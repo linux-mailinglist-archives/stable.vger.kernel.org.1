@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CEA29303
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43436A28FF1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6940D1696FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFFF169791
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CF418F2CF;
-	Wed,  5 Feb 2025 14:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280917DA6A;
+	Wed,  5 Feb 2025 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOefC47g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktQ1wNhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DBA146A7A;
-	Wed,  5 Feb 2025 14:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6933156C5E;
+	Wed,  5 Feb 2025 14:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767509; cv=none; b=L7/okcBSEdqJJfp+8jmUSp1+q7lFVDhsrr6ObKnv6hVF9JPJhAgtpOem7KEhvBK3x5iUSnU4Up3g3OLuQM4H5U0mKCKe9Mbf3pfLm7VEEtkmJ0xlO67GjVZW/oNaW5Pk5kWaANtrV4u5+wY3/zjihZgPSYZ3sb6mWGKMIP5KsFE=
+	t=1738765810; cv=none; b=Ak6xjk+hfaJBtX5Uy83QuD/v2PQyYBNDZf5z3XkaIOuBCa7WBeeTZssVMhoRWquQ1kl8+K4kntWI351pDdSfZwc2MXMGRyAH/3SWQuKpUUQrFFzO4LtYINpgCzxeGsLIrfLiQsFXUr0hFAl4Dw1BQqI1opbb3GVmHH7I3pxg+8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767509; c=relaxed/simple;
-	bh=jS/eInwb+OdshR5H9gQcCSkBCDdws1RH3nibGAaF2YY=;
+	s=arc-20240116; t=1738765810; c=relaxed/simple;
+	bh=HAJb84Vn4MtEkZc/RtH9DYOUdi2qgITu1RwWMCYCJDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sd2rfW0xwwJqQYuZyCfDyh7insYjPkbuNxOkoq4O9WXHhs+F61Icid7Y0t2lxLY6vza5Ua+LKkCd7Gtmqvv/xNG7Wu5lsS+BNdUcQFHQdiGUFy4I3qRA7tlnL4WQtlK2r58eWLx0fDuIUd1UdZCSqH8vf5GFEa0lUgBAoKf2VVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOefC47g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93ADC4CED1;
-	Wed,  5 Feb 2025 14:58:27 +0000 (UTC)
+	 MIME-Version; b=qMi+G4ncfNHiITNtCLCP4T9z0T3yB6IOvNE6/btwK5BfTRin+CPKjOOz7scPHyYva9zszFrsLuBYGHrI/c84K+hy+0W6tdMwgtrUGQvPZB//yFjdKkkqQgWZNhahsf9dZLXLhQYCmlK2e+6sUYfPP36qmSe1jZpkoDLPEVrrBRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktQ1wNhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E7AC4CED1;
+	Wed,  5 Feb 2025 14:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767508;
-	bh=jS/eInwb+OdshR5H9gQcCSkBCDdws1RH3nibGAaF2YY=;
+	s=korg; t=1738765810;
+	bh=HAJb84Vn4MtEkZc/RtH9DYOUdi2qgITu1RwWMCYCJDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOefC47gWVhIStYTKJym4QBQVOykgz/scR3Ee3kzCEOnDx1u+PT9JAUjDGkIQHhCT
-	 H1i95wExpgot0dY8eIEqstWbyr/QcnPNcb1srW8EciCi4EBsg8JLiR6dRTeM17OEVq
-	 qVRtHKxeOzcpg2EN/kHGqY0bTsHPn3PMhlceuqm0=
+	b=ktQ1wNhXZ/Cdu1SXqFXPJrxdcPTCPCkRsW1HKRm8Wq1WLIQ2kW7mTrD+rmABx7f7D
+	 ubNR5f+PT5RawGWMjPw+ZKRlbEtJ/kHmnAYuYuXKR32SY+vI6yYDaYbDvQw1Ln/Gk9
+	 CmhEJSkTx1AuBQjcncjFFFWfV8NrekPWdj9CM2u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 466/590] dmaengine: ti: edma: fix OF node reference leaks in edma_driver
+Subject: [PATCH 6.6 302/393] PCI: endpoint: pci-epf-test: Fix check for DMA MEMCPY test
 Date: Wed,  5 Feb 2025 14:43:41 +0100
-Message-ID: <20250205134513.088569715@linuxfoundation.org>
+Message-ID: <20250205134431.867567583@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit e883c64778e5a9905fce955681f8ee38c7197e0f ]
+[ Upstream commit 235c2b197a8de2887f13990094a3343d2392155b ]
 
-The .probe() of edma_driver calls of_parse_phandle_with_fixed_args() but
-does not release the obtained OF nodes. Thus add a of_node_put() call.
+Currently, if DMA MEMCPY test is requested by the host, and if the endpoint
+DMA controller supports DMA_PRIVATE, the test will fail. This is not
+correct since there is no check for DMA_MEMCPY capability and the DMA
+controller can support both DMA_PRIVATE and DMA_MEMCPY.
 
-This bug was found by an experimental verification tool that I am
-developing.
+Fix the check and also reword the error message.
 
-Fixes: 1be5336bc7ba ("dmaengine: edma: New device tree binding")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20241219020507.1983124-3-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20250116171650.33585-2-manivannan.sadhasivam@linaro.org
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Reported-by: Niklas Cassel <cassel@kernel.org>
+Closes: https://lore.kernel.org/linux-pci/Z3QtEihbiKIGogWA@ryzen
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/edma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 5f8d2e93ff3fb..7f861fb07cb83 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -208,7 +208,6 @@ struct edma_desc {
- struct edma_cc;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index fa7ae8cedb676..ac1dae113f2d9 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -361,8 +361,8 @@ static void pci_epf_test_copy(struct pci_epf_test *epf_test,
  
- struct edma_tc {
--	struct device_node		*node;
- 	u16				id;
- };
- 
-@@ -2466,13 +2465,13 @@ static int edma_probe(struct platform_device *pdev)
- 			if (ret || i == ecc->num_tc)
- 				break;
- 
--			ecc->tc_list[i].node = tc_args.np;
- 			ecc->tc_list[i].id = i;
- 			queue_priority_mapping[i][1] = tc_args.args[0];
- 			if (queue_priority_mapping[i][1] > lowest_priority) {
- 				lowest_priority = queue_priority_mapping[i][1];
- 				info->default_queue = i;
- 			}
-+			of_node_put(tc_args.np);
+ 	ktime_get_ts64(&start);
+ 	if (reg->flags & FLAG_USE_DMA) {
+-		if (epf_test->dma_private) {
+-			dev_err(dev, "Cannot transfer data using DMA\n");
++		if (!dma_has_cap(DMA_MEMCPY, epf_test->dma_chan_tx->device->cap_mask)) {
++			dev_err(dev, "DMA controller doesn't support MEMCPY\n");
+ 			ret = -EINVAL;
+ 			goto err_map_addr;
  		}
- 
- 		/* See if we have optional dma-channel-mask array */
 -- 
 2.39.5
 
