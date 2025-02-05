@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-113827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18A1A293BF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAAEA29362
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A2A27A3D65
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2106816FB20
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF0418B47D;
-	Wed,  5 Feb 2025 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D70C18D649;
+	Wed,  5 Feb 2025 15:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIHa6/xf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8p+Dq7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F1818D621;
-	Wed,  5 Feb 2025 15:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE44618DF6B;
+	Wed,  5 Feb 2025 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768298; cv=none; b=ri0vRghoFtIJT1oRtDNe3jNPkB/f5/GRIlaeY3vyB08rmWAii/bwSHF2Tq15fklf1tbTquregs67Z7ZY8/tNIS9QZmuqkQ93ed7dOrTfnnTqvZhjKymF7gyHj4nCBSjCHemGuqdFQ2bv0ajrhXoLRUcCfgLUCVbZvXm3nTdIluU=
+	t=1738767825; cv=none; b=iVbzkYOH1fmiDWstqCoHyit0F88JUIajsNDngykhaYfUbYfMDPIIUFjU7zwWpO/1Ucid925EPo5HQXQaY1CoXLYkop5rxDaYvfHiA17oh96DYqv3U0ig15KPQ76KpeDsJvG0u8KG+KVQmd4ghvC+lriEU+T2uFJvKGKGX4m1nfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768298; c=relaxed/simple;
-	bh=RdFTYVl1qN6xD8JZPwP1qEmYz59xZ1t1QZ8PIy+s3Rw=;
+	s=arc-20240116; t=1738767825; c=relaxed/simple;
+	bh=AumU0/Z1edGf5bHCxwOKQZkeyJ8oMpMeV8qcBS2nbFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPIhW9zCUujzxP4MpdbxUurK9IIW3YWB5TzsO2TOXDq7Srw1wpTODruR1DzDKVL58VIcw9tRmOGKcyM+ggu7+3TQiArtX35MRDbzCDVz0+6r2T8J2IhB7pJcgpQ2Ew7ln/RInDvXEZd1YRienhECLCa+Qi2oLwl7KPFPwsNc1Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIHa6/xf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C25EC4CED1;
-	Wed,  5 Feb 2025 15:11:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qw2pVf38xrqR09Y0WL810lBCjpEsZkvx/G0h1R2KigDdIu4aViL3YUEOYL3gnPlH+hD+ZouqpXwuy7/PKR1bgHLWAoXq4RGIjUQbZE/bPlrVXx+rRbBy2SpEJpyhIwGAKobhPpx6VkJdqDEnBBc7fDorEaSv8gW89aiN+yKtPxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8p+Dq7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A927C4CED6;
+	Wed,  5 Feb 2025 15:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768297;
-	bh=RdFTYVl1qN6xD8JZPwP1qEmYz59xZ1t1QZ8PIy+s3Rw=;
+	s=korg; t=1738767825;
+	bh=AumU0/Z1edGf5bHCxwOKQZkeyJ8oMpMeV8qcBS2nbFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIHa6/xf20Bjoqw9P3uyQxp3jQLoUYkEjdcQM32BBQRcHIKy9Q9NC0ikEGlFBY2uL
-	 UNbo/x3TFi10cPkKB4UBUO0eb+MB6cRULFaMCv8EgEqUCJhSeEuznGDeEDpkCKluzr
-	 L9qYOBIAmCq7pYABsZqFOdowcD3sA0bVWmpXDhX4=
+	b=t8p+Dq7to2Ar3ZrNfoSl95FKDinH3CjDwVVhb7x060afgZuZVI3l6S6Q3wmlwF3Qe
+	 idY837dbtAdSrsWmy0wrrakXjeuWXGV4lM6HnZyxQ60ADDepAsb4/PR74iFPJkBqj7
+	 kOxLH5THZpSqteZF34gpzCMFQe4nrNIaqLCAt5i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 527/623] selftests: mptcp: extend CFLAGS to keep options from environment
+Subject: [PATCH 6.12 514/590] bgmac: reduce max frame size to support just MTU 1500
 Date: Wed,  5 Feb 2025 14:44:29 +0100
-Message-ID: <20250205134516.386743129@linuxfoundation.org>
+Message-ID: <20250205134514.930989104@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 23b3a7c4a7583eac9e3976355928a832c87caa0f ]
+[ Upstream commit 752e5fcc2e77358936d36ef8e522d6439372e201 ]
 
-Package build environments like Fedora rpmbuild introduced hardening
-options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
-and LDFLAGS.
+bgmac allocates new replacement buffer before handling each received
+frame. Allocating & DMA-preparing 9724 B each time consumes a lot of CPU
+time. Ideally bgmac should just respect currently set MTU but it isn't
+the case right now. For now just revert back to the old limited frame
+size.
 
-mptcp Makefile currently overrides CFLAGS but not LDFLAGS, which leads
-to a mismatch and build failure, for example:
-  make[1]: *** [../../lib.mk:222: tools/testing/selftests/net/mptcp/mptcp_sockopt] Error 1
-  /usr/bin/ld: /tmp/ccqyMVdb.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
-  /usr/bin/ld: failed to set dynamic section sizes: bad value
-  collect2: error: ld returned 1 exit status
+This change bumps NAT masquerade speed by ~95%.
 
-Fixes: cc937dad85ae ("selftests: centralize -D_GNU_SOURCE= to CFLAGS in lib.mk")
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/7abc701da9df39c2d6cd15bc3cf9e6cee445cb96.1737621162.git.jstancek@redhat.com
+Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
+page_frag_alloc_align()"), the bgmac driver fails to open its network
+interface successfully and runs out of memory in the following call
+stack:
+
+bgmac_open
+  -> bgmac_dma_init
+    -> bgmac_dma_rx_skb_for_slot
+      -> netdev_alloc_frag
+
+BGMAC_RX_ALLOC_SIZE = 10048 and PAGE_FRAG_CACHE_MAX_SIZE = 32768.
+
+Eventually we land into __page_frag_alloc_align() with the following
+parameters across multiple successive calls:
+
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=0
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=10048
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=20096
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=30144
+
+So in that case we do indeed have offset + fragsz (40192) > size (32768)
+and so we would eventually return NULL. Reverting to the older 1500
+bytes MTU allows the network driver to be usable again.
+
+Fixes: 8c7da63978f1 ("bgmac: configure MTU and add support for frames beyond 8192 byte size")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+[florian: expand commit message about recent commits]
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250127175159.1788246-1-florian.fainelli@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bgmac.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
-index 8e3fc05a53979..c76525fe2b84d 100644
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -2,7 +2,7 @@
- 
- top_srcdir = ../../../../..
- 
--CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
-+CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
- 
- TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
+index d73ef262991d6..6fee9a41839c0 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.h
++++ b/drivers/net/ethernet/broadcom/bgmac.h
+@@ -328,8 +328,7 @@
+ #define BGMAC_RX_FRAME_OFFSET			30		/* There are 2 unused bytes between header and real data */
+ #define BGMAC_RX_BUF_OFFSET			(NET_SKB_PAD + NET_IP_ALIGN - \
+ 						 BGMAC_RX_FRAME_OFFSET)
+-/* Jumbo frame size with FCS */
+-#define BGMAC_RX_MAX_FRAME_SIZE			9724
++#define BGMAC_RX_MAX_FRAME_SIZE			1536
+ #define BGMAC_RX_BUF_SIZE			(BGMAC_RX_FRAME_OFFSET + BGMAC_RX_MAX_FRAME_SIZE)
+ #define BGMAC_RX_ALLOC_SIZE			(SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) + \
+ 						 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
 -- 
 2.39.5
 
