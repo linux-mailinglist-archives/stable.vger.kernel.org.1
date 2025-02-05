@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA66AA28C3A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8398A28F7E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B04167B42
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCF3188865D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCF8139D1B;
-	Wed,  5 Feb 2025 13:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A317154C08;
+	Wed,  5 Feb 2025 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USD0T9kJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vushmXYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF09B640;
-	Wed,  5 Feb 2025 13:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174608634E;
+	Wed,  5 Feb 2025 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763232; cv=none; b=VdogDcSNjZN9cxe0qAi7Y9HRqJD8ebsVzuWsNjHk+DOOSE8JqDi2WKUOb/X295FkIuAOBFKuKBoZvA/rTzPvvcPFBFH5yDrkEN2L4c6gwQ8UwgrkH1nq6D1IewVDms2C6LAHoh5ePHJYrW+WKq32ppTo3pxzqsBLNXpNdVBqf7M=
+	t=1738765508; cv=none; b=JxGmu7ygDLj//9eCkB4WQzIM4zbZuE6BTJEuwfFoQqoDGM/iLCFWWhLhFJm59X+6q9+zDORKrwfLbgG5mC/+Znxtq74MRARETmNK7fjijjaf3soHOkc6W0I5kNDfovfNgEG1Urcdpa5yADyRr5zo8t4JcjJlsNhh5uaKtXBN030=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763232; c=relaxed/simple;
-	bh=iCIrBBqe/4kLhzzZcvOWsm/q4kp9yMFzV8K1S3G6u0I=;
+	s=arc-20240116; t=1738765508; c=relaxed/simple;
+	bh=ygEuqCIW8OKKmFBEHJkvTsuCxdMU+Q2Mh2gOB5q8ygM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdqOCpZo1qskewSFc1RYLG1Rt8sdr5WclqljqeIzGFT+vTsO9Ad4lx7dWWAPhCGsq7p7q+6C94G0S5w8aioWdejabr0ccTaBfKC3uO5FViu6dH/ApN1xqeit+u/1k/PmbMvsCYt97hgIJalcWaEkMD8Nbt/z9mgnpwQHJ1uYm5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USD0T9kJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336A0C4CED1;
-	Wed,  5 Feb 2025 13:47:12 +0000 (UTC)
+	 MIME-Version; b=CcEG2vCm/g3o+mrqXKpgF1nkN3ZYqu4Pigx4RrjRlsEoVRebddCgbqIVX/082ut+XRclElaUAyeAs7pm9MTnDgGVFmKvWEWMmhnWej5aHgPVSBgtInZFYFUHV6VPB+7dZi7hPvVJgsezv+VxLeSj2LxOcSJZoEskzeBqRmq0A50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vushmXYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A563C4CED1;
+	Wed,  5 Feb 2025 14:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763232;
-	bh=iCIrBBqe/4kLhzzZcvOWsm/q4kp9yMFzV8K1S3G6u0I=;
+	s=korg; t=1738765508;
+	bh=ygEuqCIW8OKKmFBEHJkvTsuCxdMU+Q2Mh2gOB5q8ygM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USD0T9kJVyJUsDm6ureDQYZeuXrbJ9VY6w2Wu70gg/WUj0kJLMx7dhuAsFuxQ7w/z
-	 BltzP0tHIaOeQlLvGXxtKzGXW1zdxPxiWt7LsgXjn2QLad28AzwksducSsDqCYcjQX
-	 xXlgaV5UVJH4Za6b8rBEtWKb76b5niLxStNGwffY=
+	b=vushmXYT2QZLa2YC3tTXgBoddI0iPXF/C0RidaHsMuxPzqzKX/S7G6PFaZOKNRs8f
+	 y2ZFtb5lAdHGs141g7knUNjJhmB0csTJu0TDqdMsFURHUPbapzzorSb/TaEHrAtaIV
+	 LutT6oh79ny4r4iEw46M3XV5cMHnzqxUR8Jvyreo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/393] block: retry call probe after request_module in blk_request_module
+Subject: [PATCH 6.13 184/623] wifi: mt76: mt7925: fix the invalid ip address for arp offload
 Date: Wed,  5 Feb 2025 14:38:46 +0100
-Message-ID: <20250205134420.573816418@linuxfoundation.org>
+Message-ID: <20250205134503.276120322@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 457ef47c08d2979f3e59ce66267485c3faed70c8 ]
+[ Upstream commit 113d469e7e23579a64b0fbb2eadf9228763092be ]
 
-Set kernel config:
+The wrong ieee80211_vif will lead to get invalid ip address and
+the correct ieee80211_vif can be obtained from ieee80211_bss_conf.
 
- CONFIG_BLK_DEV_LOOP=m
- CONFIG_BLK_DEV_LOOP_MIN_COUNT=0
-
-Do latter:
-
- mknod loop0 b 7 0
- exec 4<> loop0
-
-Before commit e418de3abcda ("block: switch gendisk lookup to a simple
-xarray"), lookup_gendisk will first use base_probe to load module loop,
-and then the retry will call loop_probe to prepare the loop disk. Finally
-open for this disk will success. However, after this commit, we lose the
-retry logic, and open will fail with ENXIO. Block device autoloading is
-deprecated and will be removed soon, but maybe we should keep open success
-until we really remove it. So, give a retry to fix it.
-
-Fixes: e418de3abcda ("block: switch gendisk lookup to a simple xarray")
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241209110435.3670985-1-yangerkun@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 147324292979 ("wifi: mt76: mt7925: add link handling in the BSS_CHANGED_ARP_FILTER handler")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20241107053005.10558-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/block/genhd.c b/block/genhd.c
-index 6d704c37f26e7..8f72539e08dea 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -763,7 +763,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
- }
- 
- #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
--void blk_request_module(dev_t devt)
-+static bool blk_probe_dev(dev_t devt)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index b43617dbd5fde..123a585098e3b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -123,10 +123,8 @@ EXPORT_SYMBOL_GPL(mt7925_mcu_regval);
+ int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
+ 				 struct ieee80211_bss_conf *link_conf)
  {
- 	unsigned int major = MAJOR(devt);
- 	struct blk_major_name **n;
-@@ -773,14 +773,26 @@ void blk_request_module(dev_t devt)
- 		if ((*n)->major == major && (*n)->probe) {
- 			(*n)->probe(devt);
- 			mutex_unlock(&major_names_lock);
--			return;
-+			return true;
- 		}
- 	}
- 	mutex_unlock(&major_names_lock);
-+	return false;
-+}
-+
-+void blk_request_module(dev_t devt)
-+{
-+	int error;
-+
-+	if (blk_probe_dev(devt))
-+		return;
- 
--	if (request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt)) > 0)
--		/* Make old-style 2.4 aliases work */
--		request_module("block-major-%d", MAJOR(devt));
-+	error = request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt));
-+	/* Make old-style 2.4 aliases work */
-+	if (error > 0)
-+		error = request_module("block-major-%d", MAJOR(devt));
-+	if (!error)
-+		blk_probe_dev(devt);
- }
- #endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
- 
+-	struct ieee80211_vif *mvif = container_of((void *)link_conf->vif,
+-						  struct ieee80211_vif,
+-						  drv_priv);
+ 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
++	struct ieee80211_vif *mvif = link_conf->vif;
+ 	struct sk_buff *skb;
+ 	int i, len = min_t(int, mvif->cfg.arp_addr_cnt,
+ 			   IEEE80211_BSS_ARP_ADDR_LIST_LEN);
 -- 
 2.39.5
 
