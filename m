@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E86A28E35
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3F1A28F0C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15F051887EEB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 694581883B16
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421FD149C53;
-	Wed,  5 Feb 2025 14:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAAC1537AC;
+	Wed,  5 Feb 2025 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvHkq0Zy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNLd5DJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F338015198D;
-	Wed,  5 Feb 2025 14:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB931519BE;
+	Wed,  5 Feb 2025 14:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764596; cv=none; b=b7lgk27uPvywqv8Zu1gVmiMc58o+HeHUq7QkbONd8vkqq78B2nTBg4JjilqrPhXHx4RaFjXPfj+PLOYKgcs4m9nXn+4NYtk48S+4oQHsYtNL8oH3x6qGC371NpGng8akJauw7vEPhKzXjTJAagtLq0pNVagMEMg8s3edzBtnjPs=
+	t=1738765198; cv=none; b=eaPHETpN8tysjUQ+aHedsIUGJkwE52KQNdkRfwxAb6KExFbWZgjwZTL8uGaTo2xxk8QF5hl0mmg6bNjFN9qjmwFj5IH7ZlCz1fSU9uoYtInASS74b0AUSS8Gsa7cxyc47MCHVWhT+qK9M10Y/F98KoBewuiGOTNXhFHZ/o1HsjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764596; c=relaxed/simple;
-	bh=A51x4AxD0MclPMlpgeaUMV63uy40HEhM0uuMQDHnVuo=;
+	s=arc-20240116; t=1738765198; c=relaxed/simple;
+	bh=AaCkyQMwTvoWF96CmLS5D9RG0xIpOwfmx/iEFx09/jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzZ+3DIZDJBX1pnvOFunKeKBrpXDXTEp3E70CbRKafSjdVggGCyO5GxyEKN5kDLlVSPsqHgsi7Z68wqBD7DZ8WRUokG9KQj76+ZxzwHMeEiOnT5grbFkdFfjjTgtLpLtLBbsKfNw0crFAkp6rjmTQA4mwKOkAElDwUZ+uTqKrEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvHkq0Zy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E71C4CED1;
-	Wed,  5 Feb 2025 14:09:55 +0000 (UTC)
+	 MIME-Version; b=IU4xKl9AKy3WTpNRH7MdY1JLOQo0QqFNE8DRhYHSGThkZPWhGWQpiIRlmyvxXLCGbAYm+eFmcLjGdadFq7Jx1bjUf4tBlXa2praskluDlbV2c6eesA42dy3noGeMOwawmmyPUgciBVk8mDptWm9eDMtb1jf0oCKfWfrFIeGzAQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNLd5DJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5451C4CED1;
+	Wed,  5 Feb 2025 14:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764595;
-	bh=A51x4AxD0MclPMlpgeaUMV63uy40HEhM0uuMQDHnVuo=;
+	s=korg; t=1738765198;
+	bh=AaCkyQMwTvoWF96CmLS5D9RG0xIpOwfmx/iEFx09/jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvHkq0ZyBAMJI1QU/G3b/1LaNIir+uK5gUIwdIQpRu+w3tTdNTzHEzjIAMbh/tKsI
-	 C1ztAHwzOot8knFnKN7UdM006RGp+o/ZXLg5JfoM7djkC9zZEK32Tjj2NZQs8xSnsh
-	 6zEDw6hF/tekcWIX5B5DjIN0yXNQ6R1NW0Mioivc=
+	b=hNLd5DJca1oeTuGQ6PwZ9O+qoNEIQJSV/fJutKh4K0vbmjUytaoM5mpfii+FrtlkH
+	 4AF5iWt0tYRe1zfTqn2cMzatuYpajZMqDVxzXBfpg8mBMqy6+cN1Sonse18UpGquIm
+	 nAmiCP4jRkxvKBaS7U9pyRtWkjxrQ7DwCUIhtMNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Tritton <terry.tritton@linaro.org>,
-	Aseda Aboagye <aaboagye@chromium.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/590] HID: fix generic desktop D-Pad controls
-Date: Wed,  5 Feb 2025 14:38:16 +0100
-Message-ID: <20250205134500.664823308@linuxfoundation.org>
+Subject: [PATCH 6.13 155/623] wifi: rtw89: chan: fix soft lockup in rtw89_entity_recalc_mgnt_roles()
+Date: Wed,  5 Feb 2025 14:38:17 +0100
+Message-ID: <20250205134502.166534728@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Tritton <terry.tritton@linaro.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 80818fdc068eaab729bb793d790ae9fd053f7053 ]
+[ Upstream commit e4790b3e314a4814f1680a5dc552031fb199b878 ]
 
-The addition of the "System Do Not Disturb" event code caused the Generic
-Desktop D-Pad configuration to be skipped. This commit allows both to be
-configured without conflicting with each other.
+During rtw89_entity_recalc_mgnt_roles(), there is a normalizing process
+which will re-order the list if an entry with target pattern is found.
+And once one is found, should have aborted the list_for_each_entry. But,
+`break` just aborted the inner for-loop. The outer list_for_each_entry
+still continues. Normally, only the first entry will match the target
+pattern, and the re-ordering will change nothing, so there won't be
+soft lockup. However, in some special cases, soft lockup would happen.
 
-Fixes: 22d6d060ac77 ("input: Add support for "Do Not Disturb"")
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
-Reviewed-by: Aseda Aboagye <aaboagye@chromium.org>
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix it by `goto fill` to break from the list_for_each_entry.
+
+The following is a sample of kernel log for this problem.
+
+watchdog: BUG: soft lockup - CPU#1 stuck for 26s! [wpa_supplicant:2055]
+[...]
+RIP: 0010:rtw89_entity_recalc ([...] chan.c:392 chan.c:479) rtw89_core
+[...]
+
+Fixes: 68ec751b2881 ("wifi: rtw89: chan: manage active interfaces")
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241231004811.8646-3-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input.c | 37 +++++++++++++++++--------------------
- include/linux/hid.h     |  1 +
- 2 files changed, 18 insertions(+), 20 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index fda9dce3da998..9d80635a91ebd 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -810,10 +810,23 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
- 			break;
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index abc78716596d0..c06d305519df4 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -391,11 +391,12 @@ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
  
--		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl*/
--			switch (usage->hid & 0xf) {
--			case 0xb: map_key_clear(KEY_DO_NOT_DISTURB); break;
--			default: goto ignore;
-+		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl & D-pad */
-+			switch (usage->hid) {
-+			case HID_GD_UP:	   usage->hat_dir = 1; break;
-+			case HID_GD_DOWN:  usage->hat_dir = 5; break;
-+			case HID_GD_RIGHT: usage->hat_dir = 3; break;
-+			case HID_GD_LEFT:  usage->hat_dir = 7; break;
-+			case HID_GD_DO_NOT_DISTURB:
-+				map_key_clear(KEY_DO_NOT_DISTURB); break;
-+			default: goto unknown;
-+			}
-+
-+			if (usage->hid <= HID_GD_LEFT) {
-+				if (field->dpad) {
-+					map_abs(field->dpad);
-+					goto ignore;
-+				}
-+				map_abs(ABS_HAT0X);
+ 				list_del(&role->mgnt_entry);
+ 				list_add(&role->mgnt_entry, &mgnt->active_list);
+-				break;
++				goto fill;
  			}
- 			break;
  		}
-@@ -844,22 +857,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
- 		if (field->application == HID_GD_SYSTEM_CONTROL)
- 			goto ignore;
+ 	}
  
--		if ((usage->hid & 0xf0) == 0x90) {	/* D-pad */
--			switch (usage->hid) {
--			case HID_GD_UP:	   usage->hat_dir = 1; break;
--			case HID_GD_DOWN:  usage->hat_dir = 5; break;
--			case HID_GD_RIGHT: usage->hat_dir = 3; break;
--			case HID_GD_LEFT:  usage->hat_dir = 7; break;
--			default: goto unknown;
--			}
--			if (field->dpad) {
--				map_abs(field->dpad);
--				goto ignore;
--			}
--			map_abs(ABS_HAT0X);
--			break;
--		}
--
- 		switch (usage->hid) {
- 		/* These usage IDs map directly to the usage codes. */
- 		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index a7d60a1c72a09..dd33423012538 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -218,6 +218,7 @@ struct hid_item {
- #define HID_GD_DOWN		0x00010091
- #define HID_GD_RIGHT		0x00010092
- #define HID_GD_LEFT		0x00010093
-+#define HID_GD_DO_NOT_DISTURB	0x0001009b
- /* Microsoft Win8 Wireless Radio Controls CA usage codes */
- #define HID_GD_RFKILL_BTN	0x000100c6
- #define HID_GD_RFKILL_LED	0x000100c7
++fill:
+ 	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
+ 		if (unlikely(pos >= RTW89_MAX_INTERFACE_NUM)) {
+ 			rtw89_warn(rtwdev,
 -- 
 2.39.5
 
