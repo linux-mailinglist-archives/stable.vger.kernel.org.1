@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14464A28EA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8808A28C49
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D3916594D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8441883E18
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECA014B075;
-	Wed,  5 Feb 2025 14:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BB4132111;
+	Wed,  5 Feb 2025 13:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAUuqpoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6vbZ+ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF10C13C3F6;
-	Wed,  5 Feb 2025 14:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB1126C18;
+	Wed,  5 Feb 2025 13:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764942; cv=none; b=mx1NvIpu4C6YDvXWRBWfFOxaSWNqhoqHsphktCkspI2dP7cOGfc0KS22IJO89vm2NuwZKXogk7+KmjUIbUx657Zj+xBPMh81Dxizt1kDm86eMF4o4YiYC6IRSf4z0C+OK6z3jr5q1vJvneaUiI0Fz87MciAG1wweRGxNtRxnquk=
+	t=1738763281; cv=none; b=nxeBlYEzkgZfYAYnSBhD7MgWJGFWYNVBMKo8Q9e0dBUn9oglhhUY/XFWNjG7p8czvsHHVYfwf2P8C0cXnCkEX5cCpKkeEYudboeHCz/F/2MF3xe7rOrCZtWaVIOsvTELcjlYDyfrPJxFzKt4/lm/Z27Ny7JD+P66IPdu2oe0dQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764942; c=relaxed/simple;
-	bh=UUDIcGQ4qsj8A3QiNPOCxVKZu+PxCNKHXtUkgoYeziw=;
+	s=arc-20240116; t=1738763281; c=relaxed/simple;
+	bh=8KiUNB6sEd9ifK+sPyUOQPRiNaq3ZtQhn+dmMYjUcJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5EZgiRwTJKClLTCKb9AXhYuZUHbgkgMtGB/fXw76Ffg4HRZU4wgu+tamBnGXgvY9c0sG8j7qb3mkW+xTInBkhV6n2kXOFiab7I72EF178RDH6EcY804v4PCR6wDKSsC9vWOFr5+JUS/iaxRdYxkJElyQt7SVsfG/8GOogjn0L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAUuqpoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F75C4CED1;
-	Wed,  5 Feb 2025 14:15:42 +0000 (UTC)
+	 MIME-Version; b=PUpFEkyzTr3BpY9LcXSSRJLeJDv629XdXbfV4LJ13+L9wUN+bArnurtQt89VEeWvmyYvsiKjJr69i0IZEC4veh4soO4UBw7zmU+53xB9I3wMNvwS9xoM1Ukr0agUTDqQdD0PdymWr8LL09h33LX6I41ugrWE2YlS8XNxbzO7oSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6vbZ+ZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46494C4CED1;
+	Wed,  5 Feb 2025 13:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764942;
-	bh=UUDIcGQ4qsj8A3QiNPOCxVKZu+PxCNKHXtUkgoYeziw=;
+	s=korg; t=1738763281;
+	bh=8KiUNB6sEd9ifK+sPyUOQPRiNaq3ZtQhn+dmMYjUcJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAUuqpoL0+5kBNlLvtSoLFXKSyxLAaqfRBpVoS2791Qk4PgShpB/+JU8NJYBvG+Pp
-	 Pn76SSBBQ3UWY4ByHd4OeSQWgxFw2HJRyA8UQPjDtiSq3jpGNZB+AFkjt+oP32nNkc
-	 YM4A6ywvoZmVCahNbBwWsG4q/auuGXtR2WiVh2dg=
+	b=m6vbZ+ZKnou3tXbT5/YO/os8kjBSHV5FafgdSHjGvpwBLfWLqNN5T6Bj0CVGPdQqd
+	 Y1yvR8EVeSkeydBnEHAxwX0qiC9k/5FUdCMzzvhNbQmQ7YD/FIdcl0riTXpEf3EDA+
+	 8BKNQ0WVgptCXPMi/nTiOoppkUsp08fBcPAMGVDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/590] wifi: mt76: mt7925: fix NULL deref check in mt7925_change_vif_links
+Subject: [PATCH 6.6 011/393] selftests/powerpc: Fix argument order to timer_sub()
 Date: Wed,  5 Feb 2025 14:38:50 +0100
-Message-ID: <20250205134501.976784983@linuxfoundation.org>
+Message-ID: <20250205134420.728312667@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 5cd0bd815c8a48862a296df9b30e0ea0da14acd3 ]
+[ Upstream commit 2bf66e66d2e6feece6175ec09ec590a0a8563bdd ]
 
-In mt7925_change_vif_links() devm_kzalloc() may return NULL but this
-returned value is not checked.
+Commit c814bf958926 ("powerpc/selftests: Use timersub() for
+gettimeofday()"), got the order of arguments to timersub() wrong,
+leading to a negative time delta being reported, eg:
 
-Fixes: 69acd6d910b0 ("wifi: mt76: mt7925: add mt7925_change_vif_links")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://patch.msgid.link/20241025075554.181572-1-hanchunchao@inspur.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  test: gettimeofday
+  tags: git_version:v6.12-rc5-409-gdddf291c3030
+  time = -3.297781
+  success: gettimeofday
+
+The correct order is minuend, subtrahend, which in this case is end,
+start. Which gives:
+
+  test: gettimeofday
+  tags: git_version:v6.12-rc5-409-gdddf291c3030-dirty
+  time = 3.300650
+  success: gettimeofday
+
+Fixes: c814bf958926 ("powerpc/selftests: Use timersub() for gettimeofday()")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241218114347.428108-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/powerpc/benchmarks/gettimeofday.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 791c8b00e1126..a5110f8485e52 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1946,6 +1946,8 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 					     GFP_KERNEL);
- 			mlink = devm_kzalloc(dev->mt76.dev, sizeof(*mlink),
- 					     GFP_KERNEL);
-+			if (!mconf || !mlink)
-+				return -ENOMEM;
- 		}
+diff --git a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+index 580fcac0a09f3..b71ef8a493ed1 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
++++ b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+@@ -20,7 +20,7 @@ static int test_gettimeofday(void)
+ 		gettimeofday(&tv_end, NULL);
+ 	}
  
- 		mconfs[link_id] = mconf;
+-	timersub(&tv_start, &tv_end, &tv_diff);
++	timersub(&tv_end, &tv_start, &tv_diff);
+ 
+ 	printf("time = %.6f\n", tv_diff.tv_sec + (tv_diff.tv_usec) * 1e-6);
+ 
 -- 
 2.39.5
 
