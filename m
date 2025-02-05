@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-112619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B533EA28D9C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582D3A28DA5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C325E18839B4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D198B1888681
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA40F510;
-	Wed,  5 Feb 2025 14:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BA0154C1D;
+	Wed,  5 Feb 2025 14:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooDZYo2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovmQu5m/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F3115198D;
-	Wed,  5 Feb 2025 14:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF9915198D;
+	Wed,  5 Feb 2025 14:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764180; cv=none; b=LgyIeXYEeLthLV58aOPqx7GkK9CABhyJX0s2iMhkqiNm5SU3wx3jE/jl/i/iMNgmzLE/MvYOQAzA+5H2ufH59AGx5NxeeiPcLvdlszwH0Y0+3R/jwYsHOpPn0tE9pTdr+xF3910/F2dsPzBlSgB1FYrXOrN1eXj9U6K2ZUvHsNw=
+	t=1738764190; cv=none; b=PJ5wXPD5ntJxuO9edWaTqSs/2Uza7CWU0L/qsH6QR3g36xgZC+osevW0cNqzKqkls3Ivf8H25Xlj05ybsqKaIWOlG1TYyN2HN5YAQzVjDR0UjREZF0i13spMw3o3DWqfrPvAEu+rTfHSYCggvJMdLSGyBYaD4txwIOjsu/jnx4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764180; c=relaxed/simple;
-	bh=o93doGUJB9Cciokxh3QHgfbTwbjsxhYfxfozd7kUo80=;
+	s=arc-20240116; t=1738764190; c=relaxed/simple;
+	bh=cwWf0AI7PuC688cYSRcA0l06Mg+VtCAREJsqS17Cg5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL4CDdtPim8VGwZsNuCK0D34DJeKHUXDCoNg6K2HXsMiT72UhZrua4qC43l582Xt8JK4pOchaHCpcCZB5IX1PT5v5/95/fnh5GC+E14hsrupBIPreUJKK4hWm+0CpmC/IgDA/3UZY50sxGct02pyzWIhvF+yq84fXbmW1yhp8PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooDZYo2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F01C4CED6;
-	Wed,  5 Feb 2025 14:02:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V6Tf2qJPwmEcwN6D4uNRUG1QJxv789dSp6Hq1YvGb7E4AjSAgHxh9IgAHNUXKMZwGbYTVf2tsVMxlWSN+yghiMVX9Ysh/BaxsH1zBIEGtySt4GdUlpeUDHZio8T7izbf/eZsBpk+UFOPdulTh3Z29FVTQBfvB8TeLYPENeey6E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovmQu5m/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EFFC4CED6;
+	Wed,  5 Feb 2025 14:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764180;
-	bh=o93doGUJB9Cciokxh3QHgfbTwbjsxhYfxfozd7kUo80=;
+	s=korg; t=1738764190;
+	bh=cwWf0AI7PuC688cYSRcA0l06Mg+VtCAREJsqS17Cg5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ooDZYo2zr73BmACDdh9HWFfZbF4WjOcekNuXaC45DyNnvqgc+I0bTurNl7/1HDX26
-	 W7zw5wIzSJasmDy/HhS8swisaoo7VQtesPzuS5Zlkcbd3jMflKzqb4rUT8FoBKijd1
-	 ik2iLvE9SDX4x7iQTf6w414nAZ0CLsjgMHREB9u4=
+	b=ovmQu5m/YsdAx9cmm0n4k1LlMjEYR79RqwpXUCXZgJt5ZN1YwCLNNLJxo/TaEUuQc
+	 2zA/9Y4X8iFdxGLuBMWV4jwgIrsLKeKtzidUs+Nqln6yG2shQ5v3b5r5GJ7cDsdLZZ
+	 CmxDFy6CWj6Gj6DPMUeRZjWgxoPGEYMV9T7+wv3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	He Lugang <helugang@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	=?UTF-8?q?Ulrich=20M=C3=BCller?= <ulm@gentoo.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/590] wifi: rtlwifi: pci: wait for firmware loading before releasing memory
-Date: Wed,  5 Feb 2025 14:37:31 +0100
-Message-ID: <20250205134458.929258482@linuxfoundation.org>
+Subject: [PATCH 6.12 097/590] HID: multitouch: fix support for Goodix PID 0x01e9
+Date: Wed,  5 Feb 2025 14:37:32 +0100
+Message-ID: <20250205134458.967352065@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -60,42 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit b59b86c5d08be7d761c04affcbcec8184738c200 ]
+[ Upstream commit 8ade5e05bd094485ce370fad66a6a3fb6f50bfbc ]
 
-At probe error path, the firmware loading work may have already been
-queued. In such a case, it will try to access memory allocated by the probe
-function, which is about to be released. In such paths, wait for the
-firmware worker to finish before releasing memory.
+Commit c8000deb68365b ("HID: multitouch: Add support for GT7868Q") added
+support for 0x01e8 and 0x01e9, but the mt_device[] entries were added
+twice for 0x01e8 and there was none added for 0x01e9. Fix that.
 
-Fixes: 3d86b93064c7 ("rtlwifi: Fix PCI probe error path orphaned memory")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241206173713.3222187-5-cascardo@igalia.com
+Fixes: c8000deb68365b ("HID: multitouch: Add support for GT7868Q")
+Reported-by: He Lugang <helugang@uniontech.com>
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Reported-by: Ulrich Müller <ulm@gentoo.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-multitouch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index a870117cf12af..0eafc4d125f91 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -2218,6 +2218,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
- fail4:
- 	rtl_deinit_core(hw);
- fail3:
-+	wait_for_completion(&rtlpriv->firmware_loading_complete);
- 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index d1b7ccfb3e051..e07d63db5e1f4 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2078,7 +2078,7 @@ static const struct hid_device_id mt_devices[] = {
+ 		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+ 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E8) },
++		     I2C_DEVICE_ID_GOODIX_01E9) },
  
- fail2:
+ 	/* GoodTouch panels */
+ 	{ .driver_data = MT_CLS_NSMU,
 -- 
 2.39.5
 
