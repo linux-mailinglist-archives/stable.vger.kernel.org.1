@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711D7A2925E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0CAA292FB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9B0516AB79
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3B183AD8C7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DCF19307F;
-	Wed,  5 Feb 2025 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AD118BC26;
+	Wed,  5 Feb 2025 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnD4QOCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgE2UFMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8467192D83;
-	Wed,  5 Feb 2025 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F0E376;
+	Wed,  5 Feb 2025 14:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767102; cv=none; b=Gt+zkcHp8WfizH8WZCu/75fXN+NGkXEex6n0Eze+5r53J2wGpRg6PNp6A81KKmXp/ZXwSFKXKs9IiF34Bs1SxKRU32NjQEcFvCu/wosMeAsCv/bah0OqUGLBNse+CuI81+wsfrVjQnIEjT0SJ+nPhKlMnYa7g/lg7F22DWuqLhs=
+	t=1738767459; cv=none; b=RcJAQv/9y9CAJLXiN/k6ieQH45tBSRh+5SVVpasmc8bQbrRsPqzYoZkxgVSMQKwRxJrUBLboFsgAIJN5gEyzokwOztZgHcDvSixgyZM0WLFMlLYNVg723EAwy9q16laoxqS7vJbj5ZIcfNxDxBNTIwks0mzBAN7CB042e4Te3mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767102; c=relaxed/simple;
-	bh=fp2ijNwEltgCPoaN3W+4u56lV5JhR0Q4poe/Nx0TlLs=;
+	s=arc-20240116; t=1738767459; c=relaxed/simple;
+	bh=3g92yF1Ur6Zt/95n5eSdohWhZ87iog+MgSOrmCqtdYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1T7d1T9QkSDu0qBGsKADlvVJ9mVS2TwIJ3WwPP73+UR7lPn6hKxVbIEQl6NxHNTqr+mGqMKHZfaPXvJKPAsU0a3Ouoh3anmcMG0aQBQn1xWMc/+lH3LvKzJOnnHDaK8VpXTknSwCzUTypFTN58a92JlejI4zQdO+mnO7hYEAUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnD4QOCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B4C4CED1;
-	Wed,  5 Feb 2025 14:51:41 +0000 (UTC)
+	 MIME-Version; b=l0mGjrYmzVCZNfyBkwknia/KgWWtzhENdCkIJAbFbzl95pLlP04Qu0Sdnxlob/AwfvHzL6HaeL4Ia2Hag0zMu4tmnwgq7H/vRSWqEsakapDn/6w7b4aAEJIpUiPts5/rgKQBGNIhaskAoeyjpMZ5ZKFWZTqRsyPzcLrdXVbatQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgE2UFMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3BFC4CED1;
+	Wed,  5 Feb 2025 14:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767102;
-	bh=fp2ijNwEltgCPoaN3W+4u56lV5JhR0Q4poe/Nx0TlLs=;
+	s=korg; t=1738767459;
+	bh=3g92yF1Ur6Zt/95n5eSdohWhZ87iog+MgSOrmCqtdYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnD4QOCQ4EHwPhnBlVS0AupfbhNRxNYFuG/BhsXldHurPgaeapFMu4z8DjSXxq15j
-	 VSTG5+FcPTjF78xvjQQeu0+lxhjU8hJIoiOIfMCC9SmlhiLMv7erIu9kw08Z9I71zJ
-	 DZfyHPOxeK5t4T+jCOmFrI6IEhywF9FyRrb45bFQ=
+	b=XgE2UFMv7JgI3blTgAEk1ONeB+Qczhz8kV5ciXjeCosojCRPg1wEQIIdGpsLJeqWR
+	 Tqr02zKU6A/k4K5GuQz6PpVi05h4BcQrHxgGPcvhKEN7HHkhGM8TC2LgxEmf0QKy0h
+	 8kq+JObna9Y/tFXcyq/SKUVsBARzeS0Rusex8HD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 393/590] arm64: dts: qcom: x1e80100-romulus: Update firmware nodes
-Date: Wed,  5 Feb 2025 14:42:28 +0100
-Message-ID: <20250205134510.302440504@linuxfoundation.org>
+	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.13 407/623] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+Date: Wed,  5 Feb 2025 14:42:29 +0100
+Message-ID: <20250205134511.793573090@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 983833061d9599a534e44fd6d335080d1a0ba985 ]
+commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
 
-Other x1e machines use _dtbs.elf for these firmwares, which matches the
-filenames shipped by Windows.
+A report in 2019 by the syzbot fuzzer was found to be connected to two
+errors in the HID core associated with Resolution Multipliers.  One of
+the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
+in hid_apply_multiplier."), but the other has not been fixed.
 
-Fixes: 09d77be56093 ("arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250108124500.44011-1-joel@jms.id.au
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This error arises because hid_apply_multipler() assumes that every
+Resolution Multiplier control is contained in a Logical Collection,
+i.e., there's no way the routine can ever set multiplier_collection to
+NULL.  This is in spite of the fact that the function starts with a
+big comment saying:
+
+	 * "The Resolution Multiplier control must be contained in the same
+	 * Logical Collection as the control(s) to which it is to be applied.
+	   ...
+	 *  If no Logical Collection is
+	 * defined, the Resolution Multiplier is associated with all
+	 * controls in the report."
+	 * HID Usage Table, v1.12, Section 4.3.1, p30
+	 *
+	 * Thus, search from the current collection upwards until we find a
+	 * logical collection...
+
+The comment and the code overlook the possibility that none of the
+collections found may be a Logical Collection.
+
+The fix is to set the multiplier_collection pointer to NULL if the
+collection found isn't a Logical Collection.
+
+Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Peter Hutterer <peter.hutterer@who-t.net>
+Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-index cdb401767c420..89e39d5527857 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-@@ -680,14 +680,14 @@
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 33a191973324..5ab8e10bbd76 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1163,6 +1163,8 @@ static void hid_apply_multiplier(struct hid_device *hid,
+ 	while (multiplier_collection->parent_idx != -1 &&
+ 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
+ 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
++	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
++		multiplier_collection = NULL;
  
- &remoteproc_adsp {
- 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qcadsp8380.mbn",
--			"qcom/x1e80100/microsoft/Romulus/adsp_dtb.mbn";
-+			"qcom/x1e80100/microsoft/Romulus/adsp_dtbs.elf";
+ 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
  
- 	status = "okay";
- };
- 
- &remoteproc_cdsp {
- 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qccdsp8380.mbn",
--			"qcom/x1e80100/microsoft/Romulus/cdsp_dtb.mbn";
-+			"qcom/x1e80100/microsoft/Romulus/cdsp_dtbs.elf";
- 
- 	status = "okay";
- };
 -- 
-2.39.5
+2.48.1
 
 
 
