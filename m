@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC86A29261
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC8AA291C9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F9E3AB186
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6FCE188D5C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AB018FDB1;
-	Wed,  5 Feb 2025 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA051953A2;
+	Wed,  5 Feb 2025 14:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0aHEcJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yd7g+v0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F031632D9;
-	Wed,  5 Feb 2025 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0107194A75;
+	Wed,  5 Feb 2025 14:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767053; cv=none; b=KAUITNdjjD3llTo14uCN90lshvlOW9upc8R8Ty9uZbcD1XzuN7/yLvdmKYMQWiZmEP7bmyCDd9/BoN158SxBimsasKRONm+1oOorijLqo6pMkugeL5adGYPe33QzVNPUx4L6KYb+PA+s0kMruZud0PzP44yImU5UK3hKuO20D2g=
+	t=1738766584; cv=none; b=j2hWtxYbZAN9eELSug4X2KIm6ZW3rMqJqrvZfmeIw5Uqoqo/yUglkynsU3oteFAkUy10lSLjDMPtndlD6akur/UNe7tDuDwUJ4pHYyKeDoVn1N4Oj1+nTLgq9EoIi8YaUskuxnO1P/UDuAaBl8DQZIxA3/CfuxcHmCpW9ZOwZjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767053; c=relaxed/simple;
-	bh=JvDyzSMQGicdFezwETN14NWBNYdp8USkVX6LNHluEhg=;
+	s=arc-20240116; t=1738766584; c=relaxed/simple;
+	bh=8QGXhGHmkQTiJ7GzxHiAI7vlIhToj4qAa++phIbk+RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiKN5RwvLFC5zYFuBUB2b3CTQF6pzU2K/XIi1ord2jbwNiTUVfpv3Dso45RXvEtfBL/NKOKKD6vS+CXW6EJ+J51fDku9QA0bXveHZNvXM2KQXpYzKn9ihinLQl7WFsQetnT2HWvKFUdD0HTl8SOfmnhsbyi0K4rz0V7iA5lg/AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0aHEcJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E8CC4CED1;
-	Wed,  5 Feb 2025 14:50:52 +0000 (UTC)
+	 MIME-Version; b=LQm3QyakTb4fTSUaX+0aNC8b/EVchBI4k/QHzL/U/VY6g3iPOADvb7XG4l5YZCCHQGlj0nyzUTP1junVoKFgWYFs3YsONaU0DMCwqz5NxowyE8CRizoSMSpskQW/fI3Z8DWC2SFjBOB6SPSeQ7wdfBHm8j+V9xX4wio2ihnRFnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yd7g+v0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCCAC4CEE3;
+	Wed,  5 Feb 2025 14:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767052;
-	bh=JvDyzSMQGicdFezwETN14NWBNYdp8USkVX6LNHluEhg=;
+	s=korg; t=1738766583;
+	bh=8QGXhGHmkQTiJ7GzxHiAI7vlIhToj4qAa++phIbk+RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0aHEcJnt8ZxMq/cUoLn1YzmEBOIh5AchFcwtQ4l153LOu4iuf30tzjt7kcxSqlf8
-	 x/LY0k+OjgjBDaV+bUZ6T3H6q2C8Tj02xwCYklmWviHo3bv3ECryadgiF8JjNqisxY
-	 0i4IISyYf5fOwW2Pn193EVxAaDT9x4yBFL0SfIaQ=
+	b=Yd7g+v0ei3ujD7V6gmoM+UmTau8t44e8snLp5gZ2aRghvtSPFilH9eu46DH4UsDkR
+	 9IVACzSPsbhDxHIKDr6TRn0yQm8hkpfvMFBdCyacTEVuzBSvfiYYy3onf+iA189sGK
+	 2x3RCof9iKmwxZZBvEJlwrh404CIY/omWCL3fJwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marek Vasut <marex@denx.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 350/623] arm64: dts: medaitek: mt8395-nio-12l: Drop regulator-compatible property
+Subject: [PATCH 6.12 337/590] arm64: dts: qcom: msm8996-xiaomi-gemini: Fix LP5562 LED1 reg property
 Date: Wed,  5 Feb 2025 14:41:32 +0100
-Message-ID: <20250205134509.615630557@linuxfoundation.org>
+Message-ID: <20250205134508.169645629@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit ab60442f26b15ba69b210974722a851ed03188ff ]
+[ Upstream commit 02e784c5023232c48c6ec79b52ac8929d4e4db34 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+The LP5562 led@1 reg property should likely be set to 1 to match
+the unit. Fix it.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: 96564b1e2ea4 ("arm64: dts: mediatek: Introduce the MT8395 Radxa NIO 12L board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-8-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 4ac46b3682c5 ("arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241006022012.366601-1-marex@denx.de
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-index 14ec970c4e491..41dc34837b02e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-@@ -812,7 +812,6 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+index f8e9d90afab00..dbad8f57f2fa3 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+@@ -64,7 +64,7 @@
+ 		};
  
- 		regulators {
- 			mt6315_6_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -829,7 +828,6 @@
- 
- 		regulators {
- 			mt6315_7_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1193750>;
+ 		led@1 {
+-			reg = <0>;
++			reg = <1>;
+ 			chan-name = "button-backlight1";
+ 			led-cur = /bits/ 8 <0x32>;
+ 			max-cur = /bits/ 8 <0xc8>;
 -- 
 2.39.5
 
