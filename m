@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-112478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B243A28CE4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E30BA28E17
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50A03A898A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B4C3A1DFC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1DE14A088;
-	Wed,  5 Feb 2025 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD5414A088;
+	Wed,  5 Feb 2025 14:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDCHVCR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/Ux9tHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA60142E86;
-	Wed,  5 Feb 2025 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3DEF510;
+	Wed,  5 Feb 2025 14:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763704; cv=none; b=SD89OAA6jDjwK4FZCysbjFxzGgccdh/+AGc2cYif5brDah8KMUJBoBrYSF+d5Z+oSyzRATCw7avcuN4FHmdG5W/ztVfL11k0A5j2CNrmoSvvAJFNdeEScZ705/wm/7soHACfnQv1rTmsrnS+5a3yvV8HElWZ7kP44k33wcPMUFk=
+	t=1738764471; cv=none; b=faq0q89yiWWswNebY9oeBUi0CcOneGjH9GIj63DXjFqcIm7stcOa+GyGarh3xhcxPHEd1FztNAvzR04cmBB4xR84xgxIHXnD5Y43uIiqMO8oNo4NSzVcC6k0T8VyCL1Dize6ZazNP22HjkX7/UcbP2lLKn6JZUp2HAXbP7XgN/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763704; c=relaxed/simple;
-	bh=aWkSnKtcWeqcJWR/stZ2ifqknDLsce1LpFP42lQxy1k=;
+	s=arc-20240116; t=1738764471; c=relaxed/simple;
+	bh=F2PRUFoMfo3iNp+gR1X2kwLmQ3qPAHKqxBdKp0aCczQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0b3szIQar2uIPwk6hFsR9zkuxgZPojut/DovVn9nYyd25EERg98m/mzFwFL9KwPY6Gk4Q39hrh2AdpeXCWhXXnH2sEbmhxnvUxouxewXapiaQDEp+n3bCZME0u0oTnRb30TvpxvOWdmlRp6hvRvX4fPelVbYFypze66hL/w3Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDCHVCR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6C6C4CED1;
-	Wed,  5 Feb 2025 13:55:03 +0000 (UTC)
+	 MIME-Version; b=Gtv5I7DjpsgAQPfD3XWD54ToYIrwnXGVqNhMUi9QODrn0mm5B7CsC7OR2U3kMsn+eIM0mTsPfF3nMGFaQ5syvdH+H0Xb4a1EYt2rWPLlZxY218dqVTD/+Mwf5l89qBe2jaCn2ze4Up0BNvVCw1WisEwAqwiuFRYE2u9THhQVYGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/Ux9tHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEACC4CED1;
+	Wed,  5 Feb 2025 14:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763704;
-	bh=aWkSnKtcWeqcJWR/stZ2ifqknDLsce1LpFP42lQxy1k=;
+	s=korg; t=1738764471;
+	bh=F2PRUFoMfo3iNp+gR1X2kwLmQ3qPAHKqxBdKp0aCczQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDCHVCR/BPn4saW7LLJurN3m78XzxSKD8UvF4NWXxzethiMhJTo0+VNJ0/pgeW3o1
-	 67VKfCD0+XaFkXHBCv/a10NyewH5nj+77R2Oq5LIY+7Fe9GCZe6a1HXaQ3HxdTMJxR
-	 faXGmlGKYSzXFJJHPDX7XAw037eiDrrA2u1+PqQM=
+	b=H/Ux9tHzJnI2oeCqJUv3aT4sFodcAT/P+CodgBV8xSIhwIthjp9wO6B79N1IlqwaI
+	 wpuVimBuucHGQbJzcGjL8SFP/8DeN1SGhis2LiUABcSQL1mvd/biVTF2D8Rg8A4u7+
+	 iSFsEz5ihF/pQ6wIb3J6vBm3HpV9Ptf4zUZ5E+KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/590] drm/connector: Allow clearing HDMI infoframes
+	Min-Hua Chen <minhuadotchen@gmail.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Michael Riesch <michael.riesch@wolfvision.net>
+Subject: [PATCH 6.13 062/623] drm/rockchip: vop2: include rockchip_drm_drv.h
 Date: Wed,  5 Feb 2025 14:36:44 +0100
-Message-ID: <20250205134457.132214620@linuxfoundation.org>
+Message-ID: <20250205134458.597720511@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek Foreman <derek.foreman@collabora.com>
+From: Min-Hua Chen <minhuadotchen@gmail.com>
 
-[ Upstream commit d34357743b360c99903b5a59daab08f55b2f41a1 ]
+[ Upstream commit 77b1ccb2a27c7b3b118a03bf1730def92070d31b ]
 
-Our infoframe setting code currently lacks the ability to clear
-infoframes. For some of the infoframes, we only need to replace them,
-so if an error occurred when generating a new infoframe we would leave
-a stale frame instead of clearing the frame.
+Move rockchip_drm_drv.h in rockchip_drm_vop2.h to fix the follow
+sparse warning:
 
-However, the Dynamic Range and Mastering (DRM) infoframe should only
-be present when displaying HDR content (ie: the HDR_OUTPUT_METADATA blob
-is set). If we can't clear infoframes, the stale DRM infoframe will
-remain and we can never set the display back to SDR mode.
+ARCH=arm64 LLVM=1 make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+mrproper defconfig all  -j12
 
-With this change, we clear infoframes when they can not, or should not,
-be generated. This fixes switching to an SDR mode from an HDR one.
+drivers/gpu/drm/rockchip/rockchip_vop2_reg.c:502:24: sparse:
+warning: symbol 'vop2_platform_driver' was not declared. Should it
+be static?
 
-Fixes: f378b77227bc ("drm/connector: hdmi: Add Infoframes generation")
-Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241202181939.724011-1-derek.foreman@collabora.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+It is also beneficial for the upcoming support for rk3576.
+
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Min-Hua Chen <minhuadotchen@gmail.com>
+Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
+Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-8-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_hdmi_state_helper.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 1 -
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.h | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_hdmi_state_helper.c b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
-index feb7a3a759811..936a8f95d80f7 100644
---- a/drivers/gpu/drm/display/drm_hdmi_state_helper.c
-+++ b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
-@@ -347,6 +347,8 @@ static int hdmi_generate_avi_infoframe(const struct drm_connector *connector,
- 		is_limited_range ? HDMI_QUANTIZATION_RANGE_LIMITED : HDMI_QUANTIZATION_RANGE_FULL;
- 	int ret;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 6082b1c179aeb..5880d87fe6b3a 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -33,7 +33,6 @@
+ #include <uapi/linux/videodev2.h>
+ #include <dt-bindings/soc/rockchip,vop2.h>
  
-+	infoframe->set = false;
-+
- 	ret = drm_hdmi_avi_infoframe_from_display_mode(frame, connector, mode);
- 	if (ret)
- 		return ret;
-@@ -376,6 +378,8 @@ static int hdmi_generate_spd_infoframe(const struct drm_connector *connector,
- 		&infoframe->data.spd;
- 	int ret;
+-#include "rockchip_drm_drv.h"
+ #include "rockchip_drm_gem.h"
+ #include "rockchip_drm_vop2.h"
+ #include "rockchip_rgb.h"
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+index 1c4204324f9f5..130aaa40316d1 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+@@ -9,6 +9,7 @@
  
-+	infoframe->set = false;
-+
- 	ret = hdmi_spd_infoframe_init(frame,
- 				      connector->hdmi.vendor,
- 				      connector->hdmi.product);
-@@ -398,6 +402,8 @@ static int hdmi_generate_hdr_infoframe(const struct drm_connector *connector,
- 		&infoframe->data.drm;
- 	int ret;
+ #include <linux/regmap.h>
+ #include <drm/drm_modes.h>
++#include "rockchip_drm_drv.h"
+ #include "rockchip_drm_vop.h"
  
-+	infoframe->set = false;
-+
- 	if (connector->max_bpc < 10)
- 		return 0;
- 
-@@ -425,6 +431,8 @@ static int hdmi_generate_hdmi_vendor_infoframe(const struct drm_connector *conne
- 		&infoframe->data.vendor.hdmi;
- 	int ret;
- 
-+	infoframe->set = false;
-+
- 	if (!info->has_hdmi_infoframe)
- 		return 0;
- 
+ #define VOP2_VP_FEATURE_OUTPUT_10BIT        BIT(0)
 -- 
 2.39.5
 
