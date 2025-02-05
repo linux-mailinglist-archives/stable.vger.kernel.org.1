@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC28A28E8F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B47BA292A1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4460F3A2428
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDB3B16C629
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D357A1494DF;
-	Wed,  5 Feb 2025 14:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5621FCD16;
+	Wed,  5 Feb 2025 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sw/1KyOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FermMYSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900E115198D;
-	Wed,  5 Feb 2025 14:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C1C1FCD0D;
+	Wed,  5 Feb 2025 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764872; cv=none; b=rc0gEmtobayUSBG/9NyXjXDOpOPpaGH4D3IkWv2KMKkC/8+lWRUk+U7smViq90zl+LbVy+i3mCIV5bJA58/riY9j9oR+KE7+U5BwICSpT9MPmHXRrbOiS/2BHf/OwSs1dZy5b+3+hSoUZAuOvdGxKlV3POv2mkU5OmDo1x3BFqQ=
+	t=1738767326; cv=none; b=DCDmaL9kYk89CxXsayC+JEyVS4lsvP4nFtaIRtYFGcrLu3jh8ys4cyEfSeoBsvXp0hUQG1mlSxoXwnJwhB436tzfU4Q1NgZa+lchXhVEBM54Yp70iByz8GZy1NVhlXgC7Q4oi7Pkxfigkp1kxKvEb8/VLblGPIf6KOONCKrVEzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764872; c=relaxed/simple;
-	bh=R8z8sE0jnoF6TbdvL/hW0K9sDm0idY2pcwx8A0GO2U4=;
+	s=arc-20240116; t=1738767326; c=relaxed/simple;
+	bh=eqOya2+wzaKZ99u7P5gaX3sdp8cdgsNlyeDGCTM4nA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFTa+i/7MwYLFTMlTpvPRL6cj110tn2BbkqqC2Zri4DZTkKXWL+WAipArza7yL3OrZWqTSr5/JjTEE6s/qMHMhWSpHEpaKjaI6F7H8XjEFTWDCEHf2lTY2by1KF20iAdDgUd08jEnCNaWo4wenEDPWFAzT6xqqhRIxFStzb1rqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sw/1KyOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBE0C4CED1;
-	Wed,  5 Feb 2025 14:14:31 +0000 (UTC)
+	 MIME-Version; b=ItGcIgZgJSZkQL+xJDcikpihWJL/FeAQXn9cXD6iTyDcEXRd5jr1upadIvv9F3GDcp05S8ugY348Rkr4A+h7UJ0rhZ75diwOdEuAs3iE1RabHySa+qQjHwSZY9AZ8mS/Vac3XKcK1u3OaMSD0CJKA4G+itK2tzaGMSCE4nNNXJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FermMYSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD5EC4CEDD;
+	Wed,  5 Feb 2025 14:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764872;
-	bh=R8z8sE0jnoF6TbdvL/hW0K9sDm0idY2pcwx8A0GO2U4=;
+	s=korg; t=1738767326;
+	bh=eqOya2+wzaKZ99u7P5gaX3sdp8cdgsNlyeDGCTM4nA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sw/1KyOEKJ8ZI3/cvPFYTS+aPG1XyAUDyaa9AO5X9j8k47hNpAlxGHJl5Oe8VtKIN
-	 XI5JMXE4IulKQjADM6NsecmY8g3HUDmVD4qS4Jqe6OTk5m6xIxZ2j+M0sPhOGTSaKa
-	 2cOCCUxj/4jfhaAbIbnY2Rw6PILmdozDIc/5jeJM=
+	b=FermMYSRhYpYQXNaSYgi7FFG9blSdRqRnH3GjeZhV0UHBVfFJRRc8i/xRwTCo/Wq8
+	 APoBrkOqnM1L6JMDoDjf3FfZAa9dz+SHH2xDDk4HL5gythaCwQ3JDiTj1WkisScK9M
+	 R4mY2iOayoq5iWe7r9ezZCQxHVlj4E+KFThuFH7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/393] arm64: dts: mediatek: mt8173-evb: Fix MT6397 PMIC sub-node names
+Subject: [PATCH 6.13 388/623] arm64: dts: qcom: sm8350: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:10 +0100
-Message-ID: <20250205134428.372646862@linuxfoundation.org>
+Message-ID: <20250205134511.065539990@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 9545ba142865b9099d43c972b9ebcf463606499a ]
+[ Upstream commit f4cc8c75cfc5d06084a31da2ff67e477565f0cae ]
 
-The MT6397 PMIC bindings specify exact names for its sub-nodes. The
-names used in the current dts don't match, causing a validation error.
+The SM8350 platform uses PMK8350 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fix up the names. Also drop the label for the regulators node, since
-any reference should be against the individual regulator sub-nodes.
-
-Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241210092614.3951748-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-14-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index f9a84825b5cad..f6a70f22bd0c4 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -308,7 +308,7 @@
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index 877905dfd861e..15b7f15b3836d 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -42,7 +42,7 @@
  
--		mt6397regulator: mt6397regulator {
-+		regulators {
- 			compatible = "mediatek,mt6397-regulator";
- 
- 			mt6397_vpca15_reg: buck_vpca15 {
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
