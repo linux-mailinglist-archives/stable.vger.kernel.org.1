@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CF1A29213
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8161FA28E30
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6865D3AC9B7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4328A188773B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4561FCD02;
-	Wed,  5 Feb 2025 14:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7A614A088;
+	Wed,  5 Feb 2025 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ezqmnDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmwiZGpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB33B1FCCFD;
-	Wed,  5 Feb 2025 14:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5695C1519AA;
+	Wed,  5 Feb 2025 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766844; cv=none; b=iKl4DbmdlrY7VjiLvlaMbfIgZTpz5Xk2XGhHzedUGd+Jp7+PCZKxwdBClyr/E/jKpfl8bhGt73Ecz3treAkkDd34o2FOu+CATvgYsF/2FGreyg6TBE0Jl4qUDkhHlHoeEFHYifN7w1dmHHMM3PBpL3WId5bro2HuQGD8XsmbJL4=
+	t=1738764582; cv=none; b=DhdQ6K+RhXEjfy3NIJqvbLzDo1vzN3s5VYK+1slQ+ITj4d8VEA1OO7uvDjvz6UWtKvF3sKt0+r2HrDZxoDcgyNAat9+aPbhURx5v9AyfnM/w4alUkJ6kwq+SVgsN/3il6NEw9pCJDPBmbNENTHwh7YPBNGWgqlTxF6oiGjRDnNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766844; c=relaxed/simple;
-	bh=2GDZeLW5bEvOom70yq8yRTzZunpXjA3tlyjMjJ4LxrA=;
+	s=arc-20240116; t=1738764582; c=relaxed/simple;
+	bh=BsH27xuthpLY7uTcgxE2nr8H1JJYogcfieJxrzEaMbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xzv5tnuivCkx+VJTW+QeBHdcsXfvPGa7+woh1eL0inIzCiKyCZ0CulB/2sTaPQOmKZ/MyZqy3/nMpnSLdDR+7hKqmG/tm5anWSSeL76MQZ4Muc0Fkx2OYrRzswqjBhr/G+7E+rso5h96WreXGiIc7WmpMvf9pHXKLhDHsjqVMio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ezqmnDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395D0C4CED1;
-	Wed,  5 Feb 2025 14:47:24 +0000 (UTC)
+	 MIME-Version; b=q3pXq6AXIjROo0tDIZmwElj9gfqxMaz/L32Vs/+tVhU05lmeQdwppPISpCr3LpcJBb1n+acPTU6oM4Z38aQuzvIUdRy1gkeo9Hh/hNXJUBcfY+rOp7j/Ncv83cpJ85h1WWINdc852sy+UsM+w96YL3FB9RFExUzf6Z3MwzTnXBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmwiZGpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE14C4CED1;
+	Wed,  5 Feb 2025 14:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766844;
-	bh=2GDZeLW5bEvOom70yq8yRTzZunpXjA3tlyjMjJ4LxrA=;
+	s=korg; t=1738764581;
+	bh=BsH27xuthpLY7uTcgxE2nr8H1JJYogcfieJxrzEaMbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ezqmnDb+j5u2CtXvIShq05TjxyZ1qNyvkw8JJs8ZfjZRdqKekgnFof9XxIsRo6PK
-	 vyEOhhPi1VqCETCbeyXryuF0kNRL209Dz7BcKVN+mMkOtdjsLisw3cyAEv8bCuxmEZ
-	 uCA9ovPhBQCpAChuCAL8C/ZZTGZQCsOcO23YgML0=
+	b=dmwiZGpg6MqfvkNw543DjiIgUeZQNOab3lNaJer6IFv5gnVXH88vxOYcEZoCda0oI
+	 vYaTNr1oEaui7GsS0pSw1EJuFoCA0OEUkxwv/xTrz2G8Gqer4v0/WJM7xCUzhrVH/7
+	 9hucDryLkAEhJ/Z3USTuItFPtE/fy1ufz0o0GA3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 348/590] arm64: dts: qcom: qrb4210-rb2: correct sleep clock frequency
+Subject: [PATCH 6.6 184/393] pinctrl: amd: Take suspend type into consideration which pins are non-wake
 Date: Wed,  5 Feb 2025 14:41:43 +0100
-Message-ID: <20250205134508.586406669@linuxfoundation.org>
+Message-ID: <20250205134427.339668348@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-[ Upstream commit 298192f365a343d84e9d2755e47bebebf0cfb82e ]
+[ Upstream commit f31f33dbb3bab572bad9fe7b849ab0dcbe6fd279 ]
 
-Qualcomm RB2 board uses PM6125 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+Some laptops have pins which are a wake source for S0i3/S3 but which
+aren't a wake source for S4/S5 and which cause issues when left unmasked
+during hibernation (S4).
 
-Fixes: 8d58a8c0d930 ("arm64: dts: qcom: Add base qrb4210-rb2 board dts")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-6-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+For example HP EliteBook 855 G7 has pin #24 that causes instant wakeup
+(hibernation failure) if left unmasked (it is a wake source only for
+S0i3/S3).
+GPIO pin #24 on this platform is likely dedicated to WWAN XMM7360
+modem since this pin triggers wake notify to WWAN modem's parent PCIe
+port.
+
+Fix this by considering a pin a wake source only if it is marked as one
+for the current suspend type (S0i3/S3 vs S4/S5).
+
+Since Z-wake pins only make sense at runtime these were excluded from
+both of suspend categories, so pins with only the Z-wake flag set are
+effectively treated as non-wake pins.
+
+Fixes: 2fff0b5e1a6b ("pinctrl: amd: Mask non-wake source pins with interrupt enabled at suspend")
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/d4b2d076366fdd08a0c1cd9b7ecd91dc95e07269.1736184752.git.mail@maciej.szmigiero.name
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c | 27 +++++++++++++++++++++------
+ drivers/pinctrl/pinctrl-amd.h |  7 +++----
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-index 1888d99d398b1..f99fb9159e0b6 100644
---- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-@@ -545,7 +545,7 @@
- };
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 86034c457c043..75bff325a4251 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -908,12 +908,13 @@ static bool amd_gpio_should_save(struct amd_gpio *gpio_dev, unsigned int pin)
+ 	return false;
+ }
  
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
+-static int amd_gpio_suspend(struct device *dev)
++static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend)
+ {
+ 	struct amd_gpio *gpio_dev = dev_get_drvdata(dev);
+ 	struct pinctrl_desc *desc = gpio_dev->pctrl->desc;
+ 	unsigned long flags;
+ 	int i;
++	u32 wake_mask = is_suspend ? WAKE_SOURCE_SUSPEND : WAKE_SOURCE_HIBERNATE;
  
- &tlmm {
+ 	for (i = 0; i < desc->npins; i++) {
+ 		int pin = desc->pins[i].number;
+@@ -925,11 +926,11 @@ static int amd_gpio_suspend(struct device *dev)
+ 		gpio_dev->saved_regs[i] = readl(gpio_dev->base + pin * 4) & ~PIN_IRQ_PENDING;
+ 
+ 		/* mask any interrupts not intended to be a wake source */
+-		if (!(gpio_dev->saved_regs[i] & WAKE_SOURCE)) {
++		if (!(gpio_dev->saved_regs[i] & wake_mask)) {
+ 			writel(gpio_dev->saved_regs[i] & ~BIT(INTERRUPT_MASK_OFF),
+ 			       gpio_dev->base + pin * 4);
+-			pm_pr_dbg("Disabling GPIO #%d interrupt for suspend.\n",
+-				  pin);
++			pm_pr_dbg("Disabling GPIO #%d interrupt for %s.\n",
++				  pin, is_suspend ? "suspend" : "hibernate");
+ 		}
+ 
+ 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
+@@ -938,6 +939,16 @@ static int amd_gpio_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
++static int amd_gpio_suspend(struct device *dev)
++{
++	return amd_gpio_suspend_hibernate_common(dev, true);
++}
++
++static int amd_gpio_hibernate(struct device *dev)
++{
++	return amd_gpio_suspend_hibernate_common(dev, false);
++}
++
+ static int amd_gpio_resume(struct device *dev)
+ {
+ 	struct amd_gpio *gpio_dev = dev_get_drvdata(dev);
+@@ -961,8 +972,12 @@ static int amd_gpio_resume(struct device *dev)
+ }
+ 
+ static const struct dev_pm_ops amd_gpio_pm_ops = {
+-	SET_LATE_SYSTEM_SLEEP_PM_OPS(amd_gpio_suspend,
+-				     amd_gpio_resume)
++	.suspend_late = amd_gpio_suspend,
++	.resume_early = amd_gpio_resume,
++	.freeze_late = amd_gpio_hibernate,
++	.thaw_early = amd_gpio_resume,
++	.poweroff_late = amd_gpio_hibernate,
++	.restore_early = amd_gpio_resume,
+ };
+ #endif
+ 
+diff --git a/drivers/pinctrl/pinctrl-amd.h b/drivers/pinctrl/pinctrl-amd.h
+index cf59089f27763..c9522c62d7910 100644
+--- a/drivers/pinctrl/pinctrl-amd.h
++++ b/drivers/pinctrl/pinctrl-amd.h
+@@ -80,10 +80,9 @@
+ #define FUNCTION_MASK		GENMASK(1, 0)
+ #define FUNCTION_INVALID	GENMASK(7, 0)
+ 
+-#define WAKE_SOURCE	(BIT(WAKE_CNTRL_OFF_S0I3) | \
+-			 BIT(WAKE_CNTRL_OFF_S3)   | \
+-			 BIT(WAKE_CNTRL_OFF_S4)   | \
+-			 BIT(WAKECNTRL_Z_OFF))
++#define WAKE_SOURCE_SUSPEND  (BIT(WAKE_CNTRL_OFF_S0I3) | \
++			      BIT(WAKE_CNTRL_OFF_S3))
++#define WAKE_SOURCE_HIBERNATE BIT(WAKE_CNTRL_OFF_S4)
+ 
+ struct amd_function {
+ 	const char *name;
 -- 
 2.39.5
 
