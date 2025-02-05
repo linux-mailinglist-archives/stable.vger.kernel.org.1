@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B19A2938E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FA7A291C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77FA216DD10
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A35164769
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A811607B7;
-	Wed,  5 Feb 2025 15:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAE0175D5D;
+	Wed,  5 Feb 2025 14:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn5oneP0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXefhxIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2217155A30;
-	Wed,  5 Feb 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A97A1DA628;
+	Wed,  5 Feb 2025 14:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768036; cv=none; b=WjjAFvqYGCwh2ZX4/h3/38QtzwEw6d/dTfj3VkaC9kDXgVfVnfqhWRC/QWCPbxXOXwH2kZrLmvRv1zzefeI3PZpGxNbuJSUUEkVVKo0hzkVhWu9RMFYkbOtTtY+6vgVtbe2ILTuq/4MhglfAew9ogDInI8uibvCt5Ucdn4PyOY8=
+	t=1738766645; cv=none; b=PR8usEghIERlH4O7ZwFUGNuCI9T6Ij/q8MDr8C/8ziK2xMM0x6fXurCODDYwTCCjp63royFxgsJn26LBiFKVJ4gw+DChs+B8FcWApQOjcRUiJ9mCrujJ087/QsI+QNgWd+J9D0HbZKPa5p6kz1GksA7KUp/MyroSuuaIfYNpsM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768036; c=relaxed/simple;
-	bh=hRygtiYMDYqNINQGoqYeWIHeYNuD9H2yJBI5SmLuMes=;
+	s=arc-20240116; t=1738766645; c=relaxed/simple;
+	bh=U8hPxhDM5m2w0uxY11QUi8N2VoJT1nfn//iYvRmxd9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERricIKQNJ/8Cp6Dswmgaj1xj2njr8GeFC4oFWpxJc+hWmMF8bCW1s40OReOWFoxqIPPVbNLPY0YqHOqRvhzNpT6oIZ6iRJ/o060WG/Kux0OHgXd49Cc8lEqqNdrM4S1utizUGdSJ7zIoVajZJCqg5nBjHPZnV8evqnRqsFmwrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn5oneP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59615C4CED1;
-	Wed,  5 Feb 2025 15:07:16 +0000 (UTC)
+	 MIME-Version; b=rfUNAKqHJCY3JTiX6tDbnM8U2rWx0sZAsLbYGqQY1S4o7M4mG+HN9ta8jqf4c9ac3Nc29LOw2RsWzO2f1qsseUiaecGhacGgHIo/6P3/uedW2XihL2C8i3IT6AyG9ouAyPR7FuPQAkcALRsYtCd+UCMQzc2NR6LUUR7JWU4jGJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXefhxIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1C8C4CED1;
+	Wed,  5 Feb 2025 14:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768036;
-	bh=hRygtiYMDYqNINQGoqYeWIHeYNuD9H2yJBI5SmLuMes=;
+	s=korg; t=1738766645;
+	bh=U8hPxhDM5m2w0uxY11QUi8N2VoJT1nfn//iYvRmxd9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wn5oneP0FP5CwVq9ZCrJkADQ81qYiTO+A9X1mM8xwdxVF6sJu4eQWAOHpz7zNdhCv
-	 FVDCsfnzACAJTCrkPxeMJD4hzqU8kP3PiO9RffFswhNRO/FuDg6i8Q0jRTgDrrWrFJ
-	 WsNWpbuxC9WMCWZkBAt4DcUFKh9CBoSpZLCXUGKs=
+	b=xXefhxIZwF/oUWCkoXJGnaC9JCAxxujEWsjoLJ2GPNjF29IA1g4VtKqgp6UP/yI32
+	 nMQNnzMoGcCMBkSerYqpxh/k2I2ldgbwoKJ7kAs822Ab2KB7WZPxj7aPDWO2M2dq4V
+	 7mNfT486Rvy+arsxto4gmDfl+BfZJpI91GF4IrPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 544/590] netfilter: nf_tables: reject mismatching sum of field_len with set key length
-Date: Wed,  5 Feb 2025 14:44:59 +0100
-Message-ID: <20250205134516.084453829@linuxfoundation.org>
+	Jos Wang <joswang@lenovo.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.6 381/393] usb: typec: tcpm: set SRC_SEND_CAPABILITIES timeout to PD_T_SENDER_RESPONSE
+Date: Wed,  5 Feb 2025 14:45:00 +0100
+Message-ID: <20250205134434.872773954@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jos Wang <joswang@lenovo.com>
 
-commit 1b9335a8000fb70742f7db10af314104b6ace220 upstream.
+commit 2eb3da037c2c20fa30bc502bc092479b2a1aaae2 upstream.
 
-The field length description provides the length of each separated key
-field in the concatenation, each field gets rounded up to 32-bits to
-calculate the pipapo rule width from pipapo_init(). The set key length
-provides the total size of the key aligned to 32-bits.
+As PD2.0 spec ("8.3.3.2.3 PE_SRC_Send_Capabilities state"), after the
+Source receives the GoodCRC Message from the Sink in response to the
+Source_Capabilities message, it should start the SenderResponseTimer,
+after the timer times out, the state machine transitions to the
+HARD_RESET state.
 
-Register-based arithmetics still allows for combining mismatching set
-key length and field length description, eg. set key length 10 and field
-description [ 5, 4 ] leading to pipapo width of 12.
-
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 Cc: stable@vger.kernel.org
-Fixes: 3ce67e3793f4 ("netfilter: nf_tables: do not allow mismatch field size and set key length")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250105135245.7493-1-joswang1221@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4968,7 +4968,7 @@ static int nft_set_desc_concat_parse(con
- static int nft_set_desc_concat(struct nft_set_desc *desc,
- 			       const struct nlattr *nla)
- {
--	u32 num_regs = 0, key_num_regs = 0;
-+	u32 len = 0, num_regs;
- 	struct nlattr *attr;
- 	int rem, err, i;
- 
-@@ -4982,12 +4982,12 @@ static int nft_set_desc_concat(struct nf
- 	}
- 
- 	for (i = 0; i < desc->field_count; i++)
--		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
-+		len += round_up(desc->field_len[i], sizeof(u32));
- 
--	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
--	if (key_num_regs != num_regs)
-+	if (len != desc->klen)
- 		return -EINVAL;
- 
-+	num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
- 	if (num_regs > NFT_REG32_COUNT)
- 		return -E2BIG;
- 
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4065,7 +4065,7 @@ static void run_state_machine(struct tcp
+ 			port->caps_count = 0;
+ 			port->pd_capable = true;
+ 			tcpm_set_state_cond(port, SRC_SEND_CAPABILITIES_TIMEOUT,
+-					    PD_T_SEND_SOURCE_CAP);
++					    PD_T_SENDER_RESPONSE);
+ 		}
+ 		break;
+ 	case SRC_SEND_CAPABILITIES_TIMEOUT:
 
 
 
