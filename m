@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E19A28D9F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40DCA28CCD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4B2F7A4189
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A7DC168E6B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8696E155335;
-	Wed,  5 Feb 2025 14:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AD7FC0B;
+	Wed,  5 Feb 2025 13:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoD9GENp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVoePS1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AFF15198D;
-	Wed,  5 Feb 2025 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59CB1494DF;
+	Wed,  5 Feb 2025 13:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764197; cv=none; b=T/sywCDKdRsSr5tSER5L6d2PtZs1oGIFv6s0AEF3oPrgnxQQK58SjmKjQ9AW3yk1PxvxArLmSujHGk4Thwr2eY4CcQVHZ1AFKDG2+OiooVB/5W9gLH/sc8IUMdlQMn0Lqv826NYkEwSXYvbYrjkHS7iGgiWpjH1vkXfha7ruigo=
+	t=1738763647; cv=none; b=PUVXphp4zon7/S1EjVb4FkkNfwSNNYdxrXpuyuBvF9sL8uYMtwYUhZFwBrMg4+mS/IAQXSLdAR3podyk/iaUF3ohRiF1a1J3V0xMMqKUwQ6WlzPOaUjRVzb7obIzPn4JCZxCTKvZIyhLfUv33CUu76Ts39oE3BuhUL6c20N4SCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764197; c=relaxed/simple;
-	bh=CMeZxRgzpjGg/xvlbJkqq4SQEiiHR0K3dAd9u9atmuU=;
+	s=arc-20240116; t=1738763647; c=relaxed/simple;
+	bh=mgh3xNPZC64oMlIOl7QyUa1wUdlg2YZpKKNOI83O6OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsQ34MrvS5aiAwlh9/EkiRDqSZvj5bND1WXWH0p3Q0kz5efwnJ2htEKy/YCLabmHWoHNA7sEnmAxMm8hLvK7imUQ8fFk9CfO1gPQueThcJnQbL+YKTG0EvY12yhW7151x9qNuVZtsCU9AUoiYRs8LTJ2fG+3M4KpjNrm/IWibgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoD9GENp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DD9C4CED6;
-	Wed,  5 Feb 2025 14:03:16 +0000 (UTC)
+	 MIME-Version; b=IDndCJE188Ajhg+b1xS0PoDcvsCudRvdExuLV1QU6BLEVpl04pfOaFWXVUp8pvgsPR5ZmZRWylxCAo+CTk3055YPlDCnFCzif3Gz9gWeWDPuzeYaoj/EwuW9IWx145ADApcqVlQ/M7JHnafyXSMv3VPHjE/M2m08/ZLHqyGKWoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVoePS1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543E3C4CED1;
+	Wed,  5 Feb 2025 13:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764196;
-	bh=CMeZxRgzpjGg/xvlbJkqq4SQEiiHR0K3dAd9u9atmuU=;
+	s=korg; t=1738763646;
+	bh=mgh3xNPZC64oMlIOl7QyUa1wUdlg2YZpKKNOI83O6OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OoD9GENpmldk/zd4QF0XgJjUdM5xdauaYqNaGWYbZL8dtEmT1uNkRFxoOl1DgKT1M
-	 I0odUwuC8GOcS03yoyqbix7h43IStvFAxP+KQWIEbjkjpxqduHsJbJbE0HB4HB/X3+
-	 tqZbHxrJgzgVt1L54P9o3LogzJ+OfP9tXSqCMEw8=
+	b=tVoePS1BKUe8tz2gsnyWMQXcptiCuH5Kby7hVgZsbbUyvCAEWTs5k3oSQkumtYzqK
+	 kvqvLUz3SyFQo+tn1NxKwbOOn7d//2X4EG3xAbyQW2NRTBaPwQElgOsDjpHrnbPH6q
+	 8xfIa3tJ/69IRy+RV1EDv7efIzRIAqntK2irFZw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 056/623] printk: Defer legacy printing when holding printk_cpu_sync
-Date: Wed,  5 Feb 2025 14:36:38 +0100
-Message-ID: <20250205134458.372188486@linuxfoundation.org>
+Subject: [PATCH 6.12 044/590] drm/rockchip: vop2: Fix cluster windows alpha ctrl regsiters offset
+Date: Wed,  5 Feb 2025 14:36:39 +0100
+Message-ID: <20250205134456.942432705@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 0161e2d6950fe66cf6ac1c10d945bae971f33667 ]
+[ Upstream commit 17b4b10a0df1a1421d5fbdc03bad0bd3799bc966 ]
 
-The documentation of printk_cpu_sync_get() clearly states
-that the owner must never perform any activities where it waits
-for a CPU. For legacy printing there can be spinning on the
-console_lock and on the port lock. Therefore legacy printing
-must be deferred when holding the printk_cpu_sync.
+The phy_id of cluster windws are not increase one for each window.
 
-Note that in the case of emergency states, atomic consoles
-are not prevented from printing when printk is deferred. This
-is appropriate because they do not spin-wait indefinitely for
-other CPUs.
-
-Reported-by: Rik van Riel <riel@surriel.com>
-Closes: https://lore.kernel.org/r/20240715232052.73eb7fb1@imladris.surriel.com
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Fixes: 55d6af1d6688 ("lib/nmi_backtrace: explicitly serialize banner and regs")
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20241209111746.192559-3-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Tested-by: Derek Foreman <derek.foreman@collabora.com>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-6-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/internal.h    | 6 ++++++
- kernel/printk/printk.c      | 5 +++++
- kernel/printk/printk_safe.c | 7 ++++++-
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index c6bb47666aef6..a91bdf8029671 100644
---- a/kernel/printk/internal.h
-+++ b/kernel/printk/internal.h
-@@ -338,3 +338,9 @@ bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
- void console_prepend_dropped(struct printk_message *pmsg, unsigned long dropped);
- void console_prepend_replay(struct printk_message *pmsg);
- #endif
-+
-+#ifdef CONFIG_SMP
-+bool is_printk_cpu_sync_owner(void);
-+#else
-+static inline bool is_printk_cpu_sync_owner(void) { return false; }
-+#endif
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 80910bc3470c2..f446a06b4da8c 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -4922,6 +4922,11 @@ void console_try_replay_all(void)
- static atomic_t printk_cpu_sync_owner = ATOMIC_INIT(-1);
- static atomic_t printk_cpu_sync_nested = ATOMIC_INIT(0);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 30d03ff6c01f0..594923303a850 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -2159,7 +2159,6 @@ static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
  
-+bool is_printk_cpu_sync_owner(void)
-+{
-+	return (atomic_read(&printk_cpu_sync_owner) == raw_smp_processor_id());
-+}
-+
- /**
-  * __printk_cpu_sync_wait() - Busy wait until the printk cpu-reentrant
-  *                            spinning lock is not owned by any CPU.
-diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
-index 6f94418d53ffb..6bc40ac8847b5 100644
---- a/kernel/printk/printk_safe.c
-+++ b/kernel/printk/printk_safe.c
-@@ -61,10 +61,15 @@ bool is_printk_legacy_deferred(void)
- 	/*
- 	 * The per-CPU variable @printk_context can be read safely in any
- 	 * context. CPU migration is always disabled when set.
-+	 *
-+	 * A context holding the printk_cpu_sync must not spin waiting for
-+	 * another CPU. For legacy printing, it could be the console_lock
-+	 * or the port lock.
- 	 */
- 	return (force_legacy_kthread() ||
- 		this_cpu_read(printk_context) ||
--		in_nmi());
-+		in_nmi() ||
-+		is_printk_cpu_sync_owner());
- }
+ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_win)
+ {
+-	u32 offset = (main_win->data->phys_id * 0x10);
+ 	struct vop2_alpha_config alpha_config;
+ 	struct vop2_alpha alpha;
+ 	struct drm_plane_state *bottom_win_pstate;
+@@ -2167,6 +2166,7 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
+ 	u16 src_glb_alpha_val, dst_glb_alpha_val;
+ 	bool premulti_en = false;
+ 	bool swap = false;
++	u32 offset = 0;
  
- asmlinkage int vprintk(const char *fmt, va_list args)
+ 	/* At one win mode, win0 is dst/bottom win, and win1 is a all zero src/top win */
+ 	bottom_win_pstate = main_win->base.state;
+@@ -2185,6 +2185,22 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
+ 	vop2_parse_alpha(&alpha_config, &alpha);
+ 
+ 	alpha.src_color_ctrl.bits.src_dst_swap = swap;
++
++	switch (main_win->data->phys_id) {
++	case ROCKCHIP_VOP2_CLUSTER0:
++		offset = 0x0;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER1:
++		offset = 0x10;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER2:
++		offset = 0x20;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER3:
++		offset = 0x30;
++		break;
++	}
++
+ 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_SRC_COLOR_CTRL + offset,
+ 		    alpha.src_color_ctrl.val);
+ 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_DST_COLOR_CTRL + offset,
 -- 
 2.39.5
 
