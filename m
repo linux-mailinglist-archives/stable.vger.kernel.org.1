@@ -1,98 +1,129 @@
-Return-Path: <stable+bounces-114000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A04A29C6D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:13:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03736A29C92
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9569B1641C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:13:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F168E188668B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67995218E82;
-	Wed,  5 Feb 2025 22:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CDC2116F9;
+	Wed,  5 Feb 2025 22:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvEFWAwX"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="gOiTxQ+J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA2421773D;
-	Wed,  5 Feb 2025 22:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F38D207A18;
+	Wed,  5 Feb 2025 22:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738793605; cv=none; b=nD6NeWIDLJ+LppflM5BOumQgiKBGEtdPZKYIhxx3bomBCGhm008LdJPzDkzkjklqhsYLpmAdx3iR2BOLETSnyyIf1s9+ZyilOcSwvhWQICHS3KE9FKDe5qih1UuTptkEVEX8uf6/zEjSoB8cDdntKYZ+H68ZIYXd2q+aZLAxzlI=
+	t=1738794222; cv=none; b=QYzzFBqQgMBUoOtAXs6eQ4ZMRxuT36qw82Ds/6JfqMU9Rw+1iUQLaExFEmZFRaKmftWlpcCO5mfYeTzidWgvrUFh8kGBNvawMf/FUf1ScBeEi7S2FRLLOhRKekfIytmKgEC7WbC6UI/0ZJ9VHuupYHOnu/o+xnwMfRKb9WaCd5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738793605; c=relaxed/simple;
-	bh=fKqU6t3xfMtBaiYlVeeCQ6y8NmC6vQ0DoLtKSLtTbLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VtPmX7fXRu46LUvHzH1ttvYEGrkBqsCU8gP5DVgMsLAuR8BMlGwYHyHDF8w8AssooHnluZbIxLPE89MOKfTw4S8euJ7i++J/Apw4Bjo5hluhv1NPywDOxfRa7uJaMI8BrhG0FftVPHWqUuve+LMW9+sp6IePbqTvyozHU6/a8OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvEFWAwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BF8C4CED1;
-	Wed,  5 Feb 2025 22:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738793604;
-	bh=fKqU6t3xfMtBaiYlVeeCQ6y8NmC6vQ0DoLtKSLtTbLQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cvEFWAwX9RNNFHfnZOLz/jpjjY93zlmJSxV9MqbHiN3c8A6VBT3h+ELoRRyga7Ovj
-	 RVGhdm6FFU92Grp7LTTn8XP1eAmPNMb09qIfljYOT4Hha7fe3eTPg7kN7nvuT8TsIO
-	 iRXOZN3qdOLPcgmo95P2xY+vcXlRw6NyyfrsGmSypDC25feevs9osvCONNZ2i2fQ0n
-	 YRApkzuLk5uq+T+8E73urgVmh5Mex1ETT080Vx7Q0veBnLjh0vNCD0v42PyQivx928
-	 wh34IHe4xHHUvs6KC/E6W9VjUf5l4cPMYZZT5WO8u3tMCqYL4Fz3AkKwyJVAaHe3VD
-	 Nreg4+4r1UQSw==
-Date: Wed, 5 Feb 2025 22:13:18 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.6 000/393] 6.6.76-rc1 review
-Message-ID: <42879ad5-a1d7-4fd0-98a0-9b8b635a4eed@sirena.org.uk>
-References: <20250205134420.279368572@linuxfoundation.org>
+	s=arc-20240116; t=1738794222; c=relaxed/simple;
+	bh=z6eD1FP///AwBHcopqgetq8mUPl1qy7sZPeZfpBTrHo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KUu7A/W77DMC3EzSqZkCX6yn5Cm2WZktZFGjA1qAx7bsOopW4VRYOUpflMlp3CpKLjUCelWJGoIUqg7UxcCWTbuCHLx1yFGvxDZspDyrX05Yi8Zw078eFoSEtP30xc/h9LuUqL5w0LM30cuvvoEvpLDmOzJBKaFKFlXhVI/Bqws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=gOiTxQ+J; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4YpFBJ2WGkz9sdr;
+	Wed,  5 Feb 2025 23:23:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1738794216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3A8gIWsEr9yJWnJxL6/MIgQmtdybjtwSXxHXk23OHxc=;
+	b=gOiTxQ+JTd3yBcrxaeqqNlL8wZPKmTjD0ErC8yTAtJFh0MGwxBdGqyAPeaRV5JsbRdpr4C
+	nrcy8XpEEbaJkbx+stTfxLi0F4JLhX5wtkSn5G6kTFmEu0P3tPu944l29uIg9H74Fo0fRm
+	R1qnA1HDUK2vlu8gd+Ej9o9H4nmsoZ14tetw/3WoiLnqPh/fvddhRTmHW/9t3ZlyS0KR6e
+	POZjzclH7hzkKKPggUhsCT8ItwlnIPxYhjMsDpchvOoeAvN3JdhElJaot8BbP3hnQObOYl
+	6C/h/r5g49hO9f03xyYpjsTAr1yDHg9sos/YthUo2t1LoCEBNWYQMYq8XfT2fQ==
+From: Frank Oltmanns <frank@oltmanns.dev>
+To: Johan Hovold <johan@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,  Chris Lew
+ <quic_clew@quicinc.com>,  Stephan Gerhold <stephan.gerhold@linaro.org>,
+  Johan Hovold <johan+linaro@kernel.org>,  Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>,  Konrad Dybcio <konradybcio@kernel.org>,
+  Abel Vesa <abel.vesa@linaro.org>,  linux-arm-msm@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  regressions@lists.linux.dev,
+  stable@vger.kernel.org, Caleb Connolly <caleb.connolly@linaro.org>, Joel
+ Selvaraj <joelselvaraj.oss@gmail.com>, Alexey Minnekhanov
+ <alexeymin@postmarketos.org>
+Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
+In-Reply-To: <Z4TXww5rAkMR8OmM@hovoldconsulting.com> (Johan Hovold's message
+	of "Mon, 13 Jan 2025 10:07:15 +0100")
+References: <20241010074246.15725-1-johan+linaro@kernel.org>
+	<Zwj3jDhc9fRoCCn6@linaro.org> <87wmf7ahc3.fsf@oltmanns.dev>
+	<Z3z7sHn6yrUvsc6Y@hovoldconsulting.com>
+	<Z36Gag6XhOrsIXqK@hovoldconsulting.com> <87wmf18m8g.fsf@oltmanns.dev>
+	<Z4TXww5rAkMR8OmM@hovoldconsulting.com>
+Date: Wed, 05 Feb 2025 23:23:22 +0100
+Message-ID: <874j182fqd.fsf@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="i5ohF/d3k1buxbG1"
-Content-Disposition: inline
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-X-Cookie: Earth is a beta site.
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 4YpFBJ2WGkz9sdr
 
+On 2025-01-13 at 10:07:15 +0100, Johan Hovold <johan@kernel.org> wrote:
+> On Sat, Jan 11, 2025 at 03:21:35PM +0100, Frank Oltmanns wrote:
+>> On 2025-01-08 at 15:06:34 +0100, Johan Hovold <johan@kernel.org> wrote:
+>
+>> > And today I also hit this on the sc8280xp CRD reference design, so as
+>> > expected, there is nothing SoC specific about the audio service
+>> > regression either:
+>> >
+>> > [   11.235564] PDR: avs/audio get domain list txn wait failed: -110
+>> > [   11.241976] PDR: service lookup for avs/audio failed: -110
+>> >
+>> > even if it may be masked by random changes in timing.
+>> >
+>> > These means it affects also machines like the X13s which already have
+>> > audio enabled.
+>>
+>> I've blocklisted the in-kernel pd-mapper module for now and have
+>> switched back to the userspace pd-mapper.
+>>
+>> I don't know if it's helpful or not, but I don't get these error logs
+>> when using to the in-kernel pd-mapper. It's just that the phone's mic
+>> only works on approximately every third boot (unless I defer loading the
+>> module).
+>
+> Ok, then it sounds like you're hitting a separate bug that is also
+> triggered by the changed timings with the in-kernel pd-mapper.
 
---i5ohF/d3k1buxbG1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I worked on finding out what's causing the issue on sdm845 and I've
+submitted a patch here: [1]
 
-On Wed, Feb 05, 2025 at 02:38:39PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.76 release.
-> There are 393 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Are there any hints in the logs about what goes wrong in your setup?
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Unfortunately not, see [1].
 
---i5ohF/d3k1buxbG1
-Content-Type: application/pgp-signature; name="signature.asc"
+> And
+> the speakers are still working, it's just affecting the mic?
 
------BEGIN PGP SIGNATURE-----
+Yes, it's only affecting the mic in my setup on xiaomi-beryllium, but
+there seem to be issues with the speaker on oneplus-enchilada that can
+be fixed with the same approach.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmej4n4ACgkQJNaLcl1U
-h9Cr2Qf+OLovu27PIDWI3U2eNah4cgNcS0HSufcNATYtqL21entd5NKZtsbPzB11
-Ee5GiGKO8EOW0aSPlLO2DSt1TMC1vGunLUiC2Ju76jMZjfklFgaECeYmGwycCDUE
-RnF5ybsgy0zy4Tq0Ey35Z/5MWH/1bLpgAoS4ZJYh7XwmnhhETlyHr7Qa3CKhlc/C
-JMrVdHAlGK6NUjdc+lOl4DJIug/U0gint4aC3ANmu0FfAG2AOmsHDC9ZddY4xh6i
-GixbEmuhsYf+WLRoMmA1ZY5p6im/UEnypD0kuPN1kmyYyu7aIQXxTdHezv3Ra1jY
-qtotFhi7KPmi59oXc+ZuSfIyMMqVFQ==
-=e/h0
------END PGP SIGNATURE-----
+Best regards,
+  Frank
 
---i5ohF/d3k1buxbG1--
+[1]: https://lore.kernel.org/all/20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev/
+
+>
+> Johan
 
