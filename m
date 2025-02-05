@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEDCA28CD7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7092A28DB5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277151888B7E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE8A1665DA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1EC14F9F3;
-	Wed,  5 Feb 2025 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9385D154C1D;
+	Wed,  5 Feb 2025 14:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHrmm75M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9J9yWwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B7014A09A;
-	Wed,  5 Feb 2025 13:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE3F15854F;
+	Wed,  5 Feb 2025 14:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763671; cv=none; b=cvBF0VGRCVlPnLzsGu1SGScKgO01QBl1UiNbETVO/CDJkteXGyZufrTxYZ3znibpkB2X4bAyqd47/UbgaPDKo49ovHR1MrFwvV4kP00OGr8UlS8hImbI9TR52etslqSBuCDzqhzXoKQP8AzQ7wvQjcjWgYGQCrZ6jF9aFEorldY=
+	t=1738764231; cv=none; b=g0ngWxxYRId+J6P2PkWRsUfE9VNj0XKmRr+HYYFBEro0iSm9kuy2G5Stcfji6teqxdiWhNB9EBdzgiy4BpC62U/IeBQUst+oKiYvfrddGLn4649EBRxNyYimcUplrMSyL6cv+QjldbTxxhTTmAo7o8e3dTn1REjp/xuw3fLSgZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763671; c=relaxed/simple;
-	bh=w2vz3HtAAbm24u1NEbQ7xPfirr0/uREg46lIxgCtEBs=;
+	s=arc-20240116; t=1738764231; c=relaxed/simple;
+	bh=IC2nPK+jle/J71+PLYYoUadnj2jtU1Ux1te8OVamz6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c61hNixqSmEDdQ4GDkr2j7p2PH1f9XV6132OYjknN15lv0PFwMZl2TDMzOMwc932P8D1iwFhxEfls0TDTXIPytiPgldH609zRnnlREi68/VNlQ7Z08A8oQlwGwQ/kzhmO86ZOg0W7z3jid/UIzQw9hOoZSlqOgF59okbwHJsxuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHrmm75M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02864C4CED1;
-	Wed,  5 Feb 2025 13:54:29 +0000 (UTC)
+	 MIME-Version; b=kKxMC1vnHpHvfFUdSDr6014jFYsmMMuU4c0aJ1x6tsaQxOXSdL1AXEF0IoVflhBbA66wYBfRorw/OR6fuSoKg9Oj0aXCmLM2SH/IjJYutasfP/XD7VpIOX0iOEWkbgKNyd9RgAOb/Jra4Hc2Z3VyObxnSdRUo5lbUuZtktmDk+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9J9yWwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53999C4CED1;
+	Wed,  5 Feb 2025 14:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763670;
-	bh=w2vz3HtAAbm24u1NEbQ7xPfirr0/uREg46lIxgCtEBs=;
+	s=korg; t=1738764230;
+	bh=IC2nPK+jle/J71+PLYYoUadnj2jtU1Ux1te8OVamz6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHrmm75MwlxYzLwD9G0UMpSAijV4+zFe9WBOpb9C/zZDHZAVN14hStvAXJTeLvRw5
-	 j2p79FCFwf02NE0ylfpNeMA3iUqdGG7ss3pzuO2cdo73fToGoU4UVb5BXvV4+unUp/
-	 N8lPS7zqQJEHVdQTQO0qcA5Dnhd3ZanCdfXE3jPs=
+	b=D9J9yWwum0qZ5nq5x+UtxG0f9vsumzWr6gA0tHNHihN065CneMs6cgh1+9TTrBq7A
+	 Qr4HeQi+cJ5VtJ5+4ZOxYhmcVzuDMlS+MMKu/LEJTnsjfT3b2e+kHUtcKbI/G7SA8W
+	 HT729o0SQnPv1n+p+THx58kGG7t74fR+c6HS51aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Adrian Larumbe <adrian.larumbe@collabora.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/590] drm/panthor: Preserve the result returned by panthor_fw_resume()
+Subject: [PATCH 6.13 059/623] drm/rockchip: vop2: Setup delay cycle for Esmart2/3
 Date: Wed,  5 Feb 2025 14:36:41 +0100
-Message-ID: <20250205134457.018097557@linuxfoundation.org>
+Message-ID: <20250205134458.484793209@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 4bd56ca8226dda6115bca385b166ef87e867d807 ]
+[ Upstream commit c766998ba6df126ab6934d32ff2ff080316ec630 ]
 
-WARN() will return true if the condition is true, false otherwise.
-If we store the return of drm_WARN_ON() in ret, we lose the actual
-error code.
+Each layer needs to set the correct delay cycle to display properly
+without unexpected offset on screen.
 
-v3:
-- Add R-b
-v2:
-- Add R-b
-
-Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Adrian Larumbe <adrian.larumbe@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241211075419.2333731-2-boris.brezillon@collabora.com
+Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Tested-by: Derek Foreman <derek.foreman@collabora.com>
+Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-5-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 6fbff516c1c1f..01dff89bed4e1 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -445,8 +445,8 @@ int panthor_device_resume(struct device *dev)
- 	    drm_dev_enter(&ptdev->base, &cookie)) {
- 		panthor_gpu_resume(ptdev);
- 		panthor_mmu_resume(ptdev);
--		ret = drm_WARN_ON(&ptdev->base, panthor_fw_resume(ptdev));
--		if (!ret) {
-+		ret = panthor_fw_resume(ptdev);
-+		if (!drm_WARN_ON(&ptdev->base, ret)) {
- 			panthor_sched_resume(ptdev);
- 		} else {
- 			panthor_mmu_suspend(ptdev);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index cd3fb906d0089..68b5c438cdaba 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -2493,9 +2493,11 @@ static void vop2_setup_dly_for_windows(struct vop2 *vop2)
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__ESMART1, dly);
+ 			break;
+ 		case ROCKCHIP_VOP2_SMART0:
++		case ROCKCHIP_VOP2_ESMART2:
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART0, dly);
+ 			break;
+ 		case ROCKCHIP_VOP2_SMART1:
++		case ROCKCHIP_VOP2_ESMART3:
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART1, dly);
+ 			break;
+ 		}
 -- 
 2.39.5
 
