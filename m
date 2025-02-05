@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-112613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9C9A28DBD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790FBA290A9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791443A5010
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC53416984C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BFC1509BD;
-	Wed,  5 Feb 2025 14:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9086E158536;
+	Wed,  5 Feb 2025 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbraQCk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTeIbQ4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB1C15198D;
-	Wed,  5 Feb 2025 14:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1557E792;
+	Wed,  5 Feb 2025 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764157; cv=none; b=XKGte/2LeFRUhSEfBMHf4gmlNUgt1crSRL1WWGPB8+FHVLjDHb96zjEp6drNa7L/c/RJK1YCNCjUChql4CR5ISwtI5aszszf6W8KZTCn757mPNaAzV/3zpEFKLK3SJzywjj6hlg2awUxmPE+CfLhuwmCE2Vmhul1vAx5f56c8Ug=
+	t=1738766306; cv=none; b=N/Z3C30OJ4BuBKGEBl3u/sH8lcMS+2vFh23cvuWvDjeNzjBS/6gRGhK0BAgG/KtnNjihO+k6bri9rZFp9RO1mNpFQB07cHaM1b7mlKi8dQaD44P9qTPWWzgUYYPFgYlHeHszoVuQAv9GlO7AV+H6viLmH+cWWW6frn67w8E/NIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764157; c=relaxed/simple;
-	bh=jfVt4wlRccKJxTHdzHGGKO0Ece6ITtECHGg4gEJWclk=;
+	s=arc-20240116; t=1738766306; c=relaxed/simple;
+	bh=npuT5Cq+rh9SvMvYLQeOVQD/YZuLY8zIgsgSBheDAxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fd4uf+oKASzZyjFkATEv22SluOWFiW49KsRZFtXVd8bQlOCA81gEFpV9NvmBqA3ASIT8uYO962VmL+A3Z1VbQ4liWnkjnrPKemOMm79yMgWu2+tMixS4UjwmxnjI2Y5KMcRiPpk83NEbX+cTS/PZYBARReJoZG/kWIKzPsAU8jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbraQCk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DECC4CED6;
-	Wed,  5 Feb 2025 14:02:36 +0000 (UTC)
+	 MIME-Version; b=EF4hiCaZIRnCNSuC1aRuuOGsSuqHUWjvxw+jVYGlxmA1ilSj0CVNsdM3FlmNiZ3TPgH6IxEt7SFYtj7APVnx8MZPwu7uoCWEAE8g5DMEUXg49wVllqgIr0eWFFLIIAkSmnOImpfW8L7i+iCS2/hC/1YF1ZnlRM1xFJmvbbA2DiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTeIbQ4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC870C4CED1;
+	Wed,  5 Feb 2025 14:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764157;
-	bh=jfVt4wlRccKJxTHdzHGGKO0Ece6ITtECHGg4gEJWclk=;
+	s=korg; t=1738766306;
+	bh=npuT5Cq+rh9SvMvYLQeOVQD/YZuLY8zIgsgSBheDAxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbraQCk9Ezs0F+mVSf93Lto/xqUttISxFq4hw6vK8HOIiZbmRnujOpI4DIU1mxwbH
-	 Icc1O4oWM+nL84zqNjCLFSydxF/eqozi/Gt8XMRFUlvrlQ/9vIlZ5/LE3ne4PPO/5N
-	 MMzk5kSSwaGhxyXWBmbAkagxrkMpQn0hTx14/PcQ=
+	b=wTeIbQ4HMqgkxt/Jqzsldynnbc9eaNcRjqZFTVe6bbSIUtXr17JienDAfSrL0Bbo0
+	 16cpbnHImfMXUhXUA1aFRv2lIrIDxQSc4icDEKkK+hEL3g5UVtzHly2U5YQQ4Ktumf
+	 J6FYE+CHu/1vH/p01yZDP+ZTX0THid532DaLXhOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/393] netfilter: nf_tables: de-constify set commit ops function argument
+Subject: [PATCH 6.12 309/590] arm64: dts: mediatek: mt8516: reserve 192 KiB for TF-A
 Date: Wed,  5 Feb 2025 14:41:04 +0100
-Message-ID: <20250205134425.852030946@linuxfoundation.org>
+Message-ID: <20250205134507.097677909@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 256001672153af5786c6ca148114693d7d76d836 ]
+[ Upstream commit 2561c7d5d497b988deccc36fe5eac7fd50b937f8 ]
 
-The set backend using this already has to work around this via ugly
-cast, don't spread this pattern.
+The Android DTB for the related MT8167 reserves 0x30000. This is likely
+correct for MT8516 Android devices as well, and there's never any harm
+in reserving 64KiB more.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 8d738c1869f6 ("netfilter: nf_tables: fix set size with rbtree backend")
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-5-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 2 +-
- net/netfilter/nft_set_pipapo.c    | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 8321915dddb28..12a30d8e7efe0 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -481,7 +481,7 @@ struct nft_set_ops {
- 					       const struct nft_set *set,
- 					       const struct nft_set_elem *elem,
- 					       unsigned int flags);
--	void				(*commit)(const struct nft_set *set);
-+	void				(*commit)(struct nft_set *set);
- 	void				(*abort)(const struct nft_set *set);
- 	u64				(*privsize)(const struct nlattr * const nla[],
- 						    const struct nft_set_desc *desc);
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 334958ef8d66c..5dab9905ebbec 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1574,12 +1574,11 @@ static void nft_pipapo_gc_deactivate(struct net *net, struct nft_set *set,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index dd17d8a88c190..e30623ebac0e1 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -144,10 +144,10 @@
+ 		#size-cells = <2>;
+ 		ranges;
  
- /**
-  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
-- * @_set:	nftables API set representation
-+ * @set:	nftables API set representation
-  * @m:		Matching data
-  */
--static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
-+static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
- {
--	struct nft_set *set = (struct nft_set *) _set;
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct net *net = read_pnet(&set->net);
- 	int rules_f0, first_rule = 0;
-@@ -1693,7 +1692,7 @@ static void pipapo_reclaim_match(struct rcu_head *rcu)
-  * We also need to create a new working copy for subsequent insertions and
-  * deletions.
-  */
--static void nft_pipapo_commit(const struct nft_set *set)
-+static void nft_pipapo_commit(struct nft_set *set)
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct nft_pipapo_match *new_clone, *old;
+-		/* 128 KiB reserved for ARM Trusted Firmware (BL31) */
++		/* 192 KiB reserved for ARM Trusted Firmware (BL31) */
+ 		bl31_secmon_reserved: secmon@43000000 {
+ 			no-map;
+-			reg = <0 0x43000000 0 0x20000>;
++			reg = <0 0x43000000 0 0x30000>;
+ 		};
+ 	};
+ 
 -- 
 2.39.5
 
