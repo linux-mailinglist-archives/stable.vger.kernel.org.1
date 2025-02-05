@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA86A28E57
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54156A28DB0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF29168AAA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB763A56F1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E0F1537AC;
-	Wed,  5 Feb 2025 14:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4414A2E634;
+	Wed,  5 Feb 2025 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZnvks8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qaM0ssOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0339D1519AA;
-	Wed,  5 Feb 2025 14:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000A915198D;
+	Wed,  5 Feb 2025 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764707; cv=none; b=JyZAno+Qt4Tq2JElW0mPg4yvJBuyIamr16NSK0sD1xN1Xsw0J+v1mERVVq1S/2wxrFMSWerTlq3Zd+zyJSenH9h44r57cp23fgjZ+EBAg9L4t1KUDxYY8/exNVLODQkffbEOSwRuXMWx8QeofsSg4chMF7ZPyYx3x9k6qxida/E=
+	t=1738764121; cv=none; b=FBrReJoFUlrwPtTS+ucuNtg8slh4yJIFMaUDUaQuYlMkk/q0EN6XO6PNhgkRy2qxBYNeQxjtj1U9AGWea56IDlmdfBJGQLq+Gtsvl8b/5cwcXqIFe1cv2o7u+AP5OadPr+CcXrnvQJQGyDDDZg7tD8r3yQ8KunsIOyH+ggdC5oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764707; c=relaxed/simple;
-	bh=jVoVCl4AkUw/GyiBDgge9ezURkDIFxj4QdjVnwFzR3I=;
+	s=arc-20240116; t=1738764121; c=relaxed/simple;
+	bh=d62vLzTxQm0S8L5lPKCyMfh1doMa5NbPvy9Iwf0BFGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uW2wqam9rKVJFK8Xl8k0s6M/Nxy4EyIsardOxXuakag0QMCljPVDWDFH8+xmSHlYpZep1k9qW8oT9KNy5EHQPzCjNSZSoeSTfcGtt0nkuH3gvyaPLd/zyHniVhbN9cqwAHPKFWaETEQHmpIgcIWJlzX+OPkAkFXYagQg3QVEkpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZnvks8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6200DC4CED1;
-	Wed,  5 Feb 2025 14:11:46 +0000 (UTC)
+	 MIME-Version; b=Xj6HZpxJUOu+zRkpG6CZR4QYb5DT6/C6+SEDXSwLnP2ZEa8WtDOEfbtGGla/KCTpOlFXZ0GlzbXKABjDIqVBKaRs9kPKQyiiJBYlsH6v7SN/XjEzgZq6KdGo5HOG5+XriZEUwBRH/QSG8MEXY2CW/m4bS3Rm9zch84Yx6WA2CEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaM0ssOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A05FC4CED1;
+	Wed,  5 Feb 2025 14:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764706;
-	bh=jVoVCl4AkUw/GyiBDgge9ezURkDIFxj4QdjVnwFzR3I=;
+	s=korg; t=1738764120;
+	bh=d62vLzTxQm0S8L5lPKCyMfh1doMa5NbPvy9Iwf0BFGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZnvks8pBSTACbjOrbZDwmmd9Bbxtl06nyZ46qh47r41WgVX6nSQ6ODnXJ0Xh2JNp
-	 drmglqtAogpq0LXyfxZEXtDSypmjYcqgIhuQetB5OTzrCsViUMEeFdPc7X0hZjEQQX
-	 8Ga41H09B54zi3iqABFGxqgI56k8SHmOIyj78tk8=
+	b=qaM0ssOr+F0KJjLOuis0j4F7ZlLKuzkLiZLcA2ZVOe5f2yVC37stM3fhIYdEzd02r
+	 Oqeg+/E0oMBjv8sG7dJBlENCQ8EeYYK7N+RQop/it/FE6V2RXz+WP4sRbBN+qVeORi
+	 4dvxC2et/bf+XhLaH+KxZy5X/UucwLiE6EiLDVaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Lee Jones <lee@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 103/623] dt-bindings: leds: class-multicolor: Fix path to color definitions
-Date: Wed,  5 Feb 2025 14:37:25 +0100
-Message-ID: <20250205134500.157257250@linuxfoundation.org>
+Subject: [PATCH 6.12 091/590] clk: fix an OF node reference leak in of_clk_get_parent_name()
+Date: Wed,  5 Feb 2025 14:37:26 +0100
+Message-ID: <20250205134458.733940174@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 609bc99a4452ffbce82d10f024a85d911c42e6cd ]
+[ Upstream commit 28fa3291cad1c201967ef93edc6e7f8ccc9afbc0 ]
 
-The LED color definitions have always been in
-include/dt-bindings/leds/common.h in upstream.
+Current implementation of of_clk_get_parent_name() leaks an OF node
+reference on error path. Add a of_node_put() call before returning an
+error.
 
-Fixes: 5c7f8ffe741daae7 ("dt: bindings: Add multicolor class dt bindings documention")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/a3c7ea92e90b77032f2e480d46418b087709286d.1731588129.git.geert+renesas@glider.be
-Signed-off-by: Lee Jones <lee@kernel.org>
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: 8da411cc1964 ("clk: let of_clk_get_parent_name() fail for invalid clock-indices")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://lore.kernel.org/r/20241210130913.3615205-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/leds/leds-class-multicolor.yaml         | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml b/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
-index e850a8894758d..bb40bb9e036ee 100644
---- a/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
-+++ b/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
-@@ -27,7 +27,7 @@ properties:
-     description: |
-       For multicolor LED support this property should be defined as either
-       LED_COLOR_ID_RGB or LED_COLOR_ID_MULTI which can be found in
--      include/linux/leds/common.h.
-+      include/dt-bindings/leds/common.h.
-     enum: [ 8, 9 ]
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index d02451f951cf0..5b4ab94193c2b 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -5391,8 +5391,10 @@ const char *of_clk_get_parent_name(const struct device_node *np, int index)
+ 		count++;
+ 	}
+ 	/* We went off the end of 'clock-indices' without finding it */
+-	if (of_property_present(clkspec.np, "clock-indices") && !found)
++	if (of_property_present(clkspec.np, "clock-indices") && !found) {
++		of_node_put(clkspec.np);
+ 		return NULL;
++	}
  
- required:
+ 	if (of_property_read_string_index(clkspec.np, "clock-output-names",
+ 					  index,
 -- 
 2.39.5
 
