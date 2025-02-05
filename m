@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C94FA292FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8FA291AF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1CFC188FD92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC9E57A14A7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C685F194C96;
-	Wed,  5 Feb 2025 14:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FFE1FDE00;
+	Wed,  5 Feb 2025 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I38lLQVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaCr9OUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C32193404;
-	Wed,  5 Feb 2025 14:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C06146A7A;
+	Wed,  5 Feb 2025 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767390; cv=none; b=ZdYflSJfYttNMjMfSICtkjD/e2hA0FynHOO1GVOjd4lJpqew3rXAmSR3KtyHTg3AEBKkl001UK78lB077YZLfmlpM9n/xxLWFfVqJbGwH0IsZzfQlhGB+gk6IcCzw6ydkJOIoQRcy+ZepHZLGqWdF9hpDoLgsJVkBEapay9ACSs=
+	t=1738766962; cv=none; b=dw+IDcYAHTnJbGly6bWVIo7RkntrscOO6vD403OfTwql15TrrrIGQ9KVwGaJdLSt9cE6heQ8lwOwE7LKzmLkM7ue7FLo+ZZFNwzziuVzXESiFPAHbPEq4SY8F9EoZqWSgfgBGksCkiz4zqoo/8bKgixZ9DmyWJ1Ay6T9czhmiBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767390; c=relaxed/simple;
-	bh=/LN8fH9cWnCUxr98pIxwFV0tgG5x/G39lIrEjpLTzJw=;
+	s=arc-20240116; t=1738766962; c=relaxed/simple;
+	bh=L0CsuTzTGeNXDWn4JUM8lInZlz6Gov8d+9rlqKxlXc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ju/BqpBzgEM0HR1B7sRkGnNSAQ33ymFTcHSH+hgQFo9MD1s7fIpUloSe572tEqxBA7DwDYvzSNgUIq6JAFtPOqFoLkT011cfI1yhcJMydwUdOlgwT6S1WrqkoWFCMJZhTlffExCJKGBm2LszHBpkj/Mv1YN5fXwdAbSu121lK+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I38lLQVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF626C4CED1;
-	Wed,  5 Feb 2025 14:56:29 +0000 (UTC)
+	 MIME-Version; b=ABWmYvLP8RRcTRZhfka1cmDXx4lm8ZyNcsYng6PnIA0sqYOsI5e+Eb0ZlVXFue8BapPetJR3fo+DURikZa+AGDsI2rpPsvxQa1Tx38rvlcyMflxCnM/A9KVt36t0rRDLt0TU3T7gnyRSzH/+wjBdpnXK4W0NgKfIetm8jFuqEaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaCr9OUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908D7C4CED6;
+	Wed,  5 Feb 2025 14:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767390;
-	bh=/LN8fH9cWnCUxr98pIxwFV0tgG5x/G39lIrEjpLTzJw=;
+	s=korg; t=1738766962;
+	bh=L0CsuTzTGeNXDWn4JUM8lInZlz6Gov8d+9rlqKxlXc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I38lLQVxXGOZt7vjUQI40mA5dgzFKUKsxSMXvsKuz4rVVo7WajBuauj6TYk0/c4Sn
-	 2E80xJ99DiKPG6DesYK95Nd4S2CrUIF1SgnY0PBp+vOFdF0U9p1EaNUejc4wIxv8QQ
-	 oy7t7B99Mx344Z47AUUV+cPyZoQy51kSrWXai54Q=
+	b=HaCr9OUxLWQhXVxqQ+XxpkfST0Es1YxGkHqA477W1s+VX9a2jYe67noESV39bqm1h
+	 X3uEc7WIpW6Cw9chiL7hIfhVkv39adOPvIDXp2nNb+hMmergy1SMfQvnv+vbaXcXwY
+	 7FtQcFwHF0z+kiV3QP4b/bAeIDQMCgWWGXxw7o7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 398/623] arm64: dts: rockchip: Fix sdmmc access on rk3308-rock-s0 v1.1 boards
-Date: Wed,  5 Feb 2025 14:42:20 +0100
-Message-ID: <20250205134511.448087430@linuxfoundation.org>
+Subject: [PATCH 6.12 386/590] arm64: dts: qcom: sm8250: Fix interrupt types of camss interrupts
+Date: Wed,  5 Feb 2025 14:42:21 +0100
+Message-ID: <20250205134510.036256812@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 26c100232b09ced0857306ac9831a4fa9c9aa231 ]
+[ Upstream commit 6c7bba42ebc3da56e64d4aec4c4a31dd454e05fd ]
 
-BootROM leave GPIO4_D6 configured as SDMMC_PWREN function and DW MCI
-driver set PRWEN high on MMC_POWER_UP and low on MMC_POWER_OFF.
-Similarly U-Boot also set PRWEN high before accessing mmc.
+Qualcomm IP catalog says that all CAMSS interrupts is edge rising,
+fix it in the CAMSS device tree node for sm8250 SoC.
 
-However, HW revision prior to v1.2 must pull GPIO4_D6 low to access
-sdmmc. For HW revision v1.2 the state of GPIO4_D6 has no impact.
-
-Model an always-on active low fixed regulator using GPIO4_D6 to fix
-use of sdmmc on older HW revisions of the board.
-
-Fixes: adeb5d2a4ba4 ("arm64: dts: rockchip: Add Radxa ROCK S0")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20241119230838.4137130-1-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 30325603b910 ("arm64: dts: qcom: sm8250: camss: Add CAMSS block definition")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20241127122950.885982-7-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3308-rock-s0.dts      | 25 ++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
-index bd6419a5c20a2..8311af4c8689f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
-@@ -74,6 +74,23 @@
- 		vin-supply = <&vcc5v0_sys>;
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 22d99e4cf96d2..faa36d17b9f2c 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -4481,20 +4481,20 @@
+ 				    "vfe_lite0",
+ 				    "vfe_lite1";
  
-+	/*
-+	 * HW revision prior to v1.2 must pull GPIO4_D6 low to access sdmmc.
-+	 * This is modeled as an always-on active low fixed regulator.
-+	 */
-+	vcc_sd: regulator-3v3-vcc-sd {
-+		compatible = "regulator-fixed";
-+		gpios = <&gpio4 RK_PD6 GPIO_ACTIVE_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&sdmmc_2030>;
-+		regulator-name = "vcc_sd";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc_io>;
-+	};
-+
- 	vcc5v0_sys: regulator-5v0-vcc-sys {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc5v0_sys";
-@@ -181,6 +198,12 @@
- 		};
- 	};
- 
-+	sdmmc {
-+		sdmmc_2030: sdmmc-2030 {
-+			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+
- 	wifi {
- 		wifi_reg_on: wifi-reg-on {
- 			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
-@@ -233,7 +256,7 @@
- 	cap-mmc-highspeed;
- 	cap-sd-highspeed;
- 	disable-wp;
--	vmmc-supply = <&vcc_io>;
-+	vmmc-supply = <&vcc_sd>;
- 	status = "okay";
- };
- 
+-			interrupts = <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 359 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 360 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 86 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 89 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 359 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 360 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "csiphy0",
+ 					  "csiphy1",
+ 					  "csiphy2",
 -- 
 2.39.5
 
