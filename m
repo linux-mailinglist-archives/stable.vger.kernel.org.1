@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AF1A28D9B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723ECA290AF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470431881A8A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68C1C169F6E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CDDF510;
-	Wed,  5 Feb 2025 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695FC155A30;
+	Wed,  5 Feb 2025 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjZ0dwlq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hu6wk6kQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479DA1519AA;
-	Wed,  5 Feb 2025 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137851632DA;
+	Wed,  5 Feb 2025 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764173; cv=none; b=PaBVODdOsDacSo+KTJ7KP35SqAPMlg4nOORRHEZW+QM/s7wYeVIGSmPFCZ5YzN2ul2FKJQZ3O+MCBhJLJHR++3sIfGTe+zFM2ZOL8dw4U2GJ9WwuDvww1yiSFWyugqACLdk0syvfldPsPdlsY2g8/YwU21w6+YbQaYBsJYk4gxg=
+	t=1738766320; cv=none; b=TSmUqOcVjMA8jKU0DU7GQxwHEPs2XVtjkraP3pscCY4wKqCzxEvs/CzECRcdsb5ChqWZw8lsufsYT3OWHTReI/u2lIcuxhOny0OSeApc12XL+1UgPZbJBzArZ6SDSGPDJ9EhSMmtUkyVCzVbulwTAYbE2SSB47RnSegTEJT8+ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764173; c=relaxed/simple;
-	bh=1Pt50D20RzQZJjFdqLETBFAQJ0bDCTx1KYr/fC7NChc=;
+	s=arc-20240116; t=1738766320; c=relaxed/simple;
+	bh=xTradLnApEBA6Q05SK2SEvYdeM/gD8bV7HJl5Ci9Jo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1xa1qVFCPg2qSSVJpZQNanqaVldWxdzROEEcpPOrZX7akIOUZR8QEarquV71Xc73I5kAVPmyGVUM1413pbNXHOq0mlaRLsSWl/W0jY7rmMkL8neY6NMWnkrFF7Un/2aV8kSkHpyyfjExmug3LW7xpg71WDFVLd9lWkds1kH+MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjZ0dwlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8693C4CED6;
-	Wed,  5 Feb 2025 14:02:52 +0000 (UTC)
+	 MIME-Version; b=uWRsn7YaFqNQUY7X+xGORVwdxdnCv5iqGnQwcCpY2sTVK8J63SGrMYs3F9LDmtCIdbRsnvlFLpPM4OTHto/4NWd1sGM/vaRNPs5KQ5EYKsHLt1Ft8EfPjHzROHWoBM3Vo98Gq6zPaiJdfw3w9biyyOYVgLWDowrxjJFgzR2mIYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hu6wk6kQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A074C4CEDD;
+	Wed,  5 Feb 2025 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764173;
-	bh=1Pt50D20RzQZJjFdqLETBFAQJ0bDCTx1KYr/fC7NChc=;
+	s=korg; t=1738766319;
+	bh=xTradLnApEBA6Q05SK2SEvYdeM/gD8bV7HJl5Ci9Jo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjZ0dwlq1lB7Ur5IRPden3a6yuRwVk8DRVqSjZ0ctyOmBJOK6A2/8Dz95q3RmOYVE
-	 VD4m/A2gyVR4w7fPJ2y/8G3ISsGFXYId7gK/SdChVlZcfpRfE30WiQfmjuzaIHh+qX
-	 NK6fbBVRbo91ilJUW5XVJKOljVxjh7snvbNdrSLM=
+	b=hu6wk6kQmR238Oqf9nWZwJQX7ahKkyROau0urJ7G/u09OHFamx2gf/FOdulPtNVxz
+	 Xiof0RrCAmn6OKpxdyZGzUBqqBJ7jnabWDO00qPKzGkTU5RHHoUwysKF7IdFBuxRvX
+	 Pqsl3OssrnqSzsp3gz+oNsECdjwV3nQW+eHQdKsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Marek Vasut <marex@denx.de>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/393] netfilter: nft_set_rbtree: rename gc deactivate+erase function
+Subject: [PATCH 6.12 310/590] ARM: dts: stm32: Increase CPU core voltage on STM32MP13xx DHCOR SoM
 Date: Wed,  5 Feb 2025 14:41:05 +0100
-Message-ID: <20250205134425.889302195@linuxfoundation.org>
+Message-ID: <20250205134507.135083139@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8079fc30f79799e59d9602e7e080d434936a482d ]
+[ Upstream commit a4422a9183278162093d4524fdf4b6bbd7dd8a28 ]
 
-Next patch adds a cllaer that doesn't hold the priv->write lock and
-will need a similar function.
+The STM32MP13xx DHCOR DHSBC is populated with STM32MP13xx part capable
+of 1 GHz operation, increase the CPU core voltage to 1.35 V to make
+sure the SoC is stable even if the blobs unconditionally force the CPU
+to 1 GHz operation.
 
-Rename the existing function to make it clear that it can only
-be used for opportunistic gc during insertion.
+It is not possible to make use of CPUfreq on the STM32MP13xx because
+the SCMI protocol 0x13 is not implemented by upstream OpTee-OS which
+is the SCMI provider.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 8d738c1869f6 ("netfilter: nf_tables: fix set size with rbtree backend")
+Fixes: 6331bddce649 ("ARM: dts: stm32: Add support for STM32MP13xx DHCOR SoM and DHSBC board")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/st/stm32mp13xx-dhcor-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index afbda7e3fd048..896a9a7024b04 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -221,14 +221,15 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
- 	return rbe;
- }
+diff --git a/arch/arm/boot/dts/st/stm32mp13xx-dhcor-som.dtsi b/arch/arm/boot/dts/st/stm32mp13xx-dhcor-som.dtsi
+index ddad6497775b8..ffb7233b063d2 100644
+--- a/arch/arm/boot/dts/st/stm32mp13xx-dhcor-som.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp13xx-dhcor-som.dtsi
+@@ -85,8 +85,8 @@
  
--static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
--				 struct nft_rbtree *priv,
--				 struct nft_rbtree_elem *rbe)
-+static void nft_rbtree_gc_elem_remove(struct net *net, struct nft_set *set,
-+				      struct nft_rbtree *priv,
-+				      struct nft_rbtree_elem *rbe)
- {
- 	struct nft_set_elem elem = {
- 		.priv	= rbe,
- 	};
- 
-+	lockdep_assert_held_write(&priv->lock);
- 	nft_setelem_data_deactivate(net, set, &elem);
- 	rb_erase(&rbe->node, &priv->root);
- }
-@@ -263,7 +264,7 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
- 	rbe_prev = NULL;
- 	if (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
--		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
-+		nft_rbtree_gc_elem_remove(net, set, priv, rbe_prev);
- 
- 		/* There is always room in this trans gc for this element,
- 		 * memory allocation never actually happens, hence, the warning
-@@ -277,7 +278,7 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
- 		nft_trans_gc_elem_add(gc, rbe_prev);
- 	}
- 
--	nft_rbtree_gc_remove(net, set, priv, rbe);
-+	nft_rbtree_gc_elem_remove(net, set, priv, rbe);
- 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
- 	if (WARN_ON_ONCE(!gc))
- 		return ERR_PTR(-ENOMEM);
+ 			vddcpu: buck1 { /* VDD_CPU_1V2 */
+ 				regulator-name = "vddcpu";
+-				regulator-min-microvolt = <1250000>;
+-				regulator-max-microvolt = <1250000>;
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
+ 				regulator-always-on;
+ 				regulator-initial-mode = <0>;
+ 				regulator-over-current-protection;
 -- 
 2.39.5
 
