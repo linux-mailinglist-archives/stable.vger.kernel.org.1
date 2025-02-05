@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0ABA28EF0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A8FA28E2C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7907F7A1C41
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC54B3A2193
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C358634E;
-	Wed,  5 Feb 2025 14:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4882014F9E7;
+	Wed,  5 Feb 2025 14:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP+VvCET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3bKZTNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C4E522A;
-	Wed,  5 Feb 2025 14:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045501519AA;
+	Wed,  5 Feb 2025 14:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765164; cv=none; b=C/QCCAb2oiQd0UJQw2WNAe+G7xeDtd0ehJrgy14UkwxACE325vsxuurGAsI05xb07EWaAqrNszKW8Ccox359z1TuSE1eWQS6XYf5GJC9N+gneSoW/mI9JqeWYquG4/b+wq8oHY9L7nRhxMZjZqexDt07Mx6ujEXvzc91xBwKOxw=
+	t=1738764575; cv=none; b=msdpJp1mRFs7pYOAUt2AmIL/jWVkG3lh3UiR4O7BJVJ4XgVTeruXsEsEQjL/0FXOzvEuEPjvpDaO4mZxSKrQ0hTWf2wu+w9W3/cMM/44YaEdCv75ftmAGRlFOZRShIgPZRQ6CijV3h2KL/92uaLq7MejkjUUVD2aWQPAB7WXkCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765164; c=relaxed/simple;
-	bh=vsfPm1tkP4uQti62ME8KtzJSxGWZ9LWJeRls4IuzGF8=;
+	s=arc-20240116; t=1738764575; c=relaxed/simple;
+	bh=sT4Mv3hCvXT7eCouZ3DP+KtsDAzzH/epLW9Jg7UnLto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOG4BuL0qtLo1/5pwFMZQCFYRCjf1zvtgvIp08eh8wFUrmtb5FpoFCbQXkEiaWdzH5eZaCpqBfOnaZwZOEe1/YjswTnC2juM9YtutwJN8E0b0TBvJ2svtSLxPMDanFB+OJ54oUJkccETlYOLU+EDv7iO3Sos5tiWaL1AlXpXiCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP+VvCET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F316C4CED1;
-	Wed,  5 Feb 2025 14:19:23 +0000 (UTC)
+	 MIME-Version; b=LzhB5UKBTwG7q2Fyp2qRgB9Z0jmzon/I2uxFBeTq5kwIcmV+RJLp4Oj1dj5VWJqfZ/Fbthy50shjP8rKLuKoODOlvWCAFTxiNPmf5K4rZ3YnDpan2aUKDHPciT8naAVDr2FKzktU825zRS4baYsFRmvGH2Hra0sbK4ADqNhrlp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3bKZTNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CDAC4CED1;
+	Wed,  5 Feb 2025 14:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765163;
-	bh=vsfPm1tkP4uQti62ME8KtzJSxGWZ9LWJeRls4IuzGF8=;
+	s=korg; t=1738764574;
+	bh=sT4Mv3hCvXT7eCouZ3DP+KtsDAzzH/epLW9Jg7UnLto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zP+VvCETb5KHwWnvR624pfygO4mR6X2M/jhu2sZUMCMIa/zTTvufCiFspBIeHoTwC
-	 aypmzfiP2UhRFCIDRJGC8DFtv+kz1IegZTXlZc6nlymB6OJjc3y09LzgQtP3wErrTB
-	 YIElZ0oRX70qX6QmTjKBWPEQSFing8KJpRpezv40=
+	b=u3bKZTNUI0mmDh0+o7DjDP2BRuIERiKVa+PdE576CZFcHvUGOIavnGJlkqkeDRUR/
+	 kZhglejD7oqoYI4lIfyqwXKmW3wK96VFnZmHlPz62cg4/OZwNgYAdYr87SbXnHKW2o
+	 PxVhfod4poC8nHaARO8xP/xQW5REYylvOES4R51g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Marek Vasut <marex@denx.de>,
-	Kalle Valo <kvalo@kernel.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 152/623] wifi: wilc1000: unregister wiphy only if it has been registered
+Subject: [PATCH 6.12 139/590] clk: qcom: gcc-sdm845: Do not use shared clk_ops for QUPs
 Date: Wed,  5 Feb 2025 14:38:14 +0100
-Message-ID: <20250205134502.050794116@linuxfoundation.org>
+Message-ID: <20250205134500.588340843@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,167 +60,189 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-[ Upstream commit 1be94490b6b8a06ff14cd23fda8714e6ec37cdfb ]
+[ Upstream commit f760a4bb5e927a133dcd75f7b69ccae2a331e42c ]
 
-There is a specific error path in probe functions in wilc drivers (both
-sdio and spi) which can lead to kernel panic, as this one for example
-when using SPI:
+Similar to the earlier fixes meant for sm8x50 and x1e platforms,
+we have to stop using the shared clk ops for sdm845 QUPs as well.
 
-Unable to handle kernel paging request at virtual address 9f000000 when read
-[9f000000] *pgd=00000000
-Internal error: Oops: 5 [#1] ARM
-Modules linked in: wilc1000_spi(+) crc_itu_t crc7 wilc1000 cfg80211 bluetooth ecdh_generic ecc
-CPU: 0 UID: 0 PID: 106 Comm: modprobe Not tainted 6.13.0-rc3+ #22
-Hardware name: Atmel SAMA5
-PC is at wiphy_unregister+0x244/0xc40 [cfg80211]
-LR is at wiphy_unregister+0x1c0/0xc40 [cfg80211]
-[...]
- wiphy_unregister [cfg80211] from wilc_netdev_cleanup+0x380/0x494 [wilc1000]
- wilc_netdev_cleanup [wilc1000] from wilc_bus_probe+0x360/0x834 [wilc1000_spi]
- wilc_bus_probe [wilc1000_spi] from spi_probe+0x15c/0x1d4
- spi_probe from really_probe+0x270/0xb2c
- really_probe from __driver_probe_device+0x1dc/0x4e8
- __driver_probe_device from driver_probe_device+0x5c/0x140
- driver_probe_device from __driver_attach+0x220/0x540
- __driver_attach from bus_for_each_dev+0x13c/0x1a8
- bus_for_each_dev from bus_add_driver+0x2a0/0x6a4
- bus_add_driver from driver_register+0x27c/0x51c
- driver_register from do_one_initcall+0xf8/0x564
- do_one_initcall from do_init_module+0x2e4/0x82c
- do_init_module from load_module+0x59a0/0x70c4
- load_module from init_module_from_file+0x100/0x148
- init_module_from_file from sys_finit_module+0x2fc/0x924
- sys_finit_module from ret_fast_syscall+0x0/0x1c
+As Stephen Boyd pointed out in earlier fixes, there wasn't a problem
+to mark QUP clks shared until we started parking shared RCGs at clk
+registration time in commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs
+upon registration"). Parking at init is actually harmful to the UART
+when earlycon is used. If the device is pumping out data while the
+frequency changes and we see garbage on the serial console until the
+driver can probe and actually set a proper frequency.
 
-The issue can easily be reproduced, for example by not wiring correctly
-a wilc device through SPI (and so, make it unresponsive to early SPI
-commands). It is due to a recent change decoupling wiphy allocation from
-wiphy registration, however wilc_netdev_cleanup has not been updated
-accordingly, letting it possibly call wiphy unregister on a wiphy which
-has never been registered.
+This patch reverts the QUP clk sharing ops part of commit 06391eddb60a
+("clk: qcom: Add Global Clock controller (GCC) driver for SDM845"), so
+that the QUPs on sdm845 don't get parked during clk registration and
+break UART operations.
 
-Fix this crash by moving wiphy_unregister/wiphy_free out of
-wilc_netdev_cleanup, and by adjusting error paths in both drivers
-
-Fixes: fbdf0c5248dc ("wifi: wilc1000: Register wiphy after reading out chipid")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Link: https://lore.kernel.org/r/20241209174912.2526928-1-amit.pundir@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.c | 2 --
- drivers/net/wireless/microchip/wilc1000/sdio.c   | 9 +++++++--
- drivers/net/wireless/microchip/wilc1000/spi.c    | 9 +++++++--
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/clk/qcom/gcc-sdm845.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 7e84fc0fd9118..af298021e0504 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -925,8 +925,6 @@ void wilc_netdev_cleanup(struct wilc *wilc)
+diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
+index dc3aa7014c3ed..c6692808a8228 100644
+--- a/drivers/clk/qcom/gcc-sdm845.c
++++ b/drivers/clk/qcom/gcc-sdm845.c
+@@ -454,7 +454,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s0_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s0_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
- 	wilc_wlan_cfg_deinit(wilc);
- 	wlan_deinit_locks(wilc);
--	wiphy_unregister(wilc->wiphy);
--	wiphy_free(wilc->wiphy);
- }
- EXPORT_SYMBOL_GPL(wilc_netdev_cleanup);
+ static struct clk_rcg2 gcc_qupv3_wrap0_s0_clk_src = {
+@@ -470,7 +470,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s1_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s1_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 5262c8846c13d..3751e2ee1ca95 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -193,7 +193,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 	ret = wilc_load_mac_from_nv(wilc);
- 	if (ret) {
- 		pr_err("Can not retrieve MAC address from chip\n");
--		goto dispose_irq;
-+		goto unregister_wiphy;
- 	}
+ static struct clk_rcg2 gcc_qupv3_wrap0_s1_clk_src = {
+@@ -486,7 +486,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s2_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s2_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
- 	wilc_sdio_deinit(wilc);
-@@ -202,15 +202,18 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 				   NL80211_IFTYPE_STATION, false);
- 	if (IS_ERR(vif)) {
- 		ret = PTR_ERR(vif);
--		goto dispose_irq;
-+		goto unregister_wiphy;
- 	}
+ static struct clk_rcg2 gcc_qupv3_wrap0_s2_clk_src = {
+@@ -502,7 +502,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s3_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s3_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
- 	dev_info(&func->dev, "Driver Initializing success\n");
- 	return 0;
+ static struct clk_rcg2 gcc_qupv3_wrap0_s3_clk_src = {
+@@ -518,7 +518,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s4_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s4_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
-+unregister_wiphy:
-+	wiphy_unregister(wilc->wiphy);
- dispose_irq:
- 	irq_dispose_mapping(wilc->dev_irq_num);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- free:
- 	kfree(sdio_priv->cmd53_buf);
- 	kfree(sdio_priv);
-@@ -222,7 +225,9 @@ static void wilc_sdio_remove(struct sdio_func *func)
- 	struct wilc *wilc = sdio_get_drvdata(func);
- 	struct wilc_sdio *sdio_priv = wilc->bus_data;
+ static struct clk_rcg2 gcc_qupv3_wrap0_s4_clk_src = {
+@@ -534,7 +534,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s5_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s5_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
-+	wiphy_unregister(wilc->wiphy);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- 	kfree(sdio_priv->cmd53_buf);
- 	kfree(sdio_priv);
- }
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index ce2a9cdd6aa78..31219fd0cfb3f 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -256,7 +256,7 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	ret = wilc_load_mac_from_nv(wilc);
- 	if (ret) {
- 		pr_err("Can not retrieve MAC address from chip\n");
--		goto power_down;
-+		goto unregister_wiphy;
- 	}
+ static struct clk_rcg2 gcc_qupv3_wrap0_s5_clk_src = {
+@@ -550,7 +550,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s6_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s6_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
- 	wilc_wlan_power(wilc, false);
-@@ -264,14 +264,17 @@ static int wilc_bus_probe(struct spi_device *spi)
- 				   NL80211_IFTYPE_STATION, false);
- 	if (IS_ERR(vif)) {
- 		ret = PTR_ERR(vif);
--		goto power_down;
-+		goto unregister_wiphy;
- 	}
- 	return 0;
+ static struct clk_rcg2 gcc_qupv3_wrap0_s6_clk_src = {
+@@ -566,7 +566,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s7_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap0_s7_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
-+unregister_wiphy:
-+	wiphy_unregister(wilc->wiphy);
- power_down:
- 	wilc_wlan_power(wilc, false);
- netdev_cleanup:
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- free:
- 	kfree(spi_priv);
- 	return ret;
-@@ -282,7 +285,9 @@ static void wilc_bus_remove(struct spi_device *spi)
- 	struct wilc *wilc = spi_get_drvdata(spi);
- 	struct wilc_spi *spi_priv = wilc->bus_data;
+ static struct clk_rcg2 gcc_qupv3_wrap0_s7_clk_src = {
+@@ -582,7 +582,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s0_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s0_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
-+	wiphy_unregister(wilc->wiphy);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- 	kfree(spi_priv);
- }
+ static struct clk_rcg2 gcc_qupv3_wrap1_s0_clk_src = {
+@@ -598,7 +598,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s1_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s1_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
+ static struct clk_rcg2 gcc_qupv3_wrap1_s1_clk_src = {
+@@ -614,7 +614,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s2_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s2_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s2_clk_src = {
+@@ -630,7 +630,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s3_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s3_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s3_clk_src = {
+@@ -646,7 +646,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s4_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s4_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s4_clk_src = {
+@@ -662,7 +662,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s5_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s5_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s5_clk_src = {
+@@ -678,7 +678,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s6_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s6_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s6_clk_src = {
+@@ -694,7 +694,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s7_clk_src_init = {
+ 	.name = "gcc_qupv3_wrap1_s7_clk_src",
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s7_clk_src = {
 -- 
 2.39.5
 
