@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7074CA29054
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE64AA29396
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C794116573E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91640188DDE3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6727E792;
-	Wed,  5 Feb 2025 14:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC1D1DAC92;
+	Wed,  5 Feb 2025 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4qxYiLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBJkUbH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEBB151988;
-	Wed,  5 Feb 2025 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1CF1DA617;
+	Wed,  5 Feb 2025 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766063; cv=none; b=mR76Fpiah+kdIDzeLC094o9S5VXna3dWJE3KVXYTiKabDkWX4O0ES1TsD4kMimKbGvo0UgdukWYWNxcSQMazhFBnuEdmBYayuw7vxH1w+lmRuAbKgwWjGt7FiTyZsnGSbmbxJrS+BF9zFh9oiyaTWS8RFqSzMy9+Za30RjPqPeU=
+	t=1738767680; cv=none; b=Cj1DvvBFqz4e4vNNiBOcEv4jJPfx1rCiqhNI828s10A560gHL7mWYWhP0YuHAACTM+V5r5O0113siiwJ0Bx4ZOj8GDcqVpC1wfozBqYE3ZnGumwLwTmONdPACPuEnJIhFA+fgQZjSEFId65hIVBlFJf4tBhl6bHI467ZVlzY1Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766063; c=relaxed/simple;
-	bh=Pw2jbpcJBK9x3ioe/KF32hhF3NQvaopbsWoS+zhb5tk=;
+	s=arc-20240116; t=1738767680; c=relaxed/simple;
+	bh=PEK5DiB1Cm6kNLipXGXArlaCmIpCXUC/kxJDRGp6bWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge8xjWvqV9eBOtFo36A41eAvEAlkhm6OJVSxw3rOGFuj1vDPHa60uzPVRfbTbz/ls1J8nim0N5oLmCzq3kUt/rbAYIc4C7y09upH6JrsiAy58w+AUpHU0wF0UITOQgo9mVU9ciXDr0O6GuMUI63yrM8uILXHR7+dUud6LPDLbs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4qxYiLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A190C4CED1;
-	Wed,  5 Feb 2025 14:34:22 +0000 (UTC)
+	 MIME-Version; b=TVU8KuMrLMpa9VogD/slqZhu9/jptrmMBcn5qb/wPD0NM7QlzstO0kTg2B2UlCP9GTWgS6hc745ge652QdW+SohkTNGKO7+uTTUFIfVuLfyDpRgG6iMKrUrLxNrKEb8S+BPcP8MvOtqygu6v/lEu0qFHBfo3J4g+eHJxrwCEy1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBJkUbH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80394C4CEE2;
+	Wed,  5 Feb 2025 15:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766062;
-	bh=Pw2jbpcJBK9x3ioe/KF32hhF3NQvaopbsWoS+zhb5tk=;
+	s=korg; t=1738767679;
+	bh=PEK5DiB1Cm6kNLipXGXArlaCmIpCXUC/kxJDRGp6bWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4qxYiLg7+yZqKMBzc+s2rNnFe9lJHltSkiGQzJIpXBMNmsa606CHh/DkMpyFAy4I
-	 aVQSqSy0bPGp0xyCVcbPdeLYNyu5pq8sOL2J2lxvl06SeTEmucOjFKO8CpENg4h54r
-	 mZGMJVO9iysW7qRcrsNCgl2ZLngY4CllKwjJDklE=
+	b=yBJkUbH8pa0caS7u/9AcUSihBQBC1J65DglxPOBfZrGhC0oqxS8rbTK8faOWIEk1H
+	 uf1+seDezSQS9JPaGkdiIJkrkP904wkgLpA+Zk+jpBG90luZtYOqkt+dUjuNn8AhlC
+	 HX9LONsIewwhL0RHZHjRViPN3Wv+rcyAendp16o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cfae50c0e5f2c500013@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/393] ipmr: do not call mr_mfc_uses_dev() for unres entries
-Date: Wed,  5 Feb 2025 14:44:05 +0100
-Message-ID: <20250205134432.786295718@linuxfoundation.org>
+Subject: [PATCH 6.12 491/590] s390/mm: Allow large pages for KASAN shadow mapping
+Date: Wed,  5 Feb 2025 14:44:06 +0100
+Message-ID: <20250205134514.054482919@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-[ Upstream commit 15a901361ec3fb1c393f91880e1cbf24ec0a88bd ]
+[ Upstream commit ff123eb7741638d55abf82fac090bb3a543c1e74 ]
 
-syzbot found that calling mr_mfc_uses_dev() for unres entries
-would crash [1], because c->mfc_un.res.minvif / c->mfc_un.res.maxvif
-alias to "struct sk_buff_head unresolved", which contain two pointers.
+Commit c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address
+spaces") introduced a large_allowed() helper that restricts which mapping
+modes can use large pages. This change unintentionally prevented KASAN
+shadow mappings from using large pages, despite there being no reason
+to avoid them. In fact, large pages are preferred for performance.
 
-This code never worked, lets remove it.
+Add POPULATE_KASAN_MAP_SHADOW to the allowed list in large_allowed()
+to restore large page mappings for KASAN shadows.
 
-[1]
-Unable to handle kernel paging request at virtual address ffff5fff2d536613
-KASAN: maybe wild-memory-access in range [0xfffefff96a9b3098-0xfffefff96a9b309f]
-Modules linked in:
-CPU: 1 UID: 0 PID: 7321 Comm: syz.0.16 Not tainted 6.13.0-rc7-syzkaller-g1950a0af2d55 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : mr_mfc_uses_dev net/ipv4/ipmr_base.c:290 [inline]
- pc : mr_table_dump+0x5a4/0x8b0 net/ipv4/ipmr_base.c:334
- lr : mr_mfc_uses_dev net/ipv4/ipmr_base.c:289 [inline]
- lr : mr_table_dump+0x694/0x8b0 net/ipv4/ipmr_base.c:334
-Call trace:
-  mr_mfc_uses_dev net/ipv4/ipmr_base.c:290 [inline] (P)
-  mr_table_dump+0x5a4/0x8b0 net/ipv4/ipmr_base.c:334 (P)
-  mr_rtm_dumproute+0x254/0x454 net/ipv4/ipmr_base.c:382
-  ipmr_rtm_dumproute+0x248/0x4b4 net/ipv4/ipmr.c:2648
-  rtnl_dump_all+0x2e4/0x4e8 net/core/rtnetlink.c:4327
-  rtnl_dumpit+0x98/0x1d0 net/core/rtnetlink.c:6791
-  netlink_dump+0x4f0/0xbc0 net/netlink/af_netlink.c:2317
-  netlink_recvmsg+0x56c/0xe64 net/netlink/af_netlink.c:1973
-  sock_recvmsg_nosec net/socket.c:1033 [inline]
-  sock_recvmsg net/socket.c:1055 [inline]
-  sock_read_iter+0x2d8/0x40c net/socket.c:1125
-  new_sync_read fs/read_write.c:484 [inline]
-  vfs_read+0x740/0x970 fs/read_write.c:565
-  ksys_read+0x15c/0x26c fs/read_write.c:708
+While large_allowed() isn't strictly necessary with current mapping
+modes since disallowed modes either don't map anything or fail alignment
+and size checks, keep it for clarity.
 
-Fixes: cb167893f41e ("net: Plumb support for filtering ipv4 and ipv6 multicast route dumps")
-Reported-by: syzbot+5cfae50c0e5f2c500013@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/678fe2d1.050a0220.15cac.00b3.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250121181241.841212-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ipmr_base.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/s390/boot/vmem.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
-index 03b6eee407a24..28d77d454d442 100644
---- a/net/ipv4/ipmr_base.c
-+++ b/net/ipv4/ipmr_base.c
-@@ -330,9 +330,6 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
- 	list_for_each_entry(mfc, &mrt->mfc_unres_queue, list) {
- 		if (e < s_e)
- 			goto next_entry2;
--		if (filter->dev &&
--		    !mr_mfc_uses_dev(mrt, mfc, filter->dev))
--			goto next_entry2;
+diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
+index 3fa28db2fe59f..824690427b61a 100644
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -264,7 +264,17 @@ static unsigned long _pa(unsigned long addr, unsigned long size, enum populate_m
  
- 		err = fill(mrt, skb, NETLINK_CB(cb->skb).portid,
- 			   cb->nlh->nlmsg_seq, mfc, RTM_NEWROUTE, flags);
+ static bool large_allowed(enum populate_mode mode)
+ {
+-	return (mode == POPULATE_DIRECT) || (mode == POPULATE_IDENTITY) || (mode == POPULATE_KERNEL);
++	switch (mode) {
++	case POPULATE_DIRECT:
++	case POPULATE_IDENTITY:
++	case POPULATE_KERNEL:
++#ifdef CONFIG_KASAN
++	case POPULATE_KASAN_MAP_SHADOW:
++#endif
++		return true;
++	default:
++		return false;
++	}
+ }
+ 
+ static bool can_large_pud(pud_t *pu_dir, unsigned long addr, unsigned long end,
 -- 
 2.39.5
 
