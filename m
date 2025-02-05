@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-113280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53137A290C9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AD8A291EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B8F53A7E3F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42202188A77C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF9916CD1D;
-	Wed,  5 Feb 2025 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8731DB363;
+	Wed,  5 Feb 2025 14:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LP8xazAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+Sr3ci7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A0115A86B;
-	Wed,  5 Feb 2025 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497331DB153;
+	Wed,  5 Feb 2025 14:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766427; cv=none; b=q08qYtFA8YPINmq1Aw2ukldzUMMGridwqIcbNQ0Fyvd3sGpwzN+mAQ80mvOaPSekSH7mR7MVxqSOkJxQNIMRyRd2tXY8r2b95lPL5ME/N85xsZ+MpI0q5m7SnRmSjbx6okWJG/dIYAMlHh2ZzbQwd7JtLXDGNqAJM6OF/SqLmP0=
+	t=1738766663; cv=none; b=N6I/YS+TKTFU8AVclT2wx2tFqfJU3/uQhjIeV+ElRjhgho9fFWgas9XUPKXjnfFE2lnnEPsp27vwkVLst+FwTFVJcAFBqWZjjouTuoq4hwxAUpCovRfMfPZLoCAFEskAjve8scu7gSK3V5UQURMRwk1fsRW/8PrqriJYjR2vEAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766427; c=relaxed/simple;
-	bh=LaTrJkjasUmq7WZbxBA/Heo5rmjBvrmGToans0GILGM=;
+	s=arc-20240116; t=1738766663; c=relaxed/simple;
+	bh=ODJxjznmWXrlkJ5+HO9qAL+jDZgRBvi2ZSFsREaJxM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5mdwvZ0e58/R4r1hdDhetAnGJR9V3hD94yQzfdIbBFvmY7kSJP7IreFov+lbwybuPZGgQb08FQpTZYIFRGOgrm+UsmvbzYfk8LeoHDo+mfoG+8X6nEaCy8aZWpSG7vp8DI/UK6YdLPhAu4UqJycCZvIiVUU27rD1uRt0WLK7u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LP8xazAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A11C4CED1;
-	Wed,  5 Feb 2025 14:40:26 +0000 (UTC)
+	 MIME-Version; b=AAOOAxqv/XvTMkgPJLWjXY+9tBz3sEunA1V0xFvs3Mp3TWVIYw+j6te992aZl3+eAir+lH/pMLySUR+KHxZ/uxosneWPved0TtW9il6fQsO65JS7wHNBTA//XTPWYLvhrL9z3yzqpGCZBXDGk7BCkNlDocjMscn5+QLpfq5/7mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+Sr3ci7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435F2C4CED1;
+	Wed,  5 Feb 2025 14:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766427;
-	bh=LaTrJkjasUmq7WZbxBA/Heo5rmjBvrmGToans0GILGM=;
+	s=korg; t=1738766662;
+	bh=ODJxjznmWXrlkJ5+HO9qAL+jDZgRBvi2ZSFsREaJxM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LP8xazAh567oxuxHU6y29U5807xWviUsBO5LPbiWxOsey4kZLoiGPHXdeSJKUX2UI
-	 bxBav8gBLR4aREfhBhwHI8IDQ5fXH4PsPcI04NtbfbX/Zhp2VwaV8nVFq9XojMCcKN
-	 YKDOq8GsCKzxYoagsH+0QKhUOlqRszsBgGcW6yRM=
+	b=p+Sr3ci7OoLQZzzARqsCXpuB3We7io3fnfnss/Kgnk0vSj3mJpCwdR2MmerlUFUuY
+	 IBx6SC3XBI0SXT2AU+NwZQTfCVDqgLbKJOUYl+2JBRf07vOT1v1hvQSYXZNe5smfJT
+	 gfwgFlA9rwYU08E1yYaFGXumAjZn5o4/40TC9OLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 272/623] perf expr: Initialize is_test value in expr__ctx_new()
-Date: Wed,  5 Feb 2025 14:40:14 +0100
-Message-ID: <20250205134506.634610949@linuxfoundation.org>
+Subject: [PATCH 6.13 273/623] pinctrl: nomadik: Add check for clk_enable()
+Date: Wed,  5 Feb 2025 14:40:15 +0100
+Message-ID: <20250205134506.672232418@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,53 +67,125 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Mingwei Zheng <zmw12306@gmail.com>
 
-[ Upstream commit 1d18ebcfd302a2005b83ae5f13df223894d19902 ]
+[ Upstream commit 5c4bfbb21dedf5d56a55cb0e129ccb1fd5083d14 ]
 
-When expr_parse_ctx is allocated by expr_ctx_new(),
-expr_scanner_ctx->is_test isn't initialize, so it has garbage value.
-this can affects the result of expr__parse() return when it parses
-non-exist event literal according to garbage value.
+Add check for the return value of clk_enable() to catch the potential
+error.
+Disable success clks in the error handling.
+Change return type of nmk_gpio_glitch_slpm_init casade.
 
-Use calloc instead of malloc in expr_ctx_new() to fix this.
-
-Fixes: 3340a08354ac286e ("perf pmu-events: Fix testing with JEVENTS_ARCH=all")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20241108143424.819126-1-yeoreum.yun@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 3a19805920f1 ("pinctrl: nomadik: move all Nomadik drivers to subdir")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/20241206221618.3453159-1-zmw12306@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/expr.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/pinctrl/nomadik/pinctrl-nomadik.c | 35 ++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index f289044a1f7c6..c221dcce66660 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -285,7 +285,7 @@ struct expr_parse_ctx *expr__ctx_new(void)
+diff --git a/drivers/pinctrl/nomadik/pinctrl-nomadik.c b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
+index f4f10c60c1d23..dcc662be08000 100644
+--- a/drivers/pinctrl/nomadik/pinctrl-nomadik.c
++++ b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
+@@ -438,9 +438,9 @@ static void nmk_prcm_altcx_set_mode(struct nmk_pinctrl *npct,
+  *  - Any spurious wake up event during switch sequence to be ignored and
+  *    cleared
+  */
+-static void nmk_gpio_glitch_slpm_init(unsigned int *slpm)
++static int nmk_gpio_glitch_slpm_init(unsigned int *slpm)
  {
- 	struct expr_parse_ctx *ctx;
+-	int i;
++	int i, j, ret;
  
--	ctx = malloc(sizeof(struct expr_parse_ctx));
-+	ctx = calloc(1, sizeof(struct expr_parse_ctx));
- 	if (!ctx)
- 		return NULL;
+ 	for (i = 0; i < NMK_MAX_BANKS; i++) {
+ 		struct nmk_gpio_chip *chip = nmk_gpio_chips[i];
+@@ -449,11 +449,21 @@ static void nmk_gpio_glitch_slpm_init(unsigned int *slpm)
+ 		if (!chip)
+ 			break;
  
-@@ -294,9 +294,6 @@ struct expr_parse_ctx *expr__ctx_new(void)
- 		free(ctx);
- 		return NULL;
+-		clk_enable(chip->clk);
++		ret = clk_enable(chip->clk);
++		if (ret) {
++			for (j = 0; j < i; j++) {
++				chip = nmk_gpio_chips[j];
++				clk_disable(chip->clk);
++			}
++
++			return ret;
++		}
+ 
+ 		slpm[i] = readl(chip->addr + NMK_GPIO_SLPC);
+ 		writel(temp, chip->addr + NMK_GPIO_SLPC);
  	}
--	ctx->sctx.user_requested_cpu_list = NULL;
--	ctx->sctx.runtime = 0;
--	ctx->sctx.system_wide = false;
- 
- 	return ctx;
++
++	return 0;
  }
+ 
+ static void nmk_gpio_glitch_slpm_restore(unsigned int *slpm)
+@@ -923,7 +933,9 @@ static int nmk_pmx_set(struct pinctrl_dev *pctldev, unsigned int function,
+ 
+ 			slpm[nmk_chip->bank] &= ~BIT(bit);
+ 		}
+-		nmk_gpio_glitch_slpm_init(slpm);
++		ret = nmk_gpio_glitch_slpm_init(slpm);
++		if (ret)
++			goto out_pre_slpm_init;
+ 	}
+ 
+ 	for (i = 0; i < g->grp.npins; i++) {
+@@ -940,7 +952,10 @@ static int nmk_pmx_set(struct pinctrl_dev *pctldev, unsigned int function,
+ 		dev_dbg(npct->dev, "setting pin %d to altsetting %d\n",
+ 			g->grp.pins[i], g->altsetting);
+ 
+-		clk_enable(nmk_chip->clk);
++		ret = clk_enable(nmk_chip->clk);
++		if (ret)
++			goto out_glitch;
++
+ 		/*
+ 		 * If the pin is switching to altfunc, and there was an
+ 		 * interrupt installed on it which has been lazy disabled,
+@@ -988,6 +1003,7 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 	struct nmk_gpio_chip *nmk_chip;
+ 	struct gpio_chip *chip;
+ 	unsigned int bit;
++	int ret;
+ 
+ 	if (!range) {
+ 		dev_err(npct->dev, "invalid range\n");
+@@ -1004,7 +1020,9 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 
+ 	find_nmk_gpio_from_pin(pin, &bit);
+ 
+-	clk_enable(nmk_chip->clk);
++	ret = clk_enable(nmk_chip->clk);
++	if (ret)
++		return ret;
+ 	/* There is no glitch when converting any pin to GPIO */
+ 	__nmk_gpio_set_mode(nmk_chip, bit, NMK_GPIO_ALT_GPIO);
+ 	clk_disable(nmk_chip->clk);
+@@ -1058,6 +1076,7 @@ static int nmk_pin_config_set(struct pinctrl_dev *pctldev, unsigned int pin,
+ 	unsigned long cfg;
+ 	int pull, slpm, output, val, i;
+ 	bool lowemi, gpiomode, sleep;
++	int ret;
+ 
+ 	nmk_chip = find_nmk_gpio_from_pin(pin, &bit);
+ 	if (!nmk_chip) {
+@@ -1116,7 +1135,9 @@ static int nmk_pin_config_set(struct pinctrl_dev *pctldev, unsigned int pin,
+ 			output ? (val ? "high" : "low") : "",
+ 			lowemi ? "on" : "off");
+ 
+-		clk_enable(nmk_chip->clk);
++		ret = clk_enable(nmk_chip->clk);
++		if (ret)
++			return ret;
+ 		if (gpiomode)
+ 			/* No glitch when going to GPIO mode */
+ 			__nmk_gpio_set_mode(nmk_chip, bit, NMK_GPIO_ALT_GPIO);
 -- 
 2.39.5
 
