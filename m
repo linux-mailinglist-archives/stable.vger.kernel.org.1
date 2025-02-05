@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AFAA28E5A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75459A292A9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8ED11889735
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9773916C8AD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CAD149C53;
-	Wed,  5 Feb 2025 14:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09C817ADF8;
+	Wed,  5 Feb 2025 14:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owNgsHn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+COEuKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84EA1537AC;
-	Wed,  5 Feb 2025 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC061519BF;
+	Wed,  5 Feb 2025 14:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764687; cv=none; b=kk7HZJrFCyH6zlYpatutFPB7xwpZJjWEn4O3/GdCT9xuprTcNNSJKRKtNkgwKIQ+W31vTv9EH/wce95ghhTI7gNAPiU4lcGVSC8138Y4SaLoPmytxD5mNry2QsKPekMmrFyjVnoabhn5A9jiSAIrlovORP6SAL+dsZPZgbLcdOw=
+	t=1738767362; cv=none; b=u8LaYnVfp+DrCYPzdIcxOueujr4xGCc7AjZ/uLRhXwz39nvNvYSPqqNQeX451LvuABRQX6U+8o2uJ6oTO41zsN4yN1l7c0cM467sNMlwFFwrW+0sB0yyJrHlRh2/+bA1FscwQvZe9qNaBpKBir3yUafJwbRPJ0B2d59kbCZX/Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764687; c=relaxed/simple;
-	bh=HUT5buw53I9xrLuaniY/dN65aB08hTZJ4ToAWeeKfHw=;
+	s=arc-20240116; t=1738767362; c=relaxed/simple;
+	bh=07W2mj19XQ/DiBaAc3Kn08hn+ctglGM9q+IDXuB+Eds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TOHH2vm/M19XOsEBqFMjOQzWwAhyxauJrNz6/0IvG8hmWo7db3Sea9DPALXiPptL9L4VVZZDfrfjwEO6X8pmZN0LM6TnSxC9vWUONKoqE+jCgUbav7STHwm71bQ+A0D7bmtITP+Xz26J9xYWOSvUp8+/7LB1doznOGcqNVjk16k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owNgsHn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BDEC4CED1;
-	Wed,  5 Feb 2025 14:11:26 +0000 (UTC)
+	 MIME-Version; b=FdX0/f5FbfIQE1FFUZx9LiWU46hlJKpkxbOWydIW7+xlcjddJqYpVxc0Y4nrFS5owASHX378RK5GUdH95IvWKOqqUId6fb1sp+ASxe30EGc9muBKxzLtG2Md6nHIsrXNVPtGbXXfcodWedWUfhJBkZJ6ED9xl6qrn2/3AB3sk8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+COEuKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC30DC4CED1;
+	Wed,  5 Feb 2025 14:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764686;
-	bh=HUT5buw53I9xrLuaniY/dN65aB08hTZJ4ToAWeeKfHw=;
+	s=korg; t=1738767362;
+	bh=07W2mj19XQ/DiBaAc3Kn08hn+ctglGM9q+IDXuB+Eds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owNgsHn2SIIA0PkwDurXktKKPIBYMKtG+idZSfPhFxFAAGaxt+yQzh1U0bN+PkSls
-	 rFy0KAn+rFjrTehnjoaVnTaSVfHd2j20qa62NKuvrWshrt6etueb/kkNOlHaTGu9bf
-	 OWYX7U1cDD+5S5CpYrk/olyrxir2G3DM9nDK0Up4=
+	b=s+COEuKYYzyfFOsvhxuy5UpiVCPXtgkYlIw9fHVjpXMK2eNTlaVVc/K1XrF5i29OM
+	 CaCMiFF+IDwtaPF2CtbOjKPQJrRIDiKQmgdEIfhzM3bMiMZL1csDh0S77OlIVAZ0kW
+	 1lG7Y81A7gV2AW+LDFPNw20Po4wtny/O+ggWcTA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Maulik Shah <quic_mkshah@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/393] cifs: Use cifs_autodisable_serverino() for disabling CIFS_MOUNT_SERVER_INUM in readdir.c
+Subject: [PATCH 6.13 370/623] arm64: dts: qcom: sa8775p: Add CPUs to psci power domain
 Date: Wed,  5 Feb 2025 14:41:52 +0100
-Message-ID: <20250205134427.679861037@linuxfoundation.org>
+Message-ID: <20250205134510.375963801@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Maulik Shah <quic_mkshah@quicinc.com>
 
-[ Upstream commit 015683d4ed0d23698c71f2194f09bd17dbfad044 ]
+[ Upstream commit 736f50489e08ba7329a9e828c35a2358968dacf0 ]
 
-In all other places is used function cifs_autodisable_serverino() for
-disabling CIFS_MOUNT_SERVER_INUM mount flag. So use is also in readir.c
-_initiate_cifs_search() function. Benefit of cifs_autodisable_serverino()
-is that it also prints dmesg message that server inode numbers are being
-disabled.
+Commit 4f79d0deae37 ("arm64: dts: qcom: sa8775p: add CPU idle states")
+already added cpu and cluster idle-states but have not added CPU devices
+to psci power domain without which idle states do not get detected.
 
-Fixes: ec06aedd4454 ("cifs: clean up handling when server doesn't consistently support inode numbers")
-Fixes: f534dc994397 ("cifs: clear server inode number flag while autodisabling")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Add CPUs to psci power domain.
+
+Fixes: 4f79d0deae37 ("arm64: dts: qcom: sa8775p: add CPU idle states")
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241112-sa8775p_cpuidle-v1-1-66ff3ba72464@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/readdir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
-index 3cffdf3975a21..75929a0a56f96 100644
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -413,7 +413,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
- 		cifsFile->invalidHandle = false;
- 	} else if ((rc == -EOPNOTSUPP) &&
- 		   (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_SERVER_INUM)) {
--		cifs_sb->mnt_cifs_flags &= ~CIFS_MOUNT_SERVER_INUM;
-+		cifs_autodisable_serverino(cifs_sb);
- 		goto ffirst_retry;
- 	}
- error_exit:
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+index d9482124f0d3b..97c85a3db3019 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -44,6 +44,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x0>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd0>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			next-level-cache = <&l2_0>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -66,6 +68,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x100>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd1>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			next-level-cache = <&l2_1>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -83,6 +87,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x200>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd2>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			next-level-cache = <&l2_2>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -100,6 +106,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x300>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd3>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			next-level-cache = <&l2_3>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -117,6 +125,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x10000>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd4>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 			next-level-cache = <&l2_4>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -140,6 +150,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x10100>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd5>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 			next-level-cache = <&l2_5>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -157,6 +169,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x10200>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd6>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 			next-level-cache = <&l2_6>;
+ 			capacity-dmips-mhz = <1024>;
+@@ -174,6 +188,8 @@
+ 			compatible = "qcom,kryo";
+ 			reg = <0x0 0x10300>;
+ 			enable-method = "psci";
++			power-domains = <&cpu_pd7>;
++			power-domain-names = "psci";
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 			next-level-cache = <&l2_7>;
+ 			capacity-dmips-mhz = <1024>;
 -- 
 2.39.5
 
