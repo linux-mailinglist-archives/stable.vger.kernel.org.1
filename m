@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-112921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28D2A28EF9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD890A28F0F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B29216065A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC2C18818B4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9A014A088;
-	Wed,  5 Feb 2025 14:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0421A13C3F6;
+	Wed,  5 Feb 2025 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR99WjLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9EKyxeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC81A282EE;
-	Wed,  5 Feb 2025 14:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1B7522A;
+	Wed,  5 Feb 2025 14:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765208; cv=none; b=gS7ze3Z2d4puyoDfvkaNYsXgIMX7voTEkE7HrUSgQBNH29mXhREyyUIYQMGK7m/6iDuw1qaa7fIPC6RXnaT5ZD0hq/371FySe0mMVPbMm8EoelWq63BrraFtuUNIqKzfNUUU7M/oK9nBrcag7kviKVm+vFVNi1HCUSoOtK50tAk=
+	t=1738765218; cv=none; b=QNgHYOs4yL9Hzys+9wxnXuf/QPbWEn8ys1/upndI7+HVeF6FYrVLODLJeJE/WEV3rBTTF+mtEKmGOTLY4hNg54j0QjqHFjaXAtPzAPBmyn5PplM6kCEn8xdJnadkTtneQg9juXgs5Fw0nCAAcH3Opa+GzqS7dXID/LNK0KqDMsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765208; c=relaxed/simple;
-	bh=aaLNLNlDXzU4f4bW+4oI1gq7y99xG206/NrvCqVksSc=;
+	s=arc-20240116; t=1738765218; c=relaxed/simple;
+	bh=N7E8uz50GLPq8F5z97Cot/ksjlHpBMtGk8JRljACN1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGXajEfn40jkbjzHriKitfSsiPXcPLx7EdJ5zQQdYejr7R32EplF1tKIAz6hg2mEKgjbmhVQjQ93QB2Z/h9HXaUIQXOCL6rEpRiDbX+6WWqKzFf+WVaDwcE48QCnh9fmcSYDdatQA3CW0MHMuv/X873i91cQerAQi6Y91+SEykE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR99WjLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A190C4CED6;
-	Wed,  5 Feb 2025 14:20:07 +0000 (UTC)
+	 MIME-Version; b=NhDhN2RSAKB6UD4Sb+WcUyt7LqG4+EW4hYgijINFn/egXNWz+icmKLHvjqnSGeizv8s0qtMqiR3LODqjuosrih+R517n+YpeQLFy371t5tBBG3LAH8USCkPq4OYO0FOfvgx5h17f/aFc//v18QWIemdJaqt4x+R8fFnHXmINtgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9EKyxeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B67EC4CED1;
+	Wed,  5 Feb 2025 14:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765208;
-	bh=aaLNLNlDXzU4f4bW+4oI1gq7y99xG206/NrvCqVksSc=;
+	s=korg; t=1738765218;
+	bh=N7E8uz50GLPq8F5z97Cot/ksjlHpBMtGk8JRljACN1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR99WjLEv2RZOoo1ha0Aej0w9U8rarPFd4N4+GawEYhiciDNJ0STu+oI55IWHbUab
-	 mcc/R+FZNGZV1oANRmdmuxtrLCTz9gk5B4SN+EF7b+LntUF6ve2JbRYA5EMQH+aXdJ
-	 910EXdXOXZEzuq1LncVjypuhtdckFyooP8Tos/hY=
+	b=w9EKyxeqP2u7CkQ3zmBFjqpxNaRG3DUWnMdwEzzyRBmcVT/eBoQT9I3Rg+L5WXCG3
+	 a1jQ/KFFs/Sy04Uqxv58bPtu7Q3qM/5AEFHpRtBh4TV8Gulsi+r3H80m+AplS4kzCU
+	 xGWMJTusq8q7Wxl54BFvVN31r4r1c3biyEjiFyMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Po-Hao Huang <phhuang@realtek.com>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 156/623] wifi: rtw89: correct header conversion rule for MLO only
-Date: Wed,  5 Feb 2025 14:38:18 +0100
-Message-ID: <20250205134502.205264187@linuxfoundation.org>
+Subject: [PATCH 6.13 157/623] wifi: rtw89: avoid to init mgnt_entry list twice when WoWLAN failed
+Date: Wed,  5 Feb 2025 14:38:19 +0100
+Message-ID: <20250205134502.243004475@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,78 +66,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit b2658bf4d7f2f2e37ae9d2463ecc40618f587834 ]
+[ Upstream commit 2f7667675df1b40b73ecc53b4b8c3189b1e5f2c1 ]
 
-Header conversion should only be used with MLO connections. Otherwise
-P2P connection fails due to wrong probe responses sent. Fix it
-accordingly.
+If WoWLAN failed in resume flow, the rtw89_ops_add_interface() triggered
+without removing the interface first. Then the mgnt_entry list init again,
+causing the list_empty() check in rtw89_chanctx_ops_assign_vif()
+useless, and list_add_tail() again. Therefore, we have added a check to
+prevent double adding of the list.
 
-Fixes: b8499664fca9 ("wifi: rtw89: Add header conversion for MLO connections")
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+rtw89_8852ce 0000:01:00.0: failed to check wow status disabled
+rtw89_8852ce 0000:01:00.0: wow: failed to check disable fw ready
+rtw89_8852ce 0000:01:00.0: wow: failed to swap to normal fw
+rtw89_8852ce 0000:01:00.0: failed to disable wow
+rtw89_8852ce 0000:01:00.0: failed to resume for wow -110
+rtw89_8852ce 0000:01:00.0: MAC has already powered on
+i2c_hid_acpi i2c-ILTK0001:00: PM: acpi_subsys_resume+0x0/0x60 returned 0 after 284705 usecs
+list_add corruption. prev->next should be next (ffff9d9719d82228), but was ffff9d9719f96030. (prev=ffff9d9719f96030).
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:34!
+invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 2 PID: 6918 Comm: kworker/u8:19 Tainted: G     U     O
+Hardware name: Google Anraggar/Anraggar, BIOS Google_Anraggar.15217.514.0 03/25/2024
+Workqueue: events_unbound async_run_entry_fn
+RIP: 0010:__list_add_valid_or_report+0x9f/0xb0
+Code: e8 56 89 ff ff 0f 0b 48 c7 c7 3e fc e0 96 48 89 c6 e8 45 89 ff ...
+RSP: 0018:ffffa51b42bbbaf0 EFLAGS: 00010246
+RAX: 0000000000000075 RBX: ffff9d9719d82ab0 RCX: 13acb86e047a4400
+RDX: 3fffffffffffffff RSI: 0000000000000000 RDI: 00000000ffffdfff
+RBP: ffffa51b42bbbb28 R08: ffffffff9768e250 R09: 0000000000001fff
+R10: ffffffff9765e250 R11: 0000000000005ffd R12: ffff9d9719f95c40
+R13: ffff9d9719f95be8 R14: ffff9d97081bfd78 R15: ffff9d9719d82060
+FS:  0000000000000000(0000) GS:ffff9d9a6fb00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007e7d029a4060 CR3: 0000000345e38000 CR4: 0000000000750ee0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body+0x68/0xb0
+ ? die+0xaa/0xd0
+ ? do_trap+0x9f/0x170
+ ? __list_add_valid_or_report+0x9f/0xb0
+ ? __list_add_valid_or_report+0x9f/0xb0
+ ? handle_invalid_op+0x69/0x90
+ ? __list_add_valid_or_report+0x9f/0xb0
+ ? exc_invalid_op+0x3c/0x50
+ ? asm_exc_invalid_op+0x16/0x20
+ ? __list_add_valid_or_report+0x9f/0xb0
+ rtw89_chanctx_ops_assign_vif+0x1f9/0x210 [rtw89_core cbb375c44bf28564ce479002bff66617a25d9ac1]
+ ? __mutex_unlock_slowpath+0xa0/0xf0
+ rtw89_ops_assign_vif_chanctx+0x4b/0x90 [rtw89_core cbb375c44bf28564ce479002bff66617a25d9ac1]
+ drv_assign_vif_chanctx+0xa7/0x1f0 [mac80211 6efaad16237edaaea0868b132d4f93ecf918a8b6]
+ ieee80211_reconfig+0x9cb/0x17b0 [mac80211 6efaad16237edaaea0868b132d4f93ecf918a8b6]
+ ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+ ? dev_printk_emit+0x51/0x70
+ ? _dev_info+0x6e/0x90
+ wiphy_resume+0x89/0x180 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+ ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 572d03acaaa933fe38251be7fce3b3675284b8ed]
+ dpm_run_callback+0x37/0x1e0
+ device_resume+0x26d/0x4b0
+ ? __pfx_dpm_watchdog_handler+0x10/0x10
+ async_resume+0x1d/0x30
+ async_run_entry_fn+0x29/0xd0
+ worker_thread+0x397/0x970
+ kthread+0xed/0x110
+ ? __pfx_worker_thread+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x38/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+
+Fixes: 68ec751b2881 ("wifi: rtw89: chan: manage active interfaces")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241231004811.8646-4-pkshih@realtek.com
+Link: https://patch.msgid.link/20250103024500.14990-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 9 ++++++++-
- drivers/net/wireless/realtek/rtw89/core.h | 3 +++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index a524c3d06aeb2..4027cda39024c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -931,6 +931,11 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
- 	bool is_bmc;
- 	u16 seq;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 619d2d3771d52..78d846e4667e7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -189,10 +189,10 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
  
-+	if (tx_req->sta)
-+		desc_info->mlo = tx_req->sta->mlo;
-+	else if (tx_req->vif)
-+		desc_info->mlo = ieee80211_vif_is_mld(tx_req->vif);
-+
- 	seq = (le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_SEQ) >> 4;
- 	if (tx_req->tx_type != RTW89_CORE_TX_TYPE_FWCMD) {
- 		tx_type = rtw89_core_get_tx_type(rtwdev, skb);
-@@ -938,7 +943,7 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
+ 	rtw89_core_txq_init(rtwdev, vif->txq);
  
- 		addr_cam = rtw89_get_addr_cam_of(tx_req->rtwvif_link,
- 						 tx_req->rtwsta_link);
--		if (addr_cam->valid)
-+		if (addr_cam->valid && desc_info->mlo)
- 			upd_wlan_hdr = true;
- 	}
- 	is_bmc = (is_broadcast_ether_addr(hdr->addr1) ||
-@@ -1078,6 +1083,8 @@ int rtw89_core_tx_write(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 	}
+-	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
++	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif)) {
+ 		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
+-
+-	INIT_LIST_HEAD(&rtwvif->mgnt_entry);
++		INIT_LIST_HEAD(&rtwvif->mgnt_entry);
++	}
  
- 	tx_req.skb = skb;
-+	tx_req.vif = vif;
-+	tx_req.sta = sta;
- 	tx_req.rtwvif_link = rtwvif_link;
- 	tx_req.rtwsta_link = rtwsta_link;
+ 	ether_addr_copy(rtwvif->mac_addr, vif->addr);
  
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5ad32eacd0d50..41bec362ac229 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -1163,12 +1163,15 @@ struct rtw89_tx_desc_info {
- 	bool stbc;
- 	bool ldpc;
- 	bool upd_wlan_hdr;
-+	bool mlo;
- };
- 
- struct rtw89_core_tx_request {
- 	enum rtw89_core_tx_type tx_type;
- 
- 	struct sk_buff *skb;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_sta *sta;
- 	struct rtw89_vif_link *rtwvif_link;
- 	struct rtw89_sta_link *rtwsta_link;
- 	struct rtw89_tx_desc_info desc_info;
 -- 
 2.39.5
 
