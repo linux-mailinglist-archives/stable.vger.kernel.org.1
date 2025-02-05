@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2675BA28DB2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA52A28E75
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 288B71885F41
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86EB27A3D40
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE85228;
-	Wed,  5 Feb 2025 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266A71494DF;
+	Wed,  5 Feb 2025 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgeTWzzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbA1JmMG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC85CF510;
-	Wed,  5 Feb 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D828E15198D;
+	Wed,  5 Feb 2025 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764213; cv=none; b=kApLJwGyIH1Kz2afXFBvvSSpxV1qzoGVtIR1qQpEkXkc4l+r5iNgtpZwb5EZRxXSNZx7T7/7zQon4cNU6RrNxwCJp+3Noaq6CRqrJ85G819P1FmxB/GPXL1l7bOWBVU6dDiqYNm6z/e37TklgN8I+mVy6OQG1qyuQrRBWoTFcm4=
+	t=1738764781; cv=none; b=nwcQnvfp1d+MB8Xu2+yFabZGPSdI3KInbNVJxStaV0+qYFLxCRuyUiXSzu9WchN8nDRnoyT1ucPFbnliq6xtD5FUY8En2r0+Yo1RfySMJRD6tMHFlXWmT0YCvX0dW3N3onAiEc2dU1WsKhMNM3he59TmiccwNmkiEFLeeeV4k+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764213; c=relaxed/simple;
-	bh=NcPiZSAr/xEVqoEFFG2zoltGPlKbTGkr76Fd+chfIoQ=;
+	s=arc-20240116; t=1738764781; c=relaxed/simple;
+	bh=NFYOXbcZLTQBVEu7fe2cDB/hKkd7YAwL9G+mr7zfgjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+8/M5pWQG0Q+H0B+XloV+qvR3p2J3QTQ//uIHO91pM90yvoH8uVVOTjo6TNRzvx8596B9qZhSHIE7gxa+p8tMTgo0M/voa1/gxhkz+yNm2T0E7K7L/i6NQjlP4RL4Gr3DPG2sMwu0X8ZaqiGGQ9ynFRfJQm3KNx2ykRg2bSl5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgeTWzzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B589C4CED1;
-	Wed,  5 Feb 2025 14:03:33 +0000 (UTC)
+	 MIME-Version; b=PUjRtKybaGfrUROosK2Mo25S9S9oJLVG7Pq+hU2OVpJ2VDPU8DvlgHqesnkwWT5BqkLTgic5el2uRt/FZaHC6x4WZabZIuXkKT5sHkXmAyLTwBbu0/xV4oV5zNY7Qi5Yt6DrOCwaDe/eiqtjeRiGHQe6NUCNKeENzLbBTuvgakA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbA1JmMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7D2C4CED1;
+	Wed,  5 Feb 2025 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764213;
-	bh=NcPiZSAr/xEVqoEFFG2zoltGPlKbTGkr76Fd+chfIoQ=;
+	s=korg; t=1738764781;
+	bh=NFYOXbcZLTQBVEu7fe2cDB/hKkd7YAwL9G+mr7zfgjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgeTWzzn7eVfqmVfNvYghUnY5Vtz2hA1vovi+RO4VVlOm5NTtFdiTIVYsKVQ05Hcv
-	 3mx7MHN71tWV5iUDu19VGqIh/sgNdeYV2I+0GW0NkExd2fddd36zr25AtziR1wFrir
-	 N2hPeo5NGLaJ/CcCF7yx+s+7r7f+829TEEu1Uapg=
+	b=HbA1JmMGS4HpfOSghCduJqVqiqmYx6SIPpaSisz2P14voBY/oiQz+Z58PgvBe+nO/
+	 b/O9Vg4a5Pnlaabm9Dh7oNfp+KvoqUV9p0AI5H6/hA3eTWaTJCITf8ajXsLtLEubGs
+	 FgNJzn+0Si2yj1USVH8aYhzy5Z2yhTW23bWC3AJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/590] wifi: brcmfmac: add missing header include for brcmf_dbg
-Date: Wed,  5 Feb 2025 14:37:34 +0100
-Message-ID: <20250205134459.045186413@linuxfoundation.org>
+Subject: [PATCH 6.13 113/623] ACPI: fan: cleanup resources in the error path of .probe()
+Date: Wed,  5 Feb 2025 14:37:35 +0100
+Message-ID: <20250205134500.539425802@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit b05d30c2b6df7e2172b18bf1baee9b202f9c6b53 ]
+[ Upstream commit c759bc8e9046f9812238f506d70f07d3ea4206d4 ]
 
-Including the fwil.h header file can lead to a build error:
+Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
+error path of acpi_fan_probe() to fix possible memory leak.
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h: \
-	In function ‘brcmf_fil_cmd_int_set’:
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h:90:9: error: implicit \
-	declaration of function ‘brcmf_dbg’ [-Werror=implicit-function-declaration]
-   90 |         brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
-      |         ^~~~~~~~~
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-The error is often avoided because the debug.h header file is included
-before the fwil.h header file.
-
-This makes sure the header include order is irrelevant by explicitly adding the
-debug.h header.
-
-Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241211133618.2014083-1-marcel.hamer@windriver.com
+Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling device")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/fan_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-index 31e080e4da669..ab3d6cfcb02bd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-@@ -6,6 +6,8 @@
- #ifndef _fwil_h_
- #define _fwil_h_
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 3ea9cfcff46e7..10016f52f4f40 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -371,19 +371,25 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ 	result = sysfs_create_link(&pdev->dev.kobj,
+ 				   &cdev->device.kobj,
+ 				   "thermal_cooling");
+-	if (result)
++	if (result) {
+ 		dev_err(&pdev->dev, "Failed to create sysfs link 'thermal_cooling'\n");
++		goto err_unregister;
++	}
  
-+#include "debug.h"
-+
- /*******************************************************************************
-  * Dongle command codes that are interpreted by firmware
-  ******************************************************************************/
+ 	result = sysfs_create_link(&cdev->device.kobj,
+ 				   &pdev->dev.kobj,
+ 				   "device");
+ 	if (result) {
+ 		dev_err(&pdev->dev, "Failed to create sysfs link 'device'\n");
+-		goto err_end;
++		goto err_remove_link;
+ 	}
+ 
+ 	return 0;
+ 
++err_remove_link:
++	sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
++err_unregister:
++	thermal_cooling_device_unregister(cdev);
+ err_end:
+ 	if (fan->acpi4)
+ 		acpi_fan_delete_attributes(device);
 -- 
 2.39.5
 
