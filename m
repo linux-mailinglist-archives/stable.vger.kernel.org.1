@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0D9A28F2A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFE4A29005
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0750318878B2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5207418849F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BCD14B959;
-	Wed,  5 Feb 2025 14:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2B114386D;
+	Wed,  5 Feb 2025 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz9G5G89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u96n1O35"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B013C3F6;
-	Wed,  5 Feb 2025 14:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062EA487BF;
+	Wed,  5 Feb 2025 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765292; cv=none; b=Xyc4zZgr4VtLpvC/1dVSkb8plgpoXCXlAqwuYtGBXlThdivbDhtjjnQnCaWy91zwmCk0ZnvQju1QFvkZgzCLSsXaPAI+JSegsWcRaOtJ9xFqYlSmWB6Uqun3ZN4jE5jnQSUzyMd5rAzKMWMh0DX6FCUwl3UyQrsbReVhkqsfdDs=
+	t=1738765868; cv=none; b=ERwEtaeZ9KnPDsk6dHXWkke1urNtr+hbL3ptGp5TAFSZX4U6vATmVaA/rfY5huXex8HHlZ7nkTDGoAcb8nwL9e9Crgk3OW24240g6ldXraW/FScPVsWEzHJndYpipbRQzpgHM3WXWuuCgqDYWpJwNbgednpOCiAISmnbzq3yNew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765292; c=relaxed/simple;
-	bh=uTcUEpavy1zIxTev0jdxOtP4YV9IhH/GRpb1xmow/uk=;
+	s=arc-20240116; t=1738765868; c=relaxed/simple;
+	bh=sTm9wj9hSgp8Jr9fXynMiH1lsJZJELhuIaBYv7xa/oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwXOhz4aY8ZY/9kEg1VDb54Sz4BfnfEA4GiHG8UKMj7eEuGFGBsccFrMWVxvY5yAA3y7fLGqXsEDimAmhsgAfy9rKCuTkJ2lre7gK/1T91KtH/EfM147wdxukAp3QAKRd0RqbWASU4z1WXtCawuuwAQC0qM7zjJkGBR+SU7lC70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz9G5G89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815B1C4CED1;
-	Wed,  5 Feb 2025 14:21:31 +0000 (UTC)
+	 MIME-Version; b=YGU4Yozp5ioW1Q1ucumBK3QpY6bgihSaEqlY2H8yRyNRIFPBcNvyOHIBNvmqXD3NPQcX2UbDQ5qbWdK2P8j/+5sLNDp+0kEsuor52BDON4pEhZXcWUCI6uKaPsDhk1iceeNhFT5wgtL0cuTb5jGEvLXkL18hs+0epuw/eYMPqh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u96n1O35; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6956CC4CED1;
+	Wed,  5 Feb 2025 14:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765292;
-	bh=uTcUEpavy1zIxTev0jdxOtP4YV9IhH/GRpb1xmow/uk=;
+	s=korg; t=1738765867;
+	bh=sTm9wj9hSgp8Jr9fXynMiH1lsJZJELhuIaBYv7xa/oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xz9G5G89f1qzTiCNcUyeb8RbFxlCONgPHa39GkVC/ZKVS8Lx3fI/HMlvbjM+LGHvR
-	 atwxmhnlX9DXs/hGt7S+dMEW424fmVq1Ao9fShLB5wj1kFn5lreV7fNGJteACrjE8U
-	 tqY6qEDJjchOslAQlXMbBQfRNNZvLNVV8LZ0nmQE=
+	b=u96n1O35tbkU7tMRrGEG1BpzoOtedUfkb3lvVE1uigvswfPpU0okFgVw7J3BrUMgj
+	 /hVhzPynj69tihHul/CKPno27xE//SOQeC/gEyoJ5JOSIhrxA4NRX8Qda6aYnDYbZm
+	 gwDEYpE9mZoksawGqZrIYzGOfpms5ZnZzwyz5woE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Charles Han <hanchunchao@inspur.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 207/590] wifi: mt76: mt7996: fix definition of tx descriptor
-Date: Wed,  5 Feb 2025 14:39:22 +0100
-Message-ID: <20250205134503.202625937@linuxfoundation.org>
+Subject: [PATCH 6.13 221/623] Bluetooth: btbcm: Fix NULL deref in btbcm_get_board_name()
+Date: Wed,  5 Feb 2025 14:39:23 +0100
+Message-ID: <20250205134504.679963521@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 14749fe2ed360c92c1a2a76dac0b77f759234981 ]
+[ Upstream commit b88655bc6593c6a7fdc1248b212d17e581c4334e ]
 
-For mt7992 chipsets, the definition of TXD.DW6.BIT10~15 has different
-interpretations on different frame types. Driver only needs to fill
-MSDU_CNT for non-management frames.
+devm_kstrdup() can return a NULL pointer on failure,but this
+returned value in btbcm_get_board_name() is not checked.
+Add NULL check in btbcm_get_board_name(), to handle kernel NULL
+pointer dereference error.
 
-Fixes: 408566db8cad ("wifi: mt76: connac: add new definition of tx descriptor")
-Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20250114101026.3587702-6-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: f9183eaad915 ("Bluetooth: btbcm: Use devm_kstrdup()")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btbcm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 0d21414e2c884..f590902fdeea3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -819,6 +819,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct ieee80211_key_conf *key, int pid,
- 			   enum mt76_txq_id qid, u32 changed)
- {
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_vif *vif = info->control.vif;
- 	u8 band_idx = (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
-@@ -886,8 +887,9 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 	val = MT_TXD6_DIS_MAT | MT_TXD6_DAS;
- 	if (is_mt7996(&dev->mt76))
- 		val |= FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
--	else
-+	else if (is_8023 || !ieee80211_is_mgmt(hdr->frame_control))
- 		val |= FIELD_PREP(MT_TXD6_MSDU_CNT_V2, 1);
+diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
+index a1153ada74d20..0a60660fc8ce8 100644
+--- a/drivers/bluetooth/btbcm.c
++++ b/drivers/bluetooth/btbcm.c
+@@ -553,6 +553,9 @@ static const char *btbcm_get_board_name(struct device *dev)
+ 
+ 	/* get rid of any '/' in the compatible string */
+ 	board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++	if (!board_type)
++		return NULL;
 +
- 	txwi[6] = cpu_to_le32(val);
- 	txwi[7] = 0;
+ 	strreplace(board_type, '/', '-');
  
-@@ -897,7 +899,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 		mt7996_mac_write_txwi_80211(dev, txwi, skb, key);
- 
- 	if (txwi[1] & cpu_to_le32(MT_TXD1_FIXED_RATE)) {
--		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 		bool mcast = ieee80211_is_data(hdr->frame_control) &&
- 			     is_multicast_ether_addr(hdr->addr1);
- 		u8 idx = MT7996_BASIC_RATES_TBL;
+ 	return board_type;
 -- 
 2.39.5
 
