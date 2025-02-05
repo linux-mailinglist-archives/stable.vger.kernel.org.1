@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8D9A28F0A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C053CA29338
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 522401889EFE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6304E166482
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6D9155CB3;
-	Wed,  5 Feb 2025 14:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24C81D7E31;
+	Wed,  5 Feb 2025 15:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1+apFlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zq8cV7pJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7B3155A30;
-	Wed,  5 Feb 2025 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE8A1607B7;
+	Wed,  5 Feb 2025 15:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765194; cv=none; b=qWC4b3BZ3HwetBvdYrnbgbRk4DEiTvcdIM8nWaKXp2zobV3dW5mQtTL/tUhx2thwPjDWq0Ub7ivvOcNVG+Wc5WrEgNPzI6+ZyZp8Otjy7UhwutVkM9JVkfYUUPR9RwP+Sj3nXLSmmch0cjbcVBcQIutfPqKEnxEmJ45uXv9Q9jo=
+	t=1738767673; cv=none; b=WHN9zZXJD5waojQu8QukqxudJfC6RxjNYiUXHebF/EPSgnlvpEe6CMOYydEkAnd6vjztilWPJpEf6gUTJoJd8rvpst7xrUs3n7dfNtYFbxgl1sVkwJPF/bUS5dmZzXweg9QItWlwWAdxxbTRSOA9Vk4hLJEGBijiUbgaCMgE/vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765194; c=relaxed/simple;
-	bh=vcuTVuNfjUZWTRIOtUNd8hU9Q7BIX21YrIFfkkC0PDM=;
+	s=arc-20240116; t=1738767673; c=relaxed/simple;
+	bh=8ZGHpF678Ild9F7KlfnLRlo4RP8DYH1cOBSH7VvW9ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJ2z6K1HfLz1c50Kr/iwRbbeBz+mYzMY6K+2AaJEBCTBdSY80MSIAxph6U8KVTvanSSWtAKRsmUtDwOLAczjMQc4S9EdohmtJCoLEbjnv9n+SP6bPaPDU6aUpjAMekJIWwrHUPORyBiLFY5a5mp0Y1AxTljVh29yQkIqKrp7Lws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1+apFlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C260C4CED6;
-	Wed,  5 Feb 2025 14:19:54 +0000 (UTC)
+	 MIME-Version; b=eouvKi2hbpEYWEHLiF5L1+g0WTI8z+OtVEF9lwb0TQ46kWKjPvapzVwqSQhH5w0dwMrJB9D+gOITW5bZ3X6Kiulv9kv71Rtq+ImHFwCvzw8LWKcLf6cgHNdf1ia1fQhZkSNdM/KGYGOkJMCfVEaC3iTtGIRvSEA6dLsf6jYXHxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zq8cV7pJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B13C4CED1;
+	Wed,  5 Feb 2025 15:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765194;
-	bh=vcuTVuNfjUZWTRIOtUNd8hU9Q7BIX21YrIFfkkC0PDM=;
+	s=korg; t=1738767673;
+	bh=8ZGHpF678Ild9F7KlfnLRlo4RP8DYH1cOBSH7VvW9ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1+apFlgzFrhoI0HaGdJycLCkMbIF5FE2Tmrv6p1dUo3Yp4dlX4aJHETgDbKRuET5
-	 40KGjQm1s3sZch5yXpcwZGU9W9NCNaIb/VJMfMGxNih0gkA4jOIfPbtkyoCRDbR+l9
-	 g9iCbe0/kbHehhCTdekgZ2SSDjkE7Hs82oqRCspg=
+	b=Zq8cV7pJwu85yyuqD2jyjdZx8G49YZ7gVhH4pQil4HYle5K5so2tmmtbL0sxqJ/uT
+	 oDtg4WrVGRFZOZ7rpnQi77rAKeFIL7cOEPOcIQ87/cUeusyNWlYjwmc5+kQSvr4xBB
+	 5+2jmLHBhlfm7SZpKi5qPQOw8pRS/nbr8RpzOa20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/393] arm64: dts: qcom: sdx75: correct sleep clock frequency
+Subject: [PATCH 6.13 419/623] arm64: dts: marvell: cn9131-cf-solidwan: fix cp1 comphy links
 Date: Wed,  5 Feb 2025 14:42:41 +0100
-Message-ID: <20250205134429.564392408@linuxfoundation.org>
+Message-ID: <20250205134512.255916865@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit b8021da9ddc65fa041e12ea1e0ff2dfce5c926eb ]
+[ Upstream commit 09cdb973afa7a18ce8e66807daff94609cc4b8a4 ]
 
-The SDX75 platform uses PMK8550 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+Marvell CN913x platforms use common phy framework for configuring and
+linking serdes lanes according to their usage.
+Each CP (X) features 5 serdes lanes (Y) represented by cpX_comphyY
+nodes.
 
-Fixes: 9181bb939984 ("arm64: dts: qcom: Add SDX75 platform and IDP board support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-9-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+CN9131 SolidWAN uses CP1 serdes lanes 3 and 5 for eth1 and eth2 of CP1
+respectively. Devicetree however wrongly links from these ports to the
+comphy of CP0.
+
+Replace the wrong links to cp0_comphy with cp1_comphy inside cp1_eth1,
+cp1_eth2.
+
+Fixes: 1280840d2030 ("arm64: dts: add description for solidrun cn9131 solidwan board")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdx75.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdx75.dtsi b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-index e180aa4023eca..0d1b5712c5067 100644
---- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-@@ -29,7 +29,7 @@
+diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+index b1ea7dcaed17d..47234d0858dd2 100644
+--- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
++++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+@@ -435,7 +435,7 @@
+ 	managed = "in-band-status";
+ 	phy-mode = "sgmii";
+ 	phy = <&cp1_phy0>;
+-	phys = <&cp0_comphy3 1>;
++	phys = <&cp1_comphy3 1>;
+ 	status = "okay";
+ };
  
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
+@@ -444,7 +444,7 @@
+ 	managed = "in-band-status";
+ 	phy-mode = "sgmii";
+ 	phy = <&cp1_phy1>;
+-	phys = <&cp0_comphy5 2>;
++	phys = <&cp1_comphy5 2>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.39.5
 
