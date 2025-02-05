@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98535A29040
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6323A28F77
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 798B4169510
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DE83AA47B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D557915696E;
-	Wed,  5 Feb 2025 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCE2155CB3;
+	Wed,  5 Feb 2025 14:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saEuWwmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF0Zr/oQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7658634E;
-	Wed,  5 Feb 2025 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CF61459F6;
+	Wed,  5 Feb 2025 14:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765980; cv=none; b=AsM0voSiEaorkDZ1+hDue90KmmtIV/jmFQo0RfG7KI43TB+PYO6D7tgMBEeOZSSkXB/ypAlxBmTQ7oXd0P6gJeUHfUwRZtZybk5Q6MUZesipi+2fanqQtVXg/UwtCzOAop5bqgirubP+7YBBhrli7sZil8FeCF3WN6tZQYhdufU=
+	t=1738765418; cv=none; b=bx4kq+2HH8RcdwT30YrkMflLJeWCqXSmpvrYQvEPuMPsZBgC+KIZI5lj+U+iM0RAvliOT2Ki3yBTmH0JiRTwgpbN7BqmZSv/vaS1t/14rBJF4GQmFBxfK4c0+7hc8zJACXpYj5YjUIRhzoQSjSMDnxPWqg/mDd46uVXIs7Syglk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765980; c=relaxed/simple;
-	bh=IJPAZNs/6yFg6UhXJKOq2+9Dl3gaiNiDKrnrxSgAHso=;
+	s=arc-20240116; t=1738765418; c=relaxed/simple;
+	bh=2rFq29rEC3XCQWnz8sgDxgL5vhzLwWNjFM6qvdFlJeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vAs/suvuc5A6gvnSaJB/UUQrX/UGHW0uG2SSXqkoaAnVv18qd27VrNiQNejWwanCsGa/Vzc4LQppi2/3BvLCByUQpiD7WKjgEPtapHaopb6dTUR4eUILL782qnQCzg1sjDRyvw1THy8IirGwtSilhc5/kE3sOhuDiwbRFEMiwz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saEuWwmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893D7C4CED1;
-	Wed,  5 Feb 2025 14:32:59 +0000 (UTC)
+	 MIME-Version; b=Okz7v/dHuAsosP4/x58eRQ/Jh5oWvV0pjegxJ7TVkALTfoVO6CO2bUd1mc/WC0CYsYFMDT/LYp3jOf+6gX9HgOkVD0VLx1cKMV+kPbiKFZsqOtrQnQgiykVueuBblKPK3eXx0ReR69u0k+Ksmh29IyvaNqOjd/dFSuxRrwtzy+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF0Zr/oQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AFFC4CED1;
+	Wed,  5 Feb 2025 14:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765980;
-	bh=IJPAZNs/6yFg6UhXJKOq2+9Dl3gaiNiDKrnrxSgAHso=;
+	s=korg; t=1738765418;
+	bh=2rFq29rEC3XCQWnz8sgDxgL5vhzLwWNjFM6qvdFlJeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saEuWwmV1ykX3GgKdGKVxjCkw7OxLrNsM9oc5jN0qUBBg4JxFz+5tHqKIfzQ2J/sp
-	 n0KZHEJKJH8UqZcbSZENEQi7Q1G4Yjoyi7MDcX1EeM2gIvLstOOrbxvu71IzuU4Fg9
-	 J8jWc5MBpmrF1yk+/q7iiPLLpGMbnTpjbvyVcOBU=
+	b=SF0Zr/oQ44M7xyaaOq6gqub1XObMm5O5ItWlrLrEbicQnrVAVuyYORy5qCaMIwgxU
+	 tLGC2hoI6JUwhC5rRzQTrOJ85XyfQ1XvE6MI77vDJ1Aq2pMZZHiUHnnP8MlEFrMqQL
+	 e7eRU/UIIpFSg9hj52NI/Eyi6MwlDYTFQcEhylP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tahera Fahimi <fahimitahera@gmail.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 231/623] selftests/landlock: Fix build with non-default pthread linking
+Subject: [PATCH 6.12 218/590] dev: Acquire netdev_rename_lock before restoring dev->name in dev_change_name().
 Date: Wed,  5 Feb 2025 14:39:33 +0100
-Message-ID: <20250205134505.063302935@linuxfoundation.org>
+Message-ID: <20250205134503.626800757@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 0e4db4f843c2c0115b5981bd6f6b75dea62e7d60 ]
+[ Upstream commit e361560a7912958ba3059f51e7dd21612d119169 ]
 
-Old toolchains require explicit -lpthread (e.g. on Debian 11).
+The cited commit forgot to add netdev_rename_lock in one of the
+error paths in dev_change_name().
 
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tahera Fahimi <fahimitahera@gmail.com>
-Fixes: c8994965013e ("selftests/landlock: Test signal scoping for threads")
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20250115145409.312226-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Let's hold netdev_rename_lock before restoring the old dev->name.
+
+Fixes: 0840556e5a3a ("net: Protect dev->name by seqlock.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250115095545.52709-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/landlock/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/landlock/Makefile b/tools/testing/selftests/landlock/Makefile
-index 348e2dbdb4e0b..480f13e77fcc4 100644
---- a/tools/testing/selftests/landlock/Makefile
-+++ b/tools/testing/selftests/landlock/Makefile
-@@ -13,11 +13,11 @@ TEST_GEN_PROGS := $(src_test:.c=)
- TEST_GEN_PROGS_EXTENDED := true
- 
- # Short targets:
--$(TEST_GEN_PROGS): LDLIBS += -lcap
-+$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
- $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
- 
- include ../lib.mk
- 
- # Targets with $(OUTPUT)/ prefix:
--$(TEST_GEN_PROGS): LDLIBS += -lcap
-+$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
- $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1867a6a8d76da..9bdb8fe5ffaa5 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1279,7 +1279,9 @@ int dev_change_name(struct net_device *dev, const char *newname)
+ rollback:
+ 	ret = device_rename(&dev->dev, dev->name);
+ 	if (ret) {
++		write_seqlock_bh(&netdev_rename_lock);
+ 		memcpy(dev->name, oldname, IFNAMSIZ);
++		write_sequnlock_bh(&netdev_rename_lock);
+ 		WRITE_ONCE(dev->name_assign_type, old_assign_type);
+ 		up_write(&devnet_rename_sem);
+ 		return ret;
 -- 
 2.39.5
 
