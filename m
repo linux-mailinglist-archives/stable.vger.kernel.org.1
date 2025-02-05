@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECE3A292C6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A519A29102
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:43:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A707A2361
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4142D1886FB3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA6E156225;
-	Wed,  5 Feb 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC874192598;
+	Wed,  5 Feb 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec2zYekV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KMrCQYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AC3DF59;
-	Wed,  5 Feb 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4481922C4;
+	Wed,  5 Feb 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767915; cv=none; b=Ccbv2maWvL1UMPJG1xUKkWrUN1zvf2xta0OgTt/JKCuM17w6JIa+XsC2R/4ALl90wVpE/0pLww0qX34fCqb+DKDMuuH0ATP1imD7qdtR3hPaQkPp61VuuwsD+lrpTlc5Y0cmQKcSz96uGNUsJkVMGrcc8/k+5syvtBJLMUquEZE=
+	t=1738766466; cv=none; b=JTlsrr6mlTgvI/Zsqlm4toVpIv81FksRcA+bCvIFmrvipfzid6yk/pjjgxlxDMuLe3G8zJ7hMIcp5aUhAX6uT8rvpeBYreTkgFtui8q1vc8S6w7HFPHhUjucVj26fIe1TswkYSCZiytS/W7burTmTL26DSVhpdW2LjOtueJsxGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767915; c=relaxed/simple;
-	bh=8jfAjbbVl2F7Rw0gP+vHU0I888uTjIT46dCcVRHRD28=;
+	s=arc-20240116; t=1738766466; c=relaxed/simple;
+	bh=+HEAaJF8Vfn0JysQdJusarpQaXO7hTReiidKIIHz9pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwltjMN3F6+ANxs78MmePO+qnUDVSzhgKz6A8GEZqiK2P9bwnXbPSZdL9iHTgvFH+lvfYfhR8L1H1yke6MuLOvhUEB7PwE65kejNTTSjlfZFAg2RUsK1ZKbYtI26AHa+kV6b32aGDhcOq3JSk1ADm+Cl+GbjevQKkSIWfRS0Kuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec2zYekV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CECFC4CED1;
-	Wed,  5 Feb 2025 15:05:14 +0000 (UTC)
+	 MIME-Version; b=UUNhvSBqkrHJfYs4/r5qfQkTevvBEmwWEyKqNeUveKsE+VKp5LGe0DGmB2RRZz3Cv48ViseJmXrXWxh9sEzkkfx1FoVNg5ROcSpO9vlAc+x3Xw2kpCZp0PkqbCHuwn1BwkvVjmgE0zId6CNQK6afFSzisbPcB6k8pBE9xhCJv9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KMrCQYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79C7C4CED1;
+	Wed,  5 Feb 2025 14:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767915;
-	bh=8jfAjbbVl2F7Rw0gP+vHU0I888uTjIT46dCcVRHRD28=;
+	s=korg; t=1738766466;
+	bh=+HEAaJF8Vfn0JysQdJusarpQaXO7hTReiidKIIHz9pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ec2zYekVIHZVqA+9NwRuavk9d7LfNwJQaDjD9REGEIWjTnyWnhNBDgKQfyaWDpA/O
-	 7Jn/KomtTl/pndIkJSMStDyIlhyRhRWApoK59EW/AAvL8jhQBvTb/onolsXapld+S8
-	 d9S4x2OdazZSv+Zk6btvdGP2GyeiQvy4jJP0BgJ8=
+	b=2KMrCQYl8DlxkfvevgMoK3qJ/Gtf3vXiZter9WChzpsxbxmy3cB7r7sRvRuCowkxD
+	 +Y+ZxzuIVbUaxl+q8L13r5Kz+SAdAJ/3dzH1Lx4aW9nisTvQqSfZOJBgxp8cTRs7W2
+	 kjZAz+oxCOL1ye+W9raw//h29Yr5U8l79U1q2Sc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <len.brown@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Brian Cain <bcain@quicinc.com>,
+	Brian Cain <brian.cain@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 529/590] tools/power turbostat: Fix forked child affinity regression
+Subject: [PATCH 6.6 365/393] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
 Date: Wed,  5 Feb 2025 14:44:44 +0100
-Message-ID: <20250205134515.506246531@linuxfoundation.org>
+Message-ID: <20250205134434.264582788@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit b32c36975da48afc9089f8b61f7b2dcc40e479d2 ]
+[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
 
-In "one-shot" mode, turbostat
-1. takes a counter snapshot
-2. forks and waits for a child
-3. takes the end counter snapshot and prints the result.
+Sparse reports
 
-But turbostat counter snapshots currently use affinity to travel
-around the system so that counter reads are "local", and this
-affinity must be cleared between #1 and #2 above.
+    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
 
-The offending commit removed that reset that allowed the child
-to run on cpu_present_set.
+Due to this code calling cmpxchg on a non-integer type
+struct inet_diag_handler *
 
-Fix that issue, and improve upon the original by using
-cpu_possible_set for the child.  This allows the child
-to also run on CPUs that hotplug online during its runtime.
+    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
+                    NULL, h) ? 0 : -EEXIST;
 
-Reported-by: Zhang Rui <rui.zhang@intel.com>
-Fixes: 7bb3fe27ad4f ("tools/power/turbostat: Obey allowed CPUs during startup")
-Signed-off-by: Len Brown <len.brown@intel.com>
+While hexagon's cmpxchg assigns an integer value to a variable of this
+type.
+
+    __typeof__(*(ptr)) __oldval = 0;
+
+Update this assignment to cast 0 to the correct type.
+
+The original issue is easily reproduced at head with the below block,
+and is absent after this change.
+
+    make LLVM=1 ARCH=hexagon defconfig
+    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
+
+Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 54 ++++++++++++++++++++++++++-
- 1 file changed, 52 insertions(+), 2 deletions(-)
+ arch/hexagon/include/asm/cmpxchg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index da97f4327650b..235e82fe7d0a5 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1087,8 +1087,8 @@ int backwards_count;
- char *progname;
- 
- #define CPU_SUBSET_MAXCPUS	1024	/* need to use before probe... */
--cpu_set_t *cpu_present_set, *cpu_effective_set, *cpu_allowed_set, *cpu_affinity_set, *cpu_subset;
--size_t cpu_present_setsize, cpu_effective_setsize, cpu_allowed_setsize, cpu_affinity_setsize, cpu_subset_size;
-+cpu_set_t *cpu_present_set, *cpu_possible_set, *cpu_effective_set, *cpu_allowed_set, *cpu_affinity_set, *cpu_subset;
-+size_t cpu_present_setsize, cpu_possible_setsize, cpu_effective_setsize, cpu_allowed_setsize, cpu_affinity_setsize, cpu_subset_size;
- #define MAX_ADDED_THREAD_COUNTERS 24
- #define MAX_ADDED_CORE_COUNTERS 8
- #define MAX_ADDED_PACKAGE_COUNTERS 16
-@@ -8223,6 +8223,33 @@ int dir_filter(const struct dirent *dirp)
- 		return 0;
- }
- 
-+char *possible_file = "/sys/devices/system/cpu/possible";
-+char possible_buf[1024];
-+
-+int initialize_cpu_possible_set(void)
-+{
-+	FILE *fp;
-+
-+	fp = fopen(possible_file, "r");
-+	if (!fp) {
-+		warn("open %s", possible_file);
-+		return -1;
-+	}
-+	if (fread(possible_buf, sizeof(char), 1024, fp) == 0) {
-+		warn("read %s", possible_file);
-+		goto err;
-+	}
-+	if (parse_cpu_str(possible_buf, cpu_possible_set, cpu_possible_setsize)) {
-+		warnx("%s: cpu str malformat %s\n", possible_file, cpu_effective_str);
-+		goto err;
-+	}
-+	return 0;
-+
-+err:
-+	fclose(fp);
-+	return -1;
-+}
-+
- void topology_probe(bool startup)
- {
- 	int i;
-@@ -8254,6 +8281,16 @@ void topology_probe(bool startup)
- 	CPU_ZERO_S(cpu_present_setsize, cpu_present_set);
- 	for_all_proc_cpus(mark_cpu_present);
- 
-+	/*
-+	 * Allocate and initialize cpu_possible_set
-+	 */
-+	cpu_possible_set = CPU_ALLOC((topo.max_cpu_num + 1));
-+	if (cpu_possible_set == NULL)
-+		err(3, "CPU_ALLOC");
-+	cpu_possible_setsize = CPU_ALLOC_SIZE((topo.max_cpu_num + 1));
-+	CPU_ZERO_S(cpu_possible_setsize, cpu_possible_set);
-+	initialize_cpu_possible_set();
-+
- 	/*
- 	 * Allocate and initialize cpu_effective_set
- 	 */
-@@ -9094,6 +9131,18 @@ void turbostat_init()
- 	}
- }
- 
-+void affinitize_child(void)
-+{
-+	/* Prefer cpu_possible_set, if available */
-+	if (sched_setaffinity(0, cpu_possible_setsize, cpu_possible_set)) {
-+		warn("sched_setaffinity cpu_possible_set");
-+
-+		/* Otherwise, allow child to run on same cpu set as turbostat */
-+		if (sched_setaffinity(0, cpu_allowed_setsize, cpu_allowed_set))
-+			warn("sched_setaffinity cpu_allowed_set");
-+	}
-+}
-+
- int fork_it(char **argv)
- {
- 	pid_t child_pid;
-@@ -9109,6 +9158,7 @@ int fork_it(char **argv)
- 	child_pid = fork();
- 	if (!child_pid) {
- 		/* child */
-+		affinitize_child();
- 		execvp(argv[0], argv);
- 		err(errno, "exec %s", argv[0]);
- 	} else {
+diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
+index bf6cf5579cf45..9c58fb81f7fd6 100644
+--- a/arch/hexagon/include/asm/cmpxchg.h
++++ b/arch/hexagon/include/asm/cmpxchg.h
+@@ -56,7 +56,7 @@ __arch_xchg(unsigned long x, volatile void *ptr, int size)
+ 	__typeof__(ptr) __ptr = (ptr);				\
+ 	__typeof__(*(ptr)) __old = (old);			\
+ 	__typeof__(*(ptr)) __new = (new);			\
+-	__typeof__(*(ptr)) __oldval = 0;			\
++	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
+ 								\
+ 	asm volatile(						\
+ 		"1:	%0 = memw_locked(%1);\n"		\
 -- 
 2.39.5
 
