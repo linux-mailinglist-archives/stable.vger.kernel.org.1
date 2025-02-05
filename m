@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D12BA28ECE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5C7A28F6F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63CC167B20
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4241606AD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74261519AA;
-	Wed,  5 Feb 2025 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FED1553AB;
+	Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0awEUyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVSQe7er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53104A28;
-	Wed,  5 Feb 2025 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD451459F6;
+	Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765040; cv=none; b=CRH+sXlGSVEMkp0PjFUcMJYoDJmEoVFwePvjNS87NX+wQq7Z4fZpvViY21v7YHhMVOU9pW/fgIfZdba6ZVwkOe0zLGO3WGzl+GSMYrgEp3/E38Tyve5f3P87Mn0MDPr6JY3+11PDvOOBrosTB74K19nf9uCPoXq6oMN1UVResN4=
+	t=1738765518; cv=none; b=V+MYXmP49DWk7XO5peiNS3FECyi10KFHN7scJd5x6FR5xgHQU80quHGIwfYooRwcOQ2rMp7hqm8eoWIpZ+NQsqJFikR72pcEtjZDJUI+j/XVt8ciKId/J30XYVHv/oW88KtHyVovhn3Qlp+ZriuOKycoqjmKE9t4tm1rw3WYkkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765040; c=relaxed/simple;
-	bh=rT27cQsUM7HPKpNBibBzT9knr4hUwfFG7ckCDL/nrso=;
+	s=arc-20240116; t=1738765518; c=relaxed/simple;
+	bh=QdvqxqjowOnyStB6Qhb9JeTy9pFEh4JZ3D8g/Wrz/wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JAAvWClR82XSr3gqygX/l3bILrMiW6u/aZ+Ghewfz3Dcs3LRk25XNK+Q86B7sq9qmyIrian4D7M5Sgcoba1XEyWSsfDovj+zwSx0FRjWNxTOI7LaoidLqBMUAF5ga8+kX1xy8I5GfV+hV9oCv2veZ9JWWisAB3RhBMyUCdGeHvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0awEUyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD9CC4CED1;
-	Wed,  5 Feb 2025 14:17:19 +0000 (UTC)
+	 MIME-Version; b=RPMtWcshwlxNPcQtGn4+9Saj+l4XF0lUi3ZhryJbAvKdi1rh5RJ1j7AWqQ5LtKmxdLOLCZRTqvhuk5yLWrE01tx62BF2Jo3SZK5Psylrh5tMMoecLc5ipkeusE5wbDtJRC5KlBWXGcfkjNFxOoZfx3b+6sdyKLEXJh+Qj5aeZcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVSQe7er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2097C4CED1;
+	Wed,  5 Feb 2025 14:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765040;
-	bh=rT27cQsUM7HPKpNBibBzT9knr4hUwfFG7ckCDL/nrso=;
+	s=korg; t=1738765518;
+	bh=QdvqxqjowOnyStB6Qhb9JeTy9pFEh4JZ3D8g/Wrz/wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0awEUyQgUsDSRObrRPYvif4STWvsq6GLhQBR5AYdUWCXuE7J9hH64H+nmik6o/Fd
-	 30qpUQwDP/yt9j3VA4QWo5dkdSOf6H+MhUG8ciOI0hlMN+0lLgxtmAqn5rhMqae2sO
-	 ce5JXjjAKgrLU5tQNrm9BRlVt/B9L9F/1eU4bYCQ=
+	b=wVSQe7erpJ/jJLpBX8FW7GwgCdajEel3T0oQF8rsjs2K8CHn7dAPZMiA1i+muHAZC
+	 lloCl7BszK1dR9lLOqd27t5XZzWpYL/B9q+xtBautQsuks51NXyjZOYtRRbfT/UWM2
+	 u1sWo/qiWBiYrZuZoC3dJ/Eu7z3aVOhDsm7SJeg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Rao <raoxu@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
+	xueqin Luo <luoxueqin@kylinos.cn>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/590] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
+Subject: [PATCH 6.13 185/623] wifi: mt76: mt7996: fix overflows seen when writing limit attributes
 Date: Wed,  5 Feb 2025 14:38:47 +0100
-Message-ID: <20250205134501.863214016@linuxfoundation.org>
+Message-ID: <20250205134503.314657014@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-[ Upstream commit f1b1e133a770fcdbd89551651232b034d2f7a27a ]
+[ Upstream commit 5adbc8ce5bbe7e311e2600b7d7d998a958873e98 ]
 
-When initializing the network card, unplugging the device will
-trigger an -EPROTO error, resulting in a flood of error messages
-being printed frantically.
+DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
+number such as 18446744073709551615 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+This commit was inspired by commit: 57ee12b6c514.
 
-The exception is printed as follows：
-
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         ...
-
-It will continue to print more than 2000 times for about 5 minutes,
-causing the usb device to be unable to be disconnected. During this
-period, the usb port cannot recognize the new device because the old
-device has not disconnected.
-
-There may be other operating methods that cause -EPROTO, but -EPROTO is
-a low-level hardware error. It is unwise to repeat vendor requests
-expecting to read correct data. It is a better choice to treat -EPROTO
-and -ENODEV the same way.
-
-Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
-EPROTO properly") do no schedule rx_worker for urb marked with status
-set  -EPROTO. I also reproduced this situation when plugging and
-unplugging the device, and this patch is effective.
-
-Just do not vendor request again for urb marked with status set -EPROTO.
-
-Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
-Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
-Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
-Co-developed-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://patch.msgid.link/9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com
+Fixes: 6879b2e94172 ("wifi: mt76: mt7996: add thermal sensor device support")
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://patch.msgid.link/20241202031917.23741-2-luoxueqin@kylinos.cn
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 58ff068233894..f9e67b8c3b3c8 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index efa7b0697a406..d5f53abc4dcb4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -82,7 +82,7 @@ static ssize_t mt7996_thermal_temp_store(struct device *dev,
+ 		return ret;
  
- 		ret = usb_control_msg(udev, pipe, req, req_type, val,
- 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV || ret == -EPROTO)
- 			set_bit(MT76_REMOVED, &dev->phy.state);
--		if (ret >= 0 || ret == -ENODEV)
-+		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
- 			return ret;
- 		usleep_range(5000, 10000);
- 	}
+ 	mutex_lock(&phy->dev->mt76.mutex);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 40, 130);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 40 * 1000, 130 * 1000), 1000);
+ 
+ 	/* add a safety margin ~10 */
+ 	if ((i - 1 == MT7996_CRIT_TEMP_IDX &&
 -- 
 2.39.5
 
