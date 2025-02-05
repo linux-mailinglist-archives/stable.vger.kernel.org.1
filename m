@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498C9A28F83
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE25A28C89
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83A117A0766
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5930C3A2CC1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41001155335;
-	Wed,  5 Feb 2025 14:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327DD1442F3;
+	Wed,  5 Feb 2025 13:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/h4Th5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nS7qaUXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D008634E;
-	Wed,  5 Feb 2025 14:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B2113AD22;
+	Wed,  5 Feb 2025 13:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765568; cv=none; b=ISouSmO9OsFKWvN2HsmIz55eTC3BRR6IbtLb645k42pU9NKC9b8+nv0kTmVYzJbRT45zTgocIdlCFUfW5glBOh19bsgBm/iow5I1yMEMxWFw+91ibASSxnQj1mga7xk+31bbD8jWM5xfY/pBA8ZDXa2YvE9T+VWfTvAOOCf8jjw=
+	t=1738763453; cv=none; b=Ta6mMr4+9c/LbQl2WnPU0/gCxhPnQQENSzdDo8aN7JXC0sbRPCvOkh598cLRJj+cIkDj0R0IdoXtMamDpmlUFABbyNW6NZV7qgTyX4nrmgSFbfsFA7E5gytohHmHHqUSXVh0ae63PUVUnRSGTTUqCyO8JB6F5Fp1pwD2mUyOaHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765568; c=relaxed/simple;
-	bh=G0FBo35xLbiXRKZZl9eTnp1Xn5tARDAMhv+Xcs/go2Y=;
+	s=arc-20240116; t=1738763453; c=relaxed/simple;
+	bh=k3i1n3JIeNZTMZC+7g0y5bCdeBJruPDY/dmow1qfxfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoIz0zwcz8qmUQrsSxsUPzRNIN5CcVpOmP5eBU40mggw5iiuDP/qIXlM2RqUrZ+89BGP5I5M7e+WGti3lfmd8ovG8fZnsE8kTVxEsrTEtL/Hwhc4K2+5MEH2NGVa+xXLV5VY6ebPaAt+untEyg47G0s4UNIHdMIVul2JgzRdhnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/h4Th5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6335CC4CED1;
-	Wed,  5 Feb 2025 14:26:07 +0000 (UTC)
+	 MIME-Version; b=gGDNWD+txly6L6PjoStiEgPExBIiQu+mGCbsqYqiaS+SWazlyPrlJtsCv1B267BUW+NPNnuaU/Lv9/fD6ZUjjw4v2b+Pq2RVjcPkWAE3BbGyd2rTWsaJCP+9nHUcju3yUhQoKMvd2LFAgP+5joLNEAsWQhCHiM3X/9JBK0me99Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nS7qaUXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FDAC4CED1;
+	Wed,  5 Feb 2025 13:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765567;
-	bh=G0FBo35xLbiXRKZZl9eTnp1Xn5tARDAMhv+Xcs/go2Y=;
+	s=korg; t=1738763452;
+	bh=k3i1n3JIeNZTMZC+7g0y5bCdeBJruPDY/dmow1qfxfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/h4Th5saBc4/deM0cWL+dAhvijafWfGh5SQrIOOwVUrIGcPYpjgba3dKd5a3SzwJ
-	 Ac5ZwGmiPPHDZ6H7CWf7vyGovcLZQw8/+WcnZXiUVIA2LC9VYFjfH/Yx4F9aVdxeJf
-	 jGt3oevSt6QgAxUodG7uYly+0UIvLedKW3cuYC9M=
+	b=nS7qaUXF0PWaGaoZFvD+lDPfD/lJCV76kuDFN7h1fXchpjW5SWap9k57VPUnP4Y9V
+	 pTfxc2CmxO1x7Q7j4JRks6x6IUEPrYCpdW4b3D61WxYqjMbvHs4stHlYdL5+Ez0ETO
+	 MkaZ7q/+1KJuq5Nycieh2SrNEI9dErb/9/vNAa1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/590] net: ethernet: ti: am65-cpsw: fix freeing IRQ in am65_cpsw_nuss_remove_tx_chns()
+Subject: [PATCH 6.6 067/393] wifi: rtlwifi: destroy workqueue at rtl_deinit_core
 Date: Wed,  5 Feb 2025 14:39:46 +0100
-Message-ID: <20250205134504.117815467@linuxfoundation.org>
+Message-ID: <20250205134422.858377419@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 4395a44acb15850e492dd1de9ec4b6479d96bc80 ]
+[ Upstream commit d8ece6fc3694657e4886191b32ca1690af11adda ]
 
-When getting the IRQ we use k3_udma_glue_tx_get_irq() which returns
-negative error value on error. So not NULL check is not sufficient
-to deteremine if IRQ is valid. Check that IRQ is greater then zero
-to ensure it is valid.
+rtl_wq is allocated at rtl_init_core, so it makes more sense to destroy it
+at rtl_deinit_core. In the case of USB, where _rtl_usb_init does not
+require anything to be undone, that is fine. But for PCI, rtl_pci_init,
+which is called after rtl_init_core, needs to deallocate data, but only if
+it has been called.
 
-There is no issue at probe time but at runtime user can invoke
-.set_channels which results in the following call chain.
-am65_cpsw_set_channels()
- am65_cpsw_nuss_update_tx_rx_chns()
-  am65_cpsw_nuss_remove_tx_chns()
-  am65_cpsw_nuss_init_tx_chns()
+That means that destroying the workqueue needs to be done whether
+rtl_pci_init has been called or not. And since rtl_pci_deinit was doing it,
+it has to be moved out of there.
 
-At this point if am65_cpsw_nuss_init_tx_chns() fails due to
-k3_udma_glue_tx_get_irq() then tx_chn->irq will be set to a
-negative value.
+It makes more sense to move it to rtl_deinit_core and have it done in both
+cases, USB and PCI.
 
-Then, at subsequent .set_channels with higher channel count we
-will attempt to free an invalid IRQ in am65_cpsw_nuss_remove_tx_chns()
-leading to a kernel warning.
+Since this is a requirement for a followup memory leak fix, mark this as
+fixing such memory leak.
 
-The issue is present in the original commit that introduced this driver,
-although there, am65_cpsw_nuss_update_tx_rx_chns() existed as
-am65_cpsw_nuss_update_tx_chns().
-
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241206173713.3222187-3-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/base.c | 6 ++++++
+ drivers/net/wireless/realtek/rtlwifi/pci.c  | 2 --
+ drivers/net/wireless/realtek/rtlwifi/usb.c  | 5 -----
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index dfca13b82bdce..b13c7e958e6b4 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2207,7 +2207,7 @@ static void am65_cpsw_nuss_remove_tx_chns(struct am65_cpsw_common *common)
- 	for (i = 0; i < common->tx_ch_num; i++) {
- 		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index c7d5b20039ca0..c981739f70773 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -575,9 +575,15 @@ static void rtl_free_entries_from_ack_queue(struct ieee80211_hw *hw,
  
--		if (tx_chn->irq)
-+		if (tx_chn->irq > 0)
- 			devm_free_irq(dev, tx_chn->irq, tx_chn);
+ void rtl_deinit_core(struct ieee80211_hw *hw)
+ {
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
+ 	rtl_c2hcmd_launcher(hw, 0);
+ 	rtl_free_entries_from_scan_list(hw);
+ 	rtl_free_entries_from_ack_queue(hw, false);
++	if (rtlpriv->works.rtl_wq) {
++		destroy_workqueue(rtlpriv->works.rtl_wq);
++		rtlpriv->works.rtl_wq = NULL;
++	}
+ }
+ EXPORT_SYMBOL_GPL(rtl_deinit_core);
  
- 		netif_napi_del(&tx_chn->napi_tx);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 8ee3a11e8dc73..67004ce2f6d9c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1657,8 +1657,6 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+-
+-	destroy_workqueue(rtlpriv->works.rtl_wq);
+ }
+ 
+ static int rtl_pci_init(struct ieee80211_hw *hw, struct pci_dev *pdev)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index cf70793b1e905..e2e1e568bdb36 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -660,11 +660,6 @@ static void _rtl_usb_cleanup_rx(struct ieee80211_hw *hw)
+ 	tasklet_kill(&rtlusb->rx_work_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+ 
+-	if (rtlpriv->works.rtl_wq) {
+-		destroy_workqueue(rtlpriv->works.rtl_wq);
+-		rtlpriv->works.rtl_wq = NULL;
+-	}
+-
+ 	skb_queue_purge(&rtlusb->rx_queue);
+ 
+ 	while ((urb = usb_get_from_anchor(&rtlusb->rx_cleanup_urbs))) {
 -- 
 2.39.5
 
