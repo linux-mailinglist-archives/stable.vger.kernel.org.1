@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF4CA29249
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DBAA2930F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5059916AA3C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03BF23AAA46
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C891FF1CA;
-	Wed,  5 Feb 2025 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2731632DA;
+	Wed,  5 Feb 2025 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDBSKUy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqVP++LE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81771FF1BC;
-	Wed,  5 Feb 2025 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062AB146A7A;
+	Wed,  5 Feb 2025 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767056; cv=none; b=nWdrNiQGfKj0jfmsh3ZYJETJQhWWwBXJ2IT4xEfhgAU+vjRgvR58atmM7y3I1/JA3YSQtB0+Mf59PdqpaqGUSe24La7NHxoVls+eBTYscj/5AEvw02tYFMzpNYbdndu/yFQFUJ16Wf8fZCN0owcM+k2U4hwVVyKdTbvjr/Qzh8U=
+	t=1738767505; cv=none; b=Kxs0ug4voyhatqgNAQT5FV1ztEBTs+ufPyqbuJlFwdzcYc+gGd9iOhD98OQtDQ94Mm+mSQXf3XdI7EwvxbzWYe1ucGpO4gSk5JqtvPIjvQDm+8K1I/aXqaCyfNVa5AKrY2a24ZVre4PbVvDwUpgiGBLUrEInz9nqnVwseMjuiaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767056; c=relaxed/simple;
-	bh=aCnfz/YQ98BnAMDambQfnfikojaNEsebvzEB+PbrTbs=;
+	s=arc-20240116; t=1738767505; c=relaxed/simple;
+	bh=YFUP9kx4sK0xMdhOBHXJAvsdCjt4UXslkt15DStms18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyiHcnldawimIC5GCi7f5gt12aksOVJifYit4fbDMj8o1PPlktHR0HXLUP3sggQyii5c/fr5LbAgms8hzIaN7Dye3qYOu4JbsWB/u5d5hY0EKjvE2yMIa0RnkZTkMmdqefhMWS+3mDRwb8vZ3pS+ERYFf5B5dnGW4PZ6cjI82hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDBSKUy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96F4C4CED1;
-	Wed,  5 Feb 2025 14:50:55 +0000 (UTC)
+	 MIME-Version; b=JLH3Cp73n4gfkZfx4oCnN7kgGMZjq2cCW5PGV7ELA126+l6jlsqnuBomiaHIluj3IpoaGOy/DFoMwoc0Th6Q+6K1FkBDN+nmuJwSGMxFNh9PT5hwYqcFu/bB4iBjBvANjrZzUklK5GWU/FObF0HWGdBhHc9XhLKEGj1j4iwV+ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqVP++LE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650AEC4CED1;
+	Wed,  5 Feb 2025 14:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767056;
-	bh=aCnfz/YQ98BnAMDambQfnfikojaNEsebvzEB+PbrTbs=;
+	s=korg; t=1738767504;
+	bh=YFUP9kx4sK0xMdhOBHXJAvsdCjt4UXslkt15DStms18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDBSKUy0oaPqFW1tN+1BRp8bTYr0rVvm0GfVxtPbQ4bxPfFYRFqH5RyEWx0uXovEs
-	 JHsTsYYAF4PtsxGVssq7g+DKG9+vQlk4r0GNUf2AICmDwOUiAyush6MrU/rG+xeA+z
-	 t1AVedyzByeRJXMHMS0ud3ZfRD/K4teEMlyyGRC8=
+	b=dqVP++LErJ5nVqmcyA1WfCLDHpMNGn1nmCf82jeaWezY1/pquGsQJ4M2nSuVVJUjH
+	 /ZF7gpoOljyvUApNe4SDsWvX2lOufL9xlpG4Ow0cpFbHNym594NumkfBqPCAVevgjf
+	 tiKfJkP6DKyxIsnR4jCYWP08r7oaKBPzOwP7dpBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Joe Klein <joe.klein812@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 400/590] RDMA/rxe: Fix the warning "__rxe_cleanup+0x12c/0x170 [rdma_rxe]"
+Subject: [PATCH 6.13 413/623] dts: arm64: mediatek: mt8188: Update OVL compatible from MT8183 to MT8195
 Date: Wed,  5 Feb 2025 14:42:35 +0100
-Message-ID: <20250205134510.566907368@linuxfoundation.org>
+Message-ID: <20250205134512.024632738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit edc4ef0e0154096d6c0cf5e06af6fc330dbad9d1 ]
+[ Upstream commit 2a1a08590d371fc6327efc8b60d8bc1831f23fb4 ]
 
-The Call Trace is as below:
-"
-  <TASK>
-  ? show_regs.cold+0x1a/0x1f
-  ? __rxe_cleanup+0x12c/0x170 [rdma_rxe]
-  ? __warn+0x84/0xd0
-  ? __rxe_cleanup+0x12c/0x170 [rdma_rxe]
-  ? report_bug+0x105/0x180
-  ? handle_bug+0x46/0x80
-  ? exc_invalid_op+0x19/0x70
-  ? asm_exc_invalid_op+0x1b/0x20
-  ? __rxe_cleanup+0x12c/0x170 [rdma_rxe]
-  ? __rxe_cleanup+0x124/0x170 [rdma_rxe]
-  rxe_destroy_qp.cold+0x24/0x29 [rdma_rxe]
-  ib_destroy_qp_user+0x118/0x190 [ib_core]
-  rdma_destroy_qp.cold+0x43/0x5e [rdma_cm]
-  rtrs_cq_qp_destroy.cold+0x1d/0x2b [rtrs_core]
-  rtrs_srv_close_work.cold+0x1b/0x31 [rtrs_server]
-  process_one_work+0x21d/0x3f0
-  worker_thread+0x4a/0x3c0
-  ? process_one_work+0x3f0/0x3f0
-  kthread+0xf0/0x120
-  ? kthread_complete_and_exit+0x20/0x20
-  ret_from_fork+0x22/0x30
-  </TASK>
-"
-When too many rdma resources are allocated, rxe needs more time to
-handle these rdma resources. Sometimes with the current timeout, rxe
-can not release the rdma resources correctly.
+The OVL hardware capabilities have changed starting from MT8195,
+making the MT8183 compatible no longer applicable.
+Therefore, it is necessary to update the OVL compatible from MT8183 to
+MT8195.
 
-Compared with other rdma drivers, a bigger timeout is used.
-
-Fixes: 215d0a755e1b ("RDMA/rxe: Stop lookup of partially built objects")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250110160927.55014-1-yanjun.zhu@linux.dev
-Tested-by: Joe Klein <joe.klein812@gmail.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Fixes: 7075b21d1a8e ("arm64: dts: mediatek: mt8188: Add display nodes for vdosys0")
+Link: https://lore.kernel.org/r/20241219181531.4282-4-jason-jh.lin@mediatek.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_pool.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8188.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_pool.c b/drivers/infiniband/sw/rxe/rxe_pool.c
-index 67567d62195e8..d9cb682fd71f8 100644
---- a/drivers/infiniband/sw/rxe/rxe_pool.c
-+++ b/drivers/infiniband/sw/rxe/rxe_pool.c
-@@ -178,7 +178,6 @@ int __rxe_cleanup(struct rxe_pool_elem *elem, bool sleepable)
- {
- 	struct rxe_pool *pool = elem->pool;
- 	struct xarray *xa = &pool->xa;
--	static int timeout = RXE_POOL_TIMEOUT;
- 	int ret, err = 0;
- 	void *xa_ret;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+index faccc7f16259a..23ec3ff6cad9b 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+@@ -2488,7 +2488,7 @@
+ 		};
  
-@@ -202,19 +201,19 @@ int __rxe_cleanup(struct rxe_pool_elem *elem, bool sleepable)
- 	 * return to rdma-core
- 	 */
- 	if (sleepable) {
--		if (!completion_done(&elem->complete) && timeout) {
-+		if (!completion_done(&elem->complete)) {
- 			ret = wait_for_completion_timeout(&elem->complete,
--					timeout);
-+					msecs_to_jiffies(50000));
- 
- 			/* Shouldn't happen. There are still references to
- 			 * the object but, rather than deadlock, free the
- 			 * object or pass back to rdma-core.
- 			 */
- 			if (WARN_ON(!ret))
--				err = -EINVAL;
-+				err = -ETIMEDOUT;
- 		}
- 	} else {
--		unsigned long until = jiffies + timeout;
-+		unsigned long until = jiffies + RXE_POOL_TIMEOUT;
- 
- 		/* AH objects are unique in that the destroy_ah verb
- 		 * can be called in atomic context. This delay
-@@ -226,7 +225,7 @@ int __rxe_cleanup(struct rxe_pool_elem *elem, bool sleepable)
- 			mdelay(1);
- 
- 		if (WARN_ON(!completion_done(&elem->complete)))
--			err = -EINVAL;
-+			err = -ETIMEDOUT;
- 	}
- 
- 	if (pool->cleanup)
+ 		ovl0: ovl@1c000000 {
+-			compatible = "mediatek,mt8188-disp-ovl", "mediatek,mt8183-disp-ovl";
++			compatible = "mediatek,mt8188-disp-ovl", "mediatek,mt8195-disp-ovl";
+ 			reg = <0 0x1c000000 0 0x1000>;
+ 			clocks = <&vdosys0 CLK_VDO0_DISP_OVL0>;
+ 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
 -- 
 2.39.5
 
