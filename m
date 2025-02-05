@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5ABAA28FF9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EC8A29312
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3905C7A1BFB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90D5F16DFE4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C03C8634E;
-	Wed,  5 Feb 2025 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3629519067C;
+	Wed,  5 Feb 2025 14:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IS5rehtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugdYaCw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267361519AF;
-	Wed,  5 Feb 2025 14:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D1216EB42;
+	Wed,  5 Feb 2025 14:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765865; cv=none; b=qMlAC5MxTMDdJMyW5eURmeEz/Lscch5lZs3pZQOsJCjE558PMzLoxUPpCSFEBjFNnFBJQ9+tXm80MigWO8mt0eRPVQW784evBL2RGjpkLuTsOoZVkH7cY5gtOrjdo5A/KjXW/ID5BFSG/CW2afKLWS19hd4qC9MQcuMhc3mHI+Q=
+	t=1738767561; cv=none; b=L+rNbf1P2LHvn89FC+E057miD0SpFXkhADRgH4xeeAGe3OAPEWDudek+OVEP6BL5CYqjDKJfGqS8CPwAypufbjrE+H/v9rakuunyRGgB5CrKo3FCFfmSV7QTacnJSUWwdIfY43frwXO1i+zS/M9Pt09WlMYT4WpwSTfiwECzl1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765865; c=relaxed/simple;
-	bh=iNYRitCvQ8fMzjkWjEYUQRAUonrjDSls6koYYF9IKYs=;
+	s=arc-20240116; t=1738767561; c=relaxed/simple;
+	bh=AxwwmeZl8qnHv+IxZwGjKwq5aDVvOKKxaleUa/PZ9T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC9n1kP3NTzHtsT2mRxECEaeZ4PlOqAuhK82ejyjkMGdBAcKfp1s7k/kT7OoVqKMSMbAFUUJv7mSfNWn9djiGiH5QT9hYN99sox3+La9r606fpo8uPbDt8dgO2aICHYuQsRUhyLEzm23XrUCmgGN/mQhg8K5/IgsJY7l8LhVuVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IS5rehtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219DEC4CED1;
-	Wed,  5 Feb 2025 14:31:03 +0000 (UTC)
+	 MIME-Version; b=BQJ4QPSGUFOww9HnMRWYF598L+LPedBB4ghjXLO5UxUHql/A4lRrWW4o/fyWSYtbSBMElL/Cc9fEdnNZOb6N22/+8QHadaRlvAHAKcdhWIjFrrpTMU66Kjp3bsijTCGYm0Pmm1BVxfVJZOGazMiFiZYyyl0W5Z4S7ylg+BP60l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugdYaCw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51271C4CEEA;
+	Wed,  5 Feb 2025 14:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765864;
-	bh=iNYRitCvQ8fMzjkWjEYUQRAUonrjDSls6koYYF9IKYs=;
+	s=korg; t=1738767560;
+	bh=AxwwmeZl8qnHv+IxZwGjKwq5aDVvOKKxaleUa/PZ9T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IS5rehtfv75rJvuI/NybcfuOSo7w6Mz+nzu/jU3n4tfIb0/UzrTTpLCOqVS4strrl
-	 bUPAcqhl+GAvIKyB7u29X5WT27E8012YTYti6UN03JPA3ZfY/otiHP2vJjy4gsKHbb
-	 uGbVEQvM6PMt+FolBBt3rczZxqHuGGlMC3mku15Q=
+	b=ugdYaCw0YteBLYDk4PuUXOVBj/XBx8/imrvTwB+i9LoljmbiFkUvKB8VLBSyhOgeS
+	 MoAGVwxXvLy8BzmlH0dntTUL6Z4lmpgic6kHFFn5vqcJJqrzBgat24d2PeFCWFjGoY
+	 e6KuY3d9l2r/6rOBdvAkETChlqc+1rtrMLGlD06w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	pangliyuan <pangliyuan1@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/393] nilfs2: convert nilfs_lookup_dirty_data_buffers to use folio_create_empty_buffers
+Subject: [PATCH 6.12 471/590] ubifs: skip dumping tnc tree when zroot is null
 Date: Wed,  5 Feb 2025 14:43:46 +0100
-Message-ID: <20250205134432.055134500@linuxfoundation.org>
+Message-ID: <20250205134513.280558355@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: pangliyuan <pangliyuan1@huawei.com>
 
-[ Upstream commit 922b12eff0b293fc13ae4045c7d7264e18938878 ]
+[ Upstream commit bdb0ca39e0acccf6771db49c3f94ed787d05f2d7 ]
 
-This function was already using a folio, so this update to the new API
-removes a single folio->page->folio conversion.
+Clearing slab cache will free all znode in memory and make
+c->zroot.znode = NULL, then dumping tnc tree will access
+c->zroot.znode which cause null pointer dereference.
 
-Link: https://lkml.kernel.org/r/20231016201114.1928083-17-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 367a9bffabe0 ("nilfs2: protect access to buffers with no active references")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219624#c0
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/ubifs/debug.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 0610cb12c11ca..57b535921a73b 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -731,10 +731,9 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 			continue;
- 		}
- 		head = folio_buffers(folio);
--		if (!head) {
--			create_empty_buffers(&folio->page, i_blocksize(inode), 0);
--			head = folio_buffers(folio);
--		}
-+		if (!head)
-+			head = folio_create_empty_buffers(folio,
-+					i_blocksize(inode), 0);
- 		folio_unlock(folio);
+diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
+index 5cc69beaa62ec..10a86c02a8b32 100644
+--- a/fs/ubifs/debug.c
++++ b/fs/ubifs/debug.c
+@@ -946,16 +946,20 @@ void ubifs_dump_tnc(struct ubifs_info *c)
  
- 		bh = head;
+ 	pr_err("\n");
+ 	pr_err("(pid %d) start dumping TNC tree\n", current->pid);
+-	znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
+-	level = znode->level;
+-	pr_err("== Level %d ==\n", level);
+-	while (znode) {
+-		if (level != znode->level) {
+-			level = znode->level;
+-			pr_err("== Level %d ==\n", level);
++	if (c->zroot.znode) {
++		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
++		level = znode->level;
++		pr_err("== Level %d ==\n", level);
++		while (znode) {
++			if (level != znode->level) {
++				level = znode->level;
++				pr_err("== Level %d ==\n", level);
++			}
++			ubifs_dump_znode(c, znode);
++			znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
+ 		}
+-		ubifs_dump_znode(c, znode);
+-		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
++	} else {
++		pr_err("empty TNC tree in memory\n");
+ 	}
+ 	pr_err("(pid %d) finish dumping TNC tree\n", current->pid);
+ }
 -- 
 2.39.5
 
