@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-112452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C5FA28CC2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACA1A28D4F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988ED188679C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43ED43A90D6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00607FC0B;
-	Wed,  5 Feb 2025 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B461547F2;
+	Wed,  5 Feb 2025 13:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5N/JDHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzpUP3Ml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D7513C9C4;
-	Wed,  5 Feb 2025 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2813C9C4;
+	Wed,  5 Feb 2025 13:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763615; cv=none; b=ssOtmKaz98QTAn2yrC0EIb6IUSOkpN8BxF0uTrB9LLrMQ5q6+LiDRSyJD7X9lDfWOIngkISbLe3RAgIFrxHVBF0PFn+SYxEZm2rCbv4+yYEqxXOewpF7a520/uWbX3oD+g2EY8yn5GWwhQ+HNFB2t3fR/kIXyZk90IvtgQamQuQ=
+	t=1738763888; cv=none; b=lVk2sdSM1ymzs7oKYK6aMgX9gnXUvD/Ml15vDwp/YvT5EfpM0V0eBMIzwSGc9iNfel77yUSwdLsMgDgwbQ1UWE3alYXCBGtVhPEnZkb4Ka/CukMPhk9xBWRsiGfy0AL9LKsoWqmF+TxpbpyxvfbIKe0rV8pZoHPWn3NYIPK3P9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763615; c=relaxed/simple;
-	bh=M/SIpb9qqTq/ygcshybkd9iD+WiZDNc4NOEKxRnPPLc=;
+	s=arc-20240116; t=1738763888; c=relaxed/simple;
+	bh=rqdpbJxYWii1Iq2vk6y65zZfjpll4JIvSluuUdgRAwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AieEWK6bWrNibhAb3OktwCgJeBKmJHBO0N0yxF1Que84VecZSfwHDkknaNlbUhPJAJwZMLpcYjIFe+cZ/PP7hXo9MRE8aEP7gsrBe8cIrS70CfTjZGDb3ZBqGZXuTYOpxrXtsQz0zwbPSFrnIRFAxbg6MjPS7htFfaw41075CN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5N/JDHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5E7C4CED1;
-	Wed,  5 Feb 2025 13:53:34 +0000 (UTC)
+	 MIME-Version; b=qDBYNHOMxZ/Tw32EK3shv2zR53V9nHggtyLu4betpKNL5yhkOJXaU+F6bundhk//CVdsFbzefM1UssntApbPIpxEdvwg/RTRqcH2BEUyvJPWomn9l6vmdjxrpDkGFjWHzR9zQuzKzo03Ak0m92+gJAJYb55S1v8Lq+3ZWeZichM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzpUP3Ml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46657C4CED1;
+	Wed,  5 Feb 2025 13:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763615;
-	bh=M/SIpb9qqTq/ygcshybkd9iD+WiZDNc4NOEKxRnPPLc=;
+	s=korg; t=1738763887;
+	bh=rqdpbJxYWii1Iq2vk6y65zZfjpll4JIvSluuUdgRAwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5N/JDHBbYHygWGDQhBXo54O2u9FNMhb9Z59WLkrJ4IYuGQHsdMrBF7/qPoxYAY09
-	 GR/vUFwldWYYQ9W2/XdVVCzCUy6aDbb+eIDOzlTxsuvR/9hBzlm/kqWHDBKMuwQFyb
-	 WXj8B62KLhQkUPqvzz1vYcqEO22xvQvycDtfDURo=
+	b=kzpUP3MlbojMXc7tsvqv3nt1BXdnZJQM0bKQ3KvwKZQNX+pBKNTNGsl6eWBaWK43M
+	 1fVIM1ZKN4gU8VE58Y/pnZ0rkLj8RsivwN84LVW6PvOafiTtLuVMQREkYTDlWgSaux
+	 btVtGAuVLEABGGe3HRKBXsVoXNxJIbvA8Avgz3Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/590] block: check BLK_FEAT_POLL under q_usage_count
+Subject: [PATCH 6.13 027/623] btrfs: subpage: fix the bitmap dump of the locked flags
 Date: Wed,  5 Feb 2025 14:36:09 +0100
-Message-ID: <20250205134455.784746337@linuxfoundation.org>
+Message-ID: <20250205134457.267193812@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 958148a6ac061a9a80a184ea678a5fa872d0c56f ]
+[ Upstream commit 396294d1afee65a203d6cabd843d0782e5d7388e ]
 
-Otherwise feature reconfiguration can race with I/O submission.
+We're dumping the locked bitmap into the @checked_bitmap variable,
+printing incorrect values during debug.
 
-Also drop the bio_clear_polled in the error path, as the flag does not
-matter for instant error completions, it is a left over from when we
-allowed polled I/O to proceed unpolled in this case.
+Thankfully even during my development I haven't hit a case where I need
+to dump the locked bitmap.  But for the sake of consistency, fix it by
+dupping the locked bitmap into @locked_bitmap variable for output.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250110054726.1499538-4-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: d432c817c21a ("block: don't update BLK_FEAT_POLL in __blk_mq_update_nr_hw_queues")
+Fixes: 75258f20fb70 ("btrfs: subpage: dump extra subpage bitmaps for debug")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 22 ++++++++++++----------
- block/blk-mq.c   | 12 ++++++++++--
- 2 files changed, 22 insertions(+), 12 deletions(-)
+ fs/btrfs/subpage.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 4f791a3114a12..487e8cafccc55 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -629,8 +629,14 @@ static void __submit_bio(struct bio *bio)
- 		blk_mq_submit_bio(bio);
- 	} else if (likely(bio_queue_enter(bio) == 0)) {
- 		struct gendisk *disk = bio->bi_bdev->bd_disk;
--
--		disk->fops->submit_bio(bio);
-+	
-+		if ((bio->bi_opf & REQ_POLLED) &&
-+		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
-+			bio->bi_status = BLK_STS_NOTSUPP;
-+			bio_endio(bio);
-+		} else {
-+			disk->fops->submit_bio(bio);
-+		}
- 		blk_queue_exit(disk->queue);
- 	}
+diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
+index 8c68059ac1b0c..03d7bfc042e2a 100644
+--- a/fs/btrfs/subpage.c
++++ b/fs/btrfs/subpage.c
+@@ -716,6 +716,7 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+ 	unsigned long writeback_bitmap;
+ 	unsigned long ordered_bitmap;
+ 	unsigned long checked_bitmap;
++	unsigned long locked_bitmap;
+ 	unsigned long flags;
  
-@@ -805,12 +811,6 @@ void submit_bio_noacct(struct bio *bio)
- 		}
- 	}
+ 	ASSERT(folio_test_private(folio) && folio_get_private(folio));
+@@ -728,15 +729,16 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, writeback, &writeback_bitmap);
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, ordered, &ordered_bitmap);
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, checked, &checked_bitmap);
+-	GET_SUBPAGE_BITMAP(subpage, fs_info, locked, &checked_bitmap);
++	GET_SUBPAGE_BITMAP(subpage, fs_info, locked, &locked_bitmap);
+ 	spin_unlock_irqrestore(&subpage->lock, flags);
  
--	if (!(q->limits.features & BLK_FEAT_POLL) &&
--			(bio->bi_opf & REQ_POLLED)) {
--		bio_clear_polled(bio);
--		goto not_supported;
--	}
--
- 	switch (bio_op(bio)) {
- 	case REQ_OP_READ:
- 		break;
-@@ -935,7 +935,7 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
- 		return 0;
- 
- 	q = bdev_get_queue(bdev);
--	if (cookie == BLK_QC_T_NONE || !(q->limits.features & BLK_FEAT_POLL))
-+	if (cookie == BLK_QC_T_NONE)
- 		return 0;
- 
- 	blk_flush_plug(current->plug, false);
-@@ -951,7 +951,9 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
- 	 */
- 	if (!percpu_ref_tryget(&q->q_usage_counter))
- 		return 0;
--	if (queue_is_mq(q)) {
-+	if (!(q->limits.features & BLK_FEAT_POLL)) {
-+		ret = 0;
-+	} else if (queue_is_mq(q)) {
- 		ret = blk_mq_poll(q, cookie, iob, flags);
- 	} else {
- 		struct gendisk *disk = q->disk;
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 4e76651e786d1..784d41eb0abba 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3092,14 +3092,22 @@ void blk_mq_submit_bio(struct bio *bio)
- 	}
- 
- 	/*
--	 * Device reconfiguration may change logical block size, so alignment
--	 * check has to be done with queue usage counter held
-+	 * Device reconfiguration may change logical block size or reduce the
-+	 * number of poll queues, so the checks for alignment and poll support
-+	 * have to be done with queue usage counter held.
- 	 */
- 	if (unlikely(bio_unaligned(bio, q))) {
- 		bio_io_error(bio);
- 		goto queue_exit;
- 	}
- 
-+	if ((bio->bi_opf & REQ_POLLED) &&
-+	    !(q->limits.features & BLK_FEAT_POLL)) {
-+		bio->bi_status = BLK_STS_NOTSUPP;
-+		bio_endio(bio);
-+		goto queue_exit;
-+	}
-+
- 	bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
- 	if (!bio)
- 		goto queue_exit;
+ 	dump_page(folio_page(folio, 0), "btrfs subpage dump");
+ 	btrfs_warn(fs_info,
+-"start=%llu len=%u page=%llu, bitmaps uptodate=%*pbl dirty=%*pbl writeback=%*pbl ordered=%*pbl checked=%*pbl",
++"start=%llu len=%u page=%llu, bitmaps uptodate=%*pbl dirty=%*pbl locked=%*pbl writeback=%*pbl ordered=%*pbl checked=%*pbl",
+ 		    start, len, folio_pos(folio),
+ 		    sectors_per_page, &uptodate_bitmap,
+ 		    sectors_per_page, &dirty_bitmap,
++		    sectors_per_page, &locked_bitmap,
+ 		    sectors_per_page, &writeback_bitmap,
+ 		    sectors_per_page, &ordered_bitmap,
+ 		    sectors_per_page, &checked_bitmap);
 -- 
 2.39.5
 
