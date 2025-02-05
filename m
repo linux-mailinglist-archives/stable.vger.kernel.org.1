@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF429A28CD3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BCEA28CEE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6772B18883CF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738A11676C7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F4414A088;
-	Wed,  5 Feb 2025 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1054C14A630;
+	Wed,  5 Feb 2025 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5r3wiip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nq1U7Rdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5E21459F6;
-	Wed,  5 Feb 2025 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5EC1519AA;
+	Wed,  5 Feb 2025 13:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763664; cv=none; b=HEdrTSuu8CgMKvqxsTFWHE+C5tF9D1AWR8ShZqgt3/1FYgbOxfvH2Efuxa7AwcVA2iPX0bP55Ms4k2ZD9DnQefuni8oN8xKQs2HfcfdAWZBJcoV43HO9HKLiGm69HKItDnP19+hiFvlGCM/5bcbspkALnOMH8mBGToLHM9y263Y=
+	t=1738763737; cv=none; b=EDGKBjpel469Zov++ZSLaeNVZ5YB2KqucLbIejY9Ug3rT+1L4qwwIDLNO0TbwDyUaxGKDFmV0yVk6w2x/cQHv8IA2TVFcinZXqI/9i/Q51DqOybnZ3bEormpiKP+vTvw9RbfI7wJGziwi56GlyVV2jk6rIyZy9ahbHnYAWizYdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763664; c=relaxed/simple;
-	bh=JfbOX2LewL2qHcUCkrMnMwnd/Z2LAu8ItNycCB78mdQ=;
+	s=arc-20240116; t=1738763737; c=relaxed/simple;
+	bh=9M0i7zQaLJ4BEp7Qs4PUE/qxnawlLiCHX4eTDP9TV8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXl5ZEJiqE8u8sqn5AJlsPPgt3lBBxULOQUMK977gwdu2BLOyaAEWqIAPsYY2Uf93y2Q8vt8u8dklgWVh/3oGSP4ZQcwHgBra8i/FeJ/+M5Nsh/9vVA06O1Ogrx6/WBg0n+v8XMa/RjJRvvuYh5g+0F6u2PqTc9ihbT+ZwPZP2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5r3wiip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEEDC4CEDD;
-	Wed,  5 Feb 2025 13:54:23 +0000 (UTC)
+	 MIME-Version; b=SNv+QvleAEu5xJUkbYDWCmHps4nySP6/W4+EA1/7K4SWmikUhPDRcTeozstA69XksAD6T0DWjWok8cXWjEZLF+C37OU4a9i+QILZ4fjmJKCrCPyVM0itTe3nMlHrwhC74flS8HEZK2k5ZsB+4hHGsJNZ8HRUZdWPu26Yw62qVXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nq1U7Rdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449FFC4CEE2;
+	Wed,  5 Feb 2025 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763663;
-	bh=JfbOX2LewL2qHcUCkrMnMwnd/Z2LAu8ItNycCB78mdQ=;
+	s=korg; t=1738763737;
+	bh=9M0i7zQaLJ4BEp7Qs4PUE/qxnawlLiCHX4eTDP9TV8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5r3wiipMFvwcdzlRarqSFtwsMlN641eL+9S0IO8XWvvmXDisGkOnJtLTucTM3Sd5
-	 dDKPGvJkEj4NijVSZVRn/WPIt+p5D5/NTM8FPwnbEutCgaPdn9z+x5LdZJHG3dHFeG
-	 xmMXsN2joTc7StzefZqsXonSoGKOuikyljpG1zpY=
+	b=nq1U7RduxzYN7ErEKPPQTQGFGJRVVN+zZo8W2fYa9Om4iUWUXvpvwVkzU9/FnsS7+
+	 YBw/+1XojXI/Tz5EHDpNJnJkqmPJ6nIfrhFRmcTRBO8dXAwjGZoItj3JCCM5/uZFYm
+	 1CYdeqq2HW6lMZSvTbc5O2agTbLPZW9SFgZUCJpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Rex Nie <rex.nie@jaguarmicro.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/590] drm/msm/dp: set safe_to_exit_level before printing it
-Date: Wed,  5 Feb 2025 14:36:33 +0100
-Message-ID: <20250205134456.708985344@linuxfoundation.org>
+Subject: [PATCH 6.12 039/590] drm/msm/hdmi: simplify code in pll_get_integloop_gain
+Date: Wed,  5 Feb 2025 14:36:34 +0100
+Message-ID: <20250205134456.746851981@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,42 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Rex Nie <rex.nie@jaguarmicro.com>
 
-[ Upstream commit 7dee35d79bb046bfd425aa9e58a82414f67c1cec ]
+[ Upstream commit c1beb6f75d5e60e4e57a837c665a52eb79eb19ba ]
 
-Rather than printing random garbage from stack and pretending that it is
-the default safe_to_exit_level, set the variable beforehand.
+In pll_get_integloop_gain(), digclk_divsel=1 or 2, base=63 or 196ULL,
+so the base may be 63, 126, 196, 392. The condition base <= 2046
+always true.
 
-Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411081748.0PPL9MIj-lkp@intel.com/
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: caedbf17c48d ("drm/msm: add msm8998 hdmi phy/pll support")
+Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/626804/
-Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-1-d9187ea96dad@linaro.org
+Patchwork: https://patchwork.freedesktop.org/patch/624153/
+Link: https://lore.kernel.org/r/20241112074101.2206-1-rex.nie@jaguarmicro.com
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c | 2 +-
+ drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index a599fc5d63c52..f4e01da5c55b0 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -329,10 +329,10 @@ static void dp_audio_safe_to_exit_level(struct dp_audio_private *audio)
- 		safe_to_exit_level = 5;
- 		break;
- 	default:
-+		safe_to_exit_level = 14;
- 		drm_dbg_dp(audio->drm_dev,
- 				"setting the default safe_to_exit_level = %u\n",
- 				safe_to_exit_level);
--		safe_to_exit_level = 14;
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c b/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
+index e6ffaf92d26d3..1c4211cfa2a47 100644
+--- a/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
++++ b/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
+@@ -137,7 +137,7 @@ static inline u32 pll_get_integloop_gain(u64 frac_start, u64 bclk, u32 ref_clk,
  
+ 	base <<= (digclk_divsel == 2 ? 1 : 0);
+ 
+-	return (base <= 2046 ? base : 2046);
++	return base;
+ }
+ 
+ static inline u32 pll_get_pll_cmp(u64 fdata, unsigned long ref_clk)
 -- 
 2.39.5
 
