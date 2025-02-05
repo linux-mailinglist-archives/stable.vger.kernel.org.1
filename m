@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-113680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEA5A292B0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A106A293A5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FE077A1F3A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F441891CA5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41CA18A924;
-	Wed,  5 Feb 2025 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF2C18B477;
+	Wed,  5 Feb 2025 15:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cElzK5l4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0idiXOYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB66376;
-	Wed,  5 Feb 2025 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0F5DF59;
+	Wed,  5 Feb 2025 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767791; cv=none; b=sik5ssqtNw+PJa7wYY1FdMV+I4ihFShD+FCgWMhHJL3VnPOM0Em/C69yUQgxEbu+y8ObygD4IGY1e0YqEM6fpsjtX4lyUkvVEKcBYN2l2hNP15NrsrQAbdSZMJHoZhNm4xhsIVAZoVNSLdP7uGjsobzHinAFOMNFKGa06HYTQsU=
+	t=1738767799; cv=none; b=Wm36OSIBJMq0OwHY16CSiuMWcldEl0bxn2t3G/ZV1B637T3q35KbY6btnQ8IXdM5tBzj4hPSROozSp5mx13suJUV3eYc2LBNiM6jE3Ng+YLEwxkweVMdsSlgp0oR69zMA/0JxfsfduG428imxtXBs0HzxXyeENIwA2gVBYlGbLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767791; c=relaxed/simple;
-	bh=/fwqXBvoU/d5kDh5KrUpOFqIJMB1xsYX0zYTXbKzLdw=;
+	s=arc-20240116; t=1738767799; c=relaxed/simple;
+	bh=vZF0gbK35GVxrkkQ9u2B7gU0Yp4JVcxTWp7NKdHsTw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHxl8uA19fvQ5IZrnslFzVE1y9ifDxNx7pX14tIizarRPJn3KRFvXNtH9xMv1iFFfUTkGyZfbDDjB/FxahAwWloNW/jU3mWrkQGQhnzHU0Ac2/WfGpYZbNXqvKBshPo17YJwuyoLY/n4aBhpSjjcjQuvDghnve1S8mDR6Jexga8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cElzK5l4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E85C4CED1;
-	Wed,  5 Feb 2025 15:03:10 +0000 (UTC)
+	 MIME-Version; b=gfM7pQdmANnD+B+sn0kdPcrsNNXxoR6czSisscQnYPc0dbqkndu3V7ZZyWmIA4xPBPeJHSyN0IimLtu19hzmsn+7wm7Mq5aaJJRDlZvK8BORwGiPkN1ax1B1iKqupfc7HGZBbv1rC2zSv1t8Xv4cZzltG+138wCUzKG8UneE5Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0idiXOYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AADAC4CED1;
+	Wed,  5 Feb 2025 15:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767791;
-	bh=/fwqXBvoU/d5kDh5KrUpOFqIJMB1xsYX0zYTXbKzLdw=;
+	s=korg; t=1738767798;
+	bh=vZF0gbK35GVxrkkQ9u2B7gU0Yp4JVcxTWp7NKdHsTw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cElzK5l4K3pumqOEyZXFoqeehjNjZhKpeuKF4yF+PFHRlSAXM2qQQyAel2MhwRxSw
-	 A/83YdQPsZEnaX83003xg3pN8DfxiF2C8l7W1h2LiRIfu5zNr7NIWUmQFY+fqwV2l0
-	 WSJku+BxTmgr2mRyCoVkEjbqN9eIi52osKHOrYB0=
+	b=0idiXOYka2/bsqcWgDklzxq7Fu7sFCxFmLCCcgmLUlI37iTTfHdZjIYvuB9W/xkZO
+	 lPzbVoKHFYgwNx2gxdkpAydP4tSnBuTRP8/2QRngOIm20ragPZMJfEwYndFm6HBAet
+	 EeIADodfbg964f9xAtr00dK+h8CKmos5heiuyv/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	david regan <dregan@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 454/623] media: uvcvideo: Propagate buf->error to userspace
-Date: Wed,  5 Feb 2025 14:43:16 +0100
-Message-ID: <20250205134513.583746760@linuxfoundation.org>
+Subject: [PATCH 6.13 455/623] mtd: rawnand: brcmnand: fix status read of brcmnand_waitfunc
+Date: Wed,  5 Feb 2025 14:43:17 +0100
+Message-ID: <20250205134513.623369563@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,42 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: david regan <dregan@broadcom.com>
 
-[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
+[ Upstream commit 03271ea36ea7a58d30a4bde182eb2a0d46220467 ]
 
-Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
-the correct value, so the user can know if the frame is valid or not via
-struct v4l2_buffer->flags.
+This change fixes an issue where an error return value may be mistakenly
+used as NAND status.
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
-Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: f504551b7f15 ("mtd: rawnand: Propagate error and simplify ternary operators for brcmstb_nand_wait_for_completion()")
+Signed-off-by: david regan <dregan@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-index 26ee85657fc89..f8464f0aae1b8 100644
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -479,7 +479,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 9c253a511e45a..fea5b61199563 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2342,6 +2342,11 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 		brcmnand_send_cmd(host, CMD_PROGRAM_PAGE);
+ 		status = brcmnand_waitfunc(chip);
  
- 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
--	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
-+	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
-+							VB2_BUF_STATE_DONE);
- }
- 
- /*
++		if (status < 0) {
++			ret = status;
++			goto out;
++		}
++
+ 		if (status & NAND_STATUS_FAIL) {
+ 			dev_info(ctrl->dev, "program failed at %llx\n",
+ 				(unsigned long long)addr);
 -- 
 2.39.5
 
