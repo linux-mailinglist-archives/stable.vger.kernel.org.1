@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEFAA28C7F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05221A28EFA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F251885E11
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3578E1889DC4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281A21442F3;
-	Wed,  5 Feb 2025 13:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C273713C3F6;
+	Wed,  5 Feb 2025 14:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZ1vKkcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBpPOCHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81BC126C18;
-	Wed,  5 Feb 2025 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807B9282EE;
+	Wed,  5 Feb 2025 14:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763426; cv=none; b=QT/1ldAe60eU1in42ASCkm+g9Sk6PMep/vN7SW5bMAuxGOBK8vPd20cmgE0+058dmuI4KpMRVNRPai41oZhoLj7aPwSMQJ9HktUTsdQkCqXhhfyyO8Crc0T9n5c8+rQ/LODGEpDMIzXT8seS1JHFB2kCzRJL/IpWkrKg5ctNwl8=
+	t=1738765157; cv=none; b=bIRP+xW1+es5zbgL4Ht1/OX6GyF8Il4ABFJs7Gno+qSNMGWLe2JTL5d5qJt0qGRwPTQS/266IV66J27nfjlCCYzKu58ehsICLEW4LkpHapsYGQZ6fZQiVEceufd5Gn/C8i4S62w0OJ3Dr/J86N5XWdZv1Xq0fQSEM1RAyP6lksI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763426; c=relaxed/simple;
-	bh=YE2wwlQVo9WNszqb7MnDd8HBXe2iAA32Wobv7D5qb84=;
+	s=arc-20240116; t=1738765157; c=relaxed/simple;
+	bh=2v1YcY2NPulDzTPwmy4TN1f4sAAnuah9v7hc8Zi6VM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K11XTl8UmQrdILglMifDUUgzlkYAUs11WCQVELvF0UjeUcCUdcvbJcEisngFXrsq/iMOPNPGQ4S+qBRwKj0SKk/gpqb22Y8mZM++tzctYNLZWM076pQ1FVXfmb78QffuWNMtp9imXHU6bqpf5k7CbNhXmK2mB8UZJ6Q+mrPNWeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZ1vKkcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FB5C4CED6;
-	Wed,  5 Feb 2025 13:50:25 +0000 (UTC)
+	 MIME-Version; b=VYBxV9jUNIAZZKDYO0/ejlMOCw8U7rVy7nk+Bji2PxfQzIkwoycTx/fgZvqYa34G0b8V/zjiXN26ZvPar/3+EQXZXOz4HHa1xbhmLRm3eUC5xyuL0D0zHyP95byfcIebqlOAWnRkFmRqUk67G91CYQL0ntCps/zgu7mQ6Z4J/Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBpPOCHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AC8C4CED6;
+	Wed,  5 Feb 2025 14:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763426;
-	bh=YE2wwlQVo9WNszqb7MnDd8HBXe2iAA32Wobv7D5qb84=;
+	s=korg; t=1738765156;
+	bh=2v1YcY2NPulDzTPwmy4TN1f4sAAnuah9v7hc8Zi6VM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZ1vKkcYbyrYb/lanL2/2gGOunnaa0gXVsz3v2uLb0Z7OyMBzLY7nZ8p9fF8OpON7
-	 2sk3OEU7zkmYVCdO3zurMleeTactG+xpw5BcymHw9KRGw5p6Z8UsmKSjeRHPvBNoJw
-	 uNY7uDNKO2zvh2MWnoQpNcAFaD3fNuaEIttJCvwc=
+	b=mBpPOCHOObMcowxCAR30aJTYQUzvuGRat7ZQv67V9DHv4kkFjj55hIQ1CZwsOh7nW
+	 S9lMJvHF2WjJOP8BRvU3JNUOVBviszrbR1gC/iYpmO7b9wfTkjljyfUsisLzIsJZZz
+	 ehJaoDIdaJhF/ktzyD/8nGaBParzMwG+WOMgAEls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/393] drm/rockchip: vop2: Fix the windows switch between different layers
+Subject: [PATCH 6.12 195/590] wifi: mt76: mt7925: Cleanup MLO settings post-disconnection
 Date: Wed,  5 Feb 2025 14:39:10 +0100
-Message-ID: <20250205134421.494507685@linuxfoundation.org>
+Message-ID: <20250205134502.738593544@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 0ca953ac226eaffbe1a795f5e517095a8d494921 ]
+[ Upstream commit 816161051a039eeb1226fc85e2b38389f508906c ]
 
-Every layer of vop2 should bind a window, and we also need to make
-sure that this window is not used by other layer.
+Clean up MLO settings after disconnection.
 
-0x5 is a reserved layer sel value on rk3568, but it will select
-Cluster3 on rk3588, configure unused layers to 0x5  will lead
-alpha blending error on rk3588.
-
-When we bind a window from layerM to layerN, we move the old window
-on layerN to layerM.
-
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-3-andyshrk@163.com
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-16-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 47 ++++++++++++++------
- 1 file changed, 34 insertions(+), 13 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/main.c  | 37 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  2 +-
+ 3 files changed, 38 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 1295aaffe868a..724b75cfb6b5b 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1924,7 +1924,10 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 	struct drm_plane *plane;
- 	u32 layer_sel = 0;
- 	u32 port_sel;
--	unsigned int nlayer, ofs;
-+	u8 layer_id;
-+	u8 old_layer_id;
-+	u8 layer_sel_id;
-+	unsigned int ofs;
- 	u32 ovl_ctrl;
- 	int i;
- 	struct vop2_video_port *vp0 = &vop2->vps[0];
-@@ -1968,9 +1971,30 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 	for (i = 0; i < vp->id; i++)
- 		ofs += vop2->vps[i].nlayers;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index a4ffa34d58a41..116b6980c7335 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1149,8 +1149,7 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 		struct mt792x_bss_conf *mconf;
  
--	nlayer = 0;
- 	drm_atomic_crtc_for_each_plane(plane, &vp->crtc) {
- 		struct vop2_win *win = to_vop2_win(plane);
-+		struct vop2_win *old_win;
-+
-+		layer_id = (u8)(plane->state->normalized_zpos + ofs);
-+
-+		/*
-+		 * Find the layer this win bind in old state.
-+		 */
-+		for (old_layer_id = 0; old_layer_id < vop2->data->win_size; old_layer_id++) {
-+			layer_sel_id = (layer_sel >> (4 * old_layer_id)) & 0xf;
-+			if (layer_sel_id == win->data->layer_sel_id)
-+				break;
-+		}
-+
-+		/*
-+		 * Find the win bind to this layer in old state
-+		 */
-+		for (i = 0; i < vop2->data->win_size; i++) {
-+			old_win = &vop2->win[i];
-+			layer_sel_id = (layer_sel >> (4 * layer_id)) & 0xf;
-+			if (layer_sel_id == old_win->data->layer_sel_id)
-+				break;
-+		}
- 
- 		switch (win->data->phys_id) {
- 		case ROCKCHIP_VOP2_CLUSTER0:
-@@ -1999,17 +2023,14 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 			break;
- 		}
- 
--		layer_sel &= ~RK3568_OVL_LAYER_SEL__LAYER(plane->state->normalized_zpos + ofs,
--							  0x7);
--		layer_sel |= RK3568_OVL_LAYER_SEL__LAYER(plane->state->normalized_zpos + ofs,
--							 win->data->layer_sel_id);
--		nlayer++;
--	}
--
--	/* configure unused layers to 0x5 (reserved) */
--	for (; nlayer < vp->nlayers; nlayer++) {
--		layer_sel &= ~RK3568_OVL_LAYER_SEL__LAYER(nlayer + ofs, 0x7);
--		layer_sel |= RK3568_OVL_LAYER_SEL__LAYER(nlayer + ofs, 5);
-+		layer_sel &= ~RK3568_OVL_LAYER_SEL__LAYER(layer_id, 0x7);
-+		layer_sel |= RK3568_OVL_LAYER_SEL__LAYER(layer_id, win->data->layer_sel_id);
-+		/*
-+		 * When we bind a window from layerM to layerN, we also need to move the old
-+		 * window on layerN to layerM to avoid one window selected by two or more layers.
-+		 */
-+		layer_sel &= ~RK3568_OVL_LAYER_SEL__LAYER(old_layer_id, 0x7);
-+		layer_sel |= RK3568_OVL_LAYER_SEL__LAYER(old_layer_id, old_win->data->layer_sel_id);
+ 		mconf = mt792x_link_conf_to_mconf(link_conf);
+-		mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx, link_conf,
+-					link_sta, false);
++		mt792x_mac_link_bss_remove(dev, mconf, mlink);
  	}
  
- 	vop2_writel(vop2, RK3568_OVL_LAYER_SEL, layer_sel);
+ 	spin_lock_bh(&mdev->sta_poll_lock);
+@@ -1208,12 +1207,46 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ {
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
++	struct {
++		struct {
++			u8 omac_idx;
++			u8 band_idx;
++			__le16 pad;
++		} __packed hdr;
++		struct req_tlv {
++			__le16 tag;
++			__le16 len;
++			u8 active;
++			u8 link_idx; /* hw link idx */
++			u8 omac_addr[ETH_ALEN];
++		} __packed tlv;
++	} dev_req = {
++		.hdr = {
++			.omac_idx = 0,
++			.band_idx = 0,
++		},
++		.tlv = {
++			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
++			.len = cpu_to_le16(sizeof(struct req_tlv)),
++			.active = true,
++		},
++	};
+ 	unsigned long rem;
+ 
+ 	rem = ieee80211_vif_is_mld(vif) ? msta->valid_links : BIT(0);
+ 
+ 	mt7925_mac_sta_remove_links(dev, vif, sta, rem);
+ 
++	if (ieee80211_vif_is_mld(vif)) {
++		mt7925_mcu_set_dbdc(&dev->mphy, false);
++
++		/* recovery omac address for the legacy interface */
++		memcpy(dev_req.tlv.omac_addr, vif->addr, ETH_ALEN);
++		mt76_mcu_send_msg(mdev, MCU_UNI_CMD(DEV_INFO_UPDATE),
++				  &dev_req, sizeof(dev_req), true);
++
++	}
++
+ 	if (vif->type == NL80211_IFTYPE_STATION) {
+ 		struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index e4c0f234aeed2..c7dd263446c9e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2660,7 +2660,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ 				     MCU_UNI_CMD(BSS_INFO_UPDATE), true);
+ }
+ 
+-int mt7925_mcu_set_dbdc(struct mt76_phy *phy)
++int mt7925_mcu_set_dbdc(struct mt76_phy *phy, bool enable)
+ {
+ 	struct mt76_dev *mdev = phy->dev;
+ 
+@@ -2680,7 +2680,7 @@ int mt7925_mcu_set_dbdc(struct mt76_phy *phy)
+ 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_MBMC_SETTING, sizeof(*conf));
+ 	conf = (struct mbmc_conf_tlv *)tlv;
+ 
+-	conf->mbmc_en = 1;
++	conf->mbmc_en = enable;
+ 	conf->band = 0; /* unused */
+ 
+ 	err = mt76_mcu_skb_send_msg(mdev, skb, MCU_UNI_CMD(SET_DBDC_PARMS),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 31bb8ed2ec513..fe6a613ba0088 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -616,7 +616,7 @@ mt7925_mcu_get_cipher(int cipher)
+ 	}
+ }
+ 
+-int mt7925_mcu_set_dbdc(struct mt76_phy *phy);
++int mt7925_mcu_set_dbdc(struct mt76_phy *phy, bool enable);
+ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		       struct ieee80211_scan_request *scan_req);
+ int mt7925_mcu_cancel_hw_scan(struct mt76_phy *phy,
 -- 
 2.39.5
 
