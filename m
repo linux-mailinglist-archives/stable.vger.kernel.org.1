@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-113422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CB9A291A8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982C6A290C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C412B7A12F9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB43169663
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEB91FCFEE;
-	Wed,  5 Feb 2025 14:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7051632DA;
+	Wed,  5 Feb 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lbYkogE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWzyCGwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8AA18C93C;
-	Wed,  5 Feb 2025 14:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE32B151988;
+	Wed,  5 Feb 2025 14:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766908; cv=none; b=IyTlI079OvBAk7eOWcdXPqJh2Q1dSMRXTpfUQrIPuRgPl+NwrbMEqvD4BzTi4msbtlBIhDuOgNFgCuS7Bjju1hm1gBix0ofDCklEW0K0vzBpn9XuZhiMkPc/sXXEnhAqUG+tYVnHJuWbDDMx52MPTx5/ra+B5xqGWmox2x+1QOk=
+	t=1738766364; cv=none; b=uaPj4/9jCIgD3e+2cxIBxRp2s63aGM/D58MZncjIqRuwfpW0519AEGqpROiK0wGii+Tl7NRAXyoquIWgzzoo/3QmWcOoVpjrj46AdNqCTsw3BL7PhvtN3qvmSk+yyU+GRE7fAHLkliHRg/S2Jx2zTB1U7gusQ/NSEl0q2j48twA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766908; c=relaxed/simple;
-	bh=ovjDkOZNuoXu4QFCXnbtn89wUzjQpHWYNGFmv7kYAYE=;
+	s=arc-20240116; t=1738766364; c=relaxed/simple;
+	bh=Lh+Kw928QZ0nW/kkME3MIVGk8R6TsN24CvUpnrBGKRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLVr1NBK97mNQYPouFdIToAKX/oVcmIXYfcan7C4dv+YypBDZep/enA5Uew7LCK0TlVyxo/nwrAZYQ4hR4itZ50ymb+YqKaX+knV2s3nPKNnRlvIwRYFW1KYOeEso1gKIpxgubYpRNkTRd90nR+Bdi0xTu8IM9z4v8PU+xkI6ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lbYkogE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B971C4CED1;
-	Wed,  5 Feb 2025 14:48:27 +0000 (UTC)
+	 MIME-Version; b=SjbpfxYgNi1eR53RL648UAu1iL45w3WkszYiHDjP0BDh+5kQCxUk3aj2honY4UkM0dKr8hBXjXNzcZNSTcebNcUCjocbDG1z5l4g1Mehg7dCtg+gNPhQfB5nt8hEeAnD5xuZDSoIXRKsxoy5+mTHvF4kSaPr0TFtxOVpHQief0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWzyCGwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45343C4CED1;
+	Wed,  5 Feb 2025 14:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766907;
-	bh=ovjDkOZNuoXu4QFCXnbtn89wUzjQpHWYNGFmv7kYAYE=;
+	s=korg; t=1738766364;
+	bh=Lh+Kw928QZ0nW/kkME3MIVGk8R6TsN24CvUpnrBGKRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lbYkogE+0Ja2rAavZrz1tsSHv2gZoR39MnaPerbcX3DXZFtNlttETBvWU4VTS/cx
-	 xj0P8H87nRK5NF8E++STaI2DDEEo6EoT9YXhI4itRza0a/SFz6hZhsF1728SZNtvOp
-	 IJ0zL2rgyNneW7eWOynAflc1cP/t9Hw7zT0U1bj0=
+	b=HWzyCGwcjzDtwLWIZslKEdWGtJS8X3Fn4hQ0+rlrYBmdqwZmoCcwpGxT3pzVsGNBB
+	 FBmhz5WieZtp0s2g84gPse+b0gUE6i4/F3pG9aN/x6TtD08GtbV/mvDXT8xv09yfu2
+	 WEtOb8DM8hTMzhRr4c3hR1zI+Yfwg4ElV+cpIJEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Frank Sorenson <sorenson@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 327/623] smb: client: fix oops due to unset link speed
+Subject: [PATCH 6.12 314/590] rdma/cxgb4: Prevent potential integer overflow on 32bit
 Date: Wed,  5 Feb 2025 14:41:09 +0100
-Message-ID: <20250205134508.734723354@linuxfoundation.org>
+Message-ID: <20250205134507.290060477@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit be7a6a77669588bfa5022a470989702bbbb11e7f ]
+[ Upstream commit bd96a3935e89486304461a21752f824fc25e0f0b ]
 
-It isn't guaranteed that NETWORK_INTERFACE_INFO::LinkSpeed will always
-be set by the server, so the client must handle any values and then
-prevent oopses like below from happening:
+The "gl->tot_len" variable is controlled by the user.  It comes from
+process_responses().  On 32bit systems, the "gl->tot_len + sizeof(struct
+cpl_pass_accept_req) + sizeof(struct rss_header)" addition could have an
+integer wrapping bug.  Use size_add() to prevent this.
 
-Oops: divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 1323 Comm: cat Not tainted 6.13.0-rc7 #2
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
-04/01/2014
-RIP: 0010:cifs_debug_data_proc_show+0xa45/0x1460 [cifs] Code: 00 00 48
-89 df e8 3b cd 1b c1 41 f6 44 24 2c 04 0f 84 50 01 00 00 48 89 ef e8
-e7 d0 1b c1 49 8b 44 24 18 31 d2 49 8d 7c 24 28 <48> f7 74 24 18 48 89
-c3 e8 6e cf 1b c1 41 8b 6c 24 28 49 8d 7c 24
-RSP: 0018:ffffc90001817be0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88811230022c RCX: ffffffffc041bd99
-RDX: 0000000000000000 RSI: 0000000000000567 RDI: ffff888112300228
-RBP: ffff888112300218 R08: fffff52000302f5f R09: ffffed1022fa58ac
-R10: ffff888117d2c566 R11: 00000000fffffffe R12: ffff888112300200
-R13: 000000012a15343f R14: 0000000000000001 R15: ffff888113f2db58
-FS: 00007fe27119e740(0000) GS:ffff888148600000(0000)
-knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe2633c5000 CR3: 0000000124da0000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x27
- ? die+0x2e/0x50
- ? do_trap+0x159/0x1b0
- ? cifs_debug_data_proc_show+0xa45/0x1460 [cifs]
- ? do_error_trap+0x90/0x130
- ? cifs_debug_data_proc_show+0xa45/0x1460 [cifs]
- ? exc_divide_error+0x39/0x50
- ? cifs_debug_data_proc_show+0xa45/0x1460 [cifs]
- ? asm_exc_divide_error+0x1a/0x20
- ? cifs_debug_data_proc_show+0xa39/0x1460 [cifs]
- ? cifs_debug_data_proc_show+0xa45/0x1460 [cifs]
- ? seq_read_iter+0x42e/0x790
- seq_read_iter+0x19a/0x790
- proc_reg_read_iter+0xbe/0x110
- ? __pfx_proc_reg_read_iter+0x10/0x10
- vfs_read+0x469/0x570
- ? do_user_addr_fault+0x398/0x760
- ? __pfx_vfs_read+0x10/0x10
- ? find_held_lock+0x8a/0xa0
- ? __pfx_lock_release+0x10/0x10
- ksys_read+0xd3/0x170
- ? __pfx_ksys_read+0x10/0x10
- ? __rcu_read_unlock+0x50/0x270
- ? mark_held_locks+0x1a/0x90
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe271288911
-Code: 00 48 8b 15 01 25 10 00 f7 d8 64 89 02 b8 ff ff ff ff eb bd e8
-20 ad 01 00 f3 0f 1e fa 80 3d b5 a7 10 00 00 74 13 31 c0 0f 05 <48> 3d
-00 f0 ff ff 77 4f c3 66 0f 1f 44 00 00 55 48 89 e5 48 83 ec
-RSP: 002b:00007ffe87c079d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000040000 RCX: 00007fe271288911
-RDX: 0000000000040000 RSI: 00007fe2633c6000 RDI: 0000000000000003
-RBP: 00007ffe87c07a00 R08: 0000000000000000 R09: 00007fe2713e6380
-R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000040000
-R13: 00007fe2633c6000 R14: 0000000000000003 R15: 0000000000000000
- </TASK>
-
-Fix this by setting cifs_server_iface::speed to a sane value (1Gbps)
-by default when link speed is unset.
-
-Cc: Shyam Prasad N <nspmangalore@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Reported-by: Frank Sorenson <sorenson@redhat.com>
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 1cab775c3e75 ("RDMA/cxgb4: Fix LE hash collision bug for passive open connection")
+Link: https://patch.msgid.link/r/86b404e1-4a75-4a35-a34e-e3054fa554c7@stanley.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/cxgb4/device.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 87cb1872db28b..9790ff2cc5b32 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -658,7 +658,8 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 
- 	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
--		tmp_iface.speed = le64_to_cpu(p->LinkSpeed);
-+		/* default to 1Gbps when link speed is unset */
-+		tmp_iface.speed = le64_to_cpu(p->LinkSpeed) ?: 1000000000;
- 		tmp_iface.rdma_capable = le32_to_cpu(p->Capability & RDMA_CAPABLE) ? 1 : 0;
- 		tmp_iface.rss_capable = le32_to_cpu(p->Capability & RSS_CAPABLE) ? 1 : 0;
+diff --git a/drivers/infiniband/hw/cxgb4/device.c b/drivers/infiniband/hw/cxgb4/device.c
+index 80970a1738f8a..034b85c422555 100644
+--- a/drivers/infiniband/hw/cxgb4/device.c
++++ b/drivers/infiniband/hw/cxgb4/device.c
+@@ -1114,8 +1114,10 @@ static inline struct sk_buff *copy_gl_to_skb_pkt(const struct pkt_gl *gl,
+ 	 * The math here assumes sizeof cpl_pass_accept_req >= sizeof
+ 	 * cpl_rx_pkt.
+ 	 */
+-	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req) +
+-			sizeof(struct rss_header) - pktshift, GFP_ATOMIC);
++	skb = alloc_skb(size_add(gl->tot_len,
++				 sizeof(struct cpl_pass_accept_req) +
++				 sizeof(struct rss_header)) - pktshift,
++			GFP_ATOMIC);
+ 	if (unlikely(!skb))
+ 		return NULL;
  
 -- 
 2.39.5
