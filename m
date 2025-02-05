@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5E5A28EED
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B8EA28E2D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856607A19D9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDA1F1888771
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BE114B075;
-	Wed,  5 Feb 2025 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F8514A088;
+	Wed,  5 Feb 2025 14:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfVZxiLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIJ83WZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813F686348;
-	Wed,  5 Feb 2025 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42111519AA;
+	Wed,  5 Feb 2025 14:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765153; cv=none; b=C8U9LFNWFRodQZ7cxTk/PNcR4aTK7kyLMkPTawXZqL3OOUXMdlejTT0dGYh58YWGz89v1kE9eYWrdK0j9RMH2lXyQsAvuyhzLf3JKeeq4Lse0zgrljnPP5yyNfTdKPPRdyv/QADzUmgBf9Ii/I4UQakdqTweW25L9TZCJHBJPho=
+	t=1738764564; cv=none; b=b2FjCIkLrIsBEpQBG2vD7zb30On40zJocxU1PY6cHVoPbVcALlfqA+PQhpFjERveuOPPWIdpWsQSw1yDhNsZ3mhBdUFzclm6J0V9K3qijyRdwM+Eb5asRo7BhrRZxOUkjNm8kbPzLov3SiKN7Ya7kHoheS8yKK1UYy4M9HkPrsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765153; c=relaxed/simple;
-	bh=hJ4iLKUGH1tCXV338NVCobMjE6HVoSqtVnaaac0nFOs=;
+	s=arc-20240116; t=1738764564; c=relaxed/simple;
+	bh=t4dYbrtxt31LTAvDg9i1lCOmbkcQn42o1BJbaV0otLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJ1L4zdM8SEv48NZeLjbHOE2SehHuhrgmAqUQQoJmjydgaTsQaMdvrrrTmbXEItP9YE8Z4do6S++E87Htd9mLXStOCmmnDFn2NFwBYGU/yyq8nf7A54etDDBsjR9iqvWzP1L+0tKg/m0/FPxoi9W6TDJp3+1xq8DYOk1bypmuJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfVZxiLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFDFC4CED1;
-	Wed,  5 Feb 2025 14:19:12 +0000 (UTC)
+	 MIME-Version; b=flHhbdDUx5DvsK90LIMFs3sJ2G5xHlj6att/TWnxHnAQN3s/hXs5UXFAEkQFux3gHmT9MS42B0+xFFtNoMwAYku0902pIHqk2XKoHBKUeNMYPUzjmb9kroqykEySrhxJKw7ziKeNQPcU6lTz1fI1OUKl+/9BBYgeLaDPvUobzsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIJ83WZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1097DC4CED1;
+	Wed,  5 Feb 2025 14:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765153;
-	bh=hJ4iLKUGH1tCXV338NVCobMjE6HVoSqtVnaaac0nFOs=;
+	s=korg; t=1738764564;
+	bh=t4dYbrtxt31LTAvDg9i1lCOmbkcQn42o1BJbaV0otLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfVZxiLR8aJzXpoNTy9TXnVcodI3Be1n8G20wSG4L+93lef5R5mDjhHjtrq4UH1Gi
-	 NNSZn/han8/5oCtFsGgq3+6udQDkBbfdSmXJS+zHnmIo2VE2Vm0FWvCi30+9FAe9/v
-	 rtJIndQ84aVn6/w7fGD7pz+ioxnbY1Nf9+Ahhffc=
+	b=kIJ83WZ+c1NSY9Av1d/VXQOqtXAEJM1fH+feIhKSbLvTKbYgATF+OfqEtKlC6F9f0
+	 mrvqNUmkQrdSd728otEDackn6jBxxU75CIvGPWVTxDYnCZvqWMx3MtpVfbvZ+YOzPh
+	 8+ignU7gjTpm90oUOMO59JujERqLkF11G5Nd3Eh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Shayne Chen <shayne.chen@mediatek.com>,
+	Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
+	Santhosh Ramesh <quic_santrame@quicinc.com>,
 	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 151/623] wifi: mt76: mt7996: fix invalid interface combinations
+Subject: [PATCH 6.12 138/590] wifi: ath12k: fix tx power, max reg power update to firmware
 Date: Wed,  5 Feb 2025 14:38:13 +0100
-Message-ID: <20250205134502.012461483@linuxfoundation.org>
+Message-ID: <20250205134500.549883981@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
 
-[ Upstream commit 89aca45f26879dfbbf8374c425c4811f69cfc2df ]
+[ Upstream commit 3540bba855b4b422e8b977d11aa8173ccb4f089d ]
 
-Setting beacon_int_min_gcd and NL80211_IFTYPE_ADHOC in the same interface
-combination is invalid, which will trigger the following warning trace
-and get error returned from wiphy_register().
+Currently, when the vdev start WMI cmd is sent from host, vdev related
+parameters such as max_reg_power, max_power, and max_antenna_gain are
+multiplied by 2 before being sent to the firmware. This is incorrect
+because the firmware uses 1 dBm steps for power calculations.
 
-[   10.080325] Call trace:
-[   10.082761]  wiphy_register+0xc4/0x76c [cfg80211]
-[   10.087465]  ieee80211_register_hw+0x800/0xac4 [mac80211]
-[   10.092868]  mt76_register_device+0x16c/0x2c0 [mt76]
-[   10.097829]  mt7996_register_device+0x740/0x844 [mt7996e]
+This leads to incorrect power values being used in the firmware and
+radio, potentially causing incorrect behavior.
 
-Fix this by removing unused adhoc iftype.
+Fix the update of max_reg_power, max_power, and max_antenna_gain values
+in the ath12k_mac_vdev_start_restart function, ensuring accurate
+power settings in the firmware by sending these values as-is,
+without multiplication.
 
-Fixes: 948f65249868 ("wifi: mt76: mt7996: advertize beacon_int_min_gcd")
-Reported-by: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Tested-By: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241007135133.5336-1-shayne.chen@mediatek.com
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Signed-off-by: Santhosh Ramesh <quic_santrame@quicinc.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240909073049.3423035-1-quic_santrame@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 5e96973226bbb..efa7b0697a406 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -16,9 +16,6 @@
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 8946141aa0dce..fbf5d57283576 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -7220,9 +7220,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
+ 							chandef->chan->band,
+ 							arvif->vif->type);
+ 	arg.min_power = 0;
+-	arg.max_power = chandef->chan->max_power * 2;
+-	arg.max_reg_power = chandef->chan->max_reg_power * 2;
+-	arg.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
++	arg.max_power = chandef->chan->max_power;
++	arg.max_reg_power = chandef->chan->max_reg_power;
++	arg.max_antenna_gain = chandef->chan->max_antenna_gain;
  
- static const struct ieee80211_iface_limit if_limits[] = {
- 	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_ADHOC)
--	}, {
- 		.max = 16,
- 		.types = BIT(NL80211_IFTYPE_AP)
- #ifdef CONFIG_MAC80211_MESH
+ 	arg.pref_tx_streams = ar->num_tx_chains;
+ 	arg.pref_rx_streams = ar->num_rx_chains;
 -- 
 2.39.5
 
