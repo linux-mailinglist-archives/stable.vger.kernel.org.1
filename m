@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D2FA29342
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22187A2905C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D708C16F6AC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8804C164A36
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4828C1DD87D;
-	Wed,  5 Feb 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F48E14B959;
+	Wed,  5 Feb 2025 14:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlf09iQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWlK22hB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0646C33993;
-	Wed,  5 Feb 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC0D151988;
+	Wed,  5 Feb 2025 14:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767693; cv=none; b=gxMcklTMSaX1gQgzPtRIuvgTPNvAOm0TrPeNfOwA1veSDD2vkJI863cXxce3XIsfRJ4ee02fvwClgmXDVm+2hFBI6EaoLbhGQNYZ08AZqOMAzqK1glowJLPY+K/rGEZvT1V39xEd0/6epzz9Xbrk+5Q05ycoXICjeG8IlingQZ8=
+	t=1738766093; cv=none; b=Z0zOw7Rr0sSDGGegV7rWqM7193fCEj8BxTwpiwnp+46GsQ+VCV+tHnrmqAuQoUsfoaJ/fFmQywktS+s/mq6SH+dUTdIXv3TYWp6Yp2i6UJfZ6GJZhqqv5RXBORannaawZ8tzHZIhvj5h+xE7pvgHhtKBCYD/SsF0DQ827SN/vKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767693; c=relaxed/simple;
-	bh=Fzv+X0hdPSdXTygdlzX6mB/O07+tQuWmzmC0H/yA6C0=;
+	s=arc-20240116; t=1738766093; c=relaxed/simple;
+	bh=tDafhmk5fBULWZvkzGauo9iRk+SFr24JNlhzs2jef4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLGpvOX3ybPPH/4Yqy3eUOdt1WTdgaGCNLj1pq1joKKGPZXY/BTB3hwYswaBaEf9dZOdMhLvlA/SqttzkNi0sVTu3xNrz2Ut3nQ0zlEFJvJr5xcKSM+5LO7nZllSDbS3/oVxbGjg/yBAQ1ofzf0GQ+aTaFk9BB1B03mOed0RqLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlf09iQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6715BC4CED1;
-	Wed,  5 Feb 2025 15:01:32 +0000 (UTC)
+	 MIME-Version; b=P0eN0e9PS/Jpgr6c0cBIZA0ycPa9HYBmeII+5sVF8mCKsTSWZMLkXsd273DeBEF6nWCvp6LHPrp5A9WyTbdv+WXrRakGcaJZzUP89N4yrFVvjW/p+8EduMljstwvvexEEMQ1tO8yY2ZP88HhOKs7FwbqaBpwigtMg2beQ95GwJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWlK22hB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BC8C4CED1;
+	Wed,  5 Feb 2025 14:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767692;
-	bh=Fzv+X0hdPSdXTygdlzX6mB/O07+tQuWmzmC0H/yA6C0=;
+	s=korg; t=1738766093;
+	bh=tDafhmk5fBULWZvkzGauo9iRk+SFr24JNlhzs2jef4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlf09iQZ0rVP+U6Gfzgg8XA/TssBUlmWhLzrsPM4M3zIVIHvuf8W5qlWu7AhkI9PR
-	 CZHZ4UEcQp+hrtQ7HAlCt9/Y5riGhp7bpBlVCzWGeMN/M728evb9eXWxiiVmX9hO8h
-	 dsNLNM+fiAgRYyzIfCkGgfZ11QJMy61EhBDNAi7Q=
+	b=BWlK22hBt1irotcmgZGE7Z7GH7PU+CVZdymjmTNIHQs5gQzMQMkniCi1RlciTHvEh
+	 yHx09mUeohrGEMbxYCV6zQvrbeLQXXz8Fu9hOuTEYcbYDGV+yhSYWHZLcpme90WTgl
+	 T4aBSJNZCxU0Iu2hQR882gpo2x+egmo/GncJ7rC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 493/590] net: rose: fix timer races against user threads
+Subject: [PATCH 6.6 329/393] net: rose: fix timer races against user threads
 Date: Wed,  5 Feb 2025 14:44:08 +0100
-Message-ID: <20250205134514.131508061@linuxfoundation.org>
+Message-ID: <20250205134432.903239571@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
