@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB38A28CDF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A58A28FFA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADFC0165508
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 141ED7A17C2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850D814A630;
-	Wed,  5 Feb 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AB41519AF;
+	Wed,  5 Feb 2025 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3uXTBn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNx5cWCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A95142E86;
-	Wed,  5 Feb 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723DA70825;
+	Wed,  5 Feb 2025 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763708; cv=none; b=O1dHW8daQfSSU9uCISN6CsPgWdOknI++dEA3y/3N2o/EFggrbd27bivI4IRqgJ8vrApnhMINk/sp+2Z0cgFNr5Nbu2anK1gyoRIPqjPkFb313+ANoV5g4sqxkKJeF6mz9u+mLI20k17e9cZAuz0stS2hpY2N8mygLGyMnBq8VOo=
+	t=1738765871; cv=none; b=HlfCK+4f0ZpY3A/AHVShl4I3J2SrXSSfx/iF16Bu4rwgpueM1qb1S3K0PNcW8uXo9wLAD+xtGKz/9xSRGznfy4hUPr9j1cREI6YXD/bbjVy90dRRlNf+xwd4mnEI8D3RVuvOt3FMGmI8ItBsMDQzzvgUUOTDd3BiC6FREt8NSy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763708; c=relaxed/simple;
-	bh=Nte7VqKIAce/GPTEpBARcFLd/HcZ+tb5paz2hOBbfY4=;
+	s=arc-20240116; t=1738765871; c=relaxed/simple;
+	bh=GRk0FtJobpWPjooub5emkbbSfECeRAwWMgAw7sg5kJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfpfd+WVAP52P9uPXmQTWIJ2XjLUnrLaATx06cKc0M+NSAsdFPdslhIGLJTFF+ZPR8RqFwL5yUrougnOeWi+wdpLQgCHe7OFt2LZ5eIJZEXavVrywaZH0WjY63cQw5wXlY5zq7qnZS89tk2t3mGw30rF/4y6G1iJGFROABFk42U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3uXTBn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD92C4CED1;
-	Wed,  5 Feb 2025 13:55:07 +0000 (UTC)
+	 MIME-Version; b=dgixyt/KZmYTqGJMnFNGRHehVYsxhdGFKxrkn3Oyc7q/a/R3RaUQffSHtVvUsd4TdBWzLwZafDdrYlr/c/oOh8S+guECP6FlpP8wrpQpCFQHAsek0aszZrPVNoybIq6AZ1Xr6TPOKyCjDN3GgwNxTFTBH2R8Rvbac8CC8eSzDWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNx5cWCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BB0C4CED1;
+	Wed,  5 Feb 2025 14:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763708;
-	bh=Nte7VqKIAce/GPTEpBARcFLd/HcZ+tb5paz2hOBbfY4=;
+	s=korg; t=1738765871;
+	bh=GRk0FtJobpWPjooub5emkbbSfECeRAwWMgAw7sg5kJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3uXTBn0T30Yl4Mg6igXLW4kMnr6VDGwbt6B8l4vEFPy4wXBOFoUpv4KDsVwWmUBX
-	 7l+GzVeuBiZm9Zud7T++5rEw95P58Jh781BHY8Sc1tQNmtPxmdn3V+VQ75sNW3Rprz
-	 bQNOGkemlab5tla27y4DYN2/6gbqALB1NQucIqns=
+	b=CNx5cWCctNLvOKO43Y3q7c2ewrv1oXI33pyvbfDztmu5P4ZZu5A7eCa2FGqVysCDl
+	 GGv8RfWsAGnPGre2NKZiewGqE2Yyxu0KOv8sdRPiaGoFh3LdbaKDebBbQvkMqRqCBb
+	 PQLKuR/G6OeSeWmzImpFW68OW+blkMxue4Alkzo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/393] clk: qcom: gcc-sdm845: Do not use shared clk_ops for QUPs
-Date: Wed,  5 Feb 2025 14:40:17 +0100
-Message-ID: <20250205134424.045323784@linuxfoundation.org>
+Subject: [PATCH 6.12 263/590] bpf: Use refcount_t instead of atomic_t for mmap_count
+Date: Wed,  5 Feb 2025 14:40:18 +0100
+Message-ID: <20250205134505.337855931@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,187 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Pundir <amit.pundir@linaro.org>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit f760a4bb5e927a133dcd75f7b69ccae2a331e42c ]
+[ Upstream commit dfa94ce54f4139c893b9c4ec17df6f7c6a7515d3 ]
 
-Similar to the earlier fixes meant for sm8x50 and x1e platforms,
-we have to stop using the shared clk ops for sdm845 QUPs as well.
+Use an API that resembles more the actual use of mmap_count.
 
-As Stephen Boyd pointed out in earlier fixes, there wasn't a problem
-to mark QUP clks shared until we started parking shared RCGs at clk
-registration time in commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs
-upon registration"). Parking at init is actually harmful to the UART
-when earlycon is used. If the device is pumping out data while the
-frequency changes and we see garbage on the serial console until the
-driver can probe and actually set a proper frequency.
+Found by cocci:
+kernel/bpf/arena.c:245:6-25: WARNING: atomic_dec_and_test variation before object free at line 249.
 
-This patch reverts the QUP clk sharing ops part of commit 06391eddb60a
-("clk: qcom: Add Global Clock controller (GCC) driver for SDM845"), so
-that the QUPs on sdm845 don't get parked during clk registration and
-break UART operations.
-
-Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Link: https://lore.kernel.org/r/20241209174912.2526928-1-amit.pundir@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b90d77e5fd78 ("bpf: Fix remap of arena.")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412292037.LXlYSHKl-lkp@intel.com/
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://lore.kernel.org/r/6ecce439a6bc81adb85d5080908ea8959b792a50.1735542814.git.xiaopei01@kylinos.cn
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdm845.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ kernel/bpf/arena.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
-index ea4c3bf4fb9bf..1a23bfd9356d5 100644
---- a/drivers/clk/qcom/gcc-sdm845.c
-+++ b/drivers/clk/qcom/gcc-sdm845.c
-@@ -454,7 +454,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s0_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s0_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index e52b3ad231b9c..93e48c7cad4ef 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -212,7 +212,7 @@ static u64 arena_map_mem_usage(const struct bpf_map *map)
+ struct vma_list {
+ 	struct vm_area_struct *vma;
+ 	struct list_head head;
+-	atomic_t mmap_count;
++	refcount_t mmap_count;
  };
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s0_clk_src = {
-@@ -470,7 +470,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s1_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s1_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
+@@ -222,7 +222,7 @@ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
+ 	vml = kmalloc(sizeof(*vml), GFP_KERNEL);
+ 	if (!vml)
+ 		return -ENOMEM;
+-	atomic_set(&vml->mmap_count, 1);
++	refcount_set(&vml->mmap_count, 1);
+ 	vma->vm_private_data = vml;
+ 	vml->vma = vma;
+ 	list_add(&vml->head, &arena->vma_list);
+@@ -233,7 +233,7 @@ static void arena_vm_open(struct vm_area_struct *vma)
+ {
+ 	struct vma_list *vml = vma->vm_private_data;
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s1_clk_src = {
-@@ -486,7 +486,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s2_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s2_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+-	atomic_inc(&vml->mmap_count);
++	refcount_inc(&vml->mmap_count);
+ }
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s2_clk_src = {
-@@ -502,7 +502,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s3_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s3_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+ static void arena_vm_close(struct vm_area_struct *vma)
+@@ -242,7 +242,7 @@ static void arena_vm_close(struct vm_area_struct *vma)
+ 	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
+ 	struct vma_list *vml = vma->vm_private_data;
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s3_clk_src = {
-@@ -518,7 +518,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s4_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s4_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s4_clk_src = {
-@@ -534,7 +534,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s5_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s5_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s5_clk_src = {
-@@ -550,7 +550,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s6_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s6_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s6_clk_src = {
-@@ -566,7 +566,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s7_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s7_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s7_clk_src = {
-@@ -582,7 +582,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s0_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s0_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s0_clk_src = {
-@@ -598,7 +598,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s1_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s1_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s1_clk_src = {
-@@ -614,7 +614,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s2_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s2_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s2_clk_src = {
-@@ -630,7 +630,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s3_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s3_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s3_clk_src = {
-@@ -646,7 +646,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s4_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s4_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s4_clk_src = {
-@@ -662,7 +662,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s5_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s5_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s5_clk_src = {
-@@ -678,7 +678,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s6_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s6_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s6_clk_src = {
-@@ -694,7 +694,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s7_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s7_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s7_clk_src = {
+-	if (!atomic_dec_and_test(&vml->mmap_count))
++	if (!refcount_dec_and_test(&vml->mmap_count))
+ 		return;
+ 	guard(mutex)(&arena->lock);
+ 	/* update link list under lock */
 -- 
 2.39.5
 
