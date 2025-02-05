@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92E6A293DE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C9EA293E7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9C1D3AB552
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56B3C7A2D16
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843E521345;
-	Wed,  5 Feb 2025 15:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8173B18C01E;
+	Wed,  5 Feb 2025 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8gpOg62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffLh6TCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FADEDF59;
-	Wed,  5 Feb 2025 15:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BE3158536;
+	Wed,  5 Feb 2025 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768172; cv=none; b=aW1VoHw9ZQuOK+R1UrNGCeUkadmq4YZE2+VfuaOPVAKKRGe88Zb1sxBngwMi9rWQVbM4ltyB3miJTsLSrEq6N3uhu8xhxLfo+UsrSvp/+ZnfroRxsnw9ujxcrLrrlE2nHEzk1jryCfaCCHY5NyrFaS1SlW0AE9sBN42LKBZ41Bo=
+	t=1738768511; cv=none; b=IZUrOlhtMwK1MVn522JXL08bYRDmk+3NfmzZ6eDGxEaf2eZuBIC69/GgW7nPqCtZLWKKiAYs9XrDCixtzoTLqjxaw+Sm6PtYAW4da2vtZFYVsZ6ojmbjrbhQANIkLagOuQBk4QMze/DtYptEVaWnB1UNa+57dpe2GvxMHGTVJyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768172; c=relaxed/simple;
-	bh=zBohVMKDf1hcI9PgrikyzhUkx23surPYGJnNTzC92BQ=;
+	s=arc-20240116; t=1738768511; c=relaxed/simple;
+	bh=09SjyKC2H13P8WLxGX3CIGsZZkjitZE4mk9pXp+2UBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoCL8mPvmtad6lK/zL+t6GjoQHkTqcS47rfs7QIKCUEJUZvE55qMuod4Y1NW1gjBmzMtJhsJVr5GwNcdClSobo8eJk6HJLL70kuNemFEmjLc8TT3v9ANP3M08RDVIpMI/OJdCZP9aAgfmygOmOL+WhgjshyVRejpW3FyFGhKaAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8gpOg62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2054C4CED1;
-	Wed,  5 Feb 2025 15:09:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HnxXmf71PEvO1jzN6es3X3aqJBDJy6hgfQ4Mu2/VGAoNOD6r+VHAR0RwaNxdasjPw9UTeUTouMW0iaKz86/fX6bhuEBgYqzU4N6F8HhRRWoxZ/AL+ZafxeT7ACuv16bhKj2yqjkTHhLjEEq/wurRzY7L93vbF+nxGBs003UxM/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffLh6TCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9772DC4CED1;
+	Wed,  5 Feb 2025 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768172;
-	bh=zBohVMKDf1hcI9PgrikyzhUkx23surPYGJnNTzC92BQ=;
+	s=korg; t=1738768511;
+	bh=09SjyKC2H13P8WLxGX3CIGsZZkjitZE4mk9pXp+2UBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8gpOg62oXf5kHkhLXnrQP3k4oU095qkRMjlzEZN7MahBC0qeJmPIBI366j/4Hfs7
-	 pYE2hUkgqH03CJTvIPN09szy+i9EX6knrXfhwccwCsxIZZsy1p0HDc7E1kRbUlnCjV
-	 PSiagQ82Jo2eh/5OoyNnx8+ONZbDCyNN93hsAVME=
+	b=ffLh6TCKzQB9j6tqBr9rz2g1ab5jWUvPWV1gc/Ums+xD9ARlpZEV8C+FN/5Z707g7
+	 5CbgovCwnhfotdCBy8USibN3JobcC6+dopEZmVlGjSAq7tXXy8I8ZFZGCvmIeUge6f
+	 XPtFjf1pDY9YyH6A3dpdZ2FeDU4y5xckzIyHS1Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 563/590] mptcp: pm: only set fullmesh for subflow endp
-Date: Wed,  5 Feb 2025 14:45:18 +0100
-Message-ID: <20250205134516.807435215@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Yu Kuai <yukuai1@huaweicloud.com>
+Subject: [PATCH 6.13 577/623] md/md-bitmap: move bitmap_{start, end}write to md upper layer
+Date: Wed,  5 Feb 2025 14:45:19 +0100
+Message-ID: <20250205134518.296365050@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +60,334 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 1bb0d1348546ad059f55c93def34e67cb2a034a6 upstream.
+commit cd5fc653381811f1e0ba65f5d169918cab61476f upstream.
 
-With the in-kernel path-manager, it is possible to change the 'fullmesh'
-flag. The code in mptcp_pm_nl_fullmesh() expects to change it only on
-'subflow' endpoints, to recreate more or less subflows using the linked
-address.
+There are two BUG reports that raid5 will hang at
+bitmap_startwrite([1],[2]), root cause is that bitmap start write and end
+write is unbalanced, it's not quite clear where, and while reviewing raid5
+code, it's found that bitmap operations can be optimized. For example,
+for a 4 disks raid5, with chunksize=8k, if user issue a IO (0 + 48k) to
+the array:
 
-Unfortunately, the set_flags() hook was a bit more permissive, and
-allowed 'implicit' endpoints to get the 'fullmesh' flag while it is not
-allowed before.
+┌────────────────────────────────────────────────────────────┐
+│chunk 0                                                     │
+│      ┌────────────┬─────────────┬─────────────┬────────────┼
+│  sh0 │A0: 0 + 4k  │A1: 8k + 4k  │A2: 16k + 4k │A3: P       │
+│      ┼────────────┼─────────────┼─────────────┼────────────┼
+│  sh1 │B0: 4k + 4k │B1: 12k + 4k │B2: 20k + 4k │B3: P       │
+┼──────┴────────────┴─────────────┴─────────────┴────────────┼
+│chunk 1                                                     │
+│      ┌────────────┬─────────────┬─────────────┬────────────┤
+│  sh2 │C0: 24k + 4k│C1: 32k + 4k │C2: P        │C3: 40k + 4k│
+│      ┼────────────┼─────────────┼─────────────┼────────────┼
+│  sh3 │D0: 28k + 4k│D1: 36k + 4k │D2: P        │D3: 44k + 4k│
+└──────┴────────────┴─────────────┴─────────────┴────────────┘
 
-That's what syzbot found, triggering the following warning:
+Before this patch, 4 stripe head will be used, and each sh will attach
+bio for 3 disks, and each attached bio will trigger
+bitmap_startwrite() once, which means total 12 times.
+ - 3 times (0 + 4k), for (A0, A1 and A2)
+ - 3 times (4 + 4k), for (B0, B1 and B2)
+ - 3 times (8 + 4k), for (C0, C1 and C3)
+ - 3 times (12 + 4k), for (D0, D1 and D3)
 
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 __mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 6499 Comm: syz.1.413 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
-  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
-  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
-  RIP: 0010:mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
-  RIP: 0010:mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
-  Code: 01 00 00 49 89 c5 e8 fb 45 e8 f5 e9 b8 fc ff ff e8 f1 45 e8 f5 4c 89 f7 be 03 00 00 00 e8 44 1d 0b f9 eb a0 e8 dd 45 e8 f5 90 <0f> 0b 90 e9 17 ff ff ff 89 d9 80 e1 07 38 c1 0f 8c c9 fc ff ff 48
-  RSP: 0018:ffffc9000d307240 EFLAGS: 00010293
-  RAX: ffffffff8bb72e03 RBX: 0000000000000000 RCX: ffff88807da88000
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffffc9000d307430 R08: ffffffff8bb72cf0 R09: 1ffff1100b842a5e
-  R10: dffffc0000000000 R11: ffffed100b842a5f R12: ffff88801e2e5ac0
-  R13: ffff88805c214800 R14: ffff88805c2152e8 R15: 1ffff1100b842a5d
-  FS:  00005555619f6500(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020002840 CR3: 00000000247e6000 CR4: 00000000003526f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2542
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
-   netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1347
-   netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1891
-   sock_sendmsg_nosec net/socket.c:711 [inline]
-   __sock_sendmsg+0x221/0x270 net/socket.c:726
-   ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
-   ___sys_sendmsg net/socket.c:2637 [inline]
-   __sys_sendmsg+0x269/0x350 net/socket.c:2669
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f5fe8785d29
-  Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007fff571f5558 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f5fe8975fa0 RCX: 00007f5fe8785d29
-  RDX: 0000000000000000 RSI: 0000000020000480 RDI: 0000000000000007
-  RBP: 00007f5fe8801b08 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007f5fe8975fa0 R14: 00007f5fe8975fa0 R15: 00000000000011f4
-   </TASK>
+After this patch, md upper layer will calculate that IO range (0 + 48k)
+is corresponding to the bitmap (0 + 16k), and call bitmap_startwrite()
+just once.
 
-Here, syzbot managed to set the 'fullmesh' flag on an 'implicit' and
-used -- according to 'id_avail_bitmap' -- endpoint, causing the PM to
-try decrement the local_addr_used counter which is only incremented for
-the 'subflow' endpoint.
+Noted that this patch will align bitmap ranges to the chunks, for example,
+if user issue a IO (0 + 4k) to array:
 
-Note that 'no type' endpoints -- not 'subflow', 'signal', 'implicit' --
-are fine, because their ID will not be marked as used in the 'id_avail'
-bitmap, and setting 'fullmesh' can help forcing the creation of subflow
-when receiving an ADD_ADDR.
+- Before this patch, 1 time (0 + 4k), for A0;
+- After this patch, 1 time (0 + 8k) for chunk 0;
 
-Fixes: 73c762c1f07d ("mptcp: set fullmesh flag in pm_netlink")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/6786ac51.050a0220.216c54.00a6.GAE@google.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/540
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250123-net-mptcp-syzbot-issues-v1-2-af73258a726f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Usually, one bitmap bit will represent more than one disk chunk, and this
+doesn't have any difference. And even if user really created a array
+that one chunk contain multiple bits, the overhead is that more data
+will be recovered after power failure.
+
+Also remove STRIPE_BITMAP_PENDING since it's not used anymore.
+
+[1] https://lore.kernel.org/all/CAJpMwyjmHQLvm6zg1cmQErttNNQPDAAXPKM3xgTjMhbfts986Q@mail.gmail.com/
+[2] https://lore.kernel.org/all/ADF7D720-5764-4AF3-B68E-1845988737AA@flyingcircus.io/
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250109015145.158868-6-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Yu Kuai <yukuai1@huaweicloud.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/md.c          |   29 +++++++++++++++++++++++++++
+ drivers/md/md.h          |    2 +
+ drivers/md/raid1.c       |    4 ---
+ drivers/md/raid10.c      |    3 --
+ drivers/md/raid5-cache.c |    2 -
+ drivers/md/raid5.c       |   50 +++++------------------------------------------
+ drivers/md/raid5.h       |    3 --
+ 7 files changed, 37 insertions(+), 56 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -2049,7 +2049,8 @@ int mptcp_pm_nl_set_flags(struct sk_buff
- 		return -EINVAL;
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8745,12 +8745,32 @@ void md_submit_discard_bio(struct mddev
+ }
+ EXPORT_SYMBOL_GPL(md_submit_discard_bio);
+ 
++static void md_bitmap_start(struct mddev *mddev,
++			    struct md_io_clone *md_io_clone)
++{
++	if (mddev->pers->bitmap_sector)
++		mddev->pers->bitmap_sector(mddev, &md_io_clone->offset,
++					   &md_io_clone->sectors);
++
++	mddev->bitmap_ops->startwrite(mddev, md_io_clone->offset,
++				      md_io_clone->sectors);
++}
++
++static void md_bitmap_end(struct mddev *mddev, struct md_io_clone *md_io_clone)
++{
++	mddev->bitmap_ops->endwrite(mddev, md_io_clone->offset,
++				    md_io_clone->sectors);
++}
++
+ static void md_end_clone_io(struct bio *bio)
+ {
+ 	struct md_io_clone *md_io_clone = bio->bi_private;
+ 	struct bio *orig_bio = md_io_clone->orig_bio;
+ 	struct mddev *mddev = md_io_clone->mddev;
+ 
++	if (bio_data_dir(orig_bio) == WRITE && mddev->bitmap)
++		md_bitmap_end(mddev, md_io_clone);
++
+ 	if (bio->bi_status && !orig_bio->bi_status)
+ 		orig_bio->bi_status = bio->bi_status;
+ 
+@@ -8775,6 +8795,12 @@ static void md_clone_bio(struct mddev *m
+ 	if (blk_queue_io_stat(bdev->bd_disk->queue))
+ 		md_io_clone->start_time = bio_start_io_acct(*bio);
+ 
++	if (bio_data_dir(*bio) == WRITE && mddev->bitmap) {
++		md_io_clone->offset = (*bio)->bi_iter.bi_sector;
++		md_io_clone->sectors = bio_sectors(*bio);
++		md_bitmap_start(mddev, md_io_clone);
++	}
++
+ 	clone->bi_end_io = md_end_clone_io;
+ 	clone->bi_private = md_io_clone;
+ 	*bio = clone;
+@@ -8793,6 +8819,9 @@ void md_free_cloned_bio(struct bio *bio)
+ 	struct bio *orig_bio = md_io_clone->orig_bio;
+ 	struct mddev *mddev = md_io_clone->mddev;
+ 
++	if (bio_data_dir(orig_bio) == WRITE && mddev->bitmap)
++		md_bitmap_end(mddev, md_io_clone);
++
+ 	if (bio->bi_status && !orig_bio->bi_status)
+ 		orig_bio->bi_status = bio->bi_status;
+ 
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -831,6 +831,8 @@ struct md_io_clone {
+ 	struct mddev	*mddev;
+ 	struct bio	*orig_bio;
+ 	unsigned long	start_time;
++	sector_t	offset;
++	unsigned long	sectors;
+ 	struct bio	bio_clone;
+ };
+ 
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -422,8 +422,6 @@ static void close_write(struct r1bio *r1
+ 
+ 	if (test_bit(R1BIO_BehindIO, &r1_bio->state))
+ 		mddev->bitmap_ops->end_behind_write(mddev);
+-	/* clear the bitmap if all writes complete successfully */
+-	mddev->bitmap_ops->endwrite(mddev, r1_bio->sector, r1_bio->sectors);
+ 	md_write_end(mddev);
+ }
+ 
+@@ -1632,8 +1630,6 @@ static void raid1_write_request(struct m
+ 
+ 			if (test_bit(R1BIO_BehindIO, &r1_bio->state))
+ 				mddev->bitmap_ops->start_behind_write(mddev);
+-			mddev->bitmap_ops->startwrite(mddev, r1_bio->sector,
+-						      r1_bio->sectors);
+ 			first_clone = 0;
+ 		}
+ 
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -428,8 +428,6 @@ static void close_write(struct r10bio *r
+ {
+ 	struct mddev *mddev = r10_bio->mddev;
+ 
+-	/* clear the bitmap if all writes complete successfully */
+-	mddev->bitmap_ops->endwrite(mddev, r10_bio->sector, r10_bio->sectors);
+ 	md_write_end(mddev);
+ }
+ 
+@@ -1506,7 +1504,6 @@ static void raid10_write_request(struct
+ 	md_account_bio(mddev, &bio);
+ 	r10_bio->master_bio = bio;
+ 	atomic_set(&r10_bio->remaining, 1);
+-	mddev->bitmap_ops->startwrite(mddev, r10_bio->sector, r10_bio->sectors);
+ 
+ 	for (i = 0; i < conf->copies; i++) {
+ 		if (r10_bio->devs[i].bio)
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -313,8 +313,6 @@ void r5c_handle_cached_data_endio(struct
+ 		if (sh->dev[i].written) {
+ 			set_bit(R5_UPTODATE, &sh->dev[i].flags);
+ 			r5c_return_dev_pending_writes(conf, &sh->dev[i]);
+-			conf->mddev->bitmap_ops->endwrite(conf->mddev,
+-					sh->sector, RAID5_STRIPE_SECTORS(conf));
+ 		}
  	}
- 	if ((addr.flags & MPTCP_PM_ADDR_FLAG_FULLMESH) &&
--	    (entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
-+	    (entry->flags & (MPTCP_PM_ADDR_FLAG_SIGNAL |
-+			     MPTCP_PM_ADDR_FLAG_IMPLICIT))) {
- 		spin_unlock_bh(&pernet->lock);
- 		GENL_SET_ERR_MSG(info, "invalid addr flags");
- 		return -EINVAL;
+ }
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -906,8 +906,7 @@ static bool stripe_can_batch(struct stri
+ 	if (raid5_has_log(conf) || raid5_has_ppl(conf))
+ 		return false;
+ 	return test_bit(STRIPE_BATCH_READY, &sh->state) &&
+-		!test_bit(STRIPE_BITMAP_PENDING, &sh->state) &&
+-		is_full_stripe_write(sh);
++	       is_full_stripe_write(sh);
+ }
+ 
+ /* we only do back search */
+@@ -3545,29 +3544,9 @@ static void __add_stripe_bio(struct stri
+ 		 (*bip)->bi_iter.bi_sector, sh->sector, dd_idx,
+ 		 sh->dev[dd_idx].sector);
+ 
+-	if (conf->mddev->bitmap && firstwrite) {
+-		/* Cannot hold spinlock over bitmap_startwrite,
+-		 * but must ensure this isn't added to a batch until
+-		 * we have added to the bitmap and set bm_seq.
+-		 * So set STRIPE_BITMAP_PENDING to prevent
+-		 * batching.
+-		 * If multiple __add_stripe_bio() calls race here they
+-		 * much all set STRIPE_BITMAP_PENDING.  So only the first one
+-		 * to complete "bitmap_startwrite" gets to set
+-		 * STRIPE_BIT_DELAY.  This is important as once a stripe
+-		 * is added to a batch, STRIPE_BIT_DELAY cannot be changed
+-		 * any more.
+-		 */
+-		set_bit(STRIPE_BITMAP_PENDING, &sh->state);
+-		spin_unlock_irq(&sh->stripe_lock);
+-		conf->mddev->bitmap_ops->startwrite(conf->mddev, sh->sector,
+-					RAID5_STRIPE_SECTORS(conf));
+-		spin_lock_irq(&sh->stripe_lock);
+-		clear_bit(STRIPE_BITMAP_PENDING, &sh->state);
+-		if (!sh->batch_head) {
+-			sh->bm_seq = conf->seq_flush+1;
+-			set_bit(STRIPE_BIT_DELAY, &sh->state);
+-		}
++	if (conf->mddev->bitmap && firstwrite && !sh->batch_head) {
++		sh->bm_seq = conf->seq_flush+1;
++		set_bit(STRIPE_BIT_DELAY, &sh->state);
+ 	}
+ }
+ 
+@@ -3618,7 +3597,6 @@ handle_failed_stripe(struct r5conf *conf
+ 	BUG_ON(sh->batch_head);
+ 	for (i = disks; i--; ) {
+ 		struct bio *bi;
+-		int bitmap_end = 0;
+ 
+ 		if (test_bit(R5_ReadError, &sh->dev[i].flags)) {
+ 			struct md_rdev *rdev = conf->disks[i].rdev;
+@@ -3643,8 +3621,6 @@ handle_failed_stripe(struct r5conf *conf
+ 		sh->dev[i].towrite = NULL;
+ 		sh->overwrite_disks = 0;
+ 		spin_unlock_irq(&sh->stripe_lock);
+-		if (bi)
+-			bitmap_end = 1;
+ 
+ 		log_stripe_write_finished(sh);
+ 
+@@ -3659,10 +3635,6 @@ handle_failed_stripe(struct r5conf *conf
+ 			bio_io_error(bi);
+ 			bi = nextbi;
+ 		}
+-		if (bitmap_end)
+-			conf->mddev->bitmap_ops->endwrite(conf->mddev,
+-					sh->sector, RAID5_STRIPE_SECTORS(conf));
+-		bitmap_end = 0;
+ 		/* and fail all 'written' */
+ 		bi = sh->dev[i].written;
+ 		sh->dev[i].written = NULL;
+@@ -3671,7 +3643,6 @@ handle_failed_stripe(struct r5conf *conf
+ 			sh->dev[i].page = sh->dev[i].orig_page;
+ 		}
+ 
+-		if (bi) bitmap_end = 1;
+ 		while (bi && bi->bi_iter.bi_sector <
+ 		       sh->dev[i].sector + RAID5_STRIPE_SECTORS(conf)) {
+ 			struct bio *bi2 = r5_next_bio(conf, bi, sh->dev[i].sector);
+@@ -3705,9 +3676,6 @@ handle_failed_stripe(struct r5conf *conf
+ 				bi = nextbi;
+ 			}
+ 		}
+-		if (bitmap_end)
+-			conf->mddev->bitmap_ops->endwrite(conf->mddev,
+-					sh->sector, RAID5_STRIPE_SECTORS(conf));
+ 		/* If we were in the middle of a write the parity block might
+ 		 * still be locked - so just clear all R5_LOCKED flags
+ 		 */
+@@ -4056,8 +4024,7 @@ returnbi:
+ 					bio_endio(wbi);
+ 					wbi = wbi2;
+ 				}
+-				conf->mddev->bitmap_ops->endwrite(conf->mddev,
+-					sh->sector, RAID5_STRIPE_SECTORS(conf));
++
+ 				if (head_sh->batch_head) {
+ 					sh = list_first_entry(&sh->batch_list,
+ 							      struct stripe_head,
+@@ -4882,8 +4849,7 @@ static void break_stripe_batch_list(stru
+ 					  (1 << STRIPE_COMPUTE_RUN)  |
+ 					  (1 << STRIPE_DISCARD) |
+ 					  (1 << STRIPE_BATCH_READY) |
+-					  (1 << STRIPE_BATCH_ERR) |
+-					  (1 << STRIPE_BITMAP_PENDING)),
++					  (1 << STRIPE_BATCH_ERR)),
+ 			"stripe state: %lx\n", sh->state);
+ 		WARN_ONCE(head_sh->state & ((1 << STRIPE_DISCARD) |
+ 					      (1 << STRIPE_REPLACED)),
+@@ -5774,10 +5740,6 @@ static void make_discard_request(struct
+ 		}
+ 		spin_unlock_irq(&sh->stripe_lock);
+ 		if (conf->mddev->bitmap) {
+-			for (d = 0; d < conf->raid_disks - conf->max_degraded;
+-			     d++)
+-				mddev->bitmap_ops->startwrite(mddev, sh->sector,
+-					RAID5_STRIPE_SECTORS(conf));
+ 			sh->bm_seq = conf->seq_flush + 1;
+ 			set_bit(STRIPE_BIT_DELAY, &sh->state);
+ 		}
+--- a/drivers/md/raid5.h
++++ b/drivers/md/raid5.h
+@@ -371,9 +371,6 @@ enum {
+ 	STRIPE_ON_RELEASE_LIST,
+ 	STRIPE_BATCH_READY,
+ 	STRIPE_BATCH_ERR,
+-	STRIPE_BITMAP_PENDING,	/* Being added to bitmap, don't add
+-				 * to batch yet.
+-				 */
+ 	STRIPE_LOG_TRAPPED,	/* trapped into log (see raid5-cache.c)
+ 				 * this bit is used in two scenarios:
+ 				 *
 
 
 
