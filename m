@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43605A29370
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1828CA28FE7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA4116CFFA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5464E1693FA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D6D15CD74;
-	Wed,  5 Feb 2025 15:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C0C157465;
+	Wed,  5 Feb 2025 14:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWANiKLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ip7jYz9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613AB1519BF;
-	Wed,  5 Feb 2025 15:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1760155756;
+	Wed,  5 Feb 2025 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767934; cv=none; b=gYjiPVbEyu0ymbfal4whX+uROzlzMCx0fpzR4txaQFKUTGaNE4ytRqkJMq6e55LM2vBnyS4Q/cNrE9ih9LoPC8wO4VgUZsZnePCZ757kk7JZJJmrkCWK5NsldtdXCLjrZebwSfRVQJvBBlC4KJWyriWSQ6dwm7epPQGcFW9cV+g=
+	t=1738765783; cv=none; b=m1zw4Ti3j2ZdtFcMUyx4mDJ0h2Hxj8MPA1v6+80PdOyP8ybelhwYm7wM84JrO0NPRNhpfTpWhvx3r1X9frLyI+xOKFIyql6D9zT9ebFW2YyJrvNBJMyVJ/83WZU6lYB+AbohA3gSI8eWepEtOe75UhR3gXx25hFPCbl9WbSE2Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767934; c=relaxed/simple;
-	bh=HmPcAUieQ0/w4zcxs1tFQgewLkE7PLPV5dZ1bzxkhKk=;
+	s=arc-20240116; t=1738765783; c=relaxed/simple;
+	bh=eX5MD+e5e5zf7NGsyh7g8JU//yaORqkNHezkuxm6Wao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObMxyTznD8iKx8o6SHIaqiNroe9gFE+pCZBbMFqof3OfzQsINa/CBhJdh9Gxd8OyeEDivcYs2d4m34yvadfL7wNTQUcrLEsZs676L518hjlnacrICZu4W4VoozsBx4My0mq/5W4+wA2yTYxA7JxmmiJrAAyO9h4oOoUVWOkRLy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWANiKLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98E3C4CED1;
-	Wed,  5 Feb 2025 15:05:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c/Di/KN+5qQwlTCNSyGeOaXgxN0m5mpwFlb5RkcqJ7VmJHZcASa7F+cnDjUepsiGWsYZbHFwC/KRbtOyWfyZK4CjeVpAPQMkiN6tkKuqHdgqf3AezrDThIsq983EjfVzWtbRb96agXpu+OUfeha/Ggfjlh8SU/oG29bdK3TKjhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ip7jYz9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC49C4CED1;
+	Wed,  5 Feb 2025 14:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767934;
-	bh=HmPcAUieQ0/w4zcxs1tFQgewLkE7PLPV5dZ1bzxkhKk=;
+	s=korg; t=1738765783;
+	bh=eX5MD+e5e5zf7NGsyh7g8JU//yaORqkNHezkuxm6Wao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWANiKLrPlDTmAX0f3NR9mIoJXUW3YRBqmWAJxbd5dQUUrDkFQ9Pz8Ltuv073vzHy
-	 gMXTAsn9XEMd0Wj9Aseo+j68psSDDdKhAVaWvUfl1baT9A8xJ6tgbALpDMLfkGCVSi
-	 PAYx2S+gF3JXkecxkLRizr2o7JIxq17AHV+SzUIc=
+	b=ip7jYz9O44vJJqbUBs8CteDnoHwpPiFrr3jwGLgkgT5lKYQQpLTJjLNcLd7/jzGQM
+	 3HbZPctcSX5IQ/69VQJBMZUYryuGdu6tVmiC4PnAKck8rJfvnkHNn1taqk+mVvZMU1
+	 F2f8gftwRu5JhkTo5wGORulstp0Wze72E0+zRWOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	King Dix <kingdix10@qq.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 474/623] scsi: ufs: bsg: Delete bsg_dev when setting up bsg fails
-Date: Wed,  5 Feb 2025 14:43:36 +0100
-Message-ID: <20250205134514.351690732@linuxfoundation.org>
+Subject: [PATCH 6.6 298/393] PCI: rcar-ep: Fix incorrect variable used when calling devm_request_mem_region()
+Date: Wed,  5 Feb 2025 14:43:37 +0100
+Message-ID: <20250205134431.713424641@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: King Dix <kingdix10@qq.com>
 
-[ Upstream commit fcf247deb3c3e1c6be5774e3fa03bbd018eff1a9 ]
+[ Upstream commit 2d2da5a4c1b4509f6f7e5a8db015cd420144beb4 ]
 
-We should remove the bsg device when bsg_setup_queue() fails to release the
-resources.
+The rcar_pcie_parse_outbound_ranges() uses the devm_request_mem_region()
+macro to request a needed resource. A string variable that lives on the
+stack is then used to store a dynamically computed resource name, which
+is then passed on as one of the macro arguments. This can lead to
+undefined behavior.
 
-Fixes: df032bf27a41 ("scsi: ufs: Add a bsg endpoint that supports UPIUs")
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241218014214.64533-2-kanie@linux.alibaba.com
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Depending on the current contents of the memory, the manifestations of
+errors may vary. One possible output may be as follows:
+
+  $ cat /proc/iomem
+  30000000-37ffffff :
+  38000000-3fffffff :
+
+Sometimes, garbage may appear after the colon.
+
+In very rare cases, if no NULL-terminator is found in memory, the system
+might crash because the string iterator will overrun which can lead to
+access of unmapped memory above the stack.
+
+Thus, fix this by replacing outbound_name with the name of the previously
+requested resource. With the changes applied, the output will be as
+follows:
+
+  $ cat /proc/iomem
+  30000000-37ffffff : memory2
+  38000000-3fffffff : memory3
+
+Fixes: 2a6d0d63d999 ("PCI: rcar: Add endpoint mode support")
+Link: https://lore.kernel.org/r/tencent_DBDCC19D60F361119E76919ADAB25EC13C06@qq.com
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: King Dix <kingdix10@qq.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs_bsg.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/pcie-rcar-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
-index 6c09d97ae0065..58023f735c195 100644
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -257,6 +257,7 @@ int ufs_bsg_probe(struct ufs_hba *hba)
- 			NULL, 0);
- 	if (IS_ERR(q)) {
- 		ret = PTR_ERR(q);
-+		device_del(bsg_dev);
- 		goto out;
- 	}
- 
+diff --git a/drivers/pci/controller/pcie-rcar-ep.c b/drivers/pci/controller/pcie-rcar-ep.c
+index f9682df1da619..209719fb6ddcc 100644
+--- a/drivers/pci/controller/pcie-rcar-ep.c
++++ b/drivers/pci/controller/pcie-rcar-ep.c
+@@ -107,7 +107,7 @@ static int rcar_pcie_parse_outbound_ranges(struct rcar_pcie_endpoint *ep,
+ 		}
+ 		if (!devm_request_mem_region(&pdev->dev, res->start,
+ 					     resource_size(res),
+-					     outbound_name)) {
++					     res->name)) {
+ 			dev_err(pcie->dev, "Cannot request memory region %s.\n",
+ 				outbound_name);
+ 			return -EIO;
 -- 
 2.39.5
 
