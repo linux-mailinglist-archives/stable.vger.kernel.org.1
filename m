@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4321DA28C93
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F843A28F92
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1F063A2CC1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE965188145E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94751494DF;
-	Wed,  5 Feb 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D79155382;
+	Wed,  5 Feb 2025 14:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPaxcPSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGWrYJGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ACA142E86;
-	Wed,  5 Feb 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E0214A088;
+	Wed,  5 Feb 2025 14:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763479; cv=none; b=XQbfKRNzTeMeANTLytJeOl3hFdiPmh5Viqo4SVhPTUVJEUV4H6505BrSx0vKCvz3gPLtmP13zDgLoGSrDqXvVpv7Re7i4mMWcC3WkGHLc64q8HO1mXkGuje6tgeQI5fs9ZngvrcMw+jw/4lsYuw9028SwRuZlo+2dhy2y/adEOk=
+	t=1738765596; cv=none; b=e9NxtorkI/+xzszngCm/FqCCJvS7jvG/phDBZ+ensyv79n1g3zxZs0fA/MjC6VrTB24jzQLwmVPGIuPEuS7pVXS8xh3q6mmD3JBnG1/CPWoNEIvtIPGQFNwxYzR3yRbRa1GolfJtgjXPZXWmjAFMrWCG6ZRIbtLbIZwAmrwe66Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763479; c=relaxed/simple;
-	bh=U2VnthXZIF7GNaG68BFIwDfT8iu1t34r7ITUdAC7mqA=;
+	s=arc-20240116; t=1738765596; c=relaxed/simple;
+	bh=DDuzxaRDm/ONejRTV0TE81oV7xcFmgIarSXWezWueIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbN4uwx7EeuuGgwjtBe+ArVJxQFd8KDqHgZ4APvnW4buqb1FwsTpvNBpfNm5WxPWPmBR9N+d6jJWLKxzBvALK3D5oo4rN4k3oOploG7qyEKMNfMmZd4NnZMncLYYIRVx0/4OT9lfgX3KueExoj5ikrdjVVGcDi4A4mobOd/4GQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPaxcPSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF280C4CED1;
-	Wed,  5 Feb 2025 13:51:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H00LpqvhcIQDdi3exxp++6wrrIy1m5kyczoUT4v0TMwUYL7Or/NScMhCa7gACT+vWXnl5V7OIxzhzLlATF5lA6FSAEmjx7yI1L3BHlbvlzc8sCEMuN1baqLuNXo3uRBVMhfiKDdO08Dd3fcLbkWRQ/B4rGU0p6SPGd+0FPS+a9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGWrYJGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44026C4CED1;
+	Wed,  5 Feb 2025 14:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763479;
-	bh=U2VnthXZIF7GNaG68BFIwDfT8iu1t34r7ITUdAC7mqA=;
+	s=korg; t=1738765596;
+	bh=DDuzxaRDm/ONejRTV0TE81oV7xcFmgIarSXWezWueIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPaxcPSn/fc5lSLGP07bhU3J47QKeg4mElAA8AM2VPEM9lKnvRLASrJ6IuxUr7dbO
-	 6NdmygdS0/n+JGsC4vXQZSPpiVt4FAoQim6M+wTkkdHXumXjKYbYwnAKJU553vbQx4
-	 wcT9fcucSuHHUSi0BnrD/7gAQ6kDDxVlAIPqdD0Y=
+	b=SGWrYJGe9YptpZYjSbHlXRMBcpMoOAXfcjzN0ShDQLSLFpdWDtvgADd99MN3IX+WI
+	 JTJaxLzHoXMZYGiHsiGRI316NREraD2gdYg1U8b98msf/TMx8+XIEQIXx9F53bQMjH
+	 lIGtZYzXZAh27zRYvl1LjpThGl7zy1WQhGANqAJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/393] regulator: dt-bindings: mt6315: Drop regulator-compatible property
+Subject: [PATCH 6.12 235/590] platform/x86: x86-android-tablets: make platform data be static
 Date: Wed,  5 Feb 2025 14:39:50 +0100
-Message-ID: <20250205134423.009498840@linuxfoundation.org>
+Message-ID: <20250205134504.271380156@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 08242719a8af603db54a2a79234a8fe600680105 ]
+[ Upstream commit 6e0fb1bdb71cf8078c8532617e565e3db22c0d3c ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+make lenovo_yoga_tab2_1380_bq24190_pdata and lenovo_yoga_tab2_1380_modules
+to be static
 
-Drop the property from the MT6315 regulator binding and its examples.
-
-Fixes: 977fb5b58469 ("regulator: document binding for MT6315 regulator")
-Fixes: 6d435a94ba5b ("regulator: mt6315: Enforce regulator-compatible, not name")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20241211052427.4178367-2-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410160432.oJAPbrW9-lkp@intel.com/
+Fixes: 3eee73ad42c3 ("platform/x86: x86-android-tablets: Add Lenovo Yoga Tablet 2 Pro 1380F/L data")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/daafd1371e7e9946217712ce8720e29cd5c52f7a.1732161310.git.xiaopei01@kylinos.cn
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/regulator/mt6315-regulator.yaml     | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/platform/x86/x86-android-tablets/lenovo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-index 6317daf76d1fb..2bed57a347827 100644
---- a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-@@ -31,10 +31,6 @@ properties:
-         $ref: regulator.yaml#
-         unevaluatedProperties: false
+diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
+index ae087f1471c17..a60efbaf4817f 100644
+--- a/drivers/platform/x86/x86-android-tablets/lenovo.c
++++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
+@@ -601,7 +601,7 @@ static const struct regulator_init_data lenovo_yoga_tab2_1380_bq24190_vbus_init_
+ 	.num_consumer_supplies = 1,
+ };
  
--        properties:
--          regulator-compatible:
--            pattern: "^vbuck[1-4]$"
--
-     additionalProperties: false
+-struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
++static struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
+ 	.regulator_init_data = &lenovo_yoga_tab2_1380_bq24190_vbus_init_data,
+ };
  
- required:
-@@ -52,7 +48,6 @@ examples:
+@@ -726,7 +726,7 @@ static const struct platform_device_info lenovo_yoga_tab2_1380_pdevs[] __initcon
+ 	},
+ };
  
-       regulators {
-         vbuck1 {
--          regulator-compatible = "vbuck1";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
-@@ -60,7 +55,6 @@ examples:
-         };
- 
-         vbuck3 {
--          regulator-compatible = "vbuck3";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
+-const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
++static const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
+ 	"bq24190_charger",            /* For the Vbus regulator for lc824206xa */
+ 	NULL
+ };
 -- 
 2.39.5
 
