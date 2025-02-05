@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54693A291BC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97D5A2904A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1944188D433
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06B53A9E25
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A337918DF7C;
-	Wed,  5 Feb 2025 14:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AF315FA7B;
+	Wed,  5 Feb 2025 14:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCXuNKxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8QdJQz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED651662EF;
-	Wed,  5 Feb 2025 14:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA6115B984;
+	Wed,  5 Feb 2025 14:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766556; cv=none; b=pgzb8V8fw7fq3KsctF8vXcWrZ0i6C0U+TnO8KChrzW3aMc3jest0hG4urtglxd+7ncMd48p06KeHAif7hX8ru45+G6ANTqFl5p476pc7iqhRWYFFOxYoXTWFa+uZZOKPkiO9S0uyR4NABc+mBEu8R/+kh5cLagG1TMiwbDT+/eM=
+	t=1738765997; cv=none; b=lzcnW1x+Hg184PSSOV806vOyGOSvrol9V9HZg1Yce5PIGE7IqEULRrB17ZFFOPf8qJnpFW3uqbY3GZO/TwrgpflC2l07l07BvC6Z2t5Kv3BcQ3f+7FAdDXDlEqpl1SNOsutWWU0eedb2zA7g8r+PPdDf339T3YQY7e2pouQMGtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766556; c=relaxed/simple;
-	bh=UQrNuYt24g9XW/S2fqDjKDJXj1yUbP4mhwLa33kPJvs=;
+	s=arc-20240116; t=1738765997; c=relaxed/simple;
+	bh=tK+TmaycY9PiTSuFU/EmLT0+j6ceeDNyT5bzjcKANUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEXKyUDSEQve1tKzWavVRk4crPIg9rveH4ZnW+zukM+E6r1iEQOD3RpzSl0IrDveeP+8XZQzrdPjkoxtMXAaV1wJFkTDz8cJmilZJP3wNMjUTI5LQD5xFkni4/OtPa4VBZ8WRoxDnHAzwJYFXByvOiI5Fj9BmZaRI7rh1xRvTSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCXuNKxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDE6C4CED1;
-	Wed,  5 Feb 2025 14:42:35 +0000 (UTC)
+	 MIME-Version; b=tc+Y8Xiy0jaD+NcChlaovixGgy8wRiN6tZS9OUUvbm59ZdnrZYx2eUYROmDS+2joklvBZOgyRwPt6NPnx47r8K1ke9cp4e5YDFjlMoGlqGAiS8oq+SV1guvQfvo1qWb0Gomn/lP/avEa7Nh6skMNN0wmfbSplp5rMJ7ynEdy+j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8QdJQz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB056C4CED1;
+	Wed,  5 Feb 2025 14:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766556;
-	bh=UQrNuYt24g9XW/S2fqDjKDJXj1yUbP4mhwLa33kPJvs=;
+	s=korg; t=1738765997;
+	bh=tK+TmaycY9PiTSuFU/EmLT0+j6ceeDNyT5bzjcKANUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCXuNKxV6E6pAbqW71ruGRxUixWC6DAkphqyRpYLGDp4FxaJfk0/W9CvB0q0Z2dDD
-	 1stXSGF/r+uBdDXFINnrUsPpdQl9skYn3JSUAcF1DTPD9Gbx3DvmS+UbeeTQMNw3yx
-	 1qp7J9GNVxLc+7QJIjpMZXnbYwoh5WdMsWZuByhs=
+	b=g8QdJQz3XFCaglcp1+OTpCiT1TY292xiZUFidh740Cf2wCc8g9J8qkC9D+B8ldFH4
+	 g4dUy/uOcAJGD/DMElLSCHdUKSaWF0psn+Fxa6ybc2gHbgZWaWoeYa19oQqmXbBSO1
+	 Q8pziijlINUwnNd5TltI/aJzC5v0SuzcOjDx7nHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 287/623] iommu/vt-d: Draining PRQ in sva unbind path when FPD bit set
+Subject: [PATCH 6.12 274/590] ASoC: Intel: avs: Fix the minimum firmware version numbers
 Date: Wed,  5 Feb 2025 14:40:29 +0100
-Message-ID: <20250205134507.210396382@linuxfoundation.org>
+Message-ID: <20250205134505.756165310@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit cf08ca81d08a04b3b304e8fb4e052f323a09783d ]
+[ Upstream commit dbda5c35b88794f6e5efe1b5b20044b0b3a340d4 ]
 
-When a device uses a PASID for SVA (Shared Virtual Address), it's possible
-that the PASID entry is marked as non-present and FPD bit set before the
-device flushes all ongoing DMA requests and removes the SVA domain. This
-can occur when an exception happens and the process terminates before the
-device driver stops DMA and calls the iommu driver to unbind the PASID.
+For few TGL-based platforms the minor version number for AudioDSP
+firmware is incorrect forcing users to utilize ignore_fw_version module
+parameter.
 
-There's no need to drain the PRQ in the mm release path. Instead, the PRQ
-will be drained in the SVA unbind path. But in such case,
-intel_pasid_tear_down_entry() only checks the presence of the pasid entry
-and returns directly.
-
-Add the code to clear the FPD bit and drain the PRQ.
-
-Fixes: c43e1ccdebf2 ("iommu/vt-d: Drain PRQs when domain removed from RID")
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20241217024240.139615-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 5acb19ecd198 ("ASoC: Intel: avs: TGL-based platforms support")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250109122216.3667847-3-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/pasid.c | 22 +++++++++++++++++++++-
- drivers/iommu/intel/pasid.h |  6 ++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ sound/soc/intel/avs/core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 5b7d85f1e143c..fb59a7d35958f 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -244,11 +244,31 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
+diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
+index 73d4bde9b2f78..82839d0994ee3 100644
+--- a/sound/soc/intel/avs/core.c
++++ b/sound/soc/intel/avs/core.c
+@@ -829,10 +829,10 @@ static const struct avs_spec jsl_desc = {
+ 	.hipc = &cnl_hipc_spec,
+ };
  
- 	spin_lock(&iommu->lock);
- 	pte = intel_pasid_get_entry(dev, pasid);
--	if (WARN_ON(!pte) || !pasid_pte_is_present(pte)) {
-+	if (WARN_ON(!pte)) {
- 		spin_unlock(&iommu->lock);
- 		return;
- 	}
- 
-+	if (!pasid_pte_is_present(pte)) {
-+		if (!pasid_pte_is_fault_disabled(pte)) {
-+			WARN_ON(READ_ONCE(pte->val[0]) != 0);
-+			spin_unlock(&iommu->lock);
-+			return;
-+		}
-+
-+		/*
-+		 * When a PASID is used for SVA by a device, it's possible
-+		 * that the pasid entry is non-present with the Fault
-+		 * Processing Disabled bit set. Clear the pasid entry and
-+		 * drain the PRQ for the PASID before return.
-+		 */
-+		pasid_clear_entry(pte);
-+		spin_unlock(&iommu->lock);
-+		intel_iommu_drain_pasid_prq(dev, pasid);
-+
-+		return;
-+	}
-+
- 	did = pasid_get_domain_id(pte);
- 	pgtt = pasid_pte_get_pgtt(pte);
- 	intel_pasid_clear_entry(dev, pasid, fault_ignore);
-diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
-index 082f4fe20216a..668d8ece6b143 100644
---- a/drivers/iommu/intel/pasid.h
-+++ b/drivers/iommu/intel/pasid.h
-@@ -73,6 +73,12 @@ static inline bool pasid_pte_is_present(struct pasid_entry *pte)
- 	return READ_ONCE(pte->val[0]) & PASID_PTE_PRESENT;
+-#define AVS_TGL_BASED_SPEC(sname)		\
++#define AVS_TGL_BASED_SPEC(sname, min)		\
+ static const struct avs_spec sname##_desc = {	\
+ 	.name = #sname,				\
+-	.min_fw_version = { 10,	29, 0, 5646 },	\
++	.min_fw_version = { 10,	min, 0, 5646 },	\
+ 	.dsp_ops = &avs_tgl_dsp_ops,		\
+ 	.core_init_mask = 1,			\
+ 	.attributes = AVS_PLATATTR_IMR,		\
+@@ -840,11 +840,11 @@ static const struct avs_spec sname##_desc = {	\
+ 	.hipc = &cnl_hipc_spec,			\
  }
  
-+/* Get FPD(Fault Processing Disable) bit of a PASID table entry */
-+static inline bool pasid_pte_is_fault_disabled(struct pasid_entry *pte)
-+{
-+	return READ_ONCE(pte->val[0]) & PASID_PTE_FPD;
-+}
-+
- /* Get PGTT field of a PASID table entry */
- static inline u16 pasid_pte_get_pgtt(struct pasid_entry *pte)
- {
+-AVS_TGL_BASED_SPEC(lkf);
+-AVS_TGL_BASED_SPEC(tgl);
+-AVS_TGL_BASED_SPEC(ehl);
+-AVS_TGL_BASED_SPEC(adl);
+-AVS_TGL_BASED_SPEC(adl_n);
++AVS_TGL_BASED_SPEC(lkf, 28);
++AVS_TGL_BASED_SPEC(tgl, 29);
++AVS_TGL_BASED_SPEC(ehl, 30);
++AVS_TGL_BASED_SPEC(adl, 35);
++AVS_TGL_BASED_SPEC(adl_n, 35);
+ 
+ static const struct pci_device_id avs_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_SKL_LP, &skl_desc) },
 -- 
 2.39.5
 
