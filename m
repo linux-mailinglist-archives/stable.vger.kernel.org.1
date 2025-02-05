@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AF7A29448
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB6CA2943E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3DA16C35B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BCFE3AA8E8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33291D89FA;
-	Wed,  5 Feb 2025 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7D0192D83;
+	Wed,  5 Feb 2025 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1S5WyvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwW8dttf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFDC1D89F8;
-	Wed,  5 Feb 2025 15:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C71C1519B4;
+	Wed,  5 Feb 2025 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768657; cv=none; b=hWlWhySfzWNWf5dJC/hsEzxXfE7c8UFC6zhfHBsOna+N8dbzmFcJTd/a5KO/OPH1OiyvPmJ7b6dzTnSfOl1Q2tDZe0gqEc3l9gDoJ4qr14xje9bCAHp55IWzTrGCLGjiez5JpkI2AGqkUqFe0adza0kAYaEndrn6Dqy5dMaVNcw=
+	t=1738768356; cv=none; b=orF2AkgfwRgaYk9Kfy1rcPqjG7COwEnS6X+0Z4Wmhcxp63W3kEY+0Zw5RgDwUHQm2dCV2iIJOlIptWrd7VfY/CUhdM/ZVpByERhZaX6HjpskG/5jx4yKlDoYJYvi6K+Jj5/9+w0bv37wkFLthAQuQlXOktyhH63a63YM1lLstbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768657; c=relaxed/simple;
-	bh=anMvIjPKpswV/EUbXc4W1YSLmgSchPYO8sRhBTDzq+g=;
+	s=arc-20240116; t=1738768356; c=relaxed/simple;
+	bh=UKLDgKiCt1j+jt6bawfSQNgUGXqucer2Ja6S4pxXppU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNm681KlU9aVx5pv0K/E7fzIw4HVeeZjw7g9/dNB5XvVG6LdH9ToTfKvQJA/JxX391MEuUEiLhaWVCIWCHAE5UiHiPAHqOuzcaDHCAFdL25kAmM0bWuVczg+wXDn0/VkUFCdmCHlm0kiXM9+eXI2wkFzAADkkvv0RZN2kxt832w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1S5WyvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE4BC4CED6;
-	Wed,  5 Feb 2025 15:17:36 +0000 (UTC)
+	 MIME-Version; b=AFbMrfBj9d4zSIkOHbgj4CrZQtWOZ2NDzfUkATYDW2B9pJ2dwGKEkKOmDfSUF49wFdtzPCT3fHTXMElE24P9zIEnUXcEi2KCQen2qbHocjtJWnFehHVhtvfRub9SmeVOo+BuB+BOWcM/M7F3Stc2HtZS5eb9+EwmqqQb0xMYgqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwW8dttf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4A6C4CED6;
+	Wed,  5 Feb 2025 15:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768656;
-	bh=anMvIjPKpswV/EUbXc4W1YSLmgSchPYO8sRhBTDzq+g=;
+	s=korg; t=1738768356;
+	bh=UKLDgKiCt1j+jt6bawfSQNgUGXqucer2Ja6S4pxXppU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1S5WyvWC3ynj1q65wXA+5HYGTKHbmYXKIkkr7EmpwokUScrC2sKGdPLs8Ukip7w2
-	 Cyhl3O4IFpgQwS+nL1aq1XuFdihpEzvTxCtuCMOrpoGHCMVMjaubDoDT6Og1eaO9WM
-	 3ugYPk2U4l/1bnDZwOzZYuR1y8LV6nF2tUwh9DdQ=
+	b=RwW8dttfjvJ3YDF7f+bdZdjAJ30aYhvGADu1HV3ELWq4aHIC2nF5P5Jgq7jybYPFM
+	 HGpAHgAvJ1OA5A6l5nA6HlP7ILGP02DC/RUdpnADPj8rAC+GjJaMI3bVRyodlbzEXf
+	 N1ZcrIy07cASN+EVbEDmMMF9W5qCvF4s2zI0WdiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 588/623] ALSA: usb-audio: Add delay quirk for iBasso DC07 Pro
+	Christoph Anton Mitterer <calestyo@scientia.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 575/590] btrfs: output the reason for open_ctree() failure
 Date: Wed,  5 Feb 2025 14:45:30 +0100
-Message-ID: <20250205134518.721337046@linuxfoundation.org>
+Message-ID: <20250205134517.265867628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit d85fc52cbb9a719c8335d93a28d6a79d7acd419f upstream.
+commit d0f038104fa37380e2a725e669508e43d0c503e9 upstream.
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+There is a recent ML report that mounting a large fs backed by hardware
+RAID56 controller (with one device missing) took too much time, and
+systemd seems to kill the mount attempt.
 
-usb 1-1: New USB device found, idVendor=2fc6, idProduct=f0b7
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-usb 1-1: Product: iBasso DC07 Pro
-usb 1-1: Manufacturer: iBasso
-usb 1-1: SerialNumber: CTUA171130B
+In that case, the only error message is:
 
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/TYUPR06MB62174A48D04E09A37996DF84D2ED2@TYUPR06MB6217.apcprd06.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  BTRFS error (device sdj): open_ctree failed
+
+There is no reason on why the failure happened, making it very hard to
+understand the reason.
+
+At least output the error number (in the particular case it should be
+-EINTR) to provide some clue.
+
+Link: https://lore.kernel.org/linux-btrfs/9b9c4d2810abcca2f9f76e32220ed9a90febb235.camel@scientia.org/
+Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2343,6 +2343,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x2fc6, 0xf0b7, /* iBasso DC07 Pro */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -972,7 +972,7 @@ static int btrfs_fill_super(struct super
+ 
+ 	err = open_ctree(sb, fs_devices);
+ 	if (err) {
+-		btrfs_err(fs_info, "open_ctree failed");
++		btrfs_err(fs_info, "open_ctree failed: %d", err);
+ 		return err;
+ 	}
+ 
 
 
 
