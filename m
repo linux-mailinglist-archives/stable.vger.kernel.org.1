@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D38A28E84
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9C6A2921E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D69016166D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA6E3ABC6F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14C314F9E7;
-	Wed,  5 Feb 2025 14:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C141C1FCF5F;
+	Wed,  5 Feb 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR6BqSi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FveXMYBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC651494DF;
-	Wed,  5 Feb 2025 14:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A718C039;
+	Wed,  5 Feb 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764843; cv=none; b=m2nCCITfW1upwHd3NIPeR5q7aUtFFC2fKYcabejtQsbMk/JLseziU5NeTY5rVshgKCPyX6sy5+INrUKZNsA3fif+zZpAj036FfBAg0ZRBl6SrT6Y1HmSBLmS84gIbFwLwxWbeTqOR8iwHVdztcdWi5kTQ27Sb7g7sy/1wCQuLgg=
+	t=1738766865; cv=none; b=toewg0jBtDY28Wp6Re/IrSE0kgYJ/ES8KB5nq37Q5ZAWjFy6vkswd8MO3uPQuwyIzjs2Ypn2WAurXhPVPavjUKKujd9vO+eEZdPeRT8DVXr6xjYue80O63QSbLEyCqmPJRqVQq1+xc3CYyKX/v4cKAAbG01oF+7XFKWSgMLZGpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764843; c=relaxed/simple;
-	bh=Ah1VmECaN5qXLQFRglKSwaO7YnUrPjNJq/jGfGC73EM=;
+	s=arc-20240116; t=1738766865; c=relaxed/simple;
+	bh=LTp5wpiEEZ9jcFTE0RvM6yMrZBjgQPT3cOWoLsod6Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFHXZEbBaKbf7CkOWX5MIBaiJg1ZykzH+w8oX+MgAmrZRs6g0I1HJX2Tn5OEgluaTdA244FJdmQQ/sI9+ETNxeh48MHVjPFeULGhcjg6qQwo1pTCmjIWw801sx6UQ5ncqWM1lDsqRGDQvEehYMWUG7SmY1K4P+2Ltrzqkj+p9Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR6BqSi3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C1DC4CED1;
-	Wed,  5 Feb 2025 14:14:02 +0000 (UTC)
+	 MIME-Version; b=OnTxzmQne4c3Kb8q6WaD2G9po8/FaIEa99GPa/Ts1o3lk9ntt598ta7P7o9tjSDltQRcWr49KnJiq/t3nZ7XCm33Fg6T/uMb5MhGczp/AQ7bhsXjjO7bvenaHibucU4QPTFiCPp9cCQ7YwznTqR77u3QKGFSwfS8K0A8zjyAAV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FveXMYBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01F1C4CEDD;
+	Wed,  5 Feb 2025 14:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764843;
-	bh=Ah1VmECaN5qXLQFRglKSwaO7YnUrPjNJq/jGfGC73EM=;
+	s=korg; t=1738766865;
+	bh=LTp5wpiEEZ9jcFTE0RvM6yMrZBjgQPT3cOWoLsod6Ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fR6BqSi3kqZ+r6Dm5qNi+1ep74cB6fehevZm4/TysDSfqJ6XIqrIn+HK2/oH55px9
-	 NIynt1sFwVW4oxfuvo+vF8TjMTRoDzmXLW3fxcPwmtEf4evgX3Bw/dULdQFRGeY3+x
-	 BBEdFqc2HnLkSsWHgremXQOA38e6/Sv4bojO9C+o=
+	b=FveXMYBpDNTMZGo+j+xtkl4Up3Iw4Kk2CaC9+JNhNrJ/jT6l9uE74Rr4lZEVxk+Vd
+	 tUS4eHe6tzFVaT1Q2Y99KFvzahOu5b8Citsq5E/w3nwVlJwTPPeglEdEvY2eHzicwf
+	 TXjyyPKAPmHXzmOT+jpSGyiTSvkqrLrVS0I+Bxi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/393] arm64: dts: mediatek: mt8195-demo: Drop regulator-compatible property
+Subject: [PATCH 6.12 373/590] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: remove disabled ov7251 camera
 Date: Wed,  5 Feb 2025 14:42:08 +0100
-Message-ID: <20250205134428.297045661@linuxfoundation.org>
+Message-ID: <20250205134509.541324116@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 2a8af9b95f504260a6d8200a11f0ae5c90e9f787 ]
+[ Upstream commit 80b47f14d5433068dd6738c9e6e17ff6648bae41 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It is also not listed in the MT6360
-regulator and charger bindings.
+The ov7251node has bindings check errors in the endpoint, and the
+camera node was disabled since the beginning. Even when switching the
+node to okay, the endpoint description to the csiphy is missing along
+with the csiphy parameters.
 
-Drop the "regulator-compatible" property from the board dts. The MT6360
-bindings actually require the lowercase name, so with the property
-present the regulators were likely not actually working.
+Drop the ov7251 camera entirely until it's properly described.
 
-Fixes: 6147314aeedc ("arm64: dts: mediatek: Add device-tree for MT8195 Demo board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-7-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+This obviously fixes:
+sdm845-db845c-navigation-mezzanine.dtso: camera@60: port:endpoint:data-lanes: [0, 1] is too long
+	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov7251.yaml#
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-2-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-demo.dts | 9 ---------
- 1 file changed, 9 deletions(-)
+ .../sdm845-db845c-navigation-mezzanine.dtso   | 42 -------------------
+ 1 file changed, 42 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-index 9079e48aea23e..f56aeb81c4168 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-@@ -137,7 +137,6 @@
- 			richtek,vinovp-microvolt = <14500000>;
- 
- 			otg_vbus_regulator: usb-otg-vbus-regulator {
--				regulator-compatible = "usb-otg-vbus";
- 				regulator-name = "usb-otg-vbus";
- 				regulator-min-microvolt = <4425000>;
- 				regulator-max-microvolt = <5825000>;
-@@ -149,7 +148,6 @@
- 			LDO_VIN3-supply = <&mt6360_buck2>;
- 
- 			mt6360_buck1: buck1 {
--				regulator-compatible = "BUCK1";
- 				regulator-name = "mt6360,buck1";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1300000>;
-@@ -160,7 +158,6 @@
- 			};
- 
- 			mt6360_buck2: buck2 {
--				regulator-compatible = "BUCK2";
- 				regulator-name = "mt6360,buck2";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1300000>;
-@@ -171,7 +168,6 @@
- 			};
- 
- 			mt6360_ldo1: ldo1 {
--				regulator-compatible = "LDO1";
- 				regulator-name = "mt6360,ldo1";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -180,7 +176,6 @@
- 			};
- 
- 			mt6360_ldo2: ldo2 {
--				regulator-compatible = "LDO2";
- 				regulator-name = "mt6360,ldo2";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -189,7 +184,6 @@
- 			};
- 
- 			mt6360_ldo3: ldo3 {
--				regulator-compatible = "LDO3";
- 				regulator-name = "mt6360,ldo3";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -198,7 +192,6 @@
- 			};
- 
- 			mt6360_ldo5: ldo5 {
--				regulator-compatible = "LDO5";
- 				regulator-name = "mt6360,ldo5";
- 				regulator-min-microvolt = <2700000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -207,7 +200,6 @@
- 			};
- 
- 			mt6360_ldo6: ldo6 {
--				regulator-compatible = "LDO6";
- 				regulator-name = "mt6360,ldo6";
- 				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <2100000>;
-@@ -216,7 +208,6 @@
- 			};
- 
- 			mt6360_ldo7: ldo7 {
--				regulator-compatible = "LDO7";
- 				regulator-name = "mt6360,ldo7";
- 				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <2100000>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
+index b5f717d0ddd97..51f1a4883ab8f 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
+@@ -68,45 +68,3 @@
+ 		};
+ 	};
+ };
+-
+-&cci_i2c1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-
+-	camera@60 {
+-		compatible = "ovti,ov7251";
+-
+-		/* I2C address as per ov7251.txt linux documentation */
+-		reg = <0x60>;
+-
+-		/* CAM3_RST_N */
+-		enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&cam3_default>;
+-
+-		clocks = <&clock_camcc CAM_CC_MCLK3_CLK>;
+-		clock-names = "xclk";
+-		clock-frequency = <24000000>;
+-
+-		/*
+-		 * The &vreg_s4a_1p8 trace always powered on.
+-		 *
+-		 * The 2.8V vdda-supply regulator is enabled when the
+-		 * vreg_s4a_1p8 trace is pulled high.
+-		 * It too is represented by a fixed regulator.
+-		 *
+-		 * No 1.2V vddd-supply regulator is used.
+-		 */
+-		vdddo-supply = <&vreg_lvs1a_1p8>;
+-		vdda-supply = <&cam3_avdd_2v8>;
+-
+-		status = "disabled";
+-
+-		port {
+-			ov7251_ep: endpoint {
+-				data-lanes = <0 1>;
+-/*				remote-endpoint = <&csiphy3_ep>; */
+-			};
+-		};
+-	};
+-};
 -- 
 2.39.5
 
