@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE42FA292A0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F23A2A28F84
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C80F16C5FA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F241886284
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF711FCD09;
-	Wed,  5 Feb 2025 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879FB1459F6;
+	Wed,  5 Feb 2025 14:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLux0LQE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blv5NgGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199F81FCD05;
-	Wed,  5 Feb 2025 14:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4385C14A088;
+	Wed,  5 Feb 2025 14:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767323; cv=none; b=Tg/AytoupVwDrU3GWLEIM+36AgNxPT6BzQGK4duusLnZW+RldDnD39Ftjw8zuVFpuH9CPaw9em10PSophFg6C2M5SNX345Hbp4OpA2CD4Tb590mfJsWlQO+tp4BDiXmFiKHZu61vQpHbf3oGCbg6CJzIx8joAkmHev/9GqnWFFg=
+	t=1738765528; cv=none; b=oIB2ZynypFa7oyC49n6W/I/2FeosKFNg+t5Fd4b411a5Q/C8D9NVfjelAxN0d8+mNA9VIvbab3S8HDLK7cmDUx5U1LjrtzWCRkKEwsIptKngsq5sJPmbpXkTcKgNaegtEBzKE8ZpDUmXeBaSlVRhhumu7uy8LRJWQDpWtXG8mS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767323; c=relaxed/simple;
-	bh=IlxsqQ+6XefBJ0UbQOjSXCh2L3i8u1VWNxTNnjWxwMY=;
+	s=arc-20240116; t=1738765528; c=relaxed/simple;
+	bh=RubxrETl4kStXJOjDa2+hhevoYeeR3DQIfxsOFy2GS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipFHfkMjJZKykKNW4VDB/86aGR7CF9iNyT8Ct+pZdVH0KCSBVNFCDAIGINEi4nSv81j78TnzhUOfHGg1f403BoaMLCuAi4TRvqwDdmB7ClfGEUY642SSSUXi5e2ms5LbN9EzWOZKYvvxDJdCdNjndO7kh5BDItcjQ8RdSPsOIQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLux0LQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A84CC4CED1;
-	Wed,  5 Feb 2025 14:55:21 +0000 (UTC)
+	 MIME-Version; b=gXw14trD+VCrMQIY8TTHUyhwovvHC3oA3w3UArQikeLkWcPAkiX7K/XXUTDnDM08I9zo1+3egFfcfwO81MpQ1NmPN5fCGzCg9b5dhdVy3nHpoH0fvidocCLAWv/8BRwqiaWnErsINq2LdhfjGN/r/I6hhW8Y8mkBumSIjewrj60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blv5NgGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9D0C4CED1;
+	Wed,  5 Feb 2025 14:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767322;
-	bh=IlxsqQ+6XefBJ0UbQOjSXCh2L3i8u1VWNxTNnjWxwMY=;
+	s=korg; t=1738765528;
+	bh=RubxrETl4kStXJOjDa2+hhevoYeeR3DQIfxsOFy2GS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLux0LQETpfNYuj4vYe0oAWU5tTW7mKL2dNkTVTZ3CWArFFm7lhxwIjPeyhut/sBc
-	 IUpLzMEVHiHBBg0AwsVitIRN6ugi5x58XNfO6W7DEGTrI96563nZvHcVXLlhkL2qcA
-	 TWwWQnWuEtmHHvocKGfSZ95989BMnMmrKR2oD85g=
+	b=blv5NgGOVnGFvEhoXedxpM9hKP2nPtgUvE34REoi8RFy+ctrWb3YtdiexLEwrTAXc
+	 m++Cq735Sx000jOzibzEfqelvk7FK7OrrAK8e9fbADNSXDdMX4WjZ4rhQkkQYc9RTZ
+	 ppIrrVyAgkxNxVsgNbQk5tkJa8YOaL3W3X6nWwA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Artemy Kovalyov <artemyko@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 439/590] erofs: get rid of erofs_{find,insert}_workgroup
+Subject: [PATCH 6.6 275/393] RDMA/mlx5: Fix indirect mkey ODP page count
 Date: Wed,  5 Feb 2025 14:43:14 +0100
-Message-ID: <20250205134512.062766463@linuxfoundation.org>
+Message-ID: <20250205134430.832376051@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit b091e8ed24b7965953147a389bac1dc7c3e8a11c ]
+[ Upstream commit 235f238402194a78ac5fb882a46717eac817e5d1 ]
 
-Just fold them into the only two callers since
-they are simple enough.
+Restrict the check for the number of pages handled during an ODP page
+fault to direct mkeys.
+Perform the check right after handling the page fault and don't
+propagate the number of handled pages to callers.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241021035323.3280682-1-hsiangkao@linux.alibaba.com
-Stable-dep-of: db902986dee4 ("erofs: fix potential return value overflow of z_erofs_shrink_scan()")
+Indirect mkeys and their associated direct mkeys can have different
+start addresses. As a result, the calculation of the number of pages to
+handle for an indirect mkey may not match the actual page fault
+handling done on the direct mkey.
+
+For example:
+A 4K sized page fault on a KSM mkey that has a start address that is not
+aligned to a page will result a calculation that assumes the number of
+pages required to handle are 2.
+While the underlying MTT might be aligned will require fetching only a
+single page.
+Thus, do the calculation and compare number of pages handled only per
+direct mkey.
+
+Fixes: db570d7deafb ("IB/mlx5: Add ODP support to MW")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
+Link: https://patch.msgid.link/86c483d9e75ce8fe14e9ff85b62df72b779f8ab1.1736187990.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/internal.h |  5 +----
- fs/erofs/zdata.c    | 38 +++++++++++++++++++++++++---------
- fs/erofs/zutil.c    | 50 +--------------------------------------------
- 3 files changed, 30 insertions(+), 63 deletions(-)
+ drivers/infiniband/hw/mlx5/odp.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 77e785a6dfa7f..b9649e3b2dd56 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -453,10 +453,7 @@ void erofs_release_pages(struct page **pagepool);
- 
- #ifdef CONFIG_EROFS_FS_ZIP
- void erofs_workgroup_put(struct erofs_workgroup *grp);
--struct erofs_workgroup *erofs_find_workgroup(struct super_block *sb,
--					     pgoff_t index);
--struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
--					       struct erofs_workgroup *grp);
-+bool erofs_workgroup_get(struct erofs_workgroup *grp);
- void erofs_workgroup_free_rcu(struct erofs_workgroup *grp);
- void erofs_shrinker_register(struct super_block *sb);
- void erofs_shrinker_unregister(struct super_block *sb);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 1a00f061798a3..8c6082fc86b29 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -714,9 +714,10 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 3a4605fda6d57..f1a0a324223c0 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -807,8 +807,7 @@ static bool mkey_is_eq(struct mlx5_ib_mkey *mmkey, u32 key)
+ /*
+  * Handle a single data segment in a page-fault WQE or RDMA region.
+  *
+- * Returns number of OS pages retrieved on success. The caller may continue to
+- * the next data segment.
++ * Returns zero on success. The caller may continue to the next data segment.
+  * Can return the following error codes:
+  * -EAGAIN to designate a temporary error. The caller will abort handling the
+  *  page fault and resolve it.
+@@ -821,7 +820,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 					 u32 *bytes_committed,
+ 					 u32 *bytes_mapped)
  {
- 	struct erofs_map_blocks *map = &fe->map;
- 	struct super_block *sb = fe->inode->i_sb;
-+	struct erofs_sb_info *sbi = EROFS_SB(sb);
- 	bool ztailpacking = map->m_flags & EROFS_MAP_META;
- 	struct z_erofs_pcluster *pcl;
--	struct erofs_workgroup *grp;
-+	struct erofs_workgroup *grp, *pre;
- 	int err;
+-	int npages = 0, ret, i, outlen, cur_outlen = 0, depth = 0;
++	int ret, i, outlen, cur_outlen = 0, depth = 0, pages_in_range;
+ 	struct pf_frame *head = NULL, *frame;
+ 	struct mlx5_ib_mkey *mmkey;
+ 	struct mlx5_ib_mr *mr;
+@@ -864,13 +863,20 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	case MLX5_MKEY_MR:
+ 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
  
- 	if (!(map->m_flags & EROFS_MAP_ENCODED) ||
-@@ -752,15 +753,23 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
- 		pcl->obj.index = 0;	/* which indicates ztailpacking */
- 	} else {
- 		pcl->obj.index = erofs_blknr(sb, map->m_pa);
--
--		grp = erofs_insert_workgroup(fe->inode->i_sb, &pcl->obj);
--		if (IS_ERR(grp)) {
--			err = PTR_ERR(grp);
--			goto err_out;
-+		while (1) {
-+			xa_lock(&sbi->managed_pslots);
-+			pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
-+					   NULL, grp, GFP_KERNEL);
-+			if (!pre || xa_is_err(pre) || erofs_workgroup_get(pre)) {
-+				xa_unlock(&sbi->managed_pslots);
-+				break;
-+			}
-+			/* try to legitimize the current in-tree one */
-+			xa_unlock(&sbi->managed_pslots);
-+			cond_resched();
- 		}
--
--		if (grp != &pcl->obj) {
--			fe->pcl = container_of(grp,
-+		if (xa_is_err(pre)) {
-+			err = xa_err(pre);
-+			goto err_out;
-+		} else if (pre) {
-+			fe->pcl = container_of(pre,
- 					struct z_erofs_pcluster, obj);
- 			err = -EEXIST;
- 			goto err_out;
-@@ -789,7 +798,16 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
- 	DBG_BUGON(fe->owned_head == Z_EROFS_PCLUSTER_NIL);
++		pages_in_range = (ALIGN(io_virt + bcnt, PAGE_SIZE) -
++				  (io_virt & PAGE_MASK)) >>
++				 PAGE_SHIFT;
+ 		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+ 		if (ret < 0)
+ 			goto end;
  
- 	if (!(map->m_flags & EROFS_MAP_META)) {
--		grp = erofs_find_workgroup(sb, blknr);
-+		while (1) {
-+			rcu_read_lock();
-+			grp = xa_load(&EROFS_SB(sb)->managed_pslots, blknr);
-+			if (!grp || erofs_workgroup_get(grp)) {
-+				DBG_BUGON(grp && blknr != grp->index);
-+				rcu_read_unlock();
-+				break;
-+			}
-+			rcu_read_unlock();
+ 		mlx5_update_odp_stats(mr, faults, ret);
+ 
+-		npages += ret;
++		if (ret < pages_in_range) {
++			ret = -EFAULT;
++			goto end;
 +		}
- 	} else if ((map->m_pa & ~PAGE_MASK) + map->m_plen > PAGE_SIZE) {
- 		DBG_BUGON(1);
- 		return -EFSCORRUPTED;
-diff --git a/fs/erofs/zutil.c b/fs/erofs/zutil.c
-index 37afe20248409..218b0249a4822 100644
---- a/fs/erofs/zutil.c
-+++ b/fs/erofs/zutil.c
-@@ -214,7 +214,7 @@ void erofs_release_pages(struct page **pagepool)
++
+ 		ret = 0;
+ 		break;
+ 
+@@ -961,7 +967,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	kfree(out);
+ 
+ 	*bytes_committed = 0;
+-	return ret ? ret : npages;
++	return ret;
+ }
+ 
+ /*
+@@ -980,8 +986,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+  *                   the committed bytes).
+  * @receive_queue: receive WQE end of sg list
+  *
+- * Returns the number of pages loaded if positive, zero for an empty WQE, or a
+- * negative error code.
++ * Returns zero for success or a negative error code.
+  */
+ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 				   struct mlx5_pagefault *pfault,
+@@ -989,7 +994,7 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 				   void *wqe_end, u32 *bytes_mapped,
+ 				   u32 *total_wqe_bytes, bool receive_queue)
+ {
+-	int ret = 0, npages = 0;
++	int ret = 0;
+ 	u64 io_virt;
+ 	__be32 key;
+ 	u32 byte_count;
+@@ -1046,10 +1051,9 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 						    bytes_mapped);
+ 		if (ret < 0)
+ 			break;
+-		npages += ret;
  	}
+ 
+-	return ret < 0 ? ret : npages;
++	return ret;
  }
  
--static bool erofs_workgroup_get(struct erofs_workgroup *grp)
-+bool erofs_workgroup_get(struct erofs_workgroup *grp)
- {
- 	if (lockref_get_not_zero(&grp->lockref))
- 		return true;
-@@ -231,54 +231,6 @@ static bool erofs_workgroup_get(struct erofs_workgroup *grp)
- 	return true;
+ /*
+@@ -1285,12 +1289,6 @@ static void mlx5_ib_mr_wqe_pfault_handler(struct mlx5_ib_dev *dev,
+ 	free_page((unsigned long)wqe_start);
  }
  
--struct erofs_workgroup *erofs_find_workgroup(struct super_block *sb,
--					     pgoff_t index)
+-static int pages_in_range(u64 address, u32 length)
 -{
--	struct erofs_sb_info *sbi = EROFS_SB(sb);
--	struct erofs_workgroup *grp;
--
--repeat:
--	rcu_read_lock();
--	grp = xa_load(&sbi->managed_pslots, index);
--	if (grp) {
--		if (!erofs_workgroup_get(grp)) {
--			/* prefer to relax rcu read side */
--			rcu_read_unlock();
--			goto repeat;
--		}
--
--		DBG_BUGON(index != grp->index);
--	}
--	rcu_read_unlock();
--	return grp;
+-	return (ALIGN(address + length, PAGE_SIZE) -
+-		(address & PAGE_MASK)) >> PAGE_SHIFT;
 -}
 -
--struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
--					       struct erofs_workgroup *grp)
--{
--	struct erofs_sb_info *const sbi = EROFS_SB(sb);
--	struct erofs_workgroup *pre;
--
--	DBG_BUGON(grp->lockref.count < 1);
--repeat:
--	xa_lock(&sbi->managed_pslots);
--	pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
--			   NULL, grp, GFP_KERNEL);
--	if (pre) {
--		if (xa_is_err(pre)) {
--			pre = ERR_PTR(xa_err(pre));
--		} else if (!erofs_workgroup_get(pre)) {
--			/* try to legitimize the current in-tree one */
--			xa_unlock(&sbi->managed_pslots);
--			cond_resched();
--			goto repeat;
--		}
--		grp = pre;
--	}
--	xa_unlock(&sbi->managed_pslots);
--	return grp;
--}
--
- static void  __erofs_workgroup_free(struct erofs_workgroup *grp)
+ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
+ 					   struct mlx5_pagefault *pfault)
  {
- 	atomic_long_dec(&erofs_global_shrink_cnt);
+@@ -1329,7 +1327,7 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
+ 	if (ret == -EAGAIN) {
+ 		/* We're racing with an invalidation, don't prefetch */
+ 		prefetch_activated = 0;
+-	} else if (ret < 0 || pages_in_range(address, length) > ret) {
++	} else if (ret < 0) {
+ 		mlx5_ib_page_fault_resume(dev, pfault, 1);
+ 		if (ret != -ENOENT)
+ 			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%x, type: 0x%x\n",
 -- 
 2.39.5
 
