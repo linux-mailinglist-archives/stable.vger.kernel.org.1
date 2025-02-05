@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3415EA29035
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906EBA293A2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F4E163C06
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A2016ACDE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE941632D3;
-	Wed,  5 Feb 2025 14:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6E4DF59;
+	Wed,  5 Feb 2025 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGlJyo+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aw+AcV/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A958151988;
-	Wed,  5 Feb 2025 14:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B591172BB9;
+	Wed,  5 Feb 2025 15:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765966; cv=none; b=OO0w18AVWbvPuJuzuRrEABD/+0mrkZZSBgSMLN08Dr1uI4K17DGVH2Z3S8e/gPYz/WsyNilCiVTLZ0fLH/AUM3Um03UpquLdznDRicwXgVVM7q68+Hn2BjgKyM2I5gVVHYbPx410OC8v0526OzPZV7E84E6ujvlRgJu8IMu/Fj4=
+	t=1738768101; cv=none; b=sz6DnvjdcYt/54itNHAEkpALhje/Qv8gDG0bNDgtwx5SuZYESMNbx3uBzm8I+d1HuTccy5wTwdndPGPdFj43cG0G51Ak7sP02MpoTqRPwlDtmwrqRgOi3UdI1vh/roLdDvXhdRvTDIEZI/piSft30PBso1c8L2U7c3TgXlLoKrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765966; c=relaxed/simple;
-	bh=YtlqvZondOfJln95ATmeHOu+gsMoBiU+QAT9tJUq/+c=;
+	s=arc-20240116; t=1738768101; c=relaxed/simple;
+	bh=FtI2Qhq9s39/zt2Qq+c61lkIABQjwUlld1c0yzxT0nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1MRjWQ4FXmZPB+Sx6ZBy2uFJUG5cR7fLvX9pdyB925Jpppn2tlc9O7vvyV5mThZhjv6tW2+DOCnxcuPLg75UEeFIP6GfIWJ49tZyEBNi6LqXBnq/ltI5rKT1gGQ4zLvkRSlypQT8/4UwX3aUf5qyqpycFKPEo264S660qguXC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGlJyo+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF683C4CED6;
-	Wed,  5 Feb 2025 14:32:45 +0000 (UTC)
+	 MIME-Version; b=lFlS27uRJ/IkOjq3S3HRt4FQBDxUghzHzRbXJ8jir5xc0DtcryDekgGJVPPE/M3Iqgq+s/trOEBbsidi8fK2zjVGYF7T0+fJ11G/LB1HnC1196XqanV7plQoXPk/17X1bt9g2nBlwbarpfN+Zrln+UAdB1uCCG3EMhZxq+dCcFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aw+AcV/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D632C4CED1;
+	Wed,  5 Feb 2025 15:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765966;
-	bh=YtlqvZondOfJln95ATmeHOu+gsMoBiU+QAT9tJUq/+c=;
+	s=korg; t=1738768099;
+	bh=FtI2Qhq9s39/zt2Qq+c61lkIABQjwUlld1c0yzxT0nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UGlJyo+PJciOnk5g1JiUAR+vK+BHND3YYucIyqSnqc+59gALr3X87y7TXj9KvFA5W
-	 Mdv+jhScWg0PiIufKk3CxsleNTcsCiFcJ3lf4d/MyFYRIXO1Lp+VfAPXFVurmxSW1N
-	 gkJFQxR6iddfXZxSF5XqM5d5OcGZ6l2tdYNAlGnI=
+	b=aw+AcV/ppurufJ4ikmo3J0srxtOgyStZV1XD7TGxNkZ0HP4v1AoufM2pLKIm9MjKA
+	 95NaK4W5067TgjuqvGwgaaXBNu96oTMIZOiPTguqBMA018RfDv6VtZwBot3LhkAMzD
+	 Du/6u7SF5/gJxMs/PdfYhkbm1K6qfs797+fHTIYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Leon Romanovsky <leonro@nvidia.com>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/393] xfrm: replay: Fix the update of replay_esn->oseq_hi for GSO
+Subject: [PATCH 6.13 493/623] xfrm: replay: Fix the update of replay_esn->oseq_hi for GSO
 Date: Wed,  5 Feb 2025 14:43:55 +0100
-Message-ID: <20250205134432.406090947@linuxfoundation.org>
+Message-ID: <20250205134515.078734601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -101,7 +101,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
-index ce56d659c55a6..7f52bb2e14c13 100644
+index bc56c63057252..235bbefc2abae 100644
 --- a/net/xfrm/xfrm_replay.c
 +++ b/net/xfrm/xfrm_replay.c
 @@ -714,10 +714,12 @@ static int xfrm_replay_overflow_offload_esn(struct xfrm_state *x, struct sk_buff
