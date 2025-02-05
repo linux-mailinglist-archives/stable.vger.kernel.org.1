@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741DBA28DC5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA20DA28E85
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C3B161C02
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E5023A1FA1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0A41509BD;
-	Wed,  5 Feb 2025 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BAA14A088;
+	Wed,  5 Feb 2025 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj50RiSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdraiS1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80771519AA;
-	Wed,  5 Feb 2025 14:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964051494DF;
+	Wed,  5 Feb 2025 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764309; cv=none; b=GeVJtlHeDN+ZvZJuPTd8Y/xLld/DKJisOjjnhJUzES+Kr/iCpytj9aXnokUsJkInb114ZbIvHwwLZGYSEBNYS2vYLJh/siSEwrxdQYSCuM4o6wiJuXrUxmVrL6ZSpSBExykrd2grKeoMa8zhVxZ1qWLtnIPXSZxkEiWpBzTGhrk=
+	t=1738764840; cv=none; b=Jzqb0AOwaHL7xrVzFdkt+hrExbsmTMGbLiGZWqN0bcjzEgSGZtSab3xMuz0iWiYM7b39bF6dRQ0bqYasLJyIUTSd28+tIyhz6eGCGAeHqle9tHh4OXaoR6kwChfLNmbA8bh9VHU9kyq23WczqS/7ozBYQhG3i9qRJqB9MCQJvxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764309; c=relaxed/simple;
-	bh=F/bwr3SvWLPf4jSHxYyXXbpbnjBVaPpWcOrKe1YrwB0=;
+	s=arc-20240116; t=1738764840; c=relaxed/simple;
+	bh=nh3pyinrxprfYqmpWODL8IDTAh7UsNe0QvEACIyy/BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8Bxad4mJJKQ2kBgvbJ9tbnV24VRTQLV9ngy/TtuuJv7EIn0bWQFoHcGY11ArgB1HseTD8hwUHz2cFIEogYlfQRCxDYznNS4/RmwrgkDCtEt6I9LV241lJh65X5NC71vnjr7wYfVB+0JRMKNb0uWME6JlBS0w7gYxH0m9b+KhY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj50RiSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19063C4CEDD;
-	Wed,  5 Feb 2025 14:05:08 +0000 (UTC)
+	 MIME-Version; b=gW3Olb8eNPAsX6GC42Sljce2Zr8ylCcr1eujUaGrxypcyKQYQEidh7gx0p0l0gqYZT4OUbvu1sY3kz7TYh80sozcYlnDAuZ7+SD8lSnOVICZpkg7fctiPwitJ66/HyJC6YOjwA4/Hy88Cfbu1GqvD1PuDxUssOkCnIydn0zmdms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdraiS1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FD1C4CED1;
+	Wed,  5 Feb 2025 14:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764309;
-	bh=F/bwr3SvWLPf4jSHxYyXXbpbnjBVaPpWcOrKe1YrwB0=;
+	s=korg; t=1738764840;
+	bh=nh3pyinrxprfYqmpWODL8IDTAh7UsNe0QvEACIyy/BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qj50RiSQQKPG1EXO54NS8mYjVPawrcbT3oN19VJ0rA6wDcA+atjr2NtsAqDiin+Fc
-	 zGVslSKxuS/VKJEWbYmM6lS83fxxhZbcwJ1x0kvMdAy8TkNaHDYNT7hx/zCrp6q+mJ
-	 no2nyx6XkMrTFgZDLs3g3vcSyS+UmLZSZ3Q+XsNw=
+	b=fdraiS1JoC3LhS5y3we0GRHwkLucfkG4iW7rXJBNA2Qwc88I3f52rtBvXGQs5j8ZB
+	 FLWU5ZSHZ5t+0OY/RGXbHTnnGf+s5AHtAp9KgUx+3Y45gmgRoG/awpowhVQrM2GgfE
+	 mhHCS/7TlUhK5mgNMriu+pZ4hT39fQisXGzS2UAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Lee Jones <lee@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/590] leds: netxbig: Fix an OF node reference leak in netxbig_leds_get_of_pdata()
+Subject: [PATCH 6.13 118/623] inetpeer: remove create argument of inet_getpeer()
 Date: Wed,  5 Feb 2025 14:37:40 +0100
-Message-ID: <20250205134459.274739880@linuxfoundation.org>
+Message-ID: <20250205134500.734916718@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0508316be63bb735f59bdc8fe4527cadb62210ca ]
+[ Upstream commit 7a596a50c4a4eab946aec149171c72321b4934aa ]
 
-netxbig_leds_get_of_pdata() does not release the OF node obtained by
-of_parse_phandle() when of_find_device_by_node() fails. Add an
-of_node_put() call to fix the leak.
+All callers of inet_getpeer() want to create an inetpeer.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
-
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/20241216074923.628509-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241215175629.1248773-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a853c609504e ("inetpeer: do not get a refcount in inet_getpeer()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-netxbig.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/inetpeer.h |  7 +++----
+ net/ipv4/inetpeer.c    | 11 ++---------
+ 2 files changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index af5a908b8d9ed..e95287416ef87 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -439,6 +439,7 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
- 	}
- 	gpio_ext_pdev = of_find_device_by_node(gpio_ext_np);
- 	if (!gpio_ext_pdev) {
-+		of_node_put(gpio_ext_np);
- 		dev_err(dev, "Failed to find platform device for gpio-ext\n");
- 		return -ENODEV;
- 	}
+diff --git a/include/net/inetpeer.h b/include/net/inetpeer.h
+index 6f51f81d6cb19..f475757daafba 100644
+--- a/include/net/inetpeer.h
++++ b/include/net/inetpeer.h
+@@ -96,8 +96,7 @@ static inline struct in6_addr *inetpeer_get_addr_v6(struct inetpeer_addr *iaddr)
+ 
+ /* can be called with or without local BH being disabled */
+ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+-			       const struct inetpeer_addr *daddr,
+-			       int create);
++			       const struct inetpeer_addr *daddr);
+ 
+ static inline struct inet_peer *inet_getpeer_v4(struct inet_peer_base *base,
+ 						__be32 v4daddr,
+@@ -108,7 +107,7 @@ static inline struct inet_peer *inet_getpeer_v4(struct inet_peer_base *base,
+ 	daddr.a4.addr = v4daddr;
+ 	daddr.a4.vif = vif;
+ 	daddr.family = AF_INET;
+-	return inet_getpeer(base, &daddr, 1);
++	return inet_getpeer(base, &daddr);
+ }
+ 
+ static inline struct inet_peer *inet_getpeer_v6(struct inet_peer_base *base,
+@@ -118,7 +117,7 @@ static inline struct inet_peer *inet_getpeer_v6(struct inet_peer_base *base,
+ 
+ 	daddr.a6 = *v6daddr;
+ 	daddr.family = AF_INET6;
+-	return inet_getpeer(base, &daddr, 1);
++	return inet_getpeer(base, &daddr);
+ }
+ 
+ static inline int inetpeer_addr_cmp(const struct inetpeer_addr *a,
+diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
+index 5ab56f4cb5297..bc79cc9d13ebb 100644
+--- a/net/ipv4/inetpeer.c
++++ b/net/ipv4/inetpeer.c
+@@ -169,13 +169,11 @@ static void inet_peer_gc(struct inet_peer_base *base,
+ }
+ 
+ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+-			       const struct inetpeer_addr *daddr,
+-			       int create)
++			       const struct inetpeer_addr *daddr)
+ {
+ 	struct inet_peer *p, *gc_stack[PEER_MAX_GC];
+ 	struct rb_node **pp, *parent;
+ 	unsigned int gc_cnt, seq;
+-	int invalidated;
+ 
+ 	/* Attempt a lockless lookup first.
+ 	 * Because of a concurrent writer, we might not find an existing entry.
+@@ -183,16 +181,11 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 	rcu_read_lock();
+ 	seq = read_seqbegin(&base->lock);
+ 	p = lookup(daddr, base, seq, NULL, &gc_cnt, &parent, &pp);
+-	invalidated = read_seqretry(&base->lock, seq);
+ 	rcu_read_unlock();
+ 
+ 	if (p)
+ 		return p;
+ 
+-	/* If no writer did a change during our lookup, we can return early. */
+-	if (!create && !invalidated)
+-		return NULL;
+-
+ 	/* retry an exact lookup, taking the lock before.
+ 	 * At least, nodes should be hot in our cache.
+ 	 */
+@@ -201,7 +194,7 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 
+ 	gc_cnt = 0;
+ 	p = lookup(daddr, base, seq, gc_stack, &gc_cnt, &parent, &pp);
+-	if (!p && create) {
++	if (!p) {
+ 		p = kmem_cache_alloc(peer_cachep, GFP_ATOMIC);
+ 		if (p) {
+ 			p->daddr = *daddr;
 -- 
 2.39.5
 
