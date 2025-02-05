@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19E0A29247
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1686A292F3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BD97A11E8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 858CC3AAEF4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596351A01BE;
-	Wed,  5 Feb 2025 14:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768541891AA;
+	Wed,  5 Feb 2025 14:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4A97R2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLsB8dfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143911891AA;
-	Wed,  5 Feb 2025 14:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BC5DF71;
+	Wed,  5 Feb 2025 14:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767408; cv=none; b=roGEtAs7vpLwuu1NSn0rlQ6GBmUtaAhrgWLl4geU+eCJIZbDqiablYZ4lO/T/JO7nV/PiDXLCLwvk2RuJskURhoqB0SkPXf4p5QjcmwlcWCG6rCRtnIBjjwWDUAUqX9agbvltRrXqX5xn7IurYOBSa7C+8ZwFCn1M87xhm+nPcc=
+	t=1738767415; cv=none; b=bdD0Jxiv7GCDnuucXUNu49W5azRqGkukppx/sehkTkmVba6dBwwD/Wh4Y0Bek/RTFXy/L87Xy79pHuek1ZI4qJskLRjFowx/yGNvWSx0TZ8IBzwXYv6Ee7EXv+P6ddqVSyYFudRg4DIjtNfI2bhNKmPUQ9Q2OHZNrxPlDTkhmEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767408; c=relaxed/simple;
-	bh=neaEuTZSODSllTJOD3lxeXx4Hp1Diod0nIrZ+0/Xkf0=;
+	s=arc-20240116; t=1738767415; c=relaxed/simple;
+	bh=wnZFYk4sE5gyy7ZK8QugRowv8kfs/6PEyMAGJfjebmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GomICTvg4hdYVUZeyfvJrvrtk9W0mKts5X2FBCBTVnxVyGf2tvQPSMkNMzbNhbck/bUb5KbpK5EJWN+rNWA9vokn3EBpBuVM0lb/kjtiIn1jp46ripa7yJQ13maBptBNvRTM4B64zinkHleByKJKPvNz5Sn1oXwWFStEpilkj04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4A97R2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D345C4CED1;
-	Wed,  5 Feb 2025 14:56:47 +0000 (UTC)
+	 MIME-Version; b=bTPocdqst7cFLjCk0Y/FZSIc+wcKUocq28lf6z5kA5bGakunbKaDeZ7bFxBvA0AMaOdHJHN5FFrnaxIpqc/+iRFenx0ldiTSMKKaa0MaWddPw5n5ujfRv7Rei0NIi2EPzIEYmnlTuwdhjAo1LmZ+BKO9LJfXPhGb/JGGQy4tP7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLsB8dfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A45CC4CED1;
+	Wed,  5 Feb 2025 14:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767407;
-	bh=neaEuTZSODSllTJOD3lxeXx4Hp1Diod0nIrZ+0/Xkf0=;
+	s=korg; t=1738767415;
+	bh=wnZFYk4sE5gyy7ZK8QugRowv8kfs/6PEyMAGJfjebmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4A97R2+IlFi/CvIOGuia7VMGWzEzdoiZ6zLwjWPMwzysi1AGuUEl7T159maZSZmP
-	 bGTAmkom25aMPFDxjF+JS63TtS/fNjhW9b1yg0GiQ1oujPoF3WGmxAFK6/IKxTrDeL
-	 udvtwHcATR5r0uRWh9bas18mpGU7Ll06xD4bZAo4=
+	b=FLsB8dfGQ67Mj5/JZ60Ov8eHXCCUidePlp+nDvDH3gevsK1Ym5EOUMzxWW5juHlPK
+	 p07U9NOGN9bMCPqGgSXd5rvIwu0WwEwOBuqXIty4Sy5Rf7lI/yoztOTEh8doAn+Ms3
+	 ODaUt7e1cR90PQgJmhaogMaeACSPA7fMa7DLKR/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Olga Kornievskaia <okorniev@redhat.com>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 453/590] NFSv4.2: fix COPY_NOTIFY xdr buf size calculation
-Date: Wed,  5 Feb 2025 14:43:28 +0100
-Message-ID: <20250205134512.596183701@linuxfoundation.org>
+Subject: [PATCH 6.12 454/590] NFSv4.2: mark OFFLOAD_CANCEL MOVEABLE
+Date: Wed,  5 Feb 2025 14:43:29 +0100
+Message-ID: <20250205134512.634182375@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -68,34 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit e8380c2d06055665b3df6c03964911375d7f9290 ]
+[ Upstream commit 668135b9348c53fd205f5e07d11e82b10f31b55b ]
 
-We need to include sequence size in the compound.
+OFFLOAD_CANCEL should be marked MOVEABLE for when we need to move
+tasks off a non-functional transport.
 
-Fixes: 0491567b51ef ("NFS: add COPY_NOTIFY operation")
+Fixes: c975c2092657 ("NFS send OFFLOAD_CANCEL when COPY killed")
 Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42xdr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/nfs42proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
-index 9e3ae53e22058..becc3149aa9e5 100644
---- a/fs/nfs/nfs42xdr.c
-+++ b/fs/nfs/nfs42xdr.c
-@@ -144,9 +144,11 @@
- 					 decode_putfh_maxsz + \
- 					 decode_offload_cancel_maxsz)
- #define NFS4_enc_copy_notify_sz		(compound_encode_hdr_maxsz + \
-+					 encode_sequence_maxsz + \
- 					 encode_putfh_maxsz + \
- 					 encode_copy_notify_maxsz)
- #define NFS4_dec_copy_notify_sz		(compound_decode_hdr_maxsz + \
-+					 decode_sequence_maxsz + \
- 					 decode_putfh_maxsz + \
- 					 decode_copy_notify_maxsz)
- #define NFS4_enc_deallocate_sz		(compound_encode_hdr_maxsz + \
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index 531c9c20ef1d1..9f0d69e652644 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -552,7 +552,7 @@ static int nfs42_do_offload_cancel_async(struct file *dst,
+ 		.rpc_message = &msg,
+ 		.callback_ops = &nfs42_offload_cancel_ops,
+ 		.workqueue = nfsiod_workqueue,
+-		.flags = RPC_TASK_ASYNC,
++		.flags = RPC_TASK_ASYNC | RPC_TASK_MOVEABLE,
+ 	};
+ 	int status;
+ 
 -- 
 2.39.5
 
