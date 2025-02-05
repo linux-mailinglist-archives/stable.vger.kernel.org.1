@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC3EA28EC9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F34BEA292C8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883AD167C6F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C7C16E37E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC714F136;
-	Wed,  5 Feb 2025 14:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB221A83ED;
+	Wed,  5 Feb 2025 14:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13WZ7KNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFlbsMgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071B01519AA;
-	Wed,  5 Feb 2025 14:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14813C8E2;
+	Wed,  5 Feb 2025 14:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765024; cv=none; b=Vfl7sc8vq6m8YExiGYs90LLqWm2Grvp6f0jXwACYjSZBIKAMkzZV0WCCO5Jlofp6ZFVe6kQtNFlHKP02psSmwYNCX3vqMuTtRcy/mrjfpmxsSCAvAB6PBMZVdloP0dUK4wH3gdDGEisnmS0SYkuiFF5XSsj6+z5bregwET09QKw=
+	t=1738767423; cv=none; b=SdYq+2THt11QxxMlUND5hcMmsH3l1EtxsWGspHXeD1FDa/C2H2HIQaS81mY+cX68IxR3zy3N1usRFJIjqhFUEvewSZZKj05+lVAv2x/muIhnoVngIZmfNNBpq3PJQipHLfODSIk1hi42VYrbuF+E9b6vuzL72huXv24AFnfzf9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765024; c=relaxed/simple;
-	bh=1TeOGlnJxfnvH2gPArZM8uAIA+j2Ywnw7QSpgQ7GOsE=;
+	s=arc-20240116; t=1738767423; c=relaxed/simple;
+	bh=f5Fg3506eSu+0X4Ev4YwIq5BNIsESUJnDtsz1VA1SPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMwY+TsrVuPSpI+vmobio5FMsSgvv5o5Mf5JkXMPD0sYSZu+Xlyp/1UyKauFZ8Yusr9/sPcY+zSKvJUtOlUbaUhKQgOGrByVs5RPo1/JGobCAO+LiOwooV1ZRQNVP9Cu2CuMgsgyNux6C5caqSO0DZ9k60qb03FMvqT4Fzk8Ckk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13WZ7KNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5E5C4CED1;
-	Wed,  5 Feb 2025 14:17:03 +0000 (UTC)
+	 MIME-Version; b=D/Y7HJf/jKTXowmTk0d2u0y+qOE2BiwUeR3mirZtty9Xq7GOp9jc+IIJvwfjhpyrr1+qxVIdqCYeocWmoS1m8d9n8Loek398atHP7bUaWva1k1ihh2deRZ7eDEZonmIbLBnpHQuOY4lIhvKnM5YtrNwpSuCJKinPHq1WQF1REgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFlbsMgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D7FC4CED1;
+	Wed,  5 Feb 2025 14:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765023;
-	bh=1TeOGlnJxfnvH2gPArZM8uAIA+j2Ywnw7QSpgQ7GOsE=;
+	s=korg; t=1738767422;
+	bh=f5Fg3506eSu+0X4Ev4YwIq5BNIsESUJnDtsz1VA1SPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13WZ7KNBeWZ/z+4YGQmcwGSTG+tjIijH3qmwWIC+Hxp68QOz+f+gpZY8T1GgmXEVR
-	 Dec+f5UB+BLXr3p536rwFRVTaZ1AliQBYRxGEx45CKIcUfZMImC1onkCroT0w8uE3C
-	 GiJq9s8UzHvmAtv8/ENn15a/CefHW7+vlcYBWVlc=
+	b=iFlbsMgF4x8bJkHJgU+ueY8bat8HdppL5ieR7XfwBQesaCTsiHY6BvTTdt9RYRs4j
+	 TYTf3K+ddl6sme5WIgIbpQmHQeOnN9y+LSqjaWsJ2BnuxI+JmA2FAR46T5h9Sjflac
+	 LoLQxoaLokOV0wrS3IYlQanQ9ES0zTaH+LlFnvIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/393] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Drop pp3300_panel voltage settings
+Subject: [PATCH 6.13 402/623] ARM: omap1: Fix up the Retu IRQ on Nokia 770
 Date: Wed,  5 Feb 2025 14:42:24 +0100
-Message-ID: <20250205134428.914536394@linuxfoundation.org>
+Message-ID: <20250205134511.601160622@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-[ Upstream commit 0b5b1c881a909f17c05ef4b1ccb421e077f6e466 ]
+[ Upstream commit ad455e48bba7f21bb5108406da0854cf8dede8ea ]
 
-The pp3300_panel fixed regulator is just a load switch. It does not have
-any regulating capabilities. Thus having voltage constraints on it is
-wrong.
+The Retu IRQ is off by one, as a result the power button does not work.
+Fix it.
 
-Remove the voltage constraints.
-
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241030070224.1006331-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 084b6f216778 ("ARM: omap1: Fix up the Nokia 770 board device IRQs")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/Z3UxH_fOzuftjnuX@darkstar.musicnaut.iki.fi
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/mach-omap1/board-nokia770.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 629c4b7ecbc62..8e0575f8c1b27 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -39,8 +39,6 @@
- 	pp3300_panel: pp3300-panel {
- 		compatible = "regulator-fixed";
- 		regulator-name = "pp3300_panel";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pp3300_panel_pins>;
- 
+diff --git a/arch/arm/mach-omap1/board-nokia770.c b/arch/arm/mach-omap1/board-nokia770.c
+index 3312ef93355da..a5bf5554800fe 100644
+--- a/arch/arm/mach-omap1/board-nokia770.c
++++ b/arch/arm/mach-omap1/board-nokia770.c
+@@ -289,7 +289,7 @@ static struct gpiod_lookup_table nokia770_irq_gpio_table = {
+ 		GPIO_LOOKUP("gpio-0-15", 15, "ads7846_irq",
+ 			    GPIO_ACTIVE_HIGH),
+ 		/* GPIO used for retu IRQ */
+-		GPIO_LOOKUP("gpio-48-63", 15, "retu_irq",
++		GPIO_LOOKUP("gpio-48-63", 14, "retu_irq",
+ 			    GPIO_ACTIVE_HIGH),
+ 		/* GPIO used for tahvo IRQ */
+ 		GPIO_LOOKUP("gpio-32-47", 8, "tahvo_irq",
 -- 
 2.39.5
 
