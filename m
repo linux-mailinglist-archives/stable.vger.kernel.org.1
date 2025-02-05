@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-113471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787BAA29279
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410E2A29254
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86081188D060
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0235316C1C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0744C1917D6;
-	Wed,  5 Feb 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B9E1922DE;
+	Wed,  5 Feb 2025 14:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvOD8qFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaUuscdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64FF1632D3;
-	Wed,  5 Feb 2025 14:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE58191F6D;
+	Wed,  5 Feb 2025 14:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767072; cv=none; b=ODle0hlTQ+SBy86vAHBkYRm4mxfLNzS2l2WkqgGuub9IccpEVa+VYWCfrAGdOGoX4KdekFQq7TidiOkp9Za4RDHwCsom0IzG4VuLdfWr43qRxrwmpoOTURtG3ZOb0u5Pt4qzCLNVIyN98YZlkCIkGApVUKPHqx5tYJdF4JjKfns=
+	t=1738767079; cv=none; b=HtH7NKNcSqPsXOaGmY4UDM9Lu5BjVe98Q6jUkb7AvNIB8ptwX2nxLF6CmTNymc2RhdMtH/nWqWa7e7GLJIGEJpYILOzGGTPrNtuzTYJS9951wD3QdFBCHpDMl+Yz0ZD6VVys+A4M5JGIG0v9jnM13x9V0OxZOxdnzTlCzAAhvqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767072; c=relaxed/simple;
-	bh=P0+8MI5qhrCmjeGRdiXMIj0iFJwb1IWk9pOjtQBBWFc=;
+	s=arc-20240116; t=1738767079; c=relaxed/simple;
+	bh=2VRy0eOZ1gl2DuePwVJkkRMGtIUZEGNwPFCtij2uVms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=al//Krqb6xkUQDqmcSKJsb+0xKAtEIFF2Ucni6S7j5MaWIqnEAHFyxaAnMY3H9i3l5y5yxLn7HAjl0xYKNGYv8K6gvEXA58TNoI17GsTbyX683TnZ/xRgEXkvudrbWW0n5Afic6HLt0jHQVPphvq/OmRG7VgBDu/iM75pkPsEjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvOD8qFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D78BC4CED1;
-	Wed,  5 Feb 2025 14:51:11 +0000 (UTC)
+	 MIME-Version; b=aQ67bWAdvQ4OtpmG4P9HsqWUCDtF2+Dhen/9bex4IzkXvtrwA/XoOsTg4DKGD+L2Bc4BueVRU+3PQClLTKXC9g1204iNzXevgxUf1OELZnHkuaNMmDnjXF/Juk9octUohYHHMYRvRwKZ9FjsvTByyK1vcg5P8FVwKPuT53Z5LZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaUuscdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4091C4CED1;
+	Wed,  5 Feb 2025 14:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767072;
-	bh=P0+8MI5qhrCmjeGRdiXMIj0iFJwb1IWk9pOjtQBBWFc=;
+	s=korg; t=1738767079;
+	bh=2VRy0eOZ1gl2DuePwVJkkRMGtIUZEGNwPFCtij2uVms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvOD8qFJ/Gx1X28BICXeGgmPIOYI33o6Wapk0pc8wPnY+LqGxDYhgE+O5/gaRCxA3
-	 Y1vN7E40my36H9C2nt6W7dt2kat2L6FwvCQUT+t8726wgMpfVZw0Xna/T6thBhJG7g
-	 3haB4Fy1UFfKxiXIfCfZLuAnT6WGnJd6LQr5tgu8=
+	b=HaUuscdA6Fw+DiBGqJ1pPTt+oUQSH/rR4eQXyCA5aq3Rll2Ys3IpmRjZ7CeR+QQB0
+	 iXPW9WvUGc7qA1euvI6gLYkZM9jrqWp4KtTbrft8N4rioLTclYKDjE/KtnJvEGvi2r
+	 OcMvCVpyzqPKPSZQLN/nhsvoZEgRZMZSdq2QKV5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Lars Pedersen <lapeddk@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 402/590] iommufd/iova_bitmap: Fix shift-out-of-bounds in iova_bitmap_offset_to_index()
-Date: Wed,  5 Feb 2025 14:42:37 +0100
-Message-ID: <20250205134510.642617300@linuxfoundation.org>
+Subject: [PATCH 6.12 403/590] spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors
+Date: Wed,  5 Feb 2025 14:42:38 +0100
+Message-ID: <20250205134510.680580384@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -68,46 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit e24c1551059268b37f6f40639883eafb281b8b9c ]
+[ Upstream commit a07eb4f67ed085f32002a1af2b6073546d67de3f ]
 
-Resolve a UBSAN shift-out-of-bounds issue in iova_bitmap_offset_to_index()
-where shifting the constant "1" (of type int) by bitmap->mapped.pgshift
-(an unsigned long value) could result in undefined behavior.
+devm_clk_get_optional() returns NULL for missing clocks and a PTR_ERR()
+if there is a clock but we fail to get it, but currently we only handle
+the latter case and do so as though the clock was missing.  If we get an
+error back we should handle that as an error since the clock exists but
+we failed to get it, if we get NULL then the clock doesn't exist and we
+should handle that.
 
-The constant "1" defaults to a 32-bit "int", and when "pgshift" exceeds
-31 (e.g., pgshift = 63) the shift operation overflows, as the result
-cannot be represented in a 32-bit type.
-
-To resolve this, the constant is updated to "1UL", promoting it to an
-unsigned long type to match the operand's type.
-
-Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
-Link: https://patch.msgid.link/r/20250113223820.10713-1-qasdev00@gmail.com
-Reported-by: syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=85992ace37d5b7b51635
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()")
+Reported-by: Lars Pedersen <lapeddk@gmail.com>
+Link: https://patch.msgid.link/20250117-spi-fix-omap2-optional-v1-1-e77d4ac6db6e@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Tested-by: Lars Pedersen <lapeddk@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/iova_bitmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-omap2-mcspi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/iova_bitmap.c b/drivers/iommu/iommufd/iova_bitmap.c
-index d90b9e253412f..2cdc4f542df47 100644
---- a/drivers/iommu/iommufd/iova_bitmap.c
-+++ b/drivers/iommu/iommufd/iova_bitmap.c
-@@ -130,7 +130,7 @@ struct iova_bitmap {
- static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
- 						 unsigned long iova)
- {
--	unsigned long pgsize = 1 << bitmap->mapped.pgshift;
-+	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 4a2f84c4d22e5..532b2e9c31d0d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1561,10 +1561,15 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
  
- 	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
- }
+ 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	if (IS_ERR(mcspi->ref_clk))
+-		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
+-	else
++	if (IS_ERR(mcspi->ref_clk)) {
++		status = PTR_ERR(mcspi->ref_clk);
++		dev_err_probe(&pdev->dev, status, "Failed to get ref_clk");
++		goto free_ctlr;
++	}
++	if (mcspi->ref_clk)
+ 		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
++	else
++		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
+ 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
+ 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 
 -- 
 2.39.5
 
