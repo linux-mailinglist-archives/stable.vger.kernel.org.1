@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-113097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827C0A28FE2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95395A29003
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFF1D7A1B01
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA5E3A666D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB138634E;
-	Wed,  5 Feb 2025 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0036E155756;
+	Wed,  5 Feb 2025 14:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBHinnsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQNjDJv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100BD487BF;
-	Wed,  5 Feb 2025 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6657E792;
+	Wed,  5 Feb 2025 14:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765814; cv=none; b=jeyEoqt2PtdfoCYG1gz52488YVOUs0zV04LaP/WPNpELKalo+ySUBAD6nADxGWvYHoySCQi+9Lvbgyk3OLmp74Mwihq9ajOW+nzzeMHlXKvvvqjXH+3T9XRBuw34g71MvWtwfkmzibtblS6V9EVLvfcoRfeFANoX5pZUT5ZuT3o=
+	t=1738765824; cv=none; b=cO5uWYy6bA/ugmg7OYlqeyVKjolxAy6eGRvww752frrX0Gr65Dxh7Gy39EJRpvvmCs9Yi61R8gB1CJAL8vaMhqeOakFUgRi2R5dtcVIURTM3cMvv6d684JyAl/imE5B4Aj1s8D7XCXpc6mP+ElVXSy/66bmU57R7EXuezS8hkho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765814; c=relaxed/simple;
-	bh=3nzlP/4gr6tiuVD4pwyPW0W33g5CWV6wzYqOLQEqDEY=;
+	s=arc-20240116; t=1738765824; c=relaxed/simple;
+	bh=xgBvLQKocCw72A6oV20tJhYPKoilAN6LE8OTtLmIeZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hn8/zV8N0EOaHeLHg2qGgcMvAjmIjOS2E+Nl7yD1Mn7kPv+4lz1NAdrsXqEyxqrHSohnmx16kva+LvxLLmQ0bHSTDen+2uMTWSUp5Se+mFcSwEwDO8II0kLS4RdsLIruNieK1Zi5PLh1I/kmpqp1ifaaNioQ56ok4dfl7X9tSJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBHinnsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A1BC4CED1;
-	Wed,  5 Feb 2025 14:30:13 +0000 (UTC)
+	 MIME-Version; b=HM7amIVanpBNl//DJ85ivE2VbvkIj5Pjh4FH0lZyZug4uXo3iU79cDIKekZHvOs2wfIQATZk9q3TNYK7vM5DkGqmS2yWYnBhhDZ0v+qi20m3w5Zl82H/wYgw2v+RHKTCd486dHHqk8yfJjQfH+L5WKg2nCD/H01jb9RRv3RTJYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQNjDJv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9434FC4CED1;
+	Wed,  5 Feb 2025 14:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765813;
-	bh=3nzlP/4gr6tiuVD4pwyPW0W33g5CWV6wzYqOLQEqDEY=;
+	s=korg; t=1738765824;
+	bh=xgBvLQKocCw72A6oV20tJhYPKoilAN6LE8OTtLmIeZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBHinnsZxf2Gc9/JMsMBbdQlEOb9NaJcCmjXFQ6+++8v04Z3hZ8pNwrysdyEXlLvB
-	 rFLYnjRv5svodU3ZN7PkwIDiM8vIJf916FtTVSv9Oy0+Xc9cQawVMWbXni65y9PfHu
-	 ZvxHTeqmVa8ylaxbutS+UPnBRabxvMY5dhmGMZQY=
+	b=BQNjDJv82csiMqn7bKLB4eOZLcckpm8UU57E1VUmiFykmWOetZ+NPDmmZ0F3KZV2W
+	 fxfpUMcGvoQ5umhp7z4+manLF5cCphC5x/A1LrQurJcKZwI7moqHTi89AzBZ/NFw0N
+	 vx7ZxabK26VXVAzoXq8GaolP47e2yf6MTn6kZo+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 216/623] cpufreq: ACPI: Fix max-frequency computation
-Date: Wed,  5 Feb 2025 14:39:18 +0100
-Message-ID: <20250205134504.489887178@linuxfoundation.org>
+Subject: [PATCH 6.13 217/623] wifi: ath12k: fix key cache handling
+Date: Wed,  5 Feb 2025 14:39:19 +0100
+Message-ID: <20250205134504.527607184@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,120 +68,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit 0834667545962ef1c5e8684ed32b45d9c574acd3 ]
+[ Upstream commit 336097d74c284a7c928b723ce8690f28912da03d ]
 
-Commit 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover
-boost frequencies") introduced an assumption in acpi_cpufreq_cpu_init()
-that the first entry in the P-state table was the nominal frequency.
-This assumption is incorrect. The frequency corresponding to the P0
-P-State need not be the same as the nominal frequency advertised via
-CPPC.
+Currently, an interface is created in the driver during channel assignment.
+If mac80211 attempts to set a key for an interface before this assignment,
+the driver caches the key. Once the interface is created, the driver
+installs the cached key to the hardware. This sequence is exemplified in
+mesh mode operation where the group key is set before channel assignment.
 
-Since the driver is using the CPPC.highest_perf and CPPC.nominal_perf
-to compute the boost-ratio, it makes sense to use CPPC.nominal_freq to
-compute the max-frequency. CPPC.nominal_freq is advertised on
-platforms supporting CPPC revisions 3 or higher.
+However, in ath12k_mac_update_key_cache(), after caching the key, due to
+incorrect logic, it is deleted from the cache during the subsequent loop
+iteration. As a result, after the interface is created, the driver does not
+find any cached key, and the key is not installed to the hardware which is
+wrong. This leads to issue in mesh, where broadcast traffic is not
+encrypted over the air.
 
-Hence, fallback to using the first entry in the P-State table only on
-platforms that do not advertise CPPC.nominal_freq.
+Fix this issue by adjusting the logic of ath12k_mac_update_key_cache()
+properly.
 
-Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost frequencies")
-Tested-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250113044107.566-1-gautham.shenoy@amd.com
-[ rjw: Retain reverse X-mas tree ordering of local variable declarations ]
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3-03253.1-QCAHKSWPL_SILICONZ-29 # Nicolas Escande <nico.escande@gmail.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1  # Nicolas Escande <nico.escande@gmail.com>
+
+Fixes: 25e18b9d6b4b ("wifi: ath12k: modify ath12k_mac_op_set_key() for MLO")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://patch.msgid.link/20250112-fix_key_cache_handling-v2-1-70e142c6153e@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c | 36 +++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 30 ++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index c9ebacf5c88e2..302df42d68875 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -623,7 +623,14 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
- #endif
- 
- #ifdef CONFIG_ACPI_CPPC_LIB
--static u64 get_max_boost_ratio(unsigned int cpu)
-+/*
-+ * get_max_boost_ratio: Computes the max_boost_ratio as the ratio
-+ * between the highest_perf and the nominal_perf.
-+ *
-+ * Returns the max_boost_ratio for @cpu. Returns the CPPC nominal
-+ * frequency via @nominal_freq if it is non-NULL pointer.
-+ */
-+static u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index fd2919f84d6f7..ef2736fb5f53f 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4316,7 +4316,23 @@ static int ath12k_mac_update_key_cache(struct ath12k_vif_cache *cache,
+ 				       struct ieee80211_sta *sta,
+ 				       struct ieee80211_key_conf *key)
  {
- 	struct cppc_perf_caps perf_caps;
- 	u64 highest_perf, nominal_perf;
-@@ -652,6 +659,9 @@ static u64 get_max_boost_ratio(unsigned int cpu)
- 
- 	nominal_perf = perf_caps.nominal_perf;
- 
-+	if (nominal_freq)
-+		*nominal_freq = perf_caps.nominal_freq;
+-	struct ath12k_key_conf *key_conf = NULL, *tmp;
++	struct ath12k_key_conf *key_conf, *tmp;
 +
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
- 		return 0;
-@@ -664,8 +674,12 @@ static u64 get_max_boost_ratio(unsigned int cpu)
- 
- 	return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
- }
++	list_for_each_entry_safe(key_conf, tmp, &cache->key_conf.list, list) {
++		if (key_conf->key != key)
++			continue;
 +
- #else
--static inline u64 get_max_boost_ratio(unsigned int cpu) { return 0; }
-+static inline u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
-+{
-+	return 0;
-+}
- #endif
++		/* If SET key entry is already present in cache, nothing to do,
++		 * just return
++		 */
++		if (cmd == SET_KEY)
++			return 0;
++
++		/* DEL key for an old SET key which driver hasn't flushed yet.
++		 */
++		list_del(&key_conf->list);
++		kfree(key_conf);
++	}
  
- static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
-@@ -675,9 +689,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	struct acpi_cpufreq_data *data;
- 	unsigned int cpu = policy->cpu;
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
-+	u64 max_boost_ratio, nominal_freq = 0;
- 	unsigned int valid_states = 0;
- 	unsigned int result = 0;
--	u64 max_boost_ratio;
- 	unsigned int i;
- #ifdef CONFIG_SMP
- 	static int blacklisted;
-@@ -827,16 +841,20 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	if (cmd == SET_KEY) {
+ 		key_conf = kzalloc(sizeof(*key_conf), GFP_KERNEL);
+@@ -4330,17 +4346,7 @@ static int ath12k_mac_update_key_cache(struct ath12k_vif_cache *cache,
+ 		list_add_tail(&key_conf->list,
+ 			      &cache->key_conf.list);
  	}
- 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
- 
--	max_boost_ratio = get_max_boost_ratio(cpu);
-+	max_boost_ratio = get_max_boost_ratio(cpu, &nominal_freq);
- 	if (max_boost_ratio) {
--		unsigned int freq = freq_table[0].frequency;
-+		unsigned int freq = nominal_freq;
- 
- 		/*
--		 * Because the loop above sorts the freq_table entries in the
--		 * descending order, freq is the maximum frequency in the table.
--		 * Assume that it corresponds to the CPPC nominal frequency and
--		 * use it to set cpuinfo.max_freq.
-+		 * The loop above sorts the freq_table entries in the
-+		 * descending order. If ACPI CPPC has not advertised
-+		 * the nominal frequency (this is possible in CPPC
-+		 * revisions prior to 3), then use the first entry in
-+		 * the pstate table as a proxy for nominal frequency.
- 		 */
-+		if (!freq)
-+			freq = freq_table[0].frequency;
+-	if (list_empty(&cache->key_conf.list))
+-		return 0;
+-	list_for_each_entry_safe(key_conf, tmp, &cache->key_conf.list, list) {
+-		if (key_conf->key == key) {
+-			/* DEL key for an old SET key which driver hasn't flushed yet.
+-			 */
+-			list_del(&key_conf->list);
+-			kfree(key_conf);
+-			break;
+-		}
+-	}
 +
- 		policy->cpuinfo.max_freq = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
- 	} else {
- 		/*
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
