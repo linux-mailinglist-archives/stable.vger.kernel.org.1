@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2602EA2909B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BB1A29256
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22E5168324
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E02613AD73E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52EC1591E3;
-	Wed,  5 Feb 2025 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B18B1FECBE;
+	Wed,  5 Feb 2025 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gD76B3Up"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ8AL5AY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91878156F39;
-	Wed,  5 Feb 2025 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9B1FECB9;
+	Wed,  5 Feb 2025 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766275; cv=none; b=G9jieaceIdY5RznK43xJC/ibEPUn2+gHE1vHzOz7A1dv7y8RJJ+cs8IdYtPY7eV1KAVPQCRR92AF8PR/2Hwzw0oVuaebk7jXOXnNFGU8I7y3wl2Qoa/XwcNi/+ffDl8iu+nCoNr6tc7QaliB2mVdlMiE0TWNsrO0vyOpSlKZxEw=
+	t=1738767018; cv=none; b=YxGJnzKIzSIzzdXs3GmDmNcdSUHqgiclZMcfCeciV/UJFTNxSgkKfYykE63pXe/g3Mj1NZebJbNGZzPEtras64FQfcQTZO0NzSKZ0+uETO3quxqpWVujPXJnuYJ7OVXjuFzar+EYwV+1WQYCeUIh6+o3IbMz59In6cF+bIz5Ogw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766275; c=relaxed/simple;
-	bh=ByqjAqvZ0PR8kF5DtjYArFdikaeP+2t7REjH3a2lFlo=;
+	s=arc-20240116; t=1738767018; c=relaxed/simple;
+	bh=YqeBScewC32V41dnUitZ36JQbiVbVX5Q0k9FUeP7y/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKQYAHHlYU+ncAFDcdrBghZBM9U7FG0du3I1PVB51/yPmMGB4+3jggagJnmFDWYkkH4BCa1gV/2tehNSZhClnq0GgIoUeVhMYx74kl/fLh0fSFWKU0r1OsMjCJvQvUb2lUWlKts0apvKPlpHx+f6/NtktYbk4nw44FzULqmisrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gD76B3Up; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DADC4CED1;
-	Wed,  5 Feb 2025 14:37:54 +0000 (UTC)
+	 MIME-Version; b=Avh6U5lVI0cMQcOPLge/Ck2sx3RasCSwkhsrDFb+CwPAnqnTZH7XtGAOuy5cvMpf7+ZNBTHNeigiEvTe+fW8POLoKH+ckwlvZNXn5fxy50kU9mu5g6kvqNJpi5oxaKQP48X1Z53GAY7Y86XuopESlHbBc63sTE3scwGWRp6Z104=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ8AL5AY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16F4C4CED1;
+	Wed,  5 Feb 2025 14:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766275;
-	bh=ByqjAqvZ0PR8kF5DtjYArFdikaeP+2t7REjH3a2lFlo=;
+	s=korg; t=1738767017;
+	bh=YqeBScewC32V41dnUitZ36JQbiVbVX5Q0k9FUeP7y/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gD76B3UprvCzdKD5foeU4peqzhRKnvJXZ05pvtqwsKHCDH+1l9ZS2JMw5LtUcthy5
-	 sptt8b7RwD5P2L8MKOaauOtWrfwW3OZIIRkEQ03PuKH6HkJHvjyL3p+gHrakTjAbZ4
-	 7yq+nqf/IYrIUrTr4QxhwbrfNUurIUWMMT5IgmZY=
+	b=cQ8AL5AYSXnIHIBcfuiiyjTxpUdDhI8IYwjwg9iD7O3onyUG+WviPDRO7tTZabIaI
+	 CqQBGCo6mL8clT4HAtCyhQ+5Zc0xaODchvUa1IW1F1t3eTsQV34AgWn7k2xv08Q1Kc
+	 1TCeTEACg88CR6hluJN+/Eyzg4xJf7oZdwhAv94I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 306/590] arm64: dts: mediatek: mt8516: fix GICv2 range
+Subject: [PATCH 6.13 319/623] iommu/amd: Fully decode all combinations of alloc_paging_flags
 Date: Wed,  5 Feb 2025 14:41:01 +0100
-Message-ID: <20250205134506.983828764@linuxfoundation.org>
+Message-ID: <20250205134508.426471793@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit e3ee31e4409f051c021a30122f3c470f093a7386 ]
+[ Upstream commit 082f1bcae8d1b5f76e92e369091176b8d61120ec ]
 
-On the MT8167 which is based on the MT8516 DTS, the following error
-was appearing on boot, breaking interrupt operation:
+Currently AMD does not support
+ IOMMU_HWPT_ALLOC_PASID | IOMMU_HWPT_ALLOC_DIRTY_TRACKING
 
-GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+It should be rejected. Instead it creates a V1 domain without dirty
+tracking support.
 
-Similar to what's been proposed for MT7622 which has the same issue,
-fix by using the range reported by force_probe.
+Use a switch to fully decode the flags.
 
-Link: https://lore.kernel.org/all/YmhNSLgp%2Fyg8Vr1F@makrotopia.org/
-Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241204190524.21862-2-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: ce2cd175469f ("iommu/amd: Enhance amd_iommu_domain_alloc_user()")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/7-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/iommu.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index d0b03dc4d3f43..4444293413023 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -268,7 +268,7 @@
- 			interrupt-parent = <&gic>;
- 			interrupt-controller;
- 			reg = <0 0x10310000 0 0x1000>,
--			      <0 0x10320000 0 0x1000>,
-+			      <0 0x1032f000 0 0x2000>,
- 			      <0 0x10340000 0 0x2000>,
- 			      <0 0x10360000 0 0x2000>;
- 			interrupts = <GIC_PPI 9
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index e0c12dc44340c..80b2c9eb438f2 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2379,24 +2379,24 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
+ 	if ((flags & ~supported_flags) || user_data)
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
+-	/* Allocate domain with v2 page table if IOMMU supports PASID. */
+-	if (flags & IOMMU_HWPT_ALLOC_PASID) {
++	switch (flags & supported_flags) {
++	case IOMMU_HWPT_ALLOC_DIRTY_TRACKING:
++		/* Allocate domain with v1 page table for dirty tracking */
++		if (!amd_iommu_hd_support(iommu))
++			break;
++		return do_iommu_domain_alloc(dev, flags, PD_MODE_V1);
++	case IOMMU_HWPT_ALLOC_PASID:
++		/* Allocate domain with v2 page table if IOMMU supports PASID. */
+ 		if (!amd_iommu_pasid_supported())
+-			return ERR_PTR(-EOPNOTSUPP);
+-
++			break;
+ 		return do_iommu_domain_alloc(dev, flags, PD_MODE_V2);
++	case 0:
++		/* If nothing specific is required use the kernel commandline default */
++		return do_iommu_domain_alloc(dev, 0, amd_iommu_pgtable);
++	default:
++		break;
+ 	}
+-
+-	/* Allocate domain with v1 page table for dirty tracking */
+-	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING) {
+-		if (amd_iommu_hd_support(iommu))
+-			return do_iommu_domain_alloc(dev, flags, PD_MODE_V1);
+-
+-		return ERR_PTR(-EOPNOTSUPP);
+-	}
+-
+-	/* If nothing specific is required use the kernel commandline default */
+-	return do_iommu_domain_alloc(dev, 0, amd_iommu_pgtable);
++	return ERR_PTR(-EOPNOTSUPP);
+ }
+ 
+ void amd_iommu_domain_free(struct iommu_domain *dom)
 -- 
 2.39.5
 
