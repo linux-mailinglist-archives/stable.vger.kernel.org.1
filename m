@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906EBA293A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3026EA29371
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A2016ACDE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAE7188DB27
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6E4DF59;
-	Wed,  5 Feb 2025 15:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6FD196D90;
+	Wed,  5 Feb 2025 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aw+AcV/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2UGQK3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B591172BB9;
-	Wed,  5 Feb 2025 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0001957FC;
+	Wed,  5 Feb 2025 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768101; cv=none; b=sz6DnvjdcYt/54itNHAEkpALhje/Qv8gDG0bNDgtwx5SuZYESMNbx3uBzm8I+d1HuTccy5wTwdndPGPdFj43cG0G51Ak7sP02MpoTqRPwlDtmwrqRgOi3UdI1vh/roLdDvXhdRvTDIEZI/piSft30PBso1c8L2U7c3TgXlLoKrA=
+	t=1738767606; cv=none; b=IQ1RNO0CZzoqAv9SvI0sOXRGeduLRJWtovgSaej6C/QcDDUUHX4aoeFQdU07HDQp1mRTFPWAB2qsE+Tzya0gUQs/dI+/Z6zFSB3Ayljx75tYPw9QuM9FXK/46vHUxriVNqaCTO8MKfrOFuzoJLPNJ+JyWYb+XD+xL2t21qSOfPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768101; c=relaxed/simple;
-	bh=FtI2Qhq9s39/zt2Qq+c61lkIABQjwUlld1c0yzxT0nQ=;
+	s=arc-20240116; t=1738767606; c=relaxed/simple;
+	bh=x7tOIT5v+6vo7PZvYRVcEGyoncc8pb4WKUyFpVp4ql0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFlS27uRJ/IkOjq3S3HRt4FQBDxUghzHzRbXJ8jir5xc0DtcryDekgGJVPPE/M3Iqgq+s/trOEBbsidi8fK2zjVGYF7T0+fJ11G/LB1HnC1196XqanV7plQoXPk/17X1bt9g2nBlwbarpfN+Zrln+UAdB1uCCG3EMhZxq+dCcFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aw+AcV/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D632C4CED1;
-	Wed,  5 Feb 2025 15:08:19 +0000 (UTC)
+	 MIME-Version; b=Ciw4MF78eVFwX7rhmRn247igt29Ba+zqHOGWtEjiMXPk8ppySQ9/0txree0ujrynO9G2vJ0BisugtHrxElUFe0+tieKD1xTiB/tmdKGAdciGON/JAGurLmSe/ap6i5fU/8dLm7Xjb/vv7sdmOKfdiA4HohTscg5BTSvKXpoeoio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2UGQK3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DFC4CED1;
+	Wed,  5 Feb 2025 15:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768099;
-	bh=FtI2Qhq9s39/zt2Qq+c61lkIABQjwUlld1c0yzxT0nQ=;
+	s=korg; t=1738767606;
+	bh=x7tOIT5v+6vo7PZvYRVcEGyoncc8pb4WKUyFpVp4ql0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aw+AcV/ppurufJ4ikmo3J0srxtOgyStZV1XD7TGxNkZ0HP4v1AoufM2pLKIm9MjKA
-	 95NaK4W5067TgjuqvGwgaaXBNu96oTMIZOiPTguqBMA018RfDv6VtZwBot3LhkAMzD
-	 Du/6u7SF5/gJxMs/PdfYhkbm1K6qfs797+fHTIYM=
+	b=f2UGQK3r3tqm8SxyZI5Bkz0IuzRNNl3GHjgCVTflNjymeM4BBZI3wOQHQrjFoVRnq
+	 N7Saghc45jbCEJEG0rPpVqliV01EsFpew0RvBllnagPu1N8TvIkJOgJYpoWssRpdP7
+	 Zf0ZEDLnTdgJ9veqOXWkTP4uf8gFR2gDW3mLWN7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 493/623] xfrm: replay: Fix the update of replay_esn->oseq_hi for GSO
-Date: Wed,  5 Feb 2025 14:43:55 +0100
-Message-ID: <20250205134515.078734601@linuxfoundation.org>
+Subject: [PATCH 6.12 481/590] xfrm: Dont disable preemption while looking up cache state.
+Date: Wed,  5 Feb 2025 14:43:56 +0100
+Message-ID: <20250205134513.662981387@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Sebastian Sewior <bigeasy@linutronix.de>
 
-[ Upstream commit c05c5e5aa163f4682ca97a2f0536575fc7dbdecb ]
+[ Upstream commit 6c9b7db96db62ee9ad8d359d90ff468d462518c4 ]
 
-When skb needs GSO and wrap around happens, if xo->seq.low (seqno of
-the first skb segment) is before the last seq number but oseq (seqno
-of the last segment) is after it, xo->seq.low is still bigger than
-replay_esn->oseq while oseq is smaller than it, so the update of
-replay_esn->oseq_hi is missed for this case wrap around because of
-the change in the cited commit.
+For the state cache lookup xfrm_input_state_lookup() first disables
+preemption, to remain on the CPU and then retrieves a per-CPU pointer.
+Within the preempt-disable section it also acquires
+netns_xfrm::xfrm_state_lock, a spinlock_t. This lock must not be
+acquired with explicit disabled preemption (such as by get_cpu())
+because this lock becomes a sleeping lock on PREEMPT_RT.
 
-For example, if sending a packet with gso_segs=3 while old
-replay_esn->oseq=0xfffffffe, we calculate:
-    xo->seq.low = 0xfffffffe + 1 = 0x0xffffffff
-    oseq = 0xfffffffe + 3 = 0x1
-(oseq < replay_esn->oseq) is true, but (xo->seq.low <
-replay_esn->oseq) is false, so replay_esn->oseq_hi is not incremented.
+To remain on the same CPU is just an optimisation for the CPU local
+lookup. The actual modification of the per-CPU variable happens with
+netns_xfrm::xfrm_state_lock acquired.
 
-To fix this issue, change the outer checking back for the update of
-replay_esn->oseq_hi. And add new checking inside for the update of
-packet's oseq_hi.
+Remove get_cpu() and use the state_cache_input on the current CPU.
 
-Fixes: 4b549ccce941 ("xfrm: replay: Fix ESN wrap around for GSO")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Closes: https://lore.kernel.org/all/CAADnVQKkCLaj=roayH=Mjiiqz_svdf1tsC3OE4EC0E=mAD+L1A@mail.gmail.com/
+Fixes: 81a331a0e72dd ("xfrm: Add an inbound percpu state cache.")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_replay.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_state.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
-index bc56c63057252..235bbefc2abae 100644
---- a/net/xfrm/xfrm_replay.c
-+++ b/net/xfrm/xfrm_replay.c
-@@ -714,10 +714,12 @@ static int xfrm_replay_overflow_offload_esn(struct xfrm_state *x, struct sk_buff
- 			oseq += skb_shinfo(skb)->gso_segs;
- 		}
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 567f02ff88597..6441e94233daa 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1150,9 +1150,8 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
+ 	struct xfrm_hash_state_ptrs state_ptrs;
+ 	struct hlist_head *state_cache_input;
+ 	struct xfrm_state *x = NULL;
+-	int cpu = get_cpu();
  
--		if (unlikely(xo->seq.low < replay_esn->oseq)) {
--			XFRM_SKB_CB(skb)->seq.output.hi = ++oseq_hi;
--			xo->seq.hi = oseq_hi;
--			replay_esn->oseq_hi = oseq_hi;
-+		if (unlikely(oseq < replay_esn->oseq)) {
-+			replay_esn->oseq_hi = ++oseq_hi;
-+			if (xo->seq.low < replay_esn->oseq) {
-+				XFRM_SKB_CB(skb)->seq.output.hi = oseq_hi;
-+				xo->seq.hi = oseq_hi;
-+			}
- 			if (replay_esn->oseq_hi == 0) {
- 				replay_esn->oseq--;
- 				replay_esn->oseq_hi--;
+-	state_cache_input =  per_cpu_ptr(net->xfrm.state_cache_input, cpu);
++	state_cache_input = raw_cpu_ptr(net->xfrm.state_cache_input);
+ 
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(x, state_cache_input, state_cache_input) {
+@@ -1186,7 +1185,6 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
+ 
+ out:
+ 	rcu_read_unlock();
+-	put_cpu();
+ 	return x;
+ }
+ EXPORT_SYMBOL(xfrm_input_state_lookup);
 -- 
 2.39.5
 
