@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-113896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5D3A2947B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:26:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647E5A29478
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278BA3B2076
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 324393AC012
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBC61DC9B3;
-	Wed,  5 Feb 2025 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF08319066D;
+	Wed,  5 Feb 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc4smkmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrQTvKyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5218FC9D;
-	Wed,  5 Feb 2025 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB5618EFD4;
+	Wed,  5 Feb 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768535; cv=none; b=crVN7n8s3gO6WexIeJCI/7N512H6GlbIGUXYMNnfAN/pF09lS/prpvhQyIeocSU+m4K6/JVLYR3g0V/bR2XmeIoXNCAoH4iXYJaXq5O8w0EOAN9Zzy7Bszk+XCQn0ngL3J+MFvehtAMYWq9DAUVtE3jrTNXZo8pZInAyBiB2whU=
+	t=1738768541; cv=none; b=FDxo69wWe8KrD//C/8nwSgzg2bhNdLSGMmdnZHOLMrD4uo4kMXCRrsJOPVfGIcuFqgabqAKQSwbP+Q/2yeDJCu2V7EjsnH8O0gWIx0VxxJOfEJ+Yoc9hUQhQT87QOTL4LqUbfGWbrQc0OkoFssiqr+zrflOs04ut9f+3rET1A+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768535; c=relaxed/simple;
-	bh=ntJTZVX+WBoVL4uWGdHAGItPSGxEudhfW4QVqcmVtnM=;
+	s=arc-20240116; t=1738768541; c=relaxed/simple;
+	bh=KsLHYqHAfKo0XCUNxrwN+7EHRRTstaYVM4e7EHxpMcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pD7VV2oHE8bvSyDadfyFSvPQt2QpfS+pNyrHiN9jVfnqcdMKJuGwspYPM7CQnfwAWqDaKliE6clMVhFHodhW5XSwAIbfvGLvkjtEto7FHN1FwJ54hz1uxbTQ/66o9NzcZTP84Gyw1yjd7hInjXdX4aP3JWtEZSixR2CorL6TLcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc4smkmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C50C4CED6;
-	Wed,  5 Feb 2025 15:15:34 +0000 (UTC)
+	 MIME-Version; b=Wo8w/eQPmXmQz4CbJ7W1O19e4vJXZ3OjgoVhtkQrlclBZ+Y+7d+llLIsMqWCq88wcjKsNZdgztlGcgzY2uMEb8jYy97osbyRB3JnNmir5A8G4XwYYJMwnXS2uPdsXWvQggPc88MC8O3pVm8JP2To7HN5TV+0QkD+ahV1LuOmHeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrQTvKyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF355C4CED1;
+	Wed,  5 Feb 2025 15:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768535;
-	bh=ntJTZVX+WBoVL4uWGdHAGItPSGxEudhfW4QVqcmVtnM=;
+	s=korg; t=1738768541;
+	bh=KsLHYqHAfKo0XCUNxrwN+7EHRRTstaYVM4e7EHxpMcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jc4smkmvBoWo7EFP5cRQqvO9rM4QLKjB33t0e+OZT/QqTLyxL/ccEwDbejc/93kYF
-	 hEBTGlUpEAZ3UX73AYSTeJisYhF7PRd1s1pEk3ld5zEc3cwNzpIw8QHpIpmdT9bcy4
-	 LFwBVJ5UEx24naHGHdCPW8RQemv8gmX/jhcyGgNc=
+	b=xrQTvKyzl5AYGIYpZR3wA96iYG27WC2n1hpV34h+erhRFPdFmczFLWo/51dETXDCB
+	 UrcHUXI4L5Ow++JZGUMANxAt2Eoqmssgp0s8oy+QPhWmMlYU7axfP7GJkfDlx/mZAa
+	 SLW6/2W6IYwyy/nO72hRQZ3qiTaBBcw7EyOQu3pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Torsten Hilbrich <torsten.hilbrich@secunet.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 554/623] hostfs: fix string handling in __dentry_name()
-Date: Wed,  5 Feb 2025 14:44:56 +0100
-Message-ID: <20250205134517.412973820@linuxfoundation.org>
+Subject: [PATCH 6.13 556/623] kbuild: Fix signing issue for external modules
+Date: Wed,  5 Feb 2025 14:44:58 +0100
+Message-ID: <20250205134517.491545083@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -65,64 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Torsten Hilbrich <torsten.hilbrich@secunet.com>
 
-[ Upstream commit 60a6002432448bb3f291d80768ae98d62efc9c77 ]
+[ Upstream commit 25ff08aa43e373a61c3e36fc7d7cae88ed0fc2d7 ]
 
-strcpy() should not be used with destination potentially overlapping
-the source; what's more, strscpy() in there is pointless - we already
-know the amount we want to copy; might as well use memcpy().
+When running the sign script the kernel is within the source directory
+of external modules. This caused issues when the kernel uses relative
+paths, like:
 
-Fixes: c278e81b8a02 "hostfs: Remove open coded strcpy()"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+make[5]: Entering directory '/build/client/devel/kernel/work/linux-2.6'
+make[6]: Entering directory '/build/client/devel/addmodules/vtx/work/vtx'
+   INSTALL /build/client/devel/addmodules/vtx/_/lib/modules/6.13.0-devel+/extra/vtx.ko
+   SIGN    /build/client/devel/addmodules/vtx/_/lib/modules/6.13.0-devel+/extra/vtx.ko
+/bin/sh: 1: scripts/sign-file: not found
+   DEPMOD  /build/client/devel/addmodules/vtx/_/lib/modules/6.13.0-devel+
+
+Working around it by using absolute pathes here.
+
+Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
+Signed-off-by: Torsten Hilbrich <torsten.hilbrich@secunet.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs_kern.c | 27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+ scripts/Makefile.modinst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 7e51d2cec64b4..bd6503b731426 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -95,32 +95,17 @@ __uml_setup("hostfs=", hostfs_args,
- static char *__dentry_name(struct dentry *dentry, char *name)
- {
- 	char *p = dentry_path_raw(dentry, name, PATH_MAX);
--	char *root;
--	size_t len;
--	struct hostfs_fs_info *fsi;
--
--	fsi = dentry->d_sb->s_fs_info;
--	root = fsi->host_root_path;
--	len = strlen(root);
--	if (IS_ERR(p)) {
--		__putname(name);
--		return NULL;
--	}
--
--	/*
--	 * This function relies on the fact that dentry_path_raw() will place
--	 * the path name at the end of the provided buffer.
--	 */
--	BUG_ON(p + strlen(p) + 1 != name + PATH_MAX);
-+	struct hostfs_fs_info *fsi = dentry->d_sb->s_fs_info;
-+	char *root = fsi->host_root_path;
-+	size_t len = strlen(root);
+diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
+index f97c9926ed31b..1628198f3e830 100644
+--- a/scripts/Makefile.modinst
++++ b/scripts/Makefile.modinst
+@@ -105,7 +105,7 @@ else
+ sig-key := $(CONFIG_MODULE_SIG_KEY)
+ endif
+ quiet_cmd_sign = SIGN    $@
+-      cmd_sign = scripts/sign-file $(CONFIG_MODULE_SIG_HASH) "$(sig-key)" certs/signing_key.x509 $@ \
++      cmd_sign = $(objtree)/scripts/sign-file $(CONFIG_MODULE_SIG_HASH) "$(sig-key)" $(objtree)/certs/signing_key.x509 $@ \
+                  $(if $(KBUILD_EXTMOD),|| true)
  
--	strscpy(name, root, PATH_MAX);
--	if (len > p - name) {
-+	if (IS_ERR(p) || len > p - name) {
- 		__putname(name);
- 		return NULL;
- 	}
- 
--	if (p > name + len)
--		strcpy(name + len, p);
-+	memcpy(name, root, len);
-+	memmove(name + len, p, name + PATH_MAX - p);
- 
- 	return name;
- }
+ ifeq ($(sign-only),)
 -- 
 2.39.5
 
