@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-113104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C33A28FFC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C8DA2900A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6D51886794
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3013A7406
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0894155751;
-	Wed,  5 Feb 2025 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4895155747;
+	Wed,  5 Feb 2025 14:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hNPYC0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8WiEHJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFEE487BF;
-	Wed,  5 Feb 2025 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917C37BAEC;
+	Wed,  5 Feb 2025 14:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765834; cv=none; b=C1GzUdSlm42uzYfYhsEkL5ly4nB+GeoZTOdJBoLrom6gu8NO4MZWKurEDO9W1TzdqP2Lryt+CYM0g2AyGmjhRBzEl10/qPJEaR+OBMt8cmEWqcWb0MHt9hntU2pblX3+4Y4cIYI706AoFew4LgJcDP4gwFSQgsCo7zBP1ST/eTc=
+	t=1738765848; cv=none; b=HqDONQ/ecML7W/g0gs99JWnKlGZ3GRLyGo7saqnWzQQGQ99bURO59JF/NXAzSkTgFA/rZprBlP0PXQOy0duy5B1aB454B3ZKH26eHWiwh4d21aq7efkO7BysQ1/w39KSdl8BAZM3zk6xtRmdp8FGuZDL0if5mOVaGQxfKboku/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765834; c=relaxed/simple;
-	bh=ux/HIXqj0NplXvZ9k9nZSC0CAam7ZyZZPIBTjVxrtVM=;
+	s=arc-20240116; t=1738765848; c=relaxed/simple;
+	bh=F5aWU8i4Uf5rBIsMBmeNRwPUxl5wWnKoknWtWegp2vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIHcy4+ZQ90aMilNwdY41vLedO7tMg36wgZVotcw6aRMOLnTs9HQUAFE/h1O1JPgvVu9sHbFqNMOmmvnkP6Eq1QmMic4zJ2KngkhZgzg6wxhlW7jtZEOgvLsFMf8uk8kSpCJGyEMtXkwNKprEPMu33Ac1ZcN+F9eHDG3oWr11EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hNPYC0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99375C4CED1;
-	Wed,  5 Feb 2025 14:30:33 +0000 (UTC)
+	 MIME-Version; b=kWSgUKVoWxxJvk/Kc6vMza8/0btXMLvMkDzGNvC402cphcbrgkDNzM9MQ/qRpAnx8IEiSHs+r5CVpTbyLiy+dULOICmgcQtRCwvi1UzW2BIQk0J9XIPhthbqW5LuaKPcGY/Dq3r3C2fACnnFqkN0+xgAlGrbrRVWNn/koQUt7CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8WiEHJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C39C4CED1;
+	Wed,  5 Feb 2025 14:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765834;
-	bh=ux/HIXqj0NplXvZ9k9nZSC0CAam7ZyZZPIBTjVxrtVM=;
+	s=korg; t=1738765848;
+	bh=F5aWU8i4Uf5rBIsMBmeNRwPUxl5wWnKoknWtWegp2vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hNPYC0hr4Sxa6yoyq41VRfSO9tvcN6CYSSNjhk8lrAm91Lm93f6mhDELQ1z89bUD
-	 VK1F8toDbrA69RVzzuwHQzGSBIxKJeJ7ZjOjUOyfAH2O1ZlzgkBqdbdgRdLo28CnCc
-	 W1x0jv78vGZ5l9Yk85fh4wt/ZHHLLcFfyXKivggM=
+	b=w8WiEHJIehMq96kjPIRnxZai/XxCpTHjXdCkZqMFkVnH4UpS6E/bSGNhJLxuL+GBm
+	 KCNNb5ov/9NNIcFPKqKIbfcLGtpM4pL85AoHwtNX4js6Vojq1Vic9hrZxswdsJfta/
+	 vSuymavVZGsidqr7MA6oHu2wH3JyYUXcfRVJLynM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"Dmitry V. Levin" <ldv@strace.io>,
+	Kees Cook <kees@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 218/623] selftests: timers: clocksource-switch: Adapt progress to kselftest framework
-Date: Wed,  5 Feb 2025 14:39:20 +0100
-Message-ID: <20250205134504.565671088@linuxfoundation.org>
+Subject: [PATCH 6.13 219/623] selftests: harness: fix printing of mismatch values in __EXPECT()
+Date: Wed,  5 Feb 2025 14:39:21 +0100
+Message-ID: <20250205134504.603748533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,49 +67,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Dmitry V. Levin <ldv@strace.io>
 
-[ Upstream commit 8694e6a7f7dba23d3abd9f5a96f64d161704c7b1 ]
+[ Upstream commit 02bc220dc6dc7c56edc4859bc5dd2c08b95d5fb5 ]
 
-When adapting the test to the kselftest framework, a few printf() calls
-indicating test progress were not updated.
+intptr_t and uintptr_t are not big enough types on 32-bit architectures
+when printing 64-bit values, resulting to the following incorrect
+diagnostic output:
 
-Fix this by replacing these printf() calls by ksft_print_msg() calls.
+  # get_syscall_info.c:209:get_syscall_info:Expected exp_args[2] (3134324433) == info.entry.args[1] (3134324433)
 
-Link: https://lore.kernel.org/r/7dd4b9ab6e43268846e250878ebf25ae6d3d01ce.1733994134.git.geert+renesas@glider.be
-Fixes: ce7d101750ff ("selftests: timers: clocksource-switch: adapt to kselftest framework")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Replace intptr_t and uintptr_t with intmax_t and uintmax_t, respectively.
+With this fix, the same test produces more usable diagnostic output:
+
+  # get_syscall_info.c:209:get_syscall_info:Expected exp_args[2] (3134324433) == info.entry.args[1] (18446744072548908753)
+
+Link: https://lore.kernel.org/r/20250108170757.GA6723@strace.io
+Fixes: b5bb6d3068ea ("selftests/seccomp: fix 32-bit build warnings")
+Signed-off-by: Dmitry V. Levin <ldv@strace.io>
+Reviewed-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/timers/clocksource-switch.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/kselftest_harness.h | 24 ++++++++++-----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/clocksource-switch.c b/tools/testing/selftests/timers/clocksource-switch.c
-index c5264594064c8..83faa4e354e38 100644
---- a/tools/testing/selftests/timers/clocksource-switch.c
-+++ b/tools/testing/selftests/timers/clocksource-switch.c
-@@ -156,8 +156,8 @@ int main(int argc, char **argv)
- 	/* Check everything is sane before we start switching asynchronously */
- 	if (do_sanity_check) {
- 		for (i = 0; i < count; i++) {
--			printf("Validating clocksource %s\n",
--				clocksource_list[i]);
-+			ksft_print_msg("Validating clocksource %s\n",
-+					clocksource_list[i]);
- 			if (change_clocksource(clocksource_list[i])) {
- 				status = -1;
- 				goto out;
-@@ -169,7 +169,7 @@ int main(int argc, char **argv)
- 		}
- 	}
- 
--	printf("Running Asynchronous Switching Tests...\n");
-+	ksft_print_msg("Running Asynchronous Switching Tests...\n");
- 	pid = fork();
- 	if (!pid)
- 		return run_tests(runtime);
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index a5a72415e37b0..666c9fde76da9 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -760,33 +760,33 @@
+ 		/* Report with actual signedness to avoid weird output. */ \
+ 		switch (is_signed_type(__exp) * 2 + is_signed_type(__seen)) { \
+ 		case 0: { \
+-			unsigned long long __exp_print = (uintptr_t)__exp; \
+-			unsigned long long __seen_print = (uintptr_t)__seen; \
+-			__TH_LOG("Expected %s (%llu) %s %s (%llu)", \
++			uintmax_t __exp_print = (uintmax_t)__exp; \
++			uintmax_t __seen_print = (uintmax_t)__seen; \
++			__TH_LOG("Expected %s (%ju) %s %s (%ju)", \
+ 				 _expected_str, __exp_print, #_t, \
+ 				 _seen_str, __seen_print); \
+ 			break; \
+ 			} \
+ 		case 1: { \
+-			unsigned long long __exp_print = (uintptr_t)__exp; \
+-			long long __seen_print = (intptr_t)__seen; \
+-			__TH_LOG("Expected %s (%llu) %s %s (%lld)", \
++			uintmax_t __exp_print = (uintmax_t)__exp; \
++			intmax_t  __seen_print = (intmax_t)__seen; \
++			__TH_LOG("Expected %s (%ju) %s %s (%jd)", \
+ 				 _expected_str, __exp_print, #_t, \
+ 				 _seen_str, __seen_print); \
+ 			break; \
+ 			} \
+ 		case 2: { \
+-			long long __exp_print = (intptr_t)__exp; \
+-			unsigned long long __seen_print = (uintptr_t)__seen; \
+-			__TH_LOG("Expected %s (%lld) %s %s (%llu)", \
++			intmax_t  __exp_print = (intmax_t)__exp; \
++			uintmax_t __seen_print = (uintmax_t)__seen; \
++			__TH_LOG("Expected %s (%jd) %s %s (%ju)", \
+ 				 _expected_str, __exp_print, #_t, \
+ 				 _seen_str, __seen_print); \
+ 			break; \
+ 			} \
+ 		case 3: { \
+-			long long __exp_print = (intptr_t)__exp; \
+-			long long __seen_print = (intptr_t)__seen; \
+-			__TH_LOG("Expected %s (%lld) %s %s (%lld)", \
++			intmax_t  __exp_print = (intmax_t)__exp; \
++			intmax_t  __seen_print = (intmax_t)__seen; \
++			__TH_LOG("Expected %s (%jd) %s %s (%jd)", \
+ 				 _expected_str, __exp_print, #_t, \
+ 				 _seen_str, __seen_print); \
+ 			break; \
 -- 
 2.39.5
 
