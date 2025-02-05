@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-113510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0941A291FD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C69A29283
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23ABE7A04C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E87E16E045
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6518A6DE;
-	Wed,  5 Feb 2025 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EE91DE89E;
+	Wed,  5 Feb 2025 14:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSY38P1L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTmRFgoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF3C155725;
-	Wed,  5 Feb 2025 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E933C189F39;
+	Wed,  5 Feb 2025 14:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767205; cv=none; b=CpbdstnD9lUB14WexuQbOAc/P3AruQk0/hMeZKojXe3xyKLM2do7+ZPM0PxeDpJKLv6/5/MKgF7rMHowTevEKq1MZ1HBtG4wXUYUiCfMNaPV4sFJWJV71V0qwKUpdENspyOMy7SDBD4uny8bFTBzaC6BvcYfV6qDVDNMwWoWh7k=
+	t=1738767212; cv=none; b=OFpCB86Adn+OsfDX6jVd42/xKLectHmf7DzU0ZgQvcGmToZy2hogqpm8yn+c/XEfoX/ljoOq3fnzJDeUB6M9aStJaQEzNrSmddte3VcPAoTgbuTVOWvN1haj9QTbnjY7ZFXNVYHKCAyCQ0pnA7OYcDk8z5MI0kw7UacvqAr5DpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767205; c=relaxed/simple;
-	bh=dFsj5OZnsqLwzKSrFGKoG1AFXkMsNuhaCJ5jm+RycpY=;
+	s=arc-20240116; t=1738767212; c=relaxed/simple;
+	bh=dgH5h+jENCAf/0QKfokHNUK2Ne1koiHET6tiVRMPvf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tv/Mqb3Vz4KVUdmo0jlYVkh/Nxkf4m3//7u9/CeiGmmkmAVYsdtohl1xAUQsoQCiJa48FD1sUWUoMsXchjfXZUCjylV0+cKtXvMXWtGYzbff8CK/jJzk9lIx9lVj+LmjH3p5UbT6I2yf7ZVkBOZhU3lxICFMX7qJ6E6+iBpmdEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSY38P1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD16C4CED1;
-	Wed,  5 Feb 2025 14:53:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PgP5eE5xHsLP1OM/RLLIXn8O3D9/kf4LBsq9LV2xWCpOWP35rWq4l/KFCIxW+Ehe5qqCfIStzCeefmCqpZ9HfdcXQwDWNp12eoJDx0nOFk0bF0uhaowC2XjfaDObRTiyngxFG4CFtR0rPhEsFUw+17MT1te+ajiu06uL+bKqPY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTmRFgoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AF9C4CEDD;
+	Wed,  5 Feb 2025 14:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767205;
-	bh=dFsj5OZnsqLwzKSrFGKoG1AFXkMsNuhaCJ5jm+RycpY=;
+	s=korg; t=1738767211;
+	bh=dgH5h+jENCAf/0QKfokHNUK2Ne1koiHET6tiVRMPvf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSY38P1LoocqHBO75Ex/whTYbd65n5EuaQhLGwhGpDG1zfVhZZLd0DqHrKSwzo79e
-	 yWUmBWMD8UE80exKVmSUdMv3I78m093xZEVuqeN57DqCItlYs9nrQscssN/Xa4v7k2
-	 GM+p7aUtXGLIP0DMrzopPA+wlMnOk5Y0yCvT1WXc=
+	b=aTmRFgoI1ukmrBwswxHC4aBguDvJzOLhNgRf/65RRBv7b5Pdcxg3WTCO8TV797oyt
+	 6BEy5Jq2IrrkkX7cvxK4W8egHykUPQov3b3LBl+B/Y7ols/7OgZUgKmeIZT5hDAU9U
+	 JXz9uz0isrrSj0/zHQIErlGGk/XRLe7x+B1POLMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Desnes Nunes <desnesn@redhat.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	King Dix <kingdix10@qq.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 423/590] media: dvb-usb-v2: af9035: fix ISO C90 compilation error on af9035_i2c_master_xfer
-Date: Wed,  5 Feb 2025 14:42:58 +0100
-Message-ID: <20250205134511.449522210@linuxfoundation.org>
+Subject: [PATCH 6.12 424/590] PCI: rcar-ep: Fix incorrect variable used when calling devm_request_mem_region()
+Date: Wed,  5 Feb 2025 14:42:59 +0100
+Message-ID: <20250205134511.487341607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -60,73 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: King Dix <kingdix10@qq.com>
 
-[ Upstream commit c36b9ad1a8add3c114e25fe167efa217a813b0c7 ]
+[ Upstream commit 2d2da5a4c1b4509f6f7e5a8db015cd420144beb4 ]
 
-This fixes a 'ISO C90 forbids mixed declarations and code' compilation
-error on af9035_i2c_master_xfer, which is caused by the sanity check added
-on user controlled msg[i], before declaring the demodulator register.
+The rcar_pcie_parse_outbound_ranges() uses the devm_request_mem_region()
+macro to request a needed resource. A string variable that lives on the
+stack is then used to store a dynamically computed resource name, which
+is then passed on as one of the macro arguments. This can lead to
+undefined behavior.
 
-Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Link: https://lore.kernel.org/r/20240919172755.196907-1-desnesn@redhat.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Depending on the current contents of the memory, the manifestations of
+errors may vary. One possible output may be as follows:
+
+  $ cat /proc/iomem
+  30000000-37ffffff :
+  38000000-3fffffff :
+
+Sometimes, garbage may appear after the colon.
+
+In very rare cases, if no NULL-terminator is found in memory, the system
+might crash because the string iterator will overrun which can lead to
+access of unmapped memory above the stack.
+
+Thus, fix this by replacing outbound_name with the name of the previously
+requested resource. With the changes applied, the output will be as
+follows:
+
+  $ cat /proc/iomem
+  30000000-37ffffff : memory2
+  38000000-3fffffff : memory3
+
+Fixes: 2a6d0d63d999 ("PCI: rcar: Add endpoint mode support")
+Link: https://lore.kernel.org/r/tencent_DBDCC19D60F361119E76919ADAB25EC13C06@qq.com
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: King Dix <kingdix10@qq.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/af9035.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/pci/controller/pcie-rcar-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
-index 0d2c42819d390..218f712f56b17 100644
---- a/drivers/media/usb/dvb-usb-v2/af9035.c
-+++ b/drivers/media/usb/dvb-usb-v2/af9035.c
-@@ -322,13 +322,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			/* demod access via firmware interface */
-+			u32 reg;
-+
- 			if (msg[0].len < 3 || msg[1].len < 1) {
- 				ret = -EOPNOTSUPP;
- 				goto unlock;
- 			}
--			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
--					msg[0].buf[2];
-+
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+				msg[0].buf[2];
- 
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
- 				reg |= 0x100000;
-@@ -385,13 +388,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			/* demod access via firmware interface */
-+			u32 reg;
-+
- 			if (msg[0].len < 3) {
- 				ret = -EOPNOTSUPP;
- 				goto unlock;
- 			}
--			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
--					msg[0].buf[2];
-+
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+				msg[0].buf[2];
- 
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
- 				reg |= 0x100000;
+diff --git a/drivers/pci/controller/pcie-rcar-ep.c b/drivers/pci/controller/pcie-rcar-ep.c
+index 047e2cef5afcd..c5e0d025bc435 100644
+--- a/drivers/pci/controller/pcie-rcar-ep.c
++++ b/drivers/pci/controller/pcie-rcar-ep.c
+@@ -107,7 +107,7 @@ static int rcar_pcie_parse_outbound_ranges(struct rcar_pcie_endpoint *ep,
+ 		}
+ 		if (!devm_request_mem_region(&pdev->dev, res->start,
+ 					     resource_size(res),
+-					     outbound_name)) {
++					     res->name)) {
+ 			dev_err(pcie->dev, "Cannot request memory region %s.\n",
+ 				outbound_name);
+ 			return -EIO;
 -- 
 2.39.5
 
