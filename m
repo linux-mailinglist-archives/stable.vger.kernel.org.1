@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8398A28F7E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB4BA28C47
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCF3188865D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9C21882FF7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A317154C08;
-	Wed,  5 Feb 2025 14:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE23E142E86;
+	Wed,  5 Feb 2025 13:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vushmXYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGVxcXgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174608634E;
-	Wed,  5 Feb 2025 14:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A9139CFA;
+	Wed,  5 Feb 2025 13:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765508; cv=none; b=JxGmu7ygDLj//9eCkB4WQzIM4zbZuE6BTJEuwfFoQqoDGM/iLCFWWhLhFJm59X+6q9+zDORKrwfLbgG5mC/+Znxtq74MRARETmNK7fjijjaf3soHOkc6W0I5kNDfovfNgEG1Urcdpa5yADyRr5zo8t4JcjJlsNhh5uaKtXBN030=
+	t=1738763271; cv=none; b=YrFWz5EqZsiucaFgYjfbUj15bHHRpNl7lHuYvA14K2movB9YBpUsjOGbTkG1MjpQLVRk8Hq+qh0wtBuBOQ4L7XCyIC0zlJSpIag0VkuMiN8/J1McpKzu7/SQ98QgV8HUfOol2jgUzf6x59G1rncthJUDgHfy2zH2sufLWlpiNy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765508; c=relaxed/simple;
-	bh=ygEuqCIW8OKKmFBEHJkvTsuCxdMU+Q2Mh2gOB5q8ygM=;
+	s=arc-20240116; t=1738763271; c=relaxed/simple;
+	bh=LnImW4EvlwaQ1Mu9EWSLPlYBhlDz8zvCmUofz6qzutw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcEG2vCm/g3o+mrqXKpgF1nkN3ZYqu4Pigx4RrjRlsEoVRebddCgbqIVX/082ut+XRclElaUAyeAs7pm9MTnDgGVFmKvWEWMmhnWej5aHgPVSBgtInZFYFUHV6VPB+7dZi7hPvVJgsezv+VxLeSj2LxOcSJZoEskzeBqRmq0A50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vushmXYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A563C4CED1;
-	Wed,  5 Feb 2025 14:25:07 +0000 (UTC)
+	 MIME-Version; b=KDfDU8LU6Dw6feesjJUSE4WEzmpkksBB9aQ1C7mwFkLmykYCMKKWgtXSe/2Ypod6sOlHlt8Cs8hzVxxJvj/4O1SZniJblNzpdk7LaxdhpM2Owq0x5t5BqcA0S593ElxsKplg3BspaAtFcdmuinkqfrHdn/cGTLeJELD02CW85UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGVxcXgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF1CC4CEDD;
+	Wed,  5 Feb 2025 13:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765508;
-	bh=ygEuqCIW8OKKmFBEHJkvTsuCxdMU+Q2Mh2gOB5q8ygM=;
+	s=korg; t=1738763271;
+	bh=LnImW4EvlwaQ1Mu9EWSLPlYBhlDz8zvCmUofz6qzutw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vushmXYT2QZLa2YC3tTXgBoddI0iPXF/C0RidaHsMuxPzqzKX/S7G6PFaZOKNRs8f
-	 y2ZFtb5lAdHGs141g7knUNjJhmB0csTJu0TDqdMsFURHUPbapzzorSb/TaEHrAtaIV
-	 LutT6oh79ny4r4iEw46M3XV5cMHnzqxUR8Jvyreo=
+	b=eGVxcXgRD5ckre1RbHn/qbTrSgQOo9UlYLbTPWA1INGQ7n/VI055fLeZeEMh7zWdn
+	 Ne691uhv24SVqj3gl8lMQNpi+hCD9YvxLJAj4Q/k5KglQBJnfIBVD8tG3qTyTFGJXY
+	 hMkiVdyuCj1goNRL0ruy46arZTfKUsJEzecu6gIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com,
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 184/623] wifi: mt76: mt7925: fix the invalid ip address for arp offload
-Date: Wed,  5 Feb 2025 14:38:46 +0100
-Message-ID: <20250205134503.276120322@linuxfoundation.org>
+Subject: [PATCH 6.6 008/393] nbd: dont allow reconnect after disconnect
+Date: Wed,  5 Feb 2025 14:38:47 +0100
+Message-ID: <20250205134420.611132116@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 113d469e7e23579a64b0fbb2eadf9228763092be ]
+[ Upstream commit 844b8cdc681612ff24df62cdefddeab5772fadf1 ]
 
-The wrong ieee80211_vif will lead to get invalid ip address and
-the correct ieee80211_vif can be obtained from ieee80211_bss_conf.
+Following process can cause nbd_config UAF:
 
-Fixes: 147324292979 ("wifi: mt76: mt7925: add link handling in the BSS_CHANGED_ARP_FILTER handler")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20241107053005.10558-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+1) grab nbd_config temporarily;
+
+2) nbd_genl_disconnect() flush all recv_work() and release the
+initial reference:
+
+  nbd_genl_disconnect
+   nbd_disconnect_and_put
+    nbd_disconnect
+     flush_workqueue(nbd->recv_workq)
+    if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF, ...))
+     nbd_config_put
+     -> due to step 1), reference is still not zero
+
+3) nbd_genl_reconfigure() queue recv_work() again;
+
+  nbd_genl_reconfigure
+   config = nbd_get_config_unlocked(nbd)
+   if (!config)
+   -> succeed
+   if (!test_bit(NBD_RT_BOUND, ...))
+   -> succeed
+   nbd_reconnect_socket
+    queue_work(nbd->recv_workq, &args->work)
+
+4) step 1) release the reference;
+
+5) Finially, recv_work() will trigger UAF:
+
+  recv_work
+   nbd_config_put(nbd)
+   -> nbd_config is freed
+   atomic_dec(&config->recv_threads)
+   -> UAF
+
+Fix the problem by clearing NBD_RT_BOUND in nbd_genl_disconnect(), so
+that nbd_genl_reconfigure() will fail.
+
+Fixes: b7aa3d39385d ("nbd: add a reconfigure netlink command")
+Reported-by: syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/675bfb65.050a0220.1a2d0d.0006.GAE@google.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250103092859.3574648-1-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/block/nbd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index b43617dbd5fde..123a585098e3b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -123,10 +123,8 @@ EXPORT_SYMBOL_GPL(mt7925_mcu_regval);
- int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
- 				 struct ieee80211_bss_conf *link_conf)
- {
--	struct ieee80211_vif *mvif = container_of((void *)link_conf->vif,
--						  struct ieee80211_vif,
--						  drv_priv);
- 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
-+	struct ieee80211_vif *mvif = link_conf->vif;
- 	struct sk_buff *skb;
- 	int i, len = min_t(int, mvif->cfg.arp_addr_cnt,
- 			   IEEE80211_BSS_ARP_ADDR_LIST_LEN);
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 96b349148e578..2203686156bfe 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2164,6 +2164,7 @@ static void nbd_disconnect_and_put(struct nbd_device *nbd)
+ 	flush_workqueue(nbd->recv_workq);
+ 	nbd_clear_que(nbd);
+ 	nbd->task_setup = NULL;
++	clear_bit(NBD_RT_BOUND, &nbd->config->runtime_flags);
+ 	mutex_unlock(&nbd->config_lock);
+ 
+ 	if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF,
 -- 
 2.39.5
 
