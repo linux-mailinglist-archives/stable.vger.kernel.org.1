@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E184A293EB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29382A28F62
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE95188ACF9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3732C168163
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66771186E26;
-	Wed,  5 Feb 2025 15:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D0F155335;
+	Wed,  5 Feb 2025 14:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PELPw54b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11cEKcK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223451519BF;
-	Wed,  5 Feb 2025 15:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0488634E;
+	Wed,  5 Feb 2025 14:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767740; cv=none; b=di2MdlJiVDpBIl9xWm3kwcobs4SHoNVYDeYKcMj1zNwUuQamoSgbRD8civPKgWyLVbupE2SPslWyUZP1ex+ha0wUQz5kChC3k95sGc4p+KOYRyhuxFQG2m9NtIasCXwGTAXRbgEe49d2mwHFOuN+VgDs8naFnxtJnSHmJwEOddc=
+	t=1738765470; cv=none; b=GAEg2A2ZjI5dp4Kl+asv8BeTgCmBeymqU049xBgxmAhUTvIQQbixzqZWSbLu7A/iqrXPOcEZ85V9i9q+9aIF7eo9K/JD8a0lloQQvcpUtkMJQb1bt72SmUdHXqJ6sul3HhEDpgct/MKsmwqXw3mg94vErsxb1W9DhBnhz3fCq4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767740; c=relaxed/simple;
-	bh=WwgYzrmU8deHSa6BDXthzKtpYX32wvkPFFk7ZxaDg8Y=;
+	s=arc-20240116; t=1738765470; c=relaxed/simple;
+	bh=77hd6zPQM0xfe8ZJQK/a0hoYl+21UUDNPA0+xPBqbTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImryS0oGsAoVs+EsiOL+Tqn+EGy9RFfLr/+aLmfoYAIQKYjdJU21lCuFSFQTVwCNYxGtfdibJfvT14SGhVPqeN1fLIwG8HKqTiDNr6oM4ZaZgbiNaIzdr5/RpbdzgQlGphqW/nPNBsrOv3a/LYIap2tU6ZiNhzPf/HDLnmFwzws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PELPw54b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828F4C4CED1;
-	Wed,  5 Feb 2025 15:02:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=edPrK92EBRAc6R/01UghV+cb8EY4YBiiX+WSaJ8kOfWA9CHLIqHHKFoqPyILn+p7J3NE1LqKcD1JSfUplk3msw82us2fnqSlvV5F2LwFUkZZfZlCNdVLeIOKH4saISLjkLKkLUq60yF0hTPinPdi1IqH8P7rvkwSFeDiSiPa5Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11cEKcK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E74AC4CED1;
+	Wed,  5 Feb 2025 14:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767740;
-	bh=WwgYzrmU8deHSa6BDXthzKtpYX32wvkPFFk7ZxaDg8Y=;
+	s=korg; t=1738765470;
+	bh=77hd6zPQM0xfe8ZJQK/a0hoYl+21UUDNPA0+xPBqbTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PELPw54bFY0Bx72qOJ/duMW1SxnEbvDiFj+s0lHwCcF3R7Y3uPyJqJ8DNAJtbCYdj
-	 O9Pgfvq9/4tCiElPi4FVoprsAECRYnGwRl5SXCM2vsfn2SCglTv7DPo64qRkJFIFWt
-	 fKZ9hcUoqFDAY+LwZkKJDl0DQ2pCMdnuuwxSVOj0=
+	b=11cEKcK9KqtYNEFE3N2Y8qxat0i3iEqhYiIBqWocMwUd4JliJ02nsvgEeEIghSp5d
+	 0Kdmz4JK6mF4wWJP1hR8BpUB0yOOo/BA4XJgeg9+NOqeFp2xQySjdElrsUSUyYaDTY
+	 IhDtpgwetKzBghd3OS6SXi0zPC//4DlhrS2WHjpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-media@vger.kernel.org,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 447/623] media: marvell: Add check for clk_enable()
+Subject: [PATCH 6.6 270/393] ARM: dts: mediatek: mt7623: fix IR nodename
 Date: Wed,  5 Feb 2025 14:43:09 +0100
-Message-ID: <20250205134513.319179295@linuxfoundation.org>
+Message-ID: <20250205134430.641368827@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 11f68d2ba2e1521a608af773bf788e8cfa260f68 ]
+[ Upstream commit 90234cf9b37c57201a24b78c217a91a8af774109 ]
 
-Add check for the return value of clk_enable() to guarantee the success.
+Fix following validation error:
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: cir@10013000: $nodename:0: 'cir@10013000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
+        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
 
-Fixes: 81a409bfd551 ("media: marvell-ccic: provide a clock for the sensor")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-[Sakari Ailus: Fix spelling in commit message.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 91044f38dae7 ("arm: dts: mt7623: add ir nodes to the mt7623.dtsi file")
+Cc: linux-media@vger.kernel.org
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20240617094634.23173-1-zajec5@gmail.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/marvell/mcam-core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/marvell/mcam-core.c b/drivers/media/platform/marvell/mcam-core.c
-index 9ec01228f9073..b8360d37000a7 100644
---- a/drivers/media/platform/marvell/mcam-core.c
-+++ b/drivers/media/platform/marvell/mcam-core.c
-@@ -935,7 +935,12 @@ static int mclk_enable(struct clk_hw *hw)
- 	ret = pm_runtime_resume_and_get(cam->dev);
- 	if (ret < 0)
- 		return ret;
--	clk_enable(cam->clk[0]);
-+	ret = clk_enable(cam->clk[0]);
-+	if (ret) {
-+		pm_runtime_put(cam->dev);
-+		return ret;
-+	}
-+
- 	mcam_reg_write(cam, REG_CLKCTRL, (mclk_src << 29) | mclk_div);
- 	mcam_ctlr_power_up(cam);
+diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+index f0b4a09004b31..9c5a52ce9351a 100644
+--- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
++++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+@@ -308,7 +308,7 @@
+ 		clock-names = "spi", "wrap";
+ 	};
  
+-	cir: cir@10013000 {
++	cir: ir-receiver@10013000 {
+ 		compatible = "mediatek,mt7623-cir";
+ 		reg = <0 0x10013000 0 0x1000>;
+ 		interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_LOW>;
 -- 
 2.39.5
 
