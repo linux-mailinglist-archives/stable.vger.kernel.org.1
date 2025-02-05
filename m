@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C137A29209
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5614A29070
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4652188DF70
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EF78162EED
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBF118A6DE;
-	Wed,  5 Feb 2025 14:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731E414B959;
+	Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9fGjyXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUuDY7/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7EC70825;
-	Wed,  5 Feb 2025 14:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305F6151988;
+	Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766763; cv=none; b=fM6VZWJOR4PuGAckIcxeXPMRjJNmOdtkt0cMD4A3yfp9yXX0muObtVRb8sw+KRdf00c6CM0NzWgVmaXQ7ghSVZpv3wiCBZ9J82NUCDMY/yOoDy6W5wq02oK8NO/RSzkGAUE83hSeZQ+U2lrEnyBIiqCaAuimZpj/rUsEPujHsOA=
+	t=1738766165; cv=none; b=XQFS5TsA6THyvc7Oh8hluv08u6oWQKW+TKrRO5GHmiRvtO6HWKGpaBX/t5VPzddn0vRkJ96u3z5kxVFdzwReRK61vy+dD5mCWYn43NTLvaAeyjFyDW96FXmaVsKkKwEq6BF7YiblUk5y0OXpvwQ+40PmZGPY7WbycSoTJPBSDeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766763; c=relaxed/simple;
-	bh=VLY6TjEwuPB8cIPrPa/5Xi1X9ERGC4V7LniTb7AP78o=;
+	s=arc-20240116; t=1738766165; c=relaxed/simple;
+	bh=BNiTe+n9/CWMdAL2TIkOF9Lurn37ZwtRvxgefw/T/iQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe9xFQ609j/tdF6GUPNr/ZRzpN3buLIOhxsO+3T/siFN1xMkYfBFZ17sBPGoSRGIDczJLO6g3mTWMO0LdOynA5RGmp8lHbeJMxRWXsZF1GicSsxQr9wW9Z20U0r0NadwR+zNRcLGBV/Yii6OWvR1xaEO0HJuw5BgbtboVubS1fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9fGjyXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D60C4CED1;
-	Wed,  5 Feb 2025 14:46:02 +0000 (UTC)
+	 MIME-Version; b=rc/WCRpIQLxnl2IDg6Br9vIcr9dmKye0pw8Rr4ZgXf9NETfHa0hdIqiMHXDOO+jhLj6D1MV1ori6XxXft46ZfUZTCsgAbPRNHP8+yelxytXcRuzG7jYJoE9CNhHnx+yk/3tFiyqEtyF6aAjv/2GsJZ7nquaYsqeHVgQMGjWxwwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUuDY7/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9601C4CED1;
+	Wed,  5 Feb 2025 14:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766763;
-	bh=VLY6TjEwuPB8cIPrPa/5Xi1X9ERGC4V7LniTb7AP78o=;
+	s=korg; t=1738766165;
+	bh=BNiTe+n9/CWMdAL2TIkOF9Lurn37ZwtRvxgefw/T/iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9fGjyXbxwBE3ukWBFxpDd9OaNCr8y0aCJtQrNZbA09i3iYZIoajY1zfSd6zKxg7K
-	 45JFHisymcEH73Vu13KX2j+A7ZcpTlYgVZLQNjSPN9pzU11bSb6vp95MDr66O7iR1V
-	 vJFvohAdC+JDVM1WwxpDclnjhvxn6YkNX8O9F8vU=
+	b=AUuDY7/nUag1i3lTVWhRZ4F82na6prHOCGYM4GoX192Ul9UotIQP09tWy/dbrLW6a
+	 n+CXXR3Jm0pHH20Kkr4Qai5TGlt2ZE4wo7xz0pOVBrUqUxRe1IhgEYgn0o516ae+cI
+	 paE52vAZVHSD4zFvM4kX8BRwEWkK27cdixswAWyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Chun-Tse Shao <ctshao@google.com>,
+	nick.forrington@arm.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 305/623] ASoC: Intel: sof_sdw: Fix DMI match for Lenovo 83LC
-Date: Wed,  5 Feb 2025 14:40:47 +0100
-Message-ID: <20250205134507.895278302@linuxfoundation.org>
+Subject: [PATCH 6.12 293/590] perf lock: Fix parse_lock_type which only retrieve one lock flag
+Date: Wed,  5 Feb 2025 14:40:48 +0100
+Message-ID: <20250205134506.486629344@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Chun-Tse Shao <ctshao@google.com>
 
-[ Upstream commit c9e05763f334845ba69494dd71d7cbfd05fd0e6e ]
+[ Upstream commit 1be9264158ef4818393e5d8144887a1a5d3cc480 ]
 
-Update the DMI match for a Lenovo laptop to the new DMI identifier.
+`parse_lock_type` can only add the first lock flag in `lock_type_table`
+given input `str`. For example, for `Y rwlock`, it only adds `rwlock:R`
+into this perf session. Another example is for `-Y mutex`, it only adds
+the mutex without `LCB_F_SPIN` flag. The patch fixes this issue, makes
+sure both `rwlock:R` and `rwlock:W` will be added with `-Y rwlock`, and
+so on.
 
-This laptop ships with a different DMI identifier to what was expected,
-and also has the DMICs connected to the host rather than the cs42l43
-codec.
+Testing:
+  $ ./perf lock con -ab -Y mutex,rwlock -- perf bench sched pipe
+  # Running 'sched/pipe' benchmark:
+  # Executed 1000000 pipe operations between two processes
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Fixes: 83c062ae81e8 ("ASoC: Intel: sof_sdw: Add quirks for some new Lenovo laptops")
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250102123335.256698-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+       Total time: 9.313 [sec]
+
+         9.313976 usecs/op
+           107365 ops/sec
+   contended   total wait     max wait     avg wait         type   caller
+
+         176      1.65 ms     19.43 us      9.38 us        mutex   pipe_read+0x57
+          34    180.14 us     10.93 us      5.30 us        mutex   pipe_write+0x50
+           7     77.48 us     16.09 us     11.07 us        mutex   do_epoll_wait+0x24d
+           7     74.70 us     13.50 us     10.67 us        mutex   do_epoll_wait+0x24d
+           3     35.97 us     14.44 us     11.99 us     rwlock:W   ep_done_scan+0x2d
+           3     35.00 us     12.23 us     11.66 us     rwlock:W   do_epoll_wait+0x255
+           2     15.88 us     11.96 us      7.94 us     rwlock:W   do_epoll_wait+0x47c
+           1     15.23 us     15.23 us     15.23 us     rwlock:W   do_epoll_wait+0x4d0
+           1     14.26 us     14.26 us     14.26 us     rwlock:W   ep_done_scan+0x2d
+           2     14.00 us      7.99 us      7.00 us        mutex   pipe_read+0x282
+           1     12.29 us     12.29 us     12.29 us     rwlock:R   ep_poll_callback+0x35
+           1     12.02 us     12.02 us     12.02 us     rwlock:W   do_epoll_ctl+0xb65
+           1     10.25 us     10.25 us     10.25 us     rwlock:R   ep_poll_callback+0x35
+           1      7.86 us      7.86 us      7.86 us        mutex   do_epoll_ctl+0x6c1
+           1      5.04 us      5.04 us      5.04 us        mutex   do_epoll_ctl+0x3d4
+
+[namhyung: Add a comment and rename to 'mutex:spin' for consistency
+
+Fixes: d783ea8f62c4 ("perf lock contention: Simplify parse_lock_type()")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Chun-Tse Shao <ctshao@google.com>
+Cc: nick.forrington@arm.com
+Link: https://lore.kernel.org/r/20250116235838.2769691-1-ctshao@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-lock.c | 66 ++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 25 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 46f1c2d368dee..d42b012a6bb9d 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -618,9 +618,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "3832")
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83LC")
- 		},
--		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
- 	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+index 062e2b56a2ab5..33a456980664a 100644
+--- a/tools/perf/builtin-lock.c
++++ b/tools/perf/builtin-lock.c
+@@ -1591,8 +1591,8 @@ static const struct {
+ 	{ LCB_F_PERCPU | LCB_F_WRITE,	"pcpu-sem:W",	"percpu-rwsem" },
+ 	{ LCB_F_MUTEX,			"mutex",	"mutex" },
+ 	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex",	"mutex" },
+-	/* alias for get_type_flag() */
+-	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex-spin",	"mutex" },
++	/* alias for optimistic spinning only */
++	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex:spin",	"mutex-spin" },
+ };
+ 
+ static const char *get_type_str(unsigned int flags)
+@@ -1617,19 +1617,6 @@ static const char *get_type_name(unsigned int flags)
+ 	return "unknown";
+ }
+ 
+-static unsigned int get_type_flag(const char *str)
+-{
+-	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
+-		if (!strcmp(lock_type_table[i].name, str))
+-			return lock_type_table[i].flags;
+-	}
+-	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
+-		if (!strcmp(lock_type_table[i].str, str))
+-			return lock_type_table[i].flags;
+-	}
+-	return UINT_MAX;
+-}
+-
+ static void lock_filter_finish(void)
+ {
+ 	zfree(&filters.types);
+@@ -2350,29 +2337,58 @@ static int parse_lock_type(const struct option *opt __maybe_unused, const char *
+ 			   int unset __maybe_unused)
+ {
+ 	char *s, *tmp, *tok;
+-	int ret = 0;
+ 
+ 	s = strdup(str);
+ 	if (s == NULL)
+ 		return -1;
+ 
+ 	for (tok = strtok_r(s, ", ", &tmp); tok; tok = strtok_r(NULL, ", ", &tmp)) {
+-		unsigned int flags = get_type_flag(tok);
++		bool found = false;
+ 
+-		if (flags == -1U) {
+-			pr_err("Unknown lock flags: %s\n", tok);
+-			ret = -1;
+-			break;
++		/* `tok` is `str` in `lock_type_table` if it contains ':'. */
++		if (strchr(tok, ':')) {
++			for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
++				if (!strcmp(lock_type_table[i].str, tok) &&
++				    add_lock_type(lock_type_table[i].flags)) {
++					found = true;
++					break;
++				}
++			}
++
++			if (!found) {
++				pr_err("Unknown lock flags name: %s\n", tok);
++				free(s);
++				return -1;
++			}
++
++			continue;
+ 		}
+ 
+-		if (!add_lock_type(flags)) {
+-			ret = -1;
+-			break;
++		/*
++		 * Otherwise `tok` is `name` in `lock_type_table`.
++		 * Single lock name could contain multiple flags.
++		 */
++		for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
++			if (!strcmp(lock_type_table[i].name, tok)) {
++				if (add_lock_type(lock_type_table[i].flags)) {
++					found = true;
++				} else {
++					free(s);
++					return -1;
++				}
++			}
+ 		}
++
++		if (!found) {
++			pr_err("Unknown lock name: %s\n", tok);
++			free(s);
++			return -1;
++		}
++
+ 	}
+ 
+ 	free(s);
+-	return ret;
++	return 0;
+ }
+ 
+ static bool add_lock_addr(unsigned long addr)
 -- 
 2.39.5
 
