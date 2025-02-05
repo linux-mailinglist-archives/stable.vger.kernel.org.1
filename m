@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12818A28F52
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5355A29018
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D493AAAB5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A869E3A2B6A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92971553AB;
-	Wed,  5 Feb 2025 14:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C27B7DA6A;
+	Wed,  5 Feb 2025 14:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBkxB7wG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5YgBDvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8447713C3F6;
-	Wed,  5 Feb 2025 14:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385341519AF;
+	Wed,  5 Feb 2025 14:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765326; cv=none; b=I5MJZtmmVE1LMQ69fgKjDu6BQvGC2Ls3/fJ2w54P0f6F1MKc+pIA2drf/nfd3UPDBeVhZu2XM0PPrmHDPYP1tdjkAkXPAMWQgkrPvU4EbX/rnj9H6O/1D7FCVXWyc3SU10n/pfn4uMczwgOsX9ML4qXniq28JNxjSWR4WPGojk4=
+	t=1738765892; cv=none; b=bN/q+JDYnsdojMy5le0h6GHwLYzPdvhlOm7ABB8o3Mi3ZAftsfGUUOMmTzEOtTt1JgDrODzwQNl12/eDF88ylk4ZXrPgCvrnHp0cTQ303Xr91l+xLs16y92R4iMCa9OUS+dZ4Ed8/i0m2UAxV7JaY8hxEfUw1uZSnIkhr3iGK7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765326; c=relaxed/simple;
-	bh=v0jVJ/WB+fNfPWRc3BnmVoFmtSzxkSKdnYovfMCdEjA=;
+	s=arc-20240116; t=1738765892; c=relaxed/simple;
+	bh=REX6rZrxC5WaJ45Xz35WnbQ6gPvB+igBgN74RNu+dBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlpvkydbZjmaFWXMm+n+2g92sFLICkuUyllh8fgMTMTfOkNOHqebuyUyqp2JKJhyWlk6sS0ODNXxvxkvL90vBlXNcFPMY9aELmH1uqPwA5Yx2up20CPeq938LoJ/uHyJ48/g1dinrcqQ+TcnCqcCkshru5KwaQs97X0Qv6knVO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBkxB7wG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5336C4CED1;
-	Wed,  5 Feb 2025 14:22:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oPknIjN1ziIvaIFsxw3f36+GW8FN1UQAIEEMTG5kfItA1Ggh+N0/6MXiNxWBpwSMl+eOb7NQRYXRZfH/EXQmEDC6BNcFXu0eEElVzTxUkKYafZ88nklF3xK/fXqZWPYtSeQWjpCEp0TgrRXf2rU1/i2XJKfGdOLZyLp4DBTNjnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5YgBDvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27790C4CED1;
+	Wed,  5 Feb 2025 14:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765326;
-	bh=v0jVJ/WB+fNfPWRc3BnmVoFmtSzxkSKdnYovfMCdEjA=;
+	s=korg; t=1738765890;
+	bh=REX6rZrxC5WaJ45Xz35WnbQ6gPvB+igBgN74RNu+dBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBkxB7wG7dxSkkyeSPtan4WGFta49f5n4HlC70JKqZD5RI9P4CYU3HwIE4x4EJRmY
-	 w5JRjpLdQ4hTaeZ0SdwWTx1fFMUOOVdVWbiUbyhwaBeq+B7xvn9Inea2qRKU78Jg9C
-	 oj+yvQv1VlW5niYll7BmlI6br2I7XsYy6FX6aIu8=
+	b=F5YgBDvZN9kgSxNi0XF5k4OHR8TPgMTXGFUXkZfdIu56P2U+FNW405KFidZ6FaFqc
+	 SMqUC1HMu3DZXgGEk2MdVLXDg8Na9KW0Qd+TVjCMGbqM/GSkJqRgAHKfgeN9THQ1s6
+	 r8kTT8m59mYTXvKF2DCcEJRtrALy1msWnYpNBicA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/590] cpufreq: ACPI: Fix max-frequency computation
+Subject: [PATCH 6.13 223/623] wifi: wilc1000: unregister wiphy only after netdev registration
 Date: Wed,  5 Feb 2025 14:39:25 +0100
-Message-ID: <20250205134503.319568101@linuxfoundation.org>
+Message-ID: <20250205134504.756921813@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 0834667545962ef1c5e8684ed32b45d9c574acd3 ]
+[ Upstream commit 208dea9107e80a33dfeb029bdb93cb53eccf005d ]
 
-Commit 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover
-boost frequencies") introduced an assumption in acpi_cpufreq_cpu_init()
-that the first entry in the P-state table was the nominal frequency.
-This assumption is incorrect. The frequency corresponding to the P0
-P-State need not be the same as the nominal frequency advertised via
-CPPC.
+wiphy_unregister()/wiphy_free() has been recently decoupled from
+wilc_netdev_cleanup() to fix a faulty error path in sdio/spi probe
+functions. However this change introduced a new failure when simply
+loading then unloading the driver:
 
-Since the driver is using the CPPC.highest_perf and CPPC.nominal_perf
-to compute the boost-ratio, it makes sense to use CPPC.nominal_freq to
-compute the max-frequency. CPPC.nominal_freq is advertised on
-platforms supporting CPPC revisions 3 or higher.
+  $ modprobe wilc1000-sdio; modprobe -r wilc1000-sdio
+  WARNING: CPU: 0 PID: 115 at net/wireless/core.c:1145 wiphy_unregister+0x904/0xc40 [cfg80211]
+  Modules linked in: wilc1000_sdio(-) wilc1000 cfg80211 bluetooth ecdh_generic ecc
+  CPU: 0 UID: 0 PID: 115 Comm: modprobe Not tainted 6.13.0-rc6+ #45
+  Hardware name: Atmel SAMA5
+  Call trace:
+   unwind_backtrace from show_stack+0x18/0x1c
+   show_stack from dump_stack_lvl+0x44/0x70
+   dump_stack_lvl from __warn+0x118/0x27c
+   __warn from warn_slowpath_fmt+0xcc/0x140
+   warn_slowpath_fmt from wiphy_unregister+0x904/0xc40 [cfg80211]
+   wiphy_unregister [cfg80211] from wilc_sdio_remove+0xb0/0x15c [wilc1000_sdio]
+   wilc_sdio_remove [wilc1000_sdio] from sdio_bus_remove+0x104/0x3f0
+   sdio_bus_remove from device_release_driver_internal+0x424/0x5dc
+   device_release_driver_internal from driver_detach+0x120/0x224
+   driver_detach from bus_remove_driver+0x17c/0x314
+   bus_remove_driver from sys_delete_module+0x310/0x46c
+   sys_delete_module from ret_fast_syscall+0x0/0x1c
+  Exception stack(0xd0acbfa8 to 0xd0acbff0)
+  bfa0:                   0044b210 0044b210 0044b24c 00000800 00000000 00000000
+  bfc0: 0044b210 0044b210 00000000 00000081 00000000 0044b210 00000000 00000000
+  bfe0: 00448e24 b6af99c4 0043ea0d aea2e12c
+  irq event stamp: 0
+  hardirqs last  enabled at (0): [<00000000>] 0x0
+  hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
+  softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
+  softirqs last disabled at (0): [<00000000>] 0x0
 
-Hence, fallback to using the first entry in the P-State table only on
-platforms that do not advertise CPPC.nominal_freq.
+The warning is triggered by the fact that there is still a
+wireless_device linked to the wiphy we are unregistering, due to
+wiphy_unregister() now being called after net device unregister (performed
+in wilc_netdev_cleanup()). Fix this warning by moving wiphy_unregister()
+after wilc_netdev_cleanup() is nominal paths (ie: driver removal).
+wilc_netdev_cleanup() ordering is left untouched in error paths in probe
+function because net device is not registered in those paths (so the
+warning can not trigger), yet the wiphy can still be registered, and we
+still some cleanup steps from wilc_netdev_cleanup().
 
-Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost frequencies")
-Tested-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250113044107.566-1-gautham.shenoy@amd.com
-[ rjw: Retain reverse X-mas tree ordering of local variable declarations ]
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 1be94490b6b8 ("wifi: wilc1000: unregister wiphy only if it has been registered")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20250114-wilc1000_modprobe-v1-1-ad19d46f0c07@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c | 36 +++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/sdio.c | 2 +-
+ drivers/net/wireless/microchip/wilc1000/spi.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index 0f04feb6cafaf..47e910c22a80b 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -626,7 +626,14 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
- #endif
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+index 3751e2ee1ca95..af970f9991110 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -225,8 +225,8 @@ static void wilc_sdio_remove(struct sdio_func *func)
+ 	struct wilc *wilc = sdio_get_drvdata(func);
+ 	struct wilc_sdio *sdio_priv = wilc->bus_data;
  
- #ifdef CONFIG_ACPI_CPPC_LIB
--static u64 get_max_boost_ratio(unsigned int cpu)
-+/*
-+ * get_max_boost_ratio: Computes the max_boost_ratio as the ratio
-+ * between the highest_perf and the nominal_perf.
-+ *
-+ * Returns the max_boost_ratio for @cpu. Returns the CPPC nominal
-+ * frequency via @nominal_freq if it is non-NULL pointer.
-+ */
-+static u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
- {
- 	struct cppc_perf_caps perf_caps;
- 	u64 highest_perf, nominal_perf;
-@@ -655,6 +662,9 @@ static u64 get_max_boost_ratio(unsigned int cpu)
+-	wiphy_unregister(wilc->wiphy);
+ 	wilc_netdev_cleanup(wilc);
++	wiphy_unregister(wilc->wiphy);
+ 	wiphy_free(wilc->wiphy);
+ 	kfree(sdio_priv->cmd53_buf);
+ 	kfree(sdio_priv);
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 31219fd0cfb3f..5bcabb7decea0 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -285,8 +285,8 @@ static void wilc_bus_remove(struct spi_device *spi)
+ 	struct wilc *wilc = spi_get_drvdata(spi);
+ 	struct wilc_spi *spi_priv = wilc->bus_data;
  
- 	nominal_perf = perf_caps.nominal_perf;
- 
-+	if (nominal_freq)
-+		*nominal_freq = perf_caps.nominal_freq;
-+
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
- 		return 0;
-@@ -667,8 +677,12 @@ static u64 get_max_boost_ratio(unsigned int cpu)
- 
- 	return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
+-	wiphy_unregister(wilc->wiphy);
+ 	wilc_netdev_cleanup(wilc);
++	wiphy_unregister(wilc->wiphy);
+ 	wiphy_free(wilc->wiphy);
+ 	kfree(spi_priv);
  }
-+
- #else
--static inline u64 get_max_boost_ratio(unsigned int cpu) { return 0; }
-+static inline u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
-+{
-+	return 0;
-+}
- #endif
- 
- static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
-@@ -678,9 +692,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	struct acpi_cpufreq_data *data;
- 	unsigned int cpu = policy->cpu;
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
-+	u64 max_boost_ratio, nominal_freq = 0;
- 	unsigned int valid_states = 0;
- 	unsigned int result = 0;
--	u64 max_boost_ratio;
- 	unsigned int i;
- #ifdef CONFIG_SMP
- 	static int blacklisted;
-@@ -830,16 +844,20 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	}
- 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
- 
--	max_boost_ratio = get_max_boost_ratio(cpu);
-+	max_boost_ratio = get_max_boost_ratio(cpu, &nominal_freq);
- 	if (max_boost_ratio) {
--		unsigned int freq = freq_table[0].frequency;
-+		unsigned int freq = nominal_freq;
- 
- 		/*
--		 * Because the loop above sorts the freq_table entries in the
--		 * descending order, freq is the maximum frequency in the table.
--		 * Assume that it corresponds to the CPPC nominal frequency and
--		 * use it to set cpuinfo.max_freq.
-+		 * The loop above sorts the freq_table entries in the
-+		 * descending order. If ACPI CPPC has not advertised
-+		 * the nominal frequency (this is possible in CPPC
-+		 * revisions prior to 3), then use the first entry in
-+		 * the pstate table as a proxy for nominal frequency.
- 		 */
-+		if (!freq)
-+			freq = freq_table[0].frequency;
-+
- 		policy->cpuinfo.max_freq = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
- 	} else {
- 		/*
 -- 
 2.39.5
 
