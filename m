@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87931A28D1F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AEE5A29048
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7242168ECD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACAF416A174
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83D614D2A2;
-	Wed,  5 Feb 2025 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F05155CBD;
+	Wed,  5 Feb 2025 14:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlFsiikb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT1g5SsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7321014A630;
-	Wed,  5 Feb 2025 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AE9151988;
+	Wed,  5 Feb 2025 14:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763839; cv=none; b=gsqQYsQ3PTwcV+zOcEx6RjouZ9tqHHUraAV9kMHy0bMRYTswiatLEvQK365MBd/2IGWT4R62ynGQz483BsmvnqNOIEj4E52jdTr5mBysi6zeKWz4y0tkj9PqF2GNLqWabJ5Lymp49Jdx8NIXtu4G6kCxTYbUpdrzoiQclw/8H5c=
+	t=1738766021; cv=none; b=BMvUfhsSTBfOahWGJ+n55b5P0vv1oPg4hNtj7w2TzUUyUEKDNdFscdLsbJIiw4L3Y2TdDKoyo1qwtGloOuUEBpZVgwgyxX8vc8D5ApLhHGngqRFjlWc6y9Tr6deiAl3xEZ6y2XWLLYE89TloVVlP/QXWAiHriB1w9VPl9trMLRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763839; c=relaxed/simple;
-	bh=JZuVZtlxZeKpI/r1iJp18kiSUubaW6/d6Y8L/ZJPv8g=;
+	s=arc-20240116; t=1738766021; c=relaxed/simple;
+	bh=egme6ltK9AP4V+Jnbe3NOX/K2Prf7K486ET8/sp74pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ1K3JXRMJcD2ybHlrK9eYqa3SkwVBJ5lWp95Qi3ujtnvOfHknVI/yPVXW90gfc+qz9LqISAhYg1D3z3D0wSsYAXyuRE7fhccPPWDi/o+0X7YRTHi96HJQbaXzzV6Zm7b5Mbh8woZDtLWW9+/qa1X3+qlz3IW6N9j//RGP47mv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlFsiikb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D369EC4CED1;
-	Wed,  5 Feb 2025 13:57:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bKN0RoZgJMVnuINTACo+DLU8bOV/Qi0z/v5TQ4qhRfqHMCKdtROYKUyxlaBzG+jbswVqV+zKGKf1QyOtNnA8SY8O2OK1iyVIhaJdXYDnacM1jJoQMWFEYmrJhy45vZMtN0JU07ptGLUbHGBgk92xh8HLlaptbEbfcfWsgKto8DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT1g5SsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC590C4CED1;
+	Wed,  5 Feb 2025 14:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763839;
-	bh=JZuVZtlxZeKpI/r1iJp18kiSUubaW6/d6Y8L/ZJPv8g=;
+	s=korg; t=1738766021;
+	bh=egme6ltK9AP4V+Jnbe3NOX/K2Prf7K486ET8/sp74pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QlFsiikbGDpsMMw7EQpxpvaBKxDjTXpK+nIyIWXioZzAAXs8fe/c/jpUy8T5AL6Ft
-	 Hh9F6SGKwj0oL5xWidHTL1eOu+lDjLd2W6k4WWBNsf1xBGhr5+i0Red6xOUwPAGJVz
-	 eAPOIHJdxPYWoAAOVD9o/17Cvc3UcWybjoLk6y1A=
+	b=cT1g5SsLmUyzlZU2CnBIRQwa9RoxzLvEN1sIvgYfQcsFUUyFSQ2ugq3U1LmFFNJEn
+	 IftS3Bsqn33Ke50vW6jAaAxUZrJE1tnPv5i10LT3ByEAmliX4qGZZpw7fcfUJrfV2g
+	 9TBBc1dapZNZ2UcBEL3nhBdun1DZvUBDzSBwXFZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/393] wifi: mac80211: dont flush non-uploaded STAs
+Subject: [PATCH 6.12 276/590] ASoC: Intel: avs: Fix init-config parsing
 Date: Wed,  5 Feb 2025 14:40:31 +0100
-Message-ID: <20250205134424.578763921@linuxfoundation.org>
+Message-ID: <20250205134505.835211970@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit aa3ce3f8fafa0b8fb062f28024855ea8cb3f3450 ]
+[ Upstream commit e9ca3db9f01a7ce91ceab35cd5fa52f0c5aca174 ]
 
-If STA state is pre-moved to AUTHORIZED (such as in IBSS
-scenarios) and insertion fails, the station is freed.
-In this case, the driver never knew about the station,
-so trying to flush it is unexpected and may crash.
+When parsing init configs correct token should be looked up.
 
-Check if the sta was uploaded to the driver before and
-fix this.
-
-Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.e3d10970a7c7.I491bbcccc46f835ade07df0640a75f6ed92f20a3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1b4217ebbb3e ("ASoC: Intel: avs: Add topology parsing support for initial config")
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250109122216.3667847-5-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.h | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/intel/avs/topology.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 2bc2fbe58f944..78aa3bc51586e 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -665,6 +665,9 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
- 	if (sdata && !check_sdata_in_driver(sdata))
- 		return;
+diff --git a/sound/soc/intel/avs/topology.c b/sound/soc/intel/avs/topology.c
+index 5cda527020c7b..d612f20ed9893 100644
+--- a/sound/soc/intel/avs/topology.c
++++ b/sound/soc/intel/avs/topology.c
+@@ -1466,7 +1466,7 @@ avs_tplg_path_template_create(struct snd_soc_component *comp, struct avs_tplg *o
  
-+	if (!sta->uploaded)
-+		return;
-+
- 	trace_drv_flush_sta(local, sdata, &sta->sta);
- 	if (local->ops->flush_sta)
- 		local->ops->flush_sta(&local->hw, &sdata->vif, &sta->sta);
+ static const struct avs_tplg_token_parser mod_init_config_parsers[] = {
+ 	{
+-		.token = AVS_TKN_MOD_INIT_CONFIG_ID_U32,
++		.token = AVS_TKN_INIT_CONFIG_ID_U32,
+ 		.type = SND_SOC_TPLG_TUPLE_TYPE_WORD,
+ 		.offset = offsetof(struct avs_tplg_init_config, id),
+ 		.parse = avs_parse_word_token,
+@@ -1519,7 +1519,7 @@ static int avs_tplg_parse_initial_configs(struct snd_soc_component *comp,
+ 		esize = le32_to_cpu(tuples->size) + le32_to_cpu(tmp->size);
+ 
+ 		ret = parse_dictionary_entries(comp, tuples, esize, config, 1, sizeof(*config),
+-					       AVS_TKN_MOD_INIT_CONFIG_ID_U32,
++					       AVS_TKN_INIT_CONFIG_ID_U32,
+ 					       mod_init_config_parsers,
+ 					       ARRAY_SIZE(mod_init_config_parsers));
+ 
 -- 
 2.39.5
 
