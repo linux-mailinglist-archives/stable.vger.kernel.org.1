@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21038A292DF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC53A292FF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 474BD16E4BC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55E163AD898
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4B418A6CE;
-	Wed,  5 Feb 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5071D18A93F;
+	Wed,  5 Feb 2025 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHgJ6+5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqfNCNVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09337376;
-	Wed,  5 Feb 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068EADF59;
+	Wed,  5 Feb 2025 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767446; cv=none; b=HDSlGUqyOT7AfAClXoxH59RJa6f5mG/4LNeHRV/VpM0ufSMv5mlKb9wa10yuKyLdUtu02eHLqEEcX5eVbUVFTfyCH77fzEEiSlQGpZNND29i7Hc2G3GwxT9OKiAIupBTaJKgTt4GxJ19SFws8qHQN7xDupGj4fe08B5sOphuB74=
+	t=1738767453; cv=none; b=ARZ12KzHtuqYLv/oZlXmwIH08TRRV2+J5XR090R8FdyIQpSflmo/j99ITttuYmOHNUfkUimEwF2LYQW/f4ORPvDBC7LEQGh5JdsNbU2u+Vnxmurj/YsPIDe5VZNs3guCf7PqsJJYBSyaY3+1hrsQK+YimMVPkOQNqJwKdRsnjz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767446; c=relaxed/simple;
-	bh=TFQzfbX7jht4CUFix2f7CKpZ4l423MrJ5HosegyhXLw=;
+	s=arc-20240116; t=1738767453; c=relaxed/simple;
+	bh=pKdF255n6l3nuj/Hf7uEgNgS8CTv2cgznkYkMWKU1zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3xQ6Y8zxiA986v9WhkU/bqQOwxqBfS2PRTUgmAiV24AYx6qbm6+UkGCSOYj114TfewYGGjL0x83SPRUELPW/XSP9AQI3ds/oEbsJCJUrqzlXWsPaJxMVWsRK87OEMZ7VgffN0VJprGoQCqWUSPm6KjGwAXJ8bkJaBeqEhc1lnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHgJ6+5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69857C4CED6;
-	Wed,  5 Feb 2025 14:57:25 +0000 (UTC)
+	 MIME-Version; b=XfV1u8hqjW9CqPvz+qa1UlWWbrWdWIufqSQn5voWIu4ZX5v4P84ZS7c+vOQMzUJ3BTIkqL8533Oo/9kTqFV5+ZeM62/XIvFcaMoclLMSbwNLSovrst6UOCYsmPn/d/yEalWDS23y/sr21YvkjD4qdIO3+AbkxzFFLF9FuZf4u0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqfNCNVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6105CC4CED1;
+	Wed,  5 Feb 2025 14:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767445;
-	bh=TFQzfbX7jht4CUFix2f7CKpZ4l423MrJ5HosegyhXLw=;
+	s=korg; t=1738767452;
+	bh=pKdF255n6l3nuj/Hf7uEgNgS8CTv2cgznkYkMWKU1zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHgJ6+5ltz+paln3//BnDJNA5QcMBryK6zJTGmSF0QKCYCIOAStEChSjVlGbWASnv
-	 eyoenEdireWNGMcGnBwEXmZ5kspQo1ITuSJNd6C00tXNplbSCi+DDZz5INLKBtxfd3
-	 OxcWhIepnyLdAsi2Pmmhcl4uKCS4kHF2QO8s0B5I=
+	b=SqfNCNVtXHstsFgzA5WyXK4owQjr8jJiQ5d1VlYpP2zE5RvKTu0AayeUwYtxQgsNk
+	 bwRARqOCRjCZNjMT7CLEPCTWV6/r/XzqKMkKZKPHqtGHIRa+QzFhBjEJZUIDt+rUP5
+	 jqAdlt+7b3hUQJy4a7dice4UDHBhN+TtulrZpJPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Antony Antony <antony.antony@secunet.com>,
 	Tobias Brunner <tobias@strongswan.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 458/590] xfrm: Add support for per cpu xfrm state handling.
-Date: Wed,  5 Feb 2025 14:43:33 +0100
-Message-ID: <20250205134512.786251074@linuxfoundation.org>
+Subject: [PATCH 6.12 459/590] xfrm: Cache used outbound xfrm states at the policy.
+Date: Wed,  5 Feb 2025 14:43:34 +0100
+Message-ID: <20250205134512.823877082@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -69,20 +69,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit 1ddf9916ac09313128e40d6581cef889c0b4ce84 ]
+[ Upstream commit 0045e3d80613cc7174dc15f189ee6fc4e73b9365 ]
 
-Currently all flows for a certain SA must be processed by the same
-cpu to avoid packet reordering and lock contention of the xfrm
-state lock.
-
-To get rid of this limitation, the IETF standardized per cpu SAs
-in RFC 9611. This patch implements the xfrm part of it.
-
-We add the cpu as a lookup key for xfrm states and a config option
-to generate acquire messages for each cpu.
-
-With that, we can have on each cpu a SA with identical traffic selector
-so that flows can be processed in parallel on all cpus.
+Now that we can have percpu xfrm states, the number of active
+states might increase. To get a better lookup performance,
+we cache the used xfrm states at the policy for outbound
+IPsec traffic.
 
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Tested-by: Antony Antony <antony.antony@secunet.com>
@@ -90,511 +82,191 @@ Tested-by: Tobias Brunner <tobias@strongswan.org>
 Stable-dep-of: e952837f3ddb ("xfrm: state: fix out-of-bounds read during lookup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h        |  5 ++--
- include/uapi/linux/xfrm.h |  2 ++
- net/key/af_key.c          |  7 +++--
- net/xfrm/xfrm_compat.c    |  6 ++--
- net/xfrm/xfrm_state.c     | 58 +++++++++++++++++++++++++++++++--------
- net/xfrm/xfrm_user.c      | 56 ++++++++++++++++++++++++++++++++++---
- 6 files changed, 112 insertions(+), 22 deletions(-)
+ include/net/xfrm.h     |  4 +++
+ net/xfrm/xfrm_policy.c | 12 +++++++++
+ net/xfrm/xfrm_state.c  | 55 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 71 insertions(+)
 
 diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index a0bdd58f401c0..f5275618e744e 100644
+index f5275618e744e..0b394c5fb5f3a 100644
 --- a/include/net/xfrm.h
 +++ b/include/net/xfrm.h
-@@ -188,6 +188,7 @@ struct xfrm_state {
+@@ -184,6 +184,7 @@ struct xfrm_state {
+ 	};
+ 	struct hlist_node	byspi;
+ 	struct hlist_node	byseq;
++	struct hlist_node	state_cache;
+ 
  	refcount_t		refcnt;
  	spinlock_t		lock;
+@@ -537,6 +538,7 @@ struct xfrm_policy_queue {
+  *	@xp_net: network namespace the policy lives in
+  *	@bydst: hlist node for SPD hash table or rbtree list
+  *	@byidx: hlist node for index hash table
++ *	@state_cache_list: hlist head for policy cached xfrm states
+  *	@lock: serialize changes to policy structure members
+  *	@refcnt: reference count, freed once it reaches 0
+  *	@pos: kernel internal tie-breaker to determine age of policy
+@@ -567,6 +569,8 @@ struct xfrm_policy {
+ 	struct hlist_node	bydst;
+ 	struct hlist_node	byidx;
  
-+	u32			pcpu_num;
- 	struct xfrm_id		id;
- 	struct xfrm_selector	sel;
- 	struct xfrm_mark	mark;
-@@ -1684,7 +1685,7 @@ struct xfrmk_spdinfo {
- 	u32 spdhmcnt;
- };
++	struct hlist_head	state_cache_list;
++
+ 	/* This lock only affects elements except for entry. */
+ 	rwlock_t		lock;
+ 	refcount_t		refcnt;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index a2ea9dbac90b3..8a1b83191a6cd 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -434,6 +434,7 @@ struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp)
+ 	if (policy) {
+ 		write_pnet(&policy->xp_net, net);
+ 		INIT_LIST_HEAD(&policy->walk.all);
++		INIT_HLIST_HEAD(&policy->state_cache_list);
+ 		INIT_HLIST_NODE(&policy->bydst);
+ 		INIT_HLIST_NODE(&policy->byidx);
+ 		rwlock_init(&policy->lock);
+@@ -475,6 +476,9 @@ EXPORT_SYMBOL(xfrm_policy_destroy);
  
--struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq);
-+struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num);
- int xfrm_state_delete(struct xfrm_state *x);
- int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync);
- int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_valid);
-@@ -1796,7 +1797,7 @@ int verify_spi_info(u8 proto, u32 min, u32 max, struct netlink_ext_ack *extack);
- int xfrm_alloc_spi(struct xfrm_state *x, u32 minspi, u32 maxspi,
- 		   struct netlink_ext_ack *extack);
- struct xfrm_state *xfrm_find_acq(struct net *net, const struct xfrm_mark *mark,
--				 u8 mode, u32 reqid, u32 if_id, u8 proto,
-+				 u8 mode, u32 reqid, u32 if_id, u32 pcpu_num, u8 proto,
- 				 const xfrm_address_t *daddr,
- 				 const xfrm_address_t *saddr, int create,
- 				 unsigned short family);
-diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-index f28701500714f..d73a97e3030a8 100644
---- a/include/uapi/linux/xfrm.h
-+++ b/include/uapi/linux/xfrm.h
-@@ -322,6 +322,7 @@ enum xfrm_attr_type_t {
- 	XFRMA_MTIMER_THRESH,	/* __u32 in seconds for input SA */
- 	XFRMA_SA_DIR,		/* __u8 */
- 	XFRMA_NAT_KEEPALIVE_INTERVAL,	/* __u32 in seconds for NAT keepalive */
-+	XFRMA_SA_PCPU,		/* __u32 */
- 	__XFRMA_MAX
+ static void xfrm_policy_kill(struct xfrm_policy *policy)
+ {
++	struct net *net = xp_net(policy);
++	struct xfrm_state *x;
++
+ 	xfrm_dev_policy_delete(policy);
  
- #define XFRMA_OUTPUT_MARK XFRMA_SET_MARK	/* Compatibility */
-@@ -437,6 +438,7 @@ struct xfrm_userpolicy_info {
- #define XFRM_POLICY_LOCALOK	1	/* Allow user to override global policy */
- 	/* Automatically expand selector to include matching ICMP payloads. */
- #define XFRM_POLICY_ICMP	2
-+#define XFRM_POLICY_CPU_ACQUIRE	4
- 	__u8				share;
- };
+ 	write_lock_bh(&policy->lock);
+@@ -490,6 +494,13 @@ static void xfrm_policy_kill(struct xfrm_policy *policy)
+ 	if (del_timer(&policy->timer))
+ 		xfrm_pol_put(policy);
  
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index f79fb99271ed8..c56bb4f451e6d 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -1354,7 +1354,7 @@ static int pfkey_getspi(struct sock *sk, struct sk_buff *skb, const struct sadb_
++	/* XXX: Flush state cache */
++	spin_lock_bh(&net->xfrm.xfrm_state_lock);
++	hlist_for_each_entry_rcu(x, &policy->state_cache_list, state_cache) {
++		hlist_del_init_rcu(&x->state_cache);
++	}
++	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
++
+ 	xfrm_pol_put(policy);
+ }
+ 
+@@ -3275,6 +3286,7 @@ struct dst_entry *xfrm_lookup_with_ifid(struct net *net,
+ 		dst_release(dst);
+ 		dst = dst_orig;
  	}
- 
- 	if (hdr->sadb_msg_seq) {
--		x = xfrm_find_acq_byseq(net, DUMMY_MARK, hdr->sadb_msg_seq);
-+		x = xfrm_find_acq_byseq(net, DUMMY_MARK, hdr->sadb_msg_seq, UINT_MAX);
- 		if (x && !xfrm_addr_equal(&x->id.daddr, xdaddr, family)) {
- 			xfrm_state_put(x);
- 			x = NULL;
-@@ -1362,7 +1362,8 @@ static int pfkey_getspi(struct sock *sk, struct sk_buff *skb, const struct sadb_
- 	}
- 
- 	if (!x)
--		x = xfrm_find_acq(net, &dummy_mark, mode, reqid, 0, proto, xdaddr, xsaddr, 1, family);
-+		x = xfrm_find_acq(net, &dummy_mark, mode, reqid, 0, UINT_MAX,
-+				  proto, xdaddr, xsaddr, 1, family);
- 
- 	if (x == NULL)
- 		return -ENOENT;
-@@ -1417,7 +1418,7 @@ static int pfkey_acquire(struct sock *sk, struct sk_buff *skb, const struct sadb
- 	if (hdr->sadb_msg_seq == 0 || hdr->sadb_msg_errno == 0)
- 		return 0;
- 
--	x = xfrm_find_acq_byseq(net, DUMMY_MARK, hdr->sadb_msg_seq);
-+	x = xfrm_find_acq_byseq(net, DUMMY_MARK, hdr->sadb_msg_seq, UINT_MAX);
- 	if (x == NULL)
- 		return 0;
- 
-diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
-index 91357ccaf4afe..5b9ee63e30b69 100644
---- a/net/xfrm/xfrm_compat.c
-+++ b/net/xfrm/xfrm_compat.c
-@@ -132,6 +132,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
- 	[XFRMA_MTIMER_THRESH]	= { .type = NLA_U32 },
- 	[XFRMA_SA_DIR]          = NLA_POLICY_RANGE(NLA_U8, XFRM_SA_DIR_IN, XFRM_SA_DIR_OUT),
- 	[XFRMA_NAT_KEEPALIVE_INTERVAL]	= { .type = NLA_U32 },
-+	[XFRMA_SA_PCPU]		= { .type = NLA_U32 },
- };
- 
- static struct nlmsghdr *xfrm_nlmsg_put_compat(struct sk_buff *skb,
-@@ -282,9 +283,10 @@ static int xfrm_xlate64_attr(struct sk_buff *dst, const struct nlattr *src)
- 	case XFRMA_MTIMER_THRESH:
- 	case XFRMA_SA_DIR:
- 	case XFRMA_NAT_KEEPALIVE_INTERVAL:
-+	case XFRMA_SA_PCPU:
- 		return xfrm_nla_cpy(dst, src, nla_len(src));
- 	default:
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_NAT_KEEPALIVE_INTERVAL);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_PCPU);
- 		pr_warn_once("unsupported nla_type %d\n", src->nla_type);
- 		return -EOPNOTSUPP;
- 	}
-@@ -439,7 +441,7 @@ static int xfrm_xlate32_attr(void *dst, const struct nlattr *nla,
- 	int err;
- 
- 	if (type > XFRMA_MAX) {
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_NAT_KEEPALIVE_INTERVAL);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_PCPU);
- 		NL_SET_ERR_MSG(extack, "Bad attribute");
- 		return -EOPNOTSUPP;
- 	}
++
+ ok:
+ 	xfrm_pols_put(pols, drop_pols);
+ 	if (dst && dst->xfrm &&
 diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 37478d36a8dff..ebef07b80afad 100644
+index ebef07b80afad..a2047825f6c88 100644
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -679,6 +679,7 @@ struct xfrm_state *xfrm_state_alloc(struct net *net)
- 		x->lft.hard_packet_limit = XFRM_INF;
- 		x->replay_maxage = 0;
- 		x->replay_maxdiff = 0;
-+		x->pcpu_num = UINT_MAX;
- 		spin_lock_init(&x->lock);
- 	}
- 	return x;
-@@ -1155,6 +1156,12 @@ static void xfrm_state_look_at(struct xfrm_policy *pol, struct xfrm_state *x,
- 			       struct xfrm_state **best, int *acq_in_progress,
- 			       int *error)
- {
-+	/* We need the cpu id just as a lookup key,
-+	 * we don't require it to be stable.
-+	 */
-+	unsigned int pcpu_id = get_cpu();
-+	put_cpu();
-+
- 	/* Resolution logic:
- 	 * 1. There is a valid state with matching selector. Done.
- 	 * 2. Valid state with inappropriate selector. Skip.
-@@ -1174,13 +1181,18 @@ static void xfrm_state_look_at(struct xfrm_policy *pol, struct xfrm_state *x,
- 							&fl->u.__fl_common))
- 			return;
+@@ -665,6 +665,7 @@ struct xfrm_state *xfrm_state_alloc(struct net *net)
+ 		refcount_set(&x->refcnt, 1);
+ 		atomic_set(&x->tunnel_users, 0);
+ 		INIT_LIST_HEAD(&x->km.all);
++		INIT_HLIST_NODE(&x->state_cache);
+ 		INIT_HLIST_NODE(&x->bydst);
+ 		INIT_HLIST_NODE(&x->bysrc);
+ 		INIT_HLIST_NODE(&x->byspi);
+@@ -744,12 +745,15 @@ int __xfrm_state_delete(struct xfrm_state *x)
  
-+		if (x->pcpu_num != UINT_MAX && x->pcpu_num != pcpu_id)
-+			return;
+ 	if (x->km.state != XFRM_STATE_DEAD) {
+ 		x->km.state = XFRM_STATE_DEAD;
 +
- 		if (!*best ||
-+		    ((*best)->pcpu_num == UINT_MAX && x->pcpu_num == pcpu_id) ||
- 		    (*best)->km.dying > x->km.dying ||
- 		    ((*best)->km.dying == x->km.dying &&
- 		     (*best)->curlft.add_time < x->curlft.add_time))
- 			*best = x;
- 	} else if (x->km.state == XFRM_STATE_ACQ) {
--		*acq_in_progress = 1;
-+		if (!*best || x->pcpu_num == pcpu_id)
-+			*acq_in_progress = 1;
- 	} else if (x->km.state == XFRM_STATE_ERROR ||
- 		   x->km.state == XFRM_STATE_EXPIRED) {
- 		if ((!x->sel.family ||
-@@ -1209,6 +1221,13 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	unsigned short encap_family = tmpl->encap_family;
+ 		spin_lock(&net->xfrm.xfrm_state_lock);
+ 		list_del(&x->km.all);
+ 		hlist_del_rcu(&x->bydst);
+ 		hlist_del_rcu(&x->bysrc);
+ 		if (x->km.seq)
+ 			hlist_del_rcu(&x->byseq);
++		if (!hlist_unhashed(&x->state_cache))
++			hlist_del_rcu(&x->state_cache);
+ 		if (x->id.spi)
+ 			hlist_del_rcu(&x->byspi);
+ 		net->xfrm.state_num--;
+@@ -1222,6 +1226,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
  	unsigned int sequence;
  	struct km_event c;
-+	unsigned int pcpu_id;
-+
-+	/* We need the cpu id just as a lookup key,
-+	 * we don't require it to be stable.
-+	 */
-+	pcpu_id = get_cpu();
-+	put_cpu();
+ 	unsigned int pcpu_id;
++	bool cached = false;
  
- 	to_put = NULL;
+ 	/* We need the cpu id just as a lookup key,
+ 	 * we don't require it to be stable.
+@@ -1234,6 +1239,46 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
  
-@@ -1282,7 +1301,10 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	}
- 
- found:
--	x = best;
-+	if (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) ||
-+	    (best && (best->pcpu_num == pcpu_id)))
-+		x = best;
-+
- 	if (!x && !error && !acquire_in_progress) {
- 		if (tmpl->id.spi &&
- 		    (x0 = __xfrm_state_lookup_all(net, mark, daddr,
-@@ -1314,6 +1336,8 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		xfrm_init_tempstate(x, fl, tmpl, daddr, saddr, family);
- 		memcpy(&x->mark, &pol->mark, sizeof(x->mark));
- 		x->if_id = if_id;
-+		if ((pol->flags & XFRM_POLICY_CPU_ACQUIRE) && best)
-+			x->pcpu_num = pcpu_id;
- 
- 		error = security_xfrm_state_alloc_acquire(x, pol->security, fl->flowi_secid);
- 		if (error) {
-@@ -1392,6 +1416,11 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			x = NULL;
- 			error = -ESRCH;
- 		}
-+
-+		/* Use the already installed 'fallback' while the CPU-specific
-+		 * SA acquire is handled*/
-+		if (best)
-+			x = best;
- 	}
- out:
- 	if (x) {
-@@ -1524,12 +1553,14 @@ static void __xfrm_state_bump_genids(struct xfrm_state *xnew)
- 	unsigned int h;
- 	u32 mark = xnew->mark.v & xnew->mark.m;
- 	u32 if_id = xnew->if_id;
-+	u32 cpu_id = xnew->pcpu_num;
- 
- 	h = xfrm_dst_hash(net, &xnew->id.daddr, &xnew->props.saddr, reqid, family);
- 	hlist_for_each_entry(x, net->xfrm.state_bydst+h, bydst) {
- 		if (x->props.family	== family &&
- 		    x->props.reqid	== reqid &&
- 		    x->if_id		== if_id &&
-+		    x->pcpu_num		== cpu_id &&
- 		    (mark & x->mark.m) == x->mark.v &&
- 		    xfrm_addr_equal(&x->id.daddr, &xnew->id.daddr, family) &&
- 		    xfrm_addr_equal(&x->props.saddr, &xnew->props.saddr, family))
-@@ -1552,7 +1583,7 @@ EXPORT_SYMBOL(xfrm_state_insert);
- static struct xfrm_state *__find_acq_core(struct net *net,
- 					  const struct xfrm_mark *m,
- 					  unsigned short family, u8 mode,
--					  u32 reqid, u32 if_id, u8 proto,
-+					  u32 reqid, u32 if_id, u32 pcpu_num, u8 proto,
- 					  const xfrm_address_t *daddr,
- 					  const xfrm_address_t *saddr,
- 					  int create)
-@@ -1569,6 +1600,7 @@ static struct xfrm_state *__find_acq_core(struct net *net,
- 		    x->id.spi       != 0 ||
- 		    x->id.proto	    != proto ||
- 		    (mark & x->mark.m) != x->mark.v ||
-+		    x->pcpu_num != pcpu_num ||
- 		    !xfrm_addr_equal(&x->id.daddr, daddr, family) ||
- 		    !xfrm_addr_equal(&x->props.saddr, saddr, family))
- 			continue;
-@@ -1602,6 +1634,7 @@ static struct xfrm_state *__find_acq_core(struct net *net,
- 			break;
- 		}
- 
-+		x->pcpu_num = pcpu_num;
- 		x->km.state = XFRM_STATE_ACQ;
- 		x->id.proto = proto;
- 		x->props.family = family;
-@@ -1630,7 +1663,7 @@ static struct xfrm_state *__find_acq_core(struct net *net,
- 	return x;
- }
- 
--static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq);
-+static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num);
- 
- int xfrm_state_add(struct xfrm_state *x)
- {
-@@ -1656,7 +1689,7 @@ int xfrm_state_add(struct xfrm_state *x)
- 	}
- 
- 	if (use_spi && x->km.seq) {
--		x1 = __xfrm_find_acq_byseq(net, mark, x->km.seq);
-+		x1 = __xfrm_find_acq_byseq(net, mark, x->km.seq, x->pcpu_num);
- 		if (x1 && ((x1->id.proto != x->id.proto) ||
- 		    !xfrm_addr_equal(&x1->id.daddr, &x->id.daddr, family))) {
- 			to_put = x1;
-@@ -1666,7 +1699,7 @@ int xfrm_state_add(struct xfrm_state *x)
- 
- 	if (use_spi && !x1)
- 		x1 = __find_acq_core(net, &x->mark, family, x->props.mode,
--				     x->props.reqid, x->if_id, x->id.proto,
-+				     x->props.reqid, x->if_id, x->pcpu_num, x->id.proto,
- 				     &x->id.daddr, &x->props.saddr, 0);
- 
- 	__xfrm_state_bump_genids(x);
-@@ -1791,6 +1824,7 @@ static struct xfrm_state *xfrm_state_clone(struct xfrm_state *orig,
- 	x->props.flags = orig->props.flags;
- 	x->props.extra_flags = orig->props.extra_flags;
- 
-+	x->pcpu_num = orig->pcpu_num;
- 	x->if_id = orig->if_id;
- 	x->tfcpad = orig->tfcpad;
- 	x->replay_maxdiff = orig->replay_maxdiff;
-@@ -2066,13 +2100,14 @@ EXPORT_SYMBOL(xfrm_state_lookup_byaddr);
- 
- struct xfrm_state *
- xfrm_find_acq(struct net *net, const struct xfrm_mark *mark, u8 mode, u32 reqid,
--	      u32 if_id, u8 proto, const xfrm_address_t *daddr,
-+	      u32 if_id, u32 pcpu_num, u8 proto, const xfrm_address_t *daddr,
- 	      const xfrm_address_t *saddr, int create, unsigned short family)
- {
- 	struct xfrm_state *x;
- 
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
--	x = __find_acq_core(net, mark, family, mode, reqid, if_id, proto, daddr, saddr, create);
-+	x = __find_acq_core(net, mark, family, mode, reqid, if_id, pcpu_num,
-+			    proto, daddr, saddr, create);
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 
- 	return x;
-@@ -2207,7 +2242,7 @@ xfrm_state_sort(struct xfrm_state **dst, struct xfrm_state **src, int n,
- 
- /* Silly enough, but I'm lazy to build resolution list */
- 
--static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq)
-+static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num)
- {
- 	unsigned int h = xfrm_seq_hash(net, seq);
- 	struct xfrm_state *x;
-@@ -2215,6 +2250,7 @@ static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 s
- 	hlist_for_each_entry_rcu(x, net->xfrm.state_byseq + h, byseq) {
- 		if (x->km.seq == seq &&
- 		    (mark & x->mark.m) == x->mark.v &&
-+		    x->pcpu_num == pcpu_num &&
- 		    x->km.state == XFRM_STATE_ACQ) {
- 			xfrm_state_hold(x);
- 			return x;
-@@ -2224,12 +2260,12 @@ static struct xfrm_state *__xfrm_find_acq_byseq(struct net *net, u32 mark, u32 s
- 	return NULL;
- }
- 
--struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq)
-+struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num)
- {
- 	struct xfrm_state *x;
- 
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
--	x = __xfrm_find_acq_byseq(net, mark, seq);
-+	x = __xfrm_find_acq_byseq(net, mark, seq, pcpu_num);
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 	return x;
- }
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index e3b8ce89831ab..e4d448950d059 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -460,6 +460,12 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 		}
- 	}
- 
-+	if (!sa_dir && attrs[XFRMA_SA_PCPU]) {
-+		NL_SET_ERR_MSG(extack, "SA_PCPU only supported with SA_DIR");
-+		err = -EINVAL;
-+		goto out;
+ 	rcu_read_lock();
++	hlist_for_each_entry_rcu(x, &pol->state_cache_list, state_cache) {
++		if (x->props.family == encap_family &&
++		    x->props.reqid == tmpl->reqid &&
++		    (mark & x->mark.m) == x->mark.v &&
++		    x->if_id == if_id &&
++		    !(x->props.flags & XFRM_STATE_WILDRECV) &&
++		    xfrm_state_addr_check(x, daddr, saddr, encap_family) &&
++		    tmpl->mode == x->props.mode &&
++		    tmpl->id.proto == x->id.proto &&
++		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
++			xfrm_state_look_at(pol, x, fl, encap_family,
++					   &best, &acquire_in_progress, &error);
 +	}
 +
- out:
- 	return err;
- }
-@@ -841,6 +847,12 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 		x->nat_keepalive_interval =
- 			nla_get_u32(attrs[XFRMA_NAT_KEEPALIVE_INTERVAL]);
- 
-+	if (attrs[XFRMA_SA_PCPU]) {
-+		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
-+		if (x->pcpu_num >= num_possible_cpus())
-+			goto error;
++	if (best)
++		goto cached;
++
++	hlist_for_each_entry_rcu(x, &pol->state_cache_list, state_cache) {
++		if (x->props.family == encap_family &&
++		    x->props.reqid == tmpl->reqid &&
++		    (mark & x->mark.m) == x->mark.v &&
++		    x->if_id == if_id &&
++		    !(x->props.flags & XFRM_STATE_WILDRECV) &&
++		    xfrm_addr_equal(&x->id.daddr, daddr, encap_family) &&
++		    tmpl->mode == x->props.mode &&
++		    tmpl->id.proto == x->id.proto &&
++		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
++			xfrm_state_look_at(pol, x, fl, family,
++					   &best, &acquire_in_progress, &error);
 +	}
 +
- 	err = __xfrm_init_state(x, false, attrs[XFRMA_OFFLOAD_DEV], extack);
- 	if (err)
- 		goto error;
-@@ -1296,6 +1308,11 @@ static int copy_to_user_state_extra(struct xfrm_state *x,
- 		if (ret)
- 			goto out;
++cached:
++	cached = true;
++	if (best)
++		goto found;
++	else if (error)
++		best = NULL;
++	else if (acquire_in_progress) /* XXX: acquire_in_progress should not happen */
++		WARN_ON(1);
++
+ 	h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
+ 	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
+ #ifdef CONFIG_XFRM_OFFLOAD
+@@ -1383,6 +1428,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 			XFRM_STATE_INSERT(bysrc, &x->bysrc,
+ 					  net->xfrm.state_bysrc + h,
+ 					  x->xso.type);
++			INIT_HLIST_NODE(&x->state_cache);
+ 			if (x->id.spi) {
+ 				h = xfrm_spi_hash(net, &x->id.daddr, x->id.spi, x->id.proto, encap_family);
+ 				XFRM_STATE_INSERT(byspi, &x->byspi,
+@@ -1431,6 +1477,15 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	} else {
+ 		*err = acquire_in_progress ? -EAGAIN : error;
  	}
-+	if (x->pcpu_num != UINT_MAX) {
-+		ret = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
-+		if (ret)
-+			goto out;
-+	}
- 	if (x->dir)
- 		ret = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
- 
-@@ -1700,6 +1717,7 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	u32 mark;
- 	struct xfrm_mark m;
- 	u32 if_id = 0;
-+	u32 pcpu_num = UINT_MAX;
- 
- 	p = nlmsg_data(nlh);
- 	err = verify_spi_info(p->info.id.proto, p->min, p->max, extack);
-@@ -1716,8 +1734,16 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (attrs[XFRMA_IF_ID])
- 		if_id = nla_get_u32(attrs[XFRMA_IF_ID]);
- 
-+	if (attrs[XFRMA_SA_PCPU]) {
-+		pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
-+		if (pcpu_num >= num_possible_cpus()) {
-+			err = -EINVAL;
-+			goto out_noput;
-+		}
++
++	if (x && x->km.state == XFRM_STATE_VALID && !cached &&
++	    (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) || x->pcpu_num == pcpu_id)) {
++		spin_lock_bh(&net->xfrm.xfrm_state_lock);
++		if (hlist_unhashed(&x->state_cache))
++			hlist_add_head_rcu(&x->state_cache, &pol->state_cache_list);
++		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
 +	}
 +
- 	if (p->info.seq) {
--		x = xfrm_find_acq_byseq(net, mark, p->info.seq);
-+		x = xfrm_find_acq_byseq(net, mark, p->info.seq, pcpu_num);
- 		if (x && !xfrm_addr_equal(&x->id.daddr, daddr, family)) {
- 			xfrm_state_put(x);
- 			x = NULL;
-@@ -1726,7 +1752,7 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	if (!x)
- 		x = xfrm_find_acq(net, &m, p->info.mode, p->info.reqid,
--				  if_id, p->info.id.proto, daddr,
-+				  if_id, pcpu_num, p->info.id.proto, daddr,
- 				  &p->info.saddr, 1,
- 				  family);
- 	err = -ENOENT;
-@@ -2526,7 +2552,8 @@ static inline unsigned int xfrm_aevent_msgsize(struct xfrm_state *x)
- 	       + nla_total_size(sizeof(struct xfrm_mark))
- 	       + nla_total_size(4) /* XFRM_AE_RTHR */
- 	       + nla_total_size(4) /* XFRM_AE_ETHR */
--	       + nla_total_size(sizeof(x->dir)); /* XFRMA_SA_DIR */
-+	       + nla_total_size(sizeof(x->dir)) /* XFRMA_SA_DIR */
-+	       + nla_total_size(4); /* XFRMA_SA_PCPU */
- }
- 
- static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -2582,6 +2609,8 @@ static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct
- 	err = xfrm_if_id_put(skb, x->if_id);
- 	if (err)
- 		goto out_cancel;
-+	if (x->pcpu_num != UINT_MAX)
-+		err = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
- 
- 	if (x->dir) {
- 		err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
-@@ -2852,6 +2881,13 @@ static int xfrm_add_acquire(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	xfrm_mark_get(attrs, &mark);
- 
-+	if (attrs[XFRMA_SA_PCPU]) {
-+		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
-+		err = -EINVAL;
-+		if (x->pcpu_num >= num_possible_cpus())
-+			goto free_state;
-+	}
-+
- 	err = verify_newpolicy_info(&ua->policy, extack);
- 	if (err)
- 		goto free_state;
-@@ -3182,6 +3218,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_MTIMER_THRESH]   = { .type = NLA_U32 },
- 	[XFRMA_SA_DIR]          = NLA_POLICY_RANGE(NLA_U8, XFRM_SA_DIR_IN, XFRM_SA_DIR_OUT),
- 	[XFRMA_NAT_KEEPALIVE_INTERVAL] = { .type = NLA_U32 },
-+	[XFRMA_SA_PCPU]		= { .type = NLA_U32 },
- };
- EXPORT_SYMBOL_GPL(xfrma_policy);
- 
-@@ -3348,7 +3385,8 @@ static inline unsigned int xfrm_expire_msgsize(void)
- {
- 	return NLMSG_ALIGN(sizeof(struct xfrm_user_expire)) +
- 	       nla_total_size(sizeof(struct xfrm_mark)) +
--	       nla_total_size(sizeof_field(struct xfrm_state, dir));
-+	       nla_total_size(sizeof_field(struct xfrm_state, dir)) +
-+	       nla_total_size(4); /* XFRMA_SA_PCPU */
- }
- 
- static int build_expire(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -3374,6 +3412,11 @@ static int build_expire(struct sk_buff *skb, struct xfrm_state *x, const struct
- 	err = xfrm_if_id_put(skb, x->if_id);
- 	if (err)
- 		return err;
-+	if (x->pcpu_num != UINT_MAX) {
-+		err = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
-+		if (err)
-+			return err;
-+	}
- 
- 	if (x->dir) {
- 		err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
-@@ -3481,6 +3524,8 @@ static inline unsigned int xfrm_sa_len(struct xfrm_state *x)
- 	}
- 	if (x->if_id)
- 		l += nla_total_size(sizeof(x->if_id));
-+	if (x->pcpu_num)
-+		l += nla_total_size(sizeof(x->pcpu_num));
- 
- 	/* Must count x->lastused as it may become non-zero behind our back. */
- 	l += nla_total_size_64bit(sizeof(u64));
-@@ -3587,6 +3632,7 @@ static inline unsigned int xfrm_acquire_msgsize(struct xfrm_state *x,
- 	       + nla_total_size(sizeof(struct xfrm_user_tmpl) * xp->xfrm_nr)
- 	       + nla_total_size(sizeof(struct xfrm_mark))
- 	       + nla_total_size(xfrm_user_sec_ctx_size(x->security))
-+	       + nla_total_size(4) /* XFRMA_SA_PCPU */
- 	       + userpolicy_type_attrsize();
- }
- 
-@@ -3623,6 +3669,8 @@ static int build_acquire(struct sk_buff *skb, struct xfrm_state *x,
- 		err = xfrm_if_id_put(skb, xp->if_id);
- 	if (!err && xp->xdo.dev)
- 		err = copy_user_offload(&xp->xdo, skb);
-+	if (!err && x->pcpu_num != UINT_MAX)
-+		err = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
- 	if (err) {
- 		nlmsg_cancel(skb, nlh);
- 		return err;
+ 	rcu_read_unlock();
+ 	if (to_put)
+ 		xfrm_state_put(to_put);
 -- 
 2.39.5
 
