@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC48A29027
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 488CDA2933A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52E6218848F1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A303188E1A0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52FE7E792;
-	Wed,  5 Feb 2025 14:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FF1192598;
+	Wed,  5 Feb 2025 14:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4Vd/tDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0R0quER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619C9347CC;
-	Wed,  5 Feb 2025 14:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3221F191F66;
+	Wed,  5 Feb 2025 14:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765956; cv=none; b=Db6QAI0AX3oTqhxkmULv6uyu1xUttp5E9zGRS+tFkp6+nYjboafXMfF3p3ROHQUSQCT3sdPLKFfSUyXlvSzUjc4g7idW6/tbsHjQk/smGu0FpkYiBbvIxrdPCoGcwaix1VoBHwA0jEl/YOE1dYqbFveLSqXmFZyDo7pcFHowAsk=
+	t=1738767589; cv=none; b=Q4Uv/Fo8xXMrdy2YuGNSN6W1lPlZoJC6+b8bBtr/W7L3A6GPBDfUSv/QbUogLrYSx96qBOFHWnAQ+gOZkwZV8GEn2n1nLXvKx+uX589zXc+l/4fCPWCqPC6SX2qY4FR+QiBW76I1QYmAtpVtAj2XSWoj/L9R7a8Q2apuPm9+PdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765956; c=relaxed/simple;
-	bh=OpoPcNxtNv2mM+a2nkT5dqRSd3t6Cfi6/2jG0adbk/c=;
+	s=arc-20240116; t=1738767589; c=relaxed/simple;
+	bh=rwTevFGTziIZ5tEzfTDcBHfGOK3HMfxoqh8k1vzhvfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLq+4rJGGOWlYUkmQiify17bI8aF3bwpQQ1UHPo5rrEIaax0Q3x/zvz9qaYblFJ7u/TCHXFxVpz1HJCXzbghVkJ+ylhYOBPzn7UPz6uUoFJhPbyP+ONFmZiJOxVvD1H1QrHySBGRjt4NABa8GYS+/T/UvqIx3hCMoOZX4jPpta0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4Vd/tDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40EDC4CED6;
-	Wed,  5 Feb 2025 14:32:35 +0000 (UTC)
+	 MIME-Version; b=bIL9/1+KIouaE+QdXt5uPSHJJR3MdGbRGOIUyCQp9mqjDEg2WOLyMqBZyb36o1RekXcu3G+kpkqE5LXqkdFWWT+SjC47AHOeoj28jKeycUz9AZt1Z6ZLaqTuDOMvnUBaaEwVJqHAEQdpUp4oXigJumT50ecRfmYUcIi1W9O5VBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0R0quER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916D3C4CED1;
+	Wed,  5 Feb 2025 14:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765956;
-	bh=OpoPcNxtNv2mM+a2nkT5dqRSd3t6Cfi6/2jG0adbk/c=;
+	s=korg; t=1738767589;
+	bh=rwTevFGTziIZ5tEzfTDcBHfGOK3HMfxoqh8k1vzhvfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4Vd/tDxm61EYm3DIImelcnO9+C6aweuHYrh17r/IWxVYumNbDv8IS4kJCgDe9TQg
-	 3K1S5vZvoRlH3QGM4AKNnI/BWrg+E55GMK5Et6chG3068serfA550VS9hfWVfeZkBZ
-	 FWbShD3FmBEli6xgkejedMIithgIQUvM/GSfJOOw=
+	b=A0R0quERZ3eP6VLqTLX4jVxqn+/uEbUhiicRhhKsflmKCDikRi3qkouqJkAToRFUO
+	 5gU3pUCGodRNoFkdBl9goFgf1SN4f0RgnK8l7HhFFl+uHvDCkm+LNmXCsv4UJPJcam
+	 W1Pin65IvTlJIOIldP9uVFb9NhjP+yXhOSunoxCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/393] tools/bootconfig: Fix the wrong format specifier
+Subject: [PATCH 6.12 479/590] PM: hibernate: Add error handling for syscore_suspend()
 Date: Wed,  5 Feb 2025 14:43:54 +0100
-Message-ID: <20250205134432.368851198@linuxfoundation.org>
+Message-ID: <20250205134513.587698373@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit f6ab7384d554ba80ff4793259d75535874b366f5 ]
+[ Upstream commit e20a70c572539a486dbd91b225fa6a194a5e2122 ]
 
-Use '%u' instead of '%d' for unsigned int.
+In hibernation_platform_enter(), the code did not check the
+return value of syscore_suspend(), potentially leading to a
+situation where syscore_resume() would be called even if
+syscore_suspend() failed. This could cause unpredictable
+behavior or system instability.
 
-Link: https://lore.kernel.org/all/20241105011048.201629-1-luoyifan@cmss.chinamobile.com/
+Modify the code sequence in question to properly handle errors returned
+by syscore_suspend(). If an error occurs in the suspend path, the code
+now jumps to label 'Enable_irqs' skipping the syscore_resume() call and
+only enabling interrupts after setting the system state to SYSTEM_RUNNING.
 
-Fixes: 973780011106 ("tools/bootconfig: Suppress non-error messages")
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 40dc166cb5dd ("PM / Core: Introduce struct syscore_ops for core subsystems PM")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250119143205.2103-1-vulab@iscas.ac.cn
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/power/hibernate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 156b62a163c5a..8a48cc2536f56 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -226,7 +226,7 @@ static int load_xbc_from_initrd(int fd, char **buf)
- 	/* Wrong Checksum */
- 	rcsum = xbc_calc_checksum(*buf, size);
- 	if (csum != rcsum) {
--		pr_err("checksum error: %d != %d\n", csum, rcsum);
-+		pr_err("checksum error: %u != %u\n", csum, rcsum);
- 		return -EINVAL;
- 	}
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index e35829d360390..b483fcea811b1 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -608,7 +608,11 @@ int hibernation_platform_enter(void)
  
-@@ -395,7 +395,7 @@ static int apply_xbc(const char *path, const char *xbc_path)
- 	xbc_get_info(&ret, NULL);
- 	printf("\tNumber of nodes: %d\n", ret);
- 	printf("\tSize: %u bytes\n", (unsigned int)size);
--	printf("\tChecksum: %d\n", (unsigned int)csum);
-+	printf("\tChecksum: %u\n", (unsigned int)csum);
+ 	local_irq_disable();
+ 	system_state = SYSTEM_SUSPEND;
+-	syscore_suspend();
++
++	error = syscore_suspend();
++	if (error)
++		goto Enable_irqs;
++
+ 	if (pm_wakeup_pending()) {
+ 		error = -EAGAIN;
+ 		goto Power_up;
+@@ -620,6 +624,7 @@ int hibernation_platform_enter(void)
  
- 	/* TODO: Check the options by schema */
- 	xbc_exit();
+  Power_up:
+ 	syscore_resume();
++ Enable_irqs:
+ 	system_state = SYSTEM_RUNNING;
+ 	local_irq_enable();
+ 
 -- 
 2.39.5
 
