@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982C6A290C3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C71DAA28DC8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB43169663
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C8CE3A992F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7051632DA;
-	Wed,  5 Feb 2025 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777C614B080;
+	Wed,  5 Feb 2025 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWzyCGwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2X31SRRZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE32B151988;
-	Wed,  5 Feb 2025 14:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F8515198D;
+	Wed,  5 Feb 2025 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766364; cv=none; b=uaPj4/9jCIgD3e+2cxIBxRp2s63aGM/D58MZncjIqRuwfpW0519AEGqpROiK0wGii+Tl7NRAXyoquIWgzzoo/3QmWcOoVpjrj46AdNqCTsw3BL7PhvtN3qvmSk+yyU+GRE7fAHLkliHRg/S2Jx2zTB1U7gusQ/NSEl0q2j48twA=
+	t=1738764217; cv=none; b=VOO7OI5FNK4+uGza8ZKlSMl10HbZf7nt2GVRrYgEvIBTd+2IcXki5Y20KtZ4WRSmqHgWi6TTuVszacnQ3WKeSNxtyLCwkxJDK06FqAav6BmerMw7tFTtIvPR3lbf5cFX3aZ5uOBuRnYI2dI2hdH1iBFsCykmGf4MHWg+OHYKoPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766364; c=relaxed/simple;
-	bh=Lh+Kw928QZ0nW/kkME3MIVGk8R6TsN24CvUpnrBGKRw=;
+	s=arc-20240116; t=1738764217; c=relaxed/simple;
+	bh=QKCyNgU1tXjpw5eQbpgjcNIijBVi/C4ro1xHKmw+Bew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjbpfxYgNi1eR53RL648UAu1iL45w3WkszYiHDjP0BDh+5kQCxUk3aj2honY4UkM0dKr8hBXjXNzcZNSTcebNcUCjocbDG1z5l4g1Mehg7dCtg+gNPhQfB5nt8hEeAnD5xuZDSoIXRKsxoy5+mTHvF4kSaPr0TFtxOVpHQief0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWzyCGwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45343C4CED1;
-	Wed,  5 Feb 2025 14:39:24 +0000 (UTC)
+	 MIME-Version; b=PmIGkNpHfdH9L6q3TqNPqIwQr94pKny7+AzTJ+cUxPn8jtNZNEm8nrjRoQBUkIhdqEsw8KOYa7NJKl36Ss8sgpYeryUpy7aPYuxotvydeLnkIGiV5IICxLBJYjOiHB7yBQpKPSqPlp119BAWUJz0Ij0tzuN7eQ1JphDC54IImJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2X31SRRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AC4C4CED1;
+	Wed,  5 Feb 2025 14:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766364;
-	bh=Lh+Kw928QZ0nW/kkME3MIVGk8R6TsN24CvUpnrBGKRw=;
+	s=korg; t=1738764217;
+	bh=QKCyNgU1tXjpw5eQbpgjcNIijBVi/C4ro1xHKmw+Bew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWzyCGwcjzDtwLWIZslKEdWGtJS8X3Fn4hQ0+rlrYBmdqwZmoCcwpGxT3pzVsGNBB
-	 FBmhz5WieZtp0s2g84gPse+b0gUE6i4/F3pG9aN/x6TtD08GtbV/mvDXT8xv09yfu2
-	 WEtOb8DM8hTMzhRr4c3hR1zI+Yfwg4ElV+cpIJEQ=
+	b=2X31SRRZeCyUh09uL+Fyoas0xk6roaFNHIjSgzNbGB8oM4y6RNcXy76KC03cIVM3X
+	 o4qcv5H8lKk1X0N0cgmFuPEQ0yXmqsKyTowLz4JSgeS7VgRYR9DEHqd8U5FcLiiJ9g
+	 oreDdcqYc7sOoVXpqKW+0RWgaCb3yL5wxaFUWd5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/590] rdma/cxgb4: Prevent potential integer overflow on 32bit
+Subject: [PATCH 6.6 150/393] net: ethernet: ti: am65-cpsw: fix freeing IRQ in am65_cpsw_nuss_remove_tx_chns()
 Date: Wed,  5 Feb 2025 14:41:09 +0100
-Message-ID: <20250205134507.290060477@linuxfoundation.org>
+Message-ID: <20250205134426.041317061@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit bd96a3935e89486304461a21752f824fc25e0f0b ]
+[ Upstream commit 4395a44acb15850e492dd1de9ec4b6479d96bc80 ]
 
-The "gl->tot_len" variable is controlled by the user.  It comes from
-process_responses().  On 32bit systems, the "gl->tot_len + sizeof(struct
-cpl_pass_accept_req) + sizeof(struct rss_header)" addition could have an
-integer wrapping bug.  Use size_add() to prevent this.
+When getting the IRQ we use k3_udma_glue_tx_get_irq() which returns
+negative error value on error. So not NULL check is not sufficient
+to deteremine if IRQ is valid. Check that IRQ is greater then zero
+to ensure it is valid.
 
-Fixes: 1cab775c3e75 ("RDMA/cxgb4: Fix LE hash collision bug for passive open connection")
-Link: https://patch.msgid.link/r/86b404e1-4a75-4a35-a34e-e3054fa554c7@stanley.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+There is no issue at probe time but at runtime user can invoke
+.set_channels which results in the following call chain.
+am65_cpsw_set_channels()
+ am65_cpsw_nuss_update_tx_rx_chns()
+  am65_cpsw_nuss_remove_tx_chns()
+  am65_cpsw_nuss_init_tx_chns()
+
+At this point if am65_cpsw_nuss_init_tx_chns() fails due to
+k3_udma_glue_tx_get_irq() then tx_chn->irq will be set to a
+negative value.
+
+Then, at subsequent .set_channels with higher channel count we
+will attempt to free an invalid IRQ in am65_cpsw_nuss_remove_tx_chns()
+leading to a kernel warning.
+
+The issue is present in the original commit that introduced this driver,
+although there, am65_cpsw_nuss_update_tx_rx_chns() existed as
+am65_cpsw_nuss_update_tx_chns().
+
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/device.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/device.c b/drivers/infiniband/hw/cxgb4/device.c
-index 80970a1738f8a..034b85c422555 100644
---- a/drivers/infiniband/hw/cxgb4/device.c
-+++ b/drivers/infiniband/hw/cxgb4/device.c
-@@ -1114,8 +1114,10 @@ static inline struct sk_buff *copy_gl_to_skb_pkt(const struct pkt_gl *gl,
- 	 * The math here assumes sizeof cpl_pass_accept_req >= sizeof
- 	 * cpl_rx_pkt.
- 	 */
--	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req) +
--			sizeof(struct rss_header) - pktshift, GFP_ATOMIC);
-+	skb = alloc_skb(size_add(gl->tot_len,
-+				 sizeof(struct cpl_pass_accept_req) +
-+				 sizeof(struct rss_header)) - pktshift,
-+			GFP_ATOMIC);
- 	if (unlikely(!skb))
- 		return NULL;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index d556e705ec000..8ffc1fbb036f9 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1651,7 +1651,7 @@ void am65_cpsw_nuss_remove_tx_chns(struct am65_cpsw_common *common)
+ 	for (i = 0; i < common->tx_ch_num; i++) {
+ 		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
  
+-		if (tx_chn->irq)
++		if (tx_chn->irq > 0)
+ 			devm_free_irq(dev, tx_chn->irq, tx_chn);
+ 
+ 		netif_napi_del(&tx_chn->napi_tx);
 -- 
 2.39.5
 
