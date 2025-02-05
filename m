@@ -1,383 +1,266 @@
-Return-Path: <stable+bounces-112316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54595A28A2D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:21:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66C7A28A50
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E96188A316
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C373B165A17
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FFE22DF81;
-	Wed,  5 Feb 2025 12:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BFE1E868;
+	Wed,  5 Feb 2025 12:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtXygBMt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YazgREI4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51C522C33C
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68D8151987
+	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738758039; cv=none; b=t264mhGLddHePHRaPLUO0XWdDF1mukttryeg3JxLUPcteW+9xDo4bW4yl6nu6JIlY1vxu2zvtVxc1ELlO/hhaDDITsmGdSCp0TmwPtCoXdLydjTIPeTcPqeWOygbUpwbu1gxCPa0FE3HfgS8vt0y6WTi+jmUkzNl5pdD1DQ1qmM=
+	t=1738758721; cv=none; b=EZ02w9vm+99++1YVtmpIGrhFXMjJOK18M8yTZA7QTTDYQ9dccv2yo7hw4jX4LXpvOHyg2zl3PhDCDub4/ImTiJyOUXq14d7XE/+YXgQncFCLPj0WLQ5SF0/sPU9EEfA/MR3h6nmGwJBFcL2ZwZ3PuFLJ1gyDOnRs8Yd/msY4jFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738758039; c=relaxed/simple;
-	bh=Q0mzOrm2DitDSKZRrRW8K0GmvNAj3fQ15K3MGXBFJos=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DyWd5Lu1k8aaqNnIaAK2dCS8pwXZl+RBk/IH2Ul8esuDpgGQ8UqXYew9mjVxxPBPZFety3Dyl/aw92/5knnhrdwgxmJPvlpRAWUhgKrvxHPQ8BCGmBKYKHzsJ23xtqC1S4JW+s78yCkCoVPx4AVdgo6iFNKLWQ4+6hfBRuVq8yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtXygBMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553A3C4CED1;
-	Wed,  5 Feb 2025 12:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738758038;
-	bh=Q0mzOrm2DitDSKZRrRW8K0GmvNAj3fQ15K3MGXBFJos=;
-	h=Subject:To:Cc:From:Date:From;
-	b=GtXygBMt6Op7dD/6b07zH7IDxy0lLHzcc0cduPcXXeNA3ecO9X6FGHH8dCJYjEk8i
-	 NF/CO1LrU4f/97w7CIf7beI4etaopNvqhiyjFGgyT+zvywJnkd99IGM1LC5qjgH3I9
-	 QJJ1YG7HaZG2y40tZBnlggNdzLE0O2JtSObX1i8k=
-Subject: FAILED: patch "[PATCH] btrfs: fix double accounting race when" failed to apply to 5.4-stable tree
-To: wqu@suse.com,boris@bur.io,dsterba@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 05 Feb 2025 13:20:35 +0100
-Message-ID: <2025020535-recognize-universe-67dc@gregkh>
+	s=arc-20240116; t=1738758721; c=relaxed/simple;
+	bh=rkPsZCd4DAeOJD5OR6QiEJ9J6CUWsTz2D7mNNXUcIj4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NSHEA/usJoCrpSvCwIuzLxSftnQTMDjPmSSY7EPqjAsUS6Z9tJ7rWXkpBm95K5nE4RFFcm6N7F7cGd2rX+y19C8ujpW8CAPqVhu2LKOi0K3m88oP8W1rt9FbhdbACdl1wgHKGdpM0wiWWvkhY8y3BCMJwoynluMaAFTlo2LUwvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YazgREI4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738758718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nX4R1J3tJqgXNtmHCVf3jelvmV9h4OXD2UPjQtl2Fsw=;
+	b=YazgREI43LRI62wocsL5FTFExmf4q32LC5J9fuWjLZM+yIRhZhTUfZTRwVU1oGhW2NCO7V
+	9eORkpxDhEHnfvsK0W/0I1epCL2kO2QORnBip4IZGnNVXg9ULf5RtBh4TRFPIkS9n1PLLE
+	c/HtpXIFytvmAsMDapEpqhWBwMDO1lA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-ykrr_B6lP3qpP6dgdre4kw-1; Wed, 05 Feb 2025 07:31:57 -0500
+X-MC-Unique: ykrr_B6lP3qpP6dgdre4kw-1
+X-Mimecast-MFC-AGG-ID: ykrr_B6lP3qpP6dgdre4kw
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436723bf7ffso58666655e9.3
+        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 04:31:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738758716; x=1739363516;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nX4R1J3tJqgXNtmHCVf3jelvmV9h4OXD2UPjQtl2Fsw=;
+        b=c5ngYqvb7p9Lg93P6Z6+XI/LVgiVw+CqA8HNx+IgOVPh+LShfiDCVQhy5JMecU08mY
+         tdMGjSRCgjcyTlKZ4bFutvocVaFDeWAuNzz+sQHhbWVG+k5Suzcin12l1ZzABHuxDlo2
+         fTzm/bI+hYfr8dHRlc9BPA60GTK3HhtwHrGflOnogS6vrtbnwrwgg3jN+K5WfzenhneS
+         zcBDTyAy1CuzXcJhGQ3NjemTaDyQ0SE+KtrvaiJaHegQcVs3PNCtdTNb/HTlL6OBQiCm
+         h9PIiZANvISUEmwoUiJietVK/r9wSPxwvxmSfgqP3OG7XkhSXRfD41kk4FjjnAspG76e
+         02Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWArh4eEobEid5flHRFydJdk2NmLtJRWY7t/0Rt3nNQBF1ebZfduYNmouhaL5PcLySr1wX/OXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytRORJmIgOBVcVu/Yo+CWN8C1E0JVrlnv4w81gUiYt9vCYdz2c
+	f/g6etqUJD7eVoLZePxTdWLnias7gKxc1CPQRL3Nn+PYi4HGHvEC1MK0WRdYFIiHTO+HHXnhG+z
+	0vmaBIX1g0BxmAkzvhmO+Gn1IoXj9qqKB3yUW1A/Qrq8rmwPaJsGfvA==
+X-Gm-Gg: ASbGncudF+YUQQb72XM2U0aSIg9LvvPdfY3+t3PGOY0Qefz4rB+XIuzjJBxKO1oPBkK
+	cbbROxQjMqUaCuKyRkgbVEJW+kNNzWXWFb2Ks2h8of9f57kqZKpt0xKFd5UxLWRWpecg2zN+06z
+	Ta5JD2EkVmmVyscNt3ItDN9l5vAGdjidm3Sqd61WdmCwnwrFVJNw1RACyENurc74bkIq9LiI6cE
+	FuMhHW2Tntx4RSSV/KA3SoUymW47U5IF0+DQrAywzYHIav+Kt3ikEw/uyd1zdtzlbK4AQA8CUN0
+	SgcaVwTU+T5WIKNcV7RYLlDcXDq8CsXZO4fmgyePrqtWQDA=
+X-Received: by 2002:a05:600c:5127:b0:436:1baa:de1c with SMTP id 5b1f17b1804b1-4390d43e4fdmr22441035e9.13.1738758715855;
+        Wed, 05 Feb 2025 04:31:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGu8UQolYnAq5L4ETol9e+CppDVauJEFOX/uqtF/MVCF19JA9RxfWAWC3l0svk2IQEOGRJbqQ==
+X-Received: by 2002:a05:600c:5127:b0:436:1baa:de1c with SMTP id 5b1f17b1804b1-4390d43e4fdmr22440555e9.13.1738758715452;
+        Wed, 05 Feb 2025 04:31:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390da6e653sm19539215e9.24.2025.02.05.04.31.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Feb 2025 04:31:54 -0800 (PST)
+Message-ID: <d1302cfe-486c-4516-a875-d9467529482a@redhat.com>
+Date: Wed, 5 Feb 2025 13:31:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] KVM: arm64: Unconditionally save+flush host
+ FPSIMD/SVE/SME state
+Content-Language: en-US
+To: Mark Rutland <mark.rutland@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: broonie@kernel.org, catalin.marinas@arm.com, fweimer@redhat.com,
+ jeremy.linton@arm.com, maz@kernel.org, oliver.upton@linux.dev,
+ pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com,
+ wilco.dijkstra@arm.com, will@kernel.org
+References: <20250204152100.705610-1-mark.rutland@arm.com>
+ <20250204152100.705610-2-mark.rutland@arm.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <20250204152100.705610-2-mark.rutland@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi Mark,
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 2/4/25 4:20 PM, Mark Rutland wrote:
+> There are several problems with the way hyp code lazily saves the host's
+> FPSIMD/SVE state, including:
+> 
+> * Host SVE being discarded unexpectedly due to inconsistent
+>   configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
+>   result in QEMU crashes where SVE is used by memmove(), as reported by
+>   Eric Auger:
+> 
+>   https://issues.redhat.com/browse/RHEL-68997
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I tested the above test case with the whole series.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 72dad8e377afa50435940adfb697e070d3556670
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020535-recognize-universe-67dc@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+Tested-by: Eric Auger <eric.auger@redhat.com>
 
-Possible dependencies:
+Thanks
 
+Eric
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 72dad8e377afa50435940adfb697e070d3556670 Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Thu, 12 Dec 2024 16:43:55 +1030
-Subject: [PATCH] btrfs: fix double accounting race when
- btrfs_run_delalloc_range() failed
-
-[BUG]
-When running btrfs with block size (4K) smaller than page size (64K,
-aarch64), there is a very high chance to crash the kernel at
-generic/750, with the following messages:
-(before the call traces, there are 3 extra debug messages added)
-
-  BTRFS warning (device dm-3): read-write for sector size 4096 with page size 65536 is experimental
-  BTRFS info (device dm-3): checking UUID tree
-  hrtimer: interrupt took 5451385 ns
-  BTRFS error (device dm-3): cow_file_range failed, root=4957 inode=257 start=1605632 len=69632: -28
-  BTRFS error (device dm-3): run_delalloc_nocow failed, root=4957 inode=257 start=1605632 len=69632: -28
-  BTRFS error (device dm-3): failed to run delalloc range, root=4957 ino=257 folio=1572864 submit_bitmap=8-15 start=1605632 len=69632: -28
-  ------------[ cut here ]------------
-  WARNING: CPU: 2 PID: 3020984 at ordered-data.c:360 can_finish_ordered_extent+0x370/0x3b8 [btrfs]
-  CPU: 2 UID: 0 PID: 3020984 Comm: kworker/u24:1 Tainted: G           OE      6.13.0-rc1-custom+ #89
-  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-  Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
-  pc : can_finish_ordered_extent+0x370/0x3b8 [btrfs]
-  lr : can_finish_ordered_extent+0x1ec/0x3b8 [btrfs]
-  Call trace:
-   can_finish_ordered_extent+0x370/0x3b8 [btrfs] (P)
-   can_finish_ordered_extent+0x1ec/0x3b8 [btrfs] (L)
-   btrfs_mark_ordered_io_finished+0x130/0x2b8 [btrfs]
-   extent_writepage+0x10c/0x3b8 [btrfs]
-   extent_write_cache_pages+0x21c/0x4e8 [btrfs]
-   btrfs_writepages+0x94/0x160 [btrfs]
-   do_writepages+0x74/0x190
-   filemap_fdatawrite_wbc+0x74/0xa0
-   start_delalloc_inodes+0x17c/0x3b0 [btrfs]
-   btrfs_start_delalloc_roots+0x17c/0x288 [btrfs]
-   shrink_delalloc+0x11c/0x280 [btrfs]
-   flush_space+0x288/0x328 [btrfs]
-   btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
-   process_one_work+0x228/0x680
-   worker_thread+0x1bc/0x360
-   kthread+0x100/0x118
-   ret_from_fork+0x10/0x20
-  ---[ end trace 0000000000000000 ]---
-  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1605632 OE len=16384 to_dec=16384 left=0
-  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1622016 OE len=12288 to_dec=12288 left=0
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1634304 OE len=8192 to_dec=4096 left=0
-  CPU: 1 UID: 0 PID: 3286940 Comm: kworker/u24:3 Tainted: G        W  OE      6.13.0-rc1-custom+ #89
-  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-  Workqueue:  btrfs_work_helper [btrfs] (btrfs-endio-write)
-  pstate: 404000c5 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : process_one_work+0x110/0x680
-  lr : worker_thread+0x1bc/0x360
-  Call trace:
-   process_one_work+0x110/0x680 (P)
-   worker_thread+0x1bc/0x360 (L)
-   worker_thread+0x1bc/0x360
-   kthread+0x100/0x118
-   ret_from_fork+0x10/0x20
-  Code: f84086a1 f9000fe1 53041c21 b9003361 (f9400661)
-  ---[ end trace 0000000000000000 ]---
-  Kernel panic - not syncing: Oops: Fatal exception
-  SMP: stopping secondary CPUs
-  SMP: failed to stop secondary CPUs 2-3
-  Dumping ftrace buffer:
-     (ftrace buffer empty)
-  Kernel Offset: 0x275bb9540000 from 0xffff800080000000
-  PHYS_OFFSET: 0xffff8fbba0000000
-  CPU features: 0x100,00000070,00801250,8201720b
-
-[CAUSE]
-The above warning is triggered immediately after the delalloc range
-failure, this happens in the following sequence:
-
-- Range [1568K, 1636K) is dirty
-
-   1536K  1568K     1600K    1636K  1664K
-   |      |/////////|////////|      |
-
-  Where 1536K, 1600K and 1664K are page boundaries (64K page size)
-
-- Enter extent_writepage() for page 1536K
-
-- Enter run_delalloc_nocow() with locked page 1536K and range
-  [1568K, 1636K)
-  This is due to the inode having preallocated extents.
-
-- Enter cow_file_range() with locked page 1536K and range
-  [1568K, 1636K)
-
-- btrfs_reserve_extent() only reserved two extents
-  The main loop of cow_file_range() only reserved two data extents,
-
-  Now we have:
-
-   1536K  1568K        1600K    1636K  1664K
-   |      |<-->|<--->|/|///////|      |
-               1584K  1596K
-  Range [1568K, 1596K) has an ordered extent reserved.
-
-- btrfs_reserve_extent() failed inside cow_file_range() for file offset
-  1596K
-  This is already a bug in our space reservation code, but for now let's
-  focus on the error handling path.
-
-  Now cow_file_range() returned -ENOSPC.
-
-- btrfs_run_delalloc_range() do error cleanup <<< ROOT CAUSE
-  Call btrfs_cleanup_ordered_extents() with locked folio 1536K and range
-  [1568K, 1636K)
-
-  Function btrfs_cleanup_ordered_extents() normally needs to skip the
-  ranges inside the folio, as it will normally be cleaned up by
-  extent_writepage().
-
-  Such split error handling is already problematic in the first place.
-
-  What's worse is the folio range skipping itself, which is not taking
-  subpage cases into consideration at all, it will only skip the range
-  if the page start >= the range start.
-  In our case, the page start < the range start, since for subpage cases
-  we can have delalloc ranges inside the folio but not covering the
-  folio.
-
-  So it doesn't skip the page range at all.
-  This means all the ordered extents, both [1568K, 1584K) and
-  [1584K, 1596K) will be marked as IOERR.
-
-  And these two ordered extents have no more pending ios, they are marked
-  finished, and *QUEUED* to be deleted from the io tree.
-
-- extent_writepage() do error cleanup
-  Call btrfs_mark_ordered_io_finished() for the range [1536K, 1600K).
-
-  Although ranges [1568K, 1584K) and [1584K, 1596K) are finished, the
-  deletion from io tree is async, it may or may not happen at this
-  time.
-
-  If the ranges have not yet been removed, we will do double cleaning on
-  those ranges, triggering the above ordered extent warnings.
-
-In theory there are other bugs, like the cleanup in extent_writepage()
-can cause double accounting on ranges that are submitted asynchronously
-(compression for example).
-
-But that's much harder to trigger because normally we do not mix regular
-and compression delalloc ranges.
-
-[FIX]
-The folio range split is already buggy and not subpage compatible, it
-was introduced a long time ago where subpage support was not even considered.
-
-So instead of splitting the ordered extents cleanup into the folio range
-and out of folio range, do all the cleanup inside writepage_delalloc().
-
-- Pass @NULL as locked_folio for btrfs_cleanup_ordered_extents() in
-  btrfs_run_delalloc_range()
-
-- Skip the btrfs_cleanup_ordered_extents() if writepage_delalloc()
-  failed
-
-  So all ordered extents are only cleaned up by
-  btrfs_run_delalloc_range().
-
-- Handle the ranges that already have ordered extents allocated
-  If part of the folio already has ordered extent allocated, and
-  btrfs_run_delalloc_range() failed, we also need to cleanup that range.
-
-Now we have a concentrated error handling for ordered extents during
-btrfs_run_delalloc_range().
-
-Fixes: d1051d6ebf8e ("btrfs: Fix error handling in btrfs_cleanup_ordered_extents")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c068a442753c..bc2bd103c8cc 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1134,14 +1134,19 @@ static bool find_next_delalloc_bitmap(struct folio *folio,
- }
- 
- /*
-- * helper for extent_writepage(), doing all of the delayed allocation setup.
-+ * Do all of the delayed allocation setup.
-  *
-- * This returns 1 if btrfs_run_delalloc_range function did all the work required
-- * to write the page (copy into inline extent).  In this case the IO has
-- * been started and the page is already unlocked.
-+ * Return >0 if all the dirty blocks are submitted async (compression) or inlined.
-+ * The @folio should no longer be touched (treat it as already unlocked).
-  *
-- * This returns 0 if all went well (page still locked)
-- * This returns < 0 if there were errors (page still locked)
-+ * Return 0 if there is still dirty block that needs to be submitted through
-+ * extent_writepage_io().
-+ * bio_ctrl->submit_bitmap will indicate which blocks of the folio should be
-+ * submitted, and @folio is still kept locked.
-+ *
-+ * Return <0 if there is any error hit.
-+ * Any allocated ordered extent range covering this folio will be marked
-+ * finished (IOERR), and @folio is still kept locked.
-  */
- static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
- 						 struct folio *folio,
-@@ -1159,6 +1164,16 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
- 	 * last delalloc end.
- 	 */
- 	u64 last_delalloc_end = 0;
-+	/*
-+	 * The range end (exclusive) of the last successfully finished delalloc
-+	 * range.
-+	 * Any range covered by ordered extent must either be manually marked
-+	 * finished (error handling), or has IO submitted (and finish the
-+	 * ordered extent normally).
-+	 *
-+	 * This records the end of ordered extent cleanup if we hit an error.
-+	 */
-+	u64 last_finished_delalloc_end = page_start;
- 	u64 delalloc_start = page_start;
- 	u64 delalloc_end = page_end;
- 	u64 delalloc_to_write = 0;
-@@ -1227,11 +1242,19 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
- 			found_len = last_delalloc_end + 1 - found_start;
- 
- 		if (ret >= 0) {
-+			/*
-+			 * Some delalloc range may be created by previous folios.
-+			 * Thus we still need to clean up this range during error
-+			 * handling.
-+			 */
-+			last_finished_delalloc_end = found_start;
- 			/* No errors hit so far, run the current delalloc range. */
- 			ret = btrfs_run_delalloc_range(inode, folio,
- 						       found_start,
- 						       found_start + found_len - 1,
- 						       wbc);
-+			if (ret >= 0)
-+				last_finished_delalloc_end = found_start + found_len;
- 		} else {
- 			/*
- 			 * We've hit an error during previous delalloc range,
-@@ -1266,8 +1289,22 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
- 
- 		delalloc_start = found_start + found_len;
- 	}
--	if (ret < 0)
-+	/*
-+	 * It's possible we had some ordered extents created before we hit
-+	 * an error, cleanup non-async successfully created delalloc ranges.
-+	 */
-+	if (unlikely(ret < 0)) {
-+		unsigned int bitmap_size = min(
-+				(last_finished_delalloc_end - page_start) >>
-+				fs_info->sectorsize_bits,
-+				fs_info->sectors_per_page);
-+
-+		for_each_set_bit(bit, &bio_ctrl->submit_bitmap, bitmap_size)
-+			btrfs_mark_ordered_io_finished(inode, folio,
-+				page_start + (bit << fs_info->sectorsize_bits),
-+				fs_info->sectorsize, false);
- 		return ret;
-+	}
- out:
- 	if (last_delalloc_end)
- 		delalloc_end = last_delalloc_end;
-@@ -1501,13 +1538,13 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- 
- 	bio_ctrl->wbc->nr_to_write--;
- 
--done:
--	if (ret) {
-+	if (ret)
- 		btrfs_mark_ordered_io_finished(inode, folio,
- 					       page_start, PAGE_SIZE, !ret);
--		mapping_set_error(folio->mapping, ret);
--	}
- 
-+done:
-+	if (ret < 0)
-+		mapping_set_error(folio->mapping, ret);
- 	/*
- 	 * Only unlock ranges that are submitted. As there can be some async
- 	 * submitted ranges inside the folio.
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 1546f341f9a4..b81afe757f64 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2301,8 +2301,7 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
- 
- out:
- 	if (ret < 0)
--		btrfs_cleanup_ordered_extents(inode, locked_folio, start,
--					      end - start + 1);
-+		btrfs_cleanup_ordered_extents(inode, NULL, start, end - start + 1);
- 	return ret;
- }
- 
+> 
+> * Host SVE state is discarded *after* modification by ptrace, which was an
+>   unintentional ptrace ABI change introduced with lazy discarding of SVE state.
+> 
+> * The host FPMR value can be discarded when running a non-protected VM,
+>   where FPMR support is not exposed to a VM, and that VM uses
+>   FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
+>   before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
+>   value in memory.
+> 
+> Avoid these by eagerly saving and "flushing" the host's FPSIMD/SVE/SME
+> state when loading a vCPU such that KVM does not need to save any of the
+> host's FPSIMD/SVE/SME state. For clarity, fpsimd_kvm_prepare() is
+> removed and the necessary call to fpsimd_save_and_flush_cpu_state() is
+> placed in kvm_arch_vcpu_load_fp(). As 'fpsimd_state' and 'fpmr_ptr'
+> should not be used, they are set to NULL; all uses of these will be
+> removed in subsequent patches.
+> 
+> Historical problems go back at least as far as v5.17, e.g. erroneous
+> assumptions about TIF_SVE being clear in commit:
+> 
+>   8383741ab2e773a9 ("KVM: arm64: Get rid of host SVE tracking/saving")
+> 
+> ... and so this eager save+flush probably needs to be backported to ALL
+> stable trees.
+> 
+> Fixes: 93ae6b01bafee8fa ("KVM: arm64: Discard any SVE state when entering KVM guests")
+> Fixes: 8c845e2731041f0f ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+> Fixes: ef3be86021c3bdf3 ("KVM: arm64: Add save/restore support for FPMR")
+> Reported-by: Eric Auger <eauger@redhat.com>
+> Reported-by: Wilco Dijkstra <wilco.dijkstra@arm.com>
+> Cc: stable@vger.kernel.org
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Florian Weimer <fweimer@redhat.com>
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Jeremy Linton <jeremy.linton@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> ---
+>  arch/arm64/kernel/fpsimd.c | 25 -------------------------
+>  arch/arm64/kvm/fpsimd.c    | 35 ++++++++++-------------------------
+>  2 files changed, 10 insertions(+), 50 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> index 2b601d88762d4..8370d55f03533 100644
+> --- a/arch/arm64/kernel/fpsimd.c
+> +++ b/arch/arm64/kernel/fpsimd.c
+> @@ -1694,31 +1694,6 @@ void fpsimd_signal_preserve_current_state(void)
+>  		sve_to_fpsimd(current);
+>  }
+>  
+> -/*
+> - * Called by KVM when entering the guest.
+> - */
+> -void fpsimd_kvm_prepare(void)
+> -{
+> -	if (!system_supports_sve())
+> -		return;
+> -
+> -	/*
+> -	 * KVM does not save host SVE state since we can only enter
+> -	 * the guest from a syscall so the ABI means that only the
+> -	 * non-saved SVE state needs to be saved.  If we have left
+> -	 * SVE enabled for performance reasons then update the task
+> -	 * state to be FPSIMD only.
+> -	 */
+> -	get_cpu_fpsimd_context();
+> -
+> -	if (test_and_clear_thread_flag(TIF_SVE)) {
+> -		sve_to_fpsimd(current);
+> -		current->thread.fp_type = FP_STATE_FPSIMD;
+> -	}
+> -
+> -	put_cpu_fpsimd_context();
+> -}
+> -
+>  /*
+>   * Associate current's FPSIMD context with this cpu
+>   * The caller must have ownership of the cpu FPSIMD context before calling
+> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
+> index 4d3d1a2eb1570..ceeb0a4893aa7 100644
+> --- a/arch/arm64/kvm/fpsimd.c
+> +++ b/arch/arm64/kvm/fpsimd.c
+> @@ -54,16 +54,18 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+>  	if (!system_supports_fpsimd())
+>  		return;
+>  
+> -	fpsimd_kvm_prepare();
+> -
+>  	/*
+> -	 * We will check TIF_FOREIGN_FPSTATE just before entering the
+> -	 * guest in kvm_arch_vcpu_ctxflush_fp() and override this to
+> -	 * FP_STATE_FREE if the flag set.
+> +	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
+> +	 * that the host kernel is responsible for restoring this state upon
+> +	 * return to userspace, and the hyp code doesn't need to save anything.
+> +	 *
+> +	 * When the host may use SME, fpsimd_save_and_flush_cpu_state() ensures
+> +	 * that PSTATE.{SM,ZA} == {0,0}.
+>  	 */
+> -	*host_data_ptr(fp_owner) = FP_STATE_HOST_OWNED;
+> -	*host_data_ptr(fpsimd_state) = kern_hyp_va(&current->thread.uw.fpsimd_state);
+> -	*host_data_ptr(fpmr_ptr) = kern_hyp_va(&current->thread.uw.fpmr);
+> +	fpsimd_save_and_flush_cpu_state();
+> +	*host_data_ptr(fp_owner) = FP_STATE_FREE;
+> +	*host_data_ptr(fpsimd_state) = NULL;
+> +	*host_data_ptr(fpmr_ptr) = NULL;
+>  
+>  	host_data_clear_flag(HOST_SVE_ENABLED);
+>  	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+> @@ -73,23 +75,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+>  		host_data_clear_flag(HOST_SME_ENABLED);
+>  		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
+>  			host_data_set_flag(HOST_SME_ENABLED);
+> -
+> -		/*
+> -		 * If PSTATE.SM is enabled then save any pending FP
+> -		 * state and disable PSTATE.SM. If we leave PSTATE.SM
+> -		 * enabled and the guest does not enable SME via
+> -		 * CPACR_EL1.SMEN then operations that should be valid
+> -		 * may generate SME traps from EL1 to EL1 which we
+> -		 * can't intercept and which would confuse the guest.
+> -		 *
+> -		 * Do the same for PSTATE.ZA in the case where there
+> -		 * is state in the registers which has not already
+> -		 * been saved, this is very unlikely to happen.
+> -		 */
+> -		if (read_sysreg_s(SYS_SVCR) & (SVCR_SM_MASK | SVCR_ZA_MASK)) {
+> -			*host_data_ptr(fp_owner) = FP_STATE_FREE;
+> -			fpsimd_save_and_flush_cpu_state();
+> -		}
+>  	}
+>  
+>  	/*
 
 
