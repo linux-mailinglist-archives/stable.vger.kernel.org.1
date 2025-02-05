@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-112405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE2BA28C8D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99652A28D58
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1595E3A13F9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C86D161469
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2091E146A63;
-	Wed,  5 Feb 2025 13:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FA114B080;
+	Wed,  5 Feb 2025 13:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWqhaBfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG2p1w3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E7D126C18;
-	Wed,  5 Feb 2025 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DF713C9C4;
+	Wed,  5 Feb 2025 13:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763462; cv=none; b=jCQBXqx07ZlbWSF/cyAVOudFoy7tMiwWzHwiDQQwR7RpRpJLOO7+egOjjt2n8brjpxpOsHfmHCE4qtiVQRPzcOTPUZAmRJz2l7C0it5pBNQnbO1VctB1TYlk7Mns/NbFEWneQVvNlUTrg4Rc1gegiFfnVdkVMJCKGkOZVXMHxUw=
+	t=1738763931; cv=none; b=X3aOsL4pD0mn/+JUowZWAtV+6GpK+rbZZ/ZrAUzazbaGeUrqbvnf3+tpJpt0vdsxs878cUs3vIHWHlIzRUFLXRRpd/Ka+7YpUupFf6olr0JcatNPN7kndrhjXD8RpKb4dId0MpWsK8j2BVuKeTPpasXuf+YnLMYqGB0bWf6wESc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763462; c=relaxed/simple;
-	bh=rfuwMxO9LaZWt5SrvTe33m8oUKtamFeuK/4wuKRHCgg=;
+	s=arc-20240116; t=1738763931; c=relaxed/simple;
+	bh=HMPAgSr4nOFvE0/eSd4Q9RRZJvvXDJAALRKXE5z+xd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5e6nBjIlzgaqoDVCwTvcbNIE9Py0RSdosqcCT4PNS5JzAoQS5mW69aFr2OVRauP3Adyu0FAz90vw7GezJxrzDDCvptaX1IgJFOkNPleinPxYVI47Pe7GLZDIGxVMjxi3xuystBm+87Z4l7oKUaageVzQyffPeKcxe3NzsNSNHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWqhaBfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A59C4CED1;
-	Wed,  5 Feb 2025 13:51:01 +0000 (UTC)
+	 MIME-Version; b=OD0irYLE6p5PSLy05X2UOeL8hsAqVGkFQtKb4OhCBtuQF8joQZznqsG3m5paClngS8NyJjPy/PYbgWUxUBSxEggUgy1DLFeeCNvIH8MOkn4tWnXtj+UEtx6CzPPjJP7A5SvZzUyVGis36MMUqruFc3F2XPSdk3PjzC1YWQxjghs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG2p1w3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057F1C4CED1;
+	Wed,  5 Feb 2025 13:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763462;
-	bh=rfuwMxO9LaZWt5SrvTe33m8oUKtamFeuK/4wuKRHCgg=;
+	s=korg; t=1738763931;
+	bh=HMPAgSr4nOFvE0/eSd4Q9RRZJvvXDJAALRKXE5z+xd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWqhaBfUUZnVEgX5P1uoQWR7OPVJNwrljIvBMjKxssR89Hm+h06WLzkvUr5I8qClD
-	 SMHk0guQBQTBnN1fkynwY6+iHYOHthPNt2xAjzjndBkzum6PHYcp5lGh5PNUff58ur
-	 pY34zvhLY7IMFuOOvkrHokXJPF1EfU05xKDIKkAs=
+	b=WG2p1w3B5nLCjD66RHbu4SM0DhuyTcQdGIVmqW6YZNOIyOngYWSYHDLArvCx+raaI
+	 TWT9U+HQp7yJepGadlvuFEhQfjvhCpGypQSOL2PXWAgdjf7xewrneoyZuafScrDUGU
+	 LtBd6MoLqAmrZZt8qxVRx3z5wiSElWvnujKaQTM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
 	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/590] nvme: Add error check for xa_store in nvme_get_effects_log
-Date: Wed,  5 Feb 2025 14:36:12 +0100
-Message-ID: <20250205134455.900114901@linuxfoundation.org>
+Subject: [PATCH 6.13 031/623] block: Ensure start sector is aligned for stacking atomic writes
+Date: Wed,  5 Feb 2025 14:36:13 +0100
+Message-ID: <20250205134457.418306946@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
+[ Upstream commit 6564862d646e7d630929ba1ff330740bb215bdac ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index csi is already used. This fix adds an
-error check of the return value of xa_store() in nvme_get_effects_log().
+For stacking atomic writes, ensure that the start sector is aligned with
+the device atomic write unit min and any boundary. Otherwise, we may
+permit misaligned atomic writes.
 
-Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Rework bdev_can_atomic_write() into a common helper to resuse the
+alignment check. There also use atomic_write_hw_unit_min, which is more
+proper (than atomic_write_unit_min).
+
+Fixes: d7f36dc446e89 ("block: Support atomic writes limits for stacked devices")
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250109114000.2299896-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ block/blk-settings.c   |  7 +++++--
+ include/linux/blkdev.h | 21 ++++++++++++---------
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 249914b90dbfa..f5ea15bfe6feb 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3085,7 +3085,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
- static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 				struct nvme_effects_log **log)
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index b017637d9e735..64f2e67238d77 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -608,7 +608,7 @@ static bool blk_stack_atomic_writes_head(struct queue_limits *t,
+ }
+ 
+ static void blk_stack_atomic_writes_limits(struct queue_limits *t,
+-				struct queue_limits *b)
++				struct queue_limits *b, sector_t start)
  {
--	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
-+	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
- 	int ret;
+ 	if (!(t->features & BLK_FEAT_ATOMIC_WRITES_STACKED))
+ 		goto unsupported;
+@@ -616,6 +616,9 @@ static void blk_stack_atomic_writes_limits(struct queue_limits *t,
+ 	if (!b->atomic_write_unit_min)
+ 		goto unsupported;
  
- 	if (cel)
-@@ -3102,7 +3102,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 		return ret;
++	if (!blk_atomic_write_start_sect_aligned(start, b))
++		goto unsupported;
++
+ 	/*
+ 	 * If atomic_write_hw_max is set, we have already stacked 1x bottom
+ 	 * device, so check for compliance.
+@@ -798,7 +801,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 		t->zone_write_granularity = 0;
+ 		t->max_zone_append_sectors = 0;
  	}
+-	blk_stack_atomic_writes_limits(t, b);
++	blk_stack_atomic_writes_limits(t, b, start);
  
--	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(cel);
-+		return xa_err(old);
-+	}
- out:
- 	*log = cel;
- 	return 0;
+ 	return ret;
+ }
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index e0ce4d6913cde..495813277597f 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1701,6 +1701,15 @@ struct io_comp_batch {
+ 	void (*complete)(struct io_comp_batch *);
+ };
+ 
++static inline bool blk_atomic_write_start_sect_aligned(sector_t sector,
++						struct queue_limits *limits)
++{
++	unsigned int alignment = max(limits->atomic_write_hw_unit_min,
++				limits->atomic_write_hw_boundary);
++
++	return IS_ALIGNED(sector, alignment >> SECTOR_SHIFT);
++}
++
+ static inline bool bdev_can_atomic_write(struct block_device *bdev)
+ {
+ 	struct request_queue *bd_queue = bdev->bd_queue;
+@@ -1709,15 +1718,9 @@ static inline bool bdev_can_atomic_write(struct block_device *bdev)
+ 	if (!limits->atomic_write_unit_min)
+ 		return false;
+ 
+-	if (bdev_is_partition(bdev)) {
+-		sector_t bd_start_sect = bdev->bd_start_sect;
+-		unsigned int alignment =
+-			max(limits->atomic_write_unit_min,
+-			    limits->atomic_write_hw_boundary);
+-
+-		if (!IS_ALIGNED(bd_start_sect, alignment >> SECTOR_SHIFT))
+-			return false;
+-	}
++	if (bdev_is_partition(bdev))
++		return blk_atomic_write_start_sect_aligned(bdev->bd_start_sect,
++							limits);
+ 
+ 	return true;
+ }
 -- 
 2.39.5
 
