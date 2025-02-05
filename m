@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79186A29064
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5E4A2936C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107941626F5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5706E16C053
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B24155756;
-	Wed,  5 Feb 2025 14:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88A515DBA3;
+	Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6Y3zbqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdwAgYfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8537151988;
-	Wed,  5 Feb 2025 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75225DF59;
+	Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766126; cv=none; b=MfmsjNxYoezUJjS02t8A5NyD8h429EcsdvauVDTJYp8IH0nCoy8dN86AXwyDVD3LL3L44ZxoJjMzlyTsxDNbRxudqiOih8f6pAZAR8sLS27XGHrr55md2Msbu3jZKGJfb0PaeBT7F1rJQCCbul6X6gWCgT6KJKYvKHodRDcuW8o=
+	t=1738767908; cv=none; b=estg609B577mj4GqOVksjG/1MEE9ldVFdQ/axVbKCuP/PjtY9dB045V0/c3bYs1SSIKUHDrZcr14rBO/5iuLYnelD8GbVuJfXirCNyMIldWDtGgaV0WFOWWRjDr77HJap7YEq+ct6wXPCft7aSUJbsLpZaN39MzKKhCAlWWX270=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766126; c=relaxed/simple;
-	bh=JxVkHh0zfXg6Pv/2bn3yWuULoex1D6cJOxYHHeahmS0=;
+	s=arc-20240116; t=1738767908; c=relaxed/simple;
+	bh=lMlRd1RHsK5AZoa2brCZCl7gHmaUZWefwedzhHHpd4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmCLFwigHVWIs7UifONHC7b1R3ziWuhSL+dV+4Onkswz2z3EMHXiVRtsgRwXgVSF0eGlhZaEno8Ef6zUe7Lkul+L6zwFiTfZw4G81ud9hysZAv5ibURMmp9uf+n7eAIYM2ZTfDfD+oggq65/coqj6wSBy9xP1YmgoU1MNiMqNxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6Y3zbqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D930C4CED1;
-	Wed,  5 Feb 2025 14:35:26 +0000 (UTC)
+	 MIME-Version; b=kjNgVLXdYYlzCGJVunbMnn/s3wK9g+I/iRXm6V1PzE9CDIVsCRdWDgtEDD5tTXQvOiLNb2bWjHcgnAnYghkPfy8zI7BqwMBrAQCGhDAplF9VXg5xRn3IckRR1nusG2nbIIKxh2XDY2NBSQoKzbH+Kdst6prhS0wyQxeM4Aqzgzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdwAgYfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6929C4CED6;
+	Wed,  5 Feb 2025 15:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766126;
-	bh=JxVkHh0zfXg6Pv/2bn3yWuULoex1D6cJOxYHHeahmS0=;
+	s=korg; t=1738767908;
+	bh=lMlRd1RHsK5AZoa2brCZCl7gHmaUZWefwedzhHHpd4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6Y3zbqZucf7PiLrIY4feIiuCa1nalfiCuF5sRZvBW6vJgD9bi0KhYX9BqUENn+mc
-	 pgip6JwT9pnc2zlOrJvg+qQxuZbuPJhCJuJnyko3vqvzsVPK2b6TcfeRVmgjdBSVFf
-	 E1m5452LN500Q59z0tpft+oD8SjMw5gZfR4ZdODg=
+	b=NdwAgYfypHNnD2kNoCQ4l43YrjpAP7Ct1f67eZygZPDo7UCpPx2M+XPr2eY8PO7rA
+	 bP+PDcq6r2/t6fsGIyt2/fdjYLBGubiuNMxqwnLohJosIzwQ2p9f8bmF4L0cOtCUeC
+	 i73OSRxcHsUImAKdmSmiZ1fJSlG7vA0yH4xhsQlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jan Stancek <jstancek@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 332/393] net: davicom: fix UAF in dm9000_drv_remove
+Subject: [PATCH 6.12 496/590] selftests: mptcp: extend CFLAGS to keep options from environment
 Date: Wed,  5 Feb 2025 14:44:11 +0100
-Message-ID: <20250205134433.015959053@linuxfoundation.org>
+Message-ID: <20250205134514.245152718@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-[ Upstream commit 19e65c45a1507a1a2926649d2db3583ed9d55fd9 ]
+[ Upstream commit 23b3a7c4a7583eac9e3976355928a832c87caa0f ]
 
-dm is netdev private data and it cannot be
-used after free_netdev() call. Using dm after free_netdev()
-can cause UAF bug. Fix it by moving free_netdev() at the end of the
-function.
+Package build environments like Fedora rpmbuild introduced hardening
+options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
+and LDFLAGS.
 
-This is similar to the issue fixed in commit
-ad297cd2db89 ("net: qcom/emac: fix UAF in emac_remove").
+mptcp Makefile currently overrides CFLAGS but not LDFLAGS, which leads
+to a mismatch and build failure, for example:
+  make[1]: *** [../../lib.mk:222: tools/testing/selftests/net/mptcp/mptcp_sockopt] Error 1
+  /usr/bin/ld: /tmp/ccqyMVdb.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
+  /usr/bin/ld: failed to set dynamic section sizes: bad value
+  collect2: error: ld returned 1 exit status
 
-This bug is detected by our static analysis tool.
-
-Fixes: cf9e60aa69ae ("net: davicom: Fix regulator not turned off on driver removal")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-CC: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20250123214213.623518-1-chenyuan0y@gmail.com
+Fixes: cc937dad85ae ("selftests: centralize -D_GNU_SOURCE= to CFLAGS in lib.mk")
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/7abc701da9df39c2d6cd15bc3cf9e6cee445cb96.1737621162.git.jstancek@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/davicom/dm9000.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-index 05a89ab6766c4..bd38f2f57c8ab 100644
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -1778,10 +1778,11 @@ dm9000_drv_remove(struct platform_device *pdev)
+diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
+index 5d796622e7309..580610c46e5ae 100644
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -2,7 +2,7 @@
  
- 	unregister_netdev(ndev);
- 	dm9000_release_board(pdev, dm);
--	free_netdev(ndev);		/* free device structure */
- 	if (dm->power_supply)
- 		regulator_disable(dm->power_supply);
+ top_srcdir = ../../../../..
  
-+	free_netdev(ndev);		/* free device structure */
-+
- 	dev_dbg(&pdev->dev, "released and freed device\n");
- 	return 0;
- }
+-CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
++CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+ 
+ TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
 -- 
 2.39.5
 
