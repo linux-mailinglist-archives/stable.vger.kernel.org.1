@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-112855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FD8A28EB6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D45A28E02
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224C11642B0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E7213A153C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291FE282EE;
-	Wed,  5 Feb 2025 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F3F510;
+	Wed,  5 Feb 2025 14:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0s5wgwYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWdZGEme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85331519A4;
-	Wed,  5 Feb 2025 14:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA881519AA;
+	Wed,  5 Feb 2025 14:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764989; cv=none; b=SxI1oVV0q3CtA5q12Tv07dmKhOUXxBFyS8lfgjCZzMxdxnSGNv0eN2279oP/G5D4j4Ibpt8UD5t7ro9DLfFbROcSOKo8Erl0khAiLaJzau8jUyT4IBtWnR4g05KGz1bLWVt38ECzBd2J928U8Eq5y7rhEwb4+LJZFdcsh2JlEkY=
+	t=1738764398; cv=none; b=D2l1Pw+NE/GLS9uKFZy+WfdKRDXLwLerdDkuV7DffVZ/w3HEQOlBhCi3I2OVLyC3ENFjy33nq4fjbNFmQuXTZeIGWW89MslSkJvpgHb5foHF9reiqWLfcuv+t0d2K8tJOQU4QQwi5eNGp/KWEtyrTXMxaIKTqtfhX8D2uoXTdaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764989; c=relaxed/simple;
-	bh=hH5t9IyHUvBLarZY8UV1S4t1e63v2iC+oIjKmhUJ7X4=;
+	s=arc-20240116; t=1738764398; c=relaxed/simple;
+	bh=wMmaRZ1bz3cgfQY9emMIl4tkTmOtakjqyFyG76oQBj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcL6QZ9+fwzW5ZOrmrZqQ//MhPhePeJO2kOanepG1w5xCXjNJPJrfaH0WFowJ7wOAICgQSCmlSh/0Iie+RkoOk0zapTGfQoCcWo0Qs3jFjFa7heDzRqfdEyh9/hc32A8EYebxxNB/oDdwGzUMQa8VPxGig39Gh9EQzeJ4J2+AFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0s5wgwYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088F0C4CED1;
-	Wed,  5 Feb 2025 14:16:28 +0000 (UTC)
+	 MIME-Version; b=lX5CNCC4VLk/BIUeMLegQV8l+bdkD8AGiQoMkRWvFAgSgsM9HyeYA062rvJRAmC3nlORJkm+Uzz2jKaYL2iOF1juWevWjM29XAAC4I6cWs8qgYrjE2eOKDWUdqD7Ve12cpMAPhJfTL1aiX/H0kvrcJlB1fS3pZWHVZ4mjwr4Xv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWdZGEme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BC1C4CED6;
+	Wed,  5 Feb 2025 14:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764989;
-	bh=hH5t9IyHUvBLarZY8UV1S4t1e63v2iC+oIjKmhUJ7X4=;
+	s=korg; t=1738764398;
+	bh=wMmaRZ1bz3cgfQY9emMIl4tkTmOtakjqyFyG76oQBj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0s5wgwYa1mG7lnyY3gNYZrDqhjdmaRWBGha1Arkce30vbS59lpCvD4s7kAmXZiGP4
-	 b9LFvKlS64TzIe/Kj8krEtZPFZ6uN+8IiDxpfwYQncwyCDgFbnbbTMaOnMidhYVDt3
-	 BeRS5Dwuy9F4xAl1I6bdI4nXEk94kcNTsutSvCWk=
+	b=sWdZGEmeOlL8NPDrUMtG3081OaGQk6ZoUx32hO9iUHpU8cIj7fbdmSNgTW63WRsjs
+	 SAuDgxji21A26IY1bZMTBnf2/97NUfNq68KloUAPQk01Qza4mXSBV0msvobLOALkFJ
+	 E9EKTmg87kERsX2hrLgSNkdYB0eDpH7eRufcnh/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Pengfei Li <pengfei.li_1@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 133/623] arm64: dts: imx93: Use IMX93_CLK_SPDIF_IPG as SPDIF IPG clock
+Subject: [PATCH 6.12 120/590] dt-bindings: clock: imx93: Drop IMX93_CLK_END macro definition
 Date: Wed,  5 Feb 2025 14:37:55 +0100
-Message-ID: <20250205134501.318687555@linuxfoundation.org>
+Message-ID: <20250205134459.851058967@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +65,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Pengfei Li <pengfei.li_1@nxp.com>
 
-[ Upstream commit 570b890e66334f283710af36feb2115f16c7a27c ]
+[ Upstream commit c0813ce2e5b0d1174782aff30d366509377abc7b ]
 
-IMX93_CLK_BUS_WAKEUP is not accurate IPG clock, which
-missed the clock gate part.
+IMX93_CLK_END should be dropped as it is not part of the ABI.
 
-IMX93_CLK_SPDIF_IPG is the correct clock.
-
-Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Shawn Guo <shawnguo@kernel.org>
-Link: https://lore.kernel.org/r/20241119015805.3840606-4-shengjiu.wang@nxp.com
+Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20241023184651.381265-3-pengfei.li_1@nxp.com
 Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Stable-dep-of: 32e9dea2645f ("dt-bindings: clock: imx93: Add SPDIF IPG clk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dt-bindings/clock/imx93-clock.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 688488de8cd28..56766fdb0b1e5 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -925,7 +925,7 @@
- 				reg-names = "ram", "regs", "rxfifo", "txfifo";
- 				interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>,
- 					     <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk IMX93_CLK_BUS_WAKEUP>,
-+				clocks = <&clk IMX93_CLK_SPDIF_IPG>,
- 					 <&clk IMX93_CLK_SPDIF_GATE>,
- 					 <&clk IMX93_CLK_DUMMY>,
- 					 <&clk IMX93_CLK_AUD_XCVR_GATE>;
+diff --git a/include/dt-bindings/clock/imx93-clock.h b/include/dt-bindings/clock/imx93-clock.h
+index 787c9e74dc96d..a1d0b326bb6bf 100644
+--- a/include/dt-bindings/clock/imx93-clock.h
++++ b/include/dt-bindings/clock/imx93-clock.h
+@@ -204,6 +204,5 @@
+ #define IMX93_CLK_A55_SEL		199
+ #define IMX93_CLK_A55_CORE		200
+ #define IMX93_CLK_PDM_IPG		201
+-#define IMX93_CLK_END			202
+ 
+ #endif
 -- 
 2.39.5
 
