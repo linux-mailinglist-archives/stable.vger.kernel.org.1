@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-113134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33234A29024
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6A5A2902C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD28E1884A02
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34E741613BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1969715A86B;
-	Wed,  5 Feb 2025 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C0E155A21;
+	Wed,  5 Feb 2025 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlNmBByy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpYGuyqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5EB186E56;
-	Wed,  5 Feb 2025 14:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D1D155747;
+	Wed,  5 Feb 2025 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765935; cv=none; b=r3lW2QcBYgTCbC6JgqK29Xo2aYJ8Vid7SN5pwR89iMNBK54wdsiHK3QK1bHZcytCtvH+B+FR5Xn1vT42IIOMawSExDafCd4JzpjejvpqHUSuD/NTqSOpv1mDGbViyDSYmo0D3yVRi8np/RnhJqte532/E5ImrBaJ4bG5Izw6Gak=
+	t=1738765946; cv=none; b=tXyqtKcwjn//nmltSYblO8QioMrAdRT5Eo4KkEodn834oxdnQdIJVyNDAU1+y2BMyPnCGzykTDjUuN+yqXTgDEb1ovBRs71dOadaYoFXMH0vXJUctP3L6WWbT2ltSzBTGcI1KT7XzxYKh53/+A+5Npr8iPowapc/XKEKOsnCaYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765935; c=relaxed/simple;
-	bh=0PSNE/WMr7KGTEb7qlQjdRmtwTo3aLQqUa4oRmyERpA=;
+	s=arc-20240116; t=1738765946; c=relaxed/simple;
+	bh=/FVpbb24FzJdYZvv+mdo10Qx9LyvL40mbLhaAzbpwCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tz0L+1XFJBjOSadKsCccTnXRXw9vKldSQ+zZcqN2DaAR8HoIBVAGaDoAs1+WfPHuIdf1mPQASees8msyaUkY6e0SKgR1DItOGdyTN5i5+lwQJ43eFA07uQlsXt5FzQwFy8zCAnx1+HUsS/plCwsCgRKncIbwHiUcqhf42bn+71k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlNmBByy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A80C4CED6;
-	Wed,  5 Feb 2025 14:32:15 +0000 (UTC)
+	 MIME-Version; b=R/5XQMXM/+pvscIQFv1ii77vDiAFB8ctOhRxmPHKF+QbUv1Vq/O1FgfXFzdbKTKewJ8C7uF3u10+ldYFUO8t0kcozmXWTBF+zY+NcRP/2xvw7bpp9F8TOZW6P5sK4F+TKf6mur5egkMpYv55i9RBUUJwG25WAIQS9K8L5dLU6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpYGuyqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A25C4CED1;
+	Wed,  5 Feb 2025 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765935;
-	bh=0PSNE/WMr7KGTEb7qlQjdRmtwTo3aLQqUa4oRmyERpA=;
+	s=korg; t=1738765946;
+	bh=/FVpbb24FzJdYZvv+mdo10Qx9LyvL40mbLhaAzbpwCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlNmBByyVHUdf66H4xYubl2LZCl9kkAFJO0QX9N/UZWZ57bVOjShk2O8aGFuMtlq5
-	 GtZcF+n5h/PW8QJmEQEny5iWZ0CwjNy3YsizYiFyFBiN9AUJeyQy3e1c8tiOL8Rlz2
-	 x3xAOLvU+tGnfl0kwoi22IZh+oPIx499NQSDt9cg=
+	b=jpYGuyqCSrqNWxhNmQPx6Dh7dhnDsIxhZ+KLUZhPuqHrSKz+8/yKLj/xq6/Jdue0G
+	 FtmiwF9Lz70H4IZvq/j5b3H94FDXUh7CnrmIKC7pZWElKpO3kX7V6cFvZc0IQ/hd/x
+	 cXQ23sEfp7YwGpb+KTSq/iCwePC5YCddFHqx99nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 227/623] pwm: stm32: Add check for clk_enable()
-Date: Wed,  5 Feb 2025 14:39:29 +0100
-Message-ID: <20250205134504.908251288@linuxfoundation.org>
+Subject: [PATCH 6.13 228/623] net: phy: realtek: clear 1000Base-T lpa if link is down
+Date: Wed,  5 Feb 2025 14:39:30 +0100
+Message-ID: <20250205134504.945481727@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -61,48 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
+[ Upstream commit 34d5a86ff7bbe225fba3ad91f9b4dc85fb408e18 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+Only read 1000Base-T link partner advertisement if autonegotiation has
+completed and otherwise 1000Base-T link partner advertisement bits.
 
-Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+This fixes bogus 1000Base-T link partner advertisement after link goes
+down (eg. by disconnecting the wire).
+Fixes: 5cb409b3960e ("net: phy: realtek: clear 1000Base-T link partner advertisement")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/realtek.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 17e591f61efb6..a59de4de18b6e 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -858,8 +858,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	chip->ops = &stm32pwm_ops;
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index f65d7f1f348e7..26b324ab0f90f 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -1023,23 +1023,20 @@ static int rtl822x_c45_read_status(struct phy_device *phydev)
+ {
+ 	int ret, val;
  
- 	/* Initialize clock refcount to number of enabled PWM channels. */
--	for (i = 0; i < num_enabled; i++)
--		clk_enable(priv->clk);
-+	for (i = 0; i < num_enabled; i++) {
-+		ret = clk_enable(priv->clk);
-+		if (ret)
-+			return ret;
-+	}
+-	ret = genphy_c45_read_status(phydev);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (phydev->autoneg == AUTONEG_DISABLE ||
+-	    !genphy_c45_aneg_done(phydev))
+-		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+-
+ 	/* Vendor register as C45 has no standardized support for 1000BaseT */
+-	if (phydev->autoneg == AUTONEG_ENABLE) {
++	if (phydev->autoneg == AUTONEG_ENABLE && genphy_c45_aneg_done(phydev)) {
+ 		val = phy_read_mmd(phydev, MDIO_MMD_VEND2,
+ 				   RTL822X_VND2_GANLPAR);
+ 		if (val < 0)
+ 			return val;
+-
+-		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
++	} else {
++		val = 0;
+ 	}
++	mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
++
++	ret = genphy_c45_read_status(phydev);
++	if (ret < 0)
++		return ret;
  
- 	ret = devm_pwmchip_add(dev, chip);
- 	if (ret < 0)
+ 	if (!phydev->link)
+ 		return 0;
 -- 
 2.39.5
 
