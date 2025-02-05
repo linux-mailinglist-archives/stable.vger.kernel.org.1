@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0CAA292FB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A3FA28EEB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3B183AD8C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0473AA32D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AD118BC26;
-	Wed,  5 Feb 2025 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB50522A;
+	Wed,  5 Feb 2025 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgE2UFMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkFV4sf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F0E376;
-	Wed,  5 Feb 2025 14:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FE813C9C4;
+	Wed,  5 Feb 2025 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767459; cv=none; b=RcJAQv/9y9CAJLXiN/k6ieQH45tBSRh+5SVVpasmc8bQbrRsPqzYoZkxgVSMQKwRxJrUBLboFsgAIJN5gEyzokwOztZgHcDvSixgyZM0WLFMlLYNVg723EAwy9q16laoxqS7vJbj5ZIcfNxDxBNTIwks0mzBAN7CB042e4Te3mU=
+	t=1738765079; cv=none; b=dwsvhu1g6dd4GlwR62yV190+L0XKhEtLokrF0+ugCq26hQQh8XThEQBexhdMWeWDHmZOZthjKl0z+wohhiNW9HDlUbsY7XTJPKzi6V2FhMvh7zZSCv9TY9UxTl1M3Yp6x5pXHOqLs0CW/J/zFoVWZMskWcu400egtIm+FbppxhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767459; c=relaxed/simple;
-	bh=3g92yF1Ur6Zt/95n5eSdohWhZ87iog+MgSOrmCqtdYg=;
+	s=arc-20240116; t=1738765079; c=relaxed/simple;
+	bh=MYRR83CJZWoHKJX/LpkrTO8phO35bdGnYbKXoBXWumw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0mGjrYmzVCZNfyBkwknia/KgWWtzhENdCkIJAbFbzl95pLlP04Qu0Sdnxlob/AwfvHzL6HaeL4Ia2Hag0zMu4tmnwgq7H/vRSWqEsakapDn/6w7b4aAEJIpUiPts5/rgKQBGNIhaskAoeyjpMZ5ZKFWZTqRsyPzcLrdXVbatQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgE2UFMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3BFC4CED1;
-	Wed,  5 Feb 2025 14:57:39 +0000 (UTC)
+	 MIME-Version; b=i1xeFsqhDQmAYTMOsV1kQMOtBn/Xd2MYirUZEfwg6OlNVdyNzxFjrV98puQ7zgWib28RwC4kYDap4RBM3K8WYa3qeG4O+6GaigSy4iVEbIasshUGR8YOgT8tHTrsbOPeKbDKwBEK2Y1cV6qJqGOq++FvWNJKGd0us0HSDbc7hqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkFV4sf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E52BC4CED1;
+	Wed,  5 Feb 2025 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767459;
-	bh=3g92yF1Ur6Zt/95n5eSdohWhZ87iog+MgSOrmCqtdYg=;
+	s=korg; t=1738765079;
+	bh=MYRR83CJZWoHKJX/LpkrTO8phO35bdGnYbKXoBXWumw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgE2UFMv7JgI3blTgAEk1ONeB+Qczhz8kV5ciXjeCosojCRPg1wEQIIdGpsLJeqWR
-	 Tqr02zKU6A/k4K5GuQz6PpVi05h4BcQrHxgGPcvhKEN7HHkhGM8TC2LgxEmf0QKy0h
-	 8kq+JObna9Y/tFXcyq/SKUVsBARzeS0Rusex8HD0=
+	b=HkFV4sf18myuCjzQmKFPBfQhp4/b4KIAPONkpGg7EpzLUr7dMsVdR8/U7AS6bHpdP
+	 aRqQ/zyeP3LgulqJJKSgFx6niJKXFwEkK+yDbXSj8BAWuvlAVqCSuMxm2s2VihaRuM
+	 SELiiIyGayNa+0BLN/rse8W/ZbhYz/+Dw1Xll8b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.13 407/623] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 230/393] arm64: dts: qcom: move common parts for sa8775p-ride variants into a .dtsi
 Date: Wed,  5 Feb 2025 14:42:29 +0100
-Message-ID: <20250205134511.793573090@linuxfoundation.org>
+Message-ID: <20250205134429.106643090@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,1712 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
+[ Upstream commit fe15631117f8d85b1bc4e0c3b434c78be483a43d ]
 
-A report in 2019 by the syzbot fuzzer was found to be connected to two
-errors in the HID core associated with Resolution Multipliers.  One of
-the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
-in hid_apply_multiplier."), but the other has not been fixed.
+In order to support multiple revisions of the sa8775p-ride board, create
+a .dtsi containing the common parts and split out the ethernet bits into
+the actual board file as they will change in revision 3.
 
-This error arises because hid_apply_multipler() assumes that every
-Resolution Multiplier control is contained in a Logical Collection,
-i.e., there's no way the routine can ever set multiplier_collection to
-NULL.  This is in spite of the fact that the function starts with a
-big comment saying:
-
-	 * "The Resolution Multiplier control must be contained in the same
-	 * Logical Collection as the control(s) to which it is to be applied.
-	   ...
-	 *  If no Logical Collection is
-	 * defined, the Resolution Multiplier is associated with all
-	 * controls in the report."
-	 * HID Usage Table, v1.12, Section 4.3.1, p30
-	 *
-	 * Thus, search from the current collection upwards until we find a
-	 * logical collection...
-
-The comment and the code overlook the possibility that none of the
-collections found may be a Logical Collection.
-
-The fix is to set the multiplier_collection pointer to NULL if the
-collection found isn't a Logical Collection.
-
-Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: Peter Hutterer <peter.hutterer@who-t.net>
-Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20240627114212.25400-3-brgl@bgdev.pl
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 30f7dfd2c489 ("arm64: dts: qcom: sa8775p: Update sleep_clk frequency")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dts  | 834 +--------------------
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 814 ++++++++++++++++++++
+ 2 files changed, 835 insertions(+), 813 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 33a191973324..5ab8e10bbd76 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1163,6 +1163,8 @@ static void hid_apply_multiplier(struct hid_device *hid,
- 	while (multiplier_collection->parent_idx != -1 &&
- 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
- 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
-+	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
-+		multiplier_collection = NULL;
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+index 26ad05bd3b3ff..2e87fd760dbdd 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+@@ -5,835 +5,43 @@
  
- 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
+ /dts-v1/;
  
+-#include <dt-bindings/gpio/gpio.h>
+-#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+-
+-#include "sa8775p.dtsi"
+-#include "sa8775p-pmics.dtsi"
++#include "sa8775p-ride.dtsi"
+ 
+ / {
+ 	model = "Qualcomm SA8775P Ride";
+ 	compatible = "qcom,sa8775p-ride", "qcom,sa8775p";
+-
+-	aliases {
+-		ethernet0 = &ethernet0;
+-		ethernet1 = &ethernet1;
+-		i2c11 = &i2c11;
+-		i2c18 = &i2c18;
+-		serial0 = &uart10;
+-		serial1 = &uart12;
+-		serial2 = &uart17;
+-		spi16 = &spi16;
+-		ufshc1 = &ufs_mem_hc;
+-	};
+-
+-	chosen {
+-		stdout-path = "serial0:115200n8";
+-	};
+-};
+-
+-&apps_rsc {
+-	regulators-0 {
+-		compatible = "qcom,pmm8654au-rpmh-regulators";
+-		qcom,pmic-id = "a";
+-
+-		vreg_s4a: smps4 {
+-			regulator-name = "vreg_s4a";
+-			regulator-min-microvolt = <1800000>;
+-			regulator-max-microvolt = <1816000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_s5a: smps5 {
+-			regulator-name = "vreg_s5a";
+-			regulator-min-microvolt = <1850000>;
+-			regulator-max-microvolt = <1996000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_s9a: smps9 {
+-			regulator-name = "vreg_s9a";
+-			regulator-min-microvolt = <535000>;
+-			regulator-max-microvolt = <1120000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l4a: ldo4 {
+-			regulator-name = "vreg_l4a";
+-			regulator-min-microvolt = <788000>;
+-			regulator-max-microvolt = <1050000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l5a: ldo5 {
+-			regulator-name = "vreg_l5a";
+-			regulator-min-microvolt = <870000>;
+-			regulator-max-microvolt = <950000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l6a: ldo6 {
+-			regulator-name = "vreg_l6a";
+-			regulator-min-microvolt = <870000>;
+-			regulator-max-microvolt = <970000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l7a: ldo7 {
+-			regulator-name = "vreg_l7a";
+-			regulator-min-microvolt = <720000>;
+-			regulator-max-microvolt = <950000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l8a: ldo8 {
+-			regulator-name = "vreg_l8a";
+-			regulator-min-microvolt = <2504000>;
+-			regulator-max-microvolt = <3300000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l9a: ldo9 {
+-			regulator-name = "vreg_l9a";
+-			regulator-min-microvolt = <2970000>;
+-			regulator-max-microvolt = <3544000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-	};
+-
+-	regulators-1 {
+-		compatible = "qcom,pmm8654au-rpmh-regulators";
+-		qcom,pmic-id = "c";
+-
+-		vreg_l1c: ldo1 {
+-			regulator-name = "vreg_l1c";
+-			regulator-min-microvolt = <1140000>;
+-			regulator-max-microvolt = <1260000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l2c: ldo2 {
+-			regulator-name = "vreg_l2c";
+-			regulator-min-microvolt = <900000>;
+-			regulator-max-microvolt = <1100000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l3c: ldo3 {
+-			regulator-name = "vreg_l3c";
+-			regulator-min-microvolt = <1100000>;
+-			regulator-max-microvolt = <1300000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l4c: ldo4 {
+-			regulator-name = "vreg_l4c";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			/*
+-			 * FIXME: This should have regulator-allow-set-load but
+-			 * we're getting an over-current fault from the PMIC
+-			 * when switching to LPM.
+-			 */
+-		};
+-
+-		vreg_l5c: ldo5 {
+-			regulator-name = "vreg_l5c";
+-			regulator-min-microvolt = <1100000>;
+-			regulator-max-microvolt = <1300000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l6c: ldo6 {
+-			regulator-name = "vreg_l6c";
+-			regulator-min-microvolt = <1620000>;
+-			regulator-max-microvolt = <1980000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l7c: ldo7 {
+-			regulator-name = "vreg_l7c";
+-			regulator-min-microvolt = <1620000>;
+-			regulator-max-microvolt = <2000000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l8c: ldo8 {
+-			regulator-name = "vreg_l8c";
+-			regulator-min-microvolt = <2400000>;
+-			regulator-max-microvolt = <3300000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l9c: ldo9 {
+-			regulator-name = "vreg_l9c";
+-			regulator-min-microvolt = <1650000>;
+-			regulator-max-microvolt = <2700000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-	};
+-
+-	regulators-2 {
+-		compatible = "qcom,pmm8654au-rpmh-regulators";
+-		qcom,pmic-id = "e";
+-
+-		vreg_s4e: smps4 {
+-			regulator-name = "vreg_s4e";
+-			regulator-min-microvolt = <970000>;
+-			regulator-max-microvolt = <1520000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_s7e: smps7 {
+-			regulator-name = "vreg_s7e";
+-			regulator-min-microvolt = <1010000>;
+-			regulator-max-microvolt = <1170000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_s9e: smps9 {
+-			regulator-name = "vreg_s9e";
+-			regulator-min-microvolt = <300000>;
+-			regulator-max-microvolt = <570000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l6e: ldo6 {
+-			regulator-name = "vreg_l6e";
+-			regulator-min-microvolt = <1280000>;
+-			regulator-max-microvolt = <1450000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-
+-		vreg_l8e: ldo8 {
+-			regulator-name = "vreg_l8e";
+-			regulator-min-microvolt = <1800000>;
+-			regulator-max-microvolt = <1950000>;
+-			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-allow-set-load;
+-			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
+-						   RPMH_REGULATOR_MODE_HPM>;
+-		};
+-	};
+ };
+ 
+ &ethernet0 {
+ 	phy-mode = "sgmii";
+-	phy-handle = <&sgmii_phy0>;
+-
+-	pinctrl-0 = <&ethernet0_default>;
+-	pinctrl-names = "default";
+-
+-	snps,mtl-rx-config = <&mtl_rx_setup>;
+-	snps,mtl-tx-config = <&mtl_tx_setup>;
+-	snps,ps-speed = <1000>;
+-
+-	status = "okay";
+-
+-	mdio {
+-		compatible = "snps,dwmac-mdio";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		sgmii_phy0: phy@8 {
+-			compatible = "ethernet-phy-id0141.0dd4";
+-			reg = <0x8>;
+-			device_type = "ethernet-phy";
+-			interrupts-extended = <&tlmm 7 IRQ_TYPE_EDGE_FALLING>;
+-			reset-gpios = <&pmm8654au_2_gpios 8 GPIO_ACTIVE_LOW>;
+-			reset-assert-us = <11000>;
+-			reset-deassert-us = <70000>;
+-		};
+-
+-		sgmii_phy1: phy@a {
+-			compatible = "ethernet-phy-id0141.0dd4";
+-			reg = <0xa>;
+-			device_type = "ethernet-phy";
+-			interrupts-extended = <&tlmm 26 IRQ_TYPE_EDGE_FALLING>;
+-			reset-gpios = <&pmm8654au_2_gpios 9 GPIO_ACTIVE_LOW>;
+-			reset-assert-us = <11000>;
+-			reset-deassert-us = <70000>;
+-		};
+-	};
+-
+-	mtl_rx_setup: rx-queues-config {
+-		snps,rx-queues-to-use = <4>;
+-		snps,rx-sched-sp;
+-
+-		queue0 {
+-			snps,dcb-algorithm;
+-			snps,map-to-dma-channel = <0x0>;
+-			snps,route-up;
+-			snps,priority = <0x1>;
+-		};
+-
+-		queue1 {
+-			snps,dcb-algorithm;
+-			snps,map-to-dma-channel = <0x1>;
+-			snps,route-ptp;
+-		};
+-
+-		queue2 {
+-			snps,avb-algorithm;
+-			snps,map-to-dma-channel = <0x2>;
+-			snps,route-avcp;
+-		};
+-
+-		queue3 {
+-			snps,avb-algorithm;
+-			snps,map-to-dma-channel = <0x3>;
+-			snps,priority = <0xc>;
+-		};
+-	};
+-
+-	mtl_tx_setup: tx-queues-config {
+-		snps,tx-queues-to-use = <4>;
+-		snps,tx-sched-sp;
+-
+-		queue0 {
+-			snps,dcb-algorithm;
+-		};
+-
+-		queue1 {
+-			snps,dcb-algorithm;
+-		};
+-
+-		queue2 {
+-			snps,avb-algorithm;
+-			snps,send_slope = <0x1000>;
+-			snps,idle_slope = <0x1000>;
+-			snps,high_credit = <0x3e800>;
+-			snps,low_credit = <0xffc18000>;
+-		};
+-
+-		queue3 {
+-			snps,avb-algorithm;
+-			snps,send_slope = <0x1000>;
+-			snps,idle_slope = <0x1000>;
+-			snps,high_credit = <0x3e800>;
+-			snps,low_credit = <0xffc18000>;
+-		};
+-	};
+ };
+ 
+ &ethernet1 {
+ 	phy-mode = "sgmii";
+-	phy-handle = <&sgmii_phy1>;
+-
+-	snps,mtl-rx-config = <&mtl_rx_setup1>;
+-	snps,mtl-tx-config = <&mtl_tx_setup1>;
+-	snps,ps-speed = <1000>;
+-
+-	status = "okay";
+-
+-	mtl_rx_setup1: rx-queues-config {
+-		snps,rx-queues-to-use = <4>;
+-		snps,rx-sched-sp;
+-
+-		queue0 {
+-			snps,dcb-algorithm;
+-			snps,map-to-dma-channel = <0x0>;
+-			snps,route-up;
+-			snps,priority = <0x1>;
+-		};
+-
+-		queue1 {
+-			snps,dcb-algorithm;
+-			snps,map-to-dma-channel = <0x1>;
+-			snps,route-ptp;
+-		};
+-
+-		queue2 {
+-			snps,avb-algorithm;
+-			snps,map-to-dma-channel = <0x2>;
+-			snps,route-avcp;
+-		};
+-
+-		queue3 {
+-			snps,avb-algorithm;
+-			snps,map-to-dma-channel = <0x3>;
+-			snps,priority = <0xc>;
+-		};
+-	};
+-
+-	mtl_tx_setup1: tx-queues-config {
+-		snps,tx-queues-to-use = <4>;
+-		snps,tx-sched-sp;
+-
+-		queue0 {
+-			snps,dcb-algorithm;
+-		};
+-
+-		queue1 {
+-			snps,dcb-algorithm;
+-		};
+-
+-		queue2 {
+-			snps,avb-algorithm;
+-			snps,send_slope = <0x1000>;
+-			snps,idle_slope = <0x1000>;
+-			snps,high_credit = <0x3e800>;
+-			snps,low_credit = <0xffc18000>;
+-		};
+-
+-		queue3 {
+-			snps,avb-algorithm;
+-			snps,send_slope = <0x1000>;
+-			snps,idle_slope = <0x1000>;
+-			snps,high_credit = <0x3e800>;
+-			snps,low_credit = <0xffc18000>;
+-		};
+-	};
+-};
+-
+-&i2c11 {
+-	clock-frequency = <400000>;
+-	pinctrl-0 = <&qup_i2c11_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+-&i2c18 {
+-	clock-frequency = <400000>;
+-	pinctrl-0 = <&qup_i2c18_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+-&pmm8654au_0_gpios {
+-	gpio-line-names = "DS_EN",
+-			  "POFF_COMPLETE",
+-			  "UFS0_VER_ID",
+-			  "FAST_POFF",
+-			  "DBU1_PON_DONE",
+-			  "AOSS_SLEEP",
+-			  "CAM_DES0_EN",
+-			  "CAM_DES1_EN",
+-			  "CAM_DES2_EN",
+-			  "CAM_DES3_EN",
+-			  "UEFI",
+-			  "ANALOG_PON_OPT";
+-};
+-
+-&pmm8654au_0_pon_resin {
+-	linux,code = <KEY_VOLUMEDOWN>;
+-	status = "okay";
+-};
+-
+-&pmm8654au_1_gpios {
+-	gpio-line-names = "PMIC_C_ID0",
+-			  "PMIC_C_ID1",
+-			  "UFS1_VER_ID",
+-			  "IPA_PWR",
+-			  "",
+-			  "WLAN_DBU4_EN",
+-			  "WLAN_EN",
+-			  "BT_EN",
+-			  "USB2_PWR_EN",
+-			  "USB2_FAULT";
+-
+-	usb2_en_state: usb2-en-state {
+-		pins = "gpio9";
+-		function = "normal";
+-		output-high;
+-		power-source = <0>;
+-	};
+-};
+-
+-&pmm8654au_2_gpios {
+-	gpio-line-names = "PMIC_E_ID0",
+-			  "PMIC_E_ID1",
+-			  "USB0_PWR_EN",
+-			  "USB0_FAULT",
+-			  "SENSOR_IRQ_1",
+-			  "SENSOR_IRQ_2",
+-			  "SENSOR_RST",
+-			  "SGMIIO0_RST",
+-			  "SGMIIO1_RST",
+-			  "USB1_PWR_ENABLE",
+-			  "USB1_FAULT",
+-			  "VMON_SPX8";
+-
+-	usb0_en_state: usb0-en-state {
+-		pins = "gpio3";
+-		function = "normal";
+-		output-high;
+-		power-source = <0>;
+-	};
+-
+-	usb1_en_state: usb1-en-state {
+-		pins = "gpio10";
+-		function = "normal";
+-		output-high;
+-		power-source = <0>;
+-	};
+-};
+-
+-&pmm8654au_3_gpios {
+-	gpio-line-names = "PMIC_G_ID0",
+-			  "PMIC_G_ID1",
+-			  "GNSS_RST",
+-			  "GNSS_EN",
+-			  "GNSS_BOOT_MODE";
+-};
+-
+-&qupv3_id_1 {
+-	status = "okay";
+-};
+-
+-&qupv3_id_2 {
+-	status = "okay";
+-};
+-
+-&serdes0 {
+-	phy-supply = <&vreg_l5a>;
+-	status = "okay";
+-};
+-
+-&serdes1 {
+-	phy-supply = <&vreg_l5a>;
+-	status = "okay";
+-};
+-
+-&sleep_clk {
+-	clock-frequency = <32764>;
+-};
+-
+-&spi16 {
+-	pinctrl-0 = <&qup_spi16_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+ };
+ 
+-&tlmm {
+-	ethernet0_default: ethernet0-default-state {
+-		ethernet0_mdc: ethernet0-mdc-pins {
+-			pins = "gpio8";
+-			function = "emac0_mdc";
+-			drive-strength = <16>;
+-			bias-pull-up;
+-		};
+-
+-		ethernet0_mdio: ethernet0-mdio-pins {
+-			pins = "gpio9";
+-			function = "emac0_mdio";
+-			drive-strength = <16>;
+-			bias-pull-up;
+-		};
+-	};
+-
+-	qup_uart10_default: qup-uart10-state {
+-		pins = "gpio46", "gpio47";
+-		function = "qup1_se3";
+-	};
+-
+-	qup_spi16_default: qup-spi16-state {
+-		pins = "gpio86", "gpio87", "gpio88", "gpio89";
+-		function = "qup2_se2";
+-		drive-strength = <6>;
+-		bias-disable;
+-	};
+-
+-	qup_i2c11_default: qup-i2c11-state {
+-		pins = "gpio48", "gpio49";
+-		function = "qup1_se4";
+-		drive-strength = <2>;
+-		bias-pull-up;
+-	};
+-
+-	qup_i2c18_default: qup-i2c18-state {
+-		pins = "gpio95", "gpio96";
+-		function = "qup2_se4";
+-		drive-strength = <2>;
+-		bias-pull-up;
+-	};
+-
+-	qup_uart12_default: qup-uart12-state {
+-		qup_uart12_cts: qup-uart12-cts-pins {
+-			pins = "gpio52";
+-			function = "qup1_se5";
+-			bias-disable;
+-		};
+-
+-		qup_uart12_rts: qup-uart12-rts-pins {
+-			pins = "gpio53";
+-			function = "qup1_se5";
+-			bias-pull-down;
+-		};
+-
+-		qup_uart12_tx: qup-uart12-tx-pins {
+-			pins = "gpio54";
+-			function = "qup1_se5";
+-			bias-pull-up;
+-		};
+-
+-		qup_uart12_rx: qup-uart12-rx-pins {
+-			pins = "gpio55";
+-			function = "qup1_se5";
+-			bias-pull-down;
+-		};
+-	};
+-
+-	qup_uart17_default: qup-uart17-state {
+-		qup_uart17_cts: qup-uart17-cts-pins {
+-			pins = "gpio91";
+-			function = "qup2_se3";
+-			bias-disable;
+-		};
+-
+-		qup_uart17_rts: qup0-uart17-rts-pins {
+-			pins = "gpio92";
+-			function = "qup2_se3";
+-			bias-pull-down;
+-		};
+-
+-		qup_uart17_tx: qup0-uart17-tx-pins {
+-			pins = "gpio93";
+-			function = "qup2_se3";
+-			bias-pull-up;
+-		};
+-
+-		qup_uart17_rx: qup0-uart17-rx-pins {
+-			pins = "gpio94";
+-			function = "qup2_se3";
+-			bias-pull-down;
+-		};
+-	};
++&mdio {
++	compatible = "snps,dwmac-mdio";
++	#address-cells = <1>;
++	#size-cells = <0>;
+ 
+-	pcie0_default_state: pcie0-default-state {
+-		perst-pins {
+-			pins = "gpio2";
+-			function = "gpio";
+-			drive-strength = <2>;
+-			bias-pull-down;
+-		};
+-
+-		clkreq-pins {
+-			pins = "gpio1";
+-			function = "pcie0_clkreq";
+-			drive-strength = <2>;
+-			bias-pull-up;
+-		};
+-
+-		wake-pins {
+-			pins = "gpio0";
+-			function = "gpio";
+-			drive-strength = <2>;
+-			bias-pull-up;
+-		};
++	sgmii_phy0: phy@8 {
++		compatible = "ethernet-phy-id0141.0dd4";
++		reg = <0x8>;
++		device_type = "ethernet-phy";
++		interrupts-extended = <&tlmm 7 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&pmm8654au_2_gpios 8 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <11000>;
++		reset-deassert-us = <70000>;
+ 	};
+ 
+-	pcie1_default_state: pcie1-default-state {
+-		perst-pins {
+-			pins = "gpio4";
+-			function = "gpio";
+-			drive-strength = <2>;
+-			bias-pull-down;
+-		};
+-
+-		clkreq-pins {
+-			pins = "gpio3";
+-			function = "pcie1_clkreq";
+-			drive-strength = <2>;
+-			bias-pull-up;
+-		};
+-
+-		wake-pins {
+-			pins = "gpio5";
+-			function = "gpio";
+-			drive-strength = <2>;
+-			bias-pull-up;
+-		};
++	sgmii_phy1: phy@a {
++		compatible = "ethernet-phy-id0141.0dd4";
++		reg = <0xa>;
++		device_type = "ethernet-phy";
++		interrupts-extended = <&tlmm 26 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&pmm8654au_2_gpios 9 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <11000>;
++		reset-deassert-us = <70000>;
+ 	};
+ };
+-
+-&pcie0 {
+-	perst-gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
+-	wake-gpios = <&tlmm 0 GPIO_ACTIVE_HIGH>;
+-
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pcie0_default_state>;
+-
+-	status = "okay";
+-};
+-
+-&pcie1 {
+-	perst-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
+-	wake-gpios = <&tlmm 5 GPIO_ACTIVE_HIGH>;
+-
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pcie1_default_state>;
+-
+-	status = "okay";
+-};
+-
+-&pcie0_phy {
+-	vdda-phy-supply = <&vreg_l5a>;
+-	vdda-pll-supply = <&vreg_l1c>;
+-
+-	status = "okay";
+-};
+-
+-&pcie1_phy {
+-	vdda-phy-supply = <&vreg_l5a>;
+-	vdda-pll-supply = <&vreg_l1c>;
+-
+-	status = "okay";
+-};
+-
+-&uart10 {
+-	compatible = "qcom,geni-debug-uart";
+-	pinctrl-0 = <&qup_uart10_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+-&uart12 {
+-	pinctrl-0 = <&qup_uart12_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+-&uart17 {
+-	pinctrl-0 = <&qup_uart17_default>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-};
+-
+-&ufs_mem_hc {
+-	reset-gpios = <&tlmm 149 GPIO_ACTIVE_LOW>;
+-	vcc-supply = <&vreg_l8a>;
+-	vcc-max-microamp = <1100000>;
+-	vccq-supply = <&vreg_l4c>;
+-	vccq-max-microamp = <1200000>;
+-
+-	status = "okay";
+-};
+-
+-&ufs_mem_phy {
+-	vdda-phy-supply = <&vreg_l4a>;
+-	vdda-pll-supply = <&vreg_l1c>;
+-
+-	status = "okay";
+-};
+-
+-&usb_0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&usb0_en_state>;
+-
+-	status = "okay";
+-};
+-
+-&usb_0_dwc3 {
+-	dr_mode = "peripheral";
+-};
+-
+-&usb_0_hsphy {
+-	vdda-pll-supply = <&vreg_l7a>;
+-	vdda18-supply = <&vreg_l6c>;
+-	vdda33-supply = <&vreg_l9a>;
+-
+-	status = "okay";
+-};
+-
+-&usb_0_qmpphy {
+-	vdda-phy-supply = <&vreg_l1c>;
+-	vdda-pll-supply = <&vreg_l7a>;
+-
+-	status = "okay";
+-};
+-
+-&usb_1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&usb1_en_state>;
+-
+-	status = "okay";
+-};
+-
+-&usb_1_dwc3 {
+-	dr_mode = "host";
+-};
+-
+-&usb_1_hsphy {
+-	vdda-pll-supply = <&vreg_l7a>;
+-	vdda18-supply = <&vreg_l6c>;
+-	vdda33-supply = <&vreg_l9a>;
+-
+-	status = "okay";
+-};
+-
+-&usb_1_qmpphy {
+-	vdda-phy-supply = <&vreg_l1c>;
+-	vdda-pll-supply = <&vreg_l7a>;
+-
+-	status = "okay";
+-};
+-
+-&usb_2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&usb2_en_state>;
+-
+-	status = "okay";
+-};
+-
+-&usb_2_dwc3 {
+-	dr_mode = "host";
+-};
+-
+-&usb_2_hsphy {
+-	vdda-pll-supply = <&vreg_l7a>;
+-	vdda18-supply = <&vreg_l6c>;
+-	vdda33-supply = <&vreg_l9a>;
+-
+-	status = "okay";
+-};
+-
+-&xo_board_clk {
+-	clock-frequency = <38400000>;
+-};
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+new file mode 100644
+index 0000000000000..2a6170623ea95
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -0,0 +1,814 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2023, Linaro Limited
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++
++#include "sa8775p.dtsi"
++#include "sa8775p-pmics.dtsi"
++
++/ {
++	aliases {
++		ethernet0 = &ethernet0;
++		ethernet1 = &ethernet1;
++		i2c11 = &i2c11;
++		i2c18 = &i2c18;
++		serial0 = &uart10;
++		serial1 = &uart12;
++		serial2 = &uart17;
++		spi16 = &spi16;
++		ufshc1 = &ufs_mem_hc;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&apps_rsc {
++	regulators-0 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "a";
++
++		vreg_s4a: smps4 {
++			regulator-name = "vreg_s4a";
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1816000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s5a: smps5 {
++			regulator-name = "vreg_s5a";
++			regulator-min-microvolt = <1850000>;
++			regulator-max-microvolt = <1996000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s9a: smps9 {
++			regulator-name = "vreg_s9a";
++			regulator-min-microvolt = <535000>;
++			regulator-max-microvolt = <1120000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l4a: ldo4 {
++			regulator-name = "vreg_l4a";
++			regulator-min-microvolt = <788000>;
++			regulator-max-microvolt = <1050000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l5a: ldo5 {
++			regulator-name = "vreg_l5a";
++			regulator-min-microvolt = <870000>;
++			regulator-max-microvolt = <950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6a: ldo6 {
++			regulator-name = "vreg_l6a";
++			regulator-min-microvolt = <870000>;
++			regulator-max-microvolt = <970000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7a: ldo7 {
++			regulator-name = "vreg_l7a";
++			regulator-min-microvolt = <720000>;
++			regulator-max-microvolt = <950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8a: ldo8 {
++			regulator-name = "vreg_l8a";
++			regulator-min-microvolt = <2504000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l9a: ldo9 {
++			regulator-name = "vreg_l9a";
++			regulator-min-microvolt = <2970000>;
++			regulator-max-microvolt = <3544000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++	};
++
++	regulators-1 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "c";
++
++		vreg_l1c: ldo1 {
++			regulator-name = "vreg_l1c";
++			regulator-min-microvolt = <1140000>;
++			regulator-max-microvolt = <1260000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l2c: ldo2 {
++			regulator-name = "vreg_l2c";
++			regulator-min-microvolt = <900000>;
++			regulator-max-microvolt = <1100000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l3c: ldo3 {
++			regulator-name = "vreg_l3c";
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <1300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l4c: ldo4 {
++			regulator-name = "vreg_l4c";
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1200000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			/*
++			 * FIXME: This should have regulator-allow-set-load but
++			 * we're getting an over-current fault from the PMIC
++			 * when switching to LPM.
++			 */
++		};
++
++		vreg_l5c: ldo5 {
++			regulator-name = "vreg_l5c";
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <1300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6c: ldo6 {
++			regulator-name = "vreg_l6c";
++			regulator-min-microvolt = <1620000>;
++			regulator-max-microvolt = <1980000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7c: ldo7 {
++			regulator-name = "vreg_l7c";
++			regulator-min-microvolt = <1620000>;
++			regulator-max-microvolt = <2000000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8c: ldo8 {
++			regulator-name = "vreg_l8c";
++			regulator-min-microvolt = <2400000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l9c: ldo9 {
++			regulator-name = "vreg_l9c";
++			regulator-min-microvolt = <1650000>;
++			regulator-max-microvolt = <2700000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++	};
++
++	regulators-2 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "e";
++
++		vreg_s4e: smps4 {
++			regulator-name = "vreg_s4e";
++			regulator-min-microvolt = <970000>;
++			regulator-max-microvolt = <1520000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s7e: smps7 {
++			regulator-name = "vreg_s7e";
++			regulator-min-microvolt = <1010000>;
++			regulator-max-microvolt = <1170000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s9e: smps9 {
++			regulator-name = "vreg_s9e";
++			regulator-min-microvolt = <300000>;
++			regulator-max-microvolt = <570000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6e: ldo6 {
++			regulator-name = "vreg_l6e";
++			regulator-min-microvolt = <1280000>;
++			regulator-max-microvolt = <1450000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8e: ldo8 {
++			regulator-name = "vreg_l8e";
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++	};
++};
++
++&ethernet0 {
++	phy-handle = <&sgmii_phy0>;
++
++	pinctrl-0 = <&ethernet0_default>;
++	pinctrl-names = "default";
++
++	snps,mtl-rx-config = <&mtl_rx_setup>;
++	snps,mtl-tx-config = <&mtl_tx_setup>;
++	snps,ps-speed = <1000>;
++
++	status = "okay";
++
++	mdio: mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
++
++	mtl_rx_setup: rx-queues-config {
++		snps,rx-queues-to-use = <4>;
++		snps,rx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,map-to-dma-channel = <0x0>;
++			snps,route-up;
++			snps,priority = <0x1>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,map-to-dma-channel = <0x1>;
++			snps,route-ptp;
++		};
++
++		queue2 {
++			snps,avb-algorithm;
++			snps,map-to-dma-channel = <0x2>;
++			snps,route-avcp;
++		};
++
++		queue3 {
++			snps,avb-algorithm;
++			snps,map-to-dma-channel = <0x3>;
++			snps,priority = <0xc>;
++		};
++	};
++
++	mtl_tx_setup: tx-queues-config {
++		snps,tx-queues-to-use = <4>;
++		snps,tx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++		};
++
++		queue2 {
++			snps,avb-algorithm;
++			snps,send_slope = <0x1000>;
++			snps,idle_slope = <0x1000>;
++			snps,high_credit = <0x3e800>;
++			snps,low_credit = <0xffc18000>;
++		};
++
++		queue3 {
++			snps,avb-algorithm;
++			snps,send_slope = <0x1000>;
++			snps,idle_slope = <0x1000>;
++			snps,high_credit = <0x3e800>;
++			snps,low_credit = <0xffc18000>;
++		};
++	};
++};
++
++&ethernet1 {
++	phy-handle = <&sgmii_phy1>;
++
++	snps,mtl-rx-config = <&mtl_rx_setup1>;
++	snps,mtl-tx-config = <&mtl_tx_setup1>;
++	snps,ps-speed = <1000>;
++
++	status = "okay";
++
++	mtl_rx_setup1: rx-queues-config {
++		snps,rx-queues-to-use = <4>;
++		snps,rx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,map-to-dma-channel = <0x0>;
++			snps,route-up;
++			snps,priority = <0x1>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,map-to-dma-channel = <0x1>;
++			snps,route-ptp;
++		};
++
++		queue2 {
++			snps,avb-algorithm;
++			snps,map-to-dma-channel = <0x2>;
++			snps,route-avcp;
++		};
++
++		queue3 {
++			snps,avb-algorithm;
++			snps,map-to-dma-channel = <0x3>;
++			snps,priority = <0xc>;
++		};
++	};
++
++	mtl_tx_setup1: tx-queues-config {
++		snps,tx-queues-to-use = <4>;
++		snps,tx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++		};
++
++		queue2 {
++			snps,avb-algorithm;
++			snps,send_slope = <0x1000>;
++			snps,idle_slope = <0x1000>;
++			snps,high_credit = <0x3e800>;
++			snps,low_credit = <0xffc18000>;
++		};
++
++		queue3 {
++			snps,avb-algorithm;
++			snps,send_slope = <0x1000>;
++			snps,idle_slope = <0x1000>;
++			snps,high_credit = <0x3e800>;
++			snps,low_credit = <0xffc18000>;
++		};
++	};
++};
++
++&i2c11 {
++	clock-frequency = <400000>;
++	pinctrl-0 = <&qup_i2c11_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&i2c18 {
++	clock-frequency = <400000>;
++	pinctrl-0 = <&qup_i2c18_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&pmm8654au_0_gpios {
++	gpio-line-names = "DS_EN",
++			  "POFF_COMPLETE",
++			  "UFS0_VER_ID",
++			  "FAST_POFF",
++			  "DBU1_PON_DONE",
++			  "AOSS_SLEEP",
++			  "CAM_DES0_EN",
++			  "CAM_DES1_EN",
++			  "CAM_DES2_EN",
++			  "CAM_DES3_EN",
++			  "UEFI",
++			  "ANALOG_PON_OPT";
++};
++
++&pmm8654au_0_pon_resin {
++	linux,code = <KEY_VOLUMEDOWN>;
++	status = "okay";
++};
++
++&pmm8654au_1_gpios {
++	gpio-line-names = "PMIC_C_ID0",
++			  "PMIC_C_ID1",
++			  "UFS1_VER_ID",
++			  "IPA_PWR",
++			  "",
++			  "WLAN_DBU4_EN",
++			  "WLAN_EN",
++			  "BT_EN",
++			  "USB2_PWR_EN",
++			  "USB2_FAULT";
++
++	usb2_en_state: usb2-en-state {
++		pins = "gpio9";
++		function = "normal";
++		output-high;
++		power-source = <0>;
++	};
++};
++
++&pmm8654au_2_gpios {
++	gpio-line-names = "PMIC_E_ID0",
++			  "PMIC_E_ID1",
++			  "USB0_PWR_EN",
++			  "USB0_FAULT",
++			  "SENSOR_IRQ_1",
++			  "SENSOR_IRQ_2",
++			  "SENSOR_RST",
++			  "SGMIIO0_RST",
++			  "SGMIIO1_RST",
++			  "USB1_PWR_ENABLE",
++			  "USB1_FAULT",
++			  "VMON_SPX8";
++
++	usb0_en_state: usb0-en-state {
++		pins = "gpio3";
++		function = "normal";
++		output-high;
++		power-source = <0>;
++	};
++
++	usb1_en_state: usb1-en-state {
++		pins = "gpio10";
++		function = "normal";
++		output-high;
++		power-source = <0>;
++	};
++};
++
++&pmm8654au_3_gpios {
++	gpio-line-names = "PMIC_G_ID0",
++			  "PMIC_G_ID1",
++			  "GNSS_RST",
++			  "GNSS_EN",
++			  "GNSS_BOOT_MODE";
++};
++
++&qupv3_id_1 {
++	status = "okay";
++};
++
++&qupv3_id_2 {
++	status = "okay";
++};
++
++&serdes0 {
++	phy-supply = <&vreg_l5a>;
++	status = "okay";
++};
++
++&serdes1 {
++	phy-supply = <&vreg_l5a>;
++	status = "okay";
++};
++
++&sleep_clk {
++	clock-frequency = <32764>;
++};
++
++&spi16 {
++	pinctrl-0 = <&qup_spi16_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&tlmm {
++	ethernet0_default: ethernet0-default-state {
++		ethernet0_mdc: ethernet0-mdc-pins {
++			pins = "gpio8";
++			function = "emac0_mdc";
++			drive-strength = <16>;
++			bias-pull-up;
++		};
++
++		ethernet0_mdio: ethernet0-mdio-pins {
++			pins = "gpio9";
++			function = "emac0_mdio";
++			drive-strength = <16>;
++			bias-pull-up;
++		};
++	};
++
++	qup_uart10_default: qup-uart10-state {
++		pins = "gpio46", "gpio47";
++		function = "qup1_se3";
++	};
++
++	qup_spi16_default: qup-spi16-state {
++		pins = "gpio86", "gpio87", "gpio88", "gpio89";
++		function = "qup2_se2";
++		drive-strength = <6>;
++		bias-disable;
++	};
++
++	qup_i2c11_default: qup-i2c11-state {
++		pins = "gpio48", "gpio49";
++		function = "qup1_se4";
++		drive-strength = <2>;
++		bias-pull-up;
++	};
++
++	qup_i2c18_default: qup-i2c18-state {
++		pins = "gpio95", "gpio96";
++		function = "qup2_se4";
++		drive-strength = <2>;
++		bias-pull-up;
++	};
++
++	qup_uart12_default: qup-uart12-state {
++		qup_uart12_cts: qup-uart12-cts-pins {
++			pins = "gpio52";
++			function = "qup1_se5";
++			bias-disable;
++		};
++
++		qup_uart12_rts: qup-uart12-rts-pins {
++			pins = "gpio53";
++			function = "qup1_se5";
++			bias-pull-down;
++		};
++
++		qup_uart12_tx: qup-uart12-tx-pins {
++			pins = "gpio54";
++			function = "qup1_se5";
++			bias-pull-up;
++		};
++
++		qup_uart12_rx: qup-uart12-rx-pins {
++			pins = "gpio55";
++			function = "qup1_se5";
++			bias-pull-down;
++		};
++	};
++
++	qup_uart17_default: qup-uart17-state {
++		qup_uart17_cts: qup-uart17-cts-pins {
++			pins = "gpio91";
++			function = "qup2_se3";
++			bias-disable;
++		};
++
++		qup_uart17_rts: qup0-uart17-rts-pins {
++			pins = "gpio92";
++			function = "qup2_se3";
++			bias-pull-down;
++		};
++
++		qup_uart17_tx: qup0-uart17-tx-pins {
++			pins = "gpio93";
++			function = "qup2_se3";
++			bias-pull-up;
++		};
++
++		qup_uart17_rx: qup0-uart17-rx-pins {
++			pins = "gpio94";
++			function = "qup2_se3";
++			bias-pull-down;
++		};
++	};
++
++	pcie0_default_state: pcie0-default-state {
++		perst-pins {
++			pins = "gpio2";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
++
++		clkreq-pins {
++			pins = "gpio1";
++			function = "pcie0_clkreq";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++
++		wake-pins {
++			pins = "gpio0";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++	};
++
++	pcie1_default_state: pcie1-default-state {
++		perst-pins {
++			pins = "gpio4";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
++
++		clkreq-pins {
++			pins = "gpio3";
++			function = "pcie1_clkreq";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++
++		wake-pins {
++			pins = "gpio5";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-up;
++		};
++	};
++};
++
++&pcie0 {
++	perst-gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
++	wake-gpios = <&tlmm 0 GPIO_ACTIVE_HIGH>;
++
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie0_default_state>;
++
++	status = "okay";
++};
++
++&pcie1 {
++	perst-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
++	wake-gpios = <&tlmm 5 GPIO_ACTIVE_HIGH>;
++
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie1_default_state>;
++
++	status = "okay";
++};
++
++&pcie0_phy {
++	vdda-phy-supply = <&vreg_l5a>;
++	vdda-pll-supply = <&vreg_l1c>;
++
++	status = "okay";
++};
++
++&pcie1_phy {
++	vdda-phy-supply = <&vreg_l5a>;
++	vdda-pll-supply = <&vreg_l1c>;
++
++	status = "okay";
++};
++
++&uart10 {
++	compatible = "qcom,geni-debug-uart";
++	pinctrl-0 = <&qup_uart10_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&uart12 {
++	pinctrl-0 = <&qup_uart12_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&uart17 {
++	pinctrl-0 = <&qup_uart17_default>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 149 GPIO_ACTIVE_LOW>;
++	vcc-supply = <&vreg_l8a>;
++	vcc-max-microamp = <1100000>;
++	vccq-supply = <&vreg_l4c>;
++	vccq-max-microamp = <1200000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l4a>;
++	vdda-pll-supply = <&vreg_l1c>;
++
++	status = "okay";
++};
++
++&usb_0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usb0_en_state>;
++
++	status = "okay";
++};
++
++&usb_0_dwc3 {
++	dr_mode = "peripheral";
++};
++
++&usb_0_hsphy {
++	vdda-pll-supply = <&vreg_l7a>;
++	vdda18-supply = <&vreg_l6c>;
++	vdda33-supply = <&vreg_l9a>;
++
++	status = "okay";
++};
++
++&usb_0_qmpphy {
++	vdda-phy-supply = <&vreg_l1c>;
++	vdda-pll-supply = <&vreg_l7a>;
++
++	status = "okay";
++};
++
++&usb_1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usb1_en_state>;
++
++	status = "okay";
++};
++
++&usb_1_dwc3 {
++	dr_mode = "host";
++};
++
++&usb_1_hsphy {
++	vdda-pll-supply = <&vreg_l7a>;
++	vdda18-supply = <&vreg_l6c>;
++	vdda33-supply = <&vreg_l9a>;
++
++	status = "okay";
++};
++
++&usb_1_qmpphy {
++	vdda-phy-supply = <&vreg_l1c>;
++	vdda-pll-supply = <&vreg_l7a>;
++
++	status = "okay";
++};
++
++&usb_2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usb2_en_state>;
++
++	status = "okay";
++};
++
++&usb_2_dwc3 {
++	dr_mode = "host";
++};
++
++&usb_2_hsphy {
++	vdda-pll-supply = <&vreg_l7a>;
++	vdda18-supply = <&vreg_l6c>;
++	vdda33-supply = <&vreg_l9a>;
++
++	status = "okay";
++};
++
++&xo_board_clk {
++	clock-frequency = <38400000>;
++};
 -- 
-2.48.1
+2.39.5
 
 
 
