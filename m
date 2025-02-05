@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13935A28E0D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F6EA28D6F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1213A28BA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DBD818897D5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BEB1459F6;
-	Wed,  5 Feb 2025 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D922E634;
+	Wed,  5 Feb 2025 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnnfSaKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/otCmzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5D6F510;
-	Wed,  5 Feb 2025 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD9815198D;
+	Wed,  5 Feb 2025 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764436; cv=none; b=MTkZ1QQl0fKqmW7pOydL9yVrp/XbiuHFb0wKOEe2myCSLCw8hpBKUtsCTOJa6MqQiLYUYSHj3EXh8bjMidvlkI6JDmWNujPDC0gqSGLAaHeOLbxabTTFSmqbKwVOYXz+4amWD0VyHBO8wIa0FVsOrSNlx+i9krCEPzl+BTp4QK0=
+	t=1738764047; cv=none; b=kQGZ2C8WyOtMdMPsv2fUPKCpZ25VrKbRUcuaC725SdvbJ0dxRw0PDOxE3HWB8Gcc6W2oht9IA7qTvhQepzwVyHMGA+yAi6aSLZdRUIsrPEkD/obM3jGwoa/bpM3nqBbiildGFhGqikic1zKTR5yL+bE6WJlHqLIaGbMX7oocYfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764436; c=relaxed/simple;
-	bh=tNsUcXFzmt0QykcNrFTI7jgyiqMB22Mb6lJ61fcPr+s=;
+	s=arc-20240116; t=1738764047; c=relaxed/simple;
+	bh=j2w+Zm8/oH3rG+0oXlQ8mLwxrvZelXiMeeBcOu56Mtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRtucJM69UzFgFTkZUHOQd5FzQUThGwJMdw0QXpKrPW1t/ZVB+Bfm6NmxqdpywCVNEOwBhHG7L8DHzGukeB+GhecEY+e0MeGGqDM6YNuBi8Eg9FZjksyAOJXoToC18U38gwBjFAMyB3mvGtXEWM40XqoZqcCj3TCj7gOAH9O51Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnnfSaKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE8C4CEDD;
-	Wed,  5 Feb 2025 14:07:15 +0000 (UTC)
+	 MIME-Version; b=ohzQJLi3IOK99CrU5JH2fWYoCX6AcK6pX/fTnkmcLUqVBDv8j9OuxghQXDzIREPzgM6Bd51rjsceK6rKoroVT4X9pKzfE6hwcMTCX6lGnMNh8fCB8K89bxHg45GHDInJxa5HtlVWU5pboo8vjIcGxircBLUSNbVX3sccysohkPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/otCmzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81840C4CED1;
+	Wed,  5 Feb 2025 14:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764436;
-	bh=tNsUcXFzmt0QykcNrFTI7jgyiqMB22Mb6lJ61fcPr+s=;
+	s=korg; t=1738764047;
+	bh=j2w+Zm8/oH3rG+0oXlQ8mLwxrvZelXiMeeBcOu56Mtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnnfSaKM5iwtfLyqCs7M5Iytn/TZjYw/uzSrLdc008wNi4DJaCaNNHhfItlK+hoix
-	 uinOqjyqUofaOd5Fpnap9KjQx+Mz/KPe6PDPO8WtODfdBR+PdQaSoPk6g6MMYlrHMX
-	 gXkOE6wM2Tkg9R9UezU6yT06ZP6iytEzpUxaWUUQ=
+	b=J/otCmzWg78ZfItje0CL6KpqP+sYQHzpvlqJa6vV6Q2YEEYgLU+B/6TBMwy6/EO08
+	 sgjq6x+dBrahfMSEobrL0AdH0TxzDY9mq9ybkWX6SyAIaQ2zjeCPf3EuGLcad9qyPv
+	 xlKDUOAEfEnHthEDj2sF/opuLYE96ci7jOTBr06E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 078/623] drm/bridge: it6505: Change definition of AUX_FIFO_MAX_SIZE
+Subject: [PATCH 6.12 065/590] drm/msm/dpu: link DSPP_2/_3 blocks on X1E80100
 Date: Wed,  5 Feb 2025 14:37:00 +0100
-Message-ID: <20250205134459.209886696@linuxfoundation.org>
+Message-ID: <20250205134457.743540591@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c14870218c14532b0f0a7805b96a4d3c92d06fb2 ]
+[ Upstream commit 3a7a4bebe0dbe22686da7de573f183e0c842883a ]
 
-The hardware AUX FIFO is 16 bytes
-Change definition of AUX_FIFO_MAX_SIZE to 16
+Link DSPP_2 to the LM_2 and DSPP_3 to the LM_3 mixer blocks. This allows
+using colour transformation matrix (aka night mode) with more outputs at
+the same time.
 
-Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: e3b1f369db5a ("drm/msm/dpu: Add X1E80100 support")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-1-e0fdd4844703@ite.corp-partner.google.com
+Patchwork: https://patchwork.freedesktop.org/patch/629966/
+Link: https://lore.kernel.org/r/20241220-dpu-fix-catalog-v2-8-38fa961ea992@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 008d86cc562af..cf891e7677c0e 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -300,7 +300,7 @@
- #define MAX_CR_LEVEL 0x03
- #define MAX_EQ_LEVEL 0x03
- #define AUX_WAIT_TIMEOUT_MS 15
--#define AUX_FIFO_MAX_SIZE 32
-+#define AUX_FIFO_MAX_SIZE 16
- #define PIXEL_CLK_DELAY 1
- #define PIXEL_CLK_INVERSE 0
- #define ADJUST_PHASE_THRESHOLD 80000
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
+index a3e60ac70689e..e084406ebb071 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
+@@ -159,6 +159,7 @@ static const struct dpu_lm_cfg x1e80100_lm[] = {
+ 		.sblk = &sdm845_lm_sblk,
+ 		.lm_pair = LM_3,
+ 		.pingpong = PINGPONG_2,
++		.dspp = DSPP_2,
+ 	}, {
+ 		.name = "lm_3", .id = LM_3,
+ 		.base = 0x47000, .len = 0x320,
+@@ -166,6 +167,7 @@ static const struct dpu_lm_cfg x1e80100_lm[] = {
+ 		.sblk = &sdm845_lm_sblk,
+ 		.lm_pair = LM_2,
+ 		.pingpong = PINGPONG_3,
++		.dspp = DSPP_3,
+ 	}, {
+ 		.name = "lm_4", .id = LM_4,
+ 		.base = 0x48000, .len = 0x320,
 -- 
 2.39.5
 
