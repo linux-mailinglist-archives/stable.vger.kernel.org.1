@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433DEA293B1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129A5A290D7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09681882FBB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59582188A623
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54FA158536;
-	Wed,  5 Feb 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D872016EB42;
+	Wed,  5 Feb 2025 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB+T6P3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZM5SEbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923D5155A30;
-	Wed,  5 Feb 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955A716CD33;
+	Wed,  5 Feb 2025 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768033; cv=none; b=b3iW9fWKQx2xJt3SpMVhGDpER7es0Knju9tVTWs9H0lfQyLYjhVk6klUQcJ/oBdNskWknO3lk1AO+W3k6rdA+3kTSHymWgMBOd/a0ProvffI6GQX8+mB7LsdEWyWtHUDEcen6ncATiWX27g6Slbbwksh4QG0K95SRjb0GL/Q1JQ=
+	t=1738766433; cv=none; b=qeXhhl1GzN9p0dLqrDqsBAqglmMO0/d4p04dluUEkPTZ6JSD2dj2/s3AoqNII7dBaaOcdqY/hXpA6HQy5XyyNVUvxfv0Y7KI86JsrwkSDH7ubTbKpQAs2m2T5yjxLwkGYfuGN1qzEI6JA9aM9upUcq2Ec1KFH4j0aYbrJQb9ksQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768033; c=relaxed/simple;
-	bh=GFKpHjnmHYxA10iucVf9svlXSNj+GmhKBXs5nJwTEdc=;
+	s=arc-20240116; t=1738766433; c=relaxed/simple;
+	bh=NwBTKNBOr/NTCQq1IWqn2kX6u7jXIdInmdpJH1rm73Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLkeC3bxYBPIQXrjs1qUFygX1AYFPFm9p3YH9FymaCtl+Opnldn6mJ/UtdzUws4DYxMzveh3r2uH/DRWmR1oR2BW/Di4iaaU3+9GwNiei3LvMIfq0FzEHe/Q4U7pIFTLal1fij4CmmWqW5R8BtJmZk/UKgUYnAbupbTtcJZrnUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB+T6P3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0554CC4CED1;
-	Wed,  5 Feb 2025 15:07:12 +0000 (UTC)
+	 MIME-Version; b=SzX623wvr1vj2QTQ0Zb35DyOdX4JFyFXuXSCe0FDVc4eNT+kQzvO1wBq+EN4+Dc1m+CWTjsN1r4ddg1C79frqK0RQf0dHop4YTDvKcA+Xq2ncy68D1bDQlGhBXsOTuQ2XTUWdH6yM2wYySJqfJr5TqzTRmE7a91Mt1QSTz1gzqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZM5SEbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199ADC4CED1;
+	Wed,  5 Feb 2025 14:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768033;
-	bh=GFKpHjnmHYxA10iucVf9svlXSNj+GmhKBXs5nJwTEdc=;
+	s=korg; t=1738766433;
+	bh=NwBTKNBOr/NTCQq1IWqn2kX6u7jXIdInmdpJH1rm73Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vB+T6P3iCeBorYEHBcLEJ4ICX48rBke/2t+KiSLsNh0Cn7F0gxVJ26vo9utnXcql1
-	 gDdrb/bgCnLFqm9hxMZIifnxGvvaXuMG9pfnFfGCJTyCXzAnoejhMr2klpvcegVhc5
-	 tGTRDiwc+Kgus9yHBgPHODluajztcnqE6tZG2AUs=
+	b=NZM5SEbPhX48jePQasF0k2yM7YQmmUqURSFf5ZL8CwRLdN2PQzy3icks+VkYbzapT
+	 sL3i4TrwRf/VprhyeyDQU1pHoUNMRqdQO27X2IzAyxOILMT01vBpCs7Sd7sXKF0W+g
+	 5LDF2nrF3MKxWHgSSJPTozm0CaO5thZWsXjhB6hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 526/590] ASoC: rockchip: i2s_tdm: Re-add the set_sysclk callback
+Subject: [PATCH 6.6 362/393] kconfig: deduplicate code in conf_read_simple()
 Date: Wed,  5 Feb 2025 14:44:41 +0100
-Message-ID: <20250205134515.389296836@linuxfoundation.org>
+Message-ID: <20250205134434.151787267@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +61,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Detlev Casanova <detlev.casanova@collabora.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 5323186e2e8d33c073fad51e24f18e2d6dbae2da ]
+[ Upstream commit d854b4b21de684a16a7d6163c7b0e9c5ff8a09d3 ]
 
-In commit
-9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates"),
-the set_sysclk callback was removed as considered unused as the mclk rate
-can be set in the hw_params callback.
-The difference between hw_params and set_sysclk is that the former is
-called with the audio sampling rate set in the params (e.g.: 48000 Hz)
-while the latter is called with a clock rate already computed with
-  sampling_rate * mclk-fs (e.g.: 48000 * 256)
+Kconfig accepts both "# CONFIG_FOO is not set" and "CONFIG_FOO=n" as
+a valid input, but conf_read_simple() duplicates similar code to handle
+them. Factor out the common code.
 
-For HDMI audio using the Rockchip I2S TDM driver, the mclk-fs value must
-be set to 128 instead of the default 256, and that value is set in the
-device tree at the machine driver level (like a simple-audio-card
-compatible node).
-Therefore, the i2s_tdm driver has no idea that another mclk-fs value can
-be configured and simply computes the mclk rate in the hw_params callback
-with DEFAULT_MCLK_FS * params_rate(params), which is wrong for HDMI
-audio.
-
-Re-add the set_sysclk callback so that the mclk rate is computed by the
-machine driver which has the correct mclk-fs value set in its device tree
-node.
-
-Fixes: 9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates")
-Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-Link: https://patch.msgid.link/20250117163102.65807-1-detlev.casanova@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: a409fc1463d6 ("kconfig: fix memory leak in sym_warn_unmet_dep()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/rockchip/rockchip_i2s_tdm.c | 31 +++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ scripts/kconfig/confdata.c | 89 +++++++++++++++-----------------------
+ 1 file changed, 35 insertions(+), 54 deletions(-)
 
-diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
-index d1f28699652fe..acd75e48851fc 100644
---- a/sound/soc/rockchip/rockchip_i2s_tdm.c
-+++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
-@@ -22,7 +22,6 @@
+diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
+index 21a65ffe7c3db..7e799060b6fe2 100644
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -346,11 +346,10 @@ int conf_read_simple(const char *name, int def)
+ 	FILE *in = NULL;
+ 	char   *line = NULL;
+ 	size_t  line_asize = 0;
+-	char *p, *p2;
++	char *p, *p2, *val;
+ 	struct symbol *sym;
+ 	int i, def_flags;
+-	const char *warn_unknown;
+-	const char *werror;
++	const char *warn_unknown, *werror, *sym_name;
  
- #define DRV_NAME "rockchip-i2s-tdm"
+ 	warn_unknown = getenv("KCONFIG_WARN_UNKNOWN_SYMBOLS");
+ 	werror = getenv("KCONFIG_WERROR");
+@@ -430,77 +429,34 @@ int conf_read_simple(const char *name, int def)
  
--#define DEFAULT_MCLK_FS				256
- #define CH_GRP_MAX				4  /* The max channel 8 / 2 */
- #define MULTIPLEX_CH_MAX			10
+ 	while (compat_getline(&line, &line_asize, in) != -1) {
+ 		conf_lineno++;
+-		sym = NULL;
+ 		if (line[0] == '#') {
+ 			if (line[1] != ' ')
+ 				continue;
+-			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
++			p = line + 2;
++			if (memcmp(p, CONFIG_, strlen(CONFIG_)))
+ 				continue;
+-			p = strchr(line + 2 + strlen(CONFIG_), ' ');
++			sym_name = p + strlen(CONFIG_);
++			p = strchr(sym_name, ' ');
+ 			if (!p)
+ 				continue;
+ 			*p++ = 0;
+ 			if (strncmp(p, "is not set", 10))
+ 				continue;
  
-@@ -70,6 +69,8 @@ struct rk_i2s_tdm_dev {
- 	bool has_playback;
- 	bool has_capture;
- 	struct snd_soc_dai_driver *dai;
-+	unsigned int mclk_rx_freq;
-+	unsigned int mclk_tx_freq;
- };
- 
- static int to_ch_num(unsigned int val)
-@@ -645,6 +646,27 @@ static int rockchip_i2s_trcm_mode(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
-+static int rockchip_i2s_tdm_set_sysclk(struct snd_soc_dai *cpu_dai, int stream,
-+				       unsigned int freq, int dir)
-+{
-+	struct rk_i2s_tdm_dev *i2s_tdm = to_info(cpu_dai);
-+
-+	if (i2s_tdm->clk_trcm) {
-+		i2s_tdm->mclk_tx_freq = freq;
-+		i2s_tdm->mclk_rx_freq = freq;
-+	} else {
-+		if (stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			i2s_tdm->mclk_tx_freq = freq;
-+		else
-+			i2s_tdm->mclk_rx_freq = freq;
-+	}
-+
-+	dev_dbg(i2s_tdm->dev, "The target mclk_%s freq is: %d\n",
-+		stream ? "rx" : "tx", freq);
-+
-+	return 0;
-+}
-+
- static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
- 				      struct snd_pcm_hw_params *params,
- 				      struct snd_soc_dai *dai)
-@@ -659,15 +681,19 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
- 
- 		if (i2s_tdm->clk_trcm == TRCM_TX) {
- 			mclk = i2s_tdm->mclk_tx;
-+			mclk_rate = i2s_tdm->mclk_tx_freq;
- 		} else if (i2s_tdm->clk_trcm == TRCM_RX) {
- 			mclk = i2s_tdm->mclk_rx;
-+			mclk_rate = i2s_tdm->mclk_rx_freq;
- 		} else if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
- 			mclk = i2s_tdm->mclk_tx;
-+			mclk_rate = i2s_tdm->mclk_tx_freq;
+-			sym = sym_find(line + 2 + strlen(CONFIG_));
+-			if (!sym) {
+-				if (warn_unknown)
+-					conf_warning("unknown symbol: %s",
+-						     line + 2 + strlen(CONFIG_));
+-
+-				conf_set_changed(true);
+-				continue;
+-			}
+-			if (sym->flags & def_flags) {
+-				conf_warning("override: reassigning to symbol %s", sym->name);
+-			}
+-			switch (sym->type) {
+-			case S_BOOLEAN:
+-			case S_TRISTATE:
+-				sym->def[def].tri = no;
+-				sym->flags |= def_flags;
+-				break;
+-			default:
+-				;
+-			}
++			val = "n";
+ 		} else if (memcmp(line, CONFIG_, strlen(CONFIG_)) == 0) {
+-			p = strchr(line + strlen(CONFIG_), '=');
++			sym_name = line + strlen(CONFIG_);
++			p = strchr(sym_name, '=');
+ 			if (!p)
+ 				continue;
+ 			*p++ = 0;
++			val = p;
+ 			p2 = strchr(p, '\n');
+ 			if (p2) {
+ 				*p2-- = 0;
+ 				if (*p2 == '\r')
+ 					*p2 = 0;
+ 			}
+-
+-			sym = sym_find(line + strlen(CONFIG_));
+-			if (!sym) {
+-				if (def == S_DEF_AUTO) {
+-					/*
+-					 * Reading from include/config/auto.conf
+-					 * If CONFIG_FOO previously existed in
+-					 * auto.conf but it is missing now,
+-					 * include/config/FOO must be touched.
+-					 */
+-					conf_touch_dep(line + strlen(CONFIG_));
+-				} else {
+-					if (warn_unknown)
+-						conf_warning("unknown symbol: %s",
+-							     line + strlen(CONFIG_));
+-
+-					conf_set_changed(true);
+-				}
+-				continue;
+-			}
+-
+-			if (sym->flags & def_flags) {
+-				conf_warning("override: reassigning to symbol %s", sym->name);
+-			}
+-			if (conf_set_sym_val(sym, def, def_flags, p))
+-				continue;
  		} else {
- 			mclk = i2s_tdm->mclk_rx;
-+			mclk_rate = i2s_tdm->mclk_rx_freq;
+ 			if (line[0] != '\r' && line[0] != '\n')
+ 				conf_warning("unexpected data: %.*s",
+@@ -509,6 +465,31 @@ int conf_read_simple(const char *name, int def)
+ 			continue;
  		}
  
--		err = clk_set_rate(mclk, DEFAULT_MCLK_FS * params_rate(params));
-+		err = clk_set_rate(mclk, mclk_rate);
- 		if (err)
- 			return err;
- 
-@@ -827,6 +853,7 @@ static const struct snd_soc_dai_ops rockchip_i2s_tdm_dai_ops = {
- 	.hw_params = rockchip_i2s_tdm_hw_params,
- 	.set_bclk_ratio	= rockchip_i2s_tdm_set_bclk_ratio,
- 	.set_fmt = rockchip_i2s_tdm_set_fmt,
-+	.set_sysclk = rockchip_i2s_tdm_set_sysclk,
- 	.set_tdm_slot = rockchip_dai_tdm_slot,
- 	.trigger = rockchip_i2s_tdm_trigger,
- };
++		sym = sym_find(sym_name);
++		if (!sym) {
++			if (def == S_DEF_AUTO) {
++				/*
++				 * Reading from include/config/auto.conf.
++				 * If CONFIG_FOO previously existed in auto.conf
++				 * but it is missing now, include/config/FOO
++				 * must be touched.
++				 */
++				conf_touch_dep(sym_name);
++			} else {
++				if (warn_unknown)
++					conf_warning("unknown symbol: %s", sym_name);
++
++				conf_set_changed(true);
++			}
++			continue;
++		}
++
++		if (sym->flags & def_flags)
++			conf_warning("override: reassigning to symbol %s", sym->name);
++
++		if (conf_set_sym_val(sym, def, def_flags, val))
++			continue;
++
+ 		if (sym && sym_is_choice_value(sym)) {
+ 			struct symbol *cs = prop_get_symbol(sym_get_choice_prop(sym));
+ 			switch (sym->def[def].tri) {
 -- 
 2.39.5
 
