@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A4FA29079
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC8CA28D72
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA84163374
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2EA1889902
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E3814B959;
-	Wed,  5 Feb 2025 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108541547E9;
+	Wed,  5 Feb 2025 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5+1S5F1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/TLtMYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFE0151988;
-	Wed,  5 Feb 2025 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BFDF510;
+	Wed,  5 Feb 2025 14:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766187; cv=none; b=MKwsMtioE4b2Up3IX+3fa5ia7f8OyWW5++sLZsrXF2aVc16ZG4JWitgPvua163mTpJj1NG8kSgMSLGEnicwcj3XnqguYFmbi1UKyn1m0mcSYCnY7RUvccmGFnSMm55pSx9Ms96Ld9xmT4wQsrPPdCKHkh28iHe7oKrFGJC8bk+w=
+	t=1738764053; cv=none; b=U/wVg0MEMBTrYV9IfW+B8WsdkGwDkjq+oy/kcNMpMBJHsNELK39ZAn82WGLlnZBGgtA/JGxghABnH5vEzxerKh6YN+nOAjiGHfApPRFJ3AjJL0InjdsJUgwvn0s7ihsKskiu/ECe1v2ie3OFv5EEH7WN0M2IShJ6k45R+DuOJbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766187; c=relaxed/simple;
-	bh=2OkmJKhXef3hKleTFzWudp/18TXsm667XjOxOeEWAds=;
+	s=arc-20240116; t=1738764053; c=relaxed/simple;
+	bh=6jREXLxrrejMgllPX+FXPpPDGm8XxRe6c26yL/6JjvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEHT++XIVDo4Qho3Eyf94mRFwIOm7dOnA22frhpBLz1YDBYYGIXHOVcYP34loNQvjCwgdMBqNHlkmLa293bo+N1Yae65qmHoAaM8khYAFd/VWjxyuzgEnbwGkP6N68DZgYYi0oyJjUtxkhk3jbTlG98SoOSq5CZCQsxDjhgSENc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5+1S5F1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF9FC4CED1;
-	Wed,  5 Feb 2025 14:36:26 +0000 (UTC)
+	 MIME-Version; b=X6lJZkx/JJWYEa5ZEpZe2dd29nB79REIklRC03wAbmZmr0ip1A35yujVii26p6PcdKf/RwwfgSjFy+xQKN9VfOIsGixyqeWQzarEmhjNz7Jcz+zLojRm7nERH36AOgfxDNFjAP+PJ1x7dGvRLCuqhc9OGkO0DuwHVXiVEP4dqNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/TLtMYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491A8C4CEDD;
+	Wed,  5 Feb 2025 14:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766187;
-	bh=2OkmJKhXef3hKleTFzWudp/18TXsm667XjOxOeEWAds=;
+	s=korg; t=1738764053;
+	bh=6jREXLxrrejMgllPX+FXPpPDGm8XxRe6c26yL/6JjvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5+1S5F1kWIXeaAO2VP46FLBUYfVuWQXnz606trtlP7A6IJ+OXXnlJJ8FUSK/DzGg
-	 bF0NGd4WwFkSWDBqMGHcFr6RvJ7Ig6YFYWccpMysTJOUyI5mf13jboKILL5i5Y2Rxy
-	 Y6UvYR64XU5Pd6IOfFfdjDRJj3XM71hdwrtrNO1c=
+	b=v/TLtMYbXeEa9WWEVhPsP9Jf0dLxSz3Z+YnSx5IhIZscub+lPvvGGs5M5tVWav7RK
+	 0+NyQabujYxbcygzs0SZdosGVM+b5pdeugWKBdevLU00eNgJ3iVGG4QmnV1WmiETou
+	 WgBmOc8Ky6wIkTOABx/+v1oMqSFMsfi3BUGLCSWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/590] padata: add pd get/put refcnt helper
+Subject: [PATCH 6.6 131/393] cpufreq: ACPI: Fix max-frequency computation
 Date: Wed,  5 Feb 2025 14:40:50 +0100
-Message-ID: <20250205134506.562628614@linuxfoundation.org>
+Message-ID: <20250205134425.308663106@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit ae154202cc6a189b035359f3c4e143d5c24d5352 ]
+[ Upstream commit 0834667545962ef1c5e8684ed32b45d9c574acd3 ]
 
-Add helpers for pd to get/put refcnt to make code consice.
+Commit 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover
+boost frequencies") introduced an assumption in acpi_cpufreq_cpu_init()
+that the first entry in the P-state table was the nominal frequency.
+This assumption is incorrect. The frequency corresponding to the P0
+P-State need not be the same as the nominal frequency advertised via
+CPPC.
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
+Since the driver is using the CPPC.highest_perf and CPPC.nominal_perf
+to compute the boost-ratio, it makes sense to use CPPC.nominal_freq to
+compute the max-frequency. CPPC.nominal_freq is advertised on
+platforms supporting CPPC revisions 3 or higher.
+
+Hence, fallback to using the first entry in the P-State table only on
+platforms that do not advertise CPPC.nominal_freq.
+
+Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost frequencies")
+Tested-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250113044107.566-1-gautham.shenoy@amd.com
+[ rjw: Retain reverse X-mas tree ordering of local variable declarations ]
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ drivers/cpufreq/acpi-cpufreq.c | 36 +++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index e2ae2c3747a85..a4c7a6eefe10e 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -47,6 +47,22 @@ struct padata_mt_job_state {
- static void padata_free_pd(struct parallel_data *pd);
- static void __init padata_mt_helper(struct work_struct *work);
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index 4ac3a35dcd983..0615e7fa20ad7 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -628,7 +628,14 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
+ #endif
  
-+static inline void padata_get_pd(struct parallel_data *pd)
-+{
-+	refcount_inc(&pd->refcnt);
-+}
-+
-+static inline void padata_put_pd_cnt(struct parallel_data *pd, int cnt)
-+{
-+	if (refcount_sub_and_test(cnt, &pd->refcnt))
-+		padata_free_pd(pd);
-+}
-+
-+static inline void padata_put_pd(struct parallel_data *pd)
-+{
-+	padata_put_pd_cnt(pd, 1);
-+}
-+
- static int padata_index_to_cpu(struct parallel_data *pd, int cpu_index)
+ #ifdef CONFIG_ACPI_CPPC_LIB
+-static u64 get_max_boost_ratio(unsigned int cpu)
++/*
++ * get_max_boost_ratio: Computes the max_boost_ratio as the ratio
++ * between the highest_perf and the nominal_perf.
++ *
++ * Returns the max_boost_ratio for @cpu. Returns the CPPC nominal
++ * frequency via @nominal_freq if it is non-NULL pointer.
++ */
++static u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
  {
- 	int cpu, target_cpu;
-@@ -206,7 +222,7 @@ int padata_do_parallel(struct padata_shell *ps,
- 	if ((pinst->flags & PADATA_RESET))
- 		goto out;
+ 	struct cppc_perf_caps perf_caps;
+ 	u64 highest_perf, nominal_perf;
+@@ -651,6 +658,9 @@ static u64 get_max_boost_ratio(unsigned int cpu)
  
--	refcount_inc(&pd->refcnt);
-+	padata_get_pd(pd);
- 	padata->pd = pd;
- 	padata->cb_cpu = *cb_cpu;
+ 	nominal_perf = perf_caps.nominal_perf;
  
-@@ -380,8 +396,7 @@ static void padata_serial_worker(struct work_struct *serial_work)
- 	}
- 	local_bh_enable();
++	if (nominal_freq)
++		*nominal_freq = perf_caps.nominal_freq;
++
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+ 		return 0;
+@@ -663,8 +673,12 @@ static u64 get_max_boost_ratio(unsigned int cpu)
  
--	if (refcount_sub_and_test(cnt, &pd->refcnt))
--		padata_free_pd(pd);
-+	padata_put_pd_cnt(pd, cnt);
+ 	return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
  }
++
+ #else
+-static inline u64 get_max_boost_ratio(unsigned int cpu) { return 0; }
++static inline u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
++{
++	return 0;
++}
+ #endif
  
- /**
-@@ -688,8 +703,7 @@ static int padata_replace(struct padata_instance *pinst)
- 	synchronize_rcu();
+ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+@@ -674,9 +688,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	struct acpi_cpufreq_data *data;
+ 	unsigned int cpu = policy->cpu;
+ 	struct cpuinfo_x86 *c = &cpu_data(cpu);
++	u64 max_boost_ratio, nominal_freq = 0;
+ 	unsigned int valid_states = 0;
+ 	unsigned int result = 0;
+-	u64 max_boost_ratio;
+ 	unsigned int i;
+ #ifdef CONFIG_SMP
+ 	static int blacklisted;
+@@ -826,16 +840,20 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	}
+ 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
  
- 	list_for_each_entry_continue_reverse(ps, &pinst->pslist, list)
--		if (refcount_dec_and_test(&ps->opd->refcnt))
--			padata_free_pd(ps->opd);
-+		padata_put_pd(ps->opd);
+-	max_boost_ratio = get_max_boost_ratio(cpu);
++	max_boost_ratio = get_max_boost_ratio(cpu, &nominal_freq);
+ 	if (max_boost_ratio) {
+-		unsigned int freq = freq_table[0].frequency;
++		unsigned int freq = nominal_freq;
  
- 	pinst->flags &= ~PADATA_RESET;
- 
-@@ -1137,8 +1151,7 @@ void padata_free_shell(struct padata_shell *ps)
- 	mutex_lock(&ps->pinst->lock);
- 	list_del(&ps->list);
- 	pd = rcu_dereference_protected(ps->pd, 1);
--	if (refcount_dec_and_test(&pd->refcnt))
--		padata_free_pd(pd);
-+	padata_put_pd(pd);
- 	mutex_unlock(&ps->pinst->lock);
- 
- 	kfree(ps);
+ 		/*
+-		 * Because the loop above sorts the freq_table entries in the
+-		 * descending order, freq is the maximum frequency in the table.
+-		 * Assume that it corresponds to the CPPC nominal frequency and
+-		 * use it to set cpuinfo.max_freq.
++		 * The loop above sorts the freq_table entries in the
++		 * descending order. If ACPI CPPC has not advertised
++		 * the nominal frequency (this is possible in CPPC
++		 * revisions prior to 3), then use the first entry in
++		 * the pstate table as a proxy for nominal frequency.
+ 		 */
++		if (!freq)
++			freq = freq_table[0].frequency;
++
+ 		policy->cpuinfo.max_freq = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
+ 	} else {
+ 		/*
 -- 
 2.39.5
 
