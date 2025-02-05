@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B5FA292EE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE68A28F45
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 350B21887E87
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D13D418886D3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F999170A37;
-	Wed,  5 Feb 2025 14:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8775015573F;
+	Wed,  5 Feb 2025 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6NONmxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inFA3euW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D01519BF;
-	Wed,  5 Feb 2025 14:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4349914B959;
+	Wed,  5 Feb 2025 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767359; cv=none; b=L6+O05ATcrdjV3wCDYCoHT6ijcKEXPjmJD6eymsuSxl/U6lFwNhPv2CceHCz9/EvQ2PbXxLKNn2F2JLQLfS0hhPHX82WfnaGxseIJbOTM8xhLhjElf/sLdCOHpL88Q2dX8az8U7lHNtTKEZqgSV4Z9/LAHcEc5sP8FubcQk9ml4=
+	t=1738765367; cv=none; b=cFKRtOeH/fwp5tqFXaIsMG7IImEPpPcjOAT+tnAHjjJj+m8q5UIeE+sUISONLA9VAOtTNJTbFzVIzgbvKKetz+nXXkb/1+avsYlclYc+lrj355gq20o7qfAx1SxIf7qbjtHaRH/L1yntp+4Xh5JZWLAECJOHnJQ75g8f2xOzvQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767359; c=relaxed/simple;
-	bh=8O2BGOf+sz8ABVWIfTYVTfc6aMNSQj0KgN7IiJItq4k=;
+	s=arc-20240116; t=1738765367; c=relaxed/simple;
+	bh=9naWWCTWx2kMCcU/yG8R2sEsFkJCEMp6JJs3IvUslBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9x/tTV7+NJjdWfNwLGYs9gIjNBKNpUBPnNNQvvdl4nloIpopkfbbMQzYQc1XR3GuJssZ1MlUIOL4yUHcVnBEbNpGPWZa0j2sgH+3H6gvf/4DlfBMsmFCwFY78cAEsbo7oVGduLvhs1fc1yKOVrEBhXIdaZsBgYxFJV5TtZw6yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6NONmxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F0AC4CED1;
-	Wed,  5 Feb 2025 14:55:58 +0000 (UTC)
+	 MIME-Version; b=VvA/8HMheiA35Xdsg838dfGEIbDVEGiDAnTUAgbQr7G5W/Ua96phQbmG1e5KArlbkLGdAD7v1wrPa3GBEnMXNHvqGUNzEPxdrIFwNZh680WizDWtmj29U6Ftf4b0Al3jL5qIq+gYgXjLMjJRt0GLioEkglNF45KT8pbRd+xbAVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inFA3euW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ACDC4CED1;
+	Wed,  5 Feb 2025 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767359;
-	bh=8O2BGOf+sz8ABVWIfTYVTfc6aMNSQj0KgN7IiJItq4k=;
+	s=korg; t=1738765366;
+	bh=9naWWCTWx2kMCcU/yG8R2sEsFkJCEMp6JJs3IvUslBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6NONmxrUS9Bx3PUomx43bzfwRYF/28gbxWG5Xekx8V01jJxmYrUhPfOz2yeX8aXE
-	 EX9/NTT94rLajpG3FrahZ9jyfVnHzAD+ZKUTN4Yr5frYse/gNSESuXNyGR+lyZ1gBg
-	 Vi9AbLJsrWXd21L/LyjHo0PxtFLtc4AygsCLv/XU=
+	b=inFA3euWs+rbYsVV6l+a2WYrA0xArWr3Thu+CIZjxpwvhUUrQWM00pYH9Kyd38Vs9
+	 Jf3xRsP5jY2QwuVb0+mSqTlmjPz3CHnZV946TVcKaAv/Svn557CMGxPspcafMVlANH
+	 N8HWtS0af+GG7n9owzCdcTix8znp/iw1OfbYkRq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 421/590] watchdog: rti_wdt: Fix an OF node leak in rti_wdt_probe()
+Subject: [PATCH 6.6 257/393] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: remove disabled ov7251 camera
 Date: Wed,  5 Feb 2025 14:42:56 +0100
-Message-ID: <20250205134511.373722070@linuxfoundation.org>
+Message-ID: <20250205134430.143104562@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 143981aa63f33d469a55a55fd9fb81cd90109672 ]
+[ Upstream commit 80b47f14d5433068dd6738c9e6e17ff6648bae41 ]
 
-rti_wdt_probe() does not release the OF node reference obtained by
-of_parse_phandle(). Add a of_node_put() call.
+The ov7251node has bindings check errors in the endpoint, and the
+camera node was disabled since the beginning. Even when switching the
+node to okay, the endpoint description to the csiphy is missing along
+with the csiphy parameters.
 
-This was found by an experimental verification tool that I am
-developing. Due to the lack of the actual device, no runtime test was
-able to be performed.
+Drop the ov7251 camera entirely until it's properly described.
 
-Fixes: f20ca595ae23 ("watchdog:rit_wdt: Add support for WDIOF_CARDRESET")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250105111718.4184192-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+This obviously fixes:
+sdm845-db845c-navigation-mezzanine.dtso: camera@60: port:endpoint:data-lanes: [0, 1] is too long
+	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov7251.yaml#
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-2-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../sdm845-db845c-navigation-mezzanine.dtso   | 42 -------------------
+ 1 file changed, 42 deletions(-)
 
-diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
-index 563d842014dfb..cc239251e1938 100644
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -301,6 +301,7 @@ static int rti_wdt_probe(struct platform_device *pdev)
- 	node = of_parse_phandle(pdev->dev.of_node, "memory-region", 0);
- 	if (node) {
- 		ret = of_address_to_resource(node, 0, &res);
-+		of_node_put(node);
- 		if (ret) {
- 			dev_err(dev, "No memory address assigned to the region.\n");
- 			goto err_iomap;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
+index b5f717d0ddd97..51f1a4883ab8f 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
+@@ -68,45 +68,3 @@
+ 		};
+ 	};
+ };
+-
+-&cci_i2c1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-
+-	camera@60 {
+-		compatible = "ovti,ov7251";
+-
+-		/* I2C address as per ov7251.txt linux documentation */
+-		reg = <0x60>;
+-
+-		/* CAM3_RST_N */
+-		enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&cam3_default>;
+-
+-		clocks = <&clock_camcc CAM_CC_MCLK3_CLK>;
+-		clock-names = "xclk";
+-		clock-frequency = <24000000>;
+-
+-		/*
+-		 * The &vreg_s4a_1p8 trace always powered on.
+-		 *
+-		 * The 2.8V vdda-supply regulator is enabled when the
+-		 * vreg_s4a_1p8 trace is pulled high.
+-		 * It too is represented by a fixed regulator.
+-		 *
+-		 * No 1.2V vddd-supply regulator is used.
+-		 */
+-		vdddo-supply = <&vreg_lvs1a_1p8>;
+-		vdda-supply = <&cam3_avdd_2v8>;
+-
+-		status = "disabled";
+-
+-		port {
+-			ov7251_ep: endpoint {
+-				data-lanes = <0 1>;
+-/*				remote-endpoint = <&csiphy3_ep>; */
+-			};
+-		};
+-	};
+-};
 -- 
 2.39.5
 
