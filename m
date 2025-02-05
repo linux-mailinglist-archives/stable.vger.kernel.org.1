@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A252AA28DBE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B38A28D1C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A363A3A4339
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9424169687
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1548614EC77;
-	Wed,  5 Feb 2025 14:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBF214F9E7;
+	Wed,  5 Feb 2025 13:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arZkuuid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpe2G6xF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C423E15198D;
-	Wed,  5 Feb 2025 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8FC14B080;
+	Wed,  5 Feb 2025 13:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764176; cv=none; b=lW8jZBy3yxKWpvuFLO9Rk7jd7WQufJe8GCVsZT2uWv4fuBxXU7ofpL74U53pZSm+geQ3u21xak5NuelsqEBynoYvln0Wm4Z2Spjshzf2l1/piyu5UYif/pCNBZIbyyAziuzNSaE9WOwRl/s+Y/fiIxfgLCcIQrU9tJj3f0DSP+Y=
+	t=1738763829; cv=none; b=vCb/zPcoeVomZOVIR7qk/tDZsz20rFfeIhT8RWgBO1/Shf6WFQrhGLxR1R+yKArXQ4L/QDxyu4F7DByHu03hG3IjnkBbix2Ola4Wj1GQxrnuzQgSmItCTmXuIVHIZxVlkB/5BcDKEKwpHsziQwPHXhiodGTpkgt+fvBYS0JnNOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764176; c=relaxed/simple;
-	bh=UbDmymL9tsfU1d2h2hVFjWqaJkg9wG/B+cupSZcH+n8=;
+	s=arc-20240116; t=1738763829; c=relaxed/simple;
+	bh=6y7IvGWtBK88CWVCk2vQV9yq9E5GBUfpW1gikQyHEvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyk0mqBPTGQ1+ZLdIvqApo9pty5v2MAFe431XE9MnbNJvBcsVoFxb/ChcdZI+2GFq0t3FCa/zsYLCXoNmL/yYV0NSL26EWPonUxoJ2qmGxsUpzpQ1ED0/Kkdxr/9Uvx9HjvIH+WTOZinroNYB99/ZXdLT6+USLe3OGs9Cttw0PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arZkuuid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966EC4CEDD;
-	Wed,  5 Feb 2025 14:02:55 +0000 (UTC)
+	 MIME-Version; b=utrOQRTu1GR9UoX73w7hXqNv1Jb7OxbKO5bLmK9UlWzpPiBiQdBLbvfg8j717n6r8QRBpIM6m7lgfEoEa9E7S24oWt5B+PrY4vnJOVHfMlEE+7pnKIz43l/FEBk9qZYD1B17yVsUOMY4CcRP6WtGOcIGF95L1OCowTs5peT5Jqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpe2G6xF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B73C4CED1;
+	Wed,  5 Feb 2025 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764176;
-	bh=UbDmymL9tsfU1d2h2hVFjWqaJkg9wG/B+cupSZcH+n8=;
+	s=korg; t=1738763829;
+	bh=6y7IvGWtBK88CWVCk2vQV9yq9E5GBUfpW1gikQyHEvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arZkuuidIF/wAHx0jrGXCjy1oOWeX1N+C9ikq0WlQfA2urT77GI4pWKMHFaDgvL+U
-	 lrgOb/+J7JqWLvmzlI8t1elEEo1BPm/XEkI2kenvnbEFKj8S+tAhw+GeH8oJzOyNw9
-	 golkZojMwqLPwP7rar+HvopiLpTvXp+mMMRR+X+Y=
+	b=wpe2G6xFGcCQt/kY3znqSnxT9zPKE/nzMZE9lLZRYsVGx9sDGB/97Dqzb8cahU6OT
+	 F5xKBrzrY6BzdYM9Aroaz/kXMluZKnoX1+rWzY1Q3o8SutPi4AXm5+URb+MaQT3fFf
+	 7aujgc6OK3Pl7tTRhFRDTMhT1RwZWBHb5Sq4ud4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <swboyd@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 054/623] drm/msm/dpu: check dpu_plane_atomic_print_state() for valid sspp
-Date: Wed,  5 Feb 2025 14:36:36 +0100
-Message-ID: <20250205134458.296583434@linuxfoundation.org>
+Subject: [PATCH 6.12 042/590] drm/amd/pm: Fix an error handling path in vega10_enable_se_edc_force_stall_config()
+Date: Wed,  5 Feb 2025 14:36:37 +0100
+Message-ID: <20250205134456.861506110@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 789384eb1437aed94155dc0eac8a8a6ba1baf578 ]
+[ Upstream commit a3300782d5375e280ba7040f323d01960bfe3396 ]
 
-Similar to the r_pipe sspp protect, add a check to protect
-the pipe state prints to avoid NULL ptr dereference for cases when
-the state is dumped without a corresponding atomic_check() where the
-pipe->sspp is assigned.
+In case of error after a amdgpu_gfx_rlc_enter_safe_mode() call, it is not
+balanced by a corresponding amdgpu_gfx_rlc_exit_safe_mode() call.
 
-Fixes: 31f7148fd370 ("drm/msm/dpu: move pstate->pipe initialization to dpu_plane_atomic_check")
-Reported-by: Stephen Boyd <swboyd@chromium.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/67
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Stephen Boyd <swboyd@chromium.org> # sc7180-trogdor
-Patchwork: https://patchwork.freedesktop.org/patch/628404/
-Link: https://lore.kernel.org/r/20241211-check-state-before-dump-v2-1-62647a501e8c@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Add the missing call.
+
+Fixes: 9b7b8154cdb8 ("drm/amd/powerplay: added didt support for vega10")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 3ffac24333a2a..703e58901d53f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -1335,12 +1335,15 @@ static void dpu_plane_atomic_print_state(struct drm_printer *p,
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
+index 3007b054c873c..776d58ea63ae9 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
+@@ -1120,13 +1120,14 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
+ 	result = vega10_program_didt_config_registers(hwmgr, SEEDCForceStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
+ 	result |= vega10_program_didt_config_registers(hwmgr, SEEDCCtrlForceStallConfig_Vega10, VEGA10_CONFIGREG_DIDT);
+ 	if (0 != result)
+-		return result;
++		goto exit_safe_mode;
  
- 	drm_printf(p, "\tstage=%d\n", pstate->stage);
+ 	vega10_didt_set_mask(hwmgr, false);
  
--	drm_printf(p, "\tsspp[0]=%s\n", pipe->sspp->cap->name);
--	drm_printf(p, "\tmultirect_mode[0]=%s\n", dpu_get_multirect_mode(pipe->multirect_mode));
--	drm_printf(p, "\tmultirect_index[0]=%s\n",
--		   dpu_get_multirect_index(pipe->multirect_index));
--	drm_printf(p, "\tsrc[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->src_rect));
--	drm_printf(p, "\tdst[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->dst_rect));
-+	if (pipe->sspp) {
-+		drm_printf(p, "\tsspp[0]=%s\n", pipe->sspp->cap->name);
-+		drm_printf(p, "\tmultirect_mode[0]=%s\n",
-+			   dpu_get_multirect_mode(pipe->multirect_mode));
-+		drm_printf(p, "\tmultirect_index[0]=%s\n",
-+			   dpu_get_multirect_index(pipe->multirect_index));
-+		drm_printf(p, "\tsrc[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->src_rect));
-+		drm_printf(p, "\tdst[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->dst_rect));
-+	}
++exit_safe_mode:
+ 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
  
- 	if (r_pipe->sspp) {
- 		drm_printf(p, "\tsspp[1]=%s\n", r_pipe->sspp->cap->name);
+-	return 0;
++	return result;
+ }
+ 
+ static int vega10_disable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 -- 
 2.39.5
 
