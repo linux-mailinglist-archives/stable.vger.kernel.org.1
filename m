@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B84A29009
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CE3A290ED
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D6A51882EDC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3348188ACE1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AE17E792;
-	Wed,  5 Feb 2025 14:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4F618A6B7;
+	Wed,  5 Feb 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmcHjZn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8AOvlS3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB461519AF;
-	Wed,  5 Feb 2025 14:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B025189F56;
+	Wed,  5 Feb 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765894; cv=none; b=G7DFMamsUzOK6NY6nd4NgM7UHRyTaWqNw/bOuAaEUUsVTl0YeF8STZ8GH71MEaTYxhkoJYFDk4Rf6/P43sN/1ntLNqsCD5LA339vsI12Y9SnROie/Rf2Gy0Kvfmo6xx+TDv9KGMKGQ11Rx1J20OGwoX02oO/1t7gbMhHaegylk4=
+	t=1738766460; cv=none; b=DRPYgzuzWi6XHrnLFt4aqfpmJza3ZZl6eeK5ba4hlF3xZvNG88RCp1XnAsz2ioYTUlhLjSBiItBxd4fssDJN8RialH4scT8ppenwooazQnHb2K90pVc0xYEuSVHUTlJw9pc8qBqpxmXNvtp/jgKSFq/+Pp9TYbnHsangWRC45lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765894; c=relaxed/simple;
-	bh=87FxbpYxF7EXFR2mUGpS0x6PdP1BKPxOzZnoAGn8nBI=;
+	s=arc-20240116; t=1738766460; c=relaxed/simple;
+	bh=cGARthTWtcZuB2szuHL7yWQXafd7f1Z//jM21XRn3VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOnbK1rAZSsaYIj6G0gOHVsfbS/gRAQJlDXnEQurBDUTs5PCwucwRBrhK56XSEgfEaP6v+C+vUIdV9cwYq7RgpTHvJAlpAU2qwTN0czoiBmBSjUYid6WvGBumtXaO7qFwK7s3C9vwb9C5QR9DYkF8y4pTHiNEzuo8wvFgYCpl1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmcHjZn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A128EC4CED6;
-	Wed,  5 Feb 2025 14:31:33 +0000 (UTC)
+	 MIME-Version; b=cDxUE0whaoPFdrGCrnfuTkiFIPqgzYyJUcR3PNuA8eQGtWzPw3h6lYeg3cZWwNZbAIlck9Nni4Xd8TWDX8YbOhwF7hWYNuef/sR2XzJ4DoMpObv/mHh49wE0kJ60Gjj1rub+mdRUFK/UVZHQvjEHQtHfKNHObRER3Colu5QtWC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8AOvlS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6553CC4CED6;
+	Wed,  5 Feb 2025 14:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765894;
-	bh=87FxbpYxF7EXFR2mUGpS0x6PdP1BKPxOzZnoAGn8nBI=;
+	s=korg; t=1738766459;
+	bh=cGARthTWtcZuB2szuHL7yWQXafd7f1Z//jM21XRn3VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmcHjZn4G7DmhhzW5hDk8i/h0K9cJa0+8JHw+Gz5E8IfR8mJY8zcDtKpJhCx4ufle
-	 /0U/yn3yVMeqGraOHsxgrIxs2wcbAh2clHPD9Nmm6bnMr+xJ0uBCpbqynhTfkbTHaW
-	 sAMtXMHkCQdoSvccYz85n8+w95kHq8tpuhxTfWqc=
+	b=h8AOvlS3XxXFM7/emqIoeplqmDdPUHkeXm/vgrmw8t8jM8XZLiUUP+LxqFssj1OOe
+	 0M+ZJ4S7aqus+zAsJ2SWthNZ6rfEfAwgAu2r9tMcshVxHxK+r3vuCWu/NW/jxH+Zbc
+	 9cCF/NXad9tQPrWfzLMFcIhcZhwKC5VpM6Zo/cQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/590] bpf: Reject struct_ops registration that uses module ptr and the module btf_id is missing
+Subject: [PATCH 6.13 278/623] crypto: hisilicon/sec2 - fix for aead invalid authsize
 Date: Wed,  5 Feb 2025 14:40:20 +0100
-Message-ID: <20250205134505.415062602@linuxfoundation.org>
+Message-ID: <20250205134506.865816207@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +63,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit 96ea081ed52bf077cad6d00153b6fba68e510767 ]
+[ Upstream commit a5a9d959936499a3106a1bf3b9070875d0d3dec4 ]
 
-There is a UAF report in the bpf_struct_ops when CONFIG_MODULES=n.
-In particular, the report is on tcp_congestion_ops that has
-a "struct module *owner" member.
+When the digest alg is HMAC-SHAx or another, the authsize may be less
+than 4 bytes and mac_len of the BD is set to zero, the hardware considers
+it a BD configuration error and reports a ras error, so the sec driver
+needs to switch to software calculation in this case, this patch add a
+check for it and remove unnecessary check that has been done by crypto.
 
-For struct_ops that has a "struct module *owner" member,
-it can be extended either by the regular kernel module or
-by the bpf_struct_ops. bpf_try_module_get() will be used
-to do the refcounting and different refcount is done
-based on the owner pointer. When CONFIG_MODULES=n,
-the btf_id of the "struct module" is missing:
-
-WARN: resolve_btfids: unresolved symbol module
-
-Thus, the bpf_try_module_get() cannot do the correct refcounting.
-
-Not all subsystem's struct_ops requires the "struct module *owner" member.
-e.g. the recent sched_ext_ops.
-
-This patch is to disable bpf_struct_ops registration if
-the struct_ops has the "struct module *" member and the
-"struct module" btf_id is missing. The btf_type_is_fwd() helper
-is moved to the btf.h header file for this test.
-
-This has happened since the beginning of bpf_struct_ops which has gone
-through many changes. The Fixes tag is set to a recent commit that this
-patch can apply cleanly. Considering CONFIG_MODULES=n is not
-common and the age of the issue, targeting for bpf-next also.
-
-Fixes: 1611603537a4 ("bpf: Create argument information for nullable arguments.")
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/bpf/74665.1733669976@localhost/
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Tested-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241220201818.127152-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 2f072d75d1ab ("crypto: hisilicon - Add aead support on SEC2")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/btf.h         |  5 +++++
- kernel/bpf/bpf_struct_ops.c | 21 +++++++++++++++++++++
- kernel/bpf/btf.c            |  5 -----
- 3 files changed, 26 insertions(+), 5 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec.h        |  2 +-
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 64 +++++++++++-----------
+ 2 files changed, 34 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/btf.h b/include/linux/btf.h
-index b8a583194c4a9..d99178ce01d21 100644
---- a/include/linux/btf.h
-+++ b/include/linux/btf.h
-@@ -352,6 +352,11 @@ static inline bool btf_type_is_scalar(const struct btf_type *t)
- 	return btf_type_is_int(t) || btf_type_is_enum(t);
- }
+diff --git a/drivers/crypto/hisilicon/sec2/sec.h b/drivers/crypto/hisilicon/sec2/sec.h
+index 70c3bdedb6baf..4b99702308228 100644
+--- a/drivers/crypto/hisilicon/sec2/sec.h
++++ b/drivers/crypto/hisilicon/sec2/sec.h
+@@ -37,6 +37,7 @@ struct sec_aead_req {
+ 	u8 *a_ivin;
+ 	dma_addr_t a_ivin_dma;
+ 	struct aead_request *aead_req;
++	bool fallback;
+ };
  
-+static inline bool btf_type_is_fwd(const struct btf_type *t)
-+{
-+	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
-+}
-+
- static inline bool btf_type_is_typedef(const struct btf_type *t)
- {
- 	return BTF_INFO_KIND(t->info) == BTF_KIND_TYPEDEF;
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index b3a2ce1e5e22e..b70d0eef8a284 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -311,6 +311,20 @@ void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc)
- 	kfree(arg_info);
- }
+ /* SEC request of Crypto */
+@@ -91,7 +92,6 @@ struct sec_auth_ctx {
+ 	u8 *a_key;
+ 	u8 a_key_len;
+ 	u8 a_alg;
+-	bool fallback;
+ 	struct crypto_shash *hash_tfm;
+ 	struct crypto_aead *fallback_aead_tfm;
+ };
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 8db995279545c..66bc07da9eb6f 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -1119,10 +1119,7 @@ static int sec_aead_setauthsize(struct crypto_aead *aead, unsigned int authsize)
+ 	struct sec_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct sec_auth_ctx *a_ctx = &ctx->a_ctx;
  
-+static bool is_module_member(const struct btf *btf, u32 id)
-+{
-+	const struct btf_type *t;
-+
-+	t = btf_type_resolve_ptr(btf, id, NULL);
-+	if (!t)
-+		return false;
-+
-+	if (!__btf_type_is_struct(t) && !btf_type_is_fwd(t))
-+		return false;
-+
-+	return !strcmp(btf_name_by_offset(btf, t->name_off), "module");
-+}
-+
- int bpf_struct_ops_desc_init(struct bpf_struct_ops_desc *st_ops_desc,
- 			     struct btf *btf,
- 			     struct bpf_verifier_log *log)
-@@ -390,6 +404,13 @@ int bpf_struct_ops_desc_init(struct bpf_struct_ops_desc *st_ops_desc,
- 			goto errout;
- 		}
- 
-+		if (!st_ops_ids[IDX_MODULE_ID] && is_module_member(btf, member->type)) {
-+			pr_warn("'struct module' btf id not found. Is CONFIG_MODULES enabled? bpf_struct_ops '%s' needs module support.\n",
-+				st_ops->name);
-+			err = -EOPNOTSUPP;
-+			goto errout;
-+		}
-+
- 		func_proto = btf_type_resolve_func_ptr(btf,
- 						       member->type,
- 						       NULL);
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 41d20b7199c4a..a44f4be592be7 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -498,11 +498,6 @@ bool btf_type_is_void(const struct btf_type *t)
- 	return t == &btf_void;
- }
- 
--static bool btf_type_is_fwd(const struct btf_type *t)
--{
--	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
--}
+-	if (unlikely(a_ctx->fallback_aead_tfm))
+-		return crypto_aead_setauthsize(a_ctx->fallback_aead_tfm, authsize);
 -
- static bool btf_type_is_datasec(const struct btf_type *t)
+-	return 0;
++	return crypto_aead_setauthsize(a_ctx->fallback_aead_tfm, authsize);
+ }
+ 
+ static int sec_aead_fallback_setkey(struct sec_auth_ctx *a_ctx,
+@@ -1159,13 +1156,7 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 		}
+ 		memcpy(c_ctx->c_key, key, keylen);
+ 
+-		if (unlikely(a_ctx->fallback_aead_tfm)) {
+-			ret = sec_aead_fallback_setkey(a_ctx, tfm, key, keylen);
+-			if (ret)
+-				return ret;
+-		}
+-
+-		return 0;
++		return sec_aead_fallback_setkey(a_ctx, tfm, key, keylen);
+ 	}
+ 
+ 	ret = crypto_authenc_extractkeys(&keys, key, keylen);
+@@ -1190,6 +1181,12 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 		goto bad_key;
+ 	}
+ 
++	ret = sec_aead_fallback_setkey(a_ctx, tfm, key, keylen);
++	if (ret) {
++		dev_err(dev, "set sec fallback key err!\n");
++		goto bad_key;
++	}
++
+ 	return 0;
+ 
+ bad_key:
+@@ -1917,8 +1914,10 @@ static void sec_aead_exit(struct crypto_aead *tfm)
+ 
+ static int sec_aead_ctx_init(struct crypto_aead *tfm, const char *hash_name)
  {
- 	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
++	struct aead_alg *alg = crypto_aead_alg(tfm);
+ 	struct sec_ctx *ctx = crypto_aead_ctx(tfm);
+-	struct sec_auth_ctx *auth_ctx = &ctx->a_ctx;
++	struct sec_auth_ctx *a_ctx = &ctx->a_ctx;
++	const char *aead_name = alg->base.cra_name;
+ 	int ret;
+ 
+ 	ret = sec_aead_init(tfm);
+@@ -1927,11 +1926,20 @@ static int sec_aead_ctx_init(struct crypto_aead *tfm, const char *hash_name)
+ 		return ret;
+ 	}
+ 
+-	auth_ctx->hash_tfm = crypto_alloc_shash(hash_name, 0, 0);
+-	if (IS_ERR(auth_ctx->hash_tfm)) {
++	a_ctx->hash_tfm = crypto_alloc_shash(hash_name, 0, 0);
++	if (IS_ERR(a_ctx->hash_tfm)) {
+ 		dev_err(ctx->dev, "aead alloc shash error!\n");
+ 		sec_aead_exit(tfm);
+-		return PTR_ERR(auth_ctx->hash_tfm);
++		return PTR_ERR(a_ctx->hash_tfm);
++	}
++
++	a_ctx->fallback_aead_tfm = crypto_alloc_aead(aead_name, 0,
++						     CRYPTO_ALG_NEED_FALLBACK | CRYPTO_ALG_ASYNC);
++	if (IS_ERR(a_ctx->fallback_aead_tfm)) {
++		dev_err(ctx->dev, "aead driver alloc fallback tfm error!\n");
++		crypto_free_shash(ctx->a_ctx.hash_tfm);
++		sec_aead_exit(tfm);
++		return PTR_ERR(a_ctx->fallback_aead_tfm);
+ 	}
+ 
+ 	return 0;
+@@ -1941,6 +1949,7 @@ static void sec_aead_ctx_exit(struct crypto_aead *tfm)
+ {
+ 	struct sec_ctx *ctx = crypto_aead_ctx(tfm);
+ 
++	crypto_free_aead(ctx->a_ctx.fallback_aead_tfm);
+ 	crypto_free_shash(ctx->a_ctx.hash_tfm);
+ 	sec_aead_exit(tfm);
+ }
+@@ -1967,7 +1976,6 @@ static int sec_aead_xcm_ctx_init(struct crypto_aead *tfm)
+ 		sec_aead_exit(tfm);
+ 		return PTR_ERR(a_ctx->fallback_aead_tfm);
+ 	}
+-	a_ctx->fallback = false;
+ 
+ 	return 0;
+ }
+@@ -2226,15 +2234,15 @@ static int sec_aead_spec_check(struct sec_ctx *ctx, struct sec_req *sreq)
+ 	struct device *dev = ctx->dev;
+ 	int ret;
+ 
+-	if (unlikely(req->cryptlen + req->assoclen > MAX_INPUT_DATA_LEN ||
+-	    req->assoclen > SEC_MAX_AAD_LEN)) {
+-		dev_err(dev, "aead input spec error!\n");
++	/* Hardware does not handle cases where authsize is less than 4 bytes */
++	if (unlikely(sz < MIN_MAC_LEN)) {
++		sreq->aead_req.fallback = true;
+ 		return -EINVAL;
+ 	}
+ 
+-	if (unlikely((c_mode == SEC_CMODE_GCM && sz < DES_BLOCK_SIZE) ||
+-		     (c_mode == SEC_CMODE_CCM && (sz < MIN_MAC_LEN || sz & MAC_LEN_MASK)))) {
+-		dev_err(dev, "aead input mac length error!\n");
++	if (unlikely(req->cryptlen + req->assoclen > MAX_INPUT_DATA_LEN ||
++	    req->assoclen > SEC_MAX_AAD_LEN)) {
++		dev_err(dev, "aead input spec error!\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -2280,7 +2288,7 @@ static int sec_aead_param_check(struct sec_ctx *ctx, struct sec_req *sreq)
+ 	if (ctx->sec->qm.ver == QM_HW_V2) {
+ 		if (unlikely(!req->cryptlen || (!sreq->c_req.encrypt &&
+ 			     req->cryptlen <= authsize))) {
+-			ctx->a_ctx.fallback = true;
++			sreq->aead_req.fallback = true;
+ 			return -EINVAL;
+ 		}
+ 	}
+@@ -2308,16 +2316,9 @@ static int sec_aead_soft_crypto(struct sec_ctx *ctx,
+ 				bool encrypt)
+ {
+ 	struct sec_auth_ctx *a_ctx = &ctx->a_ctx;
+-	struct device *dev = ctx->dev;
+ 	struct aead_request *subreq;
+ 	int ret;
+ 
+-	/* Kunpeng920 aead mode not support input 0 size */
+-	if (!a_ctx->fallback_aead_tfm) {
+-		dev_err(dev, "aead fallback tfm is NULL!\n");
+-		return -EINVAL;
+-	}
+-
+ 	subreq = aead_request_alloc(a_ctx->fallback_aead_tfm, GFP_KERNEL);
+ 	if (!subreq)
+ 		return -ENOMEM;
+@@ -2349,10 +2350,11 @@ static int sec_aead_crypto(struct aead_request *a_req, bool encrypt)
+ 	req->aead_req.aead_req = a_req;
+ 	req->c_req.encrypt = encrypt;
+ 	req->ctx = ctx;
++	req->aead_req.fallback = false;
+ 
+ 	ret = sec_aead_param_check(ctx, req);
+ 	if (unlikely(ret)) {
+-		if (ctx->a_ctx.fallback)
++		if (req->aead_req.fallback)
+ 			return sec_aead_soft_crypto(ctx, a_req, encrypt);
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
