@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-112576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179E6A28D90
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10DFA28D99
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BF633A9876
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802E1188790E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303051509BD;
-	Wed,  5 Feb 2025 14:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E279F510;
+	Wed,  5 Feb 2025 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKJ5eafk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7leT0W6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D5B5228;
-	Wed,  5 Feb 2025 14:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA565228;
+	Wed,  5 Feb 2025 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764034; cv=none; b=XGuEZUazcJnvNHKMAOWxOsG4GO65XWbM7/nCnv0JZtt74UUlLuOm4ADH/FZ1pUqB65jDsl4N19XoD0B3dlGmFu5bTzRXkG6hmjkSp67SD79G7YtPZ6WNqfC05gW6pueWIfRFbEGEMX6MqGwwaDklH1ss4uUPHc1VMQkD/MLZnF0=
+	t=1738764167; cv=none; b=f2wRukB58KSR3jCrOiTSkAwyJarrkJnIhnRb0X2sstgXu8SX2dXG+/gqT+bUXS2hicVofGvawAC6SlsYouI1Rm3whIEj3m2zaazMFFr1G53I0c1SMnCSCxo6fIm5u7sy8ChF6gXtRWMjyNXgchsIrJnB+iEPri78nCtmZF8naHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764034; c=relaxed/simple;
-	bh=oPtTSUIwIa+etfGX8bhsr4jxfGV6xXBc3Xs0Sv/bx5s=;
+	s=arc-20240116; t=1738764167; c=relaxed/simple;
+	bh=DKtbY6APvzB9r9nuzSPs3mO5ZT7mhM8cYyPL4LtgE4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUNnZitSwK+mPbtqeWoJPXJOa8Ed4JAdSsE+fNmBCIVB7vWzknDHtSZDeqDO7zdgBVy50GgoBIqXhFHlO+56dMajDC+61jhKCk9eilkKi2p5PXWiRLlLNlFSJHkHcfLN6UhmPkatqqBjxXXpIDmOk9wquCt+Uv42+e0g+ZAxtUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKJ5eafk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED87C4CED1;
-	Wed,  5 Feb 2025 14:00:33 +0000 (UTC)
+	 MIME-Version; b=nZV7Kwcg+Gc+w+Gi5TeeNlCC0qHiK79QXX3l4YTXErVVA3Trj+sdS7sIhUo5cbBT1AB13ihG7zHEu4/r5jtBOeHnoctQkm/oKdR7WXT5vZykbsXk1RcPvzKUiUETL/Z2njEhUWZLmZNyYCojapd+dKaZ2rKQnqnaJWuMmcZeTDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7leT0W6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597E3C4CEDD;
+	Wed,  5 Feb 2025 14:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764033;
-	bh=oPtTSUIwIa+etfGX8bhsr4jxfGV6xXBc3Xs0Sv/bx5s=;
+	s=korg; t=1738764166;
+	bh=DKtbY6APvzB9r9nuzSPs3mO5ZT7mhM8cYyPL4LtgE4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKJ5eafkBozjK5TyCsedUMv0Y6ihLbw/2eU0fEejGTm81TkP6ZLeBIUU4+cRSjFye
-	 o7+1lczdRcDZrZjzd5EbEhgRWx4EksZKDgB/G4d26IdnGyRHyfbVe4zoaUSFqmO5JJ
-	 JRhtyWahkfc1wNJmvcVvgL+5JXy/3lCmAi5k0cS4=
+	b=Y7leT0W6RRFNt467H107MAKaPiDUlne/XxNQEgyfGqeAoPMQjOmnnrBztHhZxOemN
+	 TKYaK0rwzEK3zEYXoBSKIMSBdzp1ORpOAN3CzQ0PcODlV85PeK9W5bsdmPg6GHghTj
+	 HqYAq8KDBfk/Q7roKwbiW+TmdGRioxnQhDh5AmDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Andy Yan <andyshrk@163.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	kernel test robot <lkp@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 040/623] drm/rockchip: vop2: fix rk3588 dp+dsi maxclk verification
-Date: Wed,  5 Feb 2025 14:36:22 +0100
-Message-ID: <20250205134457.762164796@linuxfoundation.org>
+Subject: [PATCH 6.13 041/623] drm/msm/dp: set safe_to_exit_level before printing it
+Date: Wed,  5 Feb 2025 14:36:23 +0100
+Message-ID: <20250205134457.800362809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -69,55 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5807f4ee6d32a4cce9a4df36f0d455c64c861947 ]
+[ Upstream commit 7dee35d79bb046bfd425aa9e58a82414f67c1cec ]
 
-The clock is in Hz while the value checked against is in kHz, so
-actual frequencies will never be able to be below to max value.
-Fix this by specifying the max-value in Hz too.
+Rather than printing random garbage from stack and pretending that it is
+the default safe_to_exit_level, set the variable beforehand.
 
-Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Acked-by: Andy Yan <andyshrk@163.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241115151131.416830-1-heiko@sntech.de
+Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411081748.0PPL9MIj-lkp@intel.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/626804/
+Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-1-d9187ea96dad@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 9873172e3fd33..30d03ff6c01f0 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1721,9 +1721,9 @@ static unsigned long rk3588_calc_cru_cfg(struct vop2_video_port *vp, int id,
- 		else
- 			dclk_out_rate = v_pixclk >> 2;
+diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
+index 74e01a5dd4195..5cbb11986460d 100644
+--- a/drivers/gpu/drm/msm/dp/dp_audio.c
++++ b/drivers/gpu/drm/msm/dp/dp_audio.c
+@@ -329,10 +329,10 @@ static void msm_dp_audio_safe_to_exit_level(struct msm_dp_audio_private *audio)
+ 		safe_to_exit_level = 5;
+ 		break;
+ 	default:
++		safe_to_exit_level = 14;
+ 		drm_dbg_dp(audio->drm_dev,
+ 				"setting the default safe_to_exit_level = %u\n",
+ 				safe_to_exit_level);
+-		safe_to_exit_level = 14;
+ 		break;
+ 	}
  
--		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000);
-+		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000000);
- 		if (!dclk_rate) {
--			drm_err(vop2->drm, "DP dclk_out_rate out of range, dclk_out_rate: %ld KHZ\n",
-+			drm_err(vop2->drm, "DP dclk_out_rate out of range, dclk_out_rate: %ld Hz\n",
- 				dclk_out_rate);
- 			return 0;
- 		}
-@@ -1738,9 +1738,9 @@ static unsigned long rk3588_calc_cru_cfg(struct vop2_video_port *vp, int id,
- 		 * dclk_rate = N * dclk_core_rate N = (1,2,4 ),
- 		 * we get a little factor here
- 		 */
--		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000);
-+		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000000);
- 		if (!dclk_rate) {
--			drm_err(vop2->drm, "MIPI dclk out of range, dclk_out_rate: %ld KHZ\n",
-+			drm_err(vop2->drm, "MIPI dclk out of range, dclk_out_rate: %ld Hz\n",
- 				dclk_out_rate);
- 			return 0;
- 		}
 -- 
 2.39.5
 
