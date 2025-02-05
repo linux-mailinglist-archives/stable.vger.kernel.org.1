@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F72A28E15
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9D3A29260
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40471681F8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F064416C373
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61E6149C53;
-	Wed,  5 Feb 2025 14:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65C2170A37;
+	Wed,  5 Feb 2025 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEXozBpc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzO2r9B1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E6DF510;
-	Wed,  5 Feb 2025 14:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947BA172BB9;
+	Wed,  5 Feb 2025 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764525; cv=none; b=aGZ/KHtBfUJxIE7ucgHR7U9OstsX0MTUwiZCAk1wgDLDu/Ax23E8XOOYMlZhT6rjt2f7KFGggPJBJNtrC/FSHxAGRUwinof/WideDioIG1GIunctR3VeSNbL/tutlPYNB/6Duan81pZ4ELemADKpLUDridp91cCDWHsOQFz9vgI=
+	t=1738767106; cv=none; b=cfOZwUEWkzEHZ1i1jGFIH08tCFiKaVo0Kk7g9JrJG5sIcqD5hl9qS4a7OqZXdz1OUfBKTXNKG/bIgdQfZZqo4vF/fvl92WYGdlA9tEbjG+oTky2br7CmqlVCsU1iUhQrcdLmvj9EyKoczvpRdLsIpRH0LlHj1moXp8zHTcDDVSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764525; c=relaxed/simple;
-	bh=/xmE+ZUmiX1h1UCtUi0wEbWIiLo6rK3A2cOGXkIrqcE=;
+	s=arc-20240116; t=1738767106; c=relaxed/simple;
+	bh=Bjg7Eg1q9mKxLjSPawCTrnhOmXaZFAf5imKDbfCRsyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JPKIyvRkvBXseDlZakMz5Y93ZUFA4WFLX7Rdrq5dECFnl8VGpMaK2ktykgzHkhYydYL0wJ/F5zwfn2emmrZBMewHoa4lmKJWnx7xoNcN4bA269X8zcxLw6T/YpMRh2BDZpHDFd1KhjX9CfOF2BgAT8ZkZ77LOBKdFINjq6+x0dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEXozBpc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260D3C4CED1;
-	Wed,  5 Feb 2025 14:08:44 +0000 (UTC)
+	 MIME-Version; b=R0hvSJzxCM8FCWTO7423T6iA0kA53ycPaCUyfbe/1PEK8Cp/L6ifQf1+r8iNqVIhRdIuE75pgfTg6QSqbdarB38FOGAl+U7cLoUNFtbtUH6TIWUsG8ztCRwjBLqA7Y9erHtXELnysIuzqxd8urC3KdxCi3CG+cVMczZoUVcIAMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzO2r9B1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32A9C4CED1;
+	Wed,  5 Feb 2025 14:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764525;
-	bh=/xmE+ZUmiX1h1UCtUi0wEbWIiLo6rK3A2cOGXkIrqcE=;
+	s=korg; t=1738767106;
+	bh=Bjg7Eg1q9mKxLjSPawCTrnhOmXaZFAf5imKDbfCRsyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEXozBpcwOoRzwVOYFufJFPM44gznQ8g9hpILzcSI/4s6k29flmyahtTMajLHKiMZ
-	 Ky6M9YsBFJDs8crBCHXnkllEyjsQDoNDtSBWzSS704vNfPYpRkqGT7S8neQ89pd0eC
-	 38+JUlFa00YCT3EVhMmIfYloiEiVNSsib+FeAaWs=
+	b=UzO2r9B1KjHE0VDthAg104uIbCBQc6XPjIgNSmLyeoZwbRe/oviK1qJ7l2DjR22o3
+	 1T9blTx46mPyJqhENd/QSHPVjeMRr1lo11kDoG7rLOclbVCHqZA4fJUAc5KwyDNlVF
+	 krzQ1ct6fU8wVX5tne6SapeRV9BI/GHVm0qT7lpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Mamta Shukla <mamta.shukla@leica-geosystems.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/393] ASoC: Intel: avs: Abstract IPC handling
-Date: Wed,  5 Feb 2025 14:41:38 +0100
-Message-ID: <20250205134427.150369333@linuxfoundation.org>
+Subject: [PATCH 6.13 357/623] arm: dts: socfpga: use reset-name "stmmaceth-ocp" instead of "ahb"
+Date: Wed,  5 Feb 2025 14:41:39 +0100
+Message-ID: <20250205134509.882372295@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,297 +61,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Mamta Shukla <mamta.shukla@leica-geosystems.com>
 
-[ Upstream commit 7576e2f4d99df6efabb77f52b9539fd345233aee ]
+[ Upstream commit 62a40a0d5634834790f7166ab592be247390d857 ]
 
-Servicing IPCs on CNL platforms and onward differs from the existing
-one. To make room for these, enrich platform descriptor with fields
-representing crucial IPC registers and utilize them throughout the code.
+The ahb reset is deasserted in probe before first register access, while the
+stmmacheth-ocp reset needs to be asserted every time before changing the phy
+mode in Arria10[1].
 
-While cleaning up device descriptors, reduce the number of code lines by
-assigning 'min_fw_version' within a single line.
+Changed in Upstream to "ahb"(331085a423b  arm64: dts: socfpga: change the
+reset-name of "stmmaceth-ocp" to "ahb" ).This change was intended for arm64
+socfpga and it is not applicable to Arria10.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240220115035.770402-5-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: bca0fa5f6b5e ("ASoC: Intel: avs: Do not readq() u32 registers")
+Further with STMMAC-SELFTEST Driver enabled, ethtool test also FAILS.
+$ ethtool -t eth0
+[  322.946709] socfpga-dwmac ff800000.ethernet eth0: entered promiscuous mode
+[  323.374558] socfpga-dwmac ff800000.ethernet eth0: left promiscuous mode
+The test result is FAIL
+The test extra info:
+ 1. MAC Loopback                 0
+ 2. PHY Loopback                 -110
+ 3. MMC Counters                 -110
+ 4. EEE                          -95
+ 5. Hash Filter MC               0
+ 6. Perfect Filter UC            -110
+ 7. MC Filter                    -110
+ 8. UC Filter                    0
+ 9. Flow Control                 -110
+10. RSS                          -95
+11. VLAN Filtering               -95
+12. VLAN Filtering (perf)        -95
+13. Double VLAN Filter           -95
+14. Double VLAN Filter (perf)    -95
+15. Flexible RX Parser           -95
+16. SA Insertion (desc)          -95
+17. SA Replacement (desc)        -95
+18. SA Insertion (reg)           -95
+19. SA Replacement (reg)         -95
+20. VLAN TX Insertion            -95
+21. SVLAN TX Insertion           -95
+22. L3 DA Filtering              -95
+23. L3 SA Filtering              -95
+24. L4 DA TCP Filtering          -95
+25. L4 SA TCP Filtering          -95
+26. L4 DA UDP Filtering          -95
+27. L4 SA UDP Filtering          -95
+28. ARP Offload                  -95
+29. Jumbo Frame                  -110
+30. Multichannel Jumbo           -95
+31. Split Header                 -95
+32. TBS (ETF Scheduler)          -95
+
+[  324.881327] socfpga-dwmac ff800000.ethernet eth0: Link is Down
+[  327.995360] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
+
+Link:[1] https://www.intel.com/content/www/us/en/docs/programmable/683711/21-2/functional-description-of-the-emac.html
+Fixes: 331085a423b ("arm64: dts: socfpga: change the reset-name of "stmmaceth-ocp" to "ahb")
+Signed-off-by: Mamta Shukla <mamta.shukla@leica-geosystems.com>
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/avs.h       | 22 ++++++++++++---
- sound/soc/intel/avs/core.c      | 47 ++++++++++++++++++++-------------
- sound/soc/intel/avs/ipc.c       | 36 ++++++++++++++-----------
- sound/soc/intel/avs/loader.c    |  2 +-
- sound/soc/intel/avs/registers.h |  6 ++---
- 5 files changed, 72 insertions(+), 41 deletions(-)
+ arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/avs/avs.h b/sound/soc/intel/avs/avs.h
-index fd394bb6479ba..1fd501a6a62d9 100644
---- a/sound/soc/intel/avs/avs.h
-+++ b/sound/soc/intel/avs/avs.h
-@@ -73,6 +73,23 @@ extern const struct avs_dsp_ops avs_apl_dsp_ops;
- #define avs_platattr_test(adev, attr) \
- 	((adev)->spec->attributes & AVS_PLATATTR_##attr)
- 
-+struct avs_sram_spec {
-+	const u32 base_offset;
-+	const u32 window_size;
-+	const u32 rom_status_offset;
-+};
-+
-+struct avs_hipc_spec {
-+	const u32 req_offset;
-+	const u32 req_ext_offset;
-+	const u32 req_busy_mask;
-+	const u32 ack_offset;
-+	const u32 ack_done_mask;
-+	const u32 rsp_offset;
-+	const u32 rsp_busy_mask;
-+	const u32 ctl_offset;
-+};
-+
- /* Platform specific descriptor */
- struct avs_spec {
- 	const char *name;
-@@ -82,9 +99,8 @@ struct avs_spec {
- 
- 	const u32 core_init_mask;	/* used during DSP boot */
- 	const u64 attributes;		/* bitmask of AVS_PLATATTR_* */
--	const u32 sram_base_offset;
--	const u32 sram_window_size;
--	const u32 rom_status;
-+	const struct avs_sram_spec *sram;
-+	const struct avs_hipc_spec *hipc;
- };
- 
- struct avs_fw_entry {
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index 3a36c71bbd502..63e4356e8caf9 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -712,36 +712,47 @@ static const struct dev_pm_ops avs_dev_pm = {
- 	SET_RUNTIME_PM_OPS(avs_runtime_suspend, avs_runtime_resume, NULL)
- };
- 
-+static const struct avs_sram_spec skl_sram_spec = {
-+	.base_offset = SKL_ADSP_SRAM_BASE_OFFSET,
-+	.window_size = SKL_ADSP_SRAM_WINDOW_SIZE,
-+	.rom_status_offset = SKL_ADSP_SRAM_BASE_OFFSET,
-+};
-+
-+static const struct avs_sram_spec apl_sram_spec = {
-+	.base_offset = APL_ADSP_SRAM_BASE_OFFSET,
-+	.window_size = APL_ADSP_SRAM_WINDOW_SIZE,
-+	.rom_status_offset = APL_ADSP_SRAM_BASE_OFFSET,
-+};
-+
-+static const struct avs_hipc_spec skl_hipc_spec = {
-+	.req_offset = SKL_ADSP_REG_HIPCI,
-+	.req_ext_offset = SKL_ADSP_REG_HIPCIE,
-+	.req_busy_mask = SKL_ADSP_HIPCI_BUSY,
-+	.ack_offset = SKL_ADSP_REG_HIPCIE,
-+	.ack_done_mask = SKL_ADSP_HIPCIE_DONE,
-+	.rsp_offset = SKL_ADSP_REG_HIPCT,
-+	.rsp_busy_mask = SKL_ADSP_HIPCT_BUSY,
-+	.ctl_offset = SKL_ADSP_REG_HIPCCTL,
-+};
-+
- static const struct avs_spec skl_desc = {
- 	.name = "skl",
--	.min_fw_version = {
--		.major = 9,
--		.minor = 21,
--		.hotfix = 0,
--		.build = 4732,
--	},
-+	.min_fw_version = { 9, 21, 0, 4732 },
- 	.dsp_ops = &avs_skl_dsp_ops,
- 	.core_init_mask = 1,
- 	.attributes = AVS_PLATATTR_CLDMA,
--	.sram_base_offset = SKL_ADSP_SRAM_BASE_OFFSET,
--	.sram_window_size = SKL_ADSP_SRAM_WINDOW_SIZE,
--	.rom_status = SKL_ADSP_SRAM_BASE_OFFSET,
-+	.sram = &skl_sram_spec,
-+	.hipc = &skl_hipc_spec,
- };
- 
- static const struct avs_spec apl_desc = {
- 	.name = "apl",
--	.min_fw_version = {
--		.major = 9,
--		.minor = 22,
--		.hotfix = 1,
--		.build = 4323,
--	},
-+	.min_fw_version = { 9, 22, 1, 4323 },
- 	.dsp_ops = &avs_apl_dsp_ops,
- 	.core_init_mask = 3,
- 	.attributes = AVS_PLATATTR_IMR,
--	.sram_base_offset = APL_ADSP_SRAM_BASE_OFFSET,
--	.sram_window_size = APL_ADSP_SRAM_WINDOW_SIZE,
--	.rom_status = APL_ADSP_SRAM_BASE_OFFSET,
-+	.sram = &apl_sram_spec,
-+	.hipc = &skl_hipc_spec,
- };
- 
- static const struct pci_device_id avs_ids[] = {
-diff --git a/sound/soc/intel/avs/ipc.c b/sound/soc/intel/avs/ipc.c
-index bdf013c3dd12e..74f676fdfba29 100644
---- a/sound/soc/intel/avs/ipc.c
-+++ b/sound/soc/intel/avs/ipc.c
-@@ -305,6 +305,7 @@ irqreturn_t avs_dsp_irq_handler(int irq, void *dev_id)
- {
- 	struct avs_dev *adev = dev_id;
- 	struct avs_ipc *ipc = adev->ipc;
-+	const struct avs_spec *const spec = adev->spec;
- 	u32 adspis, hipc_rsp, hipc_ack;
- 	irqreturn_t ret = IRQ_NONE;
- 
-@@ -312,35 +313,35 @@ irqreturn_t avs_dsp_irq_handler(int irq, void *dev_id)
- 	if (adspis == UINT_MAX || !(adspis & AVS_ADSP_ADSPIS_IPC))
- 		return ret;
- 
--	hipc_ack = snd_hdac_adsp_readl(adev, SKL_ADSP_REG_HIPCIE);
--	hipc_rsp = snd_hdac_adsp_readl(adev, SKL_ADSP_REG_HIPCT);
-+	hipc_ack = snd_hdac_adsp_readl(adev, spec->hipc->ack_offset);
-+	hipc_rsp = snd_hdac_adsp_readl(adev, spec->hipc->rsp_offset);
- 
- 	/* DSP acked host's request */
--	if (hipc_ack & SKL_ADSP_HIPCIE_DONE) {
-+	if (hipc_ack & spec->hipc->ack_done_mask) {
- 		/*
- 		 * As an extra precaution, mask done interrupt. Code executed
- 		 * due to complete() found below does not assume any masking.
- 		 */
--		snd_hdac_adsp_updatel(adev, SKL_ADSP_REG_HIPCCTL,
-+		snd_hdac_adsp_updatel(adev, spec->hipc->ctl_offset,
- 				      AVS_ADSP_HIPCCTL_DONE, 0);
- 
- 		complete(&ipc->done_completion);
- 
- 		/* tell DSP it has our attention */
--		snd_hdac_adsp_updatel(adev, SKL_ADSP_REG_HIPCIE,
--				      SKL_ADSP_HIPCIE_DONE,
--				      SKL_ADSP_HIPCIE_DONE);
-+		snd_hdac_adsp_updatel(adev, spec->hipc->ack_offset,
-+				      spec->hipc->ack_done_mask,
-+				      spec->hipc->ack_done_mask);
- 		/* unmask done interrupt */
--		snd_hdac_adsp_updatel(adev, SKL_ADSP_REG_HIPCCTL,
-+		snd_hdac_adsp_updatel(adev, spec->hipc->ctl_offset,
- 				      AVS_ADSP_HIPCCTL_DONE,
- 				      AVS_ADSP_HIPCCTL_DONE);
- 		ret = IRQ_HANDLED;
- 	}
- 
- 	/* DSP sent new response to process */
--	if (hipc_rsp & SKL_ADSP_HIPCT_BUSY) {
-+	if (hipc_rsp & spec->hipc->rsp_busy_mask) {
- 		/* mask busy interrupt */
--		snd_hdac_adsp_updatel(adev, SKL_ADSP_REG_HIPCCTL,
-+		snd_hdac_adsp_updatel(adev, spec->hipc->ctl_offset,
- 				      AVS_ADSP_HIPCCTL_BUSY, 0);
- 
- 		ret = IRQ_WAKE_THREAD;
-@@ -379,10 +380,11 @@ irqreturn_t avs_dsp_irq_thread(int irq, void *dev_id)
- static bool avs_ipc_is_busy(struct avs_ipc *ipc)
- {
- 	struct avs_dev *adev = to_avs_dev(ipc->dev);
-+	const struct avs_spec *const spec = adev->spec;
- 	u32 hipc_rsp;
- 
--	hipc_rsp = snd_hdac_adsp_readl(adev, SKL_ADSP_REG_HIPCT);
--	return hipc_rsp & SKL_ADSP_HIPCT_BUSY;
-+	hipc_rsp = snd_hdac_adsp_readl(adev, spec->hipc->rsp_offset);
-+	return hipc_rsp & spec->hipc->rsp_busy_mask;
- }
- 
- static int avs_ipc_wait_busy_completion(struct avs_ipc *ipc, int timeout)
-@@ -440,9 +442,10 @@ static void avs_ipc_msg_init(struct avs_ipc *ipc, struct avs_ipc_msg *reply)
- 
- static void avs_dsp_send_tx(struct avs_dev *adev, struct avs_ipc_msg *tx, bool read_fwregs)
- {
-+	const struct avs_spec *const spec = adev->spec;
- 	u64 reg = ULONG_MAX;
- 
--	tx->header |= SKL_ADSP_HIPCI_BUSY;
-+	tx->header |= spec->hipc->req_busy_mask;
- 	if (read_fwregs)
- 		reg = readq(avs_sram_addr(adev, AVS_FW_REGS_WINDOW));
- 
-@@ -450,8 +453,8 @@ static void avs_dsp_send_tx(struct avs_dev *adev, struct avs_ipc_msg *tx, bool r
- 
- 	if (tx->size)
- 		memcpy_toio(avs_downlink_addr(adev), tx->data, tx->size);
--	snd_hdac_adsp_writel(adev, SKL_ADSP_REG_HIPCIE, tx->header >> 32);
--	snd_hdac_adsp_writel(adev, SKL_ADSP_REG_HIPCI, tx->header & UINT_MAX);
-+	snd_hdac_adsp_writel(adev, spec->hipc->req_ext_offset, tx->header >> 32);
-+	snd_hdac_adsp_writel(adev, spec->hipc->req_offset, tx->header & UINT_MAX);
- }
- 
- static int avs_dsp_do_send_msg(struct avs_dev *adev, struct avs_ipc_msg *request,
-@@ -586,6 +589,7 @@ int avs_dsp_send_rom_msg(struct avs_dev *adev, struct avs_ipc_msg *request)
- 
- void avs_dsp_interrupt_control(struct avs_dev *adev, bool enable)
- {
-+	const struct avs_spec *const spec = adev->spec;
- 	u32 value, mask;
- 
- 	/*
-@@ -597,7 +601,7 @@ void avs_dsp_interrupt_control(struct avs_dev *adev, bool enable)
- 
- 	mask = AVS_ADSP_HIPCCTL_DONE | AVS_ADSP_HIPCCTL_BUSY;
- 	value = enable ? mask : 0;
--	snd_hdac_adsp_updatel(adev, SKL_ADSP_REG_HIPCCTL, mask, value);
-+	snd_hdac_adsp_updatel(adev, spec->hipc->ctl_offset, mask, value);
- }
- 
- int avs_ipc_init(struct avs_ipc *ipc, struct device *dev)
-diff --git a/sound/soc/intel/avs/loader.c b/sound/soc/intel/avs/loader.c
-index 56bb0a59249d5..fe0340c798efe 100644
---- a/sound/soc/intel/avs/loader.c
-+++ b/sound/soc/intel/avs/loader.c
-@@ -306,7 +306,7 @@ avs_hda_init_rom(struct avs_dev *adev, unsigned int dma_id, bool purge)
- 	}
- 
- 	/* await ROM init */
--	ret = snd_hdac_adsp_readq_poll(adev, spec->rom_status, reg,
-+	ret = snd_hdac_adsp_readq_poll(adev, spec->sram->rom_status_offset, reg,
- 				       (reg & 0xF) == AVS_ROM_INIT_DONE ||
- 				       (reg & 0xF) == APL_ROM_FW_ENTERED,
- 				       AVS_ROM_INIT_POLLING_US, APL_ROM_INIT_TIMEOUT_US);
-diff --git a/sound/soc/intel/avs/registers.h b/sound/soc/intel/avs/registers.h
-index 2b464e466ed52..5c1dce46f71d8 100644
---- a/sound/soc/intel/avs/registers.h
-+++ b/sound/soc/intel/avs/registers.h
-@@ -55,7 +55,7 @@
- #define APL_ADSP_SRAM_WINDOW_SIZE	0x20000
- 
- /* Constants used when accessing SRAM, space shared with firmware */
--#define AVS_FW_REG_BASE(adev)		((adev)->spec->sram_base_offset)
-+#define AVS_FW_REG_BASE(adev)		((adev)->spec->sram->base_offset)
- #define AVS_FW_REG_STATUS(adev)		(AVS_FW_REG_BASE(adev) + 0x0)
- #define AVS_FW_REG_ERROR_CODE(adev)	(AVS_FW_REG_BASE(adev) + 0x4)
- 
-@@ -70,8 +70,8 @@
- 
- /* registry I/O helpers */
- #define avs_sram_offset(adev, window_idx) \
--	((adev)->spec->sram_base_offset + \
--	 (adev)->spec->sram_window_size * (window_idx))
-+	((adev)->spec->sram->base_offset + \
-+	 (adev)->spec->sram->window_size * (window_idx))
- 
- #define avs_sram_addr(adev, window_idx) \
- 	((adev)->dsp_ba + avs_sram_offset(adev, window_idx))
+diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi b/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
+index 6b6e77596ffa8..b108265e9bde4 100644
+--- a/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
+@@ -440,7 +440,7 @@
+ 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
+ 			clock-names = "stmmaceth", "ptp_ref";
+ 			resets = <&rst EMAC0_RESET>, <&rst EMAC0_OCP_RESET>;
+-			reset-names = "stmmaceth", "ahb";
++			reset-names = "stmmaceth", "stmmaceth-ocp";
+ 			snps,axi-config = <&socfpga_axi_setup>;
+ 			status = "disabled";
+ 		};
+@@ -460,7 +460,7 @@
+ 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
+ 			clock-names = "stmmaceth", "ptp_ref";
+ 			resets = <&rst EMAC1_RESET>, <&rst EMAC1_OCP_RESET>;
+-			reset-names = "stmmaceth", "ahb";
++			reset-names = "stmmaceth", "stmmaceth-ocp";
+ 			snps,axi-config = <&socfpga_axi_setup>;
+ 			status = "disabled";
+ 		};
+@@ -480,7 +480,7 @@
+ 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
+ 			clock-names = "stmmaceth", "ptp_ref";
+ 			resets = <&rst EMAC2_RESET>, <&rst EMAC2_OCP_RESET>;
+-			reset-names = "stmmaceth", "ahb";
++			reset-names = "stmmaceth", "stmmaceth-ocp";
+ 			snps,axi-config = <&socfpga_axi_setup>;
+ 			status = "disabled";
+ 		};
 -- 
 2.39.5
 
