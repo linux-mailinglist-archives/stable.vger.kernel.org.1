@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD1AA28E81
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA113A292BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26314161FD4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F284B3ACA03
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BC714A088;
-	Wed,  5 Feb 2025 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672661FC7F3;
+	Wed,  5 Feb 2025 14:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5c8Dd+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T89cdfoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD413C9C4;
-	Wed,  5 Feb 2025 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0B15CD74;
+	Wed,  5 Feb 2025 14:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764833; cv=none; b=P00Mb47CXQWnxMafwIGHtf2UVXbBXsEeneKTgwAUFXb415ll293hXNjl2NmVGiWSd1U1NT3zeTFlu9aQZ8ykLJ1Lg4viynJ8PnRE+yjYzzrXh7g5ulafe+Er/Uo/55jG/rIUl3l3VNjSsXRBjrpqMDKphtoJZ8/ZygVROGDk/4Q=
+	t=1738767303; cv=none; b=D91aV51spl+Exxkn5UXKce3kTKz9faqInY9AG2bWZN4fTx/ywWGuD34EYcN0kg/JhHGfTWHYf1TYir3ROjtPhPt37N+vMlf81YOueDwXKFGZMog2zqm9oldL3WfwSBhomNLLsLwJzQXFrs44CLdhkCYaITC7tck3pEFzaAWSpPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764833; c=relaxed/simple;
-	bh=LHIqRIIcl6uyaBH24IGa7u+WLNQcfGZUU2wWJspicsU=;
+	s=arc-20240116; t=1738767303; c=relaxed/simple;
+	bh=t6CbGRZD8J4BeMEu0O1d+9Jtw0QEoI8Kscyv+mDfuT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRIZ/QNe+3nLoVh5WNdEiTYdwaFiP+LMgwE+BvlrJmdRJFIKF/k7MbgW+EonuBmDrPYb17plMFjqi76HmvGn2exS0WShN84sGUJ56Q+HoD0oZr5xmLfTDYOVkrrfcUCX7RqCjr9m1Fc8DBP9n59SQdt9AI7s48EqdLUgZ//CyvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5c8Dd+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DAEC4CED1;
-	Wed,  5 Feb 2025 14:13:52 +0000 (UTC)
+	 MIME-Version; b=R7nfQUFgOv2sapmFS1+ETbDozEaCUb6Gm/R/wszF69cBbK/G/O6d+Rj9WW/P6LQGJb0IPmIsv/GYTG8OB2A6GCVgxgaC7hb3nS5h6J/Un5NREkS52Y864nRSk7VOdsTx7HD5eRLYuVyfCYdlhSTWB7vuEyshouipj0oLznhGxlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T89cdfoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEECC4CED6;
+	Wed,  5 Feb 2025 14:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764833;
-	bh=LHIqRIIcl6uyaBH24IGa7u+WLNQcfGZUU2wWJspicsU=;
+	s=korg; t=1738767302;
+	bh=t6CbGRZD8J4BeMEu0O1d+9Jtw0QEoI8Kscyv+mDfuT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5c8Dd+IlMOEyVj6RoJ0Qwxj6uJ07VbLhNT7dFHu+ZhjIVFTXAJVglyQb4Hbk2ZZt
-	 nc9/WkxN5AwA7rIQBUJNtePtb1YYgiEFx75jEFREwYIxUwN0yRFVBa5dC9H69T6Kcu
-	 9ryr7nrG5j7X9eW1AKAw0OiOOcdtpoQ6XNxZV9KQ=
+	b=T89cdfoEJtuwOik36DYs9ZshLR9DTTPjtOVW+SANRQ5vnSz50fn3CvyHxye57zZ8L
+	 s0tMGCydYD01A0qb+pxFib02CR4ZgjKdcZwjmi5Z0h7Hx/JeQ2cHoG9zdXcWcf5m8B
+	 KbGDKNUsqa/jEk/lT7Wt85XU3Crbu593kXlw2LEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 208/393] arm64: dts: mediatek: mt8195-cherry: Drop regulator-compatible property
+Subject: [PATCH 6.13 385/623] arm64: dts: qcom: sm6125: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:07 +0100
-Message-ID: <20250205134428.260085530@linuxfoundation.org>
+Message-ID: <20250205134510.952363980@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4dbaa5d5def2c49e44efaa5e796c23d9b904be09 ]
+[ Upstream commit b3c547e1507862f0e4d46432b665c5c6e61e14d6 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+The SM6125 platform uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-6-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: cff4bbaf2a2d ("arm64: dts: qcom: Add support for SM6125")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-11-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index b21663b46b519..e3b30543c2c64 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -1203,7 +1203,6 @@
- 
- 		regulators {
- 			mt6315_6_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -1221,7 +1220,6 @@
- 
- 		regulators {
- 			mt6315_7_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
+diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+index 17d528d639343..f3f207dcac84f 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+@@ -28,7 +28,7 @@
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+ 			#clock-cells = <0>;
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			clock-output-names = "sleep_clk";
+ 		};
+ 	};
 -- 
 2.39.5
 
