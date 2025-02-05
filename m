@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB88EA29071
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648F3A293A7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18AB77A2F00
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217FD16ACE2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7671155747;
-	Wed,  5 Feb 2025 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E89617C21C;
+	Wed,  5 Feb 2025 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tbs2ZTpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kW0Ay/S5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B27151988;
-	Wed,  5 Feb 2025 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE6B17B4FF;
+	Wed,  5 Feb 2025 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766168; cv=none; b=UXUWuy0ChvcSL07lABktLEdzHmxEvTdk7fkAASy6zUsd9KYryYHsYS1Ew9vFxAdxdN9JaNzawUt1eqDAKl6QFapZQGOS72OBF7Xy7t66OJyw6XZZVs7/1eXJKkozBxPQtMv0laY5kMV5v+4/K+AjdhyMJE/6n3aWCQ3Iwjuxfwo=
+	t=1738768103; cv=none; b=sJAmrmjCUggCn18vr+5wi/zoMrjNTEPq7JFpFvrjG9BRr70P3BrISsO4m3yyfwWonZGT17O4xw4uSUjOBEbG0dKQ8QmvNRt9jN2vBpmy2fnroXAPdlnkteVmmhTNZhiLHGu7ZUBOM5lstVsCxKIkh4SfywAP8lhCkX6OX8bNrmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766168; c=relaxed/simple;
-	bh=pjtqb7pFt+bPzvsBHSPZu8tVuaxmiNlVJ0Vj28mfmL4=;
+	s=arc-20240116; t=1738768103; c=relaxed/simple;
+	bh=LXrLHrERX85vU2EA/4nGBy4brntInv6qxjVjpfSNnaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ku++2uPe+iPV0wEi2UdkFlnvAnnsEk3k1JJQuZlTdXtn1UTaGtDpa8tDQeTSdlq3ZSAlMgN9AovRb3awCfkH4Lu3QUHtZy/1Dwl4/s/2+DqSlClVzo35NozoJphN2UJc1G03yipxHrg8spRvGEB8k9F9djL67NGtsDY0LkLRfac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tbs2ZTpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C30C4CED1;
-	Wed,  5 Feb 2025 14:36:07 +0000 (UTC)
+	 MIME-Version; b=XNBNx5oa5HbqeQTyKRcZnu+OpmdFJ7+8kVfzl03PjQAEAfRbc+HoK9z1jEcrEPL8KhXYeSgokIbT7/Odnza0PEEwUJfDuXZUnldsXCUG0+xgCoJSXzJ4OVcsTn7bnU1Uws36R4SEH7mnQJiSFGmZOermZ6iaMKUCb+nibnGggf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kW0Ay/S5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93C9C4CED1;
+	Wed,  5 Feb 2025 15:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766168;
-	bh=pjtqb7pFt+bPzvsBHSPZu8tVuaxmiNlVJ0Vj28mfmL4=;
+	s=korg; t=1738768103;
+	bh=LXrLHrERX85vU2EA/4nGBy4brntInv6qxjVjpfSNnaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tbs2ZTpGjLRGvb6YNQwTPcgD+vsj+5S9zUyuT0B3C7D3r/alwG+CBzwgVQ6NMwqLG
-	 dxNAdzbBy8iHLRg5DnaAtmxuatt/qfEGvg622TTJNRd9S+2nDyb47ccRexvrU87+6o
-	 wlkp+q+Ph9TVy/gI1ZDUshizFDQM/ybjXourAj2g=
+	b=kW0Ay/S5sJubzwUgV7kMgu2wkHzUNgo/67n8Mois/li5XjbxQflGDv9JXINUHkn1t
+	 LyGVg2cG87G0y/s4Vush/mcMnEtbdDZD73X0sLCCEigO5EYMJVxvqM9gVsYDhfNbDv
+	 dTtuBtzJjYgjfZWi4+7Sf21W7vea8wgFnBzzURQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pangliyuan <pangliyuan1@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/393] ubifs: skip dumping tnc tree when zroot is null
+Subject: [PATCH 6.13 498/623] rtc: tps6594: Fix integer overflow on 32bit systems
 Date: Wed,  5 Feb 2025 14:44:00 +0100
-Message-ID: <20250205134432.596687884@linuxfoundation.org>
+Message-ID: <20250205134515.270292305@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pangliyuan <pangliyuan1@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bdb0ca39e0acccf6771db49c3f94ed787d05f2d7 ]
+[ Upstream commit 09c4a610153286cef54d4f0c85398f4e32fc227e ]
 
-Clearing slab cache will free all znode in memory and make
-c->zroot.znode = NULL, then dumping tnc tree will access
-c->zroot.znode which cause null pointer dereference.
+The problem is this multiply in tps6594_rtc_set_offset()
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219624#c0
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
-Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+	tmp = offset * TICKS_PER_HOUR;
+
+The "tmp" variable is an s64 but "offset" is a long in the
+(-277774)-277774 range.  On 32bit systems a long can hold numbers up to
+approximately two billion.  The number of TICKS_PER_HOUR is really large,
+(32768 * 3600) or roughly a hundred million.  When you start multiplying
+by a hundred million it doesn't take long to overflow the two billion
+mark.
+
+Probably the safest way to fix this is to change the type of
+TICKS_PER_HOUR to long long because it's such a large number.
+
+Fixes: 9f67c1e63976 ("rtc: tps6594: Add driver for TPS6594 RTC")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/1074175e-5ecb-4e3d-b721-347d794caa90@stanley.mountain
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/debug.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/rtc/rtc-tps6594.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
-index eef9e527d9ff9..ff9e574c07a87 100644
---- a/fs/ubifs/debug.c
-+++ b/fs/ubifs/debug.c
-@@ -946,16 +946,20 @@ void ubifs_dump_tnc(struct ubifs_info *c)
+diff --git a/drivers/rtc/rtc-tps6594.c b/drivers/rtc/rtc-tps6594.c
+index e696676341378..7c6246e3f0292 100644
+--- a/drivers/rtc/rtc-tps6594.c
++++ b/drivers/rtc/rtc-tps6594.c
+@@ -37,7 +37,7 @@
+ #define MAX_OFFSET (277774)
  
- 	pr_err("\n");
- 	pr_err("(pid %d) start dumping TNC tree\n", current->pid);
--	znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
--	level = znode->level;
--	pr_err("== Level %d ==\n", level);
--	while (znode) {
--		if (level != znode->level) {
--			level = znode->level;
--			pr_err("== Level %d ==\n", level);
-+	if (c->zroot.znode) {
-+		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
-+		level = znode->level;
-+		pr_err("== Level %d ==\n", level);
-+		while (znode) {
-+			if (level != znode->level) {
-+				level = znode->level;
-+				pr_err("== Level %d ==\n", level);
-+			}
-+			ubifs_dump_znode(c, znode);
-+			znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
- 		}
--		ubifs_dump_znode(c, znode);
--		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
-+	} else {
-+		pr_err("empty TNC tree in memory\n");
- 	}
- 	pr_err("(pid %d) finish dumping TNC tree\n", current->pid);
- }
+ // Number of ticks per hour
+-#define TICKS_PER_HOUR (32768 * 3600)
++#define TICKS_PER_HOUR (32768 * 3600LL)
+ 
+ // Multiplier for ppb conversions
+ #define PPB_MULT NANO
 -- 
 2.39.5
 
