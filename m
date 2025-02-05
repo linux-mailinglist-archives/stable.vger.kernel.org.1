@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FEEA28FD8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CDCA28C51
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82EB87A1DCE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F173A2637
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B51156C76;
-	Wed,  5 Feb 2025 14:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6913AD22;
+	Wed,  5 Feb 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfgMB93Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCOZ+OVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814AE156C5E;
-	Wed,  5 Feb 2025 14:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652FB640;
+	Wed,  5 Feb 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765773; cv=none; b=VQRel78Eug5SYcE3NDCp9Y6JadxdS5eXcxdJd5XB9QMwYnWTewBtkaH1xQz6A3KJSD1BqofGK3M9C1woSiWGi6bhMoJ0On/qpclyXxMELT5YGh/oV3C6JMRXf2LulL8hjMr8Kvggj+dpaeaKDcJEx+1eEJCVSdg/UDjJ5PdHu84=
+	t=1738763306; cv=none; b=PbHxzWZjbg8J0dx2lAh+9CSn1+oDFVuVPByJs5EESL+nVhP6TTdiYyI4a8duUM/xxwiRTgxrmUrjew7w13sqygrlYH4g/nSv0yZ7gSm5OekvJvx12RWsMEBvHS7Vvs0N7PsjcDMivIU8q7Ho6y38P06gBuBR6vWjJaZQcKDY0ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765773; c=relaxed/simple;
-	bh=FcIRQ40uWOKLaxlrx/mNOyAB97/G/C2EQjZU3sqKfVM=;
+	s=arc-20240116; t=1738763306; c=relaxed/simple;
+	bh=4IsXcyNvKhkmk+OfFp9Zu94uwD5zZ/IbQ7UeIwwHPBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5XUAEbsCZgbgRqHIADzvqHasWREejAzEuV2yNuXYRQsHRYrCvxZkM19NnLzszFJe/Lkd8Kzph6N7zS4ymXfG42zSiRnFWv+2zOVBUnSFSGUTojvsbl2w52CUAMbv0KOLRDLDFHnaCO6n7g7HNMbwPmlXCD1rV1agkKRZ+3o3NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfgMB93Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3429C4CED6;
-	Wed,  5 Feb 2025 14:29:32 +0000 (UTC)
+	 MIME-Version; b=uI899aQ6ILlg2YQQS2xHPCtTEw4p++jom9pNrbmjxB7HG4KQ7yDR8Q3kCBPsNGGM80Zq83hcUuZ3Gsx0/aAULmkQPipPZaN16FtfbOjTeHkr4cfTvrBtPCfRPj9XLH+NJM3LOvJxvcHtTXcBp6zFzfzirTOZMI4Z6yanj2TMHSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCOZ+OVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885B6C4CED1;
+	Wed,  5 Feb 2025 13:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765773;
-	bh=FcIRQ40uWOKLaxlrx/mNOyAB97/G/C2EQjZU3sqKfVM=;
+	s=korg; t=1738763306;
+	bh=4IsXcyNvKhkmk+OfFp9Zu94uwD5zZ/IbQ7UeIwwHPBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfgMB93ZxubVphyerJ0jDWfI843FBBcFl44+Fm2XFMgwwKEi+5FFOIk6+rNiMkPCp
-	 mmKbNgKuE8PKRI9H9Phh4/9kueed5N6MG/IyaYfHTsBOnx7hg5tNInbKIdXzfBfvDi
-	 YTYVpQz/VF4AWtAPdKe/0e6pOUfLZ7+2lwk56mlk=
+	b=kCOZ+OVVQR4VbCE1Fzjkc+OeWTgobxtzX4/NkqjbI+RW3tfmrgUUJHp1LCOJnnjOE
+	 kcpK/CTpDQqG0R9/XXZ++/6z/MD67/wFbHqb8u3B8mAJV6u1cGUJGOcuZq9zcFrnBT
+	 yYjgUSmF66H/uRzu5Sh/XpfU3Jh8JA6kLsM80Rqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 212/623] wifi: mt76: mt7996: fix incorrect indexing of MIB FW event
-Date: Wed,  5 Feb 2025 14:39:14 +0100
-Message-ID: <20250205134504.338912892@linuxfoundation.org>
+Subject: [PATCH 6.6 036/393] OPP: add index check to assert to avoid buffer overflow in _read_freq()
+Date: Wed,  5 Feb 2025 14:39:15 +0100
+Message-ID: <20250205134421.685276261@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 5c2a25a1ab76a2976dddc5ffd58498866f3ef7c2 ]
+[ Upstream commit d659bc68ed489022ea33342cfbda2911a81e7a0d ]
 
-Fix wrong calculation of the channel times due to incorrect
-interpretation from the FW event.
+Pass the freq index to the assert function to make sure
+we do not read a freq out of the opp->rates[] table when called
+from the indexed variants:
+dev_pm_opp_find_freq_exact_indexed() or
+dev_pm_opp_find_freq_ceil/floor_indexed().
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250114101026.3587702-4-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Add a secondary parameter to the assert function, unused
+for assert_single_clk() then add assert_clk_index() which
+will check for the clock index when called from the _indexed()
+find functions.
+
+Fixes: 142e17c1c2b4 ("OPP: Introduce dev_pm_opp_find_freq_{ceil/floor}_indexed() APIs")
+Fixes: a5893928bb17 ("OPP: Add dev_pm_opp_find_freq_exact_indexed()")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 45 ++++++++++++-------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ drivers/opp/core.c | 42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 6c445a9dbc03d..d6d80b1b2d697 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3666,6 +3666,13 @@ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap)
- 
- int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index bceb27b1baa18..3c26130dc75e3 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -101,11 +101,21 @@ struct opp_table *_find_opp_table(struct device *dev)
+  * representation in the OPP table and manage the clock configuration themselves
+  * in an platform specific way.
+  */
+-static bool assert_single_clk(struct opp_table *opp_table)
++static bool assert_single_clk(struct opp_table *opp_table,
++			      unsigned int __always_unused index)
  {
-+	enum {
-+		IDX_TX_TIME,
-+		IDX_RX_TIME,
-+		IDX_OBSS_AIRTIME,
-+		IDX_NON_WIFI_TIME,
-+		IDX_NUM
-+	};
- 	struct {
- 		struct {
- 			u8 band;
-@@ -3675,16 +3682,15 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
- 			__le16 tag;
- 			__le16 len;
- 			__le32 offs;
--		} data[4];
-+		} data[IDX_NUM];
- 	} __packed req = {
- 		.hdr.band = phy->mt76->band_idx,
- 	};
--	/* strict order */
- 	static const u32 offs[] = {
--		UNI_MIB_TX_TIME,
--		UNI_MIB_RX_TIME,
--		UNI_MIB_OBSS_AIRTIME,
--		UNI_MIB_NON_WIFI_TIME,
-+		[IDX_TX_TIME] = UNI_MIB_TX_TIME,
-+		[IDX_RX_TIME] = UNI_MIB_RX_TIME,
-+		[IDX_OBSS_AIRTIME] = UNI_MIB_OBSS_AIRTIME,
-+		[IDX_NON_WIFI_TIME] = UNI_MIB_NON_WIFI_TIME,
- 	};
- 	struct mt76_channel_state *state = phy->mt76->chan_state;
- 	struct mt76_channel_state *state_ts = &phy->state_ts;
-@@ -3693,7 +3699,7 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
- 	struct sk_buff *skb;
- 	int i, ret;
+ 	return !WARN_ON(opp_table->clk_count > 1);
+ }
  
--	for (i = 0; i < 4; i++) {
-+	for (i = 0; i < IDX_NUM; i++) {
- 		req.data[i].tag = cpu_to_le16(UNI_CMD_MIB_DATA);
- 		req.data[i].len = cpu_to_le16(sizeof(req.data[i]));
- 		req.data[i].offs = cpu_to_le32(offs[i]);
-@@ -3712,17 +3718,24 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
- 		goto out;
++/*
++ * Returns true if clock table is large enough to contain the clock index.
++ */
++static bool assert_clk_index(struct opp_table *opp_table,
++			     unsigned int index)
++{
++	return opp_table->clk_count > index;
++}
++
+ /**
+  * dev_pm_opp_get_voltage() - Gets the voltage corresponding to an opp
+  * @opp:	opp for which voltage has to be returned for
+@@ -499,12 +509,12 @@ static struct dev_pm_opp *_opp_table_find_key(struct opp_table *opp_table,
+ 		unsigned long (*read)(struct dev_pm_opp *opp, int index),
+ 		bool (*compare)(struct dev_pm_opp **opp, struct dev_pm_opp *temp_opp,
+ 				unsigned long opp_key, unsigned long key),
+-		bool (*assert)(struct opp_table *opp_table))
++		bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	struct dev_pm_opp *temp_opp, *opp = ERR_PTR(-ERANGE);
  
- #define __res_u64(s) le64_to_cpu(res[s].data)
--	state->cc_tx += __res_u64(1) - state_ts->cc_tx;
--	state->cc_bss_rx += __res_u64(2) - state_ts->cc_bss_rx;
--	state->cc_rx += __res_u64(2) + __res_u64(3) - state_ts->cc_rx;
--	state->cc_busy += __res_u64(0) + __res_u64(1) + __res_u64(2) + __res_u64(3) -
-+	state->cc_tx += __res_u64(IDX_TX_TIME) - state_ts->cc_tx;
-+	state->cc_bss_rx += __res_u64(IDX_RX_TIME) - state_ts->cc_bss_rx;
-+	state->cc_rx += __res_u64(IDX_RX_TIME) +
-+			__res_u64(IDX_OBSS_AIRTIME) -
-+			state_ts->cc_rx;
-+	state->cc_busy += __res_u64(IDX_TX_TIME) +
-+			  __res_u64(IDX_RX_TIME) +
-+			  __res_u64(IDX_OBSS_AIRTIME) +
-+			  __res_u64(IDX_NON_WIFI_TIME) -
- 			  state_ts->cc_busy;
--
- out:
--	state_ts->cc_tx = __res_u64(1);
--	state_ts->cc_bss_rx = __res_u64(2);
--	state_ts->cc_rx = __res_u64(2) + __res_u64(3);
--	state_ts->cc_busy = __res_u64(0) + __res_u64(1) + __res_u64(2) + __res_u64(3);
-+	state_ts->cc_tx = __res_u64(IDX_TX_TIME);
-+	state_ts->cc_bss_rx = __res_u64(IDX_RX_TIME);
-+	state_ts->cc_rx = __res_u64(IDX_RX_TIME) + __res_u64(IDX_OBSS_AIRTIME);
-+	state_ts->cc_busy = __res_u64(IDX_TX_TIME) +
-+			    __res_u64(IDX_RX_TIME) +
-+			    __res_u64(IDX_OBSS_AIRTIME) +
-+			    __res_u64(IDX_NON_WIFI_TIME);
- #undef __res_u64
+ 	/* Assert that the requirement is met */
+-	if (assert && !assert(opp_table))
++	if (assert && !assert(opp_table, index))
+ 		return ERR_PTR(-EINVAL);
  
- 	dev_kfree_skb(skb);
+ 	mutex_lock(&opp_table->lock);
+@@ -532,7 +542,7 @@ _find_key(struct device *dev, unsigned long *key, int index, bool available,
+ 	  unsigned long (*read)(struct dev_pm_opp *opp, int index),
+ 	  bool (*compare)(struct dev_pm_opp **opp, struct dev_pm_opp *temp_opp,
+ 			  unsigned long opp_key, unsigned long key),
+-	  bool (*assert)(struct opp_table *opp_table))
++	  bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	struct opp_table *opp_table;
+ 	struct dev_pm_opp *opp;
+@@ -555,7 +565,7 @@ _find_key(struct device *dev, unsigned long *key, int index, bool available,
+ static struct dev_pm_opp *_find_key_exact(struct device *dev,
+ 		unsigned long key, int index, bool available,
+ 		unsigned long (*read)(struct dev_pm_opp *opp, int index),
+-		bool (*assert)(struct opp_table *opp_table))
++		bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	/*
+ 	 * The value of key will be updated here, but will be ignored as the
+@@ -568,7 +578,7 @@ static struct dev_pm_opp *_find_key_exact(struct device *dev,
+ static struct dev_pm_opp *_opp_table_find_key_ceil(struct opp_table *opp_table,
+ 		unsigned long *key, int index, bool available,
+ 		unsigned long (*read)(struct dev_pm_opp *opp, int index),
+-		bool (*assert)(struct opp_table *opp_table))
++		bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	return _opp_table_find_key(opp_table, key, index, available, read,
+ 				   _compare_ceil, assert);
+@@ -577,7 +587,7 @@ static struct dev_pm_opp *_opp_table_find_key_ceil(struct opp_table *opp_table,
+ static struct dev_pm_opp *_find_key_ceil(struct device *dev, unsigned long *key,
+ 		int index, bool available,
+ 		unsigned long (*read)(struct dev_pm_opp *opp, int index),
+-		bool (*assert)(struct opp_table *opp_table))
++		bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	return _find_key(dev, key, index, available, read, _compare_ceil,
+ 			 assert);
+@@ -586,7 +596,7 @@ static struct dev_pm_opp *_find_key_ceil(struct device *dev, unsigned long *key,
+ static struct dev_pm_opp *_find_key_floor(struct device *dev,
+ 		unsigned long *key, int index, bool available,
+ 		unsigned long (*read)(struct dev_pm_opp *opp, int index),
+-		bool (*assert)(struct opp_table *opp_table))
++		bool (*assert)(struct opp_table *opp_table, unsigned int index))
+ {
+ 	return _find_key(dev, key, index, available, read, _compare_floor,
+ 			 assert);
+@@ -647,7 +657,8 @@ struct dev_pm_opp *
+ dev_pm_opp_find_freq_exact_indexed(struct device *dev, unsigned long freq,
+ 				   u32 index, bool available)
+ {
+-	return _find_key_exact(dev, freq, index, available, _read_freq, NULL);
++	return _find_key_exact(dev, freq, index, available, _read_freq,
++			       assert_clk_index);
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_exact_indexed);
+ 
+@@ -707,7 +718,8 @@ struct dev_pm_opp *
+ dev_pm_opp_find_freq_ceil_indexed(struct device *dev, unsigned long *freq,
+ 				  u32 index)
+ {
+-	return _find_key_ceil(dev, freq, index, true, _read_freq, NULL);
++	return _find_key_ceil(dev, freq, index, true, _read_freq,
++			      assert_clk_index);
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_ceil_indexed);
+ 
+@@ -760,7 +772,7 @@ struct dev_pm_opp *
+ dev_pm_opp_find_freq_floor_indexed(struct device *dev, unsigned long *freq,
+ 				   u32 index)
+ {
+-	return _find_key_floor(dev, freq, index, true, _read_freq, NULL);
++	return _find_key_floor(dev, freq, index, true, _read_freq, assert_clk_index);
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_floor_indexed);
+ 
+@@ -1676,7 +1688,7 @@ void dev_pm_opp_remove(struct device *dev, unsigned long freq)
+ 	if (IS_ERR(opp_table))
+ 		return;
+ 
+-	if (!assert_single_clk(opp_table))
++	if (!assert_single_clk(opp_table, 0))
+ 		goto put_table;
+ 
+ 	mutex_lock(&opp_table->lock);
+@@ -2027,7 +2039,7 @@ int _opp_add_v1(struct opp_table *opp_table, struct device *dev,
+ 	unsigned long tol;
+ 	int ret;
+ 
+-	if (!assert_single_clk(opp_table))
++	if (!assert_single_clk(opp_table, 0))
+ 		return -EINVAL;
+ 
+ 	new_opp = _opp_allocate(opp_table);
+@@ -2889,7 +2901,7 @@ static int _opp_set_availability(struct device *dev, unsigned long freq,
+ 		return r;
+ 	}
+ 
+-	if (!assert_single_clk(opp_table)) {
++	if (!assert_single_clk(opp_table, 0)) {
+ 		r = -EINVAL;
+ 		goto put_table;
+ 	}
+@@ -2965,7 +2977,7 @@ int dev_pm_opp_adjust_voltage(struct device *dev, unsigned long freq,
+ 		return r;
+ 	}
+ 
+-	if (!assert_single_clk(opp_table)) {
++	if (!assert_single_clk(opp_table, 0)) {
+ 		r = -EINVAL;
+ 		goto put_table;
+ 	}
 -- 
 2.39.5
 
