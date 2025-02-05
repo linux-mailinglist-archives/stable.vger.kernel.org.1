@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-113326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680FAA291A4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89216A291CE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FDAA16B5A9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C765188D816
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F5D192D86;
-	Wed,  5 Feb 2025 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949BD197A68;
+	Wed,  5 Feb 2025 14:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0wDyrgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSIg056H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DB9170A13;
-	Wed,  5 Feb 2025 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCBF172BB9;
+	Wed,  5 Feb 2025 14:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766580; cv=none; b=hhCUHQEdfKxahlD8YlG5tn/F79PG3FGzV+3ELAdmOOYFzjZ0qTMkKsPVun+ouGDf7286DCwCOD/B9VrHnxBKoB6Rp6GyVFbwp4VTTI/Q3DC/0KNPp38/IzVLQt6O8pmTe79sB/wL04Js19FFBDDk9K+EhTUTpqkZQUsKXDBLfX4=
+	t=1738766591; cv=none; b=CifN5I2S4RT3qCYgBbAPYSkT4+HruTwk2EbCAH+iAE7uMWqmSJXwDmCtwYaHSyFRhw2uJPWeq57/klJnMxPPBQcKBbepUp1mDfIeMksSWd2M6qT2OO4n35SOQDLqO8UXztN6NGjzyWHT6oG490kiBv55HqAxW9pxEu/RiBMzju8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766580; c=relaxed/simple;
-	bh=GNlYFCH5peNiICbmxItCv1YBJ8+iireHoTZry6yXV9o=;
+	s=arc-20240116; t=1738766591; c=relaxed/simple;
+	bh=mnXQQWavRensmn9TEjcYkUnd9AYGJH4sUgVhZHhUb3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxHO8ZOxwSotZYkQz/N/Cq2WAzGTRf93hPhviajPy9g41Z0BoVoZJMToJ/tSCNNFMMATe66HQ/jKHxLr29wc8WmewDGx3PcUuubI9HYloxtv/51VVYUPVT/7hDwMvUl4j+bDFP1TBq01kJvCB0Y+3Fo4bZpQ+daggxqLYYu0o1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0wDyrgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671A4C4CEE2;
-	Wed,  5 Feb 2025 14:42:59 +0000 (UTC)
+	 MIME-Version; b=hYTtc+y+Nt/JJjCN35EuCUP8X9OGoJJcxcTa6RYZFu8N/NAJV7mRdaHn7IAfVgU92xFuADoe31OxaQgdgkMj9Zial4fVJ6yM4fB+ChMzQ8hAKH/YItCaVicO9bBI/4l4RHlxojJ6ZB73vafDPXvQwIMKcbniB9hB7IVJCkpg9MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSIg056H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B23C4CEEF;
+	Wed,  5 Feb 2025 14:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766580;
-	bh=GNlYFCH5peNiICbmxItCv1YBJ8+iireHoTZry6yXV9o=;
+	s=korg; t=1738766591;
+	bh=mnXQQWavRensmn9TEjcYkUnd9AYGJH4sUgVhZHhUb3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0wDyrgT2qvep+7zOqbBxT/HBsPs6+K68BdWUfGcg6fWIgl74SgtP7GdIiI+Zm6U8
-	 TSxVaY5S2T0GnsP+/BYU8j96AdXs5UyA4/e4Q84kFgFFGaVKg9esKoAjObWQkVAQhP
-	 7oMWl2ovWnXlR9JuL1RfxMVAGFlmiJci/uO/f+7o=
+	b=OSIg056HaWBdXVP/sYWd1Bz+vSRaa0ij/CpWrN8k9HOIxXjuE2oVGkPvdAPOntktj
+	 mszTW6Frgezk1xCKoDsk0jFhB9EEa+8ONMtjPcCHew/t/vm0Gy9VpgBcujO9D6Iq08
+	 h5+HBIKk8ymBLoBjFbye86PbX6RkQnynOZG+0CfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
 	Mark Rutland <mark.rutland@arm.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <songliubraving@fb.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 289/623] perf maps: Fix display of kernel symbols
-Date: Wed,  5 Feb 2025 14:40:31 +0100
-Message-ID: <20250205134507.287721012@linuxfoundation.org>
+Subject: [PATCH 6.13 290/623] perf machine: Dont ignore _etext when not a text symbol
+Date: Wed,  5 Feb 2025 14:40:32 +0100
+Message-ID: <20250205134507.325880677@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -77,69 +79,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit dae29277fddaaf6670d17dfcbb916a2ca29c912f ]
+[ Upstream commit 7a93786c306296f15e728b1dbd949a319e4e3d19 ]
 
-Since commit 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily
-sorted array for addresses"), perf doesn't display anymore kernel
-symbols on powerpc, allthough it still detects them as kernel addresses.
+Depending on how vmlinux.lds is written, _etext might be the very first
+data symbol instead of the very last text symbol.
 
-	# Overhead  Command     Shared Object  Symbol
-	# ........  ..........  ............. ......................................
-	#
-	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
-	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
-	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
-	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
-	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
-	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
-	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+Don't require it to be a text symbol, accept any symbol type.
 
-This is because function maps__find_next_entry() now returns current
-entry instead of next entry, leading to kernel map end address getting
-mis-configured with its own start address instead of the start address
-of the following map.
+Comitter notes:
 
-Fix it by really taking the next entry, also make sure that entry
-follows current one by making sure entries are sorted.
+See the first Link for further discussion, but it all boils down to
+this:
 
-Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
+ ---
+  # grep -e _stext -e _etext -e _edata /proc/kallsyms
+  c0000000 T _stext
+  c08b8000 D _etext
+
+  So there is no _edata and _etext is not text
+
+  $ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
+  c0000000 g       .head.text	00000000 _stext
+  c08b8000 g       .rodata	00000000 _etext
+  c1378000 g       .sbss	00000000 _edata
+ ---
+
+Fixes: ed9adb2035b5be58 ("perf machine: Read also the end of the kernel")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu
+Cc: Song Liu <songliubraving@fb.com>
+Link: https://lore.kernel.org/r/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/perf/util/machine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index 432399cbe5dd3..09c9cc326c08d 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -1136,8 +1136,13 @@ struct map *maps__find_next_entry(struct maps *maps, struct map *map)
- 	struct map *result = NULL;
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 27d5345d2b307..9be2f4479f525 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1003,7 +1003,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
  
- 	down_read(maps__lock(maps));
-+	while (!maps__maps_by_address_sorted(maps)) {
-+		up_read(maps__lock(maps));
-+		maps__sort_by_address(maps);
-+		down_read(maps__lock(maps));
-+	}
- 	i = maps__by_address_index(maps, map);
--	if (i < maps__nr_maps(maps))
-+	if (++i < maps__nr_maps(maps))
- 		result = map__get(maps__maps_by_address(maps)[i]);
+ 	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
+ 	if (err)
+-		err = kallsyms__get_function_start(filename, "_etext", &addr);
++		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
+ 	if (!err)
+ 		*end = addr;
  
- 	up_read(maps__lock(maps));
 -- 
 2.39.5
 
