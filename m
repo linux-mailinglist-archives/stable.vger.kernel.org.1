@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8B7A2949E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:28:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CCEA29498
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A8221885BA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A6188DEA9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759EA15FA7B;
-	Wed,  5 Feb 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC51A170A13;
+	Wed,  5 Feb 2025 15:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUyS/riv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fw2SBZ0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD4A18FDDB;
-	Wed,  5 Feb 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A850717C79;
+	Wed,  5 Feb 2025 15:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768339; cv=none; b=jRZpy0umkNaIfD77AInl88IX2gG1ppx0UK+t6UJ0d90YzUeGIlG/UStOcDGJIiTsTbVjiN0rxH/uRcz+LMOzR2G7EXdNL5fZgpKLgt4CUhjixdXVNAIBsO9UbVs32Yx1yheLSPpJ5k1PohN4axYHQgXlOt5duiQBqkC3Pg5Qa7c=
+	t=1738768582; cv=none; b=txjGszNhLfmaR3a+21XiETYf+caNoPAMzBQ42Mctd7dXV1y3ocuxM46vOBg0iJQXa2cuJfJ/CfsHwDCcikF+naCReY1kAaTE3eMprLRTPhH+s6XGddvysGt9p3+/+oHkF+6jEmypJnoHuy3F2yjsDI7UPzSBXz60CwKhIYyiFLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768339; c=relaxed/simple;
-	bh=7jCoKuJn9cwv6FlwktYgOBuVarzfFgBI3uSvTfrl7gY=;
+	s=arc-20240116; t=1738768582; c=relaxed/simple;
+	bh=wRA6pxwSUpHrt0ISUK44Ep+t90li8ogB2bnMJYm054w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsUG9EVhdLzytFrXU0nvyw0ISWf9J8U8yKgM+EE+bDtKQ7RQ9MdiyHuedcY9+PUhC6UVQRfmCgV/kni9rkrVF2Z3Bv/04H2mNiuPYMVcMi7A5g+Hqbw2cjNMLPWcg4/d6Qg2bsFz79cJop4E3PLNlNc5yMb0nRmbygVG4r/VeB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUyS/riv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6A7C4CED1;
-	Wed,  5 Feb 2025 15:12:18 +0000 (UTC)
+	 MIME-Version; b=ohvnwvlcNwO7YJESMlEYVuq3B9dfrKoIlnd5FuI6+0H5maVKGTBot0Go76YCMOen03huwdPeXIoCSoGou0mkZ4HsjyRJXqXVpK1UC6XW4eplPiPoJQiNuyydEA0GB08u2sL5dKNJTTaLHhvRiLkK0mU3SOD44Aw1a0X57x/u0QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fw2SBZ0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0F3C4CED1;
+	Wed,  5 Feb 2025 15:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768339;
-	bh=7jCoKuJn9cwv6FlwktYgOBuVarzfFgBI3uSvTfrl7gY=;
+	s=korg; t=1738768582;
+	bh=wRA6pxwSUpHrt0ISUK44Ep+t90li8ogB2bnMJYm054w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUyS/rivKubdyK8PcdV9q2CqCPGTE2F2i73Txv1Oimr2rRWBoKoa4XYEhy7bx5Reh
-	 F6cDL8jm5v6HavtBOxKjNnB4C2tq2bIPQOeO2kwYVGOXv7tg99uQu+8SXqmoov5Ohj
-	 yQuVRLepSnZIks/m2RvtUmTRHwWlUnPOR5gDCNEs=
+	b=fw2SBZ0gDU77AUWDVuM57Uh+IKto45WR6NOSqJVQ3EPIPwOseqR3j/jg1c+BbBW2D
+	 yHbtnLykUZqIuoWkAHNM3wCewGvBwA1SqiJie3uO+ABoU0pqcMLQIUPsMKnESf9rTz
+	 3QI+9C9gzPhE0AwT7f8ExttqDaHW0/9ugnhUpLHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sung Lee <sung.lee@amd.com>,
-	Aric Cyr <Aric.Cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 586/590] drm/amd/display: Add hubp cache reset when powergating
+	syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 599/623] mptcp: consolidate suboption status
 Date: Wed,  5 Feb 2025 14:45:41 +0100
-Message-ID: <20250205134517.680900581@linuxfoundation.org>
+Message-ID: <20250205134519.139752668@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,261 +63,333 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <Aric.Cyr@amd.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 01130f5260e5868fb6b15ab8c00dbc894139f48e upstream.
+commit c86b000782daba926c627d2fa00c3f60a75e7472 upstream.
 
-[Why]
-When HUBP is power gated, the SW state can get out of sync with the
-hardware state causing cursor to not be programmed correctly.
+MPTCP maintains the received sub-options status is the bitmask carrying
+the received suboptions and in several bitfields carrying per suboption
+additional info.
 
-[How]
-Similar to DPP, add a HUBP reset function which is called wherever
-HUBP is initialized or powergated.  This function will clear the cursor
-position and attribute cache allowing for proper programming when the
-HUBP is brought back up.
+Zeroing the bitmask before parsing is not enough to ensure a consistent
+status, and the MPTCP code has to additionally clear some bitfiled
+depending on the actually parsed suboption.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+The above schema is fragile, and syzbot managed to trigger a path where
+a relevant bitfield is not cleared/initialized:
+
+  BUG: KMSAN: uninit-value in __mptcp_expand_seq net/mptcp/options.c:1030 [inline]
+  BUG: KMSAN: uninit-value in mptcp_expand_seq net/mptcp/protocol.h:864 [inline]
+  BUG: KMSAN: uninit-value in ack_update_msk net/mptcp/options.c:1060 [inline]
+  BUG: KMSAN: uninit-value in mptcp_incoming_options+0x2036/0x3d30 net/mptcp/options.c:1209
+   __mptcp_expand_seq net/mptcp/options.c:1030 [inline]
+   mptcp_expand_seq net/mptcp/protocol.h:864 [inline]
+   ack_update_msk net/mptcp/options.c:1060 [inline]
+   mptcp_incoming_options+0x2036/0x3d30 net/mptcp/options.c:1209
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_established+0x1061/0x2510 net/ipv4/tcp_input.c:6264
+   tcp_v4_do_rcv+0x7f3/0x11a0 net/ipv4/tcp_ipv4.c:1916
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
+   do_softirq+0x9a/0x100 kernel/softirq.c:462
+   __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:389
+   local_bh_enable include/linux/bottom_half.h:33 [inline]
+   rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
+   __dev_queue_xmit+0x2758/0x57d0 net/core/dev.c:4493
+   dev_queue_xmit include/linux/netdevice.h:3168 [inline]
+   neigh_hh_output include/net/neighbour.h:523 [inline]
+   neigh_output include/net/neighbour.h:537 [inline]
+   ip_finish_output2+0x187c/0x1b70 net/ipv4/ip_output.c:236
+   __ip_finish_output+0x287/0x810
+   ip_finish_output+0x4b/0x600 net/ipv4/ip_output.c:324
+   NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+   ip_output+0x15f/0x3f0 net/ipv4/ip_output.c:434
+   dst_output include/net/dst.h:450 [inline]
+   ip_local_out net/ipv4/ip_output.c:130 [inline]
+   __ip_queue_xmit+0x1f2a/0x20d0 net/ipv4/ip_output.c:536
+   ip_queue_xmit+0x60/0x80 net/ipv4/ip_output.c:550
+   __tcp_transmit_skb+0x3cea/0x4900 net/ipv4/tcp_output.c:1468
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Uninit was stored to memory at:
+   mptcp_get_options+0x2c0f/0x2f20 net/mptcp/options.c:397
+   mptcp_incoming_options+0x19a/0x3d30 net/mptcp/options.c:1150
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_established+0x1061/0x2510 net/ipv4/tcp_input.c:6264
+   tcp_v4_do_rcv+0x7f3/0x11a0 net/ipv4/tcp_ipv4.c:1916
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
+
+  Uninit was stored to memory at:
+   put_unaligned_be32 include/linux/unaligned.h:68 [inline]
+   mptcp_write_options+0x17f9/0x3100 net/mptcp/options.c:1417
+   mptcp_options_write net/ipv4/tcp_output.c:465 [inline]
+   tcp_options_write+0x6d9/0xe90 net/ipv4/tcp_output.c:759
+   __tcp_transmit_skb+0x294b/0x4900 net/ipv4/tcp_output.c:1414
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Uninit was stored to memory at:
+   mptcp_pm_add_addr_signal+0x3d7/0x4c0
+   mptcp_established_options_add_addr net/mptcp/options.c:666 [inline]
+   mptcp_established_options+0x1b9b/0x3a00 net/mptcp/options.c:884
+   tcp_established_options+0x2c4/0x7d0 net/ipv4/tcp_output.c:1012
+   __tcp_transmit_skb+0x5b7/0x4900 net/ipv4/tcp_output.c:1333
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Uninit was stored to memory at:
+   mptcp_pm_add_addr_received+0x95f/0xdd0 net/mptcp/pm.c:235
+   mptcp_incoming_options+0x2983/0x3d30 net/mptcp/options.c:1169
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_state_process+0x2a38/0x49d0 net/ipv4/tcp_input.c:6972
+   tcp_v4_do_rcv+0xbf9/0x11a0 net/ipv4/tcp_ipv4.c:1939
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
+
+  Local variable mp_opt created at:
+   mptcp_incoming_options+0x119/0x3d30 net/mptcp/options.c:1127
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+
+The current schema is too fragile; address the issue grouping all the
+state-related data together and clearing the whole group instead of
+just the bitmask. This also cleans-up the code a bit, as there is no
+need to individually clear "random" bitfield in a couple of places
+any more.
+
+Fixes: 84dfe3677a6f ("mptcp: send out dedicated ADD_ADDR packet")
 Cc: stable@vger.kernel.org
-Reviewed-by: Sung Lee <sung.lee@amd.com>
-Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/6786ac51.050a0220.216c54.00a7.GAE@google.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/541
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250123-net-mptcp-syzbot-issues-v1-1-af73258a726f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c     |    3 +++
- drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c   |   10 +++++++++-
- drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h   |    2 ++
- drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c   |    1 +
- drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c |    1 +
- drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c   |    3 +++
- drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c   |    3 +++
- drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c   |    1 +
- drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c   |    1 +
- drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c   |    1 +
- drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c |    3 ++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c  |    2 ++
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c  |    2 ++
- drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h             |    2 ++
- 14 files changed, 33 insertions(+), 2 deletions(-)
+ net/mptcp/options.c  |   13 +++++--------
+ net/mptcp/protocol.h |   30 ++++++++++++++++--------------
+ 2 files changed, 21 insertions(+), 22 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-@@ -194,6 +194,9 @@ void dpp_reset(struct dpp *dpp_base)
- 	dpp->filter_h = NULL;
- 	dpp->filter_v = NULL;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -108,7 +108,6 @@ static void mptcp_parse_option(const str
+ 			mp_opt->suboptions |= OPTION_MPTCP_DSS;
+ 			mp_opt->use_map = 1;
+ 			mp_opt->mpc_map = 1;
+-			mp_opt->use_ack = 0;
+ 			mp_opt->data_len = get_unaligned_be16(ptr);
+ 			ptr += 2;
+ 		}
+@@ -157,11 +156,6 @@ static void mptcp_parse_option(const str
+ 		pr_debug("DSS\n");
+ 		ptr++;
  
-+	memset(&dpp_base->pos, 0, sizeof(dpp_base->pos));
-+	memset(&dpp_base->att, 0, sizeof(dpp_base->att));
-+
- 	memset(&dpp->scl_data, 0, sizeof(dpp->scl_data));
- 	memset(&dpp->pwl_data, 0, sizeof(dpp->pwl_data));
- }
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
-@@ -532,6 +532,12 @@ void hubp1_dcc_control(struct hubp *hubp
- 			SECONDARY_SURFACE_DCC_IND_64B_BLK, dcc_ind_64b_blk);
- }
+-		/* we must clear 'mpc_map' be able to detect MP_CAPABLE
+-		 * map vs DSS map in mptcp_incoming_options(), and reconstruct
+-		 * map info accordingly
+-		 */
+-		mp_opt->mpc_map = 0;
+ 		flags = (*ptr++) & MPTCP_DSS_FLAG_MASK;
+ 		mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+ 		mp_opt->dsn64 = (flags & MPTCP_DSS_DSN64) != 0;
+@@ -369,8 +363,11 @@ void mptcp_get_options(const struct sk_b
+ 	const unsigned char *ptr;
+ 	int length;
  
-+void hubp_reset(struct hubp *hubp)
-+{
-+	memset(&hubp->pos, 0, sizeof(hubp->pos));
-+	memset(&hubp->att, 0, sizeof(hubp->att));
-+}
-+
- void hubp1_program_surface_config(
- 	struct hubp *hubp,
- 	enum surface_pixel_format format,
-@@ -1337,8 +1343,9 @@ static void hubp1_wait_pipe_read_start(s
+-	/* initialize option status */
+-	mp_opt->suboptions = 0;
++	/* Ensure that casting the whole status to u32 is efficient and safe */
++	BUILD_BUG_ON(sizeof_field(struct mptcp_options_received, status) != sizeof(u32));
++	BUILD_BUG_ON(!IS_ALIGNED(offsetof(struct mptcp_options_received, status),
++				 sizeof(u32)));
++	*(u32 *)&mp_opt->status = 0;
  
- void hubp1_init(struct hubp *hubp)
- {
--	//do nothing
-+	hubp_reset(hubp);
- }
-+
- static const struct hubp_funcs dcn10_hubp_funcs = {
- 	.hubp_program_surface_flip_and_addr =
- 			hubp1_program_surface_flip_and_addr,
-@@ -1351,6 +1358,7 @@ static const struct hubp_funcs dcn10_hub
- 	.hubp_set_vm_context0_settings = hubp1_set_vm_context0_settings,
- 	.set_blank = hubp1_set_blank,
- 	.dcc_control = hubp1_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_hubp_blank_en = hubp1_set_hubp_blank_en,
- 	.set_cursor_attributes	= hubp1_cursor_set_attributes,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h
-@@ -746,6 +746,8 @@ void hubp1_dcc_control(struct hubp *hubp
- 		bool enable,
- 		enum hubp_ind_block_size independent_64b_blks);
- 
-+void hubp_reset(struct hubp *hubp);
-+
- bool hubp1_program_surface_flip_and_addr(
- 	struct hubp *hubp,
- 	const struct dc_plane_address *address,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-@@ -1660,6 +1660,7 @@ static struct hubp_funcs dcn20_hubp_func
- 	.set_blank = hubp2_set_blank,
- 	.set_blank_regs = hubp2_set_blank_regs,
- 	.dcc_control = hubp2_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
- 	.set_cursor_position	= hubp2_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c
-@@ -121,6 +121,7 @@ static struct hubp_funcs dcn201_hubp_fun
- 	.set_cursor_position	= hubp1_cursor_set_position,
- 	.set_blank = hubp1_set_blank,
- 	.dcc_control = hubp1_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.hubp_clk_cntl = hubp1_clk_cntl,
- 	.hubp_vtg_sel = hubp1_vtg_sel,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c
-@@ -811,6 +811,8 @@ static void hubp21_init(struct hubp *hub
- 	struct dcn21_hubp *hubp21 = TO_DCN21_HUBP(hubp);
- 	//hubp[i].HUBPREQ_DEBUG.HUBPREQ_DEBUG[26] = 1;
- 	REG_WRITE(HUBPREQ_DEBUG, 1 << 26);
-+
-+	hubp_reset(hubp);
- }
- static struct hubp_funcs dcn21_hubp_funcs = {
- 	.hubp_enable_tripleBuffer = hubp2_enable_triplebuffer,
-@@ -823,6 +825,7 @@ static struct hubp_funcs dcn21_hubp_func
- 	.hubp_set_vm_system_aperture_settings = hubp21_set_vm_system_aperture_settings,
- 	.set_blank = hubp1_set_blank,
- 	.dcc_control = hubp1_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = hubp21_set_viewport,
- 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
- 	.set_cursor_position	= hubp1_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
-@@ -483,6 +483,8 @@ void hubp3_init(struct hubp *hubp)
- 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
- 	//hubp[i].HUBPREQ_DEBUG.HUBPREQ_DEBUG[26] = 1;
- 	REG_WRITE(HUBPREQ_DEBUG, 1 << 26);
-+
-+	hubp_reset(hubp);
- }
- 
- static struct hubp_funcs dcn30_hubp_funcs = {
-@@ -497,6 +499,7 @@ static struct hubp_funcs dcn30_hubp_func
- 	.set_blank = hubp2_set_blank,
- 	.set_blank_regs = hubp2_set_blank_regs,
- 	.dcc_control = hubp3_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
- 	.set_cursor_position	= hubp2_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-@@ -79,6 +79,7 @@ static struct hubp_funcs dcn31_hubp_func
- 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
- 	.set_blank = hubp2_set_blank,
- 	.dcc_control = hubp3_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
- 	.set_cursor_position	= hubp2_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
-@@ -181,6 +181,7 @@ static struct hubp_funcs dcn32_hubp_func
- 	.set_blank = hubp2_set_blank,
- 	.set_blank_regs = hubp2_set_blank_regs,
- 	.dcc_control = hubp3_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_cursor_attributes	= hubp32_cursor_set_attributes,
- 	.set_cursor_position	= hubp2_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c
-@@ -199,6 +199,7 @@ static struct hubp_funcs dcn35_hubp_func
- 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
- 	.set_blank = hubp2_set_blank,
- 	.dcc_control = hubp3_dcc_control,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = min_set_viewport,
- 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
- 	.set_cursor_position	= hubp2_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-@@ -141,7 +141,7 @@ void hubp401_update_mall_sel(struct hubp
- 
- void hubp401_init(struct hubp *hubp)
- {
--	//For now nothing to do, HUBPREQ_DEBUG_DB register is removed on DCN4x.
-+	hubp_reset(hubp);
- }
- 
- void hubp401_vready_at_or_After_vsync(struct hubp *hubp,
-@@ -974,6 +974,7 @@ static struct hubp_funcs dcn401_hubp_fun
- 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
- 	.set_blank = hubp2_set_blank,
- 	.set_blank_regs = hubp2_set_blank_regs,
-+	.hubp_reset = hubp_reset,
- 	.mem_program_viewport = hubp401_set_viewport,
- 	.set_cursor_attributes	= hubp32_cursor_set_attributes,
- 	.set_cursor_position	= hubp401_cursor_set_position,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -1286,6 +1286,7 @@ void dcn10_plane_atomic_power_down(struc
- 		if (hws->funcs.hubp_pg_control)
- 			hws->funcs.hubp_pg_control(hws, hubp->inst, false);
- 
-+		hubp->funcs->hubp_reset(hubp);
- 		dpp->funcs->dpp_reset(dpp);
- 
- 		REG_SET(DC_IP_REQUEST_CNTL, 0,
-@@ -1447,6 +1448,7 @@ void dcn10_init_pipes(struct dc *dc, str
- 		/* Disable on the current state so the new one isn't cleared. */
- 		pipe_ctx = &dc->current_state->res_ctx.pipe_ctx[i];
- 
-+		hubp->funcs->hubp_reset(hubp);
- 		dpp->funcs->dpp_reset(dpp);
- 
- 		pipe_ctx->stream_res.tg = tg;
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -787,6 +787,7 @@ void dcn35_init_pipes(struct dc *dc, str
- 		/* Disable on the current state so the new one isn't cleared. */
- 		pipe_ctx = &dc->current_state->res_ctx.pipe_ctx[i];
- 
-+		hubp->funcs->hubp_reset(hubp);
- 		dpp->funcs->dpp_reset(dpp);
- 
- 		pipe_ctx->stream_res.tg = tg;
-@@ -940,6 +941,7 @@ void dcn35_plane_atomic_disable(struct d
- /*to do, need to support both case*/
- 	hubp->power_gated = true;
- 
-+	hubp->funcs->hubp_reset(hubp);
- 	dpp->funcs->dpp_reset(dpp);
- 
- 	pipe_ctx->stream = NULL;
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h
-@@ -152,6 +152,8 @@ struct hubp_funcs {
- 	void (*dcc_control)(struct hubp *hubp, bool enable,
- 			enum hubp_ind_block_size blk_size);
- 
-+	void (*hubp_reset)(struct hubp *hubp);
-+
- 	void (*mem_program_viewport)(
- 			struct hubp *hubp,
- 			const struct rect *viewport,
+ 	length = (th->doff * 4) - sizeof(struct tcphdr);
+ 	ptr = (const unsigned char *)(th + 1);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -149,22 +149,24 @@ struct mptcp_options_received {
+ 	u32	subflow_seq;
+ 	u16	data_len;
+ 	__sum16	csum;
+-	u16	suboptions;
++	struct_group(status,
++		u16 suboptions;
++		u16 use_map:1,
++		    dsn64:1,
++		    data_fin:1,
++		    use_ack:1,
++		    ack64:1,
++		    mpc_map:1,
++		    reset_reason:4,
++		    reset_transient:1,
++		    echo:1,
++		    backup:1,
++		    deny_join_id0:1,
++		    __unused:2;
++	);
++	u8	join_id;
+ 	u32	token;
+ 	u32	nonce;
+-	u16	use_map:1,
+-		dsn64:1,
+-		data_fin:1,
+-		use_ack:1,
+-		ack64:1,
+-		mpc_map:1,
+-		reset_reason:4,
+-		reset_transient:1,
+-		echo:1,
+-		backup:1,
+-		deny_join_id0:1,
+-		__unused:2;
+-	u8	join_id;
+ 	u64	thmac;
+ 	u8	hmac[MPTCPOPT_HMAC_LEN];
+ 	struct mptcp_addr_info addr;
 
 
 
