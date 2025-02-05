@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A55AA28EB3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C94FA292FC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD8F37A0604
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1CFC188FD92
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8672786348;
-	Wed,  5 Feb 2025 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C685F194C96;
+	Wed,  5 Feb 2025 14:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gN+hmirm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I38lLQVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431E61519BE;
-	Wed,  5 Feb 2025 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C32193404;
+	Wed,  5 Feb 2025 14:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764983; cv=none; b=jinbvY3eFu66s3cMIRRQaW5wCCDV6Lt8mJC4qUz3/iv0pbjX1rxsT0oYmfW4YuQtPiUdHp4xC5qnv3cyLHHRG5mTGO4uKrUqcLanCpEU+9SwQEOTCR0dTTnqL7ICiduXwtolCIa7VWtW/eetXidnWUdgBj9yvegYtUXgF2BDaDY=
+	t=1738767390; cv=none; b=ZdYflSJfYttNMjMfSICtkjD/e2hA0FynHOO1GVOjd4lJpqew3rXAmSR3KtyHTg3AEBKkl001UK78lB077YZLfmlpM9n/xxLWFfVqJbGwH0IsZzfQlhGB+gk6IcCzw6ydkJOIoQRcy+ZepHZLGqWdF9hpDoLgsJVkBEapay9ACSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764983; c=relaxed/simple;
-	bh=hba3cf2Fg3hkp7otQv73gNMKCounjCJtlNSI9Lg25E4=;
+	s=arc-20240116; t=1738767390; c=relaxed/simple;
+	bh=/LN8fH9cWnCUxr98pIxwFV0tgG5x/G39lIrEjpLTzJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ado1TdYAMu2T5dwW5iVwq/kmp+11rmPqBT+u+vgTkQ67N7xgjd/Zrm9Cvuy/EAVVo/DFWnKTIU2YXt4EoC5LWLWhH/41jzHTXf71dpiF0QKNeM5eDw0yNqwdfc6hYMZHUU647dkFF9o4esXR4vz8myDsfEwt3yskPN+hG1GlciU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gN+hmirm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EF2C4CED1;
-	Wed,  5 Feb 2025 14:16:22 +0000 (UTC)
+	 MIME-Version; b=ju/BqpBzgEM0HR1B7sRkGnNSAQ33ymFTcHSH+hgQFo9MD1s7fIpUloSe572tEqxBA7DwDYvzSNgUIq6JAFtPOqFoLkT011cfI1yhcJMydwUdOlgwT6S1WrqkoWFCMJZhTlffExCJKGBm2LszHBpkj/Mv1YN5fXwdAbSu121lK+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I38lLQVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF626C4CED1;
+	Wed,  5 Feb 2025 14:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764983;
-	bh=hba3cf2Fg3hkp7otQv73gNMKCounjCJtlNSI9Lg25E4=;
+	s=korg; t=1738767390;
+	bh=/LN8fH9cWnCUxr98pIxwFV0tgG5x/G39lIrEjpLTzJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gN+hmirmGlvJe2BrqAM/6obVE1/99b9+Fjrdp6Xm9WGqwwyjl+xPFYvKp2va1cyqF
-	 8SuPcWdjPvPkdpg6siqPLiovyFETB+WIBdN1KwQbyXdexgDm4PqG2DKkzU599ZksRE
-	 xquJBcFAe5YxaE/Dfi/Czn5aM+Qu5gToVQYqY/gQ=
+	b=I38lLQVxXGOZt7vjUQI40mA5dgzFKUKsxSMXvsKuz4rVVo7WajBuauj6TYk0/c4Sn
+	 2E80xJ99DiKPG6DesYK95Nd4S2CrUIF1SgnY0PBp+vOFdF0U9p1EaNUejc4wIxv8QQ
+	 oy7t7B99Mx344Z47AUUV+cPyZoQy51kSrWXai54Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/393] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie1
+Subject: [PATCH 6.13 398/623] arm64: dts: rockchip: Fix sdmmc access on rk3308-rock-s0 v1.1 boards
 Date: Wed,  5 Feb 2025 14:42:20 +0100
-Message-ID: <20250205134428.763756919@linuxfoundation.org>
+Message-ID: <20250205134511.448087430@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 3d7fdd8e38aafd4858935df2392762c1ab8fb40f ]
+[ Upstream commit 26c100232b09ced0857306ac9831a4fa9c9aa231 ]
 
-The MAC reset for PCIe port 1 on MT8195 when asserted during suspend
-causes the system to hang during resume with the following error (with
-no_console_suspend enabled):
+BootROM leave GPIO4_D6 configured as SDMMC_PWREN function and DW MCI
+driver set PRWEN high on MMC_POWER_UP and low on MMC_POWER_OFF.
+Similarly U-Boot also set PRWEN high before accessing mmc.
 
-  mtk-pcie-gen3 112f8000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
-  mtk-pcie-gen3 112f8000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x24 returns -110
-  mtk-pcie-gen3 112f8000.pcie: PM: failed to resume noirq: error -110
+However, HW revision prior to v1.2 must pull GPIO4_D6 low to access
+sdmmc. For HW revision v1.2 the state of GPIO4_D6 has no impact.
 
-This issue is specific to MT8195. On MT8192 with the PCIe reset,
-MT8192_INFRA_RST4_PCIE_TOP_SWRST, added to the DT node, the issue is not
-observed.
+Model an always-on active low fixed regulator using GPIO4_D6 to fix
+use of sdmmc on older HW revisions of the board.
 
-Since without the reset, the PCIe controller and WiFi card connected to
-it, work just as well, remove the reset to allow the system to suspend
-and resume properly.
-
-Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20241218-mt8195-pcie1-reset-suspend-fix-v1-1-1c021dda42a6@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: adeb5d2a4ba4 ("arm64: dts: rockchip: Add Radxa ROCK S0")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20241119230838.4137130-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ .../boot/dts/rockchip/rk3308-rock-s0.dts      | 25 ++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 5a087404ccc2d..1cb22257adb36 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -1572,9 +1572,6 @@
- 			phy-names = "pcie-phy";
- 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P1>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
+index bd6419a5c20a2..8311af4c8689f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
+@@ -74,6 +74,23 @@
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
  
--			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P1_SWRST>;
--			reset-names = "mac";
--
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 7>;
- 			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
++	/*
++	 * HW revision prior to v1.2 must pull GPIO4_D6 low to access sdmmc.
++	 * This is modeled as an always-on active low fixed regulator.
++	 */
++	vcc_sd: regulator-3v3-vcc-sd {
++		compatible = "regulator-fixed";
++		gpios = <&gpio4 RK_PD6 GPIO_ACTIVE_LOW>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&sdmmc_2030>;
++		regulator-name = "vcc_sd";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc_io>;
++	};
++
+ 	vcc5v0_sys: regulator-5v0-vcc-sys {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc5v0_sys";
+@@ -181,6 +198,12 @@
+ 		};
+ 	};
+ 
++	sdmmc {
++		sdmmc_2030: sdmmc-2030 {
++			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	wifi {
+ 		wifi_reg_on: wifi-reg-on {
+ 			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+@@ -233,7 +256,7 @@
+ 	cap-mmc-highspeed;
+ 	cap-sd-highspeed;
+ 	disable-wp;
+-	vmmc-supply = <&vcc_io>;
++	vmmc-supply = <&vcc_sd>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.39.5
 
