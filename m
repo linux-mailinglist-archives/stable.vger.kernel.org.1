@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-113029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC59CA28FA4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE47A2928D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11AEC3A5FD6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A3016BAD6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFC0155382;
-	Wed,  5 Feb 2025 14:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E941FC0F5;
+	Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcJdAh09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/7knL3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E02C8634E;
-	Wed,  5 Feb 2025 14:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50A1FC0EF;
+	Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765580; cv=none; b=XGzbDA9ZiLeyT0kbWAdHEpm0WW4/rnzlLyVt46+BRng7EGY5CpODz3DERZD1qIrURKvUvytOZ2ijHZDsLA9wbQyjDzKclMQRUVH7FwE2PcdRW3n+KoyC2YNmjuBilDaSGPb1Wr4brHVRne8cNt4KT19F6En7tcbhMM3MfuIEImY=
+	t=1738767225; cv=none; b=R9u9FeVOwtOEbPFVbAOc2jhM+NBlKg8v71jaTuShk5EdaJ/s/fIPbtpPwbKaGcfgte/yWkOJbBybTivr+ul2I9HE5BWOB5v9ayM6A24/xhJqvZLMDSaPgC4IdMuNvOvvTUAB34TV+1FVle2289Zr390Jf2Y+gl5s0d81o4AXJZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765580; c=relaxed/simple;
-	bh=fvhAqaOZG8Eiid/B7EP0z65+1QLpv7hdSQtMyMUyyxg=;
+	s=arc-20240116; t=1738767225; c=relaxed/simple;
+	bh=vY0UNt7kkwYb1NyMHZxmDacTyuY8bpWejtj2lM20F/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr2Vb7M8IgQyVGqYrp4MOB3kXfCAqYTcEOdXw1tI2aJMGa/CTNntFvT+OjhyLZX5WnwH8jx8Q4oW0m6/92MqQiYe9BjSH16EqU2sCYjgFgpOfDuNwtp7EdSUgRk9OEMoibLJpRRjnT7v0zG3AJH4/ZiTHL6u0nGUYT8z76DGQHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcJdAh09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B98C4CED1;
-	Wed,  5 Feb 2025 14:26:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q2iW1Wkpx/Ej1jB+yDegA5Nnq/7ZUIe2sM3EHPqThwtD3IcObPGHIoEJuJkaujaKhdpLTVsNsHCAdDUPzE3M5WHqGzzzyvSt59f3+yJQOKxpkilim18+uzjTH0o7S0nN4CkgLyAafCILhm8JaX4dotkkoxmVfrKKAVSs/Q6DP5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/7knL3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2BFC4CED1;
+	Wed,  5 Feb 2025 14:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765580;
-	bh=fvhAqaOZG8Eiid/B7EP0z65+1QLpv7hdSQtMyMUyyxg=;
+	s=korg; t=1738767225;
+	bh=vY0UNt7kkwYb1NyMHZxmDacTyuY8bpWejtj2lM20F/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcJdAh09gyZJAJ5dUuDyLmHoBeEbO6gqrGaB0gta5caXv9u4EQoQlIv+b3U7Xfzsp
-	 +H0FKqK0zE2yM0y+AmB9r2kKySn7c1BpCoKj4fTDax4oMM9trRLaQ9dQfS8t7kKpMO
-	 VAphbAs2Od5FZX8WrX5VAh/el5KuWWwVzA/VJnSc=
+	b=o/7knL3pEmX2NXiNi36MPmTmTCCo+RpcLlZaZmaFVBLxIS9amqMEl/ZLVBuAbLudQ
+	 UNYXjU0SJL4K7poRlm9gtdsgFDdWLFNwKGjXwFRN18NfGRNy1DqJ84qamRcbmpj7Wb
+	 4sdQ+USCht8A4bjaybALE36LXdNhx8whvRSFJ7qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wronek <davidwronek@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/393] arm64: dts: qcom: Add SM7125 device tree
-Date: Wed,  5 Feb 2025 14:43:00 +0100
-Message-ID: <20250205134430.297498452@linuxfoundation.org>
+Subject: [PATCH 6.12 426/590] PCI: imx6: Skip controller_id generation logic for i.MX7D
+Date: Wed,  5 Feb 2025 14:43:01 +0100
+Message-ID: <20250205134511.562868350@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wronek <davidwronek@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 72fbf05149bd451e7222c2ed1e3823972f19df9c ]
+[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
 
-The Snapdragon 720G (sm7125) is software-wise very similar to the
-Snapdragon 7c with minor differences in clock speeds and as added here,
-it uses the Kryo 465 instead of Kryo 468.
+The i.MX7D only has one PCIe controller, so controller_id should always be
+0. The previous code is incorrect although yielding the correct result.
 
-Signed-off-by: David Wronek <davidwronek@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230824091737.75813-4-davidwronek@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 092febd32a99 ("arm64: dts: qcom: sc7180: fix psci power domain node names")
+Fix by removing "IMX7D" from the switch case branch.
+
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm7125.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm7125.dtsi
+ drivers/pci/controller/dwc/pci-imx6.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7125.dtsi b/arch/arm64/boot/dts/qcom/sm7125.dtsi
-new file mode 100644
-index 0000000000000..12dd72859a433
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm7125.dtsi
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2021, The Linux Foundation. All rights reserved.
-+ */
-+
-+#include "sc7180.dtsi"
-+
-+/* SM7125 uses Kryo 465 instead of Kryo 468 */
-+&CPU0 { compatible = "qcom,kryo465"; };
-+&CPU1 { compatible = "qcom,kryo465"; };
-+&CPU2 { compatible = "qcom,kryo465"; };
-+&CPU3 { compatible = "qcom,kryo465"; };
-+&CPU4 { compatible = "qcom,kryo465"; };
-+&CPU5 { compatible = "qcom,kryo465"; };
-+&CPU6 { compatible = "qcom,kryo465"; };
-+&CPU7 { compatible = "qcom,kryo465"; };
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 9d61e7c472082..22bf21846b79d 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1393,7 +1393,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 	switch (imx_pcie->drvdata->variant) {
+ 	case IMX8MQ:
+ 	case IMX8MQ_EP:
+-	case IMX7D:
+ 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx_pcie->controller_id = 1;
+ 		break;
 -- 
 2.39.5
 
