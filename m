@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD8FA28D5B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CA9A28E04
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949561889DB5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9833A19A5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EBA1519AA;
-	Wed,  5 Feb 2025 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CE82E634;
+	Wed,  5 Feb 2025 14:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMdKh2qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEGBx0Lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE8513C9C4;
-	Wed,  5 Feb 2025 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E997F510;
+	Wed,  5 Feb 2025 14:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763949; cv=none; b=Eqz41yhCDDibN6RAzYuUBLjsbmANw2cqPQmqeus7YfVfKn5+hYFzEr7NZx0hvLPi3G3vfOgfcbQwW2AJz3LvnE2kRvyO9WW8fwKeYQae9/XE6hP44casak1XjLfcqp+Ho2k/pUTYbDtbWuoTlOEcgri/xr45/h4gzGbZI6Cat+0=
+	t=1738764412; cv=none; b=u2HdpeEWDWfQ7E5HlTo65Ur3CYGXNBL49+AZzsoJMHa+IeYhlFMxnp+R5K6B6ejySnQIkGudXQI7jnovTkwbVH9m0TAIZchtRyH0s2TPg0etIj+b0FASiAjqe+F4vBvMbLPFHRojk+LiKxv2sHsGtZcD9OL9SK9g73i7VYGC7c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763949; c=relaxed/simple;
-	bh=NZXp70OzpNF6MP8oisAvF2c5YgiN26Szkt2gg5KSAik=;
+	s=arc-20240116; t=1738764412; c=relaxed/simple;
+	bh=oAXfLkoWBJTMOKmWDG6h+9yuURUrLdDO3i4pMlMyv3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g93s+vWA1zE95IQvLi3+r3Nz0k4ge8Sm8ckSigyKJGsqswHkJGiPqLC07Q4y/CYOs7DOC3Ub+JMP1VCdkMFCmpaG7ShO75KoBixH6ui6BjbRjoPnrAWJf0IBdasmRqvB+wflVgrGNm8/riipLHaxkBXf9bXK78qGrl7hGGTV5Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMdKh2qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8490FC4CED1;
-	Wed,  5 Feb 2025 13:59:08 +0000 (UTC)
+	 MIME-Version; b=m1DHyT1cd+FMwP8EYNYNjX8Jj0eBtxBYBVmaAiuxXJQXDRuI3GHPfPDvs49D7BEtaLUeXfvyCi0VFk/YuUFkuw5X/ljOl7r8PARU8aTwSqGGeuP5/7D6xrsaQ0mUfI6dne8wuRmOD6jIE6qfmhiwSbvsxLyGHSKLOLxvY+uL+2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEGBx0Lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78330C4CED1;
+	Wed,  5 Feb 2025 14:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763949;
-	bh=NZXp70OzpNF6MP8oisAvF2c5YgiN26Szkt2gg5KSAik=;
+	s=korg; t=1738764412;
+	bh=oAXfLkoWBJTMOKmWDG6h+9yuURUrLdDO3i4pMlMyv3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMdKh2qcY8jJwXBiJFONVBygQv644I7L4LiADlVx6A9mlUuKhx9zc1CrL65FSBW5z
-	 +AMf4/jCbENQUbRxOUa/gxjTjbJe2BLwnCKhUuFxZGuwhV7qtHe3xzjzI9CBD42i2b
-	 wAz/USSNDQ6uMYSyFxCw7pBoAdNCcE0yNjjN231s=
+	b=UEGBx0Ljm2YUnFR9eQvMc7lC83Wpq7+niQQZvF9aze218PBkmskWd2EaoP/2Is3QS
+	 1D/6q8Z8t0WlfOXfLU5OTEj9tG4zOHieqNSULkByE6ler/FWGLL6qHeioZ69LkkFOv
+	 kqYf3ooQZcWOnLVX3PFzuhr+uXo72VQXMwvDnA0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/590] drm/msm/dpu: link DSPP_2/_3 blocks on SM8550
+Subject: [PATCH 6.13 076/623] drm/msm: dont clean up priv->kms prematurely
 Date: Wed,  5 Feb 2025 14:36:58 +0100
-Message-ID: <20250205134457.667404503@linuxfoundation.org>
+Message-ID: <20250205134459.134206435@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit e21f9d85b05361bc343b11ecf84ac12c9cccbc3e ]
+[ Upstream commit ebc0deda3c2948d40419677d388b4e6081688a06 ]
 
-Link DSPP_2 to the LM_2 and DSPP_3 to the LM_3 mixer blocks. This allows
-using colour transformation matrix (aka night mode) with more outputs at
-the same time.
+MSM display drivers provide kms structure allocated during probe().
+Don't clean up priv->kms field in case of an error. Otherwise probe
+functions might fail after KMS probe deferral.
 
-Fixes: efcd0107727c ("drm/msm/dpu: add support for SM8550")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: a2ab5d5bb6b1 ("drm/msm: allow passing struct msm_kms to msm_drv_probe()")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/629961/
-Link: https://lore.kernel.org/r/20241220-dpu-fix-catalog-v2-6-38fa961ea992@linaro.org
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 506efcba3129 ("drm/msm: carve out KMS code from msm_drv.c")
+Patchwork: https://patchwork.freedesktop.org/patch/590411/
+Link: https://lore.kernel.org/r/20240420-mdp4-fixes-v1-1-96a70f64fa85@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/msm_kms.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-index ad48defa154f7..a1dbbf5c652ff 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-@@ -160,6 +160,7 @@ static const struct dpu_lm_cfg sm8550_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_3,
- 		.pingpong = PINGPONG_2,
-+		.dspp = DSPP_2,
- 	}, {
- 		.name = "lm_3", .id = LM_3,
- 		.base = 0x47000, .len = 0x320,
-@@ -167,6 +168,7 @@ static const struct dpu_lm_cfg sm8550_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_2,
- 		.pingpong = PINGPONG_3,
-+		.dspp = DSPP_3,
- 	}, {
- 		.name = "lm_4", .id = LM_4,
- 		.base = 0x48000, .len = 0x320,
+diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
+index f3326d09bdbce..4cfad12f4dc1f 100644
+--- a/drivers/gpu/drm/msm/msm_kms.c
++++ b/drivers/gpu/drm/msm/msm_kms.c
+@@ -244,7 +244,6 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
+ 	ret = priv->kms_init(ddev);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "failed to load kms\n");
+-		priv->kms = NULL;
+ 		return ret;
+ 	}
+ 
 -- 
 2.39.5
 
