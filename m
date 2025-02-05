@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409D7A28CF0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8601BA28C5E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA291664F8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 858BB7A4CAF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668EB13C9C4;
-	Wed,  5 Feb 2025 13:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDECB640;
+	Wed,  5 Feb 2025 13:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Up5Yw41n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdNKDpMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AAF14A4E9;
-	Wed,  5 Feb 2025 13:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0731494DF;
+	Wed,  5 Feb 2025 13:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763744; cv=none; b=OusRB5aFl+RBXIiP9hVLe6QXR1oA9SOHH3TvL9JBQ6/C1Eh9hOMz6TYW+kNW1EPT5+4BeCaUxAPJxOw/Moat/he1asn+cOeNNTpGYA1QXabkzMmCc13Ay+3Gq3fxVC/0dqI3ru172o+VgQfw0JOGtZiN5RESZIrwguwd32T9Rdg=
+	t=1738763167; cv=none; b=cABOmygxl47BYfZs62YOcWUuG0D02pk60HO5bHtcPI5ASLh47+VFrW+v7HBU44+wyEbsQEK4FNk0z9V8+jXR6z7vCk0P7xd3Ux5QnchncXYXxUicpRVoUA7OBFT8Oi0pksfonrUGeH9d6jBk/0O/bFysl+o0kvL1HZLTzh0tHtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763744; c=relaxed/simple;
-	bh=MKMB5Q7L14StdL2Bj9EO3r9CcVA3cczFQE48XvceKOA=;
+	s=arc-20240116; t=1738763167; c=relaxed/simple;
+	bh=DUwzIN6x3MN4ybT9THz/XR78+7uSM0q3TnREs5F8chc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hV44WiOinWfRRiD8FnxoEXajciB223rWgnv/lqm6FFBhZrgi/EQQ2bxAVJunKirJUgSlBqdgJR3lCTWW+wBtPiHGMcB7GFY9nP2VHN+syPDBZmyMnbjND7XlCDjWV+pZY3Df8q9GgRWw1iK0nDVybJqIzkmsS2TRLurIFT6Gk1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Up5Yw41n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD4AC4CED1;
-	Wed,  5 Feb 2025 13:55:43 +0000 (UTC)
+	 MIME-Version; b=YnL2RWEVxUvE4d6Wr5kbU128IhZyIIl1uVwz4f8EpjtMnuRKDCMljZWxWqWJbN1cuo5e4bOXguG0d0kLcAbQfEnTyJccMLhQidezKZX0tiv/+gak87GklSNkBiguPIKvKgmxDjZeSNF2mAXs5H+Nbk1fLV6w3B7zf8Z8Cr+vkR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdNKDpMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E46C4CED1;
+	Wed,  5 Feb 2025 13:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763744;
-	bh=MKMB5Q7L14StdL2Bj9EO3r9CcVA3cczFQE48XvceKOA=;
+	s=korg; t=1738763167;
+	bh=DUwzIN6x3MN4ybT9THz/XR78+7uSM0q3TnREs5F8chc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Up5Yw41nsgX5hbqFVXlu+eTvcDoyvzAXjOQYi29R7/yVmRcQwUSvq7ovA6l5lb2gg
-	 KOKL7Q9VemaB83zXwWgm5XY0c3kS/8iLQ0EIL6EHI0uVAGrLZldZX1xwfePl5d3YzM
-	 LW2PB13zkuFBQ4K5IpgAawbfKR8q0VMKCzHWo4bA=
+	b=SdNKDpMZQZgEavMDb9XLdNy9NJetQlYF9avJJacJ9vxy/+5cbyjDTmxUiEvLDcEby
+	 fmN1vZPIkdYzdNC0ONLEdUJAYhAFCB0Jdg+sICwFYKibvZchF1CzRCQlzCbW483ttE
+	 rpjIIWNd/HBr5zp+I0HckKNGWXUqIXBYsZhpUuFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Kees Cook <kees@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 014/623] pstore/blk: trivial typo fixes
-Date: Wed,  5 Feb 2025 14:35:56 +0100
-Message-ID: <20250205134456.774987611@linuxfoundation.org>
+Subject: [PATCH 6.12 002/590] powerpc/book3s64/hugetlb: Fix disabling hugetlb when fadump is active
+Date: Wed,  5 Feb 2025 14:35:57 +0100
+Message-ID: <20250205134455.323235319@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@linaro.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 542243af7182efaeaf6d0f4643f7de437541a9af ]
+[ Upstream commit d629d7a8efc33d05d62f4805c0ffb44727e3d99f ]
 
-Fix trivial typos in comments.
+Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
+is active") disabled hugetlb support when fadump is active by returning
+early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
+populating hpage_shift/HPAGE_SHIFT.
 
-Fixes: 2a03ddbde1e1 ("pstore/blk: Move verify_size() macro out of function")
-Fixes: 17639f67c1d6 ("pstore/blk: Introduce backend for block devices")
-Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-Link: https://lore.kernel.org/r/20250101111921.850406-1-eugen.hristev@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
+early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
+which inadvertently re-enabled hugetlb support when fadump is active.
+
+Fix this by implementing hugepages_supported() on powerpc. This ensures
+that disabling hugetlb for the fadump kernel is independent of
+hpage_shift/HPAGE_SHIFT.
+
+Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241217074640.1064510-1-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/blk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/pstore/blk.c b/fs/pstore/blk.c
-index 65b2473e22ff9..fa6b8cb788a1f 100644
---- a/fs/pstore/blk.c
-+++ b/fs/pstore/blk.c
-@@ -89,7 +89,7 @@ static struct pstore_device_info *pstore_device_info;
- 		_##name_ = check_size(name, alignsize);		\
- 	else							\
- 		_##name_ = 0;					\
--	/* Synchronize module parameters with resuls. */	\
-+	/* Synchronize module parameters with results. */	\
- 	name = _##name_ / 1024;					\
- 	dev->zone.name = _##name_;				\
- }
-@@ -121,7 +121,7 @@ static int __register_pstore_device(struct pstore_device_info *dev)
- 	if (pstore_device_info)
- 		return -EBUSY;
+diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+index 18a3028ac3b6d..dad2e7980f245 100644
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -15,6 +15,15 @@
  
--	/* zero means not limit on which backends to attempt to store. */
-+	/* zero means no limit on which backends attempt to store. */
- 	if (!dev->flags)
- 		dev->flags = UINT_MAX;
+ extern bool hugetlb_disabled;
  
++static inline bool hugepages_supported(void)
++{
++	if (hugetlb_disabled)
++		return false;
++
++	return HPAGE_SHIFT != 0;
++}
++#define hugepages_supported hugepages_supported
++
+ void __init hugetlbpage_init_defaultsize(void);
+ 
+ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
 -- 
 2.39.5
 
