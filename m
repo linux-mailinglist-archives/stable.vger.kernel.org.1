@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC17A29314
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23486A28ECB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E90A188B995
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6921167098
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8C71DB363;
-	Wed,  5 Feb 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F0C8632B;
+	Wed,  5 Feb 2025 14:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBa/uEUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz/OpGOm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8711DB125;
-	Wed,  5 Feb 2025 14:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575F1519AA;
+	Wed,  5 Feb 2025 14:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767429; cv=none; b=l6Zlpeft9pJaQw28wAWgtWzeg6Imimc8XETgZSnbuML7IdUrUVURrQhuB/Z7cemgTprCHgDAV0iSbLKeTmXREgQQWgq9UprhCPm8WuK4w/+bzZkfwgLGad7rEPbYjF5K9uPpSAkilZe9rARp2zpQs+nFjC+fSbC2e5yFDsrx/oU=
+	t=1738765034; cv=none; b=tDzo6fgXlKBraY3nF8dSw02o+brhns6hG5UYecA1qSH0xfHtVIQDtkuLn4Saq1iHY2xRVfNrwtp4MXbgtMwJAIE7XiosYqfRKKvhXvROgRvS5L2e9Lh9i7ORFe+vE7PyMDb3DPirn6f1++hYB154LTKHTwLaasdU6gy7vkjk8Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767429; c=relaxed/simple;
-	bh=PW201XdSr4qF+69l0vNmD8+2Y079r7CrAWn9M5sMWes=;
+	s=arc-20240116; t=1738765034; c=relaxed/simple;
+	bh=4RDQNuxMYfXxtyUokhn+lSWy9jo/k9OiiLY6vFvY76M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPnEBpZB37tzUfvtL9gEjVEvSIvItjs0MN1BO7rlDYhlEbpV95+7pPHuZhtB+79JXC9L7OcdMdSNTB0cFqD3PbUf7+n3hjLungwJbfe5FihxgRRlnwA7Ex1/Fn8FpsXF7WuQDU1ovzQzw3n3KlL58vsDYzcw+8MM3DpmnOz/Da8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBa/uEUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EB7C4CEDD;
-	Wed,  5 Feb 2025 14:57:08 +0000 (UTC)
+	 MIME-Version; b=n/47V3N2Nhoentv+FTrn3W/mfMzl1XCKhnF6zjG5IvAXoeQOC6LSCky/7EHe6UkU2XkEg6yCjuLj6QyqqJFTK+hWZ2TVdo7EDvbU62hsSg8ACj6yIyK4qeMfqGvgt+LubKmxfZKqJ9sTRHJHkEB+cr5fq3J9N54B7SzYp5fSbLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz/OpGOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF57DC4CED1;
+	Wed,  5 Feb 2025 14:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767428;
-	bh=PW201XdSr4qF+69l0vNmD8+2Y079r7CrAWn9M5sMWes=;
+	s=korg; t=1738765034;
+	bh=4RDQNuxMYfXxtyUokhn+lSWy9jo/k9OiiLY6vFvY76M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBa/uEUutpRvlKyWLpI0ZPO7sYali1FuWQRgm5cPdPWu/sQp8yav/Dim+0CnW7bRU
-	 30s0JHq6VjtAq5+GLYvnVJNijWpJ+04XTmHNqslOPBGItDOSv7xX04rGdG5qVs5pnM
-	 6cBsqzN0rUkFFh8mxFqLahkFnPT7llbcX6qEj2qc=
+	b=Pz/OpGOm7Tsv6r1IymPHD20YKkdD/lHhKGZ9A3oGnO0XBYgUViJzFOC53GLZNzK/n
+	 3ln/V89p39czwDvZ4SGCYmfY2pRngfekESs2Gkm0Rtkpea6h7uXC7d/erNu6fiDjB4
+	 5cz2Hf431n4RbZ8h6HpSDJ8txCM5qSW/YLZLty/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Marek Vasut <marex@denx.de>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 403/623] arm64: dts: qcom: qcm6490-shift-otter: remove invalid orientation-switch
+Subject: [PATCH 6.6 226/393] arm64: dts: qcom: msm8996-xiaomi-gemini: Fix LP5562 LED1 reg property
 Date: Wed,  5 Feb 2025 14:42:25 +0100
-Message-ID: <20250205134511.638974868@linuxfoundation.org>
+Message-ID: <20250205134428.953894749@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit abb00f0fbf31d71b9f725e58d6a29634175f28a8 ]
+[ Upstream commit 02e784c5023232c48c6ec79b52ac8929d4e4db34 ]
 
-The orientation-switch property is not documented in the PHY bindings,
-remove it.
+The LP5562 led@1 reg property should likely be set to 1 to match
+the unit. Fix it.
 
-This fixes:
-qcm6490-shift-otter.dts: phy@88e3000: 'orientation-switch' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/phy/qcom,usb-snps-femto-v2.yaml#
-
+Fixes: 4ac46b3682c5 ("arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5")
+Signed-off-by: Marek Vasut <marex@denx.de>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-1-1e6880e9dda3@linaro.org
+Link: https://lore.kernel.org/r/20241006022012.366601-1-marex@denx.de
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-index 4667e47a74bc5..75930f9576966 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-@@ -942,8 +942,6 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+index f8e9d90afab00..dbad8f57f2fa3 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+@@ -64,7 +64,7 @@
+ 		};
  
- 	qcom,squelch-detector-bp = <(-2090)>;
- 
--	orientation-switch;
--
- 	status = "okay";
- };
- 
+ 		led@1 {
+-			reg = <0>;
++			reg = <1>;
+ 			chan-name = "button-backlight1";
+ 			led-cur = /bits/ 8 <0x32>;
+ 			max-cur = /bits/ 8 <0xc8>;
 -- 
 2.39.5
 
