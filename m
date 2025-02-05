@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5817EA2920B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B850A29222
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81D7C7A15C1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1055188DFD6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9FC1FC111;
-	Wed,  5 Feb 2025 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492DB1FC10D;
+	Wed,  5 Feb 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BLApNAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elh6Dgkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7993218A6D7;
-	Wed,  5 Feb 2025 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FFA18A6D7;
+	Wed,  5 Feb 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767244; cv=none; b=by8ZNdPLcs2MULTC9v9HJ84PviREIk4QCmA05YgbmSwv8nfJF7YdUutKyQAjgd/LewpODXwSts8v+DlKKOBIRq+zyV86kqOXn9oZUHvSlCA82MWKEWfeXi0GnUKBLY9rEJLTiJ2m0Mu1S9E7TS6VV+A3FHLTw1P+6a0t1EoCZyA=
+	t=1738766810; cv=none; b=jZ+bLrpFwnUJyHk+q5CIt4bDBesD7qR0aDUwcF4O6TUEsm+qXdeqBsvqH3qdrDLm3zDOXJKOA5I5x6R1qXKwIoKuI4EgTfrYOM2JnYa8BWNd1imMMgQdIw1fN8W77/5sYTuogNUvSxiI7DEeUxkxylth40qucfrG/SPwqkSovoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767244; c=relaxed/simple;
-	bh=JiZXV51rkRJJIlqbPpY6nYZbH2OL/lyJkWhHL1AhI20=;
+	s=arc-20240116; t=1738766810; c=relaxed/simple;
+	bh=bw2Cqr+HFtsfEu6E44MC8VRjrbTuOGH2rB9QX2RCDA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdiCH8AaW4mokkkaMDTNADMHPD4JiSoVTTLbq7piE/PaZ7O1bIacfTUCUeESB5udO3qCwCvjb2hLEimrt3b+1PLIB/vI7RBaPq0osbOCgduYh/9r1RYu87y2g3QUNT6hOsR0sKG9D8VZY6KZwdaInatKiXJL7EPJQOJTPOTvDaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BLApNAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E790BC4CED1;
-	Wed,  5 Feb 2025 14:54:03 +0000 (UTC)
+	 MIME-Version; b=SiWXh9zY/AElxmNjompyaYfB5GgIZGoeAa7VN2TerrbYuB0HFkj81roNB463fzzx0B/k9+VC4zRjukv6HEMcPhpQsuQaRWDMO4IS3hg8qwEdSVT/Ek7Lhmbfs756jmdE/LV6Ri1/hjoigeq7nrsNVUS8ef8l3jHJHxB+UDSdxWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elh6Dgkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692E8C4CED1;
+	Wed,  5 Feb 2025 14:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767244;
-	bh=JiZXV51rkRJJIlqbPpY6nYZbH2OL/lyJkWhHL1AhI20=;
+	s=korg; t=1738766809;
+	bh=bw2Cqr+HFtsfEu6E44MC8VRjrbTuOGH2rB9QX2RCDA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0BLApNADh8NebbWqn7pId9lCw508RI46P4JfVyxBqUphLqj/pP8cLJYBLjsZRW+0o
-	 DI3UT8cOT+oqAbI9sHEc6FhDdzBUco2i2bWFdLs5NsYRfw7ck688t6WZlI/TWya9w9
-	 bXY+NktdopnHb2WnoGxBFO3Al/LvbMKuX4Gk2D0Q=
+	b=elh6DgkmbnSqDHCRvzlEr4XZ/XPa7qx0uQfnSh1UxE8vKwuHQEr52TN+SVr1o9vD3
+	 OhcXNvls5m3LLkbarvQ9qFQiIa/QtGtCQajRbqvlA7JNyMv5eJegr5yqqlemJo5x2K
+	 SRLcZGh8vBNt4L7U4iHiNzmE2/WskmCHydG1i3l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bin Liu <b-liu@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 377/623] arm64: dts: qcom: msm8939: correct sleep clock frequency
+Subject: [PATCH 6.12 364/590] arm64: dts: ti: k3-am62a: Remove duplicate GICR reg
 Date: Wed,  5 Feb 2025 14:41:59 +0100
-Message-ID: <20250205134510.642536140@linuxfoundation.org>
+Message-ID: <20250205134509.196285184@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Bryan Brattlof <bb@ti.com>
 
-[ Upstream commit 5c775f586cde4fca3c5591c43b6dc8b243bc304c ]
+[ Upstream commit 6f0232577e260cdbc25508e27bb0b75ade7e7ebc ]
 
-The MSM8939 platform uses PM8916 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+The GIC Redistributor control range is mapped twice. Remove the extra
+entry from the reg range.
 
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-2-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Reported-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-2-758b4d5b4a0a@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 7a6f1eeaa3fc4..7cd5660de1b33 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -34,7 +34,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 		};
- 	};
- 
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index 16a578ae2b412..56945d29e0150 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -18,7 +18,6 @@
+ 		compatible = "arm,gic-v3";
+ 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
+ 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
+-		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
+ 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
+ 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
+ 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
 -- 
 2.39.5
 
