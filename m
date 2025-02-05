@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E252A2939E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19E0A29247
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CEBB3ABC14
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BD97A11E8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A8A16F8E9;
-	Wed,  5 Feb 2025 15:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596351A01BE;
+	Wed,  5 Feb 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSt7eotp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4A97R2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F381C6BE;
-	Wed,  5 Feb 2025 15:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143911891AA;
+	Wed,  5 Feb 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767881; cv=none; b=hyjC3Rx0WRYwXxX+hLLIjSgpQWH7XrJvVcasrBsVvbudmZWQrxICBDe9GENbTYgQroZ09KepyGgYARqRjeE7LMGzYiiUSCz8EmJakesFH6r2BF7ZEsGD6pbyzdLp8OieXQWseWKnSwqXnxxLYI6MLYbmQDsRe8nft+/efU4woKo=
+	t=1738767408; cv=none; b=roGEtAs7vpLwuu1NSn0rlQ6GBmUtaAhrgWLl4geU+eCJIZbDqiablYZ4lO/T/JO7nV/PiDXLCLwvk2RuJskURhoqB0SkPXf4p5QjcmwlcWCG6rCRtnIBjjwWDUAUqX9agbvltRrXqX5xn7IurYOBSa7C+8ZwFCn1M87xhm+nPcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767881; c=relaxed/simple;
-	bh=+Totolw3kj1DxV9w5f+ouYvzR2TmBNaulCaAOBFx7N0=;
+	s=arc-20240116; t=1738767408; c=relaxed/simple;
+	bh=neaEuTZSODSllTJOD3lxeXx4Hp1Diod0nIrZ+0/Xkf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkUEk2qmqXLSukSQDtooTcc1aVZgqvcmnmPesrhyNP6fQNez+u1Z7W4+5LCaotKKZdCvB6XkKfMKI1yGPSHKhYboxl4mbA0rTMriiWKO3b+RUSP+wlw7Lh77/dSDLIjtozGHpPPDDFbJTkStVO7PY9oFdk+Js2+SOYle/XT+uUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSt7eotp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AD4C4CED1;
-	Wed,  5 Feb 2025 15:04:40 +0000 (UTC)
+	 MIME-Version; b=GomICTvg4hdYVUZeyfvJrvrtk9W0mKts5X2FBCBTVnxVyGf2tvQPSMkNMzbNhbck/bUb5KbpK5EJWN+rNWA9vokn3EBpBuVM0lb/kjtiIn1jp46ripa7yJQ13maBptBNvRTM4B64zinkHleByKJKPvNz5Sn1oXwWFStEpilkj04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4A97R2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D345C4CED1;
+	Wed,  5 Feb 2025 14:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767880;
-	bh=+Totolw3kj1DxV9w5f+ouYvzR2TmBNaulCaAOBFx7N0=;
+	s=korg; t=1738767407;
+	bh=neaEuTZSODSllTJOD3lxeXx4Hp1Diod0nIrZ+0/Xkf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSt7eotp3MrgUGMoYTtG20bHWL/6Hb9UcFIdk+R7wxlURro4MZXvLAB/MtcdZEw6g
-	 qHUiI9y2egMbkN4gtaEcojtsxCosj96+GUcLne/X1jWx3A3v43vioCKNbk0WL8+LaJ
-	 9X6paBDhGuHyLYc5Sl29BrBarai8atk0i9eBrRpA=
+	b=A4A97R2+IlFi/CvIOGuia7VMGWzEzdoiZ6zLwjWPMwzysi1AGuUEl7T159maZSZmP
+	 bGTAmkom25aMPFDxjF+JS63TtS/fNjhW9b1yg0GiQ1oujPoF3WGmxAFK6/IKxTrDeL
+	 udvtwHcATR5r0uRWh9bas18mpGU7Ll06xD4bZAo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 466/623] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
+Subject: [PATCH 6.12 453/590] NFSv4.2: fix COPY_NOTIFY xdr buf size calculation
 Date: Wed,  5 Feb 2025 14:43:28 +0100
-Message-ID: <20250205134514.045914186@linuxfoundation.org>
+Message-ID: <20250205134512.596183701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit ef61c7d8d032adb467f99d03ccfaa293b417ac75 ]
+[ Upstream commit e8380c2d06055665b3df6c03964911375d7f9290 ]
 
-Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it should
-be deasserted in imx_pcie_deassert_core_reset().
+We need to include sequence size in the compound.
 
-Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
-Link: https://lore.kernel.org/r/20241126075702.4099164-6-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 0491567b51ef ("NFS: add COPY_NOTIFY operation")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/nfs42xdr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 22bf21846b79d..94f5246b3a720 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -775,6 +775,7 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
- static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
- {
- 	reset_control_deassert(imx_pcie->pciephy_reset);
-+	reset_control_deassert(imx_pcie->apps_reset);
- 
- 	if (imx_pcie->drvdata->core_reset)
- 		imx_pcie->drvdata->core_reset(imx_pcie, false);
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index 9e3ae53e22058..becc3149aa9e5 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -144,9 +144,11 @@
+ 					 decode_putfh_maxsz + \
+ 					 decode_offload_cancel_maxsz)
+ #define NFS4_enc_copy_notify_sz		(compound_encode_hdr_maxsz + \
++					 encode_sequence_maxsz + \
+ 					 encode_putfh_maxsz + \
+ 					 encode_copy_notify_maxsz)
+ #define NFS4_dec_copy_notify_sz		(compound_decode_hdr_maxsz + \
++					 decode_sequence_maxsz + \
+ 					 decode_putfh_maxsz + \
+ 					 decode_copy_notify_maxsz)
+ #define NFS4_enc_deallocate_sz		(compound_encode_hdr_maxsz + \
 -- 
 2.39.5
 
