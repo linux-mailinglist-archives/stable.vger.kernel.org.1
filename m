@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F19BA292AF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF7EA28E06
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2321188B04D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91CC13A1C1F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D559218A6A9;
-	Wed,  5 Feb 2025 14:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5035E14B959;
+	Wed,  5 Feb 2025 14:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ6sVW36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+V8UoZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBA41C6BE;
-	Wed,  5 Feb 2025 14:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E461FC0B;
+	Wed,  5 Feb 2025 14:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767191; cv=none; b=vB14/BAZwHe7KKdEN9ZrEcARc0gz5ZS7orwikfgs7YCh8jLir5J/EwYX7EdcRW0XhSuWKrgj/lexHmuIeQBIwaImqaaOFIu4yHlvNSUK5+5fA9Ntqu55z/nzW8KwHSptAlVHXgZirNkgPzRL73Q75uCjYgY4hjh5VMkxpujZ6UA=
+	t=1738764419; cv=none; b=g7287vMndQ3gVItoUlSB6kh8yRGRVJ4wAxaQi/eiZaRSDUfneRsJcM+Y46h+IVRZTxPZgOaoHV0foJUQWQvKjzosI0VGqJI/dtBBRomTiUq58/h8970qE6OIHJ1bGjfSDad0wmtsHWL/RJgSd8A5IzD2mkOu5oUTcuV40kpYAQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767191; c=relaxed/simple;
-	bh=CDGZ8pQBDeRbHONkSFphWX7gq5pBHlWhqNcm1pj8284=;
+	s=arc-20240116; t=1738764419; c=relaxed/simple;
+	bh=SPsmRfSTxsahfL4yfPb+BO4H3AtFArHlxTZFk0r3Dhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYjkdzo3453DOvL7zQvdA/iqF9PcGzGvPnsxk0GTzf0zPxTqV/K7ZRy1X8gm+w4Kk6XolL3hZe9gNlNspC11dUL54heYZYr+8k6WMY7E63NJb98cxsm8iqthDamyoV80G+hSjl4J4WAKUla8cm3o912OCiqHGIhq51p2o4pm7uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ6sVW36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19541C4CED1;
-	Wed,  5 Feb 2025 14:53:10 +0000 (UTC)
+	 MIME-Version; b=uIP9qN2kMnUcecJferDs49LzofNttXsT6rfp4ZTSvFVc/JmWWxugU5fa8KG/RVspLdZ6+7dtEE9Utzf1t19ffmyDs99kvcZg54/QZW2AXWmr9CPlYFj9Hf3rv17cHOVgGLPq2HruqpdVYxcoFouJZs/CzBoBF1+sUwuM6MFR3us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+V8UoZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7072AC4CED1;
+	Wed,  5 Feb 2025 14:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767191;
-	bh=CDGZ8pQBDeRbHONkSFphWX7gq5pBHlWhqNcm1pj8284=;
+	s=korg; t=1738764418;
+	bh=SPsmRfSTxsahfL4yfPb+BO4H3AtFArHlxTZFk0r3Dhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJ6sVW36kWuCaALFnkHjZZ4Sy/axjW2D3Re18IG+GJOotfpIwD/ikhYaOaK3yiVUY
-	 ev6IFoQQg6DBrua6FG+OklGr2GGOsNxbgfJtLD6X7VU/w+mlGi5+fqBOVFkC2JKlIZ
-	 tjXGCvO3hNrVyibP5mYj3EpDK21SJUli9XM8jcZs=
+	b=N+V8UoZV/HnYvFa84nf+S+jPL6lByxdXUYlPhX0vrb8soumtp/1ELOMc0pKYOVufR
+	 EOPq8UrdxN4ICJlNM42oByShruTNu9W4mOtZWRrqPLIzc7QK73bZkG+/Y0qo03eE2S
+	 AVUjNs82ZnTMC5IoHciJZPvM1KOXxMck2FPwEE/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 346/623] arm64: dts: mediatek: mt8173-elm: Drop regulator-compatible property
-Date: Wed,  5 Feb 2025 14:41:28 +0100
-Message-ID: <20250205134509.465034949@linuxfoundation.org>
+Subject: [PATCH 6.6 170/393] crypto: ixp4xx - fix OF node reference leaks in init_ixp_crypto()
+Date: Wed,  5 Feb 2025 14:41:29 +0100
+Message-ID: <20250205134426.799862593@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,215 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 4b907b3ea5fba240808136cc5599d14b52230b39 ]
+[ Upstream commit 472a989029aac2b78ef2f0b18b27c568bf76d104 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It is also not listed in the MT6397
-regulator bindings. Having them present produces a whole bunch of
-validation errors:
+init_ixp_crypto() calls of_parse_phandle_with_fixed_args() multiple
+times, but does not release all the obtained refcounts. Fix it by adding
+of_node_put() calls.
 
-    Unevaluated properties are not allowed ('regulator-compatible' was unexpected)
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-4-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 76f24b4f46b8 ("crypto: ixp4xx - Add device tree support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 23 --------------------
- 1 file changed, 23 deletions(-)
+ drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-index eee64461421f8..b91072f4723f3 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-@@ -946,7 +946,6 @@
- 			compatible = "mediatek,mt6397-regulator";
+diff --git a/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c b/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
+index 4a18095ae5d80..662aac9ea186d 100644
+--- a/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
++++ b/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
+@@ -471,6 +471,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		npe_id = npe_spec.args[0];
++		of_node_put(npe_spec.np);
  
- 			mt6397_vpca15_reg: buck_vpca15 {
--				regulator-compatible = "buck_vpca15";
- 				regulator-name = "vpca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -956,7 +955,6 @@
- 			};
+ 		ret = of_parse_phandle_with_fixed_args(np, "queue-rx", 1, 0,
+ 						       &queue_spec);
+@@ -479,6 +480,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		recv_qid = queue_spec.args[0];
++		of_node_put(queue_spec.np);
  
- 			mt6397_vpca7_reg: buck_vpca7 {
--				regulator-compatible = "buck_vpca7";
- 				regulator-name = "vpca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -966,7 +964,6 @@
- 			};
- 
- 			mt6397_vsramca15_reg: buck_vsramca15 {
--				regulator-compatible = "buck_vsramca15";
- 				regulator-name = "vsramca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -975,7 +972,6 @@
- 			};
- 
- 			mt6397_vsramca7_reg: buck_vsramca7 {
--				regulator-compatible = "buck_vsramca7";
- 				regulator-name = "vsramca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -984,7 +980,6 @@
- 			};
- 
- 			mt6397_vcore_reg: buck_vcore {
--				regulator-compatible = "buck_vcore";
- 				regulator-name = "vcore";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -993,7 +988,6 @@
- 			};
- 
- 			mt6397_vgpu_reg: buck_vgpu {
--				regulator-compatible = "buck_vgpu";
- 				regulator-name = "vgpu";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -1002,7 +996,6 @@
- 			};
- 
- 			mt6397_vdrm_reg: buck_vdrm {
--				regulator-compatible = "buck_vdrm";
- 				regulator-name = "vdrm";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <1400000>;
-@@ -1011,7 +1004,6 @@
- 			};
- 
- 			mt6397_vio18_reg: buck_vio18 {
--				regulator-compatible = "buck_vio18";
- 				regulator-name = "vio18";
- 				regulator-min-microvolt = <1620000>;
- 				regulator-max-microvolt = <1980000>;
-@@ -1020,18 +1012,15 @@
- 			};
- 
- 			mt6397_vtcxo_reg: ldo_vtcxo {
--				regulator-compatible = "ldo_vtcxo";
- 				regulator-name = "vtcxo";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_va28_reg: ldo_va28 {
--				regulator-compatible = "ldo_va28";
- 				regulator-name = "va28";
- 			};
- 
- 			mt6397_vcama_reg: ldo_vcama {
--				regulator-compatible = "ldo_vcama";
- 				regulator-name = "vcama";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1039,18 +1028,15 @@
- 			};
- 
- 			mt6397_vio28_reg: ldo_vio28 {
--				regulator-compatible = "ldo_vio28";
- 				regulator-name = "vio28";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_vusb_reg: ldo_vusb {
--				regulator-compatible = "ldo_vusb";
- 				regulator-name = "vusb";
- 			};
- 
- 			mt6397_vmc_reg: ldo_vmc {
--				regulator-compatible = "ldo_vmc";
- 				regulator-name = "vmc";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1058,7 +1044,6 @@
- 			};
- 
- 			mt6397_vmch_reg: ldo_vmch {
--				regulator-compatible = "ldo_vmch";
- 				regulator-name = "vmch";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1066,7 +1051,6 @@
- 			};
- 
- 			mt6397_vemc_3v3_reg: ldo_vemc3v3 {
--				regulator-compatible = "ldo_vemc3v3";
- 				regulator-name = "vemc_3v3";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1074,7 +1058,6 @@
- 			};
- 
- 			mt6397_vgp1_reg: ldo_vgp1 {
--				regulator-compatible = "ldo_vgp1";
- 				regulator-name = "vcamd";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1082,7 +1065,6 @@
- 			};
- 
- 			mt6397_vgp2_reg: ldo_vgp2 {
--				regulator-compatible = "ldo_vgp2";
- 				regulator-name = "vcamio";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1090,7 +1072,6 @@
- 			};
- 
- 			mt6397_vgp3_reg: ldo_vgp3 {
--				regulator-compatible = "ldo_vgp3";
- 				regulator-name = "vcamaf";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1098,7 +1079,6 @@
- 			};
- 
- 			mt6397_vgp4_reg: ldo_vgp4 {
--				regulator-compatible = "ldo_vgp4";
- 				regulator-name = "vgp4";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1106,7 +1086,6 @@
- 			};
- 
- 			mt6397_vgp5_reg: ldo_vgp5 {
--				regulator-compatible = "ldo_vgp5";
- 				regulator-name = "vgp5";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3000000>;
-@@ -1114,7 +1093,6 @@
- 			};
- 
- 			mt6397_vgp6_reg: ldo_vgp6 {
--				regulator-compatible = "ldo_vgp6";
- 				regulator-name = "vgp6";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1123,7 +1101,6 @@
- 			};
- 
- 			mt6397_vibr_reg: ldo_vibr {
--				regulator-compatible = "ldo_vibr";
- 				regulator-name = "vibr";
- 				regulator-min-microvolt = <1300000>;
- 				regulator-max-microvolt = <3300000>;
+ 		ret = of_parse_phandle_with_fixed_args(np, "queue-txready", 1, 0,
+ 						       &queue_spec);
+@@ -487,6 +489,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		send_qid = queue_spec.args[0];
++		of_node_put(queue_spec.np);
+ 	} else {
+ 		/*
+ 		 * Hardcoded engine when using platform data, this goes away
 -- 
 2.39.5
 
