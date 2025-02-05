@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-112790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9D0A28E68
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6087A2920C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD553A30A0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC393AC89A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050E214D2A2;
-	Wed,  5 Feb 2025 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BD11FCCE6;
+	Wed,  5 Feb 2025 14:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixKU65d6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLoogwO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B673915198D;
-	Wed,  5 Feb 2025 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ECC1FC7FE;
+	Wed,  5 Feb 2025 14:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764762; cv=none; b=BhugXu22UcI/ROOTL1tpG0De7yMxnPYEFk2N5IswI0QZd6t+tPE4r/3NceZCwCZwZYKppdby61efcuTnA7ZaFwBZBbW4ohk7/N2R/z0M8419mqFHmMCi+DxfgHO9KVFTIh9dtaimZDUw/2j1S2qaBhjySFg1FEePCck1WTfG8Sk=
+	t=1738766827; cv=none; b=BEGfHq/y4h9MgeJL9SxIIXnC45LeJrQvJX8t8N6WjYimTrWMdiaSqXxWGiArWsmLhgzNqvE7E2QBMyeKiq8GToL9xaEvBCMTyV6L83D4QHDnlUnbllYkdwLPp+mtNszu/rztutLMyVr4IWbuOIlIZJ2eqf/2BPiSmvCr2+l3GVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764762; c=relaxed/simple;
-	bh=sF7KHbFAy0m7VKTqNxShnx5fHgQP5KwEMSFiSKje7+Y=;
+	s=arc-20240116; t=1738766827; c=relaxed/simple;
+	bh=lLGOfprXQ5hUFpA4Fr/fFPCDx7CDmSIU0XewCQggqnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iruqhSkuBM0lxg1GVG8lqVbJxSIUvvLvpQvhuFAmUZiGbnyFmUCjxhAvDfqi7RV/m+ODXaqirlN99n2Dms7vd6fObrhJD2uZ3ptm6HNaYr+GMJrxX7/z1+FMUe4gW/fmHThirsh2mrv5cSJ4S5TyHkuWz6cOBW+nIBUf0GX2xFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixKU65d6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15998C4CED1;
-	Wed,  5 Feb 2025 14:12:40 +0000 (UTC)
+	 MIME-Version; b=kfgx7iLi8AavjK20QO1OTfDd8+OwkXSDd/s4AxObY3bBNpVvGR0t2hY9TcxR2zjfNzVr2lIshpAYOeSjkJXxrC8cUKs5Am64UNFOzf7XuP41ZkDPVnituRPXpDG03e2DTFbASuKjHrALvBV6b3YQKdYotAtbrVHvTsgW9ce+ynI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLoogwO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1677C4CED1;
+	Wed,  5 Feb 2025 14:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764762;
-	bh=sF7KHbFAy0m7VKTqNxShnx5fHgQP5KwEMSFiSKje7+Y=;
+	s=korg; t=1738766827;
+	bh=lLGOfprXQ5hUFpA4Fr/fFPCDx7CDmSIU0XewCQggqnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixKU65d69irCRRgN6cJQ5EDJUhAfdY+XnwjlDjJ4CdYAuyexlMEYqgEAKBlmZ9AOu
-	 K4jdWdPstZ8IGrP/m3bfPtEk6WqTbkr/rGWn8yteGlBmxdWrVqnFW0jB9eVN3zoN5j
-	 5sG2SD53MrUyHENfeM8ZNF6YSHZV9ATkk/uwwHRs=
+	b=fLoogwO5/xFLqjXeTFyJsXrek+MuGzkgQQoVJz3dIDxHmk8kcIPiuOtcAPv8+BX9N
+	 X+eg669BwnXmiSMVlrUamSOD5jt60vkvQ3/StfJ43rvngi8b8HW6IJtgxz9uGfucJs
+	 JGo6OigZktsYQGhJxBjhfoBuwCDGsMVRMc3oP2DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 202/393] ARM: dts: stm32: Fix IPCC EXTI declaration on stm32mp151
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.12 366/590] arm64: dts: allwinner: a64: explicitly assign clock parent for TCON0
 Date: Wed,  5 Feb 2025 14:42:01 +0100
-Message-ID: <20250205134428.030540235@linuxfoundation.org>
+Message-ID: <20250205134509.273591845@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 4ea654242e0c75bdf6b45d3c619c5fdcb2e9312a ]
+[ Upstream commit 8715c91a836502929c637c76a26335ede8818acf ]
 
-The GIC IRQ type used for IPCC RX should be IRQ_TYPE_LEVEL_HIGH.
-Replacing the interrupt with the EXTI event changes the type to
-the numeric value 1, meaning IRQ_TYPE_EDGE_RISING.
+TCON0 seems to need a different clock parent depending on output type.
+For RGB it has to be PLL-VIDEO0-2X, while for DSI it has to be PLL-MIPI,
+so select it explicitly.
 
-The issue is that EXTI event 61 is a direct event.The IRQ type of
-direct events is not used by EXTI and is propagated to the parent
-IRQ controller of EXTI, the GIC.
+Video output doesn't work if incorrect clock is assigned.
 
-Align the IRQ type to the value expected by the GIC by replacing
-the second parameter "1" with IRQ_TYPE_LEVEL_HIGH.
+On my Pinebook I manually configured PLL-VIDEO0-2X and PLL-MIPI to the same
+rate, and while video output works fine with PLL-VIDEO0-2X, it doesn't
+work at all (as in no picture) with PLL-MIPI.
 
-Fixes: 7d9802bb0e34 ("ARM: dts: stm32: remove the IPCC "wakeup" IRQ on stm32mp151")
-Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-4-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp151.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts | 2 ++
+ arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts  | 2 ++
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi         | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
-index aec7fa5ab5d8c..fe79d5d40c116 100644
---- a/arch/arm/boot/dts/st/stm32mp151.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
-@@ -1165,7 +1165,7 @@
- 			reg = <0x4c001000 0x400>;
- 			st,proc-id = <0>;
- 			interrupts-extended =
--				<&exti 61 1>,
-+				<&exti 61 IRQ_TYPE_LEVEL_HIGH>,
- 				<&intc GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "rx", "tx";
- 			clocks = <&rcc IPCC>;
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
+index 379c2c8466f50..86d44349e0951 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
+@@ -390,6 +390,8 @@
+ &tcon0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd_rgb666_pins>;
++	assigned-clocks = <&ccu CLK_TCON0>;
++	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
+ 
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
+index b407e1dd08a73..ec055510af8b6 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
+@@ -369,6 +369,8 @@
+ &tcon0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd_rgb666_pins>;
++	assigned-clocks = <&ccu CLK_TCON0>;
++	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
+ 
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index a5c3920e0f048..0fecf0abb204c 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -445,6 +445,8 @@
+ 			clock-names = "ahb", "tcon-ch0";
+ 			clock-output-names = "tcon-data-clock";
+ 			#clock-cells = <0>;
++			assigned-clocks = <&ccu CLK_TCON0>;
++			assigned-clock-parents = <&ccu CLK_PLL_MIPI>;
+ 			resets = <&ccu RST_BUS_TCON0>, <&ccu RST_BUS_LVDS>;
+ 			reset-names = "lcd", "lvds";
+ 
 -- 
 2.39.5
 
