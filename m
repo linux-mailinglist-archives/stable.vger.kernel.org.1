@@ -1,266 +1,248 @@
-Return-Path: <stable+bounces-112317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66C7A28A50
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:32:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6889A28B1E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C373B165A17
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E123A52D9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BFE1E868;
-	Wed,  5 Feb 2025 12:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E7EB677;
+	Wed,  5 Feb 2025 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YazgREI4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="erp8tyNB"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2071.outbound.protection.outlook.com [40.107.93.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68D8151987
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738758721; cv=none; b=EZ02w9vm+99++1YVtmpIGrhFXMjJOK18M8yTZA7QTTDYQ9dccv2yo7hw4jX4LXpvOHyg2zl3PhDCDub4/ImTiJyOUXq14d7XE/+YXgQncFCLPj0WLQ5SF0/sPU9EEfA/MR3h6nmGwJBFcL2ZwZ3PuFLJ1gyDOnRs8Yd/msY4jFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738758721; c=relaxed/simple;
-	bh=rkPsZCd4DAeOJD5OR6QiEJ9J6CUWsTz2D7mNNXUcIj4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NSHEA/usJoCrpSvCwIuzLxSftnQTMDjPmSSY7EPqjAsUS6Z9tJ7rWXkpBm95K5nE4RFFcm6N7F7cGd2rX+y19C8ujpW8CAPqVhu2LKOi0K3m88oP8W1rt9FbhdbACdl1wgHKGdpM0wiWWvkhY8y3BCMJwoynluMaAFTlo2LUwvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YazgREI4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738758718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nX4R1J3tJqgXNtmHCVf3jelvmV9h4OXD2UPjQtl2Fsw=;
-	b=YazgREI43LRI62wocsL5FTFExmf4q32LC5J9fuWjLZM+yIRhZhTUfZTRwVU1oGhW2NCO7V
-	9eORkpxDhEHnfvsK0W/0I1epCL2kO2QORnBip4IZGnNVXg9ULf5RtBh4TRFPIkS9n1PLLE
-	c/HtpXIFytvmAsMDapEpqhWBwMDO1lA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-ykrr_B6lP3qpP6dgdre4kw-1; Wed, 05 Feb 2025 07:31:57 -0500
-X-MC-Unique: ykrr_B6lP3qpP6dgdre4kw-1
-X-Mimecast-MFC-AGG-ID: ykrr_B6lP3qpP6dgdre4kw
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436723bf7ffso58666655e9.3
-        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 04:31:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738758716; x=1739363516;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nX4R1J3tJqgXNtmHCVf3jelvmV9h4OXD2UPjQtl2Fsw=;
-        b=c5ngYqvb7p9Lg93P6Z6+XI/LVgiVw+CqA8HNx+IgOVPh+LShfiDCVQhy5JMecU08mY
-         tdMGjSRCgjcyTlKZ4bFutvocVaFDeWAuNzz+sQHhbWVG+k5Suzcin12l1ZzABHuxDlo2
-         fTzm/bI+hYfr8dHRlc9BPA60GTK3HhtwHrGflOnogS6vrtbnwrwgg3jN+K5WfzenhneS
-         zcBDTyAy1CuzXcJhGQ3NjemTaDyQ0SE+KtrvaiJaHegQcVs3PNCtdTNb/HTlL6OBQiCm
-         h9PIiZANvISUEmwoUiJietVK/r9wSPxwvxmSfgqP3OG7XkhSXRfD41kk4FjjnAspG76e
-         02Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWArh4eEobEid5flHRFydJdk2NmLtJRWY7t/0Rt3nNQBF1ebZfduYNmouhaL5PcLySr1wX/OXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytRORJmIgOBVcVu/Yo+CWN8C1E0JVrlnv4w81gUiYt9vCYdz2c
-	f/g6etqUJD7eVoLZePxTdWLnias7gKxc1CPQRL3Nn+PYi4HGHvEC1MK0WRdYFIiHTO+HHXnhG+z
-	0vmaBIX1g0BxmAkzvhmO+Gn1IoXj9qqKB3yUW1A/Qrq8rmwPaJsGfvA==
-X-Gm-Gg: ASbGncudF+YUQQb72XM2U0aSIg9LvvPdfY3+t3PGOY0Qefz4rB+XIuzjJBxKO1oPBkK
-	cbbROxQjMqUaCuKyRkgbVEJW+kNNzWXWFb2Ks2h8of9f57kqZKpt0xKFd5UxLWRWpecg2zN+06z
-	Ta5JD2EkVmmVyscNt3ItDN9l5vAGdjidm3Sqd61WdmCwnwrFVJNw1RACyENurc74bkIq9LiI6cE
-	FuMhHW2Tntx4RSSV/KA3SoUymW47U5IF0+DQrAywzYHIav+Kt3ikEw/uyd1zdtzlbK4AQA8CUN0
-	SgcaVwTU+T5WIKNcV7RYLlDcXDq8CsXZO4fmgyePrqtWQDA=
-X-Received: by 2002:a05:600c:5127:b0:436:1baa:de1c with SMTP id 5b1f17b1804b1-4390d43e4fdmr22441035e9.13.1738758715855;
-        Wed, 05 Feb 2025 04:31:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGu8UQolYnAq5L4ETol9e+CppDVauJEFOX/uqtF/MVCF19JA9RxfWAWC3l0svk2IQEOGRJbqQ==
-X-Received: by 2002:a05:600c:5127:b0:436:1baa:de1c with SMTP id 5b1f17b1804b1-4390d43e4fdmr22440555e9.13.1738758715452;
-        Wed, 05 Feb 2025 04:31:55 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390da6e653sm19539215e9.24.2025.02.05.04.31.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 04:31:54 -0800 (PST)
-Message-ID: <d1302cfe-486c-4516-a875-d9467529482a@redhat.com>
-Date: Wed, 5 Feb 2025 13:31:52 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C99623;
+	Wed,  5 Feb 2025 12:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738760326; cv=fail; b=JFW8De9WTmT+1CEA4VVfeDyk9c9K4zrXKtEWD9OU+r/ikCQqpfBDX1lGqTLnACmcbtOZAYjAeBDv5AH95bZFeHoGlpHpbRwqxJ8dSGnH4rGqoaHPJluMOGcSVTJTWWTbaZMq5RC+BNq5kIo9M2g7/GWCO1HgucdqQaVsouQoca0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738760326; c=relaxed/simple;
+	bh=wQy9zBw8lH0Vjw62z1gW0wGsuj8O0w99+44E1wo7+Vw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=SPczmO41Ktw+clwPU+fR5BXTd5mqE05vHS165vbJUsUZZjq3QCXf1qYAAz3wNY6VTCOlFnjXYs5T9Vx3OEvQhhODlcpPk+0xHWeMde7HYxHyq4czQHLphQaeGRV7NLiu6b87VhquEMIYmDNtsaf9t2WALtz2crBLaFlwaF1dl0E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=erp8tyNB; arc=fail smtp.client-ip=40.107.93.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bPc4v58Y3Ihgf7xFpNsdJddC3aB81xePxo3TnZxs7u6YSSNAWeYFDlE2snp/i5gLdP8oLbdHYn7ml+tPmLHbeV/i6nArMJgdRI1SFnDrdFrJbXul9ayU9Zj4/yummpRIEulO/DswDfn1imuQSlinlTSgpSg88uW7WPGfEMNXtxfxZDNUtSymkj/5m2WkM7+jVU3jYhZ0aRnZudK8v1m8WhCynmGNW6ym49g9Alu6rsZMaGeg4NskzmzThnwV121aJvF14z2iDSB4bNwHe134/t86t4h5WVIHBBbwkXsZyQz1X9+Ye/pV5NlwPgy9cOxT4344nw3FMzPwQCWG0qDydQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uIP0x8xZsjgbvcjx3n2kdLj2pTAyKIwqn0sMlGmj4LE=;
+ b=bStFRI6Gqcv/QLMq9MlM1wTnkA2ME3xWRRSKg5boodk2mkcSyK3M3/tLHJyE6NeM8ruLVgXNgUxisxe3QROPlIgi7poFCb0NcfETLUDgsj1F/xABV8ySpWi+h8bLfgypPvtsJOCY51zPtpPZmRo6kfxluv/91zJaQDhapnojn7fCwjjZl5+XGcKW1oTtjUKKyOaxpL2GYQk0gBpDZ3QSzZmfGRTlZAPtpcvDrp1OoHM/mO9JV5Vl2fVnaa6SDQedM7YjTitu109Hck9i7xWl8USN8Vod7R2BgXEjHQr7ivVJNdRT3gUh4YOct4iss5+r+0FtmlBvwcBrBpcVaBa3ZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uIP0x8xZsjgbvcjx3n2kdLj2pTAyKIwqn0sMlGmj4LE=;
+ b=erp8tyNBM7gb3+bO7YqDji57bVWYFeF7sbL3Pcc4dcka+qg+F76M73JswQtYzjEqSSxfVdKLBXWoI6qSwNZsG/bsoDsef9xPUccfQ746Fdhw1p+iJ8hFnq50XWHeTLNybD7GaRAPfSI8tlNM4UPZ9n6tApn4+hCwU/mLljMiJsyRFOMRRlKih7p3mn7jNtos83FZMVrm3sx1J6e0L+3lAAVgmgDbmoeyuolNw/h5IgnHCGREtwAkJNpVR+DGM5vZU8LnWwz2Li2ud1kjx+tME3prOw/8EnCdrQedkQbnbNW1UwZCj5QMWTQ2UR9/5AMQ/8ejuPjgTAbdpdoO3TX4og==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM4PR12MB5101.namprd12.prod.outlook.com (2603:10b6:5:390::10)
+ by DS0PR12MB6414.namprd12.prod.outlook.com (2603:10b6:8:cd::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Wed, 5 Feb
+ 2025 12:58:41 +0000
+Received: from DM4PR12MB5101.namprd12.prod.outlook.com
+ ([fe80::8a69:5694:f724:868b]) by DM4PR12MB5101.namprd12.prod.outlook.com
+ ([fe80::8a69:5694:f724:868b%3]) with mapi id 15.20.8422.010; Wed, 5 Feb 2025
+ 12:58:41 +0000
+Message-ID: <84c4c672-fc17-4f75-b3ce-388b987d32ab@nvidia.com>
+Date: Wed, 5 Feb 2025 18:28:34 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] dmaengine: tegra210-adma: check for adma max page
+To: Jon Hunter <jonathanh@nvidia.com>, vkoul@kernel.org,
+ thierry.reding@gmail.com
+Cc: dmaengine@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250205033131.3920801-1-mkumard@nvidia.com>
+ <20250205033131.3920801-3-mkumard@nvidia.com>
+ <61a3c7e9-f3cb-4bc2-a10b-5e44fa2cdedf@nvidia.com>
+Content-Language: en-US
+From: Mohan Kumar D <mkumard@nvidia.com>
+In-Reply-To: <61a3c7e9-f3cb-4bc2-a10b-5e44fa2cdedf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0PR01CA0067.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ad::13) To DM4PR12MB5101.namprd12.prod.outlook.com
+ (2603:10b6:5:390::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] KVM: arm64: Unconditionally save+flush host
- FPSIMD/SVE/SME state
-Content-Language: en-US
-To: Mark Rutland <mark.rutland@arm.com>, linux-arm-kernel@lists.infradead.org
-Cc: broonie@kernel.org, catalin.marinas@arm.com, fweimer@redhat.com,
- jeremy.linton@arm.com, maz@kernel.org, oliver.upton@linux.dev,
- pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com,
- wilco.dijkstra@arm.com, will@kernel.org
-References: <20250204152100.705610-1-mark.rutland@arm.com>
- <20250204152100.705610-2-mark.rutland@arm.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <20250204152100.705610-2-mark.rutland@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5101:EE_|DS0PR12MB6414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 793368c1-6357-4ebb-3c68-08dd45e4d07a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aStVM2dJRnp6TVdRUDVMSkJISXdYRHZWaTVGYVd4QnFIalU4ekVnSW5yMmZj?=
+ =?utf-8?B?cjN1WmdyTXJDK1p5NytxN0tXUGlWM05DaGwxc3lkN3hWa3hsNjErUmVGUUtL?=
+ =?utf-8?B?TEJTRDlDUUs1b3JFUzltWVl2dVZRWGdnNzFkM3F4dGpycDdZOEtoRlRKUXVM?=
+ =?utf-8?B?eC8yZjhFbXRLTWRlWjJYVS95NnprS2tDb1c4ekR2NmRWMXVWc3pLWUpuRmsx?=
+ =?utf-8?B?cmh0eGVUYi9DYmE5T1UrSnBWK08wOHVmWHd2MWVqOG13SEhBaEkvZ3dBMG84?=
+ =?utf-8?B?VDNyQnovbWVjTlh3WVp2UTg0ZDZmMmdORFpDeTVnSmdoOW5UVlc1Q1VDV3FP?=
+ =?utf-8?B?RVM3UFZGdEdPTzI2TTZlbjdQYW5FQUdSQ09XZWJQK3dOM3NBbjJyeVpuUGkr?=
+ =?utf-8?B?YzJQaHFvSlI4Q0t4SGNpdk9zSTY2UG9wbUphUDAxNFYzK0hGT1lIQ2NkQS9G?=
+ =?utf-8?B?Y2lMZHJObmFMVUx3MCs1b3FPMjJuYlplUUJhdEdrS2hHVzlCOS9zNlh1MXV6?=
+ =?utf-8?B?b2RZdGhSdC9mRG03dVoxVGxMRHk2M2VxR1h2amNWWXl1d0tEWCtzUFdxbmlW?=
+ =?utf-8?B?N0lTME43TDRxdFNmaWVUTVNvcU1SMUNNZlZBRzBwNVN6WUUrRlV2UDVtdkNY?=
+ =?utf-8?B?MGhxUzFFMThyV1p2QmFaK20xN2pScFlUV2FSb2FDNHNmN0xybDQ4RHJ1enFF?=
+ =?utf-8?B?UGpBUnNhN0VVUmRoN0tDSmVwaS8zTEVHSHVCWjZEM0V3c2RpbDBwdEN5TDl1?=
+ =?utf-8?B?YVVmZnk2K3Frdm1MaHZ1N2EwRUFNWmxKa1NqQWFwY0w2QzB2Nkw1S0xmWXlk?=
+ =?utf-8?B?dFJRbVhRZFdPNElGQUdXWHhkdzNBWG42OHBFUHlaMkF0NjdiL3RSK2szM0Jn?=
+ =?utf-8?B?WmVjNXZNUDdkSS9FSWdsYTR6d1QzRG42b29BV2VUelN1RUhucUVyYkdjRVhz?=
+ =?utf-8?B?d3ByVzBYcUYxT1VzSzJZV1FTNlpMMDBhbFlzK0ZEaFI5alJ2Y3JRR2RXLzY3?=
+ =?utf-8?B?Wkc4WFM5djRESjZyQnVqb0ZqMFJ6b1ZsNk1zTzVyenJib1FWUVdPSTJSdDNi?=
+ =?utf-8?B?eThLOUZxTnV6eUJqV1V6NHZFK01GckdsQ0FiK215emlWajluOG1hUCtGOEo0?=
+ =?utf-8?B?bC9pYlZSSWNvZ25JOE5GRFEwSUVxVjc5Vy85VGZrZnZmRStpMlhmYk1VRXQ4?=
+ =?utf-8?B?MmpKWGJmaDNQRW9TSTV2b0w2S0hBWkQwQU5ZUlFycTB5TGhhVzNYYUV4MVd1?=
+ =?utf-8?B?VDlXOWphNHlwZlZnZjlVQXFpaUI2UEZiY2k0OXE5N253VGEwdi9tWGRiaEMw?=
+ =?utf-8?B?bFpJTDhycEFJRGREZlFVeU9lRGNNZmRRS0l3anhaYkdXNWJsMHJhcTdoamY1?=
+ =?utf-8?B?a2F1emxCUy9aQVRXNzVOV24zT3pJZWZlbjJLQkVPaUpEMUJ4SW5UeEJuT29n?=
+ =?utf-8?B?bDJXT1pDOVNuV282c3NUVmtsbFQyN1hPT09FcEJaRUgxT3pqWjF4aHRtK090?=
+ =?utf-8?B?TzNJUVc2d0hIWmlHUUxTckhFb2h2bjMxbkJQMmdPUHBlaWZXMlNicEM1Ymo4?=
+ =?utf-8?B?eWFSU0d6UzJjNXBmVUVBKzRDMzR1QnpEdGhER3pxSW9mK1ZNcUczb3FadW1j?=
+ =?utf-8?B?THNmREhhTzhGWGx2T1g3V1Q1bmF3OGNJZm1zK1NNVGlRalVRVjViOW51Wklm?=
+ =?utf-8?B?OU9KUkhOUGhvWXp2emhPMTZEQnlwSENTVFZ0M25zQ1hmQzBoa2pRd25rVVBS?=
+ =?utf-8?B?UTVIdkRMQUVZcFhqL1lpSjNCRElvZUhtWW1yUzFTRHVOR1IzZHg3ZncwN2ND?=
+ =?utf-8?B?M1J1dE91MGEyZE9SVUZhdm1WRFY4bitUT21jbWt4NlBRRWpEWmM2dE02RlpO?=
+ =?utf-8?Q?A6wMKHVb6bi/g?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R2E0QXkxdHNmTEZDZFFpb0g5Nm5ZQlFrR0ROSmxVSFVoWlJhcGpEQnhVcDVF?=
+ =?utf-8?B?UTBMcDhsSnRrbmE2ZnpVOTZrZzJCRjJqc0lLTS81RHg0eFpSaE9QZUl6Nm9a?=
+ =?utf-8?B?ZTJmckNkVXlzK1dzRW5kSFcrWGJ0WEgwdGdNZDAwTjJsaG1DeGMyTVNuMStu?=
+ =?utf-8?B?KzJ2ZTVCdGJJZlJ6NlhjMXd5LzJ5MDN3YSt6YjUxMTNuamcvQmtRVVBicVp6?=
+ =?utf-8?B?TlhtMVZ6cmJROVFBZ1dmZ2FROGV6MTVFMWNLYm1UQU50U2hWNVQ5RVVTN0E1?=
+ =?utf-8?B?eG9TUTRNMVFFUFk2dnNId0p2S1ZBdnVuTU11VEp5VzNSM21YdHQ2M1MydXFD?=
+ =?utf-8?B?bFE2R3JhSFM1aGlNODA4azFlTUZQWXFDSHZGckx0aTJ2UXBIbWJsS250Qmkz?=
+ =?utf-8?B?aGFrY243cTV4WEtIVlptblJteFJsN1RGbkpmL2FsQzU2TXFhRmxGZytRaEZU?=
+ =?utf-8?B?MDdEaWVHYjF3WjAvcFhtK09FeGtPbkJYOWFONVA1NmMvS01RM0RuUmYvVzlI?=
+ =?utf-8?B?SVlTcUF6dzZIZ2RETUNpTWp5R2Noa08zSmdlUExTYkJSRlNVVEdWeit6UVh6?=
+ =?utf-8?B?WHFBYmFPV0l6WmpwcmFqaWF0aGUvNEVBd0s4bllkQ2RCTHN2dmhmMmVXNU1D?=
+ =?utf-8?B?eXpKdytCZDNySjZGY0s4bU5wUGkyR2duOFV3dUkzNnBmR2Jod3o0cTYzUVB5?=
+ =?utf-8?B?bGJxSndyUUNEaGlwU3pSOFI1L25lR25XUm4wdXhTalorQWh2SVJNMmhkdFFv?=
+ =?utf-8?B?UDJBdHRESXQyRmVUc1htZUNMeCtNNTI4MEwzOGo3eDdkWXIzQll6bXRoRWhy?=
+ =?utf-8?B?Qm9Kbk05anNReWJBUzVEbVZRV3o0TGpzcHRlMjhUbWp4TjBGSFQwd25ta01B?=
+ =?utf-8?B?b09HSTlnQVNYWmlQaUlWbm5ZU2h2RlBCbUJneWVMTmtTVFV5ODVnSVRJOEg3?=
+ =?utf-8?B?dzNFM28wSEhSR1d6WllwY3NSTHdmTmlMK0d3VXRLc2N0WlkySXpOcm4wSCtP?=
+ =?utf-8?B?MytzRDk4N1gzQzZyNklHZ09Cdi9TdVRHU1dpLzZzVFE5K2JOZ0MwVEI0cTl2?=
+ =?utf-8?B?WEh5bERkKzhURzNtRkVpUHBKb1pmOU12SGJlKzBXejFwcW15VDU3dmc2MTli?=
+ =?utf-8?B?R004K1V3enk2czBCNmFDRVlHd3RtQzZQRlphZzFYRjBXQzR4RWNMWmsrdHNz?=
+ =?utf-8?B?eTBzR1BsTE5WZTNaSzVPcmE1UmQ2M2FyV3o5VDdUOFljejdKeXA0RjRDdERZ?=
+ =?utf-8?B?VkZ2ZDVia3JzSlNNRjAzZkErRkx3T0NkVVZSNjlac0pNWlpTcTN3YTg2d05V?=
+ =?utf-8?B?WlNMcVdlSlgwak5HamJLVWVJMGU4VkpRTnRnWU5BajVndVpEZ0JpQk1VQlNM?=
+ =?utf-8?B?VFdmNHdjem5zbEZKT0lsREQ5bTlPdGh5UW1FZjNsU1djTG1Sb0I3TytjbEk2?=
+ =?utf-8?B?WGcxN1RSV2tvckwxWlZFZjVvMm81MlhqNGxxYzZLNXVzSHBWQmN3d1pRVFNt?=
+ =?utf-8?B?VXNoMlBRemFaRmNITE5VNjdYNUo5WXVBdUJiVEVqdlF3eTNOOTZ3dmRlM2xF?=
+ =?utf-8?B?cURucHJlV2xsS1hnUjlQRVZ1UFFqSmh4NzJlUjIybzBhOC9MREZtckJVdFpV?=
+ =?utf-8?B?dmxPckk4dUlGQU52YUdKcFFoVnpRZ3cxcG5sdmR0TjhMTGI2c0M1cWFLZSsx?=
+ =?utf-8?B?WTlteGkwbDc2cEh0SURkd21TR2Y3cWZ3VUFWQXRpRS9GR09iT1BzNFhjYVhi?=
+ =?utf-8?B?YXA1RVJ6NDJwOUIxWFFGaWUxeDNMMGo1L2FkK0s2OHd0S0g4UEVlbXN4MVg4?=
+ =?utf-8?B?UkxCSEVlb2VCS2xzbjFtOHdlSEZiaWVpam1kaHVML0pKK2s0MHB1Z3Q3NTF5?=
+ =?utf-8?B?SC9oVSs2UE9PQUtsR3BETk9Yem5DY3VxZHRhcUNPcW5FWTJYcEt3UVU0Sldi?=
+ =?utf-8?B?NlhXeWtWcEM1aGkrZ09QekFiYVpoRVZKOVl6VHlGQkt6SHRieUowU2g2Yy9j?=
+ =?utf-8?B?YnlWcWVlc0tOU3hnM1VkenhoSzdGM3J0SlpmV240U09WaDVJajEyNWplTXBC?=
+ =?utf-8?B?a2FQSFJNbHlFcmRLUUU4TE1mQWo5cnMyVmZMMzJwZWEwbmlISFg1by9wamQr?=
+ =?utf-8?Q?0W/FbC12MEfNzwk1zyzSEsWAm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 793368c1-6357-4ebb-3c68-08dd45e4d07a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 12:58:41.2478
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oIDSJ+cKCKFoUQ2n9qvyelA8v6qnopHSn9RU7FgexBtGrEaIfqMXvgyL1zqs4n4sGM+fF/h5qzCwHC8CpjCvaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6414
 
-Hi Mark,
 
-On 2/4/25 4:20 PM, Mark Rutland wrote:
-> There are several problems with the way hyp code lazily saves the host's
-> FPSIMD/SVE state, including:
-> 
-> * Host SVE being discarded unexpectedly due to inconsistent
->   configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
->   result in QEMU crashes where SVE is used by memmove(), as reported by
->   Eric Auger:
-> 
->   https://issues.redhat.com/browse/RHEL-68997
-
-I tested the above test case with the whole series.
-
-Tested-by: Eric Auger <eric.auger@redhat.com>
-
-Thanks
-
-Eric
-
-> 
-> * Host SVE state is discarded *after* modification by ptrace, which was an
->   unintentional ptrace ABI change introduced with lazy discarding of SVE state.
-> 
-> * The host FPMR value can be discarded when running a non-protected VM,
->   where FPMR support is not exposed to a VM, and that VM uses
->   FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
->   before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
->   value in memory.
-> 
-> Avoid these by eagerly saving and "flushing" the host's FPSIMD/SVE/SME
-> state when loading a vCPU such that KVM does not need to save any of the
-> host's FPSIMD/SVE/SME state. For clarity, fpsimd_kvm_prepare() is
-> removed and the necessary call to fpsimd_save_and_flush_cpu_state() is
-> placed in kvm_arch_vcpu_load_fp(). As 'fpsimd_state' and 'fpmr_ptr'
-> should not be used, they are set to NULL; all uses of these will be
-> removed in subsequent patches.
-> 
-> Historical problems go back at least as far as v5.17, e.g. erroneous
-> assumptions about TIF_SVE being clear in commit:
-> 
->   8383741ab2e773a9 ("KVM: arm64: Get rid of host SVE tracking/saving")
-> 
-> ... and so this eager save+flush probably needs to be backported to ALL
-> stable trees.
-> 
-> Fixes: 93ae6b01bafee8fa ("KVM: arm64: Discard any SVE state when entering KVM guests")
-> Fixes: 8c845e2731041f0f ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-> Fixes: ef3be86021c3bdf3 ("KVM: arm64: Add save/restore support for FPMR")
-> Reported-by: Eric Auger <eauger@redhat.com>
-> Reported-by: Wilco Dijkstra <wilco.dijkstra@arm.com>
-> Cc: stable@vger.kernel.org
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Florian Weimer <fweimer@redhat.com>
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Jeremy Linton <jeremy.linton@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> ---
->  arch/arm64/kernel/fpsimd.c | 25 -------------------------
->  arch/arm64/kvm/fpsimd.c    | 35 ++++++++++-------------------------
->  2 files changed, 10 insertions(+), 50 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-> index 2b601d88762d4..8370d55f03533 100644
-> --- a/arch/arm64/kernel/fpsimd.c
-> +++ b/arch/arm64/kernel/fpsimd.c
-> @@ -1694,31 +1694,6 @@ void fpsimd_signal_preserve_current_state(void)
->  		sve_to_fpsimd(current);
->  }
->  
-> -/*
-> - * Called by KVM when entering the guest.
-> - */
-> -void fpsimd_kvm_prepare(void)
-> -{
-> -	if (!system_supports_sve())
-> -		return;
-> -
-> -	/*
-> -	 * KVM does not save host SVE state since we can only enter
-> -	 * the guest from a syscall so the ABI means that only the
-> -	 * non-saved SVE state needs to be saved.  If we have left
-> -	 * SVE enabled for performance reasons then update the task
-> -	 * state to be FPSIMD only.
-> -	 */
-> -	get_cpu_fpsimd_context();
-> -
-> -	if (test_and_clear_thread_flag(TIF_SVE)) {
-> -		sve_to_fpsimd(current);
-> -		current->thread.fp_type = FP_STATE_FPSIMD;
-> -	}
-> -
-> -	put_cpu_fpsimd_context();
-> -}
-> -
->  /*
->   * Associate current's FPSIMD context with this cpu
->   * The caller must have ownership of the cpu FPSIMD context before calling
-> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
-> index 4d3d1a2eb1570..ceeb0a4893aa7 100644
-> --- a/arch/arm64/kvm/fpsimd.c
-> +++ b/arch/arm64/kvm/fpsimd.c
-> @@ -54,16 +54,18 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
->  	if (!system_supports_fpsimd())
->  		return;
->  
-> -	fpsimd_kvm_prepare();
-> -
->  	/*
-> -	 * We will check TIF_FOREIGN_FPSTATE just before entering the
-> -	 * guest in kvm_arch_vcpu_ctxflush_fp() and override this to
-> -	 * FP_STATE_FREE if the flag set.
-> +	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
-> +	 * that the host kernel is responsible for restoring this state upon
-> +	 * return to userspace, and the hyp code doesn't need to save anything.
-> +	 *
-> +	 * When the host may use SME, fpsimd_save_and_flush_cpu_state() ensures
-> +	 * that PSTATE.{SM,ZA} == {0,0}.
->  	 */
-> -	*host_data_ptr(fp_owner) = FP_STATE_HOST_OWNED;
-> -	*host_data_ptr(fpsimd_state) = kern_hyp_va(&current->thread.uw.fpsimd_state);
-> -	*host_data_ptr(fpmr_ptr) = kern_hyp_va(&current->thread.uw.fpmr);
-> +	fpsimd_save_and_flush_cpu_state();
-> +	*host_data_ptr(fp_owner) = FP_STATE_FREE;
-> +	*host_data_ptr(fpsimd_state) = NULL;
-> +	*host_data_ptr(fpmr_ptr) = NULL;
->  
->  	host_data_clear_flag(HOST_SVE_ENABLED);
->  	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
-> @@ -73,23 +75,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
->  		host_data_clear_flag(HOST_SME_ENABLED);
->  		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
->  			host_data_set_flag(HOST_SME_ENABLED);
-> -
-> -		/*
-> -		 * If PSTATE.SM is enabled then save any pending FP
-> -		 * state and disable PSTATE.SM. If we leave PSTATE.SM
-> -		 * enabled and the guest does not enable SME via
-> -		 * CPACR_EL1.SMEN then operations that should be valid
-> -		 * may generate SME traps from EL1 to EL1 which we
-> -		 * can't intercept and which would confuse the guest.
-> -		 *
-> -		 * Do the same for PSTATE.ZA in the case where there
-> -		 * is state in the registers which has not already
-> -		 * been saved, this is very unlikely to happen.
-> -		 */
-> -		if (read_sysreg_s(SYS_SVCR) & (SVCR_SM_MASK | SVCR_ZA_MASK)) {
-> -			*host_data_ptr(fp_owner) = FP_STATE_FREE;
-> -			fpsimd_save_and_flush_cpu_state();
-> -		}
->  	}
->  
->  	/*
-
+On 05-02-2025 17:10, Jon Hunter wrote:
+>
+>
+> On 05/02/2025 03:31, Mohan Kumar D wrote:
+>> Have additional check for max channel page during the probe
+>> to cover if any offset overshoot happens due to wrong DT
+>> configuration.
+>>
+>> Fixes: 68811c928f88 ("dmaengine: tegra210-adma: Support channel page")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
+>> ---
+>>   drivers/dma/tegra210-adma.c | 7 ++++++-
+>>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
+>> index a0bd4822ed80..801740ad8e0d 100644
+>> --- a/drivers/dma/tegra210-adma.c
+>> +++ b/drivers/dma/tegra210-adma.c
+>> @@ -83,7 +83,9 @@ struct tegra_adma;
+>>    * @nr_channels: Number of DMA channels available.
+>>    * @ch_fifo_size_mask: Mask for FIFO size field.
+>>    * @sreq_index_offset: Slave channel index offset.
+>> + * @max_page: Maximum ADMA Channel Page.
+>>    * @has_outstanding_reqs: If DMA channel can have outstanding 
+>> requests.
+>> + * @set_global_pg_config: Global page programming.
+>>    */
+>>   struct tegra_adma_chip_data {
+>>       unsigned int (*adma_get_burst_config)(unsigned int burst_size);
+>> @@ -99,6 +101,7 @@ struct tegra_adma_chip_data {
+>>       unsigned int nr_channels;
+>>       unsigned int ch_fifo_size_mask;
+>>       unsigned int sreq_index_offset;
+>> +    unsigned int max_page;
+>>       bool has_outstanding_reqs;
+>>       void (*set_global_pg_config)(struct tegra_adma *tdma);
+>>   };
+>> @@ -854,6 +857,7 @@ static const struct tegra_adma_chip_data 
+>> tegra210_chip_data = {
+>>       .nr_channels        = 22,
+>>       .ch_fifo_size_mask    = 0xf,
+>>       .sreq_index_offset    = 2,
+>> +    .max_page        = 0,
+>>       .has_outstanding_reqs    = false,
+>>       .set_global_pg_config    = NULL,
+>>   };
+>> @@ -871,6 +875,7 @@ static const struct tegra_adma_chip_data 
+>> tegra186_chip_data = {
+>>       .nr_channels        = 32,
+>>       .ch_fifo_size_mask    = 0x1f,
+>>       .sreq_index_offset    = 4,
+>> +    .max_page        = 4,
+>>       .has_outstanding_reqs    = true,
+>>       .set_global_pg_config    = tegra186_adma_global_page_config,
+>>   };
+>> @@ -921,7 +926,7 @@ static int tegra_adma_probe(struct 
+>> platform_device *pdev)
+>>               page_offset = res_page->start - res_base->start;
+>>               page_no = div_u64(page_offset, cdata->ch_base_offset);
+>>   -            if (WARN_ON(page_no == 0))
+>> +            if (WARN_ON(page_no == 0 || page_no > cdata->max_page))
+>
+> So no one should ever specify the 'page' region for Tegra210, correct? 
+> If they did then this would always fail. I don't know if it is also 
+> worth checking if someone has a 'page' region for a device that has 
+> max_page == 0?
+Yes, DT binding specifies "page" should not be used for Tegra210 and 
+above conditions takes care. I believe above condition should suffice.
+>
+> Jon
 
