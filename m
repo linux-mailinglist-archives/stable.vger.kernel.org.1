@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-113170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7340A29044
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEB8A28D3D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E1B188188C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41073AA7CE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2F4151988;
-	Wed,  5 Feb 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CB71591E3;
+	Wed,  5 Feb 2025 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfGeu0Ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu2LNkfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693EA7DA6A;
-	Wed,  5 Feb 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD24158536;
+	Wed,  5 Feb 2025 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766059; cv=none; b=ZGC3CXvuVIDbjlWbhTLYl//w8zMh6zoHFeiEC8/b9pEV4bP18QLt8gyEghAtWrHsLAp/EBj0FWpEqjfHf/odBlD0/dCln6ExjzLb0wEJ3xcWy4b89LMf24U8gRqdXTpiMrgJ5Ym8fmvXoXxBis3S6xbhzfRjIILIiHglTawJQX4=
+	t=1738763860; cv=none; b=JGBy2C8g04DktDyRXYRBQY/qS7My0hzFkBtEFbLpthMZ9qGd36mDPWII8Grmm4WwYIg3KBCSZMyc+QrdB2yaw2pro2pPlzVGWUV3O95S12cFpQxiB/XcN2lzK0EcQDcaYgztDB5R04+Agvz9ZTDFBJK6Z2nMoRirZHs8bLI1T2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766059; c=relaxed/simple;
-	bh=Ry164LweK1e/7njCdzMWRTqirxkDZuQdtCI7V3Tj5fA=;
+	s=arc-20240116; t=1738763860; c=relaxed/simple;
+	bh=nxtjr+iDNzdMJ6EG+FKdiu67GRdP4IdxB2EdCYN8XaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyzPSFgxIr461LlRRLXDoJ21Ju3RsBFj4gTiIIRKsSDeVVDermgSASqibBOhF0mAji7e9DsPOfPhiPzKxkkLZzaufgl34yal/GUc81+qetDb86sJpqSz+TssZ1xH5AQaMgOC//51gmomzjIRbIs7X5rvVI+PbLJ1AsUcUgyebNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfGeu0Ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE78C4CED1;
-	Wed,  5 Feb 2025 14:34:18 +0000 (UTC)
+	 MIME-Version; b=fZ65JxeQutp7l6U9cBw2HdjbnnfypmE5dX17hZk72YiLJLa7v/9HLx+zRiKEvZBUK6gwmak7qowTMBs6Ul7jJG8bQaCxYnVpl02HwK7G5MEkFsauV0dl3UdXpyDKbobo47O2A6otoe0+T3sNgwcO1CkznDzXSlNdSVxjiOXePIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu2LNkfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2E8C4CED6;
+	Wed,  5 Feb 2025 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766059;
-	bh=Ry164LweK1e/7njCdzMWRTqirxkDZuQdtCI7V3Tj5fA=;
+	s=korg; t=1738763860;
+	bh=nxtjr+iDNzdMJ6EG+FKdiu67GRdP4IdxB2EdCYN8XaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfGeu0UlF31bFvGwfTxAuq7uzLBh0ta2Htd/JkPX02zwo0CHkTw1MyhaaWWQvwP3U
-	 1F2QxXJ/AVve6rQ/HH9qeAK362pLERGopvhzdT2Wa5S3lcnyFuxiGA2lvC0b1fadZl
-	 zamdbefHu3TY9hGvSDBRtNeMpPEP8LFayUshHHo4=
+	b=fu2LNkfycU0niXLow6CLJm9ejGrs8hpTo2IDfJqJn32KqwuPS6LbKzKF22KJCrkxU
+	 ldzVpLmvrkglwg8pyoCe8xLa+rhBjrDVnl0xTl8bUS4RUzmVkgv1B0qGkwSwV4t/jD
+	 Kbagxl2ztgV/32AK+yOFPjpneC3CNvoFROy/Ddyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michel Lind <michel@michel-slm.name>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/590] perf MANIFEST: Add arch/*/include/uapi/asm/bpf_perf_event.h to the perf tarball
-Date: Wed,  5 Feb 2025 14:40:32 +0100
-Message-ID: <20250205134505.874272288@linuxfoundation.org>
+Subject: [PATCH 6.6 114/393] net/smc: fix data error when recvmsg with MSG_PEEK flag
+Date: Wed,  5 Feb 2025 14:40:33 +0100
+Message-ID: <20250205134424.655184657@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,93 +63,246 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 74c033b6aa650ea7280221a9e57b7318a120978c ]
+[ Upstream commit a4b6539038c1aa1ae871aacf6e41b566c3613993 ]
 
-Needed to build tools/lib/bpf/ on various arches other than x86_64,
-notably arm64 when using the perf tarballs generated by:
+When recvmsg with MSG_PEEK flag, the data will be copied to
+user's buffer without advancing consume cursor and without
+reducing the length of rx available data. Once the expected
+peek length is larger than the value of bytes_to_rcv, in the
+loop of do while in smc_rx_recvmsg, the first loop will copy
+bytes_to_rcv bytes of data from the position local_tx_ctrl.cons,
+the second loop will copy the min(bytes_to_rcv, read_remaining)
+bytes from the position local_tx_ctrl.cons again because of the
+lacking of process with advancing consume cursor and reducing
+the length of available data. So do the subsequent loops. The
+data copied in the second loop and the subsequent loops will
+result in data error, as it should not be copied if no more data
+arrives and it should be copied from the position advancing
+bytes_to_rcv bytes from the local_tx_ctrl.cons if more data arrives.
 
-  $ make help | grep perf-
-    perf-tar-src-pkg    - Build the perf source tarball with no compression
-    perf-targz-src-pkg  - Build the perf source tarball with gzip compression
-    perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression
-    perf-tarxz-src-pkg  - Build the perf source tarball with xz compression
-    perf-tarzst-src-pkg - Build the perf source tarball with zst compression
-  $
+This issue can be reproduce by the following python script:
+server.py:
+import socket
+import time
+server_ip = '0.0.0.0'
+server_port = 12346
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((server_ip, server_port))
+server_socket.listen(1)
+print('Server is running and listening for connections...')
+conn, addr = server_socket.accept()
+print('Connected by', addr)
+while True:
+    data = conn.recv(1024)
+    if not data:
+        break
+    print('Received request:', data.decode())
+    conn.sendall(b'Hello, client!\n')
+    time.sleep(5)
+    conn.sendall(b'Hello, again!\n')
+conn.close()
 
-Building with BPF support was opt-in in perf for a long time, and
-testing it via the tarball main kernel Makefile targets in an
-architecture other than x86_64 was an odd case.
+client.py:
+import socket
+server_ip = '<server ip>'
+server_port = 12346
+resp=b'Hello, client!\nHello, again!\n'
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((server_ip, server_port))
+request = 'Hello, server!'
+client_socket.sendall(request.encode())
+peek_data = client_socket.recv(len(resp),
+    socket.MSG_PEEK | socket.MSG_WAITALL)
+print('Peeked data:', peek_data.decode())
+client_socket.close()
 
-I had noticed this at some point earlier this year while cross building
-perf to some arches, including arm64, but it fell thru the cracks, see
-the Link tag below.
-
-Fix it now by adding those arch/*/include/uapi/asm/bpf_perf_event.h
-files to the MANIFEST file used in building the perf source tarball.
-
-Tested with:
-
-  perfbuilder@number:~$ time dm debian:experimental-x-arm64
-     1    21.60 debian:experimental-x-arm64   : Ok   aarch64-linux-gnu-gcc (Debian 14.1.0-5) 14.1.0  flex 2.6.4
-  BUILD_TARBALL_HEAD=d31a974f6edc576f84c35be9526fec549a3b3520
-  $
-  $ git log --oneline -1 d31a974f6edc576f84c35be9526fec549a3b3520
-  d31a974f6edc576f (HEAD -> perf-tools-next) perf MANIFEST: Add arch/*/include/uapi/asm/bpf_perf_event.h to the perf tarball
-  $
-
-That was previously failing:
-
-  perfbuilder@number:~$ grep debian:experimental-x-arm64 dm.log.old/summary
-  19     4.80 debian:experimental-x-arm64   : FAIL gcc version 14.1.0 (Debian 14.1.0-5)
-  $
-  perfbuilder@number:~$ grep -B6 'Error 1' dm.log.old/debian:experimental-x-arm64
-  In file included from /git/perf-6.12.0-rc6/tools/include/uapi/linux/bpf_perf_event.h:11,
-                   from libbpf.c:36:
-  /git/perf-6.12.0-rc6/tools/include/uapi/asm/bpf_perf_event.h:2:10: fatal error: ../../arch/arm64/include/uapi/asm/bpf_perf_event.h: No such file or directory
-      2 | #include "../../arch/arm64/include/uapi/asm/bpf_perf_event.h"
-        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  compilation terminated.
-  make[4]: *** [/git/perf-6.12.0-rc6/tools/build/Makefile.build:105: /tmp/build/perf/libbpf/staticobjs/libbpf.o] Error 1
-  perfbuilder@number:~$
-
-Closes: https://lore.kernel.org/all/Z0UNRCRYKunbDYxP@hyperscale.parallels
-Fixes: 9eea8fafe33eb708 ("libbpf: fix __arg_ctx type enforcement for perf_event programs")
-Reported-by: Michel Lind <michel@michel-slm.name>
-Tested-by: Michel Lind <michel@michel-slm.name>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: 317c11923cf676437456e44a7f408d4ce589a9c0.camel@michel-slm.name
-Link: https://lore.kernel.org/bpf/ZfyEgoG3JFiOs2Fs@x1/
-Link: https://lore.kernel.org/r/Z0Yy5u42Q1hWoEzz@x1
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 952310ccf2d8 ("smc: receive data from RMBE")
+Reported-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Link: https://patch.msgid.link/20250104143201.35529-1-guangguan.wang@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/MANIFEST | 1 +
- 1 file changed, 1 insertion(+)
+ net/smc/af_smc.c |  2 +-
+ net/smc/smc_rx.c | 37 +++++++++++++++++++++----------------
+ net/smc/smc_rx.h |  8 ++++----
+ 3 files changed, 26 insertions(+), 21 deletions(-)
 
-diff --git a/tools/perf/MANIFEST b/tools/perf/MANIFEST
-index dc42de1785cee..908165fcec7de 100644
---- a/tools/perf/MANIFEST
-+++ b/tools/perf/MANIFEST
-@@ -1,5 +1,6 @@
- arch/arm64/tools/gen-sysreg.awk
- arch/arm64/tools/sysreg
-+arch/*/include/uapi/asm/bpf_perf_event.h
- tools/perf
- tools/arch
- tools/scripts
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 0acf07538840c..45efbbfff94ae 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2745,7 +2745,7 @@ static int smc_accept(struct socket *sock, struct socket *new_sock,
+ 			release_sock(clcsk);
+ 		} else if (!atomic_read(&smc_sk(nsk)->conn.bytes_to_rcv)) {
+ 			lock_sock(nsk);
+-			smc_rx_wait(smc_sk(nsk), &timeo, smc_rx_data_available);
++			smc_rx_wait(smc_sk(nsk), &timeo, 0, smc_rx_data_available);
+ 			release_sock(nsk);
+ 		}
+ 	}
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index 9a2f3638d161d..acb14e28cad41 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -238,22 +238,23 @@ static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
+ 	return -ENOMEM;
+ }
+ 
+-static int smc_rx_data_available_and_no_splice_pend(struct smc_connection *conn)
++static int smc_rx_data_available_and_no_splice_pend(struct smc_connection *conn, size_t peeked)
+ {
+-	return atomic_read(&conn->bytes_to_rcv) &&
++	return smc_rx_data_available(conn, peeked) &&
+ 	       !atomic_read(&conn->splice_pending);
+ }
+ 
+ /* blocks rcvbuf consumer until >=len bytes available or timeout or interrupted
+  *   @smc    smc socket
+  *   @timeo  pointer to max seconds to wait, pointer to value 0 for no timeout
++ *   @peeked  number of bytes already peeked
+  *   @fcrit  add'l criterion to evaluate as function pointer
+  * Returns:
+  * 1 if at least 1 byte available in rcvbuf or if socket error/shutdown.
+  * 0 otherwise (nothing in rcvbuf nor timeout, e.g. interrupted).
+  */
+-int smc_rx_wait(struct smc_sock *smc, long *timeo,
+-		int (*fcrit)(struct smc_connection *conn))
++int smc_rx_wait(struct smc_sock *smc, long *timeo, size_t peeked,
++		int (*fcrit)(struct smc_connection *conn, size_t baseline))
+ {
+ 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+ 	struct smc_connection *conn = &smc->conn;
+@@ -262,7 +263,7 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo,
+ 	struct sock *sk = &smc->sk;
+ 	int rc;
+ 
+-	if (fcrit(conn))
++	if (fcrit(conn, peeked))
+ 		return 1;
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	add_wait_queue(sk_sleep(sk), &wait);
+@@ -271,7 +272,7 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo,
+ 			   cflags->peer_conn_abort ||
+ 			   READ_ONCE(sk->sk_shutdown) & RCV_SHUTDOWN ||
+ 			   conn->killed ||
+-			   fcrit(conn),
++			   fcrit(conn, peeked),
+ 			   &wait);
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+@@ -322,11 +323,11 @@ static int smc_rx_recv_urg(struct smc_sock *smc, struct msghdr *msg, int len,
+ 	return -EAGAIN;
+ }
+ 
+-static bool smc_rx_recvmsg_data_available(struct smc_sock *smc)
++static bool smc_rx_recvmsg_data_available(struct smc_sock *smc, size_t peeked)
+ {
+ 	struct smc_connection *conn = &smc->conn;
+ 
+-	if (smc_rx_data_available(conn))
++	if (smc_rx_data_available(conn, peeked))
+ 		return true;
+ 	else if (conn->urg_state == SMC_URG_VALID)
+ 		/* we received a single urgent Byte - skip */
+@@ -344,10 +345,10 @@ static bool smc_rx_recvmsg_data_available(struct smc_sock *smc)
+ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 		   struct pipe_inode_info *pipe, size_t len, int flags)
+ {
+-	size_t copylen, read_done = 0, read_remaining = len;
++	size_t copylen, read_done = 0, read_remaining = len, peeked_bytes = 0;
+ 	size_t chunk_len, chunk_off, chunk_len_sum;
+ 	struct smc_connection *conn = &smc->conn;
+-	int (*func)(struct smc_connection *conn);
++	int (*func)(struct smc_connection *conn, size_t baseline);
+ 	union smc_host_cursor cons;
+ 	int readable, chunk;
+ 	char *rcvbuf_base;
+@@ -384,14 +385,14 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 		if (conn->killed)
+ 			break;
+ 
+-		if (smc_rx_recvmsg_data_available(smc))
++		if (smc_rx_recvmsg_data_available(smc, peeked_bytes))
+ 			goto copy;
+ 
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN) {
+ 			/* smc_cdc_msg_recv_action() could have run after
+ 			 * above smc_rx_recvmsg_data_available()
+ 			 */
+-			if (smc_rx_recvmsg_data_available(smc))
++			if (smc_rx_recvmsg_data_available(smc, peeked_bytes))
+ 				goto copy;
+ 			break;
+ 		}
+@@ -425,26 +426,28 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 			}
+ 		}
+ 
+-		if (!smc_rx_data_available(conn)) {
+-			smc_rx_wait(smc, &timeo, smc_rx_data_available);
++		if (!smc_rx_data_available(conn, peeked_bytes)) {
++			smc_rx_wait(smc, &timeo, peeked_bytes, smc_rx_data_available);
+ 			continue;
+ 		}
+ 
+ copy:
+ 		/* initialize variables for 1st iteration of subsequent loop */
+ 		/* could be just 1 byte, even after waiting on data above */
+-		readable = atomic_read(&conn->bytes_to_rcv);
++		readable = smc_rx_data_available(conn, peeked_bytes);
+ 		splbytes = atomic_read(&conn->splice_pending);
+ 		if (!readable || (msg && splbytes)) {
+ 			if (splbytes)
+ 				func = smc_rx_data_available_and_no_splice_pend;
+ 			else
+ 				func = smc_rx_data_available;
+-			smc_rx_wait(smc, &timeo, func);
++			smc_rx_wait(smc, &timeo, peeked_bytes, func);
+ 			continue;
+ 		}
+ 
+ 		smc_curs_copy(&cons, &conn->local_tx_ctrl.cons, conn);
++		if ((flags & MSG_PEEK) && peeked_bytes)
++			smc_curs_add(conn->rmb_desc->len, &cons, peeked_bytes);
+ 		/* subsequent splice() calls pick up where previous left */
+ 		if (splbytes)
+ 			smc_curs_add(conn->rmb_desc->len, &cons, splbytes);
+@@ -480,6 +483,8 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 			}
+ 			read_remaining -= chunk_len;
+ 			read_done += chunk_len;
++			if (flags & MSG_PEEK)
++				peeked_bytes += chunk_len;
+ 
+ 			if (chunk_len_sum == copylen)
+ 				break; /* either on 1st or 2nd iteration */
+diff --git a/net/smc/smc_rx.h b/net/smc/smc_rx.h
+index db823c97d824e..994f5e42d1ba2 100644
+--- a/net/smc/smc_rx.h
++++ b/net/smc/smc_rx.h
+@@ -21,11 +21,11 @@ void smc_rx_init(struct smc_sock *smc);
+ 
+ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 		   struct pipe_inode_info *pipe, size_t len, int flags);
+-int smc_rx_wait(struct smc_sock *smc, long *timeo,
+-		int (*fcrit)(struct smc_connection *conn));
+-static inline int smc_rx_data_available(struct smc_connection *conn)
++int smc_rx_wait(struct smc_sock *smc, long *timeo, size_t peeked,
++		int (*fcrit)(struct smc_connection *conn, size_t baseline));
++static inline int smc_rx_data_available(struct smc_connection *conn, size_t peeked)
+ {
+-	return atomic_read(&conn->bytes_to_rcv);
++	return atomic_read(&conn->bytes_to_rcv) - peeked;
+ }
+ 
+ #endif /* SMC_RX_H */
 -- 
 2.39.5
 
