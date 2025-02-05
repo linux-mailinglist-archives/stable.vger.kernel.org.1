@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DC2A293E8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C66C7A29325
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1D257A258E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44FC87A118A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6280CA64;
-	Wed,  5 Feb 2025 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07330155327;
+	Wed,  5 Feb 2025 15:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLT5Wo2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiC5eZYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECAF18A6A9;
-	Wed,  5 Feb 2025 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72321E89C;
+	Wed,  5 Feb 2025 15:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768514; cv=none; b=TxdfpvwlBrMeviN/Ewwkkf3huwKJMlpSc9cGA4pOwZvl1YzSxhDWnrfOyowTT4+9GebHtNaOHPcSDWl0eRQtHRS539XrLnX9VyTclUWwKsPk+EoMZQjYPcPELLiyPVgHSXXjCfK5P2lXsCpIGoi1AYc27FM0oqIAVvjzDem9zxs=
+	t=1738768188; cv=none; b=AP9o5+qYwxQBMT7rXI+WFSqdZZ7nPB+SfiO8Uuj1IyVxgzeVaxWlJkPOsgSxw8FAjeZG1GdWReXesW5iyBsgqdPyz3CcSmfpFNwpSfUgVFOofnfFjxV7wjqjKaVqnocrA6ijBw0ZKsts8y4PF5il4gWa2KrT2Ei6m/86g32CT2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768514; c=relaxed/simple;
-	bh=hXyIybBsp44Yd+hWGVVDNxu+dJR+0bA7B6dOzUmd4bU=;
+	s=arc-20240116; t=1738768188; c=relaxed/simple;
+	bh=4HOGczX4n7l0SqUMM3Wxqbi21GrRLlNvACqxYKTFokU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozNNJxtlOHYWSbUOZPl0cuykDvOWR7NwzwCYHEagpsNK2HwO4d/VbECYQJxR7bU0I1oi59ke/9uJCilSYZ5gT8ZbGMIPlX7aO1FYyNiLZvSZOI+JWyB+TUjcN8DmxxbdutTAl/UaOPZdvU5hfg6I7uXkcDE0F3zGSJ3VOuDRO6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLT5Wo2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D7BC4CEDD;
-	Wed,  5 Feb 2025 15:15:13 +0000 (UTC)
+	 MIME-Version; b=mu/d1HCRRhEr5T2ZkMjobGKz5Enz0IET3KdivLokNbIf0gnJmMMSpRbDsMw5UUmW2KCTsZTmY/PyQCL9xHYEpjcm9uVIMNARGPBwZ1Dn2tDXWcV+VeDwJj8dJir/2VnSvvCgZfc+zMDyI1uaxj2nBFzHTpcUd+pL91Uv3fbkXRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiC5eZYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BEC4CED1;
+	Wed,  5 Feb 2025 15:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768514;
-	bh=hXyIybBsp44Yd+hWGVVDNxu+dJR+0bA7B6dOzUmd4bU=;
+	s=korg; t=1738768188;
+	bh=4HOGczX4n7l0SqUMM3Wxqbi21GrRLlNvACqxYKTFokU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLT5Wo2hSrTzKzTAKoivi2igNqBOmeVVAHnYNFMkPxYYD3WCmbpyUKUT0/HudF2HF
-	 0Avma4GllxyHObrJkBh8Kk+ukp8H6z2VdIU42myLHKS0ZERvNocreAjP4eenj5Ml36
-	 2VxVR515nJ5kkt/QD0fcohI1S0xoSW1ZQn17XdyU=
+	b=XiC5eZYZe0IvUvxsF4ieW8rsDe9nI4zE7DNvMAmISDgyIWwFqOLSkq4/xhtTDwWwY
+	 Zy68dlfQHZba14yFXq/rjua71sAO+e0IlL9LgYWlPNUy2yiSyOoRE6E5D8QQDMq9/y
+	 yNuhPekkr7MmoRLrmUJTahd+Dhk0ZSxc6hzny84g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 578/623] Revert "SUNRPC: Reduce thread wake-up rate when receiving large RPC messages"
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 565/590] mptcp: blackhole only if 1st SYN retrans w/o MPC is accepted
 Date: Wed,  5 Feb 2025 14:45:20 +0100
-Message-ID: <20250205134518.334644783@linuxfoundation.org>
+Message-ID: <20250205134516.881826226@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 966a675da844f1a764bb44557c21561cc3d09840 upstream.
+commit e598d8981fd34470b78a1ae777dbf131b15d5bf2 upstream.
 
-I noticed that a handful of NFSv3 fstests were taking an
-unexpectedly long time to run. Troubleshooting showed that the
-server's TCP window closed and never re-opened, which caused the
-client to trigger an RPC retransmit timeout after 180 seconds.
+The Fixes commit mentioned this:
 
-The client's recovery action was to establish a fresh connection
-and retransmit the timed-out requests. This worked, but it adds a
-long delay.
+> An MPTCP firewall blackhole can be detected if the following SYN
+> retransmission after a fallback to "plain" TCP is accepted.
 
-I tracked the problem to the commit that attempted to reduce the
-rate at which the network layer delivers TCP socket data_ready
-callbacks. Under most circumstances this change worked as expected,
-but for NFSv3, which has no session or other type of throttling, it
-can overwhelm the receiver on occasion.
+But in fact, this blackhole was detected if any following SYN
+retransmissions after a fallback to TCP was accepted.
 
-I'm sure I could tweak the lowat settings, but the small benefit
-doesn't seem worth the bother. Just revert it.
+That's because 'mptcp_subflow_early_fallback()' will set 'request_mptcp'
+to 0, and 'mpc_drop' will never be reset to 0 after.
 
-Fixes: 2b877fc53e97 ("SUNRPC: Reduce thread wake-up rate when receiving large RPC messages")
-Cc: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This is an issue, because some not so unusual situations might cause the
+kernel to detect a false-positive blackhole, e.g. a client trying to
+connect to a server while the network is not ready yet, causing a few
+SYN retransmissions, before reaching the end server.
+
+Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svcsock.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ net/mptcp/ctrl.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1083,9 +1083,6 @@ static void svc_tcp_fragment_received(st
- 	/* If we have more data, signal svc_xprt_enqueue() to try again */
- 	svsk->sk_tcplen = 0;
- 	svsk->sk_marker = xdr_zero;
--
--	smp_wmb();
--	tcp_set_rcvlowat(svsk->sk_sk, 1);
+--- a/net/mptcp/ctrl.c
++++ b/net/mptcp/ctrl.c
+@@ -405,9 +405,9 @@ void mptcp_active_detect_blackhole(struc
+ 			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEACTIVEDROP);
+ 			subflow->mpc_drop = 1;
+ 			mptcp_subflow_early_fallback(mptcp_sk(subflow->conn), subflow);
+-		} else {
+-			subflow->mpc_drop = 0;
+ 		}
++	} else if (ssk->sk_state == TCP_SYN_SENT) {
++		subflow->mpc_drop = 0;
+ 	}
  }
  
- /**
-@@ -1175,17 +1172,10 @@ err_incomplete:
- 		goto err_delete;
- 	if (len == want)
- 		svc_tcp_fragment_received(svsk);
--	else {
--		/* Avoid more ->sk_data_ready() calls until the rest
--		 * of the message has arrived. This reduces service
--		 * thread wake-ups on large incoming messages. */
--		tcp_set_rcvlowat(svsk->sk_sk,
--				 svc_sock_reclen(svsk) - svsk->sk_tcplen);
--
-+	else
- 		trace_svcsock_tcp_recv_short(&svsk->sk_xprt,
- 				svc_sock_reclen(svsk),
- 				svsk->sk_tcplen - sizeof(rpc_fraghdr));
--	}
- 	goto err_noclose;
- error:
- 	if (len != -EAGAIN)
 
 
 
