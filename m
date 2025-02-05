@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-113302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7735EA29128
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:46:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612FEA29166
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33F787A2C5A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:45:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B379188AEB4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858E618A6D2;
-	Wed,  5 Feb 2025 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADA1FF61D;
+	Wed,  5 Feb 2025 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIjsGFeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK6964mI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426FF18A6C0;
-	Wed,  5 Feb 2025 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D87E1FE47E;
+	Wed,  5 Feb 2025 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766500; cv=none; b=YVP4Cct3HC5VWRG0JZVjB1wgOunpAqJZA+tf9BnNFWfWDot+IMgbEEevrqc0DGJkL5lupi905GfJc/RQjrDD7kmn0bDL+8YtDlfguOsseI0NT1yqPG8VNimUWqXhRfOo2Vv4YJf1YdibwwyNpTNbr9GY2SU52WHw7I1uc9XrFKY=
+	t=1738766510; cv=none; b=Lb9hmDhbN6n5xjlZSS1brBiWUOhQyA2Ay7l0JWq6GGfTQC3goSTWZEnhKd023+i+Y0BiOwg9ZJ+FA68TRu3g3rauawVMe7HhVhDJXdeQkAe77zYn6aHQZcbJ2rTcWVvpS43I0LwV5P4DSNXqUl8y7uzBgihi5qMNGmzyBSwaoik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766500; c=relaxed/simple;
-	bh=cr8GE7iWznVx7A5SWeJMzuMIeSeWY7rpdbn2E1L52wQ=;
+	s=arc-20240116; t=1738766510; c=relaxed/simple;
+	bh=YhAGcmNMExGba0RCFjSWkoOOpz9y3GuCAR7cMYWs2Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glqgEpJa/ZlS+DOEzi6/ukauRSDXJbsAq/kZn8Yfki5B7OZa8vxwJzDEthOk2QhTMEgbAAwjoa996BNi950pPcxQR4LKHzW97yP0CG/uqFFXli8rW8Jd38YypBNDMhc196rK2EMtJacRFiDd4+t1ew6OhXwL3bk1NvZBCcMzZzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIjsGFeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BECC4CED6;
-	Wed,  5 Feb 2025 14:41:39 +0000 (UTC)
+	 MIME-Version; b=NWnzXp7JlF4fQchhuQF6FBih8JguYLuA0U8o8wav2288+dZurj32Y6Mhw6PEZdlONUydmXSFwYFMlJyiF/y1HoiewvXQgofsszz6zYgWOAi0U57sCH92CPv/QNKtgnJkzxmOwgCeAu6kKkFvANEfX0BEWWA+5o+VhhlARYMdcEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK6964mI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9358C4CEEA;
+	Wed,  5 Feb 2025 14:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766500;
-	bh=cr8GE7iWznVx7A5SWeJMzuMIeSeWY7rpdbn2E1L52wQ=;
+	s=korg; t=1738766510;
+	bh=YhAGcmNMExGba0RCFjSWkoOOpz9y3GuCAR7cMYWs2Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIjsGFeGqzCmwvBbQOK+fG6IZR96c9PnolBWX2Q0m11gKEqmc6zQyQohB+wl29xxY
-	 Qp6b5nHg5zkaSpduDZZg7xM0csF/BW+wqUx41v0eEgJtjlhmKejGAjvjNccV3EF8yM
-	 G2tcvxN8WEQs8LdBetaQMJreFej4ZRqMOS3p//R0=
+	b=pK6964mIFsDYwp4aj/Ca/9qdmuxt/dIFTfy+K6TG4O7sKKq3d0dmlBK0jZgme06iY
+	 oHvHqMeuv/Wc+CDPj9Y9Al1626kqIq+bBcNxx07DORHsTnSld7gw71+BjJhiWnIOmN
+	 bGzC+MxpWRuIyZVWHpPGpQHDQtEqEBlLxhtYMFEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
 	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 368/393] NFSD: Reset cb_seq_status after NFS4ERR_DELAY
-Date: Wed,  5 Feb 2025 14:44:47 +0100
-Message-ID: <20250205134434.380593457@linuxfoundation.org>
+Subject: [PATCH 6.6 369/393] Revert "SUNRPC: Reduce thread wake-up rate when receiving large RPC messages"
+Date: Wed,  5 Feb 2025 14:44:48 +0100
+Message-ID: <20250205134434.418160114@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -68,40 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 961b4b5e86bf56a2e4b567f81682defa5cba957e upstream.
+commit 966a675da844f1a764bb44557c21561cc3d09840 upstream.
 
-I noticed that once an NFSv4.1 callback operation gets a
-NFS4ERR_DELAY status on CB_SEQUENCE and then the connection is lost,
-the callback client loops, resending it indefinitely.
+I noticed that a handful of NFSv3 fstests were taking an
+unexpectedly long time to run. Troubleshooting showed that the
+server's TCP window closed and never re-opened, which caused the
+client to trigger an RPC retransmit timeout after 180 seconds.
 
-The switch arm in nfsd4_cb_sequence_done() that handles
-NFS4ERR_DELAY uses rpc_restart_call() to rearm the RPC state machine
-for the retransmit, but that path does not call the rpc_prepare_call
-callback again. Thus cb_seq_status is set to -10008 by the first
-NFS4ERR_DELAY result, but is never set back to 1 for the retransmits.
+The client's recovery action was to establish a fresh connection
+and retransmit the timed-out requests. This worked, but it adds a
+long delay.
 
-nfsd4_cb_sequence_done() thinks it's getting nothing but a
-long series of CB_SEQUENCE NFS4ERR_DELAY replies.
+I tracked the problem to the commit that attempted to reduce the
+rate at which the network layer delivers TCP socket data_ready
+callbacks. Under most circumstances this change worked as expected,
+but for NFSv3, which has no session or other type of throttling, it
+can overwhelm the receiver on occasion.
 
-Fixes: 7ba6cad6c88f ("nfsd: New helper nfsd4_cb_sequence_done() for processing more cb errors")
+I'm sure I could tweak the lowat settings, but the small benefit
+doesn't seem worth the bother. Just revert it.
+
+Fixes: 2b877fc53e97 ("SUNRPC: Reduce thread wake-up rate when receiving large RPC messages")
+Cc: Jakub Kicinski <kuba@kernel.org>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sunrpc/svcsock.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1202,6 +1202,7 @@ static bool nfsd4_cb_sequence_done(struc
- 		ret = false;
- 		break;
- 	case -NFS4ERR_DELAY:
-+		cb->cb_seq_status = 1;
- 		if (!rpc_restart_call(task))
- 			goto out;
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1093,9 +1093,6 @@ static void svc_tcp_fragment_received(st
+ 	/* If we have more data, signal svc_xprt_enqueue() to try again */
+ 	svsk->sk_tcplen = 0;
+ 	svsk->sk_marker = xdr_zero;
+-
+-	smp_wmb();
+-	tcp_set_rcvlowat(svsk->sk_sk, 1);
+ }
  
+ /**
+@@ -1185,17 +1182,10 @@ err_incomplete:
+ 		goto err_delete;
+ 	if (len == want)
+ 		svc_tcp_fragment_received(svsk);
+-	else {
+-		/* Avoid more ->sk_data_ready() calls until the rest
+-		 * of the message has arrived. This reduces service
+-		 * thread wake-ups on large incoming messages. */
+-		tcp_set_rcvlowat(svsk->sk_sk,
+-				 svc_sock_reclen(svsk) - svsk->sk_tcplen);
+-
++	else
+ 		trace_svcsock_tcp_recv_short(&svsk->sk_xprt,
+ 				svc_sock_reclen(svsk),
+ 				svsk->sk_tcplen - sizeof(rpc_fraghdr));
+-	}
+ 	goto err_noclose;
+ error:
+ 	if (len != -EAGAIN)
 
 
 
