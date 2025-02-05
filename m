@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F925A28EA3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D3FA28D7F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26BA61631C6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F551888330
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE12155333;
-	Wed,  5 Feb 2025 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37E7154C1D;
+	Wed,  5 Feb 2025 14:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvJT8+Y6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkCBOCZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBDB2AD22;
-	Wed,  5 Feb 2025 14:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C71509BD;
+	Wed,  5 Feb 2025 14:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764930; cv=none; b=ba/k/ngxTchtnd8ac6Zz8DrEx9xnYVAM4hFMQJja9rsn8FaPciVv9H3ZXvRByR0RTGf2dfo3RpJS7muhC32mwhBKqQ15p303XOE+tAQT52q1byhJT79xpAIve35n4/c0MhOwDz6S02242QRZFWphR+PhrvZMVWp/HmqN4zhBAZ4=
+	t=1738764110; cv=none; b=KVAF6dAU63zK9fHEppRK0pQisy/3wj8EoSc5vXJPN1aQy+By3g8PV/NHrFJSRHPC6rzyzz8ehK2uC7yNHjEjPYZsfSFHahlDmF6qSc0knXH646QFB0XLqLkCpmLyKS0/C2hpGFXrTJNFnyoSP7/wB9GYdauTLuSVV39GfUxO45c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764930; c=relaxed/simple;
-	bh=T3JpHSrqpJUHHqgszCmE0Bm2arH1ChUaQldn42eq0fw=;
+	s=arc-20240116; t=1738764110; c=relaxed/simple;
+	bh=0eAfk+Pq1/5224mTksGgvqWiNkd7n9Jk1wXamabtg60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sx/3oIjC6dw1ci7awNEdkko3LnB5CnGPvEsLyrVGarGaP8FR/11KmQfIS7x/5Q4EP8VwgRVQHd7RyvtIYGxJ1L8wCbvNz4U7ijOv2KrJLCACGr7Kl9tJKa211XxHLHQVoYOr8Q5XLPigQCV52gWfvsElx1qx0kBQ6z6ndE2+LBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvJT8+Y6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2157CC4CED1;
-	Wed,  5 Feb 2025 14:15:28 +0000 (UTC)
+	 MIME-Version; b=nnsXaFnMT6ytg4yfoD64JInwK3Xr56gQulFbuNXEMcOxFt8o4OGDOIjMjW8m4X9RYVE4FyOM7vY3cKcqujN0QffuftwQYdbz+I4if5D1xmR/OrHktf8QTfWRY3A4WRXFALfCGlmTszJltAqJQZX36+nGxqp/NvUjlpjcdHJGCR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkCBOCZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D86C4CED1;
+	Wed,  5 Feb 2025 14:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764929;
-	bh=T3JpHSrqpJUHHqgszCmE0Bm2arH1ChUaQldn42eq0fw=;
+	s=korg; t=1738764110;
+	bh=0eAfk+Pq1/5224mTksGgvqWiNkd7n9Jk1wXamabtg60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvJT8+Y6k6qGwu/QA+JH1bwtp0KIqpSw67Las3Nw84a1uwut4yM4zXSmw5slO1bZC
-	 vDPACwCm9pTXOGqyDDBlnmE8I3KJuN2t+WV3AtribLTirtMX47HhE7rmLfL0FvqT2z
-	 47V0bx4AcwWDlUhnymguCEy7qJ9PQ4QJtDhTkp+4=
+	b=XkCBOCZ1FbrWLibtlixt5cFnIku6zw0jeXNhipRYH/k7ecSUtcBw0s5pQI8fyS6Bn
+	 2ZEUU21xRGlmDt8eqPkoqVDKj9xub0tSE1NJfOepGmE55AucOtX+UNMmAViVP+6r/e
+	 fp9H8HjxlI5o8JC2Criq+AGh4bTDAKnwfY7x/24U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 102/623] clk: fix an OF node reference leak in of_clk_get_parent_name()
-Date: Wed,  5 Feb 2025 14:37:24 +0100
-Message-ID: <20250205134500.119773591@linuxfoundation.org>
+Subject: [PATCH 6.12 090/590] dt-bindings: mmc: controller: clarify the address-cells description
+Date: Wed,  5 Feb 2025 14:37:25 +0100
+Message-ID: <20250205134458.695077336@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 28fa3291cad1c201967ef93edc6e7f8ccc9afbc0 ]
+[ Upstream commit b2b8e93ec00b8110cb37cbde5400d5abfdaed6a7 ]
 
-Current implementation of of_clk_get_parent_name() leaks an OF node
-reference on error path. Add a of_node_put() call before returning an
-error.
+The term "slot ID" has nothing to do with the SDIO function number
+which is specified in the reg property of the subnodes, rephrase
+the description to be more accurate.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
-
-Fixes: 8da411cc1964 ("clk: let of_clk_get_parent_name() fail for invalid clock-indices")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/20241210130913.3615205-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: f9b7989859dd ("dt-bindings: mmc: Add YAML schemas for the generic MMC options")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Message-ID: <20241128-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v4-1-11d9f9200a59@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 9b45fa005030f..cf7720b9172ff 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -5385,8 +5385,10 @@ const char *of_clk_get_parent_name(const struct device_node *np, int index)
- 		count++;
- 	}
- 	/* We went off the end of 'clock-indices' without finding it */
--	if (of_property_present(clkspec.np, "clock-indices") && !found)
-+	if (of_property_present(clkspec.np, "clock-indices") && !found) {
-+		of_node_put(clkspec.np);
- 		return NULL;
-+	}
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 58ae298cd2fcf..23884b8184a9d 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -25,7 +25,7 @@ properties:
+   "#address-cells":
+     const: 1
+     description: |
+-      The cell is the slot ID if a function subnode is used.
++      The cell is the SDIO function number if a function subnode is used.
  
- 	if (of_property_read_string_index(clkspec.np, "clock-output-names",
- 					  index,
+   "#size-cells":
+     const: 0
 -- 
 2.39.5
 
