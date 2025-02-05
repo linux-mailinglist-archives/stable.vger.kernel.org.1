@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-113352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73829A291D2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1824BA28D54
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D8883AC004
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9F916A08C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33CA1DC19D;
-	Wed,  5 Feb 2025 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D0415CD74;
+	Wed,  5 Feb 2025 13:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2skUCV2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PepvMHAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7501DB153;
-	Wed,  5 Feb 2025 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C175A155A21;
+	Wed,  5 Feb 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766669; cv=none; b=tn7Edn8bkpgQPpcvjScOz4OG8A/gs8gRhpZXk78oC1gkUDjuaYbA3ET24/Moc8rgXivzzaFdmFrKySZYYvIqSbauUSrG9jskkfJHe0CVettj/TuK64Ss08CT+8OBXxSX2U0b/Ff9kiXcaZ5BHCamebMiaGFucShc0QX39aiMnTY=
+	t=1738763917; cv=none; b=K/IpXC0eT3qbkaWFcfsDT6ZenUqPwmrfVuv77InZH0y22UyT9rayQFh28HklM3zoWKO+gKU8dZG6EybXkuDuB2ckVsQstz+kkHppNB4bQcA36fVxMEsLQDTuTrxVP9x+iadOg9+mB0wsNrmMt2j1V6895eFqCCLFIKRBVvDoXq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766669; c=relaxed/simple;
-	bh=zI5x1mfNBYwub5x9woaebtWH4Y4H/LcSk4felDg0f6E=;
+	s=arc-20240116; t=1738763917; c=relaxed/simple;
+	bh=VPg50kikS5cqYe4IPYZlXW49QcmtsG2B/h4Cp8j/SUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GrHr0aLKbkY4dnrCiUj1hexn29z2wfMPe5ed18JOgay0nK2EeUnC1BXf9ZFFGY2nKaf3kiGH9bDe8YbaETLHQ4dCzKVEWQjsNlxV0rio0PRiyQh0IjE5JNKmLOXTZME8zYZRpAzTofv6eOmYMImDqTP7lsyTECfxcAaSYZho82w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2skUCV2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEB0C4CED1;
-	Wed,  5 Feb 2025 14:44:28 +0000 (UTC)
+	 MIME-Version; b=DxUfn5Ah02M1J2zjbIrSSS//sms9Z+jmYpH7edsOqBoyJd9m9N01w3SSk+3HuVPUXY1xCYssI3B5jgNYq/GWQoMvbGKizDxcsL6tZlzdYGpiVX4EpxGq9R75cIrN7+q/VDHkMnIVYuoNg63FsitPdp2n+M/89FkhqTDMhhMbD88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PepvMHAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3108CC4CEE2;
+	Wed,  5 Feb 2025 13:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766669;
-	bh=zI5x1mfNBYwub5x9woaebtWH4Y4H/LcSk4felDg0f6E=;
+	s=korg; t=1738763917;
+	bh=VPg50kikS5cqYe4IPYZlXW49QcmtsG2B/h4Cp8j/SUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2skUCV2Tp9OL/LyfyFtDef7mYwB9FdB012/S2I2R2gLjMsmIH/JDiZqYl7UQa+rXi
-	 4YrZEPszC6n9NDXQdWeBzeEpAaItroa44ReuMnrfY0ImsJjIIhJ1fsgDpQW4XlBRwx
-	 kh/dSgqKZQY4P0+gHvBwrJvZils8RqXVkFA/tiTs=
+	b=PepvMHAv1Z4tPfUU5L8WuWiyUoafGpEQuEFwG9HfTRz2AzkBQMzHnX+aoHvw5+AWw
+	 PXxrwhBndljK/S5RkV0pRtUvmCfJDSnCtSN+uvml9DBD61GmtL8X5AKa4zXt4SoFBm
+	 QlctMF8lHypRkitikoZhsYp/lvNpY8N1Xl5BPzxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 296/623] ASoC: Intel: avs: Fix init-config parsing
+Subject: [PATCH 6.6 119/393] wifi: mt76: mt7996: fix rx filter setting for bfee functionality
 Date: Wed,  5 Feb 2025 14:40:38 +0100
-Message-ID: <20250205134507.554046334@linuxfoundation.org>
+Message-ID: <20250205134424.846260669@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit e9ca3db9f01a7ce91ceab35cd5fa52f0c5aca174 ]
+[ Upstream commit 858fd2a53877b2e8b1d991a5a861ac34a0f55ef8 ]
 
-When parsing init configs correct token should be looked up.
+Fix rx filter setting to prevent dropping NDPA frames. Without this
+change, bfee functionality may behave abnormally.
 
-Fixes: 1b4217ebbb3e ("ASoC: Intel: avs: Add topology parsing support for initial config")
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250109122216.3667847-5-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Link: https://patch.msgid.link/20241230194202.95065-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/topology.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/avs/topology.c b/sound/soc/intel/avs/topology.c
-index 5cda527020c7b..d612f20ed9893 100644
---- a/sound/soc/intel/avs/topology.c
-+++ b/sound/soc/intel/avs/topology.c
-@@ -1466,7 +1466,7 @@ avs_tplg_path_template_create(struct snd_soc_component *comp, struct avs_tplg *o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 0e69f0a508616..c559212ea86a7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -474,8 +474,7 @@ static void mt7996_configure_filter(struct ieee80211_hw *hw,
  
- static const struct avs_tplg_token_parser mod_init_config_parsers[] = {
- 	{
--		.token = AVS_TKN_MOD_INIT_CONFIG_ID_U32,
-+		.token = AVS_TKN_INIT_CONFIG_ID_U32,
- 		.type = SND_SOC_TPLG_TUPLE_TYPE_WORD,
- 		.offset = offsetof(struct avs_tplg_init_config, id),
- 		.parse = avs_parse_word_token,
-@@ -1519,7 +1519,7 @@ static int avs_tplg_parse_initial_configs(struct snd_soc_component *comp,
- 		esize = le32_to_cpu(tuples->size) + le32_to_cpu(tmp->size);
+ 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
+ 			     MT_WF_RFCR_DROP_RTS |
+-			     MT_WF_RFCR_DROP_CTL_RSV |
+-			     MT_WF_RFCR_DROP_NDPA);
++			     MT_WF_RFCR_DROP_CTL_RSV);
  
- 		ret = parse_dictionary_entries(comp, tuples, esize, config, 1, sizeof(*config),
--					       AVS_TKN_MOD_INIT_CONFIG_ID_U32,
-+					       AVS_TKN_INIT_CONFIG_ID_U32,
- 					       mod_init_config_parsers,
- 					       ARRAY_SIZE(mod_init_config_parsers));
- 
+ 	*total_flags = flags;
+ 	mt76_wr(dev, MT_WF_RFCR(phy->mt76->band_idx), phy->rxfilter);
 -- 
 2.39.5
 
