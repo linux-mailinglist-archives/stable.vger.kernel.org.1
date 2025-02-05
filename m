@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A715CA291DF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F7BA28E33
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A6DC7A1350
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCEE51887DE0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E55186284;
-	Wed,  5 Feb 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9C514F9E7;
+	Wed,  5 Feb 2025 14:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1bq14e7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq4BAy4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC9C156C5E;
-	Wed,  5 Feb 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E1B1519AA;
+	Wed,  5 Feb 2025 14:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767144; cv=none; b=CPbmR2LcYGEy6PZoLXnwYT827T0R0TTAD4L+pU3LtgoVQQI3UATxOnhT9cNfEupS9Uj19/VGv+YEu88kbiaFWdBl5sGZxvlMo7gfuq2NTwO5yJLk0/nNWerv3YextvXyBafXO6YYW1tr527Q0IiPo6Vz3xCLxwwgEInBTjUANFg=
+	t=1738764592; cv=none; b=BNCSAJOPKaVKdP/GsZBhf9fWVR05+NnO49fqMNR3+R4Y8D4DHTEuBRjkdgeypip5LIUBGaG7rOkQemfAvw7wkbeqZcJRL4LrhFhtNZpozTIgPz9mkpOlbklVMm+sV124B4Lu4BZT0dvFJz8z1c9+tT9qK2pDAD4Q9Iw1o4x/HeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767144; c=relaxed/simple;
-	bh=8BLc7QBJuO5JvxN1FlvLEhQEjbomY+X0/ZslvqqIoqQ=;
+	s=arc-20240116; t=1738764592; c=relaxed/simple;
+	bh=/mo+JzAeaLFCXX9BAGFyqJoYSibOF84kWE+a/BB/W2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/FGqZf5mYnLvUjWZy1iYx6G6bbxZ9yKRs0gH80crbyxGCGOBEYtiZNHPho1MYMf0+wEap14NuirUM93bWSYdHb9NIuG+D6tmK/disqyNqAhkspl9VxPJJgxNTwAv8A+5vh5s5dekySI5I9Nk+YwmWQ7vDqI7yD5qI8oL6/BeIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1bq14e7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A31AC4CED1;
-	Wed,  5 Feb 2025 14:52:23 +0000 (UTC)
+	 MIME-Version; b=GNzAJWb1ui2+nvA9DcgdFkZftbBhD0eaivxozi1ukhsiKcHdlaZhcuhaHQPN00suLwgtegXOcjVmSOr3vB81J8oA1vkh1++u+gKNym8PJUJ3qEZzZEDXcYFEUDtP3cOqJTEWQhT1v3/GcuiFF9CFk1p0+57wWYYa0BQNjlR8pcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq4BAy4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058F6C4CEDD;
+	Wed,  5 Feb 2025 14:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767144;
-	bh=8BLc7QBJuO5JvxN1FlvLEhQEjbomY+X0/ZslvqqIoqQ=;
+	s=korg; t=1738764592;
+	bh=/mo+JzAeaLFCXX9BAGFyqJoYSibOF84kWE+a/BB/W2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1bq14e7GwBtCPFyo7WqjCc93ZQk/YqfC/K3uss9B/knxkfZWvyPURXMXTVDBJ+tT
-	 Ks62EeuUoFLmYGGCKXsTZdgt2WM4Iy4ZFg0967k4yYzMKcFwPQmeatB898wBW3KyTh
-	 GZsNJmup/ljyFYQWqzD/kxtdMQuDJBbjY4WtKa+M=
+	b=Cq4BAy4yu1cvN/+Rb9+1kIUrZSUHS75giiyVCpyZJH/cVZxeTbj/PeklBc95K+w7l
+	 IkG8EPxng+pTAKlAFiQ1NdgXn/61xgS5ohk+bHLSRyQ8Wz+kJCFC7NqkinGqCmzu1q
+	 MbeXUxGlAse9Bxazq36FIx0CBWwB4CuDZPxx0ZH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 362/623] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie1
+Subject: [PATCH 6.6 185/393] bpf: Send signals asynchronously if !preemptible
 Date: Wed,  5 Feb 2025 14:41:44 +0100
-Message-ID: <20250205134510.071401975@linuxfoundation.org>
+Message-ID: <20250205134427.377399634@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 3d7fdd8e38aafd4858935df2392762c1ab8fb40f ]
+[ Upstream commit 87c544108b612512b254c8f79aa5c0a8546e2cc4 ]
 
-The MAC reset for PCIe port 1 on MT8195 when asserted during suspend
-causes the system to hang during resume with the following error (with
-no_console_suspend enabled):
+BPF programs can execute in all kinds of contexts and when a program
+running in a non-preemptible context uses the bpf_send_signal() kfunc,
+it will cause issues because this kfunc can sleep.
+Change `irqs_disabled()` to `!preemptible()`.
 
-  mtk-pcie-gen3 112f8000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
-  mtk-pcie-gen3 112f8000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x24 returns -110
-  mtk-pcie-gen3 112f8000.pcie: PM: failed to resume noirq: error -110
-
-This issue is specific to MT8195. On MT8192 with the PCIe reset,
-MT8192_INFRA_RST4_PCIE_TOP_SWRST, added to the DT node, the issue is not
-observed.
-
-Since without the reset, the PCIe controller and WiFi card connected to
-it, work just as well, remove the reset to allow the system to suspend
-and resume properly.
-
-Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20241218-mt8195-pcie1-reset-suspend-fix-v1-1-1c021dda42a6@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reported-by: syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67486b09.050a0220.253251.0084.GAE@google.com/
+Fixes: 1bc7896e9ef4 ("bpf: Fix deadlock with rq_lock in bpf_send_signal()")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20250115103647.38487-1-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/trace/bpf_trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index ade685ed2190b..04e41b557d448 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -1611,9 +1611,6 @@
- 			phy-names = "pcie-phy";
- 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P1>;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 5f12bb727b850..9d8f60e0cb554 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -853,7 +853,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type)
+ 	if (unlikely(is_global_init(current)))
+ 		return -EPERM;
  
--			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P1_SWRST>;
--			reset-names = "mac";
--
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 7>;
- 			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
+-	if (irqs_disabled()) {
++	if (!preemptible()) {
+ 		/* Do an early check on signal validity. Otherwise,
+ 		 * the error is lost in deferred irq_work.
+ 		 */
 -- 
 2.39.5
 
