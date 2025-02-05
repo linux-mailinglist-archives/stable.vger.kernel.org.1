@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-112423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A079AA28CA2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35937A28D69
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9365218831A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6F0160B0A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E84149C53;
-	Wed,  5 Feb 2025 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD681547F2;
+	Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O783SazZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIMOBZ2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7013C146A63;
-	Wed,  5 Feb 2025 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6715B14EC77;
+	Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763524; cv=none; b=bNMI7KluoXbfIqtwnOKXLr4aJtdk4DhQgr6R+F/ic5JhIezJT9VpaPnPNXmUnbpJcU+dIuT4vBTyvxynI2CeVDcN0qmnB4LsjYBTLSRm3X6dIwTQk48yjjKdrOv+AzBy5uc6woBZvdx4s9EfT6P4Af91/GIcTurZEs9hHC5ObQc=
+	t=1738764021; cv=none; b=Kt85PhJZycAK4swVoiQ7NBxGxo9/sFOLQswCdKTb8xm2lU3T51DoTIr7xrz+g1efAyRPd1WyOIKlapFcqGsObXJdNAV8BWXWBhHsuDT8XYChYrwGsfoQPxX9p/yCQDPT8m1Mz10bxM97u/7mMT9tiPocweejiU8kg2ENvhxg7bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763524; c=relaxed/simple;
-	bh=8oKZY+l8wrQMiEygp/1VBqUMklCoIq33LWVLiSNJTpQ=;
+	s=arc-20240116; t=1738764021; c=relaxed/simple;
+	bh=7htLj/aH+/RZhpdG0QBAHElZ3By77dUWxRdn5eP658M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PybJXW5f7X68zk4dHH+Y9f0uwrq3vqRO8o59n9rfZGpZn3sphShoa+YomqMeMYk9/nSqKT+iC9ImQTBPFPNhzh2SUcO0ZOWrQKgUAatyFcANsu2mWQJQmfX5G/8t96HX3KWQaxvcAARfQJtQoautRajG7AJogOl5IHJBnM/vizg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O783SazZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F3CC4CED1;
-	Wed,  5 Feb 2025 13:52:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JFszzJhDP2810Vj8BylkASxtYncgiJTbaBLE+cfkTMR7nE0ZP5IxXhBD3kobX4nceRVgjDBmd/elHWYKGaEraweC1F3XKdFYHAWVgVTRtfnTkgRGOevxs5wLnJGFV61g/MmR4Y6+7sCzV77C52HqDSdKE/zN3hiWbzQY2CNpfQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIMOBZ2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8991C4CED1;
+	Wed,  5 Feb 2025 14:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763524;
-	bh=8oKZY+l8wrQMiEygp/1VBqUMklCoIq33LWVLiSNJTpQ=;
+	s=korg; t=1738764021;
+	bh=7htLj/aH+/RZhpdG0QBAHElZ3By77dUWxRdn5eP658M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O783SazZJux4aPq4MVKO4m/MsCSR74T2pIjwnPW4lGl/ZDZJkGketQAJ3TQSDQsaJ
-	 0j1DsEuJkpXNy+VajWX/TE9RSO35j0yR5sbdrfU+nePPBkxfrIgrR6SDbe10vqAerg
-	 F9R8S2mv55lNAnh+JxiD7b/JbJy5sGXQf4FopwyY=
+	b=VIMOBZ2avAtShc1EVVukZlNF5yrc5MxIV9hu721P5dd4WZr5XQlXtpgAkGppDwW9Y
+	 u/giNu4wuwIqK+qJUkYY1cLXkLdIyb6MxIZdSi3+DI6yQK816QiubKnVRhcmXeVpLJ
+	 OoIgEdQ4i657wIPjudPXzSrYzkPNIANu57on9BQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/590] nvme: fix bogus kzalloc() return check in nvme_init_effects_log()
-Date: Wed,  5 Feb 2025 14:36:20 +0100
-Message-ID: <20250205134456.208611817@linuxfoundation.org>
+Subject: [PATCH 6.13 039/623] drm/i915: Grab intel_display from the encoder to avoid potential oopsies
+Date: Wed,  5 Feb 2025 14:36:21 +0100
+Message-ID: <20250205134457.724613738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 170e086ad3997f816d1f551f178a03a626a130b7 ]
+[ Upstream commit dc3806d9eb66d0105f8d55d462d4ef681d9eac59 ]
 
-nvme_init_effects_log() returns failure when kzalloc() is successful,
-which is obviously wrong and causes failures to boot. Correct the
-check.
+Grab the intel_display from 'encoder' rather than 'state'
+in the encoder hooks to avoid the massive footgun that is
+intel_sanitize_encoder(), which passes NULL as the 'state'
+argument to encoder .disable() and .post_disable().
 
-Fixes: d4a95adeabc6 ("nvme: Add error path for xa_store in nvme_init_effects")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+TODO: figure out how to actually fix intel_sanitize_encoder()...
+
+Fixes: 40eb34c3f491 ("drm/i915/crt: convert to struct intel_display")
+Fixes: ab0b0eb5c85c ("drm/i915/tv: convert to struct intel_display")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241107161123.16269-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_crt.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 23137fcd335b0..4c409efd8cec1 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3174,7 +3174,7 @@ static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
- 	struct nvme_effects_log *effects, *old;
+diff --git a/drivers/gpu/drm/i915/display/intel_crt.c b/drivers/gpu/drm/i915/display/intel_crt.c
+index 74c1983fe07ea..1be55bdb48b96 100644
+--- a/drivers/gpu/drm/i915/display/intel_crt.c
++++ b/drivers/gpu/drm/i915/display/intel_crt.c
+@@ -244,7 +244,7 @@ static void hsw_disable_crt(struct intel_atomic_state *state,
+ 			    const struct intel_crtc_state *old_crtc_state,
+ 			    const struct drm_connector_state *old_conn_state)
+ {
+-	struct intel_display *display = to_intel_display(state);
++	struct intel_display *display = to_intel_display(encoder);
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
  
- 	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
--	if (effects)
-+	if (!effects)
- 		return -ENOMEM;
+ 	drm_WARN_ON(display->drm, !old_crtc_state->has_pch_encoder);
+@@ -257,7 +257,7 @@ static void hsw_post_disable_crt(struct intel_atomic_state *state,
+ 				 const struct intel_crtc_state *old_crtc_state,
+ 				 const struct drm_connector_state *old_conn_state)
+ {
+-	struct intel_display *display = to_intel_display(state);
++	struct intel_display *display = to_intel_display(encoder);
+ 	struct intel_crtc *crtc = to_intel_crtc(old_crtc_state->uapi.crtc);
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
  
- 	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
+@@ -287,7 +287,7 @@ static void hsw_pre_pll_enable_crt(struct intel_atomic_state *state,
+ 				   const struct intel_crtc_state *crtc_state,
+ 				   const struct drm_connector_state *conn_state)
+ {
+-	struct intel_display *display = to_intel_display(state);
++	struct intel_display *display = to_intel_display(encoder);
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+ 
+ 	drm_WARN_ON(display->drm, !crtc_state->has_pch_encoder);
+@@ -300,7 +300,7 @@ static void hsw_pre_enable_crt(struct intel_atomic_state *state,
+ 			       const struct intel_crtc_state *crtc_state,
+ 			       const struct drm_connector_state *conn_state)
+ {
+-	struct intel_display *display = to_intel_display(state);
++	struct intel_display *display = to_intel_display(encoder);
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+ 	enum pipe pipe = crtc->pipe;
+@@ -319,7 +319,7 @@ static void hsw_enable_crt(struct intel_atomic_state *state,
+ 			   const struct intel_crtc_state *crtc_state,
+ 			   const struct drm_connector_state *conn_state)
+ {
+-	struct intel_display *display = to_intel_display(state);
++	struct intel_display *display = to_intel_display(encoder);
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+ 	enum pipe pipe = crtc->pipe;
 -- 
 2.39.5
 
