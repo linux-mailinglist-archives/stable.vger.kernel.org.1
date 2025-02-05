@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE07A293A3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78C8A29096
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3134B1891AF8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 165617A354E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124F818732B;
-	Wed,  5 Feb 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7B3165F16;
+	Wed,  5 Feb 2025 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpDl37Ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOguHpYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F1B13C8E2;
-	Wed,  5 Feb 2025 15:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BB6151988;
+	Wed,  5 Feb 2025 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767750; cv=none; b=A9gUZ7Bj5V+0WTJfcg1YBecA7kTvs9VR6HODI1XjC1zHvAjn/RAXopaph2KfAVovPRw/5FJpd7Ld7fCyYIYdueMzTsRPU4xDM76WLuivQ3zFUFYDAz6EbOd5QWQzrlgamjvlVmsc7rtGZijUUP1V7csxDmgnGQHdhL/aA8911KY=
+	t=1738766272; cv=none; b=e/QtGbhD7ITKG6c3/dShnXM2E5vK7TFBEWWfboDoSRteLpSgao5kycOgNWMoSwp+EmGL6dRHKiAO+XLC9rDvs1hz90v8gg1CBzMRm7CQMZRDUYQFkj/UwWrwvjHNl6CfJ9adLqficjXZ7wEuKTed7kLCRF7s7pgavQW/YvxjupA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767750; c=relaxed/simple;
-	bh=J3FuHgNpmSJjj65N99QREwCs8zSuzj9wZ93HnWEIDXY=;
+	s=arc-20240116; t=1738766272; c=relaxed/simple;
+	bh=xI4WoyIqpcnYPgOGpWrk08+oqh395Reo44UQ0mp+1vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucbt4VRrFsn90Om2ZqaSECw2yM3eHukMic0nC6JxV1BKQ9YL33BP8VnWeb76owC0VKW7L92ln61gjRFje4PRSyozBOdLORSdyPzY/rzmDbF7t/RX3E83ZVhUUYE5mkJa6G3zgxb9lDi935+HUTGYdv/gAE/VjnlK0dL3ZKeCqPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpDl37Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4A5C4CED1;
-	Wed,  5 Feb 2025 15:02:29 +0000 (UTC)
+	 MIME-Version; b=qxi8ebTULqxs5FETxBqLQ2qBZeTv6ym+ohDHTzSF6unB7N6aJssku2F6ur7bJFNk58Ug/Wv0lZ9c8UHKQ+4VSxvxHr0cXmiqS1Z11S2GeitfOjTyEzGUOnIePxSkiBhBlakY0j0tb1fEjMvhH4ZKJhZAUV3P1vFCE9CGbLin8UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOguHpYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95546C4CEDD;
+	Wed,  5 Feb 2025 14:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767750;
-	bh=J3FuHgNpmSJjj65N99QREwCs8zSuzj9wZ93HnWEIDXY=;
+	s=korg; t=1738766272;
+	bh=xI4WoyIqpcnYPgOGpWrk08+oqh395Reo44UQ0mp+1vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpDl37Ep8u09R94sFJXtEGRskGQI8wxAG3mScZitMiOcoKz4S7+hwm4S3fav97ycB
-	 VEXBZZD6WAeNO0FIlfzKX46RWF0yDLF97uryVtpP0RbplSQwv6Ob8Qf2RVLAG0WR0Y
-	 jCpX+EuogSW+gImvxjwjlwjpLlPqgGc31P4mT2fE=
+	b=yOguHpYS7L+Q90vaQjT69ebhZb5QvwxIqQl3urVO2nEO9QuTpagKMFIkxcGYlvTKo
+	 hMBLV7X+x5OOzKm3TLHSj49zepQe0kETY0dvrbCdbU8HUUg/lzICD7vgT2L/hXRctA
+	 Vq2uZXP0gP+Zf4io4JqGsn2k/3cSWGl3fNFA4s/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 504/590] net: stmmac: Limit the number of MTL queues to hardware capability
-Date: Wed,  5 Feb 2025 14:44:19 +0100
-Message-ID: <20250205134514.550299549@linuxfoundation.org>
+Subject: [PATCH 6.6 341/393] vsock: Keep the binding until socket destruction
+Date: Wed,  5 Feb 2025 14:44:20 +0100
+Message-ID: <20250205134433.358615696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit f5fb35a3d6b36d378b2e2ecbfb9caa337d5428e6 ]
+[ Upstream commit fcdd2242c0231032fc84e1404315c245ae56322a ]
 
-The number of MTL queues to use is specified by the parameter
-"snps,{tx,rx}-queues-to-use" from stmmac_platform layer.
+Preserve sockets bindings; this includes both resulting from an explicit
+bind() and those implicitly bound through autobind during connect().
 
-However, the maximum numbers of queues are constrained by upper limits
-determined by the capability of each hardware feature. It's appropriate
-to limit the values not to exceed the upper limit values and display
-a warning message.
+Prevents socket unbinding during a transport reassignment, which fixes a
+use-after-free:
 
-This only works if the hardware capability has the upper limit values.
+    1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
+    2. transport->release() calls vsock_remove_bound() without checking if
+       sk was bound and moved to bound list (refcnt=1)
+    3. vsock_bind() assumes sk is in unbound list and before
+       __vsock_insert_bound(vsock_bound_sockets()) calls
+       __vsock_remove_bound() which does:
+           list_del_init(&vsk->bound_table); // nop
+           sock_put(&vsk->sk);               // refcnt=0
 
-Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+BUG: KASAN: slab-use-after-free in __vsock_bind+0x62e/0x730
+Read of size 4 at addr ffff88816b46a74c by task a.out/2057
+ dump_stack_lvl+0x68/0x90
+ print_report+0x174/0x4f6
+ kasan_report+0xb9/0x190
+ __vsock_bind+0x62e/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Allocated by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ __kasan_slab_alloc+0x85/0x90
+ kmem_cache_alloc_noprof+0x131/0x450
+ sk_prot_alloc+0x5b/0x220
+ sk_alloc+0x2c/0x870
+ __vsock_create.constprop.0+0x2e/0xb60
+ vsock_create+0xe4/0x420
+ __sock_create+0x241/0x650
+ __sys_socket+0xf2/0x1a0
+ __x64_sys_socket+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ kasan_save_free_info+0x37/0x60
+ __kasan_slab_free+0x4b/0x70
+ kmem_cache_free+0x1a1/0x590
+ __sk_destruct+0x388/0x5a0
+ __vsock_bind+0x5e1/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
+RIP: 0010:refcount_warn_saturate+0xce/0x150
+ __vsock_bind+0x66d/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
+RIP: 0010:refcount_warn_saturate+0xee/0x150
+ vsock_remove_bound+0x187/0x1e0
+ __vsock_release+0x383/0x4a0
+ vsock_release+0x90/0x120
+ __sock_release+0xa3/0x250
+ sock_close+0x14/0x20
+ __fput+0x359/0xa80
+ task_work_run+0x107/0x1d0
+ do_exit+0x847/0x2560
+ do_group_exit+0xb8/0x250
+ __x64_sys_exit_group+0x3a/0x50
+ x64_sys_call+0xfec/0x14f0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-1-1cf57065b770@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/vmw_vsock/af_vsock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index cf7b59b8cc64b..7b1ae6f397fb9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7236,6 +7236,21 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 	if (priv->dma_cap.tsoen)
- 		dev_info(priv->device, "TSO supported\n");
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 2050d888df2ae..ea857ed57d046 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -336,7 +336,10 @@ EXPORT_SYMBOL_GPL(vsock_find_connected_socket);
  
-+	if (priv->dma_cap.number_rx_queues &&
-+	    priv->plat->rx_queues_to_use > priv->dma_cap.number_rx_queues) {
-+		dev_warn(priv->device,
-+			 "Number of Rx queues (%u) exceeds dma capability\n",
-+			 priv->plat->rx_queues_to_use);
-+		priv->plat->rx_queues_to_use = priv->dma_cap.number_rx_queues;
-+	}
-+	if (priv->dma_cap.number_tx_queues &&
-+	    priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
-+		dev_warn(priv->device,
-+			 "Number of Tx queues (%u) exceeds dma capability\n",
-+			 priv->plat->tx_queues_to_use);
-+		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
-+	}
+ void vsock_remove_sock(struct vsock_sock *vsk)
+ {
+-	vsock_remove_bound(vsk);
++	/* Transport reassignment must not remove the binding. */
++	if (sock_flag(sk_vsock(vsk), SOCK_DEAD))
++		vsock_remove_bound(vsk);
 +
- 	priv->hw->vlan_fail_q_en =
- 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
- 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
+ 	vsock_remove_connected(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_remove_sock);
+@@ -820,12 +823,13 @@ static void __vsock_release(struct sock *sk, int level)
+ 	 */
+ 	lock_sock_nested(sk, level);
+ 
++	sock_orphan(sk);
++
+ 	if (vsk->transport)
+ 		vsk->transport->release(vsk);
+ 	else if (sock_type_connectible(sk->sk_type))
+ 		vsock_remove_sock(vsk);
+ 
+-	sock_orphan(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+ 	skb_queue_purge(&sk->sk_receive_queue);
 -- 
 2.39.5
 
