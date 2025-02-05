@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1045DA28FAC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB1AA293F0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2A81881DEF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C2C189202D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B98155335;
-	Wed,  5 Feb 2025 14:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C34D15B122;
+	Wed,  5 Feb 2025 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv6L+xUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q58J+pRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110A9522A;
-	Wed,  5 Feb 2025 14:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9161C6BE;
+	Wed,  5 Feb 2025 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765669; cv=none; b=dMQQHVRLJA6wLcKhQHoOnEVKCjsryGM/k+p49ZnKJzO/kScY7KykzdpE8WovPPbZSOCbMTYdE8sOZ3JO6zOnTzIPAQ847w6+SrZ7uEg1Kp35NTPmn4YrzxBYpziuShOfgYIVC761cNCXmdBZSowVMxqKV5j9PLTwyRYYveMBLXs=
+	t=1738767874; cv=none; b=RQHKWxKN+5fGvhMGRRt1Zw16O0d5vsjY4qBlWRsVeiu6ud4qb1m6gtQ5wbG64viQ8N8DzTfLSxOL1+J+C0XcA3NtaAJkPZwvZVxJ8h3Qnmh5tFzFP+jHpah3QRfwpnwPhoRYsBAKjeREdGbQ8qFMRkoTuVLQEiliwA+DH+2i6Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765669; c=relaxed/simple;
-	bh=xYZUICL9PfYkA30X2LLJKsc7Fs3Wyg79TjgXwfUldjM=;
+	s=arc-20240116; t=1738767874; c=relaxed/simple;
+	bh=xfdMLt0r5qK5tPSpHDbU/8mKOAPq/gJR0eCtKR3lh3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfmrJdYsy8ETnLzJHD9ZUfwDVj3xBjPOucxEscfQBKBtsEm5sy62Djl4m+WDaByoU1AhjhpYY/ayECLv6XD9lI3Heni9/0mzbSKtBwLvQcDXtCXK/lMQDqQUJzxmNELF2rfMgz3C+X73ah31mI83L8x8arPz0md8KuMAJDc8CUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv6L+xUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C85C4CED1;
-	Wed,  5 Feb 2025 14:27:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EURjrkeKztKAII/vwWRaK9Ug0hZCJVpADsoCrm+zIFbCbvTKUGqFTmUolnYu2k4ui5Qhl8Y+65ta9LeoQc5rpIFl8PfxQi/4+CZfQIi+F4fmEW3OPbGa9WYukIk7cnujUBj1jHoHl+1COLAqYKZYVPnuDjejechPFN5SjOpnWyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q58J+pRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A830C4CED1;
+	Wed,  5 Feb 2025 15:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765668;
-	bh=xYZUICL9PfYkA30X2LLJKsc7Fs3Wyg79TjgXwfUldjM=;
+	s=korg; t=1738767873;
+	bh=xfdMLt0r5qK5tPSpHDbU/8mKOAPq/gJR0eCtKR3lh3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv6L+xUPXtCZMnFEyMCTzuYH+C08lADPncGVo1AGmMYIYXCacMDyLtGvMuUKYemAr
-	 fR0NOftcjJpal7Il55/6YGosE/GznSKVcZuUlz65tA+BYFe7OSzcbNuLVfJG+CwD05
-	 iGL9SsiUJJl6uJH166XAePvLe4pIt1kHxKemxXFA=
+	b=q58J+pRjGDn8IjCr+IrFmM+o8/2vBYMlH64gzJKGZxqPHLiJ56q89QaL3c48W2emA
+	 frH37Wcqgo8sAPRpKYlIlZDhf9cbslGfSRjRb0h4Pg7l0NNl4W5Yc2FDgDYXPGYGFj
+	 d8Z9r/bs4oMmYf5R0KZnsMy3pqUmBQn70Bl9uXQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/393] media: mipi-csis: Add check for clk_enable()
+Subject: [PATCH 6.13 465/623] PCI: imx6: Skip controller_id generation logic for i.MX7D
 Date: Wed,  5 Feb 2025 14:43:27 +0100
-Message-ID: <20250205134431.331736479@linuxfoundation.org>
+Message-ID: <20250205134514.007892391@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 125ad1aeec77eb55273b420be6894b284a01e4b6 ]
+[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
 
-Add check for the return value of clk_enable() to gurantee the success.
+The i.MX7D only has one PCIe controller, so controller_id should always be
+0. The previous code is incorrect although yielding the correct result.
 
-Fixes: b5f1220d587d ("[media] v4l: Add v4l2 subdev driver for S5P/EXYNOS4 MIPI-CSI receivers")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fix by removing "IMX7D" from the switch case branch.
+
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/samsung/exynos4-is/mipi-csis.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-index 686ca8753ba22..87c6fb88ab920 100644
---- a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-+++ b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-@@ -940,13 +940,19 @@ static int s5pcsis_pm_resume(struct device *dev, bool runtime)
- 					       state->supplies);
- 			goto unlock;
- 		}
--		clk_enable(state->clock[CSIS_CLK_GATE]);
-+		ret = clk_enable(state->clock[CSIS_CLK_GATE]);
-+		if (ret) {
-+			phy_power_off(state->phy);
-+			regulator_bulk_disable(CSIS_NUM_SUPPLIES,
-+					       state->supplies);
-+			goto unlock;
-+		}
- 	}
- 	if (state->flags & ST_STREAMING)
- 		s5pcsis_start_stream(state);
- 
- 	state->flags &= ~ST_SUSPENDED;
-- unlock:
-+unlock:
- 	mutex_unlock(&state->lock);
- 	return ret ? -EAGAIN : 0;
- }
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 9d61e7c472082..22bf21846b79d 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1393,7 +1393,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 	switch (imx_pcie->drvdata->variant) {
+ 	case IMX8MQ:
+ 	case IMX8MQ_EP:
+-	case IMX7D:
+ 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx_pcie->controller_id = 1;
+ 		break;
 -- 
 2.39.5
 
