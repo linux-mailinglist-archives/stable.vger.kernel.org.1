@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C01A2926F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBB9A291A0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1748E188C436
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D3016B510
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C29E1FECDC;
-	Wed,  5 Feb 2025 14:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DA918DF65;
+	Wed,  5 Feb 2025 14:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8EDDVW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hl8ZpGVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCBB18D65F;
-	Wed,  5 Feb 2025 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2981662EF;
+	Wed,  5 Feb 2025 14:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767040; cv=none; b=O+G2NNCSiHosAFtZZ+1pVudzXCWPC8m90FakxGNXNmyVY7Lm8Z+PvWhk3az4wi3AJGJFWHlqDmp2MVFEAfCIqw8iz4K0YhwRypDAgisSBO2m4kbOKrMvNPjpDyxr4rOlsN+68OYt6vMgjGfA6WH5E5c1pXiGaf769LYzGcqcnfo=
+	t=1738766563; cv=none; b=HJACvU5jxUhUaghTMVdExDbzH/7eoOuk6sRmdi5E4hiPjsihvbLSXpd9X1LQ0l+A51m7SSbvmV4M1QTspi1i4y42NdqnhW+lR8sp63yStpY10/GdgfZecS5ssVc7qMR3MBZ5N7gGx1lkH2zvZZrjJvXSAmDNonmr10If2UZxR7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767040; c=relaxed/simple;
-	bh=+QYvefDN345C6wRU6BmBw/7Eb2Z713lqbG5JgOr6K1w=;
+	s=arc-20240116; t=1738766563; c=relaxed/simple;
+	bh=HGfnHxn2sr/GZnmSGCEuFNCnkT5LT7AxsrkK+0bj6Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3Z3Z5upq+8f0NHPsLBqLbAAkooLfQRXq8ovyPDnLfUWNHRE4tzrIc1SpDxGwiF2YIP66ignrR0wF+mGSZWRUgy0abES0sy9FUAz9v/QlQqiBV2mBNolIMtf+dqhxbNYPFpCE3CKTr1ji1AOcuu14U8oi08zNMaf0HXjO8upaLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8EDDVW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAD9C4CED1;
-	Wed,  5 Feb 2025 14:50:39 +0000 (UTC)
+	 MIME-Version; b=LxM2Zz5cYLd4InJkfFz6mby053bvf+6aD/pszzQqJrNpG/siJ3SILpp0RjnzG+3PDEwiP0Qqv0rZgnpKSI4FwnMIPYW7/ClbblXWolzzjvjUtSvflStCPwYAzbmR4l+4JcyrC3dDkw4MVJKU13Ee63RUqRE2WW8k25Gk8cjmvLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hl8ZpGVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E14C4CED1;
+	Wed,  5 Feb 2025 14:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767039;
-	bh=+QYvefDN345C6wRU6BmBw/7Eb2Z713lqbG5JgOr6K1w=;
+	s=korg; t=1738766563;
+	bh=HGfnHxn2sr/GZnmSGCEuFNCnkT5LT7AxsrkK+0bj6Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8EDDVW6RDzfE/Wxb8Fp1MyCh0yuifAJuBoGc8w9qKRZ9UwCye4pDs4w81aFFQnP8
-	 1Fo0cXWDfQlLm2YOlCs0K/qA6LwEVocLL+XFsLB8L0W/JMuOYN2HCzez2ukL8enSW6
-	 h8G+VPq4LTxoVRQdaimcsnuvhY87u4Rog1iiNtPQ=
+	b=hl8ZpGVUFYqdvsxU3kGOzTRpLdjtxzPtXNcfrvI9jx4Vm4QM2bbHR1dqz8y0/LCXZ
+	 uez73+5I+O5HFIE6AtcZWFGM1H54nL+qVE5ecWDRjz3f6pCag6vMikwOGXjSwNIQFC
+	 Tzr60z12lwCLvlxtlzgXMvokEcYLmfj5DJFI7gjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 348/623] arm64: dts: mediatek: mt8195-cherry: Drop regulator-compatible property
+Subject: [PATCH 6.12 335/590] memory: tegra20-emc: fix an OF node reference bug in tegra_emc_find_node_by_ram_code()
 Date: Wed,  5 Feb 2025 14:41:30 +0100
-Message-ID: <20250205134509.539670278@linuxfoundation.org>
+Message-ID: <20250205134508.094455684@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 4dbaa5d5def2c49e44efaa5e796c23d9b904be09 ]
+[ Upstream commit b9784e5cde1f9fb83661a70e580e381ae1264d12 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+As of_find_node_by_name() release the reference of the argument device
+node, tegra_emc_find_node_by_ram_code() releases some device nodes while
+still in use, resulting in possible UAFs. According to the bindings and
+the in-tree DTS files, the "emc-tables" node is always device's child
+node with the property "nvidia,use-ram-code", and the "lpddr2" node is a
+child of the "emc-tables" node. Thus utilize the
+for_each_child_of_node() macro and of_get_child_by_name() instead of
+of_find_node_by_name() to simplify the code.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
+This bug was found by an experimental verification tool that I am
+developing.
 
-Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-6-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 96e5da7c8424 ("memory: tegra: Introduce Tegra20 EMC driver")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://lore.kernel.org/r/20241217091434.1993597-1-joe@pf.is.s.u-tokyo.ac.jp
+Link: https://lore.kernel.org/r/20241218024415.2494267-3-joe@pf.is.s.u-tokyo.ac.jp
+[krzysztof: applied v1, adjust the commit msg to incorporate v2 parts]
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/memory/tegra/tegra20-emc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index 2c7b2223ee76b..5056e07399e23 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -1285,7 +1285,6 @@
+diff --git a/drivers/memory/tegra/tegra20-emc.c b/drivers/memory/tegra/tegra20-emc.c
+index 7193f848d17e6..9b7d30a21a5bd 100644
+--- a/drivers/memory/tegra/tegra20-emc.c
++++ b/drivers/memory/tegra/tegra20-emc.c
+@@ -474,14 +474,15 @@ tegra_emc_find_node_by_ram_code(struct tegra_emc *emc)
  
- 		regulators {
- 			mt6315_6_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -1303,7 +1302,6 @@
+ 	ram_code = tegra_read_ram_code();
  
- 		regulators {
- 			mt6315_7_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
+-	for (np = of_find_node_by_name(dev->of_node, "emc-tables"); np;
+-	     np = of_find_node_by_name(np, "emc-tables")) {
++	for_each_child_of_node(dev->of_node, np) {
++		if (!of_node_name_eq(np, "emc-tables"))
++			continue;
+ 		err = of_property_read_u32(np, "nvidia,ram-code", &value);
+ 		if (err || value != ram_code) {
+ 			struct device_node *lpddr2_np;
+ 			bool cfg_mismatches = false;
+ 
+-			lpddr2_np = of_find_node_by_name(np, "lpddr2");
++			lpddr2_np = of_get_child_by_name(np, "lpddr2");
+ 			if (lpddr2_np) {
+ 				const struct lpddr2_info *info;
+ 
+@@ -518,7 +519,6 @@ tegra_emc_find_node_by_ram_code(struct tegra_emc *emc)
+ 			}
+ 
+ 			if (cfg_mismatches) {
+-				of_node_put(np);
+ 				continue;
+ 			}
+ 		}
 -- 
 2.39.5
 
