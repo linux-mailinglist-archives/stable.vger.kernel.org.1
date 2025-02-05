@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-112754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49204A28E3F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D215A28D41
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C6F3A1A0A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4220A168F2A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBB9155A21;
-	Wed,  5 Feb 2025 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66711158D96;
+	Wed,  5 Feb 2025 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEchbN5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7VHPwB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBE11553AB;
-	Wed,  5 Feb 2025 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB01152E02;
+	Wed,  5 Feb 2025 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764636; cv=none; b=uxCjF/TxEC0X8hMv5Sx0CM1Vcl7kNGU74H41OcbvWW7wAn1zMbdea2ZcDmiMCM8Hp7KfNWwVRH3dAYwS3MxVruhd0tX99gjJhu/bQtVTQSpIp5wiBiFEE7qQ400eOkl3ggvufhZctPUi+GaqjdMgY7vV52azSOw6tpyXdLWL4lw=
+	t=1738763881; cv=none; b=eik7MXLAqR0Ouag9JWAfq1e0rM+l8z2zMzv3kS4I39Bsoe/BGybb75Z2fUnvTNxN/A34+iXZv2Q/oX/7bUlsOFJP+pDF/atXJ0sSIKXdc/6E5Ngwkepw5NtoGiDXSNPb9PfG8DTHwQTJaKgfLwDs58yu8G73tBblx3VOjZwkxjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764636; c=relaxed/simple;
-	bh=tt+tuTojqaXoY60uWCusBZDD6RP51vZTl6zroAL11UQ=;
+	s=arc-20240116; t=1738763881; c=relaxed/simple;
+	bh=9BXap00Nst3PuQiILwNI1UC5wlYJMH4VDegeOFDixag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYnJNDfkS2Y2ASTIYJIMxnE0IG1RunHHOJvrtS8HLAGlmUqfbF7CDBndcHM4zQwlzHHW7pZ+VeaUgpgYsibIolHx76+f/ubEZSltI5D5WDchAXseTTEXO4oDS6qE+ApBw5xhr1MVnCyt7Zld79UQwUsboaKRmGkMvqoB2k5K6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEchbN5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CB2C4CED1;
-	Wed,  5 Feb 2025 14:10:35 +0000 (UTC)
+	 MIME-Version; b=cMTMXA3kDNikuomW5TlwKAvRkF/0P28bVvrjgfLnnnspX88HZ35yALmxbdVbmJn0rO0pdCk8R1rjDZ0LZhobTFZA5D2UkyPgtXPnv/LsYdSxJk7BG3uuhzVU2ymZ1YEAzmGrT/xCTPdK8PLmUeGdO75XjkfyeX0ZwUxbJidGPCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7VHPwB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A20C4CED1;
+	Wed,  5 Feb 2025 13:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764635;
-	bh=tt+tuTojqaXoY60uWCusBZDD6RP51vZTl6zroAL11UQ=;
+	s=korg; t=1738763881;
+	bh=9BXap00Nst3PuQiILwNI1UC5wlYJMH4VDegeOFDixag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEchbN5/VHIuBCC0FTI5TpE/wMZN3zky1pi2rXUHxv/rIJ38SeUjcfr+9BL8eap19
-	 fBuTSrJMSKofAZKQuFhb/GPHnmUH1hUWI2jzqOJ5DLrl02W5EQjAjdOJyPDEpftn84
-	 E5147H5iCSAS3mU7G6pQamSZFrzHlN7Pm+TVB8L8=
+	b=K7VHPwB6jh4o30cPA8OO4SHo7gYFdA3n8txUHCM3arbOUWgUHl7/V5hZ4Dtje/jkY
+	 k+CCdJFBW+Y24EoeJwBhLAdiZedqtdxA2DNgk9MJsuENY6PHr98LwUWRPvNkgf++Vb
+	 RAAb4f5UJII4j0ATSmpmKgoywFXaPtUs6noIEvIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 082/623] genirq: Make handle_enforce_irqctx() unconditionally available
+Subject: [PATCH 6.12 069/590] drm/bridge: it6505: Change definition of AUX_FIFO_MAX_SIZE
 Date: Wed,  5 Feb 2025 14:37:04 +0100
-Message-ID: <20250205134459.361145150@linuxfoundation.org>
+Message-ID: <20250205134457.898346921@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit 8d187a77f04c14fb459a5301d69f733a5a1396bc ]
+[ Upstream commit c14870218c14532b0f0a7805b96a4d3c92d06fb2 ]
 
-Commit 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
-sett the flag which enforces interrupt handling in interrupt context and
-prevents software base resends for ARM GIC v2/v3.
+The hardware AUX FIFO is 16 bytes
+Change definition of AUX_FIFO_MAX_SIZE to 16
 
-But it missed that the helper function which checks the flag was hidden
-behind CONFIG_GENERIC_PENDING_IRQ, which is not set by ARM[64].
-
-Make the helper unconditionally available so that the enforcement actually
-works.
-
-Fixes: 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241210101811.497716609@linutronix.de
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-1-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/internals.h | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index fe0272cd84a51..a29df4b02a2ed 100644
---- a/kernel/irq/internals.h
-+++ b/kernel/irq/internals.h
-@@ -441,10 +441,6 @@ static inline struct cpumask *irq_desc_get_pending_mask(struct irq_desc *desc)
- {
- 	return desc->pending_mask;
- }
--static inline bool handle_enforce_irqctx(struct irq_data *data)
--{
--	return irqd_is_handle_enforce_irqctx(data);
--}
- bool irq_fixup_move_pending(struct irq_desc *desc, bool force_clear);
- #else /* CONFIG_GENERIC_PENDING_IRQ */
- static inline bool irq_can_move_pcntxt(struct irq_data *data)
-@@ -471,11 +467,12 @@ static inline bool irq_fixup_move_pending(struct irq_desc *desc, bool fclear)
- {
- 	return false;
- }
-+#endif /* !CONFIG_GENERIC_PENDING_IRQ */
-+
- static inline bool handle_enforce_irqctx(struct irq_data *data)
- {
--	return false;
-+	return irqd_is_handle_enforce_irqctx(data);
- }
--#endif /* !CONFIG_GENERIC_PENDING_IRQ */
- 
- #if !defined(CONFIG_IRQ_DOMAIN) || !defined(CONFIG_IRQ_DOMAIN_HIERARCHY)
- static inline int irq_domain_activate_irq(struct irq_data *data, bool reserve)
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 008d86cc562af..cf891e7677c0e 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -300,7 +300,7 @@
+ #define MAX_CR_LEVEL 0x03
+ #define MAX_EQ_LEVEL 0x03
+ #define AUX_WAIT_TIMEOUT_MS 15
+-#define AUX_FIFO_MAX_SIZE 32
++#define AUX_FIFO_MAX_SIZE 16
+ #define PIXEL_CLK_DELAY 1
+ #define PIXEL_CLK_INVERSE 0
+ #define ADJUST_PHASE_THRESHOLD 80000
 -- 
 2.39.5
 
