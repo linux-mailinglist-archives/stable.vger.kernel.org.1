@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6744A29091
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02352A28D80
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E4B81648E4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43630162C7D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8539A155CBD;
-	Wed,  5 Feb 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455F61509BD;
+	Wed,  5 Feb 2025 14:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hk2XKnVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcNRkQ9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416688634E;
-	Wed,  5 Feb 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0022B5228;
+	Wed,  5 Feb 2025 14:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766263; cv=none; b=Po+ZmPhcpHGcSqxm5u2AvlX+sCfEViZbj64+zJgu8wesIqCrDAnOENba3Eef+kZNHh/DqEm243K5e5DptAwEH14fEKmvufZmgWdGttHd19BYc+g+Fc5bRX9TcQcpGAVee417FT5/zX4PCHLi+2KGQ/lg9IA5LM47/ioYxnU7iyM=
+	t=1738764114; cv=none; b=cldIPoF+QDxNSLjzF4GXmVbX9PKe5+UafYz5XT9nFYv+wWoEbwFBmO9uGrUksIWErV8YEY/+iwA33NXBpeBeCRT83xRs0zzuIvjTDAXOz3hfwPcbFxUfEydvspUGdm35qVhHkmOrOnK7bge12gYyOwgrNq3soAjoZtj5jUxZrOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766263; c=relaxed/simple;
-	bh=EfiPe+atpfOkUEtlqvBSxBO1XHJc8E9NoWYMtgu2ZYY=;
+	s=arc-20240116; t=1738764114; c=relaxed/simple;
+	bh=GCTCYVPFgy948LrSuP4XjFuWDftgkvCWWsjBydEnWnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK2cmSBkq3SLc3722qFnLyPuePwnDnvDA+tTQxDgabrlTWOz+Au1WR/jr25ZPR2qdLEQnYGtVAx8XSZQn0G9F7tvPC1Y5AjPZfRJ7HoG75Z/sx6f+yILlqSrHJzM+p18XeqKaDcwNNTSogy3v7BG+o01Pf0V7xgfH14ZHMDL3hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hk2XKnVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41BB8C4CED6;
-	Wed,  5 Feb 2025 14:37:41 +0000 (UTC)
+	 MIME-Version; b=MYKzmoFFyGW0jsodIz7eROEX5Kp6GP+44AWlg/WKVmOOQhYzmF1zBc2KfICd22rxC+b3nXBKN0CRGJDcDi2EEclN0x9h+BxcCYS7aWhv3eY/OG/FOKNZHqxXEmqG+6WsaTIg5gzwnQ3im4w68hi5o6r2ehCEhNUddiDLV8rxLjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcNRkQ9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66034C4CEDD;
+	Wed,  5 Feb 2025 14:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766261;
-	bh=EfiPe+atpfOkUEtlqvBSxBO1XHJc8E9NoWYMtgu2ZYY=;
+	s=korg; t=1738764113;
+	bh=GCTCYVPFgy948LrSuP4XjFuWDftgkvCWWsjBydEnWnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hk2XKnVurHS4tzpxJVsDiNj9t9VuWjE0hf3HrOLP2nZr5+5f0UdyMp4/tFwdkvfvH
-	 cxPOtaFxmYs0jjsQjDVBDURTp40nTxYUU5O7+f9p6E+JaZLVBmDpA3AArkzRKXOedk
-	 zdLaf3aIvKWpYEwRFIq7hwrK8UMqFJHdvd5b7J7c=
+	b=TcNRkQ9gd4ZcHd+wSE034A3oRz0gw6q8NkU8RwoBLqWuGmjZkAJbb8jJjCy+yfb8k
+	 GvWVvJLWrejZhBzEm8jJkqfp64IsExWAUGZzMu0TDRTUvpdyR7eVln+UgE0YzWX9//
+	 bDS5O7Yh9q16xbIMs74ci1pQLwMM5RK4pT4/BQAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/590] arm64: dts: mt8183: set DMIC one-wire mode on Damu
+Subject: [PATCH 6.6 141/393] net/mlxfw: Drop hard coded max FW flash image size
 Date: Wed,  5 Feb 2025 14:41:00 +0100
-Message-ID: <20250205134506.946496265@linuxfoundation.org>
+Message-ID: <20250205134425.701584778@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 6c379e8b984815fc8f876e4bc78c4d563f13ddae ]
+[ Upstream commit 70d81f25cc92cc4e914516c9935ae752f27d78ad ]
 
-Sets DMIC one-wire mode on Damu.
+Currently, mlxfw kernel module limits FW flash image size to be
+10MB at most, preventing the ability to burn recent BlueField-3
+FW that exceeds the said size limit.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20241113-damu-v4-1-6911b69610dd@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Thus, drop the hard coded limit. Instead, rely on FW's
+max_component_size threshold that is reported in MCQI register
+as the size limit for FW image.
+
+Fixes: 410ed13cae39 ("Add the mlxfw module for Mellanox firmware flash process")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1737030796-1441634-1-git-send-email-moshe@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-index 65860b33c01fe..3935d83a047e0 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-@@ -26,6 +26,10 @@
- 	hid-descr-addr = <0x0001>;
- };
+diff --git a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
+index 46245e0b24623..43c84900369a3 100644
+--- a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
++++ b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
+@@ -14,7 +14,6 @@
+ #define MLXFW_FSM_STATE_WAIT_TIMEOUT_MS 30000
+ #define MLXFW_FSM_STATE_WAIT_ROUNDS \
+ 	(MLXFW_FSM_STATE_WAIT_TIMEOUT_MS / MLXFW_FSM_STATE_WAIT_CYCLE_MS)
+-#define MLXFW_FSM_MAX_COMPONENT_SIZE (10 * (1 << 20))
  
-+&mt6358codec {
-+	mediatek,dmic-mode = <1>; /* one-wire */
-+};
-+
- &qca_wifi {
- 	qcom,ath10k-calibration-variant = "GO_DAMU";
- };
+ static const int mlxfw_fsm_state_errno[] = {
+ 	[MLXFW_FSM_STATE_ERR_ERROR] = -EIO,
+@@ -229,7 +228,6 @@ static int mlxfw_flash_component(struct mlxfw_dev *mlxfw_dev,
+ 		return err;
+ 	}
+ 
+-	comp_max_size = min_t(u32, comp_max_size, MLXFW_FSM_MAX_COMPONENT_SIZE);
+ 	if (comp->data_size > comp_max_size) {
+ 		MLXFW_ERR_MSG(mlxfw_dev, extack,
+ 			      "Component size is bigger than limit", -EINVAL);
 -- 
 2.39.5
 
