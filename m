@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E24A2927A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3923EA28E41
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A08D16A1AA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 962701643A4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BF51DE2B4;
-	Wed,  5 Feb 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B881547E9;
+	Wed,  5 Feb 2025 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPyH6N/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0TV/p2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F981DE2A5;
-	Wed,  5 Feb 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8F315198D;
+	Wed,  5 Feb 2025 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767171; cv=none; b=vFCo5F8u1aQkaxBmZIRuKlIV7EUVZ+YC0Hke+ZJDSMXsRyiDkFOKJpiOD8AGr3r+k4QGSd2yB3aULM77s/GEcP9/8VaiXeZc6HabVZUYaUcAHWQzAkGJpE/L7m3Y88o0KCYzauXub15G/9CFq2w+k1ZBerQ1xi3Y1bVNWSFkY+g=
+	t=1738764639; cv=none; b=iY20awfhntEUvdAJJt2mhTxCVBYgMMj7K0p38x73uKPlVA8BQLbUqaukA1vfcDk63UN6bTSeaKj9zSoAl0VwNDtKTUF0LE2gyUycL0FP17vkSt2nPSUgFxYEuaHuF8QmoYgmt0vf/hJ7wrUc5Lol/gq+rVSVE/sDzQq6m/FrOuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767171; c=relaxed/simple;
-	bh=XO2ouYuDBZ6ACk4B4mBCFUeSyaeFhREGj+0NykhbzGE=;
+	s=arc-20240116; t=1738764639; c=relaxed/simple;
+	bh=0ruY57Vp3/M9FWMlcLb19TElEVAsPqrk836sKtjR0Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfxU0f5qKtF044mkS6QbDGjzRZ91ue9mHbk1ZXwOw1wI9ynB+rL4cz1x3B2LZ7L3KdynhtfRmoZRfUdUh7zpRIhjX44wNcTIETYPtVMY2vl0gNqbGSQgIb3uecAA6jl+tZ+zmfGc+C4PQYyhav8/BP1jEM75ut83Nb5s4FBJE+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPyH6N/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9C5C4CEE2;
-	Wed,  5 Feb 2025 14:52:50 +0000 (UTC)
+	 MIME-Version; b=ki3pr4DMLM9BVu56sCK/HdZQeHqmr2vnbKQ0O9FzbrWok6RL6EZ5POCGu6QqyaTFN3iHq2XfJZ3ef4JPYRknet9dsIWCQpYPlovQQyHouVf+yqlsA6RgX6f8LDuIeZt3SrtQgBuLE+ANxvXk5P7BvyPmBr1pHY2tl5tHcEP6mOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0TV/p2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3DFC4CED1;
+	Wed,  5 Feb 2025 14:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767171;
-	bh=XO2ouYuDBZ6ACk4B4mBCFUeSyaeFhREGj+0NykhbzGE=;
+	s=korg; t=1738764639;
+	bh=0ruY57Vp3/M9FWMlcLb19TElEVAsPqrk836sKtjR0Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPyH6N/MwRnwMdlw83b2rx4qBAQZe14KtyO7m0+bBBqdcs6uM1Rv7s/51UU2H5Gyp
-	 5YV1MGZxyhI2QbChM8Ko2LyjmcOnrt7XUgLsAiKpgdzN8KI8JI9LYQbj2OyFWU78HO
-	 u3a32TuBsSOsJjYZQBQVInnk6gtF9hB1T8Hx8rDM=
+	b=R0TV/p2wislam75SNASRvQ9CZowIeVA3TnXD59WbX3mAA8fWKWaBLqaYM9+/mbxdz
+	 l6FYIK659vmJrJL+2lzbrhWvCeP/hlOMoKW7YN/YZBJ7TdcuKkEVgOPnEcc3WVNE5R
+	 4LDEJXgx3CFdTng0l38kOuGJD1KY85ak9pwywD1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Qu Zicheng <quzicheng@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 366/623] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Drop pp3300_panel voltage settings
+Subject: [PATCH 6.6 189/393] padata: fix UAF in padata_reorder
 Date: Wed,  5 Feb 2025 14:41:48 +0100
-Message-ID: <20250205134510.222517851@linuxfoundation.org>
+Message-ID: <20250205134427.528324198@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 0b5b1c881a909f17c05ef4b1ccb421e077f6e466 ]
+[ Upstream commit e01780ea4661172734118d2a5f41bc9720765668 ]
 
-The pp3300_panel fixed regulator is just a load switch. It does not have
-any regulating capabilities. Thus having voltage constraints on it is
-wrong.
+A bug was found when run ltp test:
 
-Remove the voltage constraints.
+BUG: KASAN: slab-use-after-free in padata_find_next+0x29/0x1a0
+Read of size 4 at addr ffff88bbfe003524 by task kworker/u113:2/3039206
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241030070224.1006331-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+CPU: 0 PID: 3039206 Comm: kworker/u113:2 Kdump: loaded Not tainted 6.6.0+
+Workqueue: pdecrypt_parallel padata_parallel_worker
+Call Trace:
+<TASK>
+dump_stack_lvl+0x32/0x50
+print_address_description.constprop.0+0x6b/0x3d0
+print_report+0xdd/0x2c0
+kasan_report+0xa5/0xd0
+padata_find_next+0x29/0x1a0
+padata_reorder+0x131/0x220
+padata_parallel_worker+0x3d/0xc0
+process_one_work+0x2ec/0x5a0
+
+If 'mdelay(10)' is added before calling 'padata_find_next' in the
+'padata_reorder' function, this issue could be reproduced easily with
+ltp test (pcrypt_aead01).
+
+This can be explained as bellow:
+
+pcrypt_aead_encrypt
+...
+padata_do_parallel
+refcount_inc(&pd->refcnt); // add refcnt
+...
+padata_do_serial
+padata_reorder // pd
+while (1) {
+padata_find_next(pd, true); // using pd
+queue_work_on
+...
+padata_serial_worker				crypto_del_alg
+padata_put_pd_cnt // sub refcnt
+						padata_free_shell
+						padata_put_pd(ps->pd);
+						// pd is freed
+// loop again, but pd is freed
+// call padata_find_next, UAF
+}
+
+In the padata_reorder function, when it loops in 'while', if the alg is
+deleted, the refcnt may be decreased to 0 before entering
+'padata_find_next', which leads to UAF.
+
+As mentioned in [1], do_serial is supposed to be called with BHs disabled
+and always happen under RCU protection, to address this issue, add
+synchronize_rcu() in 'padata_free_shell' wait for all _do_serial calls
+to finish.
+
+[1] https://lore.kernel.org/all/20221028160401.cccypv4euxikusiq@parnassus.localdomain/
+[2] https://lore.kernel.org/linux-kernel/jfjz5d7zwbytztackem7ibzalm5lnxldi2eofeiczqmqs2m7o6@fq426cwnjtkm/
+Fixes: b128a3040935 ("padata: allocate workqueue internally")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Qu Zicheng <quzicheng@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/padata.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 49e053b932e76..80888bd4ad823 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -39,8 +39,6 @@
- 	pp3300_panel: pp3300-panel {
- 		compatible = "regulator-fixed";
- 		regulator-name = "pp3300_panel";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pp3300_panel_pins>;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 427f28db6b259..85ac7cfe87446 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -1118,6 +1118,12 @@ void padata_free_shell(struct padata_shell *ps)
+ 	if (!ps)
+ 		return;
  
++	/*
++	 * Wait for all _do_serial calls to finish to avoid touching
++	 * freed pd's and ps's.
++	 */
++	synchronize_rcu();
++
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+ 	pd = rcu_dereference_protected(ps->pd, 1);
 -- 
 2.39.5
 
