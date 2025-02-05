@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E459A29032
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54693A291BC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AC91886415
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1944188D433
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E274D155756;
-	Wed,  5 Feb 2025 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A337918DF7C;
+	Wed,  5 Feb 2025 14:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+OBivJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCXuNKxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D40D8634E;
-	Wed,  5 Feb 2025 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED651662EF;
+	Wed,  5 Feb 2025 14:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765983; cv=none; b=gpHYKuaLDKQKA87HWndXM1MmGcNbbvwAqPIK6aSMIshBvh7wn0AOwQ8QR9ZM/voWu75p5cZti3limSk6BdfDZWYT8UruKJ17l1x9dS50cmhUgVOwbjWwNExa5MFRpbe03/aVZByGFAQDo0PkdNH+SklMsASx4A3pDAkhTVYYIGs=
+	t=1738766556; cv=none; b=pgzb8V8fw7fq3KsctF8vXcWrZ0i6C0U+TnO8KChrzW3aMc3jest0hG4urtglxd+7ncMd48p06KeHAif7hX8ru45+G6ANTqFl5p476pc7iqhRWYFFOxYoXTWFa+uZZOKPkiO9S0uyR4NABc+mBEu8R/+kh5cLagG1TMiwbDT+/eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765983; c=relaxed/simple;
-	bh=Rd/JUikFIQZ/YQTAxVlV3JPLbRQu6S8GAMBAosSVprI=;
+	s=arc-20240116; t=1738766556; c=relaxed/simple;
+	bh=UQrNuYt24g9XW/S2fqDjKDJXj1yUbP4mhwLa33kPJvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws9IrtCkUcr0Wwxq7EpKJ4/s1/68wJ4QZs7qgkbC2JKyNJv3EYfUr0w9IHr3bWFn/qNNiBGaJFvWjzaCOZJ9eW9oFZ2qKStoCh5AaoZaBhiymsl++11EtZlewRhg9gxMn2vKGYcuMubKX7Fo7iU/xTnaIlcI8dZwMpFiZo/o6Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+OBivJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB2DC4CED1;
-	Wed,  5 Feb 2025 14:33:02 +0000 (UTC)
+	 MIME-Version; b=fEXKyUDSEQve1tKzWavVRk4crPIg9rveH4ZnW+zukM+E6r1iEQOD3RpzSl0IrDveeP+8XZQzrdPjkoxtMXAaV1wJFkTDz8cJmilZJP3wNMjUTI5LQD5xFkni4/OtPa4VBZ8WRoxDnHAzwJYFXByvOiI5Fj9BmZaRI7rh1xRvTSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCXuNKxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDE6C4CED1;
+	Wed,  5 Feb 2025 14:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765983;
-	bh=Rd/JUikFIQZ/YQTAxVlV3JPLbRQu6S8GAMBAosSVprI=;
+	s=korg; t=1738766556;
+	bh=UQrNuYt24g9XW/S2fqDjKDJXj1yUbP4mhwLa33kPJvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+OBivJEVRG5ahvpsUK0l6CsSIjAY41amZj/jvaw38haYzUzK2L/D3/E1mCnjKEue
-	 XaDdU8np4KBGV6nYSF4Lq/hO6NbxocTxwNJ5xHoWEjxh3bCuGCipUx/411K73uPigK
-	 nkb8zNK+sulQMpombkmNNQocrXpsPmSj0aJhUZco=
+	b=jCXuNKxV6E6pAbqW71ruGRxUixWC6DAkphqyRpYLGDp4FxaJfk0/W9CvB0q0Z2dDD
+	 1stXSGF/r+uBdDXFINnrUsPpdQl9skYn3JSUAcF1DTPD9Gbx3DvmS+UbeeTQMNw3yx
+	 1qp7J9GNVxLc+7QJIjpMZXnbYwoh5WdMsWZuByhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 273/590] ASoC: Intel: avs: Do not readq() u32 registers
-Date: Wed,  5 Feb 2025 14:40:28 +0100
-Message-ID: <20250205134505.718557624@linuxfoundation.org>
+Subject: [PATCH 6.13 287/623] iommu/vt-d: Draining PRQ in sva unbind path when FPD bit set
+Date: Wed,  5 Feb 2025 14:40:29 +0100
+Message-ID: <20250205134507.210396382@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit bca0fa5f6b5e96c03daac1ed62b1e5c5057a2048 ]
+[ Upstream commit cf08ca81d08a04b3b304e8fb4e052f323a09783d ]
 
-Register reporting ROM status is 4-bytes wide.
+When a device uses a PASID for SVA (Shared Virtual Address), it's possible
+that the PASID entry is marked as non-present and FPD bit set before the
+device flushes all ongoing DMA requests and removes the SVA domain. This
+can occur when an exception happens and the process terminates before the
+device driver stops DMA and calls the iommu driver to unbind the PASID.
 
-Fixes: 092cf7b26a48 ("ASoC: Intel: avs: Code loading over HDA")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250109122216.3667847-2-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+There's no need to drain the PRQ in the mm release path. Instead, the PRQ
+will be drained in the SVA unbind path. But in such case,
+intel_pasid_tear_down_entry() only checks the presence of the pasid entry
+and returns directly.
+
+Add the code to clear the FPD bit and drain the PRQ.
+
+Fixes: c43e1ccdebf2 ("iommu/vt-d: Drain PRQs when domain removed from RID")
+Suggested-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20241217024240.139615-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/intel/pasid.c | 22 +++++++++++++++++++++-
+ drivers/iommu/intel/pasid.h |  6 ++++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/loader.c b/sound/soc/intel/avs/loader.c
-index 890efd2f1feab..37de077a99838 100644
---- a/sound/soc/intel/avs/loader.c
-+++ b/sound/soc/intel/avs/loader.c
-@@ -308,7 +308,7 @@ avs_hda_init_rom(struct avs_dev *adev, unsigned int dma_id, bool purge)
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 5b7d85f1e143c..fb59a7d35958f 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -244,11 +244,31 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
+ 
+ 	spin_lock(&iommu->lock);
+ 	pte = intel_pasid_get_entry(dev, pasid);
+-	if (WARN_ON(!pte) || !pasid_pte_is_present(pte)) {
++	if (WARN_ON(!pte)) {
+ 		spin_unlock(&iommu->lock);
+ 		return;
  	}
  
- 	/* await ROM init */
--	ret = snd_hdac_adsp_readq_poll(adev, spec->sram->rom_status_offset, reg,
-+	ret = snd_hdac_adsp_readl_poll(adev, spec->sram->rom_status_offset, reg,
- 				       (reg & 0xF) == AVS_ROM_INIT_DONE ||
- 				       (reg & 0xF) == APL_ROM_FW_ENTERED,
- 				       AVS_ROM_INIT_POLLING_US, APL_ROM_INIT_TIMEOUT_US);
++	if (!pasid_pte_is_present(pte)) {
++		if (!pasid_pte_is_fault_disabled(pte)) {
++			WARN_ON(READ_ONCE(pte->val[0]) != 0);
++			spin_unlock(&iommu->lock);
++			return;
++		}
++
++		/*
++		 * When a PASID is used for SVA by a device, it's possible
++		 * that the pasid entry is non-present with the Fault
++		 * Processing Disabled bit set. Clear the pasid entry and
++		 * drain the PRQ for the PASID before return.
++		 */
++		pasid_clear_entry(pte);
++		spin_unlock(&iommu->lock);
++		intel_iommu_drain_pasid_prq(dev, pasid);
++
++		return;
++	}
++
+ 	did = pasid_get_domain_id(pte);
+ 	pgtt = pasid_pte_get_pgtt(pte);
+ 	intel_pasid_clear_entry(dev, pasid, fault_ignore);
+diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
+index 082f4fe20216a..668d8ece6b143 100644
+--- a/drivers/iommu/intel/pasid.h
++++ b/drivers/iommu/intel/pasid.h
+@@ -73,6 +73,12 @@ static inline bool pasid_pte_is_present(struct pasid_entry *pte)
+ 	return READ_ONCE(pte->val[0]) & PASID_PTE_PRESENT;
+ }
+ 
++/* Get FPD(Fault Processing Disable) bit of a PASID table entry */
++static inline bool pasid_pte_is_fault_disabled(struct pasid_entry *pte)
++{
++	return READ_ONCE(pte->val[0]) & PASID_PTE_FPD;
++}
++
+ /* Get PGTT field of a PASID table entry */
+ static inline u16 pasid_pte_get_pgtt(struct pasid_entry *pte)
+ {
 -- 
 2.39.5
 
