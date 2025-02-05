@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E2DA28F12
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64F9A29046
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965E6188306B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716D4169F8E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19A71459F6;
-	Wed,  5 Feb 2025 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB1E155CBD;
+	Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAvbkAl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEDAJW4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE67E522A;
-	Wed,  5 Feb 2025 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E3E155756;
+	Wed,  5 Feb 2025 14:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765234; cv=none; b=I1I7/3t8PRmMb4BLNIiZqxjKmZF2ZGAIcB4/bElj+W28S8IzgHmeDJI1t+SXbxDeiO6tERvP2ZhOwN9+5JfCJG9p2bVNDY2yW/XVd5Ijbu67+l5yMLOPAvwGThpaOOUUSy6qCepIGl3awdSd4/iLka+VRjBtllTWcigN2qFhNSw=
+	t=1738766014; cv=none; b=LhY4DDrDkSzJukiEiRddC0l7VLZB+oyrCadgp0xh72eIB32SoXHZenYa5mmBums2akcJyZ4UbIcY3sSfkb4bT3Jcuzk7tpjsR8QJW2+8tsQVjjXvJz/OR5ss3n2n36uBJt7HHHNfXHgmIb3weXEBDyBMiQ3jbAqrBRg0qQ/qyYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765234; c=relaxed/simple;
-	bh=rB1QPDrlkaVBHuxwtWTAJSaA80tp8epqO+6XB8vCon0=;
+	s=arc-20240116; t=1738766014; c=relaxed/simple;
+	bh=CYraQN8jaMBYQml7wsD7pl60+9lJzgL+MCL4MiT6IQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrhnGvasZsqeTgX2ucGlPC9zNMJUZ0csGDSewLjLBPNCGusYMQ0oY4DXsilRZJmjYK5eJxD6IWgk+3WMmp8KMFah8n8V+8N8GO+yDYiCI9kR+1jM/kGHusyDELiPTG+nLyeW5NQDGN+tfLXTd7aKK8FTHXYOHla75lyIgGWxaf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAvbkAl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B26C4CED1;
-	Wed,  5 Feb 2025 14:20:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J0ZKIGjdpu/QPLXjntCP14+iBjcE1wNuJIIBxCout0QgYrNffZvIPSZrKL4sqEZ/dBmUtIxt5ee9JxsxZuInHnLVJXtXEeRu5YeEmvJalNSKiNEJ9g0G4NzYD6R+0cllIdIDBftaH0Q07xquslVpVGHwZU5r30BFsssJrX6PSYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEDAJW4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3761C4CED1;
+	Wed,  5 Feb 2025 14:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765234;
-	bh=rB1QPDrlkaVBHuxwtWTAJSaA80tp8epqO+6XB8vCon0=;
+	s=korg; t=1738766014;
+	bh=CYraQN8jaMBYQml7wsD7pl60+9lJzgL+MCL4MiT6IQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAvbkAl44CZqI3iBjZ6KjiXW+mXzJOid3SbRB2NG26/Pd9KBtVjghySJtJWRMGrhT
-	 cwSm6h9kTJaf2MqTAx9RpecvhiFEPutsJVPU4LQMDgNrRjMgECuolgDfycRMsyb/sw
-	 fmMBvQBXZ5rAyiLVsM1R/5nfZclyTIOyQ4GMGDyE=
+	b=zEDAJW4S07iECbXeonrUxqAfaOsOGxVQ2u0qMzLQ8COaWdk1rCjzQOsqGPxWTb66h
+	 CzVM6svkzkDcdX45rbFLFHL4n1RXm9dGYUxUSfOomXmijtuTd4TUFEENCKkVyYVXQw
+	 Qd/2b8Wz7jQHa2ObzmZJ0l3XhXeu9dFlx9DJlmqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/590] wifi: mt76: mt7996: fix register mapping
+Subject: [PATCH 6.13 215/623] i2c: designware: Actually make use of the I2C_DW_COMMON and I2C_DW symbol namespaces
 Date: Wed,  5 Feb 2025 14:39:17 +0100
-Message-ID: <20250205134503.009659113@linuxfoundation.org>
+Message-ID: <20250205134504.451526595@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit d07ecb4f7070e84de49e8fa4e5a83dd52716d805 ]
+[ Upstream commit f0a4e9fa656ceb3b2e4c296cf6226798d804fa22 ]
 
-Bypass the entry when ofs is equal to dev->reg.map[i].size.
-Without this patch, it would get incorrect register mapping when the CR
-address is located at the boundary of an entry.
+DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
+is included. So move the define above the include block.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/OSZPR01MB84344FEFF53004B5CF40BCC198132@OSZPR01MB8434.jpnprd01.prod.outlook.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: fd57a3325a77 ("i2c: designware: Move exports to I2C_DW namespaces")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-designware-common.c | 5 +++--
+ drivers/i2c/busses/i2c-designware-master.c | 5 +++--
+ drivers/i2c/busses/i2c-designware-slave.c  | 5 +++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 40e45fb2b6260..442f72450352b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -177,7 +177,7 @@ static u32 __mt7996_reg_addr(struct mt7996_dev *dev, u32 addr)
- 			continue;
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index 183a35038eef9..8eb7bd640f8d3 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -8,6 +8,9 @@
+  * Copyright (C) 2007 MontaVista Software Inc.
+  * Copyright (C) 2009 Provigent Ltd.
+  */
++
++#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW_COMMON"
++
+ #include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -29,8 +32,6 @@
+ #include <linux/types.h>
+ #include <linux/units.h>
  
- 		ofs = addr - dev->reg.map[i].phys;
--		if (ofs > dev->reg.map[i].size)
-+		if (ofs >= dev->reg.map[i].size)
- 			continue;
+-#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW_COMMON"
+-
+ #include "i2c-designware-core.h"
  
- 		return dev->reg.map[i].mapped + ofs;
+ static const char *const abort_sources[] = {
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index c8cbe5b1aeb19..2569bf1a72e0e 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -8,6 +8,9 @@
+  * Copyright (C) 2007 MontaVista Software Inc.
+  * Copyright (C) 2009 Provigent Ltd.
+  */
++
++#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
++
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -22,8 +25,6 @@
+ #include <linux/regmap.h>
+ #include <linux/reset.h>
+ 
+-#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
+-
+ #include "i2c-designware-core.h"
+ 
+ #define AMD_TIMEOUT_MIN_US	25
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index dc2b788eac5bd..5cd4a5f7a472e 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -6,6 +6,9 @@
+  *
+  * Copyright (C) 2016 Synopsys Inc.
+  */
++
++#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
++
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -16,8 +19,6 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
+ 
+-#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
+-
+ #include "i2c-designware-core.h"
+ 
+ static void i2c_dw_configure_fifo_slave(struct dw_i2c_dev *dev)
 -- 
 2.39.5
 
