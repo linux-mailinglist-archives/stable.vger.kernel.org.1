@@ -1,124 +1,141 @@
-Return-Path: <stable+bounces-112257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B632BA27FB6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 00:37:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DD3A2803D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 01:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A61166B83
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F443A72CA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 00:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2A820C00D;
-	Tue,  4 Feb 2025 23:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B33227B9D;
+	Wed,  5 Feb 2025 00:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3AixAuJx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IYALZiu5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f74.google.com (mail-ua1-f74.google.com [209.85.222.74])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AEB21B1A7
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 23:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E5C227B96;
+	Wed,  5 Feb 2025 00:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738712211; cv=none; b=kq7qte+JZZ2QFnjgRCT2tIRfFINSy0mnxEZMTXODqnrQZL8BFHHpKZzFteophwEonoFBHozH0FkQ3+FMtWTLylOWpd/OY0pw+jdIhJVBsuGc6EzWxAOUkDhY41aWXSDT25ejgFXeKfUasXQIE3NJCDM7nTF3TRy/11foocA5PkM=
+	t=1738716228; cv=none; b=YHgZtVZEbgpMMQKRObS2pnsutSMSMISbJsvrsgCApYDAK/VDfEZFCVXR+AR2WdiZ7gmQrobwXSn51bG62Cko3Vn7zPxmNQX4hWNnaEtPmM/IzZ0MnDxjM5DHGRsSQfu4ceVsV4UneaMNbJv/W2JeK3YXPtPzdqDWYT/SDnhorVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738712211; c=relaxed/simple;
-	bh=qpfQTDheYUA9fYCH8Nr2dmrMbuSUIH8GoGeahli4TyA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WCOasiQcWzvEH33LuX+ouCjzwUKaiQADraApZHudCFjh/qbS2p5govDOu5Xk98Qw/EBXNyZPmWhdYDpN1NV/jC41wIlSJBNfV0Q3Lsf7gqeCiNjB67mVEMSKbATUlPLptLpAMEc98p+P+nU9Pq1yRjDQFeR7/SLbbykmIsRBat4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3AixAuJx; arc=none smtp.client-ip=209.85.222.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com
-Received: by mail-ua1-f74.google.com with SMTP id a1e0cc1a2514c-85c69f4718fso936321241.0
-        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 15:36:47 -0800 (PST)
+	s=arc-20240116; t=1738716228; c=relaxed/simple;
+	bh=wFF0buE+n4Z/W/TPm3SY/2G4F0JfmZg9zxSGIJD935Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=S/swapQijlAsY1QneMUyPIFvuSG7Q7TFMYMoXfjvM//9TGf000i5Nn6AFjcl+rEQMZ+QtHEkYpcRl1WOWSIML56mWhtHV9yLnETS+Iw9slikfmXYfri3PBTWOrHw+SQ2t6ps6wwB8V7W69AoGqKIBxYvLV+4j/3LpMOYS3mEgVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IYALZiu5; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b6eeff1fdfso559149485a.2;
+        Tue, 04 Feb 2025 16:43:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738712207; x=1739317007; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EgtkKatdG0S9Pe613E3mNyAnYsjwJSKIyXvHCOEHLD8=;
-        b=3AixAuJxD34h4yxa5q/NFruN2WwfMVfgXo+h5XYaTBhM1/yQpNTIx4IvdPedAJzgRA
-         6A9To8r1a2kmKDBsk+xzE10/u+NmabNKM87MUNjBFEq7TzrP/B/avp5/P3plOa+yg2yU
-         JTHeSr9dVJ1s1LyI5gx2XJ0VhLgqULEKbDTFaMGkiMnYUjMfmrem2cr/Tyr/8yTHAY9L
-         h/2IIN4Mkd5s26PT7xBlagzKpQZht9+WzMMwQ2F4cabKIeYh7tf4bvmESV73yzR9kiUZ
-         fomqJIEfortX0djyD8B7MI2UC/pbQZAxNHWVwQRgfgKM6Oq/I4MAT7QoqmuvOGvB8QTj
-         74xA==
+        d=gmail.com; s=20230601; t=1738716226; x=1739321026; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dzb4zP7i5IlmoBFgUs4VvFMiHfPg3IAAZoeV+R5bjfU=;
+        b=IYALZiu5Xfsad8/EgYEC2QSjlCk6Ydw0JVZj95V7RFsc9nGdwgyTc1nwxIWvnqEJbP
+         OsHi85TZWPAE9TSS/rWGmYaGiWwcVrVZIYm8anoMmEyMmF6lJRfCZOB6tqy/2oKLMPzL
+         8fuqFHKF/fNPrerlEebBHOso8A60Z8lgisS29fuWwT3KBEFS4zmJTk/yCaVt/gmh1a4J
+         r2/iwd0mjdGSzgAMYO8sMV5Q7QUcADfc5J0JOWOOiRyKjvj06Af8XdFiuQavvCAZBr3B
+         0h7JCpxKNl9kYH81ztxi/bDFtYWK/m7Mhys06tp0H/DNeGzGB2Wu5yXegTpG42tumnu8
+         dDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738712207; x=1739317007;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EgtkKatdG0S9Pe613E3mNyAnYsjwJSKIyXvHCOEHLD8=;
-        b=XM2CoyLUupvCZz75JRxpkcx+8znoQpuj1CdUdIiUVZ+GLNe5YU6MJTw0BFjsZNFedF
-         DgUW+oaenPuGEmS2px5TMXZt8XsrhtT6saGfZ6c+jEX685HZi9BoFTDmJ+F8LPQjh1ep
-         z7+02A63snA9t0ALyQ+ItKEGIVWlsEgRY3c02fVrtlBKlDgLjsv9bndzYS2OlbnFXW0c
-         r3HNIgZOBzPLnmyQcKhnKYaneZ+QlvJAgHCQ88oQ5vOgfQdidWu/FdxHY1QVNszqBc3a
-         NvraURpSrQFpl/ULv1Z+tNrBJJUu1lEaigw7YukGAqnV+BL3t8IuqSPDGWXvTao3Kbhb
-         f4Wg==
-X-Gm-Message-State: AOJu0YyfP2SE9YxrAFOwvZD/dY+Bo4ESC6JcpBrrv0QVyIZOj0OEZUsz
-	G6mUEJ9Wbhb3TK/xpkRRRiKeYDh7qB2Skm0i3PZgrH4JcodwGiScEgTaUEfVsKTnnRH3mrN97SV
-	Hzg==
-X-Google-Smtp-Source: AGHT+IHLmJQMOHisVnRtKMgv2ybXEZeJENK07fK0AuOA8MPyXUxQYl+xPhHPKdpsSt0+Iplrr5S2y+x6ejs=
-X-Received: from vsae9.prod.google.com ([2002:a05:6102:349:b0:4af:e39b:2b2])
- (user=royluo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6102:2b8d:b0:4af:ed5a:b697
- with SMTP id ada2fe7eead31-4ba478e696cmr962885137.13.1738712206734; Tue, 04
- Feb 2025 15:36:46 -0800 (PST)
-Date: Tue,  4 Feb 2025 23:36:42 +0000
+        d=1e100.net; s=20230601; t=1738716226; x=1739321026;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dzb4zP7i5IlmoBFgUs4VvFMiHfPg3IAAZoeV+R5bjfU=;
+        b=lhVluUxgBLzk/0DRkwyoN7XfP/QC7zoa7LqwY2x33zX07vhM1wExsqPs8nAYlo4Hlw
+         sRB075Ei0fFgdThWOSD3utj3brDXJI3X6Eps+/HJp2ZVe5r7/3yPaGlW4rqiGJLSddhD
+         ZCAESUq8nxHMJy0q/k3+5xZflYYWFtapoE7MNXyoDVWchBAtDbWdR9VovWFkX0jdl+nn
+         NH5dF87Bku0GDO0BmQKmviR55Tdqw3O+TAxyfzJmonOY0iw9XQ/uzMyzAnJ2krMGSYfT
+         2U61kAyM7ZlLF2Lc4bJ+Dz1VZIlkrROnFcYgzt9HBnA2mm/4UdvabxTI6eHBUwWk0fKB
+         Y5Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7b1kMoRmfVVw3lEePgVSk43RJ7xXqSyRCkfKPNXDV7Y8pB9NpDKTzqHvYj3ScNR88PhcF/t5KzwScCK0=@vger.kernel.org, AJvYcCWseUauT09d4f6jH0kb20Xwe84dgtzAuvIuXDKEbWPYG1pp8ODdK0w1uoDbkgwOWJdTJIZAyGZv@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1YG7M0RLB3OGbO33YrPjuq3kZMyJLCLP9O2BACJfJkAUu7HbK
+	U4eLjtvhRuqK4iVGOfSZPm/QqhTYvr1pm+Z05L6d8PUgWLlmWilRMAftkw==
+X-Gm-Gg: ASbGncsZfF0oIHfJ0UNvlfkFq7E7FquWIkU7cj6gO+n2lpghW6EmEPy5xxZtWmj2pTq
+	ogI76ugaHJq8P5uuPWzC1k4BN6gnWTzseaKzPduQy22/3uj7yPP7biG8zujMCUurroA2LKbr9i9
+	Wyd5ugusdA+tIDATPKvSq2ZexJ/J92u9rGhrA+9jHFFM7z129g7oXT4aeNq9GZDfeH6bTdVRwYL
+	IitZ65ulihbD75TlJfDulr9NQfY4q+Ge5byX3BeENPs1LKsJei9FN+tL9GBV02gWip5wf3Skjba
+	LpPtPEK2ZVfnzCF29fEG0KQYIJGaWLiAIbUZbg==
+X-Google-Smtp-Source: AGHT+IHQkCCCoOux0E0BbQEUJQrZgCHT7xAEg04wqTGE8APKZbAnrbAeal3eznjICMcqTm3namTOxw==
+X-Received: by 2002:a05:620a:6011:b0:7be:8304:f24b with SMTP id af79cd13be357-7c03a02f29fmr178738685a.56.1738716225783;
+        Tue, 04 Feb 2025 16:43:45 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a904810sm691868885a.66.2025.02.04.16.43.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 16:43:45 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: mazziesaccount@gmail.com
+Cc: broonie@kernel.org,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	jiashengjiangcool@gmail.com,
+	linux-kernel@vger.kernel.org,
+	rafael@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] regmap-irq: Add missing kfree()
+Date: Wed,  5 Feb 2025 00:43:43 +0000
+Message-Id: <20250205004343.14413-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <27dd749e-712f-46eb-9630-660a8f8f490d@gmail.com>
+References: <27dd749e-712f-46eb-9630-660a8f8f490d@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
-Message-ID: <20250204233642.666991-1-royluo@google.com>
-Subject: [PATCH v2] usb: gadget: core: flush gadget workqueue after device removal
-From: Roy Luo <royluo@google.com>
-To: royluo@google.com, Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	andre.draszik@linaro.org, elder@kernel.org, stern@rowland.harvard.edu, 
-	crwulff@gmail.com, paul@crapouillou.net, jkeeping@inmusicbrands.com, 
-	yuanlinyu@hihonor.com, sumit.garg@linaro.org, balbi@ti.com
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-device_del() can lead to new work being scheduled in gadget->work
-workqueue. This is observed, for example, with the dwc3 driver with the
-following call stack:
-  device_del()
-    gadget_unbind_driver()
-      usb_gadget_disconnect_locked()
-        dwc3_gadget_pullup()
-	  dwc3_gadget_soft_disconnect()
-	    usb_gadget_set_state()
-	      schedule_work(&gadget->work)
+Add kfree() for "d->main_status_buf" to the error-handling path to prevent
+a memory leak.
 
-Move flush_work() after device_del() to ensure the workqueue is cleaned
-up.
-
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Roy Luo <royluo@google.com>
+Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
+Cc: <stable@vger.kernel.org>  # v5.1+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 ---
- drivers/usb/gadget/udc/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changelog:
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index a6f46364be65..4b3d5075621a 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1543,8 +1543,8 @@ void usb_del_gadget(struct usb_gadget *gadget)
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
--	flush_work(&gadget->work);
- 	device_del(&gadget->dev);
-+	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
- 	device_unregister(&udc->dev);
+v2 -> v3:
 
-base-commit: f286757b644c226b6b31779da95a4fa7ab245ef5
+1. Add kfree() to regmap_del_irq_chip().
+
+v1 -> v2:
+
+1. Add a cc: stable line.
+---
+ drivers/base/regmap/regmap-irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+index 0bcd81389a29..978613407ea3 100644
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -906,6 +906,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 	kfree(d->wake_buf);
+ 	kfree(d->mask_buf_def);
+ 	kfree(d->mask_buf);
++	kfree(d->main_status_buf);
+ 	kfree(d->status_buf);
+ 	kfree(d->status_reg_buf);
+ 	if (d->config_buf) {
+@@ -981,6 +982,7 @@ void regmap_del_irq_chip(int irq, struct regmap_irq_chip_data *d)
+ 	kfree(d->wake_buf);
+ 	kfree(d->mask_buf_def);
+ 	kfree(d->mask_buf);
++	kfree(d->main_status_buf);
+ 	kfree(d->status_reg_buf);
+ 	kfree(d->status_buf);
+ 	if (d->config_buf) {
 -- 
-2.48.1.362.g079036d154-goog
+2.25.1
 
 
