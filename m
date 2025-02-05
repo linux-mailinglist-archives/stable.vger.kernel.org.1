@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-112698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F88A28E0F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC86A29261
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C773A2AC1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F9E3AB186
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9D71494DF;
-	Wed,  5 Feb 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AB018FDB1;
+	Wed,  5 Feb 2025 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRa9cs3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0aHEcJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C51519AA;
-	Wed,  5 Feb 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F031632D9;
+	Wed,  5 Feb 2025 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764440; cv=none; b=K/gciVaqVjL11LXehQ0JmLLCwcKC3GVyrrhYMcwBNP+zwWaFpJew/4y3pPtrq9QH4gE6mzmNHy+XD/Zmu5DloJZMGUrG4W/X6ivxLWtt3ehB0d0NbPjW2wMuMtM3ERAkRigmNKwQwUeHWB3WMSbjTIAGV+jgDQxJZmvVvGicEpM=
+	t=1738767053; cv=none; b=KAUITNdjjD3llTo14uCN90lshvlOW9upc8R8Ty9uZbcD1XzuN7/yLvdmKYMQWiZmEP7bmyCDd9/BoN158SxBimsasKRONm+1oOorijLqo6pMkugeL5adGYPe33QzVNPUx4L6KYb+PA+s0kMruZud0PzP44yImU5UK3hKuO20D2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764440; c=relaxed/simple;
-	bh=Efjx2LtAPohd3RktqDwmKsejGrhAjmEt4tY23VzoVw4=;
+	s=arc-20240116; t=1738767053; c=relaxed/simple;
+	bh=JvDyzSMQGicdFezwETN14NWBNYdp8USkVX6LNHluEhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1Gw85nARUDLIzQNDOkjgUeYwBDR7WZoUqU2ILp3P6PAQ9Ty53PN1Cff7dpnQNwZCkCPIHSHxzimj48fCz1uQEOjmh7pKhbFEAukxsqJPtHc1c2K5AQ94pFDPN6BZ9SB9xWvHTw+J+GofIFr0PtWbXl7/yEbgcDztLPYyYi7vMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRa9cs3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D5FC4CED1;
-	Wed,  5 Feb 2025 14:07:19 +0000 (UTC)
+	 MIME-Version; b=NiKN5RwvLFC5zYFuBUB2b3CTQF6pzU2K/XIi1ord2jbwNiTUVfpv3Dso45RXvEtfBL/NKOKKD6vS+CXW6EJ+J51fDku9QA0bXveHZNvXM2KQXpYzKn9ihinLQl7WFsQetnT2HWvKFUdD0HTl8SOfmnhsbyi0K4rz0V7iA5lg/AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0aHEcJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E8CC4CED1;
+	Wed,  5 Feb 2025 14:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764440;
-	bh=Efjx2LtAPohd3RktqDwmKsejGrhAjmEt4tY23VzoVw4=;
+	s=korg; t=1738767052;
+	bh=JvDyzSMQGicdFezwETN14NWBNYdp8USkVX6LNHluEhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRa9cs3YBYvzR6j3TzE1n4IafrR6AJzOkS34gDPUjn0WEU31bkIK3ClUc6UHuVyFb
-	 5y8aOFHvC5e64yBZioMXtoBg5yChxyfDqJZpSJvDDooHKp7aKbLp1RhIT5hHj9D32j
-	 XqQLcNc44fnuRQHnyAZM4ZOZUOG9UNUBDij4TzDw=
+	b=P0aHEcJnt8ZxMq/cUoLn1YzmEBOIh5AchFcwtQ4l153LOu4iuf30tzjt7kcxSqlf8
+	 x/LY0k+OjgjBDaV+bUZ6T3H6q2C8Tj02xwCYklmWviHo3bv3ECryadgiF8JjNqisxY
+	 0i4IISyYf5fOwW2Pn193EVxAaDT9x4yBFL0SfIaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/393] ALSA: seq: Make dependency on UMP clearer
-Date: Wed,  5 Feb 2025 14:41:31 +0100
-Message-ID: <20250205134426.875413064@linuxfoundation.org>
+Subject: [PATCH 6.13 350/623] arm64: dts: medaitek: mt8395-nio-12l: Drop regulator-compatible property
+Date: Wed,  5 Feb 2025 14:41:32 +0100
+Message-ID: <20250205134509.615630557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 9001d515443518d72222ba4d58e247696b625071 ]
+[ Upstream commit ab60442f26b15ba69b210974722a851ed03188ff ]
 
-CONFIG_SND_SEQ_UMP_CLIENT is a Kconfig for a sequencer client
-corresponding to the UMP rawmidi, while we have another major knob
-CONFIG_SND_SEQ_UMP that specifies whether the sequencer core supports
-UMP packets or not.  Strictly speaking both of them are independent,
-but practically seen, it makes no sense to enable
-CONFIG_SND_SEQ_UMP_CLIENT without UMP support itself.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-This patch makes such an implicit dependency clearer.  Now
-CONFIG_SND_SEQ_UMP_CLIENT depends on both CONFIG_SND_UMP and
-CONFIG_SND_SEQ_UMP.  Meanwhile, CONFIG_SND_SEQ_UMP is enabled as
-default when CONFIG_SND_UMP is set.
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
 
-Fixes: 81fd444aa371 ("ALSA: seq: Bind UMP device")
-Link: https://patch.msgid.link/20250101125548.25961-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 96564b1e2ea4 ("arm64: dts: mediatek: Introduce the MT8395 Radxa NIO 12L board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-8-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/core/seq/Kconfig b/sound/core/seq/Kconfig
-index 0374bbf51cd4d..e4f58cb985d47 100644
---- a/sound/core/seq/Kconfig
-+++ b/sound/core/seq/Kconfig
-@@ -62,7 +62,7 @@ config SND_SEQ_VIRMIDI
+diff --git a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
+index 14ec970c4e491..41dc34837b02e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
+@@ -812,7 +812,6 @@
  
- config SND_SEQ_UMP
- 	bool "Support for UMP events"
--	default y if SND_SEQ_UMP_CLIENT
-+	default SND_UMP
- 	help
- 	  Say Y here to enable the support for handling UMP (Universal MIDI
- 	  Packet) events via ALSA sequencer infrastructure, which is an
-@@ -71,6 +71,6 @@ config SND_SEQ_UMP
- 	  among legacy and UMP clients.
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -829,7 +828,6 @@
  
- config SND_SEQ_UMP_CLIENT
--	def_tristate SND_UMP
-+	def_tristate SND_UMP && SND_SEQ_UMP
- 
- endif # SND_SEQUENCER
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
 -- 
 2.39.5
 
