@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-112711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FA3A28E19
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77524A29252
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADD13A8CF5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E110216D0B7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C2B14A088;
-	Wed,  5 Feb 2025 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368EF19924D;
+	Wed,  5 Feb 2025 14:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXpz/a64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXYI5k1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42A1F510;
-	Wed,  5 Feb 2025 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E736D190052;
+	Wed,  5 Feb 2025 14:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764484; cv=none; b=MiOSqlXIYYfsC+/6BxhxKwiF9DgMOchoSoRF2SMwppB5JCESJE4WO4OVCPFWzlWpYVpv0WCEh7J9nOkzswNZzoa70Lboyr/Jm3g2o2TQt+UFAjHzx4R44EKS/ueuTBi/gVoBKy7Yomn4C2fgWwHzrZ0Ca3lbvLgJ5GOAAWPOxfg=
+	t=1738767076; cv=none; b=Q/sJsnU6vx8UE2AUfmimapPHADPifMl1z7wZRam0ahLCKFiKSNnhJFPErRliryOyV3KPA/KKs8j+9mNyXTEjzdXCXXTEn7ofcXgubWaWnmYgzaJrBSUpY0C2pnGl5MTqcsr2n3OvRGQk+1oPW4nm7azcLxrPDi9tmiE2qlsGTMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764484; c=relaxed/simple;
-	bh=V63YR6PRRweZHZAAfqxiYTJNPncQmeOO7cueggdUpzY=;
+	s=arc-20240116; t=1738767076; c=relaxed/simple;
+	bh=1QQOHY1lPuGbRQ5ekTbj6qtJc9enw61hq6qPcUdcXRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6h3y4dJDGAWjau0bMvKOVaYwcN79dQZeiSMPwqbccnSAudowPAV+Pr3XqR2igpP6j4TLoO43Mmsi1BtSW7OleYvYns8NtM0NaSBjTFVh/4iYYYi0adkAGvzQOGxyJ0SyPH2XaKQaofa5Nh39jI4ex0NG7Y5TVOhGWS1043fbDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXpz/a64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA51C4CED1;
-	Wed,  5 Feb 2025 14:08:03 +0000 (UTC)
+	 MIME-Version; b=hgmMnaHsIdMH/0bd+Q/enyytGROC7USOwcYHq5rfg69tdck24nKl6RCbItc5C1hQ95E0QaKplYghgDPo0gGKANvh8f4Srin/YPjQdzUo8CJegPyXTx+hk69psU7J0WRjjEdIUp1IeC+RULddAwgQHEQdYRDReSmECwC1OtHHXl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXYI5k1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630B1C4CED6;
+	Wed,  5 Feb 2025 14:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764484;
-	bh=V63YR6PRRweZHZAAfqxiYTJNPncQmeOO7cueggdUpzY=;
+	s=korg; t=1738767075;
+	bh=1QQOHY1lPuGbRQ5ekTbj6qtJc9enw61hq6qPcUdcXRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXpz/a641IiGccSSBLTM7ZK/umRrZKJPiEF6f+04Jxq8ewsq2CAuYMRV9oW6JJVbN
-	 8L99nJiPQQiw/fGDvmKpC8KdK7RbalrvA260vtFjHfYoTyNgmkM1Y5hzJyyWOSqyqk
-	 9S++7qvpZouxgQfovdUeb7XUccPJZlhJwTZSD+ys=
+	b=PXYI5k1g0UX1Ba5XKDKGryzArOC+4BrsCoGpkxY5/ezH/6j7DOETvvfHQPb8YaZ4X
+	 55tpqgdrdEoEf8BTgvtM79JldH6xHbRO4TquoXg0ZhyLbQEAYocIFrEtX6WcH9bY12
+	 tV4MH42RAWjMwtZ7imrHOFyK7L2FcphnQN+8a96Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Nigro <fnigro@redhat.com>,
-	Ilan Green <igreen@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Clark Williams <williams@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/393] perf namespaces: Introduce nsinfo__set_in_pidns()
+Subject: [PATCH 6.13 353/623] arm64: dts: mediatek: mt8173-evb: Fix MT6397 PMIC sub-node names
 Date: Wed,  5 Feb 2025 14:41:35 +0100
-Message-ID: <20250205134427.030360721@linuxfoundation.org>
+Message-ID: <20250205134509.729363713@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,88 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 9c6a585d257f6845731f4e36b45fe42b5c3162f5 ]
+[ Upstream commit 9545ba142865b9099d43c972b9ebcf463606499a ]
 
-When we're processing a perf.data file we will, for every thread in that
-file do a machine__findnew_thread(machine, pid, tid) that when that pid
-is seen for the first time will create a 'struct thread' representing
-it.
+The MT6397 PMIC bindings specify exact names for its sub-nodes. The
+names used in the current dts don't match, causing a validation error.
 
-That in turn will call nsinfo__new() -> nsinfo__init() and there it will
-assume we're running live, which is wrong and will need to be addressed
-in a followup patch.
+Fix up the names. Also drop the label for the regulators node, since
+any reference should be against the individual regulator sub-nodes.
 
-The nsinfo__new() assumes that if we can't access that thread it has
-already finished and will ignore the -1 return from nsinfo__init(), just
-taking notes to avoid trying to enter in that namespace, since it isn't
-there anymore, a race.
-
-When doing this from 'perf inject', tho, we can fill in parts of that
-nsinfo from what we get from the PERF_RECORD_MMAP2 (pid, tid) and in the
-jitdump file name, that has the form of jit-<PID>.dump.
-
-So if the pid in the jitdump file name is not the one in the
-PERF_RECORD_MMAP2, we can assume that its the pid of the process
-_inside_ the namespace, and that perf was runing outside that namespace.
-
-This will be done in the following patch.
-
-Reported-by: Francesco Nigro <fnigro@redhat.com>
-Reported-by: Ilan Green <igreen@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
-Link: https://lore.kernel.org/r/20241206204828.507527-4-acme@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 64a7617efd5a ("perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool")
+Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20241210092614.3951748-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/namespaces.c | 5 +++++
- tools/perf/util/namespaces.h | 1 +
- 2 files changed, 6 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
-index cb185c5659d6b..36047184d76e2 100644
---- a/tools/perf/util/namespaces.c
-+++ b/tools/perf/util/namespaces.c
-@@ -271,6 +271,11 @@ pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
- 	return RC_CHK_ACCESS(nsi)->in_pidns;
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+index 511c16cb1d59c..9fffed0ef4bff 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -307,7 +307,7 @@
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
  
-+void nsinfo__set_in_pidns(struct nsinfo *nsi)
-+{
-+	RC_CHK_ACCESS(nsi)->in_pidns = true;
-+}
-+
- void nsinfo__mountns_enter(struct nsinfo *nsi,
- 				  struct nscookie *nc)
- {
-diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
-index 8c0731c6cbb7e..e014becb9cd8e 100644
---- a/tools/perf/util/namespaces.h
-+++ b/tools/perf/util/namespaces.h
-@@ -59,6 +59,7 @@ pid_t nsinfo__tgid(const struct nsinfo  *nsi);
- pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
- pid_t nsinfo__pid(const struct nsinfo  *nsi);
- pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
-+void nsinfo__set_in_pidns(struct nsinfo *nsi);
+-		mt6397regulator: mt6397regulator {
++		regulators {
+ 			compatible = "mediatek,mt6397-regulator";
  
- void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
- void nsinfo__mountns_exit(struct nscookie *nc);
+ 			mt6397_vpca15_reg: buck_vpca15 {
 -- 
 2.39.5
 
