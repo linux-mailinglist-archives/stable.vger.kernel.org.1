@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E9EA290AB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A492A2924C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCB83A717E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4D3E18899A1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09C6158870;
-	Wed,  5 Feb 2025 14:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322B41FCFD2;
+	Wed,  5 Feb 2025 14:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITrwa4xK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3BLsTKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6D80BFF;
-	Wed,  5 Feb 2025 14:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26E618C93C;
+	Wed,  5 Feb 2025 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766340; cv=none; b=aIy5WuEIoBXE1VLbz6nXvuAciVGPvx2sCcjh0OKlJAAx0Br/0QzjDV1tj9nlenpo6kUIF4VfsO4vNdsdPxpXg/EK81hlDpnODrizdQy3goTFnTIZHoc3ve2bJXeuLNrLIJFiBe0EHBTzn8I1jIWiaUrMyA77eCSeWx7Sn14drIg=
+	t=1738766891; cv=none; b=YqE87BOIw27vic77tqIuPaRXfmWRKLfqaPLl8dvjNKcJxfUkMkS47XnzwXiaOiE54+gKVFW84FVOAlLb31WTrSn1XYpecs6w+KVvtBncRiMXicQUiHPtBwXY/o1OFwyLEqPjD/RihUYSA6oawu/fGo0A4apJfw/WOCthciBOoV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766340; c=relaxed/simple;
-	bh=BwvSjlSWARJPaChgEvriJEeXSvFVL5VCF/t9qi4aciI=;
+	s=arc-20240116; t=1738766891; c=relaxed/simple;
+	bh=emk6SCh8LaolEEC0Tm+3el0gnCDTw+Po20CtaPfNhDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0/O/Q1htBjcDHnEWoTm9Nc1BLgAE/oQhtuHg60KIFDgxGT+Dwejj8UwtQ6Hsk2FLLyQjE+AxNx81D+7qBs9qudFKgMBw0L+uUacXbia1T3y96EXOdhN0tZAhtA95QW8TQ5f94RqKDnopfzLuC7r8ErjLJAbc3ek/fRHXN/+PTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITrwa4xK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE96CC4CED1;
-	Wed,  5 Feb 2025 14:38:59 +0000 (UTC)
+	 MIME-Version; b=Q7ORVG3/4KYOyiwAJwhJQeM2ULzkugqBPY08zMxTkHq4aDsAFBmVAolQ7EySP/BtZnbA7E1sIILRvwvSSfCWP8T77rucYpwdqSA1SnlJDL6Gt2XRaW3H1cbXsR+oA0udLjq9dX5VYANwkeAFtJAm7aXTDBeHmtQPHh/7j4T+8a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3BLsTKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D896FC4CED1;
+	Wed,  5 Feb 2025 14:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766340;
-	bh=BwvSjlSWARJPaChgEvriJEeXSvFVL5VCF/t9qi4aciI=;
+	s=korg; t=1738766890;
+	bh=emk6SCh8LaolEEC0Tm+3el0gnCDTw+Po20CtaPfNhDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITrwa4xKxAeLDGRRxEG63nHAHvRpHSuioN4oo9KChmfdQPhtLNRomkARzSXpD04Xx
-	 MLyttJyOjkAY+QsKSM/QPs0xq+JNvj7KDD19alDlK+0rX6NmK3FnghaiLPc6Mb1Q07
-	 1oDpnUGOQRNlmpDTYblSdfKNJYArdhGrjmhBXaV4=
+	b=M3BLsTKpqZJfyRa8xISdB46zRjhTE21Q8YKOjXTfFJyrOMGODyo0XWlYsAsZJHRY0
+	 aNwt5Dq547yBNibd45s01mcmSYC2L1MhmZLqR3wSKILrxp9/uOeKqlPK600GE7EwIq
+	 0krVmjHpDOPVgbZmJ6vh8u02IPrg5Ytl3x6UUp40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/590] RDMA/mlx4: Avoid false error about access to uninitialized gids array
+Subject: [PATCH 6.13 325/623] padata: avoid UAF for reorder_work
 Date: Wed,  5 Feb 2025 14:41:07 +0100
-Message-ID: <20250205134507.210802979@linuxfoundation.org>
+Message-ID: <20250205134508.657553862@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 1f53d88cbb0dcc7df235bf6611ae632b254fccd8 ]
+[ Upstream commit dd7d37ccf6b11f3d95e797ebe4e9e886d0332600 ]
 
-Smatch generates the following false error report:
-drivers/infiniband/hw/mlx4/main.c:393 mlx4_ib_del_gid() error: uninitialized symbol 'gids'.
+Although the previous patch can avoid ps and ps UAF for _do_serial, it
+can not avoid potential UAF issue for reorder_work. This issue can
+happen just as below:
 
-Traditionally, we are not changing kernel code and asking people to fix
-the tools. However in this case, the fix can be done by simply rearranging
-the code to be more clear.
+crypto_request			crypto_request		crypto_del_alg
+padata_do_serial
+  ...
+  padata_reorder
+    // processes all remaining
+    // requests then breaks
+    while (1) {
+      if (!padata)
+        break;
+      ...
+    }
 
-Fixes: e26be1bfef81 ("IB/mlx4: Implement ib_device callbacks")
-Link: https://patch.msgid.link/6a3a1577463da16962463fcf62883a87506e9b62.1733233426.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+				padata_do_serial
+				  // new request added
+				  list_add
+    // sees the new request
+    queue_work(reorder_work)
+				  padata_reorder
+				    queue_work_on(squeue->work)
+...
+
+				<kworker context>
+				padata_serial_worker
+				// completes new request,
+				// no more outstanding
+				// requests
+
+							crypto_del_alg
+							  // free pd
+
+<kworker context>
+invoke_padata_reorder
+  // UAF of pd
+
+To avoid UAF for 'reorder_work', get 'pd' ref before put 'reorder_work'
+into the 'serial_wq' and put 'pd' ref until the 'serial_wq' finish.
+
+Fixes: bbefa1dd6a6d ("crypto: pcrypt - Avoid deadlock by using per-instance padata queues")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/padata.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/main.c b/drivers/infiniband/hw/mlx4/main.c
-index 529db874d67c6..b1bbdcff631d5 100644
---- a/drivers/infiniband/hw/mlx4/main.c
-+++ b/drivers/infiniband/hw/mlx4/main.c
-@@ -351,7 +351,7 @@ static int mlx4_ib_del_gid(const struct ib_gid_attr *attr, void **context)
- 	struct mlx4_port_gid_table   *port_gid_table;
- 	int ret = 0;
- 	int hw_update = 0;
--	struct gid_entry *gids;
-+	struct gid_entry *gids = NULL;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index de2c02a81469c..418987056340e 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -352,8 +352,14 @@ static void padata_reorder(struct parallel_data *pd)
+ 	smp_mb();
  
- 	if (!rdma_cap_roce_gid_table(attr->device, attr->port_num))
- 		return -EINVAL;
-@@ -389,10 +389,10 @@ static int mlx4_ib_del_gid(const struct ib_gid_attr *attr, void **context)
- 	}
- 	spin_unlock_bh(&iboe->lock);
- 
--	if (!ret && hw_update) {
-+	if (gids)
- 		ret = mlx4_ib_update_gids(gids, ibdev, attr->port_num);
--		kfree(gids);
--	}
-+
-+	kfree(gids);
- 	return ret;
+ 	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
+-	if (!list_empty(&reorder->list) && padata_find_next(pd, false))
++	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
++		/*
++		 * Other context(eg. the padata_serial_worker) can finish the request.
++		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
++		 */
++		padata_get_pd(pd);
+ 		queue_work(pinst->serial_wq, &pd->reorder_work);
++	}
  }
  
+ static void invoke_padata_reorder(struct work_struct *work)
+@@ -364,6 +370,8 @@ static void invoke_padata_reorder(struct work_struct *work)
+ 	pd = container_of(work, struct parallel_data, reorder_work);
+ 	padata_reorder(pd);
+ 	local_bh_enable();
++	/* Pairs with putting the reorder_work in the serial_wq */
++	padata_put_pd(pd);
+ }
+ 
+ static void padata_serial_worker(struct work_struct *serial_work)
 -- 
 2.39.5
 
