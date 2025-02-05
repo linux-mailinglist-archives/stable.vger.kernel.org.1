@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3764CA28DB8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0635AA28CB3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C467A2D16
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA7EC1885079
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6A31519AA;
-	Wed,  5 Feb 2025 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0768B1494DF;
+	Wed,  5 Feb 2025 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/z6f+sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3bH6oVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A81F510;
-	Wed,  5 Feb 2025 14:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66AFFC0B;
+	Wed,  5 Feb 2025 13:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764266; cv=none; b=R2aLqo7wJwRnTZRWMKsaoq4N+YEsjGHwhmPhDoKgu6WVOS2c6yop1jw1opAta2l3CyD9vV2S6KdT+94OBVcfv/4zF5GqzcphsmfSr9c/UvKCOu2cuExbXB2jUb0rxvxw4MRjR0NvR58WCgk6sxGHNISXORTaxteq65AVHOBhl8I=
+	t=1738763569; cv=none; b=WnyKw5iz3F+jSvLs2ZRk4g921XXVJoWN1HYH91rhROyTrPnLlVxedIr+WQM4+NKMfG3+QFJ7z98KAZjpkQubtEY+Dv78t0zCAvJtiMFbhI3EWS/YsI8X2N++39aoqZ6qD0SI/9FI9sTu9ysPflGk6N/mIQQNTyQ+tWFR8h7UhE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764266; c=relaxed/simple;
-	bh=bcCqLfePKx1mY9ShPc1cTSE0fYFf1FnFfKBxYZ+OCVM=;
+	s=arc-20240116; t=1738763569; c=relaxed/simple;
+	bh=MmcoINcfdK71Fx0kp28QW4XeOU7NRmFwizPl7MqxOHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGI4ierKayG0yRi+x0ZXuEhuUxDCz4Vr7uZTPy8ZCgcAHx9Gb/6K/chmBbye4l5gfvJb6ebzRKi+QR2BKl5/744F4uAPUT8j6ITN4tBVJSCiyantm/Psh3vmJnkqxBrAwU79PXl3bcdmb94zxYehc+lEhdMrNXdRSzB7cGiFceE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/z6f+sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAFBC4CED1;
-	Wed,  5 Feb 2025 14:04:25 +0000 (UTC)
+	 MIME-Version; b=m1+t5T5Ri9Z+sD9ZCTGNHJQPE423/JrvcUWKlL10f8lwtt1Yp1otgCjh+F9/vypXRBYajGBSlsq3nPxix0FaqHgVzl/CTkJjjC8+g9mlHKEhjit2iHqFRijZKh3CTOBgk406/xt4EpwUueo8Ve4dI8Qmw5EQZSZiWZHlJDyCrjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3bH6oVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22028C4CED1;
+	Wed,  5 Feb 2025 13:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764265;
-	bh=bcCqLfePKx1mY9ShPc1cTSE0fYFf1FnFfKBxYZ+OCVM=;
+	s=korg; t=1738763569;
+	bh=MmcoINcfdK71Fx0kp28QW4XeOU7NRmFwizPl7MqxOHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/z6f+szS8PhuDqPJ/KcV5FmEv6OjLBizHzYnhCRM8h+5o6xlLu5HSAU/THlb5fmX
-	 P5tFtOu5FAzQ8wq5Tx/Rbmo0PQ5uXXsdYNqHpsZHOyZIMUFR3od0kGSh4oF6AFJ8k0
-	 ax1KGdfB7f7PqQH/AEE8fLEZfczWkgbV7k4RA4G4=
+	b=d3bH6oVJTNe9Ol7/2zsUqzBKAcP7tm6b7EybKGZqAqUzimdOVJV0rVkR7H950F+d5
+	 bzY9LuPnfGFrumVssermGxiWZeUQsQQSw6rtSj0XADcLe6LOZUUpQ1OUbMBmf9uS4p
+	 BE89Kigi8IwLMzsrmcC1i6ct40SkyT2PjYv/d3v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 043/623] dt-bindings: display/msm: qcom,sa8775p-mdss: fix the example
-Date: Wed,  5 Feb 2025 14:36:25 +0100
-Message-ID: <20250205134457.876895205@linuxfoundation.org>
+Subject: [PATCH 6.12 031/590] x86/cpu: Enable SD_ASYM_PACKING for PKG domain on AMD
+Date: Wed,  5 Feb 2025 14:36:26 +0100
+Message-ID: <20250205134456.437548599@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Perry Yuan <perry.yuan@amd.com>
 
-[ Upstream commit 3b08796f2a7ca0c27b16543603df85bb45a640ff ]
+[ Upstream commit b0979e53645825a38f814ca5d3d09aed2745911d ]
 
-Add p1 region to the list of DP registers in the SA8775p example. This
-fixes the following warning:
+Enable the SD_ASYM_PACKING domain flag for the PKG domain on AMD heterogeneous
+processors.  This flag is beneficial for processors with one or more CCDs and
+relies on x86_sched_itmt_flags().
 
-Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.example.dtb: displayport-controller@af54000: reg: [[183844864, 260], [183845376, 192], [183848960, 1904], [183853056, 156]] is too short
-
-Fixes: 409685915f00 ("dt-bindings: display/msm: Document MDSS on SA8775P")
-Reported-by: Rob Herring <robh@kernel.org>
-Closes: https://lore.kernel.org/dri-devel/CAL_JsqJ0zoyaZAgZtyJ8xMsPY+YzrbF-YG1vPN6tFoFXQaW09w@mail.gmail.com/
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/624068/
-Link: https://lore.kernel.org/r/20241112-fd-dp-fux-warning-v2-1-8cc4960094bd@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20241025171459.1093-4-mario.limonciello@amd.com
+Stable-dep-of: e1bc02646527 ("x86/topology: Use x86_sched_itmt_flags for PKG domain unconditionally")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml     | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/smpboot.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
-index 58f8a01f29c7a..4536bb2f971f3 100644
---- a/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
-@@ -168,7 +168,8 @@ examples:
-             reg = <0xaf54000 0x104>,
-                   <0xaf54200 0x0c0>,
-                   <0xaf55000 0x770>,
--                  <0xaf56000 0x09c>;
-+                  <0xaf56000 0x09c>,
-+                  <0xaf57000 0x09c>;
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 766f092dab80b..b5a8f0891135b 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -497,8 +497,9 @@ static int x86_cluster_flags(void)
  
-             interrupt-parent = <&mdss0>;
-             interrupts = <12>;
+ static int x86_die_flags(void)
+ {
+-	if (cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
+-	       return x86_sched_itmt_flags();
++	if (cpu_feature_enabled(X86_FEATURE_HYBRID_CPU) ||
++	    cpu_feature_enabled(X86_FEATURE_AMD_HETEROGENEOUS_CORES))
++		return x86_sched_itmt_flags();
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
