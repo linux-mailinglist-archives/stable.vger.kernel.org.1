@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-113759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A777BA293F8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20B5A293F6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20AC8188B263
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFE7188F1F1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FD7188736;
-	Wed,  5 Feb 2025 15:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E72917C79;
+	Wed,  5 Feb 2025 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US5YJ32m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4e9oAiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D6115DBA3;
-	Wed,  5 Feb 2025 15:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB5CDF59;
+	Wed,  5 Feb 2025 15:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768070; cv=none; b=uH/s+ogxH77adbZYPPiSC6cfzywWRvo809tV3bi0cwwT2iM4UgjsMSc/Ti9Qp6YKRWy/r8/FkrwXx5On5UBQufEv7XBAP4jjwQGPzGfdlN98lrQLMaUdH/EOVpy3eODUPdd224ve7f5cfVRQbx+AXsQ+2sBrTWxiPKjzv22y7Sg=
+	t=1738768018; cv=none; b=RlU5Fd+Llt1oS5Hjf0kqKXi0FZCneoZRSOJHQbtDFydj5NB5cgWyXOg+YPLl1McazIjNwCYpsIEmvEESGn3+r2p6UHmobKzHtwvetA7ECf+o+uOB502atUf8cfLm0TNPcrlpAZPWSSo2SNJbEO1YDwMQOC6qYFO6aWxdqYTcXes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768070; c=relaxed/simple;
-	bh=Cwp5wz4qoNoSDqNdvFFAs8YOKRwnhf8Eg9NDFjfSBZo=;
+	s=arc-20240116; t=1738768018; c=relaxed/simple;
+	bh=TUJynldOELTqpSc4U8l4QAfO2VzLRobPdPFownAFae4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SbAvuODVkVgg2Lf+MN1kC0XhgCKR6lJVYBqCsLc3iczRwCB2YTF7T9YU+OyViFroNHDyd4hXa/wIGLlXXMUMJKfqtMZTsV03ysVJ60DY6VH6RaYJffiFt8EpvCaeM8/fvPNDdw1V/Xu5JYce+C3B6JnwL2miQHn1JWh0TBDP67U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US5YJ32m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F50EC4CED1;
-	Wed,  5 Feb 2025 15:07:49 +0000 (UTC)
+	 MIME-Version; b=igd3Davz5o1qapCbyjfrKVTFrRbdUlzluBrMzVmNJhIx9wriDNSZ3HF0qsKAb9901VYD6HODS87reMnhWSp8gbCb3ekTHhErv7oXCUq7wTgjwxf4lRZYa6jr2eDVvDvzQo5QXazFPWAeE4MIuO4P9dEB4pqheAfPBfUAtCOnroo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4e9oAiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561BAC4CED1;
+	Wed,  5 Feb 2025 15:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768070;
-	bh=Cwp5wz4qoNoSDqNdvFFAs8YOKRwnhf8Eg9NDFjfSBZo=;
+	s=korg; t=1738768017;
+	bh=TUJynldOELTqpSc4U8l4QAfO2VzLRobPdPFownAFae4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=US5YJ32mUU7kpZGTcUJwyGeg+ZL5T2bC7QTdxNyfyHY+b6Qj1WnNjXHyERso4yC5h
-	 7Q46W/uENML5Yt6ckBEx3Eaysgw+6+Ka/2zUHpbwAEX8DMha0136EkcfMUE+vI6mpM
-	 jDtaCAtbp9J6ZY7z9Rfccu5nRozmb1QzMNs2/MDE=
+	b=N4e9oAiPFveqNEPiCLq6CwhF3POnC22UbD9TsMkJqCUo5WswldcGr7X4KE4BTuXxk
+	 sSAQFbHLA/Pzxn2fwYkjnpT8VjjbCnIshTW0es3gyhv7FMG/T8TZanfxgEsrhVMRFP
+	 GOM4E9EOiRqsBxt0K+DzJ9PqkRZrdx5ax7fEEQcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 469/623] PCI: dwc: Always stop link in the dw_pcie_suspend_noirq
-Date: Wed,  5 Feb 2025 14:43:31 +0100
-Message-ID: <20250205134514.161728268@linuxfoundation.org>
+Subject: [PATCH 6.13 485/623] driver core: class: Fix wild pointer dereferences in API class_dev_iter_next()
+Date: Wed,  5 Feb 2025 14:43:47 +0100
+Message-ID: <20250205134514.771679052@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -62,49 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 86a016e278b78cc2281edd4ffaddbc011c87a593 ]
+[ Upstream commit e128f82f7006991c99a58114f70ef61e937b1ac1 ]
 
-On the i.MX8QM, PCIe link can't be re-established again in
-dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared
-properly in dw_pcie_suspend_noirq().
+There are a potential wild pointer dereferences issue regarding APIs
+class_dev_iter_(init|next|exit)(), as explained by below typical usage:
 
-So, add dw_pcie_stop_link() to dw_pcie_suspend_noirq() to fix
-this issue and to align the suspend/resume functions since there
-is dw_pcie_start_link() in dw_pcie_resume_noirq() already.
+// All members of @iter are wild pointers.
+struct class_dev_iter iter;
 
-Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-Link: https://lore.kernel.org/r/20241210081557.163555-2-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+// class_dev_iter_init(@iter, @class, ...) checks parameter @class for
+// potential class_to_subsys() error, and it returns void type and does
+// not initialize its output parameter @iter, so caller can not detect
+// the error and continues to invoke class_dev_iter_next(@iter) even if
+// @iter still contains wild pointers.
+class_dev_iter_init(&iter, ...);
+
+// Dereference these wild pointers in @iter here once suffer the error.
+while (dev = class_dev_iter_next(&iter)) { ... };
+
+// Also dereference these wild pointers here.
+class_dev_iter_exit(&iter);
+
+Actually, all callers of these APIs have such usage pattern in kernel tree.
+Fix by:
+- Initialize output parameter @iter by memset() in class_dev_iter_init()
+  and give callers prompt by pr_crit() for the error.
+- Check if @iter is valid in class_dev_iter_next().
+
+Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250105-class_fix-v6-1-3a2f1768d4d4@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/class.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index d2291c3ceb8be..cf146ff6a3ea8 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -946,6 +946,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
- 		return ret;
- 	}
+diff --git a/drivers/base/class.c b/drivers/base/class.c
+index 582b5a02a5c41..d57f277978dc9 100644
+--- a/drivers/base/class.c
++++ b/drivers/base/class.c
+@@ -323,8 +323,12 @@ void class_dev_iter_init(struct class_dev_iter *iter, const struct class *class,
+ 	struct subsys_private *sp = class_to_subsys(class);
+ 	struct klist_node *start_knode = NULL;
  
-+	dw_pcie_stop_link(pci);
- 	if (pci->pp.ops->deinit)
- 		pci->pp.ops->deinit(&pci->pp);
+-	if (!sp)
++	memset(iter, 0, sizeof(*iter));
++	if (!sp) {
++		pr_crit("%s: class %p was not registered yet\n",
++			__func__, class);
+ 		return;
++	}
  
+ 	if (start)
+ 		start_knode = &start->p->knode_class;
+@@ -351,6 +355,9 @@ struct device *class_dev_iter_next(struct class_dev_iter *iter)
+ 	struct klist_node *knode;
+ 	struct device *dev;
+ 
++	if (!iter->sp)
++		return NULL;
++
+ 	while (1) {
+ 		knode = klist_next(&iter->ki);
+ 		if (!knode)
 -- 
 2.39.5
 
