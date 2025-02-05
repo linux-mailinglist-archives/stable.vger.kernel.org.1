@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF55A291C1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F88A28E0F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1496188C45F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C773A2AC1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A7916CD1D;
-	Wed,  5 Feb 2025 14:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9D71494DF;
+	Wed,  5 Feb 2025 14:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7tmfpBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRa9cs3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426EF1662EF;
-	Wed,  5 Feb 2025 14:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C51519AA;
+	Wed,  5 Feb 2025 14:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766573; cv=none; b=AsL4G7mgTXbp4fSQzBge6Dgyge5Fh9v9x6QkvD9rMcHgt6Y2MaJxKZ5xX70D8ZDyqUFejvoC7GYisySEVlmAlnLKALkqgX4iqWJVjbosU3g19N5Fwe4avr1Vl+soApVhU+ZZNxwRPa+YfMfZyHe36BrFq9L886kt7F3HyBLykX8=
+	t=1738764440; cv=none; b=K/gciVaqVjL11LXehQ0JmLLCwcKC3GVyrrhYMcwBNP+zwWaFpJew/4y3pPtrq9QH4gE6mzmNHy+XD/Zmu5DloJZMGUrG4W/X6ivxLWtt3ehB0d0NbPjW2wMuMtM3ERAkRigmNKwQwUeHWB3WMSbjTIAGV+jgDQxJZmvVvGicEpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766573; c=relaxed/simple;
-	bh=jaGXjdMW6kQP5ZAxyj3PNAuv0XkhzB1BHwmPc49xMWk=;
+	s=arc-20240116; t=1738764440; c=relaxed/simple;
+	bh=Efjx2LtAPohd3RktqDwmKsejGrhAjmEt4tY23VzoVw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDFKoHT+GKgU/6sVh16HmTty+JTNwmIjttyZB2Fryyl+ePjYznP6pnANHQlFviIRyEYR8vm7sMxiNVpRYiRXpBvyguvC+QvuEb3ozU1G16gSGo+CYI4uSc/lYmnEfH52ypW0ohegUxzThuvliyl5TOJX3ww2ifxi25+XFIInEIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7tmfpBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A51C4CED1;
-	Wed,  5 Feb 2025 14:42:52 +0000 (UTC)
+	 MIME-Version; b=J1Gw85nARUDLIzQNDOkjgUeYwBDR7WZoUqU2ILp3P6PAQ9Ty53PN1Cff7dpnQNwZCkCPIHSHxzimj48fCz1uQEOjmh7pKhbFEAukxsqJPtHc1c2K5AQ94pFDPN6BZ9SB9xWvHTw+J+GofIFr0PtWbXl7/yEbgcDztLPYyYi7vMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRa9cs3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D5FC4CED1;
+	Wed,  5 Feb 2025 14:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766573;
-	bh=jaGXjdMW6kQP5ZAxyj3PNAuv0XkhzB1BHwmPc49xMWk=;
+	s=korg; t=1738764440;
+	bh=Efjx2LtAPohd3RktqDwmKsejGrhAjmEt4tY23VzoVw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7tmfpBZDLe+1qruZryxg0ivDH4l4eGpFzS9ndKLqTAS+oMdkr94eCmcfaMsDCa8l
-	 wr5sdGHwB7offduQ9dGyJ/IDFYIAsirn7sxLnh37RhhJrZxCpmo48xOXfGDgpGbur/
-	 6APjXPr3dJVyOwBSkHI1/2AH2o01zpy2Wupdo+VI=
+	b=FRa9cs3YBYvzR6j3TzE1n4IafrR6AJzOkS34gDPUjn0WEU31bkIK3ClUc6UHuVyFb
+	 5y8aOFHvC5e64yBZioMXtoBg5yChxyfDqJZpSJvDDooHKp7aKbLp1RhIT5hHj9D32j
+	 XqQLcNc44fnuRQHnyAZM4ZOZUOG9UNUBDij4TzDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 336/590] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Drop pp3300_panel voltage settings
+Subject: [PATCH 6.6 172/393] ALSA: seq: Make dependency on UMP clearer
 Date: Wed,  5 Feb 2025 14:41:31 +0100
-Message-ID: <20250205134508.131677033@linuxfoundation.org>
+Message-ID: <20250205134426.875413064@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0b5b1c881a909f17c05ef4b1ccb421e077f6e466 ]
+[ Upstream commit 9001d515443518d72222ba4d58e247696b625071 ]
 
-The pp3300_panel fixed regulator is just a load switch. It does not have
-any regulating capabilities. Thus having voltage constraints on it is
-wrong.
+CONFIG_SND_SEQ_UMP_CLIENT is a Kconfig for a sequencer client
+corresponding to the UMP rawmidi, while we have another major knob
+CONFIG_SND_SEQ_UMP that specifies whether the sequencer core supports
+UMP packets or not.  Strictly speaking both of them are independent,
+but practically seen, it makes no sense to enable
+CONFIG_SND_SEQ_UMP_CLIENT without UMP support itself.
 
-Remove the voltage constraints.
+This patch makes such an implicit dependency clearer.  Now
+CONFIG_SND_SEQ_UMP_CLIENT depends on both CONFIG_SND_UMP and
+CONFIG_SND_SEQ_UMP.  Meanwhile, CONFIG_SND_SEQ_UMP is enabled as
+default when CONFIG_SND_UMP is set.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241030070224.1006331-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 81fd444aa371 ("ALSA: seq: Bind UMP device")
+Link: https://patch.msgid.link/20250101125548.25961-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ sound/core/seq/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 49e053b932e76..80888bd4ad823 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -39,8 +39,6 @@
- 	pp3300_panel: pp3300-panel {
- 		compatible = "regulator-fixed";
- 		regulator-name = "pp3300_panel";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pp3300_panel_pins>;
+diff --git a/sound/core/seq/Kconfig b/sound/core/seq/Kconfig
+index 0374bbf51cd4d..e4f58cb985d47 100644
+--- a/sound/core/seq/Kconfig
++++ b/sound/core/seq/Kconfig
+@@ -62,7 +62,7 @@ config SND_SEQ_VIRMIDI
  
+ config SND_SEQ_UMP
+ 	bool "Support for UMP events"
+-	default y if SND_SEQ_UMP_CLIENT
++	default SND_UMP
+ 	help
+ 	  Say Y here to enable the support for handling UMP (Universal MIDI
+ 	  Packet) events via ALSA sequencer infrastructure, which is an
+@@ -71,6 +71,6 @@ config SND_SEQ_UMP
+ 	  among legacy and UMP clients.
+ 
+ config SND_SEQ_UMP_CLIENT
+-	def_tristate SND_UMP
++	def_tristate SND_UMP && SND_SEQ_UMP
+ 
+ endif # SND_SEQUENCER
 -- 
 2.39.5
 
