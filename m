@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-113064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041C3A28FC7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED000A29069
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E1E3A9A81
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2B67A279B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BC9155335;
-	Wed,  5 Feb 2025 14:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC11155747;
+	Wed,  5 Feb 2025 14:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlE+q73w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObdfoupB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9108A522A;
-	Wed,  5 Feb 2025 14:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5387DA6A;
+	Wed,  5 Feb 2025 14:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765700; cv=none; b=Z7+hXSNLv0+C8EuLib53Gove7XqhLOLxxVOvjNwbLJvKwcAoLdMQAzuU6ZvKcbWkO4QaEZG7I11CKmMtxot2yrGmt99c3iSilX4pBw7mWABAZzMmz+qv7f6ndq7EODsGmiTFgAzlD/3reDVl7r5x6Oq7zYvdq/DiyolOuxPXXIw=
+	t=1738766142; cv=none; b=ogUVVOZrgvricP0qgz9YK7QbPMCoqQj6tK9HKm2YzjLiZb2tHyEwn7IsfojaprwI3+yIc/mjsqfsa8bDnB2O727Mh9ArDRp8wY5XcnkKBWLdqvZqyhpuaSQZ+kEna+h81lh03v/0jZc00YsFMQDpRAsykyWVM6qP8M4WeHFHecg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765700; c=relaxed/simple;
-	bh=lZXZUWxqlCfMb7H1ttyVROKfktF/8IpKHw9N7QFnTDE=;
+	s=arc-20240116; t=1738766142; c=relaxed/simple;
+	bh=xlmhOtS1GSNXMVjmq51FUb/rJDiIe4++xFz5gkPLjac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/pkpo/bHNQrOGTu+YCkyaJPNNTjWsGgDIBKOB9vJx9SU84oF4+7jo1Ny/Akbm2+ZVRL03W9XPQ6HcsC62O8B/FeUHbW7K/cYbg8EkSFQVVdVYw1YsJ59oO8Kh3JoAkKpjmPx8O3kFhxs8cz8hqBk55W7iNIn0mHQmII/tV8hQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlE+q73w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924FBC4CED1;
-	Wed,  5 Feb 2025 14:28:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QK9Ar7EoEc/84tTIc2BtD4C7oQ55Dz30TpYimRrrwDQYnH021Uhx/5DeXWDSn5tSYWAdvV3/Sx6F/OAOnJCAj0ECqnkXqyXXKmCIea4ky0Du9NeaEBSiEZPahIDPQms4e8mPjE0JBaeLQCmTQWDQ7hf7QQAV2+4pJhZjF0nag0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObdfoupB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC08C4CED1;
+	Wed,  5 Feb 2025 14:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765700;
-	bh=lZXZUWxqlCfMb7H1ttyVROKfktF/8IpKHw9N7QFnTDE=;
+	s=korg; t=1738766142;
+	bh=xlmhOtS1GSNXMVjmq51FUb/rJDiIe4++xFz5gkPLjac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlE+q73wOSiZdRHU4FHxUDhrztlKQquoEmf/n7IRpIBQJ4dK37upnPn9kvCer9mH4
-	 bJSa2/eAm1KEzMIx0/0rWWKjX82gxnIKrgIrnGi+VAtbBun7gPwTuzO3lV0xyQwSpk
-	 VbhgCCf4/iIIYAmQFCTcrm+tt2AdyksPlVHAfP/8=
+	b=ObdfoupBTtx0BNbT8s5TyIOzEZ1oTLPOpVrEwiAQMuQAUbtoHjn/RdC+Uvz9D7RqC
+	 MAVkQKqklG3emJhHmc7/S8kY5E092saPGNNxMY2H022V78pGZBOcuICpHnvlXMbVBT
+	 WNnCy3eSJsg8AumgBLYpQ7r3XjRBn6FRPW+G1UG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahdi Arghavani <ma.arghavani@yahoo.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Haibo Zhang <haibo.zhang@otago.ac.nz>,
-	David Eyers <david.eyers@otago.ac.nz>,
-	Abbas Arghavani <abbas.arghavani@mdu.se>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/590] tcp_cubic: fix incorrect HyStart round start detection
-Date: Wed,  5 Feb 2025 14:39:47 +0100
-Message-ID: <20250205134504.155717693@linuxfoundation.org>
+Subject: [PATCH 6.13 246/623] platform/x86: x86-android-tablets: make platform data be static
+Date: Wed,  5 Feb 2025 14:39:48 +0100
+Message-ID: <20250205134505.637544378@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahdi Arghavani <ma.arghavani@yahoo.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 25c1a9ca53db5780757e7f53e688b8f916821baa ]
+[ Upstream commit 6e0fb1bdb71cf8078c8532617e565e3db22c0d3c ]
 
-I noticed that HyStart incorrectly marks the start of rounds,
-leading to inaccurate measurements of ACK train lengths and
-resetting the `ca->sample_cnt` variable. This inaccuracy can impact
-HyStart's functionality in terminating exponential cwnd growth during
-Slow-Start, potentially degrading TCP performance.
+make lenovo_yoga_tab2_1380_bq24190_pdata and lenovo_yoga_tab2_1380_modules
+to be static
 
-The issue arises because the changes introduced in commit 4e1fddc98d25
-("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
-moved the caller of the `bictcp_hystart_reset` function inside the `hystart_update` function.
-This modification added an additional condition for triggering the caller,
-requiring that (tcp_snd_cwnd(tp) >= hystart_low_window) must also
-be satisfied before invoking `bictcp_hystart_reset`.
-
-This fix ensures that `bictcp_hystart_reset` is correctly called
-at the start of a new round, regardless of the congestion window size.
-This is achieved by moving the condition
-(tcp_snd_cwnd(tp) >= hystart_low_window)
-from before calling `bictcp_hystart_reset` to after it.
-
-I tested with a client and a server connected through two Linux software routers.
-In this setup, the minimum RTT was 150 ms, the bottleneck bandwidth was 50 Mbps,
-and the bottleneck buffer size was 1 BDP, calculated as (50M / 1514 / 8) * 0.150 = 619 packets.
-I conducted the test twice, transferring data from the server to the client for 1.5 seconds.
-Before the patch was applied, HYSTART-DELAY stopped the exponential growth of cwnd when
-cwnd = 516, and the bottleneck link was not yet saturated (516 < 619).
-After the patch was applied, HYSTART-ACK-TRAIN stopped the exponential growth of cwnd when
-cwnd = 632, and the bottleneck link was saturated (632 > 619).
-In this test, applying the patch resulted in 300 KB more data delivered.
-
-Fixes: 4e1fddc98d25 ("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
-Signed-off-by: Mahdi Arghavani <ma.arghavani@yahoo.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Haibo Zhang <haibo.zhang@otago.ac.nz>
-Cc: David Eyers <david.eyers@otago.ac.nz>
-Cc: Abbas Arghavani <abbas.arghavani@mdu.se>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410160432.oJAPbrW9-lkp@intel.com/
+Fixes: 3eee73ad42c3 ("platform/x86: x86-android-tablets: Add Lenovo Yoga Tablet 2 Pro 1380F/L data")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/daafd1371e7e9946217712ce8720e29cd5c52f7a.1732161310.git.xiaopei01@kylinos.cn
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_cubic.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/platform/x86/x86-android-tablets/lenovo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
-index 5dbed91c61782..76c23675ae50a 100644
---- a/net/ipv4/tcp_cubic.c
-+++ b/net/ipv4/tcp_cubic.c
-@@ -392,6 +392,10 @@ static void hystart_update(struct sock *sk, u32 delay)
- 	if (after(tp->snd_una, ca->end_seq))
- 		bictcp_hystart_reset(sk);
+diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
+index ae087f1471c17..a60efbaf4817f 100644
+--- a/drivers/platform/x86/x86-android-tablets/lenovo.c
++++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
+@@ -601,7 +601,7 @@ static const struct regulator_init_data lenovo_yoga_tab2_1380_bq24190_vbus_init_
+ 	.num_consumer_supplies = 1,
+ };
  
-+	/* hystart triggers when cwnd is larger than some threshold */
-+	if (tcp_snd_cwnd(tp) < hystart_low_window)
-+		return;
-+
- 	if (hystart_detect & HYSTART_ACK_TRAIN) {
- 		u32 now = bictcp_clock_us(sk);
+-struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
++static struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
+ 	.regulator_init_data = &lenovo_yoga_tab2_1380_bq24190_vbus_init_data,
+ };
  
-@@ -467,9 +471,7 @@ __bpf_kfunc static void cubictcp_acked(struct sock *sk, const struct ack_sample
- 	if (ca->delay_min == 0 || ca->delay_min > delay)
- 		ca->delay_min = delay;
+@@ -726,7 +726,7 @@ static const struct platform_device_info lenovo_yoga_tab2_1380_pdevs[] __initcon
+ 	},
+ };
  
--	/* hystart triggers when cwnd is larger than some threshold */
--	if (!ca->found && tcp_in_slow_start(tp) && hystart &&
--	    tcp_snd_cwnd(tp) >= hystart_low_window)
-+	if (!ca->found && tcp_in_slow_start(tp) && hystart)
- 		hystart_update(sk, delay);
- }
- 
+-const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
++static const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
+ 	"bq24190_charger",            /* For the Vbus regulator for lc824206xa */
+ 	NULL
+ };
 -- 
 2.39.5
 
