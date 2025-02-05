@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-113864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AAAA29416
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396A6A2945F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26B316B077
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2A203ADFD8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1791990BA;
-	Wed,  5 Feb 2025 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E87186284;
+	Wed,  5 Feb 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylIb1sul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5keUF6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C46F198E77;
-	Wed,  5 Feb 2025 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66831591E3;
+	Wed,  5 Feb 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768425; cv=none; b=t9Jq+ttC9C6V7dHHG5T3lIEa0UqP3un2hFV4wFF2XNRegy9Qkayt9SfehznVFY3zBhPQr/jyAyIwZFiXW/GOT2L1YRKcxrhRHAk+uxsBt1ynA2W3pvm8LGh4cQ+Pjuj9rQVoCZjqtA+ov1tbaoluvFFyL0Pe9evSFX/dEo+7wdc=
+	t=1738768558; cv=none; b=FR1Vi9+e1dRtlKgaLXagl+OwYRMJYjFo53DQjigvv09EPg8lD1L4sfQTBO+rXf2U19qtiz8nHqPzvMH9WcEHESB2XIgf7Wn+ZDlGVpq3aWjGbbZ00XswBQLhSIEqVWLiEdDHIy/letbr5LdCVvVgwpXkRKugpsCLI/fJWoqOYM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768425; c=relaxed/simple;
-	bh=Su8lCGG+jmYr/3C5APRMMkcvzohrK+yqeyNnrt6Fdzg=;
+	s=arc-20240116; t=1738768558; c=relaxed/simple;
+	bh=lTu0XLxFVGRiEm9g8K4xSo8s77ShI6zevngFad0OeWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEksWbDapF88EL4wWPEz+aUbC8lMXhUn6Sa1a01s07dVS48+idHLgvIRnLQ9k3gvF6XHnLGSfx8i1RagHrbpLiuJHUG3byJcAdzTrOwyO8DWh9dMKWIf/kM3XHcK/fv0XcEk8390KvR5ushzGhGPhoYoZ9I3TmN6mTiSTalya4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylIb1sul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFA6C4CED1;
-	Wed,  5 Feb 2025 15:13:44 +0000 (UTC)
+	 MIME-Version; b=AELaFE1YAZPPETomB9dnbUQlICDoIkdvKyh0ysPoTe/wHnCkJsQ49sO98dfxiIzoGL+H/lmkaU2i5IoK/sUKyACxD/Lwiu0cFB1cL+sc5xVveC2h6znJKI23cdiMbWnnyd3h0VuwVefVCzm/m4To12Kdy9HlpEK4qahYjDUk06A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5keUF6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F3DC4CED1;
+	Wed,  5 Feb 2025 15:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768425;
-	bh=Su8lCGG+jmYr/3C5APRMMkcvzohrK+yqeyNnrt6Fdzg=;
+	s=korg; t=1738768558;
+	bh=lTu0XLxFVGRiEm9g8K4xSo8s77ShI6zevngFad0OeWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylIb1suljYcQ62VunnAYweKk3Pz6ZuGDUz8MbUsBgXntjkaLJP2aqIe5zE/YjSnZN
-	 j6xZF7jAe80UYqEa4fm/+INRw3KHHq8OheUH7FcNps1X7854wJ9fcCLpHaHvM4IwFr
-	 5VKohJAaws/Z8p4wHNynHV2rP7t/bPhzXnv2SAC8=
+	b=j5keUF6Nv+jYXyts9wrTWMT+vUiZMq3QDsCuaBHcLyRA+xdVTcx3K6I9cH2uns1EK
+	 V0HnHVsiqFBEbZy58F+9EsOEIB0l9zwQCapC2PJDyq3fs2vtah5e0PV56n0UEHBBSh
+	 aaa4b0UrIDDHknEkeFXOgi9QzFZOhQwAmbx5x/GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Everest K.C." <everestkc@everestkc.com.np>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 578/590] xfrm: Add error handling when nla_put_u32() returns an error
+	Arnd Bergmann <arnd@arndb.de>,
+	Sean Rhodes <sean@starlabs.systems>
+Subject: [PATCH 6.13 591/623] drivers/card_reader/rtsx_usb: Restore interrupt based detection
 Date: Wed,  5 Feb 2025 14:45:33 +0100
-Message-ID: <20250205134517.378610800@linuxfoundation.org>
+Message-ID: <20250205134518.835569300@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Everest K.C <everestkc@everestkc.com.np>
+From: Sean Rhodes <sean@starlabs.systems>
 
-commit 9d287e70c51f1c141ac588add261ed2efdd6fc6b upstream.
+commit 235b630eda072d7e7b102ab346d6b8a2c028a772 upstream.
 
-Error handling is missing when call to nla_put_u32() fails.
-Handle the error when the call to nla_put_u32() returns an error.
+This commit reintroduces interrupt-based card detection previously
+used in the rts5139 driver. This functionality was removed in commit
+00d8521dcd23 ("staging: remove rts5139 driver code").
 
-The error was reported by Coverity Scan.
-Report:
-CID 1601525: (#1 of 1): Unused value (UNUSED_VALUE)
-returned_value: Assigning value from nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num)
-to err here, but that stored value is overwritten before it can be used
+Reintroducing this mechanism fixes presence detection for certain card
+readers, which with the current driver, will taken approximately 20
+seconds to enter S3 as `mmc_rescan` has to be frozen.
 
-Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
-Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Rhodes <sean@starlabs.systems>
+Link: https://lore.kernel.org/r/20241119085815.11769-1-sean@starlabs.systems
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/misc/cardreader/rtsx_usb.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2609,8 +2609,11 @@ static int build_aevent(struct sk_buff *
- 	err = xfrm_if_id_put(skb, x->if_id);
- 	if (err)
- 		goto out_cancel;
--	if (x->pcpu_num != UINT_MAX)
-+	if (x->pcpu_num != UINT_MAX) {
- 		err = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
-+		if (err)
-+			goto out_cancel;
-+	}
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -286,6 +286,7 @@ static int rtsx_usb_get_status_with_bulk
+ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+ {
+ 	int ret;
++	u8 interrupt_val = 0;
+ 	u16 *buf;
  
- 	if (x->dir) {
- 		err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
+ 	if (!status)
+@@ -308,6 +309,20 @@ int rtsx_usb_get_card_status(struct rtsx
+ 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
+ 	}
+ 
++	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
++	/* Cross check presence with interrupts */
++	if (*status & XD_CD)
++		if (!(interrupt_val & XD_INT))
++			*status &= ~XD_CD;
++
++	if (*status & SD_CD)
++		if (!(interrupt_val & SD_INT))
++			*status &= ~SD_CD;
++
++	if (*status & MS_CD)
++		if (!(interrupt_val & MS_INT))
++			*status &= ~MS_CD;
++
+ 	/* usb_control_msg may return positive when success */
+ 	if (ret < 0)
+ 		return ret;
 
 
 
