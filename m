@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08DCA28F2B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C33A28FFC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C60683A984F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6D51886794
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5FE14B080;
-	Wed,  5 Feb 2025 14:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0894155751;
+	Wed,  5 Feb 2025 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNvNuqXa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hNPYC0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59476282EE;
-	Wed,  5 Feb 2025 14:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFEE487BF;
+	Wed,  5 Feb 2025 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765272; cv=none; b=Hla0RsxMq3kXI766b3acvPpDGkYIwx5p+sp94S62MNZf0G6IG2b1oOzZ0A8lEQAozuwiMrGYMZq635gsbdOvhPColr7JC5484vwcROK6GLKu9kvXVZHdV+b+budDLM5CLS9g+WJpGSYqQcFCAAP1qQcNfU4GdHsongak4qXPw4U=
+	t=1738765834; cv=none; b=C1GzUdSlm42uzYfYhsEkL5ly4nB+GeoZTOdJBoLrom6gu8NO4MZWKurEDO9W1TzdqP2Lryt+CYM0g2AyGmjhRBzEl10/qPJEaR+OBMt8cmEWqcWb0MHt9hntU2pblX3+4Y4cIYI706AoFew4LgJcDP4gwFSQgsCo7zBP1ST/eTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765272; c=relaxed/simple;
-	bh=GgPYopS0OLQHZAoAEoyd8jdMHSHSrF7IsBjlforztL8=;
+	s=arc-20240116; t=1738765834; c=relaxed/simple;
+	bh=ux/HIXqj0NplXvZ9k9nZSC0CAam7ZyZZPIBTjVxrtVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URxXwenja3u73pkx7noNMv11MCOm3Fo8BZAZbaNHiP6ZEvz/s2bXQVnFMZ3zaaZgp9wMbQpCsqbD7aMKOrwd9wyrwMkqT629jf423VDCtKz0/PwRs7uFdxwV+P8N0LhPVatS8rd/uQm7r2rQZ5SSCNPp9jJBuTECDl2VVBo1oUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNvNuqXa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC018C4CED1;
-	Wed,  5 Feb 2025 14:21:11 +0000 (UTC)
+	 MIME-Version; b=tIHcy4+ZQ90aMilNwdY41vLedO7tMg36wgZVotcw6aRMOLnTs9HQUAFE/h1O1JPgvVu9sHbFqNMOmmvnkP6Eq1QmMic4zJ2KngkhZgzg6wxhlW7jtZEOgvLsFMf8uk8kSpCJGyEMtXkwNKprEPMu33Ac1ZcN+F9eHDG3oWr11EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hNPYC0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99375C4CED1;
+	Wed,  5 Feb 2025 14:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765272;
-	bh=GgPYopS0OLQHZAoAEoyd8jdMHSHSrF7IsBjlforztL8=;
+	s=korg; t=1738765834;
+	bh=ux/HIXqj0NplXvZ9k9nZSC0CAam7ZyZZPIBTjVxrtVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNvNuqXaw0/5isE3YIC4cgGEpe4Dfwvt+XlnPEiqLm39yNFWE379egnr6BEpZuuyy
-	 lMTwsQO1iRvwZDnmUvTscdVS4sXNA+PByh4yj4VyLQOJhVO7L8o7LQt0spbkbWqyPO
-	 +trl/8WY3mKkxKFKJn9Qb79rmz2Y4xGjRDbAQ9Mc=
+	b=0hNPYC0hr4Sxa6yoyq41VRfSO9tvcN6CYSSNjhk8lrAm91Lm93f6mhDELQ1z89bUD
+	 VK1F8toDbrA69RVzzuwHQzGSBIxKJeJ7ZjOjUOyfAH2O1ZlzgkBqdbdgRdLo28CnCc
+	 W1x0jv78vGZ5l9Yk85fh4wt/ZHHLLcFfyXKivggM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 205/590] wifi: mt76: mt7996: fix HE Phy capability
+Subject: [PATCH 6.13 218/623] selftests: timers: clocksource-switch: Adapt progress to kselftest framework
 Date: Wed,  5 Feb 2025 14:39:20 +0100
-Message-ID: <20250205134503.125532845@linuxfoundation.org>
+Message-ID: <20250205134504.565671088@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 7e3aef59a403ade5dd4ea02edc2d7138a66d74b6 ]
+[ Upstream commit 8694e6a7f7dba23d3abd9f5a96f64d161704c7b1 ]
 
-Set HE SU PPDU And HE MU PPDU With 4x HE-LTF And 0.8 us GI within HE PHY
-Capabilities element as 1 since hardware can support.
+When adapting the test to the kselftest framework, a few printf() calls
+indicating test progress were not updated.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250114101026.3587702-3-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix this by replacing these printf() calls by ksft_print_msg() calls.
+
+Link: https://lore.kernel.org/r/7dd4b9ab6e43268846e250878ebf25ae6d3d01ce.1733994134.git.geert+renesas@glider.be
+Fixes: ce7d101750ff ("selftests: timers: clocksource-switch: adapt to kselftest framework")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/timers/clocksource-switch.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index e04abd57b3b3a..d8a013812d1e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1077,6 +1077,9 @@ mt7996_init_he_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 	he_cap_elem->phy_cap_info[2] = IEEE80211_HE_PHY_CAP2_STBC_TX_UNDER_80MHZ |
- 				       IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ;
+diff --git a/tools/testing/selftests/timers/clocksource-switch.c b/tools/testing/selftests/timers/clocksource-switch.c
+index c5264594064c8..83faa4e354e38 100644
+--- a/tools/testing/selftests/timers/clocksource-switch.c
++++ b/tools/testing/selftests/timers/clocksource-switch.c
+@@ -156,8 +156,8 @@ int main(int argc, char **argv)
+ 	/* Check everything is sane before we start switching asynchronously */
+ 	if (do_sanity_check) {
+ 		for (i = 0; i < count; i++) {
+-			printf("Validating clocksource %s\n",
+-				clocksource_list[i]);
++			ksft_print_msg("Validating clocksource %s\n",
++					clocksource_list[i]);
+ 			if (change_clocksource(clocksource_list[i])) {
+ 				status = -1;
+ 				goto out;
+@@ -169,7 +169,7 @@ int main(int argc, char **argv)
+ 		}
+ 	}
  
-+	he_cap_elem->phy_cap_info[7] =
-+			IEEE80211_HE_PHY_CAP7_HE_SU_MU_PPDU_4XLTF_AND_08_US_GI;
-+
- 	switch (iftype) {
- 	case NL80211_IFTYPE_AP:
- 		he_cap_elem->mac_cap_info[0] |= IEEE80211_HE_MAC_CAP0_TWT_RES;
-@@ -1116,8 +1119,7 @@ mt7996_init_he_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 			IEEE80211_HE_PHY_CAP6_PARTIAL_BW_EXT_RANGE |
- 			IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT;
- 		he_cap_elem->phy_cap_info[7] |=
--			IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP |
--			IEEE80211_HE_PHY_CAP7_HE_SU_MU_PPDU_4XLTF_AND_08_US_GI;
-+			IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP;
- 		he_cap_elem->phy_cap_info[8] |=
- 			IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
- 			IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
+-	printf("Running Asynchronous Switching Tests...\n");
++	ksft_print_msg("Running Asynchronous Switching Tests...\n");
+ 	pid = fork();
+ 	if (!pid)
+ 		return run_tests(runtime);
 -- 
 2.39.5
 
