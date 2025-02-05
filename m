@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778B0A28D65
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E440CA28E32
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80CD18880A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83A32188639A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40BE14F9E7;
-	Wed,  5 Feb 2025 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91D8FC0B;
+	Wed,  5 Feb 2025 14:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSiDnvSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1KCEaz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923A014A4E9;
-	Wed,  5 Feb 2025 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960771519AA;
+	Wed,  5 Feb 2025 14:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763994; cv=none; b=lbqANxJiolF1qwhKyVb4Pn1jqJ/Tpty8BJOVRUpduHsHrcQTcr34GRKAdyxQ5tG7Sdum7YER8yRBzOdBBhluwCgmQQanWhRnXbLC7rFFHL4Dj1fETRcfNc76XrqRMjhkuuwRwLiLpdGj8J1SLyf0yhAiQ6PFw2yWKCEDwNz+ZmQ=
+	t=1738764589; cv=none; b=K6GV8Fpkz3UeAT2acdl6DmJcn/Vz4Ty0MDEpC4iGcZyghgDtfaSDf5VL3h0hi3fUgeFanr+uKMHPAkGSs5MQLUbp32SchYKxBNGWvwWOl2XD1a5lGsTpvFLcwo8eBwK/phNd1n2XpHfviSzeCXz1Mh1WWnCRrUusGY9+dNgsnpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763994; c=relaxed/simple;
-	bh=hVDW3DXTJw05+St/eDIR9EHXJXscr0SylFQdFoO2gug=;
+	s=arc-20240116; t=1738764589; c=relaxed/simple;
+	bh=TVR2RvAQpDacSLHBfOTIQtEsZROARLa7sNC1X7z8NK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2clEaTIUvoJqSVMvsiw/+wjk8gTvtcLCvnYLOVK8SkPqdvnfkLMU2Ul6PndEO3vdSfA5MuXadSCQikVlbv/9geM8F5b0mYG9pGYADEi5xYFhNble00VSK3LWwah2LBv49te+FKjfecrTtSr3OI7fUTMmpnI+Rxr5JpGWZQx1TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSiDnvSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0034AC4CED1;
-	Wed,  5 Feb 2025 13:59:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BccLg6Ge5s3/Jg7ock1cUlV8jdEWmEZmZnz0v5ot5t8v+05OfFHyUR3/vfRDmmJQQ4HIYKnmO80o5tQMP3juKRSF3iH9XBLsPxod6+ZtOa2WA11mh6foRgc2kUFHTP5slVoOguzfGdYVZ5Jye81O4eJwP8wPnRSBfkX6MFD7LUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1KCEaz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3C3C4CED1;
+	Wed,  5 Feb 2025 14:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763994;
-	bh=hVDW3DXTJw05+St/eDIR9EHXJXscr0SylFQdFoO2gug=;
+	s=korg; t=1738764589;
+	bh=TVR2RvAQpDacSLHBfOTIQtEsZROARLa7sNC1X7z8NK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSiDnvSgbRTjxMmPHPM77Q9AQqAnS05MgOqRT8hLpXVFoZl456PuX7XXipVQVE920
-	 OrO0AlrfKTZBVnmrv+Wl9jVaRs0OvuwsgtnN7eWYgLafI/esTpdemnQwz6AEqaCSbb
-	 WNNgcLZDmU5mZXcyDysv0eQbft+955RqjzngJTSs=
+	b=E1KCEaz8XKm7eEz5OfuGCpmMchtlhthPgaEUgF8e267COQMReReuJPtDTf1aOaKY/
+	 HhOYpU/WYqWb6JxxEGQaXxLk5p1wImFWkfDGSakbkf2iPQViRwqMiPM24D4dkduXR2
+	 Q0+nqRnXY/hWounJGhDGttAgfY+bdImzITjRLwQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/590] wifi: rtlwifi: wait for firmware loading before releasing memory
-Date: Wed,  5 Feb 2025 14:37:14 +0100
-Message-ID: <20250205134458.275869474@linuxfoundation.org>
+Subject: [PATCH 6.13 093/623] clk: mmp: pxa1908-mpmu: Fix a NULL vs IS_ERR() check
+Date: Wed,  5 Feb 2025 14:37:15 +0100
+Message-ID: <20250205134459.783939589@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b4b26642b31ef282df6ff7ea8531985edfdef12a ]
+[ Upstream commit 7def56f841af22e07977e193eea002e085facbdb ]
 
-At probe error path, the firmware loading work may have already been
-queued. In such a case, it will try to access memory allocated by the probe
-function, which is about to be released. In such paths, wait for the
-firmware worker to finish before releasing memory.
+The devm_kzalloc() function returns NULL on error, not error pointers.
+Update the check to match.
 
-Fixes: a7f7c15e945a ("rtlwifi: rtl8192cu: Free ieee80211_hw if probing fails")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-4-cascardo@igalia.com
+Fixes: ebac87cdd230 ("clk: mmp: Add Marvell PXA1908 MPMU driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5b3b963d-ecae-4819-be47-d82e8a58e64b@stanley.mountain
+Acked-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/mmp/clk-pxa1908-mpmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index c3aa0cd9ff211..c27b116ccdff5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1028,13 +1028,15 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	err = ieee80211_register_hw(hw);
- 	if (err) {
- 		pr_err("Can't register mac80211 hw.\n");
--		goto error_out;
-+		goto error_init_vars;
- 	}
- 	rtlpriv->mac80211.mac80211_registered = 1;
+diff --git a/drivers/clk/mmp/clk-pxa1908-mpmu.c b/drivers/clk/mmp/clk-pxa1908-mpmu.c
+index e3337bacaadd5..90b4b24885740 100644
+--- a/drivers/clk/mmp/clk-pxa1908-mpmu.c
++++ b/drivers/clk/mmp/clk-pxa1908-mpmu.c
+@@ -78,8 +78,8 @@ static int pxa1908_mpmu_probe(struct platform_device *pdev)
+ 	struct pxa1908_clk_unit *pxa_unit;
  
- 	set_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
- 	return 0;
+ 	pxa_unit = devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERNEL);
+-	if (IS_ERR(pxa_unit))
+-		return PTR_ERR(pxa_unit);
++	if (!pxa_unit)
++		return -ENOMEM;
  
-+error_init_vars:
-+	wait_for_completion(&rtlpriv->firmware_loading_complete);
- error_out:
- 	rtl_deinit_core(hw);
- error_out2:
+ 	pxa_unit->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(pxa_unit->base))
 -- 
 2.39.5
 
