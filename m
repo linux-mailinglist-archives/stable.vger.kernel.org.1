@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8B9A29045
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC08A29315
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2456169EBD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A4F3AC0BE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBF2151988;
-	Wed,  5 Feb 2025 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87FB18FC90;
+	Wed,  5 Feb 2025 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvOZxrF/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qd0ckrH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186F67DA6A;
-	Wed,  5 Feb 2025 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84823155333;
+	Wed,  5 Feb 2025 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766011; cv=none; b=jskQsdAXCtL2kkYNmlpLkEnG+GCbEFhaK/YskRQ1RroyIgwx35Mac8gj1YlNubGPdtiUoDvwDto9LmQBF2KcxMeHLZKF71inbDSsTVhLfOZVXzP8DcTQ0v0dSkSvYOjfp+EugPlD8s9O88H1olOIapulVr/WX8/DhS+T7HKAUN4=
+	t=1738767501; cv=none; b=ObNNlyAOhlRylwGzN95qy2QRB16T4l/fLBfLCbNnf6v5bRtVYxTb2tJA66VLJcOQspfgEGEp2Rk8e1ILutIhT93VWyRwSyWGqCultu7wfYiA2S//IQ9y9Zx/uNGVp1w0cKdI/kXCqSNXs76kh7ylZ24W09KNlI3nJz1Yoaii8nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766011; c=relaxed/simple;
-	bh=lsbON/a0+6Utj6DfBV4DTu70DqLY3m7qJzdqnkHyHws=;
+	s=arc-20240116; t=1738767501; c=relaxed/simple;
+	bh=6TJaShuBOHnOrKtyDRB4lTK+fPcyyMGOJbvxakvtxO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dIwwmNUjHl1KqxWotGqUcxrNXrXWd0kITCrBxUR7XFkmG78HaOgMlyOHy1N4XDYK3hTf4mJzq0r4CZe5zJJZAqZVJ699afONoF0M9Nt0HFxqiBw4uvnUKP9irFz8kgngA1PvhlyrQqu26vbYMI7twiVaGWmF9AOOZf1uy0EP85o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvOZxrF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7719AC4CED1;
-	Wed,  5 Feb 2025 14:33:30 +0000 (UTC)
+	 MIME-Version; b=cZw1UEfb/RC8gmlsyOElfcDzQzapPp8lto6QWGQKs1aDRB+dlW6Or2DYZQIdIvvhr0XMGylNS3o0nVLIYZUZ0WzYQP8Udrk0DYaMeqcOVEmh6QhyZKI5DxWDGDG/Xma1XG1F/6LlFFjTygocxnBT/HbLqoo3YYXUfxMuhxW9VZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qd0ckrH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ECEC4CED1;
+	Wed,  5 Feb 2025 14:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766010;
-	bh=lsbON/a0+6Utj6DfBV4DTu70DqLY3m7qJzdqnkHyHws=;
+	s=korg; t=1738767501;
+	bh=6TJaShuBOHnOrKtyDRB4lTK+fPcyyMGOJbvxakvtxO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvOZxrF/BUGQRKM9/YXlZDUzPQMNXgV8fI024kDxWQgauqc94ZxlEHN65QlIjnEUY
-	 FCEuVmeaIluMMyVpcOw7vljcjeJhh+fY6Se9A/ZrRYfxtotHni1L9hhoGqEGZKmkW5
-	 aPTP/SJAQ5gLUmwzZL7JROTzo64boPngBWjf8epc=
+	b=qd0ckrH8TAmDKP66nLp07TT6wPOuoKvMQb6/3F0twdjy4mkE6EpRke6xY+v5TtWw5
+	 25o4VKmNuRRgHUrvMZrGJoBEgisBEGsVBtRz8f7vzw4spm/Xa29WnBZswVg2YNWqM9
+	 VtpOICnInPkpvN8CZUsQXYSfKs1d8GRxxqp57Lmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohamed Khalfella <khalfella@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Adam Ford <aford173@gmail.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/393] PCI: endpoint: pci-epf-test: Set dma_chan_rx pointer to NULL on error
+Subject: [PATCH 6.12 465/590] phy: freescale: fsl-samsung-hdmi: Clean up fld_tg_code calculation
 Date: Wed,  5 Feb 2025 14:43:40 +0100
-Message-ID: <20250205134431.829679238@linuxfoundation.org>
+Message-ID: <20250205134513.050218301@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohamed Khalfella <khalfella@gmail.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit b1b1f4b12969130c0a6ec0cf0299460cb01e799c ]
+[ Upstream commit d567679f2b6a8bcea20589bbea6488c0236886cd ]
 
-If dma_chan_tx allocation fails, set dma_chan_rx to NULL after it is
-freed.
+Currently, the calcuation for fld_tg_code is based on a lookup table,
+but there are gaps in the lookup table, and frequencies in these
+gaps may not properly use the correct divider.  Based on the description
+of FLD_CK_DIV, the internal PLL frequency should be less than 50 MHz,
+so directly calcuate the value of FLD_CK_DIV from pixclk.
+This allow for proper calcuation of any pixel clock and eliminates a
+few gaps in the LUT.
 
-Link: https://lore.kernel.org/r/20241227160841.92382-1-khalfella@gmail.com
-Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
-Signed-off-by: Mohamed Khalfella <khalfella@gmail.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Since the value of the int_pllclk is in Hz, do the fixed-point
+math in Hz to achieve a more accurate value and reduces the complexity
+of the caluation to 24MHz * (256 / int_pllclk).
+
+Fixes: 6ad082bee902 ("phy: freescale: add Samsung HDMI PHY")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Link: https://lore.kernel.org/r/20241026132014.73050-3-aford173@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-samsung-hdmi.c | 32 +++++++-------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 1f0d2b84296a3..fa7ae8cedb676 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -251,7 +251,7 @@ static int pci_epf_test_init_dma_chan(struct pci_epf_test *epf_test)
+diff --git a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
+index 029de69fbeaf4..6801a09c86a77 100644
+--- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
++++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
+@@ -388,25 +388,17 @@ fsl_samsung_hdmi_phy_configure_pll_lock_det(struct fsl_samsung_hdmi_phy *phy,
+ {
+ 	u32 pclk = cfg->pixclk;
+ 	u32 fld_tg_code;
+-	u32 pclk_khz;
+-	u8 div = 1;
+-
+-	switch (cfg->pixclk) {
+-	case  22250000 ...  47500000:
+-		div = 1;
+-		break;
+-	case  50349650 ...  99000000:
+-		div = 2;
+-		break;
+-	case 100699300 ... 198000000:
+-		div = 4;
+-		break;
+-	case 205000000 ... 297000000:
+-		div = 8;
+-		break;
++	u32 int_pllclk;
++	u8 div;
++
++	/* Find int_pllclk speed */
++	for (div = 0; div < 4; div++) {
++		int_pllclk = pclk / (1 << div);
++		if (int_pllclk < (50 * MHZ))
++			break;
+ 	}
  
- fail_back_rx:
- 	dma_release_channel(epf_test->dma_chan_rx);
--	epf_test->dma_chan_tx = NULL;
-+	epf_test->dma_chan_rx = NULL;
+-	writeb(FIELD_PREP(REG12_CK_DIV_MASK, ilog2(div)), phy->regs + PHY_REG(12));
++	writeb(FIELD_PREP(REG12_CK_DIV_MASK, div), phy->regs + PHY_REG(12));
  
- fail_back_tx:
- 	dma_cap_zero(mask);
+ 	/*
+ 	 * Calculation for the frequency lock detector target code (fld_tg_code)
+@@ -419,10 +411,8 @@ fsl_samsung_hdmi_phy_configure_pll_lock_det(struct fsl_samsung_hdmi_phy *phy,
+ 	 *        settings rounding up always too. TODO: Check if that is
+ 	 *        correct.
+ 	 */
+-	pclk /= div;
+-	pclk_khz = pclk / 1000;
+-	fld_tg_code = 256 * 1000 * 1000 / pclk_khz * 24;
+-	fld_tg_code = DIV_ROUND_UP(fld_tg_code, 1000);
++
++	fld_tg_code =  DIV_ROUND_UP(24 * MHZ * 256, int_pllclk);
+ 
+ 	/* FLD_TOL and FLD_RP_CODE taken from downstream driver */
+ 	writeb(FIELD_PREP(REG13_TG_CODE_LOW_MASK, fld_tg_code),
 -- 
 2.39.5
 
