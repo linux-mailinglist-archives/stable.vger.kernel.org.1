@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C9DA29296
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79763A293A1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 158E3169419
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351961891B2D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585DC1FC7F9;
-	Wed,  5 Feb 2025 14:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C7E189F3F;
+	Wed,  5 Feb 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRl/dTmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B16A92G2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C69B198845;
-	Wed,  5 Feb 2025 14:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E84513C8E2;
+	Wed,  5 Feb 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767306; cv=none; b=AJ9iFmtFwYHAzYJgiBfZflAMnieYfDx+9iPqwrdrHvWoS2429GXPGXCeApIKfEpQUvZd5qBPOZY72gpRQjjHosHaXXpfV1BfMI5ekoxg3HIpa1/0kH58RACJH4p/c/HbSPzxx6aqQabgS3gztZsf2j2SYNQn35q6u4SuaJVDVo8=
+	t=1738767760; cv=none; b=EhHEVoO3NUzlIJqyNNjRL8dl9AqU/dzeWFr0BYLQKGL4aw8n5ACfsZFT0xtZcfM8H6iWLBHKG4Bv2U0EhSPpd1rafxyFBy3DP+/bbRbgqRiexwtr6p8pBJLIyqOGsF+su10BSF5GDJXEfr16queB3/JVIUFlDcP1KWh81lDiDPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767306; c=relaxed/simple;
-	bh=YLZOeYxpyOK+bIUZVcLOM5PK7zqnv2nz13cVATviMgI=;
+	s=arc-20240116; t=1738767760; c=relaxed/simple;
+	bh=HMo+CYNxsScGgd/kBtM7H9C0YJcTXLK/MpsfUYJaazM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJZE6LHX32lGMB9aTHIapsYYf68fYOYfwOYL9D1CQZgdxkgpxvZvtThU9xSARcZmhqG07aJ7OCyLIiHW2IagnSOGt5ikhisvL3FcRuhhuaaEZ26O/kYzWQXoCpNl4lQUYwbQqNMEU4V/Q/lrzkvIFy9jpOH6adXRcYihVK0KMpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRl/dTmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0F2C4CED1;
-	Wed,  5 Feb 2025 14:55:05 +0000 (UTC)
+	 MIME-Version; b=srs4xa7IXyFudckWwQEDHGDFBdcBgOZHDB9G7hb07V4rjd0Z+0+LQ+Rwx1AmUvoGdm+6oWaNmz2spU1tljLHjcnmWQt3t+LY23jWZMm+vMuhHL3eFAKC8RQ8M8FON8i5bA4STey2f/jltwSodlA5GQ+3q94Bdyvmi6RsWYmTDg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B16A92G2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCDEC4CED1;
+	Wed,  5 Feb 2025 15:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767305;
-	bh=YLZOeYxpyOK+bIUZVcLOM5PK7zqnv2nz13cVATviMgI=;
+	s=korg; t=1738767760;
+	bh=HMo+CYNxsScGgd/kBtM7H9C0YJcTXLK/MpsfUYJaazM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRl/dTmkMs8aFbQvbtbI5T0EOext1dw93QHpfTZgdDwHkM4komitEAyog9daYE83k
-	 xk3eTlwkGLM2HgS3poHeZ97k1hISOWNMf0Op3Kk++wpazgUABh1f72OxfaGYYwLPrh
-	 /+seiVXu/moqMQM9wj67MAItpO/hcSSGNpTmz15k=
+	b=B16A92G2JEVyRs3WIGexjoQ6VtDmy5BLOEjg5YUCFt69ICmgRQcB8q9v0b495gBDq
+	 Mnn+vnIqUPTi63BsDak+s8OzZCDUYwb6guJg3FFKyWOufCzkOEyuShIw/ScSwsH7Si
+	 zkzuMAmAJVFQq4iWqLEkt9mGwfY6zR9Q7NqLWjls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 437/590] scsi: mpi3mr: Fix possible crash when setting up bsg fails
+Subject: [PATCH 6.13 450/623] media: i2c: ov9282: Correct the exposure offset
 Date: Wed,  5 Feb 2025 14:43:12 +0100
-Message-ID: <20250205134511.986299556@linuxfoundation.org>
+Message-ID: <20250205134513.431989228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 295006f6e8c17212d3098811166e29627d19e05c ]
+[ Upstream commit feaf4154d69657af2bf96e6e66cca794f88b1a61 ]
 
-If bsg_setup_queue() fails, the bsg_queue is assigned a non-NULL value.
-Consequently, in mpi3mr_bsg_exit(), the condition "if(!mrioc->bsg_queue)"
-will not be satisfied, preventing execution from entering
-bsg_remove_queue(), which could lead to the following crash:
+The datasheet lists that "Maximum exposure time is frame
+length -25 row periods, where frame length is set by
+registers {0x380E, 0x380F}".
+However this driver had OV9282_EXPOSURE_OFFSET set to 12
+which allowed that restriction to be violated, and would
+result in very under-exposed images.
 
-BUG: kernel NULL pointer dereference, address: 000000000000041c
-Call Trace:
-  <TASK>
-  mpi3mr_bsg_exit+0x1f/0x50 [mpi3mr]
-  mpi3mr_remove+0x6f/0x340 [mpi3mr]
-  pci_device_remove+0x3f/0xb0
-  device_release_driver_internal+0x19d/0x220
-  unbind_store+0xa4/0xb0
-  kernfs_fop_write_iter+0x11f/0x200
-  vfs_write+0x1fc/0x3e0
-  ksys_write+0x67/0xe0
-  do_syscall_64+0x38/0x80
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+Correct the offset.
 
-Fixes: 4268fa751365 ("scsi: mpi3mr: Add bsg device support")
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250107022032.24006-1-kanie@linux.alibaba.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 14ea315bbeb7 ("media: i2c: Add ov9282 camera sensor driver")
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_app.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ov9282.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
-index 10b8e4dc64f8b..7589f48aebc80 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -2951,6 +2951,7 @@ void mpi3mr_bsg_init(struct mpi3mr_ioc *mrioc)
- 		.max_hw_sectors		= MPI3MR_MAX_APP_XFER_SECTORS,
- 		.max_segments		= MPI3MR_MAX_APP_XFER_SEGMENTS,
- 	};
-+	struct request_queue *q;
+diff --git a/drivers/media/i2c/ov9282.c b/drivers/media/i2c/ov9282.c
+index 9f52af6f047f3..87e5d7ce5a47e 100644
+--- a/drivers/media/i2c/ov9282.c
++++ b/drivers/media/i2c/ov9282.c
+@@ -40,7 +40,7 @@
+ /* Exposure control */
+ #define OV9282_REG_EXPOSURE	0x3500
+ #define OV9282_EXPOSURE_MIN	1
+-#define OV9282_EXPOSURE_OFFSET	12
++#define OV9282_EXPOSURE_OFFSET	25
+ #define OV9282_EXPOSURE_STEP	1
+ #define OV9282_EXPOSURE_DEFAULT	0x0282
  
- 	device_initialize(bsg_dev);
- 
-@@ -2966,14 +2967,17 @@ void mpi3mr_bsg_init(struct mpi3mr_ioc *mrioc)
- 		return;
- 	}
- 
--	mrioc->bsg_queue = bsg_setup_queue(bsg_dev, dev_name(bsg_dev), &lim,
-+	q = bsg_setup_queue(bsg_dev, dev_name(bsg_dev), &lim,
- 			mpi3mr_bsg_request, NULL, 0);
--	if (IS_ERR(mrioc->bsg_queue)) {
-+	if (IS_ERR(q)) {
- 		ioc_err(mrioc, "%s: bsg registration failed\n",
- 		    dev_name(bsg_dev));
- 		device_del(bsg_dev);
- 		put_device(bsg_dev);
-+		return;
- 	}
-+
-+	mrioc->bsg_queue = q;
- }
- 
- /**
 -- 
 2.39.5
 
