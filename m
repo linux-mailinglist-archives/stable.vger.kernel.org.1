@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129E7A292C5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B89BA2935A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8745C3A8083
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9367616C8B4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBA61FCCF2;
-	Wed,  5 Feb 2025 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F48718A6B5;
+	Wed,  5 Feb 2025 15:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNK+JgXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+qNavFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A101FCCEA;
-	Wed,  5 Feb 2025 14:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CB5DF71;
+	Wed,  5 Feb 2025 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767317; cv=none; b=lS/dWRQVO+pMiZB4twwFruzsj9vA6QuuXNFQLUZ6c47GAtFU0wSKK++w9gWBL8EY+ni3jub++ue1RjZ2ivaMuw/yjkJWsOrknQzjWDF/eN3xe/9jS+i0CslsMXllZ2erTlGddx5V5Wkre6ynwWiDmol3Q6QdgUtkaCH4beCVjN8=
+	t=1738767777; cv=none; b=Fuw9D0K3/72gMFJ7EN79J8vZ5K9QMax36VSsI3irunbJIfsffRWD11j4Uip/mMS2AH9ZnL3OACBip2QTeD+72QI6C64pbqFrHoEMlSfMGl1XruGZ0079ranhxqlKYB6kWs5gqlaoHcaboqh0MBJQY/8ZnjVEzAtQ4mpfGTav1nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767317; c=relaxed/simple;
-	bh=TbMUCxTID7qo0UZ9hktS/x6g0XfWS/1xVtJb86Qggt0=;
+	s=arc-20240116; t=1738767777; c=relaxed/simple;
+	bh=0sBno1v49j39QQIOOTWLVUCJ3+HSkwN2QWYWoO+kY5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3vDn6DqzrQC4SgKpPB31LnBrw6PreqlMVu3KRkAPxYwxGLAxjMRj6NomOi2d+Gc6IXUNO06vzpinWVTm8nB61CxGjeBJymmr8LGxkpVLcLJTbQO7ARyohf7Wua7OwQiJEvFMRYLQq1F4PwWSHYqOsyC2LpmhVaLE/DIHhtnEgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNK+JgXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9016EC4CED1;
-	Wed,  5 Feb 2025 14:55:15 +0000 (UTC)
+	 MIME-Version; b=jKboH2AH5Z5MEsv1hXfy2uT6+mCr/PLLvHqMmGL/DUcUlSlyh5gnJ0T6sdokWtMrCjcboZgZPzU8wnttJW+vYLqDBHhiU7qg47TKLOBHVahAX6ZUpeXanVSBljXGBI/fU+UfAqPnTm360Ku3YukX1bJRjLZA2rsBbKRoMwPl0wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+qNavFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346D0C4CED1;
+	Wed,  5 Feb 2025 15:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767316;
-	bh=TbMUCxTID7qo0UZ9hktS/x6g0XfWS/1xVtJb86Qggt0=;
+	s=korg; t=1738767777;
+	bh=0sBno1v49j39QQIOOTWLVUCJ3+HSkwN2QWYWoO+kY5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNK+JgXFyruTbY7AQJx74+ecXv5wYi7fLamxItcBeinhQ1vPPW5QrixDfUNYEFboa
-	 rWgEPCiPiQVDHug/Yy9pfdVq+pPrFECFzBQZqbo11+ynKd2R/HkB8vslqU9vYE3CTB
-	 ++/r+ogI7lipL97GSWrnapbS++JeUiubCBKf9DhY=
+	b=i+qNavFKJ386nY9OMNslTbs79Qy9JYw0ogcZ/Y0Rbmeie/OVoDVM/07FdqQJpKnRd
+	 mZc5gL9lXZj7dFBrHPfbHjMDgxu21ekNEt3/Qo3RshW+afsEo8314E0yLTmfbtNu9e
+	 ArQGsAfk0ez3lfNQPnedQTSGC9GQNRb9S4mbn9hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 438/590] firewire: test: Fix potential null dereference in firewire kunit test
-Date: Wed,  5 Feb 2025 14:43:13 +0100
-Message-ID: <20250205134512.025094995@linuxfoundation.org>
+Subject: [PATCH 6.13 452/623] media: camif-core: Add check for clk_enable()
+Date: Wed,  5 Feb 2025 14:43:14 +0100
+Message-ID: <20250205134513.508410965@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 352fafe97784e81a10a7c74bd508f71a19b53c2a ]
+[ Upstream commit 77ed2470ac09c2b0a33cf3f98cc51d18ba9ed976 ]
 
-kunit_kzalloc() may return a NULL pointer, dereferencing it without
-NULL check may lead to NULL dereference.
-Add a NULL check for test_state.
+Add check for the return value of clk_enable() to gurantee the success.
 
-Fixes: 1c8506d62624 ("firewire: test: add test of device attributes for simple AV/C device")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250110084237.8877-1-hanchunchao@inspur.com
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/device-attribute-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../media/platform/samsung/s3c-camif/camif-core.c   | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firewire/device-attribute-test.c b/drivers/firewire/device-attribute-test.c
-index 2f123c6b0a165..97478a96d1c96 100644
---- a/drivers/firewire/device-attribute-test.c
-+++ b/drivers/firewire/device-attribute-test.c
-@@ -99,6 +99,7 @@ static void device_attr_simple_avc(struct kunit *test)
- 	struct device *unit0_dev = (struct device *)&unit0.device;
- 	static const int unit0_expected_ids[] = {0x00ffffff, 0x00ffffff, 0x0000a02d, 0x00010001};
- 	char *buf = kunit_kzalloc(test, PAGE_SIZE, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
- 	int ids[4] = {0, 0, 0, 0};
+diff --git a/drivers/media/platform/samsung/s3c-camif/camif-core.c b/drivers/media/platform/samsung/s3c-camif/camif-core.c
+index de6e8f1518496..221e3c447f361 100644
+--- a/drivers/media/platform/samsung/s3c-camif/camif-core.c
++++ b/drivers/media/platform/samsung/s3c-camif/camif-core.c
+@@ -527,10 +527,19 @@ static void s3c_camif_remove(struct platform_device *pdev)
+ static int s3c_camif_runtime_resume(struct device *dev)
+ {
+ 	struct camif_dev *camif = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_enable(camif->clock[CLK_GATE]);
++	if (ret)
++		return ret;
  
- 	// Ensure associations for node and unit devices.
-@@ -180,6 +181,7 @@ static void device_attr_legacy_avc(struct kunit *test)
- 	struct device *unit0_dev = (struct device *)&unit0.device;
- 	static const int unit0_expected_ids[] = {0x00012345, 0x00fedcba, 0x00abcdef, 0x00543210};
- 	char *buf = kunit_kzalloc(test, PAGE_SIZE, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
- 	int ids[4] = {0, 0, 0, 0};
+-	clk_enable(camif->clock[CLK_GATE]);
+ 	/* null op on s3c244x */
+-	clk_enable(camif->clock[CLK_CAM]);
++	ret = clk_enable(camif->clock[CLK_CAM]);
++	if (ret) {
++		clk_disable(camif->clock[CLK_GATE]);
++		return ret;
++	}
++
+ 	return 0;
+ }
  
- 	// Ensure associations for node and unit devices.
 -- 
 2.39.5
 
