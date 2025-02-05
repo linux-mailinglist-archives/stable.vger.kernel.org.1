@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398DAA28E46
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C89A28F1C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E0C16878C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2781882BE4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F08149C53;
-	Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C9814A088;
+	Wed,  5 Feb 2025 14:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ge7pRAhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/Yl4A/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76480FC0B;
-	Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6ED913C3F6;
+	Wed,  5 Feb 2025 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764662; cv=none; b=QN8DvkfoTHIUMoeRbvsrwfd11bq8SpWwl0hXZ8jRCmV53DUGi69ek1wEFXnm1FkFbSa/pG/zvnXUN6JMYbgsQL9n7g6VJCwTCmbY0jSSZGzZcv3YkdmqUP6QIDokbcJyXYBOj6WuSsAM6me1NpLEF+SZgu57Ae+xwYOyUP5RXHI=
+	t=1738765256; cv=none; b=Zs6ALCm8QV5D1QsAH1F+5MffOwQHj9uGcZ8vCNGd099+t635TLrfDWdewW7qZ0h4RiUxuvbpEtTj0cpbTmElQxDmKWY9/kaKdbHqy6FkQ/dnEtJNuHbCMuCPt2duzudjW1KDdPybUwxW4j9A29rev91x4JKf+j5x/32JdZb3q/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764662; c=relaxed/simple;
-	bh=elBhsDXo5rPiOepJt1MB4npUXkcVlkqPl28tiV7IIUI=;
+	s=arc-20240116; t=1738765256; c=relaxed/simple;
+	bh=y8u3lP9UMTxeXtkTiWXQmfN3IGOm9eDHXcYdJGju+TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUAI4b5LFjOoXGLXyPjo2Qxvvr8MayIKZYoHjI1AQzPW6H0PRnT9w2GHx/l9yMpXWqPX5grOrofxJpABNxAL/IFJo9Hc5FP/3g5AWVY3WX/3F1bLnif6cAqNIJPUtVu+m4UmRQI1dXU11ivyCcloXXeqgXhyzVg3vvpAyThA90k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ge7pRAhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBC1C4CED1;
-	Wed,  5 Feb 2025 14:11:01 +0000 (UTC)
+	 MIME-Version; b=ndEntpyLHKquy0cNyO7nLpxh8XTOY1r4Bj70KQos2AClRy2oep1LU0FOdErrKobbWMnHGL+tVaXOAmx175JtvFB7TQljYqTnku0KTGo0G4g4TL2kdy2pprgbPVkNVucG0vDBE8JeW7hpZ2zLNPz75g1rl+3ufk5Xn7biGMftRvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/Yl4A/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C02BC4CED1;
+	Wed,  5 Feb 2025 14:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764661;
-	bh=elBhsDXo5rPiOepJt1MB4npUXkcVlkqPl28tiV7IIUI=;
+	s=korg; t=1738765255;
+	bh=y8u3lP9UMTxeXtkTiWXQmfN3IGOm9eDHXcYdJGju+TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ge7pRAhzvdXdLgokhGnKmKcFrwg4ej39QKGNpCWIl3GqzfPzbaQU4za8sOsKca1Wq
-	 efnplPq3HI/gbFRWk8sBMi5q+6RlHt8WlZBMkjaVUK/zHRd0zIZng0H6f0l2Mm0tNL
-	 GHDvtYnlRE9ea4QxEb+l1hqPMQvXhe8lErK+Mu+8=
+	b=O/Yl4A/2K0SH32munXaGpewvSCnYGIwiJVtluR5NHb+oLEYM+sXhC5lAsgdF+wGt7
+	 Fd3MLxhtAfUac8VeQS5irbLuw+SOCMKITvXZtwQJxBX+Sk9DI39II8jK0BOBElgvDn
+	 6x4pDS+EzysWrJh61o2KaUZ+HJn1LiV4OYGhVV1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/590] wifi: rtw89: handle entity active flag per PHY
+Subject: [PATCH 6.13 160/623] hwmon: Fix help text for aspeed-g6-pwm-tach
 Date: Wed,  5 Feb 2025 14:38:22 +0100
-Message-ID: <20250205134500.899878049@linuxfoundation.org>
+Message-ID: <20250205134502.356787890@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit ad95bb3b92c65849a6101402197e2cbeb2910a4a ]
+[ Upstream commit c8571eab11131cce6dcce76b3345c1524e074071 ]
 
-Originally, we have an active flag to record whether we have set PHY once.
-After impending MLO support, there will be dual-PHY and they can be set
-individually on Wi-Fi 7 chips. So, we now have active flag per PHY and
-handle them individually.
+The help text has the wrong module name mentioned, and the capitalisation
+of the title is inconsistent.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240925020119.13170-3-pkshih@realtek.com
-Stable-dep-of: e47f0a589854 ("wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes")
+Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20250110114737.64035-1-joel@jms.id.au
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.h | 11 +++++++----
- drivers/net/wireless/realtek/rtw89/core.c | 15 ++++++++-------
- drivers/net/wireless/realtek/rtw89/core.h |  2 +-
- drivers/net/wireless/realtek/rtw89/mac.c  |  3 ++-
- 4 files changed, 18 insertions(+), 13 deletions(-)
+ drivers/hwmon/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
-index 4ed777ea50648..74de13a2e7da9 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.h
-+++ b/drivers/net/wireless/realtek/rtw89/chan.h
-@@ -43,18 +43,21 @@ struct rtw89_entity_weight {
- 	unsigned int active_roles;
- };
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index dd376602f3f19..9afa70f877cc1 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -413,7 +413,7 @@ config SENSORS_ASPEED
+ 	  will be called aspeed_pwm_tacho.
  
--static inline bool rtw89_get_entity_state(struct rtw89_dev *rtwdev)
-+static inline bool rtw89_get_entity_state(struct rtw89_dev *rtwdev,
-+					  enum rtw89_phy_idx phy_idx)
- {
- 	struct rtw89_hal *hal = &rtwdev->hal;
+ config SENSORS_ASPEED_G6
+-	tristate "ASPEED g6 PWM and Fan tach driver"
++	tristate "ASPEED G6 PWM and Fan tach driver"
+ 	depends on ARCH_ASPEED || COMPILE_TEST
+ 	depends on PWM
+ 	help
+@@ -421,7 +421,7 @@ config SENSORS_ASPEED_G6
+ 	  controllers.
  
--	return READ_ONCE(hal->entity_active);
-+	return READ_ONCE(hal->entity_active[phy_idx]);
- }
+ 	  This driver can also be built as a module. If so, the module
+-	  will be called aspeed_pwm_tacho.
++	  will be called aspeed_g6_pwm_tach.
  
--static inline void rtw89_set_entity_state(struct rtw89_dev *rtwdev, bool active)
-+static inline void rtw89_set_entity_state(struct rtw89_dev *rtwdev,
-+					  enum rtw89_phy_idx phy_idx,
-+					  bool active)
- {
- 	struct rtw89_hal *hal = &rtwdev->hal;
- 
--	WRITE_ONCE(hal->entity_active, active);
-+	WRITE_ONCE(hal->entity_active[phy_idx], active);
- }
- 
- static inline
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 5b8e65f6de6a4..37d2bcba1b315 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -352,10 +352,6 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
- 	enum rtw89_entity_mode mode;
- 	bool entity_active;
- 
--	entity_active = rtw89_get_entity_state(rtwdev);
--	if (!entity_active)
--		return;
--
- 	mode = rtw89_get_entity_mode(rtwdev);
- 	switch (mode) {
- 	case RTW89_ENTITY_MODE_SCC:
-@@ -375,6 +371,11 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
- 		chanctx_idx = roc_idx;
- 
- 	phy_idx = RTW89_PHY_0;
-+
-+	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
-+	if (!entity_active)
-+		return;
-+
- 	chan = rtw89_chan_get(rtwdev, chanctx_idx);
- 	chip->ops->set_txpwr(rtwdev, chan, phy_idx);
- }
-@@ -393,8 +394,6 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
- 	enum rtw89_entity_mode mode;
- 	bool entity_active;
- 
--	entity_active = rtw89_get_entity_state(rtwdev);
--
- 	mode = rtw89_entity_recalc(rtwdev);
- 	switch (mode) {
- 	case RTW89_ENTITY_MODE_SCC:
-@@ -416,6 +415,8 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
- 	mac_idx = RTW89_MAC_0;
- 	phy_idx = RTW89_PHY_0;
- 
-+	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
-+
- 	chan = rtw89_chan_get(rtwdev, chanctx_idx);
- 	chan_rcd = rtw89_chan_rcd_get(rtwdev, chanctx_idx);
- 
-@@ -432,7 +433,7 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
- 		rtw89_chip_rfk_band_changed(rtwdev, phy_idx, chan);
- 	}
- 
--	rtw89_set_entity_state(rtwdev, true);
-+	rtw89_set_entity_state(rtwdev, phy_idx, true);
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index de33320b1354c..0ed31b37d10fe 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4668,7 +4668,7 @@ struct rtw89_hal {
- 	struct rtw89_chanctx chanctx[NUM_OF_RTW89_CHANCTX];
- 	struct cfg80211_chan_def roc_chandef;
- 
--	bool entity_active;
-+	bool entity_active[RTW89_PHY_MAX];
- 	bool entity_pause;
- 	enum rtw89_entity_mode entity_mode;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 4e15d539e3d1c..4574aa62839b0 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1483,7 +1483,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- 		clear_bit(RTW89_FLAG_CMAC1_FUNC, rtwdev->flags);
- 		clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
- 		rtw89_write8(rtwdev, R_AX_SCOREBOARD + 3, MAC_AX_NOTIFY_PWR_MAJOR);
--		rtw89_set_entity_state(rtwdev, false);
-+		rtw89_set_entity_state(rtwdev, RTW89_PHY_0, false);
-+		rtw89_set_entity_state(rtwdev, RTW89_PHY_1, false);
- 	}
- 
- 	return 0;
+ config SENSORS_ATXP1
+ 	tristate "Attansic ATXP1 VID controller"
 -- 
 2.39.5
 
