@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09EAA2939F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CEA29303
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89DD13A6F29
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6940D1696FC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0256BDF59;
-	Wed,  5 Feb 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CF418F2CF;
+	Wed,  5 Feb 2025 14:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XU1RMEKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOefC47g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FD91519BF;
-	Wed,  5 Feb 2025 15:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DBA146A7A;
+	Wed,  5 Feb 2025 14:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767974; cv=none; b=Qr0u79dEAzkM6gStc4/gCjJba2EA+8Ae51azt5e2BUXDrzWIDh92hSqGCJIwM7gpUZjInQtcrYKkruCXE8Z18lys93NfQIb76c+MoT/C8137w4DUdJONjGEnzorbKMa3/5rxq+pQ5kndzlp5grIRe5eUWCOsi/USdoYxbg6OVcs=
+	t=1738767509; cv=none; b=L7/okcBSEdqJJfp+8jmUSp1+q7lFVDhsrr6ObKnv6hVF9JPJhAgtpOem7KEhvBK3x5iUSnU4Up3g3OLuQM4H5U0mKCKe9Mbf3pfLm7VEEtkmJ0xlO67GjVZW/oNaW5Pk5kWaANtrV4u5+wY3/zjihZgPSYZ3sb6mWGKMIP5KsFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767974; c=relaxed/simple;
-	bh=dA4h51W+08lCLL0pW6BRulkvtGvf4SnxPZmKljxhILI=;
+	s=arc-20240116; t=1738767509; c=relaxed/simple;
+	bh=jS/eInwb+OdshR5H9gQcCSkBCDdws1RH3nibGAaF2YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AI9h3WZUTOYxMxOzNxMilNpTVRa38iJmMCgbeP2XEh2Q7hZezS37QXYurz6cJiDQosmuSfy1UeYNHH6WcIjnW95h2tVKo3xT9MwWD+fa1NoWcydFusqxlipYPp0mKbh340GXOCmJ2gZnG+LL0bRJPEOf3av/lq2AaF4V0tNjzZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XU1RMEKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFDBC4CED1;
-	Wed,  5 Feb 2025 15:06:13 +0000 (UTC)
+	 MIME-Version; b=Sd2rfW0xwwJqQYuZyCfDyh7insYjPkbuNxOkoq4O9WXHhs+F61Icid7Y0t2lxLY6vza5Ua+LKkCd7Gtmqvv/xNG7Wu5lsS+BNdUcQFHQdiGUFy4I3qRA7tlnL4WQtlK2r58eWLx0fDuIUd1UdZCSqH8vf5GFEa0lUgBAoKf2VVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOefC47g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93ADC4CED1;
+	Wed,  5 Feb 2025 14:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767974;
-	bh=dA4h51W+08lCLL0pW6BRulkvtGvf4SnxPZmKljxhILI=;
+	s=korg; t=1738767508;
+	bh=jS/eInwb+OdshR5H9gQcCSkBCDdws1RH3nibGAaF2YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XU1RMEKqNRTugGGLhO5SHhJz9NrC3JwNom/QzqHlcnJbPUG00Xl1Qi9eI53P3gj54
-	 QZDgaW+onVxw+D0Di4A3caDcsIROKJpkR5IUX0qLzlSayZdqEFsIm9hWxBVGbXHgPA
-	 cQlG9aKYakMgTM70VoMSEJn/klPHhBZIWuvGVTe8=
+	b=TOefC47gWVhIStYTKJym4QBQVOykgz/scR3Ee3kzCEOnDx1u+PT9JAUjDGkIQHhCT
+	 H1i95wExpgot0dY8eIEqstWbyr/QcnPNcb1srW8EciCi4EBsg8JLiR6dRTeM17OEVq
+	 qVRtHKxeOzcpg2EN/kHGqY0bTsHPn3PMhlceuqm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com,
-	syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 479/623] nilfs2: do not force clear folio if buffer is referenced
+Subject: [PATCH 6.12 466/590] dmaengine: ti: edma: fix OF node reference leaks in edma_driver
 Date: Wed,  5 Feb 2025 14:43:41 +0100
-Message-ID: <20250205134514.542528872@linuxfoundation.org>
+Message-ID: <20250205134513.088569715@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit ca76bb226bf47ff04c782cacbd299f12ddee1ec1 ]
+[ Upstream commit e883c64778e5a9905fce955681f8ee38c7197e0f ]
 
-Patch series "nilfs2: protect busy buffer heads from being force-cleared".
+The .probe() of edma_driver calls of_parse_phandle_with_fixed_args() but
+does not release the obtained OF nodes. Thus add a of_node_put() call.
 
-This series fixes the buffer head state inconsistency issues reported by
-syzbot that occurs when the filesystem is corrupted and falls back to
-read-only, and the associated buffer head use-after-free issue.
+This bug was found by an experimental verification tool that I am
+developing.
 
-This patch (of 2):
-
-Syzbot has reported that after nilfs2 detects filesystem corruption and
-falls back to read-only, inconsistencies in the buffer state may occur.
-
-One of the inconsistencies is that when nilfs2 calls mark_buffer_dirty()
-to set a data or metadata buffer as dirty, but it detects that the buffer
-is not in the uptodate state:
-
- WARNING: CPU: 0 PID: 6049 at fs/buffer.c:1177 mark_buffer_dirty+0x2e5/0x520
-  fs/buffer.c:1177
- ...
- Call Trace:
-  <TASK>
-  nilfs_palloc_commit_alloc_entry+0x4b/0x160 fs/nilfs2/alloc.c:598
-  nilfs_ifile_create_inode+0x1dd/0x3a0 fs/nilfs2/ifile.c:73
-  nilfs_new_inode+0x254/0x830 fs/nilfs2/inode.c:344
-  nilfs_mkdir+0x10d/0x340 fs/nilfs2/namei.c:218
-  vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
-  do_mkdirat+0x264/0x3a0 fs/namei.c:4280
-  __do_sys_mkdirat fs/namei.c:4295 [inline]
-  __se_sys_mkdirat fs/namei.c:4293 [inline]
-  __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The other is when nilfs_btree_propagate(), which propagates the dirty
-state to the ancestor nodes of a b-tree that point to a dirty buffer,
-detects that the origin buffer is not dirty, even though it should be:
-
- WARNING: CPU: 0 PID: 5245 at fs/nilfs2/btree.c:2089
-  nilfs_btree_propagate+0xc79/0xdf0 fs/nilfs2/btree.c:2089
- ...
- Call Trace:
-  <TASK>
-  nilfs_bmap_propagate+0x75/0x120 fs/nilfs2/bmap.c:345
-  nilfs_collect_file_data+0x4d/0xd0 fs/nilfs2/segment.c:587
-  nilfs_segctor_apply_buffers+0x184/0x340 fs/nilfs2/segment.c:1006
-  nilfs_segctor_scan_file+0x28c/0xa50 fs/nilfs2/segment.c:1045
-  nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1216 [inline]
-  nilfs_segctor_collect fs/nilfs2/segment.c:1540 [inline]
-  nilfs_segctor_do_construct+0x1c28/0x6b90 fs/nilfs2/segment.c:2115
-  nilfs_segctor_construct+0x181/0x6b0 fs/nilfs2/segment.c:2479
-  nilfs_segctor_thread_construct fs/nilfs2/segment.c:2587 [inline]
-  nilfs_segctor_thread+0x69e/0xe80 fs/nilfs2/segment.c:2701
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-  </TASK>
-
-Both of these issues are caused by the callbacks that handle the
-page/folio write requests, forcibly clear various states, including the
-working state of the buffers they hold, at unexpected times when they
-detect read-only fallback.
-
-Fix these issues by checking if the buffer is referenced before clearing
-the page/folio state, and skipping the clear if it is.
-
-Link: https://lkml.kernel.org/r/20250107200202.6432-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250107200202.6432-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b2b14916b77acf8626d7
-Reported-by: syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=d98fd19acd08b36ff422
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Tested-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1be5336bc7ba ("dmaengine: edma: New device tree binding")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20241219020507.1983124-3-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/page.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ drivers/dma/ti/edma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 9de2a494a0694..899686d2e5f71 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -392,6 +392,11 @@ void nilfs_clear_dirty_pages(struct address_space *mapping)
- /**
-  * nilfs_clear_folio_dirty - discard dirty folio
-  * @folio: dirty folio that will be discarded
-+ *
-+ * nilfs_clear_folio_dirty() clears working states including dirty state for
-+ * the folio and its buffers.  If the folio has buffers, clear only if it is
-+ * confirmed that none of the buffer heads are busy (none have valid
-+ * references and none are locked).
-  */
- void nilfs_clear_folio_dirty(struct folio *folio)
- {
-@@ -399,10 +404,6 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 5f8d2e93ff3fb..7f861fb07cb83 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -208,7 +208,6 @@ struct edma_desc {
+ struct edma_cc;
  
- 	BUG_ON(!folio_test_locked(folio));
+ struct edma_tc {
+-	struct device_node		*node;
+ 	u16				id;
+ };
  
--	folio_clear_uptodate(folio);
--	folio_clear_mappedtodisk(folio);
--	folio_clear_checked(folio);
--
- 	head = folio_buffers(folio);
- 	if (head) {
- 		const unsigned long clear_bits =
-@@ -410,6 +411,25 @@ void nilfs_clear_folio_dirty(struct folio *folio)
- 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
- 			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
- 			 BIT(BH_Delay));
-+		bool busy, invalidated = false;
-+
-+recheck_buffers:
-+		busy = false;
-+		bh = head;
-+		do {
-+			if (atomic_read(&bh->b_count) | buffer_locked(bh)) {
-+				busy = true;
-+				break;
-+			}
-+		} while (bh = bh->b_this_page, bh != head);
-+
-+		if (busy) {
-+			if (invalidated)
-+				return;
-+			invalidate_bh_lrus();
-+			invalidated = true;
-+			goto recheck_buffers;
-+		}
+@@ -2466,13 +2465,13 @@ static int edma_probe(struct platform_device *pdev)
+ 			if (ret || i == ecc->num_tc)
+ 				break;
  
- 		bh = head;
- 		do {
-@@ -419,6 +439,9 @@ void nilfs_clear_folio_dirty(struct folio *folio)
- 		} while (bh = bh->b_this_page, bh != head);
- 	}
+-			ecc->tc_list[i].node = tc_args.np;
+ 			ecc->tc_list[i].id = i;
+ 			queue_priority_mapping[i][1] = tc_args.args[0];
+ 			if (queue_priority_mapping[i][1] > lowest_priority) {
+ 				lowest_priority = queue_priority_mapping[i][1];
+ 				info->default_queue = i;
+ 			}
++			of_node_put(tc_args.np);
+ 		}
  
-+	folio_clear_uptodate(folio);
-+	folio_clear_mappedtodisk(folio);
-+	folio_clear_checked(folio);
- 	__nilfs_clear_folio_dirty(folio);
- }
- 
+ 		/* See if we have optional dma-channel-mask array */
 -- 
 2.39.5
 
