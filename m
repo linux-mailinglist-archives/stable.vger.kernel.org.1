@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7230AA28D4D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23A5A291BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F047B169C1A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3DF188C3F9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC1F1514EE;
-	Wed,  5 Feb 2025 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0472191F75;
+	Wed,  5 Feb 2025 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER6VN9iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxiQXzKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C2914B080;
-	Wed,  5 Feb 2025 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2451917F1;
+	Wed,  5 Feb 2025 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763911; cv=none; b=AyfliswJSrCm6/Df8fOjH5d7lpRY/z/0ufTpxW6tGFA9SyeYGL/6v4WKRpyb7A1qAqAwBPFaYKKdZm16cMsbk7C6DOdUCL13I58uxcM5J8qC/xHFAzO/e48R9Xgr7vzOADiFOA9wQWJ3PS17Sbw/eX2V9ZJBASNgAKZku+aR0V0=
+	t=1738766546; cv=none; b=m8hGr1SbME9e/I07oEaArLMbguAxzrZfUIj7j6Ak+6yTZ7cWa85AKTCNhCx38GSuePW8S/Yfaf7COz1VeVCV3Fq43qJODIN5n4z3boe3iYEwrN0Hdcta4rk3tz2z6S4/sdKHhaNXGv0W+SkhYQqB5buFeTacjiSdCmT2zHR6Zt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763911; c=relaxed/simple;
-	bh=TtiaqVKjXHRiAwHW6cts3BvdqSnyRvVKzw2Nzs0EQJI=;
+	s=arc-20240116; t=1738766546; c=relaxed/simple;
+	bh=d/UvbPlxNXHo9UVAjvfMLOJA2DrwcsWWLnZpOVD1GAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjqFy3f95/bq1ALucBU3Yw7A0sZ7O4T2jDD9/PWJ9cUdfqPaETG1G4c6vxOcoOxSLtzINisw+m7eCtdV9ZbzQ7thyMJcdVmQl7D5BHDEBCBHIVPQb6YeLiYwHyqM5FyGuKjQ/Pju+AO3Kzd0adp7PUvWUSmqCJNWx9lnbB98D60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER6VN9iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2D5C4CED1;
-	Wed,  5 Feb 2025 13:58:30 +0000 (UTC)
+	 MIME-Version; b=OWGC56kyj/nJudysl4PsD5LouqhGr810N+KopLvNZqMm4OPQlwnr4Un5dWHNEbypbZQq3i84j/MQi3epOKWZ58geCRzmVPSLT1fRzpXoaGnJORl8GLyBqdvlVt8Uoao2rBApmPXxE4kogwVSShAzfY3+dxVwYXtHJhz0CqMGfVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxiQXzKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084B7C4CED1;
+	Wed,  5 Feb 2025 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763910;
-	bh=TtiaqVKjXHRiAwHW6cts3BvdqSnyRvVKzw2Nzs0EQJI=;
+	s=korg; t=1738766546;
+	bh=d/UvbPlxNXHo9UVAjvfMLOJA2DrwcsWWLnZpOVD1GAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER6VN9izV+Ka8EhbMFbfaQBBL9p5OcJss82FHa42rSdBVoyAQE4lCi50WwzsyQIOK
-	 c+IjtOl/GjpeIjAERORrwT8+hycGVc/Wm4c56VktG2Rr3R5uVy/8uyHbejd9TFOI1A
-	 moGhVyUUPM9HF28AQa/5S+Wq7lmvlV2Ya78F/GGo=
+	b=hxiQXzKS3YKYifKbpXEaIwO/6EGoSk78Hc3MXoXy65IT6hab5OV8TydY9r2XbsJx5
+	 TT/G6kyvzTG7frh1ZfjqKYIyGYmPGa1aiKzN9CKMofuOfi6v2vsZbbIm4fk3CDgVuV
+	 7WwIleL5JvST8C06h8sp4o6+pTtKGW/UQs8B5E4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/393] wifi: mac80211: prohibit deactivating all links
+Subject: [PATCH 6.13 286/623] selftests/bpf: Avoid generating untracked files when running bpf selftests
 Date: Wed,  5 Feb 2025 14:40:28 +0100
-Message-ID: <20250205134424.467752359@linuxfoundation.org>
+Message-ID: <20250205134507.171880031@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 7553477cbfd784b128297f9ed43751688415bbaa ]
+[ Upstream commit 73b9075f334f5debf28646884a320b796b27768d ]
 
-In the internal API this calls this is a WARN_ON, but that
-should remain since internally we want to know about bugs
-that may cause this. Prevent deactivating all links in the
-debugfs write directly.
+Currently, when we run the BPF selftests with the following command:
 
-Reported-by: syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com
-Fixes: 3d9011029227 ("wifi: mac80211: implement link switching")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20241230091408.505bd125c35a.Ic3c1f9572b980a952a444cad62b09b9c6721732b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  make -C tools/testing/selftests TARGETS=bpf SKIP_TARGETS=""
+
+The command generates untracked files and directories with make version
+less than 4.4:
+
+'''
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	tools/testing/selftests/bpfFEATURE-DUMP.selftests
+	tools/testing/selftests/bpffeature/
+'''
+
+We lost slash after word "bpf". The reason is slash appending code is as
+follow:
+
+'''
+OUTPUT := $(OUTPUT)/
+$(eval include ../../../build/Makefile.feature)
+OUTPUT := $(patsubst %/,%,$(OUTPUT))
+'''
+
+This way of assigning values to OUTPUT will never be effective for the
+variable OUTPUT provided via the command argument [1] and BPF makefile
+is called from parent Makfile(tools/testing/selftests/Makefile) like:
+
+'''
+all:
+  ...
+	$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET
+'''
+
+According to GNU make, we can use override Directive to fix this issue [2].
+
+  [1] https://www.gnu.org/software/make/manual/make.html#Overriding
+  [2] https://www.gnu.org/software/make/manual/make.html#Override-Directive
+
+Fixes: dc3a8804d790 ("selftests/bpf: Adapt OUTPUT appending logic to lower versions of Make")
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20241224075957.288018-1-mrpre@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/debugfs_netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 63250286dc8b7..d6938ffd764ca 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -616,7 +616,7 @@ static ssize_t ieee80211_if_parse_active_links(struct ieee80211_sub_if_data *sda
- {
- 	u16 active_links;
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 7eeb3cbe18c70..8d206266d98c8 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -203,9 +203,9 @@ ifeq ($(shell expr $(MAKE_VERSION) \>= 4.4), 1)
+ $(let OUTPUT,$(OUTPUT)/,\
+ 	$(eval include ../../../build/Makefile.feature))
+ else
+-OUTPUT := $(OUTPUT)/
++override OUTPUT := $(OUTPUT)/
+ $(eval include ../../../build/Makefile.feature)
+-OUTPUT := $(patsubst %/,%,$(OUTPUT))
++override OUTPUT := $(patsubst %/,%,$(OUTPUT))
+ endif
+ endif
  
--	if (kstrtou16(buf, 0, &active_links))
-+	if (kstrtou16(buf, 0, &active_links) || !active_links)
- 		return -EINVAL;
- 
- 	return ieee80211_set_active_links(&sdata->vif, active_links) ?: buflen;
 -- 
 2.39.5
 
