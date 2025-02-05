@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BD8A28E73
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C791BA28DB9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0FD164955
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C0916555E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1184B1494DF;
-	Wed,  5 Feb 2025 14:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0752E634;
+	Wed,  5 Feb 2025 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBG8gJ4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAKhUKdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C260E15198D;
-	Wed,  5 Feb 2025 14:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287D3F510;
+	Wed,  5 Feb 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764796; cv=none; b=dgmUnKXIjFc6wzSZqQycfwZn2ecVqHsFJGkWKh/TU5cKeLU6FI3WcSVuE/y1YRDGt5EnrB7mPD3/831QucPpEI4AA3i1rBnOyh6kKDv8UXLeF8iIiSfeKvo58MPf2b/yN3Ywdrpw5O01qDAldhbcTgkqptScJZLmuMqCpuDZQkw=
+	t=1738764249; cv=none; b=K8QswwxK1DPY1JrGSH7Ah6nju9DjZRwARqJC0ZWYm9QmSCgyQCtfrcIfJP5YpptHNECE0xVCH8Gei6HvLuAxO0hqZ4cxcS2fzSPNf2utSheSY3cRqMb2+G6mTNLKufeT8sST7PglisIFERaS9OhOIoVpEvhd3bFyFteYvnxZOkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764796; c=relaxed/simple;
-	bh=GeTTERc9pZwrEzyJ3sKq+ibSYl4vINVUPhilorx1Sxc=;
+	s=arc-20240116; t=1738764249; c=relaxed/simple;
+	bh=Qy9eG2NEsdgOH86RxcAy7Je7gI+yPmvHXMA4wGzQaB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+/tNj5L0Of03bKohBMlLFkzgNb682HaB8YrlvQeynpBfyeR83a1IIQo6Ob0TlwmuInWjddBXQYYWh7aX/cA89ncbON5ghkPtKaAl4cEuV5qmOpfWMEixyNqVrlWcqAXXB///kLFHBJanF2adUlXdAksKa649Nvk0TR/us1YAZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBG8gJ4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8805C4CED1;
-	Wed,  5 Feb 2025 14:13:14 +0000 (UTC)
+	 MIME-Version; b=luQIiNHQXmgHJ9gNQNqdBSGPjGY0CSiaX/3lHIZTYgE/r7Bd5MQ74JOX2/tho2RuHCzd9ObzW8Z85H2RnhTk4sgrJEtpSGxdzf+FdVWJLT37Nr+m2+U3VMBiZ3zq0CEaCz4/JTlLysyn0hGE9TXpneDb01YdqIKnJOxHeq9GZHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAKhUKdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D286AC4CED1;
+	Wed,  5 Feb 2025 14:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764795;
-	bh=GeTTERc9pZwrEzyJ3sKq+ibSYl4vINVUPhilorx1Sxc=;
+	s=korg; t=1738764248;
+	bh=Qy9eG2NEsdgOH86RxcAy7Je7gI+yPmvHXMA4wGzQaB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBG8gJ4vJxOgvlN/0wUv8neXJh8Nf+Y87STmxVc/74jsv/1AZupqJBZOhftpjpVeM
-	 RU77+/ZHLRB4dXvAdN8voH+G4MO3RTkMmeibCwICildMSrOBI7qMd255ZptG5aS9rx
-	 J5+HCJGjPXzJYTpgRIWt/jJ0TxdeZmXPBJwpccgk=
+	b=AAKhUKdIMRaR9Oe031TX0xb15ycCcVWsw1N/8M8XY+ijMxvVjnH/XC7uy+lH3EKmU
+	 Mo0fX+cM7eHulT5v+l7hbAPn7yJ5HrQI1uZdZVnbPgfmMEGPNID2CSOe38OvTKqEN/
+	 5x6vCpo6x5owVy4kcr8fmI2rrFywURUKGtllGP8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Rongguang <herongguang@linux.alibaba.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 114/623] cpupower: fix TSC MHz calculation
-Date: Wed,  5 Feb 2025 14:37:36 +0100
-Message-ID: <20250205134500.580818373@linuxfoundation.org>
+Subject: [PATCH 6.12 102/590] ACPI: fan: cleanup resources in the error path of .probe()
+Date: Wed,  5 Feb 2025 14:37:37 +0100
+Message-ID: <20250205134459.160684637@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Rongguang <herongguang@linux.alibaba.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 9d6c0e58514f8b57cd9c2c755e41623d6a966025 ]
+[ Upstream commit c759bc8e9046f9812238f506d70f07d3ea4206d4 ]
 
-Commit 'cpupower: Make TSC read per CPU for Mperf monitor' (c2adb1877b7)
-changes TSC counter reads per cpu, but left time diff global (from start
-of all cpus to end of all cpus), thus diff(time) is too large for a
-cpu's tsc counting, resulting in far less than acutal TSC_Mhz and thus
-`cpupower monitor` showing far less than actual cpu realtime frequency.
+Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
+error path of acpi_fan_probe() to fix possible memory leak.
 
-/proc/cpuinfo shows frequency:
-cat /proc/cpuinfo | egrep -e 'processor' -e 'MHz'
-...
-processor : 171
-cpu MHz   : 4108.498
-...
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-before fix (System 100% busy):
-    | Mperf              || Idle_Stats
- CPU| C0   | Cx   | Freq  || POLL | C1   | C2
- 171|  0.77| 99.23|  2279||  0.00|  0.00|  0.00
-
-after fix (System 100% busy):
-    | Mperf              || Idle_Stats
- CPU| C0   | Cx   | Freq  || POLL | C1   | C2
- 171|  0.46| 99.54|  4095||  0.00|  0.00|  0.00
-
-Fixes: c2adb1877b76 ("cpupower: Make TSC read per CPU for Mperf monitor")
-Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling device")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../cpupower/utils/idle_monitor/mperf_monitor.c   | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/acpi/fan_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index ae6af354a81db..08a399b0be286 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -33,7 +33,7 @@ static int mperf_get_count_percent(unsigned int self_id, double *percent,
- 				   unsigned int cpu);
- static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- 				unsigned int cpu);
--static struct timespec time_start, time_end;
-+static struct timespec *time_start, *time_end;
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 7cea4495f19bb..300e5d9199864 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -371,19 +371,25 @@ static int acpi_fan_probe(struct platform_device *pdev)
+ 	result = sysfs_create_link(&pdev->dev.kobj,
+ 				   &cdev->device.kobj,
+ 				   "thermal_cooling");
+-	if (result)
++	if (result) {
+ 		dev_err(&pdev->dev, "Failed to create sysfs link 'thermal_cooling'\n");
++		goto err_unregister;
++	}
  
- static cstate_t mperf_cstates[MPERF_CSTATE_COUNT] = {
- 	{
-@@ -174,7 +174,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
- 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
- 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
- 	} else if (max_freq_mode == MAX_FREQ_SYSFS) {
--		timediff = max_frequency * timespec_diff_us(time_start, time_end);
-+		timediff = max_frequency * timespec_diff_us(time_start[cpu], time_end[cpu]);
- 		*percent = 100.0 * mperf_diff / timediff;
- 		dprint("%s: MAXFREQ - mperf_diff: %llu, time_diff: %llu\n",
- 		       mperf_cstates[id].name, mperf_diff, timediff);
-@@ -207,7 +207,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
- 		/* Calculate max_freq from TSC count */
- 		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
--		time_diff = timespec_diff_us(time_start, time_end);
-+		time_diff = timespec_diff_us(time_start[cpu], time_end[cpu]);
- 		max_frequency = tsc_diff / time_diff;
+ 	result = sysfs_create_link(&cdev->device.kobj,
+ 				   &pdev->dev.kobj,
+ 				   "device");
+ 	if (result) {
+ 		dev_err(&pdev->dev, "Failed to create sysfs link 'device'\n");
+-		goto err_end;
++		goto err_remove_link;
  	}
  
-@@ -226,9 +226,8 @@ static int mperf_start(void)
- {
- 	int cpu;
- 
--	clock_gettime(CLOCK_REALTIME, &time_start);
--
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
-+		clock_gettime(CLOCK_REALTIME, &time_start[cpu]);
- 		mperf_get_tsc(&tsc_at_measure_start[cpu]);
- 		mperf_init_stats(cpu);
- 	}
-@@ -243,9 +242,9 @@ static int mperf_stop(void)
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
- 		mperf_measure_stats(cpu);
- 		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
- 	}
- 
--	clock_gettime(CLOCK_REALTIME, &time_end);
  	return 0;
- }
  
-@@ -349,6 +348,8 @@ struct cpuidle_monitor *mperf_register(void)
- 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
- 	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
- 	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
-+	time_start = calloc(cpu_count, sizeof(struct timespec));
-+	time_end = calloc(cpu_count, sizeof(struct timespec));
- 	mperf_monitor.name_len = strlen(mperf_monitor.name);
- 	return &mperf_monitor;
- }
-@@ -361,6 +362,8 @@ void mperf_unregister(void)
- 	free(aperf_current_count);
- 	free(tsc_at_measure_start);
- 	free(tsc_at_measure_end);
-+	free(time_start);
-+	free(time_end);
- 	free(is_valid);
- }
- 
++err_remove_link:
++	sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
++err_unregister:
++	thermal_cooling_device_unregister(cdev);
+ err_end:
+ 	if (fan->acpi4)
+ 		acpi_fan_delete_attributes(device);
 -- 
 2.39.5
 
