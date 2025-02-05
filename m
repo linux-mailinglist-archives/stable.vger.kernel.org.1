@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC30A28C48
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC853A28EF8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E281676D6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2905818882A4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF48126C18;
-	Wed,  5 Feb 2025 13:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA2D13C9C4;
+	Wed,  5 Feb 2025 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3jKbrmC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKZka/ok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAA7B640;
-	Wed,  5 Feb 2025 13:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD0A1519BE;
+	Wed,  5 Feb 2025 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763278; cv=none; b=uWQ4DRrSWON5PvXQSxml3WiJLdQS/mqcPCUAKFfzvFei/gXd1WtAvjDvf5UfrNaL2VXOyOVOfhOj00bpjJMVtukQE4r0epR0YSrhd4XVCrVND6W9istphvRtCFXdWOUhUsyWJAlGAFKzJTY5BcSBluBKbf9vvlxMDIK3MizkW/4=
+	t=1738765139; cv=none; b=XmJGlYX54f0DzIM5osRMTwrV22LkaMK6kNW+E+ZBCexWnsoUXYJ8RlU4n7em6lTQc+zKAJWyOpTYB/a94ghFxskXYPOQ2cCTxU8w58zlqLbfDa7MNABWMPAERtXeRo0PfZma/Lni0MMu4bPkC7ctOk8zKMZuKFpobKAG8GqbAFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763278; c=relaxed/simple;
-	bh=Ho7JLYR+2LQB+R7YoIhJweWF0WpYJA/n7E4SVvIKiBc=;
+	s=arc-20240116; t=1738765139; c=relaxed/simple;
+	bh=IiAcCYpl8MiGEiZylaRPjdLwyCGNZm7dWbfO5ZlK794=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWOMp5/cuEb3OyQE4bxeJBbn9iFW0cfDgJdceUOr8xZ0Ur0iyPHWbMpVw5rky6VTnFjnMR0d4+mk3blKcLYtrb0khZ+nw4Ll+A06I/lVDABE9vTCanwVDCCuylwAfXAxaR30kuxenDVmg5ccSULkPnAgaUXPzbudZinxC2zSb1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3jKbrmC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DB8C4CED1;
-	Wed,  5 Feb 2025 13:47:57 +0000 (UTC)
+	 MIME-Version; b=WupnqjFivdypiQGhzn+yj+5rxfuvGH/GShA3TobcPGur/UdaSL8Qlh3eaMMlp5nJ4Sw0kQg2GpKt2X5EUhd75rHaxa9Uixdo46jAyzA3MRoutDcFzzKav9bqG6kpOkCwdxVAM3tVQUMp6FH3HKQzdjhmI5O9mQNbNb6XZCRTbe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKZka/ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDC9C4CED1;
+	Wed,  5 Feb 2025 14:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763278;
-	bh=Ho7JLYR+2LQB+R7YoIhJweWF0WpYJA/n7E4SVvIKiBc=;
+	s=korg; t=1738765139;
+	bh=IiAcCYpl8MiGEiZylaRPjdLwyCGNZm7dWbfO5ZlK794=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3jKbrmCRUl+zPediDRMEHSH+Bs7ewIdY0SJ5mdKGUJqfiGxFfwI3hBok2EVcvjBY
-	 KTmNUoef/gT1Af31E9CrTUIgJmswKgoQTOV4y91qE0+Rt9pX3Eu5Ho9aUnI/mPJ4zt
-	 UdQFWUCkECpALEZL8QawoNOJFjI0h47TOIB0HW4I=
+	b=jKZka/okROM+21oQtgytdTBRXFZyhhuWVLSx6adylx3qfyJPwrG3Q8eXd84FN60mf
+	 d2imALwxLRf+XSBhJWIIxs2FCt84Mt1tITwr1+wR5gVjAiBuIpv9N/BT6w5Sh2sN2B
+	 20gGE04eByXj1asRqJ76eknph57ptwWsQpEb0K5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/393] nvme: Add error check for xa_store in nvme_get_effects_log
+Subject: [PATCH 6.12 174/590] wifi: mt76: mt7915: Fix an error handling path in mt7915_add_interface()
 Date: Wed,  5 Feb 2025 14:38:49 +0100
-Message-ID: <20250205134420.689681767@linuxfoundation.org>
+Message-ID: <20250205134501.938814228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
+[ Upstream commit 126a516fe30639708e759678bcb10178938cc718 ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index csi is already used. This fix adds an
-error check of the return value of xa_store() in nvme_get_effects_log().
+If mt76_wcid_alloc() fails, the "mt76.mutex" mutex needs to be released as
+done in the other error handling paths of mt7915_add_interface().
 
-Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: f3049b88b2b3 ("wifi: mt76: mt7915: allocate vif wcid in the same range as stations")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/b9d8fbfc19360bfe60b9cea1cb0f735ab3b4bc26.1727639596.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 4aad16390d479..37485b8cc1281 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2853,7 +2853,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
- static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 				struct nvme_effects_log **log)
- {
--	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
-+	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
- 	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index b7884772e2f40..8c0d63cebf3e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -246,8 +246,10 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+ 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
  
- 	if (cel)
-@@ -2870,7 +2870,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 		return ret;
- 	}
- 
--	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(cel);
-+		return xa_err(old);
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
+-	if (idx < 0)
+-		return -ENOSPC;
++	if (idx < 0) {
++		ret = -ENOSPC;
++		goto out;
 +	}
- out:
- 	*log = cel;
- 	return 0;
+ 
+ 	INIT_LIST_HEAD(&mvif->sta.rc_list);
+ 	INIT_LIST_HEAD(&mvif->sta.wcid.poll_list);
 -- 
 2.39.5
 
