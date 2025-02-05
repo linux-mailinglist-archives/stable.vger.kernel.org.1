@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3820A2921C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45607A290A6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9068D3ACAC7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BDBA1695D1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D771FCD1F;
-	Wed,  5 Feb 2025 14:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCC616DC3C;
+	Wed,  5 Feb 2025 14:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSxb+bEA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyHTggla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149A518C039;
-	Wed,  5 Feb 2025 14:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD01155A30;
+	Wed,  5 Feb 2025 14:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766862; cv=none; b=Zs3gP4oMHbnx5KB2t3Qee6z+NVamL87ORBZrmVES4wmVsLncUONfBVGOW1X5CBcfl664e8xrIcHnf2MNPJ4UEDfSw9Goxf70tzb1kbV3UW8WbzEov+vFPEaQcLZr3o62Ihs5x4kOK2JfrtY7ZgB7ArQue1W/Xuiaph7zZ/QPmec=
+	t=1738766298; cv=none; b=RmSbif5oc+ESdHHfT598OSIkiLBKBuoDAOdezyXHlnfefnTOk96y7g/x+AiRMD0rTiy0vip62neakXbZ38aop1iYXIq5vSpiyxu84nbr8McXK2X3Zk5Ga8bTJlp2A0s0+fwcMal/Uz6EUrDOlFquBFniyifnI/yuWzkj1Fm/6aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766862; c=relaxed/simple;
-	bh=yfbAVcsjPS/rvApQDjR5AnJNHzE8F2P5PZniOaMcWhU=;
+	s=arc-20240116; t=1738766298; c=relaxed/simple;
+	bh=H9PAuBew03ZFpkPzI88ddpMWCqHPMsLuGt2sCXgJxB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nak5xURgrlYm8+s9mGRBRbh8qr90oZhVqaRm6rBU0WlhTg4+zUVnacO8JvnhOHr99lys2yb80Sq914NSIw6q5EEIj2ltyLmQWfqsTqTv7mgR0F6WG8vk/X1YHznv4+JUsA9s3Th+tv7ZYs0O8s1Xr76/zTXziyVZR5Wm/hIljs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSxb+bEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC93C4CED1;
-	Wed,  5 Feb 2025 14:47:41 +0000 (UTC)
+	 MIME-Version; b=pJWSJpBMGgGxF/YOUYzL6G+lAYXyD3H2IakJhK2/DA1U1AgEWLY3cwnhIQZhC4lNI63OX+HjDbEqbtCSBzYvGDCM17aChwllyR8/UMfvO5LF8QKPuCh8O4Lb+Q6XxpHWc+5zgsbJN4y62LHv3KVka5pcnUbbmnUbbyRQoLPNLZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyHTggla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59ECEC4CED6;
+	Wed,  5 Feb 2025 14:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766861;
-	bh=yfbAVcsjPS/rvApQDjR5AnJNHzE8F2P5PZniOaMcWhU=;
+	s=korg; t=1738766295;
+	bh=H9PAuBew03ZFpkPzI88ddpMWCqHPMsLuGt2sCXgJxB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSxb+bEAlREOD9oU8P50y4bwpmaoQ/WNilL+K0nsz7C0FY9qfa7vusx2ihBX7OhoK
-	 2/DH1Uh+shRHlh9KCFZcS5HMp3RLhd1kCg46vc/+e1yeCSTb68fOXG6PS2U1PFiOzI
-	 8DIsivxWL+nCJpaOXoJKsgfOKdFlSsrck1WjPPq0=
+	b=VyHTgglalgxgzy4I4Ub2M0SueomWqdNUS+b6mNLUx5FQjLEpkYb32Di8EoWbGZQN5
+	 v/MRzUaU99kM+84HB9yuzXul7eKnZ4fYRhFPHqM6w7GCAF4RHgi6CF7jb/ApBjOGeb
+	 yCykNIB2v5Gq/VtU4er6cXUF02rFOd30uVuBuXEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Chourasia <vishalc@linux.ibm.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 321/623] tools: Sync if_xdp.h uapi tooling header
+Subject: [PATCH 6.12 308/590] arm64: dts: mediatek: mt8516: add i2c clock-div property
 Date: Wed,  5 Feb 2025 14:41:03 +0100
-Message-ID: <20250205134508.501601429@linuxfoundation.org>
+Message-ID: <20250205134507.060324730@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Chourasia <vishalc@linux.ibm.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 01f3ce5328c405179b2c69ea047c423dad2bfa6d ]
+[ Upstream commit eb72341fd92b7af510d236e5a8554d855ed38d3c ]
 
-Sync if_xdp.h uapi header to remove following warning:
+Move the clock-div property from the pumpkin board dtsi to the SoC's
+since it belongs to the SoC itself and is required on other devices.
 
-  Warning: Kernel ABI header at 'tools/include/uapi/linux/if_xdp.h'
-  differs from latest version at 'include/uapi/linux/if_xdp.h'
-
-Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250115032248.125742-1-yoong.siang.song@intel.com
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-4-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/uapi/linux/if_xdp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi         | 3 +++
+ arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi | 2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/include/uapi/linux/if_xdp.h b/tools/include/uapi/linux/if_xdp.h
-index 2f082b01ff228..42ec5ddaab8dc 100644
---- a/tools/include/uapi/linux/if_xdp.h
-+++ b/tools/include/uapi/linux/if_xdp.h
-@@ -117,12 +117,12 @@ struct xdp_options {
- 	((1ULL << XSK_UNALIGNED_BUF_OFFSET_SHIFT) - 1)
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index 098c32ebf6788..dd17d8a88c190 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -344,6 +344,7 @@
+ 			reg = <0 0x11009000 0 0x90>,
+ 			      <0 0x11000180 0 0x80>;
+ 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C0>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+@@ -358,6 +359,7 @@
+ 			reg = <0 0x1100a000 0 0x90>,
+ 			      <0 0x11000200 0 0x80>;
+ 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C1>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+@@ -372,6 +374,7 @@
+ 			reg = <0 0x1100b000 0 0x90>,
+ 			      <0 0x11000280 0 0x80>;
+ 			interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C2>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+diff --git a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
+index ec8dfb3d1c6d6..a356db5fcc5f3 100644
+--- a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
++++ b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
+@@ -47,7 +47,6 @@
+ };
  
- /* Request transmit timestamp. Upon completion, put it into tx_timestamp
-- * field of union xsk_tx_metadata.
-+ * field of struct xsk_tx_metadata.
-  */
- #define XDP_TXMD_FLAGS_TIMESTAMP		(1 << 0)
+ &i2c0 {
+-	clock-div = <2>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c0_pins_a>;
+ 	status = "okay";
+@@ -156,7 +155,6 @@
+ };
  
- /* Request transmit checksum offload. Checksum start position and offset
-- * are communicated via csum_start and csum_offset fields of union
-+ * are communicated via csum_start and csum_offset fields of struct
-  * xsk_tx_metadata.
-  */
- #define XDP_TXMD_FLAGS_CHECKSUM			(1 << 1)
+ &i2c2 {
+-	clock-div = <2>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c2_pins_a>;
+ 	status = "okay";
 -- 
 2.39.5
 
