@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-112382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B216A28C6E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE25A28D15
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86BC3A2718
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15CD01889C07
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F217B13D52B;
-	Wed,  5 Feb 2025 13:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B42914D2A2;
+	Wed,  5 Feb 2025 13:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tqt0BnRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2Mcms0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED3213AD22;
-	Wed,  5 Feb 2025 13:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B681519AA;
+	Wed,  5 Feb 2025 13:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763385; cv=none; b=IgGVcr/BC6bC2UpHwiGiMXN3lkZZEV9tQU7U38DHnDSTIpWU7bK70IYirA5HgFeNd7Rtsa9q/KHWgY8TBxcN5DXXyaIW5l5+8o3dxYiVlbqlBhLSn4QbyLqGbGAAjjG21qnlaJDBbzcxX754Ji/+3nbfrEItVwPVNHNzjzxWIJk=
+	t=1738763795; cv=none; b=Nr8bkGHGBaJsSAohFJKv09TSjIgKdTBiZSKWHRhiCc3pXLL/piyaxXDxFH1VhmtDEJZrp6mwgPiJYjrSjbjs2ZOgL1gYBU6rbdgqFSVANHxjsEBnfU9HZZ3zzfENNAWoBEWJsOwGNtPifnnb61ShxKUZmBMPJmklSjeEGF0zhJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763385; c=relaxed/simple;
-	bh=T2F25rtmkt0pJc9CzsMHyoiEXnvUx8dhrd4qDjF1Eto=;
+	s=arc-20240116; t=1738763795; c=relaxed/simple;
+	bh=haW5CrQlP4JOTW2d2kO3KeJH264mt95iSINQtYlWi3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1SCvIKllHfmR6ULTpwpPNGpixmr9j/pALaNoY9ZZYqYKB9pu4ZVD0kNoIAh2P1O/AGFOciZSgP5RjBCEYZ/goBSIYTumLqxXCWYlfIIuJuqN47HBc4oOgmk4K3pD7d47ro/oMnDx5MJHvXjPPmLruoL05GLvuPVnDuHmNCQwqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tqt0BnRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC1BC4CED1;
-	Wed,  5 Feb 2025 13:49:44 +0000 (UTC)
+	 MIME-Version; b=sSgBj28XKFzn00YSMxcD+aQZYqsdmvks1AbSYXD4yxDJ4isz5Y69Gv4knhQSnJ4PDWVbBKsJi+NcBpnx6yVSnordqKdBaauVa5RwisAbwBj4kATCgOVbyyuxw6ATabM5Ivq8g1zL20TuxOpTgH09yw6DRLNt5VCLNbORuuA8hVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2Mcms0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99226C4CED1;
+	Wed,  5 Feb 2025 13:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763385;
-	bh=T2F25rtmkt0pJc9CzsMHyoiEXnvUx8dhrd4qDjF1Eto=;
+	s=korg; t=1738763795;
+	bh=haW5CrQlP4JOTW2d2kO3KeJH264mt95iSINQtYlWi3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tqt0BnRDk4Ze8ODfC5eZWPDJqeFdmvQFcdrgUPCDmG//lkfARao4klrNDhVPYSI9E
-	 WRjg0NfPigmTylhtXElgqOFyE5mQccvlQJx6vW/jYJL9d7+lBgWc/+jgK7rFX6m1+u
-	 JeGYTiegWCPp8FFR6OGeiNdGprLHO59V/cxHZHQ0=
+	b=o2Mcms0gE/hhpMY3Jk1KokM+5r/AMJwmjte4aQLfQfEw7uqLNpeJQtKTHVNeRXlQb
+	 Xzf0ehyv2rQhxpm0mbACLZqW/YSW8NpTJsi8N5n9mFbVpW1+KK3JSAq9F0tRmX/8RS
+	 wkcLipsmZ/JKxARQv66gNsP0vnQDgipXoqArTRTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/590] afs: Fix directory format encoding struct
+Subject: [PATCH 6.13 019/623] block: fix queue freeze vs limits lock order in sysfs store methods
 Date: Wed,  5 Feb 2025 14:36:01 +0100
-Message-ID: <20250205134455.473930606@linuxfoundation.org>
+Message-ID: <20250205134456.963768722@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +67,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 07a10767853adcbdbf436dc91393b729b52c4e81 ]
+[ Upstream commit c99f66e4084a62a2cc401c4704a84328aeddc9ec ]
 
-The AFS directory format structure, union afs_xdr_dir_block::meta, has too
-many alloc counter slots declared and so pushes the hash table along and
-over the data.  This doesn't cause a problem at the moment because I'm
-currently ignoring the hash table and only using the correct number of
-alloc_ctrs in the code anyway.  In future, however, I should start using
-the hash table to try and speed up afs_lookup().
+queue_attr_store() always freezes a device queue before calling the
+attribute store operation. For attributes that control queue limits, the
+store operation will also lock the queue limits with a call to
+queue_limits_start_update(). However, some drivers (e.g. SCSI sd) may
+need to issue commands to a device to obtain limit values from the
+hardware with the queue limits locked. This creates a potential ABBA
+deadlock situation if a user attempts to modify a limit (thus freezing
+the device queue) while the device driver starts a revalidation of the
+device queue limits.
 
-Fix this by using the correct constant to declare the counter array.
+Avoid such deadlock by not freezing the queue before calling the
+->store_limit() method in struct queue_sysfs_entry and instead use the
+queue_limits_commit_update_frozen helper to freeze the queue after taking
+the limits lock.
 
-Fixes: 4ea219a839bf ("afs: Split the directory content defs into a header")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241216204124.3752367-14-dhowells@redhat.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This also removes taking the sysfs lock for the store_limit method as
+it doesn't protect anything here, but creates even more nesting.
+Hopefully it will go away from the actual sysfs methods entirely soon.
+
+(commit log adapted from a similar patch from  Damien Le Moal)
+
+Fixes: ff956a3be95b ("block: use queue_limits_commit_update in queue_discard_max_store")
+Fixes: 0327ca9d53bf ("block: use queue_limits_commit_update in queue_max_sectors_store")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250110054726.1499538-7-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/xdr_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-sysfs.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/fs/afs/xdr_fs.h b/fs/afs/xdr_fs.h
-index 8ca8681645077..cc5f143d21a34 100644
---- a/fs/afs/xdr_fs.h
-+++ b/fs/afs/xdr_fs.h
-@@ -88,7 +88,7 @@ union afs_xdr_dir_block {
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index d2aa2177e4ba5..e828be777206b 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -694,22 +694,24 @@ queue_attr_store(struct kobject *kobj, struct attribute *attr,
+ 	if (entry->load_module)
+ 		entry->load_module(disk, page, length);
  
- 	struct {
- 		struct afs_xdr_dir_hdr	hdr;
--		u8			alloc_ctrs[AFS_DIR_MAX_BLOCKS];
-+		u8			alloc_ctrs[AFS_DIR_BLOCKS_WITH_CTR];
- 		__be16			hashtable[AFS_DIR_HASHTBL_SIZE];
- 	} meta;
+-	mutex_lock(&q->sysfs_lock);
+-	blk_mq_freeze_queue(q);
+ 	if (entry->store_limit) {
+ 		struct queue_limits lim = queue_limits_start_update(q);
  
+ 		res = entry->store_limit(disk, page, length, &lim);
+ 		if (res < 0) {
+ 			queue_limits_cancel_update(q);
+-		} else {
+-			res = queue_limits_commit_update(q, &lim);
+-			if (!res)
+-				res = length;
++			return res;
+ 		}
+-	} else {
+-		res = entry->store(disk, page, length);
++
++		res = queue_limits_commit_update_frozen(q, &lim);
++		if (res)
++			return res;
++		return length;
+ 	}
++
++	mutex_lock(&q->sysfs_lock);
++	blk_mq_freeze_queue(q);
++	res = entry->store(disk, page, length);
+ 	blk_mq_unfreeze_queue(q);
+ 	mutex_unlock(&q->sysfs_lock);
+ 	return res;
 -- 
 2.39.5
 
