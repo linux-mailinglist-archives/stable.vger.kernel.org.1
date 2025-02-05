@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-112941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B49A28F18
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CA2A28F21
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A37A04D2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60E4E1637CE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A8414B080;
-	Wed,  5 Feb 2025 14:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1D91537AC;
+	Wed,  5 Feb 2025 14:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouDhQMWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDLXY/qC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048831519BE;
-	Wed,  5 Feb 2025 14:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B9F1519BE;
+	Wed,  5 Feb 2025 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765279; cv=none; b=OeXjuew9rYOnvBSQ2CH84ZLDZEzlo6WBRen2MPyexAMT7G/1VTTqfUCIdgJ/z5OvGrjd/0IJIl5zQOfwVQTPRGqQsmhr7tT5nkYfKfOGWdMjWvDEt56Et8i/SUxbRDycjKQlh5dQP1HDDzixJ4KYkNytmO4un74N112ENhAdBlQ=
+	t=1738765289; cv=none; b=px4HmmiXf7mPT7pMHd7h3AERL8BXMmlmLZyN/e0C6zcOfKIYDQ788Dy77XOaJ5aU2UmDNpadWH9VLxX4VbmuwVjSKzUK26mCVcU+kbEZss9iZYgTHqhIU0QBv379EkbqLLLrCrrGf9mHokmYy+IpgLjlsLbB3sZH40w6HOx6SS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765279; c=relaxed/simple;
-	bh=/zfueHGcZNzwx/29k/6kYWu1/4imQ6UfJScZOwyFW3c=;
+	s=arc-20240116; t=1738765289; c=relaxed/simple;
+	bh=GGLh/SXP7ZpxKP+b7uqdAe/M0zj1QVaFQxzkSJ/hop8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOIsz1OcwWx/4X6qAo2qF5/mmlEKp0cvemOhm2+2ra98A7WmQU6CyeVeridiKGzNvB3p7y9/vYULupLnMNLrF1fZA2wgroqTW4fkkzaHzgLhat47xcKiO8Z3v4VafmNUIoAwrryirM/UlK+yGtIaiOz+rC/f4invfODCE9VW3sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouDhQMWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66767C4CED1;
-	Wed,  5 Feb 2025 14:21:18 +0000 (UTC)
+	 MIME-Version; b=gi7AhjHA6+Oepy9DmETKSwloBToEk7V3rxIL45k1J50vdpSo5fJApPKUaAq8rguwJAJFZlm2M6+LFjvFcXirA7IP8c97YwaXI/Nz6+9LGHSlF56GIFRykYFQ9YbSCpwZkQ83LdA7ipc8mBpqTu6NPM1DqpI3+T/k3Qo01lytyfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDLXY/qC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F3FC4CED1;
+	Wed,  5 Feb 2025 14:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765278;
-	bh=/zfueHGcZNzwx/29k/6kYWu1/4imQ6UfJScZOwyFW3c=;
+	s=korg; t=1738765288;
+	bh=GGLh/SXP7ZpxKP+b7uqdAe/M0zj1QVaFQxzkSJ/hop8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouDhQMWQnxGXCeSutEZStmXGYN8i7Z3XTW7KJcbBoLn1fWfNixgtWK2EqqXLNMZyt
-	 EHUtOUaUw8Bqozrh1VOLeDiP8aw3I4fII3RDeJhuGJcRgzNkH7Orlr8JWOsl+u7cEh
-	 O93rl0Gt9Zxp5chzQeiVb8LF3qcx0jPgTpPuklDE=
+	b=sDLXY/qCEWW0HuM8xGEWUnrKMz5DgVG0Y51GjzMqJ54IQbWdEyZ1pyS4aNgpKwgg4
+	 JUxZCO5nHPQwQur1P28GKYY1z6eLkVNkme9ZSN9NYvplQ/snnFq65WrrZ0EKsWk12Y
+	 1UxMighFzKZKge8koDA0OFSrRwD39R0moW3VBVXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 162/623] wifi: mt76: mt7915: Fix mesh scan on MT7916 DBDC
-Date: Wed,  5 Feb 2025 14:38:24 +0100
-Message-ID: <20250205134502.431439178@linuxfoundation.org>
+Subject: [PATCH 6.13 163/623] wifi: iwlwifi: fw: read STEP table from correct UEFI var
+Date: Wed,  5 Feb 2025 14:38:25 +0100
+Message-ID: <20250205134502.469088526@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,44 +67,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f21b77cb556296116b1cce1d62295d13e35da574 ]
+[ Upstream commit 80c2b651fe7fc82e1d1b3e4f9651095896a095f0 ]
 
-commit c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop
-period") changes the behavior of mt7915_bss_info_changed() in mesh mode
-when enable_beacon becomes false: it calls mt7915_mcu_add_bss_info(...,
-false) and mt7915_mcu_add_sta(..., false) while the previous code
-didn't.  These sends mcu commands that apparently confuse the firmware.
+This variable exists for the "common" (WiFi/BT) GUID, not the
+WiFi-only GUID. Fix that by passing the GUID to the function.
+A short-cut for the wifi-only version remains so not all code
+must be updated.
 
-This breaks scanning while in mesh mode on AsiaRF MT7916 DBDC-based cards:
-scanning works but no mesh frames get sent afterwards and the firmware
-seems to be hosed.  It breaks on MT7916 DBDC but not on MT7915 DBDC.
+However, rename the GUID defines to be clearer.
 
-Fixes: c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop period")
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://patch.msgid.link/20240927085350.4594-1-nicolas.cavallari@green-communications.fr
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 09b4c35d73a5 ("wifi: iwlwifi: mvm: Support STEP equalizer settings from BIOS.")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241227095718.89a5ad921b6d.Idae95a70ff69d2ba1b610e8eced826961ce7de98@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 44 +++++++++++++-------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index c6f498fc81ffd..8183708a9b355 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -619,8 +619,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC)
- 		set_bss_info = vif->cfg.assoc;
- 	if (changed & BSS_CHANGED_BEACON_ENABLED &&
-+	    info->enable_beacon &&
- 	    vif->type != NL80211_IFTYPE_AP)
--		set_bss_info = set_sta = info->enable_beacon;
-+		set_bss_info = set_sta = 1;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index 091fb6fd7c787..834f7c9bb9e92 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -13,9 +13,12 @@
+ #include <linux/efi.h>
+ #include "fw/runtime.h"
  
- 	if (set_bss_info == 1)
- 		mt7915_mcu_add_bss_info(phy, vif, true);
+-#define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
+-				  0xb2, 0xec, 0xf5, 0xa3,	\
+-				  0x59, 0x4f, 0x4a, 0xea)
++#define IWL_EFI_WIFI_GUID	EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
++					 0xb2, 0xec, 0xf5, 0xa3,	\
++					 0x59, 0x4f, 0x4a, 0xea)
++#define IWL_EFI_WIFI_BT_GUID	EFI_GUID(0xe65d8884, 0xd4af, 0x4b20,	\
++					 0x8d, 0x03, 0x77, 0x2e,	\
++					 0xcc, 0x3d, 0xa5, 0x31)
+ 
+ struct iwl_uefi_pnvm_mem_desc {
+ 	__le32 addr;
+@@ -61,7 +64,7 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
+ 
+ 	*len = 0;
+ 
+-	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_VAR_GUID,
++	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_WIFI_GUID,
+ 				     &package_size);
+ 	if (IS_ERR(data)) {
+ 		IWL_DEBUG_FW(trans,
+@@ -76,18 +79,18 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
+ 	return data;
+ }
+ 
+-static
+-void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
+-				     efi_char16_t *uefi_var_name,
+-				     char *var_name,
+-				     unsigned int expected_size,
+-				     unsigned long *size)
++static void *
++iwl_uefi_get_verified_variable_guid(struct iwl_trans *trans,
++				    efi_guid_t *guid,
++				    efi_char16_t *uefi_var_name,
++				    char *var_name,
++				    unsigned int expected_size,
++				    unsigned long *size)
+ {
+ 	void *var;
+ 	unsigned long var_size;
+ 
+-	var = iwl_uefi_get_variable(uefi_var_name, &IWL_EFI_VAR_GUID,
+-				    &var_size);
++	var = iwl_uefi_get_variable(uefi_var_name, guid, &var_size);
+ 
+ 	if (IS_ERR(var)) {
+ 		IWL_DEBUG_RADIO(trans,
+@@ -112,6 +115,18 @@ void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
+ 	return var;
+ }
+ 
++static void *
++iwl_uefi_get_verified_variable(struct iwl_trans *trans,
++			       efi_char16_t *uefi_var_name,
++			       char *var_name,
++			       unsigned int expected_size,
++			       unsigned long *size)
++{
++	return iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_GUID,
++						   uefi_var_name, var_name,
++						   expected_size, size);
++}
++
+ int iwl_uefi_handle_tlv_mem_desc(struct iwl_trans *trans, const u8 *data,
+ 				 u32 tlv_len, struct iwl_pnvm_image *pnvm_data)
+ {
+@@ -311,8 +326,9 @@ void iwl_uefi_get_step_table(struct iwl_trans *trans)
+ 	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+ 		return;
+ 
+-	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_STEP_NAME,
+-					      "STEP", sizeof(*data), NULL);
++	data = iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_BT_GUID,
++						   IWL_UEFI_STEP_NAME,
++						   "STEP", sizeof(*data), NULL);
+ 	if (IS_ERR(data))
+ 		return;
+ 
 -- 
 2.39.5
 
