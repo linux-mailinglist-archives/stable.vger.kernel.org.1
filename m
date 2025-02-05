@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF69A28DE1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B082FA28EAC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4775B167FEC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BB037A4526
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABA5155A21;
-	Wed,  5 Feb 2025 14:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713BA14D2A2;
+	Wed,  5 Feb 2025 14:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMgbdaVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXPgqDQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C041509BD;
-	Wed,  5 Feb 2025 14:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAB84A28;
+	Wed,  5 Feb 2025 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764366; cv=none; b=WZpTYp3amBvjgNJoR9t5/fSKnrc117JcfhkWQEFkRq1bdYkjCtp++rg4xiXNdmlb7baVJmSZ7CWazJb5tQxcsHySWKIbOn79mT/BDMNUq+8kDFEjF7sytrv3g4BVKJZ+FiOIx2lphsTNN/JxZYVJsaiscY64CiHGhKZMnBEP03Q=
+	t=1738764956; cv=none; b=D4tNsI862BTkdw56XoEkLgL4NSHvXqE2eJZ/IbegPcsIwQXyWRcOwnc3i2A4mUtN/+2e64YfFAxGNXSi6gLsjp7BI9p/QWTzPksKMwE4lgc4chkbvfW+e83FpAqUTGo5DNpYL91aJNPx0aalNsY8MZkquI9zVH6LoZ+EeW/JfXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764366; c=relaxed/simple;
-	bh=r8Ln1BYLqBGPRaCfdZVHpKBnUXtDzYRYMAwASs1z6PU=;
+	s=arc-20240116; t=1738764956; c=relaxed/simple;
+	bh=Qrf7GcsoCH0KiFZWxdf04mkMg6NTmITpfcUdB2ToeO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWTiaaLIrdwaPJyCQ4uK3INb9yu6vLx38755dS4IgNCjm/hWVV/0FYTEpszo2KTku0sLZ83bdoebZSAhI3UMaCxEZQDcA3IDFZiIn0a95UQUsz1H3TYyFRVa90+PsDYr0cp+T+x1KI+vHDCspBgLD/IPmuN6BU/gUqNlSCQfngg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMgbdaVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C932AC4CED1;
-	Wed,  5 Feb 2025 14:06:05 +0000 (UTC)
+	 MIME-Version; b=DXjOmFkDx8kpjSYzFvnm2yiovpmZ0np2HIuWEfBRj04pah4SWWHIktAxFrH+gLHm4FhuAL3AP6GQH30JpWUkvLwnRE2gblZozIVA+ESI7p5HVUYKAVnZ8o/9NEbZuv6RReDHBQ4mJ1FqMXHPXK2LYepGQtXhJcGJc/x8nMZKV4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXPgqDQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224C0C4CED1;
+	Wed,  5 Feb 2025 14:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764366;
-	bh=r8Ln1BYLqBGPRaCfdZVHpKBnUXtDzYRYMAwASs1z6PU=;
+	s=korg; t=1738764955;
+	bh=Qrf7GcsoCH0KiFZWxdf04mkMg6NTmITpfcUdB2ToeO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMgbdaVEUvyXebHclCyYVwRAglxWgY2zjUNTYlLGK5SFzEYBKJMWjfKBSQ2nWPeK8
-	 HMtNE7oV0pmeOrMIUbrmWs3gYE1TBQAUuXlRRLKAVvsrznmBBq6bgjTM2oZBRXVaaB
-	 BTXoPAYqeisjFROsc+NkJvD6J+6YKHddY1QuM7nQ=
+	b=nXPgqDQ5UTqiLpbjEl+Ufx3StVywBoMogmUKojHGoRheevYEV1UfW6cPAD+Dx8eiL
+	 QkCLWXZ4US8Sv742BVFSeRigkiimzLvTfVXgX8qKWcTV6Zg+I2xXhNNNtsyZf48kHB
+	 8UNXcYvt6ISp3UJNaqwt9cXaF2hYtbGEKYuGbikE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Marek Vasut <marex@denx.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/590] cpufreq: qcom: Implement clk_ops::determine_rate() for qcom_cpufreq* clocks
+Subject: [PATCH 6.13 130/623] clk: imx8mp: Fix clkout1/2 support
 Date: Wed,  5 Feb 2025 14:37:52 +0100
-Message-ID: <20250205134459.735082497@linuxfoundation.org>
+Message-ID: <20250205134501.202508746@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit a9ba290d0b829012574b6821ba08815046e60c94 ]
+[ Upstream commit a9b7c84d22fb1687d63ca2a386773015cf59436b ]
 
-determine_rate() callback is used by the clk_set_rate() API to get the
-closest rate of the target rate supported by the clock. If this callback
-is not implemented (nor round_rate() callback), then the API will assume
-that the clock cannot set the requested rate. And since there is no parent,
-it will return -EINVAL.
+The CLKOUTn may be fed from PLL1/2/3, but the PLL1/2/3 has to be enabled
+first by setting PLL_CLKE bit 11 in CCM_ANALOG_SYS_PLLn_GEN_CTRL register.
+The CCM_ANALOG_SYS_PLLn_GEN_CTRL bit 11 is modeled by plln_out clock. Fix
+the clock tree and place the clkout1/2 under plln_sel instead of plain plln
+to let the clock subsystem correctly control the bit 11 and enable the PLL
+in case the CLKOUTn is supplied by PLL1/2/3.
 
-This is not an issue right now as clk_set_rate() mistakenly compares the
-target rate with cached rate and bails out early. But once that is fixed
-to compare the target rate with the actual rate of the clock (returned by
-recalc_rate()), then clk_set_rate() for this clock will start to fail as
-below:
-
-cpu cpu0: _opp_config_clk_single: failed to set clock rate: -22
-
-So implement the determine_rate() callback that just returns the actual
-rate at which the clock is passed to the CPUs in a domain.
-
-Fixes: 4370232c727b ("cpufreq: qcom-hw: Add CPU clock provider support")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Suggested-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 43896f56b59e ("clk: imx8mp: add clkout1/2 support")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20241112013718.333771-1-marex@denx.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/qcom-cpufreq-hw.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/clk/imx/clk-imx8mp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
-index 2d3f00d410207..e739978063839 100644
---- a/drivers/cpufreq/qcom-cpufreq-hw.c
-+++ b/drivers/cpufreq/qcom-cpufreq-hw.c
-@@ -626,8 +626,21 @@ static unsigned long qcom_cpufreq_hw_recalc_rate(struct clk_hw *hw, unsigned lon
- 	return __qcom_cpufreq_hw_get(data->policy) * HZ_PER_KHZ;
- }
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 516dbd170c8a3..fb18f507f1213 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -399,8 +399,9 @@ static const char * const imx8mp_dram_core_sels[] = {"dram_pll_out", "dram_alt_r
  
-+/*
-+ * Since we cannot determine the closest rate of the target rate, let's just
-+ * return the actual rate at which the clock is running at. This is needed to
-+ * make clk_set_rate() API work properly.
-+ */
-+static int qcom_cpufreq_hw_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
-+{
-+	req->rate = qcom_cpufreq_hw_recalc_rate(hw, 0);
-+
-+	return 0;
-+}
-+
- static const struct clk_ops qcom_cpufreq_hw_clk_ops = {
- 	.recalc_rate = qcom_cpufreq_hw_recalc_rate,
-+	.determine_rate = qcom_cpufreq_hw_determine_rate,
- };
+ static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_out", "video_pll1_out",
+ 						  "dummy", "dummy", "gpu_pll_out", "vpu_pll_out",
+-						  "arm_pll_out", "sys_pll1", "sys_pll2", "sys_pll3",
+-						  "dummy", "dummy", "osc_24m", "dummy", "osc_32k"};
++						  "arm_pll_out", "sys_pll1_out", "sys_pll2_out",
++						  "sys_pll3_out", "dummy", "dummy", "osc_24m",
++						  "dummy", "osc_32k"};
  
- static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
+ static struct clk_hw **hws;
+ static struct clk_hw_onecell_data *clk_hw_data;
 -- 
 2.39.5
 
