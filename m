@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EE8A2937C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6357AA28F36
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9B5188E1E3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E4D3A228C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F38192D86;
-	Wed,  5 Feb 2025 15:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E950814F136;
+	Wed,  5 Feb 2025 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/HoHg+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9ksUhhs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF02194137;
-	Wed,  5 Feb 2025 15:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ED01519BE;
+	Wed,  5 Feb 2025 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767603; cv=none; b=dA3NkWjW0g7M75tajQ/nVWUf9ALSCpxGMnwDcy5/s/sdsZWAEKCoNlcuolvaG/nit6OU9nDN2g8QQc5CwHuSze6FQCP86V+T7YAt0Q5ef8IKeJTwfrEugTPG10vK4QBHgcNfdF9b93pjWawIkC68D3E08XmBQz+VD+cSOhQcZu8=
+	t=1738765285; cv=none; b=oCODzmQlrPICf5vbXAL4NQKkfPNTHtgJdKRbnU6H9O+YOa59UOWqCF2+hE093TtJnKAip+zETxJ6vOqUMe2Y0Pvs+b9SnFXHwSphAH4wkRKukAgS+9OIgbfaYPXbsIH/2w9TMbfJA/TY5Q+ZvFE6lm/aM3Wq991dftfDUOKXNts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767603; c=relaxed/simple;
-	bh=0UcKgr6DlLY11l1p6y4tOY29D1hNhYPpMJh38Q61EQo=;
+	s=arc-20240116; t=1738765285; c=relaxed/simple;
+	bh=fANy96USdNhBoxC0JaaHN1A5j6+R2Nc7BsCKA8uV4f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1TLUqA0rVN2ZcKO9olZp+Zkqza/V6VD2FrQN5ZbRBqoWPa9zxbi+x54tb4beH8HM6s6xbg/Cjy6S+WgccfZb8Pw6YFOSy2Shx0NjC0WSpgWmLPbNuNXt0hFfQFB8VFcIM6rcDpiaYg1i4B9/2rJE6G7muiBsNYHW5iy2inGyxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/HoHg+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F1AC4CED6;
-	Wed,  5 Feb 2025 15:00:02 +0000 (UTC)
+	 MIME-Version; b=NmpLHUCGJNtbFN4ckm95/1D3sO1cBgNrRPh4SSRoj/9TneiOnOHl4ha5ZnIYP87QvVQSpiYAxJ8CJwUNYuYzvI3oRQcFB1KgO3H83b5tq3yOH5c45xzWHjHhoJyE+GhXcuz1W6T3uz+I0sff2ujXJmiAm88XYj6nV/ugIXyfKPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9ksUhhs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1314BC4CED1;
+	Wed,  5 Feb 2025 14:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767603;
-	bh=0UcKgr6DlLY11l1p6y4tOY29D1hNhYPpMJh38Q61EQo=;
+	s=korg; t=1738765285;
+	bh=fANy96USdNhBoxC0JaaHN1A5j6+R2Nc7BsCKA8uV4f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/HoHg+zotclTztMuGbbDk155Dhq/zfAbPgSMjaZfui+VhE5UPmWAwbCytpicRDp3
-	 V0cbqwaqFMTLFsShcgX77N9iTZ4wU4YjhAHOjcVIcA+GEdaZTjCrdohqTrnUu+SkEb
-	 kFgdbqfYiztple0wrseRzA+ZO8xvPXssi3onQ60Y=
+	b=b9ksUhhsrtnbXYlBNVrm+Mzk95aw/HlpN8hHpq6vbHUnsqNx6tLaJjPilJLZfkcFO
+	 O2q1y7/JZoJxev3e9RxV0NhjNsqmXtW2AayWoWRTTA2DsqVKnqIBXNLZpUdK2DmGty
+	 e+Lpb+5XoMTO7a5PB/lkywUhUZUZMG+Oj313EF6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mihai Sain <mihai.sain@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 427/623] arm64: dts: qcom: x1e80100-romulus: Update firmware nodes
+Subject: [PATCH 6.6 250/393] ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node
 Date: Wed,  5 Feb 2025 14:42:49 +0100
-Message-ID: <20250205134512.558018216@linuxfoundation.org>
+Message-ID: <20250205134429.872567153@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-[ Upstream commit 983833061d9599a534e44fd6d335080d1a0ba985 ]
+[ Upstream commit 4d9e5965df04c0adf260c3009c55d5fe240f7286 ]
 
-Other x1e machines use _dtbs.elf for these firmwares, which matches the
-filenames shipped by Windows.
+Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
+This property will stop the LDO regulator from switching to 1.8V when the
+MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
+SDMMC interface pins in GPIO mode (PA0 - PA13).
 
-Fixes: 09d77be56093 ("arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250108124500.44011-1-joel@jms.id.au
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+On this board, PA10 is used as GPIO to enable the power switch controlling
+USB Vbus for the USB Host. The change is needed to fix the PA10 voltage
+level to 3.3V instead of 1.8V.
+
+Fixes: 5d4c3cfb63fe ("ARM: dts: at91: sama5d27_wlsom1: add SAMA5D27 wlsom1 and wlsom1-ek")
+Suggested-by: Mihai Sain <mihai.sain@microchip.com>
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://lore.kernel.org/r/20241119160107.598411-3-cristian.birsan@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-index 6835fdeef3aec..8761874dc2f06 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-@@ -706,14 +706,14 @@
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+index 15239834d886e..35a933eec5738 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+@@ -197,6 +197,7 @@
  
- &remoteproc_adsp {
- 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qcadsp8380.mbn",
--			"qcom/x1e80100/microsoft/Romulus/adsp_dtb.mbn";
-+			"qcom/x1e80100/microsoft/Romulus/adsp_dtbs.elf";
- 
+ &sdmmc0 {
+ 	bus-width = <4>;
++	no-1-8-v;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
  	status = "okay";
- };
- 
- &remoteproc_cdsp {
- 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qccdsp8380.mbn",
--			"qcom/x1e80100/microsoft/Romulus/cdsp_dtb.mbn";
-+			"qcom/x1e80100/microsoft/Romulus/cdsp_dtbs.elf";
- 
- 	status = "okay";
- };
 -- 
 2.39.5
 
