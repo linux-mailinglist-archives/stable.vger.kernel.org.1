@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-112459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6E6A28CCB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565F6A29036
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A587E3A8F14
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C807F1884889
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CAE152E12;
-	Wed,  5 Feb 2025 13:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03511155A30;
+	Wed,  5 Feb 2025 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBZoDFGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmo3qxEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0714F9FD;
-	Wed,  5 Feb 2025 13:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B1C7E792;
+	Wed,  5 Feb 2025 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763640; cv=none; b=ffO3QkIJNbcFz35ULIfzd0AIXr8EpQe6zhfQlpqj0j/xDTPpXLnoGD1DODoztUOBvGgtoCOMl2AHIDC31LlS7kPWpX96m6zJhjECz9FIwLUP/p9Mvcit2R4/a/+NF6Gw0PiH0Rn1VTWXH12z9dDtmEbfXFnq1sfI+a96eghWDBQ=
+	t=1738766007; cv=none; b=FFlioillIGXvvCKATgynvdSp1zJpgcCFazrfyMAXUKhl6rjlhD/Q7kYyPeJCM/gliC6ECMLKWIE5nZ1x2CFLzUBBZQpG+0ugmytv8jFFJcm50KFMihhHH3ebi+FCjEzrYZSjA/bRt3hsDT741W5Xu67jNMz3YRBYeme0nVFCfNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763640; c=relaxed/simple;
-	bh=MS5PohMXpk5gN+YXnC+fyTl3ckRN+1BYAEl2WR8FqYQ=;
+	s=arc-20240116; t=1738766007; c=relaxed/simple;
+	bh=JvUBMSn2o0SBm+nqXyNHksTcOVcnUnxCx0t1Kl/n7UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5y16v0QEFdwDiNSRtTWUBzAxQuyZRQhK4kM2S7SrZa5IPK0LtMhfLaVt3TmmbeRIH000ZxyI577ZIR1L0VSzWpmofYQzfv5SJviISlpfXGpngBohYm4RF+jLYiHQ6a66/anMoogdI5ldEXcn4YT8x8nLxMwy6QkYz0vhGtTLqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBZoDFGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1B9C4CED1;
-	Wed,  5 Feb 2025 13:53:58 +0000 (UTC)
+	 MIME-Version; b=rfXTmz/MSqFt32GsWirccveI0AE51mY275ukWbZKxwk9bui01b8Q1eg4KFKYOr42DXmJzgfUkE8Pi5kvwrXhkURt7S4RVxPou4wegrUSZ2fQ6XYtglgGjP5ejtYPdfUhuBDjIukHo0GASK8P/1R45LmN5Fyv9RvQGTS9iRYvJYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmo3qxEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF56C4CED1;
+	Wed,  5 Feb 2025 14:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763639;
-	bh=MS5PohMXpk5gN+YXnC+fyTl3ckRN+1BYAEl2WR8FqYQ=;
+	s=korg; t=1738766007;
+	bh=JvUBMSn2o0SBm+nqXyNHksTcOVcnUnxCx0t1Kl/n7UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBZoDFGYx0dBW5hNGoNGf1gWLG6QsIf7vox/V+l33aGuuhKDBRueKnXkUSWxmvIvw
-	 2kjXdrZTo222gWjUc4eSHyOsRtp9UfGVSKNiNb3tgazzMqdtCfr7005HsW1Ife/tf5
-	 VERDXAtwVyi04kvhGh8SzaRG6f+PmH2wNp93ZbsU=
+	b=kmo3qxEmja17hgpTDxn6na9SqmvZxxLQgWZXpj41hAElNfx+c76phE1rFGrzYTNc6
+	 49axYvfiYn9lSqXkZ2wvNRuI6tQi4UZ0+phYEULBtJXF9eIPQcF1Ok2iKiaOjVcVZ3
+	 4kPhX9vsnksY8I2n2mTA+W/evCzob1OprOf2xHyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank Oltmanns <frank@oltmanns.dev>,
-	Stuart Gathman <stuart@gathman.org>
-Subject: [PATCH 6.6 092/393] clk: sunxi-ng: a64: stop force-selecting PLL-MIPI as TCON0 parent
+	Ba Jing <bajing@cmss.chinamobile.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 256/590] ktest.pl: Remove unused declarations in run_bisect_test function
 Date: Wed,  5 Feb 2025 14:40:11 +0100
-Message-ID: <20250205134423.814832556@linuxfoundation.org>
+Message-ID: <20250205134505.073660176@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Ba Jing <bajing@cmss.chinamobile.com>
 
-[ Upstream commit 383ca7bee8a93be9ff5a072936981c2710d2856b ]
+[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
 
-Stop force-selecting PLL-MIPI as TCON0 parent, since it breaks video
-output on Pinebook that uses RGB to eDP bridge.
+Since $output and $ret are not used in the subsequent code, the declarations
+should be removed.
 
-Partially revert commit ca1170b69968 ("clk: sunxi-ng: a64: force
-select PLL_MIPI in TCON0 mux"), while still leaving
-CLK_SET_RATE_NO_REPARENT flag set, since we do not want the clock to
-be reparented.
-
-The issue is that apparently different TCON0 outputs require a different
-clock, or the mux might be selecting the output type.
-
-I did an experiment: I manually configured PLL_MIPI and PLL_VIDEO0_2X
-to the same clock rate and flipped the switch with devmem. Experiment
-clearly showed that whenever PLL_MIPI is selected as TCON0 clock parent,
-the video output stops working.
-
-Therefore, TCON0 clock parent corresponding to the output type must be
-assigned in the device tree.
-
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
-Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Link: https://patch.msgid.link/20250104074035.1611136-5-anarsoul@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
+Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
+Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-index 6a4b2b9ef30a8..aee1a2f14c951 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-@@ -533,11 +533,11 @@ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
- 				 CLK_SET_RATE_PARENT);
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index dacad94e2be42..ecb22626805d5 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2960,8 +2960,6 @@ sub run_bisect_test {
  
- /*
-- * DSI output seems to work only when PLL_MIPI selected. Set it and prevent
-- * the mux from reparenting.
-+ * Experiments showed that RGB output requires pll-video0-2x, while DSI
-+ * requires pll-mipi. It will not work with incorrect clock, the screen will
-+ * be blank.
-+ * sun50i-a64.dtsi assigns pll-mipi as TCON0 parent by default
-  */
--#define SUN50I_A64_TCON0_CLK_REG	0x118
--
- static const char * const tcon0_parents[] = { "pll-mipi", "pll-video0-2x" };
- static const u8 tcon0_table[] = { 0, 2, };
- static SUNXI_CCU_MUX_TABLE_WITH_GATE_CLOSEST(tcon0_clk, "tcon0", tcon0_parents,
-@@ -957,11 +957,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
+     my $failed = 0;
+     my $result;
+-    my $output;
+-    my $ret;
  
- 	writel(0x515, reg + SUN50I_A64_PLL_MIPI_REG);
+     $in_bisect = 1;
  
--	/* Set PLL MIPI as parent for TCON0 */
--	val = readl(reg + SUN50I_A64_TCON0_CLK_REG);
--	val &= ~GENMASK(26, 24);
--	writel(val | (0 << 24), reg + SUN50I_A64_TCON0_CLK_REG);
--
- 	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_a64_ccu_desc);
- 	if (ret)
- 		return ret;
 -- 
 2.39.5
 
