@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EE2A2939B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE26A28F67
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE2B3AE7AE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1A718850FD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52EF1519A9;
-	Wed,  5 Feb 2025 15:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A621553AB;
+	Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJOcghvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndyWfExO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699E31519BF;
-	Wed,  5 Feb 2025 15:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B411459F6;
+	Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767884; cv=none; b=S10vUl1hVIRqxZgbtiY3j9eRNSEOc6y/63Rjyj+nszZ/y+VAPFV1Hbiu1XPOrPs/4Sdi1jjnZzBQYPZAw38pbqo4MvzLGdq22b4dZqhY0iohxLsSA5Fknu5i320ilfo2QfFm9t707Yu+U4iSpiYerJUoM8yVNTpcSp/TWdZGy7w=
+	t=1738765435; cv=none; b=emOuarKHnYgQ/isaUnkASPRwNFw8pDQrskXt4UhiL3J+IVc4zwgkaa9J872VVT2Uqi3ADFMBNX0XfdGg8NEBrkbT9O30NUCnu3oBTxnNtHw4N2SqvjUZlVMcNPtIUVWwMMGnzebHFY2R3o2ZqlXFWV8l+eq1/Tixi/ldehvjcus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767884; c=relaxed/simple;
-	bh=YAO0DKD9rG4F1ekmicqgPsgYxHDyv1M2bAgLKjsqVLw=;
+	s=arc-20240116; t=1738765435; c=relaxed/simple;
+	bh=udzjODBlDu6sALCW1t1rG5KuCZZ/+jDG6ioQsEmAwPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxI+Ts8n4JZkg9qyejgfZq2R8bNzddAZCFOv0tObmhDXz7h1SU8tVw/q4PopfTmqrvRWJDU56VmBJTCd4PwertBfQ5wpdMvXpY0C/CgVWcG+L9zMJlAIz+EV/8BG6xJT6uPjYaeBR8CeepPNc1Su1RN9FOAfLuSd3Mh4ZSQ2JTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJOcghvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F1DC4CED1;
-	Wed,  5 Feb 2025 15:04:43 +0000 (UTC)
+	 MIME-Version; b=CTiG1r6ELUtwJjLRwnNUL4s7UXEdR0oqPMv2VpLpFLkmTflncuYjfPaQzrDAWOZa0GNePKsguNXYnmKXLHYZHQwjwi7+ltDFQOS6+C70RW/Q6/Aja37JL2IWy+675xGYbjs/bvEmxddzLq1e1eZnwy54FnKkjwrwo7Ohsk60vmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndyWfExO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750ADC4CED1;
+	Wed,  5 Feb 2025 14:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767884;
-	bh=YAO0DKD9rG4F1ekmicqgPsgYxHDyv1M2bAgLKjsqVLw=;
+	s=korg; t=1738765435;
+	bh=udzjODBlDu6sALCW1t1rG5KuCZZ/+jDG6ioQsEmAwPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJOcghvLAVqtflRa+2uJuakYI+fxgRbCBFouFPTfJ0KS1oVpSowcBouBkJbsPMEOL
-	 xq0kFZM3ZcyLFGNFmpRg5MMQgodXvw8ZdKPvpYoC0KNGwQ25fgcUwt/rxLnQWp54tC
-	 mcKvFd06pDgrxWL30V/L+kspMnWUZa/Wl3Gm+rEY=
+	b=ndyWfExOhv82p9BlrUMHB+pAR+MXkPbFX1Cd0c5zBVxYer1LBpVJYojgrT3GpIAIc
+	 PKVryZWkWRNiExFOA9dEzg21JT1WxS5uZRtk7WorUyPMaYUvAY29NoD37bGXAy2B2C
+	 xYJA2upzT8QqqjWLOy3YIlamRUeurPqVdUj7Yxjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Val Packett <val@packett.cool>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 444/623] PCI: endpoint: Destroy the EPC device in devm_pci_epc_destroy()
+Subject: [PATCH 6.6 267/393] arm64: dts: mediatek: add per-SoC compatibles for keypad nodes
 Date: Wed,  5 Feb 2025 14:43:06 +0100
-Message-ID: <20250205134513.203390043@linuxfoundation.org>
+Message-ID: <20250205134430.528741925@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit d4929755e4d02bd3de3ae5569dab69cb9502c54f ]
+[ Upstream commit 6139d9e9e397dc9711cf10f8f548a8f9da3b5323 ]
 
-The devm_pci_epc_destroy() comment says destroys the EPC device, but it
-does not actually do that since devres_destroy() does not call
-devm_pci_epc_release(), and it also can not fully undo what the API
-devm_pci_epc_create() does, so it is faulty.
+The mt6779-keypad binding specifies using a compatible for the
+actual SoC before the generic MT6779 one.
 
-Fortunately, the faulty API has not been used by current kernel tree.  Use
-devres_release() instead of devres_destroy() so the EPC device will be
-released.
-
-Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-1-4d86dd573e4b@quicinc.com
-Fixes: 5e8cb4033807 ("PCI: endpoint: Add EP core layer to enable EP controller and EP functions")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: a8013418d35c ("arm64: dts: mediatek: mt8183: add keyboard node")
+Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241225192631.25017-3-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 3 ++-
+ arch/arm64/boot/dts/mediatek/mt8365.dtsi | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index bed7c7d1fe3c3..75c6688290034 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -942,7 +942,7 @@ void devm_pci_epc_destroy(struct device *dev, struct pci_epc *epc)
- {
- 	int r;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 8721a5ffca30a..d1b6355148620 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1026,7 +1026,8 @@
+ 		};
  
--	r = devres_destroy(dev, devm_pci_epc_release, devm_pci_epc_match,
-+	r = devres_release(dev, devm_pci_epc_release, devm_pci_epc_match,
- 			   epc);
- 	dev_WARN_ONCE(dev, r, "couldn't find PCI EPC resource\n");
- }
+ 		keyboard: keyboard@10010000 {
+-			compatible = "mediatek,mt6779-keypad";
++			compatible = "mediatek,mt8183-keypad",
++				     "mediatek,mt6779-keypad";
+ 			reg = <0 0x10010000 0 0x1000>;
+ 			interrupts = <GIC_SPI 186 IRQ_TYPE_EDGE_FALLING>;
+ 			clocks = <&clk26m>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+index 413496c920695..62c5b50d3c5fb 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+@@ -334,7 +334,8 @@
+ 		};
+ 
+ 		keypad: keypad@10010000 {
+-			compatible = "mediatek,mt6779-keypad";
++			compatible = "mediatek,mt8365-keypad",
++				     "mediatek,mt6779-keypad";
+ 			reg = <0 0x10010000 0 0x1000>;
+ 			wakeup-source;
+ 			interrupts = <GIC_SPI 124 IRQ_TYPE_EDGE_FALLING>;
 -- 
 2.39.5
 
