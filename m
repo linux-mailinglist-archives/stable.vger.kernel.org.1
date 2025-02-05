@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF0EA28F75
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A77CA29357
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5F27A0FB5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A24B3AE58A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F59B155333;
-	Wed,  5 Feb 2025 14:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B65318A6B8;
+	Wed,  5 Feb 2025 15:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTvuBkoc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmDjELdp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7D8634E;
-	Wed,  5 Feb 2025 14:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0401591E3;
+	Wed,  5 Feb 2025 15:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765539; cv=none; b=D92Ckp/ef77SPTBy2gvBfSjojatZtpqGpFFw+BOMsNcWmXdgxySokd9L1BnHWwp1YsBf7xcfU9Xa+EQolxdGq3manLjGLpEjmW0XlkivCr4X7uA/rHGJ8kRXkrYpuoAVfx0W2EiZwJQt8b3Wz+/M++3Go8HHOgtwmKxx79dFXF8=
+	t=1738767784; cv=none; b=F9iQPRT/Spqw7RK20kJ+vuVJGGp1akU3lVCi0dQOnQ7a7lmIpDJsL7EiqlzTO3+g96xzzh0Xf/rBR77d5jenzc21CmjglRqyOdt6ll7ab5LNnZmuRSYpcAkX0ppvVXd2FEF5gD3KYW9Ls4WBNl7dR/wGKx/cDUsxc4xtII6nkkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765539; c=relaxed/simple;
-	bh=fAhjMPsWq5toNTn1psgQUZzrLt+pZ+tLFb3fAVltPto=;
+	s=arc-20240116; t=1738767784; c=relaxed/simple;
+	bh=CuVGHUNyvajH4AYNQm8nOUfeSXKxoDKy3O4g8iMaIaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbnkaP1D52BlYXEub55LzrjGmy2WYJHEQKm77WOSyNaQERxzDFWqBYbO/HHqpBcyEL+jLdCP7l6SEqCIPH8e5dx+DjiLgPJ7ER800Vv5t0ZKGxJwjpEwpUAmYSksiJn1pRE52JbV8iwad94c9xw+XnJ7b+sOAAbtue5Rn+NQkWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTvuBkoc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36197C4CED1;
-	Wed,  5 Feb 2025 14:25:38 +0000 (UTC)
+	 MIME-Version; b=k4E8IX567gfMkI/KaivAHwn/MR4sxOUaV0MKyBYJg6V0egQxs/F2MVPPutKZsBaTWd+lQH7y5DW9pa/yTkFIdTdCcgyBBpzLggBHNobesMpqTTR0kilNNrlygvoKd7WLZUDmYzHYmtjbEeLCyFecIu+dJu7xRKgDuQH+CCg7e2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmDjELdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0BDC4CED1;
+	Wed,  5 Feb 2025 15:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765538;
-	bh=fAhjMPsWq5toNTn1psgQUZzrLt+pZ+tLFb3fAVltPto=;
+	s=korg; t=1738767784;
+	bh=CuVGHUNyvajH4AYNQm8nOUfeSXKxoDKy3O4g8iMaIaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTvuBkocXmwWePAe1/R1hKnVismrYiV0HbczxpxenOc7pNNQ7kjQrQkvkV0RL06YC
-	 858WKG58H/FlmhHEv1B29cCthKdOfmaf0l5+luDponpeashVb7tPxD2sKQm2q50i5P
-	 ZG5N+4IpqZs0bJ7yGAB/CTAoNB4A+n69yjqq2ot0=
+	b=CmDjELdpp3HXTIQQy0TCqaMztRK51Lxm1DFzUp3udJDsJS/t4JMnAdzD9x9Wj6wl2
+	 f/OodeCO+8gt5QDUlXFfx3lIXJLz4lTQxykBWBrr9fYRJWSPkngUfdLCxNqbdyJjXT
+	 BoeW7gaUCeSjWqJ1ApSKeALqbbq8pwGO3fTAzUuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	syzbot+9446d5e0d25571e6a212@syzkaller.appspotmail.com,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/393] of: reserved-memory: Do not make kmemleak ignore freed address
+Subject: [PATCH 6.13 453/623] media: uvcvideo: Fix deadlock during uvc_probe
 Date: Wed,  5 Feb 2025 14:43:15 +0100
-Message-ID: <20250205134430.870406525@linuxfoundation.org>
+Message-ID: <20250205134513.545681124@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 29091a52562bca4d6e678dd8f0085dac119d6a21 ]
+[ Upstream commit a67f75c2b5ecf534eab416ce16c11fe780c4f8f6 ]
 
-early_init_dt_alloc_reserved_memory_arch() will free address @base when
-suffers memblock_mark_nomap() error, but it still makes kmemleak ignore
-the freed address @base via kmemleak_ignore_phys().
+If uvc_probe() fails, it can end up calling uvc_status_unregister() before
+uvc_status_init() is called.
 
-That is unnecessary, besides, also causes unnecessary warning messages:
+Fix this by checking if dev->status is NULL or not in
+uvc_status_unregister().
 
-kmemleak_ignore_phys()
- -> make_black_object()
-    -> paint_ptr()
-       -> kmemleak_warn() // warning message here.
-
-Fix by avoiding kmemleak_ignore_phys() when suffer the error.
-
-Fixes: 658aafc8139c ("memblock: exclude MEMBLOCK_NOMAP regions from kmemleak")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-10-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reported-by: syzbot+9446d5e0d25571e6a212@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-media/20241020160249.GD7770@pendragon.ideasonboard.com/T/#m506744621d72a2ace5dd2ab64055be9898112dbd
+Fixes: c5fe3ed618f9 ("media: uvcvideo: Avoid race condition during unregister")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241022-race-unreg-v1-1-2212f364d9de@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/of_reserved_mem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_status.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 7ec94cfcbddb1..959f1808c240f 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -50,7 +50,8 @@ static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
- 			memblock_phys_free(base, size);
- 	}
+diff --git a/drivers/media/usb/uvc/uvc_status.c b/drivers/media/usb/uvc/uvc_status.c
+index 06c867510c8fe..f37417634ee94 100644
+--- a/drivers/media/usb/uvc/uvc_status.c
++++ b/drivers/media/usb/uvc/uvc_status.c
+@@ -294,6 +294,9 @@ int uvc_status_init(struct uvc_device *dev)
  
--	kmemleak_ignore_phys(base);
-+	if (!err)
-+		kmemleak_ignore_phys(base);
- 
- 	return err;
+ void uvc_status_unregister(struct uvc_device *dev)
+ {
++	if (!dev->status)
++		return;
++
+ 	uvc_status_suspend(dev);
+ 	uvc_input_unregister(dev);
  }
 -- 
 2.39.5
