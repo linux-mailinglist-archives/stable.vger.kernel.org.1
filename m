@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D45A2907C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE70A28DA2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45D216316F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495CC3A8A98
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5067214B959;
-	Wed,  5 Feb 2025 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA5F1519AA;
+	Wed,  5 Feb 2025 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye1EXCWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRFS+vrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D067151988;
-	Wed,  5 Feb 2025 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9FE5228;
+	Wed,  5 Feb 2025 14:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766197; cv=none; b=KkX/KYrnEKw7TP+H1vWzTnl0cVlOYhi1n2oryLREZ5rL/C7Sjjs0u5Faneg+XOhvx3cSKLpCN2kNuWGF4uAfLCr1DXKehSsOoMu8zo05tWcSCXqll2y5F6F5bTaUSkfEelqd26oDnnLArufw5E/vpAWDqM0lx0uv3e1tqjiJ2LM=
+	t=1738764090; cv=none; b=enyYbXvpR0h3wfYvgyodUuIY3Fs7PShL00KdD5Hiagic+tswPuT24PCkDmsU3s5UKihyAb3uyyeT4NMCgozeIHaBbI0U03u3FN6vd6Y8H9dH/yFGWH5RC4Pq8k7BDv9KIIpbTUTWUEO7UwPrqlyuE8sG4yKkzGN49Nzmfj0GpRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766197; c=relaxed/simple;
-	bh=zG9BzUJCSzdfSDEQpl8uZlTG15/d0YOQsZ7n/9X41h0=;
+	s=arc-20240116; t=1738764090; c=relaxed/simple;
+	bh=ScP+PjFTU3C9OHfPG6A9QesdeCIXpLg5rbZgUi9OVCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEcPeNrZusK0JTZcXCTITh2z6xCPQpI7vK9NFvASgfN5BDJ5yWEwzbgozP8MkOMpTfbpbfcT/f2QumNQ8lnr0tG5QkukVpiVK5G9F9c+S53trF1MDDWJZfpWNee86E/Ez32N3PVu1gl9JGL3tcDfykZAGGEwxi1xnaX/DJHZSlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye1EXCWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD42C4CED1;
-	Wed,  5 Feb 2025 14:36:36 +0000 (UTC)
+	 MIME-Version; b=WqQhKI+z1sDvwv81zUNP6csCfYkEERsBlzo7r6Og/aU5W05OTTMyYXXWMvcMKJ16f6PyemPEk7xGTcwqTC03+0AIB2JZj4GK2Drf9s/xpfF3AGYlFOEdHs5Xsaamo936y1zuTDVqY0vgn1HKS1I9DpGwMvOobD7f9fO0Ynvme+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRFS+vrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D5EC4CED1;
+	Wed,  5 Feb 2025 14:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766196;
-	bh=zG9BzUJCSzdfSDEQpl8uZlTG15/d0YOQsZ7n/9X41h0=;
+	s=korg; t=1738764089;
+	bh=ScP+PjFTU3C9OHfPG6A9QesdeCIXpLg5rbZgUi9OVCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ye1EXCWzfzqwQgOjTxUSxazSR1w/difvjUp8vuydigy7EZGYvgEE+fqSVY07q+AFr
-	 o2xP9i9wHvDdDSBwo0A66N9/sqpsIpCCIhTo8LXXmMlrAYYnS3w0SEBjs3ZqVc7fzJ
-	 0Vxkad7YlTFHS/ohKeQEDwgX3DeT/VZOgSS0aFRk=
+	b=PRFS+vrgiVIZYwWR0/P9pQn1AF5DRW6VPXBoCg9rMjuOrvbLuCAWnc3cBIu+qKD6H
+	 wIWVzIl6uzdpaTTBwDp/J7JHD1T64jpbyO5NEVb9f33XJkDozrbfgjNxliV1UaGrdd
+	 3yQJPZBKmyTMwFsnMdPKojtWqPUHwvDiWCuriNbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 296/590] padata: avoid UAF for reorder_work
+Subject: [PATCH 6.6 132/393] selftests: timers: clocksource-switch: Adapt progress to kselftest framework
 Date: Wed,  5 Feb 2025 14:40:51 +0100
-Message-ID: <20250205134506.601094045@linuxfoundation.org>
+Message-ID: <20250205134425.347473544@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit dd7d37ccf6b11f3d95e797ebe4e9e886d0332600 ]
+[ Upstream commit 8694e6a7f7dba23d3abd9f5a96f64d161704c7b1 ]
 
-Although the previous patch can avoid ps and ps UAF for _do_serial, it
-can not avoid potential UAF issue for reorder_work. This issue can
-happen just as below:
+When adapting the test to the kselftest framework, a few printf() calls
+indicating test progress were not updated.
 
-crypto_request			crypto_request		crypto_del_alg
-padata_do_serial
-  ...
-  padata_reorder
-    // processes all remaining
-    // requests then breaks
-    while (1) {
-      if (!padata)
-        break;
-      ...
-    }
+Fix this by replacing these printf() calls by ksft_print_msg() calls.
 
-				padata_do_serial
-				  // new request added
-				  list_add
-    // sees the new request
-    queue_work(reorder_work)
-				  padata_reorder
-				    queue_work_on(squeue->work)
-...
-
-				<kworker context>
-				padata_serial_worker
-				// completes new request,
-				// no more outstanding
-				// requests
-
-							crypto_del_alg
-							  // free pd
-
-<kworker context>
-invoke_padata_reorder
-  // UAF of pd
-
-To avoid UAF for 'reorder_work', get 'pd' ref before put 'reorder_work'
-into the 'serial_wq' and put 'pd' ref until the 'serial_wq' finish.
-
-Fixes: bbefa1dd6a6d ("crypto: pcrypt - Avoid deadlock by using per-instance padata queues")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/7dd4b9ab6e43268846e250878ebf25ae6d3d01ce.1733994134.git.geert+renesas@glider.be
+Fixes: ce7d101750ff ("selftests: timers: clocksource-switch: adapt to kselftest framework")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/timers/clocksource-switch.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index a4c7a6eefe10e..22770372bdf32 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -352,8 +352,14 @@ static void padata_reorder(struct parallel_data *pd)
- 	smp_mb();
+diff --git a/tools/testing/selftests/timers/clocksource-switch.c b/tools/testing/selftests/timers/clocksource-switch.c
+index c5264594064c8..83faa4e354e38 100644
+--- a/tools/testing/selftests/timers/clocksource-switch.c
++++ b/tools/testing/selftests/timers/clocksource-switch.c
+@@ -156,8 +156,8 @@ int main(int argc, char **argv)
+ 	/* Check everything is sane before we start switching asynchronously */
+ 	if (do_sanity_check) {
+ 		for (i = 0; i < count; i++) {
+-			printf("Validating clocksource %s\n",
+-				clocksource_list[i]);
++			ksft_print_msg("Validating clocksource %s\n",
++					clocksource_list[i]);
+ 			if (change_clocksource(clocksource_list[i])) {
+ 				status = -1;
+ 				goto out;
+@@ -169,7 +169,7 @@ int main(int argc, char **argv)
+ 		}
+ 	}
  
- 	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
--	if (!list_empty(&reorder->list) && padata_find_next(pd, false))
-+	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
-+		/*
-+		 * Other context(eg. the padata_serial_worker) can finish the request.
-+		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
-+		 */
-+		padata_get_pd(pd);
- 		queue_work(pinst->serial_wq, &pd->reorder_work);
-+	}
- }
- 
- static void invoke_padata_reorder(struct work_struct *work)
-@@ -364,6 +370,8 @@ static void invoke_padata_reorder(struct work_struct *work)
- 	pd = container_of(work, struct parallel_data, reorder_work);
- 	padata_reorder(pd);
- 	local_bh_enable();
-+	/* Pairs with putting the reorder_work in the serial_wq */
-+	padata_put_pd(pd);
- }
- 
- static void padata_serial_worker(struct work_struct *serial_work)
+-	printf("Running Asynchronous Switching Tests...\n");
++	ksft_print_msg("Running Asynchronous Switching Tests...\n");
+ 	pid = fork();
+ 	if (!pid)
+ 		return run_tests(runtime);
 -- 
 2.39.5
 
