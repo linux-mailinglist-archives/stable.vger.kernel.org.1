@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-112848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28B6A28EAE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7475A28EAF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E711882BBE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 647C61647EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022132AD22;
-	Wed,  5 Feb 2025 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B46282EE;
+	Wed,  5 Feb 2025 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTitCohN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm1pu6LP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B359F1519AA;
-	Wed,  5 Feb 2025 14:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111322AD22;
+	Wed,  5 Feb 2025 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764966; cv=none; b=WYJE+21fNA/7X1XDfiCeu2BpxGlVcTmcYdqX9MQu4CJEOMew9FQs/mrsvGyrt9Qx4dCKV5teAq7oOrSeuRsmXAPbVFP7iLDLYBBtJ6zuNl78brW6j77+XMS9CiuIkhc3CNCOioNaGRpeEv0yn+Cc041d3zcsLrZVpJI8iN3nPbc=
+	t=1738764979; cv=none; b=byVgaJAHlHw6nQn3dncpqvc6z2OTJ28ysff9fQjBJjrkYi3yuxt1pdTeTgN7zMOlWLW9wPTFINhYtruHjJGlpec65uPqf1hCJb8zx8DCoKnYcoADJHj5ikg0S/FQbGeg/R2NFCmK2tYg+LFXf2puO5a8jhoU8heNjgrdWiRdD1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764966; c=relaxed/simple;
-	bh=Ya6jabkHZ0XB2uhaSH9p8qpwJ17/+m+C4vCE4IMK9Dc=;
+	s=arc-20240116; t=1738764979; c=relaxed/simple;
+	bh=RWB37dAkmkwOj+AOdXe5VzPql/AD5gDNucOUQ/tKP1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoxOGLygVPiDa4B4qahmmF68++8DtoYln58MMcdoKStpB64qsIcnZaiPNCeUZZVqy2j0ggf8F+O2JUPj9YJXzJEBl+/nm0MCYh2EXWr9GdjMlIFnukvuoXtXT4L/okZdzKCu5wAoxQVbjQEI12fR60Qovs5kC5QqPdE+WtQ0JQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTitCohN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1345C4CED1;
-	Wed,  5 Feb 2025 14:16:05 +0000 (UTC)
+	 MIME-Version; b=TZTakFulk8UiyDPsOaPid0CCSbMTOstPsgS6Q+OlVotqt4vkCUel2vmQ1dWzv89kQBiUTU5oR1DmhUfFDqkxvWUnuGMao93IYhypefYVVWJIFPkwenDi909iwybTsee8qRczYPBXKk31IjOM9ML9kyUI+OANSpbXHvF5QRZ9YrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm1pu6LP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8586AC4CED1;
+	Wed,  5 Feb 2025 14:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764966;
-	bh=Ya6jabkHZ0XB2uhaSH9p8qpwJ17/+m+C4vCE4IMK9Dc=;
+	s=korg; t=1738764978;
+	bh=RWB37dAkmkwOj+AOdXe5VzPql/AD5gDNucOUQ/tKP1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTitCohNssHcyzyOaSkCTYrqmWzlE4gF3Gw/egEvXmefnjEeWvaFeQPSHTX7mUKwo
-	 s5WprgsFJR+EgHzN7NIP/EgdTnEL+D5eJrdd250KZWkluI93hD5T2TH1DF4QVYZK/P
-	 PYHLDWbPx2A0OC8FLSYXDASrLNVcP2k84t9YpKNA=
+	b=Gm1pu6LP/ap3ELvbfpFA4g8IFL/gtYgzRf+5lBAra5OZKOLAjbsCncOeW9NagPJu4
+	 dXy+El/Vw7ZiSPH6/2C72hbi/93epW9a6q9a1PnYeh372E2iQBCjNg2RKDEhXMQGq6
+	 YE1moK3YhNSwsk3BxRpvnSh9Of4e8Ar02VeiBOWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Shengjiu Wang <shengjiu.wang@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 131/623] dt-bindings: clock: imx93: Add SPDIF IPG clk
-Date: Wed,  5 Feb 2025 14:37:53 +0100
-Message-ID: <20250205134501.240998376@linuxfoundation.org>
+Subject: [PATCH 6.13 132/623] clk: imx93: Add IMX93_CLK_SPDIF_IPG clock
+Date: Wed,  5 Feb 2025 14:37:54 +0100
+Message-ID: <20250205134501.280704931@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,33 +69,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 32e9dea2645fa10dfa08b4e333918affaf1e4de5 ]
+[ Upstream commit 6a7853544482e2336b5b8bb9a4b964f9d687f290 ]
 
-Add SPDIF IPG clk. The SPDIF IPG clock and root clock
-share same clock gate.
+Split IMX93_CLK_SPDIF_IPG from IMX93_CLK_SPDIF_GATE
+because the IMX93_CLK_SPDIF_GATE controls the gate
+of IPG clock and root clock. Without this change,
+disabling IMX93_CLK_SPDIF_GATE would also disable
+the IPG clock, causing register access failures.
 
 Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241119015805.3840606-2-shengjiu.wang@nxp.com
+Link: https://lore.kernel.org/r/20241119015805.3840606-3-shengjiu.wang@nxp.com
 Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/imx93-clock.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/imx/clk-imx93.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/dt-bindings/clock/imx93-clock.h b/include/dt-bindings/clock/imx93-clock.h
-index 6c685067288b5..c393fad3a3469 100644
---- a/include/dt-bindings/clock/imx93-clock.h
-+++ b/include/dt-bindings/clock/imx93-clock.h
-@@ -209,5 +209,6 @@
- #define IMX91_CLK_ENET2_REGULAR     204
- #define IMX91_CLK_ENET2_REGULAR_GATE		205
- #define IMX91_CLK_ENET1_QOS_TSN_GATE		206
-+#define IMX93_CLK_SPDIF_IPG		207
+diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
+index 58a516dd385bf..eb818db008fb6 100644
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -15,7 +15,7 @@
  
- #endif
+ #include "clk.h"
+ 
+-#define IMX93_CLK_END 207
++#define IMX93_CLK_END 208
+ 
+ #define PLAT_IMX93 BIT(0)
+ #define PLAT_IMX91 BIT(1)
+@@ -38,6 +38,7 @@ static u32 share_count_sai2;
+ static u32 share_count_sai3;
+ static u32 share_count_mub;
+ static u32 share_count_pdm;
++static u32 share_count_spdif;
+ 
+ static const char * const a55_core_sels[] = {"a55_alt", "arm_pll"};
+ static const char *parent_names[MAX_SEL][4] = {
+@@ -252,7 +253,8 @@ static const struct imx93_clk_ccgr {
+ 	{ IMX93_CLK_MQS1_GATE,		"mqs1",		"sai1_root",		0x9b00, },
+ 	{ IMX93_CLK_MQS2_GATE,		"mqs2",		"sai3_root",		0x9b40, },
+ 	{ IMX93_CLK_AUD_XCVR_GATE,	"aud_xcvr",	"audio_xcvr_root",	0x9b80, },
+-	{ IMX93_CLK_SPDIF_GATE,		"spdif",	"spdif_root",		0x9c00, },
++	{ IMX93_CLK_SPDIF_IPG,		"spdif_ipg_clk", "bus_wakeup_root",	0x9c00, 0, &share_count_spdif},
++	{ IMX93_CLK_SPDIF_GATE,		"spdif",	"spdif_root",		0x9c00, 0, &share_count_spdif},
+ 	{ IMX93_CLK_HSIO_32K_GATE,	"hsio_32k",	"osc_32k",		0x9dc0, },
+ 	{ IMX93_CLK_ENET1_GATE,		"enet1",	"wakeup_axi_root",	0x9e00, 0, NULL, PLAT_IMX93, },
+ 	{ IMX93_CLK_ENET_QOS_GATE,	"enet_qos",	"wakeup_axi_root",	0x9e40, 0, NULL, PLAT_IMX93, },
 -- 
 2.39.5
 
