@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA21A28E6F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4891A28E7A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446F1162FBB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5306B7A30CA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D56E14B959;
-	Wed,  5 Feb 2025 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04002149C53;
+	Wed,  5 Feb 2025 14:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxskQQtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN/lfXHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002FF15198D;
-	Wed,  5 Feb 2025 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45B115198D;
+	Wed,  5 Feb 2025 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764792; cv=none; b=UkUKMN4pwfrBmBy/FSLqWe9Cj+R8zESkrG4Gh99AcGToGF0TQstQOGcxh79w91QyukeRtPh3FYOPGG02BPkNUmTOdm5K1ccE3fNpm3AZZOsoVliFUV4umn7xBTK4F9ClROQ4y3usZ8UaD9cT+w7SvwoOx1dA0vyPihMtlhG2Fjc=
+	t=1738764802; cv=none; b=CrgDiOOi/JOF9ApiP9QmsAGLy4J5hImLiHf5SviMW41HEUllCmbbU3pA+f44C5vEmAvOcmShgdxbLC+FNaFaSfVnP3G6IHnSUcuYi30ifxn/J28bbfqLH8MVfHnjiAapB3g694Ge9yfOwD5zN6BFZhJXbDxHUT9kXWwWGOxkce0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764792; c=relaxed/simple;
-	bh=Tc4wIudJznJ1PqLhuutOrTFoTIwfDDrTDb3ByZeFArg=;
+	s=arc-20240116; t=1738764802; c=relaxed/simple;
+	bh=9h9kCzG/IOjkMd45xfETh2TXUlgoXCQjwwHlR6LgR+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgkg0S8biQt/rRTSC4ehTrBVzl/FARaVwGIu1+D/VwmkLhfp+XqiVFz5ZlP7HrrWq1Kzi+0ZI2g+Bbswo6Ndvzs/BNIkQXPtNJiThcv+R0HshycnQb96SyF2JyW1bMFK7uwp64Xfhmo9JR1chYqhElAlQfjRZYZO39f6ZiqHvdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxskQQtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601CCC4CED1;
-	Wed,  5 Feb 2025 14:13:11 +0000 (UTC)
+	 MIME-Version; b=SpltipPcI+UE9ZSSlaBYmcZ/R5EvfDIYcjQtYyjASKHXjOXY1kIfzomO9P7LhcL6az5AQpuVFzKOfuqu3F32cEjEzYIxJ1V4bTjxdIe4TrYeMN7uFS2ENl7d8QcV/qZGn5oOTfu/O4MSpKOPaQK6txEUpdo3X28GUzul4sYFjck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN/lfXHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71A8C4CED1;
+	Wed,  5 Feb 2025 14:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764791;
-	bh=Tc4wIudJznJ1PqLhuutOrTFoTIwfDDrTDb3ByZeFArg=;
+	s=korg; t=1738764802;
+	bh=9h9kCzG/IOjkMd45xfETh2TXUlgoXCQjwwHlR6LgR+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxskQQtf3Hjf1mIsErfkW3hnK3kyL/7WMSXxnW2Gj/PcTy/C7SHgPNv4ROBY7aB/e
-	 cFcsJ2B9W677jKNjADJB5xhbnwSBiYhwcj49ZSS6MSJ3N7bMHg+mANGzqoUbc0h1b6
-	 Js+AB7NbySO7xhBVWFCBChAgkRVHuJrbbkafjGBs=
+	b=cN/lfXHbw8UrpFB3wIak9c7XX95ajuUlVYsXXOxsp1j39u3E1cGVDkRCz4TEz6QPo
+	 qs/vy7GNkWCd93NQ2cOresIGt2TqHrg+WaMsnxgqimYR6RnmARabxg7N31FRNS0T5r
+	 bKBHXc8HQhow1i3Bryc9F8e7JY/9DQHU07qNMp8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 158/590] wifi: iwlwifi: fw: read STEP table from correct UEFI var
-Date: Wed,  5 Feb 2025 14:38:33 +0100
-Message-ID: <20250205134501.328947656@linuxfoundation.org>
+Subject: [PATCH 6.12 159/590] wifi: iwlwifi: mvm: avoid NULL pointer dereference
+Date: Wed,  5 Feb 2025 14:38:34 +0100
+Message-ID: <20250205134501.368055903@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,115 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 80c2b651fe7fc82e1d1b3e4f9651095896a095f0 ]
+[ Upstream commit cf704a7624f99eb2ffca1a16c69183e85544a613 ]
 
-This variable exists for the "common" (WiFi/BT) GUID, not the
-WiFi-only GUID. Fix that by passing the GUID to the function.
-A short-cut for the wifi-only version remains so not all code
-must be updated.
+When iterating over the links of a vif, we need to make sure that the
+pointer is valid (in other words - that the link exists) before
+dereferncing it.
+Use for_each_vif_active_link that also does the check.
 
-However, rename the GUID defines to be clearer.
-
-Fixes: 09b4c35d73a5 ("wifi: iwlwifi: mvm: Support STEP equalizer settings from BIOS.")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Fixes: 2b7ee1a10a72 ("wifi: iwlwiif: mvm: handle the new BT notif")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241227095718.89a5ad921b6d.Idae95a70ff69d2ba1b610e8eced826961ce7de98@changeid
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20241229164246.31d41f7d3eab.I7fb7036a0b187c1636b01970207259cb2327952c@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 44 +++++++++++++-------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 091fb6fd7c787..834f7c9bb9e92 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -13,9 +13,12 @@
- #include <linux/efi.h>
- #include "fw/runtime.h"
- 
--#define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
--				  0xb2, 0xec, 0xf5, 0xa3,	\
--				  0x59, 0x4f, 0x4a, 0xea)
-+#define IWL_EFI_WIFI_GUID	EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
-+					 0xb2, 0xec, 0xf5, 0xa3,	\
-+					 0x59, 0x4f, 0x4a, 0xea)
-+#define IWL_EFI_WIFI_BT_GUID	EFI_GUID(0xe65d8884, 0xd4af, 0x4b20,	\
-+					 0x8d, 0x03, 0x77, 0x2e,	\
-+					 0xcc, 0x3d, 0xa5, 0x31)
- 
- struct iwl_uefi_pnvm_mem_desc {
- 	__le32 addr;
-@@ -61,7 +64,7 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- 
- 	*len = 0;
- 
--	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_VAR_GUID,
-+	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_WIFI_GUID,
- 				     &package_size);
- 	if (IS_ERR(data)) {
- 		IWL_DEBUG_FW(trans,
-@@ -76,18 +79,18 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- 	return data;
- }
- 
--static
--void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
--				     efi_char16_t *uefi_var_name,
--				     char *var_name,
--				     unsigned int expected_size,
--				     unsigned long *size)
-+static void *
-+iwl_uefi_get_verified_variable_guid(struct iwl_trans *trans,
-+				    efi_guid_t *guid,
-+				    efi_char16_t *uefi_var_name,
-+				    char *var_name,
-+				    unsigned int expected_size,
-+				    unsigned long *size)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+index b607961970e97..9b8624304fa30 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+@@ -530,18 +530,15 @@ static void iwl_mvm_bt_coex_notif_iterator(void *_data, u8 *mac,
+ 					   struct ieee80211_vif *vif)
  {
- 	void *var;
- 	unsigned long var_size;
+ 	struct iwl_mvm *mvm = _data;
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
  
--	var = iwl_uefi_get_variable(uefi_var_name, &IWL_EFI_VAR_GUID,
--				    &var_size);
-+	var = iwl_uefi_get_variable(uefi_var_name, guid, &var_size);
+ 	lockdep_assert_held(&mvm->mutex);
  
- 	if (IS_ERR(var)) {
- 		IWL_DEBUG_RADIO(trans,
-@@ -112,6 +115,18 @@ void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
- 	return var;
- }
- 
-+static void *
-+iwl_uefi_get_verified_variable(struct iwl_trans *trans,
-+			       efi_char16_t *uefi_var_name,
-+			       char *var_name,
-+			       unsigned int expected_size,
-+			       unsigned long *size)
-+{
-+	return iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_GUID,
-+						   uefi_var_name, var_name,
-+						   expected_size, size);
-+}
-+
- int iwl_uefi_handle_tlv_mem_desc(struct iwl_trans *trans, const u8 *data,
- 				 u32 tlv_len, struct iwl_pnvm_image *pnvm_data)
- {
-@@ -311,8 +326,9 @@ void iwl_uefi_get_step_table(struct iwl_trans *trans)
- 	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+ 	if (vif->type != NL80211_IFTYPE_STATION)
  		return;
  
--	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_STEP_NAME,
--					      "STEP", sizeof(*data), NULL);
-+	data = iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_BT_GUID,
-+						   IWL_UEFI_STEP_NAME,
-+						   "STEP", sizeof(*data), NULL);
- 	if (IS_ERR(data))
- 		return;
- 
+-	for (int link_id = 0;
+-	     link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+-	     link_id++) {
+-		struct ieee80211_bss_conf *link_conf =
+-			rcu_dereference_check(vif->link_conf[link_id],
+-					      lockdep_is_held(&mvm->mutex));
++	for_each_vif_active_link(vif, link_conf, link_id) {
+ 		struct ieee80211_chanctx_conf *chanctx_conf =
+ 			rcu_dereference_check(link_conf->chanctx_conf,
+ 					      lockdep_is_held(&mvm->mutex));
 -- 
 2.39.5
 
