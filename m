@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9C6A2921E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5D5A29297
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA6E3ABC6F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7352716814A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C141C1FCF5F;
-	Wed,  5 Feb 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9FE155333;
+	Wed,  5 Feb 2025 14:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FveXMYBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc5Bv96D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A718C039;
-	Wed,  5 Feb 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920E18F2CF;
+	Wed,  5 Feb 2025 14:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766865; cv=none; b=toewg0jBtDY28Wp6Re/IrSE0kgYJ/ES8KB5nq37Q5ZAWjFy6vkswd8MO3uPQuwyIzjs2Ypn2WAurXhPVPavjUKKujd9vO+eEZdPeRT8DVXr6xjYue80O63QSbLEyCqmPJRqVQq1+xc3CYyKX/v4cKAAbG01oF+7XFKWSgMLZGpQ=
+	t=1738767309; cv=none; b=OS01nbZKx/POujgwPqbgfNFJ5PwFU1FTJ3jEUJ6b/vYIm9cZ5Hkb+CLozwbGZUTI/MLhcK35ZJVAiOrbdeIKpgOehNJHqJVA2y9QhM7re+BqVcgM3X854QX4kp3bv5gAY3VYtzBQ2y9lWzYfeXi6SEG9H6zH00gqg52nv28x6qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766865; c=relaxed/simple;
-	bh=LTp5wpiEEZ9jcFTE0RvM6yMrZBjgQPT3cOWoLsod6Ec=;
+	s=arc-20240116; t=1738767309; c=relaxed/simple;
+	bh=TR4gmKzBG1s6PaCQMo0LP8NJQQ6IZUtI7TbGkGGZr1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnTxzmQne4c3Kb8q6WaD2G9po8/FaIEa99GPa/Ts1o3lk9ntt598ta7P7o9tjSDltQRcWr49KnJiq/t3nZ7XCm33Fg6T/uMb5MhGczp/AQ7bhsXjjO7bvenaHibucU4QPTFiCPp9cCQ7YwznTqR77u3QKGFSwfS8K0A8zjyAAV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FveXMYBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01F1C4CEDD;
-	Wed,  5 Feb 2025 14:47:44 +0000 (UTC)
+	 MIME-Version; b=ZcAFUArrCxgzu/z4cLmALJB7t88PV3xuzcQJPS5XajpK/wT9DdoUBrwuCDzild5RVPPH3yqeyNwEF/9Zy444ebx6hHjy75KBK1zgUCbPjo1snTAXEx+Vn+207nd5I9meZY9o6xrFntAlbakMLz07QjcSoq4wVInYlmCCcUCkmWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc5Bv96D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB063C4CED1;
+	Wed,  5 Feb 2025 14:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766865;
-	bh=LTp5wpiEEZ9jcFTE0RvM6yMrZBjgQPT3cOWoLsod6Ec=;
+	s=korg; t=1738767309;
+	bh=TR4gmKzBG1s6PaCQMo0LP8NJQQ6IZUtI7TbGkGGZr1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FveXMYBpDNTMZGo+j+xtkl4Up3Iw4Kk2CaC9+JNhNrJ/jT6l9uE74Rr4lZEVxk+Vd
-	 tUS4eHe6tzFVaT1Q2Y99KFvzahOu5b8Citsq5E/w3nwVlJwTPPeglEdEvY2eHzicwf
-	 TXjyyPKAPmHXzmOT+jpSGyiTSvkqrLrVS0I+Bxi4=
+	b=Fc5Bv96DSTyyqnzXNzHlD1rJi/rWnOhQhMi1lqC0Rzbc+aqT15CbGv83RP/KKwsDu
+	 L9SwEXZgBt/Jr63m1pUmvW/jGT+pgXNBPFilQGCCJzuB6JSzm9MdK3LIcULZdgsUmL
+	 03Kr4vfu8HWjDE+SDx4ykEakKSOnFg4xNghPZyh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/590] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: remove disabled ov7251 camera
+Subject: [PATCH 6.13 386/623] arm64: dts: qcom: sm6375: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:08 +0100
-Message-ID: <20250205134509.541324116@linuxfoundation.org>
+Message-ID: <20250205134510.990772101@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 80b47f14d5433068dd6738c9e6e17ff6648bae41 ]
+[ Upstream commit 223382c94f1f07c475d39713e4c058401480b441 ]
 
-The ov7251node has bindings check errors in the endpoint, and the
-camera node was disabled since the beginning. Even when switching the
-node to okay, the endpoint description to the csiphy is missing along
-with the csiphy parameters.
+The SM6375 platform uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Drop the ov7251 camera entirely until it's properly described.
-
-This obviously fixes:
-sdm845-db845c-navigation-mezzanine.dtso: camera@60: port:endpoint:data-lanes: [0, 1] is too long
-	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov7251.yaml#
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-2-1e6880e9dda3@linaro.org
+Fixes: 59d34ca97f91 ("arm64: dts: qcom: Add initial device tree for SM6375")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-12-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../sdm845-db845c-navigation-mezzanine.dtso   | 42 -------------------
- 1 file changed, 42 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
-index b5f717d0ddd97..51f1a4883ab8f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
-+++ b/arch/arm64/boot/dts/qcom/sdm845-db845c-navigation-mezzanine.dtso
-@@ -68,45 +68,3 @@
+diff --git a/arch/arm64/boot/dts/qcom/sm6375.dtsi b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+index e0b1c54e98c0e..7c929168ed080 100644
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -29,7 +29,7 @@
+ 
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
  		};
  	};
- };
--
--&cci_i2c1 {
--	#address-cells = <1>;
--	#size-cells = <0>;
--
--	camera@60 {
--		compatible = "ovti,ov7251";
--
--		/* I2C address as per ov7251.txt linux documentation */
--		reg = <0x60>;
--
--		/* CAM3_RST_N */
--		enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&cam3_default>;
--
--		clocks = <&clock_camcc CAM_CC_MCLK3_CLK>;
--		clock-names = "xclk";
--		clock-frequency = <24000000>;
--
--		/*
--		 * The &vreg_s4a_1p8 trace always powered on.
--		 *
--		 * The 2.8V vdda-supply regulator is enabled when the
--		 * vreg_s4a_1p8 trace is pulled high.
--		 * It too is represented by a fixed regulator.
--		 *
--		 * No 1.2V vddd-supply regulator is used.
--		 */
--		vdddo-supply = <&vreg_lvs1a_1p8>;
--		vdda-supply = <&cam3_avdd_2v8>;
--
--		status = "disabled";
--
--		port {
--			ov7251_ep: endpoint {
--				data-lanes = <0 1>;
--/*				remote-endpoint = <&csiphy3_ep>; */
--			};
--		};
--	};
--};
 -- 
 2.39.5
 
