@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-113484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87931A29265
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF15A29267
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B46E016AC6C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B85F716D579
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EE8198857;
-	Wed,  5 Feb 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D135A1990B7;
+	Wed,  5 Feb 2025 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1r0LQj3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXOJTeom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A3197A76;
-	Wed,  5 Feb 2025 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2CE198A17;
+	Wed,  5 Feb 2025 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767116; cv=none; b=mb4hH+XqmhAOm9S0A19AtBijo/xAV9lWll/2PZA7qdIQA/AzreAdPL9irs0QGvoT3o9JVjsl3jjYCfx3VCjQO0pAe1UQCqZzaO2ffRgup55dr0X3+huW4mVAVsYIXD2/fIMv3/msh/7HXXxIXshCUGVevjfjxmZAuZ2mV6iP6Tk=
+	t=1738767123; cv=none; b=D6kpJ2XCiLJctQ6NQYyIZ9TBGWhyymo1Vbc4x1Z5OmWB82/N8lEe8vkGwkvxEfcxD0LKyV/LqBvRCU1npfirxka0Oipo1Xj06lA+IhcFjRLyeh7CIj4qOOvuLIuvOKL4Gr5OMeq9xW3K7jOC6QA32Zc98MudgJ411KV9rs7MdSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767116; c=relaxed/simple;
-	bh=IKX1q/bvASayUUG9JN+Wfvi7rQVoTdynRwnnzhaclJk=;
+	s=arc-20240116; t=1738767123; c=relaxed/simple;
+	bh=ujubaZC9NfdyqnUKQHSKdu4W1KPQvScYIuJvOlSn8CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=og7OmqjOmtEBGlBK1jFVmdISG4CRLJUoAQ8twdzDhTY7C1S7fxckSfgfpbQ6SxGzvbbD4uo2nWHB0mm/g0APx07p6ldivfpJGUaoZWtY303MRVYiSOdUe9NNBJqbYHECFbupTphYVVCQ8PRP+E/dm/D8UZjOGcbh9mG6i8exJbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1r0LQj3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D002C4CED1;
-	Wed,  5 Feb 2025 14:51:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=STXcU7aRBK8rp8acRIY5Jj7Xk7Yyl47XpWh4I7smD80WHFh/aSbfwAs+lXYu0yjwi9r1uxAPMKNkrXkf30OIeHpTGT97xDRGrwHjnxWRtYJaMZpsPKHKKYwR9qBMCp7t60WgxLMJwWHG5HswzQFyvRIsk+NFaY/0rT9g9KMUEjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXOJTeom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE790C4CED1;
+	Wed,  5 Feb 2025 14:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767116;
-	bh=IKX1q/bvASayUUG9JN+Wfvi7rQVoTdynRwnnzhaclJk=;
+	s=korg; t=1738767123;
+	bh=ujubaZC9NfdyqnUKQHSKdu4W1KPQvScYIuJvOlSn8CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1r0LQj3Tx/2k/0jjU2BpJMEpNG/Nt/Hp75mNE2DyViTY/K5aS3qmoTmKD3SE/+t6N
-	 KNgq0gncMY78r2YRTPmUVHPtEtE5U70U42LekRTW4oGnpqTpxt+bTkPjLEptWbI1l8
-	 PXGjzbWwYIC0TeUYZCHP8jvM8ueUUU4genZBqcws=
+	b=tXOJTeom3Hp/Ill6SlRSMatRvCI1XELJAEB6SYJEEoJmvKymkpm1ACuKMrMrrCtMw
+	 EPogQETTAJrGdLG8zRNSGptDFjuXLuL+hob3R/Dowup5wr6lTBRqoXjNr6M3P6wdLk
+	 H0Ifs0oDuHmUy1YZkpS1wRIBba37ePL5qOAUT+F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/590] PCI: endpoint: Destroy the EPC device in devm_pci_epc_destroy()
-Date: Wed,  5 Feb 2025 14:42:43 +0100
-Message-ID: <20250205134510.876637348@linuxfoundation.org>
+Subject: [PATCH 6.12 409/590] PCI/ASPM: Save parent L1SS config in pci_save_aspm_l1ss_state()
+Date: Wed,  5 Feb 2025 14:42:44 +0100
+Message-ID: <20250205134510.914319105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -60,47 +61,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-[ Upstream commit d4929755e4d02bd3de3ae5569dab69cb9502c54f ]
+[ Upstream commit 1db806ec06b7c6e08e8af57088da067963ddf117 ]
 
-The devm_pci_epc_destroy() comment says destroys the EPC device, but it
-does not actually do that since devres_destroy() does not call
-devm_pci_epc_release(), and it also can not fully undo what the API
-devm_pci_epc_create() does, so it is faulty.
+After 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for
+suspend/resume"), pci_save_aspm_l1ss_state(dev) saves the L1SS state for
+"dev", and pci_restore_aspm_l1ss_state(dev) restores the state for both
+"dev" and its parent.
 
-Fortunately, the faulty API has not been used by current kernel tree.  Use
-devres_release() instead of devres_destroy() so the EPC device will be
-released.
+The problem is that unless pci_save_state() has been used in some other
+path and has already saved the parent L1SS state, we will restore junk to
+the parent, which means the L1 Substates likely won't work correctly.
 
-Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-1-4d86dd573e4b@quicinc.com
-Fixes: 5e8cb4033807 ("PCI: endpoint: Add EP core layer to enable EP controller and EP functions")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Save the L1SS config for both the device and its parent in
+pci_save_aspm_l1ss_state().  When restoring, we need both because L1SS must
+be enabled at the parent (the Downstream Port) before being enabled at the
+child (the Upstream Port).
+
+Link: https://lore.kernel.org/r/20241115072200.37509-3-jhp@endlessos.org
+Fixes: 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for suspend/resume")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218394
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+[bhelgaas: parallel save/restore structure, simplify commit log, patch at
+https://lore.kernel.org/r/20241212230340.GA3267194@bhelgaas]
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jian-Hong Pan <jhp@endlessos.org> # Asus B1400CEAE
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index 62f7dff437309..de665342dc16d 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -856,7 +856,7 @@ void devm_pci_epc_destroy(struct device *dev, struct pci_epc *epc)
- {
- 	int r;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index cee2365e54b8b..9bbcfc91a491e 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -81,24 +81,47 @@ void pci_configure_aspm_l1ss(struct pci_dev *pdev)
  
--	r = devres_destroy(dev, devm_pci_epc_release, devm_pci_epc_match,
-+	r = devres_release(dev, devm_pci_epc_release, devm_pci_epc_match,
- 			   epc);
- 	dev_WARN_ONCE(dev, r, "couldn't find PCI EPC resource\n");
+ void pci_save_aspm_l1ss_state(struct pci_dev *pdev)
+ {
++	struct pci_dev *parent = pdev->bus->self;
+ 	struct pci_cap_saved_state *save_state;
+-	u16 l1ss = pdev->l1ss;
+ 	u32 *cap;
+ 
++	/*
++	 * If this is a Downstream Port, we never restore the L1SS state
++	 * directly; we only restore it when we restore the state of the
++	 * Upstream Port below it.
++	 */
++	if (pcie_downstream_port(pdev) || !parent)
++		return;
++
++	if (!pdev->l1ss || !parent->l1ss)
++		return;
++
+ 	/*
+ 	 * Save L1 substate configuration. The ASPM L0s/L1 configuration
+ 	 * in PCI_EXP_LNKCTL_ASPMC is saved by pci_save_pcie_state().
+ 	 */
+-	if (!l1ss)
++	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
++	if (!save_state)
+ 		return;
+ 
+-	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
++	cap = &save_state->cap.data[0];
++	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL2, cap++);
++	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL1, cap++);
++
++	if (parent->state_saved)
++		return;
++
++	/*
++	 * Save parent's L1 substate configuration so we have it for
++	 * pci_restore_aspm_l1ss_state(pdev) to restore.
++	 */
++	save_state = pci_find_saved_ext_cap(parent, PCI_EXT_CAP_ID_L1SS);
+ 	if (!save_state)
+ 		return;
+ 
+ 	cap = &save_state->cap.data[0];
+-	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL2, cap++);
+-	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, cap++);
++	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2, cap++);
++	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1, cap++);
  }
+ 
+ void pci_restore_aspm_l1ss_state(struct pci_dev *pdev)
 -- 
 2.39.5
 
