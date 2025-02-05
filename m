@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E91A290C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E63BA28DB7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A43F16976C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29930168A96
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6743416DEB1;
-	Wed,  5 Feb 2025 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC86155333;
+	Wed,  5 Feb 2025 14:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFL9rg+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlmSrvUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F8A151988;
-	Wed,  5 Feb 2025 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07EF1547E9;
+	Wed,  5 Feb 2025 14:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766374; cv=none; b=pydhRtmGD7BrtYMN7ux+/YhK0e7Bs0D+DLsXGKGcP2wdRmTHWQjTrHjCab7tGr38itJgXOevgUcmtNWBCTLaS23tb1VwZiLxQMj/s/rZvFToD2mk7WysFlAUBc7MOUpWi/et0p6i39M3cqse+AWMXfYKX5Oi5ZT7lWXcmup5dXo=
+	t=1738764238; cv=none; b=T56ysbiNvLxc3B3hiAE9fHGY1ERMUBjG+jro6NaNANrCYrY8Uo+Yd2gBYLITSIUvipo30TxSjgLQBV3Fyhqm/rqVpSt4Au0n08qrox7G2CF9m5OGb2Q+hZS0q2tb1EcM1OPo44Q3fC6qt1Ie+t7Hhgr/rPsbmdwzKNAlDomikWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766374; c=relaxed/simple;
-	bh=wzOvac6SXBqQAUt7gvouL+eLbpJtSGZda4VO408Nl+I=;
+	s=arc-20240116; t=1738764238; c=relaxed/simple;
+	bh=UU8D1ws0cmkzsmRw4DhgNR0Kdd8YZrSo9VFuB6cGPLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGxZOx9UEsifex5UeJeTGqXDa54Tp4iqXe7HR6+5HLnTEOBJhZDiF/izsKi/IkUw0qKqJKk5aHQqsoLu2Xc4tgL1QsXbK+iYciD8klsnnPXGS+/B2ZHyjPlzKE4FVpu6PFz/pRVs9zaqjh4vWTb0ycBvwXJRLkckbaRcVJ58n38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFL9rg+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0FBC4CED1;
-	Wed,  5 Feb 2025 14:39:33 +0000 (UTC)
+	 MIME-Version; b=HhUEJ1zTpFBqBVvBszUqu69gBFowLKtGhIKvwzrTjFtSt8ywzvZvD3CiLVg/bF+aSBKS/84fzwwtdtUxPIxcHko+JpJtopCZaHTr/GvnFd4ELVbuRBjCnsdNS6fk4VEiufa6CXbhE4/nRzWH5Fvr5v3RyY3Uu8l6uv0/FUY4ORY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlmSrvUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC5BC4CED1;
+	Wed,  5 Feb 2025 14:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766374;
-	bh=wzOvac6SXBqQAUt7gvouL+eLbpJtSGZda4VO408Nl+I=;
+	s=korg; t=1738764237;
+	bh=UU8D1ws0cmkzsmRw4DhgNR0Kdd8YZrSo9VFuB6cGPLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFL9rg+tjgpi5A4ORxGgq0XPKeM+p6bTraNLLKNqD01D5JhdYvH6QWxmIOMRJfNrD
-	 9HCuQy+QZnXfG0J0iGo6odXTBZQgGMAxlDuy1WXnmhXbumKHqkR1avwD5rgcu2Rx5P
-	 iymFCRIfA9yLTcgZLkIy1XM/p9XOLwNcQ9ri3BGo=
+	b=vlmSrvUd5uwTZhgXkuZC3L0V+/BrlQJYxFeWRPAvmch7kDyavlKCifavhHpDJxmEl
+	 Ma2x4+lW+x2mNFOGArvknV7CPZO5yhOIGvGmx3hl8JVsiVj7EVhOW7prSQIGZE9MQ+
+	 hkDbjupY2OAOD/7Lwi8O9SAk8m4tP5RPjKEBjKHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/590] arm64: dts: mediatek: mt8173-evb: Drop regulator-compatible property
-Date: Wed,  5 Feb 2025 14:41:10 +0100
-Message-ID: <20250205134507.327884463@linuxfoundation.org>
+Subject: [PATCH 6.6 152/393] net/rose: prevent integer overflows in rose_setsockopt()
+Date: Wed,  5 Feb 2025 14:41:11 +0100
+Message-ID: <20250205134426.117775896@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,216 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit a6d5983e40f5d5b219337569cdd269727f5a3e2e ]
+[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It is also not listed in the MT6397
-regulator bindings. Having them present produces a whole bunch of
-validation errors:
+In case of possible unpredictably large arguments passed to
+rose_setsockopt() and multiplied by extra values on top of that,
+integer overflows may occur.
 
-    Unevaluated properties are not allowed ('regulator-compatible' was unexpected)
+Do the safest minimum and fix these issues by checking the
+contents of 'opt' and returning -EINVAL if they are too large. Also,
+switch to unsigned int and remove useless check for negative 'opt'
+in ROSE_IDLE case.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-3-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 23 ---------------------
- 1 file changed, 23 deletions(-)
+ net/rose/af_rose.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index bb4671c18e3bd..511c16cb1d59c 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -311,7 +311,6 @@
- 			compatible = "mediatek,mt6397-regulator";
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 42e8b9e37516b..342823b918e7c 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct rose_sock *rose = rose_sk(sk);
+-	int opt;
++	unsigned int opt;
  
- 			mt6397_vpca15_reg: buck_vpca15 {
--				regulator-compatible = "buck_vpca15";
- 				regulator-name = "vpca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -320,7 +319,6 @@
- 			};
+ 	if (level != SOL_ROSE)
+ 		return -ENOPROTOOPT;
  
- 			mt6397_vpca7_reg: buck_vpca7 {
--				regulator-compatible = "buck_vpca7";
- 				regulator-name = "vpca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -329,7 +327,6 @@
- 			};
+-	if (optlen < sizeof(int))
++	if (optlen < sizeof(unsigned int))
+ 		return -EINVAL;
  
- 			mt6397_vsramca15_reg: buck_vsramca15 {
--				regulator-compatible = "buck_vsramca15";
- 				regulator-name = "vsramca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -338,7 +335,6 @@
- 			};
+-	if (copy_from_sockptr(&opt, optval, sizeof(int)))
++	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
+ 		return -EFAULT;
  
- 			mt6397_vsramca7_reg: buck_vsramca7 {
--				regulator-compatible = "buck_vsramca7";
- 				regulator-name = "vsramca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -347,7 +343,6 @@
- 			};
+ 	switch (optname) {
+@@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
  
- 			mt6397_vcore_reg: buck_vcore {
--				regulator-compatible = "buck_vcore";
- 				regulator-name = "vcore";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -356,7 +351,6 @@
- 			};
+ 	case ROSE_T1:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t1 = opt * HZ;
+ 		return 0;
  
- 			mt6397_vgpu_reg: buck_vgpu {
--				regulator-compatible = "buck_vgpu";
- 				regulator-name = "vgpu";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -365,7 +359,6 @@
- 			};
+ 	case ROSE_T2:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t2 = opt * HZ;
+ 		return 0;
  
- 			mt6397_vdrm_reg: buck_vdrm {
--				regulator-compatible = "buck_vdrm";
- 				regulator-name = "vdrm";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <1400000>;
-@@ -374,7 +367,6 @@
- 			};
+ 	case ROSE_T3:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t3 = opt * HZ;
+ 		return 0;
  
- 			mt6397_vio18_reg: buck_vio18 {
--				regulator-compatible = "buck_vio18";
- 				regulator-name = "vio18";
- 				regulator-min-microvolt = <1620000>;
- 				regulator-max-microvolt = <1980000>;
-@@ -383,19 +375,16 @@
- 			};
+ 	case ROSE_HOLDBACK:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->hb = opt * HZ;
+ 		return 0;
  
- 			mt6397_vtcxo_reg: ldo_vtcxo {
--				regulator-compatible = "ldo_vtcxo";
- 				regulator-name = "vtcxo";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_va28_reg: ldo_va28 {
--				regulator-compatible = "ldo_va28";
- 				regulator-name = "va28";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_vcama_reg: ldo_vcama {
--				regulator-compatible = "ldo_vcama";
- 				regulator-name = "vcama";
- 				regulator-min-microvolt = <1500000>;
- 				regulator-max-microvolt = <2800000>;
-@@ -403,18 +392,15 @@
- 			};
- 
- 			mt6397_vio28_reg: ldo_vio28 {
--				regulator-compatible = "ldo_vio28";
- 				regulator-name = "vio28";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_vusb_reg: ldo_vusb {
--				regulator-compatible = "ldo_vusb";
- 				regulator-name = "vusb";
- 			};
- 
- 			mt6397_vmc_reg: ldo_vmc {
--				regulator-compatible = "ldo_vmc";
- 				regulator-name = "vmc";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -422,7 +408,6 @@
- 			};
- 
- 			mt6397_vmch_reg: ldo_vmch {
--				regulator-compatible = "ldo_vmch";
- 				regulator-name = "vmch";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -430,7 +415,6 @@
- 			};
- 
- 			mt6397_vemc_3v3_reg: ldo_vemc3v3 {
--				regulator-compatible = "ldo_vemc3v3";
- 				regulator-name = "vemc_3v3";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -438,7 +422,6 @@
- 			};
- 
- 			mt6397_vgp1_reg: ldo_vgp1 {
--				regulator-compatible = "ldo_vgp1";
- 				regulator-name = "vcamd";
- 				regulator-min-microvolt = <1220000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -446,7 +429,6 @@
- 			};
- 
- 			mt6397_vgp2_reg: ldo_vgp2 {
--				regulator-compatible = "ldo_vgp2";
- 				regulator-name = "vcamio";
- 				regulator-min-microvolt = <1000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -454,7 +436,6 @@
- 			};
- 
- 			mt6397_vgp3_reg: ldo_vgp3 {
--				regulator-compatible = "ldo_vgp3";
- 				regulator-name = "vcamaf";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -462,7 +443,6 @@
- 			};
- 
- 			mt6397_vgp4_reg: ldo_vgp4 {
--				regulator-compatible = "ldo_vgp4";
- 				regulator-name = "vgp4";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -470,7 +450,6 @@
- 			};
- 
- 			mt6397_vgp5_reg: ldo_vgp5 {
--				regulator-compatible = "ldo_vgp5";
- 				regulator-name = "vgp5";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3000000>;
-@@ -478,7 +457,6 @@
- 			};
- 
- 			mt6397_vgp6_reg: ldo_vgp6 {
--				regulator-compatible = "ldo_vgp6";
- 				regulator-name = "vgp6";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -486,7 +464,6 @@
- 			};
- 
- 			mt6397_vibr_reg: ldo_vibr {
--				regulator-compatible = "ldo_vibr";
- 				regulator-name = "vibr";
- 				regulator-min-microvolt = <1300000>;
- 				regulator-max-microvolt = <3300000>;
+ 	case ROSE_IDLE:
+-		if (opt < 0)
++		if (opt > UINT_MAX / (60 * HZ))
+ 			return -EINVAL;
+ 		rose->idle = opt * 60 * HZ;
+ 		return 0;
 -- 
 2.39.5
 
