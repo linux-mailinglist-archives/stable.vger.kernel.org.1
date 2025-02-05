@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1224EA28F85
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031B1A28E69
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7669F3A16D4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918373A1E1F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEACF155333;
-	Wed,  5 Feb 2025 14:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6681E14B959;
+	Wed,  5 Feb 2025 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ8CodUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHKmwGRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C0D1537AC;
-	Wed,  5 Feb 2025 14:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FF115198D;
+	Wed,  5 Feb 2025 14:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765445; cv=none; b=sPD3SOm5Fv58wySxeNIVA63L125YYm3HhAP6SozmR4cIEZ5IVGzW1HQCs196GMq08XyVRuUtThWp1nHpSS85E15aQ94M52johaKJ65kbf7fTFtNew9Y1hZw2QaFZyve+d8EK2CivOvarnsiCenM+7XVwGOGUxYKpng4HNNF36r8=
+	t=1738764767; cv=none; b=CDCbJqSyEDBGEifH4D+dZnG/jjNGVtlm5ZPaxoywIG6bhTnWbeGcIoxWS7MS24XEnCmHTodlajgBgKZPI+LkYWMvrhLSw1t/oViIuGbb124hwN5wTHPRzYRahh+lJA7mSej1GJIjdiniBtGZEJvh9g+B6tQOp0do6Bryuy9NdmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765445; c=relaxed/simple;
-	bh=B5tm3Nf0IQBElL7q/OkCi50PMDLiw503NESxSC8JODo=;
+	s=arc-20240116; t=1738764767; c=relaxed/simple;
+	bh=lQQs5az5FMlwvDcDBZRmO2Lr4ZpJxBj6aSsKOBlCBLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPaHKDlumvg1PM/MHocVu94+mTMjP6APtNUvpOU9s0RkTJHrXG/MmjHSOOGWr7TZAIu/51y959kH7hfl5gjXD/HMYpLnwUDCM8ysMgY1ynhAU+C2GJ8SMwICWhDb83e/93iuz7yfQ+KsK1rGBER+ZHgFw6zFE1Gek5qp4oBF0tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ8CodUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07321C4CED1;
-	Wed,  5 Feb 2025 14:24:04 +0000 (UTC)
+	 MIME-Version; b=AHxX0NQqObacVDp4ckzOXci43fjYcD2UyraKujpqV+szazccfXE7GZUAuF44jnoIRwJCHYDq38tWTrgmP2HU3mj2RRZMfArPjJwTXMEtFtEHshgU02RdCjDbDfx+/gKDjf1bcoa262w1AO/+o2ns1iKkUIFiwCCjuGWcAiZKyKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHKmwGRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECDAC4CED1;
+	Wed,  5 Feb 2025 14:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765445;
-	bh=B5tm3Nf0IQBElL7q/OkCi50PMDLiw503NESxSC8JODo=;
+	s=korg; t=1738764766;
+	bh=lQQs5az5FMlwvDcDBZRmO2Lr4ZpJxBj6aSsKOBlCBLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZ8CodUv+g/gjTIztE26iy5egfMhr43UUOf+C9WCZxf9X6ialMMhE3+c9Ze9P66Cc
-	 IbIpGqVXJTBLfEspou37EAhU8kXssaGCMWCcOGs/PCuZ+U3QRSBP3aiULvn1pk/SzO
-	 hqn7jwHjzkJ8xM5J7Z9psPsIDaBZOgldhryrLGuA=
+	b=pHKmwGRgD5dKGvFNLSB/iQMp5MMkP8JkOMBhMGcAb1vtBR/EQqCsRUMSyRDDAgj+Z
+	 tkuX5bpD7qATFYXY6ifGM3TlyFWC+pvmuQnLX0jOHOT12xkDu6i8bjse6+DupfWVjo
+	 KJ/9Mcv7FNojSbsDzoTbgtIXuiLV0pS06ScI/Zn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Strohman <andrew@andrewstrohman.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 169/623] wifi: mac80211: fix tid removal during mesh forwarding
+Subject: [PATCH 6.12 156/590] wifi: mt76: mt7925: fix off by one in mt7925_load_clc()
 Date: Wed,  5 Feb 2025 14:38:31 +0100
-Message-ID: <20250205134502.700109263@linuxfoundation.org>
+Message-ID: <20250205134501.253462714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Strohman <andrew@andrewstrohman.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3aaa1a5a9a2ceeb32afa6ea4110a92338a863c33 ]
+[ Upstream commit 08fa656c91fd5fdf47ba393795b9c0d1e97539ed ]
 
-With change (wifi: mac80211: fix receiving A-MSDU
-frames on mesh interfaces), a non-zero TID assignment
-is lost during slow path mesh forwarding.
+This comparison should be >= instead of > to prevent an out of bounds
+read and write.
 
-Prior to this change, ieee80211_rx_h_mesh_fwding()
-left the TID intact in the header.
-
-As a result of this header corruption, packets belonging
-to non-zero TIDs will get treating as belonging
-TID 0 by functions such as ieee80211_get_tid().
-While this miscategorization by itself is an
-issue, there are additional ramifications
-due to the fact that skb->priority still reflects
-the mesh forwarded packet's ingress (correct) TID.
-
-The mt7915 driver inspects the TID recorded within
-skb->priority and relays this to the
-hardware/radio during TX. The radio firmware appears to
-react to this by changing the sequence control
-header, but it does not also ensure/correct the TID in
-the QoS control header. As a result, the receiver
-will see packets with sequence numbers corresponding
-to the wrong TID. The receiver of the forwarded
-packet will see TID 0 in QoS control but a sequence number
-corresponding to the correct (different) TID in sequence
-control. This causes data stalls for TID 0 until
-the TID 0 sequence number advances past what the receiver
-believes it should be due to this bug.
-
-Mesh routing mpath changes cause a brief transition
-from fast path forwarding to slow path forwarding.
-Since this bug only affects the slow path forwarding,
-mpath changes bring opportunity for the bug to be triggered.
-In the author's case, he was experiencing TID 0 data stalls
-after mpath changes on an intermediate mesh node.
-
-These observed stalls may be specific
-to mediatek radios. But the inconsistency between
-the packet header and skb->priority may cause problems
-for other drivers as well. Regardless if this causes
-connectivity issues on other radios, this change is
-necessary in order transmit (forward) the packet on the
-correct TID and to have a consistent view a packet's TID
-within mac80211.
-
-Fixes: 986e43b19ae9 ("wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces")
-Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
-Link: https://patch.msgid.link/20250107104431.446775-1-andrew@andrewstrohman.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9679ca7326e5 ("wifi: mt76: mt7925: fix a potential array-index-out-of-bounds issue for clc")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/84bf5dd2-2fe3-4410-a7af-ae841e41082a@stanley.mountain
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 2bec18fc1b035..c4a28ccbd0647 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3001,6 +3001,7 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 748ea6adbc6b3..0c2a2337c313d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -638,7 +638,7 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 	for (offset = 0; offset < len; offset += le32_to_cpu(clc->len)) {
+ 		clc = (const struct mt7925_clc *)(clc_base + offset);
  
- 	IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, fwded_frames);
-+	ieee80211_set_qos_hdr(sdata, fwd_skb);
- 	ieee80211_add_pending_skb(local, fwd_skb);
+-		if (clc->idx > ARRAY_SIZE(phy->clc))
++		if (clc->idx >= ARRAY_SIZE(phy->clc))
+ 			break;
  
- rx_accept:
+ 		/* do not init buf again if chip reset triggered */
 -- 
 2.39.5
 
