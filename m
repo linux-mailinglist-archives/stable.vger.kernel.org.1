@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C08AA291B9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC3EA28EC9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 910677A047D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883AD167C6F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEC01FE476;
-	Wed,  5 Feb 2025 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC714F136;
+	Wed,  5 Feb 2025 14:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7h8i+I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13WZ7KNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4EA1FE453;
-	Wed,  5 Feb 2025 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071B01519AA;
+	Wed,  5 Feb 2025 14:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766987; cv=none; b=dDPj/apjuIpAW1HvSlglqxulNF9+3sElGBUCNm4e2Q89nUofHQQjiIB8FDEOGkhz2yeOBTMn53+YtsmAd79eGiOpvyWzW1k7kuoTnae2bA5h7KetqP4BCSqBcOhyJnO4Mc/nPbBhDobIBbo4kQJMT6yT+8sNMp+Q4itslDQMHwY=
+	t=1738765024; cv=none; b=Vfl7sc8vq6m8YExiGYs90LLqWm2Grvp6f0jXwACYjSZBIKAMkzZV0WCCO5Jlofp6ZFVe6kQtNFlHKP02psSmwYNCX3vqMuTtRcy/mrjfpmxsSCAvAB6PBMZVdloP0dUK4wH3gdDGEisnmS0SYkuiFF5XSsj6+z5bregwET09QKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766987; c=relaxed/simple;
-	bh=9UPtRgvKae0hQa3m8V5Fogz8sLITH9KBBl0aANKY5cY=;
+	s=arc-20240116; t=1738765024; c=relaxed/simple;
+	bh=1TeOGlnJxfnvH2gPArZM8uAIA+j2Ywnw7QSpgQ7GOsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjyzLUn4qAjnGz7wX8Pmw7sjGINcZCqN64CMukDh7Prqd4dR6cIcycyJjGxdgbVRIjMGxHmAUzr8YP3hTI8PSi8ExrQgqxiidDPQ3XEXqlJPZHkD7L4b8P3UApc5C1a1ssqfnzTmtD0tJj3I+S15OEf5Bqzp3RaCvT+ARWcjaRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7h8i+I+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B236C4CED1;
-	Wed,  5 Feb 2025 14:49:46 +0000 (UTC)
+	 MIME-Version; b=iMwY+TsrVuPSpI+vmobio5FMsSgvv5o5Mf5JkXMPD0sYSZu+Xlyp/1UyKauFZ8Yusr9/sPcY+zSKvJUtOlUbaUhKQgOGrByVs5RPo1/JGobCAO+LiOwooV1ZRQNVP9Cu2CuMgsgyNux6C5caqSO0DZ9k60qb03FMvqT4Fzk8Ckk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13WZ7KNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5E5C4CED1;
+	Wed,  5 Feb 2025 14:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766987;
-	bh=9UPtRgvKae0hQa3m8V5Fogz8sLITH9KBBl0aANKY5cY=;
+	s=korg; t=1738765023;
+	bh=1TeOGlnJxfnvH2gPArZM8uAIA+j2Ywnw7QSpgQ7GOsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7h8i+I++p9P5YUNw5/3XguMsuZY5m3F+2We+XzymX8jN57lD1AhgYre0ww7w8Urx
-	 07WhPYPb4exJB023wlUZBXneslvsn/e78i+9xWWyWBdnVRKTrygLGsnXl2SaFDB8MU
-	 r1L80pqLBUbCNb4EhzZlRR2yyrqWr8NWfnve942U=
+	b=13WZ7KNBeWZ/z+4YGQmcwGSTG+tjIijH3qmwWIC+Hxp68QOz+f+gpZY8T1GgmXEVR
+	 Dec+f5UB+BLXr3p536rwFRVTaZ1AliQBYRxGEx45CKIcUfZMImC1onkCroT0w8uE3C
+	 GiJq9s8UzHvmAtv8/ENn15a/CefHW7+vlcYBWVlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 389/590] arm64: dts: rockchip: fix num-channels property of wolfvision pf5 mic
+Subject: [PATCH 6.6 225/393] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Drop pp3300_panel voltage settings
 Date: Wed,  5 Feb 2025 14:42:24 +0100
-Message-ID: <20250205134510.150755342@linuxfoundation.org>
+Message-ID: <20250205134428.914536394@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@wolfvision.net>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 11d07966c83f5eccf6b927cb32862aef58488e23 ]
+[ Upstream commit 0b5b1c881a909f17c05ef4b1ccb421e077f6e466 ]
 
-The Rockchip RK3568 PDM block always considers stereo inputs. Therefore,
-the number of channels must be always an even number, even if a single
-mono microphone is attached.
+The pp3300_panel fixed regulator is just a load switch. It does not have
+any regulating capabilities. Thus having voltage constraints on it is
+wrong.
 
-Fixes: 0be29f76633a ("arm64: dts: rockchip: add wolfvision pf5 mainboard")
-Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
-Link: https://lore.kernel.org/r/20241218-b4-wolfvision-pf5-update-v1-1-1d1959858708@wolfvision.net
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Remove the voltage constraints.
+
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20241030070224.1006331-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-index 170b14f92f51b..f9ef0af8aa1ac 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-@@ -53,7 +53,7 @@
- 
- 	pdm_codec: pdm-codec {
- 		compatible = "dmic-codec";
--		num-channels = <1>;
-+		num-channels = <2>;
- 		#sound-dai-cells = <0>;
- 	};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+index 629c4b7ecbc62..8e0575f8c1b27 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+@@ -39,8 +39,6 @@
+ 	pp3300_panel: pp3300-panel {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "pp3300_panel";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pp3300_panel_pins>;
  
 -- 
 2.39.5
