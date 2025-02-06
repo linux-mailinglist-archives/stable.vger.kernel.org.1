@@ -1,159 +1,130 @@
-Return-Path: <stable+bounces-114057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FAFA2A526
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB5AA2A52E
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABCD1887DE1
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5911889504
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA56226198;
-	Thu,  6 Feb 2025 09:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E93226528;
+	Thu,  6 Feb 2025 09:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b="l2bpM0JJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="FWCwd1uU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10625.protonmail.ch (mail-10625.protonmail.ch [79.135.106.25])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA1322616D
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 09:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95582144BE
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 09:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738835511; cv=none; b=CrL2IPZ/iXd62R7J0+oX/tmoJsus6jnOe1UporcW8TRmbFWAIFwykPEQyTe8WmDinPQlkOFi6KQabxGTgLkELQ7WH7XvNIt5F0ZGBVd7Swt88Bnouiz8eBUIBHU5uR5NT9aVnGZCH6HsHZVcSzSW1wHQqjYHQP6GgkBY87k6EKI=
+	t=1738835594; cv=none; b=QX/Eb3fJtl7svHt3NOTK0JeJ3PEMMLJ5bACnpHf5rQTsBV8syGhfa1xCYV0h92HEdGfhB8LZsDLh9ZVs57l4wgscqR41FrTVUE/ppgxpNF1EuvqzmoJ1EF1SFEYXYqAsf0TLwsgG4WNnV22h07JyZP/D0fsLLzOv9sPcFh264a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738835511; c=relaxed/simple;
-	bh=Ni8gutXVKMRqos6yCMp4awMbgZVqcfe2letlDQuVQfE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sgf14SuhGGDNbRWlaYf6OKgJRD+oHN218RMPsSCAg+HklJQQgoh8m2FJPBQ2nhjZCM8oBRUXL/UNmyQNtgXTu7wY9ekV2b8Ii/B20pCFn8mbXuOVMKp67Jqbc06UGJx8Jh1fiYECdD56fKQFA9uq5n4Nuytdteb0KVbSlE26cbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com; spf=pass smtp.mailfrom=yhndnzj.com; dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b=l2bpM0JJ; arc=none smtp.client-ip=79.135.106.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yhndnzj.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yhndnzj.com;
-	s=protonmail2; t=1738835500; x=1739094700;
-	bh=L6gAvZL7PgSB+nG1k5fJgwlRsKzBynySE+dxg3Aa6uc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=l2bpM0JJVRIsa/cTQElE6hrDbyFw7hIhO5dKxN5KLi7FMIOVpt3GzzQZ4un0nG6GE
-	 H8ezuNG8NB+irQQ/6kup179c/MQ/H/rAHxThCc2o1/pjy7zN5i4HE8NEGZakXFiRgU
-	 ifrVlKnnjhCuBldmFAtn08n3kfcVWwRsUe/tk4xmg52SHY6LxbP2DkQ5j5Dh1AHs1y
-	 n4s3i+Buk0Sh+yrOKosD0QBMD5uk1ej6Etu09KKJsSLT2hIAXb7wIlo3aUxXc0VxyX
-	 eeWQGE/7NUAqE1MCpTOd75K6xerDKv3IGeTnhe4jZDRKXNVcrQ8DxQnb5ZWYzIcbDe
-	 tRHoitHcpklqw==
-Date: Thu, 06 Feb 2025 09:51:33 +0000
-To: "brauner@kernel.org" <brauner@kernel.org>
-From: Mike Yuan <me@yhndnzj.com>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "cgzones@googlemail.com" <cgzones@googlemail.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] fs/xattr: actually support O_PATH fds in *xattrat() syscalls
-Message-ID: <Kn-2tlpxN8YNmh0j0udjQ8YIFNZMVVJYJh-LyBoYNBfpax28PNUkXuH6gnod7if2eX3NRVs3Ey8uCHRpwg_S5hPX_ADtrgMZbDTWFpHd_uU=@yhndnzj.com>
-In-Reply-To: <20250206-uhrwerk-faultiere-7a308565e2d3@brauner>
-References: <20250205204628.49607-1-me@yhndnzj.com> <20250206-uhrwerk-faultiere-7a308565e2d3@brauner>
-Feedback-ID: 102487535:user:proton
-X-Pm-Message-ID: 3a961205d5f56ec1f7e40996895013c95d3b8356
+	s=arc-20240116; t=1738835594; c=relaxed/simple;
+	bh=V39skD+/eTe9Gts1XP+dz8FWYa7ChamoYCoJzGWc1T0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lieBrTzvpVFNg4gjk1vIQ7TNof2KtwIH+XioNHoV3807GhIbjIAEnbeTvsN1iOq1e7dTjW8/wD3Wfq8LI7ptk+/t4AY1r2AsImI2bFponL4MMYMXxiV3v7sCsJZAQBT3HKyAQtNWl9tkptG1LAHGO0SSnJGV81+TaJfu4Mhr4HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=FWCwd1uU; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+	by cmsmtp with ESMTPS
+	id fmVAtEmMDAfjwfyZLtABJS; Thu, 06 Feb 2025 09:53:11 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fyZKtHmutUvNvfyZKtSNyN; Thu, 06 Feb 2025 09:53:10 +0000
+X-Authority-Analysis: v=2.4 cv=SMZEVvvH c=1 sm=1 tr=0 ts=67a48686
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NrxwET5oIQlMPkpfD34350qDLLEVZjRr+OYwqmaMwJw=; b=FWCwd1uUJZ45ll5DV+TxNtLwwV
+	C007+cPyH9JRJF/ctmlH3wbiMHXEA7imn9asUi/g6VixDGEg5j7vZdnd30k5t1bl+SDmab/RfT0qs
+	J2LH0h8ySdr7yFDskoWpQADpQuvecZ3QM6Nm338wWA60f+BLsWvRhXdKAG2FACeUlG7OA4/+KSivw
+	5+/Z55U14A1IVjP3RSVduMd3OkBtjy4wlCqCxKCrd71duhnCaywDz4UQObzr/UxxfFPE/hBFlz0pb
+	g+uWbhN3EloJd7jRtk6OmRQNKgq1LL7ppe311tLR7jGvlDWxv0ydR9hYFzdj/1gKmbwQ/SqyB/S7I
+	aeTIka/g==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:45656 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tfyZJ-001qjF-0c;
+	Thu, 06 Feb 2025 02:53:09 -0700
+Message-ID: <66c87ad9-5987-42f1-b97f-75d53a0957d3@w6rz.net>
+Date: Thu, 6 Feb 2025 01:53:06 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/393] 6.6.76-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250205134420.279368572@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tfyZJ-001qjF-0c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:45656
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 56
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfB7GVNKD7XOuSSU/dG0md8Qwd00h7aPa8ckkwDB2W+1+Gm7fuLbb3sbVyUCWcR+qQV3Ch8kOh6qIZm0HTYAMwtbKp7Ybo8KnezygmTGokHH0ELGhWak4
+ EhLG4Fv6/Oq+6SmoWha+5hoPSPuZoJ2PIzqx4S9LiJM26VTpdM/err9EozjzS3VB9Vu4OH8iVGBEaA==
 
-On 2/6/25 10:31, Christian Brauner <brauner@kernel.org> wrote:
+On 2/5/25 05:38, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.76 release.
+> There are 393 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 07 Feb 2025 13:43:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.76-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
->  On Wed, Feb 05, 2025 at 08:47:23PM +0000, Mike Yuan wrote:
->  > Cited from commit message of original patch [1]:
->  >
->  > > One use case will be setfiles(8) setting SELinux file contexts
->  > > ("security.selinux") without race conditions and without a file
->  > > descriptor opened with read access requiring SELinux read permission=
-.
->  >
->  > Also, generally all *at() syscalls operate on O_PATH fds, unlike
->  > f*() ones. Yet the O_PATH fds are rejected by *xattrat() syscalls
->  > in the final version merged into tree. Instead, let's switch things
->  > to CLASS(fd_raw).
->  >
->  > Note that there's one side effect: f*xattr() starts to work with
->  > O_PATH fds too. It's not clear to me whether this is desirable
->  > (e.g. fstat() accepts O_PATH fds as an outlier).
->  >
->  > [1] https://lore.kernel.org/all/20240426162042.191916-1-cgoettsche@sel=
-tendoof.de/
->  >
->  > Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
->  > Signed-off-by: Mike Yuan <me@yhndnzj.com>
->  > Cc: Al Viro <viro@zeniv.linux.org.uk>
->  > Cc: Christian G=C3=B6ttsche <cgzones@googlemail.com>
->  > Cc: Christian Brauner <brauner@kernel.org>
->  > Cc: <stable@vger.kernel.org>
->  > ---
-> =20
->  I expanded on this before. O_PATH is intentionally limited in scope and
->  it should not allow to perform operations that are similar to a read or
->  write which getting and setting xattrs is.
-> =20
->  Patches that further weaken or dilute the semantics of O_PATH are not
->  acceptable.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-But the *at() variants really should be able to work with O_PATH fds, other=
-wise they're basically useless? I guess I just need to keep f*() as-is?
+Tested-by: Ron Economos <re@w6rz.net>
 
->  >  fs/xattr.c | 8 ++++----
->  >  1 file changed, 4 insertions(+), 4 deletions(-)
->  >
->  > diff --git a/fs/xattr.c b/fs/xattr.c
->  > index 02bee149ad96..15df71e56187 100644
->  > --- a/fs/xattr.c
->  > +++ b/fs/xattr.c
->  > @@ -704,7 +704,7 @@ static int path_setxattrat(int dfd, const char __u=
-ser *pathname,
->  >
->  >  =09filename =3D getname_maybe_null(pathname, at_flags);
->  >  =09if (!filename) {
->  > -=09=09CLASS(fd, f)(dfd);
->  > +=09=09CLASS(fd_raw, f)(dfd);
->  >  =09=09if (fd_empty(f))
->  >  =09=09=09error =3D -EBADF;
->  >  =09=09else
->  > @@ -848,7 +848,7 @@ static ssize_t path_getxattrat(int dfd, const char=
- __user *pathname,
->  >
->  >  =09filename =3D getname_maybe_null(pathname, at_flags);
->  >  =09if (!filename) {
->  > -=09=09CLASS(fd, f)(dfd);
->  > +=09=09CLASS(fd_raw, f)(dfd);
->  >  =09=09if (fd_empty(f))
->  >  =09=09=09return -EBADF;
->  >  =09=09return file_getxattr(fd_file(f), &ctx);
->  > @@ -978,7 +978,7 @@ static ssize_t path_listxattrat(int dfd, const cha=
-r __user *pathname,
->  >
->  >  =09filename =3D getname_maybe_null(pathname, at_flags);
->  >  =09if (!filename) {
->  > -=09=09CLASS(fd, f)(dfd);
->  > +=09=09CLASS(fd_raw, f)(dfd);
->  >  =09=09if (fd_empty(f))
->  >  =09=09=09return -EBADF;
->  >  =09=09return file_listxattr(fd_file(f), list, size);
->  > @@ -1079,7 +1079,7 @@ static int path_removexattrat(int dfd, const cha=
-r __user *pathname,
->  >
->  >  =09filename =3D getname_maybe_null(pathname, at_flags);
->  >  =09if (!filename) {
->  > -=09=09CLASS(fd, f)(dfd);
->  > +=09=09CLASS(fd_raw, f)(dfd);
->  >  =09=09if (fd_empty(f))
->  >  =09=09=09return -EBADF;
->  >  =09=09return file_removexattr(fd_file(f), &kname);
->  >
->  > base-commit: a86bf2283d2c9769205407e2b54777c03d012939
->  > --
->  > 2.48.1
->  >
->  >
->  
 
