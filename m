@@ -1,98 +1,150 @@
-Return-Path: <stable+bounces-114065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623C6A2A5DA
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:34:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C168A2A639
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FE4B18887D8
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:34:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC443167F6D
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94CB226554;
-	Thu,  6 Feb 2025 10:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4FB22757C;
+	Thu,  6 Feb 2025 10:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iot787BE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czSQMmQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2DA18B03;
-	Thu,  6 Feb 2025 10:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5BE22756B
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 10:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738838064; cv=none; b=P5iTwt1wGRmTQOMPpKnVyljrpUQtLu4Wyn/IOofFkfoA+pPJqw3O3WkZO26AC038E9teeF1P35NtNZudMvlljUUm++sFJqUMxCeH1o1vWQQK3Fl2QXKEbCER730d3CZlaGJhxRRX0HOYuUvzW9ej+qHPutja7qVX94VamONo2Ck=
+	t=1738838552; cv=none; b=GHFlcU+wMEYmoi1S20H3JuaVDY6FdVvUXH0d2AeocxsP5K6AKESM4yPBiMlvp84nBMdYjPXC3twTb5yVzLfiJ+GOCELqQyMsxF+FnmYxCMBGdNH/Z7XtiAm5rmalytfoCZlurMgT/ce4+usIIrR1PJ2nKZvtqTGpX166KK3vS/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738838064; c=relaxed/simple;
-	bh=HtJGuuBPY7GzLXY3kxC0VzXl+lpKcP1odVWAB06tJ9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NIJHoiLweQNY//MQ0CmuHbqWXwNTKd0Ts4/KjD064Ka70ZhirwmlR0am2/NL36Z9YeC5wneVHKGiz+VTCW/LAkhj3IKQJv1jJelLqKZ3TXRwr8pXESaCr3oN5bJd/hYVn+hfpAwvS4axk2x7jn0sRx1CQzHdCCq3/3o7WbRV6Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iot787BE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E42C4CEDD;
-	Thu,  6 Feb 2025 10:34:20 +0000 (UTC)
+	s=arc-20240116; t=1738838552; c=relaxed/simple;
+	bh=jfV7FRBl0rJ0JOMqPnXz12hpk6KIsvGmE5SGttHHEos=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gv2A8WLS2cirs4SKW3+AyQMQGr3hlsv6/O9OynATPOASeRCVLAuWMpkwaZ5wD1PmxDJzWo6Fw4TnfIXf1k2V3G70/nCUlPawSdIhSggA76BkAIwXc0p57jgd5u0K2wKnl/s9o5wN2iK6UNULpHY6MCdLvs0ogqMne9JVjq2mcAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czSQMmQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3EAC4CEDD;
+	Thu,  6 Feb 2025 10:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738838063;
-	bh=HtJGuuBPY7GzLXY3kxC0VzXl+lpKcP1odVWAB06tJ9Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Iot787BECykWp2gtP3LBBfpkGun7l00fOPAElaA5BAiQCtwwTeI+lVecYMzKwAnts
-	 4mcyF+D7fWht1j+3rEu3Cj1DeyPer4iHjAMiI9YUWs+kcZZlBXtr31rsdaxfYzyLlo
-	 W04h+ye22xoupObrmhPOhQ3wmdVoNLUsufgqTPam+umbVH0CCgAW87+XGI3BvdHj7B
-	 6bGGqk9nn8pKjJ1FUWcQSS28fa1KRdLaD1dIgqoGtHBv8bFZMZk/H7/f1DvM+JP+ZX
-	 woAuP/pEtkO6VckSw7t2BXzkqiKH0LqFV0wwy5n6jYGwhxehp1ZAZDN0bLIEDFYrQR
-	 6h+Szxrv3EMNQ==
-Date: Thu, 6 Feb 2025 10:34:18 +0000
-From: Simon Horman <horms@kernel.org>
-To: Chen-Yu Tsai <wens@kernel.org>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Steven Price <steven.price@arm.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH netdev] net: stmmac: dwmac-rk: Provide FIFO sizes for
- DWMAC 1000
-Message-ID: <20250206103418.GO554665@kernel.org>
+	s=k20201202; t=1738838552;
+	bh=jfV7FRBl0rJ0JOMqPnXz12hpk6KIsvGmE5SGttHHEos=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=czSQMmQ61T7Kp3fWGXbm1EvX4Rf2+uS96o6ngh21tMvODk939IAhEOjTKwL98Lll6
+	 F01JFcFzACxcJS+fsx9durY1YXOinWFM7t6vSo+hoKVlc6NhlSSlXhO1A9hy1xyoq6
+	 jmSELQBP7o5rxcGrX894ZhJ4kA7dxzuXq6YwKaBf4RhjbqUArkbReY/3PyZ3Ie9YA1
+	 HXWTBgtfN7IIKzush33wnxl3wb9W69RnL+L//hgXZw6rduy1aGAWn9o9A3QEAg62hw
+	 0dG0EpVeYAl6klVxYks0VsWykI0wRTgse3I2VTTphI+8uWsqVAULn2+EIFm8iUg+CW
+	 hCdGLcITFTMIQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tfzL3-0015WC-S4;
+	Thu, 06 Feb 2025 10:42:29 +0000
+Date: Thu, 06 Feb 2025 10:42:29 +0000
+Message-ID: <86seortkve.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	eauger@redhat.com,
+	fweimer@redhat.com,
+	jeremy.linton@arm.com,
+	oliver.upton@linux.dev,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	tabba@google.com,
+	wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH 7/8] KVM: arm64: Mark some header functions as inline
+In-Reply-To: <Z6SJAkogWN9D7ZKf@J2N7QTR9R3>
+References: <20250204152100.705610-1-mark.rutland@arm.com>
+	<20250204152100.705610-8-mark.rutland@arm.com>
+	<b76803b7-c1b3-426b-a375-0c01b98142c9@sirena.org.uk>
+	<Z6SJAkogWN9D7ZKf@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z6OjmtiZ4A8BzvsP@shell.armlinux.org.uk>
- <CAGb2v64CZWZwC7T9NNN7Re8pkCLQZEh3bcraYjcQRyVxtJgS5w@mail.gmail.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Feb 06, 2025 at 01:40:17AM +0800, Chen-Yu Tsai wrote:
-> On Thu, Feb 6, 2025 at 1:38 AM Simon Horman <horms@kernel.org> wrote:
-
-...
-
-> > I think the point is that someone needs to formally
-> > submit the revert. And I assume it should target the net tree.
+On Thu, 06 Feb 2025 10:03:46 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
 > 
-> Russell sent one a couple hours ago, so I think we're covered.
+> [resending as I corrupted MarcZ's email when moving from CC into TO]
 > 
-
-On Wed, Feb 05, 2025 at 05:44:58PM +0000, Russell King (Oracle) wrote:
-> On Wed, Feb 05, 2025 at 05:38:24PM +0000, Simon Horman wrote:
-
-...
-
-> > I think the point is that someone needs to formally
-> > submit the revert. And I assume it should target the net tree.
+> On Wed, Feb 05, 2025 at 09:50:30PM +0000, Mark Brown wrote:
+> > On Tue, Feb 04, 2025 at 03:20:59PM +0000, Mark Rutland wrote:
+> > > The shared hyp swtich header has a number of static functions which
+> > > might not be used by all files that include the header, and when unused
+> > > they will provoke compiler warnings, e.g.
+> > 
+> > With at least LLVM 18 we still have some issues with unused statics
+> > arising from the aliased function definitions:
+> > 
+> > In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
+> > ./arch/arm64/kvm/hyp/include/hyp/switch.h:699:13: warning: unused function 'kvm_hyp_handle_iabt_low' [-Wunused-function]
+> >   699 | static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+> >       |             ^~~~~~~~~~~~~~~~~~~~~~~
+> > ./arch/arm64/kvm/hyp/include/hyp/switch.h:701:13: warning: unused function 'kvm_hyp_handle_watchpt_low' [-Wunused-function]
+> >   701 | static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+> >       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 
+> > The simplest thing would be to expand the alises into simple wrapper
+> > functions but that doesn't feel amazing, I don't know what people's
+> > taste is there?
 > 
-> For what I think is the third time today (fourth if you include the
-> actual patch...)
+> Adding 'inline' seems to work, which seems simpler?
 > 
-> https://lore.kernel.org/r/E1tfeyR-003YGJ-Gb@rmk-PC.armlinux.org.uk
+> That said, I'm going to go with the below, adding 'inline' to
+> kvm_hyp_handle_memory_fault() and using CPP defines to alias the
+> function names:
+> 
+> | static inline bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu,
+> |                                                u64 *exit_code)
+> | {
+> |         if (!__populate_fault_info(vcpu))
+> |                 return true;
+> | 
+> |         return false;
+> | }
+> | #define kvm_hyp_handle_iabt_low         kvm_hyp_handle_memory_fault
+> | #define kvm_hyp_handle_watchpt_low      kvm_hyp_handle_memory_fault
+> 
+> I think that's clearer, and it's more alisnged with how we usually alias
+> function names in headers. Other than these two cases, __alias() is only
+> used in C files to create a sesparate exprted symbol, and it's odd to
+> use it in a header anyhow.
+> 
+> Marc, please should if you'd prefer otherwise.
 
-Thanks, I see it now.
+Nah, that's fine by me.
+
+My only issue was with marking functions as inline, and yet storing
+pointers to these functions. But it looks like the compiler (GCC 12.2
+in my case) is doing a good job noticing the weird pattern, and
+generating only one function, even if we store multiple pointers.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
