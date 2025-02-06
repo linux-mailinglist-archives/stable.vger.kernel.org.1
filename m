@@ -1,124 +1,125 @@
-Return-Path: <stable+bounces-114166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A71A2B1C2
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:56:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C2AA2B205
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB281188542D
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 18:56:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1E93AA2ED
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6D61A23A6;
-	Thu,  6 Feb 2025 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4181519F464;
+	Thu,  6 Feb 2025 19:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6b0357/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktnqYp0p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193B41DE4EA;
-	Thu,  6 Feb 2025 18:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A4323959B
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 19:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738867919; cv=none; b=mgyL7e+sz856R0cwLuA6iHbwq2AswqEcBLDq1FP+KUPHkig/cmwknpc+iWXIi+SLL1j9VIhFJmik3K0IoRWS4MIs5zdsbWsGZeDbCGNPyB8xT8G0DNdmuXL0onHGRBghj7CaVexunH02dxhXnAbM2HyHhgeqdq0y55FawnBSELY=
+	t=1738869179; cv=none; b=LCHVQgsJ67zA+3z/IGZu5Undmy8mpE5LwvA87oVF9svKxZug/tAsXo6Bh2/rvU6I0Nkk4Gb5iNyoTq/BwWjE/KE3QddqFi1zetA7do6PWVzVDZiJO1LL7XS8UFjmhcqz78Lmw50E0LiBHThH0VR3uZntY5v8ZUnreyiskvevWL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738867919; c=relaxed/simple;
-	bh=Apls7xlXpI4BlG2F+Xa4MPAdsuwb3kTPYtmLlbvU+hU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FVfe95rAL7YeVHuK/tBrGrQKefqTxcioDYZ2RTOS2j9NbGHg4vKAenrcBnw6RRk/2AnGt/diXC0C8uQOV7MtEJsKEy1bmiFlZUtWzh7KvK+zpwbj1WjWVDew7Kyv8O8VbvRY1N1TN/edSQxufUOhbdzvZXyiwwbU0kqXngdaHbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6b0357/; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-216406238f9so3088895ad.2;
-        Thu, 06 Feb 2025 10:51:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738867916; x=1739472716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MQDe7d33d+8AbbWFyoGmO2lz3zYl9Xdp8K24tZeJFrk=;
-        b=J6b0357/mvQiC2YWXnIKisuGd1tDAIm9/BriBCnjIH6N7vg628LR3cMDOrf5jg2X9c
-         87erRpA/k6vnX1B7A358XrM3jrIrV4arnoSTZb+4s22RHoveEbJGzbhSKeRCG2BZrr4s
-         pSpZIMIhpjg0Atwrw1Nhl0eB+I2eOdCD6mq+hia0Iwb7WYdhdTgHIZ4IC3XTk+Hh29p6
-         C4QtKr8KQuoH5eJcpAJUjpS8Val/CpByh2AHkm2XJcmu6E98Db+GzKfyRUJ/OsgtRcRm
-         1UXLq2+3+daEOcXuFEvWXVqGHQRcXJI6T/PltKXqdaHkAahHsbCVLAMIuxtM2DSVz3/U
-         grFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738867916; x=1739472716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MQDe7d33d+8AbbWFyoGmO2lz3zYl9Xdp8K24tZeJFrk=;
-        b=h67HNkJwq6NEWTEZ7gNvO9RXS9N2X5KhPuiBBJu0CUwCYgSKo+SGc2lpCpuYvd5P7o
-         jcYq/IpbsSOVvNr3ihBOB86iOOyMh17Uy6DR87WYEhAbC3YgKaTPUvCAmW2IPPi7gRi2
-         nOX+TzEN8VkrGC0Ec/pGGR6OaBnTejsv79EIpDrVk683Rw2ZH0S17vFatJ/BCeTXjYWC
-         HH/AxnzAeLQkesGfs6nj4Y73aZ3yD1wayaeKqmVn+lbc+0rXu68XOgyO99B7XgXXAKt0
-         l4unbWT5EKSCYYGa/AAedSqidfuqoMah1hcPCQv0ZrvKnW7vFh7oYCrkcRbXUFbAmuyn
-         DHMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVY/lIihLCaE9TlF4DJUGjEiaWKMScfXK17SDk+4Y/UdVEpySwAzciE02aIE+oPmqAuN4tLQIks@vger.kernel.org, AJvYcCVjZBOmmnAMcWT5xr9kavS2dHiakETfNOnuvKZZIVsdi37j1akXTHjHjXAiU6BErAeweF5lgyaojKSK4nM=@vger.kernel.org, AJvYcCXUFeCZjmKf5mqg/G1//IYs1rABK5VyjKCTJqkRNnuIbFxz0sAyYH1SOzPEHoVZavzQXGFA9bnXumqJlckh+jw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVV86uuI9ZmJRopSLHmPw8d6/h/hG2hVYODv2NWJAm9hhqwIPO
-	JYj7Ihx9Ae5HpJSvsQUqM55Yr6kzbItAKQVRpRuMdbs7hmrYXai8MYcUapX5h9bmenw8Ab8AZq5
-	KV+Ka+rmV5bpi54qE0I3DuxIMUPs=
-X-Gm-Gg: ASbGncvO++8n/a61KP+Yp5vB0FBHVRYAvNnFTckdUuWb2NgFnGo+lmwmIOThk+SK/W5
-	c5y9wEn5Pitu1k9SGbFmgVkS6jKHiboOxgRXwRsV3+PnExuqpAcaLgMvoREtRqnZxfbwLVi7W
-X-Google-Smtp-Source: AGHT+IHXyLnCF10siG1h3PoSY2AAnWYTS1Ir/xOCwCqiVyI4gHTlCdy+ATAintPEFk7FJn2T3sWetjp0FJZPhtD5RFE=
-X-Received: by 2002:a17:902:db0b:b0:20b:9b07:777a with SMTP id
- d9443c01a7336-21f4e771cf8mr1088025ad.10.1738867916182; Thu, 06 Feb 2025
- 10:51:56 -0800 (PST)
+	s=arc-20240116; t=1738869179; c=relaxed/simple;
+	bh=g9/g/hpUUywCC6oyxEmQw01HogHxdD6MoRuJVjntsiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XrTyBmB0jcRpP3s+rrik7tnHpq1wpOerdF1bT3kWGblLXf/R5JOLdht9sV99/3BMlPhElepjayEGDq2Pmc5QobQHyMPCmmYDe75PKgtAFmapxma8SIlngh7AkrwSv1EZfnBVL8z158m98YmVOkTa5t5k2YDQzWgivLKczzg9m2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktnqYp0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B887BC4CEE0;
+	Thu,  6 Feb 2025 19:12:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738869178;
+	bh=g9/g/hpUUywCC6oyxEmQw01HogHxdD6MoRuJVjntsiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ktnqYp0p/btUoBkPX5EIvvqEirIqBp/Wz0b38Bh1kBQj17p/6hDw3zy368JIKput7
+	 89Rqp7LxNfhNiQ2FqZBfm17aCOSvfWTwa8GAK9Oe6awvMXk7GAXHGGknE8/lD+4/yQ
+	 57ppLhBLeawa+kAWYPo9r7sYA+nK92S5X5dx1a4DKVJ+PAFxYXTs2CVRse1nsUK9xA
+	 kjHe3vtUBbJsYB5Wp/mphJrtoaK6F/QnZrTvZuRKIOKVg6WD+Q6fd6S9dL+K3llZ9e
+	 No5a9bdBpSLXQI4R4ggKoX3h/LxsPOlZ2vbl65D8oab9VklliW2EC2kj6ik+deSR/P
+	 oLE9wNyVpUtjw==
+Date: Thu, 6 Feb 2025 19:12:52 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+	eauger@redhat.com, eric.auger@redhat.com, fweimer@redhat.com,
+	jeremy.linton@arm.com, maz@kernel.org, oliver.upton@linux.dev,
+	pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com,
+	wilco.dijkstra@arm.com, will@kernel.org
+Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <9972d29a-1387-408c-9070-d53b025191f2@sirena.org.uk>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-9-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
-In-Reply-To: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 19:51:41 +0100
-X-Gm-Features: AWEUYZnnDjBj8aaLIlLDC8SjVdoNXjCv4Z3bXs5NTkwlAeXWYNqkYkHQw2bJDTY
-Message-ID: <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
-Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: x86@kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TAjyd6cungso5X+6"
+Content-Disposition: inline
+In-Reply-To: <20250206141102.954688-9-mark.rutland@arm.com>
+X-Cookie: With your bare hands?!?
 
-On Mon, Feb 3, 2025 at 9:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> When using Rust on the x86 architecture, we are currently using the
-> unstable target.json feature to specify the compilation target. Rustc is
-> going to change how softfloat is specified in the target.json file on
-> x86, thus update generate_rust_target.rs to specify softfloat using the
-> new option.
->
-> Note that if you enable this parameter with a compiler that does not
-> recognize it, then that triggers a warning but it does not break the
-> build.
->
-> Cc: stable@vger.kernel.org # for 6.12.y
-> Link: https://github.com/rust-lang/rust/pull/136146
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-x86: I will pick this up, but if x86 wants to do so, that would be
-welcome -- in which case:
+--TAjyd6cungso5X+6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-    Acked-by: Miguel Ojeda <ojeda@kernel.org>
+On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
 
-and I would recommend updating the Cc stable tag to mention 6.13 and
-the reason to avoid over-backports, e.g.
+> +static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
+> +{
+> +	u64 zcr_el1, zcr_el2;
+> +
+> +	if (!guest_owns_fp_regs())
+> +		return;
+> +
+> +	if (vcpu_has_sve(vcpu)) {
+> +		/* A guest hypervisor may restrict the effective max VL. */
+> +		if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu))
+> +			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+> +		else
+> +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> +
+> +		write_sysreg_el2(zcr_el2, SYS_ZCR);
+> +
+> +		zcr_el1 = __vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu));
+> +		write_sysreg_el1(zcr_el1, SYS_ZCR);
+> +	}
+> +}
 
-    Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only
-(Rust is pinned in older LTSs).
+I don't think we should worry about it for this series but just for
+future reference:
 
-Cheers,
-Miguel
+These new functions do unconditional writes for EL2, the old code made
+use of sve_cond_update_zcr_vq() which suppresses the writes but didn't
+have the selection of actual sysreg that write_sysreg_el2() has.  I
+believe this was done due to a concern about potential overheads from
+writes to the LEN value effective in the current EL.  OTOH that also
+introduced an additional read to get the current value, and that was all
+done without practical systems to benchmark any actual impacts from noop
+writes so there's a reasonable chance it's just not a practical issue.
+We should check this on hardware, but that can be done separately.
+
+--TAjyd6cungso5X+6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmelCbMACgkQJNaLcl1U
+h9CrEgf/TGgo4RVmaJxXS634U8oUIbNEIuXqOQJAqsTazdIud+hAZMt+dIaXwL+7
+fNdixA7N2DycoddigmHo+3CMMWlhdqjUx+6KKg/hA/RLflnT3LyT4h/lmRgxiz8d
+6MaxnP3+7vRubFCHotGBIQayLt5VhIlOYpwDikHcXAU2xWd7i0tAYqkzUivQJD2z
+mT1QjZOh7Dd/AKNOH9z2PeAfEn/EsMksgzWl3p/ElBEQ2Qbyq7GVadyGn6xhLooP
+UyQLxrI+ReiZj2kXHa6kez9GYlhABFU9dlz0VDUtKLlgdR2m4mC7HJ4bTWm/xuaD
+6pR0opLZp/dGO/Djx6pnmvuH+ri02A==
+=FSAp
+-----END PGP SIGNATURE-----
+
+--TAjyd6cungso5X+6--
 
