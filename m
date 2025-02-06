@@ -1,136 +1,113 @@
-Return-Path: <stable+bounces-114063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4C0A2A5C5
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:26:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785E9A2A5D1
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364233A71AD
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2ED160AA2
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33C3227564;
-	Thu,  6 Feb 2025 10:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="c2wdjK8E"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F53622686A;
+	Thu,  6 Feb 2025 10:28:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B078122540F
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 10:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188EA226553
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 10:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738837578; cv=none; b=WaLYIHmCarFFSRjrSDjuC3HqM0AnFsfGjXdGzOkcZoX8KSb4bIoFnlZHKFXoj8xnD6t356SVbv1lgjvOcxkWMcNU76BP+HAVQvlUWEXQOwO8Ktqx/a6H3DXu7ATlEOPGnlb9lgVknt7VmowTn/h1HiV2p7TrbOvrt4fHcJMkmrY=
+	t=1738837723; cv=none; b=rCf8yRBu4H1Z1sEwHyXSqnugoMzeA5dqEgZnj2hok+jFFCNV6Q5ZE9ekkQ2T6JIHSounlNhFuZQi8qbGZgUpFqi5Z2e6qrH25y1LiRBHqT//3G83HjiPpGCJjiPeGaRh4AH4ePIPzXt+qLOjZCEZu2fHrywardWF+33HjAyxDIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738837578; c=relaxed/simple;
-	bh=ty4Eujbi3JXutVV8JchgtpSnzXyS57fNPP7x8fwv3Cc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jaMdes+EVGmdUcQfgbgO7NFMC5vXelga0bCKBdrAHRtHc1ol9KH+j8MDbk04hyHKgflr39HfiG2+Qp4JE7NM1LSXShf9AucnYUpTIYm3Hq1djnydR41CjvqhBHPFAY5SI/RVCaidjSjJHL1UNK8wK2QbqNQ/Nc6zM50hCF9pmR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=c2wdjK8E; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1738837565;
-	bh=flV33qDbCktrhjYaUTG2DPPSAd2dWkCXdepsMeSnBJ8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=c2wdjK8ElIiQIdzdWufX8wd/vRP9mN8Fhjqn2SSTHHYOSDzryBP3DtLtoaRJYtx5q
-	 dcRq4c+f1qxwvPWc1Gt++XX1T2hsl6dbm43qQ1j9doE5otg5hP6zC2vXdOguDrfdoQ
-	 LRZzKJ0vQzIKaUmqt155JzAQzQMn1JeNzjAbu6Yc=
-X-QQ-mid: bizesmtpip4t1738837559tgprquo
-X-QQ-Originating-IP: YmVy3874EstnoparGauVHa6MhyYnp0d0n3DAgaqWRRQ=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 06 Feb 2025 18:25:57 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5688250677626398646
-From: WangYuli <wangyuli@uniontech.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mark.rutland@arm.com,
-	tsbogend@alpha.franken.de,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	WangYuli <wangyuli@uniontech.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5.4~6.13] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
-Date: Thu,  6 Feb 2025 18:25:48 +0800
-Message-ID: <6832B20AFE3B7328+20250206102548.95302-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1738837723; c=relaxed/simple;
+	bh=7shIeqFxoByejGhwrum3zyYrt0zqqhRUn8TGl+XPb4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HeTUifo1wu39LpQRdl0bHHPsvjp5NVo/ixk5V4Rdagh91yBHhq80HZ7NwqgvyVobXzglLi5sPMPHoIllZbOeTRidw9LJaUuY6Beo0umvpXK6JztMZasqXjR6Cjxm7/7fQ3YK5B0mE23veOULHZAF87UQTPDeEAsFmAqBBRXZtpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7740112FC;
+	Thu,  6 Feb 2025 02:29:03 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D961A3F63F;
+	Thu,  6 Feb 2025 02:28:37 -0800 (PST)
+Date: Thu, 6 Feb 2025 10:28:35 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com,
+	jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com,
+	stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <Z6SO0x-T4QRT31Y_@J2N7QTR9R3>
+References: <20250204152100.705610-1-mark.rutland@arm.com>
+ <20250204152100.705610-9-mark.rutland@arm.com>
+ <861pwdvbd3.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: M135ko5REW2alb6372CGYhiZ+aMCzPVWw0sIl38J0eO6ryeBc6Ks962c
-	0j2G+sdqngN6dk/kIK+VYDL0hE737vMoAwUC2TGPKF28HN0ZRzBcfbBeuoIo1vjHJkQVT1h
-	ckRfpkFEV1s/Q7YSJKan95K+MpbjGv14ldicVHVv6kCy+gmqKYBbUeNX/vHL8lge0OQGfL/
-	eeIVG5dXGx8VkKoOTOFbaZvRPvz2g9IGH36jyGwxs6oFDtRKWT91zPVbhom+c1ro4TggioN
-	zzsn6/Hpm1Oc0LTW93MQ4f+iWQaAbagtE4erK1pYClcN99TFZswge9mSTKLYbWlZcHiYIIP
-	Asp0TPl6450JJgK16aFAUdogcrt8Awsq68Tagz/gjQL003dSkfw4qhJv+b9rGtK3MDhtbsc
-	VYuoruhLA7OHRjdVy9mtGEjr2GWGXa9JNsXtYV/bpEE/K/cjA7mWKA4PJAwBy614IzE6mtT
-	RRJE1a22a92e9dChwO+UaXJOTDk214L5BhGPRt9ijlZ6urypd6Aqm3m+9SAL5rTnrIviEP6
-	ejCw5wPE8UoHXOC8bunnN5jN+cUFzCTxQhqMMBvjiv64BEt9DA1uul+1zKz6uGefvmGysFS
-	Yhkexjloyj7OWXIft06NlctVwtVqqg7nkLQk2acpO5Xi0P3Xfc2fukPGJg0AJTrmzPOYSng
-	9Iy5iYQkKPJzUx2+jh0rR3j38Gr+n7Y66F0xxn4838QMk3OOCtKpS+j1IN4ocZx+LOQ6Hmp
-	1F43Iup9vyzeJRYj9vEjCrvH0NaUlB4f2RHKk1S+dOoanKA58GLrIGhBrCqANOi02s2RH/7
-	3Cv1e3MMeq0r/UYPwL07NAa8dC0FJFhk70mLSMFdtegU0Ia493oLHUBFBKIqOjqwEeIRaSV
-	crV5yWGeUEj+LSzgqs6nuE3VM9eHGnyTZmwaCt/sQ1WOrFTvsk3/N+mPom4BmJnXWYQditU
-	Dn2yYcUIMQh3FhwQFc8jQ3ca6w8u1eBhBDZcfbfQrDk4OzA5dV0F1HlPYDdV+3wJvkKspI6
-	z/syDtYQ==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <861pwdvbd3.wl-maz@kernel.org>
 
-commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
+On Tue, Feb 04, 2025 at 06:00:24PM +0000, Marc Zyngier wrote:
+> On Tue, 04 Feb 2025 15:21:00 +0000,
+> Mark Rutland <mark.rutland@arm.com> wrote:
 
-Declare ftrace_get_parent_ra_addr() as static to suppress clang
-compiler warning that 'no previous prototype'. This function is
-not intended to be called from other parts.
+> > +static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
+> > +{
+> > +	u64 zcr_el1, zcr_el2;
+> > +
+> > +	if (!guest_owns_fp_regs())
+> > +		return;
+> > +
+> > +	if (vcpu_has_sve(vcpu)) {
+> > +		/* A guest hypervisor may restrict the effective max VL. */
+> > +		if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu))
+> > +			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+> > +		else
+> > +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> > +
+> > +		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
+> 
+> Not a big deal, but I though I'd mention it here: Using ZCR_EL2 (or
+> any other register using the _EL2 suffix) is a source of expensive
+> traps with NV. We're much better off using the _EL1 accessor if we are
+> running VHE, as this will involve no trap at all.
+> 
+> nVHE will of course trap, but using nVHE with SVE under NV is not
+> something I'm prepared to give a damn about.
 
-Fix follow error with clang-19:
+Ah, sorry. I had forgotten that wrinkle.
 
-arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      |               ^
-arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      | ^
-      | static
-1 error generated.
+Given the compiler warnings reported by Mark Brown [1] and the kernel
+test robot [2], I'll go spin a v2 with that cleaned up.
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- arch/mips/kernel/ftrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll use write_sysreg_el2() here, i.e.
 
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index 8c401e42301c..f39e85fd58fa 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(void)
- #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
- #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
- 
--unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-+static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
- 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
- {
- 	unsigned long sp, ip, tmp;
--- 
-2.47.2
+	if (vcpu_has_sve(vcpu)) {
+		/* A guest hypervisor may restrict the effective max VL. */
+		if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu))
+			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+		else
+			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
 
+		write_sysreg_el2(scr_el2, SYS_ZCR);
+	}
+
+That'll use the preferred alias automatically, and it matches the style
+used to write to ZCR_EL{1,12} immediately after.
+
+Likewise for the other instances.
+
+Mark.
+
+[1] https://lore.kernel.org/linux-arm-kernel/b76803b7-c1b3-426b-a375-0c01b98142c9@sirena.org.uk/
+[2] https://lore.kernel.org/oe-kbuild-all/202502061341.FvsCMKEH-lkp@intel.com/
 
