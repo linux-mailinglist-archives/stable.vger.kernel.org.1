@@ -1,188 +1,153 @@
-Return-Path: <stable+bounces-114172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFDDA2B38C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 21:45:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CA6A2B3A3
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 21:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 002E93A615E
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:45:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E217188A5ED
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06E21DC992;
-	Thu,  6 Feb 2025 20:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7DC1DD0D6;
+	Thu,  6 Feb 2025 20:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRbkb21t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ct79wcSR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DE71DC185;
-	Thu,  6 Feb 2025 20:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F31DC9B4;
+	Thu,  6 Feb 2025 20:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738874684; cv=none; b=qTe2fQM6QaGte7xsaCXWN8bfmZ5XYIAIoMOntmCNP/RvUuN00FKlD2R0dpWEiCGKb+/wbLa/uc/DdfcrIZ527By5pVN3qkKRGoxAJen0dCWqWC1x5BvfymzgH7NWdXwvIeo11rkGkiNrXEEEH/JPyhYxx0emxjUA5qRTJ6c64y0=
+	t=1738875491; cv=none; b=Ixqxycbs+mbZPAdB/b6kWAQQzTZFMCP/jzcaSynWfB2oTCavKbfDGIrwh3FKeNA01M/874RaKSgCGm2LWKG1Usmpyos8c8JKy2tHH/P7G6T2HwGZgQqZNTok+IPr7PxKaKaLTU+JC+gU96zRsK/Au0PdkGzEMeO4uxYiKqvvhzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738874684; c=relaxed/simple;
-	bh=ntk1sF+j+9AC331gmFh872rwNxuhPJMIm8QD4kp8s0A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJLbh5vS9TxaeQb2qXBdtQWmiXDuX3Z6xNzjtzqPVMIZC+CdNI9TlCGNZwYGACOoAUpKu7P1yMo5fTyaA5RDUDks4wd/03+0tWlShiCahTiTUfd03879eEPvLoZtMy10BOVkB2R+K2H1uCbnsOzSmhcx6Zitz1+XFKUskcwlZ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRbkb21t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38910C4CEDD;
-	Thu,  6 Feb 2025 20:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738874681;
-	bh=ntk1sF+j+9AC331gmFh872rwNxuhPJMIm8QD4kp8s0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bRbkb21tjbmTDocG2+T5hr/vp09a93HN7q7LUrT9fBWT/gM05fvs+i9QSFusSyW0V
-	 e0mszS9zPSVzZYa8fdAfjuOppus4i2jOHeBU1TrvprC0ihJ3jWRMLovI1mvpsA+LPk
-	 IJskQ6e6TNG7bTbPt+JVgZApTwDbuEvGCnJ4aaGUUL48ARWLo3EYei3HsfJZtz7mKt
-	 dwBinEpyGiA4CjnMXeAz7qdKqyrHRYq+wHrG+U/B49iHgNfao/ZxFY/Wtcy+zNyazr
-	 DOu797WOjHNLDZE/YX66eMFH9KYhTofH7IcMOmyXkxG1qZcFB+waGrJOxb4mOaM2ce
-	 E/8maGfssJBYQ==
-Date: Thu, 6 Feb 2025 22:44:37 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Seo <mikeseohyungjin@gmail.com>, kernel-dev@igalia.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] tpm: do not start chip while suspended
-Message-ID: <Z6UfNcvehCjUakdI@kernel.org>
-References: <20250205-tpm-suspend-v1-1-fb89a29c0b69@igalia.com>
+	s=arc-20240116; t=1738875491; c=relaxed/simple;
+	bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VyVETMk06qlKYFn9c+nhPeNzqpVh0ZyVPw6FoaYQDj4C2X5NYBmiXDrtSTzvg4P9YwdV5NmI0HItzts+cfB7Z1MhF3Buqqq65Ugwzzu5TEq8WftTkJT+J7V/uf8muMvIbV0xag6sZBA0mt0iDRorS866J0I4vfq6IpKS1q7RAgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ct79wcSR; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738875489; x=1770411489;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
+  b=Ct79wcSRsooELflExK73Ul9bMU3LhReyH3kgVROr1bu5Dyuc/+IhtYpZ
+   wOl4qoGFosqMG/oFRm5yDp1ViQ//tsv7FJy7eQ/8q3Lun5SEgp2kiZKfG
+   AOMMvwSRvQfQ3loF5/DdQE+jI+axCrDlZ7x6SBcAuSaoPMxWXJ5a88FwZ
+   Nm7ODuZ8Fv5T/hS6JR5UQSSjHlMyusL33okTAr557podgpgVGkLxKX4cn
+   s18Mcg5XKED+soqRglAzPY+pN9KKOcDwLsFh+RpvXdwI9Wa+NkhEKbMwc
+   +ZMV5FF1Fwl94UwPtKS6ydzuzcQtHzBcu0htoSiLpgHKPqJ5bc2YTW3rO
+   A==;
+X-CSE-ConnectionGUID: rNL5IQ9CR1K5jMCoGUHwhw==
+X-CSE-MsgGUID: ho1zCSgwSDu1RvqWiG4fbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50125056"
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="50125056"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:08 -0800
+X-CSE-ConnectionGUID: JUPj4RINSo+3mL2t23/4wQ==
+X-CSE-MsgGUID: tx3sjQ9oRTCYKrH4T8h8TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="111945741"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.17]) ([10.125.111.17])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:06 -0800
+Message-ID: <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
+Date: Thu, 6 Feb 2025 12:58:07 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205-tpm-suspend-v1-1-fb89a29c0b69@igalia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: x86@kernel.org, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
+ <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 05, 2025 at 09:20:07AM -0300, Thadeu Lima de Souza Cascardo wrote:
-> tpm_chip_start may issue IO that should not be done while the chip is
-> suspended. In the particular case of I2C, it will issue the following
-> warning:
-
-The bug is legit but this description needs some rework:
-
-"Checking TPM_CHIP_FLAG_SUSPENDED after the call to tpm_chip_find_get_ops()
-can lead to a spurious tpm_chip_start_call()":
-
-> [35985.503771] i2c i2c-1: Transfer while suspended
-> [35985.503796] WARNING: CPU: 0 PID: 74 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xbe/0x810
-> [35985.503802] Modules linked in:
-> [35985.503808] CPU: 0 UID: 0 PID: 74 Comm: hwrng Tainted: G        W          6.13.0-next-20250203-00005-gfa0cb5642941 #19 9c3d7f78192f2d38e32010ac9c90fdc71109ef6f
-> [35985.503814] Tainted: [W]=WARN
-> [35985.503817] Hardware name: Google Morphius/Morphius, BIOS Google_Morphius.13434.858.0 10/26/2023
-> [35985.503819] RIP: 0010:__i2c_transfer+0xbe/0x810
-> [35985.503825] Code: 30 01 00 00 4c 89 f7 e8 40 fe d8 ff 48 8b 93 80 01 00 00 48 85 d2 75 03 49 8b 16 48 c7 c7 0a fb 7c a7 48 89 c6 e8 32 ad b0 fe <0f> 0b b8 94 ff ff ff e9 33 04 00 00 be 02 00 00 00 83 fd 02 0f 5
-> [35985.503828] RSP: 0018:ffffa106c0333d30 EFLAGS: 00010246
-> [35985.503833] RAX: 074ba64aa20f7000 RBX: ffff8aa4c1167120 RCX: 0000000000000000
-> [35985.503836] RDX: 0000000000000000 RSI: ffffffffa77ab0e4 RDI: 0000000000000001
-> [35985.503838] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-> [35985.503841] R10: 0000000000000004 R11: 00000001000313d5 R12: ffff8aa4c10f1820
-> [35985.503843] R13: ffff8aa4c0e243c0 R14: ffff8aa4c1167250 R15: ffff8aa4c1167120
-> [35985.503846] FS:  0000000000000000(0000) GS:ffff8aa4eae00000(0000) knlGS:0000000000000000
-> [35985.503849] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [35985.503852] CR2: 00007fab0aaf1000 CR3: 0000000105328000 CR4: 00000000003506f0
-> [35985.503855] Call Trace:
-> [35985.503859]  <TASK>
-> [35985.503863]  ? __warn+0xd4/0x260
-> [35985.503868]  ? __i2c_transfer+0xbe/0x810
-> [35985.503874]  ? report_bug+0xf3/0x210
-> [35985.503882]  ? handle_bug+0x63/0xb0
-> [35985.503887]  ? exc_invalid_op+0x16/0x50
-> [35985.503892]  ? asm_exc_invalid_op+0x16/0x20
-> [35985.503904]  ? __i2c_transfer+0xbe/0x810
-> [35985.503913]  tpm_cr50_i2c_transfer_message+0x24/0xf0
-> [35985.503920]  tpm_cr50_i2c_read+0x8e/0x120
-> [35985.503928]  tpm_cr50_request_locality+0x75/0x170
-> [35985.503935]  tpm_chip_start+0x116/0x160
-
-Only put this snippe to the commit message.
-
-> Test for the suspended flag inside tpm_try_get_ops while holding the chip
-> tpm_mutex before calling tpm_chip_start. That will also prevent
-> tpm_get_random from doing IO while the TPM is suspended.
-
-Remove and:
-
-"Don't move forward with tpm_chip_start() inside tpm_chip_find_get(),
-unless TPM_CHIP_FLAG_SUSPENDED is set. Return NULl in the failure
-case."
-
+On 2/6/25 10:51, Miguel Ojeda wrote:
+> x86: I will pick this up, but if x86 wants to do so, that would be
+> welcome -- in which case:
 > 
-> Fixes: 9265fed6db60 ("tpm: Lock TPM chip in tpm_pm_suspend() first")
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> Cc: stable@vger.kernel.org
-> Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-> Cc: Mike Seo <mikeseohyungjin@gmail.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
->  drivers/char/tpm/tpm-chip.c      | 5 +++++
->  drivers/char/tpm/tpm-interface.c | 8 +-------
->  2 files changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-> index 7df7abaf3e526bf7e85ac9dfbaa1087a51d2ab7e..6db864696a583bf59c534ec8714900a6be7b5156 100644
-> --- a/drivers/char/tpm/tpm-chip.c
-> +++ b/drivers/char/tpm/tpm-chip.c
-> @@ -168,6 +168,11 @@ int tpm_try_get_ops(struct tpm_chip *chip)
->  		goto out_ops;
->  
->  	mutex_lock(&chip->tpm_mutex);
-> +
-> +	/* tmp_chip_start may issue IO that is denied while suspended */
-> +	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-> +		goto out_lock;
-> +
->  	rc = tpm_chip_start(chip);
->  	if (rc)
->  		goto out_lock;
-> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-> index b1daa0d7b341b1a4c71a200115f0d29d2e87512d..e6d786ce4e36970428b75d288a066e832c5b2af1 100644
-> --- a/drivers/char/tpm/tpm-interface.c
-> +++ b/drivers/char/tpm/tpm-interface.c
-> @@ -441,22 +441,16 @@ int tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
->  	if (!out || max > TPM_MAX_RNG_DATA)
->  		return -EINVAL;
->  
-> +	/* NULL will be returned if chip is suspended */
+>     Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-spurious diff, remove
+Hey Miguel,
 
->  	chip = tpm_find_get_ops(chip);
->  	if (!chip)
->  		return -ENODEV;
->  
-> -	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
-> -	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED) {
-> -		rc = 0;
-> -		goto out;
-> -	}
-> -
->  	if (chip->flags & TPM_CHIP_FLAG_TPM2)
->  		rc = tpm2_get_random(chip, out, max);
->  	else
->  		rc = tpm1_get_random(chip, out, max);
->  
-> -out:
->  	tpm_put_ops(chip);
->  	return rc;
->  }
-> 
-> ---
-> base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-> change-id: 20250205-tpm-suspend-b22f745f3124
-> 
-> Best regards,
-> -- 
-> Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> 
+Are you saying you'd prefer that we pick this up on the x86 side? I'm
+totally happy to do that, and it's obviously patching x86-specific
+sections of the rust scripts.
 
-BR, Jarkko
+If I'm understanding the ask.... Just curious though, what makes that
+preferable? It's in a rust-specific file
+(scripts/generate_rust_target.rs) and I'd guess that it'd be easier to
+take it through the rust tree since it's more likely to collide with
+stuff there and also be closer to the folks that can competently resolve
+any merge problems.
+
+
 
