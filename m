@@ -1,222 +1,225 @@
-Return-Path: <stable+bounces-114055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EACA2A50B
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:48:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3474A2A520
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E811888D3F
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E56143A3E49
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C86224884;
-	Thu,  6 Feb 2025 09:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657EC225A4E;
+	Thu,  6 Feb 2025 09:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="s8GTSZbw"
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="gZImi63L"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC0226548;
-	Thu,  6 Feb 2025 09:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738835283; cv=none; b=J6O5H8MCRLP0IgYJZ+Yg8NXxRuQ5TL8TgteTEmDN/39lAy3BCPI29NADMKSjtuKzCs4e2o/YCJXFSXEjKKln27irgNMLePRlyeyQIeqFKFdqDqLxyVxvkabo0vA15dAEK+Y8TJXZYn+iM0e3zW7G2K3QQG8Tg+adQo74v4u7tHA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738835283; c=relaxed/simple;
-	bh=KkN8KoXTOeZ8lZ3T82dFaZ8J/Dzj11SUyaxzwofgmG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IjgBPC5IIBpoTQEFc6jNCyV4IespliDSZdbxhfh3Zcoo34WHgBMbgkNJzBXtByBWi5/rXpll3lSfs5wb8He4HMDngkCC6Mq10eI4JtgwLVEPjOMWqV+yldM0Pyj9BziQQhV2u0g1QGs1paorecIYwxCUUq3hJtyiO8c1ame0OrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=s8GTSZbw; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.66.79] (unknown [4.194.122.144])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B681C20BCAF2;
-	Thu,  6 Feb 2025 01:47:57 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B681C20BCAF2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738835281;
-	bh=YT/fFA4ucxm2xXcs7puYh3xl7FDSSE0Kjemi8yIfrZ0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s8GTSZbw/RyJkeq6c76yW5KffvRHoaNKXTiPKP4rrNZkF89JXrdX5n2MOSssqh5C7
-	 02obP9U3DcyT3AR2o9fS7qA+/FXRIKi1VSiw4WOustYQ6P4425dPhU90mxdEJG7qjK
-	 0awnnEo5EOynizMBsnkW4MyQRMgXE8LGjAeOikqg=
-Message-ID: <7042c53b-31b6-491d-8310-352d18334742@linux.microsoft.com>
-Date: Thu, 6 Feb 2025 15:17:57 +0530
+Received: from mx07-001d1705.pphosted.com (mx07-001d1705.pphosted.com [185.132.183.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818FC1FDE08;
+	Thu,  6 Feb 2025 09:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.132.183.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738835460; cv=fail; b=bGN9NSVEx3CqQXBmu0Sufng+AaHo7rf/omNKifrimPzaT/DLXFHgSrfVoer9Q1S8w1jDVwS7ZP3hgxxY0T2pXIamcHnlEbuDIhwmgfAd6MB+jqopJ9oMuvMk1vizFLm+bvjyslhzAfC82BOurvAMHTiGmrDPr8vgLBj6inRwOnQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738835460; c=relaxed/simple;
+	bh=3StlK3pr9EH2UHFWj1tVz+kGMCHgzUGTGIOlooqbXyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BzmdKIeaQjixld3fuLoxHigFfMSgdd38jeheuXNYTeVsjiaywLjRBLolmZcPc0vbCEa6aI2StRGR/Xr811nArRgolfPf3v00EQg/OIotjnoS/6Q/aZK31LrwimtqNYqK5ncuZaH5OxljVYEB2T9aeatwV0mAjSFq7/i+wRyGk8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=gZImi63L; arc=fail smtp.client-ip=185.132.183.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
+Received: from pps.filterd (m0209325.ppops.net [127.0.0.1])
+	by mx08-001d1705.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5166fFqj002788;
+	Thu, 6 Feb 2025 09:50:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sony.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=S1; bh=8c1JGK1RlfFwuX2ZH5g+PocyEId359m
+	TDL/mXqCI4sQ=; b=gZImi63L0SZaxaUL4O0t2MBDr5M3fvRLfYb+4gQBifOYp6E
+	AczBeBwJXRinrd71qNjXfl0ncdKNuIny4mijI4BiaMA+4MKPm9xq8CM0+Q/O34P3
+	KVxfwhBQd4YSgHMwSJsZuPhGFHCkdbt6O0kvUOptxBYWzp4BetP8FxclAEsvQIY/
+	eWeZOiYXUdPS+FlHA4lp+i1M7fP5I9LAiemx5B1O2mW20g5XPmfzf+ciT/luxxcD
+	KalJO6AJhm++pM5uP3A3h65U9mFPwiIglNR4OKa4rDF7LN+D0pxUe9UV5J+/YrqC
+	hODQ/ATjFxkJc4H77IiR/kP+YR9E9PU4hl9uVrQ==
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2177.outbound.protection.outlook.com [104.47.56.177])
+	by mx08-001d1705.pphosted.com (PPS) with ESMTPS id 44hd484gfj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Feb 2025 09:50:50 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pDGkBydkR7npALSmhqaKRTO/Jsy/khDUNVJU3YIlU22stAL/vyCKbB7z33eIzZiVGzPNly42LOe2e9XipNwwoIidQbYWL1vTrlzSQih0YLayWvj8vwRojmvk16GbsSYJCuZD+JBfSkLy0q1dqmd53lM8XB/WbQr4TIJpMV+G4BRNhw1w6caF4AZn3EyZ4rSMJPKN6tQDeBRrnXDnEDYgPpT4RMTblO56uuPnRpl0rI2j5C71cshw3GsHzOLodT79wg4b6FlsXAvmwPph2Qx8jN8beLI/pkJmVFzUyq2EdRlCrQVWlZYp37CDVGXCcB9P/OGPfKSC+sC6g3+n2yva4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8c1JGK1RlfFwuX2ZH5g+PocyEId359mTDL/mXqCI4sQ=;
+ b=im6TgtYj7QOIhsRdH+zJ8rnWhVJ3TmK1Whd+ncmbYgUMf9wIq/7+yzGui5hXWLIDF+8M04M+npV9XoiZcO/F+HDtoxLlGBVEGCEdFZ31lDnOVk+PS01DASox4rbNg84ESbO6Tn/wLwiSukskBobEI+bHCC/ky2Bn5AsFH3rYe6gq6tOfvbvtGS3LU0/2izUGw8kZISny4b+lmH2kRIoLD3oEWMIJH4lL/5jJ5KaZTRt2P1gevyKcJide6sxxM2W/JrpUO0f0kZnRck3YIyafbf5zMFi6fgDs24TH1PULFQ8hrunh7jguiYh2a+m5rXIkew4Am/lgokQ3KidSb8xzHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 121.100.38.196) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=sony.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=sony.com;
+ dkim=none (message not signed); arc=none (0)
+Received: from DS7PR03CA0312.namprd03.prod.outlook.com (2603:10b6:8:2b::21) by
+ IA3PR13MB7078.namprd13.prod.outlook.com (2603:10b6:208:535::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Thu, 6 Feb
+ 2025 09:50:46 +0000
+Received: from DS2PEPF00003441.namprd04.prod.outlook.com
+ (2603:10b6:8:2b:cafe::4a) by DS7PR03CA0312.outlook.office365.com
+ (2603:10b6:8:2b::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Thu,
+ 6 Feb 2025 09:50:45 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 121.100.38.196)
+ smtp.mailfrom=sony.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=sony.com;
+Received-SPF: Fail (protection.outlook.com: domain of sony.com does not
+ designate 121.100.38.196 as permitted sender)
+ receiver=protection.outlook.com; client-ip=121.100.38.196;
+ helo=gepdcl07.sg.gdce.sony.com.sg;
+Received: from gepdcl07.sg.gdce.sony.com.sg (121.100.38.196) by
+ DS2PEPF00003441.mail.protection.outlook.com (10.167.17.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Thu, 6 Feb 2025 09:50:44 +0000
+Received: from gepdcl02.s.gdce.sony.com.sg (SGGDCSE1NS07.sony.com.sg [146.215.123.196])
+	by gepdcl07.sg.gdce.sony.com.sg (8.14.7/8.14.4) with ESMTP id 5169oUxV024184
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 6 Feb 2025 17:50:42 +0800
+Received: from APSISCSDT-2369 ([43.88.80.159])
+	by gepdcl02.s.gdce.sony.com.sg (8.14.7/8.14.4) with ESMTP id 5169oSK1017294;
+	Thu, 6 Feb 2025 17:50:29 +0800
+Date: Thu, 6 Feb 2025 15:19:48 +0530
+From: Krishanth Jagaduri <krishanth.jagaduri@sony.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Atsushi Ochiai <Atsushi.Ochiai@sony.com>,
+        Daniel Palmer <Daniel.Palmer@sony.com>,
+        Oleg Nesterov <oleg@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] Documentation/no_hz: Remove description that states boot
+ CPU cannot be nohz_full
+Message-ID: <20250206-hypersonic-penguin-of-typhoon-8ef016@krishanthj>
+References: <20250205-send-oss-20250129-v1-1-d404921e6d7e@sony.com>
+ <2025020547-judo-precise-0b3c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
- for debug builds
-To: K Prateek Nayak <kprateek.nayak@amd.com>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steve Wahl <steve.wahl@hpe.com>,
- Saurabh Singh Sengar <ssengar@linux.microsoft.com>, srivatsa@csail.mit.edu,
- Michael Kelley <mhklinux@outlook.com>
-References: <20250203114738.3109-1-namjain@linux.microsoft.com>
- <f6bf04e8-3007-4a44-86d8-2cc671c85247@amd.com>
- <20250205095506.GB7145@noisy.programming.kicks-ass.net>
- <0835864f-6dc5-430d-91c0-b5605007d9d2@amd.com>
- <20250205101600.GC7145@noisy.programming.kicks-ass.net>
- <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025020547-judo-precise-0b3c@gregkh>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003441:EE_|IA3PR13MB7078:EE_
+X-MS-Office365-Filtering-Correlation-Id: 084c192b-ba2d-4301-d576-08dd4693ba4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SDBgKu09xJNhEoKd/uKeolEEVGu+/XxeydL9I0I54BbTnK5Ma3DOl+wTv5Zd?=
+ =?us-ascii?Q?9DTOX6knNRJPRrxP6pdd4JPOf74IAh3y71+F2IQem5KW7qBJCXweR0I4XlLq?=
+ =?us-ascii?Q?5p4h5H4UuXRDYNNMMhHktQ3hjFJ/p8hA6YjcLMA5e08Y+/6xUH9AaMp3ctab?=
+ =?us-ascii?Q?uZi1v5+FWJULyPIwj9H936MTTuIhkRq/jP6+gPYnZ8UD8E79Dv3F8N6WpxTi?=
+ =?us-ascii?Q?0a/bRblX2fhzGRG2VUyXlkW56lm0tQgR1jz9iXkpxnQoAoOIK5OON+eik7cd?=
+ =?us-ascii?Q?/nnu7elKCeVdfGSYSO9Gc5Le3U1ex4CUUypWTX0ULotk3CDBT20AZUoT/DrW?=
+ =?us-ascii?Q?SYklUhI10lO959AjEnqLJNZGFGv9WLiBHnCouh0K+xsjgcnVkvRv88IeUOzB?=
+ =?us-ascii?Q?8zvHDI0VSgIFihwDYkCzw0PyMxlSYSi7VFHfLTBpXSvbxFWeYL27Lx/JIGEt?=
+ =?us-ascii?Q?uV/itb40TOTtv549SnCdmuZTF2i6nRgky4MD64TeItzXgmfhr87E2ZZrUr8y?=
+ =?us-ascii?Q?fDI0mNXiqgBIOlxwlMdQPBBBy0llQZCyuWT4J5aNb10+ebNbLP2l6mN1rl5G?=
+ =?us-ascii?Q?r+BVHDRz17Aoir5/oFCI/zGYk6mFC3ZBLWFLHju0y2TzdBwXUzToiHM2SljL?=
+ =?us-ascii?Q?shojo0xfmZDc3v6ryeb25WcKbm/LD0GJ7wQGJIdymMn3Cc4vVm2hLdis3Xxn?=
+ =?us-ascii?Q?UTLcKeD24DaB9SpBycH7GrM8f6i4tz+tNO0bd0QvBBSBWqDg/d2EZsWC07tn?=
+ =?us-ascii?Q?F3gEKU1/Bt9DHT1wXvAP42U40WFrVAESL5hBYHfhq5mbawKTj+aDexeMF48f?=
+ =?us-ascii?Q?Ulvtl7qK0Swuf5bPlwGylFQV4G4cfBtUAqu/0N/AMSrygKZ850hLtcmP2KUA?=
+ =?us-ascii?Q?wMcbcNC5w597CxcMIHGXV9TCDkYrP/MdQtZNS5G9cJOe+0ffEJgXYka7fqal?=
+ =?us-ascii?Q?eh+MPAzLvhVRRX/QlqRlr6lmZXpl/CbGk15S5Zrt4Z0sNJaTomwi12FGQNG3?=
+ =?us-ascii?Q?wj4xzNwKgBMZmYXY4RUWbR6thDRzmPo3pKgY5f0l17cUiPqQ06wZMFxf7nTE?=
+ =?us-ascii?Q?x5pvwx1MReovU4YHCXAUtGV8hMeIWdwe8NdYRb8zHJTLhOdfnq9G5PtaUwAX?=
+ =?us-ascii?Q?3QA7kTWnb2KlsQfjALVcEgUtODaQlmL6OGGRGUwIg2lzjexYkkQUV0rKIizk?=
+ =?us-ascii?Q?FlpIMeaEm+JF8+KcRIKWBV7XUr6fUj7JODbcD7OQ9OOjgbS7GHnjJ2zESqH2?=
+ =?us-ascii?Q?laMzBdWnFeGq9gLWvoIFHIUzoXcLI1NNad2UXMnbidbHaPZIAxVXpf18WrqH?=
+ =?us-ascii?Q?HUzXigYL3GAVwGDbMWGn3R06Rd54izOUmoIRGrb2zPE/MEuRjiUCrapfiv1Y?=
+ =?us-ascii?Q?pW1oNrCEjOLAsgQYs4al0quVzBoFXYfE372c5Uy7vfUU0CETOCm29TVlqqmg?=
+ =?us-ascii?Q?f1cGDqRCUQ9t4EWbiU/ybt4NyH5jNYuB6XW/rukQYVOfh0O6COdaYA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:121.100.38.196;CTRY:SG;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:gepdcl07.sg.gdce.sony.com.sg;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	yEt0WZ347VQtxaKixsHomn8bivtS+/9zEHgRz5cJlS584Jvha3LXgX3xVZtboYpwRPWuKazxjpTUF3dEaOCt74YhnimOpzrAOGES+ef/CPYv7sNsZaMEhIL3NZf/KKLh2tz0X2C+7CdrmuwIjc8TW8A8qzRMygOLlk6RdsHjcCR8pSRJZ5usqqwPbmPLyYhFGmIA8NxkCIFt+pDVaNTpUlsnkqVv8hqkZKRNo8Xeg17dLGTTM49Rf+67pMZ+VrSQiyJrZBi7HpzxYsmj/3KP+vMI9BATujy++1xchDanG+yUf0Wf1bjvwOQbzXBKeejJQIJkjGF7RaGJusNpbcs/gJyyOZ5c848kWIlAHA1eIYtfLxq5QCy7bkfRq++a8Pr6gYkSeVvr6Ei3eP/5uSF9hgAouecFmCzaYSexi9DisFC7TIQDH9DYS19xa6t00wUQUeZPhON5OmmSOyAhuj1rk9mxTIO0e11+QfzvqKKXVwCN/h7rA1OeYy3zLKALoK/5xzBasH0qo3yCT8RJML+ODLBUHzVXEfSpi888kSV/YSjt3bxlmtldY1xzk3s+4Ge992m4LIxL2r9TT9OEVGFgMFniScXlwpH+XPmSaydHv2JJ6YpYlV/iG6suF04OCVgO
+X-OriginatorOrg: sony.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 09:50:44.8909
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 084c192b-ba2d-4301-d576-08dd4693ba4f
+X-MS-Exchange-CrossTenant-Id: 66c65d8a-9158-4521-a2d8-664963db48e4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=66c65d8a-9158-4521-a2d8-664963db48e4;Ip=[121.100.38.196];Helo=[gepdcl07.sg.gdce.sony.com.sg]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DS2PEPF00003441.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR13MB7078
+X-Proofpoint-GUID: udZftQASvXpU3r5b4I0ntzA2xwuwW5qQ
+X-Proofpoint-ORIG-GUID: udZftQASvXpU3r5b4I0ntzA2xwuwW5qQ
+X-Sony-Outbound-GUID: udZftQASvXpU3r5b4I0ntzA2xwuwW5qQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-06_02,2025-02-05_03,2024-11-22_01
 
-
-
-On 2/6/2025 2:40 PM, K Prateek Nayak wrote:
-> Hello Peter,
+On Wed, Feb 05, 2025 at 10:18:17AM +0100, Greg KH wrote:
+> On Wed, Feb 05, 2025 at 08:32:14AM +0530, Krishanth Jagaduri via B4 Relay wrote:
+> > From: Oleg Nesterov <oleg@redhat.com>
+> > 
+> > [ Upstream commit 5097cbcb38e6e0d2627c9dde1985e91d2c9f880e ]
 > 
-> On 2/5/2025 3:46 PM, Peter Zijlstra wrote:
->> On Wed, Feb 05, 2025 at 03:43:54PM +0530, K Prateek Nayak wrote:
->>> Hello Peter,
->>>
->>> Thank you for the background!
->>>
->>> On 2/5/2025 3:25 PM, Peter Zijlstra wrote:
->>>> On Wed, Feb 05, 2025 at 03:18:24PM +0530, K Prateek Nayak wrote:
->>>>
->>>>> Have there been any reports on an x86 system / VM where
->>>>> topology_span_sane() was tripped?
->>>>
->>>> At the very least Intel SNC 'feature' tripped it at some point. They
->>>> figured it made sense to have the LLC span two nodes.
-> 
-> I'm 99% sure that this might have been the topology_sane() check on
-> the x86 side and not the topology_span_sane() check in
-> kernel/sched/topology.c
-> 
-> I believe one of the original changes that did the plumbing for SNC was
-> commit 2c88d45edbb8 ("x86, sched: Treat Intel SNC topology as default,
-> COD as exception") from Alison where they mentions that they saw the
-> following splat when running with SNC:
-> 
->      sched: CPU #3's llc-sibling CPU #0 is not on the same node! [node: 
-> 1 != 0]. Ignoring dependency.
-> 
-> This comes from the topology_sane() check in arch/x86/boot/smpboot.c
-> and match_llc() on x86 side was modified to work around that.
-> 
->>>>
->>>> But I think there were some really dodgy VMs too.
-> 
-> For VMs too, it is easy to trip topology_sane() check on x86 side. With
-> QEMU, I can run:
-> 
->      qemu-system-x86_64 -enable-kvm -cpu host \
->      -smp cpus=32,sockets=2,cores=8,threads=2 \
->      ...
->      -numa node,cpus=0-7,cpus=16-23,memdev=m0,nodeid=0 \
->      -numa node,cpus=8-15,cpus=24-31,memdev=m1,nodeid=1 \
->      ...
-> 
-> and I get:
-> 
->      sched: CPU #8's llc-sibling CPU #0 is not on the same node! [node: 
-> 1 != 0]. Ignoring dependency.
-> 
-> This is because consecutive CPUs (0-1,2-3,...) are SMT siblings and
-> CPUs 0-15 are on the same socket as a result of how QEMU presents
-> MADT to the guest but then I go ahead and mess things up by saying
-> CPUs 0-7,16-23 are on one NUMA node, and the rest are on the other.
-> 
-> I still haven't managed to trip topology_span_sane() tho.
-> 
->>>>
->>>> But yeah, its not been often. But basically dodgy BIOS/VM data can mess
->>>> up things badly enough for it to trip.
->>>
->>> Has it ever happened without tripping the topology_sane() check first
->>> on the x86 side?
-> 
-> What topology_span_sane() does is, it iterates over all the CPUs at a
-> given topology level and makes sure that the cpumask for a CPU at
-> that domain is same as the cpumask of every other CPU set on that mask
-> for that topology level.
-> 
-> If two CPUs are set on a mask, they should have the same mask. If CPUs
-> are not set on each other's mask, the masks should be disjoint.
-> 
-> On x86, the way set_cpu_sibling_map() works, CPUs are set on each other's
-> shared masks iff match_*() returns true:
-> 
-> o For SMT, this means:
-> 
->    - If X86_FEATURE_TOPOEXT is set:
->      - pkg_id must match.
->      - die_id must match.
->      - amd_node_id must match.
->      - llc_id must match.
->      - Either core_id or cu_id must match. (*)
->      - NUMA nodes must match.
-> 
->    - If !X86_FEATURE_TOPOEXT:
->      - pkg_id must match.
->      - die_id must match.
->      - core_id must match.
->      - NUMA nodes must match.
-> 
-> o For CLUSTER this means:
-> 
->    - If l2c_id is not populated (== BAD_APICID)
->      - Same conditions as SMT.
-> 
->    - If l2c_id is populated (!= BAD_APICID)
->      - l2c_id must match.
->      - NUMA nodes must match.
-> 
-> o For MC it means:
-> 
->    - llc_id must be populated (!= BAD_APICID) and must match.
->    - If INTEL_SNC: pkg_id must match.
->    - If !INTEL_SNC: NUMA nodes must match.
-> 
-> o For PKG domain:
->    - Inserted only if !x86_has_numa_in_package.
->    - CPUs should be in same NUMA node.
-> 
-> All in all, other that the one (*) decision point, everything else has
-> to strictly match for CPUs to be set in each other's CPU mask. And if
-> they match with one CPU, they should match will all other CPUs in mask
-> and it they mismatch with one, they should mismatch with all leading
-> to link_mask() never being called.
-> 
-> This is why I think that the topology_span_sane() check is redundant
-> when the x86 bits have already ensured masks cannot overlap in all
-> cases except for potentially in the (*) case.
-> 
-> So circling back to my original question around "SDTL_ARCH_VERIFIED",
-> would folks be okay to an early bailout from topology_span_sane() on:
-> 
->      if (!sched_debug() && (tl->flags & SDTL_ARCH_VERIFIED))
->          return;
-> 
-> and more importantly, do folks care enough about topology_span_sane()
-> to have it run on other architectures and not just have it guarded
-> behind just "sched_debug()" which starts off as false by default?
-> 
-> (Sorry for the long answer explaining my thought process.)
+> It's just the documentation part of that commit, not the full one.
 > 
 
+Updated in v2. Thank you.
 
-Thanks for sharing your valuable insights.
-I am sorry, I could not find SDTL_ARCH_VERIFIED in linux-next tip. Am I
-missing something?
+> > Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
+> > include the boot CPU, which is no longer true after:
+> > 
+> >   commit 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+> > 
+> > Apply changes only to Documentation/timers/no_hz.rst in stable kernels.
+> 
+> You dropped the rest of the changelog text here :(
+>
 
-Regards,
-Naman
+Updated in v2. Thank you.
 
+> > 
+> > Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> > Cc: stable@vger.kernel.org # 5.4+
+> > Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+> 
+> And you dropped all the other signed-off-by lines :(
+>
 
+Updated in v2. Thank you.
+
+> > While it fixes the document description, it also fixes issue introduced
+> > by another commit aae17ebb53cd ("workqueue: Avoid using isolated cpus'
+> > timers on queue_delayed_work").
+> > 
+> > It is unlikely that it will be backported to stable kernels which does
+> > not contain the commit that introduced the issue.
+> > 
+> > Could Documentation/timers/no_hz.rst be fixed in stable kernels 5.4+?
+> 
+> Does the documentation lines really matter here?
+> 
+
+When we tried LTS kernels 5.4 to 6.6, we noticed that boot CPU can be
+nohz_full without any problems. But information in documentation was
+misleading. We wanted to check if it would be okay to fix the information
+in the document.
+
+> At the very least, we can't take this as the signed-off-by lines are all
+> gone.  Please resend with them all back, and then make a note that you
+> are only including the documentation portion and why.
+>
+Updated in v2. Thank you.
+
+Best regards,
+Krishanth
 
