@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-114106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76B6A2AB53
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C8DA2AB55
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED011632A0
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23BE116AD00
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C961E5B86;
-	Thu,  6 Feb 2025 14:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C541E5B99;
+	Thu,  6 Feb 2025 14:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5YsVwZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hf7uM4Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C21E5B75
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 14:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EC01E5B93;
+	Thu,  6 Feb 2025 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738852118; cv=none; b=UxpBvW9exrzMzKYOOFeUjHIhLZXRLrf12dH1Z46YzrYl7tIyBexwD8kiKWB7e2psLmPF4rUP1bzx+M4di+5AePcnpv1+vwcX5U+tLE/RACqYm84OFtspcEKaOTUgqbk7av7+P8EsR5EBLidAS5NTb+T2c2Ev4Dl3GIZOTPGI3e4=
+	t=1738852122; cv=none; b=iFrCTwGE4l0XeIjnwZUUIa9G/Y5Ft89c3MM53hPGW2kGx81ex4qFmps7GsBbbn+mJYKfNomqj+KKuOvQwo1GcYKUQknngdFu415RFDBQclRnfJAWLVu9mmnbcQwx9XMUXBvifNMgej9z6cDeU7sO7ACmUwXWv8j25e6rdhJqI+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738852118; c=relaxed/simple;
-	bh=ZGMh4NBIlI/VAItS+IF6XAUKNT0gBk2JR1Y97NCSDqc=;
+	s=arc-20240116; t=1738852122; c=relaxed/simple;
+	bh=cP18bAFLC5z20fm5XJqsusQj5NcGcW0quC9Mv6doxZY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uBKgA4juuNRZb9Uz1/BKFqAXS00ltTWfX6UhrsFSlKFAfYGNqt/H78OrWmI+NHKBO2jSRpht3fEWzZqiLdnYqAiba/DI5bkpGCguHwCVg8cgTbdFaeYXx9ltu0rdrcCQlIngS+FY/LNlJfHfjbHhGl6i/fA/BHe/Fov18kDe0Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5YsVwZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E89C4CEDF;
-	Thu,  6 Feb 2025 14:28:37 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=RuOdLxhRk6J8Q4POxDt1GzCbwl4Kk7JiD4ix+Rco1CQyefinyhqpFPeSTxKDW6bTTzJNk8lKbzEOGtm2GmdHkedmtk2QH7TobInO0AmPyMc7mXuQVnnh2bHdKtL8AOwDeQ67KwPZvkRZ+TzHl5+8Co8E7CfrlHrTfHyomGr+NyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hf7uM4Jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB8FC4CEDD;
+	Thu,  6 Feb 2025 14:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738852118;
-	bh=ZGMh4NBIlI/VAItS+IF6XAUKNT0gBk2JR1Y97NCSDqc=;
+	s=korg; t=1738852121;
+	bh=cP18bAFLC5z20fm5XJqsusQj5NcGcW0quC9Mv6doxZY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q5YsVwZTj+hJ4yJC+l0Ga919aTyQ/y4+SiS05Ty4c6aTUI9EliJi0vomUAOzzDdUz
-	 dVrAV/7nCYDPvkF7jT6YEsVeVznVEg7fnN59i9I75W6ZH7DP6/wcQYOoq/SpG7mmXj
-	 FkyXkDhRBKj1WtRxmBBUmoGhEBKXQZncOQqlv0IM=
-Date: Thu, 6 Feb 2025 09:15:24 +0100
+	b=Hf7uM4JrgK4bYWHFAvM3E8f8gZk0b/V6kmKZllWvjy3fFemWOJX+AvyIpfhRhSBiE
+	 Eyflp1MV1xb5xnbwSP+ihgCvDTom8R2XQ90IGcxSt5MbNWQLcQFJixdNVjupvkbb0x
+	 aTF044E0h+ibrKHG4Q2bPG6l9Zoa0LahMYqit0i8=
+Date: Thu, 6 Feb 2025 11:03:30 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Xingrui Yi <yixingrui@linux.alibaba.com>
-Cc: tglx@linutronix.de, rostedt@goodmis.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5.10.y] profile: Fix use after free in profile_tick()
-Message-ID: <2025020603-slighting-playful-1623@gregkh>
-References: <20250206072406.975315-1-yixingrui@linux.alibaba.com>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: ardb@kernel.org, chenhuacai@kernel.org, chenhuacai@loongson.cn,
+	kernel@xen0n.name, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	masahiroy@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
+	nicolas@fjasle.eu, sashal@kernel.org, stable@vger.kernel.org
+Subject: Re: Re: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage
+ where possible
+Message-ID: <2025020611-olive-gluten-fa45@gregkh>
+References: <2024120635-wham-campsite-b62b@gregkh>
+ <F6E14B0130692444+20250206083705.63378-1-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,56 +59,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250206072406.975315-1-yixingrui@linux.alibaba.com>
+In-Reply-To: <F6E14B0130692444+20250206083705.63378-1-wangyuli@uniontech.com>
 
-On Thu, Feb 06, 2025 at 03:24:06PM +0800, Xingrui Yi wrote:
-> [free]
-> profiling_store()
->   --> profile_init()
->     --> free_cpumask_var(prof_cpu_mask)                           <-- freed
+On Thu, Feb 06, 2025 at 04:37:02PM +0800, WangYuli wrote:
+> Hi, Greg,
 > 
-> [use]
-> tick_sched_timer()
->   --> profile_tick()
->     --> cpumask_available(prof_cpu_mask)                          <-- prof_cpu_mask is not NULL
->                                                                       if cpumask offstack
->       --> cpumask_test_cpu(smp_processor_id(), prof_cpu_mask)     <-- use after free
+> It's rather unfortunate that currently, almost all Linux distributions
+> supporting LoongArch are using LTS kernels version v6.6 or older, such as
+> openEuler and deepin. [1][2]
 > 
-> When profile_init() failed if prof_buffer is not allocated,
-> prof_cpu_mask will be kfreed by free_cpumask_var() but not set
-> to NULL when CONFIG_CPUMASK_OFFSTACK=y, thus profile_tick() will
-> use prof_cpu_mask after free.
+> If this bugfix isn't merged into linux-stable, then every single distro
+> kernel team will have to waste time fixing the same darn bug over and
+> over, even though it's already fixed in later kernels.
 > 
-> Signed-off-by: Xingrui Yi <yixingrui@linux.alibaba.com>
-> ---
->  kernel/profile.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/kernel/profile.c b/kernel/profile.c
-> index 0db1122855c0..b5e85193cb02 100644
-> --- a/kernel/profile.c
-> +++ b/kernel/profile.c
-> @@ -137,6 +137,9 @@ int __ref profile_init(void)
->  		return 0;
->  
->  	free_cpumask_var(prof_cpu_mask);
-> +#ifdef CONFIG_CPUMASK_OFFSTACK
-> +	prof_cpu_mask = NULL;
-> +#endif
->  	return -ENOMEM;
->  }
->  
-> -- 
-> 2.43.5
-> 
-> 
+> This would really make LTS look like it's failing to serve its intended
+> purpose. And I'm sure all of us do not want to see something so terrible
+> happen.
 
-<formletter>
+LTS is here to ensure that the original release of these branches, keeps
+working for that branch.  Adding support for newer toolchains sometimes
+happens, but is not a requirement or a normal thing to do as that really
+isn't a "regression", right?
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Most of the time, fixing things up for newer compilers is simple.
+Sometimes it is not simple.  The "not simple" ones we usually just do
+not backport as that causes extra work for everyone over time.
 
-</formletter>
+As for the distros like openEuler, and deepin, they are free to add
+these patches there, on top of their other non-LTS patches, right?
+
+thanks,
+
+greg k-h
 
