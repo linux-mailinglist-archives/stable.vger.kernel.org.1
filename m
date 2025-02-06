@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-114150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D36A2AEE0
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 18:30:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1291A2AF3A
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 18:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E4B1690AD
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 17:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1093188BA0E
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 17:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30C19047F;
-	Thu,  6 Feb 2025 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC318FDD2;
+	Thu,  6 Feb 2025 17:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOkHOJVH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rD2HdXOs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mifhz9+U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E995916DEA9;
-	Thu,  6 Feb 2025 17:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3079818A92D;
+	Thu,  6 Feb 2025 17:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738863026; cv=none; b=Rx4mLuiB1j19BP9P0LTHdLlsE79gFrhWVBSfW37HB3FGHZzYwMvbG/WdgdCkEthxqqk3VhQ0sWrvteL97bxjSCPZUm9Zv7kZQfp12NNjT7mp7U/uW3nOWBTHevbasJrvEOp07A5Yz+K+f6943btZzRQ5bV7UrOswi4B80zzMxVg=
+	t=1738863969; cv=none; b=X4HdRJ4PScpAZwe8tg6u6MXsii0d4rTVRPAn6R79fX6kYd7Gyo0pissF6B55D5YNypCf+TTlhV8670BGHRZiMw8efe8t7BOw+RIDqWXQuXtD+1BQq29/48eDQDp9TRysNXuilb0Td41Vh3K3BFlyecGhyR9YT/Fb4DNv1/fout0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738863026; c=relaxed/simple;
-	bh=HqCjcQyLCccFtXHBmscOjjFPNZ77+uvrORcQ76hCDTs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MuAZcAWH6TmmZzY0p0TFkc3m3P8PbvmfBerDSBUUu7Cs3MGBHWeaePJB/DR173Cq7dyKNG4jKFxzLJOZkEAJXyIv1Icc4jn7LL7s6ZVTUZ7obE+6vTHuOcc2IINKYikNG7Atc28ZujJC/c3pmv/NR566R/ukhi3kzB+B/3Pdaqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOkHOJVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C123FC4CEDD;
-	Thu,  6 Feb 2025 17:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738863025;
-	bh=HqCjcQyLCccFtXHBmscOjjFPNZ77+uvrORcQ76hCDTs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jOkHOJVH0zzTiQaU2U1YLoPjmuXVRVpgOrfvko6wc4a0o80zJuh2gVBw4MosAF4EU
-	 eBeQkdGB93yn+sXTeaWp5e8wW0ghbim73yDdrFTX2ZiB3i9GlgFmLeIYl1dkeNEgtZ
-	 ae0aLrM0D3AF2WiAQK71PSLg/HD6/fM9luVNbsHmQJhYlGVAXXAZHp3hz0gAP+bAhL
-	 8f4p6lnF41o2GowtCFKu8gq0dlTvD6RlX5g5QCUGXzvB8ODUHWr51wUu9ehCSSKSaz
-	 7P7fWqIKdMjyqk3SD+gEqjkBMx755K0uLQ7GLSx0pa9T+IyQJaSPiREWshLUrFy6rK
-	 uAP1rgI0SQFsA==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
- ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
- pierre-louis.bossart@linux.dev, stable@vger.kernel.org, 
- cujomalainey@chromium.org, daniel.baluta@nxp.com
-In-Reply-To: <20250205135232.19762-1-peter.ujfalusi@linux.intel.com>
-References: <20250205135232.19762-1-peter.ujfalusi@linux.intel.com>
-Subject: Re: [PATCH v2 0/2] ASoC: SOF: Correct sps->stream and cstream
- nullity management
-Message-Id: <173886302350.325569.18363906987699150271.b4-ty@kernel.org>
-Date: Thu, 06 Feb 2025 17:30:23 +0000
+	s=arc-20240116; t=1738863969; c=relaxed/simple;
+	bh=VbCFflXesGSImL6bNQsizjjO6E8k6pkdVh7W5M/aRAY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=j2KvNWsY3dZspzkNLbT37Pk25a9ZMcpZGex1+TuOhGXoFSaPseNXhKvGFBIQaJiYYFF2dfdvY4VHS9D+tEYB/ftZDAfn9DGOAG6fbV3zEJjWg24YbgeRUG0ouaQpwo3gsqKycs0jZFtU1LZ5V99QbxK19pVzibpuajD/Vg4pKTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rD2HdXOs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mifhz9+U; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738863965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kdX3fHEALuqcZwNeLv5W3dViVtMAUAdzbiwDYebj3uQ=;
+	b=rD2HdXOsIWRCRMluGt6ZXHDjjsoO1cJAaSf9Nr6fsAR/KPIsq6sp9zIY21Kg3w61bGPAvY
+	gULkBoG83Eo2U8FXwGQVH4Y0mO9RE0/9lyOy7jEU+YgYjcFrgSEfdL5lCqGptLo3YFHE9+
+	cF+AP6C/fTlZzZjuuOS54aFTPtBYJvgunhyWVhKGBvtioeWa5XIEjTh8Fvq5qsPPVZXlU4
+	mtg2vLOUnHbsWUJNoyZt+eY6QV8qcyU30TMYUnkl1IJVosY1GBLCyTSLmcYQP+EgPhJQ+h
+	x39PVE+Fdc0+raGP8ZVNtlcd2g65ab/YequP+5YRiSkNLTWr7WTuxf5wT73ipA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738863965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kdX3fHEALuqcZwNeLv5W3dViVtMAUAdzbiwDYebj3uQ=;
+	b=Mifhz9+USAPdgAJIwLLQDNiN64f/lo/v0gQ6FCXm6HZeHVBbEpbUzhjtmRttyK+EiMHJuA
+	UxUIudukSHJVIACA==
+Subject: [PATCH net-next 0/4] ptp: vmclock: bugfixes and cleanups for error
+ handling
+Date: Thu, 06 Feb 2025 18:45:00 +0100
+Message-Id: <20250206-vmclock-probe-v1-0-17a3ea07be34@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,48 +62,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABz1pGcC/x3MQQqAIBBA0avErBswwaSuEi1ymmqoNDQiiO6et
+ HyL/x9IHIUTtMUDkS9JEnxGVRZAy+BnRhmzQSttlFY1XjttgVY8YnCMxpIjZ61qtIHcHJEnuf9
+ fB55P9Hyf0L/vBzWnlzxpAAAA
+X-Change-ID: 20250206-vmclock-probe-57cbcb770925
+To: David Woodhouse <dwmw2@infradead.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738863961; l=754;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=VbCFflXesGSImL6bNQsizjjO6E8k6pkdVh7W5M/aRAY=;
+ b=+DBjjLLbYLFrYEW0vieMhxBlIsJy7TvvcRujD/f4gQWcNhgr2hMlGUiRsiNj/uyyaG5Ic3j1L
+ cqrnDIb1TDhB4cSUYP+PFR0sIg+SieOEPD7REm/oMm3IFFqPxcZjODQ
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-On Wed, 05 Feb 2025 15:52:30 +0200, Peter Ujfalusi wrote:
-> Changes since v1:
-> - fix the SHA of the Fixes tag
-> 
-> The Nullity of sps->cstream needs to be checked in sof_ipc_msg_data() and not
-> assume that it is not NULL.
-> The sps->stream must be cleared to NULL on close since this is used as a check
-> to see if we have active PCM stream.
-> 
-> [...]
+Some error handling issues I noticed while looking at the code.
 
-Applied to
+Only compile-tested.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Thomas Weißschuh (4):
+      ptp: vmclock: Set driver data before its usage
+      ptp: vmclock: Don't unregister misc device if it was not registered
+      ptp: vmclock: Clean up miscdev and ptp clock through devres
+      ptp: vmclock: Remove goto-based cleanup logic
 
-Thanks!
+ drivers/ptp/ptp_vmclock.c | 46 ++++++++++++++++++++--------------------------
+ 1 file changed, 20 insertions(+), 26 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250206-vmclock-probe-57cbcb770925
 
-[1/2] ASoC: SOF: stream-ipc: Check for cstream nullity in sof_ipc_msg_data()
-      commit: d8d99c3b5c485f339864aeaa29f76269cc0ea975
-[2/2] ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
-      commit: 46c7b901e2a03536df5a3cb40b3b26e2be505df6
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
