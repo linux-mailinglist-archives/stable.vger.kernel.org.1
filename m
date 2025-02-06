@@ -1,156 +1,131 @@
-Return-Path: <stable+bounces-114170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B17EA2B26B
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806C7A2B271
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19354162C90
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E94A16234F
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7741AAA2F;
-	Thu,  6 Feb 2025 19:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235BC1A9B3B;
+	Thu,  6 Feb 2025 19:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QrFbyYfQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JEiWV6ZM"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF251A9B46;
-	Thu,  6 Feb 2025 19:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3A91A9B28
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 19:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738870804; cv=none; b=tA2NITMRPkYEJnu7gJ9tN2s3LcnhD5FTZBcUb3zDr29ahUE7u94Hc4B/gRkkYKKjUIubR9VDsbdEkzlnr8vbUM7axW0klz+yX+ql70K/UBCZ++3+713BaMylhvOLl1CJQnkA6zYo4m+Uk0v//tehO722Kj7PTipEeCcNvWkjNTo=
+	t=1738870854; cv=none; b=ru9THYTWguBEUhOF6wzWiHZ5pK21CZeRf4jARgYecolDb8RBI/ZKEaeiyu3NJ1f8ZpW0VpqH8/1pWcWKi5T6/bLq30lQnNvgQQuAYY4Pgu8Yw3uo7YMKIqmvSRv6Ltuh2HXIqgqlGicTn1uOQDOiecbZNswa3pfPHlqap4uF6vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738870804; c=relaxed/simple;
-	bh=x/gRAVP5w48dDy3Q4GLG6EyEXkg923PyyQPCeIGWkXE=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=nMz5Mm/1IoDuKA3y9n8CXvDpVtAMWXUBx0F+zSrXnOp4Vs5QSYBs4zjBqO65jWEQHrarqq+LguWKuvf7I/gWGAN4Pk2Lf+Y8f4YflhlPpnqVWfupSGZtQFmmXqraWdUy7CFvaVl+hisdkf3givPd4mQNCdsGlSWCGNtRD2/j5Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QrFbyYfQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 516Hrior018154;
-	Thu, 6 Feb 2025 19:39:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=N3DbkgSLvQT9
-	Mh8DpNYxq3rF29ncrXImS+5D27fnjTA=; b=QrFbyYfQWh1/ApBAiTMN02bPXADx
-	YVjKABqCc++ZnP0sQu60M3xazSMRRtJBDo2pIk4XkckFROXVPsCtfe6I3uPMf2S7
-	i2bNdTQIO6OmBKxTbqY3EckZvSK8NnEGEefTa7YGSDCiQ6iH5hYXJkLZj6LjO14u
-	dIdaYwm+4xjHgShlOZ+hDUlnd1bNiVqD43dm7Io5nJIYxCUEETshf+Z7Em28ZQOL
-	oXbSSkAU97Rykas5hGWu68FADDW8lJAFSwabqRjO5cM3tXlTV4kaD+AYxVENAbFo
-	c2H0fWA3bx+beITAtA2HXmLcQLaF6IeQ/1AXD+N+1P++UN9w5fRsTah36A==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n1vng8dj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 19:39:56 +0000 (GMT)
-Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 516Jdtea012577;
-	Thu, 6 Feb 2025 19:39:55 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTP id 44n335r65a-1;
-	Thu, 06 Feb 2025 19:39:55 +0000
-Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 516JbT6X008333;
-	Thu, 6 Feb 2025 19:39:55 GMT
-Received: from hu-devc-lv-u18-c.qualcomm.com (hu-eserrao-lv.qualcomm.com [10.47.235.27])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTP id 516JdsVD012557;
-	Thu, 06 Feb 2025 19:39:55 +0000
-Received: by hu-devc-lv-u18-c.qualcomm.com (Postfix, from userid 464172)
-	id C0DDC624CA9; Thu,  6 Feb 2025 11:39:54 -0800 (PST)
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
-To: gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        xu.yang_2@nxp.com
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Elson Roy Serrao <quic_eserrao@quicinc.com>, stable@vger.kernel.org
-Subject: [PATCH v2] usb: roles: set switch registered flag early on
-Date: Thu,  6 Feb 2025 11:39:50 -0800
-Message-Id: <20250206193950.22421-1-quic_eserrao@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: mZCfhr0dpV2NxLO4jK71MJD8fEodPPjp
-X-Proofpoint-GUID: mZCfhr0dpV2NxLO4jK71MJD8fEodPPjp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_06,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 impostorscore=0
- mlxscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502060155
+	s=arc-20240116; t=1738870854; c=relaxed/simple;
+	bh=kzFOt+hUFf2hH0dfSHzEMgZGBx5oqybElRnsgUP9O+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NNPX+X6+gtPpk19NE7ZUECIwvshfLxJAnuK5Vw7XixB3mI1bi1CJospvq0NUJhRO9yMO6D6JDIJTlMGUkd2jz6SIiHAOMFaFHUOu51m/LCOM6FFI5A0TsS3mGgkvtBnZLHIDeBE5JUat6YyHjnYecMqNo4Sy9GKhmsdmsj6t+zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JEiWV6ZM; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 516Is6dN022730
+	for <stable@vger.kernel.org>; Thu, 6 Feb 2025 19:40:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	kzFOt+hUFf2hH0dfSHzEMgZGBx5oqybElRnsgUP9O+I=; b=JEiWV6ZMs6Rcgd6m
+	Rk5pSE6UsQbQ/v6Uoj16oVvB23CD8gYVux7FGaIrFWWCPTwm7FqtlWfGJypfJaKt
+	/cYCSImgiP6PQ+b9UscfGuuL/Pty1N6DafI5ypBRjxcW0gBYHDoH/oRunhFw2Ynr
+	LQQdf8cJXJ7SAkCPFc6mi1l+CPlaBUzKQ3xGMlnLVNQkP2DO/Zsx217gzeD8JiPf
+	pizf24t7hCX9KvMUxjn6QEXbphRS2umZR1E/E+Yx1Dqeg10UHc9NgzRokhCVjYvu
+	Zor2Dwow+V8FNBFuceikJQbbejD0k7mbtCUrpgdPmEomAiuSXP7NIA0rq5QWG7ur
+	YmdOpQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n2rt83bw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 06 Feb 2025 19:40:52 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7c013ef320aso14233985a.2
+        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 11:40:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738870851; x=1739475651;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kzFOt+hUFf2hH0dfSHzEMgZGBx5oqybElRnsgUP9O+I=;
+        b=oIknIQBWIzLKUQ397ZlypcrpqAnq3ItWsG+b+ygWSjfkGDSJe37f4sfUcGDKyn4aw/
+         VCgi3rrvI5cYAvliMgWOUAFT3j5lS9pb7BQkmJjJ7oOnjQZG27yLDPEWw+jcfeie0Squ
+         Zjjr/AvfWv+dg71jgipaIdGdRm5FC4A/QWPsgPeKdX95iEoo8K+UkC9b4y4NUQaOBQsl
+         +LPXBYHEHpR7V8lsYmgm6Kv4yK0c1EU/1um3EVUg3wQZdupgMzjuHlMEA5odSrtqBbRt
+         F6eXi/4zwmpa71KttVcOO0/GkTWQnoABTTvSUgCY0Nu9ZGy/D7NQ1EjFmQmPO7fCNthw
+         W/cA==
+X-Gm-Message-State: AOJu0YzPCqdKluM/3I7DAdlrnehRq9Ktggc/1ssd28pBs7GUrNtVGOgi
+	VRdAuLz8xh43wyVRuuYWd/CGbPJvH7OFRE7xey+7WOWwIZUrawBJQCXlNTjlycoqu89HEkicmpE
+	vDXIJSOpV/XqIl1/5EqdP5CxvKrEVd3S34ZwSK1qM5uhp77Vm7nIx208=
+X-Gm-Gg: ASbGncscd1odRofrVVBlkG6Dg5eCfiQTNJ5pXbqjP+Kfjhe5rSq29eq8tkqQTmyN1QU
+	SJKXMfkzYK9OOUjl9wyPhLq4/pl9ZG4IbozLVI5C63vvhbK4GcTH3K//LiW/xnesH9CZth2LU7I
+	McrKkRzIy/agui7T1namSNiGKANrFVenz6e6P7VIE5XYcaYEsxSPTGemyL5wv/ToZpp4vokSuP8
+	Y1i0b1VWjC40nwYPDo4v4wPFFQ7EJq2gXNi2M7oHGYaR5uYiQYAYz8tZk38TQTLXHzBnBdr2+5+
+	aCT4g6zUpDthmDZvI1Bd/A==
+X-Received: by 2002:a05:622a:3cc:b0:46c:86d8:fbc with SMTP id d75a77b69052e-47167ad1375mr2774361cf.11.1738870851167;
+        Thu, 06 Feb 2025 11:40:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGK2GFCexxJpENqKGcHNEyCUS9NksWXDELz9dkEmRkjk/gHfsgg3nLmQnccU+pMc4HP4PrA1g==
+X-Received: by 2002:a05:622a:3cc:b0:46c:86d8:fbc with SMTP id d75a77b69052e-47167ad1375mr2774141cf.11.1738870850809;
+        Thu, 06 Feb 2025 11:40:50 -0800 (PST)
+Received: from [192.168.65.90] ([78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab772f8460csm145266866b.62.2025.02.06.11.40.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Feb 2025 11:40:50 -0800 (PST)
+Message-ID: <1ded2597-d5a1-44be-b5d2-30b70657730e@oss.qualcomm.com>
+Date: Thu, 6 Feb 2025 20:40:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] arm64: dts: qcom: ipq9574: Fix USB vdd info
+To: Varadarajan Narayanan <quic_varada@quicinc.com>, lgirdwood@gmail.com,
+        broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, andersson@kernel.org, konradybcio@kernel.org,
+        agross@kernel.org, dmitry.baryshkov@linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250205074657.4142365-1-quic_varada@quicinc.com>
+ <20250205074657.4142365-3-quic_varada@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250205074657.4142365-3-quic_varada@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: Urd2-lyw0KBXOUCWllDOtxDSSjVylXCj
+X-Proofpoint-GUID: Urd2-lyw0KBXOUCWllDOtxDSSjVylXCj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-06_06,2025-02-05_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 mlxlogscore=581
+ impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502060156
 
-The role switch registration and set_role() can happen in parallel as they
-are invoked independent of each other. There is a possibility that a driver
-might spend significant amount of time in usb_role_switch_register() API
-due to the presence of time intensive operations like component_add()
-which operate under common mutex. This leads to a time window after
-allocating the switch and before setting the registered flag where the set
-role notifications are dropped. Below timeline summarizes this behavior
+On 5.02.2025 8:46 AM, Varadarajan Narayanan wrote:
+> USB phys in ipq9574 use the 'L5' regulator. The commit
+> ec4f047679d5 ("arm64: dts: qcom: ipq9574: Enable USB")
+> incorrectly specified it as 'L2'. Because of this when the phy
+> module turns off/on its regulators, 'L2' is turned off/on
+> resulting in 2 issues, namely 'L5' is not turned off/on and the
+> network module powered by the 'L2' is turned off/on.
 
-Thread1				|	Thread2
-usb_role_switch_register()	|
-	|			|
-	---> allocate switch	|
-	|			|
-	---> component_add()	|	usb_role_switch_set_role()
-	|			|	|
-	|			|	--> Drop role notifications
-	|			|	    since sw->registered
-	|			|	    flag is not set.
-	|			|
-	--->Set registered flag.|
+Please wrap your lines at ~72 chars
 
-To avoid this, set the registered flag early on in the switch register
-API.
+You use "'L5'" and "'L2'" a lot, making it hard to read. Try focusing
+on the effect.
 
-Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
-cc: stable@vger.kernel.org
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
----
-Changes in v2:
- - Set the switch registered flag from the get-go as suggested by
-   Heikki.
- - Modified subject line and commit next as per the new logic.
- - Link to v1: https://lore.kernel.org/all/20250127230715.6142-1-quic_eserrao@quicinc.com/
-
- drivers/usb/roles/class.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index c58a12c147f4..30482d4cf826 100644
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -387,8 +387,11 @@ usb_role_switch_register(struct device *parent,
- 	dev_set_name(&sw->dev, "%s-role-switch",
- 		     desc->name ? desc->name : dev_name(parent));
- 
-+	sw->registered = true;
-+
- 	ret = device_register(&sw->dev);
- 	if (ret) {
-+		sw->registered = false;
- 		put_device(&sw->dev);
- 		return ERR_PTR(ret);
- 	}
-@@ -399,8 +402,6 @@ usb_role_switch_register(struct device *parent,
- 			dev_warn(&sw->dev, "failed to add component\n");
- 	}
- 
--	sw->registered = true;
--
- 	/* TODO: Symlinks for the host port and the device controller. */
- 
- 	return sw;
--- 
-2.17.1
-
+Konrad
 
