@@ -1,110 +1,95 @@
-Return-Path: <stable+bounces-114019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F38A29E8B
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 02:53:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59753A29EAA
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 03:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82AF1662B6
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 01:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 563EC1888FD6
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 02:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FABA74BE1;
-	Thu,  6 Feb 2025 01:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3459126C16;
+	Thu,  6 Feb 2025 02:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RuLaYuvV"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048495103F;
-	Thu,  6 Feb 2025 01:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893062E62B;
+	Thu,  6 Feb 2025 02:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738806825; cv=none; b=VGE2ihbYzVrMf46QTLpZcUsH4dWCV5VQC0eVu+WVvEdwyheImwDaGRmetlpjHQWSxr36LJuhf/y/SpOOTIEH6lPtZfaUKjaf0ZB+H2q1raYSy0U/HfmD52pGquluaUCqlOCv6qYP5xFWcFFHhNyD/2I3Fpm1YoTXD+/qhBVJH48=
+	t=1738808405; cv=none; b=D3ONayPf7LEcqvs9Bq9XLxjqnQj6r+3vLq/Knw+IJ2r1NUet4Hel+uf/VdQ9ew5r/Bhs7T9xQ3JW6rBJddI3nDQFiqw8KcLr3gFU1Fspi1WlS5OyWEeycQ/hGYd58uoEFUKGFaO8qiir9gG46nqVswdb7Y/qq55JdFvESisNIfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738806825; c=relaxed/simple;
-	bh=i1447m7XQLHq2APBpUMTQzWjGGeYa5kePCEYkMeHtb8=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=WQ/VVNXrjtzwE/tWCammtPfgduNV9XKKw4aCqKdqTSYqzuyOR12sC17UNdWsXJTEIy48cXWPIN/4z4bn8eH3XT28Ky1HOEUfYPmi/k4I32mIiEMqrxhcY0yUnbDum22tivdBFRWlEqnMSyF18U9TvdmpJKiAbc7GfDNZRXqSMlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YpKr46sMbz4f3jMQ;
-	Thu,  6 Feb 2025 09:53:08 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 6F5011A06DC;
-	Thu,  6 Feb 2025 09:53:31 +0800 (CST)
-Received: from [10.174.179.143] (unknown [10.174.179.143])
-	by APP4 (Coremail) with SMTP id gCh0CgDnSl8aFqRnHiYjDA--.26918S3;
-	Thu, 06 Feb 2025 09:53:31 +0800 (CST)
-Subject: Re: [PATCH 6.6 0/6] md/md-bitmap: move bitmap_{start, end}write to md
- upper layer
-To: Greg KH <gregkh@linuxfoundation.org>, Yu Kuai <yukuai1@huaweicloud.com>
-Cc: stable@vger.kernel.org, song@kernel.org, linux-raid@vger.kernel.org,
- linux-kernel@vger.kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20250127085351.3198083-1-yukuai1@huaweicloud.com>
- <2025020447-hesitant-corroding-16c1@gregkh>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <a2fce7b4-11d1-eaa8-55db-b028e5517892@huaweicloud.com>
-Date: Thu, 6 Feb 2025 09:53:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1738808405; c=relaxed/simple;
+	bh=oHSSIC5E6hzcwmxupX44t54z1KpOd5ZqlBP1+ll/XwU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=DjvfEhRImaSzWERAbBuQoMt0mpX10RhGwkftJSLViJhtm11Bb7s2kP0d+n9vseFCEfoZ8iKtgtoZEAi7YpqiU7uUzLqD5qCb0Q7oT3+ae2yeYm4LUswuXl0JcM5On/7QudJn+qLGozbJg9Cx1GdXQE12syQMwfdebF8kpvmIZ90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RuLaYuvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DE2C4CED1;
+	Thu,  6 Feb 2025 02:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738808404;
+	bh=oHSSIC5E6hzcwmxupX44t54z1KpOd5ZqlBP1+ll/XwU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RuLaYuvV7nEVrtDqSIwidq4MXaSGOW12xBIIZCmJP5+141K8m5sc3iB2EwE8EMho2
+	 Rx6+2RQTBW1TQ1p8hI9v3M157OeOs1BPHX1o38UguND3o4JzEYxMQ8eJf6r99lFIwM
+	 216vXoTwEiUix03H2qSNECCtI9LgycOu25/U8CRclSRTswlYyzGGW6GClrq7Dn2KqQ
+	 IVwP63GHMAOZ0srzpDiRtYkItx63kFyd7fJ++ytm2JGsCvWzL/CmU/fEeqXgY0oSE8
+	 6+LllxtjCVo/42QqXamMd/k8aAFK6iQZ4wWEvQRSqQXtskwFgeY4GhtaQS6gjM/IIT
+	 ZggF4ttW28x7w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE1A8380AAD0;
+	Thu,  6 Feb 2025 02:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2025020447-hesitant-corroding-16c1@gregkh>
-Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDnSl8aFqRnHiYjDA--.26918S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrtrWDuw4UGrW3KF4DZw43KFg_yoWxCrc_uF
-	4xua48u3srXF1UWr4DtFn3Zryvk3y5WrWrtryDXFy3Jr1fZ3Z5Ga9ru3s5Z3WfWrs7JFZ5
-	tayqkw4qyryDWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
-	Y487MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VU13ku3UUUUU==
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+Subject: Re: [PATCH net] selftests: mptcp: connect: -f: no reconnect
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173880843253.974883.18192366892501704782.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Feb 2025 02:20:32 +0000
+References: <20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org>
+In-Reply-To: <20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
-Hi,
+Hello:
 
-ÔÚ 2025/02/04 19:40, Greg KH Ð´µÀ:
-> On Mon, Jan 27, 2025 at 04:53:45PM +0800, Yu Kuai wrote:
->> From: Yu Kuai <yukuai3@huawei.com>
->>
->> This set fix reported problem:
->>
->> https://lore.kernel.org/all/CAJpMwyjmHQLvm6zg1cmQErttNNQPDAAXPKM3xgTjMhbfts986Q@mail.gmail.com/
->> https://lore.kernel.org/all/ADF7D720-5764-4AF3-B68E-1845988737AA@flyingcircus.io/
->>
->> See details in patch 6.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 04 Feb 2025 23:19:53 +0100 you wrote:
+> The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
+> by closing the connection with unread bytes in the receive queue.
 > 
-> Please redo this series and describe in it what you changed from the
-> original commits, as these are not just normal cherry-picks at all.
-
-Got it, the difference is that bitmap_ops doesn't exist in 6.6.
-
-Thanks,
-Kuai
-
+> The xdisconnect() helper was used to stop the connection, but it does
+> more than that: it will shut it down, then wait before reconnecting to
+> the same address. This causes the mptcp_join's "fastclose test" to fail
+> all the time.
 > 
-> thanks,
-> 
-> greg k-h
-> .
-> 
+> [...]
+
+Here is the summary with links:
+  - [net] selftests: mptcp: connect: -f: no reconnect
+    https://git.kernel.org/netdev/net/c/5368a67307b3
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
