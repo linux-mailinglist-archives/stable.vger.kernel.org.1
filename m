@@ -1,147 +1,130 @@
-Return-Path: <stable+bounces-114049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAA4A2A4B0
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:36:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35216A2A4A9
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:36:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A963A9BD3
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 921321889036
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C771222B581;
-	Thu,  6 Feb 2025 09:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C7122686B;
+	Thu,  6 Feb 2025 09:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wrx7+CUv"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="aksC4HcP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1E1226538;
-	Thu,  6 Feb 2025 09:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D1C22686E
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 09:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834319; cv=none; b=bcDKo4hs+7HVFvXxTvkaVcLFYbAe53kANOwIrFG/G20N6uJX00W6ko4hmj/hkJEMUC2XJoopuML3YMeYWjtrokUNGjWG9gvZR8JXTAV0cj0BoEO51DZoOvEeRAzVZcCB1sizZ5mm0KzBT2LksByCoYz0dtencx5K5WcFl0U9bWI=
+	t=1738834418; cv=none; b=GZC2WYMIkxr+b5TumeAzl9W3ukn0sW4NqGylaNpdsnOuQCCbzudMiprmH51+G1k35sF3ZsCLHjjIaVBlt+gO1mo/usfMj4bQbYDdH9y0gTeLL7Ot4HyduIVpaX8IQa49HtWx4W3/U38Ssz1DiIhqTTajgF4Bcxc0tyPY8W7H/3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834319; c=relaxed/simple;
-	bh=Tt+yDI5db92DPvgxkLoXDgaz4XRmykzWy85BDbRZ59w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LHKsnqiWwKMsuGSwjvxOMRmvmnuNiSgGA7E+1J9o+5LMsmA6BkGu2n1zHzcCl96L+U3rtFnvIzZG0LybuNgPERGHPgUdLTtsUV5hOx17UZVFu1XXbbGLu1XTuB6w2x858lHhUoL+eSZvHFDQkc7iVV17QPlt2jabFILF1SMn6yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wrx7+CUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34153C4CEE0;
-	Thu,  6 Feb 2025 09:31:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738834319;
-	bh=Tt+yDI5db92DPvgxkLoXDgaz4XRmykzWy85BDbRZ59w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wrx7+CUvewS1AnJVqhdiy94m1I4bXqHc+kE/YZvG9LkFbAHSsrkyxsHb31Q9g0LED
-	 lRdqw7nuDHecpGlERXiBbykQfhKl0NBmOPU25g8xWDqnyV+xmegCpr2Vxb2SZSAxmZ
-	 xKL10egsCUsuqWn2rhbhBHTW28IiIwMGprrg9lu4V50QPqKJ0SOA4E5G7Qux9l65gv
-	 ZMgpBcmcKDWycmLY0HneSgEghx3X6D1dCYPXvyQEVgFT/UTrWdsJdgHa1Va9ssLeGS
-	 CrY4zwbHl1WcO5x8Jf8dTlJk6jC0L2wcTRizWq3z9TzTPwVgJCfVMymAhh1tmg1Iu1
-	 Y2OWvt76DJDQg==
-Date: Thu, 6 Feb 2025 10:31:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Mike Yuan <me@yhndnzj.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, Christian =?utf-8?B?R8O2dHRzY2hl?= <cgzones@googlemail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs/xattr: actually support O_PATH fds in *xattrat()
- syscalls
-Message-ID: <20250206-uhrwerk-faultiere-7a308565e2d3@brauner>
-References: <20250205204628.49607-1-me@yhndnzj.com>
+	s=arc-20240116; t=1738834418; c=relaxed/simple;
+	bh=usdz62LURijbWQ2Ga/7vGTMaHUbDX8+cCgvM+iEDBJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ChPyw66TR53xobRXWhHcdmiGg7Glu1aPJhWB0iPr1nnZEcjYBgr4nuSUiVQQSnyfxl8uKykuAqBzsDFUvdl6oR/yVGTpKa6xyrYsI5maSS90oR9VUcH2Gsdts2aUfSwjONUF3s3trOCJoWjisXGuGCd0sdeNU+JU59ZHH+8qZ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=aksC4HcP; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id fsvst6kD0zZPafyGMtzqxd; Thu, 06 Feb 2025 09:33:34 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fyGMtpom1hQfUfyGMtxPwx; Thu, 06 Feb 2025 09:33:34 +0000
+X-Authority-Analysis: v=2.4 cv=Negt1HD4 c=1 sm=1 tr=0 ts=67a481ee
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=g9OED4ookiJITInLTEIPWloDXRRtGC/+P9KCScsYSdQ=; b=aksC4HcP+RjmcglH6u/QW6svcJ
+	65bznwhEy5oTC4EiDMRHnltKotGFMshb75iryQCFGZptqeUmps6VPqYGgd6LnUgMTrlLhnjd5dlU3
+	ztmwecvyrQMR5u2g1JyOtpZjoY2/FIYP2szZbmOKgB9NJlrhBY0YxN9xDKkkxrkg2mQLoCOfzs9hb
+	j+MZLvBh08V9ECkvlZ0ZRa127r1FCpjQ0rMaN//yI0qg/+6wn6Ldj4/utFXa/jhdsO4LKpzSW3m7+
+	kagCOdf8zhwpGIiPxw4CJhxRhMkQqLgWkLwn3AoFiqiC6Xk3h/s/0PL1xCq1I1ugTMHYRPuvN7oZu
+	JTJvT5+Q==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:55396 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tfyGL-001iYW-03;
+	Thu, 06 Feb 2025 02:33:33 -0700
+Message-ID: <97713b4c-e3b5-4335-9827-a695f00a09ad@w6rz.net>
+Date: Thu, 6 Feb 2025 01:33:30 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250205204628.49607-1-me@yhndnzj.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.13 000/623] 6.13.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250205134456.221272033@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tfyGL-001iYW-03
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:55396
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBYaq30QigBndM4S3AqAfvwUhI3IPZvsD6K0nKRTTAZ8+nPvPbmY5vJOkWnJNUDrsmj5un0+XSOKkmIXcyjdXynJhPFDrndR4GpVOqO1TDeqMNa1H4om
+ 7p19nie2EhVfvBRVgFHd5ca8csNiwCLYDD2ibH7d9te/gfBxONulELQYrMM0KLh8CVyWtMPGFfbQNw==
 
-On Wed, Feb 05, 2025 at 08:47:23PM +0000, Mike Yuan wrote:
-> Cited from commit message of original patch [1]:
-> 
-> > One use case will be setfiles(8) setting SELinux file contexts
-> > ("security.selinux") without race conditions and without a file
-> > descriptor opened with read access requiring SELinux read permission.
-> 
-> Also, generally all *at() syscalls operate on O_PATH fds, unlike
-> f*() ones. Yet the O_PATH fds are rejected by *xattrat() syscalls
-> in the final version merged into tree. Instead, let's switch things
-> to CLASS(fd_raw).
-> 
-> Note that there's one side effect: f*xattr() starts to work with
-> O_PATH fds too. It's not clear to me whether this is desirable
-> (e.g. fstat() accepts O_PATH fds as an outlier).
-> 
-> [1] https://lore.kernel.org/all/20240426162042.191916-1-cgoettsche@seltendoof.de/
-> 
-> Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
-> Signed-off-by: Mike Yuan <me@yhndnzj.com>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Christian Göttsche <cgzones@googlemail.com>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> ---
+On 2/5/25 05:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.2 release.
+> There are 623 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 07 Feb 2025 13:42:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I expanded on this before. O_PATH is intentionally limited in scope and
-it should not allow to perform operations that are similar to a read or
-write which getting and setting xattrs is.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Patches that further weaken or dilute the semantics of O_PATH are not
-acceptable.
+Tested-by: Ron Economos <re@w6rz.net>
 
->  fs/xattr.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/xattr.c b/fs/xattr.c
-> index 02bee149ad96..15df71e56187 100644
-> --- a/fs/xattr.c
-> +++ b/fs/xattr.c
-> @@ -704,7 +704,7 @@ static int path_setxattrat(int dfd, const char __user *pathname,
->  
->  	filename = getname_maybe_null(pathname, at_flags);
->  	if (!filename) {
-> -		CLASS(fd, f)(dfd);
-> +		CLASS(fd_raw, f)(dfd);
->  		if (fd_empty(f))
->  			error = -EBADF;
->  		else
-> @@ -848,7 +848,7 @@ static ssize_t path_getxattrat(int dfd, const char __user *pathname,
->  
->  	filename = getname_maybe_null(pathname, at_flags);
->  	if (!filename) {
-> -		CLASS(fd, f)(dfd);
-> +		CLASS(fd_raw, f)(dfd);
->  		if (fd_empty(f))
->  			return -EBADF;
->  		return file_getxattr(fd_file(f), &ctx);
-> @@ -978,7 +978,7 @@ static ssize_t path_listxattrat(int dfd, const char __user *pathname,
->  
->  	filename = getname_maybe_null(pathname, at_flags);
->  	if (!filename) {
-> -		CLASS(fd, f)(dfd);
-> +		CLASS(fd_raw, f)(dfd);
->  		if (fd_empty(f))
->  			return -EBADF;
->  		return file_listxattr(fd_file(f), list, size);
-> @@ -1079,7 +1079,7 @@ static int path_removexattrat(int dfd, const char __user *pathname,
->  
->  	filename = getname_maybe_null(pathname, at_flags);
->  	if (!filename) {
-> -		CLASS(fd, f)(dfd);
-> +		CLASS(fd_raw, f)(dfd);
->  		if (fd_empty(f))
->  			return -EBADF;
->  		return file_removexattr(fd_file(f), &kname);
-> 
-> base-commit: a86bf2283d2c9769205407e2b54777c03d012939
-> -- 
-> 2.48.1
-> 
-> 
 
