@@ -1,126 +1,204 @@
-Return-Path: <stable+bounces-114120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A69A2AC5F
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 16:23:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368D8A2AC67
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 16:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D70164C15
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72E333A5F03
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968D11EDA19;
-	Thu,  6 Feb 2025 15:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0401EDA2E;
+	Thu,  6 Feb 2025 15:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtJx5H6u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MFkn4ghC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDF723642A;
-	Thu,  6 Feb 2025 15:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DF01EDA1D
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 15:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738855374; cv=none; b=J42IFMXH8L/raWKQZGzjk44bTm0bHxhGUUMBuu5ZBDMGwVLqmtbeiofji9LX0yAOcUn1pyT/AM212FM+4vUBRWLY23h59bfph7mhx62txzAMkhOcHGDwnYSVzcfFUdmiEDQeTF2Wx8FU7MwxtxJtTtGgmUilslQrNz+EReAwiiU=
+	t=1738855467; cv=none; b=QfsPmQm4d+36c3e0+zyGHpUq1JL6q5r1tJyxiRma2skcqb8E6PyQ/bQxck+68mAqseGS6VLTImSUCcPieAsTb6WmKI3/gDoVJ+3/r3xtzoXTddeyVmcBEVC26+DVI/vq1XkDs5gngDFqAfBH2YBq0B7u9FXCwc39ncZEFIEGPBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738855374; c=relaxed/simple;
-	bh=FrLHXacAKu7E8PIh7mv5/7UyuK0ZoDb/ggVEpXUiGJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lsKJqLXz5dY2hc8TAXFzpWx9A02J1K3u/3Jx5MQlna4G5AQre8pRKcaA6/OAIDBDTGnZmT42tkENd5ab/h+Xdk64bedNXXoYyIKkRkJt3lEEsSa1cDO5fDMDHEk5iqeFiRrAMGm4V1NcSCXHqpkWrtELvYuj2OWXGXCT7ndIWRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtJx5H6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CB8C4CEDD;
-	Thu,  6 Feb 2025 15:22:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738855371;
-	bh=FrLHXacAKu7E8PIh7mv5/7UyuK0ZoDb/ggVEpXUiGJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GtJx5H6uD4arsQxYHReeieGtNLb5HEPaP+XikrDzrkEIEkr5tFKHPffQXcFzGR4wc
-	 8RpS2oaekOqsSGsbQi906lQjVUomwO5uAB0h8gx72/aFNZ34DL9/Bvj7uB1u9NRN4d
-	 oKxW/VFr56qRdgy+5FlwxFr7JnLgLwrFVX2TM8v3M3G4muu5uJXDly6tN/B4EVM6Nz
-	 CK5gQCkbnEzr9KtIaHF/keibaJMTkX5azZZEiC6/xuTeh6fIrroFwX69zD8JF/I7mR
-	 qE5diBGxt4zDD43aNOb2VpZUZO/+LJggzzk1T2TJjrkhbMGg7zwBYGY/zrY/6bCcKP
-	 sXSlKD5XSKFLg==
-Date: Thu, 6 Feb 2025 15:22:47 +0000
-From: Will Deacon <will@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: Handle .ARM.attributes section in linker
- scripts
-Message-ID: <20250206152246.GA3468@willie-the-truck>
-References: <20250204-arm64-handle-arm-attributes-in-linker-script-v2-1-d684097f5554@kernel.org>
- <20250206130526.GB3204@willie-the-truck>
- <20250206135715.GA180182@ax162>
+	s=arc-20240116; t=1738855467; c=relaxed/simple;
+	bh=YPphV5G62CFL8KuQxZ3yO1XWPORZFgSc7KgvCiPN2mM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cetPVcGUgY7qRCXbTkqG7trgwgflFmulPW2UZH1SR6jEbDXmgJYFYhKUOokwBdvrVr59djGTjTTFO4+5CmS20kr319ZTkQeyFCdR6dj7Ym8qV52vvwO4J6xE8s0waMAunWQjkBzDFEFPhp/e71TRQ1HV3rsaGB8Ea6GMfcKODiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MFkn4ghC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738855464;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nsSy0hAlezuKAgobid2coWCPgueOf9jZ3at11uhkyPc=;
+	b=MFkn4ghCYo46XKoaJuWC5KubVLr6kKkH3rUL4IJPmnLpde9yXBQOrUL7UIdo/K9J2apUdC
+	Yam3gxAc1ppJXZcRaHuRoQvXSLemG7josx2ZcODnwf3F27adPk3ptKDJbMz6jzL9jHk6Kx
+	w4iRvrissDM3xKAxcSwvHGEcu0Ikl3I=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-ha8f2_Y2PFmImgyKxLeUGw-1; Thu, 06 Feb 2025 10:24:23 -0500
+X-MC-Unique: ha8f2_Y2PFmImgyKxLeUGw-1
+X-Mimecast-MFC-AGG-ID: ha8f2_Y2PFmImgyKxLeUGw
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6e4237b6cf0so15204556d6.1
+        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 07:24:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738855462; x=1739460262;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nsSy0hAlezuKAgobid2coWCPgueOf9jZ3at11uhkyPc=;
+        b=fvuNkFe+o0Ca1+kpEytdlda5oTbw2Lqntqf5eJiu08X9dULwa7zkEsgWQvURS+TIzL
+         UcNQvzQRZ7t0ZiBux+zsFT7zlYSnI5OvoqUHvgV6WkyALqVtRXr7ry/wQuI4BEvGVumK
+         IWm4l8B6kH6K25QIbX/JuInwBRRjTIzyX8dvDCHSRof42rkpsYPfXAg/7frfIC+uomFu
+         4UiEQABgMjBHFW1ue6eJ3oWTGDWbyU0fUyes7T5bP5yKFUzLWx60H6TdeoneCmatiZTC
+         /fcOG7XoVLkkfu8FoyMs35XurlVj7TbHdNeIz6sVHWvDuvvBIqVk2QGJ6qms8fe21oy+
+         O9rg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIS7e2G4ryKpF+bZAEJfZ04GtMKG9f7QWzrJp1GoVsykcywpErOGvIhp9xqpo4InMxvn7amcU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5JeGu8eyuDwynOSrlBQpHxqE3gdPxa1IiQBfiJfF86Y7BOGnT
+	mNEMcPkOvGgShq1ftJbV8KaRpuNarli9lMep7hxw9drWrHbQWHRQWVLjoNgnt1J8VXp7tzeCRgR
+	BCw6EzoARTxvux4rtVZvZYuiQaSCSh8VNBwZrT0dmH434KD2Z/YPc+Q==
+X-Gm-Gg: ASbGnctCH8kwDLKXEJ/7059LzZHAljNungvDDAXGPv+AoliqtuVktmldcYoGeAWfc+3
+	K0gnyKObVBWRNLTY51ehcuvJAmHwK71587Wml7gK4ujwCnapZ803MozrYowSGEHnHUCLQjwlTKn
+	gOEvD434TQMgUrjtqtckgs192jH1Xmxk9vyEEYHLTrJG5NL1ZjCJ/UYXBxqrQmyOUZelHGPiB9e
+	yg4vD4Z67/3UYNs+ka4ucXy2dbYj4SFH62Ns2c8c8nSzBuYwJFiB29BmFg9PGe/AHl4jJzXaQ0/
+	xiacuQ3Rn+AxvqhRDTslgfOIUd4IB6e0GS8yX7h8IaoABdYN6o2CqLLX0eVrvbFj3Q==
+X-Received: by 2002:a0c:fd87:0:b0:6e4:3478:b55a with SMTP id 6a1803df08f44-6e43478b75bmr57603366d6.35.1738855462430;
+        Thu, 06 Feb 2025 07:24:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEAzIP3FPchsTGksDad8A1HROFqTYUizQO7jsonTZtU1t1mZ2sva4db+JAsMgyMPkDZ4m50qA==
+X-Received: by 2002:a0c:fd87:0:b0:6e4:3478:b55a with SMTP id 6a1803df08f44-6e43478b75bmr57603066d6.35.1738855462057;
+        Thu, 06 Feb 2025 07:24:22 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43baacac6sm6602286d6.87.2025.02.06.07.24.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 07:24:20 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>, Peter Zijlstra
+ <peterz@infradead.org>
+Cc: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar
+ <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
+ Gorman <mgorman@suse.de>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steve Wahl <steve.wahl@hpe.com>, Saurabh
+ Singh Sengar <ssengar@linux.microsoft.com>, srivatsa@csail.mit.edu,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
+ for debug builds
+In-Reply-To: <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
+References: <20250203114738.3109-1-namjain@linux.microsoft.com>
+ <f6bf04e8-3007-4a44-86d8-2cc671c85247@amd.com>
+ <20250205095506.GB7145@noisy.programming.kicks-ass.net>
+ <0835864f-6dc5-430d-91c0-b5605007d9d2@amd.com>
+ <20250205101600.GC7145@noisy.programming.kicks-ass.net>
+ <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
+Date: Thu, 06 Feb 2025 16:24:17 +0100
+Message-ID: <xhsmhed0bjdum.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206135715.GA180182@ax162>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 
-On Thu, Feb 06, 2025 at 06:57:15AM -0700, Nathan Chancellor wrote:
-> Hi Will,
-> 
-> On Thu, Feb 06, 2025 at 01:05:26PM +0000, Will Deacon wrote:
-> > On Tue, Feb 04, 2025 at 10:48:55AM -0700, Nathan Chancellor wrote:
-> > > A recent LLVM commit [1] started generating an .ARM.attributes section
-> > > similar to the one that exists for 32-bit, which results in orphan
-> > > section warnings (or errors if CONFIG_WERROR is enabled) from the linker
-> > > because it is not handled in the arm64 linker scripts.
-> > > 
-> > >   ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
-> > >   ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
-> > > 
-> > >   ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-> > >   ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-> > >   ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-> > > 
-> > > Discard the new sections in the necessary linker scripts to resolve the
-> > > warnings, as the kernel and vDSO do not need to retain it, similar to
-> > > the .note.gnu.property section.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
-> > > Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
-> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > > ---
-> > > Changes in v2:
-> > > - Discard the section instead of adding it to the final artifacts to
-> > >   mirror the .note.gnu.property section handling (Will).
-> > 
-> > Thanks for the v2. Just a minor nit:
-> > 
-> > > - Link to v1: https://lore.kernel.org/r/20250124-arm64-handle-arm-attributes-in-linker-script-v1-1-74135b6cf349@kernel.org
-> > > ---
-> > >  arch/arm64/kernel/vdso/vdso.lds.S | 1 +
-> > >  arch/arm64/kernel/vmlinux.lds.S   | 1 +
-> > >  2 files changed, 2 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/kernel/vdso/vdso.lds.S b/arch/arm64/kernel/vdso/vdso.lds.S
-> > > index 4ec32e86a8da..8095fef66209 100644
-> > > --- a/arch/arm64/kernel/vdso/vdso.lds.S
-> > > +++ b/arch/arm64/kernel/vdso/vdso.lds.S
-> > > @@ -80,6 +80,7 @@ SECTIONS
-> > >  		*(.data .data.* .gnu.linkonce.d.* .sdata*)
-> > >  		*(.bss .sbss .dynbss .dynsbss)
-> > >  		*(.eh_frame .eh_frame_hdr)
-> > > +		*(.ARM.attributes)
-> > >  	}
-> > 
-> > Can we chuck this in the earlier /DISCARD/ section along with
-> > .note.gnu.property? i.e.
-> 
-> Sure, I don't see why not. Do you want the comment above it updated to
-> mention this section or should I leave it as is?
+On 06/02/25 14:40, K Prateek Nayak wrote:
+> What topology_span_sane() does is, it iterates over all the CPUs at a
+> given topology level and makes sure that the cpumask for a CPU at
+> that domain is same as the cpumask of every other CPU set on that mask
+> for that topology level.
+>
+> If two CPUs are set on a mask, they should have the same mask. If CPUs
+> are not set on each other's mask, the masks should be disjoint.
+>
+> On x86, the way set_cpu_sibling_map() works, CPUs are set on each other's
+> shared masks iff match_*() returns true:
+>
+> o For SMT, this means:
+>
+>    - If X86_FEATURE_TOPOEXT is set:
+>      - pkg_id must match.
+>      - die_id must match.
+>      - amd_node_id must match.
+>      - llc_id must match.
+>      - Either core_id or cu_id must match. (*)
+>      - NUMA nodes must match.
+>
+>    - If !X86_FEATURE_TOPOEXT:
+>      - pkg_id must match.
+>      - die_id must match.
+>      - core_id must match.
+>      - NUMA nodes must match.
+>
+> o For CLUSTER this means:
+>
+>    - If l2c_id is not populated (== BAD_APICID)
+>      - Same conditions as SMT.
+>
+>    - If l2c_id is populated (!= BAD_APICID)
+>      - l2c_id must match.
+>      - NUMA nodes must match.
+>
+> o For MC it means:
+>
+>    - llc_id must be populated (!= BAD_APICID) and must match.
+>    - If INTEL_SNC: pkg_id must match.
+>    - If !INTEL_SNC: NUMA nodes must match.
+>
+> o For PKG domain:
+>
+>    - Inserted only if !x86_has_numa_in_package.
+>    - CPUs should be in same NUMA node.
+>
+> All in all, other that the one (*) decision point, everything else has
+> to strictly match for CPUs to be set in each other's CPU mask. And if
+> they match with one CPU, they should match will all other CPUs in mask
+> and it they mismatch with one, they should mismatch with all leading
+> to link_mask() never being called.
+>
 
-If you can think of something useful to add to the comment, don't let me
-stop you!
+Nice summary, thanks for that - I'm not that familiar with the x86 topology
+faff.
 
-Will
+
+> This is why I think that the topology_span_sane() check is redundant
+> when the x86 bits have already ensured masks cannot overlap in all
+> cases except for potentially in the (*) case.
+>
+> So circling back to my original question around "SDTL_ARCH_VERIFIED",
+> would folks be okay to an early bailout from topology_span_sane() on:
+>
+>      if (!sched_debug() && (tl->flags & SDTL_ARCH_VERIFIED))
+>       return;
+>
+> and more importantly, do folks care enough about topology_span_sane()
+> to have it run on other architectures and not just have it guarded
+> behind just "sched_debug()" which starts off as false by default?
+>
+
+If/when possible I prefer to have sanity checks run unconditionally, as
+long as they don't noticeably impact runtime. Unfortunately this does show
+up in the boot time, though Steve had a promising improvement for that.
+
+Anyway, if someone gets one of those hangs on a
+
+  do { } while (group != sd->groups)
+
+they'll quickly turn on sched_verbose (or be told to) and the sanity check
+will holler at them, so I'm not entirely against it.
+
+> (Sorry for the long answer explaining my thought process.)
+>
+>>
+>> That I can't remember, sorry :/
+>
+> --
+> Thanks and Regards,
+> Prateek
+
 
