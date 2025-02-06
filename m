@@ -1,154 +1,136 @@
-Return-Path: <stable+bounces-114082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8DCA2A834
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:16:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D25A2A880
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 393907A2C9C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 12:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B291889473
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 12:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B1622A7FA;
-	Thu,  6 Feb 2025 12:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F2F22DF8B;
+	Thu,  6 Feb 2025 12:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csL5T1yI"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC1D2288F5;
-	Thu,  6 Feb 2025 12:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5837D22DF89
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 12:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738844158; cv=none; b=ZdLtUI5iFOSEq8nNFhFyM9vjF0w3Fhs9AoWKN39d5/LSQtUK5uw9EZ1cAmiChOxuK+F+RQ92vUgKkWF0tDi4sjZR9SVB4j1o8NG1CaOliX0ry+38MDHXHv//BU7ucnGKWTteR04RukVu8I/BamQEE5bnHYeiYunkVxNoiftBhVY=
+	t=1738844926; cv=none; b=dYbT8verVwKxKqo0s2UN6qXDz1mRuswyMJyb97+PTaTtbjkL2d+NkTHjlZQpVZOTGmigllNJAL7SYcTLasr3RgYYNuRimXmgxvvuSqFvoJGztsK0Rp1mCbzwQAFQUAZ8MDOHbYdpRZzRxS2I/EX9syL5wr8au6M4VzdP1lK/SlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738844158; c=relaxed/simple;
-	bh=biMuNNUnivOyJHCNz5R+9p74VtDFagjLNpn2KojOK94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dVJ6n7/XfjXYXqEd7/RjL3ghkleRPDisaIRhpSI1SzXM7uSpHYOZ/JiiAa58DNkWGJc9aF0nz/yfVJVjLIErERZDkriHmOOhNLYa1IpRML5vnKg91+YeCwNpJu/nzRjuNRFYWCJxs1iMpVk2/FRqdJ4waFPwWpYFNaTapcdgM9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1943912FC;
-	Thu,  6 Feb 2025 04:16:18 -0800 (PST)
-Received: from [10.57.80.166] (unknown [10.57.80.166])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 98B683F63F;
-	Thu,  6 Feb 2025 04:15:49 -0800 (PST)
-Message-ID: <ed3f2549-cacc-4eaa-80c3-3f220835c9e6@arm.com>
-Date: Thu, 6 Feb 2025 12:15:47 +0000
+	s=arc-20240116; t=1738844926; c=relaxed/simple;
+	bh=Du3aRerjxPean/CYnG5U4O6ptHDlBuzv0OizfoXm9C8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n6GV8WEMPXqn1qDF/KxDwhmtRSF6Jg1DY0Quk5ZWK0sPwdGM8P5awTigqE+ShsdUbfdF9pXQjtVWTV9RY0hisTcZcz4zKCsJXP/7gNon1/zRlvJ5PSvkLltHDsDGqgxYQ/jIBadcN97vG6xs/7mcNS7/BtfKHVARKDuNkz876s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csL5T1yI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C368EC4CEDD;
+	Thu,  6 Feb 2025 12:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738844925;
+	bh=Du3aRerjxPean/CYnG5U4O6ptHDlBuzv0OizfoXm9C8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=csL5T1yIthLtechzYj+crRsL+LfIawodBZVWBc83SSEoQE1RIa0QZ2oOODwqq+AXZ
+	 OOHd9mbwSk3swh7bwPKXHKN0JgX39P7WzUUL3X+emqZQWUCY+UZwisXOE2uL4F6p4N
+	 lWMBls5cGDloIlNd3Ri/xCT6lMXMuoY+nw8vvIBI6Lldzw38WnmkRnnkqsOajfrPkv
+	 /xJTyFyg72O8J0UhrvNvNnPzZ7ZSIvGqqcIh1jxmaekhqQFsC+mQuQpgDa7tY0No3y
+	 Q5yUUyWjIAdrhgLOLlDqa4BFw4hqq324rs4MU/lB/qIqX8mewboNPX74eueU2yaTo5
+	 noWEKLgM+2gnA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tg0zr-0017aO-AA;
+	Thu, 06 Feb 2025 12:28:43 +0000
+Date: Thu, 06 Feb 2025 12:28:42 +0000
+Message-ID: <86r04btfyd.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	eauger@redhat.com,
+	fweimer@redhat.com,
+	jeremy.linton@arm.com,
+	oliver.upton@linux.dev,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	tabba@google.com,
+	wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH 7/8] KVM: arm64: Mark some header functions as inline
+In-Reply-To: <Z6SVGbr7cvrVnNMz@J2N7QTR9R3>
+References: <20250204152100.705610-1-mark.rutland@arm.com>
+	<20250204152100.705610-8-mark.rutland@arm.com>
+	<b76803b7-c1b3-426b-a375-0c01b98142c9@sirena.org.uk>
+	<Z6SJAkogWN9D7ZKf@J2N7QTR9R3>
+	<86seortkve.wl-maz@kernel.org>
+	<Z6SVGbr7cvrVnNMz@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/16] mm: hugetlb: Add huge page size param to
- huge_ptep_get_and_clear()
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Muchun Song <muchun.song@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- Steve Capper <steve.capper@linaro.org>, Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, stable@vger.kernel.org
-References: <20250205151003.88959-1-ryan.roberts@arm.com>
- <20250205151003.88959-2-ryan.roberts@arm.com>
- <d8ef8240-e202-464c-ad16-1a34953cc872@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <d8ef8240-e202-464c-ad16-1a34953cc872@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thanks for the review!
-
-On 06/02/2025 05:03, Anshuman Khandual wrote:
+On Thu, 06 Feb 2025 10:55:21 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
 > 
+> On Thu, Feb 06, 2025 at 10:42:29AM +0000, Marc Zyngier wrote:
+> > On Thu, 06 Feb 2025 10:03:46 +0000,
+> > Mark Rutland <mark.rutland@arm.com> wrote:
+> > > That said, I'm going to go with the below, adding 'inline' to
+> > > kvm_hyp_handle_memory_fault() and using CPP defines to alias the
+> > > function names:
+> > > 
+> > > | static inline bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu,
+> > > |                                                u64 *exit_code)
+> > > | {
+> > > |         if (!__populate_fault_info(vcpu))
+> > > |                 return true;
+> > > | 
+> > > |         return false;
+> > > | }
+> > > | #define kvm_hyp_handle_iabt_low         kvm_hyp_handle_memory_fault
+> > > | #define kvm_hyp_handle_watchpt_low      kvm_hyp_handle_memory_fault
+> > > 
+> > > I think that's clearer, and it's more alisnged with how we usually alias
+> > > function names in headers. Other than these two cases, __alias() is only
+> > > used in C files to create a sesparate exprted symbol, and it's odd to
+> > > use it in a header anyhow.
+> > > 
+> > > Marc, please should if you'd prefer otherwise.
+> > 
+> > Nah, that's fine by me.
+> > 
+> > My only issue was with marking functions as inline, and yet storing
+> > pointers to these functions. But it looks like the compiler (GCC 12.2
+> > in my case) is doing a good job noticing the weird pattern, and
+> > generating only one function, even if we store multiple pointers.
 > 
-> On 2/5/25 20:39, Ryan Roberts wrote:
->> In order to fix a bug, arm64 needs to be told the size of the huge page
->> for which the huge_pte is being set in huge_ptep_get_and_clear().
->> Provide for this by adding an `unsigned long sz` parameter to the
->> function. This follows the same pattern as huge_pte_clear() and
->> set_huge_pte_at().
->>
->> This commit makes the required interface modifications to the core mm as
->> well as all arches that implement this function (arm64, loongarch, mips,
->> parisc, powerpc, riscv, s390, sparc). The actual arm64 bug will be fixed
->> in a separate commit.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->>  arch/arm64/include/asm/hugetlb.h     |  4 ++--
->>  arch/arm64/mm/hugetlbpage.c          |  8 +++++---
->>  arch/loongarch/include/asm/hugetlb.h |  6 ++++--
->>  arch/mips/include/asm/hugetlb.h      |  6 ++++--
->>  arch/parisc/include/asm/hugetlb.h    |  2 +-
->>  arch/parisc/mm/hugetlbpage.c         |  2 +-
->>  arch/powerpc/include/asm/hugetlb.h   |  6 ++++--
->>  arch/riscv/include/asm/hugetlb.h     |  3 ++-
->>  arch/riscv/mm/hugetlbpage.c          |  2 +-
->>  arch/s390/include/asm/hugetlb.h      | 12 ++++++++----
->>  arch/s390/mm/hugetlbpage.c           | 10 ++++++++--
->>  arch/sparc/include/asm/hugetlb.h     |  2 +-
->>  arch/sparc/mm/hugetlbpage.c          |  2 +-
->>  include/asm-generic/hugetlb.h        |  2 +-
->>  include/linux/hugetlb.h              |  4 +++-
->>  mm/hugetlb.c                         |  4 ++--
->>  16 files changed, 48 insertions(+), 27 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
->> index c6dff3e69539..03db9cb21ace 100644
->> --- a/arch/arm64/include/asm/hugetlb.h
->> +++ b/arch/arm64/include/asm/hugetlb.h
->> @@ -42,8 +42,8 @@ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
->>  				      unsigned long addr, pte_t *ptep,
->>  				      pte_t pte, int dirty);
->>  #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
->> -extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
->> -				     unsigned long addr, pte_t *ptep);
->> +extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
->> +				     pte_t *ptep, unsigned long sz);
-> 
-> If VMA could be passed instead of MM, the size of the huge page can
-> be derived via huge_page_size(hstate_vma(vma)) and another argument
-> here need not be added. Also MM can be derived from VMA if required.
+> That's fair -- I'm fairly certain that we do this elsewhere too, but I
+> can switch to __maybe_unused if we're worried that might bite us in
+> future?
 
-I considered this approach; infact that's what I first implemented when fixing
-an equivalent bug on set_huge_pte_at() in the past. But that was problematic
-because there are some cases where the helper is used for kernel mappings (see
-vmalloc) and there is no VMA to pass in that case. See [1].
-
-To fix this bug, usage of this helper for kernel mappings is not an issue (yet)
-so I guess technically it could be fixed by passing VMA. But later in this
-series I start using huge_ptep_get_and_clear() for the vmap (see patch 11) so it
-would break at that point.
-
-Another approach I considered was to allocate a spare swap-pte bit (we have a
-few) to indicate PTE_CONT for non-present PTEs. Then no API change is required
-at all. But given set_huge_pte_at() and huge_pte_clear() already pass "sz", it
-seemed best just to keep things simple and follow that pattern.
-
-[1] https://lore.kernel.org/all/20230922115804.2043771-1-ryan.roberts@arm.com/
+Sure, that'd be equally fine.
 
 Thanks,
-Ryan
 
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
