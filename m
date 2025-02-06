@@ -1,188 +1,136 @@
-Return-Path: <stable+bounces-114176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7D1A2B410
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5F8A2B4CB
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ABE33A8C1C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 21:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F0463A2703
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7FB1DF98C;
-	Thu,  6 Feb 2025 21:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3A222FF59;
+	Thu,  6 Feb 2025 22:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CT26USX7"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="WS9x6mvv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288A21CEAC8;
-	Thu,  6 Feb 2025 21:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1C422FF57
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 22:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738876847; cv=none; b=glAAH5P9gl2AUydA1G+VCGaBYlHc/n3K3lxo9ynUj9qQlNPHuWqzy47U2qL6zcId9FkTzjpVkFvAs1NU5I7rVuoVaWkxsb3tesv/Rk2qakpm8sSWgZg/eumSFHeqqhB8QzJLMLMPxy8DyPoTN1qOv3miZbrH3tSHZrfTUyalJAQ=
+	t=1738879768; cv=none; b=i8xk4vLXUKhsDRoauMm6b6dHVRgwbGeVtUwAGi9mNTvlvnJiP7dLh4DUB6Vf6im51jO+pilG8FuNaiEfjFOS2yC54ON2plZy0/2Q0/tRioRqgMy9euKTtb46Pw8la31oJRj49hDgUuUPfr4BM3EatgCDRF9nYRT0wYsnSkHS+nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738876847; c=relaxed/simple;
-	bh=mfJyXij44o3o0oJrdMgXZbXTD7uDgld9x1fyfk43N1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XOMvbqsuZ5X+kUd2rifrzEgwGtk4hYJK1ZlHOEPt71bJS7RjJikx1ir9OOdYhhfC8KuBJm4xRrLa+//1wKZq9aGoJqRXRX8GvRa+CVGDfpAd1b/skTm8j4rcBSVoaWFpWP1ZXBWgU+dVbKqofMAd84/cTFdPLwo2XZWcCl8ANFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CT26USX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C924C4CEDD;
-	Thu,  6 Feb 2025 21:20:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738876845;
-	bh=mfJyXij44o3o0oJrdMgXZbXTD7uDgld9x1fyfk43N1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CT26USX7LJYcjhY05L1NYswCMFEDkGEqK+b7cNTcCq6H6cwFcNw5p/H0ugRdSw0Qz
-	 YRn1qHMpGxm3JsiUBM/GlLoeQcuW00LbPkTuS6fEj4Yt8tFiNYw3JqoPBGnKbLMMj0
-	 /5ZxXfq7Lc9UEt4V9gEMdng8Z4dsqN7yWZWA0BLULn7EbsCW5PPrf+UsvgWq7t/sJf
-	 6osJSoIA26geb+gRut7IWeWDcJdyGQy6eWWGr3lFDPIsyji7XzSvK+eW3eiloAlKLm
-	 01vYcvkAqYsjiOk19N5HGuRl1Er7HaiqPbHLk5VNjvOsJCr74nng1McgihLJLSdcaU
-	 dQwLJcbm+agGg==
-Date: Thu, 6 Feb 2025 13:20:45 -0800
-From: Kees Cook <kees@kernel.org>
-To: Eyal Birger <eyal.birger@gmail.com>
-Cc: luto@amacapital.net, wad@chromium.org, oleg@redhat.com,
-	mhiramat@kernel.org, andrii@kernel.org, jolsa@kernel.org,
-	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com,
-	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
-	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
-	bpf@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] seccomp: passthrough uretprobe systemcall without
- filtering
-Message-ID: <202502061320.07B459A@keescook>
-References: <20250202162921.335813-1-eyal.birger@gmail.com>
- <20250202162921.335813-2-eyal.birger@gmail.com>
+	s=arc-20240116; t=1738879768; c=relaxed/simple;
+	bh=v8Cb/I97cbYSHojVbzWOcSDJMzlNFCCIVvXaYBcMZxI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jJWY47tzyEc94rSIBGBiWFjMthXfdFzB16xHi8ImBFOJ55kzNM+5nhhlsC00U6eX922FGDCs8bNdos6kago+zVKCMZCwYrOKCnsm+SG/Gg0FD2/JMR6pHjty1RiNTIZJKTVkRGtYKifulyG0cYygMUki40bAYKmkU2fo81wmXwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=WS9x6mvv; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f3328f72aso16588065ad.3
+        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 14:09:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1738879764; x=1739484564; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YowFV95RzqYpXXncaW4VNnhPzNA0mgUHkVJDlV/Z4no=;
+        b=WS9x6mvvw1xRtAvcpMCfBQJHjKlMf8A/0GANFGWK3D4TvvqRrOLf+witlUNi4HOqPv
+         v7zIcMgdW+8qfMbJaBNu/b1CsNcDchgfKL5IYdn9uWukS0LoIY++PlFrj3XSvSqtcR74
+         Cqy++AHBfbINO0NsAqXOeNcWC0C3e4xlbibUnme0wQabxssoYLzQD8jPiftyBB8qbmVo
+         OVCX4vjMqGspB1WukFpXCzgTXFBIB0/isr1hvavOOww347EMyP26Zuni5PUwE24WdgHH
+         YE5ToAchpAI/hhgjRMObZ359n2X7cKao3Q9P4Y4t0ako7U3IT45+A1Uhh/7/CFw7L0pF
+         Xfww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738879764; x=1739484564;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YowFV95RzqYpXXncaW4VNnhPzNA0mgUHkVJDlV/Z4no=;
+        b=m4AN0gfKnIDyxD0KZJ0z17PR623BPF5bH1W855CiWuOC9R+4ZYvh64WknC7PmACRIY
+         u+/Fu2hVO/91TPT3ZCR6MwbRfrry8sudYmjJQ7n95GaPSzlvU2AngQWAJ+qEopyxFFZs
+         MvD8LiTU2YOxiZKq7hl3ukTwrsEKw+vwb8PFuTHIgmVKjy1vp7LR1FoVnd1hqQ63PEB/
+         2X0l+HD16G4bOqpXam5T1wmarmorUvjbZnQZJSupHyGa9PY85BwAmjh2kKCLni6D6Oag
+         hoc2TlAPcvpapNOXYtIzpXkea26m5MErsdyWpBr2BGiVQAlMnoNr9PxeLdMy7E/6q/UY
+         NOFg==
+X-Gm-Message-State: AOJu0YwhntiRlIJkwNmWfrgDGweE+P2FflVnMqIXaQTs6S8o/8FuzJ4w
+	ArooamCvR/NzPaV5+EsSWijTJH+RjJIJZpD0kdUForD0WWy07QSs3wkkmgP9VqL1QqrxOyXA8aM
+	ytDw+NhRvc5QvfxF4TmnqMor9qe7wgtkQ7vrZTQ==
+X-Gm-Gg: ASbGncuksTulU5jrRpsHSwZ9HX7al5jsXjFUgu5zdCUSwkm8qsXINIuWzPo2rrJl0YV
+	9toAsqq7CbGh5MN2hPM/DtCk8yPIicu8J7+AfSqhiD20mWng5uyM8vZ/PUFDgqJsnkIYnyA==
+X-Google-Smtp-Source: AGHT+IHVA3aLLUHBjvM7tBiT/JAeRIG715XqkMU23ZlOgaA1/IPqLSTPkVNA5hE3GgpS2Sq6STuEQ8GQr00qCN1MoNE=
+X-Received: by 2002:a17:903:2a86:b0:212:6187:6a76 with SMTP id
+ d9443c01a7336-21f4e6afbccmr15332045ad.14.1738879764518; Thu, 06 Feb 2025
+ 14:09:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250202162921.335813-2-eyal.birger@gmail.com>
+References: <20250206160711.563887287@linuxfoundation.org>
+In-Reply-To: <20250206160711.563887287@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Fri, 7 Feb 2025 07:09:13 +0900
+X-Gm-Features: AWEUYZkqc_QFPDa0cmxptap1fL55qjlShAz2QJJR1zciPi5pSP-77julnD_XuYc
+Message-ID: <CAKL4bV5Ks9OCh8SrgkoF=UrK3KW+POAXOD77L1kD0P9fOiNC4w@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/583] 6.12.13-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 02, 2025 at 08:29:20AM -0800, Eyal Birger wrote:
-> When attaching uretprobes to processes running inside docker, the attached
-> process is segfaulted when encountering the retprobe.
-> 
-> The reason is that now that uretprobe is a system call the default seccomp
-> filters in docker block it as they only allow a specific set of known
-> syscalls. This is true for other userspace applications which use seccomp
-> to control their syscall surface.
-> 
-> Since uretprobe is a "kernel implementation detail" system call which is
-> not used by userspace application code directly, it is impractical and
-> there's very little point in forcing all userspace applications to
-> explicitly allow it in order to avoid crashing tracked processes.
-> 
-> Pass this systemcall through seccomp without depending on configuration.
-> 
-> Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueueinfo
-> uses the same number as __NR_uretprobe so the syscall isn't forced in the
-> compat bitmap.
-> 
-> Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-> Reported-by: Rafael Buchbinder <rafi@rbk.io>
-> Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
-> Link: https://lore.kernel.org/lkml/20250121182939.33d05470@gandalf.local.home/T/#me2676c378eff2d6a33f3054fed4a5f3afa64e65b
-> Link: https://lore.kernel.org/lkml/20250128145806.1849977-1-eyal.birger@gmail.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
-> ---
-> v3: no change - deferring 32bit compat handling as there aren't plans to
->     support this syscall in compat mode.
-> v2: use action_cache bitmap and mode1 array to check the syscall
-> ---
->  kernel/seccomp.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> index f59381c4a2ff..09b6f8e6db51 100644
-> --- a/kernel/seccomp.c
-> +++ b/kernel/seccomp.c
-> @@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user *user_filter)
->  
->  #ifdef SECCOMP_ARCH_NATIVE
->  /**
-> - * seccomp_is_const_allow - check if filter is constant allow with given data
-> + * seccomp_is_filter_const_allow - check if filter is constant allow with given data
->   * @fprog: The BPF programs
->   * @sd: The seccomp data to check against, only syscall number and arch
->   *      number are considered constant.
->   */
-> -static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
-> -				   struct seccomp_data *sd)
-> +static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *fprog,
-> +					  struct seccomp_data *sd)
->  {
->  	unsigned int reg_value = 0;
->  	unsigned int pc;
-> @@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
->  	return false;
->  }
->  
-> +static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
-> +				   struct seccomp_data *sd)
-> +{
-> +#ifdef __NR_uretprobe
-> +	if (sd->nr == __NR_uretprobe
-> +#ifdef SECCOMP_ARCH_COMPAT
-> +	    && sd->arch != SECCOMP_ARCH_COMPAT
-> +#endif
-> +	   )
-> +		return true;
-> +#endif
-> +
-> +	return seccomp_is_filter_const_allow(fprog, sd);
-> +}
-> +
->  static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sfilter,
->  					 void *bitmap, const void *bitmap_prev,
->  					 size_t bitmap_size, int arch)
+Hi Greg
 
-I minimized the above to:
+On Fri, Feb 7, 2025 at 1:11=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.13 release.
+> There are 583 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 08 Feb 2025 16:05:14 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.13-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-@@ -749,6 +749,15 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
- 	if (WARN_ON_ONCE(!fprog))
- 		return false;
- 
-+	/* Our single exception to filtering. */
-+#ifdef __NR_uretprobe
-+#ifdef SECCOMP_ARCH_COMPAT
-+	if (sd->arch == SECCOMP_ARCH_NATIVE)
-+#endif
-+		if (sd->nr == __NR_uretprobe)
-+			return true;
-+#endif
-+
- 	for (pc = 0; pc < fprog->len; pc++) {
- 		struct sock_filter *insn = &fprog->filter[pc];
- 		u16 code = insn->code;
+6.12.13-rc2 tested.
 
-> @@ -1023,6 +1038,9 @@ static inline void seccomp_log(unsigned long syscall, long signr, u32 action,
->   */
->  static const int mode1_syscalls[] = {
->  	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
-> +#ifdef __NR_uretprobe
-> +	__NR_uretprobe,
-> +#endif
->  	-1, /* negative terminated */
->  };
->  
-> -- 
-> 2.43.0
-> 
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
--Kees
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
--- 
-Kees Cook
+[    0.000000] Linux version 6.12.13-rc2rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250128, GNU ld (GNU
+Binutils) 2.43.1) #1 SMP PREEMPT_DYNAMIC Fri Feb  7 06:24:00 JST 2025
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
