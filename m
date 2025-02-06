@@ -1,136 +1,153 @@
-Return-Path: <stable+bounces-114177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5F8A2B4CB
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:09:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27725A2B4D9
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F0463A2703
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B498D167194
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3A222FF59;
-	Thu,  6 Feb 2025 22:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E81622FF39;
+	Thu,  6 Feb 2025 22:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="WS9x6mvv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIjdoy7V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1C422FF57
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 22:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5228423C367;
+	Thu,  6 Feb 2025 22:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738879768; cv=none; b=i8xk4vLXUKhsDRoauMm6b6dHVRgwbGeVtUwAGi9mNTvlvnJiP7dLh4DUB6Vf6im51jO+pilG8FuNaiEfjFOS2yC54ON2plZy0/2Q0/tRioRqgMy9euKTtb46Pw8la31oJRj49hDgUuUPfr4BM3EatgCDRF9nYRT0wYsnSkHS+nQ=
+	t=1738880009; cv=none; b=MeHF1v9/rlqG9TRZE7P7XBJeVdI3uh6uXa8hobDeezM7u3bmF2bWqPKEl/tHkZS4vBhGUEgyaJEV72CV+AcpleuBmZzM9H0a1soxeFRhTirYJrGwUncmk8bm+natAIAa7OvjEtgpUu7fe78sIoFS2uLpLOZzHvlTyl/unoL1D3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738879768; c=relaxed/simple;
-	bh=v8Cb/I97cbYSHojVbzWOcSDJMzlNFCCIVvXaYBcMZxI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jJWY47tzyEc94rSIBGBiWFjMthXfdFzB16xHi8ImBFOJ55kzNM+5nhhlsC00U6eX922FGDCs8bNdos6kago+zVKCMZCwYrOKCnsm+SG/Gg0FD2/JMR6pHjty1RiNTIZJKTVkRGtYKifulyG0cYygMUki40bAYKmkU2fo81wmXwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=WS9x6mvv; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f3328f72aso16588065ad.3
-        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 14:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1738879764; x=1739484564; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YowFV95RzqYpXXncaW4VNnhPzNA0mgUHkVJDlV/Z4no=;
-        b=WS9x6mvvw1xRtAvcpMCfBQJHjKlMf8A/0GANFGWK3D4TvvqRrOLf+witlUNi4HOqPv
-         v7zIcMgdW+8qfMbJaBNu/b1CsNcDchgfKL5IYdn9uWukS0LoIY++PlFrj3XSvSqtcR74
-         Cqy++AHBfbINO0NsAqXOeNcWC0C3e4xlbibUnme0wQabxssoYLzQD8jPiftyBB8qbmVo
-         OVCX4vjMqGspB1WukFpXCzgTXFBIB0/isr1hvavOOww347EMyP26Zuni5PUwE24WdgHH
-         YE5ToAchpAI/hhgjRMObZ359n2X7cKao3Q9P4Y4t0ako7U3IT45+A1Uhh/7/CFw7L0pF
-         Xfww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738879764; x=1739484564;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YowFV95RzqYpXXncaW4VNnhPzNA0mgUHkVJDlV/Z4no=;
-        b=m4AN0gfKnIDyxD0KZJ0z17PR623BPF5bH1W855CiWuOC9R+4ZYvh64WknC7PmACRIY
-         u+/Fu2hVO/91TPT3ZCR6MwbRfrry8sudYmjJQ7n95GaPSzlvU2AngQWAJ+qEopyxFFZs
-         MvD8LiTU2YOxiZKq7hl3ukTwrsEKw+vwb8PFuTHIgmVKjy1vp7LR1FoVnd1hqQ63PEB/
-         2X0l+HD16G4bOqpXam5T1wmarmorUvjbZnQZJSupHyGa9PY85BwAmjh2kKCLni6D6Oag
-         hoc2TlAPcvpapNOXYtIzpXkea26m5MErsdyWpBr2BGiVQAlMnoNr9PxeLdMy7E/6q/UY
-         NOFg==
-X-Gm-Message-State: AOJu0YwhntiRlIJkwNmWfrgDGweE+P2FflVnMqIXaQTs6S8o/8FuzJ4w
-	ArooamCvR/NzPaV5+EsSWijTJH+RjJIJZpD0kdUForD0WWy07QSs3wkkmgP9VqL1QqrxOyXA8aM
-	ytDw+NhRvc5QvfxF4TmnqMor9qe7wgtkQ7vrZTQ==
-X-Gm-Gg: ASbGncuksTulU5jrRpsHSwZ9HX7al5jsXjFUgu5zdCUSwkm8qsXINIuWzPo2rrJl0YV
-	9toAsqq7CbGh5MN2hPM/DtCk8yPIicu8J7+AfSqhiD20mWng5uyM8vZ/PUFDgqJsnkIYnyA==
-X-Google-Smtp-Source: AGHT+IHVA3aLLUHBjvM7tBiT/JAeRIG715XqkMU23ZlOgaA1/IPqLSTPkVNA5hE3GgpS2Sq6STuEQ8GQr00qCN1MoNE=
-X-Received: by 2002:a17:903:2a86:b0:212:6187:6a76 with SMTP id
- d9443c01a7336-21f4e6afbccmr15332045ad.14.1738879764518; Thu, 06 Feb 2025
- 14:09:24 -0800 (PST)
+	s=arc-20240116; t=1738880009; c=relaxed/simple;
+	bh=oB7yhd9eYYIy50bn91tuQKVReuuUgUvlw9L5hyQ859A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KvbkOj3+PEIiLqVryCUM9Jtq+ydxSVDVFGoAJPaTomNWQj2Fy0fc+LLJIRELrvLsi+G1z+wWxMwNItl4zXX8LnIsU/L5SiA87ryxGD7gwSXsFsOB/Ez67cVvCNvUwQWBPiDNrtbpnIp0otfZR/mDw4a5SMBpWBcxklyLs/gzvMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIjdoy7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC52EC4CEDD;
+	Thu,  6 Feb 2025 22:13:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738880008;
+	bh=oB7yhd9eYYIy50bn91tuQKVReuuUgUvlw9L5hyQ859A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MIjdoy7Vd5OFj15074wFBHEr6EniJi7CkUhhz5y2ENlEG3HfipzBgALFfE3qCDJt1
+	 8BioW4OVC7psiwLPRSUXmFACwijYeBAwW4umMm8YCQp1V/m4bKUZYag5zqD0dFZ3qP
+	 vob5LmL6nnk3zVX3R9Z8fCp6HCA6CZbqRqXQyOSWkwAeF9i5cXX9JIl5pEbwOwatJm
+	 k43cbSeeTWrCO9Uws65c4fAGmqzaZM1wqpl4rzx9WVzOhUHzYoEFlWTXC48bmoPV/B
+	 a+4QmuReWSWdBJy3DTFg4EaSGyG/bfDfyX0snZZQ/0j6uIftsALd3ceACmHg8QwIZs
+	 kJ1ioG+psjNxQ==
+Date: Thu, 6 Feb 2025 16:13:25 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: konradybcio@kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Saranya R <quic_sarar@quicinc.com>, 
+	Johan Hovold <johan@kernel.org>, Frank Oltmanns <frank@oltmanns.dev>
+Subject: Re: [PATCH v2] soc: qcom: pdr: Fix the potential deadlock
+Message-ID: <nqsuml3jcblwkp6mcriiekfiz5wlxjypooiygvgd5fjtmfnvdc@zfoaolcjecpl>
+References: <20250129155544.1864854-1-mukesh.ojha@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206160711.563887287@linuxfoundation.org>
-In-Reply-To: <20250206160711.563887287@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Fri, 7 Feb 2025 07:09:13 +0900
-X-Gm-Features: AWEUYZkqc_QFPDa0cmxptap1fL55qjlShAz2QJJR1zciPi5pSP-77julnD_XuYc
-Message-ID: <CAKL4bV5Ks9OCh8SrgkoF=UrK3KW+POAXOD77L1kD0P9fOiNC4w@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/583] 6.12.13-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250129155544.1864854-1-mukesh.ojha@oss.qualcomm.com>
 
-Hi Greg
+On Wed, Jan 29, 2025 at 09:25:44PM +0530, Mukesh Ojha wrote:
+> When some client process A call pdr_add_lookup() to add the look up for
+> the service and does schedule locator work, later a process B got a new
+> server packet indicating locator is up and call pdr_locator_new_server()
+> which eventually sets pdr->locator_init_complete to true which process A
+> sees and takes list lock and queries domain list but it will timeout due
+> to deadlock as the response will queued to the same qmi->wq and it is
+> ordered workqueue and process B is not able to complete new server
+> request work due to deadlock on list lock.
+> 
+>        Process A                        Process B
+> 
+>                                      process_scheduled_works()
+> pdr_add_lookup()                      qmi_data_ready_work()
+>  process_scheduled_works()             pdr_locator_new_server()
+>                                          pdr->locator_init_complete=true;
+>    pdr_locator_work()
+>     mutex_lock(&pdr->list_lock);
+> 
+>      pdr_locate_service()                  mutex_lock(&pdr->list_lock);
+> 
+>       pdr_get_domain_list()
+>        pr_err("PDR: %s get domain list
+>                txn wait failed: %d\n",
+>                req->service_name,
+>                ret);
+> 
+> Fix it by removing the unnecessary list iteration as the list iteration
+> is already being done inside locator work, so avoid it here and just
+> call schedule_work() here.
+> 
 
-On Fri, Feb 7, 2025 at 1:11=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.13 release.
-> There are 583 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 08 Feb 2025 16:05:14 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.13-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+I came to the same patch while looking into the issue related to
+in-kernel pd-mapper reported here:
+https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
 
-6.12.13-rc2 tested.
+So:
+Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+> Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Saranya R <quic_sarar@quicinc.com>
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Can we please use full names?
 
-[    0.000000] Linux version 6.12.13-rc2rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250128, GNU ld (GNU
-Binutils) 2.43.1) #1 SMP PREEMPT_DYNAMIC Fri Feb  7 06:24:00 JST 2025
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-Thanks
+Unfortunately I can't merge this; Saranya's S-o-b comes first which
+implies that she authored the patch, but you're listed as author.
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Regards,
+Bjorn
+
+> ---
+> Changes in v2:
+>  - Added Fixes tag,
+> 
+>  drivers/soc/qcom/pdr_interface.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
+> index 328b6153b2be..71be378d2e43 100644
+> --- a/drivers/soc/qcom/pdr_interface.c
+> +++ b/drivers/soc/qcom/pdr_interface.c
+> @@ -75,7 +75,6 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
+>  {
+>  	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
+>  					      locator_hdl);
+> -	struct pdr_service *pds;
+>  
+>  	mutex_lock(&pdr->lock);
+>  	/* Create a local client port for QMI communication */
+> @@ -87,12 +86,7 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
+>  	mutex_unlock(&pdr->lock);
+>  
+>  	/* Service pending lookup requests */
+> -	mutex_lock(&pdr->list_lock);
+> -	list_for_each_entry(pds, &pdr->lookups, node) {
+> -		if (pds->need_locator_lookup)
+> -			schedule_work(&pdr->locator_work);
+> -	}
+> -	mutex_unlock(&pdr->list_lock);
+> +	schedule_work(&pdr->locator_work);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.34.1
+> 
 
