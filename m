@@ -1,125 +1,139 @@
-Return-Path: <stable+bounces-114167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C2AA2B205
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:13:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66145A2B218
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1E93AA2ED
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BAD31889FAE
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4181519F464;
-	Thu,  6 Feb 2025 19:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297C11A2872;
+	Thu,  6 Feb 2025 19:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktnqYp0p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qdp0xjse"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A4323959B
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 19:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7585E157A5C;
+	Thu,  6 Feb 2025 19:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738869179; cv=none; b=LCHVQgsJ67zA+3z/IGZu5Undmy8mpE5LwvA87oVF9svKxZug/tAsXo6Bh2/rvU6I0Nkk4Gb5iNyoTq/BwWjE/KE3QddqFi1zetA7do6PWVzVDZiJO1LL7XS8UFjmhcqz78Lmw50E0LiBHThH0VR3uZntY5v8ZUnreyiskvevWL0=
+	t=1738869605; cv=none; b=HcmgrHNc3jTrmqKIZdcXOaIygbHWFrzq3CFCDDhq4MgWxwg4J2Q60lJxwLQH+/GIKSKRwc5+3RS2NgEUO4sX+7UwzaLvMTQfgSbSKkWSD7j+4DeC2mTMu/6pS77Mdx2OsD5/xtSYz6xigNUDVzgTasgSkvXeZlpovHu3pKu5Av4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738869179; c=relaxed/simple;
-	bh=g9/g/hpUUywCC6oyxEmQw01HogHxdD6MoRuJVjntsiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XrTyBmB0jcRpP3s+rrik7tnHpq1wpOerdF1bT3kWGblLXf/R5JOLdht9sV99/3BMlPhElepjayEGDq2Pmc5QobQHyMPCmmYDe75PKgtAFmapxma8SIlngh7AkrwSv1EZfnBVL8z158m98YmVOkTa5t5k2YDQzWgivLKczzg9m2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktnqYp0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B887BC4CEE0;
-	Thu,  6 Feb 2025 19:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738869178;
-	bh=g9/g/hpUUywCC6oyxEmQw01HogHxdD6MoRuJVjntsiU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ktnqYp0p/btUoBkPX5EIvvqEirIqBp/Wz0b38Bh1kBQj17p/6hDw3zy368JIKput7
-	 89Rqp7LxNfhNiQ2FqZBfm17aCOSvfWTwa8GAK9Oe6awvMXk7GAXHGGknE8/lD+4/yQ
-	 57ppLhBLeawa+kAWYPo9r7sYA+nK92S5X5dx1a4DKVJ+PAFxYXTs2CVRse1nsUK9xA
-	 kjHe3vtUBbJsYB5Wp/mphJrtoaK6F/QnZrTvZuRKIOKVg6WD+Q6fd6S9dL+K3llZ9e
-	 No5a9bdBpSLXQI4R4ggKoX3h/LxsPOlZ2vbl65D8oab9VklliW2EC2kj6ik+deSR/P
-	 oLE9wNyVpUtjw==
-Date: Thu, 6 Feb 2025 19:12:52 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-	eauger@redhat.com, eric.auger@redhat.com, fweimer@redhat.com,
-	jeremy.linton@arm.com, maz@kernel.org, oliver.upton@linux.dev,
-	pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com,
-	wilco.dijkstra@arm.com, will@kernel.org
-Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
-Message-ID: <9972d29a-1387-408c-9070-d53b025191f2@sirena.org.uk>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
- <20250206141102.954688-9-mark.rutland@arm.com>
+	s=arc-20240116; t=1738869605; c=relaxed/simple;
+	bh=lpceZ522M3/G2j+23ZqHSKSS/XNc3DjrXYEVrd34Eck=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ncpjaXZHfn1ma+kgMPnp4ZzCGYNZOLYGi2RuMyFD6dD91pnXQDdYijp5onNfIuobzvwB29+09wJAEvnR7dr+93Jmbs8Y7XpHabPH8ZgQkI7kZ96sUxpKE7jPQ0ctWyY32oWehRHE0KH1JxgvyM0isP8IbVK5BbOoMZf1BWgpr04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qdp0xjse; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-467a17055e6so16172841cf.3;
+        Thu, 06 Feb 2025 11:20:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738869603; x=1739474403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DcrbolGONnkzpsMRrj1p29h31Hv8IReG8unYB/3cb/8=;
+        b=Qdp0xjseY0c/IP6lKLHPasAAyAPFWSK1Rah4FxghQHFaQ7UD8lsHeIU+0lBTinmthD
+         3Oxe4oRxjPScdlnhXii5FSDWEGVcdEIbaHQPNGK0buhNGz0rxwg/q3ymFioGcINGH4/s
+         /tjYawP4IqBriydlLWM6GDAT3BZHA0Nbfs1YCqiXp/gG4YxZpDsekUdEEsWeQxLK8Y3Q
+         K02oe5ICPhr9RRq5ftkX268Jk14QLSEhcjGn1nuuYe2reiDcQKnB/lY6zwuOxqdFBipr
+         egdXcm0VrLB/fo6TOucZD4PcDGEtwTKH0CLpsxJ8sZokO+rQHki7qPy0pbd0ZBNCah0l
+         0JAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738869603; x=1739474403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DcrbolGONnkzpsMRrj1p29h31Hv8IReG8unYB/3cb/8=;
+        b=Zk1mq7OLOrO/Q32a3/ppPdHN6ywDR8WhR15UOMD4cPuaa5/yjKfO9yTAdX29IAOM6P
+         4MzaN1u1iHDh4RN0fMMMJ+r8Ak3b20Vo7bgrlBVU5epYEtkJ8WkgVoBlXsg/pT77uw9s
+         PQPFToYk2U1cQS5IRWVpBXX/AualICbpKVQllqkNYxLb34idqYSLUZTNaknwWNBanN/z
+         CnKAkFPaHp13785WdE5xxXvLoYeQQnMRamYYJYWut6klTmxC48TrrvScrXfuM33Qa7XA
+         UScOcBdr2qxOhQTYny1Gz44CgtQZd3V9qp05+HflYJ4NgU3J19sCDP9yFt9rR1nDHTys
+         +xkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhYMVPF9zo/8DVR2ooFLupUMPXANmulyfSGg/oBfvK9hZvcTLkJ26ZI4pFxFkqboGfKbQaOQkVG3fE73s=@vger.kernel.org, AJvYcCWzJJMYG/WDoLdRAQ0CgQX6LhOSNKbyvHpX1Q63rVDgDevQwoRXl6Qrtd16Uwh5LKwnSkCqtjSV@vger.kernel.org, AJvYcCXI0/mpGxXnknNgqxmdFQxI55fkCzrzsyZqpGl54Sm7nzSTKORrdffUFftVod6C5cku7plHn83kYTWTFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAlqlNhLJH/eOn8TEI7EMJ7TpjHjcxYWqm+REACphIpZ8GaceC
+	Pzjl59FVjAqDHD14ap0bwtnfmUVbPNUJ2T7CGti9pY8QT14tG2th
+X-Gm-Gg: ASbGncsTcdzaWTm6+FKfc2WaL8RQZlh03chUDa4p72Q5aVzyR835jf7MnIjI5OEyr4U
+	6vRY86JMYlV1tYMTSALvbgMKkLiXg78SWn62Y2mXlMY0uo3dKWd7oYcK1V+0tb0lX8Fr8VL9YvG
+	ysMahPejZ0QGg+tSIyaC7PZjVKPzJ9G3Q5LjwTkMVwB+VbV7A7mQkzcHcMI32kiq2RvMy5k13Bx
+	1MwnPsWyCwfUhW1aqjQhe1H3ZBOu7Hsuf9RZIqoPzHrbdi0JwFkwYgdzzgp18vCRAAu69unVtQw
+	mAFRFGwT7p8EVElZ1TjeSnnBbkIPsOJeQB4HCA==
+X-Google-Smtp-Source: AGHT+IEcRLsPCYAccwqi/4g0hJA3ZEAnkWiTfxeLFqTMx/RVl+ZVNZJLt+NvBYaDZEWcgxWuIHugYA==
+X-Received: by 2002:a05:622a:493:b0:46e:2a18:93b4 with SMTP id d75a77b69052e-47167bce490mr5808821cf.33.1738869603185;
+        Thu, 06 Feb 2025 11:20:03 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471492763ebsm8159161cf.1.2025.02.06.11.20.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 11:20:02 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@hansenpartnership.com,
+	arun.easi@cavium.com,
+	bvanassche@acm.org,
+	jhasan@marvell.com,
+	jiashengjiangcool@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	manish.rangankar@cavium.com,
+	markus.elfring@web.de,
+	martin.petersen@oracle.com,
+	nilesh.javali@cavium.com,
+	skashyap@marvell.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] scsi: qedf: Replace kmalloc_array() with kcalloc()
+Date: Thu,  6 Feb 2025 19:19:59 +0000
+Message-Id: <20250206192000.17827-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2025020658-backlog-riot-5faf@gregkh>
+References: <2025020658-backlog-riot-5faf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TAjyd6cungso5X+6"
-Content-Disposition: inline
-In-Reply-To: <20250206141102.954688-9-mark.rutland@arm.com>
-X-Cookie: With your bare hands?!?
+Content-Transfer-Encoding: 8bit
 
+Replace kmalloc_array() with kcalloc() to avoid old (dirty) data being
+used/freed.
 
---TAjyd6cungso5X+6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Cc: <stable@vger.kernel.org> # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+Changlog:
 
-On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
+v1 -> v2:
 
-> +static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
-> +{
-> +	u64 zcr_el1, zcr_el2;
-> +
-> +	if (!guest_owns_fp_regs())
-> +		return;
-> +
-> +	if (vcpu_has_sve(vcpu)) {
-> +		/* A guest hypervisor may restrict the effective max VL. */
-> +		if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu))
-> +			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
-> +		else
-> +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-> +
-> +		write_sysreg_el2(zcr_el2, SYS_ZCR);
-> +
-> +		zcr_el1 = __vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu));
-> +		write_sysreg_el1(zcr_el1, SYS_ZCR);
-> +	}
-> +}
+1. Replace kzalloc() with kcalloc() to not reintroduce the possibility of multiplication overflow.
+---
+ drivers/scsi/qedf/qedf_io.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-I don't think we should worry about it for this series but just for
-future reference:
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index fcfc3bed02c6..d52057b97a4f 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -254,9 +254,7 @@ struct qedf_cmd_mgr *qedf_cmd_mgr_alloc(struct qedf_ctx *qedf)
+ 	}
+ 
+ 	/* Allocate pool of io_bdts - one for each qedf_ioreq */
+-	cmgr->io_bdt_pool = kmalloc_array(num_ios, sizeof(struct io_bdt *),
+-	    GFP_KERNEL);
+-
++	cmgr->io_bdt_pool = kcalloc(num_ios, sizeof(*cmgr->io_bdt_pool), GFP_KERNEL);
+ 	if (!cmgr->io_bdt_pool) {
+ 		QEDF_WARN(&(qedf->dbg_ctx), "Failed to alloc io_bdt_pool.\n");
+ 		goto mem_err;
+-- 
+2.25.1
 
-These new functions do unconditional writes for EL2, the old code made
-use of sve_cond_update_zcr_vq() which suppresses the writes but didn't
-have the selection of actual sysreg that write_sysreg_el2() has.  I
-believe this was done due to a concern about potential overheads from
-writes to the LEN value effective in the current EL.  OTOH that also
-introduced an additional read to get the current value, and that was all
-done without practical systems to benchmark any actual impacts from noop
-writes so there's a reasonable chance it's just not a practical issue.
-We should check this on hardware, but that can be done separately.
-
---TAjyd6cungso5X+6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmelCbMACgkQJNaLcl1U
-h9CrEgf/TGgo4RVmaJxXS634U8oUIbNEIuXqOQJAqsTazdIud+hAZMt+dIaXwL+7
-fNdixA7N2DycoddigmHo+3CMMWlhdqjUx+6KKg/hA/RLflnT3LyT4h/lmRgxiz8d
-6MaxnP3+7vRubFCHotGBIQayLt5VhIlOYpwDikHcXAU2xWd7i0tAYqkzUivQJD2z
-mT1QjZOh7Dd/AKNOH9z2PeAfEn/EsMksgzWl3p/ElBEQ2Qbyq7GVadyGn6xhLooP
-UyQLxrI+ReiZj2kXHa6kez9GYlhABFU9dlz0VDUtKLlgdR2m4mC7HJ4bTWm/xuaD
-6pR0opLZp/dGO/Djx6pnmvuH+ri02A==
-=FSAp
------END PGP SIGNATURE-----
-
---TAjyd6cungso5X+6--
 
