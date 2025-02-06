@@ -1,119 +1,208 @@
-Return-Path: <stable+bounces-114179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AF7A2B4F8
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:24:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C09A2B4FF
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8193C18853CF
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E3A16702F
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9469E22FF2B;
-	Thu,  6 Feb 2025 22:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317DF22FF3E;
+	Thu,  6 Feb 2025 22:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUxnEkF7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l4KNDw16"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B88E15B99E;
-	Thu,  6 Feb 2025 22:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73415B99E
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 22:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738880637; cv=none; b=nH7z8ph3Gf1lUkMC3Fd4l4SXBYv209a1DCo+wl1ojU5IrRxYvSuARsL2iHJSWfOmF6TU+H0PVf+HpL7MUjIjnBvx1iydkL02mf+g6m9wwMS2Ee++B9sjABtDi86aqIRmn7spUG1Fz8+iURQNOtyNOzKcte3tuMgsHCTNcs+KQqo=
+	t=1738880888; cv=none; b=Ou6X4hS97O4kgcCwUyZjTelZGpYYeeOuejr0Bc7ei6vaJqiUkoXu0D79lUiFw8GUrF1Dg1U36fGxHdoMqOrY7gricGDmV8anTVVI5vjq0Nd2U0vkSJId/oLeqhSKK+EuQnJDZgBrBf4dDDbYoIo0P8qgRSQRvdU4K/P1UGALhf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738880637; c=relaxed/simple;
-	bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dw8SW8EykhJywptO/2i2VwE72oeeiJrjaMLPC87OD36tVzIdbk/AWr/tUhsiOM+xCECajMbY8HOOELUEV8A/Txq6SErsnRbxcaK+MZqAsK56h8mrv7nLirfqrnY6UuLwn2JsAopRlKikeyrISsnSFFUbRw8UXQOuxL4aDcsQAyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUxnEkF7; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fa102a6106so222749a91.0;
-        Thu, 06 Feb 2025 14:23:55 -0800 (PST)
+	s=arc-20240116; t=1738880888; c=relaxed/simple;
+	bh=68S+7ZlsuMe2fEeqhZuUrws52Dw8cqaMxh/N9g6qQgg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=f3x5gb3VZ9/wndrcX/TCpz4RuTMK/4k8aqa73y/SPb0P+T/aLEN0IaoAWvRYu17MQI93nLYTmhjkOlkY4YSOBWOCpc7xKdA/4ROWPFGZWI/MscNrjPBcAz8FAyIHwlhM2oV/rKPv1j2ReBv6mgee9LVz23zkDOKJG2ecWEupqTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l4KNDw16; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-21f022fc6a3so29809285ad.1
+        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 14:28:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738880635; x=1739485435; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-        b=TUxnEkF7DGNOFEs5g+Q7Q00tJz+BOnR+sEmkNQ78+KAJVJBH8lkUmvNwLk+7OrIp+T
-         Ein16lyShx8SAF+24xEwZ4yq6dJYMcz8GDzOVV2qVmsunPHLDcHFkb3EPFsOMkSlCxoK
-         fjgBmf4muH0xqjrq7LQpxOB7ARE3RsL9VukjqvNJ/UskZ+bNTmZEL9Vv6Xgd5uxnz82f
-         fJ95RFMDB3BQ3BsMCTzH4rT8lEj5LCxeDgStY9GGXoObVvvxqnAlo/6DGfn9qgP11VW8
-         sKJIf+OMKCb9whoRUBm3fGx6sIGWw7hlRqep9vXxmc/RpTlxKSa8S42LUjzjODCPn2Me
-         sq4g==
+        d=google.com; s=20230601; t=1738880886; x=1739485686; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8P4AhcS+GNaWZWjxWYlbkE1kh/676R53jJusOmDR5nw=;
+        b=l4KNDw16bG8QRPPd7Ebi13w4o0rOGTUgkPBS8cwWl3BJAcaHR+P9SlYSmGkztr+sqV
+         NnpzvXIDeFEh/YJw4Uusk62+r04VY2++oi6cyspKtjfoNg5pO+vv96W9n7FsSvaRbRWu
+         cAsOdr+Bre8mm3I76ew2xoOxd9IZ3p0QgHKf5JB63ljn7cQxpVbTiKIoNdOfU2nS7VX/
+         kNo0lXv9O7090WhnlUg9pgfIbEjNoR93Rlvv7IkQTL0B/1jLvgeuK6ktfQ3MHtmJ147T
+         s0/F77Uw/PE0AFkeoTjLBmNlwi3SBtQNyVKoLDM6enlpUtb9I9DF68xsq4ASXu018xsc
+         RIKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738880635; x=1739485435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-        b=aX4n/Bk4P5+fXz7mQE3X+cBKS7lfh7VZSwNdqiUASaYhGll0mhZSgMJ0nA4VPjly/q
-         5GQPMScGhstZTVb6Ez1UA/5L4h7F4qiDJ8VdWUNCS3Y4b/2qgII51hvP85UebBovBcv5
-         Ty6JyvSssEGE9jSRR4cZfqSNCJ/yDOhU/bRKaApEhE7F6SgZYu4kG+G1krrlec3QKTuI
-         HuhOXd1uq/y8bRsrhwCmqd+ydGkIf+MI7LLCYXQ1f31CvMgocQ5Yo5sb9iHzeE0PeTd8
-         VNB3fRqpZUJn3cggP38I+gvHjqhpxZryjTna+KuegBXTvzpGQyjI5AnFk0ANUv1p2UhM
-         +Upw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4J42CmQZhNZ7OYNyoxXZmyfbF6JFPjphYQtb5iYhJh+MTgJpRmCmAALaes8DRVdRg7XL+5HMG@vger.kernel.org, AJvYcCXDjW5gBccFPwUVbz8JFvZHeTW8GDwyJpZM8FzWjSOhe7KZAW3w9o3JSQf04XweP3l6E3E+tdU6deLiv2o=@vger.kernel.org, AJvYcCXouwMGurKDcyxC3IoVTdQcU/tmc9cI3dXFTZBnFsEceuLss+NMGgTCeft9E8CQRSlCeJpnBqyuZDv5h8od7QI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5+gLtFNLD5NfDelJxrQYd1PvhYq5EIj+sjXgoL2oQ8O3/HwZz
-	T4lg4akSWIsGXRSY5pgTusv+BpqrAGkKXCr46B0yhlHr+lnKimkJc7wGQIlZ8G5TztRvrG4cCnA
-	FhYwUiUpm13gJY4XV+hYYByLawtT2urFwkqQ=
-X-Gm-Gg: ASbGnctyc3YGlUJ9rgUy6kF+B/S+z6gSV6xjdkA+qax39XVb222xke9NNY9c9d+gQlY
-	D0K/e90u7tCUNzt7WwojguBRKVUwN6DO/+nSOhEtedtPicKh5SPZPmhG3pjtovXwkGWoXYcs9
-X-Google-Smtp-Source: AGHT+IG9SCuXHttUG1K4uZ9sgNfkDjQbd2RfkChJLOxYwTTEA6GyQPkoVKG1M20Dtiyd4iqgUwAhGCeFpgbE45ZfjYY=
-X-Received: by 2002:a17:90b:1b44:b0:2ea:956b:deab with SMTP id
- 98e67ed59e1d1-2fa2453100emr455019a91.4.1738880635082; Thu, 06 Feb 2025
- 14:23:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738880886; x=1739485686;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8P4AhcS+GNaWZWjxWYlbkE1kh/676R53jJusOmDR5nw=;
+        b=OKMpZqdWxhgpxs5VMiLuIU6/lFZfdC/Qj55G/GlrTo76rYrzdcppFhHSqrbAcgFQGk
+         NFS2wEhmfo5cea++gZYrt/Zo9hkjHqWoKkIZgHBg8ZU908946L0kubWGGWl5zDVbRP6v
+         +hIBplrQoTwTq7kUsoP+1VIiB5cAfwwTqjQjlehVa7wGyrT85oIBj10gCwMUoz1AuRQv
+         KbjSpb9Nkes0Yj5hlG/LShwgpAp4hAWNaHBIFMHvn0834L6iAeGD/cQSSNuuLLJ8Z67T
+         2Qbg1Ujc9qfCZYo0UrNKBZUuTt9CXnOO1KbcJliiFFxDj6YYeeiyvT/q4N78DF0+o4Tb
+         EOJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHchsxmRf8oqpHXyjNiSOCtNITTXegOYyyLZLZcPHroi6kttMrALAWKi5X8OQ9Q1uNZIrc9pQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwydIK6BHEyAL3cCZ9bIlScMxoZJHKnTCGomB+U8g8FrgfJDGpH
+	jSYz/+cncdqpOR98iWKXv/BfImz/G7QJ5eX0tAAQlWICVA/tqSwA8YbZtZfkT4pL/k+Rft8MjxC
+	T7fLn8zSRfqzoruXNPg==
+X-Google-Smtp-Source: AGHT+IGV2oh05tX4Vjgo2rH9ZwUrNxYtXWIw0ieeSiG3VAWoKfP6hvB9RpQpAjOsrL8oZOFBbq18FpN8lc54sQDS
+X-Received: from plbx9.prod.google.com ([2002:a17:902:ea89:b0:21f:40e5:a651])
+ (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:ec89:b0:215:758c:52e8 with SMTP id d9443c01a7336-21f4f16fe8dmr10682555ad.12.1738880885742;
+ Thu, 06 Feb 2025 14:28:05 -0800 (PST)
+Date: Thu,  6 Feb 2025 22:27:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
- <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com> <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
-In-Reply-To: <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 23:23:42 +0100
-X-Gm-Features: AWEUYZmRxOjvPPyaibtJQh9LKpnRat36mvXX_IWG3jDmqy8dT0gvCzQxMYYWI28
-Message-ID: <CANiq72kYzZ5T0Y1PMmz8dcu5FEwuS+xkUPprnw-qawy1WHEMsA@mail.gmail.com>
-Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
+Message-ID: <20250206222714.1079059-1-vannapurve@google.com>
+Subject: [PATCH V3 1/2] x86/tdx: Route safe halt execution via tdx_safe_halt()
+From: Vishal Annapurve <vannapurve@google.com>
+To: x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com, 
+	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
+	pgonda@google.com, kirill@shutemov.name, dave.hansen@linux.intel.com, 
+	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, Vishal Annapurve <vannapurve@google.com>, stable@vger.kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 6, 2025 at 9:58=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
-wrote:
->
-> Are you saying you'd prefer that we pick this up on the x86 side? I'm
-> totally happy to do that, and it's obviously patching x86-specific
-> sections of the rust scripts.
->
-> If I'm understanding the ask.... Just curious though, what makes that
-> preferable? It's in a rust-specific file
-> (scripts/generate_rust_target.rs) and I'd guess that it'd be easier to
-> take it through the rust tree since it's more likely to collide with
-> stuff there and also be closer to the folks that can competently resolve
-> any merge problems.
+Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
+so IRQs need to remain disabled until the TDCALL to ensure that pending
+IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
+be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
 
-I typically say something like that when I feel I may be overstepping
--- I don't want other subsystems to feel that they are being skipped.
-For x86 I have so far taken things myself, since it was the first Rust
-arch (so it was an exceptional case), but perhaps you wanted to start
-handling things on your own etc.
+Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+prevented the idle routines from using "sti;hlt". But it missed the
+paravirt routine which can be reached like this as an example:
+        acpi_safe_halt() =>
+        raw_safe_halt()  =>
+        arch_safe_halt() =>
+        irq.safe_halt()  =>
+        pv_native_safe_halt()
 
-I am happy either way, of course. Your Acked-by's would be very welcome!
+Modify tdx_safe_halt() to implement the sequence "TDCALL;
+raw_local_irq_enable()" and invoke tdx_halt() from idle routine which just
+executes TDCALL without changing state of interrupts.
 
-Cheers,
-Miguel
+If CONFIG_PARAVIRT_XXL is disabled, "sti;hlt" sequences can still get
+executed from TDX VMs via paths like:
+        acpi_safe_halt() =>
+        raw_safe_halt()  =>
+        arch_safe_halt() =>
+	native_safe_halt()
+There is a long term plan to fix these paths by carving out
+irq.safe_halt() outside paravirt framework.
+
+Cc: stable@vger.kernel.org
+Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+---
+Changes since V2:
+1) Addressed comments from Dave H and Kirill S.
+
+V2: https://lore.kernel.org/lkml/20250129232525.3519586-1-vannapurve@google.com/
+
+ arch/x86/coco/tdx/tdx.c    | 18 +++++++++++++++++-
+ arch/x86/include/asm/tdx.h |  2 +-
+ arch/x86/kernel/process.c  |  2 +-
+ 3 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 32809a06dab4..5e68758666a4 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -14,6 +14,7 @@
+ #include <asm/ia32.h>
+ #include <asm/insn.h>
+ #include <asm/insn-eval.h>
++#include <asm/paravirt_types.h>
+ #include <asm/pgtable.h>
+ #include <asm/set_memory.h>
+ #include <asm/traps.h>
+@@ -398,7 +399,7 @@ static int handle_halt(struct ve_info *ve)
+ 	return ve_instr_len(ve);
+ }
+ 
+-void __cpuidle tdx_safe_halt(void)
++void __cpuidle tdx_halt(void)
+ {
+ 	const bool irq_disabled = false;
+ 
+@@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
+ 		WARN_ONCE(1, "HLT instruction emulation failed\n");
+ }
+ 
++static void __cpuidle tdx_safe_halt(void)
++{
++	tdx_halt();
++	raw_local_irq_enable();
++}
++
+ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+ 	struct tdx_module_args args = {
+@@ -1109,6 +1116,15 @@ void __init tdx_early_init(void)
+ 	x86_platform.guest.enc_kexec_begin	     = tdx_kexec_begin;
+ 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
+ 
++#ifdef CONFIG_PARAVIRT_XXL
++	/*
++	 * Avoid the literal hlt instruction in TDX guests. hlt will
++	 * induce a #VE in the STI-shadow which will enable interrupts
++	 * in a place where they are not wanted.
++	 */
++	pv_ops.irq.safe_halt = tdx_safe_halt;
++#endif
++
+ 	/*
+ 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
+ 	 * bringup low level code. That raises #VE which cannot be handled
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index b4b16dafd55e..393ee2dfaab1 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve);
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+ 
+-void tdx_safe_halt(void);
++void tdx_halt(void);
+ 
+ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 6da6769d7254..d11956a178df 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -934,7 +934,7 @@ void __init select_idle_routine(void)
+ 		static_call_update(x86_idle, mwait_idle);
+ 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+ 		pr_info("using TDX aware idle routine\n");
+-		static_call_update(x86_idle, tdx_safe_halt);
++		static_call_update(x86_idle, tdx_halt);
+ 	} else {
+ 		static_call_update(x86_idle, default_idle);
+ 	}
+-- 
+2.48.1.502.g6dc24dfdaf-goog
+
 
