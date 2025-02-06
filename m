@@ -1,208 +1,185 @@
-Return-Path: <stable+bounces-114180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C09A2B4FF
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:28:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9EDA2B529
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E3A16702F
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:28:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3492718887AF
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317DF22FF3E;
-	Thu,  6 Feb 2025 22:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF80A225A49;
+	Thu,  6 Feb 2025 22:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l4KNDw16"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uOiLaBGd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2086.outbound.protection.outlook.com [40.107.94.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73415B99E
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 22:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738880888; cv=none; b=Ou6X4hS97O4kgcCwUyZjTelZGpYYeeOuejr0Bc7ei6vaJqiUkoXu0D79lUiFw8GUrF1Dg1U36fGxHdoMqOrY7gricGDmV8anTVVI5vjq0Nd2U0vkSJId/oLeqhSKK+EuQnJDZgBrBf4dDDbYoIo0P8qgRSQRvdU4K/P1UGALhf8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738880888; c=relaxed/simple;
-	bh=68S+7ZlsuMe2fEeqhZuUrws52Dw8cqaMxh/N9g6qQgg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=f3x5gb3VZ9/wndrcX/TCpz4RuTMK/4k8aqa73y/SPb0P+T/aLEN0IaoAWvRYu17MQI93nLYTmhjkOlkY4YSOBWOCpc7xKdA/4ROWPFGZWI/MscNrjPBcAz8FAyIHwlhM2oV/rKPv1j2ReBv6mgee9LVz23zkDOKJG2ecWEupqTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l4KNDw16; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-21f022fc6a3so29809285ad.1
-        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 14:28:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738880886; x=1739485686; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8P4AhcS+GNaWZWjxWYlbkE1kh/676R53jJusOmDR5nw=;
-        b=l4KNDw16bG8QRPPd7Ebi13w4o0rOGTUgkPBS8cwWl3BJAcaHR+P9SlYSmGkztr+sqV
-         NnpzvXIDeFEh/YJw4Uusk62+r04VY2++oi6cyspKtjfoNg5pO+vv96W9n7FsSvaRbRWu
-         cAsOdr+Bre8mm3I76ew2xoOxd9IZ3p0QgHKf5JB63ljn7cQxpVbTiKIoNdOfU2nS7VX/
-         kNo0lXv9O7090WhnlUg9pgfIbEjNoR93Rlvv7IkQTL0B/1jLvgeuK6ktfQ3MHtmJ147T
-         s0/F77Uw/PE0AFkeoTjLBmNlwi3SBtQNyVKoLDM6enlpUtb9I9DF68xsq4ASXu018xsc
-         RIKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738880886; x=1739485686;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8P4AhcS+GNaWZWjxWYlbkE1kh/676R53jJusOmDR5nw=;
-        b=OKMpZqdWxhgpxs5VMiLuIU6/lFZfdC/Qj55G/GlrTo76rYrzdcppFhHSqrbAcgFQGk
-         NFS2wEhmfo5cea++gZYrt/Zo9hkjHqWoKkIZgHBg8ZU908946L0kubWGGWl5zDVbRP6v
-         +hIBplrQoTwTq7kUsoP+1VIiB5cAfwwTqjQjlehVa7wGyrT85oIBj10gCwMUoz1AuRQv
-         KbjSpb9Nkes0Yj5hlG/LShwgpAp4hAWNaHBIFMHvn0834L6iAeGD/cQSSNuuLLJ8Z67T
-         2Qbg1Ujc9qfCZYo0UrNKBZUuTt9CXnOO1KbcJliiFFxDj6YYeeiyvT/q4N78DF0+o4Tb
-         EOJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHchsxmRf8oqpHXyjNiSOCtNITTXegOYyyLZLZcPHroi6kttMrALAWKi5X8OQ9Q1uNZIrc9pQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwydIK6BHEyAL3cCZ9bIlScMxoZJHKnTCGomB+U8g8FrgfJDGpH
-	jSYz/+cncdqpOR98iWKXv/BfImz/G7QJ5eX0tAAQlWICVA/tqSwA8YbZtZfkT4pL/k+Rft8MjxC
-	T7fLn8zSRfqzoruXNPg==
-X-Google-Smtp-Source: AGHT+IGV2oh05tX4Vjgo2rH9ZwUrNxYtXWIw0ieeSiG3VAWoKfP6hvB9RpQpAjOsrL8oZOFBbq18FpN8lc54sQDS
-X-Received: from plbx9.prod.google.com ([2002:a17:902:ea89:b0:21f:40e5:a651])
- (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ec89:b0:215:758c:52e8 with SMTP id d9443c01a7336-21f4f16fe8dmr10682555ad.12.1738880885742;
- Thu, 06 Feb 2025 14:28:05 -0800 (PST)
-Date: Thu,  6 Feb 2025 22:27:12 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA823C380
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 22:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738881229; cv=fail; b=NX94nZSJmT0PWPWBwyjfx11UPWgJVelVcZOZ+J2Eu2Y79pQc+6+86kMf/9r86b70Mv5CPuj6gaeckCaoY18Wvrelh/b66LHdnnZ2VInaNl3ckaPo03QL52naKubQve+rLa/w2Jkup6ImiuJxQX7lMCxN6vbO7KLkgYA6VPMojmA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738881229; c=relaxed/simple;
+	bh=yX7y2V2uukYOBW+jG1H1wzgRx2+YYp3N6CYaomSa2Iw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qfsq6EmzoL1FGW0+OcKaCpVv3FjpLW+uAz7DzlAoJiUovoZUw5WBdc3fjbsnwBX2ZbPhB/Z0bOpsQfzTtPQAvZNFui8JXwoFE4DNW97O3Z+GHokmSxBsO0cFRyyUPO4vfX5fneV1jm2ifDFMbe7yscSfPjVuiMr6YZlHz6IqeFM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uOiLaBGd; arc=fail smtp.client-ip=40.107.94.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IOEVxJKq+35b2uIHu2hvb+4Ki/Gi5IPi9DSiRuOVtutQJJ1XECTyijmeM0n/Sq+SqiwafmwcGvCZn58i4nuKpzUIWJZoKgmS11ApMqMxTsHFlpPGf5zZDdfmkQcsDBm4bwaED167GzQjEpiwp7TxBdbDGcRDuBByNwW0FLdIELy1+Yeh4U3HUXnD+5n3gJCMhi9GCW83ZTbydFykPmNFfPoTiT41tpAguOeFpDnonNpD+Ucs0mqRJdBAj8zBgYBd3AUI6HT0MZp3R4csOi8wTry/Jki2BeKuhnHFAq3f1hHWYqNxuFiQVmcA6s9f9Z6GscBGc0dD0Ut/aB5yJDl31Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C1UZTBhTJcYQ/yaszOUWOtN/NL5tW5Jf7Q9g46+SmIc=;
+ b=Ni+aXDnukGesmOSHDb/lwdhLu2y8CW25cSDTak5GvsgrC0l8GrFJ4yUVJPKuefMwiQGBwsbTZmQ51C9lCgxDdjFV6xLcZR+n2vrvME+KJ11Fb8uu8KTOIN0ndz3qvOnD1M7EWuFevkryzc/Nn34gIWDObH/79E5m/I68pk6yIUwqCMI6JBfbZLAslcd2wzA1noooAaWLRzwYHq9CLQ+b3WQtX7jqkoc6U81ZXuA1/1gSfTREdhORzOFQZByTwxA3ty/cuElYw0qxGjgdTKErx49TTaR7T+j7xE+rafbTapAjfosqN4YZ886ioSCxQg7keMhm3oGE+qta/Ns4X5k60A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C1UZTBhTJcYQ/yaszOUWOtN/NL5tW5Jf7Q9g46+SmIc=;
+ b=uOiLaBGdGu9w5e8Tl1KRbegZ8Jok9vbRyuTaIztIuoZEPLrFPUjz69PnkwcS8ZYiCE+122FA2MRU11wquDvPV7oZODSfJUAamq7TNyHo6anVuxiHoy7Zio6YbvUgx5bdMw12gjhi+Xhmt4A0OZhH00Octpikv63+JsUUzlu7GyihB6IW2BwvLpKvGF5gYFetcIw87zR6jvjv9Ld9USULP8ZvltFcj+IQVqqX9B4SK2kh0aslKyz+O88Hy30ELhJulNEr0y+eFlCttVF8qIH69kK86T++AeBF2Lq9u17K/zQrjPh9YvtyNTD1oe0luAtSqcQPuBFtwBZCI0pCRSvS1w==
+Received: from BL1PR13CA0124.namprd13.prod.outlook.com (2603:10b6:208:2bb::9)
+ by SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Thu, 6 Feb
+ 2025 22:33:45 +0000
+Received: from BL02EPF0001A102.namprd05.prod.outlook.com
+ (2603:10b6:208:2bb:cafe::60) by BL1PR13CA0124.outlook.office365.com
+ (2603:10b6:208:2bb::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.6 via Frontend Transport; Thu, 6
+ Feb 2025 22:33:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL02EPF0001A102.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Thu, 6 Feb 2025 22:33:44 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 6 Feb 2025
+ 14:33:34 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 6 Feb 2025 14:33:34 -0800
+Received: from build-yijuh-20230530T223047391.nvidia.com (10.127.8.10) by
+ mail.nvidia.com (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.14
+ via Frontend Transport; Thu, 6 Feb 2025 14:33:34 -0800
+From: Ivy Huang <yijuh@nvidia.com>
+To: Ivy Huang <yijuh@nvidia.com>
+CC: Ninad Malwade <nmalwade@nvidia.com>, <stable@vger.kernel.org>
+Subject: [PATCH] arm64: tegra: delete the Orin NX/Nano suspend key
+Date: Thu, 6 Feb 2025 22:33:30 +0000
+Message-ID: <20250206223330.3691327-1-yijuh@nvidia.com>
+X-Mailer: git-send-email 2.17.1
+X-NVConfidentiality: public
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
-Message-ID: <20250206222714.1079059-1-vannapurve@google.com>
-Subject: [PATCH V3 1/2] x86/tdx: Route safe halt execution via tdx_safe_halt()
-From: Vishal Annapurve <vannapurve@google.com>
-To: x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com, 
-	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
-	pgonda@google.com, kirill@shutemov.name, dave.hansen@linux.intel.com, 
-	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, Vishal Annapurve <vannapurve@google.com>, stable@vger.kernel.org, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A102:EE_|SJ2PR12MB8953:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1483ae9f-7e52-43f0-9b7e-08dd46fe50e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XmjWotPVdCkYbU0Y3Dg2/BjWiac/6QilSLaszs2wE4UJe1eF1DC2KfX/V2BL?=
+ =?us-ascii?Q?BUXAZ5b9QuhAvn6GeKlpyKuykS3XoI6qsQ1Ou9SpeXWim9GHzQOOwNMiq3LY?=
+ =?us-ascii?Q?+ViiVdsKmR+e0bTVQWh7We8X2eUi0Wm8Vq6R2K1WVeZod6DMzrMDFxgwsj7p?=
+ =?us-ascii?Q?HjzouK9ip1Qs2X4D8DT7QjVkxgWr7O+N0p9gzT3FH26TZkyaXMiCwluf0Sua?=
+ =?us-ascii?Q?tYa5vGJfRRWFYusSWpPdeOSgjUHkFnOWsuMAaw9CBSmsW9nx0gd6MqJ1WC0E?=
+ =?us-ascii?Q?og4YzY6Keg2RrVV60ZEAhb5THapSFFTkFpEEvWu2V1KNjIpYyADkXiUlrinv?=
+ =?us-ascii?Q?69qWSNSMVx48s4bN96fLJvm5ziVo8YjXHURXV+Sl5rtXf5YBDCd7WrKhoK4F?=
+ =?us-ascii?Q?Gp2SunKHBrXvTlX1v68fiYvjOrpQCxGdQWpyPN6YY2Ob4LbSu85QmxTrnB6e?=
+ =?us-ascii?Q?iChnDgqwA4RmYd/Yti6/fqZCfwlb/LC1dLseKj6/uNpxyS5Q3b31ETCU0wWF?=
+ =?us-ascii?Q?wEMGKiW3O+cMcq/EF0rrAd81k5ob3jkkNmwcyWejqO/BrsvwkVSbwhCVJ3Ns?=
+ =?us-ascii?Q?gX5mlmDq0Ie44gf8k925QyYPqHBYsfpaDyAjOZsiTeTcc+lisNwrkGTd89b4?=
+ =?us-ascii?Q?gAZSnGPuOId9jK+mpL3qRHlsmcptMj8ZkzfwxBNdRn1eNL2Plt2sl/clMqQN?=
+ =?us-ascii?Q?h9GJU2gCUDC0Kpp055+A+fdgIPVtqQovoF98YMFLAbhKwH/sVsaMWIGV0up/?=
+ =?us-ascii?Q?+nVOwtEBaPIBzd39Gy3b5q1aWDsV8f17CoB63kJ3Nhxhh6WrNnnf2SVoc7Ny?=
+ =?us-ascii?Q?SvKSDPFP4VBTU2EB5fXgcbXFA9YQpLrTQO9OJZ/9NUyEuh8jMpn/quaH4hoI?=
+ =?us-ascii?Q?W09yy/aT3+vlDsWKLzWPpb2lPWUCtZTMQ/ykHQ3qgh9Qmd8O1CridB1QNhiX?=
+ =?us-ascii?Q?CfmuQNLFFyCrE5/B4ANxjgRofOU3g4PklGzDJvqwqMdmigGfcmYC1D6oZBU2?=
+ =?us-ascii?Q?H/cQVJVIdtunarvWFMa0LnsPTxH+Yst/MWA61iHizrMbJCtJVaQclbR7xQEM?=
+ =?us-ascii?Q?ROoLC83zP7n9TYRwMRLMBETnhZ09K2zMIEgiOsTTAA9LqMkdxGYuarQGbiyr?=
+ =?us-ascii?Q?UFPwTfHgkW0EXkVfpkyv5ENPcD6l6Ak9HYf3RH0fxWVGtgCgQk5cjG7P27to?=
+ =?us-ascii?Q?P7ez6IaJtJ+hisUzVoCGrFp6dZ+vNl3OqNPunOINAIWSJ/nnJKdbJ6H1vHxT?=
+ =?us-ascii?Q?W1RezEL5s35N6eiaTQw5UW2K1JK/uzxDAsEW9DCXloZqMmiS5cfei/Mc9e+V?=
+ =?us-ascii?Q?4vteIomCojtaVzvxFLfMhujfayadUFM56QaLMOXat+f5UDvUjPUQLw6MxXL3?=
+ =?us-ascii?Q?eVDW40z9mOx5iX8BzuTYzRM2Ug8Rxm+MuisXWHwZNtS5NpOn9SXkBLGyJlr1?=
+ =?us-ascii?Q?hvzJkjEpvqCvSzkYIgm9M7cDgjMUW3PEqvoj07J4naPi6tM8ztaYEY93L8Dp?=
+ =?us-ascii?Q?/yFH0b+ZXNjPvhA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 22:33:44.7884
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1483ae9f-7e52-43f0-9b7e-08dd46fe50e9
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A102.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8953
 
-Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
-so IRQs need to remain disabled until the TDCALL to ensure that pending
-IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
-be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
+From: Ninad Malwade <nmalwade@nvidia.com>
 
-Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-prevented the idle routines from using "sti;hlt". But it missed the
-paravirt routine which can be reached like this as an example:
-        acpi_safe_halt() =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-        irq.safe_halt()  =>
-        pv_native_safe_halt()
+As per the Orin Nano Dev Kit schematic, GPIO_G.02 is not available
+on this device family. It should not be used at all on Orin NX/Nano.
+Having this unused pin mapped as the suspend key can lead to
+unpredictable behavior for low power modes.
 
-Modify tdx_safe_halt() to implement the sequence "TDCALL;
-raw_local_irq_enable()" and invoke tdx_halt() from idle routine which just
-executes TDCALL without changing state of interrupts.
-
-If CONFIG_PARAVIRT_XXL is disabled, "sti;hlt" sequences can still get
-executed from TDX VMs via paths like:
-        acpi_safe_halt() =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-	native_safe_halt()
-There is a long term plan to fix these paths by carving out
-irq.safe_halt() outside paravirt framework.
+Orin NX/Nano uses GPIO_EE.04 as both a "power" button and a "suspend"
+button.  However, we cannot have two gpio-keys mapped to the same
+GPIO. Therefore delete the "suspend" key.
 
 Cc: stable@vger.kernel.org
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+Fixes: e63472eda5ea ("arm64: tegra: Support Jetson Orin NX reference platform")
+Signed-off-by: Ninad Malwade <nmalwade@nvidia.com>
+Signed-off-by: Ivy Huang <yijuh@nvidia.com>
 ---
-Changes since V2:
-1) Addressed comments from Dave H and Kirill S.
+ arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi | 7 -------
+ 1 file changed, 7 deletions(-)
 
-V2: https://lore.kernel.org/lkml/20250129232525.3519586-1-vannapurve@google.com/
-
- arch/x86/coco/tdx/tdx.c    | 18 +++++++++++++++++-
- arch/x86/include/asm/tdx.h |  2 +-
- arch/x86/kernel/process.c  |  2 +-
- 3 files changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 32809a06dab4..5e68758666a4 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/ia32.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-+#include <asm/paravirt_types.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
- #include <asm/traps.h>
-@@ -398,7 +399,7 @@ static int handle_halt(struct ve_info *ve)
- 	return ve_instr_len(ve);
- }
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
+index 19340d13f789..41821354bbda 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
+@@ -227,13 +227,6 @@
+ 			wakeup-event-action = <EV_ACT_ASSERTED>;
+ 			wakeup-source;
+ 		};
+-
+-		key-suspend {
+-			label = "Suspend";
+-			gpios = <&gpio TEGRA234_MAIN_GPIO(G, 2) GPIO_ACTIVE_LOW>;
+-			linux,input-type = <EV_KEY>;
+-			linux,code = <KEY_SLEEP>;
+-		};
+ 	};
  
--void __cpuidle tdx_safe_halt(void)
-+void __cpuidle tdx_halt(void)
- {
- 	const bool irq_disabled = false;
- 
-@@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
- 		WARN_ONCE(1, "HLT instruction emulation failed\n");
- }
- 
-+static void __cpuidle tdx_safe_halt(void)
-+{
-+	tdx_halt();
-+	raw_local_irq_enable();
-+}
-+
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
-@@ -1109,6 +1116,15 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_kexec_begin	     = tdx_kexec_begin;
- 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
- 
-+#ifdef CONFIG_PARAVIRT_XXL
-+	/*
-+	 * Avoid the literal hlt instruction in TDX guests. hlt will
-+	 * induce a #VE in the STI-shadow which will enable interrupts
-+	 * in a place where they are not wanted.
-+	 */
-+	pv_ops.irq.safe_halt = tdx_safe_halt;
-+#endif
-+
- 	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index b4b16dafd55e..393ee2dfaab1 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve);
- 
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
- 
--void tdx_safe_halt(void);
-+void tdx_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 6da6769d7254..d11956a178df 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -934,7 +934,7 @@ void __init select_idle_routine(void)
- 		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		static_call_update(x86_idle, tdx_safe_halt);
-+		static_call_update(x86_idle, tdx_halt);
- 	} else {
- 		static_call_update(x86_idle, default_idle);
- 	}
+ 	fan: pwm-fan {
 -- 
-2.48.1.502.g6dc24dfdaf-goog
+2.17.1
 
 
