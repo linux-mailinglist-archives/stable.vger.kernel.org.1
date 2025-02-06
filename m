@@ -1,300 +1,190 @@
-Return-Path: <stable+bounces-114046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042DFA2A3E3
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:10:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FA9A2A4A1
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 264B07A19B8
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789103A3B95
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12399225A36;
-	Thu,  6 Feb 2025 09:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E7E226196;
+	Thu,  6 Feb 2025 09:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JzJUkNfY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKVZf0n4"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0105C15B10D;
-	Thu,  6 Feb 2025 09:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738833027; cv=fail; b=Ptl9NJk++sDce2EuxdoGVL6apWQbEpaR6rbWHlG2HrtVkEzOtWj90CuPChSBunkPKyM0MjmztSUgc5/nIOXGryhnRJJ5PSSI9R8WtS3pQiEvkJbYKO41NjRlwlPwskuKBJKJqLXZhE8HVD3wyQMYi094KpAOUoircixFRd2es/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738833027; c=relaxed/simple;
-	bh=TisIJJ7B+QWgWyIqJWnFQNgDsOwFsBnzWyg9Ok6G7EA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jkRLaw9S4j7V7+xXnISc4Fh4VugbKh0tRWGRXxEt6TEKVCFiROAod2fmmMzCTEDy/utzdb29CLqScGDs0AyXjsB/ehlB/CxVo2VAypt3CFceyirX+Cf43lbtWUxX16b5kt9EJ0wdYdsFUzeidPGXhsvz4PNLx8OOI7Xs4paZpJc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JzJUkNfY; arc=fail smtp.client-ip=40.107.93.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dhv9WO06c5zPMfU7EAhh9w/KF5fOmL/vXKQ1/NuORVTRlv87FRzQabIlQw+ds0zGS8+6La9+A30qJCR631O0KV8jFsGnM9jPgSdU9Gn+CZzIK1jlGsItG/ENx6Idw89z8XMsdxpbQA2CrmI5cV0gDPHumWEKQ+lP90kBOAxvuy25MF3A5kjeVcTg2mngGXV+qQVdZWYQAv49cYnVgrraSM7qQrSTjbsWrB2dWrfuKm+JyrXJYzKeYPWITA4zMftZeOeWtAHAF/yhVeZfq0abnvkEshhJ7lIpPb3g6KLjOLGRQaXbQPQRVW0oDW9PBJqNzVEp/LMl33xk1B6UwyDLPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0lWoxvtR8uuM4TGD/+tc8u78p7wIOWut/6iFqrUU0v0=;
- b=CI3+XJKfLCeTlzPF0NdJyRCi1txCIkMdtKrCoq/3j6l4sl25u8CyMIf5uQFPtaiaHLFZseLtsU6xz1bQhF54Q2eK/lbwwlEI6e3IHgvb+S/9x9438hz009WyVoRPxFeU3qXrrYaglyOd68gNL0uMcaNwxye+1DBo+/ZmIpklH2DsDplVHnRpW0s1GHtKRWnzlcl1ffHOu67isDTxEaLQ4txgvJLKGY55L6Gb1p3mLphc9JZ1WmKJIzhCs53fiLQVUdp3oFNy3VpLqPF4FzJJ6ZsILRPZ+blpfybf59/68mcP12eVzCNxzjCflNElC5wRbRy09xX6vQmVYrXkUx4UQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0lWoxvtR8uuM4TGD/+tc8u78p7wIOWut/6iFqrUU0v0=;
- b=JzJUkNfY+crA50iLLSinmGhzTTgmH4eaDSbOjQ7JHxz9LOEOUKFXUV5AMkeLecb1QHGtfr2LV4gX/Et/0BHf8rLH+VmebbhLEm4HFnoCVzdiWfkHyLIRul+gdnZk1ClVucDJcVJ2wJxqHXlqeBWNYM1SUZKy5g37FWlyG+eDYe4=
-Received: from BY5PR03CA0010.namprd03.prod.outlook.com (2603:10b6:a03:1e0::20)
- by SJ0PR12MB6991.namprd12.prod.outlook.com (2603:10b6:a03:47c::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Thu, 6 Feb
- 2025 09:10:21 +0000
-Received: from MWH0EPF000971E9.namprd02.prod.outlook.com
- (2603:10b6:a03:1e0:cafe::dc) by BY5PR03CA0010.outlook.office365.com
- (2603:10b6:a03:1e0::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.25 via Frontend Transport; Thu,
- 6 Feb 2025 09:10:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000971E9.mail.protection.outlook.com (10.167.243.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8398.14 via Frontend Transport; Thu, 6 Feb 2025 09:10:20 +0000
-Received: from [10.136.39.79] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 6 Feb
- 2025 03:10:16 -0600
-Message-ID: <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
-Date: Thu, 6 Feb 2025 14:40:13 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEBF225760;
+	Thu,  6 Feb 2025 09:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738834263; cv=none; b=EOj3vnbAhUgte0VNamDIyajvzk9+v8ucJar2WGymwFiDj23nLDfaTsVAa7P7wJ39MCCeWD6KlYMm9v5krCmeVs8gOaLdcQa9s+MWx6SkRk2t2BxSHXHxoxuRCaN7m6VUs+QFXtGfDtcE6LiG40Hug44QSy3wRTDU82cw4C1AI7g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738834263; c=relaxed/simple;
+	bh=SOrWPcSoquNWpMyZy27wi/Q8SEueF+uvyv+XLXRcMtI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=goJ/v2c7tzrRbBcu/lwqWHkD5ZomrP7MS5zshrql+w73Lv8IKdXRVDe+ktWBe93NpnJWXsVpj95qH/6JwlvBBhFbIJdN3g8VhUb7uR24tmXr2DdM5st/VBYxUArEJlXv5qOQi+PMJo9XnGCUTKQ199KFCZiYaMBadD1HbJkaVQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKVZf0n4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E7610C4CEDD;
+	Thu,  6 Feb 2025 09:31:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738834263;
+	bh=SOrWPcSoquNWpMyZy27wi/Q8SEueF+uvyv+XLXRcMtI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=dKVZf0n4e4dRMTQWnrkqyy3uilErXdJ0QaK3TdzfR8z6J6eaJuHOfV5Otk3J3aIqD
+	 d/YdC5i0d4JCBhnPOfvyBlxTI1s7YbDrpiPb6Acl5BmOYUTalO9mbzF8Rw9T+H63Y+
+	 ZR9HH+JkBmk4wBcNNKH6f+PMVphuch6wvZPmO0vUntMHKxZeC3PP0nM2sNzhjpE89Z
+	 H6OjLO/bjRaUFK5fkeKjjhgpYlsIXQ4R2i0NHhCZBtBDQekNrpHrB+z53U2B52OKa3
+	 1Fa+z/Qd22copyEQq+8HyQGbG0nJz6ToUd8rSJ9Pz+wjavIqmF6nEFPwHu32XpnL2o
+	 LEMWeR2VLULAQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C93A0C02194;
+	Thu,  6 Feb 2025 09:31:02 +0000 (UTC)
+From: Krishanth Jagaduri via B4 Relay <devnull+Krishanth.Jagaduri.sony.com@kernel.org>
+Date: Thu, 06 Feb 2025 14:59:59 +0530
+Subject: [PATCH v2] Documentation/no_hz: Remove description that states
+ boot CPU cannot be nohz_full
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
- for debug builds
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-	<stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Steve Wahl
-	<steve.wahl@hpe.com>, Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
-	<srivatsa@csail.mit.edu>, Michael Kelley <mhklinux@outlook.com>
-References: <20250203114738.3109-1-namjain@linux.microsoft.com>
- <f6bf04e8-3007-4a44-86d8-2cc671c85247@amd.com>
- <20250205095506.GB7145@noisy.programming.kicks-ass.net>
- <0835864f-6dc5-430d-91c0-b5605007d9d2@amd.com>
- <20250205101600.GC7145@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20250205101600.GC7145@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E9:EE_|SJ0PR12MB6991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53c1b160-0b5f-4806-64a4-08dd468e152f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026|32650700017;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?enAwYUhDakcyeGFBVit3cjUweVduYnpuSVd3c0EzNGd1Y09YTWU1UEEyd2RV?=
- =?utf-8?B?YVZPME52dVJid3lSWURSbWN3LzVlQjFlM2FlTWhLTitsTmdIZ0hzNUZxOU5k?=
- =?utf-8?B?eGN3MitBQzZ0TGljdVhCbURCTDlsQ0cvYnQyZkFYK1Z1UGZtRjZCMnFBcTBv?=
- =?utf-8?B?QnN4ODBMZkx4ZXpFNU5idis1WFNmdmMvd3JYWmtwU3JBeVh2QlJSejVqUWdp?=
- =?utf-8?B?dFNwNkVvMzVleDRlK2lwSHJzYUtVRVNoeis1d0ZTTW5WYXc0UnFIc2JjUzl6?=
- =?utf-8?B?Z3FFNU83VkVuTkRKblVRZmdsb1Vkd3kraVFkOWFmSUJpYXgrLzZGV2Y0Mm5R?=
- =?utf-8?B?dXYzZEVGUmRDamd1SW5SYytWWnNqODNXNE9vYlNwdU1KNDhSYk9UZ0svdzU1?=
- =?utf-8?B?eEZCM2F0c3ZnMXNVbEYyRW41Ymg4cFVySHJMb2oxSUVVRUkxamZDY1pmQTYr?=
- =?utf-8?B?c0VzQVl6ZndNYzk5YUNDRmcvaHR0OUNhbjM0NjZXSlJ2SU0ybkxxdkExSlgw?=
- =?utf-8?B?ZUgxWFd5U0hERDlhTjdxeW1ValNFZHM2OWI2Q040V0F3dkttdnNQNkc2TUxj?=
- =?utf-8?B?Q2xtZDU0bmZZcEhSWGx6NWNaeVZ4b3J4eVQ4NERPeE9OUW1EeUQrbTRkU0tM?=
- =?utf-8?B?dzVhdWJlV1JBcjB1YnAwVllwSVZlOXFveGRoNjZhSFJ4SHIzdVRSTlR2SWFv?=
- =?utf-8?B?QzhiWXpxc0IvMEZGdkNUY0xPbi9wU25SNkQ3ZlNmYytrblhkcVpUVXQyS1Ur?=
- =?utf-8?B?OGwrbmE2QlYrdmQ1a1M1UmtsVzF2Q3V0T3kva1QrRkg1YWRPSE03TncvU3Z2?=
- =?utf-8?B?aHZmVHU4OHVZOFdvV2FJdG9qRjlqczhmSUF1UFNVZlU5aWE4VEFNdkpSdXNF?=
- =?utf-8?B?cXBSelNLYkExTG43QzhrWHdVV2hqY29SSFJCR2YzWTkvR0hEeG14ZVdWVk9N?=
- =?utf-8?B?eHdDTUxjMEV1WE9uYVgvclZrMEFuMWx3T0VncERKM2srenBtNGdKbzdIWkZi?=
- =?utf-8?B?Rzd5S2cwWjdFcXpBK3RCMG9YY2dlS296QTJtaUx5aGlxdTI1czQ5U0gwZVIz?=
- =?utf-8?B?N0ZycE5rOUFEbFdya2N6eFBlbHVTOHhWRnd3WXArc2VEWWtDRjEvelBaRklZ?=
- =?utf-8?B?RlpDSmpQMWZTWm9FMWJveUZhbzdmY0xqNEkxcXMxNmNwWlA3UGRMeHVjWS9G?=
- =?utf-8?B?bk5LbEE3SGtiK3I1RitVWlFLYzRId2hKSVFwWGMwa2w1OVNXd1B3cGhmajVM?=
- =?utf-8?B?Ym1temxiUkRqQUFaS2dGaU5vbFo5anNFNE9JdG1jQXFEd3ZhRU1xR0RWZTVL?=
- =?utf-8?B?clNJQnNkbEZqR3l1Y3NObmVPdzNYYmNpZ0s5TDN1b2VZOHljOGtIaFVsYUxm?=
- =?utf-8?B?VlJ5cmZOZERpSFM3V1MrV1ZaM0pkUXhHTEp6OWgxVEEwZFRXR0JFU3pNM0lR?=
- =?utf-8?B?RnZjNGU5elM2dmFqKzFtSjZuYXkzTGVOVmRKZVpyVW5rd3hlUU5sV1BydUs3?=
- =?utf-8?B?YUlSdkptelkyZmdGeUs5MzhKQWo3bzlvZFl1N3VNVWZhY0dXUU9oUXVVclpu?=
- =?utf-8?B?WjV2TktDRzlHV2RNaWZ2TDZLZHVjRGJ6d0FHWHVLNEVldGx3ZDBoWVd0OWNh?=
- =?utf-8?B?UTlYT1JabjRLbUNSUnNJM3lOYnJoV1NVUHdkYzljVHdNRndsanFoSEtwTEND?=
- =?utf-8?B?clN0NEczdi95YWZzQlZyTlZUVkFhRDE5S3ArWVJRM01Bc0ZneElmTE5SMGJN?=
- =?utf-8?B?V01qaW1RUSs4RUNGd3RNOTNMNmUzT01kbWc0cnFMUUEwTVRZOWY2YjJPcWtU?=
- =?utf-8?B?RWZZVkZacFdQSEZucUR3S2RjVDZZY21GaDc2cER1ZW9aaEhaNEZlbzMxbHVQ?=
- =?utf-8?B?Y0daa1N2eTI2Qys5aEE1amp1VXZTTDR2R0Q0NGUxd1BaSWVyY1dmQVBabDAz?=
- =?utf-8?B?NmZsOVZZRHNqSXdSOVFzbDNxalJWSEZNS0RhVFkyMytSTXRGQmFsMnY1d0FK?=
- =?utf-8?Q?rzlb1AAUoMPr+0QUKTimV3xcVlcpuU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026)(32650700017);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 09:10:20.9643
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53c1b160-0b5f-4806-64a4-08dd468e152f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E9.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6991
+Message-Id: <20250206-send-oss-20250129-v2-1-453755f58ae0@sony.com>
+X-B4-Tracking: v=1; b=H4sIABaBpGcC/22NQQrCMBBFr1Jm7UgyTSt15T2kC02mNgsTyUiwl
+ NzdWMGVy/fgv7+CcPIscGxWSJy9+Bgq0K4BO1/CjdG7ykCKOqVpQOHgMIrgz7TWkLOT6Vu+Qt0
+ 9Ek/+tTXPY+XZyzOmZbvI+mO/NVLdn1rWqNEZZQbS3LsDnySGZW/jHcZSyhu4p96TsQAAAA==
+X-Change-ID: 20250129-send-oss-20250129-3c42dcf463eb
+To: Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Atsushi Ochiai <Atsushi.Ochiai@sony.com>, 
+ Daniel Palmer <Daniel.Palmer@sony.com>, Oleg Nesterov <oleg@redhat.com>, 
+ Chris von Recklinghausen <crecklin@redhat.com>, 
+ Ingo Molnar <mingo@kernel.org>, Phil Auld <pauld@redhat.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, stable@vger.kernel.org, 
+ Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738834214; l=4586;
+ i=Krishanth.Jagaduri@sony.com; s=20250122; h=from:subject:message-id;
+ bh=0sAqiurAdX4WtqSixtXBXrO6eSAPmKIpbmQxC16fIUQ=;
+ b=hDy7sRE95Qphd9khrwPu6zkaHUaLc4tX4GPlhxcIbo1nJb0329SLQF28B1dY2SW2yulWnmT/+
+ 8/xP9DJuCLLC72BGybpDoZaSCYsUvTiTnOr6bLexjE7YL/2fSlhMpJu
+X-Developer-Key: i=Krishanth.Jagaduri@sony.com; a=ed25519;
+ pk=lx2tvWPqsnFN2XCeuuKdm7G2bXm/Grq1a1KTsSpFZSk=
+X-Endpoint-Received: by B4 Relay for Krishanth.Jagaduri@sony.com/20250122
+ with auth_id=326
+X-Original-From: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+Reply-To: Krishanth.Jagaduri@sony.com
 
-Hello Peter,
+From: Oleg Nesterov <oleg@redhat.com>
 
-On 2/5/2025 3:46 PM, Peter Zijlstra wrote:
-> On Wed, Feb 05, 2025 at 03:43:54PM +0530, K Prateek Nayak wrote:
->> Hello Peter,
->>
->> Thank you for the background!
->>
->> On 2/5/2025 3:25 PM, Peter Zijlstra wrote:
->>> On Wed, Feb 05, 2025 at 03:18:24PM +0530, K Prateek Nayak wrote:
->>>
->>>> Have there been any reports on an x86 system / VM where
->>>> topology_span_sane() was tripped?
->>>
->>> At the very least Intel SNC 'feature' tripped it at some point. They
->>> figured it made sense to have the LLC span two nodes.
+sched/isolation: Prevent boot crash when the boot CPU is nohz_full
 
-I'm 99% sure that this might have been the topology_sane() check on
-the x86 side and not the topology_span_sane() check in
-kernel/sched/topology.c
+[ Upstream commit 5097cbcb38e6e0d2627c9dde1985e91d2c9f880e ]
 
-I believe one of the original changes that did the plumbing for SNC was
-commit 2c88d45edbb8 ("x86, sched: Treat Intel SNC topology as default,
-COD as exception") from Alison where they mentions that they saw the
-following splat when running with SNC:
+Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
+include the boot CPU, which is no longer true after:
 
-     sched: CPU #3's llc-sibling CPU #0 is not on the same node! [node: 1 != 0]. Ignoring dependency.
+  commit 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
 
-This comes from the topology_sane() check in arch/x86/boot/smpboot.c
-and match_llc() on x86 side was modified to work around that.
+However after:
 
->>>
->>> But I think there were some really dodgy VMs too.
+  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
 
-For VMs too, it is easy to trip topology_sane() check on x86 side. With
-QEMU, I can run:
+the kernel will crash at boot time in this case; housekeeping_any_cpu()
+returns an invalid CPU number until smp_init() brings the first
+housekeeping CPU up.
 
-     qemu-system-x86_64 -enable-kvm -cpu host \
-     -smp cpus=32,sockets=2,cores=8,threads=2 \
-     ...
-     -numa node,cpus=0-7,cpus=16-23,memdev=m0,nodeid=0 \
-     -numa node,cpus=8-15,cpus=24-31,memdev=m1,nodeid=1 \
-     ...
+Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
+return smp_processor_id() in this case.
 
-and I get:
+This is just the simple and backportable workaround which fixes the
+symptom, but smp_processor_id() at boot time should be safe at least for
+type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
+logic.
 
-     sched: CPU #8's llc-sibling CPU #0 is not on the same node! [node: 1 != 0]. Ignoring dependency.
+There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
+offline tick_do_timer_cpu (the 1st online housekeeping CPU).
 
-This is because consecutive CPUs (0-1,2-3,...) are SMT siblings and
-CPUs 0-15 are on the same socket as a result of how QEMU presents
-MADT to the guest but then I go ahead and mess things up by saying
-CPUs 0-7,16-23 are on one NUMA node, and the rest are on the other.
+[ Apply only documentation changes as commit which causes boot
+  crash when boot CPU is nohz_full is not backported to stable
+  kernels - Krishanth ]
 
-I still haven't managed to trip topology_span_sane() tho.
+Fixes: aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
+Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
+Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+---
+Hi,
 
->>>
->>> But yeah, its not been often. But basically dodgy BIOS/VM data can mess
->>> up things badly enough for it to trip.
->>
->> Has it ever happened without tripping the topology_sane() check first
->> on the x86 side?
+Before kernel 6.9, Documentation/timers/no_hz.rst states that
+"nohz_full=" mask must not include the boot CPU, which is no longer
+true after commit 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be
+nohz_full").
 
-What topology_span_sane() does is, it iterates over all the CPUs at a
-given topology level and makes sure that the cpumask for a CPU at
-that domain is same as the cpumask of every other CPU set on that mask
-for that topology level.
+When trying LTS kernels between 5.4 and 6.6, we noticed we could use
+boot CPU as nohz_full but the information in the document was misleading. 
 
-If two CPUs are set on a mask, they should have the same mask. If CPUs
-are not set on each other's mask, the masks should be disjoint.
+This was fixed upstream by commit 5097cbcb38e6 ("sched/isolation: Prevent
+boot crash when the boot CPU is nohz_full").
 
-On x86, the way set_cpu_sibling_map() works, CPUs are set on each other's
-shared masks iff match_*() returns true:
+While it fixes the document description, it also fixes issue introduced
+by another commit aae17ebb53cd ("workqueue: Avoid using isolated cpus'
+timers on queue_delayed_work").
 
-o For SMT, this means:
+It is unlikely that upstream commit as a whole will be backported to
+stable kernels which does not contain the commit that introduced the
+issue of boot crash when boot CPU is nohz_full.
 
-   - If X86_FEATURE_TOPOEXT is set:
-     - pkg_id must match.
-     - die_id must match.
-     - amd_node_id must match.
-     - llc_id must match.
-     - Either core_id or cu_id must match. (*)
-     - NUMA nodes must match.
+Could we fix only the document portion in stable kernels 5.4+ that
+mentions boot CPU cannot be nohz_full?
+---
+Changes in v2:
+- Add original changelog and trailers to commit message.
+- Add backport note for why only document portion is modified.
+- Link to v1: https://lore.kernel.org/r/20250205-send-oss-20250129-v1-1-d404921e6d7e@sony.com
+---
+ Documentation/timers/no_hz.rst | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-   - If !X86_FEATURE_TOPOEXT:
-     - pkg_id must match.
-     - die_id must match.
-     - core_id must match.
-     - NUMA nodes must match.
+diff --git a/Documentation/timers/no_hz.rst b/Documentation/timers/no_hz.rst
+index 065db217cb04fc252bbf6a05991296e7f1d3a4c5..16bda468423e88090c0dc467ca7a5c7f3fd2bf02 100644
+--- a/Documentation/timers/no_hz.rst
++++ b/Documentation/timers/no_hz.rst
+@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-adaptive-tick CPU must remain
+ online to handle timekeeping tasks in order to ensure that system
+ calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
+ (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
+-user processes to observe slight drifts in clock rate.)  Therefore, the
+-boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
+-"nohz_full=" mask that includes the boot CPU will result in a boot-time
+-error message, and the boot CPU will be removed from the mask.  Note that
+-this means that your system must have at least two CPUs in order for
++user processes to observe slight drifts in clock rate.) Note that this
++means that your system must have at least two CPUs in order for
+ CONFIG_NO_HZ_FULL=y to do anything for you.
+ 
+ Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
 
-o For CLUSTER this means:
+---
+base-commit: 219d54332a09e8d8741c1e1982f5eae56099de85
+change-id: 20250129-send-oss-20250129-3c42dcf463eb
 
-   - If l2c_id is not populated (== BAD_APICID)
-     - Same conditions as SMT.
-
-   - If l2c_id is populated (!= BAD_APICID)
-     - l2c_id must match.
-     - NUMA nodes must match.
-
-o For MC it means:
-
-   - llc_id must be populated (!= BAD_APICID) and must match.
-   - If INTEL_SNC: pkg_id must match.
-   - If !INTEL_SNC: NUMA nodes must match.
-
-o For PKG domain:
-   
-   - Inserted only if !x86_has_numa_in_package.
-   - CPUs should be in same NUMA node.
-
-All in all, other that the one (*) decision point, everything else has
-to strictly match for CPUs to be set in each other's CPU mask. And if
-they match with one CPU, they should match will all other CPUs in mask
-and it they mismatch with one, they should mismatch with all leading
-to link_mask() never being called.
-
-This is why I think that the topology_span_sane() check is redundant
-when the x86 bits have already ensured masks cannot overlap in all
-cases except for potentially in the (*) case.
-
-So circling back to my original question around "SDTL_ARCH_VERIFIED",
-would folks be okay to an early bailout from topology_span_sane() on:
-
-     if (!sched_debug() && (tl->flags & SDTL_ARCH_VERIFIED))
-     	return;
-
-and more importantly, do folks care enough about topology_span_sane()
-to have it run on other architectures and not just have it guarded
-behind just "sched_debug()" which starts off as false by default?
-
-(Sorry for the long answer explaining my thought process.)
-
-> 
-> That I can't remember, sorry :/
-
+Best regards,
 -- 
-Thanks and Regards,
-Prateek
+Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+
 
 
