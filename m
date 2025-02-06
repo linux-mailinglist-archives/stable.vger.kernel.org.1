@@ -1,152 +1,147 @@
-Return-Path: <stable+bounces-114048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD333A2A499
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:35:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAA4A2A4B0
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767EE1888C51
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A963A9BD3
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4915D22652F;
-	Thu,  6 Feb 2025 09:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C771222B581;
+	Thu,  6 Feb 2025 09:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nR8qDONS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wrx7+CUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD20A2288EF;
-	Thu,  6 Feb 2025 09:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1E1226538;
+	Thu,  6 Feb 2025 09:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834305; cv=none; b=mtiOf1IrUCAMPZ2R0zoZGio9meJyNTZdnaGZAUerl5kwWF/0l5+X9kQbpmbAFbAZYRVGd4CwghQLYTFbh9l+uv/whcJDYxmfoEETJf7IeDqM9ccOUFW77XpAE8cVsb0Zane12O/qnCz/TBFOFh0U+y8aEC6ScqjN89angzOQQZs=
+	t=1738834319; cv=none; b=bcDKo4hs+7HVFvXxTvkaVcLFYbAe53kANOwIrFG/G20N6uJX00W6ko4hmj/hkJEMUC2XJoopuML3YMeYWjtrokUNGjWG9gvZR8JXTAV0cj0BoEO51DZoOvEeRAzVZcCB1sizZ5mm0KzBT2LksByCoYz0dtencx5K5WcFl0U9bWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834305; c=relaxed/simple;
-	bh=Q6AG0Tb6OXFB7wV0ZyGe9g/9r8PLQ/Tcu0VVcSGy51Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DpQrZzQu1bc5Btl15ngnmskGGfC8ZZbJlFYi2KyYV5w5nduN+dVeWmOiPa3cZYphOphu5alp1/mp+UlJpW5odlalL+d3upeyIJUDNDBbO5Cnka+vgAt/Q5w7BHtpe45M4qdUxxDPOYWylggy2OqAh8RT2u8rvPqxiGeGC4lJOeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nR8qDONS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C33C4CEE9;
-	Thu,  6 Feb 2025 09:31:44 +0000 (UTC)
+	s=arc-20240116; t=1738834319; c=relaxed/simple;
+	bh=Tt+yDI5db92DPvgxkLoXDgaz4XRmykzWy85BDbRZ59w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LHKsnqiWwKMsuGSwjvxOMRmvmnuNiSgGA7E+1J9o+5LMsmA6BkGu2n1zHzcCl96L+U3rtFnvIzZG0LybuNgPERGHPgUdLTtsUV5hOx17UZVFu1XXbbGLu1XTuB6w2x858lHhUoL+eSZvHFDQkc7iVV17QPlt2jabFILF1SMn6yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wrx7+CUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34153C4CEE0;
+	Thu,  6 Feb 2025 09:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738834304;
-	bh=Q6AG0Tb6OXFB7wV0ZyGe9g/9r8PLQ/Tcu0VVcSGy51Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nR8qDONS6rjfjxa3FFh6nYG9JIMOl4KGAdEs6Jwuugx9stgcrBRv6KO+JuoXcVhwM
-	 L7ByfBwuAbpYHIwxiUuBScNnLqW8k9A+xb2fOzdH3swsRIZ98s/f9hTWr+HpDWCB5b
-	 FnnB62NPLkcSXnTedhwRApgsTM0fO3JmY7erBPrn38e9SHOK/YdjBTr7TBRUDk1pd1
-	 hLjv4ftd0G4B9pS94/RyCozdhkpKYQReRu9A7sJ57GrBt+MBj3mkgbqbdw6/M5wZx5
-	 2qFrEe+M3CKA9ptLK+NELwbSJ/ux5BxWRRAeBbDIbqey6iSz4fxcv5ojemIPQRRK4i
-	 z4qK1ybB5I4Rg==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-543e47e93a3so768280e87.2;
-        Thu, 06 Feb 2025 01:31:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUgVy/3PsLifZER4P18I4NUAqWvgEsNuukrhZ2+wIZUTlRAGeZeyTDBuUbcyV4N/UyxhfFfwXXA9vxNUH4=@vger.kernel.org, AJvYcCVQnZ3xTtPcKCr+nrdxajWBqud9P3bau7suGc9TOHPp34t4UFIcinCrAX7VH39rDmGBogc9IqRO@vger.kernel.org, AJvYcCWrffx/lBU0Omr095cJpOHRQz8HvdjQ2HRWYIGcGnwLCUuKboj0vlSJ2PmNkInjT/PB27Ak4ra+KXgPc7kw@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIXmywO2Z26a01s+9RMgOyMOsYUzSnKue6f1SpkrIZxHFImFsi
-	XTO2SGbQ0e8015QRHPovWc8HkTIRO82rV7U6GaysozPMDtvahgtrcc+MhOBXLtLaAd6e4G8mRP0
-	HBeypzS2+xsAau8Q1NokyT27gZts=
-X-Google-Smtp-Source: AGHT+IGebw4cig1cVqkZhlVHDqSescttcHIDn0kzKQ7R63gfmvspIXo0UlAHrss4F8BMyNGjIrTntmAMN/iOtL9dBeQ=
-X-Received: by 2002:a05:6512:686:b0:53e:37e4:1457 with SMTP id
- 2adb3069b0e04-54405a6c0c4mr2506851e87.33.1738834302634; Thu, 06 Feb 2025
- 01:31:42 -0800 (PST)
+	s=k20201202; t=1738834319;
+	bh=Tt+yDI5db92DPvgxkLoXDgaz4XRmykzWy85BDbRZ59w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wrx7+CUvewS1AnJVqhdiy94m1I4bXqHc+kE/YZvG9LkFbAHSsrkyxsHb31Q9g0LED
+	 lRdqw7nuDHecpGlERXiBbykQfhKl0NBmOPU25g8xWDqnyV+xmegCpr2Vxb2SZSAxmZ
+	 xKL10egsCUsuqWn2rhbhBHTW28IiIwMGprrg9lu4V50QPqKJ0SOA4E5G7Qux9l65gv
+	 ZMgpBcmcKDWycmLY0HneSgEghx3X6D1dCYPXvyQEVgFT/UTrWdsJdgHa1Va9ssLeGS
+	 CrY4zwbHl1WcO5x8Jf8dTlJk6jC0L2wcTRizWq3z9TzTPwVgJCfVMymAhh1tmg1Iu1
+	 Y2OWvt76DJDQg==
+Date: Thu, 6 Feb 2025 10:31:54 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Mike Yuan <me@yhndnzj.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Al Viro <viro@zeniv.linux.org.uk>, Christian =?utf-8?B?R8O2dHRzY2hl?= <cgzones@googlemail.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/xattr: actually support O_PATH fds in *xattrat()
+ syscalls
+Message-ID: <20250206-uhrwerk-faultiere-7a308565e2d3@brauner>
+References: <20250205204628.49607-1-me@yhndnzj.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024120635-wham-campsite-b62b@gregkh> <F6E14B0130692444+20250206083705.63378-1-wangyuli@uniontech.com>
-In-Reply-To: <F6E14B0130692444+20250206083705.63378-1-wangyuli@uniontech.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 6 Feb 2025 10:31:31 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGJhrwg06Z2X9ZZKQ2XmgQ7N0_D-TJy+iySRmYzOMnGkw@mail.gmail.com>
-X-Gm-Features: AWEUYZnQdhaxLOzWRmPZht5-vA_YiVmsBJ92uwDIa3N1IikbOKyDzf36vMWnojY
-Message-ID: <CAMj1kXGJhrwg06Z2X9ZZKQ2XmgQ7N0_D-TJy+iySRmYzOMnGkw@mail.gmail.com>
-Subject: Re: Re: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage where possible
-To: WangYuli <wangyuli@uniontech.com>
-Cc: gregkh@linuxfoundation.org, chenhuacai@kernel.org, chenhuacai@loongson.cn, 
-	kernel@xen0n.name, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, masahiroy@kernel.org, nathan@kernel.org, 
-	ndesaulniers@google.com, nicolas@fjasle.eu, sashal@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250205204628.49607-1-me@yhndnzj.com>
 
-On Thu, 6 Feb 2025 at 09:53, WangYuli <wangyuli@uniontech.com> wrote:
->
-> Hi, Greg,
->
-> It's rather unfortunate that currently, almost all Linux distributions
-> supporting LoongArch are using LTS kernels version v6.6 or older, such as
-> openEuler and deepin. [1][2]
->
-> If this bugfix isn't merged into linux-stable, then every single distro
-> kernel team will have to waste time fixing the same darn bug over and
-> over, even though it's already fixed in later kernels.
->
-> This would really make LTS look like it's failing to serve its intended
-> purpose. And I'm sure all of us do not want to see something so terrible
-> happen.
->
-> On Fri, Dec 6, 2024 at 9:04=E2=80=AFPM Greg Kroah-Hartman wrote:
-> > Odd, why doesn't this affect other arches as well using new binutils?  =
-I
-> > hate to have to backport all of this just for one arch, as that feels
-> > odd.
->
-> Could you help me understand why you expressed that you "hate" to have
-> to backport something for only one arch?
-> Given that we've historically done quite a bit of similar backporting for
-> architectures such as arm, powerpc, and x86...It's not exactly unpreceden=
-ted.
-> I just want to grasp the rationale, as it all seems perfectly justified
-> and necessary.
->
-> Moreover, with all the active and strict code reviews by all developers,
-> such occurrences are not frequent on LoongArch. You could be not exactly
-> "always" backporting something like this just for LoongArch, so perhaps
-> that might make you and your colleagues feel a little less "hate" :-)
->
-> As for your questions on the root cause of the issue and the effectivenes=
-s
-> of this fix, I reckon Xi Ruoyao's explanation and Ard Biesheuvel's
-> supplementary points have already provided ample details. [3][4][5]
->
-> If, after your feedback, you still have any lingering doubts regarding th=
-e
-> issue itself or the LoongArch architecture, I believe that Xi Ruoyao,
-> Ard Biesheuvel, and Huacai Chen would all be more than willing to elabora=
-te
-> further.
->
-> I'm bringing this up because we've encountered concrete issues in the
-> process of maintaining distributions. Furthermore, as an upstream resourc=
-e,
-> linux-stable can help us more effectively drive forward community
-> development efforts.
-> Plus, we realize this benefits all Linux community developers just the sa=
-me.
->
-> Hoping you could spare a moment from your busy schedule to take another l=
-ook
-> at this patch series and perhaps reconsider the LTS inclusion of this bug=
-fix.
->
-> [1]. https://gitee.com/openeuler/kernel/blob/openEuler-25.03/Makefile#L3
-> [2]. https://github.com/deepin-community/kernel/blob/linux-6.6.y/Makefile=
-#L3
-> [3]. https://lore.kernel.org/all/ccb1fa9034b177042db8fcbe7a95a2a5b466dc30=
-.camel@xry111.site/
-> [4]. https://lore.kernel.org/all/CAMj1kXEV+HC+2HMLhDaLfAufQLrXRs2J7akMNr1=
-mjejDYc7kdw@mail.gmail.com/#t
-> [5]. https://lore.kernel.org/all/c9a43e5da01ee2215393c0f3c50956171fe660ab=
-.camel@xry111.site/
->
+On Wed, Feb 05, 2025 at 08:47:23PM +0000, Mike Yuan wrote:
+> Cited from commit message of original patch [1]:
+> 
+> > One use case will be setfiles(8) setting SELinux file contexts
+> > ("security.selinux") without race conditions and without a file
+> > descriptor opened with read access requiring SELinux read permission.
+> 
+> Also, generally all *at() syscalls operate on O_PATH fds, unlike
+> f*() ones. Yet the O_PATH fds are rejected by *xattrat() syscalls
+> in the final version merged into tree. Instead, let's switch things
+> to CLASS(fd_raw).
+> 
+> Note that there's one side effect: f*xattr() starts to work with
+> O_PATH fds too. It's not clear to me whether this is desirable
+> (e.g. fstat() accepts O_PATH fds as an outlier).
+> 
+> [1] https://lore.kernel.org/all/20240426162042.191916-1-cgoettsche@seltendoof.de/
+> 
+> Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
+> Signed-off-by: Mike Yuan <me@yhndnzj.com>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Christian Göttsche <cgzones@googlemail.com>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> ---
 
-You might consider sending a Loongarch-only patch for mainline that
-adds weak definitions of these symbols, and backport that to -stable
-once it hits Linus's tree. That way, the weak references are always
-satisfied, even during the first linker pass.
+I expanded on this before. O_PATH is intentionally limited in scope and
+it should not allow to perform operations that are similar to a read or
+write which getting and setting xattrs is.
+
+Patches that further weaken or dilute the semantics of O_PATH are not
+acceptable.
+
+>  fs/xattr.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/xattr.c b/fs/xattr.c
+> index 02bee149ad96..15df71e56187 100644
+> --- a/fs/xattr.c
+> +++ b/fs/xattr.c
+> @@ -704,7 +704,7 @@ static int path_setxattrat(int dfd, const char __user *pathname,
+>  
+>  	filename = getname_maybe_null(pathname, at_flags);
+>  	if (!filename) {
+> -		CLASS(fd, f)(dfd);
+> +		CLASS(fd_raw, f)(dfd);
+>  		if (fd_empty(f))
+>  			error = -EBADF;
+>  		else
+> @@ -848,7 +848,7 @@ static ssize_t path_getxattrat(int dfd, const char __user *pathname,
+>  
+>  	filename = getname_maybe_null(pathname, at_flags);
+>  	if (!filename) {
+> -		CLASS(fd, f)(dfd);
+> +		CLASS(fd_raw, f)(dfd);
+>  		if (fd_empty(f))
+>  			return -EBADF;
+>  		return file_getxattr(fd_file(f), &ctx);
+> @@ -978,7 +978,7 @@ static ssize_t path_listxattrat(int dfd, const char __user *pathname,
+>  
+>  	filename = getname_maybe_null(pathname, at_flags);
+>  	if (!filename) {
+> -		CLASS(fd, f)(dfd);
+> +		CLASS(fd_raw, f)(dfd);
+>  		if (fd_empty(f))
+>  			return -EBADF;
+>  		return file_listxattr(fd_file(f), list, size);
+> @@ -1079,7 +1079,7 @@ static int path_removexattrat(int dfd, const char __user *pathname,
+>  
+>  	filename = getname_maybe_null(pathname, at_flags);
+>  	if (!filename) {
+> -		CLASS(fd, f)(dfd);
+> +		CLASS(fd_raw, f)(dfd);
+>  		if (fd_empty(f))
+>  			return -EBADF;
+>  		return file_removexattr(fd_file(f), &kname);
+> 
+> base-commit: a86bf2283d2c9769205407e2b54777c03d012939
+> -- 
+> 2.48.1
+> 
+> 
 
