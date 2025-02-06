@@ -1,59 +1,50 @@
-Return-Path: <stable+bounces-114105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712E4A2AB41
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:29:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76B6A2AB53
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 15:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991D03A949D
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED011632A0
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EDC24632B;
-	Thu,  6 Feb 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C961E5B86;
+	Thu,  6 Feb 2025 14:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEjcrTfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5YsVwZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB5D22D4F8;
-	Thu,  6 Feb 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C21E5B75
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 14:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738852094; cv=none; b=mrOiDJW5lOImIHtRJA6jBshI533TszbX8Pz04rbQqXsHMjwUgtk1taKlzd/gu8YY8puACWRlQ9LRHnCm1pVka0+6ZWun6kWfb6oadIx0YyMSPRP8yW3J1xXTckuEf/ekH25PfZ83Lz7dD3zh8+omH3jzjvOdVz/I3JAjT1ebD00=
+	t=1738852118; cv=none; b=UxpBvW9exrzMzKYOOFeUjHIhLZXRLrf12dH1Z46YzrYl7tIyBexwD8kiKWB7e2psLmPF4rUP1bzx+M4di+5AePcnpv1+vwcX5U+tLE/RACqYm84OFtspcEKaOTUgqbk7av7+P8EsR5EBLidAS5NTb+T2c2Ev4Dl3GIZOTPGI3e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738852094; c=relaxed/simple;
-	bh=uYGpgO24aGawl3gWDh1ZdcK2qXbzQnfvCq7tRYaL6Ws=;
+	s=arc-20240116; t=1738852118; c=relaxed/simple;
+	bh=ZGMh4NBIlI/VAItS+IF6XAUKNT0gBk2JR1Y97NCSDqc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gpO1ApqNFeDRE67xfj6cfU9YEaoBVhgGdQwvW7qhZSHzEzGUMI9Wg0BOoThL/tFZaYbY52LyqGtilHAa5kRhPMblp/8jV93qALcp/a76ZzjQVemm7Rc+1mjSKiYvXuvUqrlDG0Ccx28mImODH1+ws/a7Yjupyapr6NEMDEQ+8Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEjcrTfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B3EC4CEDD;
-	Thu,  6 Feb 2025 14:28:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uBKgA4juuNRZb9Uz1/BKFqAXS00ltTWfX6UhrsFSlKFAfYGNqt/H78OrWmI+NHKBO2jSRpht3fEWzZqiLdnYqAiba/DI5bkpGCguHwCVg8cgTbdFaeYXx9ltu0rdrcCQlIngS+FY/LNlJfHfjbHhGl6i/fA/BHe/Fov18kDe0Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5YsVwZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E89C4CEDF;
+	Thu,  6 Feb 2025 14:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738852094;
-	bh=uYGpgO24aGawl3gWDh1ZdcK2qXbzQnfvCq7tRYaL6Ws=;
+	s=korg; t=1738852118;
+	bh=ZGMh4NBIlI/VAItS+IF6XAUKNT0gBk2JR1Y97NCSDqc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uEjcrTfzA6CpPH0t/AqVezLM92pTIVxHvdj+DOVcs6UJsjLYnit9mKAB7fva3b6ta
-	 10ioreUkGFgpF26sxcF2q4CBC0tfAgPbrfT/ie0bSv8nU6N8ioaPmOkgT9rFg5rdn9
-	 w7X+DnbmGyHrfrhkQTve0TqL9N44IL4jH+XlL7Q4=
-Date: Thu, 6 Feb 2025 06:38:21 +0100
+	b=Q5YsVwZTj+hJ4yJC+l0Ga919aTyQ/y4+SiS05Ty4c6aTUI9EliJi0vomUAOzzDdUz
+	 dVrAV/7nCYDPvkF7jT6YEsVeVznVEg7fnN59i9I75W6ZH7DP6/wcQYOoq/SpG7mmXj
+	 FkyXkDhRBKj1WtRxmBBUmoGhEBKXQZncOQqlv0IM=
+Date: Thu, 6 Feb 2025 09:15:24 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: markus.elfring@web.de, GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@hansenpartnership.com, arun.easi@cavium.com,
-	bvanassche@acm.org, jhasan@marvell.com,
-	linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-	manish.rangankar@cavium.com, martin.petersen@oracle.com,
-	nilesh.javali@cavium.com, skashyap@marvell.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] scsi: qedf: Replace kmalloc_array() with kcalloc()
-Message-ID: <2025020658-backlog-riot-5faf@gregkh>
-References: <d4db5506-6ace-4585-972e-6b7a6fc882a4@web.de>
- <20250206052523.16683-1-jiashengjiangcool@gmail.com>
- <20250206052523.16683-2-jiashengjiangcool@gmail.com>
- <2025020626-purist-chrome-0dd6@gregkh>
+To: Xingrui Yi <yixingrui@linux.alibaba.com>
+Cc: tglx@linutronix.de, rostedt@goodmis.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.10.y] profile: Fix use after free in profile_tick()
+Message-ID: <2025020603-slighting-playful-1623@gregkh>
+References: <20250206072406.975315-1-yixingrui@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,45 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025020626-purist-chrome-0dd6@gregkh>
+In-Reply-To: <20250206072406.975315-1-yixingrui@linux.alibaba.com>
 
-On Thu, Feb 06, 2025 at 06:36:58AM +0100, Greg KH wrote:
-> On Thu, Feb 06, 2025 at 05:25:22AM +0000, Jiasheng Jiang wrote:
-> > Replace kmalloc_array() with kcalloc() to avoid old (dirty) data being
-> > used/freed.
+On Thu, Feb 06, 2025 at 03:24:06PM +0800, Xingrui Yi wrote:
+> [free]
+> profiling_store()
+>   --> profile_init()
+>     --> free_cpumask_var(prof_cpu_mask)                           <-- freed
 > 
-> Used/freed where?
+> [use]
+> tick_sched_timer()
+>   --> profile_tick()
+>     --> cpumask_available(prof_cpu_mask)                          <-- prof_cpu_mask is not NULL
+>                                                                       if cpumask offstack
+>       --> cpumask_test_cpu(smp_processor_id(), prof_cpu_mask)     <-- use after free
 > 
-> > 
-> > Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-> > Cc: <stable@vger.kernel.org> # v5.10+
-> > Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-> > ---
-> >  drivers/scsi/qedf/qedf_io.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
-> > index fcfc3bed02c6..d52057b97a4f 100644
-> > --- a/drivers/scsi/qedf/qedf_io.c
-> > +++ b/drivers/scsi/qedf/qedf_io.c
-> > @@ -254,9 +254,7 @@ struct qedf_cmd_mgr *qedf_cmd_mgr_alloc(struct qedf_ctx *qedf)
-> >  	}
-> >  
-> >  	/* Allocate pool of io_bdts - one for each qedf_ioreq */
-> > -	cmgr->io_bdt_pool = kmalloc_array(num_ios, sizeof(struct io_bdt *),
-> > -	    GFP_KERNEL);
-> > -
-> > +	cmgr->io_bdt_pool = kcalloc(num_ios, sizeof(*cmgr->io_bdt_pool), GFP_KERNEL);
+> When profile_init() failed if prof_buffer is not allocated,
+> prof_cpu_mask will be kfreed by free_cpumask_var() but not set
+> to NULL when CONFIG_CPUMASK_OFFSTACK=y, thus profile_tick() will
+> use prof_cpu_mask after free.
 > 
-> This is just an array that is then properly all initialized a few lines
-> below this.
+> Signed-off-by: Xingrui Yi <yixingrui@linux.alibaba.com>
+> ---
+>  kernel/profile.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> So why does this need to be zeroed out at all?
+> diff --git a/kernel/profile.c b/kernel/profile.c
+> index 0db1122855c0..b5e85193cb02 100644
+> --- a/kernel/profile.c
+> +++ b/kernel/profile.c
+> @@ -137,6 +137,9 @@ int __ref profile_init(void)
+>  		return 0;
+>  
+>  	free_cpumask_var(prof_cpu_mask);
+> +#ifdef CONFIG_CPUMASK_OFFSTACK
+> +	prof_cpu_mask = NULL;
+> +#endif
+>  	return -ENOMEM;
+>  }
+>  
+> -- 
+> 2.43.5
+> 
+> 
 
-Oh, I think I figured it out, but your text for the changelog is wrong,
-and needs to be fixed to properly describe what is going on here.
+<formletter>
 
-thanks,
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-greg k-h
+</formletter>
 
