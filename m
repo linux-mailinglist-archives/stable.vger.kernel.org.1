@@ -1,204 +1,228 @@
-Return-Path: <stable+bounces-114021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB84A29EDB
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 03:37:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9828FA29EFD
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 03:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8A4A188958E
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 02:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E07C165549
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 02:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9269A136358;
-	Thu,  6 Feb 2025 02:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1357F13CA93;
+	Thu,  6 Feb 2025 02:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JFnNIHB7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlKKBkfT"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D9F13959D
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 02:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE03C13AD18;
+	Thu,  6 Feb 2025 02:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738809426; cv=none; b=PXmgjJLqFTAzGy5wtRLcg5PR/M41MCxbebbh038eqszs7WRfntTA2ELTUEVj2kTkRg02lEWz8sE2l8u8eWrwcbI2Ab1d+xMeaE0I0+z9N+GevJc8zl4YGMJtGZyZi8M51DPw2zbTv4zyG4x+eK8tj8kaCtqmw9YihfJXwwR+ZEo=
+	t=1738810498; cv=none; b=qIIer0VqLa5/XgWgZVDGj9MvxDeKBG7W8gt5+6uDBlmEQn6gHdCs+KNs+xRQEct48d91ezhpAZNCKj0UxL5Q5eZFUym7evMwPszI7TBgsOiDIIPzmDSZpsWgXUAJGoi+z1fa0dFAK4QaBzhBBS/mMfxFAFUNPXNzXEu8BG0wwXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738809426; c=relaxed/simple;
-	bh=sw9zD1D1sqWvxw19DBsDi7y/5AEgnjxMKp/xdrQhVZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ORBMoY3yhoM5sn48i/uwz8lm0cvWi0soH2lMkwqDRtW/qYe6bmg3271R/FIAqVUkPt3UK3iAynozf7meBCr9WDrbZaVqT10Iqbs1jy7UNiqfX1mPC9K/KQdlMeQMfCWfHYlq7TvsVUl6AgXL5zUKltzZYdIqdDl20JADTw9HKAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JFnNIHB7; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5161gLhJ005059;
-	Thu, 6 Feb 2025 02:37:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=qyI1+gdNHiuziTX4lAju005zwyNFU
-	VHNwhS1bWk9L8E=; b=JFnNIHB7OsLfjYfbsWfXz1Ey8M3dJ7IFfFnW2VuhGFJBL
-	VF9v0fo+L+K75g/nA6ArT76GKa21sWsW33FBWtluvCsnjBHpOwdjwfpfQ22J1dPA
-	jXNVVlyF+ykY9LJgq9S8P4z/tCjtBJanBiAfTJIISVYhusW4ibBasCNne91YvW4E
-	CHO4oaMIVxraFJpVDRwctPt7uifGP+KzV90i2Gl6E5MeJBgVXpm9IBDRDk+7BQZs
-	DtHYZZbDTTkkXIyzERcJOwDNEZADUqmt3V8OPiUNOlhe2aldwS72WbcfmM1Nw2jM
-	mKJ852LaMMSNd+cWYi1EELTSy/wlMtZxDOy5TpARA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hhju0d5c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 06 Feb 2025 02:37:02 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 515NOBFF027879;
-	Thu, 6 Feb 2025 02:37:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44j8p57guk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 06 Feb 2025 02:37:01 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5162b0mQ018912;
-	Thu, 6 Feb 2025 02:37:00 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 44j8p57gu8-1;
-	Thu, 06 Feb 2025 02:37:00 +0000
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-To: stable@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk, stefanb@linux.ibm.com, zohar@linux.ibm.com,
-        samasth.norway.ananda@oracle.com
-Subject: [PATCH 5.10.y 5.4.y] ima: Fix use-after-free on a dentry's dname.name
-Date: Wed,  5 Feb 2025 18:36:59 -0800
-Message-ID: <20250206023659.1217450-1-samasth.norway.ananda@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1738810498; c=relaxed/simple;
+	bh=cuh23/guRoIQwP/CHmkEvoRkDVmV3WnIEIa0dzmdwUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWTf09p2q2kO4HowkV6r+4psqA+ePzoXb15fnCLNDHvpwxvmJxTpBlr7zoylghTFM1xLMdH3AuHSLsrWIybS63ERAgDkfFzvz0YZwKR9kwL/kvXZmRAbs+jFlczgYr5AiaX4jcPO4IBD780z4RM8YuNK3jM8FxLuQOXbdVfwC9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlKKBkfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D14CC4CED1;
+	Thu,  6 Feb 2025 02:54:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738810498;
+	bh=cuh23/guRoIQwP/CHmkEvoRkDVmV3WnIEIa0dzmdwUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tlKKBkfTGx3Fn0IbDHUyaN4fArX/tyiUHwKQZz3b78jJ8TUS8K2LEBCOdaQYfAFLK
+	 gv0Cxf/nYR1kfDKzl4Y11b+YngVUi+iuqYQLZzxgNgXNJ4YIsxGjh8Fhjk9Jsnc9gK
+	 Up7G7+VW3cxVjDcXUfxw+3AzFgUG82r4KdXSVgSRXPjrAi9twIs4B3CAQ5O4hYcZTS
+	 JUk4fitEAxHoQ8rkmmrrpquDq2QCM3teo9LvBr3DGqwYz8/D3xBxIwAmLI1e3MjY87
+	 pXQkyvZ0rx727utPnrUIAeeF8oJwP9phKJkGljMLw3fnQHjwhLAX9tKYLSgIOLHwLL
+	 OJdgt/AB+D5Jg==
+Date: Wed, 5 Feb 2025 20:54:53 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Frank Oltmanns <frank@oltmanns.dev>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Chris Lew <quic_clew@quicinc.com>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+	Johan Hovold <johan+linaro@kernel.org>, Caleb Connolly <caleb.connolly@linaro.org>, 
+	Joel Selvaraj <joelselvaraj.oss@gmail.com>, Alexey Minnekhanov <alexeymin@postmarketos.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: pd-mapper: defer probing on sdm845
+Message-ID: <2vfwtuiorefq64ood4k7y7ukt34ubdomyezfebkeu2wu5omvkb@c5h2sbqs47ya>
+References: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_01,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
- definitions=main-2502060019
-X-Proofpoint-GUID: jlfvNZXu4Vdwcovf5bGEgXM2W5CP3ute
-X-Proofpoint-ORIG-GUID: jlfvNZXu4Vdwcovf5bGEgXM2W5CP3ute
+In-Reply-To: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+On Wed, Feb 05, 2025 at 10:57:11PM +0100, Frank Oltmanns wrote:
+> On xiaomi-beryllium and oneplus-enchilada audio does not work reliably
+> with the in-kernel pd-mapper. Deferring the probe solves these issues.
+> Specifically, audio only works reliably with the in-kernel pd-mapper, if
+> the probe succeeds when remoteproc3 triggers the first successful probe.
+> I.e., probes from remoteproc0, 1, and 2 need to be deferred until
+> remoteproc3 has been probed.
+> 
+> Introduce a device specific quirk that lists the first auxdev for which
+> the probe must be executed. Until then, defer probes from other auxdevs.
+> 
+> Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+> ---
+> The in-kernel pd-mapper has been causing audio issues on sdm845
+> devices (specifically, xiaomi-beryllium and oneplus-enchilada). I
+> observed that Stephan’s approach [1] - which defers module probing by
+> blocklisting the module and triggering a later probe - works reliably.
+> 
+> Inspired by this, I experimented with delaying the probe within the
+> module itself by returning -EPROBE_DEFER in qcom_pdm_probe() until a
+> certain time (13.9 seconds after boot, based on ktime_get()) had
+> elapsed. This method also restored audio functionality.
+> 
+> Further logging of auxdev->id in qcom_pdm_probe() led to an interesting
+> discovery: audio only works reliably with the in-kernel pd-mapper when
+> the first successful probe is triggered by remoteproc3. In other words,
+> probes from remoteproc0, 1, and 2 must be deferred until remoteproc3 has
+> been probed.
+> 
 
-[ Upstream commit be84f32bb2c981ca670922e047cdde1488b233de ]
+The remoteproc numbering is assigned at the time of registering each
+remoteproc driver, and does not necessarily relate to the order in which
+they are launched. That said, it sounds like what you're saying is that
+is that audio only works if we launch the pd-mapper after the
+remoteprocs has started?
 
-->d_name.name can change on rename and the earlier value can be freed;
-there are conditions sufficient to stabilize it (->d_lock on dentry,
-->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
-rename_lock), but none of those are met at any of the sites. Take a stable
-snapshot of the name instead.
+Can you please confirm which remoteproc is which in your numbering? (In
+particular, which remoteproc instance is the audio DSP?)
 
-Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-[Samasth: bp to fix CVE-2024-39494; Minor conflict resolved due to code
-context change]
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
----
- security/integrity/ima/ima_api.c          | 16 ++++++++++++----
- security/integrity/ima/ima_template_lib.c | 17 ++++++++++++++---
- 2 files changed, 26 insertions(+), 7 deletions(-)
+> To address this, I propose introducing a quirk table (which currently
+> only contains sdm845) to defer probing until the correct auxiliary
+> device (remoteproc3) initiates the probe.
+> 
+> I look forward to your feedback.
+> 
 
-diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
-index 70efd4aa1bd1..285d6069c32f 100644
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -213,7 +213,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
- 	struct inode *real_inode = d_real_inode(file_dentry(file));
--	const char *filename = file->f_path.dentry->d_name.name;
-+	struct name_snapshot filename;
- 	int result = 0;
- 	int length;
- 	void *tmpbuf;
-@@ -276,9 +276,13 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 		if (file->f_flags & O_DIRECT)
- 			audit_cause = "failed(directio)";
- 
-+		take_dentry_name_snapshot(&filename, file->f_path.dentry);
-+
- 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
--				    filename, "collect_data", audit_cause,
--				    result, 0);
-+				    filename.name.name, "collect_data",
-+				    audit_cause, result, 0);
-+
-+		release_dentry_name_snapshot(&filename);
- 	}
- 	return result;
- }
-@@ -391,6 +395,7 @@ void ima_audit_measurement(struct integrity_iint_cache *iint,
-  */
- const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- {
-+	struct name_snapshot filename;
- 	char *pathname = NULL;
- 
- 	*pathbuf = __getname();
-@@ -404,7 +409,10 @@ const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- 	}
- 
- 	if (!pathname) {
--		strlcpy(namebuf, path->dentry->d_name.name, NAME_MAX);
-+		take_dentry_name_snapshot(&filename, path->dentry);
-+		strscpy(namebuf, filename.name.name, NAME_MAX);
-+		release_dentry_name_snapshot(&filename);
-+
- 		pathname = namebuf;
- 	}
- 
-diff --git a/security/integrity/ima/ima_template_lib.c b/security/integrity/ima/ima_template_lib.c
-index c022ee9e2a4e..f72a2564fd05 100644
---- a/security/integrity/ima/ima_template_lib.c
-+++ b/security/integrity/ima/ima_template_lib.c
-@@ -385,7 +385,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 				     bool size_limit)
- {
- 	const char *cur_filename = NULL;
-+	struct name_snapshot filename;
- 	u32 cur_filename_len = 0;
-+	bool snapshot = false;
-+	int ret;
- 
- 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
- 
-@@ -398,7 +401,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 	}
- 
- 	if (event_data->file) {
--		cur_filename = event_data->file->f_path.dentry->d_name.name;
-+		take_dentry_name_snapshot(&filename,
-+					  event_data->file->f_path.dentry);
-+		snapshot = true;
-+		cur_filename = filename.name.name;
- 		cur_filename_len = strlen(cur_filename);
- 	} else
- 		/*
-@@ -407,8 +413,13 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 		 */
- 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
- out:
--	return ima_write_template_field_data(cur_filename, cur_filename_len,
--					     DATA_FMT_STRING, field_data);
-+	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
-+					    DATA_FMT_STRING, field_data);
-+
-+	if (snapshot)
-+		release_dentry_name_snapshot(&filename);
-+
-+	return ret;
- }
- 
- /*
--- 
-2.46.0
+I don't think the proposed workaround is our path forward, but I very
+much appreciate your initiative and the insights it provides! Seems to
+me that we have a race-condition in the pdr helper.
 
+Regards,
+Bjorn
+
+> Thanks,
+>   Frank
+> 
+> [1]: https://lore.kernel.org/linux-arm-msm/Zwj3jDhc9fRoCCn6@linaro.org/
+> ---
+>  drivers/soc/qcom/qcom_pd_mapper.c | 43 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
+> index 154ca5beb47160cc404a46a27840818fe3187420..34b26df665a888ac4872f56e948e73b561ae3b6b 100644
+> --- a/drivers/soc/qcom/qcom_pd_mapper.c
+> +++ b/drivers/soc/qcom/qcom_pd_mapper.c
+> @@ -46,6 +46,11 @@ struct qcom_pdm_data {
+>  	struct list_head services;
+>  };
+>  
+> +struct qcom_pdm_probe_first_dev_quirk {
+> +	const char *name;
+> +	u32 id;
+> +};
+> +
+>  static DEFINE_MUTEX(qcom_pdm_mutex); /* protects __qcom_pdm_data */
+>  static struct qcom_pdm_data *__qcom_pdm_data;
+>  
+> @@ -526,6 +531,11 @@ static const struct qcom_pdm_domain_data *x1e80100_domains[] = {
+>  	NULL,
+>  };
+>  
+> +static const struct qcom_pdm_probe_first_dev_quirk first_dev_remoteproc3 = {
+> +	.id = 3,
+> +	.name = "pd-mapper"
+> +};
+> +
+>  static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+>  	{ .compatible = "qcom,apq8016", .data = NULL, },
+>  	{ .compatible = "qcom,apq8064", .data = NULL, },
+> @@ -566,6 +576,10 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+>  	{},
+>  };
+>  
+> +static const struct of_device_id qcom_pdm_defer[] __maybe_unused = {
+> +	{ .compatible = "qcom,sdm845", .data = &first_dev_remoteproc3, },
+> +	{},
+> +};
+>  static void qcom_pdm_stop(struct qcom_pdm_data *data)
+>  {
+>  	qcom_pdm_free_domains(data);
+> @@ -637,6 +651,25 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
+>  	return ERR_PTR(ret);
+>  }
+>  
+> +static bool qcom_pdm_ready(struct auxiliary_device *auxdev)
+> +{
+> +	const struct of_device_id *match;
+> +	struct device_node *root;
+> +	struct qcom_pdm_probe_first_dev_quirk *first_dev;
+> +
+> +	root = of_find_node_by_path("/");
+> +	if (!root)
+> +		return true;
+> +
+> +	match = of_match_node(qcom_pdm_defer, root);
+> +	of_node_put(root);
+> +	if (!match)
+> +		return true;
+> +
+> +	first_dev = (struct qcom_pdm_probe_first_dev_quirk *) match->data;
+> +	return (auxdev->id == first_dev->id) && !strcmp(auxdev->name, first_dev->name);
+> +}
+> +
+>  static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+>  			  const struct auxiliary_device_id *id)
+>  
+> @@ -647,6 +680,15 @@ static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+>  	mutex_lock(&qcom_pdm_mutex);
+>  
+>  	if (!__qcom_pdm_data) {
+> +		if (!qcom_pdm_ready(auxdev)) {
+> +			pr_debug("%s: Deferring probe for device %s (id: %u)\n",
+> +				__func__, auxdev->name, auxdev->id);
+> +			ret = -EPROBE_DEFER;
+> +			goto probe_stop;
+> +		}
+> +		pr_debug("%s: Probing for device %s (id: %u), starting pdm\n",
+> +			__func__, auxdev->name, auxdev->id);
+> +
+>  		data = qcom_pdm_start();
+>  
+>  		if (IS_ERR(data))
+> @@ -659,6 +701,7 @@ static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+>  
+>  	auxiliary_set_drvdata(auxdev, __qcom_pdm_data);
+>  
+> +probe_stop:
+>  	mutex_unlock(&qcom_pdm_mutex);
+>  
+>  	return ret;
+> 
+> ---
+> base-commit: 7f048b202333b967782a98aa21bb3354dc379bbf
+> change-id: 20250205-qcom_pdm_defer-3dc1271d74d9
+> 
+> Best regards,
+> -- 
+> Frank Oltmanns <frank@oltmanns.dev>
+> 
 
