@@ -1,255 +1,209 @@
-Return-Path: <stable+bounces-114043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4193FA2A387
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:49:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9948A2A3BD
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 10:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 366647A152E
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 08:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66756162A6A
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 09:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6393E2253FC;
-	Thu,  6 Feb 2025 08:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01573207E0E;
+	Thu,  6 Feb 2025 09:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MNHCTiRu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dWLS24n+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B24214231;
-	Thu,  6 Feb 2025 08:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CBC20E032
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 09:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738831759; cv=none; b=DoWEE7FjANrk3+kIaGNGVkCXCkbjjpqMRNVqi+XP6G5g/aYi5J9Q4EJkIv8/rQIw+DbA1fL1/wemdSvh8KCNbTz1UdHOchTV6QY57sjV3k+qxuG6XZDFz+zwYmaKS4KJ15/ECgQBOMkG6+eDWX52Y9WQ0zRHyV6285KzYZLXLnU=
+	t=1738832428; cv=none; b=Jy/6DfiHN3pKN0mF5FD4Gi3YBNaO6NOd1yAmldm+x2b8L4xlbPe4moOgCod74AH4V6ZHcXGPI4iedUNi+H5t+3RSxaUa7+Xp1hR/RIBu063kZsb7jprcXHo8VIhjWMVCePJ8eIVSvade6fAMzBewys3If165OJHA52yQnBIkKao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738831759; c=relaxed/simple;
-	bh=7aG5/za7ruzMac1s3CS4suv9AvzYxTEakHWPMO2a+WM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=EwtRVdCGet8RR8iF3/ii3sPVNyc3Vbhzp74E4VbDZgoN/gGGuMD26mD+5Qoc5h7mpQ/zIf8g3+3DpHf/eGGby5/SZyg9xB7pGay3pFA/DqAwuD52u1RJPq1HIhcFepiAkSBYHxJNlzOgwGLbnCeWh/j5NfEIAiW876JV29yl61Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MNHCTiRu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5167xquF006451;
-	Thu, 6 Feb 2025 08:48:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HV7rdfOO37+bLA4QCT63lTmO77gcJONDjGXKxVKB6mQ=; b=MNHCTiRuJXvvYBfh
-	b2jUL9P8/F/1lpzXvgFaX/n7QhMKlCtbRXshaV4SOUlAicsDLPKS/ld879TaM/AK
-	l8JBFGZBEbJ4aVUWPpeB+KcjoOEiZcWPUjMLwYQ8IzURZS3Kr6Sd5ptBw6oecxTi
-	IGo1k8jukP4VE5Yjkt2vhf9vjlh30HzsRABMdFXu6owZqKBzcM7dRL4paIqFwhW0
-	bJutjtPFZNzJD0+AqdWw+vbWbnRR+uIU4DmG7z0tb8K9vLW4F04c65eDbKYl2plx
-	fDBu6+5T2DS6PCJaPfE+XITsuer1qr2+ym7SLs8+gxy+SiMiOuqHtKu4lyfMLf8G
-	uP3Faw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44mp648hgu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 08:48:48 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5168mlmn017334
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 6 Feb 2025 08:48:47 GMT
-Received: from [10.239.132.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 6 Feb 2025
- 00:48:43 -0800
-Message-ID: <10a970c0-e8f2-41c5-a68f-3ac4ae88d9d0@quicinc.com>
-Date: Thu, 6 Feb 2025 16:48:35 +0800
+	s=arc-20240116; t=1738832428; c=relaxed/simple;
+	bh=fP8lW/xe9f4DET2rvmmufyFEjRPrSmq+iN1o+9ZWvR4=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=dHfo+WhFUIJ4VtV4juBwm1DhYL91bqcyIR6maafVDEw9lVmefLl6iyowBdf4xhtubZ+18yFuHRPNQoSCc0JKW9othPvn2JRN4I2lk+KcqubK+J7qkTW6GcZDh8Ud4TGPYOlXWT9+/X0yxv6nb2IKHPshWceFRXa71Z5RH14JlUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dWLS24n+; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738832426; x=1770368426;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=fP8lW/xe9f4DET2rvmmufyFEjRPrSmq+iN1o+9ZWvR4=;
+  b=dWLS24n+O/FP8NIeAuui+fAh2sbUJM9ClxC7q72KqgoJ7FLQ02cNogaK
+   7JGoLaUHyXo/U+QHj5s8IH12H3X6OEmoV+IF3tRnWpLS8aq1MwAxX/zKd
+   ASS1tljRcLxxCCKRJYvVe2jilwaeaMtvX6pnuVP9DnmE9ZVQc2WSsm28C
+   REMiZ19My9libMfH4kE180ma+ImcP4IrzyQ3WB9livQGSmjpqzEYxz86S
+   4nmtCXl9iUEM4pgKfseQV8OHTRPQASdhuR6FhoU2efMkK5ymSTSBVeRNs
+   LjmZlWOl6ovRVkuoHqbXvYshY3xQ3GxhGnH4TaAquvNi3/PfoAmaJ7PTN
+   A==;
+X-CSE-ConnectionGUID: GwoxriZ7SxCn1ybnveYphw==
+X-CSE-MsgGUID: hpiQkBT/Rj2yPDhMnfrxTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="38655031"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="38655031"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:00:25 -0800
+X-CSE-ConnectionGUID: ZoQNWTg2TCKt1ZQwWCHJFQ==
+X-CSE-MsgGUID: 5g9lTXqJS2uvL+z3QAdcpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="134381887"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.165])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:00:22 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 6 Feb 2025 11:00:18 +0200 (EET)
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+    Jian-Hong Pan <jhp@endlessos.org>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH 6.13 445/623] PCI/ASPM: Save parent L1SS config in
+ pci_save_aspm_l1ss_state()
+In-Reply-To: <20250205134513.241757556@linuxfoundation.org>
+Message-ID: <7a41907d-14d0-a1a4-47d6-90ff572d5af9@linux.intel.com>
+References: <20250205134456.221272033@linuxfoundation.org> <20250205134513.241757556@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-To: <anshuman.khandual@arm.com>, <catalin.marinas@arm.com>
-CC: <will@kernel.org>, <ardb@kernel.org>, <ryan.roberts@arm.com>,
-        <mark.rutland@arm.com>, <joey.gouly@arm.com>,
-        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
-        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
-        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
-        <stable@vger.kernel.org>
-References: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
- <9ae36424-2cb6-491d-8ac2-95bfe39828a2@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <9ae36424-2cb6-491d-8ac2-95bfe39828a2@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: pK0AeNTT_iaLFAnCN66di-FsCCP3I7ts
-X-Proofpoint-ORIG-GUID: pK0AeNTT_iaLFAnCN66di-FsCCP3I7ts
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_01,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502060071
+Content-Type: multipart/mixed; BOUNDARY="8323328-293007893-1738832330=:931"
+Content-ID: <05fc6404-da1f-0bd9-994c-69166039b704@linux.intel.com>
 
-Dear Catalin and Anshuman,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Given that it's a genuine bug affecting stability, we need to address it 
-:). Could you please let me know if you have any additional concerns or 
-thoughts?
+--8323328-293007893-1738832330=:931
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <818d9580-e5c2-dade-c632-f4837610f77b@linux.intel.com>
 
-On 2025/1/15 10:13, Zhenhua Huang wrote:
-> Gentle reminder if you happened to miss it :)
-> 
-> On 2025/1/9 17:38, Zhenhua Huang wrote:
->> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
->> to 27, making one section 128M. The related page struct which vmemmap
->> points to is 2M then.
->> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
->> vmemmap to populate at the PMD section level which was suitable
->> initially since hot plug granule is always one section(128M). However,
->> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
->> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
->> existing arm64 assumptions.
->>
->> Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
->> pmd_sect() is true, the entire PMD section is cleared, even if there is
->> other effective subsection. For example page_struct_map1 and
->> page_strcut_map2 are part of a single PMD entry and they are hot-added
->> sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
->> the entire PMD entry freeing the struct page map for the whole section,
->> even though page_struct_map2 is still active. Similar problem exists
->> with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
->> base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
->> Tearing down the entire PMD mapping too will leave other subsections
->> unmapped in the linear mapping.
->>
->> To address the issue, we need to prevent PMD/PUD/CONT mappings for both
->> linear and vmemmap for non-boot sections if corresponding size on the
->> given base page exceeds SUBSECTION_SIZE(2MB now).
->>
->> Cc: stable@vger.kernel.org # v5.4+
->> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
->> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
->> ---
->> Hi Catalin and Anshuman,
->> I have addressed comments so far, please help review.
->> One outstanding point which not finalized is in vmemmap_populate(): 
->> how to judge hotplug
->> section. Currently I am using system_state, discussion:
->> https://lore.kernel.org/linux-mm/1515dae4-cb53-4645-8c72- 
->> d33b27ede7eb@quicinc.com/
->>   arch/arm64/mm/mmu.c | 46 ++++++++++++++++++++++++++++++++++++---------
->>   1 file changed, 37 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index e2739b69e11b..8718d6e454c5 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -42,9 +42,13 @@
->>   #include <asm/pgalloc.h>
->>   #include <asm/kfence.h>
->> -#define NO_BLOCK_MAPPINGS    BIT(0)
->> -#define NO_CONT_MAPPINGS    BIT(1)
->> -#define NO_EXEC_MAPPINGS    BIT(2)    /* assumes FEAT_HPDS is not 
->> used */
->> +#define NO_PMD_BLOCK_MAPPINGS    BIT(0)
->> +#define NO_PUD_BLOCK_MAPPINGS    BIT(1)  /* Hotplug case: do not want 
->> block mapping for PUD */
->> +#define NO_BLOCK_MAPPINGS    (NO_PMD_BLOCK_MAPPINGS | 
->> NO_PUD_BLOCK_MAPPINGS)
->> +#define NO_PTE_CONT_MAPPINGS    BIT(2)
->> +#define NO_PMD_CONT_MAPPINGS    BIT(3)  /* Hotplug case: do not want 
->> cont mapping for PMD */
->> +#define NO_CONT_MAPPINGS    (NO_PTE_CONT_MAPPINGS | 
->> NO_PMD_CONT_MAPPINGS)
->> +#define NO_EXEC_MAPPINGS    BIT(4)    /* assumes FEAT_HPDS is not 
->> used */
->>   u64 kimage_voffset __ro_after_init;
->>   EXPORT_SYMBOL(kimage_voffset);
->> @@ -224,7 +228,7 @@ static void alloc_init_cont_pte(pmd_t *pmdp, 
->> unsigned long addr,
->>           /* use a contiguous mapping if the range is suitably aligned */
->>           if ((((addr | next | phys) & ~CONT_PTE_MASK) == 0) &&
->> -            (flags & NO_CONT_MAPPINGS) == 0)
->> +            (flags & NO_PTE_CONT_MAPPINGS) == 0)
->>               __prot = __pgprot(pgprot_val(prot) | PTE_CONT);
->>           init_pte(ptep, addr, next, phys, __prot);
->> @@ -254,7 +258,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long 
->> addr, unsigned long end,
->>           /* try section mapping first */
->>           if (((addr | next | phys) & ~PMD_MASK) == 0 &&
->> -            (flags & NO_BLOCK_MAPPINGS) == 0) {
->> +            (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
->>               pmd_set_huge(pmdp, phys, prot);
->>               /*
->> @@ -311,7 +315,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, 
->> unsigned long addr,
->>           /* use a contiguous mapping if the range is suitably aligned */
->>           if ((((addr | next | phys) & ~CONT_PMD_MASK) == 0) &&
->> -            (flags & NO_CONT_MAPPINGS) == 0)
->> +            (flags & NO_PMD_CONT_MAPPINGS) == 0)
->>               __prot = __pgprot(pgprot_val(prot) | PTE_CONT);
->>           init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
->> @@ -358,8 +362,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned 
->> long addr, unsigned long end,
->>            * For 4K granule only, attempt to put down a 1GB block
->>            */
->>           if (pud_sect_supported() &&
->> -           ((addr | next | phys) & ~PUD_MASK) == 0 &&
->> -            (flags & NO_BLOCK_MAPPINGS) == 0) {
->> +            ((addr | next | phys) & ~PUD_MASK) == 0 &&
->> +            (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
->>               pud_set_huge(pudp, phys, prot);
->>               /*
->> @@ -1177,7 +1181,13 @@ int __meminit vmemmap_populate(unsigned long 
->> start, unsigned long end, int node,
->>   {
->>       WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
->> -    if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
->> +    /*
->> +     * Hotplugged section does not support hugepages as
->> +     * PMD_SIZE (hence PUD_SIZE) section mapping covers
->> +     * struct page range that exceeds a SUBSECTION_SIZE
->> +     * i.e 2MB - for all available base page sizes.
->> +     */
->> +    if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || system_state != 
->> SYSTEM_BOOTING)
->>           return vmemmap_populate_basepages(start, end, node, altmap);
->>       else
->>           return vmemmap_populate_hugepages(start, end, node, altmap);
->> @@ -1339,9 +1349,27 @@ int arch_add_memory(int nid, u64 start, u64 size,
->>               struct mhp_params *params)
->>   {
->>       int ret, flags = NO_EXEC_MAPPINGS;
->> +    unsigned long start_pfn = PFN_DOWN(start);
->> +    struct mem_section *ms = __pfn_to_section(start_pfn);
->>       VM_BUG_ON(!mhp_range_allowed(start, size, true));
->> +    /* should not be invoked by early section */
->> +    WARN_ON(early_section(ms));
->> +
->> +    /*
->> +     * Disallow BlOCK/CONT mappings if the corresponding size exceeds
->> +     * SUBSECTION_SIZE which now is 2MB.
->> +     *
->> +     * PUD_BLOCK or PMD_CONT should consistently exceed SUBSECTION_SIZE
->> +     * across all variable page size configurations, so add them 
->> directly
->> +     */
->> +    flags |= NO_PUD_BLOCK_MAPPINGS | NO_PMD_CONT_MAPPINGS;
->> +    if (SUBSECTION_SHIFT < PMD_SHIFT)
->> +        flags |= NO_PMD_BLOCK_MAPPINGS;
->> +    if (SUBSECTION_SHIFT < CONT_PTE_SHIFT)
->> +        flags |= NO_PTE_CONT_MAPPINGS;
->> +
->>       if (can_set_direct_map())
->>           flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
-> 
-> 
+On Wed, 5 Feb 2025, Greg Kroah-Hartman wrote:
 
+> 6.13-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Jian-Hong Pan <jhp@endlessos.org>
+>=20
+> [ Upstream commit 1db806ec06b7c6e08e8af57088da067963ddf117 ]
+>=20
+> After 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for
+> suspend/resume"), pci_save_aspm_l1ss_state(dev) saves the L1SS state for
+> "dev", and pci_restore_aspm_l1ss_state(dev) restores the state for both
+> "dev" and its parent.
+>=20
+> The problem is that unless pci_save_state() has been used in some other
+> path and has already saved the parent L1SS state, we will restore junk to
+> the parent, which means the L1 Substates likely won't work correctly.
+>=20
+> Save the L1SS config for both the device and its parent in
+> pci_save_aspm_l1ss_state().  When restoring, we need both because L1SS mu=
+st
+> be enabled at the parent (the Downstream Port) before being enabled at th=
+e
+> child (the Upstream Port).
+>=20
+> Link: https://lore.kernel.org/r/20241115072200.37509-3-jhp@endlessos.org
+> Fixes: 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for suspe=
+nd/resume")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218394
+> Suggested-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+> [bhelgaas: parallel save/restore structure, simplify commit log, patch at
+> https://lore.kernel.org/r/20241212230340.GA3267194@bhelgaas]
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Jian-Hong Pan <jhp@endlessos.org> # Asus B1400CEAE
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+Hi stable maintainers,
+
+Please withhold this commit from stable until its fix ("PCI/ASPM: Fix L1SS=
+=20
+saving") can be pushed at the same as having this commit alone can causes=
+=20
+PCIe devices to becomes unavailable and hang the system during PM=20
+transitions.
+
+The fix is currently in pci/for-linus as the commit c312f005dedc, but=20
+Bjorn might add more reported-by/tested-by tags if more people hit it=20
+before the commit makes into Linus' tree so don't expect that commit id to=
+=20
+be stable just yet.
+
+--=20
+ i.
+
+> ---
+>  drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++++++++++++-----
+>  1 file changed, 28 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+> index 28567d457613b..e0bc90597dcad 100644
+> --- a/drivers/pci/pcie/aspm.c
+> +++ b/drivers/pci/pcie/aspm.c
+> @@ -81,24 +81,47 @@ void pci_configure_aspm_l1ss(struct pci_dev *pdev)
+> =20
+>  void pci_save_aspm_l1ss_state(struct pci_dev *pdev)
+>  {
+> +=09struct pci_dev *parent =3D pdev->bus->self;
+>  =09struct pci_cap_saved_state *save_state;
+> -=09u16 l1ss =3D pdev->l1ss;
+>  =09u32 *cap;
+> =20
+> +=09/*
+> +=09 * If this is a Downstream Port, we never restore the L1SS state
+> +=09 * directly; we only restore it when we restore the state of the
+> +=09 * Upstream Port below it.
+> +=09 */
+> +=09if (pcie_downstream_port(pdev) || !parent)
+> +=09=09return;
+> +
+> +=09if (!pdev->l1ss || !parent->l1ss)
+> +=09=09return;
+> +
+>  =09/*
+>  =09 * Save L1 substate configuration. The ASPM L0s/L1 configuration
+>  =09 * in PCI_EXP_LNKCTL_ASPMC is saved by pci_save_pcie_state().
+>  =09 */
+> -=09if (!l1ss)
+> +=09save_state =3D pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
+> +=09if (!save_state)
+>  =09=09return;
+> =20
+> -=09save_state =3D pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
+> +=09cap =3D &save_state->cap.data[0];
+> +=09pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL2, cap++);
+> +=09pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL1, cap++);
+> +
+> +=09if (parent->state_saved)
+> +=09=09return;
+> +
+> +=09/*
+> +=09 * Save parent's L1 substate configuration so we have it for
+> +=09 * pci_restore_aspm_l1ss_state(pdev) to restore.
+> +=09 */
+> +=09save_state =3D pci_find_saved_ext_cap(parent, PCI_EXT_CAP_ID_L1SS);
+>  =09if (!save_state)
+>  =09=09return;
+> =20
+>  =09cap =3D &save_state->cap.data[0];
+> -=09pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL2, cap++);
+> -=09pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, cap++);
+> +=09pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2, cap++);
+> +=09pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1, cap++);
+>  }
+> =20
+>  void pci_restore_aspm_l1ss_state(struct pci_dev *pdev)
+>=20
+--8323328-293007893-1738832330=:931--
 
