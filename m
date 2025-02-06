@@ -1,153 +1,180 @@
-Return-Path: <stable+bounces-114173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CA6A2B3A3
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 21:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4E4A2B3FF
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 22:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E217188A5ED
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 20:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2191188A771
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 21:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7DC1DD0D6;
-	Thu,  6 Feb 2025 20:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF861DF25D;
+	Thu,  6 Feb 2025 21:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ct79wcSR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ElYSLXtb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F31DC9B4;
-	Thu,  6 Feb 2025 20:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6151DEFF9;
+	Thu,  6 Feb 2025 21:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738875491; cv=none; b=Ixqxycbs+mbZPAdB/b6kWAQQzTZFMCP/jzcaSynWfB2oTCavKbfDGIrwh3FKeNA01M/874RaKSgCGm2LWKG1Usmpyos8c8JKy2tHH/P7G6T2HwGZgQqZNTok+IPr7PxKaKaLTU+JC+gU96zRsK/Au0PdkGzEMeO4uxYiKqvvhzE=
+	t=1738876619; cv=none; b=Zq9kagxuTPTMueN+HcGw29A7hk3v1++MJLB3xv0WPzRMt/S1pjGlHuSoN6JFOz5VzPNh3ivB1pdCAbxu8Blzwovv/iyABPhGZTFikpsTgICCPp3+MYd8srVXGCupulkSsjrJXqTiGu2/DenvjERwTG02xLVBIZCIPmEN2yWNbDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738875491; c=relaxed/simple;
-	bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VyVETMk06qlKYFn9c+nhPeNzqpVh0ZyVPw6FoaYQDj4C2X5NYBmiXDrtSTzvg4P9YwdV5NmI0HItzts+cfB7Z1MhF3Buqqq65Ugwzzu5TEq8WftTkJT+J7V/uf8muMvIbV0xag6sZBA0mt0iDRorS866J0I4vfq6IpKS1q7RAgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ct79wcSR; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738875489; x=1770411489;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
-  b=Ct79wcSRsooELflExK73Ul9bMU3LhReyH3kgVROr1bu5Dyuc/+IhtYpZ
-   wOl4qoGFosqMG/oFRm5yDp1ViQ//tsv7FJy7eQ/8q3Lun5SEgp2kiZKfG
-   AOMMvwSRvQfQ3loF5/DdQE+jI+axCrDlZ7x6SBcAuSaoPMxWXJ5a88FwZ
-   Nm7ODuZ8Fv5T/hS6JR5UQSSjHlMyusL33okTAr557podgpgVGkLxKX4cn
-   s18Mcg5XKED+soqRglAzPY+pN9KKOcDwLsFh+RpvXdwI9Wa+NkhEKbMwc
-   +ZMV5FF1Fwl94UwPtKS6ydzuzcQtHzBcu0htoSiLpgHKPqJ5bc2YTW3rO
-   A==;
-X-CSE-ConnectionGUID: rNL5IQ9CR1K5jMCoGUHwhw==
-X-CSE-MsgGUID: ho1zCSgwSDu1RvqWiG4fbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50125056"
-X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
-   d="scan'208";a="50125056"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:08 -0800
-X-CSE-ConnectionGUID: JUPj4RINSo+3mL2t23/4wQ==
-X-CSE-MsgGUID: tx3sjQ9oRTCYKrH4T8h8TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
-   d="scan'208";a="111945741"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.17]) ([10.125.111.17])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:06 -0800
-Message-ID: <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
-Date: Thu, 6 Feb 2025 12:58:07 -0800
+	s=arc-20240116; t=1738876619; c=relaxed/simple;
+	bh=7RLOQgqxkeJV37SB65KL4xohj0BnZPDsnI9DHX295jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WSOXk4PAuAIfSSQSaUM1rmpFwtNoMD3rcAMncZFpO5/1FQbGEZW2yMH4+zixrzHeVQqhCtAqPxYH8WsjpwYPhPJ6lc1TcReHpqp04DOv8uqGZlwC/uI+UZ7k+AFRMj9/DiebUm2obvXj61WTYRm366Uq2y28SiEM3os+iOUKawQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ElYSLXtb; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f16af1f71so22060625ad.3;
+        Thu, 06 Feb 2025 13:16:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738876617; x=1739481417; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x3ry0f1fvXAjZQbuhNpyazK/LrWcbCBiBdgamVGM/o8=;
+        b=ElYSLXtbfx7JM78rMWgO79ikeT89eZN+jeP/1tipBqEM8LN6gAVwRHA1dZp8xuR3II
+         xRmpUq2VTKhaa7U+rIhDUUsg1bAkHhSN34g/g5s7U9WAvqws347WnJIfVEYgH2h/mY6H
+         0Bv0VtMHdmAwTH9poENTrzPrv9E7+p60rqtebq/7iCYqNvJqX+5eK9tjynEtt1sHd1wR
+         0BYZqlfHLkivT5nXhy1NrbVdcX0Y0vPzGN/Vnj81pA40NN4Lrfxgk34RgkhbEUp7y0aF
+         1KX153sGjOItSogFeypf4q223OcPBrvg3PxUeqbRuKeW3IQjAmPyHKaZLnnrwDsR5wvl
+         JZ8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738876617; x=1739481417;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x3ry0f1fvXAjZQbuhNpyazK/LrWcbCBiBdgamVGM/o8=;
+        b=gv5aHqTBkSijneRnSSXnpqFm1NxXDGleIjDICbHDjuaqWAQhRtPOnMqC74ZQHN4v6u
+         G4dgB8BRtwal3/mvpBFjgEk+DnveYa3jKxuNerD5MfvhqrNF4fRqSUzWSOp1OeTUBsgz
+         KaiivxLvPzg70NkrZTtQLVKdZ57jBKXej0KqdAcGhEQiodIqGWzNuj4oE5wf9JuCIqMz
+         i3SnZ4D5ccnK6q2Ihc9Te7Lyi1+3VLmmPGLRK2qgScF4Yk8kb38XW17BzcGKVz63yJ/6
+         jO9r2KLLVpTdFHOute2hZQF/GTMvk2XqBKaqdbjkGHAOroJP28J3c4RkbaedGSXQEW2X
+         jNYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVlwG7gvTS6roJAU/nbGJll9j36Q6Eh0IeMckd7M/OKYEm6QnjXFx0dmyWJ2T8OntpK3jGX3Z6elkcgNg+w@vger.kernel.org, AJvYcCVxLJ0NffrfNERuI/RH312K71r1GBZHdEMreJN+DmDFRoWugMksiWaEupXItuTHrvOEYQZIFw7z@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlirpBNoGt272cu10E3Enc9HrDLS+3zSYoAKr+VjIoM07dHWPa
+	R9aP195m8hgG5awp08xrB7bC7tT1qZU93mXJUSQfRmFukzJKSbHjNo8h2Q==
+X-Gm-Gg: ASbGncv1BP1imCdK54MhCSHSxsFuuxivVlWXsydk39HAxjPyKV2xqxjGlPHJMHnb01z
+	yo7tc62VH7N4GtswqYrqtTqls3S9y+NQcMHM711BdbKtXM2i2MMILVJJ7SV+EdnwcnbMuBaM374
+	9cVQvyHqOq6aEHoXtpHH/RUnNi1vHeah0aUw9XFrWqjyxSCJEcot1zRecZ/1Ml1qaL7zrgK6AJ3
+	N5RfzbwFlxediDwnbKQV/p4qNg4JANJsAXTgGE5GV9q+Jtv4F+XWu0R+epYV5A6SRPz8atkyfY2
+	m226wqBqzTonXq2fVnEwB0qsyR1R
+X-Google-Smtp-Source: AGHT+IGG0ZsiVIWgAcAcsLxCwil0EnOraMxTLD03yHgQeVzBHEnch1aPkEja/wtga9He/ntNpiDS7Q==
+X-Received: by 2002:a05:6a20:ce4c:b0:1e1:aa10:5491 with SMTP id adf61e73a8af0-1ee03a8f4b6mr1504083637.24.1738876617181;
+        Thu, 06 Feb 2025 13:16:57 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048a9d4d7sm1806241b3a.16.2025.02.06.13.16.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 13:16:56 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 6 Feb 2025 13:16:55 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pidfs: improve ioctl handling
+Message-ID: <988727a0-fe48-4cc0-ab4c-20de01dbcddf@roeck-us.net>
+References: <20250204-work-pidfs-ioctl-v1-1-04987d239575@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: x86@kernel.org, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
- <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204-work-pidfs-ioctl-v1-1-04987d239575@kernel.org>
 
-On 2/6/25 10:51, Miguel Ojeda wrote:
-> x86: I will pick this up, but if x86 wants to do so, that would be
-> welcome -- in which case:
+On Tue, Feb 04, 2025 at 02:51:20PM +0100, Christian Brauner wrote:
+> Pidfs supports extensible and non-extensible ioctls. The extensible
+> ioctls need to check for the ioctl number itself not just the ioctl
+> command otherwise both backward- and forward compatibility are broken.
 > 
->     Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> The pidfs ioctl handler also needs to look at the type of the ioctl
+> command to guard against cases where "[...] a daemon receives some
+> random file descriptor from a (potentially less privileged) client and
+> expects the FD to be of some specific type, it might call ioctl() on
+> this FD with some type-specific command and expect the call to fail if
+> the FD is of the wrong type; but due to the missing type check, the
+> kernel instead performs some action that userspace didn't expect."
+> (cf. [1]]
+> 
+> Reported-by: Jann Horn <jannh@google.com>
+> Cc: stable@vger.kernel.org # v6.13
+> Fixes: https://lore.kernel.org/r/CAG48ez2K9A5GwtgqO31u9ZL292we8ZwAA=TJwwEv7wRuJ3j4Lw@mail.gmail.com [1]
 
-Hey Miguel,
+This is not a proper Fixes: tag.
 
-Are you saying you'd prefer that we pick this up on the x86 side? I'm
-totally happy to do that, and it's obviously patching x86-specific
-sections of the rust scripts.
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+> Hey,
+> 
+> Jann reported that the pidfs extensible ioctl checking has two issues:
+> 
+> (1) We check for the ioctl command, not the number breaking forward and
+>     backward compatibility.
+> 
+> (2) We don't verify the type encoded in the ioctl to guard against
+>     ioctl number collisions.
+> 
+> This adresses both.
+> 
+> Greg, when this patch (or a version thereof) lands upstream then it
+> needs to please be backported to v6.13 together with the already
+> upstream commit 8ce352818820 ("pidfs: check for valid ioctl commands").
+> 
+> Christian
+> ---
+>  fs/pidfs.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/pidfs.c b/fs/pidfs.c
+> index 049352f973de..63f9699ebac3 100644
+> --- a/fs/pidfs.c
+> +++ b/fs/pidfs.c
+> @@ -287,7 +287,6 @@ static bool pidfs_ioctl_valid(unsigned int cmd)
+>  	switch (cmd) {
+>  	case FS_IOC_GETVERSION:
+>  	case PIDFD_GET_CGROUP_NAMESPACE:
+> -	case PIDFD_GET_INFO:
+>  	case PIDFD_GET_IPC_NAMESPACE:
+>  	case PIDFD_GET_MNT_NAMESPACE:
+>  	case PIDFD_GET_NET_NAMESPACE:
+> @@ -300,6 +299,17 @@ static bool pidfs_ioctl_valid(unsigned int cmd)
+>  		return true;
+>  	}
+>  
+> +	/* Extensible ioctls require some more careful checks. */
+> +	switch (_IOC_NR(cmd)) {
+> +	case _IOC_NR(PIDFD_GET_INFO):
+> +		/*
+> +		 * Try to prevent performing a pidfd ioctl when someone
+> +		 * erronously mistook the file descriptor for a pidfd.
+> +		 * This is not perfect but will catch most cases.
+> +		 */
+> +		return (_IOC_TYPE(cmd) == _IOC_TYPE(PIDFD_GET_INFO));
+> +	}
+> +
 
-If I'm understanding the ask.... Just curious though, what makes that
-preferable? It's in a rust-specific file
-(scripts/generate_rust_target.rs) and I'd guess that it'd be easier to
-take it through the rust tree since it's more likely to collide with
-stuff there and also be closer to the folks that can competently resolve
-any merge problems.
+This double-checks _IOC_TYPE(cmd) against _IOC_TYPE(PIDFD_GET_INFO))
+due to the switch() and case statements. A simple
 
+	return _IOC_TYPE(cmd) == _IOC_TYPE(PIDFD_GET_INFO);
 
+for the entire block would have had the same result. Or at least
+you might have used a simple
+		return true;
+in the case statement if more are expected in the future.
+
+[ reported by coverity ]
+
+Guenter
 
