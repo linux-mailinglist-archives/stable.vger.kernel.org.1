@@ -1,158 +1,322 @@
-Return-Path: <stable+bounces-114163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EFAA2B176
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:43:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF005A2B17C
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 19:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 736391691B8
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 18:43:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06C9188431B
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 18:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D59239563;
-	Thu,  6 Feb 2025 18:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A4419CD13;
+	Thu,  6 Feb 2025 18:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xk12lPKm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EkztWE5L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9FC23956F;
-	Thu,  6 Feb 2025 18:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A3419CCF5;
+	Thu,  6 Feb 2025 18:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738867393; cv=none; b=C/GmF/N4p1IdEcQovH+JbS0T4qW+Qduhli/A7EdewfWd7aiVRoLkcs8/y8+odGUv1JtbegIInAs0p10XAfZiJjDbLnIkjMi0JNygjXMFUcewdaqE+/72CUvdWg0AS4bomtuqRTUnRlaiwb7nkwYTx5WsJvxWpDfq1q3Q0T0zaLQ=
+	t=1738867440; cv=none; b=jcm01Zo192+lvHMDDi26r5+l2WRBZWr5oQhMHTk+NvUY/3W9Z/YyYqv9AqhzAtFN4lMEnJoOl1mSksTsQly6251i/T6z66oeh4NTlzgELDmHB6dsoWZqKsuJZ0tomled8aZu5vamfJpmiDTwPuhCZsjL12+W0W5v+GwyBVKsENk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738867393; c=relaxed/simple;
-	bh=uAdAXJ3ttfBwLPhGf5YBt3vPt5f0DiFXdkavg0WbUCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Il4kBR2KjYx87ZnEDuiHug6PrctPGfJFTlMUWQdrA0txfsHiONC050UHzxrtlHM2iVxSGcbaB/t/xHTa/vLp7PCz3tT9KIUTl+KMDM3NqpIfKQRagaB2Hz6QDusYEsThpHh3Wm2O1zoOOfeC7Q7wG0R1TK/cuR1VLqndOMjVq7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xk12lPKm; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1738867440; c=relaxed/simple;
+	bh=VPe4UJJcpjekVm25gnlpFuv4nVzcY1hdRs2dtDlJh5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o3iOHEZ6i9y49LoUS2fGrE3eU+CMaCaay3QJ2XQ6ozjGYBgLBD3K8OJy2Hlx2De/gizbn4YD/98684BlmBUROMgsoFqRgQ+86wcVnSIl5iZMVn8ZqeKVn0DlDE8SNJAPMqqSfHpSYckK/ImRWWOtuSD8pW/ZNh3dMGlgUyHssBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EkztWE5L; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2f9bed1f521so1913124a91.3;
-        Thu, 06 Feb 2025 10:43:12 -0800 (PST)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30797730cbdso12250811fa.3;
+        Thu, 06 Feb 2025 10:43:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738867391; x=1739472191; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=o/SGIzDDU1HxCcCtg97Oxc2BICy9BGiv/PmjOhgONoM=;
-        b=Xk12lPKma3CSB8v0asc2L/bgyTxXiJJly95+a6vmgYMi1+cnO95RUIVYkH+C1izKIQ
-         WPwNXSqXj/bwyU56WkPKntvxewD+/jSbzCRdx2RREV8rtPdk6JW272qknXoUQXrAkDo8
-         UdLC6SlxnRrc5ZJRhpkM/EolZ/n+PYWfqSex3Pmfo93xFflgTr6m9/JeJYKWUhC7q02j
-         7Y4SIYK0gM7erfSYyIFyeQM4B1Urlc3UtMaVFsZWNY2KybB5KkXuNT3rDWOcmh10CFBD
-         JfUq+HBKnZ2I+5uC5LTxihuqrjvUavK13+riuW5+7VzbPF6PZ/OCEO8QINuLGSrK5M1l
-         GGFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738867391; x=1739472191;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1738867437; x=1739472237; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o/SGIzDDU1HxCcCtg97Oxc2BICy9BGiv/PmjOhgONoM=;
-        b=VuSNwAE2DmteP1ppyq4ewtoUR8p/tqm+4B4e3ovZmAT7OEqcqxHg74Uimv3qelc8R6
-         OjKmdZtWyu11Ih6ivI3cXZBdwMU7DxlN+Gq3+0hOEtyD2TT213MH2PIb3+otri7TjLNT
-         +QFjGffO6OWdLgAkCsS7ZbJ+YhjlxZFu1lk1a6Qz59jTghDyhRneuUeviUYpHiDsQGyJ
-         KBt//cXycL6P3zRCUW7Rf/LE0JCPks0dnSG0FZpijapEXAhYgTvGmbi13M9Q+RkXJ+Zs
-         1qv6RaB2pg5zfX5KLlKkQEcSmiNoLtp97RmhFf+Vs1lzVJGs/ZmIx0S1RaWWWSpI/pL/
-         J3CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPZYmv57yGdozqpb7+FA8w4Wv+y2NRPeF0yaKBVVDXu/SKTc+mPh+5LYZDPq0Nh++aL7gsWW7O@vger.kernel.org, AJvYcCXiWSVH7elpgNbBaJTj7+V4oRDXXDfYSh2v1Oaj7T4fDq5ImLyuUdGIpTbOTZr3/3UoeXIHZ+P/nAdHuBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2/QVtuSNqK81nVJZrFFZeonNU31wHsm+OQMTHzIXprojnxNb3
-	1UJEUcelkd/dWFUGUCg/eleV43td9Z88OI5CcOnRqTffuhYovgIMx6hf6g5/
-X-Gm-Gg: ASbGnctCuoSP8R37sMDpStVBS9imXzDMIUxLbE/TJCu9fTCCgTnHGYB0SsV5Ph69ZJQ
-	bNKYXEg7wd2+q2siOvrpteyhjQEl2By888Akf44YvvTuBf0qqNQYrGIaaQgvK0VnwOA1QsuNhvt
-	qhAzdFQcpQmxi0FV1hcy5slI2sTuml1dGV6foHYQKsjejg2e73Mq00S1bqqyYvhBW6RxpUUzxf+
-	AfMCGFOV9TvyQK9HIKNGFv+inBRvqNJ7yQQ8PcHz2g2/zYVeba7SGd2l1Gl1/yLWZrQinY2SRyB
-	AAyrGHMdJYJB07w5YQOQ2VtxI4SVmRF9HXFGQ9uISb4=
-X-Google-Smtp-Source: AGHT+IGiU24T0A4ZJOX9laIhtVM1hqrLeeLDEOg8OUwzqY7sc88PLn51PkImSwHoo/N/LgXlKs9E2w==
-X-Received: by 2002:a17:90b:38c3:b0:2f4:434d:c7f0 with SMTP id 98e67ed59e1d1-2fa23f6e5f1mr182841a91.12.1738867391422;
-        Thu, 06 Feb 2025 10:43:11 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f9e1e4166dsm3946656a91.44.2025.02.06.10.43.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Feb 2025 10:43:10 -0800 (PST)
-Message-ID: <cda2a9a3-825d-473c-a9ad-10fb7cdf139c@gmail.com>
-Date: Thu, 6 Feb 2025 10:43:09 -0800
+        bh=SSz55NNBL/wEB/+zq8CAk9tThzNZKLGSMn0AQs8qIXo=;
+        b=EkztWE5Lp1AgMxG0ZOnaFEl9rFjYJXftzKRmq/t3TpSDSMYbX0HfGbaXSevaGEvAOR
+         RS+5JMOWBDCsyW7wwi9poR1bGsIhCxVpx5aM9QaGwDJhLhzeBbKY1+2byvk7f5KeR96A
+         iA6xX1th4P9YBesK6xu/rKrGu+i/9kqMGep+pbtVQzPcHn65QaXD+WHMfmmbwD//o3X9
+         GhRWokoZZRO+uxhsJGEU7swtbr37qHIe8PRC+jui3xwthbQ1Zfq8juMJiMa4KKEIFbHM
+         er2vz6z4kll6SLwQ/ZgiurDdWAmDDTXJqgJfQzfeDqq88jBtmFk6PPRBk3pDmowm/tUU
+         7QDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738867437; x=1739472237;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SSz55NNBL/wEB/+zq8CAk9tThzNZKLGSMn0AQs8qIXo=;
+        b=j5P/sC9dlcriBn3xZpy90Gtp8H3bs99seeMkGex7A2V+zDCLDIEtYaGhQCFH/Okl+8
+         rjwJDLIikVO3sD3gk/1bJybZe2/2X2gOzRMtH4XlOUJTTnFd199eCmvj6HJfZ71f8KQT
+         0MliIwH7qb8pJwqi8BgjozqpHDuM/wrR8VFo7hgjd435CdkRx454m7Ny7b8Waj/x/2K7
+         AyBcT7MQUeDY5tggyBxI603K0KVkXUA3T6XiBoRHtqhnhlMHKXENR3dPf1XMqdg1GCKl
+         Flpg6jgLmCeERHNJ/9E/yZft9boajO5N1c813SB9lrjthBWCZ86lApSNhS4rKy5qDSNT
+         v7Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCWetuesIi7v9NzOS1pHn5+ZLopHPURjGVpQo6hVCcP1ZWvW2SbauxW0CPFR4rEQ3PnGol/yoxer@vger.kernel.org, AJvYcCWyTMWRgECCF9yv/GfeJvLAv0DD8CDxwBpKKx3uDz+wgR5PGoSxGKqcRGlUk1JBOACwWN8iSnc/AJbW@vger.kernel.org, AJvYcCXzApZThNqrEpyx6wLAxZJES3Ia/7HWcJmVTavutDMpQkNng7R/RlFqAo153Qrjuld8ffK2GTc2NzcLHl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEhCDtWf0/PKFKKE/xLai5J4jB2D04lvtTK3PhrQRWLhaC7yF2
+	WQNO2hUb1PJQLyp+Y02zuJhjLgQHkTDCzrPQCUWQnPt/NpT8xPly
+X-Gm-Gg: ASbGncstpykWycqgLhbJ94Q1SRwQ9L3uWSKnk0XgM+uZP2cpXcGVttXwpV8+DuAIIZR
+	NZUTAEqMrvesrMkL6Obrc0buhnGylQTkCQ13mEnd+q2rDOet50Pp7dFl2uSfiYlipxFBXiLWEXy
+	ExUn5GEHCuskUJTI2X6FSqOqZgeHOgZ8jf/RpkkFyWJM+eOhgY/pZ8ZGIQCK9VwRQ7qBf0H86QN
+	vMWyv7hdUYxUqmrVedjlmzO4KszjIOn7z4pU6euKbzRJvjZl3lg1NetIivQjDMbJRCM6cCehTyp
+	bg+YR+ATSQ/hAnfQmf9eHk9B3CHS9OrDxXZeLw6qGRSuubOBKpvIRA==
+X-Google-Smtp-Source: AGHT+IElyC2jVmeR7BzH1KpwsN3wlI42ippMtkEeAeDRj5504+O6/v3Y72ZOF5SYnyC6OcKQNHMP9g==
+X-Received: by 2002:ac2:544a:0:b0:544:e86:e60e with SMTP id 2adb3069b0e04-5440e87025emr1306437e87.41.1738867436362;
+        Thu, 06 Feb 2025 10:43:56 -0800 (PST)
+Received: from fedora.. (broadband-5-228-116-177.ip.moscow.rt.ru. [5.228.116.177])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-544105f31b8sm198394e87.204.2025.02.06.10.43.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 10:43:56 -0800 (PST)
+From: Fedor Pchelkin <boddah8794@gmail.com>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>
+Cc: Fedor Pchelkin <boddah8794@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Saranya Gopal <saranya.gopal@intel.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Pearson <mpearson@squebb.ca>,
+	stable@vger.kernel.org
+Subject: [PATCH RFC 1/2] acpi: typec: ucsi: Introduce a ->poll_cci method
+Date: Thu,  6 Feb 2025 21:43:14 +0300
+Message-ID: <20250206184327.16308-2-boddah8794@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250206184327.16308-1-boddah8794@gmail.com>
+References: <20250206184327.16308-1-boddah8794@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 000/619] 6.13.2-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250206160718.019272260@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20250206160718.019272260@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2/6/25 08:11, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.2 release.
-> There are 619 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 08 Feb 2025 16:05:17 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.2-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: "Christian A. Ehrhardt" <lk@c--e.de>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+For the ACPI backend of UCSI the UCSI "registers" are just a memory copy
+of the register values in an opregion. The ACPI implementation in the
+BIOS ensures that the opregion contents are synced to the embedded
+controller and it ensures that the registers (in particular CCI) are
+synced back to the opregion on notifications. While there is an ACPI call
+that syncs the actual registers to the opregion there is rarely a need to
+do this and on some ACPI implementations it actually breaks in various
+interesting ways.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+The only reason to force a sync from the embedded controller is to poll
+CCI while notifications are disabled. Only the ucsi core knows if this
+is the case and guessing based on the current command is suboptimal, i.e.
+leading to the following spurious assertion splat:
+
+WARNING: CPU: 3 PID: 76 at drivers/usb/typec/ucsi/ucsi.c:1388 ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
+CPU: 3 UID: 0 PID: 76 Comm: kworker/3:0 Not tainted 6.12.11-200.fc41.x86_64 #1
+Hardware name: LENOVO 21D0/LNVNB161216, BIOS J6CN45WW 03/17/2023
+Workqueue: events_long ucsi_init_work [typec_ucsi]
+RIP: 0010:ucsi_reset_ppm+0x1b4/0x1c0 [typec_ucsi]
+Call Trace:
+ <TASK>
+ ucsi_init_work+0x3c/0xac0 [typec_ucsi]
+ process_one_work+0x179/0x330
+ worker_thread+0x252/0x390
+ kthread+0xd2/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Thus introduce a ->poll_cci() method that works like ->read_cci() with an
+additional forced sync and document that this should be used when polling
+with notifications disabled. For all other backends that presumably don't
+have this issue use the same implementation for both methods.
+
+Fixes: fa48d7e81624 ("usb: typec: ucsi: Do not call ACPI _DSM method for UCSI read operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Tested-by: Fedor Pchelkin <boddah8794@gmail.com>
+Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+---
+Add the explicit WARNING splat and slightly increase the length of text
+lines in the changelog.
+Original patch: https://lore.kernel.org/linux-usb/Z2Cf1AI8CXao5ZAn@cae.in-ulm.de/
+
+ drivers/usb/typec/ucsi/ucsi.c           | 10 +++++-----
+ drivers/usb/typec/ucsi/ucsi.h           |  2 ++
+ drivers/usb/typec/ucsi/ucsi_acpi.c      | 21 ++++++++++++++-------
+ drivers/usb/typec/ucsi/ucsi_ccg.c       |  1 +
+ drivers/usb/typec/ucsi/ucsi_glink.c     |  1 +
+ drivers/usb/typec/ucsi/ucsi_stm32g0.c   |  1 +
+ drivers/usb/typec/ucsi/ucsi_yoga_c630.c |  1 +
+ 7 files changed, 25 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index fcf499cc9458..0fe1476f4c29 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1346,7 +1346,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+ 
+ 	mutex_lock(&ucsi->ppm_lock);
+ 
+-	ret = ucsi->ops->read_cci(ucsi, &cci);
++	ret = ucsi->ops->poll_cci(ucsi, &cci);
+ 	if (ret < 0)
+ 		goto out;
+ 
+@@ -1364,7 +1364,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+ 
+ 		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
+ 		do {
+-			ret = ucsi->ops->read_cci(ucsi, &cci);
++			ret = ucsi->ops->poll_cci(ucsi, &cci);
+ 			if (ret < 0)
+ 				goto out;
+ 			if (cci & UCSI_CCI_COMMAND_COMPLETE)
+@@ -1393,7 +1393,7 @@ static int ucsi_reset_ppm(struct ucsi *ucsi)
+ 		/* Give the PPM time to process a reset before reading CCI */
+ 		msleep(20);
+ 
+-		ret = ucsi->ops->read_cci(ucsi, &cci);
++		ret = ucsi->ops->poll_cci(ucsi, &cci);
+ 		if (ret)
+ 			goto out;
+ 
+@@ -1929,8 +1929,8 @@ struct ucsi *ucsi_create(struct device *dev, const struct ucsi_operations *ops)
+ 	struct ucsi *ucsi;
+ 
+ 	if (!ops ||
+-	    !ops->read_version || !ops->read_cci || !ops->read_message_in ||
+-	    !ops->sync_control || !ops->async_control)
++	    !ops->read_version || !ops->read_cci || !ops->poll_cci ||
++	    !ops->read_message_in || !ops->sync_control || !ops->async_control)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	ucsi = kzalloc(sizeof(*ucsi), GFP_KERNEL);
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 82735eb34f0e..28780acc4af2 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -62,6 +62,7 @@ struct dentry;
+  * struct ucsi_operations - UCSI I/O operations
+  * @read_version: Read implemented UCSI version
+  * @read_cci: Read CCI register
++ * @poll_cci: Read CCI register while polling with notifications disabled
+  * @read_message_in: Read message data from UCSI
+  * @sync_control: Blocking control operation
+  * @async_control: Non-blocking control operation
+@@ -76,6 +77,7 @@ struct dentry;
+ struct ucsi_operations {
+ 	int (*read_version)(struct ucsi *ucsi, u16 *version);
+ 	int (*read_cci)(struct ucsi *ucsi, u32 *cci);
++	int (*poll_cci)(struct ucsi *ucsi, u32 *cci);
+ 	int (*read_message_in)(struct ucsi *ucsi, void *val, size_t val_len);
+ 	int (*sync_control)(struct ucsi *ucsi, u64 command);
+ 	int (*async_control)(struct ucsi *ucsi, u64 command);
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index 5c5515551963..ac1ebb5d9527 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -59,19 +59,24 @@ static int ucsi_acpi_read_version(struct ucsi *ucsi, u16 *version)
+ static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+-	int ret;
+-
+-	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
+-		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+-		if (ret)
+-			return ret;
+-	}
+ 
+ 	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
+ 
+ 	return 0;
+ }
+ 
++static int ucsi_acpi_poll_cci(struct ucsi *ucsi, u32 *cci)
++{
++	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	int ret;
++
++	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
++	if (ret)
++		return ret;
++
++	return ucsi_acpi_read_cci(ucsi, cci);
++}
++
+ static int ucsi_acpi_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+@@ -94,6 +99,7 @@ static int ucsi_acpi_async_control(struct ucsi *ucsi, u64 command)
+ static const struct ucsi_operations ucsi_acpi_ops = {
+ 	.read_version = ucsi_acpi_read_version,
+ 	.read_cci = ucsi_acpi_read_cci,
++	.poll_cci = ucsi_acpi_poll_cci,
+ 	.read_message_in = ucsi_acpi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = ucsi_acpi_async_control
+@@ -142,6 +148,7 @@ static int ucsi_gram_sync_control(struct ucsi *ucsi, u64 command)
+ static const struct ucsi_operations ucsi_gram_ops = {
+ 	.read_version = ucsi_acpi_read_version,
+ 	.read_cci = ucsi_acpi_read_cci,
++	.poll_cci = ucsi_acpi_poll_cci,
+ 	.read_message_in = ucsi_gram_read_message_in,
+ 	.sync_control = ucsi_gram_sync_control,
+ 	.async_control = ucsi_acpi_async_control
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index 740171f24ef9..4b1668733a4b 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -664,6 +664,7 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
+ static const struct ucsi_operations ucsi_ccg_ops = {
+ 	.read_version = ucsi_ccg_read_version,
+ 	.read_cci = ucsi_ccg_read_cci,
++	.poll_cci = ucsi_ccg_read_cci,
+ 	.read_message_in = ucsi_ccg_read_message_in,
+ 	.sync_control = ucsi_ccg_sync_control,
+ 	.async_control = ucsi_ccg_async_control,
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index fed39d458090..8af79101a2fc 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -206,6 +206,7 @@ static void pmic_glink_ucsi_connector_status(struct ucsi_connector *con)
+ static const struct ucsi_operations pmic_glink_ucsi_ops = {
+ 	.read_version = pmic_glink_ucsi_read_version,
+ 	.read_cci = pmic_glink_ucsi_read_cci,
++	.poll_cci = pmic_glink_ucsi_read_cci,
+ 	.read_message_in = pmic_glink_ucsi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = pmic_glink_ucsi_async_control,
+diff --git a/drivers/usb/typec/ucsi/ucsi_stm32g0.c b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
+index 6923fad31d79..57ef7d83a412 100644
+--- a/drivers/usb/typec/ucsi/ucsi_stm32g0.c
++++ b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
+@@ -424,6 +424,7 @@ static irqreturn_t ucsi_stm32g0_irq_handler(int irq, void *data)
+ static const struct ucsi_operations ucsi_stm32g0_ops = {
+ 	.read_version = ucsi_stm32g0_read_version,
+ 	.read_cci = ucsi_stm32g0_read_cci,
++	.poll_cci = ucsi_stm32g0_read_cci,
+ 	.read_message_in = ucsi_stm32g0_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = ucsi_stm32g0_async_control,
+diff --git a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+index 4cae85c0dc12..d33e3f2dd1d8 100644
+--- a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
++++ b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+@@ -74,6 +74,7 @@ static int yoga_c630_ucsi_async_control(struct ucsi *ucsi, u64 command)
+ static const struct ucsi_operations yoga_c630_ucsi_ops = {
+ 	.read_version = yoga_c630_ucsi_read_version,
+ 	.read_cci = yoga_c630_ucsi_read_cci,
++	.poll_cci = yoga_c630_ucsi_read_cci,
+ 	.read_message_in = yoga_c630_ucsi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = yoga_c630_ucsi_async_control,
 -- 
-Florian
+2.48.1
+
 
