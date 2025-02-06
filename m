@@ -1,376 +1,163 @@
-Return-Path: <stable+bounces-114084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D802A2A8DB
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:55:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0349BA2A8EC
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5463A71A0
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 12:55:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1378E188778A
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED0922CBF3;
-	Thu,  6 Feb 2025 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3411822E3EC;
+	Thu,  6 Feb 2025 13:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XrTLxR5w"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122A213D897;
-	Thu,  6 Feb 2025 12:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2755013D897;
+	Thu,  6 Feb 2025 12:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738846549; cv=none; b=jRwlX/vd7pt9N1/2sALFYuQx0c+96vM5cUQxarlj60Mdrw8soaDr0eSXGkKiddNABCgmG8NgWyxWZ0wxeVPghIROmhxotBdcdcoU0cW4FOZiLtJcRQpASj3t7bA/56Byd3uN8UDZ9Y7j30Tt5424fu2ZI/t9EaVhlsfzKsGsfKc=
+	t=1738846802; cv=none; b=gzaYN8NjKK4sZuUHvXbak34ynpz+qGq9u5zeBN6wiKUUY9OTe2TfooE11x9eAYta+MOYtGz0uvpi2OCxjZegHn6gWVOSKAbucP0g/GP+Kz86J/2eTSB6UZm3S9c7b2Oj7zyKJfpPGSguLdKKwlovn9CkuCG7Pou6ztDdPJcdask=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738846549; c=relaxed/simple;
-	bh=0jO54oDwqDlt/hq9ItcIf8nOdlvMa2coe35cjfuqPLw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hw8DcGl1e8/0H+Cp4KZr9cUJ0WCFqJM3NHbuiuLVWDWpTACmSRxokY8nSaydZfIhOiq8sOtYaMn6VD2k5FMPJdX8RNxYfuH6u3dOVssshnSssBD3LOONRhdR94cc3OWH2kOPhdYD6WkgIy0e1VNuEoDa5/di0AOU99UfTA25qpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C6B9FEC;
-	Thu,  6 Feb 2025 04:56:09 -0800 (PST)
-Received: from [10.57.80.166] (unknown [10.57.80.166])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FE513F5A1;
-	Thu,  6 Feb 2025 04:55:43 -0800 (PST)
-Message-ID: <25155f6e-8a62-405e-852d-c07a55be0ac5@arm.com>
-Date: Thu, 6 Feb 2025 12:55:41 +0000
+	s=arc-20240116; t=1738846802; c=relaxed/simple;
+	bh=xxbDZdqWo3K/8PCwFPnRCr7uf9tUfjynoOu26v/FlfU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZuhzFgN+1EUMMdGTKzY9wohWqLqLsr5yR6lTRXBtrVCFjXeni1e0io5iEI01QGXvZjJav2D9jX0/AYH1dm5VH3jvPV66XEZZ6ipgMoAI6Gumqy+8YTxiYsnkFdbiI8vV2E2EeHHx8N+G9kiKW/ItYmHJTzQjGJ7m7AjBsdJS0+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=XrTLxR5w; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 516Cxmmr3553666
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Feb 2025 06:59:48 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1738846788;
+	bh=Mv0wdh7SmM7WMLkdwxSV1wkm7zvheEOu8m9g8tZ+KPI=;
+	h=From:To:CC:Subject:Date;
+	b=XrTLxR5wO8p6ersm33yDywbwUdJb5nIdCWOIuRR2+l8AnSWrgBBsCi40/sqGEZ9qq
+	 TRNHphQJO7WGmGZn2oiSJ8YrYp3kDbFjuilteo542lDVMKNSRma3Y/b+XGTqjm8M7X
+	 qW7ubqUEzu+OWEbVngTMOgwR7fLGI7RIeChkMwuo=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 516Cxm5T012943
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 6 Feb 2025 06:59:48 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
+ Feb 2025 06:59:48 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 6 Feb 2025 06:59:48 -0600
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.104])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 516CxhVf101205;
+	Thu, 6 Feb 2025 06:59:44 -0600
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <peter.chen@kernel.org>, <pawell@cadence.com>, <rogerq@kernel.org>,
+        <gregkh@linuxfoundation.org>, <balbi@kernel.org>, <jun.li@nxp.com>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH] usb: cdns3: exit cdns3_gadget_udc_start if FAST_REG_ACCESS cannot be set
+Date: Thu, 6 Feb 2025 18:29:36 +0530
+Message-ID: <20250206125943.786949-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/16] arm64: hugetlb: Fix huge_ptep_get_and_clear()
- for non-present ptes
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Muchun Song <muchun.song@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- Steve Capper <steve.capper@linaro.org>, Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250205151003.88959-1-ryan.roberts@arm.com>
- <20250205151003.88959-3-ryan.roberts@arm.com>
- <83103cbb-e2b8-4177-aeaf-c3b6e6b08008@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <83103cbb-e2b8-4177-aeaf-c3b6e6b08008@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 06/02/2025 06:15, Anshuman Khandual wrote:
-> On 2/5/25 20:39, Ryan Roberts wrote:
->> arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
->> a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
->> are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
->> CONT_PMD_SIZE). So the function has to figure out the size from the
->> huge_pte pointer. This was previously done by walking the pgtable to
->> determine the level, then using the PTE_CONT bit to determine the number
->> of ptes.
-> 
-> Actually PTE_CONT gets used to determine if the entry is normal i.e
-> PMD/PUD based huge page or cont PTE/PMD based huge page just to call
-> into standard __ptep_get_and_clear() or specific get_clear_contig(),
-> after determining find_num_contig() by walking the page table.
-> 
-> PTE_CONT presence is only used to determine the switch above but not
-> to determine the number of ptes for the mapping as mentioned earlier.
+When the device is in a low power state, access to the following
+registers takes a long time:
+- EP_CFG
+- EP_TRADDR
+- EP_CMD
+- EP_SEL
+- EP_STS
+- USB_CONF
 
-Sorry I don't really follow your distinction; PTE_CONT is used to decide whether
-we are operating on a single entry (pte_cont()==false) or on multiple entires
-(pte_cont()==true). For the multiple entry case, the level tells you the exact
-number.
+To address this, the fast register access feature can be enabled by
+setting PUSB_PWR_FST_REG_ACCESS bit of the USB_PWR register, which
+allows quick access by software. Software is expected to poll on
+PUSB_PWR_FST_REG_ACCESS_STAT to ensure that fast register access has
+been enabled by the controller. Attempting to access any of the
+aforementioned registers after setting PUSB_PWR_FST_REG_ACCESS but
+before PUSB_PWR_FST_REG_ACCESS_STAT has been set will result in
+undefined behavior and potentially result in system hang.
 
-I can certainly tidy up this description a bit, but I think we both agree that
-the value of PTE_CONT is one of the inputs into deciding how many entries need
-to be operated on?
+Hence, poll on PUSB_PWR_FST_REG_ACCESS_STAT before proceeding with
+gadget configuration, and exit if it cannot be enabled.
 
-> 
-> There are two similar functions which determines the 
-> 
-> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->                            pte_t *ptep, size_t *pgsize)
-> {
->         pgd_t *pgdp = pgd_offset(mm, addr);
->         p4d_t *p4dp;
->         pud_t *pudp;
->         pmd_t *pmdp;
-> 
->         *pgsize = PAGE_SIZE;
->         p4dp = p4d_offset(pgdp, addr);
->         pudp = pud_offset(p4dp, addr);
->         pmdp = pmd_offset(pudp, addr);
->         if ((pte_t *)pmdp == ptep) {
->                 *pgsize = PMD_SIZE;
->                 return CONT_PMDS;
->         }
->         return CONT_PTES;
-> }
-> 
-> find_num_contig() already assumes that the entry is contig huge page and
-> it just finds whether it is PMD or PTE based one. This always requires a
-> prior PTE_CONT bit being set determination via pte_cont() before calling
-> find_num_contig() in each instance.
+Fixes: b5148d946f45 ("usb: cdns3: gadget: set fast access bit")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-Agreed.
+Hello,
 
-> 
-> But num_contig_ptes() can get the same information without walking the
-> page table and thus without predetermining if PTE_CONT is set or not.
-> size can be derived from VMA argument when present.
+This patch is based on commit
+92514ef226f5 Merge tag 'for-6.14-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+of Mainline Linux.
 
-Also agreed. But VMA is not provided to this function. And because we want to
-use it for kernel space mappings, I think it's a bad idea to pass VMA.
+Regards,
+Siddharth.
 
-> 
-> static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
-> {
->         int contig_ptes = 0;
-> 
->         *pgsize = size;
-> 
->         switch (size) {
-> #ifndef __PAGETABLE_PMD_FOLDED
->         case PUD_SIZE:
->                 if (pud_sect_supported())
->                         contig_ptes = 1;
->                 break;
-> #endif
->         case PMD_SIZE:
->                 contig_ptes = 1;
->                 break;
->         case CONT_PMD_SIZE:
->                 *pgsize = PMD_SIZE;
->                 contig_ptes = CONT_PMDS;
->                 break;
->         case CONT_PTE_SIZE:
->                 *pgsize = PAGE_SIZE;
->                 contig_ptes = CONT_PTES;
->                 break;
->         }
-> 
->         return contig_ptes;
-> }
-> 
-> On a side note, why cannot num_contig_ptes() be used all the time and
-> find_num_contig() be dropped ? OR am I missing something here.
+ drivers/usb/cdns3/cdns3-gadget.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-There are 2 remaining users of find_num_contig() after my series:
-huge_ptep_set_access_flags() and huge_ptep_set_wrprotect(). Both of them can
-only be legitimately called for present ptes (so its safe to check pte_cont()).
-huge_ptep_set_access_flags() already has the VMA so it would be easy to convert
-to num_contig_ptes(). huge_ptep_set_wrprotect() doesn't have the VMA but I guess
-you could do the trick where you take the size of the folio that the pte points to?
-
-So yes, I think we could drop find_num_contig() and I agree it would be an
-improvement.
-
-But to be honest, grabbing the folio size also feels like a hack to me (we do
-this in other places too). While today, the folio size is guarranteed to be be
-the same size as the huge pte in practice, I'm not sure there is any spec that
-mandates that?
-
-Perhaps the most robust thing is to just have a PTE_CONT bit for the swap-pte so
-we can tell the size of both present and non-present ptes, then do the table
-walk trick to find the level. Shrug.
-
-> 
->>
->> But the PTE_CONT bit is only valid when the pte is present. For
->> non-present pte values (e.g. markers, migration entries), the previous
->> implementation was therefore erroniously determining the size. There is
->> at least one known caller in core-mm, move_huge_pte(), which may call
->> huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
->> this case. Additionally the "regular" ptep_get_and_clear() is robust to
->> being called for non-present ptes so it makes sense to follow the
->> behaviour.
-> 
-> With VMA argument and num_contig_ptes() dependency on PTE_CONT being set
-> and the entry being mapped might not be required.
-> >>
->> Fix this by using the new sz parameter which is now provided to the
->> function. Additionally when clearing each pte in a contig range, don't
->> gather the access and dirty bits if the pte is not present.
-> 
-> Makes sense.
-> 
->>
->> An alternative approach that would not require API changes would be to
->> store the PTE_CONT bit in a spare bit in the swap entry pte. But it felt
->> cleaner to follow other APIs' lead and just pass in the size.
-> 
-> Right, changing the arguments in the API will help solve this problem.
-> 
->>
->> While we are at it, add some debug warnings in functions that require
->> the pte is present.
->>
->> As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
->> entry offset field (layout of non-present pte). Since hugetlb is never
->> swapped to disk, this field will only be populated for markers, which
->> always set this bit to 0 and hwpoison swap entries, which set the offset
->> field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
->> memory in that high half was poisoned (I think!). So in practice, this
->> bit would almost always be zero for non-present ptes and we would only
->> clear the first entry if it was actually a contiguous block. That's
->> probably a less severe symptom than if it was always interpretted as 1
->> and cleared out potentially-present neighboring PTEs.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->>  arch/arm64/mm/hugetlbpage.c | 54 ++++++++++++++++++++-----------------
->>  1 file changed, 29 insertions(+), 25 deletions(-)
->>
->> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
->> index 06db4649af91..328eec4bfe55 100644
->> --- a/arch/arm64/mm/hugetlbpage.c
->> +++ b/arch/arm64/mm/hugetlbpage.c
->> @@ -163,24 +163,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
->>  			     unsigned long pgsize,
->>  			     unsigned long ncontig)
->>  {
->> -	pte_t orig_pte = __ptep_get(ptep);
->> -	unsigned long i;
->> -
->> -	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
->> -		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
->> -
->> -		/*
->> -		 * If HW_AFDBM is enabled, then the HW could turn on
->> -		 * the dirty or accessed bit for any page in the set,
->> -		 * so check them all.
->> -		 */
->> -		if (pte_dirty(pte))
->> -			orig_pte = pte_mkdirty(orig_pte);
->> -
->> -		if (pte_young(pte))
->> -			orig_pte = pte_mkyoung(orig_pte);
->> +	pte_t pte, tmp_pte;
->> +	bool present;
->> +
->> +	pte = __ptep_get_and_clear(mm, addr, ptep);
->> +	present = pte_present(pte);
->> +	while (--ncontig) {
-> 
-> Although this does the right thing by calling __ptep_get_and_clear() once
-> for non-contig huge pages but wondering if cont/non-cont separation should
-> be maintained in the caller huge_ptep_get_and_clear(), keeping the current
-> logical bifurcation intact.
-
-To what benefit?
-
-> 
->> +		ptep++;
->> +		addr += pgsize;
->> +		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
->> +		if (present) {
-> 
-> Checking for present entries makes sense here.
-> 
->> +			if (pte_dirty(tmp_pte))
->> +				pte = pte_mkdirty(pte);
->> +			if (pte_young(tmp_pte))
->> +				pte = pte_mkyoung(pte);
->> +		}
->>  	}
->> -	return orig_pte;
->> +	return pte;
->>  }
->>  
->>  static pte_t get_clear_contig_flush(struct mm_struct *mm,
->> @@ -401,13 +400,8 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
->>  {
->>  	int ncontig;
->>  	size_t pgsize;
->> -	pte_t orig_pte = __ptep_get(ptep);
->> -
->> -	if (!pte_cont(orig_pte))
->> -		return __ptep_get_and_clear(mm, addr, ptep);
->> -
->> -	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>  
->> +	ncontig = num_contig_ptes(sz, &pgsize);
-> 
-> __ptep_get_and_clear() can still be called here if 'ncontig' is
-> returned as 0 indicating a normal non-contig huge page thus
-> keeping get_clear_contig() unchanged just to handle contig huge
-> pages.
-
-I think you're describing the case where num_contig_ptes() returns 0? The
-intention, from my reading of the function, is that num_contig_ptes() returns
-the number of ptes that need to be operated on (e.g. 1 for a single entry or N
-for a contig block). It will only return 0 if called with an invalid huge size.
-I don't believe it will ever "return 0 indicating a normal non-contig huge page".
-
-Perhaps the right solution is to add a warning if returning 0?
-
-> 
->>  	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
->>  }
->>  
->> @@ -451,6 +445,8 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
->>  	pgprot_t hugeprot;
->>  	pte_t orig_pte;
->>  
->> +	VM_WARN_ON(!pte_present(pte));
->> +
->>  	if (!pte_cont(pte))
->>  		return __ptep_set_access_flags(vma, addr, ptep, pte, dirty);
->>  
->> @@ -461,6 +457,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
->>  		return 0;
->>  
->>  	orig_pte = get_clear_contig_flush(mm, addr, ptep, pgsize, ncontig);
->> +	VM_WARN_ON(!pte_present(orig_pte));
->>  
->>  	/* Make sure we don't lose the dirty or young state */
->>  	if (pte_dirty(orig_pte))
->> @@ -485,7 +482,10 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
->>  	size_t pgsize;
->>  	pte_t pte;
->>  
->> -	if (!pte_cont(__ptep_get(ptep))) {
->> +	pte = __ptep_get(ptep);
->> +	VM_WARN_ON(!pte_present(pte));
->> +
->> +	if (!pte_cont(pte)) {
->>  		__ptep_set_wrprotect(mm, addr, ptep);
->>  		return;
->>  	}
->> @@ -509,8 +509,12 @@ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->>  	struct mm_struct *mm = vma->vm_mm;
->>  	size_t pgsize;
->>  	int ncontig;
->> +	pte_t pte;
->>  
->> -	if (!pte_cont(__ptep_get(ptep)))
->> +	pte = __ptep_get(ptep);
->> +	VM_WARN_ON(!pte_present(pte));
->> +
->> +	if (!pte_cont(pte))
->>  		return ptep_clear_flush(vma, addr, ptep);
->>  
->>  	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
-> 
-> In all the above instances should not num_contig_ptes() be called to determine
-> if a given entry is non-contig or contig huge page, thus dropping the need for
-> pte_cont() and pte_present() tests as proposed here.
-
-Yeah maybe. But as per above, we have options for how to do that. I'm not sure
-which is preferable at the moment. What do you think? Regardless, I think that
-cleanup would be a separate patch (which I'm happy to add for v2). For this bug
-fix, I was trying to do the minimum.
-
-Thanks,
-Ryan
-
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index fd1beb10bba7..b62691944272 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2971,8 +2971,6 @@ static void cdns3_gadget_config(struct cdns3_device *priv_dev)
+ 	/* enable generic interrupt*/
+ 	writel(USB_IEN_INIT, &regs->usb_ien);
+ 	writel(USB_CONF_CLK2OFFDS | USB_CONF_L1DS, &regs->usb_conf);
+-	/*  keep Fast Access bit */
+-	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
+ 
+ 	cdns3_configure_dmult(priv_dev, NULL);
+ }
+@@ -2990,6 +2988,8 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
+ 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
+ 	unsigned long flags;
+ 	enum usb_device_speed max_speed = driver->max_speed;
++	int ret;
++	u32 reg;
+ 
+ 	spin_lock_irqsave(&priv_dev->lock, flags);
+ 	priv_dev->gadget_driver = driver;
+@@ -2997,6 +2997,20 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
+ 	/* limit speed if necessary */
+ 	max_speed = min(driver->max_speed, gadget->max_speed);
+ 
++	/*  keep Fast Access bit */
++	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
++	reg = readl(&priv_dev->regs->usb_pwr);
++	if (!(reg & PUSB_PWR_FST_REG_ACCESS_STAT)) {
++		ret = readl_poll_timeout_atomic(&priv_dev->regs->usb_pwr, reg,
++						(reg & PUSB_PWR_FST_REG_ACCESS_STAT),
++						10, 1000);
++		if (ret) {
++			dev_err(priv_dev->dev, "Failed to enable fast access\n");
++			spin_unlock_irqrestore(&priv_dev->lock, flags);
++			return ret;
++		}
++	}
++
+ 	switch (max_speed) {
+ 	case USB_SPEED_FULL:
+ 		writel(USB_CONF_SFORCE_FS, &priv_dev->regs->usb_conf);
+-- 
+2.43.0
 
 
