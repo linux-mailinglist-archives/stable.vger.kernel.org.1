@@ -1,87 +1,87 @@
-Return-Path: <stable+bounces-114024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF41CA29F1C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 04:02:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11732A29F21
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 04:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 430D43A5E96
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 03:02:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938123A6E20
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 03:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8840614F9F3;
-	Thu,  6 Feb 2025 03:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F1A1422AB;
+	Thu,  6 Feb 2025 03:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="c7rmlGfx"
+	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="U6NouZ5p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CD4144D21
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 03:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BBF1487F8
+	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 03:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738810964; cv=none; b=G/KabXUA+4miHDYghTYieYsd3gXTnJ2Vxca5XrlkI6ac0eacgcj5OAsjMmvFFQSeBTtUCwSltkOd/jGR8aq5ZV/IBbS/hvOeDXETULg9Noax/txfWC+d609PwBU4OF+l4eS19qN5/CUQ9BCmyCMI6+LAcVH4D4X2agSaaJtr7dI=
+	t=1738811055; cv=none; b=S0jBjWY/ijOMEI9+l4SzauomQJ5zZR7jSxjpFhMgd7viCcLDlQFMdLcczooHaIyzosOmGr89ejlE+34BDOGgXAeBuL9esiaMD9WyShnoxtzFLcemdSr71YvH3CN3EncGP9j+jcQj2l1HDcAwCRRlosvpr5V4g67KHEs2y3o6818=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738810964; c=relaxed/simple;
-	bh=1xsX34EuN9d3iaUOEhymIsTKtzzLy8B85YwSGltNECQ=;
+	s=arc-20240116; t=1738811055; c=relaxed/simple;
+	bh=54yoTXIy+BgN4RRhfycSnTE4g25MRL44lDayWTyxGGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig7zWDFST/VlpkbvBXgIyPT6oZDngUJG+ycD/UHLaGnR7YWfjPBQ5Oo6Xwa7mnLvsD9W0wAOmJUe00Wj6TKtIJkluBlglSjCFGQOTnHWOvUxqysEO3Q0QRfxXYRO2gNND3z9+oMbKv3C+agCtPYBOcoPa9d7M7Eo37gdv1XXH0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=c7rmlGfx; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=LlJHGCsCql4kEUrn1tpwlfSCpzIrWbG3JK9muSV7Q9RqoyqSOolr06Dm9V0BqzsEqFiLiIjhtohldv28w90A/n2ePGELt6JlVDyqh3fvxoMPWeszKL6ZwDwAg9qS5vbmbBzSAGiJT7lrcMBVoSkYF0hYZ/BdsAZnIwR4op/OHtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=U6NouZ5p; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wbinvd.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2f9bac7699aso536183a91.1
-        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 19:02:41 -0800 (PST)
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2efe25558ddso522978a91.2
+        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 19:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wbinvd.org; s=wbinvd; t=1738810961; x=1739415761; darn=vger.kernel.org;
+        d=wbinvd.org; s=wbinvd; t=1738811052; x=1739415852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EkbvcINLw1PP0+Eo519DYZCjFZ+4bIooBLyPGoWM4wQ=;
-        b=c7rmlGfxBkksptgoML9wZFgInoyo7qVwZnF2qqHS4kIx6MqNkSR97Xf+FCNDucGMbR
-         RdB833ISwZbzgC/onuzaR/Qsc+W4EjjtlvkbLT/LK7vIo/wAibe+GeXUdrVjaMpDuyGy
-         z0X+yvHKvdNvMNs5btiT3DBsfF+9V8mrbMhS4Zbo5Bg3PAnpSVhikqwDxBU3F2ASbk4O
-         NojcaR0wNu+femqkTwKkRZfQDV6nmB/bkCwLHV5+6fqPzmKIfngexkZasm/Yok2GooIB
-         gMYbQA3rWV/c0icQwLZ98hn503WguQlIwg67m0hkxHTcta0DYnoQHrapzyAcy+vGL1rI
-         HFIw==
+        bh=auAy9KZcrTW6kYAlbBemAOJmVzvvwh7fjCFeNie6u0s=;
+        b=U6NouZ5pP6kXoXt054zw+fn5xpIo88Ati94JtGffn5ZxlNHbJi0use3sWKF47yN/bI
+         iKw+esxSEiOZusGGLhhD+Pgl5VgxPipDGT0c5fRjHt1iN7vSqTUuNi1PDPJOY201E7EI
+         Tv3QCevp5jCafHxo0/bJCi29LYvtgExYG2chLGvN37MAgwqPBIw3JULxiMZHZ5rgwbNu
+         DgmSmW4Su0h7xCmX0b4jyIUXpUA0k5J/5tBD5i6WMY15VikBcDzU9HuvMlQIksyDFqCB
+         lzgQC5JV3QGLAK4kO0AxvXeBSaMNOeld4yb9pPSovezzu2oFvQxGhUQUW/Eqrf/BfIRr
+         0XXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738810961; x=1739415761;
+        d=1e100.net; s=20230601; t=1738811052; x=1739415852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EkbvcINLw1PP0+Eo519DYZCjFZ+4bIooBLyPGoWM4wQ=;
-        b=g9Tr+iKNQlcx3sZUW5O+LB4QcqcgCvfuq5YhCxzcTRq+5J66fXbUbrV4YJAwax3YGp
-         1D7sGa6CBYPOCfl9oC+/qbnocYRJzQh4ZDOZ1MA5GXpBK5ENCAlYD7obfkVcaS3FMNV2
-         kt2fdC1vnLN01xm+3zar90j97/Pr7dVaOgBdpqumROcgceICnK9/i/RoHAG4HV3sjYii
-         LKVt94Mcf5Q602fA9sf4X31KV/eglaXy7CcvBms8XgbAi0xeC4n1ZBq+PwMHx9fcFMxw
-         YJ82+P+BsnsD2WjPA4sHUstBh8QVJOLEWpAbFflnuNfunfrDOZJeTmA8SSc+a9r9mJ8i
-         52dw==
-X-Gm-Message-State: AOJu0Yybl1UBil5w5RvZV94JMS9sXGOCo4USBI7cU5Hxz5Fuo8U6RytQ
-	LaxVHcx2DVJ1qRrnKZfdj0Ftu7uRRG2Z4SByRjd971Cpsn8yYOVoIW7aZ+Qe7lAKtpVeBElZNO/
-	+
-X-Gm-Gg: ASbGncsKt7LLxKLflbjHU1Q4ntQRak+VL/95ksbv4dHzt3P81TZN0QCn+Q7g/Wxs+tm
-	K65s/rUapT0XCuVzLwt03jIis7wD9jPijzFBoyWmaPkWmUK6NwyX7hWFWZYw5jx6QNn/6mtG3PC
-	MoePzwmeVJweIOEqGhOZLxkOMk+x68UfjBx/DTEQ1Pmh9IBp4D9IhI3zIgt+Jr5pu47Fla+Drv+
-	nbCMxRZoK9ea+giQCq7YmbI1r0XmsorNIFc1N6+C1ZP8YEofvfKfeUXwRZHcCMUURz8JMEBcTHJ
-	ey2gm54CcqNBFHKP9CKgzebXsMEB0BztQioXQERyd04B+crMgSgD63OTCc1U
-X-Google-Smtp-Source: AGHT+IGV71VKeudcn9y9F8EZvrlz+2PV2d4SwjJrMR3eqtOpTjh3jCX+Wos2s6h5y2KRSArsmMa+8A==
-X-Received: by 2002:a17:90b:4fcc:b0:2f4:465d:5c94 with SMTP id 98e67ed59e1d1-2f9e076777dmr8687203a91.11.1738810960959;
-        Wed, 05 Feb 2025 19:02:40 -0800 (PST)
+        bh=auAy9KZcrTW6kYAlbBemAOJmVzvvwh7fjCFeNie6u0s=;
+        b=NimlfJOVJ0WcFHgyeBlifFL3cDQJDsSXUeAJHFOq8R+q6OjaMR6zjjelmV5O+Ix0GA
+         shaaiOMpe6k53tY+E8TmP7fUz14KcgXHeH63klMHBFSOYGPKM96/0ApM2YtBtacBgFr4
+         3un/tLcg9ua5HMyTjzWg7C2fIg2+5vnR7l3WOMRy3DLikF6lzAx4CcnRR1wajIhU6hva
+         tjyGDa8ofxgWENyen9mrrh7E82N2MIC6U9IHuOgzdwYT4SWG4C+P6cgOu9SFP2SgWy47
+         vNeU3AGD1LK7/gQB79mixPs1JZmMnOzdltRZ7ZbPSLvvkCU6tK5mK/MS30uMUNCTLqei
+         7kJg==
+X-Gm-Message-State: AOJu0YxqbdBFYcwjtaqswxweBzjZmBGF5pSSR7jMCterkFxVokkkuQfY
+	c4c+Ugo68TiwW4SIQRm3qs5X6R5Ru8wbIoIKAU1dikXSHgBpKcl7I+KENXStazJVo6gL6jdZedb
+	k
+X-Gm-Gg: ASbGncvqfRfy7XjhmgA2VOP6gB+rsgxTJ8WbHxdVxbLpkFEyMAoc9BLH5U4AoJ6VOyh
+	3OXYYatmJzafrMod5AAmNTA9Z9d8lE1oIJQsaSE3rAwUMKFApw9dlofiK7lVyILY404hQP1NyFJ
+	xeEZVzPlaQDz7yTUHzs7TRTjqMd8fW9k8E8f70ypngH6OtEp3fDz592X+7csxqtpucx8DHf/gQJ
+	ppIH2Sapep6+PCBxXRs96DxmkOsiWKWFsaNwtmAYZivzCeSdifwGJ4P1SFRI4oS8GK+0IZG2njE
+	J8xS2YEVqqeAOBdstSjSXwfi+OnF1TAj47K4ez28MNAW7Et94fWiBXgK8L7I
+X-Google-Smtp-Source: AGHT+IE69+rMy8cLbKFh8q6cugLzfF0Cg75L84X02ZBAlowOobNm59Mh+pNsmjgps9Sgg305YC41zg==
+X-Received: by 2002:a17:90a:d406:b0:2ee:7698:e565 with SMTP id 98e67ed59e1d1-2f9e075e307mr8248718a91.8.1738811052416;
+        Wed, 05 Feb 2025 19:04:12 -0800 (PST)
 Received: from mozart.vkv.me (192-184-160-101.fiber.dynamic.sonic.net. [192.184.160.101])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa09b5c76dsm170625a91.43.2025.02.05.19.02.40
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f9e1e23766sm2399084a91.33.2025.02.05.19.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 19:02:40 -0800 (PST)
+        Wed, 05 Feb 2025 19:04:11 -0800 (PST)
 From: Calvin Owens <calvin@wbinvd.org>
 To: stable@vger.kernel.org
 Cc: mschmidt@redhat.com,
 	calvin@wbinvd.org
-Subject: [PATCH 5.15.y] pps: Fix a use-after-free
-Date: Wed,  5 Feb 2025 19:02:32 -0800
-Message-ID: <3f1cad0c5516037fb35168b52dc8d8f16109ecd2.1738810952.git.calvin@wbinvd.org>
+Subject: [PATCH 5.10.y] pps: Fix a use-after-free
+Date: Wed,  5 Feb 2025 19:04:01 -0800
+Message-ID: <a79cc7764ee98771a74a62e1dfc3d398461e4187.1738811041.git.calvin@wbinvd.org>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <2025020421-probe-shock-4e0d@gregkh>
-References: <2025020421-probe-shock-4e0d@gregkh>
+In-Reply-To: <2025020422-tragedy-splashing-50db@gregkh>
+References: <2025020422-tragedy-splashing-50db@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -176,15 +176,14 @@ Signed-off-by: Calvin Owens <calvin@wbinvd.org>
  drivers/pps/kapi.c                |  10 +--
  drivers/pps/kc.c                  |  10 +--
  drivers/pps/pps.c                 | 127 ++++++++++++++++--------------
- drivers/ptp/ptp_ocp.c             |   2 +-
  include/linux/pps_kernel.h        |   3 +-
- 9 files changed, 87 insertions(+), 83 deletions(-)
+ 8 files changed, 86 insertions(+), 82 deletions(-)
 
 diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index 2f4b11b4dfcd..bf3b6f1aa984 100644
+index e0de1df2ede0..541b03706808 100644
 --- a/drivers/pps/clients/pps-gpio.c
 +++ b/drivers/pps/clients/pps-gpio.c
-@@ -214,8 +214,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
+@@ -232,8 +232,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
  		return -EINVAL;
  	}
  
@@ -218,10 +217,10 @@ index d33106bd7a29..2f465549b843 100644
  	return 0;
  }
 diff --git a/drivers/pps/clients/pps-ldisc.c b/drivers/pps/clients/pps-ldisc.c
-index d73c4c2ed4e1..15c05cb62907 100644
+index 4fd0cbf7f931..3a21177c0d1a 100644
 --- a/drivers/pps/clients/pps-ldisc.c
 +++ b/drivers/pps/clients/pps-ldisc.c
-@@ -32,7 +32,7 @@ static void pps_tty_dcd_change(struct tty_struct *tty, unsigned int status)
+@@ -34,7 +34,7 @@ static void pps_tty_dcd_change(struct tty_struct *tty, unsigned int status)
  	pps_event(pps, &ts, status ? PPS_CAPTUREASSERT :
  			PPS_CAPTURECLEAR, NULL);
  
@@ -230,7 +229,7 @@ index d73c4c2ed4e1..15c05cb62907 100644
  			status ? "assert" : "clear", jiffies);
  }
  
-@@ -69,7 +69,7 @@ static int pps_tty_open(struct tty_struct *tty)
+@@ -71,7 +71,7 @@ static int pps_tty_open(struct tty_struct *tty)
  		goto err_unregister;
  	}
  
@@ -239,7 +238,7 @@ index d73c4c2ed4e1..15c05cb62907 100644
  
  	return 0;
  
-@@ -89,7 +89,7 @@ static void pps_tty_close(struct tty_struct *tty)
+@@ -91,7 +91,7 @@ static void pps_tty_close(struct tty_struct *tty)
  	if (WARN_ON(!pps))
  		return;
  
@@ -249,10 +248,10 @@ index d73c4c2ed4e1..15c05cb62907 100644
  }
  
 diff --git a/drivers/pps/clients/pps_parport.c b/drivers/pps/clients/pps_parport.c
-index 53e9c304ae0a..c3f46efd64c3 100644
+index 84e49204912f..b2a991c10c74 100644
 --- a/drivers/pps/clients/pps_parport.c
 +++ b/drivers/pps/clients/pps_parport.c
-@@ -81,7 +81,7 @@ static void parport_irq(void *handle)
+@@ -83,7 +83,7 @@ static void parport_irq(void *handle)
  	/* check the signal (no signal means the pulse is lost this time) */
  	if (!signal_is_set(port)) {
  		local_irq_restore(flags);
@@ -261,7 +260,7 @@ index 53e9c304ae0a..c3f46efd64c3 100644
  		goto out_assert;
  	}
  
-@@ -98,7 +98,7 @@ static void parport_irq(void *handle)
+@@ -100,7 +100,7 @@ static void parport_irq(void *handle)
  	/* timeout */
  	dev->cw_err++;
  	if (dev->cw_err >= CLEAR_WAIT_MAX_ERRORS) {
@@ -673,19 +672,6 @@ index 22a65ad4e46e..2d008e0d116a 100644
  }
  
  subsys_initcall(pps_init);
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 7a4a06148515..22accc022245 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -1341,7 +1341,7 @@ ptp_ocp_complete(struct ptp_ocp *bp)
- 
- 	pps = pps_lookup_dev(bp->ptp);
- 	if (pps)
--		ptp_ocp_symlink(bp, pps->dev, "pps");
-+		ptp_ocp_symlink(bp, &pps->dev, "pps");
- 
- 	if (device_add_groups(&bp->dev, timecard_groups))
- 		pr_err("device add groups failed\n");
 diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
 index 78c8ac4951b5..c7abce28ed29 100644
 --- a/include/linux/pps_kernel.h
