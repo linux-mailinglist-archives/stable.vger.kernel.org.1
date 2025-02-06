@@ -1,182 +1,133 @@
-Return-Path: <stable+bounces-114090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1623A2AA0C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:35:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49B7A2AA7D
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 14:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81E83AA4AD
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:35:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A84167534
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 13:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454861EA7E3;
-	Thu,  6 Feb 2025 13:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E551C6FEF;
+	Thu,  6 Feb 2025 13:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jx2rlSGh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvGXW9vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7301EA7C0;
-	Thu,  6 Feb 2025 13:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012ED199B9;
+	Thu,  6 Feb 2025 13:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738848906; cv=none; b=eCYsmn72DySuwLXp5CFd4IYWXX6CY50pljp8xXrWsjbB2ZtBF+2e6vTHICN7oxcJzSfoy0IrhO04/DSTAVwIVTmE/+bRCRmfEoFs8sa+/FU/AY++LRPn4K9ygruyzRmwFCiej9GK+OEanwgg/XzMblAtEzHczYmWKshcAunWm2w=
+	t=1738850241; cv=none; b=iR2BFvPAgsWkkwXp4wWDsdDqFRZ76enSMRH21KbAIktIbqRLTfhzdfdH9uRyAK7ExL3VxbDeXRhyYHTO6fU+QUMZ7+7cVWWi1rLTYE9lUeswZGicGbTfHqMQeLnRumeJsfstjb/qXxNOcE+qcenwiCiKcuUDkOAnCAUMeXweOBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738848906; c=relaxed/simple;
-	bh=tVoDQ7fDHYavMaIBf6OpSoHIN3J38dTXcwr8Ehd5Nz4=;
+	s=arc-20240116; t=1738850241; c=relaxed/simple;
+	bh=LxYhiBiaZHBVR5Gszv7w/Tef4B8mfeE8hfjbsuT8Pxw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VRdzdwvv5hIIW5zFNyrWDAey87QaZD5Tq5Vg/dbGsNUNMwUz+pcy99KtEMAlveOE+7J79mJPUWQEHLfQnLJg3LoMOXt5P7MfVgMu7IGeiEKkr4UCgCtKyT9DFc/5O8b5U7DLXG+se610DdVAjH0iuhdDM9JVnOZuUkOB4rFJCOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jx2rlSGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C5FC4CEDD;
-	Thu,  6 Feb 2025 13:35:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsfeTezd8Gnj+C2l79dMoGKgTtZ+MgCy5f81/kkHSsOn3FyJoLS+a11VuXNWP81DhJWelCjYrMqe6udTFLQbf+kfXpa/FHcR2eSm4nqWgXZVePfVm/skUc0i/vk8OHufI34rfssZWrPoaj8JZ+xWPxMC/EoiNW3SUC81b8Rnw/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvGXW9vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26496C4CEDD;
+	Thu,  6 Feb 2025 13:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738848905;
-	bh=tVoDQ7fDHYavMaIBf6OpSoHIN3J38dTXcwr8Ehd5Nz4=;
+	s=k20201202; t=1738850239;
+	bh=LxYhiBiaZHBVR5Gszv7w/Tef4B8mfeE8hfjbsuT8Pxw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jx2rlSGh5E4lmD5Zr/uWi/14Fmj0ldgckXjrZASstnQCxiUQ/OABrw6gU7UqHBUoM
-	 VQuR+Vj2wgZYYMNCPpSPEN+9c3B5QQ1dnGDkDsI+WePYhVN1s5SUXCrN8oNve7ZvIb
-	 mcuhdKpHQrp+5EmMWGZkN/F6SXpx04SJO5Mwg9eRlrnW2aH/6RfxnJwFYUtSeS8NZW
-	 W5SrRamk0GBtGvDRI7+JH0vuHo5lrXHk92Gp6lQL3PTWrjo69Aru995L5/NJmJCc6p
-	 FI6fM4Fbn40c7OO63Hh2V61YRhvk+rhX0+SQxqa27MT87hmvDkl1TE4zPco3CGQYpO
-	 3nFcegO9GoeJg==
-Date: Thu, 6 Feb 2025 14:35:00 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Mike Yuan <me@yhndnzj.com>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, 
-	"cgzones@googlemail.com" <cgzones@googlemail.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] fs/xattr: actually support O_PATH fds in *xattrat()
- syscalls
-Message-ID: <20250206-wisst-rangieren-d59f7882761a@brauner>
-References: <20250205204628.49607-1-me@yhndnzj.com>
- <20250206-uhrwerk-faultiere-7a308565e2d3@brauner>
- <Kn-2tlpxN8YNmh0j0udjQ8YIFNZMVVJYJh-LyBoYNBfpax28PNUkXuH6gnod7if2eX3NRVs3Ey8uCHRpwg_S5hPX_ADtrgMZbDTWFpHd_uU=@yhndnzj.com>
- <20250206-erbauen-ornament-26f338d98f13@brauner>
- <cfnfHaahrrXJJOgvNjb5hFbU0qh8gVXJ62R9uP9AItBEywyNH9vNBRzJbPR8xTv-LtFaUJYTHvyuLBfkznwJPt3fEcqNBFxf_yKJeZKwL3I=@yhndnzj.com>
+	b=dvGXW9vruqA5OZ9jMC8fhfP2uAjPcXoOle4tDfQuEYs4gH0YggZyErKDMfT9Alr2a
+	 eM95P7GIGqg7QnFhRRAzE+W4nVFhTG0MPnaMIq0kfrDtDnsTnPnE732p9gp54tbNGq
+	 B8Fy4oZMq6EKMb2DCQY0rJwuu832LoI4rM9mSqQBP8zqDnRYLZQbFBTdRG6cm7idVC
+	 NJbq4UTsyAWJ4F4uz+8Kvr6LxvoN/6g//lvxu+TR53N9R/rBaHWjuxpk02XLISHd85
+	 0eeDmR6aSyIqlu1Id/+TWsuejTLv1d5TUfFWMJU5eZPTzkGYCQ0gbYsx4yMBKghOmc
+	 WDErRNAxO1unw==
+Date: Thu, 6 Feb 2025 06:57:15 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Handle .ARM.attributes section in linker
+ scripts
+Message-ID: <20250206135715.GA180182@ax162>
+References: <20250204-arm64-handle-arm-attributes-in-linker-script-v2-1-d684097f5554@kernel.org>
+ <20250206130526.GB3204@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cfnfHaahrrXJJOgvNjb5hFbU0qh8gVXJ62R9uP9AItBEywyNH9vNBRzJbPR8xTv-LtFaUJYTHvyuLBfkznwJPt3fEcqNBFxf_yKJeZKwL3I=@yhndnzj.com>
+In-Reply-To: <20250206130526.GB3204@willie-the-truck>
 
-On Thu, Feb 06, 2025 at 01:25:19PM +0000, Mike Yuan wrote:
-> On 2/6/25 11:03, Christian Brauner <brauner@kernel.org> wrote:
+Hi Will,
+
+On Thu, Feb 06, 2025 at 01:05:26PM +0000, Will Deacon wrote:
+> On Tue, Feb 04, 2025 at 10:48:55AM -0700, Nathan Chancellor wrote:
+> > A recent LLVM commit [1] started generating an .ARM.attributes section
+> > similar to the one that exists for 32-bit, which results in orphan
+> > section warnings (or errors if CONFIG_WERROR is enabled) from the linker
+> > because it is not handled in the arm64 linker scripts.
+> > 
+> >   ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+> >   ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+> > 
+> >   ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+> >   ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+> >   ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+> > 
+> > Discard the new sections in the necessary linker scripts to resolve the
+> > warnings, as the kernel and vDSO do not need to retain it, similar to
+> > the .note.gnu.property section.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
+> > Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> > Changes in v2:
+> > - Discard the section instead of adding it to the final artifacts to
+> >   mirror the .note.gnu.property section handling (Will).
 > 
-> >  On Thu, Feb 06, 2025 at 09:51:33AM +0000, Mike Yuan wrote:
-> >  > On 2/6/25 10:31, Christian Brauner <brauner@kernel.org> wrote:
-> >  >
-> >  > >  On Wed, Feb 05, 2025 at 08:47:23PM +0000, Mike Yuan wrote:
-> >  > >  > Cited from commit message of original patch [1]:
-> >  > >  >
-> >  > >  > > One use case will be setfiles(8) setting SELinux file contexts
-> >  > >  > > ("security.selinux") without race conditions and without a file
-> >  > >  > > descriptor opened with read access requiring SELinux read permission.
-> >  > >  >
-> >  > >  > Also, generally all *at() syscalls operate on O_PATH fds, unlike
-> >  > >  > f*() ones. Yet the O_PATH fds are rejected by *xattrat() syscalls
-> >  > >  > in the final version merged into tree. Instead, let's switch things
-> >  > >  > to CLASS(fd_raw).
-> >  > >  >
-> >  > >  > Note that there's one side effect: f*xattr() starts to work with
-> >  > >  > O_PATH fds too. It's not clear to me whether this is desirable
-> >  > >  > (e.g. fstat() accepts O_PATH fds as an outlier).
-> >  > >  >
-> >  > >  > [1] https://lore.kernel.org/all/20240426162042.191916-1-cgoettsche@seltendoof.de/
-> >  > >  >
-> >  > >  > Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
-> >  > >  > Signed-off-by: Mike Yuan <me@yhndnzj.com>
-> >  > >  > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> >  > >  > Cc: Christian Göttsche <cgzones@googlemail.com>
-> >  > >  > Cc: Christian Brauner <brauner@kernel.org>
-> >  > >  > Cc: <stable@vger.kernel.org>
-> >  > >  > ---
-> >  > >
-> >  > >  I expanded on this before. O_PATH is intentionally limited in scope and
-> >  > >  it should not allow to perform operations that are similar to a read or
-> >  > >  write which getting and setting xattrs is.
-> >  > >
-> >  > >  Patches that further weaken or dilute the semantics of O_PATH are not
-> >  > >  acceptable.
-> >  >
-> >  > But the *at() variants really should be able to work with O_PATH fds, otherwise they're basically useless? I guess I just need to keep f*() as-is?
-> >  
-> >  I'm confused. If you have:
-> >  
-> >          filename = getname_maybe_null(pathname, at_flags);
-> >          if (!filename) {
-> >                  CLASS(fd, f)(dfd);
-> >                  if (fd_empty(f))
-> >                          error = -EBADF;
-> >                  else
-> >                          error = file_setxattr(fd_file(f), &ctx);
-> >  
-> >  Then this branch ^^ cannot use fd_raw because you're allowing operations
-> >  directly on the O_PATH file descriptor.
-> >  
-> >  Using the O_PATH file descriptor for lookup is obviously fine which is
-> >  why the other branch exists:
-> >  
-> >          } else {
-> >                  error = filename_setxattr(dfd, filename, lookup_flags, &ctx);
-> >          }
-> >  
-> >  IOW, your patch makes AT_EMPTY_PATH work with an O_PATH file descriptor
-> >  which isn't acceptable. However, it is already perfectly fine to use an
-> >  O_PATH file descriptor for lookup.
+> Thanks for the v2. Just a minor nit:
 > 
-> Well, again, [1] clearly stated the use case:
+> > - Link to v1: https://lore.kernel.org/r/20250124-arm64-handle-arm-attributes-in-linker-script-v1-1-74135b6cf349@kernel.org
+> > ---
+> >  arch/arm64/kernel/vdso/vdso.lds.S | 1 +
+> >  arch/arm64/kernel/vmlinux.lds.S   | 1 +
+> >  2 files changed, 2 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kernel/vdso/vdso.lds.S b/arch/arm64/kernel/vdso/vdso.lds.S
+> > index 4ec32e86a8da..8095fef66209 100644
+> > --- a/arch/arm64/kernel/vdso/vdso.lds.S
+> > +++ b/arch/arm64/kernel/vdso/vdso.lds.S
+> > @@ -80,6 +80,7 @@ SECTIONS
+> >  		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+> >  		*(.bss .sbss .dynbss .dynsbss)
+> >  		*(.eh_frame .eh_frame_hdr)
+> > +		*(.ARM.attributes)
+> >  	}
 > 
-> > Those can be used to operate on extended attributes,
-> especially security related ones, either relative to a pinned directory
-> or [on a file descriptor without read access, avoiding a
-> /proc/<pid>/fd/<fd> detour, requiring a mounted procfs].
+> Can we chuck this in the earlier /DISCARD/ section along with
+> .note.gnu.property? i.e.
+
+Sure, I don't see why not. Do you want the comment above it updated to
+mention this section or should I leave it as is?
+
+> diff --git a/arch/arm64/kernel/vdso/vdso.lds.S b/arch/arm64/kernel/vdso/vdso.lds.S
+> index 4ec32e86a8da..47ad6944f9f0 100644
+> --- a/arch/arm64/kernel/vdso/vdso.lds.S
+> +++ b/arch/arm64/kernel/vdso/vdso.lds.S
+> @@ -41,6 +41,7 @@ SECTIONS
+>          */
+>         /DISCARD/       : {
+>                 *(.note.GNU-stack .note.gnu.property)
+> +               *(.ARM.attributes)
+>         }
+>         .note           : { *(.note.*) }                :text   :note
 > 
-> And this surfaced in my PR to systemd:
 > 
-> https://github.com/systemd/systemd/pull/36228/commits/34fe16fb177d2f917570c5f71dfa8f5b9746b9a7
-> 
-> How are *xattrat() syscalls different from e.g. fchmodat2(AT_EMPTY_PATH) in that regard? I can agree that the semantics of f*xattr() ought to be left untouched, yet I fail to grok the case for _at variants.
-
-man openat:
-
-       O_PATH (since Linux 2.6.39)
-              Obtain a file descriptor that can be used for two purposes: to indicate a location in the filesystem tree and to perform operations that act purely at the file descriptor level.
-              The file itself is not opened, and other file operations (e.g., read(2), write(2), fchmod(2), fchown(2), fgetxattr(2), ioctl(2), mmap(2)) fail with the error EBADF.
-
-              The following operations can be performed on the resulting file descriptor:
-
-              •  close(2).
-
-              •  fchdir(2), if the file descriptor refers to a directory (since Linux 3.5).
-
-              •  fstat(2) (since Linux 3.6).
-
-              •  fstatfs(2) (since Linux 3.12).
-
-              •  Duplicating the file descriptor (dup(2), fcntl(2) F_DUPFD, etc.).
-
-              •  Getting and setting file descriptor flags (fcntl(2) F_GETFD and F_SETFD).
-
-              •  Retrieving open file status flags using the fcntl(2) F_GETFL operation: the returned flags will include the bit O_PATH.
-
-              •  Passing  the  file  descriptor  as the dirfd argument of openat() and the other "*at()" system calls.  This includes linkat(2) with AT_EMPTY_PATH (or via procfs using AT_SYM‐
-                 LINK_FOLLOW) even if the file is not a directory.
-
-              •  Passing the file descriptor to another process via a UNIX domain socket (see SCM_RIGHTS in unix(7)).
-
-Both fchownat() and fchmodat() variants have had this behavior which
-is a bug. And not a great one because it breaks O_PATH guarantees.
-That's no reason to now also open up further holes such as getting and
-setting xattrs.
-
-If you want to perform read/write like operations you need a proper file
-descriptor for that and not continue to expand the meaning of O_PATH
-until it is indistinguishable from a regular file descriptor.
+> Will
 
