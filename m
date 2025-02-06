@@ -1,174 +1,144 @@
-Return-Path: <stable+bounces-114076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B731EA2A7C7
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 12:43:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22183A2A7CD
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 12:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0A71887B23
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:43:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49415162DCF
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 11:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFBE22C325;
-	Thu,  6 Feb 2025 11:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D96C22B5AC;
+	Thu,  6 Feb 2025 11:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="rBU684MG"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="1qsBiAi9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C9F22A4D3
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 11:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A32228CA0;
+	Thu,  6 Feb 2025 11:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738842104; cv=none; b=PHCzEAKMdYuaBYhYFM9b2w80YiTTdS30cq2ir9auOeRuwX+otlcDQOll94a9+fsQYaJKm8wuampoAqmJ1h0cOd6xB4cTqqU8P+dl4rWBSwNuC7BssIKXxtx76ZZFiCc2tklAFuTIpqJN9ys37zOeqHnHzNpLAKSFu1VuYRPkyLY=
+	t=1738842197; cv=none; b=OJOImyL8WfSx9ammH/1P9QrCcIGrUjbuLJ85nhtJm8dDRpMNbseu3RvRcTteoyUCP0i6MrQ1m15WtcSC5DLaZFdizRcEGZxYOGB+/2GfJ3RBpwKVRwFpAXJgwe8xkPyi0Qq1cPvSX1uNSAR7pwCgk6L5gn8lu8iUUzaqQLwVe2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738842104; c=relaxed/simple;
-	bh=uPd/seLc0R/OCTGhswhENSfy993FEKKvyB0nCxN2bzU=;
+	s=arc-20240116; t=1738842197; c=relaxed/simple;
+	bh=qkU7mN3WsjPDpBNtFt3YNB/Qn72CCJ1Masnk7K2NHIE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fRnNRA4rTUfZL61rAqSfI/Y4jOj4j9og0VYBK3QPRFasIvOvN/Npqo4NvnS/Yo7dM/TAu8dZTVUoNkJ8LIgTTMjNMdQeIbFpEVLoqRUrh2iPOfXljEzEVSv30Z1bl5lth1EkSAlpgw4SA40nuuZYHRkBVHAnrvQ+2F21MT5JdHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=rBU684MG; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 344893F291
-	for <stable@vger.kernel.org>; Thu,  6 Feb 2025 11:41:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1738842098;
-	bh=pxRegLnQ2ckk9B0H5x44QGdXpNaEQZAvL/r+edA76Vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=rBU684MG/1ZmpVOkmC2DqkiIsuD4SP1Xh2F3tfwFM9joxQhOBBmzDm45TH1UhVq+L
-	 yKzNmGXWeSHXf5iGB1CTLFIh/+Dzrsp3un2UUqa9WEs5c5c93y0mB//tmEXCsDgH1r
-	 yXR6A0uRi7qyFLQ+dK9J8lgczaWsev/o38H4sikAnJwSfhPDIuNjGogQbm+HX8iPy6
-	 w2iuA1U9/vWW9gWZWqJhcl/RWeBe06Ih1LMtgHgdnsaZ0JQgzQGGl8ZknpiTcRbUMc
-	 L7h0sPKipW5AIEbcFWuurXcn3f0CdRieYYRmaUUztryRlppJzqoZXVKgW55VhQkHpE
-	 //GDAdnNSVXWQ==
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2f46b7851fcso2497320a91.1
-        for <stable@vger.kernel.org>; Thu, 06 Feb 2025 03:41:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738842096; x=1739446896;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pxRegLnQ2ckk9B0H5x44QGdXpNaEQZAvL/r+edA76Vc=;
-        b=qhaxWGMW/09E6NTdzdKVX/pXRq3bdgRpIhZVUn+SmtMUlBL4IMv0FEkXfnYQ22q1C3
-         +m2auHZkfd3/o1IOYOSgNC/RGmQQZMyCf42LitnbpgnZeZE4WtwXiI2+YYwtaEAw11Uy
-         nqszb3NxbaM7I2i/wv6/4R4eYUVmN4++Q9VOFDnwH3cUYntImO7PiZUMTl0V4JHTmFcY
-         FSLYF0B9GXiti5NVrJX1hauXzAo5rfUfHjQh6utk8oIpTnpBrihor751ihQmEUhnfLR5
-         F98O7DO6GS4aS3da5knGaIdUvMi4hDOOWZNT+FHjj6PGOnxUABcF4xkMLm1IxK4n7hEc
-         fWUQ==
-X-Gm-Message-State: AOJu0YwugqAYaQT7Jmyc745MrNXMZbQ+6l7ZmujXQYOEs/xoNL+ATUpg
-	DhJcuuUx44DGS5qbTsO838VXPHqqv3N1iaWRZgg6J/ffetUWeo6uQRxwt0gw6UwotihzBbB2XMB
-	Nd40V0qMainE8yZt3xKORmx7Q5A4d2nOH5+DKPr9nkFUttBYRQlwmlik/+SIW4FOKUU7ATi6AKJ
-	lPIw==
-X-Gm-Gg: ASbGncthd2Y+MIOmZM2668YAK6OLnHGsR4SApYwz+/S3+f5sv+Ih4gbiXKV9C05iCtp
-	n5mKl9o1PJSutz9u0ONtMWfYVqE7++Cs60Jm50xn8oD8VxOUaD1BDDFD3Hv3jMsUrO6io6TOiD6
-	fhP8yaU5HttagPJDQB9MWkTzMszeVEJNWjTlQD2TGc5hyDHUZQh0Pt/+4Anx564b4yqIme0YOSz
-	BSmw/Y9IuxVfo+UjFh/C8Pv9jI6PnCJfqaOzH/buS5j0+2t75zGHchYp9bOxWEAl8pktLtNA9n7
-	viX1IoQ=
-X-Received: by 2002:a05:6a00:3a01:b0:726:54f1:d133 with SMTP id d2e1a72fcca58-7303513960bmr10558142b3a.12.1738842096298;
-        Thu, 06 Feb 2025 03:41:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHgWFlboY9bVv95oILpdZGtSBQdmygikI9ZzimmOUBKZ9x2HbGcBkcS+B2DV7qPOnVt92hGlw==
-X-Received: by 2002:a05:6a00:3a01:b0:726:54f1:d133 with SMTP id d2e1a72fcca58-7303513960bmr10558106b3a.12.1738842095895;
-        Thu, 06 Feb 2025 03:41:35 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:c489:148c:951f:33f1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048bf1375sm1075175b3a.119.2025.02.06.03.41.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 03:41:35 -0800 (PST)
-Date: Thu, 6 Feb 2025 20:41:33 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kV9n1U27y9nTb60bCzTPttrez985qxI9aqLroDKxY2zoG5dMHa8sVOLnT45GdUBteEr5Jn8HRkEavV/Yd0VUD+Z9xEHNz7EnYVsh7AEzC3nM6HgMSG2PdBt5aLAS3/OWnKVbnRNgF3zsl+A0ssKyns1udxa85F0yGoUeHcgAztk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=1qsBiAi9; arc=none smtp.client-ip=217.72.192.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1738842152; x=1739446952; i=christian@heusel.eu;
+	bh=sKaacpelINh+QPZCj7WfmXqNHAh/vXPNTGfxtluWYqg=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=1qsBiAi9MHKI7A0Gk4eIhzAaUwqbh4mz9/MQQ3nf/+8BMTo8EEzQkyWGU+6+VLGm
+	 1g0qpj1JM2ttxJI12U7duvLnJgZeIGgh4naQcG4M+IOrnQWCcfnfy45D7VJjJrptD
+	 MGaI3zkPnef08uslAXf88QLqG9MdOW+Fu6cdfFKvy/1HzKGgTRKw+XmI3kGCU7lMu
+	 y8N3ppx7+cWxrWllYaum1q0EO6Bi8yRufHaXOjrfi5yleR/5iw0gM2WAboNO1vA4S
+	 fDxkTe98phQAWTTEgZEtRqOC0OEGvsLTruRIfF6VFpT1GpI77rHvjmRq3PfE6Z2+r
+	 uSF9ernJziuliS64Dg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue108
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MI5cP-1tbJq43KOl-00Fthz; Thu, 06
+ Feb 2025 12:42:31 +0100
+Date: Thu, 6 Feb 2025 12:42:29 +0100
+From: Christian Heusel <christian@heusel.eu>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>, 
-	David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 6.12 102/114] btrfs: avoid monopolizing a core when
- activating a swap file
-Message-ID: <q6zj7uvssfaqkz5sshi7i6oooschrwlyapb7o47y36ylz4ylf7@dkopww2lfuko>
-References: <20241230154218.044787220@linuxfoundation.org>
- <20241230154222.045141330@linuxfoundation.org>
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.13 000/623] 6.13.2-rc1 review
+Message-ID: <798f3ac3-ac78-4463-a2cb-68fec03f8136@heusel.eu>
+References: <20250205134456.221272033@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ouvuviv5axtginyy"
 Content-Disposition: inline
-In-Reply-To: <20241230154222.045141330@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+X-Provags-ID: V03:K1:h+PZD6BVMcDnThJ7eIWrKvUJMEFfpEYRpQWcYef5xzHcenUCVXp
+ tD+FgW3ofNvGF+rw6WReYBNpmrfTOSefs0+hShoSuSPLksUcJ4V2S09WxT6CLTK2+pRsjb6
+ 9IGrd+77DRPrmngIoEmupmBd4IGR3FLmglbOSch+9zW2chT8cDbNJorBKr4B1jscF2QARrE
+ Jnk1nHEeColYiTdXDD2Fw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Hz9o2WSSMG0=;UViQF+ak1W7UqDQKkdjuyYgkzAZ
+ s96i6Fsa0NceOO4RQnc8aqYGHwCBj18dQdd19HqcClyz9wO7NpN8DJUlV7HsP65qn7hkh2Ifg
+ 5qnjasigSb6nNyHZ69onMyACLNqU3TsYg+Rf41R5HVxolBIGH1m3umNzlsaYPCNOm8eU5Y9m8
+ 1bhkyTsm9lNMkRFfPAu0MUbUHCrkDzWaH1zKOZ0wt4nFScikb6hQCaaxWfEmVxTdF47t6viku
+ +JWAiPqp1N5/sQwtGuEHKhEaYqMenYVF98I1sVMtOh0Nx0tNiV67ETh7PA0ZQu00omGzOtdoa
+ lpKB4VXarxB1TiM1tLOY2/wWmsl9DvqP+mQdgDYTlyCJIUvSg+SrvWNqZWaZTOvJSzbKGGQOE
+ IU4Oxmt85DJpU4vmi1AKfxrAuh7YPtCFaj+x3jc875km3QGb5Bolj3jylqE3InK6LDzQHbFzE
+ DFH4R+oKG9/A0kYaqGPs1+VXnUR3HWh3Ovc7/iuInTzmovP3DlY4US+AaIfU/0O6ciUkH/jfE
+ 6P6LUaDuyhKm5y1B34wXky3fVbpnuG+8S3MDg0bCo0gsDYI1UmSdvM2PKU/d5tJbJIehSkD7I
+ M29Kg8u7bM43E+4qMBp2o6TxFFlzBdfi5BcIaafSiIVK7Vuk5Gj1vws+3x/vMA099fp3U8m0b
+ D0dELmcKPd1+1niPiqxOIc2/f4El20Y38C+a8BKwmsT3y27I0IuOmEdpby4Nmv6Xu6+f5Kv7c
+ 0eQXfK/pqjkx0l1SMW6QbMcZ5khbHlrU+kWSIH1v7jHR/m/isENOZ+ZW7oVuXjMC8ty/8w8C+
+ /ZhFepBka8LccATRPHsrtk8IplbIRj6ISuHssayNMAFn1kFrcIf8S4t2xGEIdIYvj9Ka18O4D
+ T5lGat4uuGJzRgKm0WHRjxAuVua4GxcUgfq++Y7kUJQ8bGO0XR2krgMxtphK/XvJjJpdtpoul
+ e583LXu5AtEI5smmsvTQi7sTRhDBVb947GfZ1QUOMOQyny1OqRBzdfvAnSZCCHVog08d3DluV
+ SMJSg+UTFP5PefDdNb+NQGZgjzE+uPCGLarwYrSCmrUuXKC2HavGM25c4RYEPF2/1tVXA3xyv
+ lj1japKC/6jRWVfsWRw6jKk2xRE7iGonZ40alwwixiAPQ1fMW10uHDcExGRqmmE1CbhfW7109
+ blHy3bj96+TI/Y1lMSvt298+8rzRSbw0DyrrR3C0Ml96i1a/zcWKhMngrOOLuX1lMPsiiVQUI
+ QafUI8NbjGmnPOW+4YU/hbgCYI+GDnD9qsRk1PoV7iAjZIvNG9SA7F11rqjqf/WDYi8DrZ2RU
+ UfLjzJ/djFAYOYpxIJ9oyVtne3EzzDPTNlSAlfQVZVAuJA0iUXn1Elx4jJU1nMxc4Cwaml5lT
+ DkmxZRG5xeeRI9Tg==
 
-On Mon, Dec 30, 2024 at 04:43:39PM GMT, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> commit 2c8507c63f5498d4ee4af404a8e44ceae4345056 upstream.
-> 
-> During swap activation we iterate over the extents of a file and we can
-> have many thousands of them, so we can end up in a busy loop monopolizing
-> a core. Avoid this by doing a voluntary reschedule after processing each
-> extent.
-> 
-> CC: stable@vger.kernel.org # 5.4+
-> Reviewed-by: Qu Wenruo <wqu@suse.com>
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  fs/btrfs/inode.c |    2 ++
->  1 file changed, 2 insertions(+)
-> 
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -7117,6 +7117,8 @@ noinline int can_nocow_extent(struct ino
->  			ret = -EAGAIN;
->  			goto out;
->  		}
-> +
-> +		cond_resched();
->  	}
->  
->  	if (file_extent)
-> 
-> 
 
-Hi, please let me confirm; is this backport really ok? I mean, should the
-cond_resched() be added to btrfs_swap_activate() loop? I was able to
-reproduce the same situation:
+--ouvuviv5axtginyy
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.13 000/623] 6.13.2-rc1 review
+MIME-Version: 1.0
 
-    $ git rev-parse HEAD
-    319addc2ad901dac4d6cc931d77ef35073e0942f
-    $ b4 mbox --single-message  c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com
-    1 messages in the thread
-    Saved ./c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com.mbx
-    $ patch -p1 < ./c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com.mbx
-    patching file fs/btrfs/inode.c
-    Hunk #1 succeeded at 7117 with fuzz 1 (offset -2961 lines).
-    $ git diff
-    diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-    index 58ffe78132d9..6fe2ac620464 100644
-    --- a/fs/btrfs/inode.c
-    +++ b/fs/btrfs/inode.c
-    @@ -7117,6 +7117,8 @@ noinline int can_nocow_extent(struct inode *inode, u64 offset, u64 *len,
-                            ret = -EAGAIN;
-                            goto out;
-                    }
-    +
-    +               cond_resched();
-            }
-    
-            if (file_extent)
+On 25/02/05 02:35PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.2 release.
+> There are 623 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Fri, 07 Feb 2025 13:42:57 +0000.
+> Anything received after that time might be too late.
+>=20
 
-The same goes for all the other stable branches applied. Sorry if I'm
-missing something.
+Tested-by: Christian Heusel <christian@heusel.eu>
 
-Thanks,
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
+Steam Deck (LCD variant)
 
--Koichiro
+--ouvuviv5axtginyy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmekoCUACgkQwEfU8yi1
+JYUouRAAsm7lYVm2lu6MTYGEL+LLpdZ25cGOUjAGsZiWra/xJQqXZXVLEpcjOLL7
+BSoliqflrtMVpy8xZe2/2Wwjhw8boYP2DVrm7sg5eH6tg12Z/rOV08tOvL/wIkxg
+ewBTdlJ/niVGwmndRjJdGXcWEr5E0Ll/57mBfF6HCDP0opF0i3ijOxs/IRgHg3IO
+eikRInbaUj2fAEbNSKEdxTMLSigATEQC4VUgANydBvqF0aS/zP81alyCjAI1n5Bv
+GRXwfI0VhqB6nNNvaJvQJAFrXdaJVipNUst9eYVqsFo388Qkaz3r04TwdBCwKbMl
+kBQOUjulv/fyAs0W+iIoVNt4fJcB585zCRC4P4Ql6ugwf+4dlTS8plQWoqZChFWc
+9m9Qg0WSzr/+aYV2TlZzu9aTKSr4BNk8HyuKAujVbrVfE+smrSCu2q8vEVZQm9YK
+I8tGXEmq+RNCBKP5BHJxe5AysDQLZbiWihikMfDj8prX4O9PkAx+U0GuCxsjTLoc
+vmhpZ+0XTp1Wd1u+k+s/7tbPne9snozU7Im0cYz/2OjN+Jifje75WvS/KjamIfgn
+BBf7N4FCVPGxG4hrKSL9YUH3fYAw5ZXvUGBTt1Mw9lJdlPlUCjNv1XfdBeDtjney
+bvaBmqua0/7eRVl5F//pMDpdOq2HUFoWZDbZZ+4K7IGkTGnEBws=
+=m6t/
+-----END PGP SIGNATURE-----
+
+--ouvuviv5axtginyy--
 
