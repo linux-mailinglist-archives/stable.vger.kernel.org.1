@@ -1,175 +1,158 @@
-Return-Path: <stable+bounces-114209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3206A2BDA1
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:13:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DF7A2BDD1
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5730F168A06
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 08:13:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8B51887973
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 08:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B291A4F2D;
-	Fri,  7 Feb 2025 08:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1849D1C331E;
+	Fri,  7 Feb 2025 08:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="36MBkKWr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bw1eyIbx"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QVTVqgOY"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D2F1547CA;
-	Fri,  7 Feb 2025 08:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEF61B07AE;
+	Fri,  7 Feb 2025 08:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738915996; cv=none; b=qkolyYY1MJOgK4oHXwqQ53HmvXtPSxliZ73k+9ZrWa4lDCWNSA4b20vTsGAlSCuXx2XP8rtoFazyti3+gZkzyFTNGwdVIOF+7Ps8rck1BX6x/fS6Obh3ViuQfdhJ+kO3nDYYJO9DJNjrly6RGEN8y42pFuaJgzC8wGD15befDW4=
+	t=1738916727; cv=none; b=fECX7IwOAFy2Gh88U9NxPx20GoM9kgKrneAxKOlYPtLG4SBGZGgUZz3TWVl680CnrRXD/XzgFW3zXBPtUz4B82p25S8JfYC9QDvjq4FjrFuLicBf7yXhpXkAewMFyhTHDWwBXoIoh4T83pY0NHcqIZyvkaia6JDqtDgOIQTxsQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738915996; c=relaxed/simple;
-	bh=pwdgnneK3dst1VUutsdE5GPzlHdvaje/IbI+REn1fKg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=TiaAxFx9lu4kSclDakCdQ32ngLcUWN0+9Rig8kGy8uQUXsvutXUWzwOfSDoXSOQxvGDVK/9NXl8VUD3icZvxbXzvaEHRKYf1lxe9C1rtFi+faKs0XaWznOEV/j296XgzVb1bOmFecrEwmebwlMUcRgORpU5ln8SNsRdiORRcfLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=36MBkKWr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bw1eyIbx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Feb 2025 08:13:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738915993;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qZjbsWaHjvehxwqwuNv4yk95BFAXowqdx+sHrdVqZDY=;
-	b=36MBkKWrrNXZVJ4U2quYSC+nC3cyy2oRnVm7Mirx+l3rNwxRmTM1haBc5m/MJgly88Uw6H
-	3M1GsI/xxhzYiMhKXfDMNml5/0pI5cslPTobTIV4b/1jG9ju4JBdwGIU+abOHm8tDyLJqG
-	/ZwSpzuss9NWLlmYhwf3rDDF3Qib82As94qd7vUFto7s4XuKJclXjIosuBClNpiAMNP+R2
-	eY8wAhwU0ckJArtwAsANjL+Sh7REVg8xYkVsrqXTSwnhkgFwC1gzVwO0wu25lW4L7areJT
-	qCZ7sKEZiDoQ96vGLZZml+evQ9dzfWHO0jju/JaBnwxpQumTNeu0NzHFOevyeA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738915993;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qZjbsWaHjvehxwqwuNv4yk95BFAXowqdx+sHrdVqZDY=;
-	b=bw1eyIbxNJF2KrqmA9sJlfM+RQVZ2R8+4bhaN4yK8xak+/vCmCG27v2gBeSaXOH0R16E6t
-	clthY5R0Qz7yvwAA==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: timers/urgent] timers/migration: Fix off-by-one root mis-connection
-Cc: Matt Fleming <mfleming@cloudflare.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250205160220.39467-1-frederic@kernel.org>
-References: <20250205160220.39467-1-frederic@kernel.org>
+	s=arc-20240116; t=1738916727; c=relaxed/simple;
+	bh=d1EJPRelGRZ/y+2eSJnekbHxmzSDvkl0vvJwA32wPR4=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=mLwScnY9c+KQxZ7wQZt/CkEN1yzLa+pklT+Tjd8h5hr9JJ3M8wBAv5nWS6gGl4kR2bSPwbVlbEKgGckO9DnRST7oTRS5MU1idNrgCd0BN2HCDNljDR+hh2u9AKyDE2OOrp5ozYw1X3U331w+ypTGEB6/ZXghDRQp2gRIqO9Bkcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QVTVqgOY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5172ImsY003550;
+	Fri, 7 Feb 2025 08:25:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=PW1Ivqzxh+OkyRP2CJ6dX9
+	EKyZpAXYRaOi2lWW9lKEo=; b=QVTVqgOY4lQev8EB2O6IeoRG8tlRl8TtGBT++S
+	6oV0Q/NUtGRBOC+2xmfpg0dRFY26L2kOwFku1RjLBaB2Xy0a3qvnwVF/L3qrqOZt
+	ZIhLg9YvlhsD0gwy9zG4m+IxfInIcooVC/dShNwvxElgg12zUJwi3MbARSxCawqn
+	bs7nDnjiz0waCeFBx17SWV+uDEorXRUOZoz11yf1N24xioYoyoDjmxZlj/WrDgEy
+	H6WBVXVfBNHsvny50F5HKDSAds1wTFyuSqUlz/e7EuQPlbuKtBlYIDeRoXz2SLwq
+	WEXQuWfM/JQ1G0cDozq7f2hV/cIGOHi9phv3v4hB3Rtv+07Q==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n99e8spm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Feb 2025 08:25:21 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5178PCi6013346
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Feb 2025 08:25:12 GMT
+Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 7 Feb 2025 00:25:08 -0800
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+Subject: [PATCH v4 0/4] Venus driver fixes to avoid possible OOB accesses
+Date: Fri, 7 Feb 2025 13:54:48 +0530
+Message-ID: <20250207-venus_oob_2-v4-0-522da0b68b22@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173891599227.10177.12341111504955542995.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFDDpWcC/2XMQQ7CIBCF4asY1mJgoC268h7GNJSOdhYWBUs0T
+ e8ubXShLt9L/m9kEQNhZLvVyAImiuT7PPR6xVxn+zNyavNmIEBLKQuesB9i7X1TAwdZCQNqK6v
+ SslxcA57osWiHY94dxbsPzwVPML9vB8yXk4ALro2yKKwudWP2t4Ec9W7j/IXNUlKfuhB/tcq1k
+ FqjQyxN+1NP0/QCc52ok+YAAAA=
+X-Change-ID: 20241115-venus_oob_2-21708239176a
+To: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Hans Verkuil <hans.verkuil@cisco.com>
+CC: Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab
+	<mchehab+samsung@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>, <stable@vger.kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738916708; l=1892;
+ i=quic_vgarodia@quicinc.com; s=20241104; h=from:subject:message-id;
+ bh=d1EJPRelGRZ/y+2eSJnekbHxmzSDvkl0vvJwA32wPR4=;
+ b=MJCCRq9VUW1stdbU+2adrvUhqJ9xzXm6ih1zJMVavcqju2zMh3vV+iGg4jNHdy7XJi3pKK1Lu
+ chFLAGPZlyeBcSSSoSUID0ogYDLz9o7kixaeYhTpftJpDK7fc/3wiwo
+X-Developer-Key: i=quic_vgarodia@quicinc.com; a=ed25519;
+ pk=LY9Eqp4KiHWxzGNKGHbwRFEJOfRCSzG/rxQNmvZvaKE=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: vKxJfEV4UmYYXxmedgXvWkgGt4lIZAbP
+X-Proofpoint-GUID: vKxJfEV4UmYYXxmedgXvWkgGt4lIZAbP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_04,2025-02-07_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502070063
 
-The following commit has been merged into the timers/urgent branch of tip:
+This series primarily adds check at relevant places in venus driver 
+where there are possible OOB accesses due to unexpected payload from 
+venus firmware. The patches describes the specific OOB possibility.
 
-Commit-ID:     868c9037df626b3c245ee26a290a03ae1f9f58d3
-Gitweb:        https://git.kernel.org/tip/868c9037df626b3c245ee26a290a03ae1f9f58d3
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 05 Feb 2025 17:02:20 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 07 Feb 2025 09:02:16 +01:00
+Please review and share your feedback.
 
-timers/migration: Fix off-by-one root mis-connection
+Validated on sc7180(v4), rb5(v6) and db410c(v1).
 
-Before attaching a new root to the old root, the children counter of the
-new root is checked to verify that only the upcoming CPU's top group have
-been connected to it. However since the recently added commit b729cc1ec21a
-("timers/migration: Fix another race between hotplug and idle entry/exit")
-this check is not valid anymore because the old root is pre-accounted
-as a child to the new root. Therefore after connecting the upcoming
-CPU's top group to the new root, the children count to be expected must
-be 2 and not 1 anymore.
+Changes in v4:
+- fix an uninitialize variable(media ci)
+- Link to v3: https://lore.kernel.org/r/20250128-venus_oob_2-v3-0-0144ecee68d8@quicinc.com
 
-This omission results in the old root to not be connected to the new
-root. Then eventually the system may run with more than one top level,
-which defeats the purpose of a single idle migrator.
+Changes in v3:
+- update the packet parsing logic in hfi_parser. The utility parsing api 
+  now returns the size of data parsed, accordingly the parser adjust the 
+  remaining bytes, taking care of OOB scenario as well (Bryan)
+- Link to v2: 
+  https://lore.kernel.org/r/20241128-venus_oob_2-v2-0-483ae0a464b8@quicinc.com
 
-Also the old root is pre-accounted but not connected upon the new root
-creation. But it can be connected to the new root later on. Therefore
-the old root may be accounted twice to the new root. The propagation of
-such overcommit can end up creating a double final top-level root with a
-groupmask incorrectly initialized. Although harmless given that the final
-top level roots will never have a parent to walk up to, this oddity
-opportunistically reported the core issue:
+Changes in v2:
+- init_codec to always update with latest payload from firmware
+  (Dmitry/Bryan)
+- Rewrite the logic of packet parsing to consider payload size for
+  different packet type (Bryan)
+- Consider reading sfr data till available space (Dmitry)
+- Add reviewed-by tags
+- Link to v1: 
+  https://lore.kernel.org/all/20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com/
 
-  WARNING: CPU: 8 PID: 0 at kernel/time/timer_migration.c:543 tmigr_requires_handle_remote
-  CPU: 8 UID: 0 PID: 0 Comm: swapper/8
-  RIP: 0010:tmigr_requires_handle_remote
-  Call Trace:
-   <IRQ>
-   ? tmigr_requires_handle_remote
-   ? hrtimer_run_queues
-   update_process_times
-   tick_periodic
-   tick_handle_periodic
-   __sysvec_apic_timer_interrupt
-   sysvec_apic_timer_interrupt
-  </IRQ>
-
-Fix the problem by taking the old root into account in the children count
-of the new root so the connection is not omitted.
-
-Also warn when more than one top level group exists to better detect
-similar issues in the future.
-
-Fixes: b729cc1ec21a ("timers/migration: Fix another race between hotplug and idle entry/exit")
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250205160220.39467-1-frederic@kernel.org
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 ---
- kernel/time/timer_migration.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Vikash Garodia (4):
+      media: venus: hfi_parser: add check to avoid out of bound access
+      media: venus: hfi_parser: refactor hfi packet parsing logic
+      media: venus: hfi: add check to handle incorrect queue size
+      media: venus: hfi: add a check to handle OOB in sfr region
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 9cb9b65..2f63308 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1675,6 +1675,9 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 
- 	} while (i < tmigr_hierarchy_levels);
- 
-+	/* Assert single root */
-+	WARN_ON_ONCE(!err && !group->parent && !list_is_singular(&tmigr_level_list[top]));
-+
- 	while (i > 0) {
- 		group = stack[--i];
- 
-@@ -1716,7 +1719,12 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 		WARN_ON_ONCE(top == 0);
- 
- 		lvllist = &tmigr_level_list[top];
--		if (group->num_children == 1 && list_is_singular(lvllist)) {
-+
-+		/*
-+		 * Newly created root level should have accounted the upcoming
-+		 * CPU's child group and pre-accounted the old root.
-+		 */
-+		if (group->num_children == 2 && list_is_singular(lvllist)) {
- 			/*
- 			 * The target CPU must never do the prepare work, except
- 			 * on early boot when the boot CPU is the target. Otherwise
+ drivers/media/platform/qcom/venus/hfi_parser.c | 96 +++++++++++++++++++-------
+ drivers/media/platform/qcom/venus/hfi_venus.c  | 15 +++-
+ 2 files changed, 83 insertions(+), 28 deletions(-)
+---
+base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
+change-id: 20241115-venus_oob_2-21708239176a
+
+Best regards,
+-- 
+Vikash Garodia <quic_vgarodia@quicinc.com>
+
 
