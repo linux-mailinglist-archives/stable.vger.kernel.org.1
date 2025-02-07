@@ -1,97 +1,118 @@
-Return-Path: <stable+bounces-114314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C59A2D059
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 23:15:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3486A2D0EC
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 23:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26FDD3AA829
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 22:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87D0416D5EB
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 22:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC441B040E;
-	Fri,  7 Feb 2025 22:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB6B1B4223;
+	Fri,  7 Feb 2025 22:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="dHtKmsm0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1peMlkO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0723194091;
-	Fri,  7 Feb 2025 22:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100861AF0AF
+	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 22:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738966520; cv=none; b=ta17keOf5CpS/0Og9pzL3CTVe6TjyR2yPCCx3XUk+5YV2Uc2Ld6UHnN5UW2DQQCf3oPsijrMoGMqoQO/HBZXWZJoISB7JOSX2DQ+Jaz5qJSt0pTLlvkl1aoEAvqdMiHOOS77YtGL6oUFPLinK2GAvRORvM/MGM6Dz//kvil4xVo=
+	t=1738968639; cv=none; b=jBjY8rUPJPIcrh2jJmYhG2jYdoX0SrL9LMa3hBLHNwFb3xDc1cRQdVZXnOeQruiQmD7V5bUDNd7qUl2lSvBkHFKP7WDymxgVjEgXREIx3yWOyrKntd923dFRJYvg05F6y5DdIORIDCN+7pzAv0Yq2H+6foi+7cK56U8/VRFy0aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738966520; c=relaxed/simple;
-	bh=Ga7CbJd40sfYvrQ9Iauv10Cwuj5BSAHcXQTxrVVFGZg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Qof3zM78ARkPPVz1L7TRU9nLApBf1U+j38FIfWhAyWaREEcw9YMo/pFxzbEWtvrEQUcYBv8l2ZYwMQ2EF3+mc1kJ2mMWKC49lW7/IQUI03MJdS2wY7pLsB0qfLyh8tFBuoxyZgmOxWlFac4BKGDLOrDBrRxK6GBNwmSf45fCJx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=dHtKmsm0; arc=none smtp.client-ip=5.161.67.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by mx.nixnet.email (Postfix) with ESMTPSA id A8B1A7D3AE;
-	Fri,  7 Feb 2025 23:06:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
-	t=1738966010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RAJGnsk9g5KDk+Q6J8DtXwovGOwC+pY2zb5XcFKtlEs=;
-	b=dHtKmsm0GezbtgkY50+nD9qgSx4yCBe93thtI8O3lUGCJ6PRgM86xk0mtn1gQfQeBAhsny
-	i96gF7bQgCMhjEUCU5ML4LSy9Pi+yDyk4eYRrjhe51TeFqDqRIGR3Uan0XxUYcTIkr/haM
-	8CvzHYJOyDxi+OZ/ieRTObhKI6LlEsg=
+	s=arc-20240116; t=1738968639; c=relaxed/simple;
+	bh=KJ1n++Vq1QZM9WEOu8KSVwISr6A6k5ssx7PVd3FHzbs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rjxPjT/t8SDXt9LM6VQh+w0MFL6EladmhbSZudGoUt2fyWkDPjAtIvpQ0K7EPHu8Sduq9h7/sTzgNQchzeS0MAhBx+apviZSdmxoL5FddVKcLNNd8yhCbYiDfF87tezqdrnFIJr4anMSkrtZFehgCy/FAcriSyJrNdboC8qRq9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1peMlkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C074C4CEE2;
+	Fri,  7 Feb 2025 22:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738968638;
+	bh=KJ1n++Vq1QZM9WEOu8KSVwISr6A6k5ssx7PVd3FHzbs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s1peMlkODpOG4tu78OFx06KpKINBNRDUfqGV1wbva9G7X6MdEhV64PpwVPfiSRMuQ
+	 fYyLWtfBb3uiWgf4z/vL4YlwD40DHGhEapgXs0qGIju7IhCv8UogHCsRX+zrHi7okv
+	 tB4qG9zgLMAxGhvYQZCmRzCeVdtkzADDh5NIJFbNL/9Dana6oEkMpOGn/YWRvz9EXR
+	 9UmWj0vXH7dOovpg0R7jiSHhuTFq38IyYCehsrfKmKAUVj3gEJh8vxpHErkfkko6Ae
+	 G+bHmfKPVPEGN0N095uBLKJB1IqstuAA1cCgpGTltMqZlXTzLEEm0rC1YOskBQLsJq
+	 j9+MvQJnggvVw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yifei Liu <yifei.l.liu@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH Linux-6.12.y 1/1] selftests/bpf: Add test to verify tailcall and freplace restrictions
+Date: Fri,  7 Feb 2025 17:50:36 -0500
+Message-Id: <20250204175901-c3cd9d008e0ad4a3@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250204222850.1993819-1-yifei.l.liu@oracle.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Feb 2025 23:06:47 +0100
-Message-Id: <D7MK034JDRNO.3LKC9MDH3QRNX@pwned.life>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
- <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
- <hargar@microsoft.com>, <broonie@kernel.org>
-Subject: Re: [PATCH 6.13 000/619] 6.13.2-rc2 review
-From: "Achill Gilgenast" <fossdd@pwned.life>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250206160718.019272260@linuxfoundation.org>
-In-Reply-To: <20250206160718.019272260@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Feb 6, 2025 at 5:11 PM CET, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.2 release.
-> There are 619 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 08 Feb 2025 16:05:17 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.2-=
-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+[ Sasha's backport helper bot ]
 
-Tested-By: Achill Gilgenast <fossdd@pwned.life>
+Hi,
 
-Builded and booted using Alpine Linux's packaging and configs. Thanks!
+The upstream commit SHA1 provided is correct: 021611d33e78694f4bd54573093c6fc70a812644
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Yifei Liu<yifei.l.liu@oracle.com>
+Commit author: Leon Hwang<leon.hwang@linux.dev>
+
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  021611d33e786 ! 1:  f573e53561b20 selftests/bpf: Add test to verify tailcall and freplace restrictions
+    @@ Metadata
+      ## Commit message ##
+         selftests/bpf: Add test to verify tailcall and freplace restrictions
+     
+    +    [ Upstream commit 021611d33e78694f4bd54573093c6fc70a812644 ]
+    +
+         Add a test case to ensure that attaching a tail callee program with an
+         freplace program fails, and that updating an extended program to a
+         prog_array map is also prohibited.
+    @@ Commit message
+         Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+         Link: https://lore.kernel.org/r/20241015150207.70264-3-leon.hwang@linux.dev
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    (cherry picked from commit 021611d33e78694f4bd54573093c6fc70a812644)
+    +    [Yifei: bpf freplace update is backported to linux-6.12 by commit 987aa730bad3 ("bpf: Prevent tailcall infinite
+    +    loop caused by freplace"). It will cause selftest #336/25 failed. Then backport this commit]
+    +    Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+     
+      ## tools/testing/selftests/bpf/prog_tests/tailcalls.c ##
+     @@ tools/testing/selftests/bpf/prog_tests/tailcalls.c: static void test_tailcall_bpf2bpf_hierarchy_3(void)
+    @@ tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
+      
+     +	__sink(skb);
+      	__sink(ret);
+    - 	return ret;
+    - }
+    + 	/* let verifier know that 'subprog_tc' can change pointers to skb->data */
+    + 	bpf_skb_change_proto(skb, 0, 0);
+     @@ tools/testing/selftests/bpf/progs/tc_bpf2bpf.c: int subprog(struct __sk_buff *skb)
+      SEC("tc")
+      int entry_tc(struct __sk_buff *skb)
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.12.y       |  Success    |  Success   |
 
