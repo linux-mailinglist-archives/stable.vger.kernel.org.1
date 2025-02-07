@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-114230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F2CA2C02D
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:05:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F71A2C02F
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE2E16A7D3
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:05:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25203A54F5
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968DF1DE4D8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD14E1DE4E3;
 	Fri,  7 Feb 2025 10:05:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B327B1DE2C5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32251DE2BC;
 	Fri,  7 Feb 2025 10:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738922713; cv=none; b=a/iSsPcBlA8C2XrHLSR4jByeIg0pajHo/eaIk1APQTCWw3IwBtZ8+JPnmm+mudKuSOfdWuseakBz9l2WXks4EgzU4SDSpCS4q5y+41wyNG5n0E/EPkJnBjZJyz4S8AZpzLW+jkgZhA/bS0YFvbAL0BNQ9aBxe/PMw6Z40hpkYdg=
+	t=1738922713; cv=none; b=rCoRQw7gkKU53JNECsDc5PqV0GdNjsbEHlkZll2gybxWWAuorJVmriQeZJXH5tNW/KOhxIPSNrTtE2FWezViHRknu8RADicjvlJSpvxYljr71blcScpT6dABGI3/bsPzyv83MgXIWlAAc1b1vDswVba/prdLrgVoVFR6R1C5lJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738922713; c=relaxed/simple;
-	bh=7v3TujD06KFAViD9d3T0ENPYjJimOlUrSpxn1dfBAXs=;
+	bh=Gpnv9rejVEnhq3aM2xqIjrvjr8pC7AsnALYMmjt13i0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O4r2uwqVYUgq0G/mvkav9prjzD2eK8TqPewfyf5REtizGR2XkVup8z385LCIImbF4hftl0irzlyW5n9tokGpoM/iTLBB4mSF4ylYY+LTiHlEvFaHE7gsQS8PdnrV8BtCNHGyqvb4Cq19BnXxi52M7ZI4svNSYlL7BM8RNIlc9U8=
+	 MIME-Version; b=Nh4U5fVGVjD3D1AKfD5WjDVG8CE0xJNgRADM2RzdxCzawx12zZiLo5DTsJrWrDcjLd1DI6L+uARSHyfnySGJN31I+g/e+XAZrgKKCphsIuM5yRwn7IFwa2+GU61TISqL6yoKwlNgvIs+tmVeNDJzWJ/qhOD4YuYovNFXYZMg8nk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300c59725eFd8C202009B11B64500.dip0.t-ipconnect.de [IPv6:2003:c5:9725:efd8:c202:9b:11b6:4500])
+Received: from kero.packetmixer.de (p200300c59725EfD8c202009b11B64500.dip0.t-ipconnect.de [IPv6:2003:c5:9725:efd8:c202:9b:11b6:4500])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id B0AA7FA14B;
-	Fri,  7 Feb 2025 10:58:29 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D13B4FA197;
+	Fri,  7 Feb 2025 10:58:30 +0100 (CET)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: davem@davemloft.net,
 	kuba@kernel.org
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Andy Strohman <andrew@andrewstrohman.com>,
-	stable@vger.kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 1/4] batman-adv: fix panic during interface removal
-Date: Fri,  7 Feb 2025 10:58:20 +0100
-Message-Id: <20250207095823.26043-2-sw@simonwunderlich.de>
+Subject: [PATCH 2/4] batman-adv: Ignore neighbor throughput metrics in error case
+Date: Fri,  7 Feb 2025 10:58:21 +0100
+Message-Id: <20250207095823.26043-3-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250207095823.26043-1-sw@simonwunderlich.de>
 References: <20250207095823.26043-1-sw@simonwunderlich.de>
@@ -58,81 +57,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andy Strohman <andrew@andrewstrohman.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-Reference counting is used to ensure that
-batadv_hardif_neigh_node and batadv_hard_iface
-are not freed before/during
-batadv_v_elp_throughput_metric_update work is
-finished.
-
-But there isn't a guarantee that the hard if will
-remain associated with a soft interface up until
-the work is finished.
-
-This fixes a crash triggered by reboot that looks
-like this:
-
-Call trace:
- batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
- batadv_v_elp_throughput_metric_update+0x1c/0xa4
- process_one_work+0x178/0x398
- worker_thread+0x2e8/0x4d0
- kthread+0xd8/0xdc
- ret_from_fork+0x10/0x20
-
-(the batadv_v_mesh_free call is misleading,
-and does not actually happen)
-
-I was able to make the issue happen more reliably
-by changing hardif_neigh->bat_v.metric_work work
-to be delayed work. This allowed me to track down
-and confirm the fix.
+If a temporary error happened in the evaluation of the neighbor throughput
+information, then the invalid throughput result should not be stored in the
+throughtput EWMA.
 
 Cc: stable@vger.kernel.org
-Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
-Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
-[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
- soft_iface]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/bat_v_elp.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_elp.c | 50 ++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
 diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
-index 1d704574e6bf..fbf499bcc671 100644
+index fbf499bcc671..65e52de52bcd 100644
 --- a/net/batman-adv/bat_v_elp.c
 +++ b/net/batman-adv/bat_v_elp.c
-@@ -66,12 +66,19 @@ static void batadv_v_elp_start_timer(struct batadv_hard_iface *hard_iface)
- static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+@@ -59,11 +59,13 @@ static void batadv_v_elp_start_timer(struct batadv_hard_iface *hard_iface)
+ /**
+  * batadv_v_elp_get_throughput() - get the throughput towards a neighbour
+  * @neigh: the neighbour for which the throughput has to be obtained
++ * @pthroughput: calculated throughput towards the given neighbour in multiples
++ *  of 100kpbs (a value of '1' equals 0.1Mbps, '10' equals 1Mbps, etc).
+  *
+- * Return: The throughput towards the given neighbour in multiples of 100kpbs
+- *         (a value of '1' equals 0.1Mbps, '10' equals 1Mbps, etc).
++ * Return: true when value behind @pthroughput was set
+  */
+-static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
++static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
++					u32 *pthroughput)
  {
  	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
-+	struct net_device *soft_iface = hard_iface->soft_iface;
- 	struct ethtool_link_ksettings link_settings;
- 	struct net_device *real_netdev;
- 	struct station_info sinfo;
- 	u32 throughput;
- 	int ret;
+ 	struct net_device *soft_iface = hard_iface->soft_iface;
+@@ -77,14 +79,16 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ 	 * batman-adv interface
+ 	 */
+ 	if (!soft_iface)
+-		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++		return false;
  
-+	/* don't query throughput when no longer associated with any
-+	 * batman-adv interface
-+	 */
-+	if (!soft_iface)
-+		return BATADV_THROUGHPUT_DEFAULT_VALUE;
-+
  	/* if the user specified a customised value for this interface, then
  	 * return it directly
  	 */
-@@ -141,7 +148,7 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ 	throughput =  atomic_read(&hard_iface->bat_v.throughput_override);
+-	if (throughput != 0)
+-		return throughput;
++	if (throughput != 0) {
++		*pthroughput = throughput;
++		return true;
++	}
+ 
+ 	/* if this is a wireless device, then ask its throughput through
+ 	 * cfg80211 API
+@@ -111,19 +115,24 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ 			 * possible to delete this neighbor. For now set
+ 			 * the throughput metric to 0.
+ 			 */
+-			return 0;
++			*pthroughput = 0;
++			return true;
+ 		}
+ 		if (ret)
+ 			goto default_throughput;
+ 
+-		if (sinfo.filled & BIT(NL80211_STA_INFO_EXPECTED_THROUGHPUT))
+-			return sinfo.expected_throughput / 100;
++		if (sinfo.filled & BIT(NL80211_STA_INFO_EXPECTED_THROUGHPUT)) {
++			*pthroughput = sinfo.expected_throughput / 100;
++			return true;
++		}
+ 
+ 		/* try to estimate the expected throughput based on reported tx
+ 		 * rates
+ 		 */
+-		if (sinfo.filled & BIT(NL80211_STA_INFO_TX_BITRATE))
+-			return cfg80211_calculate_bitrate(&sinfo.txrate) / 3;
++		if (sinfo.filled & BIT(NL80211_STA_INFO_TX_BITRATE)) {
++			*pthroughput = cfg80211_calculate_bitrate(&sinfo.txrate) / 3;
++			return true;
++		}
+ 
+ 		goto default_throughput;
+ 	}
+@@ -142,8 +151,10 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ 			hard_iface->bat_v.flags &= ~BATADV_FULL_DUPLEX;
+ 
+ 		throughput = link_settings.base.speed;
+-		if (throughput && throughput != SPEED_UNKNOWN)
+-			return throughput * 10;
++		if (throughput && throughput != SPEED_UNKNOWN) {
++			*pthroughput = throughput * 10;
++			return true;
++		}
+ 	}
  
  default_throughput:
- 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
--		batadv_info(hard_iface->soft_iface,
-+		batadv_info(soft_iface,
- 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
- 			    hard_iface->net_dev->name,
- 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
+@@ -157,7 +168,8 @@ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
+ 	}
+ 
+ 	/* if none of the above cases apply, return the base_throughput */
+-	return BATADV_THROUGHPUT_DEFAULT_VALUE;
++	*pthroughput = BATADV_THROUGHPUT_DEFAULT_VALUE;
++	return true;
+ }
+ 
+ /**
+@@ -169,15 +181,21 @@ void batadv_v_elp_throughput_metric_update(struct work_struct *work)
+ {
+ 	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+ 	struct batadv_hardif_neigh_node *neigh;
++	u32 throughput;
++	bool valid;
+ 
+ 	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+ 				   metric_work);
+ 	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+ 			     bat_v);
+ 
+-	ewma_throughput_add(&neigh->bat_v.throughput,
+-			    batadv_v_elp_get_throughput(neigh));
++	valid = batadv_v_elp_get_throughput(neigh, &throughput);
++	if (!valid)
++		goto put_neigh;
++
++	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
+ 
++put_neigh:
+ 	/* decrement refcounter to balance increment performed before scheduling
+ 	 * this task
+ 	 */
 -- 
 2.39.5
 
