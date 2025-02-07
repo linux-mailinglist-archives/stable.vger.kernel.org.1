@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-114225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E89A2BF92
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:39:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8247A2BF93
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00210169455
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:39:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73FC416992D
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB51DE2BF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AAF1DE3AE;
 	Fri,  7 Feb 2025 09:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xJBddyY7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qWVKt+F6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pUPLgXFa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rZNrnwW+"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970D0481B6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E6D13C9A3;
 	Fri,  7 Feb 2025 09:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738921151; cv=none; b=qeUqAWSejZxT42dhV6ySurCuDnftIf8/Mr4ZhTAmgH8t4dK7cN8jI8Xnodc7iYEQy5OBqnHIZTMvtrEPVtaErSfhmgqK/Jp1ukK2nxMevW8oCEDMw9HQghHbLWY1hgGGePimcopY0Akln+qCvSq2jyXZpm5nO7hH9/Re7LegPbU=
+	t=1738921151; cv=none; b=if1Pvc3DoWge9/QZvvAXGin6+vdkeWrhIbjAnVVFUfSyscm/w9nEN+UBefO7FiX0mDFo5wZA1SAk6WRH7lJhdTk88xGjBCHbqgDxJIiZcOZGXE8Am+9KGgr6ucMW767djdbapDK4DIhwPrl/HutKOK5crSbMeJtqU8+zubtc8hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738921151; c=relaxed/simple;
-	bh=07a7zO22lqqx0uPehtxqwwQPs3Go5oYt4L9UEaHArB0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B+WI8ANxE/wuKRj/yCxS48yNo35vSY4BcvaHNGP5MJi2zFytn50OCl2yIz2bLMC4G7bVOfqzRct7CYNktJjuVGX+KK3m/d0Dpn3GMphrUjxtctgM6cSV+F98lSYnWyp6Or84wiXiWuMWWX8NIu8trRlTDdOGb/OlFSrbAVqSJDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xJBddyY7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qWVKt+F6; arc=none smtp.client-ip=193.142.43.55
+	bh=kTfv69N70jRYPW4PfE2gGidB3Lx+7n93IMhTANRVrYE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ravht3/O4MK8W3rYS7o3TPWa54uOyKxDGocO6HCBaeXeMoPwBehrqF8dpskalqgkvWg9PcHsyIF/zkn3bj+W8gOJWAN1rteRdjzYFWktreAI3rCv9/gHiS2AbaHZAtyxi4XBtah9oTC78f4mu/kV55qlu+Qo77wFJiovdSysDAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pUPLgXFa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rZNrnwW+; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738921147;
+	s=2020; t=1738921148;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lPgKIcdFP2NxJcFQKZs1+KGN4CChjbcR4yJdh1Rx6b8=;
-	b=xJBddyY7Zauoxo9cQqWv2CL43/m/oP2U2s1DHymNBUX83IL+1AkrDEtlSkJJ0ZSw4ZmzeU
-	WwO4D0y3YmEKCm4oTuSsv31i55YWaAMoY7tFWOH2HQZNYetWn9TW+LmhuChJ/1bEPU6Pov
-	x6rhXrTEyX6SNqWc6AEBMFZoRMCscBteYc1n/jnUwWV4cgbkeLe8bxww+A8+pOivAJgSUs
-	pvUGTyXbZY1FE/5hIaS91JSloh8HOm3tLCoU6gGwSY2spWdjUp0QmQELFJXbGbth59F/Gw
-	ZE0ibv1O1MZ9tqliQua+V56hZQvqjwiHGTxM3bgafWsCYW4rpYLrXBSYY8lmNA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OGKJRgcHeTsvHCCIhahevFs9ZoQcn4ms3fb+kPTrYUw=;
+	b=pUPLgXFaDGWrQ5TSaSsCKK7CMqDdW27b68OIDaQM1CHubYZldfxMSWOp4pGzduuyh36qs1
+	T8yQSDklKXkuFklPN2EEBmEB7plqmpXoe8urrj+TmQzz7Mx6mTOjNX+in+ohHpStH/tmcC
+	c6JR0q7KMY6RBe/01+TDHty2typlgcm6mPV9yFVP1bN3lObWNKbA8acLgcrWP/2n4RH9Ub
+	ZLswa/zgY2yBTJEJIBiLj9ezhNwEwfUAaCzM2iLx+hAO25XNCIwX1A9B7h8rkRrWiQWocL
+	2g7jL5e5vX6uFSk1eZ/t0kCEZgabGqVZ+il9/+/tSyggg21RTHJ5exBhseGBaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738921147;
+	s=2020e; t=1738921148;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lPgKIcdFP2NxJcFQKZs1+KGN4CChjbcR4yJdh1Rx6b8=;
-	b=qWVKt+F65rIuo6lnMUh0kT4pZDVJASAewUyP8S5bsB+G5DdWH1SoOLBDaQ3B1xHMfe8MKV
-	5VEPs4faUCdl17Dg==
-Subject: [PATCH net v2 0/5] ptp: vmclock: bugfixes and cleanups for error
- handling
-Date: Fri, 07 Feb 2025 10:39:01 +0100
-Message-Id: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OGKJRgcHeTsvHCCIhahevFs9ZoQcn4ms3fb+kPTrYUw=;
+	b=rZNrnwW+9h7sQmNnvHKyUxWAMHxultlcKQzohTuYuJDqnHkbz+FuwsxPdgmIUGDPS5bviL
+	CakQJH32PygzfCCg==
+Date: Fri, 07 Feb 2025 10:39:02 +0100
+Subject: [PATCH net v2 1/5] ptp: vmclock: Add .owner to
+ vmclock_miscdev_fops
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,11 +65,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIALbUpWcC/3WNQQ7CIBREr9L8tRhKRaIr72G6APq1P1ZoAElNw
- 90l7F2+mcybHSIGwgjXboeAmSJ5V0EcOrCzdk9kNFUGwYXkgp9ZftvF2xdbgzfIpLLGGqX4RUi
- omzXgg7bmu4PDBGMNZ4rJh2/7yH2r/uhyzzjrlR5Qc2VwON0Wcp8UvKPtOCGMpZQfoindtrMAA
- AA=
-X-Change-ID: 20250206-vmclock-probe-57cbcb770925
+Message-Id: <20250207-vmclock-probe-v2-1-bc2fce0bdf07@linutronix.de>
+References: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
+In-Reply-To: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
 To: David Woodhouse <dwmw2@infradead.org>, 
  Richard Cochran <richardcochran@gmail.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -78,47 +78,41 @@ Cc: Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
  linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
  stable@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738921146; l=1229;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738921146; l=908;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=07a7zO22lqqx0uPehtxqwwQPs3Go5oYt4L9UEaHArB0=;
- b=FCeeQ0id5SVolworsceb5H9jhSEHTlZI9xXjZJ995//1a1F3ghCrCla/HtvGCW0OjjB3Z21K1
- AVJbUglZ+3aBCJ7olEjfUs2pu/9Ht6tlyiVjynEPfB64U5u00Te9K5X
+ bh=MFy8Kvx9GfNv7kEwQZwKavMJ1HFnaFSDW05FWmtv9l0=;
+ b=FhK5DAQshdTsQDR3kmHqezcN25DxsO+GNEzCCmLMZaUkHHdxVobJAN70DHC3pWCzlbjKqnIYm
+ rkbpqgaaKLsCgdQPRhJlJs6BUtoxDxWr/RogxLH4J+VVVUUhRmwVAOn
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-Some error handling issues I noticed while looking at the code.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Only compile-tested.
+Without the .owner field, the module can be unloaded while /dev/vmclock0
+is open, leading to an oops.
 
+Fixes: 205032724226 ("ptp: Add support for the AMZNC10C 'vmclock' device")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-Changes in v2:
-- Fix typo in commit message: vmclock_ptp_register()
-- Retarget against net tree
-- Include patch from David. It's at the start of the series so that all
-  bugfixes are at the beginning and the logical ordering of my patches
-  is not disrupted.
-- Pick up tags from LKML
-- Link to v1: https://lore.kernel.org/r/20250206-vmclock-probe-v1-0-17a3ea07be34@linutronix.de
+ drivers/ptp/ptp_vmclock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
----
-David Woodhouse (1):
-      ptp: vmclock: Add .owner to vmclock_miscdev_fops
+diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
+index 0a2cfc8ad3c5408a87fd8fedeff274ab895de3dd..dbc73e5382935dcbc799ea608b87f5ff51044ebc 100644
+--- a/drivers/ptp/ptp_vmclock.c
++++ b/drivers/ptp/ptp_vmclock.c
+@@ -414,6 +414,7 @@ static ssize_t vmclock_miscdev_read(struct file *fp, char __user *buf,
+ }
+ 
+ static const struct file_operations vmclock_miscdev_fops = {
++	.owner = THIS_MODULE,
+ 	.mmap = vmclock_miscdev_mmap,
+ 	.read = vmclock_miscdev_read,
+ };
 
-Thomas Weißschuh (4):
-      ptp: vmclock: Set driver data before its usage
-      ptp: vmclock: Don't unregister misc device if it was not registered
-      ptp: vmclock: Clean up miscdev and ptp clock through devres
-      ptp: vmclock: Remove goto-based cleanup logic
-
- drivers/ptp/ptp_vmclock.c | 47 +++++++++++++++++++++--------------------------
- 1 file changed, 21 insertions(+), 26 deletions(-)
----
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-change-id: 20250206-vmclock-probe-57cbcb770925
-
-Best regards,
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.48.1
 
 
