@@ -1,97 +1,172 @@
-Return-Path: <stable+bounces-114267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BC1A2C725
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:30:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 888F5A2C75D
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32DAF7A6448
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 15:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D0B162FF0
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 15:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82CD1EB19D;
-	Fri,  7 Feb 2025 15:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n65epe05"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1DC1EB1BC;
+	Fri,  7 Feb 2025 15:37:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE24238D58
-	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 15:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40631EB19B;
+	Fri,  7 Feb 2025 15:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738942164; cv=none; b=EhyryIobD4f16V6r6MdzSkmzJs2lJZSWfExtUdicBG6COFVoMa0Zd4aoNH9KR7HmKjil5TGU7u60mbYo5pI1Y8HN5FmOk+yEREAHG5ApFwHKBAT39yjgOnM9E3Kfjh+d4kSKydUXbNIAteMGPb1TxNcVyryVTDeLLiR28N/TpMc=
+	t=1738942676; cv=none; b=fhWZhEzNgdPOzEGsoVV0HyNI78BhZtHgHsqbanJPQ8r93OkUMAMuGQYAVVSz1nr4M39YeDbe+g/vsLOy21tUXqdxibQIN9qar2+DwRwU8elcRdI+fQcNroWI7bCdExOYibEjHZ70k1ehV/Zd900KWOp2IBe3I+IWqm42uACfCgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738942164; c=relaxed/simple;
-	bh=OTFyLpxN6C5VuMjj49IaWGV1upiyLkZbFT2jAtsQFGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=fE3zrywEdd5KQkvQ5SVRy+0k4Bq3ITNckkuBuK8zDKXcmc/e3Y503LwzgEhpU1OhLWJIiy+kjvcSgHmKGI+p0n7h+4hAPJDG2kVVj33ptwzQ6GL/QASKLr64xT6YFbYvVi6S/nlTbj6nEP7m00MDSaFrB5WK+LbzBdVGMIeeXX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n65epe05; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso13429125e9.1
-        for <stable@vger.kernel.org>; Fri, 07 Feb 2025 07:29:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738942160; x=1739546960; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v9uBaRTvniPQLL4y9k/ubMP7M1hOn1Tj5yYlr3MZgxQ=;
-        b=n65epe05Z7msO7kfYF+G9HmvJ7pHqk/D6XsRWwh7hDmyhheayIZfA3LWu+/G/IDbMz
-         +VDxZ397p8fhdt1kQxgPIg431hq1/3rH8bytPOwja0tutK2IACvHrTrdaJ7vJy4njCAG
-         nAwNeMX/fRZ+Znui/1W+WKb8G3cXisbmYQU1N8RZ2Lqh036McCBgoJuuB7KV9j1wEZ4d
-         iY4+U8EdvEqC+YTW8dbECJDgHz43RVY4hBYSnFF52/bJNDeSnNKGt3deXKALtLiWfVyq
-         XnGb9tW6BpaWQQnwOBJZXF0iWBomA9s7ml/j3CtfZxHu7HK377HywDQRB30gfYj8eHie
-         bbHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738942160; x=1739546960;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v9uBaRTvniPQLL4y9k/ubMP7M1hOn1Tj5yYlr3MZgxQ=;
-        b=BFBgAhGRH0NEgRRrgsL51y2puDVjyNM2RYHX9iaxLB0/xYt9kCF6uXFHsFWb6UDRXr
-         xWuedRybbEL0GR0m1ez8G/1X9PQOap9FNdtRFroqHlr07vbD6KKCbvYMpfRBg1NUrnBF
-         QavUljgYYjaaseo56yo1uNsQFb1dgnBX/WCaq27kcOJ4kl1cyQ79G+MRbucmXZnO+5e9
-         pZjsvDZPbK0jLuh0juat6TfC5lY5dmH9OM1b7FHTOuNRWXrU9fcQOumZlLRZNgNq//v4
-         F7/tOCkkVUlaROvPy+vG5QPc5DzD6cr0ZkxjjIfc1Yk1PKWIwKMEpTxcLN8Im0RsU4de
-         k+4A==
-X-Gm-Message-State: AOJu0YzGggl9FHv0MrgCuE6n0EeXvcdaamm7CaQEGplkxHdGKOTGVU7B
-	52e7ylVBl1xt9vVLHutoE6RMwuHtC3Ycp3w9+4b+MDm+AlKTWyBF9986faMRS8I=
-X-Gm-Gg: ASbGncvKXRFcQSXBSj0oCwmYt3KcykQUrZmbzLqrpzaQCiNHpvNIMehmdzQ2VXTs7nN
-	Syc5p70oPsyXfd2/gg9n178vOrfK88I4DQaaTBl23CG+jtVM9WP5YYSGgZXVs9GkXFziyc+E/si
-	wgtr3p3LwXTCjq8m3jPvVZODl0oduhVCXJIVo8Ak6pvgnN40Qv9bBpBXYGetZXy236iEXu5sVty
-	ti4jyZoHM6fd5C6cyEe5otx+b1+eLh/MzNkShxM6DXfNARjVJ2WKGmJCCfOD6J7QWuDdoRw5dGG
-	YeQ3/cvVunAUXVNLdGOJ
-X-Google-Smtp-Source: AGHT+IHw/7SkLNh3+GoLq4ArzhbTKTIC8ugTZ+xvY50S+PpRvFB2glfM4JxIKwBUi6SdVCWoBonkUw==
-X-Received: by 2002:a05:600c:3b91:b0:434:e892:1033 with SMTP id 5b1f17b1804b1-43912d0f1e1mr56753875e9.2.1738942160302;
-        Fri, 07 Feb 2025 07:29:20 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4390d94d802sm97702125e9.12.2025.02.07.07.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 07:29:20 -0800 (PST)
-Date: Fri, 7 Feb 2025 18:29:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Anders Roxell <anders.roxell@linaro.org>,
-	Sasha Levin <sashal@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Subject: [stable] please apply media: cxd2841er: fix 64-bit division on gcc-9
-Message-ID: <Z6YmzKDqPjwpTZI9@stanley.mountain>
+	s=arc-20240116; t=1738942676; c=relaxed/simple;
+	bh=VOepS3saF6lXyvNja4h23kQbudvfHAFdAOjA8Ph7kJY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fC/w6rbhZeMdL+WEyLBPf1OUIm+l7e+OG+4izEntAyrTqT3r4R00BzfkzTn1q0MQdNOuEv5KnkP0IJ/8r7WKlsgGMJypGBIvBLFH5CC5vSX26ljh+bWuuSjgL6baWLdFY6WhmhavIOV+iiET3gxN/i4rP5nn/2qhHLf2PfF5A1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 3BA2824CC6;
+	Fri,  7 Feb 2025 18:37:40 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru [10.177.185.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  7 Feb 2025 18:37:39 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.177.20.117])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YqJ4x4phBz1gyXY;
+	Fri,  7 Feb 2025 18:37:37 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Longlong Xia <xialonglong@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10/5.15] tty: n_gsm: Fix use-after-free in gsm_cleanup_mux
+Date: Fri,  7 Feb 2025 18:36:51 +0300
+Message-Id: <20250207153651.7115-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/02/07 14:10:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;new-mail.astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190874 [Feb 07 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/02/07 12:24:00 #27143140
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/02/07 14:13:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-Hi Greg and Sasha,
+commit 9462f4ca56e7d2430fdb6dcc8498244acbfc4489 upstream.
 
-Could you please apply commit 8d46603eeeb4 ("media: cxd2841er: fix 64-bit
-division on gcc-9") on v6.13.y?  It fixes the build with gcc-8 on arm32.
-It applies cleanly to older kernels as well, but it's only required
-for v6.13.y.
+BUG: KASAN: slab-use-after-free in gsm_cleanup_mux+0x77b/0x7b0
+drivers/tty/n_gsm.c:3160 [n_gsm]
+Read of size 8 at addr ffff88815fe99c00 by task poc/3379
+CPU: 0 UID: 0 PID: 3379 Comm: poc Not tainted 6.11.0+ #56
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX
+Desktop Reference Platform, BIOS 6.00 11/12/2020
+Call Trace:
+ <TASK>
+ gsm_cleanup_mux+0x77b/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
+ __pfx_gsm_cleanup_mux+0x10/0x10 drivers/tty/n_gsm.c:3124 [n_gsm]
+ __pfx_sched_clock_cpu+0x10/0x10 kernel/sched/clock.c:389
+ update_load_avg+0x1c1/0x27b0 kernel/sched/fair.c:4500
+ __pfx_min_vruntime_cb_rotate+0x10/0x10 kernel/sched/fair.c:846
+ __rb_insert_augmented+0x492/0xbf0 lib/rbtree.c:161
+ gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
+ _raw_spin_lock_irqsave+0x92/0xf0 arch/x86/include/asm/atomic.h:107
+ __pfx_gsmld_ioctl+0x10/0x10 drivers/tty/n_gsm.c:3822 [n_gsm]
+ ktime_get+0x5e/0x140 kernel/time/timekeeping.c:195
+ ldsem_down_read+0x94/0x4e0 arch/x86/include/asm/atomic64_64.h:79
+ __pfx_ldsem_down_read+0x10/0x10 drivers/tty/tty_ldsem.c:338
+ __pfx_do_vfs_ioctl+0x10/0x10 fs/ioctl.c:805
+ tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
 
-regards,
-dan carpenter
+Allocated by task 65:
+ gsm_data_alloc.constprop.0+0x27/0x190 drivers/tty/n_gsm.c:926 [n_gsm]
+ gsm_send+0x2c/0x580 drivers/tty/n_gsm.c:819 [n_gsm]
+ gsm1_receive+0x547/0xad0 drivers/tty/n_gsm.c:3038 [n_gsm]
+ gsmld_receive_buf+0x176/0x280 drivers/tty/n_gsm.c:3609 [n_gsm]
+ tty_ldisc_receive_buf+0x101/0x1e0 drivers/tty/tty_buffer.c:391
+ tty_port_default_receive_buf+0x61/0xa0 drivers/tty/tty_port.c:39
+ flush_to_ldisc+0x1b0/0x750 drivers/tty/tty_buffer.c:445
+ process_scheduled_works+0x2b0/0x10d0 kernel/workqueue.c:3229
+ worker_thread+0x3dc/0x950 kernel/workqueue.c:3391
+ kthread+0x2a3/0x370 kernel/kthread.c:389
+ ret_from_fork+0x2d/0x70 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:257
+
+Freed by task 3367:
+ kfree+0x126/0x420 mm/slub.c:4580
+ gsm_cleanup_mux+0x36c/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
+ gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
+ tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
+
+[Analysis]
+gsm_msg on the tx_ctrl_list or tx_data_list of gsm_mux
+can be freed by multi threads through ioctl,which leads
+to the occurrence of uaf. Protect it by gsm tx lock.
+
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240926130213.531959-1-xialonglong@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Alexey: Replace guard macro with spin_lock_irqsave due to its unavailability
+in pre-6.1 kernels. Based on a v1 patch from Longlong Xia [1]. ]
+Link: https://lore.kernel.org/all/20240924093519.767036-1-xialonglong@kylinos.cn/ [1]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+---
+Backport fix for CVE-2024-50073
+ drivers/tty/n_gsm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index aae9f73585bd..1becbdf7c470 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2443,6 +2443,7 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	int i;
+ 	struct gsm_dlci *dlci;
+ 	struct gsm_msg *txq, *ntxq;
++	unsigned long flags;
+ 
+ 	gsm->dead = true;
+ 	mutex_lock(&gsm->mutex);
+@@ -2471,9 +2472,12 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
++
++	spin_lock_irqsave(&gsm->tx_lock, flags);
+ 	list_for_each_entry_safe(txq, ntxq, &gsm->tx_list, list)
+ 		kfree(txq);
+ 	INIT_LIST_HEAD(&gsm->tx_list);
++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
+ }
+ 
+ /**
+-- 
+2.30.2
+
 
