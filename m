@@ -1,181 +1,130 @@
-Return-Path: <stable+bounces-114274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB3AA2C8A8
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 17:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D871A2C95E
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 17:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A6B2169213
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:25:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF0CD166D36
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79E118BC3F;
-	Fri,  7 Feb 2025 16:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EPcJROjt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5E518DB37;
+	Fri,  7 Feb 2025 16:55:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C933B57C9F
-	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 16:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5354F8479;
+	Fri,  7 Feb 2025 16:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738945443; cv=none; b=TgGZQgHvS7Z/pDYcwV5No9ZskaPkLEEA0BQ2LQceZMLDJE3/OlLACJmh+pYnRhqqV3AUPHZEGSphLehOmbLNLWK5lIRX/Folfm/N2szKcPD68xNDuZfn2to1MJMvWph5PqHcJxfyc1YAcHarmVR1vDKYMH6ljxlHwyK0GGwk+do=
+	t=1738947348; cv=none; b=f1DhjRKGgOR7yRJzKAxPN/CO5bxUSlkYy/fiWUMQeEwgTD7RXpVWaQSpkNteHQYxNgE7S37EnLhM+r7Cb7VhoeFTPwN/B8ls5umwWaIKgSg1rxumvgR8617ykdgUay3CsBvtoKi5GrQsiAGgvmKGdmp+bZjHqNuXWfORG2rTUpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738945443; c=relaxed/simple;
-	bh=VpKkhKPCwP/eWjXtyw93qnuZirQn/Fe0LjWFYpfLIZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MZt39XnKJ6J6BHMebIL560YYXGWksTgysk2xR/X6hNWgr1YmCGs5AeFxsujBPdjJ4bwBQ3OxHDGsHyf7rb8U8bZZbBZ9fHGmsGkG1wkDBzVOZ1a7Nd98O75evqDFt7XnGis8MDdOMTcEFv5CKf40Pc+U0tSy1GW4yxWa4l59Qv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EPcJROjt; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738945441; x=1770481441;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VpKkhKPCwP/eWjXtyw93qnuZirQn/Fe0LjWFYpfLIZQ=;
-  b=EPcJROjtZ+mdkquQTg+xo3hd1IC86uWRlmgyZNQKa4OuAb8tPSlcTyon
-   GBVpVV8zsIwwhvSenOuuO0IHdBAFDM27jllQH8f4j7aVXFmpjDWQPGcyE
-   VeUkB4CTC6SO5IeA+IGuogcKADdniy1VxjYS071pCYzeTLp3pm7tX9FC0
-   6t9bFPlpM/RH/GhicpKhPSmhxKwwPad52A0+8FbGwx3lbdOEVGMVL+iMw
-   hnxtKN+yhbs0j0NoTd66IRhvqPot6RaFKxzVGXxVLm4fk7Rgm1DoHsscw
-   iF2WjNn11B0KxC+BGParnKSyQrIR5oWOZTHQbFfBMBHXCBh4if1dIJl2J
-   Q==;
-X-CSE-ConnectionGUID: 51UAj3JuQKCuxR42v9/wiQ==
-X-CSE-MsgGUID: oogm6+72TjeEOsKZxTNZbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="39500227"
-X-IronPort-AV: E=Sophos;i="6.13,267,1732608000"; 
-   d="scan'208";a="39500227"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2025 08:24:01 -0800
-X-CSE-ConnectionGUID: oM55lDiSRhy1fQr81Ew6/A==
-X-CSE-MsgGUID: ulxWW6C3S7CUFqVmkLG45g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116768616"
-Received: from nirmoyda-desk.igk.intel.com ([10.211.135.230])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2025 08:24:00 -0800
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/xe: Carve out wopcm portion from the stolen memory
-Date: Fri,  7 Feb 2025 17:43:34 +0100
-Message-ID: <20250207164334.1393054-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1738947348; c=relaxed/simple;
+	bh=Kf7lV+gHtfPMZlxIak0NF3IgwD7fvSoGJtBstYM4Gvs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EVpPgTBCjmkgJOII+ZMtq0RqzQuA/d0zVG5BO6WNEX1vQmG02ikNcFjHSt8ksA8ny6fyRwpRVGnHwtdusNa5tGYkYKp/9OGlQAmlO52gLkVtR5Fz+wKQL8+aN+AYiC1LUFiA7IPmUNWebWl9bV4gIUY3Se3pqFJzRkGIjsKY6Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 178DC24D4C;
+	Fri,  7 Feb 2025 19:55:39 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail05.astralinux.ru [10.177.185.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  7 Feb 2025 19:55:37 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.177.20.117])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YqKpv34m9z1c051;
+	Fri,  7 Feb 2025 19:55:35 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Subject: [PATCH 6.1] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
+Date: Fri,  7 Feb 2025 19:55:32 +0300
+Message-Id: <20250207165532.29963-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
 Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/02/07 15:20:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;lore.kernel.org:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190876 [Feb 07 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/02/07 12:24:00 #27143140
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/02/07 15:21:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-Top of stolen memory is wopcm which shouldn't be accessed so remove
-that portion of memory from the stolen memory.
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-Fixes: d8b52a02cb40 ("drm/xe: Implement stolen memory.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
+
+In the cdns_i3c_master_probe function, &master->hj_work is bound with
+cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
+cnds_i3c_master_demux_ibis function to start the work.
+
+If we remove the module which will call cdns_i3c_master_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
+
+CPU0                                      CPU1
+
+                                     | cdns_i3c_master_hj
+cdns_i3c_master_remove               |
+i3c_master_unregister(&master->base) |
+device_unregister(&master->dev)      |
+device_release                       |
+//free master->base                  |
+                                     | i3c_master_do_daa(&master->base)
+                                     | //use master->base
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in cdns_i3c_master_remove.
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
 ---
- drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c | 54 ++++++++++++++------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+Backport fix for CVE-2024-50061
+ drivers/i3c/master/i3c-master-cdns.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-index 423856cc18d4..d414421f8c13 100644
---- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-+++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-@@ -57,12 +57,35 @@ bool xe_ttm_stolen_cpu_access_needs_ggtt(struct xe_device *xe)
- 	return GRAPHICS_VERx100(xe) < 1270 && !IS_DGFX(xe);
- }
- 
-+static u32 get_wopcm_size(struct xe_device *xe)
-+{
-+	u32 wopcm_size;
-+	u64 val;
-+
-+	val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
-+	val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
-+
-+	switch (val) {
-+	case 0x5 ... 0x6:
-+		val--;
-+		fallthrough;
-+	case 0x0 ... 0x3:
-+		wopcm_size = (1U << val) * SZ_1M;
-+		break;
-+	default:
-+		WARN(1, "Missing case wopcm_size=%llx\n", val);
-+		wopcm_size = 0;
-+	}
-+
-+	return wopcm_size;
-+}
-+
- static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index 35b90bb686ad..c5a37f58079a 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -1667,6 +1667,7 @@ static int cdns_i3c_master_remove(struct platform_device *pdev)
  {
- 	struct xe_tile *tile = xe_device_get_root_tile(xe);
- 	struct xe_mmio *mmio = xe_root_tile_mmio(xe);
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
--	u64 stolen_size;
-+	u64 stolen_size, wopcm_size;
- 	u64 tile_offset;
- 	u64 tile_size;
+ 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
  
-@@ -74,7 +97,13 @@ static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- 	if (drm_WARN_ON(&xe->drm, tile_size < mgr->stolen_base))
- 		return 0;
++	cancel_work_sync(&master->hj_work);
+ 	i3c_master_unregister(&master->base);
  
-+	/* Carve out the top of DSM as it contains the reserved WOPCM region */
-+	wopcm_size = get_wopcm_size(xe);
-+	if (drm_WARN_ON(&xe->drm, !wopcm_size))
-+		return 0;
-+
- 	stolen_size = tile_size - mgr->stolen_base;
-+	stolen_size -= wopcm_size;
- 
- 	/* Verify usage fits in the actual resource available */
- 	if (mgr->stolen_base + stolen_size <= pci_resource_len(pdev, LMEM_BAR))
-@@ -89,29 +118,6 @@ static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- 	return ALIGN_DOWN(stolen_size, SZ_1M);
- }
- 
--static u32 get_wopcm_size(struct xe_device *xe)
--{
--	u32 wopcm_size;
--	u64 val;
--
--	val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
--	val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
--
--	switch (val) {
--	case 0x5 ... 0x6:
--		val--;
--		fallthrough;
--	case 0x0 ... 0x3:
--		wopcm_size = (1U << val) * SZ_1M;
--		break;
--	default:
--		WARN(1, "Missing case wopcm_size=%llx\n", val);
--		wopcm_size = 0;
--	}
--
--	return wopcm_size;
--}
--
- static u32 detect_bar2_integrated(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+ 	clk_disable_unprepare(master->sysclk);
 -- 
-2.46.0
+2.30.2
 
 
