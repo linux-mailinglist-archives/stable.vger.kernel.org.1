@@ -1,191 +1,111 @@
-Return-Path: <stable+bounces-114200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B8AA2BABF
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 06:43:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6DDA2BAC5
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 06:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0BE166977
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 05:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7277B3A7C97
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 05:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23F2233150;
-	Fri,  7 Feb 2025 05:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0770C23315C;
+	Fri,  7 Feb 2025 05:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hqgmSoZy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gTz+oIII"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DCC13CFA6;
-	Fri,  7 Feb 2025 05:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B8213CFA6;
+	Fri,  7 Feb 2025 05:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738906987; cv=none; b=BtDGGCuYpS5XRCwWnD/EklYlUjwMakiT8yzLNKtlc9BNTdi7BLeBtVmBk8PpnepKGqyCuVScQSnwOmAqIMIztynpoaa15pE3UbMqfhUrtyIefcT8ZPOylZ2tJLb3pV0IFbfpbXnx5deHYv7xcMuuVFuYI0z3hRlgMLVwFZUGnPM=
+	t=1738907021; cv=none; b=ujYYOq3w54kL2GIaH8RxtdIFBvh/doUs+s+/P1JyMDFmg+fjS+ghOzjHqeVvQsLolecDm0GsbOWGTWoZBKuMDJ9VlpW6ZgJnN67cDjKWmkYTJIcJU1+83LCh8tjw1DRvh7H/LZ1s8wpp9un1MUNJxk59+x21FpEJTluKOq41zSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738906987; c=relaxed/simple;
-	bh=11k0J7SJXQWZRFuWCglBUF7/hV4fhUXshZRVhbYDlL0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ElQSZtgIDeYQkBl6UDOcSDJvdwgwUyNn8PdcLgHSBRt1NSsAiVPKyWM1D+gX61DD2Md91eOL8Un4Tg/KaqMKYB1njqQ+WzVpxWaON5TP6mxC9eQS0Q8FCH1VUPQTmPHDdGr3BZIkjQjEPnjI0rxv8Lvjntt+Ibe/6KIfUNe0GGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=hqgmSoZy; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 5175gq222868858
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Feb 2025 23:42:52 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1738906972;
-	bh=H37U1nr2lOv9jYFyNln2CSztqFrKuMmT/UtblK3qmKo=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=hqgmSoZywUlBqmrCAcuuV6QlsFMrfFxXuVFw/rn3+23Kya2iHIDU5WD7xE2tcctho
-	 /lsrOdmumIvgbOa6OpkczXC/ODrOGEopDwh1kX15CGxmLaiLvFZ75eKiZBoWMgr2Zu
-	 AkJEnnvQqRQUC3Qntag//YDudh07urACNQCdPZBc=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 5175gqS0016443
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 6 Feb 2025 23:42:52 -0600
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
- Feb 2025 23:42:52 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 6 Feb 2025 23:42:52 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.104])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5175gptM115695;
-	Thu, 6 Feb 2025 23:42:51 -0600
-Date: Fri, 7 Feb 2025 11:12:50 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Peter Chen <peter.chen@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <pawell@cadence.com>,
-        <rogerq@kernel.org>, <gregkh@linuxfoundation.org>, <balbi@kernel.org>,
-        <jun.li@nxp.com>, <linux-usb@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] usb: cdns3: exit cdns3_gadget_udc_start if
- FAST_REG_ACCESS cannot be set
-Message-ID: <tf7qwkoybolexehzagzel67kdxdfsve2f3qdueomedld72v7pp@bquo47wpsxul>
-References: <20250206125943.786949-1-s-vadapalli@ti.com>
- <20250207022523.GA22848@nchen-desktop>
+	s=arc-20240116; t=1738907021; c=relaxed/simple;
+	bh=QZ+/ABzqoT4spBJY25jeXthY0X87myu/uIIk+g7BFFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DTTwtRSiZxskkeDRE9W3JJCnym53czPddSjTXhWBdHxKrBVeEU+jZkYQh7Tsw0lXIzN1v+/eQal5mqb5tyzpa5P0g6QL0Go1drh1SuyNbeyW+/yPw9HWSVzFikmXsA8LfQ3Qeg9sSxKFrlZEdW2ZEXq9trIDSTdke+KAyWymKUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gTz+oIII; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-21f573ff39bso1969775ad.1;
+        Thu, 06 Feb 2025 21:43:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738907020; x=1739511820; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4oaIvYvQBu4niJTPgoiSKYP3MHzIjlH/YJlINX4NRXQ=;
+        b=gTz+oIIIbs0ldfOeuJLjSqi1vgBp7YP08QEHONqoAS6Ab3t6e0nvreuw+SAGGpbe2x
+         QSaIilSYcj9DOzeSZNVLpGrtlvOcm6r7tZH9GefgP1807GQGIgHqwEctmeMitnvAlEe2
+         lbk4ZzjM9EjCq5Mqic2EoO2KuoMLzrWZWwP+svOdzxKlMmwFdHSVKF1cyL3FIVozJK0K
+         NY9kxM9aAKHDUmi7Li+mWj76zuOPEtmdmOtNSSfiqbkgB6Z8Fkiq786AwMYAMjqjdzrw
+         70ERafbfciwYZ0acxXEclCmSP7IRT59uj6M3F0A/HqyufnGKd2OsLJLdtSr6mOw1fDwi
+         Dytw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738907020; x=1739511820;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4oaIvYvQBu4niJTPgoiSKYP3MHzIjlH/YJlINX4NRXQ=;
+        b=lgFSD0CI0k/Li2TANyt7UwcqCoUBMgiEodqyhaeTqyM/5k2zHj9H6XYLQxssGf/yCP
+         mpd7hyhk9ORbbOc/Aszo4cjavuOVtmIoJReRpGOL/kq/KcIgMcHvthiydVzAf9hESYev
+         3/Tpc9681rd2F2z2vsHRB2YLdBtSPr40vnuZEudoPQEyUHI6ZJfJV5nFgHpmk7Ma6vOI
+         D2XLLeYULYfwzECept9Q7e2MvR7sbqfe90biMg+19clVOYyUpJBGnDxP7ZW3UohUewPd
+         Bo9qBGwVzv9vqjDiatcc7SRn448/2NjrbET3S1pjcOoutNoJ3HBZXk4I19G10diAIiz0
+         x+Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCUj+fnryWTYW4Mg1Pxv/GYz+o5CKDKdXd6bXM3QilXTacUganxt1WcJDcAUc/aGpAupULYdvDqwUgftGQo=@vger.kernel.org, AJvYcCV6KSqNySv+kPQFskdnUsF6jzNlvH3XoKF8OB3GF3QLsex1Odp1e74bXcqpcE67ZSXRFKwwc4w6@vger.kernel.org, AJvYcCXDbhkbUWW1MIrEHxw1V6Ltu4vrfikICUvTHwBOPWOB90cZ84FlTqieT5L/KymwyA0ypGuhxPEL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUob3pzVOz79l/IDF6ylQ17YJdFydprK70H55RuV1qCPTuLBJE
+	IGjQTJSYrgilF2Bq6Qd8Sb8EgU4CHE42FV0N6IrxNOUCRZadwhTDDBe4TA==
+X-Gm-Gg: ASbGncu2u76mBZ9T+HqsLgFr6li2kz9mtfm202dTcEu3crh1d/fMFbvUJ0lPnjKFSnf
+	+jpWIYzq8YC4Xmp86kJiFWjwWfJwFkZ42BT8MV2Z090N/lbsqvNXsquSZlxkrWgfxUt9uVoBt86
+	Vb4q7yHK/iiAE/liZk9mHENAnYOfqZDSLMZKnrbmS4zxOupWrQ7HdPTbMoNWL5ChwUPH19f5MZ9
+	1buALMV5GTV+xHFykOzXcEppH2P5oRyvWsubZdJm0jY3TFyTJZZwmyRheH8FyY3hT6c/zIQqdH3
+	ASIrLBVwQMvKbcjS0QLHPSAdYBW4v2HxovPcJYtbXqrHQWtXiQcc8fGGMh6cOnkVk6yTQBASHbV
+	Jqlq4ug==
+X-Google-Smtp-Source: AGHT+IHcBYS7+hJxgdBY/wIHUqMNCV5DmWfWyMOx0rt8+aM1hXIn1PnKkugiHfCHdnQk5sllDXmxKw==
+X-Received: by 2002:a17:903:234e:b0:21f:1549:a55a with SMTP id d9443c01a7336-21f4e1c8b5dmr37802505ad.1.1738907019700;
+        Thu, 06 Feb 2025 21:43:39 -0800 (PST)
+Received: from hoboy.vegasvil.org (108-78-253-96.lightspeed.sntcca.sbcglobal.net. [108.78.253.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683dde1sm22043165ad.149.2025.02.06.21.43.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 21:43:38 -0800 (PST)
+Date: Thu, 6 Feb 2025 21:43:35 -0800
+From: Richard Cochran <richardcochran@gmail.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Woodhouse <dwmw@amazon.co.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net-next 0/4] ptp: vmclock: bugfixes and cleanups for
+ error handling
+Message-ID: <Z6Wdhz7ysFYWSoGi@hoboy.vegasvil.org>
+References: <20250206-vmclock-probe-v1-0-17a3ea07be34@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250207022523.GA22848@nchen-desktop>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250206-vmclock-probe-v1-0-17a3ea07be34@linutronix.de>
 
-On Fri, Feb 07, 2025 at 10:25:23AM +0800, Peter Chen wrote:
-
-Hello Peter,
-
-> On 25-02-06 18:29:36, Siddharth Vadapalli wrote:
-> > When the device is in a low power state, access to the following
-> > registers takes a long time:
-> > - EP_CFG
-> > - EP_TRADDR
-> > - EP_CMD
-> > - EP_SEL
-> > - EP_STS
-> > - USB_CONF
-> > 
-> > To address this, the fast register access feature can be enabled by
-> > setting PUSB_PWR_FST_REG_ACCESS bit of the USB_PWR register, which
-> > allows quick access by software. Software is expected to poll on
-> > PUSB_PWR_FST_REG_ACCESS_STAT to ensure that fast register access has
-> > been enabled by the controller. Attempting to access any of the
-> > aforementioned registers after setting PUSB_PWR_FST_REG_ACCESS but
-> > before PUSB_PWR_FST_REG_ACCESS_STAT has been set will result in
-> > undefined behavior and potentially result in system hang.
-> > 
-> > Hence, poll on PUSB_PWR_FST_REG_ACCESS_STAT before proceeding with
-> > gadget configuration, and exit if it cannot be enabled.
-> > 
-> > Fixes: b5148d946f45 ("usb: cdns3: gadget: set fast access bit")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> > ---
-> > 
-> > Hello,
-> > 
-> > This patch is based on commit
-> > 92514ef226f5 Merge tag 'for-6.14-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
-> > of Mainline Linux.
-> > 
-> > Regards,
-> > Siddharth.
-> > 
-> >  drivers/usb/cdns3/cdns3-gadget.c | 18 ++++++++++++++++--
-> >  1 file changed, 16 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-> > index fd1beb10bba7..b62691944272 100644
-> > --- a/drivers/usb/cdns3/cdns3-gadget.c
-> > +++ b/drivers/usb/cdns3/cdns3-gadget.c
-> > @@ -2971,8 +2971,6 @@ static void cdns3_gadget_config(struct cdns3_device *priv_dev)
-> >  	/* enable generic interrupt*/
-> >  	writel(USB_IEN_INIT, &regs->usb_ien);
-> >  	writel(USB_CONF_CLK2OFFDS | USB_CONF_L1DS, &regs->usb_conf);
-> > -	/*  keep Fast Access bit */
-> > -	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
-> >  
-> >  	cdns3_configure_dmult(priv_dev, NULL);
-> >  }
-> > @@ -2990,6 +2988,8 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
-> >  	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
-> >  	unsigned long flags;
-> >  	enum usb_device_speed max_speed = driver->max_speed;
-> > +	int ret;
-> > +	u32 reg;
-> >  
-> >  	spin_lock_irqsave(&priv_dev->lock, flags);
-> >  	priv_dev->gadget_driver = driver;
-> > @@ -2997,6 +2997,20 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
-> >  	/* limit speed if necessary */
-> >  	max_speed = min(driver->max_speed, gadget->max_speed);
-> >  
-> > +	/*  keep Fast Access bit */
-> > +	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
-> > +	reg = readl(&priv_dev->regs->usb_pwr);
-> > +	if (!(reg & PUSB_PWR_FST_REG_ACCESS_STAT)) {
-> > +		ret = readl_poll_timeout_atomic(&priv_dev->regs->usb_pwr, reg,
-> > +						(reg & PUSB_PWR_FST_REG_ACCESS_STAT),
-> > +						10, 1000);
-> > +		if (ret) {
-> > +			dev_err(priv_dev->dev, "Failed to enable fast access\n");
-> > +			spin_unlock_irqrestore(&priv_dev->lock, flags);
-> > +			return ret;
-> > +		}
-> > +	}
-> > +
-> >  	switch (max_speed) {
-> >  	case USB_SPEED_FULL:
-> >  		writel(USB_CONF_SFORCE_FS, &priv_dev->regs->usb_conf);
+On Thu, Feb 06, 2025 at 06:45:00PM +0100, Thomas Weiﬂschuh wrote:
+> Some error handling issues I noticed while looking at the code.
 > 
-> Hi Siddharth,
+> Only compile-tested.
 > 
-> Would you please keep this change at cdns3_gadget_config in case the
-> controller is power lost during the system suspend?
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-I did think of that initially, but the problem with doing so is that we
-are already accessing USB_CONF above in the "switch(max_speed)" section.
-The PUSB_PWR_FST_REG_ACCESS bit needs to be set before accessing any of:
-- EP_CFG
-- EP_TRADDR
-- EP_CMD
-- EP_SEL
-- EP_STS
-- USB_CONF
+For the series:
 
-Please let me know if you have an alternate suggestion to address the
-above.
-
-Regards,
-Siddharth.
+Acked-by: Richard Cochran <richardcochran@gmail.com>
 
