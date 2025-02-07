@@ -1,89 +1,81 @@
-Return-Path: <stable+bounces-114188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C13CA2B6A7
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 00:40:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7761BA2B718
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 01:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F8A17A371C
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 23:39:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6028166484
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 00:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A129226541;
-	Thu,  6 Feb 2025 23:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A31D26D;
+	Fri,  7 Feb 2025 00:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cD8Peldp"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DAAmmzsU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8472417EF;
-	Thu,  6 Feb 2025 23:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDCCD299;
+	Fri,  7 Feb 2025 00:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738885193; cv=none; b=VWRDVjzW3oo0Q9Iq/s7/Fp3Xr4Jdm65lnSL4tHkUB97mPC/F1KG4DJ80HW4iE8JU2nJZLCzeMdH/HDgct0D1xJhRY79mjby2rBz4YrxudUhfkXzp7KpXur7xiUSkcRg1deURUnYAVQIMU5CfStKRuIjngHk/EtlzKYetNUevSPA=
+	t=1738887819; cv=none; b=dcjmiQqLDXB/Dk3+4V6wg4cYmbRZO8In372C5OCtnpTTc51rmgqyWuDjXm3cYP2y66q1hWTIot0/7cwoP+U5KGm5Tp69cpHuiC2EsAxsGcXI8khJBIG6NSZwVs36ywRduLgCtf09akV3LKXzH6Idn/EmGA+3hwZHV9LiUqYxY3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738885193; c=relaxed/simple;
-	bh=p0DLFVOiELhPDzFWd2fbfQXfQiU4pRtGR9G1jmfaePQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C3PL/CB6y3fDPFwI2zSXzNTHtaUD7jBoXML4uSyOndgCi6Mgc+vV2b0CaVQE4FHvS4oorIiq8RR4HBCBAb9xzpUKV2FAudnZq6iahi1bgQqQ1Lx83nv2io4pOy3ifWbXV7wz+R/5vNw3o5UIawVIsaTymogf7Ldhkr4g5gFPwLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cD8Peldp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A01C4CEDD;
-	Thu,  6 Feb 2025 23:39:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738885192;
-	bh=p0DLFVOiELhPDzFWd2fbfQXfQiU4pRtGR9G1jmfaePQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cD8PeldpAgOrn7XgIMI4wrG50qQ3MU5MzZkhafVPUo/d7HLwCcxrjSkniinpVXooK
-	 sN9LZjjoaLlAzCbEEYqf3WpZxH9jvi6fFzsyup8k7mErggbGx8X9f09fftDtJoacbm
-	 epNVN7QiEbhWb8sKZvH16vG28zqhFSs+3VnD/OUkNIpNUH8yChTpx92noz1e9rjS+c
-	 dTix9pxuf7V36J4c1oEFCImQfTSSz/ahxFHCL9cfUh8o73nmpr/2WzBUVyU+x4Q7VI
-	 QJaPfdJ5vRxnV2HofXYjb4pSA+EFfGTPVPHOOKZruY5ciQQ4tb+sxYSXX38V7NpllR
-	 20gdyEKRr7OJg==
-Date: Thu, 6 Feb 2025 15:39:51 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, Alexander Lobakin
- <aleksander.lobakin@intel.com>, netdev@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: advertise 'netns local' property via
- netlink
-Message-ID: <20250206153951.41fbcb84@kernel.org>
-In-Reply-To: <20250206165132.2898347-2-nicolas.dichtel@6wind.com>
-References: <20250206165132.2898347-1-nicolas.dichtel@6wind.com>
-	<20250206165132.2898347-2-nicolas.dichtel@6wind.com>
+	s=arc-20240116; t=1738887819; c=relaxed/simple;
+	bh=MSBQ8GWnqbmkXkDJQH1fTfd8ljxtUT/P4BqezHpjyeA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TvUapz3C8m7OgbvgrvsihSxVw41eXjSQLnoGsS5y40bguIljra9vjtOfeq2zI60l3OLcwsCsEimyWBgCoiNnlHa6795uCCUj/fIKU+sAL6YciAzmj/CaI9BlwW1BE3vI0ucUc/gGj1WMPIGCdi+QIiHbYFUJ0qzrHBEqei7y+Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DAAmmzsU; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1738887805; x=1739147005;
+	bh=+Y17yiJKHXbqIJKjLYffT+nV6HQjYl3k7kgDM8kNNBE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=DAAmmzsUhsgxUQje4qg9DrQub53aodQNzRZXxLSsX8E8J37eTISb97wKLPkWd2qUa
+	 dkjt83wiQEBv+Fd/xOgYy1ZYAfM3x+8MgHrAv72xgD+DLP1hgkkksMcC8+Sfc1Gxld
+	 yWGh9aIXFtAdAUjlnEjt4VS2Vtr4B5IGgsqQ8eKzGE1gSvG3Ds8dFlinAUN3Qn8NtR
+	 AAkS7yaZp70LqCh8DAsL/RchjVV4IQ7/eijVxvC/UPVeZ/FZr4HsDxKmz5he3webkE
+	 MIg8R2VteMaR75Hdmry5dLzOPatOhl6NHAt7V1qlohSxK+D8QO6dJiE+UBLczuxpAe
+	 bXE5opynilM5w==
+Date: Fri, 07 Feb 2025 00:23:21 +0000
+To: Mitchell Levy <levymitchell0@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: lockdep: Remove support for dynamically allocated LockClassKeys
+Message-ID: <a21084cc-84d7-473f-846b-9ca735cd8e34@proton.me>
+In-Reply-To: <20250205-rust-lockdep-v3-1-5313e83a0bef@gmail.com>
+References: <20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com> <20250205-rust-lockdep-v3-1-5313e83a0bef@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: c4b077ab609d510ca1842e9ee98f1b607618ee1c
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu,  6 Feb 2025 17:50:26 +0100 Nicolas Dichtel wrote:
-> Since the below commit, there is no way to see if the netns_local property
-> is set on a device. Let's add a netlink attribute to advertise it.
+On 05.02.25 20:59, Mitchell Levy wrote:
+> Currently, dynamically allocated LockCLassKeys can be used from the Rust
+> side without having them registered. This is a soundness issue, so
+> remove them.
+>=20
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi=
+@metaspace.dk/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> ---
+>  rust/kernel/sync.rs | 16 ++++------------
+>  1 file changed, 4 insertions(+), 12 deletions(-)
 
-I think the motivation for the change may be worth elaborating on.
-It's a bit unclear to me what user space would care about this
-information, a bit of a "story" on how you hit the issue could
-be useful perhaps? The uAPI is new but the stable tag indicates
-regression..
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-> @@ -2041,6 +2042,7 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
->  		       netif_running(dev) ? READ_ONCE(dev->operstate) :
->  					    IF_OPER_DOWN) ||
->  	    nla_put_u8(skb, IFLA_LINKMODE, READ_ONCE(dev->link_mode)) ||
-> +	    nla_put_u8(skb, IFLA_NETNS_LOCAL, dev->netns_local) ||
-
-Maybe nla_put_flag() ? Or do you really care about false being there?
-The 3 bytes wasted on padding always makes me question when people pick
-NLA_u8.
-
->  	    nla_put_u32(skb, IFLA_MTU, READ_ONCE(dev->mtu)) ||
->  	    nla_put_u32(skb, IFLA_MIN_MTU, READ_ONCE(dev->min_mtu)) ||
->  	    nla_put_u32(skb, IFLA_MAX_MTU, READ_ONCE(dev->max_mtu)) ||
 
