@@ -1,112 +1,292 @@
-Return-Path: <stable+bounces-114251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF88A2C426
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:54:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA81A2C4BF
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 15:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECE481889F49
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 13:54:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7EA3A5C6C
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3DD1F4E48;
-	Fri,  7 Feb 2025 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3FA1F9F61;
+	Fri,  7 Feb 2025 14:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fps0HS3H"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="yd5rOPDA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358131F4169;
-	Fri,  7 Feb 2025 13:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241F01F561D
+	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 14:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738936478; cv=none; b=Xtub31XEto/0RNKbNZ9dpEF4mozbkojnBLfWrNnDuPjNxhAjYXgG4bL68+Ub83ybjVH+yyGMGDnVRJLrnf0G1vR9wWhn4mnxCKXjcWNpXHE+zN/OSslq+WQf4tPzMAPlOcEZN9g9RleVNjv6Ni2YeVXCVGRY7zhtyiZ4+wcR24A=
+	t=1738937212; cv=none; b=qkwk1uouIfeJEEYXrLiTaFcfea/yrpNFLLWG64KLYmlk5lBi8rb0kdIOZlE9kg9aDz4Z2nQ+6c0QoZvds4O9dfs7/6iWXBNY64KWYN7pSLdxMMkarm0MdLQr+LdhYHhi2+SYyeajsVlKx+qKBzsZ9XRnJFq71nkFKugu2TwibjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738936478; c=relaxed/simple;
-	bh=+9Nb79PCPONjK0IJAJ2FUvhPtmIH7tDDtA5yLL15zl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iOC3Pc3jZheo16+62+gUIptjAcjiego13XM7PIk9Z8Ny0mjHcj0FsWKsycm99PaRu7TOKxtadoWA3BH7uIVxPeQVKzu7g0cZOCxalt+2Ot0o01mvQHsOFeOE2ve8bpomZmZ7JyXw5UGDPxkkamS+NynIkBNfzWfCGcV3MqTWksA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fps0HS3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9931AC4CED1;
-	Fri,  7 Feb 2025 13:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738936477;
-	bh=+9Nb79PCPONjK0IJAJ2FUvhPtmIH7tDDtA5yLL15zl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fps0HS3H3smOOEy4Rw3xJJtjVN2H8E4lOAFm5MkZ+uvtRH+j/o/Z5b8gAnyKtJjrr
-	 PI1Yv04krMwYEEQoBTZ9xOzAsGwySwoEOtzPzLc6/J3FDvfOAGxpC3dhL4v6Tfu6CN
-	 m+IjViywq6yXy9qp9NyPYocTJHFv6PIzZh8eLsy3nYEtHKbMxlUishWduTXzOVwag6
-	 EkwUQYycrO0NgJLMh3BsQ45FnfI2NkvsjsrvNJm4YTiM1jRWRAMftpcVSY1r527QE9
-	 8XAI+YAvPw5iLaS5jngnet43gEwpy3/hvvdylZ0ybHnC1ICNm7nWlvleOKLBiB4+OC
-	 ItkZaGUbIkjkA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tgOog-000000003Wa-2HYR;
-	Fri, 07 Feb 2025 14:54:46 +0100
-Date: Fri, 7 Feb 2025 14:54:46 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 541/623] PM: sleep: core: Synchronize runtime PM
- status of parents and children
-Message-ID: <Z6YQpnfhXRh5oHRi@hovoldconsulting.com>
-References: <20250205134456.221272033@linuxfoundation.org>
- <20250205134516.919594202@linuxfoundation.org>
+	s=arc-20240116; t=1738937212; c=relaxed/simple;
+	bh=/+atRYGkzWkrF11+aBXVPjX2iSt27l26vrl53ByHtpY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlkMxtIudCP8AuMRu84enWwwiPpqGYGG7merad/C6mlSkwB6Svug+ssxdF2NfUpe4K75d/eQYzvKjgMPh1QmI74V/Un5rTqRPxBqmHWiMzQdEJFT9nWzYxx6jcEDdbVq0x/zTaIyJ1iXSSrRuXKxmhzG8ur3N3nIUM5egoaPOzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=yd5rOPDA; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-438a39e659cso14079745e9.2
+        for <stable@vger.kernel.org>; Fri, 07 Feb 2025 06:06:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1738937208; x=1739542008; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bi8V3nc67FAR7arKY4Dyfn3J3o7Kox2zEvzSP3nrKFA=;
+        b=yd5rOPDAWrKTjXx43qDEndgKZDX2YTpGEUInhURzFrXxvr29Km82uJ7Ijqk6EjjwTE
+         VBZhvM5xkRq7icKW80apNyrqoWQX3HmJNwe9Ve5uKSiIK0B2a3g4NfWbJB8lqp41ex0h
+         9BZatQqtm7sZVmKndl0RT44kUitV7QGQXvKwdybk6k0M6DNj5pz+bwpRfLDWadk4LCA0
+         abjJzSbKSY2mpgC3y8Pv5ndcE+TJ1gTfbxaaq/Djvr4catvyXtDXG2yMFa3BWah7pcp0
+         0kwP1k7qs0mrDOwAvaDPquT1YWkLYcM3YMP5qoxtO8UvmNJwdewJx6p+QkTAoRcKXhYn
+         WjGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738937208; x=1739542008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bi8V3nc67FAR7arKY4Dyfn3J3o7Kox2zEvzSP3nrKFA=;
+        b=DaRee9+LRb0CijF5MWbL3zoKiyASU64fqn60zJAp+s0sI/ZoHdsPzgiqBvD8Wyp38Z
+         ZvT2WQrS9dJcuR4Y9Lzwyqcs+Dh3waipzsyu1au6oiOCFayDCGEkMMcpxG0ifHJIebBB
+         jel/n9ctdQ27dQ6RQNYSqFymobhe53wUzVKgP7AVtjlhYhTiCiN0lo3NwDbLDiXybv2e
+         UOPMK91EvptYNtpGs+k0WlbLVwzJS9eIcd5k6udTcszyK03RxF5WmqblkaaI8I8HqO7I
+         UyN3ehRgw+PFLUJroHb37e0iDrmFKf6X+Bu46zed8dpT+ivQNK6OsVu7BH+D/3r5VnIL
+         7kUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/e4yL1H3dbE+WabhUu3ZH20t3FPDCJmEaCth3S/nBPHUh1932MslRmNeDwZRk+woLTpvsUgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvpVOCGJ8lTAm6BlAI1OujreYQPuy015dsfaNXiAdrv25UYixP
+	kRKp5tl+JJc8olIWZ4iHLLjsJeZU/J60YZgE5/EltJL0G5ZazkjYSKKqwYdzIcio2BMnQGNlVhJ
+	NqQk=
+X-Gm-Gg: ASbGncvfLl42cvMuHYI19vWeAHYojyg3g4PM7G3D4BCGOQU6ir2NBHo124Utki8kRLI
+	Gw0WHiHwHpBWrcKTkb3mAoZgExJffbslvl5CPmERo9N/9QWAjSa+tncUw+Feais1PPdsNbnYDsr
+	buWaygvxGr2yxXf/29f6zJvGtVg0BSzyHpVZuunYYV28//n6Lno2jbwe6D38LGQu235EVIJGg4Q
+	EOZwtTxuj8mvmTHlJQrmQR3PUWlZTfjDSk5E5CJiKIGpIN3UAL93ah/QNlw+20t0QXTHNIBmdmJ
+	2BqLXYSkCpzyvQ==
+X-Google-Smtp-Source: AGHT+IFT6StL9+cv/Mca8lE2/6nU79pNpRJLnSbz9dglzFGJiRnXiiZ+PtRCuOc05D0NEBFYZctDkw==
+X-Received: by 2002:a5d:47cc:0:b0:38a:888c:676f with SMTP id ffacd0b85a97d-38dc8ddd8e8mr2054569f8f.15.1738937208274;
+        Fri, 07 Feb 2025 06:06:48 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:ae69:c28e:8e23:dca])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dca0b4237sm2033950f8f.85.2025.02.07.06.06.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 06:06:47 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Lechner <dlechner@baylibre.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] gpiolib: protect gpio_chip with SRCU in array_info paths in multi get/set
+Date: Fri,  7 Feb 2025 15:06:40 +0100
+Message-ID: <20250207140640.57664-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205134516.919594202@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 05, 2025 at 02:44:43PM +0100, Greg Kroah-Hartman wrote:
-> 6.13-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> [ Upstream commit 3775fc538f535a7c5adaf11990c7932a0bd1f9eb ]
-> 
-> Commit 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the
-> resume phase") overlooked the case in which the parent of a device with
-> DPM_FLAG_SMART_SUSPEND set did not use that flag and could be runtime-
-> suspended before a transition into a system-wide sleep state.  In that
-> case, if the child is resumed during the subsequent transition from
-> that state into the working state, its runtime PM status will be set to
-> RPM_ACTIVE, but the runtime PM status of the parent will not be updated
-> accordingly, even though the parent will be resumed too, because of the
-> dev_pm_skip_suspend() check in device_resume_noirq().
-> 
-> Address this problem by tracking the need to set the runtime PM status
-> to RPM_ACTIVE during system-wide resume transitions for devices with
-> DPM_FLAG_SMART_SUSPEND set and all of the devices depended on by them.
-> 
-> Fixes: 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the resume phase")
-> Closes: https://lore.kernel.org/linux-pm/Z30p2Etwf3F2AUvD@hovoldconsulting.com/
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Tested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> Link: https://patch.msgid.link/12619233.O9o76ZdvQC@rjwysocki.net
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-This patch appears to be causing trouble and should not be backported,
-at least not until this has been resolved:
+During the locking rework in GPIOLIB, we omitted one important use-case,
+namely: setting and getting values for GPIO descriptor arrays with
+array_info present.
 
-	https://lore.kernel.org/all/1c2433d4-7e0f-4395-b841-b8eac7c25651@nvidia.com/
+This patch does two things: first it makes struct gpio_array store the
+address of the underlying GPIO device and not chip. Next: it protects
+the chip with SRCU from removal in gpiod_get_array_value_complex() and
+gpiod_set_array_value_complex().
 
-Please drop from all stable queues.
+Cc: stable@vger.kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+David Lechner's series made me realize that we don't use SRCU to protect
+the GPIO chip in case where array_info is available in multiple get/set
+routines. This addresses it. The changes here could potentially be split
+into two separate commits but I want to easily backport it and it works
+together as well.
 
-Johan
+ drivers/gpio/gpiolib.c | 48 +++++++++++++++++++++++++++++-------------
+ drivers/gpio/gpiolib.h |  4 ++--
+ 2 files changed, 35 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 679ed764cb14..6e630680be52 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3129,6 +3129,8 @@ static int gpiod_get_raw_value_commit(const struct gpio_desc *desc)
+ static int gpio_chip_get_multiple(struct gpio_chip *gc,
+ 				  unsigned long *mask, unsigned long *bits)
+ {
++	lockdep_assert_held(&gc->gpiodev->srcu);
++
+ 	if (gc->get_multiple)
+ 		return gc->get_multiple(gc, mask, bits);
+ 	if (gc->get) {
+@@ -3159,6 +3161,7 @@ int gpiod_get_array_value_complex(bool raw, bool can_sleep,
+ 				  struct gpio_array *array_info,
+ 				  unsigned long *value_bitmap)
+ {
++	struct gpio_chip *gc;
+ 	int ret, i = 0;
+ 
+ 	/*
+@@ -3170,10 +3173,15 @@ int gpiod_get_array_value_complex(bool raw, bool can_sleep,
+ 	    array_size <= array_info->size &&
+ 	    (void *)array_info == desc_array + array_info->size) {
+ 		if (!can_sleep)
+-			WARN_ON(array_info->chip->can_sleep);
++			WARN_ON(array_info->gdev->can_sleep);
+ 
+-		ret = gpio_chip_get_multiple(array_info->chip,
+-					     array_info->get_mask,
++		guard(srcu)(&array_info->gdev->srcu);
++		gc = srcu_dereference(array_info->gdev->chip,
++				      &array_info->gdev->srcu);
++		if (!gc)
++			return -ENODEV;
++
++		ret = gpio_chip_get_multiple(gc, array_info->get_mask,
+ 					     value_bitmap);
+ 		if (ret)
+ 			return ret;
+@@ -3454,6 +3462,8 @@ static void gpiod_set_raw_value_commit(struct gpio_desc *desc, bool value)
+ static void gpio_chip_set_multiple(struct gpio_chip *gc,
+ 				   unsigned long *mask, unsigned long *bits)
+ {
++	lockdep_assert_held(&gc->gpiodev->srcu);
++
+ 	if (gc->set_multiple) {
+ 		gc->set_multiple(gc, mask, bits);
+ 	} else {
+@@ -3471,6 +3481,7 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
+ 				  struct gpio_array *array_info,
+ 				  unsigned long *value_bitmap)
+ {
++	struct gpio_chip *gc;
+ 	int i = 0;
+ 
+ 	/*
+@@ -3482,14 +3493,19 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
+ 	    array_size <= array_info->size &&
+ 	    (void *)array_info == desc_array + array_info->size) {
+ 		if (!can_sleep)
+-			WARN_ON(array_info->chip->can_sleep);
++			WARN_ON(array_info->gdev->can_sleep);
++
++		guard(srcu)(&array_info->gdev->srcu);
++		gc = srcu_dereference(array_info->gdev->chip,
++				      &array_info->gdev->srcu);
++		if (!gc)
++			return -ENODEV;
+ 
+ 		if (!raw && !bitmap_empty(array_info->invert_mask, array_size))
+ 			bitmap_xor(value_bitmap, value_bitmap,
+ 				   array_info->invert_mask, array_size);
+ 
+-		gpio_chip_set_multiple(array_info->chip, array_info->set_mask,
+-				       value_bitmap);
++		gpio_chip_set_multiple(gc, array_info->set_mask, value_bitmap);
+ 
+ 		i = find_first_zero_bit(array_info->set_mask, array_size);
+ 		if (i == array_size)
+@@ -4751,8 +4767,8 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ {
+ 	struct gpio_desc *desc;
+ 	struct gpio_descs *descs;
++	struct gpio_device *gdev;
+ 	struct gpio_array *array_info = NULL;
+-	struct gpio_chip *gc;
+ 	int count, bitmap_size;
+ 	size_t descs_size;
+ 
+@@ -4774,7 +4790,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 
+ 		descs->desc[descs->ndescs] = desc;
+ 
+-		gc = gpiod_to_chip(desc);
++		gdev = gpiod_to_gpio_device(desc);
+ 		/*
+ 		 * If pin hardware number of array member 0 is also 0, select
+ 		 * its chip as a candidate for fast bitmap processing path.
+@@ -4782,8 +4798,8 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 		if (descs->ndescs == 0 && gpio_chip_hwgpio(desc) == 0) {
+ 			struct gpio_descs *array;
+ 
+-			bitmap_size = BITS_TO_LONGS(gc->ngpio > count ?
+-						    gc->ngpio : count);
++			bitmap_size = BITS_TO_LONGS(gdev->ngpio > count ?
++						    gdev->ngpio : count);
+ 
+ 			array = krealloc(descs, descs_size +
+ 					 struct_size(array_info, invert_mask, 3 * bitmap_size),
+@@ -4803,7 +4819,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 
+ 			array_info->desc = descs->desc;
+ 			array_info->size = count;
+-			array_info->chip = gc;
++			array_info->gdev = gdev;
+ 			bitmap_set(array_info->get_mask, descs->ndescs,
+ 				   count - descs->ndescs);
+ 			bitmap_set(array_info->set_mask, descs->ndescs,
+@@ -4816,7 +4832,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 			continue;
+ 
+ 		/* Unmark array members which don't belong to the 'fast' chip */
+-		if (array_info->chip != gc) {
++		if (array_info->gdev != gdev) {
+ 			__clear_bit(descs->ndescs, array_info->get_mask);
+ 			__clear_bit(descs->ndescs, array_info->set_mask);
+ 		}
+@@ -4840,8 +4856,10 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 			}
+ 		} else {
+ 			/* Exclude open drain or open source from fast output */
+-			if (gpiochip_line_is_open_drain(gc, descs->ndescs) ||
+-			    gpiochip_line_is_open_source(gc, descs->ndescs))
++			if (gpiochip_line_is_open_drain(gdev->chip,
++							descs->ndescs) ||
++			    gpiochip_line_is_open_source(gdev->chip,
++							 descs->ndescs))
+ 				__clear_bit(descs->ndescs,
+ 					    array_info->set_mask);
+ 			/* Identify 'fast' pins which require invertion */
+@@ -4853,7 +4871,7 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
+ 	if (array_info)
+ 		dev_dbg(dev,
+ 			"GPIO array info: chip=%s, size=%d, get_mask=%lx, set_mask=%lx, invert_mask=%lx\n",
+-			array_info->chip->label, array_info->size,
++			array_info->gdev->label, array_info->size,
+ 			*array_info->get_mask, *array_info->set_mask,
+ 			*array_info->invert_mask);
+ 	return descs;
+diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
+index 83690f72f7e5..147156ec502b 100644
+--- a/drivers/gpio/gpiolib.h
++++ b/drivers/gpio/gpiolib.h
+@@ -114,7 +114,7 @@ extern const char *const gpio_suffixes[];
+  *
+  * @desc:		Array of pointers to the GPIO descriptors
+  * @size:		Number of elements in desc
+- * @chip:		Parent GPIO chip
++ * @gdev:		Parent GPIO device
+  * @get_mask:		Get mask used in fastpath
+  * @set_mask:		Set mask used in fastpath
+  * @invert_mask:	Invert mask used in fastpath
+@@ -126,7 +126,7 @@ extern const char *const gpio_suffixes[];
+ struct gpio_array {
+ 	struct gpio_desc	**desc;
+ 	unsigned int		size;
+-	struct gpio_chip	*chip;
++	struct gpio_device	*gdev;
+ 	unsigned long		*get_mask;
+ 	unsigned long		*set_mask;
+ 	unsigned long		invert_mask[];
+-- 
+2.45.2
+
 
