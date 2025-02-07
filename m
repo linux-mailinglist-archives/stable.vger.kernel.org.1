@@ -1,120 +1,86 @@
-Return-Path: <stable+bounces-114233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4588DA2C032
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:05:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5677CA2C042
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B22816AC7C
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:05:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC3A188CB3B
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ED61DED54;
-	Fri,  7 Feb 2025 10:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEEC1DE4CE;
+	Fri,  7 Feb 2025 10:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rhw8xQtD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32D11DE3B5;
-	Fri,  7 Feb 2025 10:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E971DDC20;
+	Fri,  7 Feb 2025 10:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738922714; cv=none; b=G6DlGD+c7VHrgHRGCMvZ/+WDVQaYoTmMDkI+jVVmt89FIf5v9AA6CnntkiXodMOPiLA7UKWHwILh1LXxlJECTjh9UXqznGYZyMZfcw+VPFCnfWh3g6SPRbg1mhfjQjZmhELEuaqt1mRfw/ex4W62w1DET0avfs8dWr91yl/NW1A=
+	t=1738923177; cv=none; b=oklGDOMHqQeaHFbMLPvxXuwpA/qQ86sNGSPvvvQrqL4jbn1kG5EANbvJ15WOJ0befga9S/Jmm0mIRL2MHgZEuMMuKExSG0VPG/8IrsZzCg/yitZUz8WvAd6YsXvvGqDaGURoskuHx9MPUsXmUbl//r+picHRn6QGL1pA3FWlCDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738922714; c=relaxed/simple;
-	bh=IUiUrzbIpNsn++CeN7RJzXT5fi6NuhaBEDIhz+xV8JQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XfKu6ZB6g4mpB7a5TWpxMCkYLhZYd+nilFxo5yq6IlLIpti/i8gpvh4gpJsGwnDp74W8oXhiLICy1NlRE87wP3kcERDlyed4K/P8YzsEOodWoZuwtpncWdhVfCcBJq6HxZeZRC3cqQiONByGly/mtOqp/glR06Tr+/pu+z4ZgzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300c59725EfD8c202009b11B64500.dip0.t-ipconnect.de [IPv6:2003:c5:9725:efd8:c202:9b:11b6:4500])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 87E4CFA365;
-	Fri,  7 Feb 2025 10:58:32 +0100 (CET)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Remi Pommarel <repk@triplefau.lt>,
-	stable@vger.kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4/4] batman-adv: Fix incorrect offset in batadv_tt_tvlv_ogm_handler_v1()
-Date: Fri,  7 Feb 2025 10:58:23 +0100
-Message-Id: <20250207095823.26043-5-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250207095823.26043-1-sw@simonwunderlich.de>
-References: <20250207095823.26043-1-sw@simonwunderlich.de>
+	s=arc-20240116; t=1738923177; c=relaxed/simple;
+	bh=W2dmIg3oUDOm9DCScX49+gw8cLE6DvYRBcyiMfj1eLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QmCWIZ23VYYE/hFz1Z+ha+5hwdEk6uCKenlRBlN1fd4dJmaMuyThSWhhktJYOBEQCoJHIhuJ8txopQTSU03cXn4SRp8JYps3XRNagdj7+4Ik59puq8tKwHw+MONPCIV2lqSxY5QX1tFvsmaY473VlgKPG+R4f9zj/MWxDIC4uoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rhw8xQtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190D4C4CED1;
+	Fri,  7 Feb 2025 10:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738923176;
+	bh=W2dmIg3oUDOm9DCScX49+gw8cLE6DvYRBcyiMfj1eLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rhw8xQtDqC43RbxmIdKgcVomB30s290RM/r3W8i1L2+toVv+Z+uUK57ZGQHf0fOYJ
+	 czo59tMjmuBeU5Ol6IRmdruDEArRRQyqLKthi8yMRl4NaCPdvtKCJ1qmkAJnOD8Wm5
+	 ubq0vLm1TWR6urg7tW8ADDL31pTKQ65tdUTyvWErv2UzdUvq5/LD4lEVf1npa42fMO
+	 KwzGqPLHem+MrsQPOGL+RM9WAItydmmohhrTvzKwO/KL0txZet0eyhTHDsPnVmeQC8
+	 JVpYpjwhKakHLBfJ1Szk0V4f5Ze1UmsIWJQ+lh66blC4+ABYiT4Wk0neXo7zY35WFf
+	 ZLpTq87K8O6vw==
+Date: Fri, 7 Feb 2025 11:12:52 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Jann Horn <jannh@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luca Boccassi <luca.boccassi@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pidfs: improve ioctl handling
+Message-ID: <20250207-lahmgelegt-zubringen-69a437fa5bd7@brauner>
+References: <20250204-work-pidfs-ioctl-v1-1-04987d239575@kernel.org>
+ <988727a0-fe48-4cc0-ab4c-20de01dbcddf@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <988727a0-fe48-4cc0-ab4c-20de01dbcddf@roeck-us.net>
 
-From: Remi Pommarel <repk@triplefau.lt>
+On Thu, Feb 06, 2025 at 01:16:55PM -0800, Guenter Roeck wrote:
+> On Tue, Feb 04, 2025 at 02:51:20PM +0100, Christian Brauner wrote:
+> > Pidfs supports extensible and non-extensible ioctls. The extensible
+> > ioctls need to check for the ioctl number itself not just the ioctl
+> > command otherwise both backward- and forward compatibility are broken.
+> > 
+> > The pidfs ioctl handler also needs to look at the type of the ioctl
+> > command to guard against cases where "[...] a daemon receives some
+> > random file descriptor from a (potentially less privileged) client and
+> > expects the FD to be of some specific type, it might call ioctl() on
+> > this FD with some type-specific command and expect the call to fail if
+> > the FD is of the wrong type; but due to the missing type check, the
+> > kernel instead performs some action that userspace didn't expect."
+> > (cf. [1]]
+> > 
+> > Reported-by: Jann Horn <jannh@google.com>
+> > Cc: stable@vger.kernel.org # v6.13
+> > Fixes: https://lore.kernel.org/r/CAG48ez2K9A5GwtgqO31u9ZL292we8ZwAA=TJwwEv7wRuJ3j4Lw@mail.gmail.com [1]
+> 
+> This is not a proper Fixes: tag.
 
-Since commit 4436df478860 ("batman-adv: Add flex array to struct
-batadv_tvlv_tt_data"), the introduction of batadv_tvlv_tt_data's flex
-array member in batadv_tt_tvlv_ogm_handler_v1() put tt_changes at
-invalid offset. Those TT changes are supposed to be filled from the end
-of batadv_tvlv_tt_data structure (including vlan_data flexible array),
-but only the flex array size is taken into account missing completely
-the size of the fixed part of the structure itself.
-
-Fix the tt_change offset computation by using struct_size() instead of
-flex_array_size() so both flex array member and its container structure
-sizes are taken into account.
-
-Cc: stable@vger.kernel.org
-Fixes: 4436df478860 ("batman-adv: Add flex array to struct batadv_tvlv_tt_data")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/translation-table.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 760d51fdbdf6..7d5de4cbb814 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3959,23 +3959,21 @@ static void batadv_tt_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	u16 num_entries, num_vlan;
--	size_t flex_size;
-+	size_t tt_data_sz;
- 
- 	if (tvlv_value_len < sizeof(*tt_data))
- 		return;
- 
- 	tt_data = tvlv_value;
--	tvlv_value_len -= sizeof(*tt_data);
--
- 	num_vlan = ntohs(tt_data->num_vlan);
- 
--	flex_size = flex_array_size(tt_data, vlan_data, num_vlan);
--	if (tvlv_value_len < flex_size)
-+	tt_data_sz = struct_size(tt_data, vlan_data, num_vlan);
-+	if (tvlv_value_len < tt_data_sz)
- 		return;
- 
- 	tt_change = (struct batadv_tvlv_tt_change *)((void *)tt_data
--						     + flex_size);
--	tvlv_value_len -= flex_size;
-+						     + tt_data_sz);
-+	tvlv_value_len -= tt_data_sz;
- 
- 	num_entries = batadv_tt_entries(tvlv_value_len);
- 
--- 
-2.39.5
-
+Fixed.
 
