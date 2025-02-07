@@ -1,77 +1,59 @@
-Return-Path: <stable+bounces-114198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA01A2B939
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 03:46:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EA7A2B9AC
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 04:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3735D188921D
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 02:46:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 441817A2A89
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 03:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A3BA4A;
-	Fri,  7 Feb 2025 02:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104D417AE1D;
+	Fri,  7 Feb 2025 03:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HQF3MW2y"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="ox98C2Rd"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F403810E9;
-	Fri,  7 Feb 2025 02:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738896379; cv=fail; b=GEsw49S0aVrLFqPZ6mBwjjaoDegHCJt6oSDjUWnzh8tOKM2+nxmPBUqyedl/REHBcth9gVuRMbBjbVnZUSV+qd5RuKOUESH1o0bLXvc/uvpMClzytwOLb7TZvpG/Fv9MSdTzUjXSJmMoYeY10v+Q5KEGYkuV/iLmlFJ/czglQ9c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738896379; c=relaxed/simple;
-	bh=nzYKaBtZwfaTuI9ENMQvRvVK3rKEvMI7bcAk9h1GKx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=W0fK36hx9m3LRSNKjsGo8pwyGjMwFlhUZX64hUrus3CK8ettrKlrZJLrm4CEUIOLjh0d8JVb3JKnt0EcnusqD6J65knYiumYbgeqjkDQ+qd9GSDnoe+Xi4TqSrgU2Sw60oimy0ajVf6M8Gxq7QbTQU/Sn6YJ8bjVM58CYyAg8Kg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HQF3MW2y; arc=fail smtp.client-ip=40.107.244.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XW5HRBUdkuGQ6bZMMddaK6rUTcGtE0+8PC/PyrCYUJUybmFlj6sGJJnYzHVOYbhlQn3fC2EeFfGlrKQroi7sUym3UPRWPPOIBjIxpTPiEjzyHbz8NcClJEthp5KazWo56BRHc+jXDDYVatloOsxjW3HhYhfYmDiGssMnUwSZbpVMR2lV+dOfVXSpPNEpvLDK91BRcwMsoXEVLlRCXjlUyp43cdQvKP0//9YBFKDtovS4yZojCd6w/Twer3KUQ2/zFDQ7Ueltjg6Uve8L1mYlYY5orXjrganOgJtFQHPrvPHvvAQ6rN9V0i1F7MXYqNm1GhjO7nHF7ptLH3k5qr3Kgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RlOAwRYql73yOJxV44zhv4TCNTw6b6+KL4b+CDvy7m4=;
- b=Tfy8/MagzqKm40tSn7JVVfIwh+V9bKLC4yY/1KkMGWgSx72ruoSb3J/AVTF4DLo+oUlavcZU1WoYW9caYJ1yr9xHQHaKsjeg2YFF270EKBEDlIFggYxTGpmNFV1DmOHFvLiMXqMgbtBnPQJ0wzvJNPCXucA7BwTlSsYDjbEtxiPkZcpHuZA/6VuIoKbKZaLfCkCD1anrRj5bDXnhs1EOOPBLjIScmjHbXmENo08Viq596407BinQUAZCZDbZ4AUCaaXJgeJ3bgkWOgrqRrDQQcynld12TpVPXPhFBXaEV4V7V9bpUQD+fDGPSF7SEVGO2DaoTbe79pjHFi6C3zuDEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RlOAwRYql73yOJxV44zhv4TCNTw6b6+KL4b+CDvy7m4=;
- b=HQF3MW2yVWj4G1+zwhr7kPLoZuZuDghjvAp3gHNcRaoBeFR6B59PKi2ba2HgNjReJNtEXhpyiyS0jz/uS7wOQ6uwCt5LXf9hU94RIVDUm/K5j5+6b+UUOfdhB5/U12uRb9nhZXJB7f0ZX3jXkGI6//KjcTPJKrjAry5C3KNbc5E=
-Received: from CYZPR12CA0001.namprd12.prod.outlook.com (2603:10b6:930:8b::8)
- by CY8PR12MB8363.namprd12.prod.outlook.com (2603:10b6:930:7a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Fri, 7 Feb
- 2025 02:46:12 +0000
-Received: from CY4PEPF0000EE3C.namprd03.prod.outlook.com
- (2603:10b6:930:8b:cafe::dc) by CYZPR12CA0001.outlook.office365.com
- (2603:10b6:930:8b::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.29 via Frontend Transport; Fri,
- 7 Feb 2025 02:46:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE3C.mail.protection.outlook.com (10.167.242.13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8398.14 via Frontend Transport; Fri, 7 Feb 2025 02:46:12 +0000
-Received: from [10.136.39.79] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 6 Feb
- 2025 20:44:39 -0600
-Message-ID: <6d436d56-20f7-4106-bedc-e9d146427fa9@amd.com>
-Date: Fri, 7 Feb 2025 08:14:10 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA8417995E;
+	Fri,  7 Feb 2025 03:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738898659; cv=none; b=ZWwDGdtozeW1aah7Urtapx2r8jjjYK9t2g7ywqlJqjG7kNaFRwxUjCYfzByO8gvCAwhLQwZLjW72AL+xo/dDirDKjSLiUwS2VtSx0/g+9nT0cmXELKEiGx7LQH/d+JMJNsTZmbf9KZ2VJHdVnkZvKvH8ZwDZKuobEXS/AziiT2c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738898659; c=relaxed/simple;
+	bh=sAlLgDxhjRVjQ1K2sXr4ARtue1aL8XbbDctOT0sc1vc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kmFRA6qCKlreNHl3JJf4hQHKVQSj7+b5A4qBIdoliEDRxNQv3hz20jXSQKDv8wdHHIYdKmsNTp3FMg1rr3TCCdgAOjca5P8mh5h4ZH377mkETjcWDhMv1H14y5CuKKzxXOpEta2vv++vkxcp0c5zGzASiNf0PV5viJXhF5abcjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=ox98C2Rd; arc=none smtp.client-ip=159.100.241.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3CC3820063;
+	Fri,  7 Feb 2025 03:24:06 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id DAE983E885;
+	Fri,  7 Feb 2025 03:23:57 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id EF9A8400D6;
+	Fri,  7 Feb 2025 03:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1738898636; bh=sAlLgDxhjRVjQ1K2sXr4ARtue1aL8XbbDctOT0sc1vc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ox98C2RdkKuJIDs11ZRNK/0gQKBeNTxpg7CU/Fvh7KqpEXOazZSaQi30ZhaHo2Ge3
+	 xLsaP6BZBmJESPJlwDk9PJDF3VT4AKjoekuiKtd+hRZIXIpqq1ozSIgXdPewcy5mfk
+	 M28fjdW1ECPbEAZqD74rQ91C3ju473el0k4tKtDY=
+Received: from [172.29.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 77A164389B;
+	Fri,  7 Feb 2025 03:23:51 +0000 (UTC)
+Message-ID: <0ca08039-73fb-4c4b-ad10-15be8129d1b7@aosc.io>
+Date: Fri, 7 Feb 2025 11:23:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,134 +61,278 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
- for debug builds
-To: Valentin Schneider <vschneid@redhat.com>, Peter Zijlstra
-	<peterz@infradead.org>
-CC: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Steve Wahl <steve.wahl@hpe.com>, Saurabh
- Singh Sengar <ssengar@linux.microsoft.com>, <srivatsa@csail.mit.edu>, Michael
- Kelley <mhklinux@outlook.com>
-References: <20250203114738.3109-1-namjain@linux.microsoft.com>
- <f6bf04e8-3007-4a44-86d8-2cc671c85247@amd.com>
- <20250205095506.GB7145@noisy.programming.kicks-ass.net>
- <0835864f-6dc5-430d-91c0-b5605007d9d2@amd.com>
- <20250205101600.GC7145@noisy.programming.kicks-ass.net>
- <e0774ea1-27ac-4aa1-9a96-5e27aa8328e6@amd.com>
- <xhsmhed0bjdum.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
+ sources
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Huacai Chen
+ <chenhuacai@loongson.cn>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>
+References: <20250131100630.342995-1-chenhuacai@loongson.cn>
+ <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
+ <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
+ <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+ <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
+ <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
+ <06c81c97-7e5f-412b-b6af-04368dd644c9@rowland.harvard.edu>
+ <6838de5f-2984-4722-9ee5-c4c62d13911b@aosc.io>
+ <6363c5ba-c576-42a8-8a09-31d55768618c@rowland.harvard.edu>
+ <9f363d74-24ce-43fe-b0e3-7aef5000abb3@aosc.io>
+ <425bf21b-8aa6-4de0-bbe4-c815b9df51a7@rowland.harvard.edu>
 Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <xhsmhed0bjdum.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3C:EE_|CY8PR12MB8363:EE_
-X-MS-Office365-Filtering-Correlation-Id: 937fa5b9-db48-4650-ab51-08dd472195b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700013|32650700017;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z0Q4STdOMGc2bnRuR2VIalRFb2ZraXduVmcvbmoxUSsrTDBLNkhXNDZsNWRR?=
- =?utf-8?B?Mmhhd3QxNXQ0WmlmSmdxMWkzbk5VN1crZjRHQ2tOUS9lMFp6WGZ4bVdKNCtO?=
- =?utf-8?B?VEJHQWpvV3AxMzRpVk40ZjQ4RzNNaVltK1VqZS90cVNDMGRWNmswR2FlMVZI?=
- =?utf-8?B?a2ZwTjdXRjQ0UENaYURrSFlrUUtNUXFHcFYxaHpQYUV5N2YvWXBuT2h1d1BU?=
- =?utf-8?B?TEpuN3ppa29xd0ZJMWxqVDRXSEorRmxZREIvNHIreXZTNUhkaWZ4TkZaSldP?=
- =?utf-8?B?TDd5ZFcrQTlNWVp4dHBucGlNckV6S0JVNXhLMW9VV1pUek9NRWNqZmdKNjBk?=
- =?utf-8?B?bTYrbFVYVEhYTTBkbzRScDBYNmlJR2tNSjM3QUtZZE90SkJRdmhZVkZVaWVN?=
- =?utf-8?B?cDZ3RVB0YTNZUGR5RnFEL0t4S1RsRlR5OTlXcGtMOFg4bmRQbU1DSVBiOGxM?=
- =?utf-8?B?em9wdnlRSks4bTNOWUNsaVRPZnNxTVM3VFZKbFZMZjVNZ0d1ajQyRTVaR3V2?=
- =?utf-8?B?cDg5KzlFb2xTWTJqY2h5YVBuT3E2UzZXVjhIS0cwZE01MkhpTXU0Y0N1ZVNK?=
- =?utf-8?B?U1VDUHoxZldBRk5WSDZPeHpLZEIwOS9IV0RGODJvMnNIWFJFYXgzZ0p2Rllh?=
- =?utf-8?B?bXNSQnoxN1JITDR5Y3JhVlFyM2hqb1NVbHhSN0FqdFBaV0tPOXR4L2Jtd2Z2?=
- =?utf-8?B?VEU3a3dMc1pIbXdMQjFyN1BCOWwzeklCMlBQZjNhS3p5Q29MSEtrZ0NMeElS?=
- =?utf-8?B?VjlSMW1oRTJ4K0JNSzhDa0N1VHZYN0Vqb2pldnowbE05MUJkdW15TnU1RHBO?=
- =?utf-8?B?a1RaWmZkRE9HRC82MzhnRVBtT0tlTWhuakJWMks1a0dNakJyNDVhK1QrSEsx?=
- =?utf-8?B?b01jWXNqQWUyZm9wNUdqbzVGSTJseUlHaURhMk5GNFNybUZQYVRYMlEvZkV0?=
- =?utf-8?B?WEVvZDE5N0w1S1I5ekY4dmRLbEk4dlZzR1htckpwU1JSbHJtbytEMWxUSnQ1?=
- =?utf-8?B?RFRoTXcwMUFrZHpvelg1RFhzOE9KTSt6V1pXYVdQLy96V3JLQzlUdEVBNWhG?=
- =?utf-8?B?OGFOek45Q3FkcVpER00rU3JBK2gxN1lNU1kyV1ROK0taYkh1K2ZLZzJQZXFG?=
- =?utf-8?B?Kzl1cXNMS2xWQUorb2lQRlVhaGtpNDRlZXd1NDhiNG5CZkkyK2J1U1F4YmY1?=
- =?utf-8?B?eWtrajVqbXBrYWFrekozN2hWT0dYK2NIVGhFYnhIMVcyd2R5Q3lneXBTZE0r?=
- =?utf-8?B?ZWE0TTZvY3NiaXhWVjBkcnNmSEp2L3dIellqT3BkSlErSktCeEdWZGo1RzFp?=
- =?utf-8?B?dG1ScEFuS3FybzJFTTZBNnJMYW5XVkRBdUF3T1BWbWt4Zmh4ZHppdThxZU1Z?=
- =?utf-8?B?MVBEdlVLcGZPa3BKNGUwZyszWGMvQkxGUUUxbzBDY2N4VTFoTnVubzFscENa?=
- =?utf-8?B?MXN5ek0rTndyKzJ0N0ZoWnl4WCtvOTFhaDVaRVYyTWpZdVdsRTh4N0RBZnI2?=
- =?utf-8?B?dzljVnFUd0xnQklZNmpiU3l1WDRTcDNrQ0ZWQ3d3RWtKQWRqOG9MblhLb2Zt?=
- =?utf-8?B?ZEdqcGltMnBCK09WdFNuUFJ4VDU0VnVQZDMrVWpPSmRzSzFqdmxpSkREd1p0?=
- =?utf-8?B?YTdDbXM0UW51NHFHWC9WN211eHg2ano2ek1IS1cxWWZsM3dDbkJDYmJha0pk?=
- =?utf-8?B?OUxVTmluSHJybzludXJkMlF5TVBLVDF1RVQwcUcwbS9DOEpPdzRjOWwrbHFm?=
- =?utf-8?B?WHRJRG1IRUc3VldXWnZ2c0RNTDg4UjNFODNFc2ZPZVcwSzlvTDBtS2RJWnkr?=
- =?utf-8?B?bytvbG9xSFp2YU1xUnJReVJaT3J5WDF0a093ZVdlZU85dHZPcWFtcGh2cFJI?=
- =?utf-8?B?SWY1a0ZmcFNnelV1b05GbS9JQW42WkIvQWZuTEJRa1JDckFyT2NYNTlGTVYr?=
- =?utf-8?B?UW1yREVuY0lNY0p0NFBKUUZPdjlValp4UWlyMi80Q0pvLzhtbDgzWGl5ZDM3?=
- =?utf-8?B?d0RZc291eUNnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700013)(32650700017);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 02:46:12.6407
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 937fa5b9-db48-4650-ab51-08dd472195b7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE3C.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8363
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <425bf21b-8aa6-4de0-bbe4-c815b9df51a7@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EF9A8400D6
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Action: no action
 
-Hello Valentin,
+Hi Alan,
 
-On 2/6/2025 8:54 PM, Valentin Schneider wrote:
-> [..snip..]
->> So circling back to my original question around "SDTL_ARCH_VERIFIED",
->> would folks be okay to an early bailout from topology_span_sane() on:
+在 2025/2/7 05:20, Alan Stern 写道:
+> On Thu, Feb 06, 2025 at 11:49:49AM +0800, Mingcong Bai wrote:
+>> On both unpatched and patched kernels, I have set power/control to "auto"
+>> for both the root hub and the external hub and left the keyboard for 60
+>> seconds. Regardless if I plug the keyboard into the chassis or the external
+>> hub, the keyboard continues to work from the first key strike (no delay or
+>> lost input).
+> 
+> It's not necessary to wait 60 seconds; 10 seconds would be enough.
+> 
+> For the case where the keyboard is plugged into the hub, it would be
+> best if you removed the r8152 device (network or wifi, I guess).
+> Leaving it plugged in will prevent the external hub from going into
+> runtime suspend unless the network interface is turned off.
+> 
+> You can check whether these devices have gone into runtime suspend by
+> looking at the contents of the .../power/runtime_status attribute
+> file.  There are a couple of ways you can do this without disturbing the
+> keyboard's status, such as by using ssh or by doing something like:
+> 
+> 	sleep 10 ; cat .../power/runtime_status
+> 
+> Or if you want to see the status of all your USB devices,
+> 
+> 	sleep 10 ; grep . /sys/bus/usb/devices/*/power/runtime_status
+> 
+
+Got it, thanks for the tip.
+
+>>> This means there's something different between the way the keyboard
+>>> sends its wakeup signal and the way the Genesys Logic hub sends its
+>>> wakeup signal.
+>>>
+>>> Can you post the output from "lsusb -t" for this system?
 >>
->>       if (!sched_debug() && (tl->flags & SDTL_ARCH_VERIFIED))
->>        return;
+>> Keyboard plugged into the chassis:
 >>
->> and more importantly, do folks care enough about topology_span_sane()
->> to have it run on other architectures and not just have it guarded
->> behind just "sched_debug()" which starts off as false by default?
+>> /:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>>      |__ Port 001: Dev 002, If 0, Class=Human Interface Device,
+>> Driver=usbhid, 1.5M
+>> /:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+>> /:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+>> /:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 006.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 007.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 008.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
 >>
+>> Keyboard plugged into the hub:
+>>
+>> /:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+>>      |__ Port 001: Dev 003, If 0, Class=Hub, Driver=hub/4p, 480M
+>>          |__ Port 001: Dev 004, If 0, Class=Vendor Specific Class,
+>> Driver=r8152, 480M
+>>          |__ Port 004: Dev 005, If 0, Class=Human Interface Device,
+>> Driver=usbhid, 1.5M
 > 
-> If/when possible I prefer to have sanity checks run unconditionally, as
-> long as they don't noticeably impact runtime. Unfortunately this does show
-> up in the boot time, though Steve had a promising improvement for that.
+> Ah, okay, there's an important difference.  The hub connects to an EHCI
+> controller whereas the keyboard by itself connects to UHCI.
 > 
-> Anyway, if someone gets one of those hangs on a
+> Also the output from "grep . /sys/bus/usb/devices/*/serial"?
 > 
->    do { } while (group != sd->groups)
+> And the contents of /sys/kernel/debug/usb/uhci/0000:00:1d.0?
 > 
-> they'll quickly turn on sched_verbose (or be told to) and the sanity check
-> will holler at them, so I'm not entirely against it.
 
-If you're game, I'm too!
+The enumerated USB tree changed (now to a controller at 1a.0) so I have 
+reproduced a new set of outputs (also for the log you requested below).
 
-I just put it out there in case folks had any strong feelings against
-this on other arch but that doesn't seem to be the case and we all love
-a simple solution :)
+`lsusb -t`:
 
-> 
->> (Sorry for the long answer explaining my thought process.)
+/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+/:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+     |__ Port 001: Dev 002, If 0, Class=Human Interface Device, 
+Driver=usbhid, 1.5M
+/:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+/:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+/:  Bus 006.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+/:  Bus 007.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+/:  Bus 008.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+
+`grep . /sys/bus/usb/devices/*/serial`:
+
+/sys/bus/usb/devices/usb1/serial:0000:00:1a.7
+/sys/bus/usb/devices/usb2/serial:0000:00:1d.7
+/sys/bus/usb/devices/usb3/serial:0000:00:1a.0
+/sys/bus/usb/devices/usb4/serial:0000:00:1a.1
+/sys/bus/usb/devices/usb5/serial:0000:00:1a.2
+/sys/bus/usb/devices/usb6/serial:0000:00:1d.0
+/sys/bus/usb/devices/usb7/serial:0000:00:1d.1
+/sys/bus/usb/devices/usb8/serial:0000:00:1d.2
+
+`cat /sys/kernel/debug/usb/uhci/0000:00:1a.0`:
+Root-hub state: running   FSBR: 0
+HC status
+   usbcmd    =     00c1   Maxp64 CF RS
+   usbstat   =     0000
+   usbint    =     000f
+   usbfrnum  =   (1)c14
+   flbaseadd = 03147c14
+   sof       =       40
+   stat1     =     01a5   LowSpeed Enabled Connected
+   stat2     =     0080
+Most recent frame: 6fe6f (623)   Last ISO frame: 6fe6f (623)
+Periodic load table
+	0	0	0	0	118	0	0	0
+	0	0	0	0	118	0	0	0
+	0	0	0	0	118	0	0	0
+	0	0	0	0	118	0	0	0
+Total: 472, #INT: 1, #ISO: 0
+
+>> /:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/6p, 480M
+>> /:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 006.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 007.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
+>> /:  Bus 008.Port 001: Dev 001, Class=root_hub, Driver=uhci_hcd/2p, 12M
 >>
 >>>
->>> That I can't remember, sorry :/
+>>> Also, can you enable dynamic debugging for usbcore by doing:
+>>>
+>>> 	echo module usbcore =p >/sys/kernel/debug/dynamic_debug/control
+>>>
+>>> and then post the dmesg log for a suspend/resume cycle?
 >>
->> --
->> Thanks and Regards,
->> Prateek
+>> Keyboard plugged into the chassis (does not wake up via the external
+>> keyboard, needed to strike Fn on the internal keyboard):
+> 
+> These logs are pretty much what I would expect, except for one thing:
+> 
+>> [  363.682633] ehci-pci 0000:00:1d.7: wakeup: 1
+>> [  363.682714] uhci_hcd 0000:00:1d.2: wakeup: 1
+>> [  363.682719] uhci_hcd 0000:00:1d.2: --> PCI D0
+>> [  363.682757] uhci_hcd 0000:00:1d.1: wakeup: 1
+>> [  363.682760] uhci_hcd 0000:00:1d.1: --> PCI D0
+>> [  363.682796] uhci_hcd 0000:00:1d.0: wakeup: 1
+>> [  363.682849] uhci_hcd 0000:00:1d.0: --> PCI D2
+>> [  363.683087] ehci-pci 0000:00:1a.7: wakeup: 1
+>> [  363.683153] uhci_hcd 0000:00:1a.2: wakeup: 1
+>> [  363.683215] uhci_hcd 0000:00:1a.2: --> PCI D2
+>> [  363.683254] uhci_hcd 0000:00:1a.1: wakeup: 1
+>> [  363.683257] uhci_hcd 0000:00:1a.1: --> PCI D0
+>> [  363.683293] uhci_hcd 0000:00:1a.0: wakeup: 1
+>> [  363.683338] uhci_hcd 0000:00:1a.0: --> PCI D2
+>> [  363.694561] ehci-pci 0000:00:1a.7: --> PCI D3hot
+>> [  363.694597] ehci-pci 0000:00:1d.7: --> PCI D3hot
+> 
+> Why do the 1d.1, 1d.2, and 1a.1 UHCI controllers remain in D0 during
+> suspend, whereas the 1d.0, 1a.0, and 1a.2 controllers get put in D2?
+> That's odd.
+> 
+> Can you send the output from "lspci -vv -s 1d.0" and "lspci -vv -s 1d.1",
+> running as root?  It may explain this behavior.
 > 
 
--- 
-Thanks and Regards,
-Prateek
+`lspci -vv -s 1d.0`:
 
+00:1a.0 USB controller: Intel Corporation 82801I (ICH9 Family) USB UHCI 
+Controller #4 (rev 03) (prog-if 00 [UHCI])
+	Subsystem: Lenovo ThinkPad T400
+	Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- 
+Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin A routed to IRQ 20
+	Region 4: I/O ports at 1860 [size=32]
+	Capabilities: [50] PCI Advanced Features
+		AFCap: TP+ FLR+
+		AFCtrl: FLR-
+		AFStatus: TP-
+	Kernel driver in use: uhci_hcd
+
+`lspci -vv -s 1d.1`:
+
+00:1a.1 USB controller: Intel Corporation 82801I (ICH9 Family) USB UHCI 
+Controller #5 (rev 03) (prog-if 00 [UHCI])
+	Subsystem: Lenovo ThinkPad T400
+	Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- 
+Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin B routed to IRQ 21
+	Region 4: I/O ports at 1880 [size=32]
+	Capabilities: [50] PCI Advanced Features
+		AFCap: TP+ FLR+
+		AFCtrl: FLR-
+		AFStatus: TP-
+	Kernel driver in use: uhci_hcd
+
+> Reading through the source code, I found a comment in the UHCI driver
+> (drivers/usb/host/uhci-hcd.c, line 328) which is highly relevant:
+> 
+> 	/*
+> 	 * UHCI doesn't distinguish between wakeup requests from downstream
+> 	 * devices and local connect/disconnect events.  There's no way to
+> 	 * enable one without the other; both are controlled by EGSM. Thus
+> 	 * if wakeups are disallowed then EGSM must be turned off -- in which
+> 	 * case remote wakeup requests from downstream during system sleep
+> 	 * will be lost.
+> 	 * ...
+> 
+> Most likely this explains what you are seeing.  In particular, it
+> explains why the keyboard (when plugged directly into the computer)
+> can't wake up the system unless wakeup is enabled on the root hub.  It
+> even explains why wakeup from runtime suspend works, because wakeup is
+> always enabled on all USB devices during runtime suspend regardless
+> of the setting in .../power/wakeup.
+> 
+> (UHCI was the first USB host controller technology to be developed;
+> the spec is from 1996.  It is very primitive compared to later
+> controllers, in many ways.  Perhaps it shouldn't be surprising that
+> UHCI controllers can't do all that we want them to.)
+> 
+
+This all makes sense. Since Huacai's patch was originally intended to 
+fix Loongson's OHCI implementation, I was beginning to suspect if it 
+exists for OHCI implementations found on older x86 platforms, say, AMD's 
+SB600/700 series south bridges. Also to see if this issue is shared 
+between OHCI and UHCI.
+
+I have purchased a motherboard to test this and will report back as soon 
+as I get my hands on it.
+
+> Alan Stern
+> 
+
+Best Regards,
+Mingcong Bai
 
