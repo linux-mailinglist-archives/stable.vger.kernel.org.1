@@ -1,204 +1,185 @@
-Return-Path: <stable+bounces-114278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B25A2C9D6
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 18:08:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A83A2CA49
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 18:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30EF16E116
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 17:07:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A5B3A9819
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 17:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C0B19342E;
-	Fri,  7 Feb 2025 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2392199EAD;
+	Fri,  7 Feb 2025 17:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="jR3B2Uf/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jLjut9Wy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E0019597F
-	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 17:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEE6194C94
+	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 17:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738948022; cv=none; b=eCgV1ybDFP3cN4EDJvHcmHF+81BdC7v6/d6aNUijz3azt645GND5qhIw4Mrrgi9HMU5lHXSM3Hn8grNtZagdM+V9QiY3xzyFxBAuHSCFDzT9Otlu95dT3YDyfLJCp0pUAxkoZrA2+nsgbnWKrpY0aA/MOBpL6tE8WfHfyfFNdZQ=
+	t=1738949803; cv=none; b=nvDex/wmz5FgBYFLyQU2kVGw9tjlAYRFFhp1IB+ktHvCBqOoDCpVN82DSAM3tbVLtSGPCchl6sx9R3nzeXtf5wlPhl/GI53WPB+PrwLqgOxXWSMLQNdC5JMYxtqm4FDy2XjpM1MiJrXUSKOeVoB9BlcHFVJgKni9ll4XCRBwuOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738948022; c=relaxed/simple;
-	bh=WnxzVfiBDOWKlPrs8uy9gGAmG83nu7iJWuRjeGWbCNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WdI9cblkyZAWh3uZ1+tTUEWq6Z1CnpI+Z7PFYtCYa2d40jlzhOCt75C7zeE4wDJQmSri5zCWxEqLEPMdkeUSq4OXIo+0sZSv1yYzAUpDl9vF7L334F0naA6sS0DanOW/p2QPoohbFubRJOPcrWN5vgQJOId8O3uP1tCQ6MkgCww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=jR3B2Uf/; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 0C6943F220
-	for <stable@vger.kernel.org>; Fri,  7 Feb 2025 17:06:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1738948016;
-	bh=LpR99Ye14Bl3z61OmVYY2qgP2w3XFhQFmphCUyct0cQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=jR3B2Uf/5ZKIHOMLEi5Kwl1WL8YZTnFcpOBdO/IRTDmv3AB87MUNsUgEcSOEDAnSL
-	 cTnhs+VnFT7UC8UrKBA9eIGi7y5TpBIENrzapTiX5LObkvoPCoctWRd25tQgv24KwG
-	 GzsthQ/QJMmYNvsZ26OlWps+weysHVXkA4tqckewuL7riPzq6Mo7cOrwVaEcMNysLa
-	 FJff4FW9S6UO6O5QPfDKdA0er82sT2MHdTLck1mcoJ5gPFzfkRnnbuf+acdH84sZZz
-	 laRoZg483ezPhhvi8RYadKXN4nsdSR2iKxM7lrUn9PbRZUqxkgwQU9WrNbq3wSmWKD
-	 5kSy+wd9at/sw==
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2fa3fd30d61so244377a91.0
-        for <stable@vger.kernel.org>; Fri, 07 Feb 2025 09:06:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738948014; x=1739552814;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1738949803; c=relaxed/simple;
+	bh=21qDGjiVABfPAamSl8+lYhl0Ac18V5VkNPgXfqK6F1o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cYwhHl4URIkNrP0NT+TodOm+hqPCi5koPKmEsqMX0nSKDjcxaDF6ug2XQTG1RmPzQDYXHmrZ+lEhE05CpAWt4S1XKr4iKTVbQEz62DQ8Wsz9UKMCxPZqqE1DpWgNFjv+m3BHk5GDsOIBO6Vv91NiPL2HUEgQCz+0NNulCoMejRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jLjut9Wy; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-8641bc78952so584897241.0
+        for <stable@vger.kernel.org>; Fri, 07 Feb 2025 09:36:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738949800; x=1739554600; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LpR99Ye14Bl3z61OmVYY2qgP2w3XFhQFmphCUyct0cQ=;
-        b=g1jtbZK6rXtNkiadTQdKonze0AWjNvdoBDhHBybnxAxn+OuSvYr0newknuNeGbXt7O
-         8QRG4QMFQf6DglkU45aQ2ZpP9Bq9GnG5udpNkidydP6eO2Y9Y681q7uTrRt1y5e9Bol1
-         /zNx7jLZa47Ai73LqzLz1zwO6jmA0PoGOlm2Yrd9537ddsLyMlTdklrhfrC2bRPuWLXb
-         f3Eflt7Vu6C74DTyUuTjxLnpP5JaE87DZMukW25j/otG416FU3I7dQrM2u/MlXXa+lsv
-         uVGUDBnYG6KbG7zduBLi6lP5XGQndz+jjmGDce0CaqFsILKl1C4QcLYSNVLtlTEJxLYX
-         1E+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUBYzEyGZ4UbwzzzkOKew9dhY2sUh6Xwc9ePUH6JMmgQPMvhmrNE+Imhw3ZikpG1Rr/0wRP0bQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ2NoL04f3FJQO0e4oAaUkdfSCk3PJ5pe5HjVx3bA579ZWxHb6
-	P9dOW5pmivGKWV1zZ8KoGCS7csz4X4M2rtT8oh5/nCw3L2AOa3cxvoUzwmYuPbFzE8xK2c92h+V
-	jNDRkS3i9nqnP4mn0NQMWPUtf3PhpPS0RyP0kgS5I0Sbe7lp9xofMP4Nyp0aRttvJxkG2BA==
-X-Gm-Gg: ASbGnctDMpS7ZK3tV5MJJNZusqj+a3nzdWirqMlT1haZpfVhqvigSIc7NAesXGCQdRo
-	1QbJeAwi+5x6419c4ubCqUX5JrBvhT+rxfrfM2S3pnCEcYfmqBqykWblaq3PotKZPaYs2t01w2n
-	Eh0PdqgHsRy6pUYtaKfg2ero9GaVTu6qqG5+qDZIO9Z/6nzi3TjEdLFK8qx47Jg81bQIQ89IWc/
-	4RYOtlHbebqTWL3+SYq/GQ3x464eDsE58lQZoduIwaiG/iivRqKcCt3RjFU7Y/8TYK/+xxq9cIj
-	2Vg61O4=
-X-Received: by 2002:a05:6a21:3406:b0:1e0:ce11:b0ce with SMTP id adf61e73a8af0-1ee03b6d257mr8098789637.35.1738948014645;
-        Fri, 07 Feb 2025 09:06:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJBQDafFYhVotNsoO822rUdYxAjMfjIT6w0V06a6wSD3JLplbq4at3BA1ruD3EaS3VB7vGhA==
-X-Received: by 2002:a05:6a21:3406:b0:1e0:ce11:b0ce with SMTP id adf61e73a8af0-1ee03b6d257mr8098734637.35.1738948014219;
-        Fri, 07 Feb 2025 09:06:54 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:bf00:4534:dd5d:8dd0])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048bf14b1sm3334500b3a.91.2025.02.07.09.06.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 09:06:53 -0800 (PST)
-Date: Sat, 8 Feb 2025 02:06:51 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: David Sterba <dsterba@suse.cz>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org, patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>, 
-	Filipe Manana <fdmanana@suse.com>, David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 6.12 102/114] btrfs: avoid monopolizing a core when
- activating a swap file
-Message-ID: <obtsofvu7o6mrgmf6u32hvly7zkgwxdqicorol4o64jqvyqe4n@kxz4jlgztzps>
-References: <20241230154218.044787220@linuxfoundation.org>
- <20241230154222.045141330@linuxfoundation.org>
- <q6zj7uvssfaqkz5sshi7i6oooschrwlyapb7o47y36ylz4ylf7@dkopww2lfuko>
- <2025020634-grid-goldfish-c9ef@gregkh>
- <20250206174542.GM5777@suse.cz>
+        bh=IoM7ay1yUEu27qZg6xqFFLuuGJrp63sCtx87CRTaTyc=;
+        b=jLjut9Wy46NrROp3gSuUkMqw6/jjt32HJClP+o0GIqmJXb8qsGKEzi+nDGizmvbxKu
+         9JCv3ksXPPngc0StmiAxdWHE3oTEiLjfPRKcJfJp3b9/cJ6bUwojycW5JArY0F88xJ1r
+         vi8fZNFfv6C6QRylAF3EeJaJrJltooVDq855pr1VB0vT9XuIFCXXP2FIYYSeO2QZ4jdv
+         7BkFh4OA2g5LOvnYY6ovO4zqud6nikIBtOWIi9i9xZK8bLtIU07IW8tWK8iCTEpk5pzr
+         HDZokPll01wRHqSsjEow1FhXg24StKzR+Pm6cx+anRt3kJMXAsb++Dokdo0o5mLYIvLJ
+         48vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738949800; x=1739554600;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IoM7ay1yUEu27qZg6xqFFLuuGJrp63sCtx87CRTaTyc=;
+        b=AFR9tod8C9rBnNBj97yx7H71gYzv4nBLYCLjJXHiTY8h6D7tte74D2knuoyljp/P5u
+         FV38wqHZnk1ZvNDphll9m5Z+OKgqyg0xxCYCceyD75Fma/PPd6ePyFj9u4eq4o4Ad+JL
+         oN5PkY6O81vaSPQ+q3drgPhGlOMxHTHXx4QNyDKppIjL23ZiwxAitsSkOFhky7+D09uC
+         Y5D9rMJGogFJnkDfOzTJc3xu+SN0Jikyw3HgKAgPw5GQmu7lzY75he6RAcBaCp5yBfw6
+         GKHgVCyjOXL1/D2/SJmqnaaRgsSyQpfbqta1tI7z/WdhpOLxfEGASW+xvXOZ/eR8sqJ4
+         vurA==
+X-Gm-Message-State: AOJu0YwGb1qZKDTB4gvtVRyHH60ibhvkaDYJ5ns6tYYF7aOi3irwX3AN
+	gBY01p07FmEr0HRFlKzQDlbYGunPJbVuPzDH9heD1WHBPsXHxNvHWE9XQ7DO0X+MfSmaPVbxr8w
+	L+ek6cv6F64GLg6nXyIqV6U4phiSfymj1tta95VQ/kxQsf7yXFPo=
+X-Gm-Gg: ASbGncsJzaAY0VqD0mmRJfyGTMPBo/MjDAMSiSBgj1RhchsOE2hmXz6a4T9cL7XqGXZ
+	80JX78yx2G10pFgd1vcpAFBpwfTeLJRJWaKPJVGTRu8heHVCk2NsTTi9Z+s5KezhPlVyWr4enVX
+	0N0UnPMo09IvigPGz9oKuEbWaAu19H
+X-Google-Smtp-Source: AGHT+IHD48I2AMSpA5+mvtWHG2ePtTqKNvefiIOSowMRXyVSROEuTDkAlvM1BbSf+cJUy+TNOcgESamf0qrSTV/WsvA=
+X-Received: by 2002:a05:6122:4986:b0:51f:306f:f35a with SMTP id
+ 71dfb90a1353d-51f306ff9camr2275253e0c.5.1738949800534; Fri, 07 Feb 2025
+ 09:36:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206174542.GM5777@suse.cz>
+References: <20250206160711.563887287@linuxfoundation.org>
+In-Reply-To: <20250206160711.563887287@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 7 Feb 2025 23:06:27 +0530
+X-Gm-Features: AWEUYZnVhjZv4-Pyf-2ceZaRTfyWavFrA0p3FZEzdjxW3fcO1g2Uupo5JGJYVpU
+Message-ID: <CA+G9fYvs9GUK25mx-v+Fh-E55v2F=he8v=pSbPa_r4Zw51CNuQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/583] 6.12.13-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 06, 2025 at 06:45:42PM GMT, David Sterba wrote:
-> On Thu, Feb 06, 2025 at 03:31:02PM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Feb 06, 2025 at 08:41:33PM +0900, Koichiro Den wrote:
-> > > On Mon, Dec 30, 2024 at 04:43:39PM GMT, Greg Kroah-Hartman wrote:
-> > > > 
-> > > 
-> > > Hi, please let me confirm; is this backport really ok? I mean, should the
-> > > cond_resched() be added to btrfs_swap_activate() loop? I was able to
-> > > reproduce the same situation:
-> > > 
-> > >     $ git rev-parse HEAD
-> > >     319addc2ad901dac4d6cc931d77ef35073e0942f
-> > >     $ b4 mbox --single-message  c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com
-> > >     1 messages in the thread
-> > >     Saved ./c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com.mbx
-> > >     $ patch -p1 < ./c37ea7a8de12e996091ba295b2f201fbe680c96c.1733929328.git.fdmanana@suse.com.mbx
-> > >     patching file fs/btrfs/inode.c
-> > >     Hunk #1 succeeded at 7117 with fuzz 1 (offset -2961 lines).
-> > >     $ git diff
-> > >     diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> > >     index 58ffe78132d9..6fe2ac620464 100644
-> > >     --- a/fs/btrfs/inode.c
-> > >     +++ b/fs/btrfs/inode.c
-> > >     @@ -7117,6 +7117,8 @@ noinline int can_nocow_extent(struct inode *inode, u64 offset, u64 *len,
-> > >                             ret = -EAGAIN;
-> > >                             goto out;
-> > >                     }
-> > >     +
-> > >     +               cond_resched();
-> > >             }
-> > >     
-> > >             if (file_extent)
-> > > 
-> > > The same goes for all the other stable branches applied. Sorry if I'm
-> > > missing something.
-> > 
-> > Hm, looks like patch messed this up :(
-> 
-> The fix is part of 4 patch series. The stable tree 6.12 has only 3 and
-> in different order, so this one fails to apply due to missing context
-> and got applied to the wrong function.
-> 
-> Applying all 4 in order to 6.12.y (same base commit f6279a98db132da0cff)
-> works without conflicts.
-> 
-> $ git cherry-pick 0525064bb82e50d59543b62b9d41a606198a4a44
-> Auto-merging fs/btrfs/inode.c
-> [detached HEAD 0466e0dbbb99] btrfs: fix race with memory mapped writes when activating swap file
->  Author: Filipe Manana <fdmanana@suse.com>
->  Date: Fri Nov 29 12:25:30 2024 +0000
->  1 file changed, 24 insertions(+), 7 deletions(-)
-> 
-> $ git cherry-pick 03018e5d8508254534511d40fb57bc150e6a87f2
-> Auto-merging fs/btrfs/inode.c
-> [detached HEAD 1715e6abcf46] btrfs: fix swap file activation failure due to extents that used to be shared
->  Author: Filipe Manana <fdmanana@suse.com>
->  Date: Mon Dec 9 12:54:14 2024 +0000
->  1 file changed, 69 insertions(+), 27 deletions(-)
-> 
-> $ git cherry-pick 9a45022a0efadd99bcc58f7f1cc2b6fb3b808c40
-> Auto-merging fs/btrfs/inode.c
-> [detached HEAD 78d50f8c8827] btrfs: allow swap activation to be interruptible
->  Author: Filipe Manana <fdmanana@suse.com>
->  Date: Mon Dec 9 16:31:41 2024 +0000
->  1 file changed, 5 insertions(+)
-> 
-> $ git cherry-pick 2c8507c63f5498d4ee4af404a8e44ceae4345056
-> Auto-merging fs/btrfs/inode.c
-> [detached HEAD a162d2371965] btrfs: avoid monopolizing a core when activating a swap file
->  Author: Filipe Manana <fdmanana@suse.com>
->  Date: Mon Dec 9 16:43:44 2024 +0000
->  1 file changed, 2 insertions(+)
-> 
-> I have more trust in git patch logic than 'patch', this can happen in the
-> future again.
+On Thu, 6 Feb 2025 at 21:41, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.13 release.
+> There are 583 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 08 Feb 2025 16:05:14 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.13-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-As a side node, I just recently observed a quite similar pattern elsewhere.
-Unfortunately, by the time I discovered it, the 6.11.y had already reached
-EOL, so I didn't have an opportunity to report it for fixing.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-The following upstream commits landed in the stable queue and were applied to 6.11.y
-in reverse order (i.e. applied as #2 then #1):
-#1. f3fe8c52c580 ("iio: adc: ti-lmp92064: add missing select REGMAP_SPI in Kconfig")
-#2. a985576af824 ("iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-that appears to have resulted in the backport for #2 being broken.
-(see https://lore.kernel.org/stable/20241021102302.767569469@linuxfoundation.org/)
-Since there seems no "FAILED to apply" announcement, I assume this was
-handled by normal patch(1) usage. Just as an extra side note, #2 seems to
-have been applied twice on the branch.
+## Build
+* kernel: 6.12.13-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: c4de2ac60676d8cbaedb6e7a4b422c65b911f12e
+* git describe: v6.12.11-627-gc4de2ac60676
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
+.11-627-gc4de2ac60676
 
-So, even though the patch reordering and patch application strategy are
-essentially seperate issues, I tend to agree that when the latter causes
-problems, it sometimes indicates that an issue with the former is lurking.
+## Test Regressions (compared to v6.12.11-42-g4d14e2486de5)
 
-Thanks,
-Koichiro
+## Metric Regressions (compared to v6.12.11-42-g4d14e2486de5)
+
+## Test Fixes (compared to v6.12.11-42-g4d14e2486de5)
+
+## Metric Fixes (compared to v6.12.11-42-g4d14e2486de5)
+
+## Test result summary
+total: 1335, pass: 981, fail: 267, skip: 87, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 113 total, 113 passed, 0 failed
+* arm64: 9 total, 8 passed, 1 failed
+* i386: 14 total, 14 passed, 0 failed
+* mips: 32 total, 32 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 33 total, 33 passed, 0 failed
+* riscv: 15 total, 15 passed, 0 failed
+* s390: 20 total, 16 passed, 4 failed
+* sh: 6 total, 5 passed, 1 failed
+* sparc: 3 total, 3 passed, 0 failed
+* x86_64: 38 total, 38 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-rust
+* libgpiod
+* log-parser-build-clang
+* log-parser-build-gcc
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-sched
+* ltp-smoke
+* ltp-tracing
+* perf
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
