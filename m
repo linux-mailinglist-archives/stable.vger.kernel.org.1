@@ -1,171 +1,113 @@
-Return-Path: <stable+bounces-114249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F76A2C36B
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:22:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BFAA2C393
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46C301654FB
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 13:22:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2820916B036
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 13:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942021EA7F3;
-	Fri,  7 Feb 2025 13:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EAD1F418C;
+	Fri,  7 Feb 2025 13:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="afh4qDIV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OoZpBxZV"
 X-Original-To: stable@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486B99454;
-	Fri,  7 Feb 2025 13:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3351F1505;
+	Fri,  7 Feb 2025 13:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738934528; cv=none; b=XHVlLDVMkRmjKLaI8PFnHyYC6T11JhScAlslr9zzCTV9tHjPc82ABeib58JOKyofpmQOXHdz8/BWolXJ2rTSn8WbHeIoLJKjC6t4koyC68Xn359tfV5FdWMx5xWUlcqFXK1AKSj/FkPlLpQGjEgAWN6UM/Jti7SrI8PaEpMTvNg=
+	t=1738935009; cv=none; b=MmNfHiO5UPSvgrHGTblBOujAeaNvCDzRipqHSGWcoheU3qXWtLXx6IVu78IS2VMnSkb6oduvhwZLCHEaeaKbObquiT4/PbkwjTDOqOREzU8Y5HyU8TIsHiUmKSWA8UEAe/ynZ0K+PuCTVS70YT66RjVkZedBu1ZGK2D9Ar8KQFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738934528; c=relaxed/simple;
-	bh=x3MPmRQLk1AbgqBDCcQ3vNHDApwtWPJ2zOR9fDuK2UY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZqATvrqv5UHq7tuqqOOo8klfYwHhyr7tR2gpWQ1w2uPnzzEkifFlb37/jh6JhQkfwd13P3hijezs4v6HGaXxBPra9qd7n93HGLwxZaMHsugceh3fSaMLPJqttfgf/bPrWmxDv4XfZ1PUVUyKS5TAzAGpY7JvQWsXRxpPJg33ypc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=afh4qDIV; arc=none smtp.client-ip=217.70.183.196
+	s=arc-20240116; t=1738935009; c=relaxed/simple;
+	bh=bKUuRClkZe1XnXxLTPyQ6tscMqQy1rs3PGNwX1eXlH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LgweZeUlFNu6qieel2K6Dnu3Ie5S17wfGZ2PqDBu1txnhZuhTWKjVpUCTK76t4Jw+N23WVDlKQ05v3sLW4CLeTFjggaKN9clHxTghFPZxFBby12QR3STxzJEHT+pWVFqvE1wlhTqLXdtdWdX78H2rQFFgnkTs6CXKpUf6Qlp24A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OoZpBxZV; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 757C044408;
-	Fri,  7 Feb 2025 13:22:02 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D7B1D442F5;
+	Fri,  7 Feb 2025 13:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738934523;
+	t=1738935005;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cAoBxYtUrA+ImixRo4h70vs5ozOMbJ+LCR06GvVPFo4=;
-	b=afh4qDIV12OqDpxGG9POlW/Ful9p+5JGQ5qX3/lTlhDj5DUKDoL5jTNdjweBuT6KjAxufx
-	dddXk3qct2y18ieVIkccL3yPotdffCSZKl0bq0LnUu1rkTcsaQfZ2SOD1HawnHLhiG5UtV
-	satrL61jVdC+nRv3WQbrtpBvEhOXX+wefn5P1seGOUuud7vc8KnIc8e7jsKaqIB119V8fx
-	S5prJcTsbD4km1s6jbbThG14GmOpeYLZjqn4gc7aBroQapHT/Zq/boIRoz1gfLo4Afu5Kd
-	qY22F5tMCVb0Nbq+RJpPlmU3t5yGf2bCrHCdhFpfQqKGFbdEol+sJ4wU/QagUw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  "linux@treblig.org" <linux@treblig.org>,  Shen Lichuan
- <shenlichuan@vivo.com>,  Jinjie Ruan <ruanjinjie@huawei.com>,
-  "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
-  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob
- when DMA is not ready
-In-Reply-To: <BL3PR11MB65320CBE12D13EBD3940CE44A2F12@BL3PR11MB6532.namprd11.prod.outlook.com>
-	(Niravkumar L. Rabara's message of "Fri, 7 Feb 2025 09:12:44 +0000")
-References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
-	<20250116032154.3976447-2-niravkumar.l.rabara@intel.com>
-	<87plkgpk8k.fsf@bootlin.com>
-	<BL3PR11MB653276DFD3339ADAADC70CCFA2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<874j1i0wfq.fsf@bootlin.com>
-	<BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<87msf8z5uu.fsf@bootlin.com>
-	<BL3PR11MB6532451B44E7C5D82F5EC4AFA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<87o6zi83se.fsf@bootlin.com>
-	<BL3PR11MB6532369D14375CC94AA2714BA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<87frkt96nw.fsf@bootlin.com>
-	<BL3PR11MB653239DDBD9D8E7D413B60F4A2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<877c6357o5.fsf@bootlin.com>
-	<BL3PR11MB65320CBE12D13EBD3940CE44A2F12@BL3PR11MB6532.namprd11.prod.outlook.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 07 Feb 2025 14:22:01 +0100
-Message-ID: <87ikpl3n5y.fsf@bootlin.com>
+	bh=4uLJEtoS2PPJFMr0I1tAyocsm8P41/TMCB7vqODm0mU=;
+	b=OoZpBxZVH/MaCQGmcz4JeZqJ48Oqd3LrSrTxiEnH0uO9644BdWBqRtn6n0Po58+Fu4amN0
+	9bPks+EnjQIvq3wD4XxW2cxFKbMsDIWEwkA909n5rmpr5Ei5RIBdaZU7GUexzRQJ/J3AWG
+	BH6BimoOaVQNFxGTsv1m65LeCDF+0G5FxUDq2+y034cUmUMlXrKLTEmWrFlme3eC1e0Ehp
+	B5L1IHtZJXS/dBqZrIhdaSO4RJH4ssqOZKO4GOgub9I1Uv5PB5R4Ni5M5dUMHaoODFaCgo
+	V6EEHxvUY9E8hGGTmHW6JHt0DXkS+ATUCf46+WzfEd2xk9r4TLw+hK1/HWQPeQ==
+Date: Fri, 7 Feb 2025 14:30:03 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, Jingoo
+ Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, Tony Lindgren
+ <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>, Tomi Valkeinen
+ <tomi.valkeinen@ti.com>, Jean-Jacques Hiblot <jjhiblot@ti.com>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>,
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] backlight: led_bl: Hold led_access lock when calling
+ led_sysfs_disable()
+Message-ID: <20250207143003.1c518df3@bootlin.com>
+In-Reply-To: <20250122091914.309533-1-herve.codina@bootlin.com>
+References: <20250122091914.309533-1-herve.codina@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjeetueegtdekjeekueekfeeuudekkedutdejhfefgfevtdeutdetgfduvdfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmpdhgihhthhhusgdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehnihhrrghvkhhumhgrrhdrlhdrrhgrsggrrhgrsehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepshhhvghnl
- hhitghhuhgrnhesvhhivhhordgtohhmpdhrtghpthhtoheprhhurghnjhhinhhjihgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehurdhklhgvihhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleegtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudehpdhrtghpthhtoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghltheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhinhhgohhohhgrnhdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehprghvvghlsehutgifrdgtiidprhgtphhtthhopehtohhmi
+ hdrvhgrlhhkvghinhgvnhesthhirdgtohhmpdhrtghpthhtohepjhhjhhhisghlohhtsehtihdrtghomh
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Lee, Daniel, Jingoo,
 
->> >> >> > My apologies for the confusion.
->> >> >> > Slave DMA terminology used in cadence nand controller bindings
->> >> >> > and driver is indeed confusing.
->> >> >> >
->> >> >> > To answer your question it is,
->> >> >> > 1 - External DMA (Generic DMA controller).
->> >> >> >
->> >> >> > Nand controller IP do not have embedded DMA controller (2 -
->> >> >> > peripheral
->> >> >> DMA).
->> >> >> >
->> >> >> > FYR, how external DMA is used.
->> >> >> > https://elixir.bootlin.com/linux/v6.13.1/source/drivers/mtd/nand
->> >> >> > /ra
->> >> >> > w/c
->> >> >> > adence-nand-controller.c#L1962
->> >> >>
->> >> >> In this case we should have a dmas property (and perhaps dma-names=
-),
->> no?
->> >> >>
->> >> > No, I believe.
->> >> > Cadence NAND controller IP do not have dedicated handshake
->> >> > interface to connect with DMA controller.
->> >> > My understanding is dmas (and dma-names) are only used for the
->> >> > dedicated handshake interface between peripheral and the DMA
->> controller.
->> >>
->> >> I don't see well how you can defer if there is no resource to grab.
->> >> And if there is a resource to grab, why is it not described anywhere?
->> >>
->> >
->> > Since NAND controller do not have handshake interface with DMA
->> controller.
->> > Driver is using external DMA for memory-to-memory copy.
->>=20
->> I'm sorry you lost me again. What do you mean handshake? There is no
->> request line? There is no way the NAND controller can trigger DMA transf=
-ers?
->>=20
-> Yes, I mean there is no request line, so there is no way the NAND control=
-ler can
-> trigger DMA transfer.
->
-> Sorry I used the terminology based on Synopsys DesignWare AXI DMA Control=
-ler
-> that is used with Agilex5 SoCFPGA platform.=20=20
-> https://github.com/torvalds/linux/blob/v6.14-rc1/drivers/dma/dw-axi-dmac/=
-dw-axi-dmac-platform.c#L1372
->
->> What do you mean mem-to-mem, how is this useful to the controller?
->>=20
-> I mean system memory to/from NAND MMIO register address for page
->  read/write data transfer.=20
->
-> 	reg =3D <0x10b80000 0x10000>,=20
-> 		<0x10840000 0x1000>; <--- This MMIO address block
-> 	reg-names =3D "reg", "sdma";
->
->> > Your point is since the driver is using external DMA and it should be
->> > described in bindings?
->>=20
->> Yes. But maybe I still don't get it correctly.
->>=20
-> dmas is an optional property in cadence nand controller bindings.=20
-> https://github.com/torvalds/linux/blob/v6.14-rc1/Documentation/devicetree=
-/bindings/mtd/cdns%2Chp-nfc.yaml#L36
-> Does it need to change to required property in bindings?
+On Wed, 22 Jan 2025 10:19:14 +0100
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-On one side you have a dedicated MMIO region, which imply we should have
-an external DMA engine that is probably generic. On the other side it
-feels like only the NAND controller uses it and it should be pictured as
-a peripheral DMA controller and in this case we should not use the DMA
-engine API at all. Your case is something in between, I don't like it
-much. Anyway, we cannot break bindings, so please respin the series
-because I totally lost your initial target.
+> Lockdep detects the following issue on led-backlight removal:
+>   [  142.315935] ------------[ cut here ]------------
+>   [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
+>   ...
+>   [  142.500725] Call trace:
+>   [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
+>   [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
+>   [  142.511742]  platform_remove+0x30/0x58
+>   [  142.515501]  device_remove+0x54/0x90
+>   ...
+> 
+> Indeed, led_sysfs_enable() has to be called with the led_access
+> lock held.
+> 
+> Hold the lock when calling led_sysfs_disable().
+> 
+> Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-Miqu=C3=A8l
+I didn't receive any feedback.
+
+v6.14-rc1 has been released since the patch was sent but the patch applies on
+top of v6.14-rc1 without any issue.
+
+Of course if really needed, I can resend the patch. Just tell me.
+
+Best regards,
+Hervé
 
