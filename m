@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-114261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F448A2C673
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:03:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F328A2C690
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 16:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C9F3A4EAF
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 15:03:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FFC77A116C
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 15:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF791EB1A8;
-	Fri,  7 Feb 2025 15:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F6C1CEAC2;
+	Fri,  7 Feb 2025 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuOmBviW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/y053Qh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130AD238D52;
-	Fri,  7 Feb 2025 15:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAC2238D29;
+	Fri,  7 Feb 2025 15:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738940615; cv=none; b=BDFcjoqKJyLvWJz3XJuZdxvDgIMnQfWAPR+/gJGI7wqclhlDSO3yPYq93bbH2EeUi+zQ5/T9E/eqMWQAPQa+MYEovqZe5/Jdfr+O0Jju/XJjzTnljWhdI6GtJ8FCl50ZEhOz2BzKgDRy8WL8RcW2Kw48eXgpSkxTDMOWETqd6BM=
+	t=1738941002; cv=none; b=S6B68K72EM04gCvcKSaIB3IIj3/l0kLafv2P24jsKnmwZQSbbzZR7tkNeyOjXvD6lvGhwDXaEVn3CAFPaZZ45Gi8yZNXS1kkTG6tB8sOjX3tfgJemS855l6/uRRmOZgOzcVGpHKeE/YLLV/as5X2vliGnLqHnhXCLPWrAwMRxlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738940615; c=relaxed/simple;
-	bh=pfd0o9gha1P3u4srzrnDS6Wo7ak7hJLBWBfV8RQdcp8=;
+	s=arc-20240116; t=1738941002; c=relaxed/simple;
+	bh=/6ag9Z18UPkK2iecfBhx20hHyPdWHRNmV7uzzAfaVG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LbOMmp2yr4x2OGZncupB8nEgDQuGh0SifkNdUHBLlaS+cZR1maHkW0YauWeRRtxM6JfKST8OX1wp9PozI6vFzY+1tIYBT6ECJ0sxkiJPXEfhx19iiEdxo/HLsb2wcZG0Q9hjZdSBcQ9iuH46zCoBCDZJ8YtHC+pBnLV6gd0VzLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuOmBviW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E122C4CEDF;
-	Fri,  7 Feb 2025 15:03:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERwQMOsfGvDN0ETbEFhm+5n0x5r8AD8on58L416uNJEg5M0ZaszeMnfXVgBptMiZF68GvqWK7SqI36TLXW30BwzLgmcPwz5ETXP8K2ObztJLnT8PZC4HU/4S9LA3dIhBnFvmKwJFVLjATb8j/BXSvMFaCX9fZFSvcQUEbVT6h9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/y053Qh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD753C4CED1;
+	Fri,  7 Feb 2025 15:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738940614;
-	bh=pfd0o9gha1P3u4srzrnDS6Wo7ak7hJLBWBfV8RQdcp8=;
+	s=korg; t=1738941001;
+	bh=/6ag9Z18UPkK2iecfBhx20hHyPdWHRNmV7uzzAfaVG8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tuOmBviWAIVGAmnuaFZO+uW3izoawwmv36d+3eOU2gRiiWfbcJo3PbGSFTsKE3q7A
-	 ZGT3N8F0Z/bkoJPQwp2S7itBrAg/AfZoeJ5TWRt4bnFrQpbQwvYuNiqWeubgVy49Qa
-	 UxSXEhYkex4L6RhEUusAeurW1Xb2vBiXfVzVV7jk=
-Date: Fri, 7 Feb 2025 16:03:31 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 541/623] PM: sleep: core: Synchronize runtime PM
- status of parents and children
-Message-ID: <2025020710-antiquely-gone-caa7@gregkh>
-References: <20250205134456.221272033@linuxfoundation.org>
- <20250205134516.919594202@linuxfoundation.org>
- <Z6YQpnfhXRh5oHRi@hovoldconsulting.com>
+	b=z/y053QhZxE4EcBYvoSc0yCsavOKSNaN+/Net2TzY31XlLhyvM+hcLoT1FhH7WPnN
+	 U1URH9Apue433WDhPLoKxptgtH++v/VIIHH1vnQEiOP0R90lnY7P6LrhQ6RB/2da+1
+	 wR4CrZyqNFOV5/AlFdfC9t9lnqAymM91DOXuiE/A=
+Date: Fri, 7 Feb 2025 16:09:58 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@hansenpartnership.com, arun.easi@cavium.com,
+	bvanassche@acm.org, jhasan@marvell.com,
+	linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+	manish.rangankar@cavium.com, markus.elfring@web.de,
+	martin.petersen@oracle.com, nilesh.javali@cavium.com,
+	skashyap@marvell.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] scsi: qedf: Replace kmalloc_array() with kcalloc()
+Message-ID: <2025020721-silver-uneasy-5565@gregkh>
+References: <2025020658-backlog-riot-5faf@gregkh>
+ <20250206192000.17827-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,50 +60,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z6YQpnfhXRh5oHRi@hovoldconsulting.com>
+In-Reply-To: <20250206192000.17827-1-jiashengjiangcool@gmail.com>
 
-On Fri, Feb 07, 2025 at 02:54:46PM +0100, Johan Hovold wrote:
-> On Wed, Feb 05, 2025 at 02:44:43PM +0100, Greg Kroah-Hartman wrote:
-> > 6.13-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > 
-> > [ Upstream commit 3775fc538f535a7c5adaf11990c7932a0bd1f9eb ]
-> > 
-> > Commit 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the
-> > resume phase") overlooked the case in which the parent of a device with
-> > DPM_FLAG_SMART_SUSPEND set did not use that flag and could be runtime-
-> > suspended before a transition into a system-wide sleep state.  In that
-> > case, if the child is resumed during the subsequent transition from
-> > that state into the working state, its runtime PM status will be set to
-> > RPM_ACTIVE, but the runtime PM status of the parent will not be updated
-> > accordingly, even though the parent will be resumed too, because of the
-> > dev_pm_skip_suspend() check in device_resume_noirq().
-> > 
-> > Address this problem by tracking the need to set the runtime PM status
-> > to RPM_ACTIVE during system-wide resume transitions for devices with
-> > DPM_FLAG_SMART_SUSPEND set and all of the devices depended on by them.
-> > 
-> > Fixes: 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the resume phase")
-> > Closes: https://lore.kernel.org/linux-pm/Z30p2Etwf3F2AUvD@hovoldconsulting.com/
-> > Reported-by: Johan Hovold <johan@kernel.org>
-> > Tested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> > Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> > Link: https://patch.msgid.link/12619233.O9o76ZdvQC@rjwysocki.net
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> This patch appears to be causing trouble and should not be backported,
-> at least not until this has been resolved:
-> 
-> 	https://lore.kernel.org/all/1c2433d4-7e0f-4395-b841-b8eac7c25651@nvidia.com/
-> 
-> Please drop from all stable queues.
+On Thu, Feb 06, 2025 at 07:19:59PM +0000, Jiasheng Jiang wrote:
+> Replace kmalloc_array() with kcalloc() to avoid old (dirty) data being
+> used/freed.
 
-Already done, and -rc2 releases were sent out yesterday with it removed.
+"Potentially" being freed.  It will not be used.  And this is only for
+an error path that obviously no one has hit before.
+
+Please explain this much better.
 
 thanks,
 
