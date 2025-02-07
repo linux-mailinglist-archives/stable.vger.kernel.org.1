@@ -1,91 +1,201 @@
-Return-Path: <stable+bounces-114238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9D9A2C1BA
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 12:37:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158A0A2C1FD
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 12:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 243143A63E5
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D96616687D
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 11:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E7C1DE4C9;
-	Fri,  7 Feb 2025 11:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A391DF240;
+	Fri,  7 Feb 2025 11:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVl4Krz3"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GP3+cy/1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2068.outbound.protection.outlook.com [40.107.101.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E5A2417ED;
-	Fri,  7 Feb 2025 11:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738928266; cv=none; b=V1+YLM7EBZqcRp3gL8gb929Se/eVC4C60vghAk+qT3mw0nYuAVcKXnkH2iESZrZGGSSwykPilC1SLXFu0Hm29sabCUWbdziIIGTfG9+TbnUHslIH3Z2x5xBx3726G1wO4VdL58bRE2CJaams0TzZA6JnVHWftuO5pwo+XOdl1J8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738928266; c=relaxed/simple;
-	bh=PW0sMWesSWW0COshS2HtpPEqlkHX2KN+bsrSyyccYLY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OaQvwO4VoZjRBUxhwPJThHaJ7gh5XGIznmKQ6jTYaowG1x1gMYWgcUmgGFDv8MccgaS1vqujtjG+Z8IF0wOlPKyE+AZLEbFfqingVjZSPFP8vXgaoQ0QXqFqptT6M6aOmJit7rqI2av+zoI+RdQWo3MwhsAzroLppQ3KztzUSgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVl4Krz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB11CC4CED1;
-	Fri,  7 Feb 2025 11:37:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738928265;
-	bh=PW0sMWesSWW0COshS2HtpPEqlkHX2KN+bsrSyyccYLY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVl4Krz3+XnL1SeqcqHb81BW0B/ih8XsjD3jG5Bh2NMdzG/6Zo4fxNBSduiSnyFLr
-	 tYtE/ub84yX7LBFyPK9XXHYPMJxNXYOxzRwtMXTG1Td9h7Q41BNWWUY7O2YGmMqd22
-	 jKmrEENZbMwjj/ouxfl15EbqSFa0x+URrW8mkFi+s1R+I4yLD9iRIjqYPFBMyGooSz
-	 GMVc6nuUiu6BcjTx/q3hTh5D5tO21MtgfrdxGW3YJLa6Pe+3Y8/nergtaL13ePLxz4
-	 RwROxzhp5cXAIBXnLv4g4m9ao/giO4Roy2LVr6CqgB2dgPktNN2l1m7xYsgq+ksv0T
-	 w1styqH4xol8Q==
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] arm64: Handle .ARM.attributes section in linker scripts
-Date: Fri,  7 Feb 2025 11:37:39 +0000
-Message-Id: <173892221767.1467001.15470830254553080217.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org>
-References: <20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87601DC9B4;
+	Fri,  7 Feb 2025 11:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738929338; cv=fail; b=de+B7AN0Z/UHOUzGibgMr02W38hI1BHWH+KgHRTD1PIMrQtQxX9T9/ZIj5vQgp91TYuhtCMFKLtNqR/9DKjj9u+NmvRnGf+iRE+S+0lhvDQ0pXBE/NPAdpZUOUHOnJ0rzUPB74yPa3V1W+6BhXWLUOPlE35ogkH7ECne0XrMKd4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738929338; c=relaxed/simple;
+	bh=9HgSoci9xwswRZsresL8NSO9/XT11sxiTbhlq+fdzzg=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=b85mBe7//H+pY2hPp/iIx2Rv2wpUI8P8cf+SyausPWGQwSL/4fByuQhz484QBmyD/9qualA7crTVZTHDt9/p+/04xBcZpU9f17eEfuVuQ4mRDhKgoxUmrLyl668tFJefzzkWoksDyMZbej0/u2UnQ6cJcUPbO/D9ot45y5bJHSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GP3+cy/1; arc=fail smtp.client-ip=40.107.101.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SvD3ccSpEAGLVM0zQtO11JCWOC42O5/atWHpk5/c9JgrUtOOMfJ4MgK2OrGMIMNnqpTGDsSzC3n/stJ2Wcq6NGQ01jScaYIygCVPwGFhgHKCYGlw5xYZ1PkEFDWddXiV5T3br+eb41zlRI/cAdkfGiYuBTGtH6GejkjjyKZMic+m2szrsXTwOpHFiHGGBWslS+ajstGyOhGWq/Jk0TDiPbBV3sRQfa3evfhHBbbxWs2VOJK3U2g33xUaJjq0PcLR8wMSpxxXjNXlyXolkXY65LMwoa0Uno0JgPK3vDAb6Rd2lDatLlgsoXvxZvJqIm8jZjUTmt/MM1g3l/00O0sD1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2mfbK6/5qoMyR1mn25Z8seN4ScznjRKdwdclaW5rsa4=;
+ b=bGq/3nJaIct03zgLPNxN+zJZQPW21qoMxQPNJ7Ru5GlRCvw3OamAP3P+L+JBYwAgAxK7XyUfPiYl7wQ8AbRv3L42OvadNgmX8pmoXV4LAhVfJni8FjAWNQvNlrdCpOXRGKibfTSgRnHnGyWsAXrrnETgyUHpczsjvR6ku/aFCJJ67tWZnA8bTSKtC9FEGboXhSk/a4jgVfcli0qGYuD2iiBxcYKAhHLlDYvP9/uAFCcs9+/xMLlz9YO1PbIkAtvzdojwf9YLHVKWkXEcX90LSkevYZoIgnl0D1UTaS691V2PGGhLdYD6RN7MBFeIG+LgpHiuJiTTlHl/zLucprIFjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2mfbK6/5qoMyR1mn25Z8seN4ScznjRKdwdclaW5rsa4=;
+ b=GP3+cy/11/xjyDd0UWj/4n6ngNUItXeanF4q9LQJPrKWZdTOTq3AI9IpoNicXpjyMdryPfV9mCN0Q/S54hg+S13ox+GbzuHmT3mKp66Z0kYkqkmibHxY5thkJT0RL+4ZlA4FwIMHNAtKUHhLjGXg5ABnrUDted0fN93zr44U7j21SRE3QiMiOWbQebKG1l4DV7qblQ2hYIfUB/qwWqYsIFIHDYXrQB47du9INdr4AK1sIPudJURvw+UfwlZgMJirmGb7W5ikLchwWbLBTtKcTi8S5BNO68ieYWcJY/d51gYmK5Ku2BWfh2q9IwGtTNd8Uo9Lf2YJSLGQdmAXkzOkKg==
+Received: from BN8PR16CA0001.namprd16.prod.outlook.com (2603:10b6:408:4c::14)
+ by DM6PR12MB4235.namprd12.prod.outlook.com (2603:10b6:5:220::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.12; Fri, 7 Feb
+ 2025 11:55:33 +0000
+Received: from BN2PEPF000044AA.namprd04.prod.outlook.com
+ (2603:10b6:408:4c:cafe::d1) by BN8PR16CA0001.outlook.office365.com
+ (2603:10b6:408:4c::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.30 via Frontend Transport; Fri,
+ 7 Feb 2025 11:55:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN2PEPF000044AA.mail.protection.outlook.com (10.167.243.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Fri, 7 Feb 2025 11:55:32 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 7 Feb 2025
+ 03:55:08 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 7 Feb
+ 2025 03:55:08 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Fri, 7 Feb 2025 03:55:08 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
+In-Reply-To: <20250206155234.095034647@linuxfoundation.org>
+References: <20250206155234.095034647@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Message-ID: <7275e41e-7afe-4d39-9e90-eae81b0eb77a@rnnvmail204.nvidia.com>
+Date: Fri, 7 Feb 2025 03:55:08 -0800
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AA:EE_|DM6PR12MB4235:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6e7e417-217d-404d-0764-08dd476e53a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RG1nNTN4S1FrYnZwQ1J4dU9PNjI0TWVwREVvcGtwcU1yMHp5MGZBOThINVh4?=
+ =?utf-8?B?MFVGTy9GODBBa1hOclNDaDVSejJWbnFVRUxMNTZRSW5GajhaSWZRdFJGRVNF?=
+ =?utf-8?B?eDB5WWpNL1BJQzMzMy96ZndDZGtqM2w3RVFoZWwvWS9zNmw2dC9QS0cvQmZX?=
+ =?utf-8?B?SWZJck5QaDRsdjZrNzFoTnMvTE10dHhFQVh6UDY3bjFkbXJSd2xGSEtpdDc1?=
+ =?utf-8?B?VEEwbVEybjZjMWlCLzNKVkdJTW4vNjVtTmhJZGwzenVsbjlxN3IyUzhnNE1O?=
+ =?utf-8?B?TlNFV0orclIrWEUyN3VDR3Y2TWdFN3lqY3J6V2o5cWFZREdtNVJ4L3dmVTlh?=
+ =?utf-8?B?dFJzanhuUWE2cmI2OFpyRWM0bTNMSDNtYzg2YTBpYmROL0pEcC9YUEMzbVRv?=
+ =?utf-8?B?enFsQ21zWGlvb2xSWXRkWE1md3NwVmQxYzN4YjgySWJTR01oSTIzQ3FjeHNw?=
+ =?utf-8?B?VVFkTE9SZWV6YkRaL3d0YkpOVWlXeW41RUdtM293SG1sOUJ4bERzYTRkUmtm?=
+ =?utf-8?B?SFY2TUNFSmZnajArNXY4UlN6OXJFc1A1NGduMnF5T3QrSWJGT3lBWEFtRzE5?=
+ =?utf-8?B?UFZETXdKeU9QdTROZ2JseG5CM1BoRk9vQnFleXB2WnVoNjQySlcwR2hyeU13?=
+ =?utf-8?B?RmthaEQzMktIUTBxdTNoOUVSOG1hZ3c1VjRlTkI5R3RtdjNDZm9MWG1EUU1v?=
+ =?utf-8?B?WEl2bEQrS3d5QnZYZEQxM1plKzhiTVRIbFVrUlovQk9vaTdhWmtJK2VIZHpJ?=
+ =?utf-8?B?NDNNdXZvQzZwdzBjRU5yUkcvWnVZa0IrWHFoNk5EZWltWUVrVS9mSElzOXdy?=
+ =?utf-8?B?QWFPUGp3ckZUMEM1cjRkQTdzcko1Mm42T1laTTZNVmgzVGN2ZUliRFFmbVRn?=
+ =?utf-8?B?cTBQUUh2RG9OWmdzZ1drTTZ5WXo2ODlremM5OHRpeVlhQndaY3d6L21WcFN2?=
+ =?utf-8?B?Z0RtS1lBTU1uM1IwSDdvelAxVEk2Uml5OXltdlNucW9hQ0dNMmdITjNGSXM0?=
+ =?utf-8?B?NW9DS2dya3RNVVlWaVVNV003NGUzVzZGS2FUbTZYUWRYalNhdzRFVVlYRGFE?=
+ =?utf-8?B?RS9sL211cWQ5QVJGOUZ5anlvT2thQzNYd2llTDJpbUlVV1I4U3lSSEdjamVz?=
+ =?utf-8?B?b1FvTmw3dVpKT0YxNk1ka25oUVQ2QTdoZ1pNa3hITThCWlQ0S2d1S1JlVjV5?=
+ =?utf-8?B?SU15NHVheEN0cXYyTWFVRlJFNGlhZ3N4UVFXdFhPdmpZQ1YybkRrVThUcEpx?=
+ =?utf-8?B?VWtXNlU5Slp5VVh6ZnEyZlBsdnJvc2x5S2Z0ZTFlVkpOMy9hdEhHUnBENHYv?=
+ =?utf-8?B?YUxSM0RTbE1YS3JHVTRyYWdTZTlvSFE0WEZGdzJuaS9wZ3YySkxTeitNbzhz?=
+ =?utf-8?B?c0wxOHlsUm9La1RCMXBBbHhlTjM3U2hrU3QrbUZUa2NwbFBRVHJLVE5zcjAv?=
+ =?utf-8?B?R005NnRsSnN3TWQrcFZrbUhuMEZVbzl4bmwxRndOR0Vya3M4Y2t6ejFsQnUw?=
+ =?utf-8?B?cmw4ZGJqVUdYcHBIakJzaUUySVVxWEduQllBd1RsZFY4NHB0SmVPY0Y0Yjkz?=
+ =?utf-8?B?TXFXQjRZY1QrSnhmSG5MRTc2aGxVQWhMODJ6b0FxS1hGdzhocHI0ODVsbHVJ?=
+ =?utf-8?B?OVdWVTFvR3U0NktkY0R6Z0NiS21qQXRKZmEzajQ3RXMzQmdsTnJaTSs4RDg5?=
+ =?utf-8?B?VUxZRFZGTHFaenpKWjhWZWlwdXNFdTgyQUNpT0R1WmtucDMxR0gyTXJrbGZ5?=
+ =?utf-8?B?WG1KOVF6QkwvV0t0YXhGWTdndk9pVXF3QzFSa09PMFVjanRXZzNnVHJENmVz?=
+ =?utf-8?B?Z3JYZCtmaHFSMkVmd1BSTUZYZG9NeEpLcHhrQ3lNcm9JTk9ja2ZUSk5odFRG?=
+ =?utf-8?B?eVRwOG4rQVE0blQ3NVAyb0VOUk9XcFJkc05aWVp5TDJIYStKV0thQ3MrMDB5?=
+ =?utf-8?B?QVlMRXUxZ1MyczlwUVZ1SVRPdjZ3aFRLakNVZkp3b3pnZVZnNE5ZeFhST3FD?=
+ =?utf-8?Q?EtEcKHwnl+aIsNMJ1McQ+jlaXoQvNQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 11:55:32.9615
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6e7e417-217d-404d-0764-08dd476e53a3
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044AA.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4235
 
-On Thu, 06 Feb 2025 10:21:38 -0700, Nathan Chancellor wrote:
-> A recent LLVM commit [1] started generating an .ARM.attributes section
-> similar to the one that exists for 32-bit, which results in orphan
-> section warnings (or errors if CONFIG_WERROR is enabled) from the linker
-> because it is not handled in the arm64 linker scripts.
+On Thu, 06 Feb 2025 17:06:18 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.76 release.
+> There are 389 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
->   ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
->   ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+> Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.76-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Applied to arm64 (for-next/fixes), thanks!
+Failures detected for Tegra ...
 
-[1/1] arm64: Handle .ARM.attributes section in linker scripts
-      https://git.kernel.org/arm64/c/ca0f4fe7cf71
+Test results for stable-v6.6:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	114 pass, 2 fail
 
-Cheers,
--- 
-Will
+Linux version:	6.6.76-rc2-ge5534ef3ba23
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Test failures:	tegra194-p2972-0000: boot.py
+                tegra194-p2972-0000: pm-system-suspend.sh
+
+
+Jon
 
