@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-114291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00152A2CC86
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 20:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BC1A2CC8A
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 20:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21BD23A72EE
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 19:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6232A3AAD07
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 19:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BBC1A3142;
-	Fri,  7 Feb 2025 19:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBEB1A3141;
+	Fri,  7 Feb 2025 19:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlnR1N3/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLEMdw8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA46719D072;
-	Fri,  7 Feb 2025 19:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED38A19D072;
+	Fri,  7 Feb 2025 19:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738956393; cv=none; b=eU2ICO8HqiZzk0fsIuKI34cur7IenZKIDCcu/m9eoUnvP4VHz/N5Nfht7rlaTc0tVAiLjaBdL/JdSGswUCTu43K/oiQWkZWm4aW2/k8zD84rrbHP2z171LtihnPzPU3uJQH2iVs34rC5GaO9XAZ9llf2kphjpkiuoJUu6u4FsFk=
+	t=1738956410; cv=none; b=eb8JR6FRFvJSzHB9y1QX+mq4SQ7YVt+HRMwqC9s6cPcAk6dgaNWVno+vP9K1bUZgGKVNDZZl3cLUUpu9b9AMms1QGOIePNqMDks4EzPlUx3wbMmTMMHW0MV3pXFwm/1DPQJvMPipM+rRVqGST6C8rTl1cJIcwbDEwG7wLhoZbx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738956393; c=relaxed/simple;
-	bh=hyR0EhSruuSRq1Cir/Qs5wUtelxx3H+TAjU03aQ8hjs=;
+	s=arc-20240116; t=1738956410; c=relaxed/simple;
+	bh=Oj4GfZBW4oDzY5Nxy5immunZV/OO6PBiunXKTZOu6ms=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=edz1uTdqdKeQsRnwzx+cKVU/dyE+25fSrj4K+WAKwyzL1YIpg0HNQCgX0XcHOq5RLZOkEb64YL9qi612yv4r/zKtFIbicol0ccRRYNTCEfRiRFA/pI49xg1ZuzzQYjXPYxApkdj0SbwNSrk4BExmC0zY6u8lpgVKxFpzlUzBJn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlnR1N3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1945C4CED1;
-	Fri,  7 Feb 2025 19:26:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PM6Gm6zIZKxALL7kNK0CHCGJhWxMI5DLNQswnh6Uwgy/VySumKTeHEw+YvMNIqTUjAcTkC/dU3vSNbFJrbSo5eTUKPLQsxs4GJc4lvYe6eWvkyJIntU8dpGS+0vh8+tL92r8ty+7hbkhgeIKxAzh0MEtxLgIn+u3tSz9DzgINKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLEMdw8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A72FC4CED1;
+	Fri,  7 Feb 2025 19:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738956393;
-	bh=hyR0EhSruuSRq1Cir/Qs5wUtelxx3H+TAjU03aQ8hjs=;
+	s=k20201202; t=1738956409;
+	bh=Oj4GfZBW4oDzY5Nxy5immunZV/OO6PBiunXKTZOu6ms=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=hlnR1N3/7zyE/nHmIAyOy+VTCxjAtXMhtoTjbNQKjauAs00Y9wBbw/g19xuL7tXrU
-	 doVWyoJtytBORqC0rxYzmInCLM4UZuE/ZQBC/m4BaEtotbc/EPFXZ9bZmjIJaancte
-	 qRkacqcm+KM81aypWNilK75qr3nGWvcQUJ98LN4o1SOzA+iPj1JF2xXA6AUKdydoki
-	 /u765JoCVHgfc8GuC9m23SF+V/i9LapZ777X4jlc+L0yNFeCu3WJEhJt7Z1mdonjpE
-	 zzrUE7I9HfjGBzKcKq617c533GAB8tDYU0l+giUclzu5LUsNTd3VrJlvRUEr2B4z4y
-	 NtCHTpwSBjjwA==
-Date: Fri, 07 Feb 2025 11:26:33 -0800
-Subject: [PATCH 01/11] xfs: avoid nested calls to __xfs_trans_commit
+	b=aLEMdw8cbYXrkZTGd8bOmFZuzIPyNDJpelttM5KxAZ/IZFkJJwFMX0fJ+3cp5naY0
+	 x2y0t9FA3v3W8izC7qOlzCxhiaHnxsLOPU7yJ1xr5cP6lXsfUk12csHAkwaeWNShUl
+	 J/g5sOvijGCiNigQc+C44Cnx0YbOrd7xjmcXSjaAxFchvXdGB41Qr6Mbo6Uq02eYnj
+	 qSM3z0tnaROXZwSp5Haza+B/pf3EYcWp5nEhQG4sANxBLnhmxPplEr8tO5zh6LqWzp
+	 s4LfGhGnRgG3c2KY5kvBs6GFNszetWoP6AIpjzAm9itbqkBO0wHCz/3r6gr/ghOXXU
+	 //HAF/ci8uwqA==
+Date: Fri, 07 Feb 2025 11:26:48 -0800
+Subject: [PATCH 02/11] xfs: don't lose solo superblock counter update
+ transactions
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, xfs-stable@lists.linux.dev
 Cc: hch@lst.de, stable@vger.kernel.org
-Message-ID: <173895601419.3373740.4927786739399794017.stgit@frogsfrogsfrogs>
+Message-ID: <173895601435.3373740.16661001569520012189.stgit@frogsfrogsfrogs>
 In-Reply-To: <173895601380.3373740.10524153147164865557.stgit@frogsfrogsfrogs>
 References: <173895601380.3373740.10524153147164865557.stgit@frogsfrogsfrogs>
 Precedence: bulk
@@ -60,66 +61,57 @@ Content-Transfer-Encoding: 7bit
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-commit e96c1e2f262e0993859e266e751977bfad3ca98a upstream
+commit c817aabd3b08e8770d89a9a29ae80fead561a1a1 upstream
 
-Currently, __xfs_trans_commit calls xfs_defer_finish_noroll, which calls
-__xfs_trans_commit again on the same transaction.  In other words,
-there's function recursion that has caused minor amounts of confusion in
-the past.  There's no reason to keep this around, since there's only one
-place where we actually want the xfs_defer_finish_noroll, and that is in
-the top level xfs_trans_commit call.
+Superblock counter updates are tracked via per-transaction counters in
+the xfs_trans object.  These changes are then turned into dirty log
+items in xfs_trans_apply_sb_deltas just prior to commiting the log items
+to the CIL.
 
-Fixes: 98719051e75ccf ("xfs: refactor internal dfops initialization")
+However, updating the per-transaction counter deltas do not cause
+XFS_TRANS_DIRTY to be set on the transaction.  In other words, a pure sb
+counter update will be silently discarded if there are no other dirty
+log items attached to the transaction.
+
+This is currently not the case anywhere in the filesystem because sb
+counter updates always dirty at least one other metadata item, but let's
+not leave a logic bomb.
+
+Cc: <stable@vger.kernel.org> # v2.6.35
+Fixes: 0924378a689ccb ("xfs: split out iclog writing from xfs_trans_commit()")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/xfs/xfs_trans.c |   26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ fs/xfs/xfs_trans.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 
 diff --git a/fs/xfs/xfs_trans.c b/fs/xfs/xfs_trans.c
-index 30e03342287a94..001d9bec4ed571 100644
+index 001d9bec4ed571..ee46051db12dde 100644
 --- a/fs/xfs/xfs_trans.c
 +++ b/fs/xfs/xfs_trans.c
-@@ -834,18 +834,6 @@ __xfs_trans_commit(
+@@ -834,6 +834,13 @@ __xfs_trans_commit(
  
  	trace_xfs_trans_commit(tp, _RET_IP_);
  
--	/*
--	 * Finish deferred items on final commit. Only permanent transactions
--	 * should ever have deferred ops.
--	 */
--	WARN_ON_ONCE(!list_empty(&tp->t_dfops) &&
--		     !(tp->t_flags & XFS_TRANS_PERM_LOG_RES));
--	if (!regrant && (tp->t_flags & XFS_TRANS_PERM_LOG_RES)) {
--		error = xfs_defer_finish_noroll(&tp);
--		if (error)
--			goto out_unreserve;
--	}
--
++	/*
++	 * Commit per-transaction changes that are not already tracked through
++	 * log items.  This can add dirty log items to the transaction.
++	 */
++	if (tp->t_flags & XFS_TRANS_SB_DIRTY)
++		xfs_trans_apply_sb_deltas(tp);
++
  	error = xfs_trans_run_precommits(tp);
  	if (error)
  		goto out_unreserve;
-@@ -924,6 +912,20 @@ int
- xfs_trans_commit(
- 	struct xfs_trans	*tp)
- {
-+	/*
-+	 * Finish deferred items on final commit. Only permanent transactions
-+	 * should ever have deferred ops.
-+	 */
-+	WARN_ON_ONCE(!list_empty(&tp->t_dfops) &&
-+		     !(tp->t_flags & XFS_TRANS_PERM_LOG_RES));
-+	if (tp->t_flags & XFS_TRANS_PERM_LOG_RES) {
-+		int error = xfs_defer_finish_noroll(&tp);
-+		if (error) {
-+			xfs_trans_cancel(tp);
-+			return error;
-+		}
-+	}
-+
- 	return __xfs_trans_commit(tp, false);
- }
+@@ -864,8 +871,6 @@ __xfs_trans_commit(
+ 	/*
+ 	 * If we need to update the superblock, then do it now.
+ 	 */
+-	if (tp->t_flags & XFS_TRANS_SB_DIRTY)
+-		xfs_trans_apply_sb_deltas(tp);
+ 	xfs_trans_apply_dquot_deltas(tp);
  
+ 	xlog_cil_commit(log, tp, &commit_seq, regrant);
 
 
