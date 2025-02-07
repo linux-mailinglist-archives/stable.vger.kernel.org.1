@@ -1,130 +1,125 @@
-Return-Path: <stable+bounces-114228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA27EA2BF9D
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:40:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879C0A2BFEC
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 10:51:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63FA77A5E7A
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:38:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A74F07A44FC
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 09:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910F42343B3;
-	Fri,  7 Feb 2025 09:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83A01DC9AD;
+	Fri,  7 Feb 2025 09:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h8YLWiD2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2WQ6m6nk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMu4QSSn"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F7E1DDA2F;
-	Fri,  7 Feb 2025 09:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DB132C8B;
+	Fri,  7 Feb 2025 09:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738921152; cv=none; b=T7eS36m8rPg0XaQtNVpt6hEUeQJUgTZw+DN5BBmMu4YlBr2IHJWvvL1XvpTenrVKv7rACVI4XEn9U06D+h9EhMzc31kvKezqQzqBjwqIJxzIISKPT5f6wpLCXdwvl1bG3ivojbl382UOFdlu5hVc3EU/OpcmxeK+h/497vHzszg=
+	t=1738921893; cv=none; b=SFvtTXMagPpXp/TNIXHUgZjM9oDxcNnTTbct6uCU7Joj5g1WWadXTg6Yrzknh1hRzMUI3cm4C/TULioJROPhlf0TGrDM/2bBdb9TSxT6DJWvJr89mKA8RbbzzMpz7GNKlGzvTrfmKEdFM+oCpKiB/w7A1dtfizY1mpi7MFWuKQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738921152; c=relaxed/simple;
-	bh=67Qj7Rsb7HIT+rC3c3Khs/YT3YZlzU7gpEnE+MBUEP4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gQlJlnwnnW6EhyINgN/GY1keKDWErF2ujs6tRAFxN3/zKezsguj1nJ+OMHx/SEvGmPSMw62Hh9hCzfvc79LZ+gvrLTZXS5Vza1/0mklKnte1j+QYayzT7fSIIrLbGWbiG7sMzrJrBVn91gLKUe+V9hkXuvV7Q05ksIsOmgzIrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h8YLWiD2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2WQ6m6nk; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738921149;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S9Y7amg6joot0ql0Loij+UqAMaqkQi9rCV9IvPg7dSo=;
-	b=h8YLWiD2nzQMDRS60SYGfl8bWoZIHD8bFoJP266cu9y78xJxLYaRkFTmSycOD5rwhl3+Ub
-	lZNfK0mbBDGI1kzEnEzM7tRqzTJ5h65UEZLxHHpgrH7JJ9qkO0zWNt8N6s+qIA0rNdTJZW
-	xBr8uo/fGm+/vfMRxxa11WehcRqiGrljNanC4XcndqqSWgC8/I9s8UINpdRsqvm0TtY/L4
-	eCII8BZ+R/ZbPEOeMam28QssEJiC6t4M+H42QKt9WOnmrnWNO9mSR3u8Y/Ak2CNin3zIGm
-	NKaCrNvK5fo6v4afyX1i6h5ic9l3gDzF88BOyuwsSFbEALOtO/ACb6r6rd1yJg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738921149;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S9Y7amg6joot0ql0Loij+UqAMaqkQi9rCV9IvPg7dSo=;
-	b=2WQ6m6nkrF368bMFQ18vNImSHuDcqKV1eqeJTACQTJwaGSqhlto6EveHe07Ecxvvi3/6/u
-	34ASIWgdR37gpbBg==
-Date: Fri, 07 Feb 2025 10:39:04 +0100
-Subject: [PATCH net v2 3/5] ptp: vmclock: Don't unregister misc device if
- it was not registered
+	s=arc-20240116; t=1738921893; c=relaxed/simple;
+	bh=V0fGlyJvT7Hjqw9WjWsPJ90tE7K5PrHUAzyAOBVXL5Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VYSjzk32df/BdV6boBp1FBhkadbs3Y8qYVDbDYORbUo2tOboG4PXJ8wKtV4jlKtUHcCIAvsJ6Jpgd/jcEFXO17Mbuq8tKqIkdzm5bDGu8iOjmvn899BuvM599JD5oBh0swnqNiyOpoO/skSOySQju3vUv3X+XZhuSp66wdv5WOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMu4QSSn; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso334378566b.3;
+        Fri, 07 Feb 2025 01:51:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738921889; x=1739526689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7wGGRZ6eVMPwwcLMRyBcLXweN9TMQ9rUUz4JCLjz+hk=;
+        b=DMu4QSSnnHtoOoSUDBBjkG82jjo3xMrAc/0BaoHgAUTwM6hnN3wtxlZvR3WzCWzk5v
+         sYS5sOzUcj47pmuP5h6C5ATKghyUeM0EWu6I/CAbYgjGkSm0dK+jJjtU0/nTcYPGz6YC
+         uVU/bwPhqQUWlbvpCp7wg3JwGQ1yPieoAx94lCB8KJ3iN461HHIPim6AVh4DDcEZtf7/
+         Pa/VQgjy9N3eAXgL9gdhVmY48ITADgqeMOfxeHJQTbxyeWiMEF7zpIa+7PjST+ReA3Mb
+         xg9EL22FvLAF6z19UvrRTAyLCIACVLNl7YH7bUp2L/w+9axtdTXTSi86vZ/lQLTsJOAP
+         kRuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738921889; x=1739526689;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7wGGRZ6eVMPwwcLMRyBcLXweN9TMQ9rUUz4JCLjz+hk=;
+        b=RDpdO+BDyXcw1DuyjTug1uG+6Y2NIsdSvUC2uXHo7OiUOtVzwwH+jf2pvNDNykzI2Z
+         v3fPdQ7oFUoLVEcSTZnveb6MjZcG/qBdPVGASlq2O6V93SUaWss1w0jTXaI7/RwUqkCl
+         xJKxjqB75AZQ8KY+a0MJBvNtSwhvKVDNGJPCoyC3wb2ButvZPqUauzx1BJN4P+C+4fwq
+         xbDQwIxVYbwy6sfBVRCfYT1VIslK5LY0j6nz9mwthxhmuk0/lJOAluM4v/mkNxQ/4N/E
+         Tnb7JpFquZJtLtulElD6/EIQK162hn+LnRsvGQS3v+GDrfWirk8bkXjiaE3DCr+VRTh7
+         N2lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmcHBAIHFn4C/KZ2QlJ26sAv2DpNu6vjvOPK49waqO80/0GnhVJYjck37TnAuSPaqaioO5Incc@vger.kernel.org, AJvYcCWZQyAV+Z8Jp7xcvLDKiX9HFJQNQCpnijPRGvZvOBQrw9qF9uCIRslviMMdT4tBDdvo6UK6qySVCCsv@vger.kernel.org, AJvYcCXorLEfPEtccMM0yhUjhmxBfEQACX5Te7h0YVsA7+4nBuRcEuosIGry2ihoP5aBxKRek1bO1Z967+gFkYk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNTM4sJVL2nPyCcXnE7DK3ju2J1MUcHiu/phoKNIJegF59EHKS
+	4MhyYsfbFMIMOYIihjyw2YFF3Y4Uj0pYe/SZYwZ6t7CtUzfkeBJl
+X-Gm-Gg: ASbGnctvrjHKIjPZ8F+B0nOCf6yQ1sZLnC0Xw10VttwVavPu2IlgaBycakLxVFFwemj
+	XhIdrISjxa7ozpKFO8p4O1wy/bue5Tmvqw1ADJju3sMbvhfZMhd1OSXO+O4sokuNmi1B9Px2I55
+	1I8ou+gIrTd8tswDZaEJFyp/cswpSdqPdPzBh4JvOLC+RmMVLi6MbIwVFv/czlLrcF7EBY+gWDy
+	5DBiV/9+EQCjxA0RKsOmhMt3nJMicM22afBAFlQ5NbBeDKP0FXELTQMS9oHeCZ3309xdVyZxK1z
+	KJD0cHCNCAtbq3hQkfOxbNC2nJ8OIBf4
+X-Google-Smtp-Source: AGHT+IHEnuoK0DdZh7BAPuOp6Egge7rYikDzdldH2vQ4C47iwFhkjEKAai76Y6xOWAXjq0vLUwU5WQ==
+X-Received: by 2002:a17:907:803:b0:ab2:ea29:a2 with SMTP id a640c23a62f3a-ab789c2fa71mr264209766b.48.1738921888906;
+        Fri, 07 Feb 2025 01:51:28 -0800 (PST)
+Received: from foxbook (adtt137.neoplus.adsl.tpnet.pl. [79.185.231.137])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab791ee091esm20140566b.144.2025.02.07.01.51.27
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Fri, 07 Feb 2025 01:51:28 -0800 (PST)
+Date: Fri, 7 Feb 2025 10:51:24 +0100
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Kuangyi Chiang <ki.chiang65@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mathias.nyman@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] xhci: Correctly handle last TRB of isoc TD on
+ Etron xHCI host
+Message-ID: <20250207105124.3cb2e6ae@foxbook>
+In-Reply-To: <CAHN5xi1HoTHx5bye6v24eRWzuKLXcyp6zc4wVpYDyHcR4yu99A@mail.gmail.com>
+References: <20250205053750.28251-2-ki.chiang65@gmail.com>
+	<20250205224511.00e52a44@foxbook>
+	<CAHN5xi1HoTHx5bye6v24eRWzuKLXcyp6zc4wVpYDyHcR4yu99A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250207-vmclock-probe-v2-3-bc2fce0bdf07@linutronix.de>
-References: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
-In-Reply-To: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
-To: David Woodhouse <dwmw2@infradead.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Mateusz Polchlopek <mateusz.polchlopek@intel.com>, 
- David Woodhouse <dwmw@amazon.co.uk>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- stable@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738921146; l=1501;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=67Qj7Rsb7HIT+rC3c3Khs/YT3YZlzU7gpEnE+MBUEP4=;
- b=3xaMTeiqFBY8oD2NO24lNtTWbQDHgoSqqQPBGwKQWQ4M5MDOnn3H5ODx+lOMPSoNoAjN29mEp
- lp7g5molxWiC/jd1g89uFg2kuyf0tkgLU8RV1gWbOwo70zphHTeAScA
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-vmclock_remove() tries to detect the successful registration of the misc
-device based on the value of its minor value.
-However that check is incorrect if the misc device registration was not
-attempted in the first place.
+On Fri, 7 Feb 2025 14:59:25 +0800, Kuangyi Chiang wrote:
+> >  
+> > >       case COMP_STOPPED:
+> > > +             /* Think of it as the final event if TD had an error */
+> > > +             if (td->error_mid_td)
+> > > +                     td->error_mid_td = false;
+> > >               sum_trbs_for_length = true;
+> > >               break;  
+> >
+> > What was the reason for this part?  
+>
+> To prevent the driver from printing the following debug message twice:
+>
+> "Error mid isoc TD, wait for final completion event"
+>
+> This can happen if the driver queues a Stop Endpoint command after
+> mid isoc TD error occurred, see my debug messages below:
 
-Always initialize the minor number, so the check works properly.
+I see. Not sure if it's a big problem, dynamic debug is disabled by
+default and anyone using it needs to read the code anyway to understand
+what those messages mean. And when you read the code it becomes obvious
+why the message can show up twice (or even more, in fact).
 
-Fixes: 205032724226 ("ptp: Add support for the AMZNC10C 'vmclock' device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
----
- drivers/ptp/ptp_vmclock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I would even say that it is helpful, because it shows that control flow
+passes exactly as expected when the Stopped event is handled. And it's
+nothing new, this debug code always worked like that on all HCs.
 
-diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
-index 1ba30a2da570fb4d1ec9db72820bf1781dfa9655..9b8bd626a397313433908fcc838edf8ffc3ecc98 100644
---- a/drivers/ptp/ptp_vmclock.c
-+++ b/drivers/ptp/ptp_vmclock.c
-@@ -550,6 +550,8 @@ static int vmclock_probe(struct platform_device *pdev)
- 		goto out;
- 	}
- 
-+	st->miscdev.minor = MISC_DYNAMIC_MINOR;
-+
- 	/*
- 	 * If the structure is big enough, it can be mapped to userspace.
- 	 * Theoretically a guest OS even using larger pages could still
-@@ -557,7 +559,6 @@ static int vmclock_probe(struct platform_device *pdev)
- 	 * cross that bridge if/when we come to it.
- 	 */
- 	if (le32_to_cpu(st->clk->size) >= PAGE_SIZE) {
--		st->miscdev.minor = MISC_DYNAMIC_MINOR;
- 		st->miscdev.fops = &vmclock_miscdev_fops;
- 		st->miscdev.name = st->name;
- 
-
--- 
-2.48.1
-
+Regards,
+Michal  
 
