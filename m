@@ -1,113 +1,112 @@
-Return-Path: <stable+bounces-114250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BFAA2C393
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:30:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF88A2C426
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 14:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2820916B036
-	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 13:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECE481889F49
+	for <lists+stable@lfdr.de>; Fri,  7 Feb 2025 13:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EAD1F418C;
-	Fri,  7 Feb 2025 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3DD1F4E48;
+	Fri,  7 Feb 2025 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OoZpBxZV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fps0HS3H"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3351F1505;
-	Fri,  7 Feb 2025 13:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358131F4169;
+	Fri,  7 Feb 2025 13:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738935009; cv=none; b=MmNfHiO5UPSvgrHGTblBOujAeaNvCDzRipqHSGWcoheU3qXWtLXx6IVu78IS2VMnSkb6oduvhwZLCHEaeaKbObquiT4/PbkwjTDOqOREzU8Y5HyU8TIsHiUmKSWA8UEAe/ynZ0K+PuCTVS70YT66RjVkZedBu1ZGK2D9Ar8KQFk=
+	t=1738936478; cv=none; b=Xtub31XEto/0RNKbNZ9dpEF4mozbkojnBLfWrNnDuPjNxhAjYXgG4bL68+Ub83ybjVH+yyGMGDnVRJLrnf0G1vR9wWhn4mnxCKXjcWNpXHE+zN/OSslq+WQf4tPzMAPlOcEZN9g9RleVNjv6Ni2YeVXCVGRY7zhtyiZ4+wcR24A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738935009; c=relaxed/simple;
-	bh=bKUuRClkZe1XnXxLTPyQ6tscMqQy1rs3PGNwX1eXlH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LgweZeUlFNu6qieel2K6Dnu3Ie5S17wfGZ2PqDBu1txnhZuhTWKjVpUCTK76t4Jw+N23WVDlKQ05v3sLW4CLeTFjggaKN9clHxTghFPZxFBby12QR3STxzJEHT+pWVFqvE1wlhTqLXdtdWdX78H2rQFFgnkTs6CXKpUf6Qlp24A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OoZpBxZV; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D7B1D442F5;
-	Fri,  7 Feb 2025 13:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738935005;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uLJEtoS2PPJFMr0I1tAyocsm8P41/TMCB7vqODm0mU=;
-	b=OoZpBxZVH/MaCQGmcz4JeZqJ48Oqd3LrSrTxiEnH0uO9644BdWBqRtn6n0Po58+Fu4amN0
-	9bPks+EnjQIvq3wD4XxW2cxFKbMsDIWEwkA909n5rmpr5Ei5RIBdaZU7GUexzRQJ/J3AWG
-	BH6BimoOaVQNFxGTsv1m65LeCDF+0G5FxUDq2+y034cUmUMlXrKLTEmWrFlme3eC1e0Ehp
-	B5L1IHtZJXS/dBqZrIhdaSO4RJH4ssqOZKO4GOgub9I1Uv5PB5R4Ni5M5dUMHaoODFaCgo
-	V6EEHxvUY9E8hGGTmHW6JHt0DXkS+ATUCf46+WzfEd2xk9r4TLw+hK1/HWQPeQ==
-Date: Fri, 7 Feb 2025 14:30:03 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, Jingoo
- Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, Tony Lindgren
- <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>, Tomi Valkeinen
- <tomi.valkeinen@ti.com>, Jean-Jacques Hiblot <jjhiblot@ti.com>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] backlight: led_bl: Hold led_access lock when calling
- led_sysfs_disable()
-Message-ID: <20250207143003.1c518df3@bootlin.com>
-In-Reply-To: <20250122091914.309533-1-herve.codina@bootlin.com>
-References: <20250122091914.309533-1-herve.codina@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1738936478; c=relaxed/simple;
+	bh=+9Nb79PCPONjK0IJAJ2FUvhPtmIH7tDDtA5yLL15zl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iOC3Pc3jZheo16+62+gUIptjAcjiego13XM7PIk9Z8Ny0mjHcj0FsWKsycm99PaRu7TOKxtadoWA3BH7uIVxPeQVKzu7g0cZOCxalt+2Ot0o01mvQHsOFeOE2ve8bpomZmZ7JyXw5UGDPxkkamS+NynIkBNfzWfCGcV3MqTWksA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fps0HS3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9931AC4CED1;
+	Fri,  7 Feb 2025 13:54:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738936477;
+	bh=+9Nb79PCPONjK0IJAJ2FUvhPtmIH7tDDtA5yLL15zl4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fps0HS3H3smOOEy4Rw3xJJtjVN2H8E4lOAFm5MkZ+uvtRH+j/o/Z5b8gAnyKtJjrr
+	 PI1Yv04krMwYEEQoBTZ9xOzAsGwySwoEOtzPzLc6/J3FDvfOAGxpC3dhL4v6Tfu6CN
+	 m+IjViywq6yXy9qp9NyPYocTJHFv6PIzZh8eLsy3nYEtHKbMxlUishWduTXzOVwag6
+	 EkwUQYycrO0NgJLMh3BsQ45FnfI2NkvsjsrvNJm4YTiM1jRWRAMftpcVSY1r527QE9
+	 8XAI+YAvPw5iLaS5jngnet43gEwpy3/hvvdylZ0ybHnC1ICNm7nWlvleOKLBiB4+OC
+	 ItkZaGUbIkjkA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tgOog-000000003Wa-2HYR;
+	Fri, 07 Feb 2025 14:54:46 +0100
+Date: Fri, 7 Feb 2025 14:54:46 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 541/623] PM: sleep: core: Synchronize runtime PM
+ status of parents and children
+Message-ID: <Z6YQpnfhXRh5oHRi@hovoldconsulting.com>
+References: <20250205134456.221272033@linuxfoundation.org>
+ <20250205134516.919594202@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleegtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudehpdhrtghpthhtoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghltheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhinhhgohhohhgrnhdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehprghvvghlsehutgifrdgtiidprhgtphhtthhopehtohhmi
- hdrvhgrlhhkvghinhgvnhesthhirdgtohhmpdhrtghpthhtohepjhhjhhhisghlohhtsehtihdrtghomh
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205134516.919594202@linuxfoundation.org>
 
-Hi Lee, Daniel, Jingoo,
-
-On Wed, 22 Jan 2025 10:19:14 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
-
-> Lockdep detects the following issue on led-backlight removal:
->   [  142.315935] ------------[ cut here ]------------
->   [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
->   ...
->   [  142.500725] Call trace:
->   [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
->   [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
->   [  142.511742]  platform_remove+0x30/0x58
->   [  142.515501]  device_remove+0x54/0x90
->   ...
+On Wed, Feb 05, 2025 at 02:44:43PM +0100, Greg Kroah-Hartman wrote:
+> 6.13-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Indeed, led_sysfs_enable() has to be called with the led_access
-> lock held.
+> ------------------
 > 
-> Hold the lock when calling led_sysfs_disable().
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> [ Upstream commit 3775fc538f535a7c5adaf11990c7932a0bd1f9eb ]
+> 
+> Commit 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the
+> resume phase") overlooked the case in which the parent of a device with
+> DPM_FLAG_SMART_SUSPEND set did not use that flag and could be runtime-
+> suspended before a transition into a system-wide sleep state.  In that
+> case, if the child is resumed during the subsequent transition from
+> that state into the working state, its runtime PM status will be set to
+> RPM_ACTIVE, but the runtime PM status of the parent will not be updated
+> accordingly, even though the parent will be resumed too, because of the
+> dev_pm_skip_suspend() check in device_resume_noirq().
+> 
+> Address this problem by tracking the need to set the runtime PM status
+> to RPM_ACTIVE during system-wide resume transitions for devices with
+> DPM_FLAG_SMART_SUSPEND set and all of the devices depended on by them.
+> 
+> Fixes: 6e176bf8d461 ("PM: sleep: core: Do not skip callbacks in the resume phase")
+> Closes: https://lore.kernel.org/linux-pm/Z30p2Etwf3F2AUvD@hovoldconsulting.com/
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Tested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Link: https://patch.msgid.link/12619233.O9o76ZdvQC@rjwysocki.net
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-I didn't receive any feedback.
+This patch appears to be causing trouble and should not be backported,
+at least not until this has been resolved:
 
-v6.14-rc1 has been released since the patch was sent but the patch applies on
-top of v6.14-rc1 without any issue.
+	https://lore.kernel.org/all/1c2433d4-7e0f-4395-b841-b8eac7c25651@nvidia.com/
 
-Of course if really needed, I can resend the patch. Just tell me.
+Please drop from all stable queues.
 
-Best regards,
-Hervé
+Johan
 
