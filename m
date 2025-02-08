@@ -1,123 +1,104 @@
-Return-Path: <stable+bounces-114363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC96A2D38A
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 04:40:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E7AA2D3C0
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 05:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F13093AB14D
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 03:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666B8188D422
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 04:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB711632D7;
-	Sat,  8 Feb 2025 03:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2538D17C21E;
+	Sat,  8 Feb 2025 04:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cxAG5M7c"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b="fi8zQwst"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server-598995.kolorio.com (server-598995.kolorio.com [162.241.152.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ACB2913;
-	Sat,  8 Feb 2025 03:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C8B185B4C
+	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 04:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.241.152.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738986034; cv=none; b=H1eh7WYEqp2bQ6guaIIWNcoXhIWaqxC/9qwMupRbna0LJWDbuCibPHASPpPpgUfM/oVsBM57rPmFSJJYyS0L0vhWZmUyRwJ2lDW57kGhMfoaK2zHl+BMFVEbOaZkJ+lgDFyjr9WGGNE+YnXQ2E7I2AninAgPdCP7eaxfDu9ym4U=
+	t=1738988472; cv=none; b=vAn0nuiJib2h6iAtdcs2C7yK6Wl1ybuQVCWZBkOdsUGetlCbztIBuGhUvJXpNpA4c5Ar472zK12wJUrkCqLZSTaozJZrOFv62tlK6mKxhi1oohDiEqQqpj/Ne8C+k8EEfVDGnTH0TxE9VBzAFrzH0z0nAvkIIDydFO48Nwdhm/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738986034; c=relaxed/simple;
-	bh=N9kaOwokRwr4iyVgwSq5BDPO0g+y+cdxPnlkd1dmLy8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kzljm/2HHca9RAGKFqdSH8CJ+8kTbbEMw8xkt7A+ZhJU2oyVZq2TjUhLHnIK1zDZ1kOf6g6Her1yFSzt4WfXV0mw5SR8DiKum99LilFVJUjNJfhTWCuVLRWFNhCyFnm4THLLK2E1OKyt4CbB1kHcjzLoOuwpxs+8dCcUXRv9qT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cxAG5M7c; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43934d6b155so127205e9.1;
-        Fri, 07 Feb 2025 19:40:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1738986031; x=1739590831; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q/MoU3id3BrwdX1UH0ylVsZ7NUAgFe+E3+3PemD+rI0=;
-        b=cxAG5M7cgnRBI6gq0XHkE78DcjsveDo+RIu5Sxm7laxEqZYPn3VojzB6IwafsonPEI
-         qj47lxRo/D4czW2CiNEsDCUqR7mjPq68bBldqOSm9DtM/qAXJvQ2IKJZ9AFKxKMtGglz
-         xrGJyUb1tGElLkJOapslnSd/il1i667vtdDwXfsbTOX36c9gmt3PhktV+okYfwYe7qDJ
-         VRA1dIB9exeCdntcPv/FuXLcR4ck+2tVOxZlewVakwIPhcA1yPO3bEVIj29kfJ1pFbEe
-         Jzi0d/CHmj7mJPC15EOTuxjNbhNGX0Mn2ce6aeV8mxeAvlMxi6L/TkIY9uaAx1RzJZcr
-         uvXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738986031; x=1739590831;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/MoU3id3BrwdX1UH0ylVsZ7NUAgFe+E3+3PemD+rI0=;
-        b=sf4MW6LDV94vD00P1ULDhhvYQvK0HvhEDqJ+6NeI6YQ5F8wZrL5G4X1Mkc0XijhGS3
-         UTkVcnhi1997r+pRrAdQglbrouzGYSq8W1J0vY27FYekPccmGU9eI449w/pS45grmHI/
-         nx/26djAAz/QuWJQwxCrUZZH8SJOAMEZPWgMIz8BkJsfJ6hNRwv7ee9uGxS1uKEiYXTx
-         HqboaDxAPFWqoBAr6dcuDFjze9/uhRsBxMnLRljTo2Vh+C2a1ob0wh5bRiioG9aycKs6
-         0qICrJHp0SGKVkRNw/6gMOnHMVweYfHxuawPJVACbMLdbm3mAoGex8veGAOxv19IUqHm
-         pePg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf7BdmmQJ5N36D7ZBEolTC72R7Gvtz53ezZhJOJFF5XiQrVrx7jzaZ/XSf/862PcbsRkEIAE/Aom1+SJg=@vger.kernel.org, AJvYcCXecIy/fD5qGHUl7ZVxbyc1ME+9Ptz2wsS894aLN4YALcAVhRxdmPQ3njOqZWixx1zoEWi2AHdf@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPOM5yjeF3l4FqVT2q96GS/y1XVKp7/SdDkefC3DBvvqJLFqde
-	Q/h1SPGt6cB+GccNEDNA17izZTqJ6ZK04zPMFQZLCRPwR2Lrdo4=
-X-Gm-Gg: ASbGncs4HrzP+Oigdn/rIct1M/FtDRPpJnb+UohbaeAzgN4nI6qtpPYWVMOKAcjkY7/
-	jlxx3wgjOhK6Bbpz9nSw78jp1+41WdbaunCYdMktUm4dCwTVVgSnvNrIs02Qnf6CUJfI0c/d9Iy
-	VS3sSyjE8OYNP3gNQ7GrnfbnBLrlQV67S+BL29AIBUWnWZU7d2xBqEBurVyBsMZdAYGe8ff6Ke3
-	GLqxWxR0blpKMT1tqqeNoI/yBQz4jg2tAhshaxZ4Q8T7aFcmas1G8icNc1FOaW7H3eJxaDAFaiB
-	/AdGQxdRJslOBiIg5T865KP0Pi2b97x7UFrvwEd89a2lXJZllkCB1tBNS7VRAWUKkLOT
-X-Google-Smtp-Source: AGHT+IFcoWeDsRNdVkwNAsdBuFf9X9aBBZeb+1xqBEK8L6mmiiRZTdSH+s+jTYA4mu5Yzzw+6E/37Q==
-X-Received: by 2002:a7b:c342:0:b0:42c:baf1:4c7 with SMTP id 5b1f17b1804b1-43912d150bbmr72193195e9.4.1738986031443;
-        Fri, 07 Feb 2025 19:40:31 -0800 (PST)
-Received: from [192.168.1.3] (p5b0574a7.dip0.t-ipconnect.de. [91.5.116.167])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dcae8f0sm71285495e9.20.2025.02.07.19.40.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Feb 2025 19:40:30 -0800 (PST)
-Message-ID: <390d6183-6d30-4e68-ba32-a6cb99ba4083@googlemail.com>
-Date: Sat, 8 Feb 2025 04:40:29 +0100
+	s=arc-20240116; t=1738988472; c=relaxed/simple;
+	bh=gl4+7vNxgV9+JzZtw7EthQ6aGDgi0WVn3wQV/lnKiyo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gR95TdQVsJNDMr8CJhGaKE4HpIH5octhUB+1cfgQ76yBcGENhqEushVn7y6Iq/aP1U/3zudpG/XAzCdy0sRcNPyeZQH3eymiCXoW8FHyEAD7wgl+UqKRfVDn1bMJC/RO8WDpw4nNr76AlWmokokafad3xFfUPNGj37e5iZT807g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=truemaisha.co.tz; spf=pass smtp.mailfrom=truemaisha.co.tz; dkim=pass (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b=fi8zQwst; arc=none smtp.client-ip=162.241.152.247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=truemaisha.co.tz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truemaisha.co.tz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=truemaisha.co.tz; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Sender:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gl4+7vNxgV9+JzZtw7EthQ6aGDgi0WVn3wQV/lnKiyo=; b=fi8zQwstIkMFlwEPvMbuufqLn6
+	xKnM1EQLE0GeOMU3TIuFLd1AwzKl4DHbuptAUGX7xK0NDK+wt9xztNLxEuE58Hlw8VkcQA0cYFAx3
+	Sfx7foRayoMFU4838aLlhbEbZgPQ4mjF8UDaAh8ov39IUh2NHYt8LDnoybn2B8nkeKY4Qb8fvd1yd
+	R+fr0SUM2KQ+1IxacYz4eTSIvAo6u6arHraZp60l1NlpQUkAcD1DHt1JDm5oERTiA6T90s/oJ1aET
+	Ce7IlAtzNmjic/ibcCFH9nKpZ5vKUa3WkdA845avFibBsoZFmEZ8pJFSTPnrXtN9cuACI9OTJNVAi
+	c3JGdzKg==;
+Received: from [74.208.124.33] (port=50242 helo=truemaisha.co.tz)
+	by server-598995.kolorio.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <chrispinerick@truemaisha.co.tz>)
+	id 1tgc0S-00026j-2H
+	for stable@vger.kernel.org;
+	Fri, 07 Feb 2025 21:59:50 -0600
+Reply-To: dsong@aa4financialservice.com
+From: David Song <chrispinerick@truemaisha.co.tz>
+To: stable@vger.kernel.org
+Subject: Re: The business loan- 
+Date: 08 Feb 2025 03:59:50 +0000
+Message-ID: <20250208015432.F66320E949462084@truemaisha.co.tz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.13 000/619] 6.13.2-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250206160718.019272260@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250206160718.019272260@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server-598995.kolorio.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - truemaisha.co.tz
+X-Get-Message-Sender-Via: server-598995.kolorio.com: authenticated_id: chrispinerick@truemaisha.co.tz
+X-Authenticated-Sender: server-598995.kolorio.com: chrispinerick@truemaisha.co.tz
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Am 06.02.2025 um 17:11 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.13.2 release.
-> There are 619 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello,
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+My name is David Song, at AA4 FS, we are a consultancy and
+brokerage Firm specializing in Growth Financial Loan and joint
+partnership venture. We specialize in investments in all Private
+and public sectors in a broad range of areas within our Financial
+Investment Services.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+ We are experts in financial and operational management, due
+diligence and capital planning in all markets and industries. Our
+Investors wish to invest in any viable Project presented by your
+Management after reviews on your Business Project Presentation
+Plan.
 
+ We look forward to your Swift response. We also offer commission
+to consultants and brokers for any partnership referrals.
 
-Beste Grüße,
-Peter Schneider
+ Regards,
+David Song
+Senior Broker
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+AA4 Financial Services
+13 Wonersh Way, Cheam,
+Sutton, Surrey, SM2 7LX
+Email: dsong@aa4financialservice.com
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
