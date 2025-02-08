@@ -1,233 +1,239 @@
-Return-Path: <stable+bounces-114365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F67A2D415
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 06:25:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DD2A2D419
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 06:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46BB5166DF6
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 05:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18405188DB2A
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 05:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A583419F128;
-	Sat,  8 Feb 2025 05:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFAC145FE8;
+	Sat,  8 Feb 2025 05:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="N+yK7UNV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="S4cBp+EN"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="Go3ZJP85"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35AE149E16;
-	Sat,  8 Feb 2025 05:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25517BA6
+	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 05:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738992316; cv=none; b=S7Cv9wc1CoyJYr9R4lnHGnhKkEEtOvtu9MgeMxueGdHhY2pYxQuIH30tep5FuL7IPgCWL18w8dKD8x7qowIfgEN8C7+6zqI6cM31aUPkbzWrtIzIU/raoQpg8ywU6UET8n0ikpdCjtngfDRrpkHREGWPLeKiQ+Z7jWyo3DLtrI0=
+	t=1738992631; cv=none; b=WiM4e4Q/l0sMzk0lDyk7oT1kRNqLcLTMD36+scHXVV//erTrW/Lmhmxr7A0EPmZiE3oAoSBOxjKvP3h4+iT2r8KQ8BqIyxtXNUE1ELhin7tNuErJajyDj/62CdyHAC0i3isuKPbd3LIkaO8Q1TJntfqSujt5dHEPifXfBOAoGkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738992316; c=relaxed/simple;
-	bh=kprJgHOyrGcjUtcHPWph5hJACXjw9/0dy/xjlmJCn/4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pZ9QHM+yV0UTDMuQRV7+nPNiVLcrMPwfdh9PcrC3wTMLDtPm0+QNie5xVkqwTECUaKSwd95h+66gSCo9eau47YgHWpB4udVlRkvDfciVfmUD5V4RVoqPBOXJt2X7pD0szIvE6o7BgRhWALCWyfp8DCSsCd+g4qn9EiJiJIDUeBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=N+yK7UNV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=S4cBp+EN; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E0E5A1140186;
-	Sat,  8 Feb 2025 00:25:12 -0500 (EST)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-06.internal (MEProxy); Sat, 08 Feb 2025 00:25:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1738992312;
-	 x=1739078712; bh=/nOeDMk5nhFhfwtOF9926Ed2Bh3keG0gC51bvfKfllI=; b=
-	N+yK7UNV6fDIZIW1rh+mleHRtyJrOResU1F5PvTfAHZK4De77RDegXpxmcsVugB/
-	7DMvzqpIH49rjbGHIB41t76E3rNEZGwVK7OkFO+5LWN7QzFT9z24890DPlQtfPGf
-	rCmDpA/C7AT4zbBN3uVVKguj5mYxPs23aRqze9xXeOwac/BGRKFvpioCVDWPNx/Z
-	4PXBw9m0xZSMRtQIZAwxAn8QxQNrjmbxEY5Va8pfEyiqa1s+9kzXqxLLMmhYyCdJ
-	/msu+StL/9zF75+dJMcRb6I8JVOr895ygUqc1LyZ2oPhrVeNEkZnad1bgaRUk2dl
-	pOhb5WDS5Qc9d9ibXhUAYg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738992312; x=
-	1739078712; bh=/nOeDMk5nhFhfwtOF9926Ed2Bh3keG0gC51bvfKfllI=; b=S
-	4cBp+ENPVA5z+OAWZGbSWmYMkHof32Uc+PiWb/CiYtFJS2mePiOe5T4R0JN083+H
-	9SWRBW7Y2CO6qMNlAxmxV8z8GHIbA5iNcMma8JCoH9wh943326hEdDzON7lpHZ2M
-	QoYiVy9JoZBKQ9pOl8b9EwKYh0jbTHPXP/Tg9/d2ZgwhA3t+yxcxUbESGOzFVUP/
-	+sxWSnkhnmy8D7Jl8e+CW2bBPSfT1aZPVOOQVp/yX6i0RFaQ2H+eyo8SmrSo1fJr
-	d/JEg51pegzmXOXL3ZUX4nT3teOY/8LHML21FRsp8Mu5cT/3Bzq6Yur9/MQmBMAe
-	LQdTxxB1J31GbbP137ENA==
-X-ME-Sender: <xms:t-qmZ3EHCPd6AKJWKYEV7IshClDRQ4ZMiPw4LwW1vqAsd-gr--nAyA>
-    <xme:t-qmZ0XNPIfh6jrY13u0k7CU1CDXo746RaLWPQBjFbYx8TWsDsJMxz_duIbgegYvh
-    8HAtsZfpP5044y4kU4>
-X-ME-Received: <xmr:t-qmZ5K8Sz7_TOMe6PFB5Vq4MQ0-OZEEgeVFPZ1CXA2RQs8rqJiz_NannXlkpoNSL_5pInT_jHGqe9BSrV0zSFVvx_P1Bn4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefudeffecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
-    jeenucfhrhhomhepfdeurghrrhihucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesph
-    hosghogidrtghomheqnecuggftrfgrthhtvghrnhepteekleehuefhgeeuveevfeehheeh
-    heegheevheejheefudehjeduffegfeeuffejnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggp
-    rhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhrvghgkh
-    hhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepshhtrggslhgv
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthhgvsheslhhish
-    htshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugi
-    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehrohgvtghkqdhush
-    drnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
-X-ME-Proxy: <xmx:t-qmZ1HiJUlus4ced2beda1OYpYvKbDc9g1p_CSq9RzYX5ka7lVGVA>
-    <xmx:t-qmZ9XmZUtrqd-d6u6ULRrYciYWKemtcIbd1W7iJOg9_oh3oB4uYQ>
-    <xmx:t-qmZwNDCasdCvY6uOR4fNCRNnp9gfQgyIzkMEIWW9U7YFlVKF9Wxw>
-    <xmx:t-qmZ83Lh_gLHLwV13znBwUNssn9d75gtRYPN6yZPJ0jkxCbkhwcxQ>
-    <xmx:uOqmZzGuMrWva48VsRJqXD1xEjufQz-e3DVGCGPBCJoWnF2NSs95O9k9>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 8 Feb 2025 00:25:09 -0500 (EST)
-Message-ID: <13a5abe4-18ea-407e-9435-ab8a36b83c86@pobox.com>
-Date: Fri, 7 Feb 2025 21:25:08 -0800
+	s=arc-20240116; t=1738992631; c=relaxed/simple;
+	bh=jdhRj2OXxCgt72Ooxak4eX+F1hJ708P7r42kl5H8la8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qoH2Rpdi5U/v5x4THPeubaMzS9j3faHZacYat4HNWKtH4yao+mXy0qYCWJnm+KAoKpLKFTDPJhUYFojf21CZHM7jPOUTc3s8qYj+NWbC12r7UPdpamVORe+bRMJB9TrdCiDZi4cjqb+cS07wAsv9knJixQPyzT9WaQ/oP/cv0L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=Go3ZJP85; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-111-148.bstnma.fios.verizon.net [173.48.111.148])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5185UBl6014483
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 8 Feb 2025 00:30:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1738992614; bh=Hpl/F0jFE1zUvay4XS9oyJREGUyTQF/l3z+1Ic2cPgY=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=Go3ZJP85jb7o58wFt00KI6ppHx7xobHqb4UHzfDBtzfjABAi7vzkdBbzAna9Bp8uC
+	 ENONPU0+vQtIN44VOqM14koe13DTebHV0Y9GsqwPkukHj3YDYdTc1uyMWzEBIhwegT
+	 opljfyZ7b7npixBXTK1fH7bz/r+RYeXSwGefWzT39MlHtB1gyquC/EG+XiHyZpTGbG
+	 /HWQ5IB0s1DxWINNY0NdLYCSgtv5zZLRbDpk32ugOyXNWyW0tXwTabUO7c/qX+nyEn
+	 0KEi55lZ1e1lMe6oXjKjBALWNNsLaln3gWd+XWeJY/0AWUHLoA9EmKdKodNioNGQVr
+	 93dEjpMm9ycfQ==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 886AC15C013F; Sat, 08 Feb 2025 00:30:11 -0500 (EST)
+Date: Sat, 8 Feb 2025 00:30:11 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Daniel Rosenberg <drosen@google.com>
+Cc: Todd Kjos <tkjos@google.com>, Greg KH <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        Gabriel Krisman Bertazi <krisman@suse.de>
+Subject: Re: f2fs: Introduce linear search for dentries
+Message-ID: <20250208053011.GK1130956@mit.edu>
+References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
+ <2025020118-flap-sandblast-6a48@gregkh>
+ <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
+ <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- herbert@gondor.apana.org.au, herbert.xu@redhat.com
-References: <20250206155234.095034647@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20250206155234.095034647@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
 
-On 2/6/25 08:06, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.76 release.
-> There are 389 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, Feb 03, 2025 at 03:07:10PM -0800, Daniel Rosenberg wrote:
 > 
-> Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
-> Anything received after that time might be too late.
-[snip]
-> Herbert Xu <herbert@gondor.apana.org.au>
->      crypto: api - Fix boot-up self-test race
-[snip]
-I mentioned in an email to the stable mailing list earlier this week 
-that the crypto-api-fix-boot-up-self-test-race patch, on my systems, is 
-causing a one-minute freeze followed by a crypto self-test failure. See 
-the log excerpt below for an example. (In that email I erroneously said 
-the affected kernel was 6.6.76-rc1. It was 6.6.75 plus stable-queue 
-patches, but not actually 6.6.76-rc1. Sorry for my mistake.)
+> The revert of the unicode patch is in all of the stable branches
+> already. That f2fs patch is technically a fix for the revert as well,
+> since the existence of either of those is a problem for the same
+> reason :/
+> 
+> On Sat, Feb 1, 2025 at 9:06 AM Todd Kjos <tkjos@google.com> wrote:
+> >
+> > Before we can bring back the reverted patch, we need the same fix for
+> > ext4. Daniel, is there progress on that?
 
-I'm still experiencing this with 6.6.76-rc2. As before, reverting 
-"crypto: api - Fix boot-up self-test race" fixes it. I also tried 
-testing 6.6.75 plus this patch, and that reproduces the problem. In case 
-it might have been a compiler issue, I tried upgrading my build system 
-from Debian bookworm to trixie, but the issue reproduces with trixie's 
-gcc 14.2 just as it does with bookworm's gcc 12.2.
+So I have a working fix for ext4, now but it's going to be a lot more
+complicated if we want to bring back the reverted patch.  That's
+because both e2fsprogs and f2fs-tools needs to be able to calculate
+the hash used by the directories, and so fsck.ext4 and fsck.f2fs will
+get confused if they run across file systems with file names which
+were inserted while the reverted patch was in force.
 
-I also tested 6.12.13-rc2 and 6.13.2-rc2. Those kernels work fine in my 
-testing and do not reproduce this issue.
+I confirmed this was applicable for both ext4 and f2fs by modifying my
+unicode-hijinks script to generate an f2fs image, and then running
+fsck.f2fs on the image:
 
-To be clear, it's personally not a real problem for me if 6.6.76 is 
-released with this patch included -- if necessary, I can just keep 
-reverting this patch until I get my systems upgraded to 6.12. However, I 
-figure this is still worth reporting, in case it eventually turns out to 
-be something that doesn't only affect me.
+% /sbin/fsck.f2fs  /tmp/foo.img 
+Info: MKFS version
+  "Linux version 6.14.0-rc1-xfstests-00013-g30a8509ae0bb-dirty (tytso@cwcc) (gcc (Debian 14.2.0-8) 14.2.0, GNU ld (GNU Binutils for Debian) 2.43.50.20241210) #456 SMP PREEMPT_DYNAMIC Fri Feb  7 01:18:48 EST 2025"
+Info: FSCK version
+...
+[FIX] (f2fs_check_hash_code:1471)  --> Mismatch hash_code for "❤️" [9a2ea068:19dd7132]
+[FIX] (f2fs_check_hash_code:1471)  --> Mismatch hash_code for "❤️" [9a2ea068:19dd7132]
 
-Anyway, I'll keep digging to see if I can figure out more. Since 
-essentially the same patch that's breaking 6.6 is working just fine on 
-6.12 and 6.13, I feel like I should be able to find more clues. 
-(However, I may be busy for the next several days, so I'm not sure how 
-soon I'll be able to make progress.)
+And of course, this happens with ext4 as well:
 
-Log excerpt:
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Problem in HTREE directory inode 4048: block #18 has bad max hash
+Invalid HTREE directory inode 4048 (/I/no-E/H/red).  Clear HTree index? yes
 
-[    5.928519] ima: No TPM chip found, activating TPM-bypass!
-[    5.939514] ima: Allocated hash algorithm: sha256
-[    5.948952] ima: No architecture policies found
-[    5.958056] evm: Initialising EVM extended attributes:
-[    5.968355] evm: security.selinux
-[    5.975045] evm: security.SMACK64 (disabled)
-[    5.983607] evm: security.SMACK64EXEC (disabled)
-[    5.992864] evm: security.SMACK64TRANSMUTE (disabled)
-[    6.002986] evm: security.SMACK64MMAP (disabled)
-[    6.012242] evm: security.apparmor
-[    6.019073] evm: security.ima
-[    6.025034] evm: security.capability
-[    6.032210] evm: HMAC attrs: 0x1
-[   68.455379] DRBG: could not allocate digest TFM handle: hmac(sha512)
-[   68.468106] alg: drbg: Failed to reset rng
-[   68.476319] alg: drbg: Test 0 failed for drbg_nopr_hmac_sha512
-[   68.488002] alg: self-tests for stdrng using drbg_nopr_hmac_sha512 
-failed (rc=-22)
-[   68.488004] ------------[ cut here ]------------
-[   68.512425] alg: self-tests for stdrng using drbg_nopr_hmac_sha512 
-failed (rc=-22)
-[   68.512443] WARNING: CPU: 0 PID: 76 at crypto/testmgr.c:5936 
-alg_test+0x49e/0x610
-[   68.543729] Modules linked in:
-[   68.549864] CPU: 0 PID: 76 Comm: cryptomgr_test Not tainted 6.6.76-rc2 #1
-[   68.563454] Hardware name: Gigabyte Technology Co., Ltd. 
-G41MT-S2PT/G41MT-S2PT, BIOS F2 12/06/2011
-[   68.581411] RIP: 0010:alg_test+0x49e/0x610
-[   68.589645] Code: de 48 89 df 89 04 24 e8 70 ed fe ff 44 8b 0c 24 e9 
-bc fc ff ff 44 89 c9 48 89 ea 4c 89 ee 48 c7 c7 f8 9a ad 8d e8 32 75 b2 
-ff <0f> 0b 44 8b 0c 24 e9 a1 fe ff ff 8b 05 61 04 c2 01 85 c0 74 56 83
-[   68.627206] RSP: 0018:ffffbd1fc02efe10 EFLAGS: 00010286
-[   68.637676] RAX: 0000000000000000 RBX: 00000000ffffffff RCX: 
-c0000000ffffefff
-[   68.651977] RDX: 0000000000000000 RSI: 00000000ffffefff RDI: 
-0000000000000001
-[   68.666258] RBP: ffff981cc09a0200 R08: 0000000000000000 R09: 
-ffffbd1fc02efc98
-[   68.680542] R10: 0000000000000003 R11: ffffffff8dcd1368 R12: 
-0000000000000058
-[   68.694842] R13: ffff981cc09a0280 R14: 0000000000000058 R15: 
-0000000000000058
-[   68.709125] FS:  0000000000000000(0000) GS:ffff981df7c00000(0000) 
-knlGS:0000000000000000
-[   68.725330] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   68.736857] CR2: 00007f1f895112e0 CR3: 0000000083220000 CR4: 
-00000000000406f0
-[   68.751140] Call Trace:
-[   68.756063]  <TASK>
-[   68.760293]  ? alg_test+0x49e/0x610
-[   68.767296]  ? __warn+0x81/0x130
-[   68.773778]  ? alg_test+0x49e/0x610
-[   68.780781]  ? report_bug+0x171/0x1a0
-[   68.788130]  ? console_unlock+0x78/0x120
-[   68.795999]  ? handle_bug+0x58/0x90
-[   68.803000]  ? exc_invalid_op+0x17/0x70
-[   68.810699]  ? asm_exc_invalid_op+0x1a/0x20
-[   68.819103]  ? alg_test+0x49e/0x610
-[   68.826108]  ? finish_task_switch.isra.0+0x90/0x2d0
-[   68.835882]  ? __schedule+0x3c8/0xb00
-[   68.843231]  ? __pfx_cryptomgr_test+0x10/0x10
-[   68.851967]  cryptomgr_test+0x24/0x40
-[   68.859317]  kthread+0xe5/0x120
-[   68.865627]  ? __pfx_kthread+0x10/0x10
-[   68.873166]  ret_from_fork+0x31/0x50
-[   68.880343]  ? __pfx_kthread+0x10/0x10
-[   68.887881]  ret_from_fork_asm+0x1b/0x30
-[   68.895753]  </TASK>
-[   68.900154] ---[ end trace 0000000000000000 ]---
 
+Now, I'm not sure how much it's important to bring back the reverted
+patch.  Yes, I know it's claimed that it fixes a "security issue", but
+in my opinion, it's pretty bullshit worry.  First, almost no one uses
+the case folded feature other than Android, and second, do you
+*really* think someone will really be trying to run git under Termux
+on their Pixel 9 Pro Fold?  I mean.... I guess; I do have Termux
+installed on my P9PF, but even I'm not crazy enough to try install
+git, emacs, gcc, etc., on an Android phone and expect to get aything
+useful done.  Using ssh, or mosh, with Termux, sure.  But git?  Not
+convinced....
+
+Anyway, if we *do* want bring back the reverted patch, it would need
+to be reworked so that there is a bit in the encoding flags which
+indicates how we are treating Unicode "ignorable" characters, so that
+e2fsprogs and f2fs-tools can do the right thing.  Once the kernel can
+handle things with and without ignorable characters, on a switchable
+basis based on a bit in the superblock, then we wouldn't need to use
+the linear fallback hack, with the attendant performance penalty.
+
+But honestly, I'm not sure it worth it.  But if someone sends me a
+patch which handles the switchable unicode casefold, I'm willing to
+spend time to get this integrated into e2fsprogs.
+
+Cheers,
+
+						- Ted
+
+P.S.  This has only been tested using my a file system image created
+using my unicode-hijinks script, but it hasn't gone through a full set
+of regression tests yet.  But this it is doing the right thing at
+least as far as the Unicode case folding is concerned.
+
+From 78499980bfa243a129a2a72f037d35147d3cf363 Mon Sep 17 00:00:00 2001
+From: Theodore Ts'o <tytso@mit.edu>
+Date: Fri, 7 Feb 2025 23:08:02 -0500
+Subject: [PATCH] ext4: introduce linear search for dentries
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch addresses an issue where some files in case-insensitive
+directories become inaccessible due to changes in how the kernel
+function, utf8_casefold(), generates case-folded strings from the
+commit 5c26d2f1d3f5 ("unicode: Don't special case ignorable code
+points").
+
+There are good reasons why this change should be made; it's actually
+quite stupid that Unicode seems to think that the characters ❤ and ❤️
+should be casefolded.  Unfortimately because of the backwards
+compatibility issue, this commit was reverted in 231825b2e1ff.
+
+This problem is addressed by instituting a brute-force linear fallback
+if a lookup fails on case-folded directory, which does result in a
+performance hit when looking up files affected by the changing how
+thekernel treats ignorable Uniode characters, or when attempting to
+look up non-existent file names.  So this fallback can be disabled by
+setting an encoding flag if in the future, the system administrator or
+the manufacturer of a mobile handset or tablet can be sure that there
+was no opportunity for a kernel to insert file names with incompatible
+encodings.
+
+Fixes: 5c26d2f1d3f5 ("unicode: Don't special case ignorable code points")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+---
+ fs/ext4/namei.c    | 14 ++++++++++----
+ include/linux/fs.h |  6 +++++-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 536d56d15072..820e7ab7f3a3 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1462,7 +1462,8 @@ static bool ext4_match(struct inode *parent,
+ 		 * sure cf_name was properly initialized before
+ 		 * considering the calculated hash.
+ 		 */
+-		if (IS_ENCRYPTED(parent) && fname->cf_name.name &&
++		if (sb_no_casefold_compat_fallback(parent->i_sb) &&
++		    IS_ENCRYPTED(parent) && fname->cf_name.name &&
+ 		    (fname->hinfo.hash != EXT4_DIRENT_HASH(de) ||
+ 		     fname->hinfo.minor_hash != EXT4_DIRENT_MINOR_HASH(de)))
+ 			return false;
+@@ -1595,10 +1596,15 @@ static struct buffer_head *__ext4_find_entry(struct inode *dir,
+ 		 * return.  Otherwise, fall back to doing a search the
+ 		 * old fashioned way.
+ 		 */
+-		if (!IS_ERR(ret) || PTR_ERR(ret) != ERR_BAD_DX_DIR)
++		if (IS_ERR(ret) && PTR_ERR(ret) == ERR_BAD_DX_DIR)
++			dxtrace(printk(KERN_DEBUG "ext4_find_entry: dx failed, "
++				       "falling back\n"));
++		else if (!sb_no_casefold_compat_fallback(dir->i_sb) &&
++			 *res_dir == NULL && IS_CASEFOLDED(dir))
++			dxtrace(printk(KERN_DEBUG "ext4_find_entry: casefold "
++				       "failed, falling back\n"));
++		else
+ 			goto cleanup_and_exit;
+-		dxtrace(printk(KERN_DEBUG "ext4_find_entry: dx failed, "
+-			       "falling back\n"));
+ 		ret = NULL;
+ 	}
+ 	nblocks = dir->i_size >> EXT4_BLOCK_SIZE_BITS(sb);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index be3ad155ec9f..b50ba230f1d4 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1246,11 +1246,15 @@ extern int send_sigurg(struct file *file);
+ #define SB_NOUSER       BIT(31)
+ 
+ /* These flags relate to encoding and casefolding */
+-#define SB_ENC_STRICT_MODE_FL	(1 << 0)
++#define SB_ENC_STRICT_MODE_FL		(1 << 0)
++#define SB_ENC_NO_COMPAT_FALLBACK_FL	(1 << 1)
+ 
+ #define sb_has_strict_encoding(sb) \
+ 	(sb->s_encoding_flags & SB_ENC_STRICT_MODE_FL)
+ 
++#define sb_no_casefold_compat_fallback(sb) \
++	(sb->s_encoding_flags & SB_ENC_NO_COMPAT_FALLBACK_FL)
++
+ /*
+  *	Umount options
+  */
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.45.2
+
 
