@@ -1,51 +1,58 @@
-Return-Path: <stable+bounces-114370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3613A2D471
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:15:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF57A2D475
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6871B164655
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA4E188CA30
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B411AAE0B;
-	Sat,  8 Feb 2025 07:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D751A4AAA;
+	Sat,  8 Feb 2025 07:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S94L/SWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsbIehTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5571A83FF;
-	Sat,  8 Feb 2025 07:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC503BBE5;
+	Sat,  8 Feb 2025 07:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738998904; cv=none; b=GMXg/MD9GiOpbk5BmHZomKj8VJZ1+o6Zbu87FQIK1q3i3xrIIpv1Dd5oql9fsQjplxXvneXqaENClHcLTdweg9WfmPzUR8OtQqScGGp8i5dt5pV2k0/OFplQXMFvhAsVgjDTdoLj9leZ41mX0PZtsZ6esunYJfkvmrOcwZQGfK0=
+	t=1738999274; cv=none; b=Id1eyq+NQISZ+CcSFIE6gDfqpQrHO8bJeLFdQ9sZSwZ67ziQ7qDWRAesr3YBG2DQa5c0vwBOl/iPkZg6YtkMMHwsDMvN1Dz1xLxg1xttHfi27+a5OuagJ+s7oq+cpXzi9BXc7AxlDjTeb/xJjpJn0helnilflAKgHM4bUvPswKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738998904; c=relaxed/simple;
-	bh=Iq3jiQK/RAsDjgRbxGyZobesn7rZGV66mz8pWo6XRLM=;
+	s=arc-20240116; t=1738999274; c=relaxed/simple;
+	bh=4AvSMCW8hMAkgc98W1wQbc55pDMAQI3b/O8HKsMqzdI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hmKYOtQ/IjEZUT/zoDTlMRWiSz5M11V+L3BdxxDJsn1ufLysyiXX0AUKC/mzMrizyAr8uJGwh8bx5ediz4UWxT01fUXkNsPEwaz3ZUUFkBaU2nxLI7ta9pg1n57uODVDpwUvz+NjlomjOMHKR6jaxdfPQa+wmhGE62I5yn1QCFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S94L/SWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF32C4CED6;
-	Sat,  8 Feb 2025 07:15:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FvjU/xaKiraPknWYn3c1wxtf73AXQI3QNqllS2M8sIgYQeu/wHTuU+dRraRTDtGZLttpZGibsveQ2FT/wFMMDonbNFWVRXWUOVhV/6eNQjzZut45V3McPUiOGcr5Et99kjyBW154Qp6iobkKSCIaoIiJbvXqmfX8ga2WzeenTP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsbIehTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7FBC4CED6;
+	Sat,  8 Feb 2025 07:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738998903;
-	bh=Iq3jiQK/RAsDjgRbxGyZobesn7rZGV66mz8pWo6XRLM=;
+	s=korg; t=1738999273;
+	bh=4AvSMCW8hMAkgc98W1wQbc55pDMAQI3b/O8HKsMqzdI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S94L/SWLk8PB6NeA77WgvCCQk9OzrR7Q2Mq8MY2fkv/lkbdy+lS7slkRS417jf4nZ
-	 IgB/ZgngvBoKYwksYi67w4jRKUaAm666Z4HgLxWJnYDcXvOOAEEOxQHNLVSwq6BCFV
-	 gRdrF0LEWIhv37mLwRClO59amhkIFPl7mDnE4cLc=
-Date: Sat, 8 Feb 2025 08:14:55 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jill Donahue <jilliandonahue58@gmail.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] f_midi_complete to call tasklet_hi_schedule
-Message-ID: <2025020836-refining-gutless-0d5f@gregkh>
-References: <20250207203441.945196-1-jilliandonahue58@gmail.com>
+	b=jsbIehTxPpoWPNvY9pc+J4DAmeLffs+DKvkDtMpLmIq5pXIYI5HwFMkmhm2XA1axU
+	 086Sb2lxMsFheotQvHaB8StsAGP8y491wGqNswmvhkod6CNi1H5z9hCKcaOvAJRP0a
+	 Sdvb2OFfz14ah/Fiv8Ew2X2Qlb1Sqsz4kFrRD9iI=
+Date: Sat, 8 Feb 2025 08:21:09 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	herbert@gondor.apana.org.au, herbert.xu@redhat.com
+Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
+Message-ID: <2025020845-oblivion-energetic-4de2@gregkh>
+References: <20250206155234.095034647@linuxfoundation.org>
+ <13a5abe4-18ea-407e-9435-ab8a36b83c86@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,67 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250207203441.945196-1-jilliandonahue58@gmail.com>
+In-Reply-To: <13a5abe4-18ea-407e-9435-ab8a36b83c86@pobox.com>
 
-On Fri, Feb 07, 2025 at 01:34:41PM -0700, Jill Donahue wrote:
-> When using USB MIDI, a lock is attempted to be acquired twice through a
-> re-entrant call to f_midi_transmit, causing a deadlock.
+On Fri, Feb 07, 2025 at 09:25:08PM -0800, Barry K. Nathan wrote:
+> On 2/6/25 08:06, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.76 release.
+> > There are 389 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
+> > Anything received after that time might be too late.
+> [snip]
+> > Herbert Xu <herbert@gondor.apana.org.au>
+> >      crypto: api - Fix boot-up self-test race
+> [snip]
+> I mentioned in an email to the stable mailing list earlier this week that
+> the crypto-api-fix-boot-up-self-test-race patch, on my systems, is causing a
+> one-minute freeze followed by a crypto self-test failure. See the log
+> excerpt below for an example. (In that email I erroneously said the affected
+> kernel was 6.6.76-rc1. It was 6.6.75 plus stable-queue patches, but not
+> actually 6.6.76-rc1. Sorry for my mistake.)
 > 
-> Fix it by using tasklet_hi_schedule() to schedule the inner
-> f_midi_transmit() via a tasklet from the completion handler.
+> I'm still experiencing this with 6.6.76-rc2. As before, reverting "crypto:
+> api - Fix boot-up self-test race" fixes it. I also tried testing 6.6.75 plus
+> this patch, and that reproduces the problem. In case it might have been a
+> compiler issue, I tried upgrading my build system from Debian bookworm to
+> trixie, but the issue reproduces with trixie's gcc 14.2 just as it does with
+> bookworm's gcc 12.2.
 > 
-> Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
-> Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
-> ---
->  drivers/usb/gadget/function/f_midi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I also tested 6.12.13-rc2 and 6.13.2-rc2. Those kernels work fine in my
+> testing and do not reproduce this issue.
 > 
-> diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-> index 837fcdfa3840..37d438e5d451 100644
-> --- a/drivers/usb/gadget/function/f_midi.c
-> +++ b/drivers/usb/gadget/function/f_midi.c
-> @@ -283,7 +283,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
->  			/* Our transmit completed. See if there's more to go.
->  			 * f_midi_transmit eats req, don't queue it again. */
->  			req->length = 0;
-> -			f_midi_transmit(midi);
-> +			tasklet_hi_schedule(&midi->tasklet);
->  			return;
->  		}
->  		break;
-> -- 
-> 2.25.1
+> To be clear, it's personally not a real problem for me if 6.6.76 is released
+> with this patch included -- if necessary, I can just keep reverting this
+> patch until I get my systems upgraded to 6.12. However, I figure this is
+> still worth reporting, in case it eventually turns out to be something that
+> doesn't only affect me.
 > 
-> 
+> Anyway, I'll keep digging to see if I can figure out more. Since essentially
+> the same patch that's breaking 6.6 is working just fine on 6.12 and 6.13, I
+> feel like I should be able to find more clues. (However, I may be busy for
+> the next several days, so I'm not sure how soon I'll be able to make
+> progress.)
 
-Hi,
+Thanks for the info, for some reason I thought this was hitting an
+already released kernel.  I'll go drop this patch from the 6.6.y queue
+now, thanks for pointing it out again.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+greg k-h
 
