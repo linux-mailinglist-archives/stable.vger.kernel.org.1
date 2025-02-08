@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-114402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9115A2D81A
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 19:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F2DA2D81D
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 19:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3146218886BB
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 18:55:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9EC5188872F
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 18:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD39618C011;
-	Sat,  8 Feb 2025 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286BB1F3BAD;
+	Sat,  8 Feb 2025 18:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lqy/hUWg"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FefXCyM8"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD34424112E;
-	Sat,  8 Feb 2025 18:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4236B19D06B;
+	Sat,  8 Feb 2025 18:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739040941; cv=none; b=CY1LHw9AiQPan1ZE+XYzufcBo3pyrUZrR/LkVSj83u1phsStZHqZWzJMR6OCWzb0Rhrpb/4uIeFX3AbUDsU97OLMStND+r3UZ43rJNNZqsc5BNr8d3DwXIeVFht+Bux1Y3P8W4PCazxtXOfB5lt0KiOHG9zXMF3hfDg/RrRiMF4=
+	t=1739040943; cv=none; b=WsQbdHwyKhFCvtsibCiZ6C8AFaTcKEK8P69oSHmWFxGOK4hfrFoyfZG3CI6XL6PEJsvtnNZJCeDphxyufhHzyV8obeU/8wuxyGwNsLFetaig9BrlCwj/vOlSgpt8LYek0L/UUU47jcmuvv4D08QjHKsJA6bCqh3ZxsgjVE+KlJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739040941; c=relaxed/simple;
-	bh=xn6O4hcyBoG6jfIPmE2BUztX9IAkzWLsFqt/36zAm8Y=;
+	s=arc-20240116; t=1739040943; c=relaxed/simple;
+	bh=nAhewZem0yEOdmgX49ppX1JTYcJmfiNI+O4lW1n2dgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZSjpVkTdbX3ScX+j5TejOFH34+qgsBVD+6lGkBxXprHmk11Ai7AMXSweFslCjCuvhPqksInsuyLjFlw2JM6YscRCacxa/MUrtFJVcPyG4so0bYF0u6t7RH3wx+idhVAWUP0iBzPjWlCf9A409EeCblo1yZPS8NJpnJ2F05gbyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lqy/hUWg; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=HY5dEwmMTbn0XntmYiyWtrREhorqD9p3vjAi0K76WzIKgOGCYc5APfZr9otqMpQ0j8I2nv+66nB0Z3xA7mX5hEjShf8WKrJcmLNiDq2GoNg/hfnJcZzfhfWCcFh7dBkSmIZeKCtUoi582ot5TD8XijJ93Bfb0KJ7Ydz5p6xhGFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FefXCyM8; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 518If6Hv019126;
-	Sat, 8 Feb 2025 18:55:32 GMT
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 518Irw1H025240;
+	Sat, 8 Feb 2025 18:55:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=fCsEf
-	SVaRwCXP243Oo/tRUothvUlY4eFwHRjL+awpKc=; b=lqy/hUWgfQTqdnRlcGpJq
-	mYewRfafhD/Q6oUzUhLYinyvf5nlTnL+8ZcBoGAZmPCLRcnrXvPazoMh5Dd5mkJz
-	x6HliVOzHcANzMxEp3kuP4EbYXIJusUFUwMOEqYrKSYkw8NPxTb+CUThi6uWFIZn
-	DM7vI/i7lhL3SJWe5dECzGYX0UvXW25uofBzxrqVjc7C4RxEMwONRnVSjNycjCIo
-	wDtv4o+aEoOvlAuXRGbAr2eyzAtPd4kCIg352VJfwIRM9pHc2no6VHLKGuk3IQBm
-	RW8G4N8B5+ErmFUm0m52pZndYcarXFCl9Mmh3DvLERLu5jH2H7NAfO+0kfJXEZR5
-	A==
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=mZFOG
+	QRjcSoVEUV0TyJg8ArcGkCzGK4D/OsjyfY/F8k=; b=FefXCyM8R0ytSV9kyOwIW
+	vILV9JwLoPslKUAfzOCYInZWp+6LEl5ArOG+ERg7R+cvqKLegpoIiiZtszfeHauI
+	GaDGDM/O6MTubnh4PJtmhbRmZsbG9a3R7MYBAY074+y2FxcPNE3RNpGDcyC7Dyn4
+	HbAjRXhWEKOiKKCnBrIRbk6x6YXFbi2LOYLiazKvvUo2oqVKMgFCYWt4xIsvj6EN
+	TIQ7AQMiXvLR8H4sFJqMLby3G08Hi8CIgl6e+5mc2ILyQDpVnwae0LCk48Hvvizj
+	7gSlDhXomnb8dDYjjJ0XLRd9u+ashpVTjzK48iqWXRmvcNUvAcq73Oa0nzMSOIYw
+	g==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qa8e7h-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0sq0ebt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Feb 2025 18:55:31 +0000 (GMT)
+	Sat, 08 Feb 2025 18:55:34 +0000 (GMT)
 Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 518EFFHX001994;
-	Sat, 8 Feb 2025 18:55:31 GMT
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 518ESk2b001906;
+	Sat, 8 Feb 2025 18:55:34 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwq601t9-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwq601tv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Feb 2025 18:55:31 +0000
+	Sat, 08 Feb 2025 18:55:34 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 518ItR0I019946;
-	Sat, 8 Feb 2025 18:55:30 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 518ItR0K019946;
+	Sat, 8 Feb 2025 18:55:33 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 44nwq601ru-2;
-	Sat, 08 Feb 2025 18:55:30 +0000
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 44nwq601ru-3;
+	Sat, 08 Feb 2025 18:55:33 +0000
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 To: stable@vger.kernel.org
 Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
         jiri@resnulli.us, liuhangbin@gmail.com, kuba@kernel.org,
         netdev@vger.kernel.org, stfomichev@gmail.com, shannon.nelson@amd.com,
-        darren.kenny@oracle.com,
+        darren.kenny@oracle.com, Stanislav Fomichev <sdf@fomichev.me>,
         Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12.y 1/2] netdevsim: print human readable IP address
-Date: Sat,  8 Feb 2025 10:55:20 -0800
-Message-ID: <20250208185521.2998155-2-harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12.y 2/2] selftests: rtnetlink: update netdevsim ipsec output format
+Date: Sat,  8 Feb 2025 10:55:21 -0800
+Message-ID: <20250208185521.2998155-3-harshit.m.mogalapalli@oracle.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
 References: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
@@ -88,77 +88,47 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxsc
  phishscore=0 bulkscore=0 malwarescore=0 adultscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
  definitions=main-2502080160
-X-Proofpoint-GUID: NSyj4W0tam8B5ntoTUVov4XlV7nJRE5Y
-X-Proofpoint-ORIG-GUID: NSyj4W0tam8B5ntoTUVov4XlV7nJRE5Y
+X-Proofpoint-ORIG-GUID: ecMT9VrV9lQ7sYEHvDHI--EUbi9zSk8H
+X-Proofpoint-GUID: ecMT9VrV9lQ7sYEHvDHI--EUbi9zSk8H
 
 From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit c71bc6da6198a6d88df86094f1052bb581951d65 ]
+[ Upstream commit 3ec920bb978ccdc68a7dfb304d303d598d038cb1 ]
 
-Currently, IPSec addresses are printed in hexadecimal format, which is
-not user-friendly. e.g.
+After the netdevsim update to use human-readable IP address formats for
+IPsec, we can now use the source and destination IPs directly in testing.
+Here is the result:
+  # ./rtnetlink.sh -t kci_test_ipsec_offload
+  PASS: ipsec_offload
 
-  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
-  sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
-  sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-
-This patch updates the code to print the IPSec address in a human-readable
-format for easier debug. e.g.
-
- # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
- SA count=4 tx=40
- sa[0] tx ipaddr=0.0.0.0
- sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
- sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[1] rx ipaddr=192.168.0.1
- sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
- sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[2] tx ipaddr=::
- sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
- sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[3] rx ipaddr=2000::1
- sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
- sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
-
-Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241010040027.21440-2-liuhangbin@gmail.com
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20241010040027.21440-4-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit c71bc6da6198a6d88df86094f1052bb581951d65)
+(cherry picked from commit 3ec920bb978ccdc68a7dfb304d303d598d038cb1)
 [Harshit: backport to stable kernels]
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 ---
- drivers/net/netdevsim/ipsec.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/rtnetlink.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
-index 3612b0633bd1..88187dd4eb2d 100644
---- a/drivers/net/netdevsim/ipsec.c
-+++ b/drivers/net/netdevsim/ipsec.c
-@@ -39,10 +39,14 @@ static ssize_t nsim_dbg_netdev_ops_read(struct file *filp,
- 		if (!sap->used)
- 			continue;
- 
--		p += scnprintf(p, bufsize - (p - buf),
--			       "sa[%i] %cx ipaddr=0x%08x %08x %08x %08x\n",
--			       i, (sap->rx ? 'r' : 't'), sap->ipaddr[0],
--			       sap->ipaddr[1], sap->ipaddr[2], sap->ipaddr[3]);
-+		if (sap->xs->props.family == AF_INET6)
-+			p += scnprintf(p, bufsize - (p - buf),
-+				       "sa[%i] %cx ipaddr=%pI6c\n",
-+				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr);
-+		else
-+			p += scnprintf(p, bufsize - (p - buf),
-+				       "sa[%i] %cx ipaddr=%pI4\n",
-+				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr[3]);
- 		p += scnprintf(p, bufsize - (p - buf),
- 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
- 			       i, be32_to_cpu(sap->xs->id.spi),
+diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
+index bdf6f10d0558..87dce3efe31e 100755
+--- a/tools/testing/selftests/net/rtnetlink.sh
++++ b/tools/testing/selftests/net/rtnetlink.sh
+@@ -809,10 +809,10 @@ kci_test_ipsec_offload()
+ 	# does driver have correct offload info
+ 	run_cmd diff $sysfsf - << EOF
+ SA count=2 tx=3
+-sa[0] tx ipaddr=0x00000000 00000000 00000000 00000000
++sa[0] tx ipaddr=$dstip
+ sa[0]    spi=0x00000009 proto=0x32 salt=0x61626364 crypt=1
+ sa[0]    key=0x34333231 38373635 32313039 36353433
+-sa[1] rx ipaddr=0x00000000 00000000 00000000 037ba8c0
++sa[1] rx ipaddr=$srcip
+ sa[1]    spi=0x00000009 proto=0x32 salt=0x61626364 crypt=1
+ sa[1]    key=0x34333231 38373635 32313039 36353433
+ EOF
 -- 
 2.46.0
 
