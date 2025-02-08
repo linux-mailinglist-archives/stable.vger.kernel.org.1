@@ -1,70 +1,71 @@
-Return-Path: <stable+bounces-114374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04FBA2D4EC
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 09:48:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D18A2D4E9
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 09:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108063AB0D8
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:47:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF026162960
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D93C19DF6A;
-	Sat,  8 Feb 2025 08:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0961F18B492;
+	Sat,  8 Feb 2025 08:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="wVlP0Gtp"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ArsdlewN"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C6519C575
-	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 08:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15048199E8B
+	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 08:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739004476; cv=none; b=m8+0Z81xpOcsZF59jou2CyL1ydTe/+sFnKzD3vtZbab2tlXCyJK6aUhvUzYpYVmJyOsCgYYMQi5+g4md7pNmvYOu/IVE6hOWO4uE04g269uh4AeBihpp10/TI8/rGr/OiVnQ81LrDPVfro8HBD9SKudkWsDfg2w8RWfocqmvngI=
+	t=1739004317; cv=none; b=Gkzch8FCudVEQaVsbgUxu7b7+Hz3164OS3B1h3k9YEuCe1pC6969CdS0/7a5iYU25pVxF8Mdix8EG5DugK0g1YninmhnJvL7HV1n2cWxxFyWpwbD9chGOOsMGto2v2XcgYCrBv0oqGpuZ6aIc2UCocxEwNYGFl2VeA5O3hhuEAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739004476; c=relaxed/simple;
-	bh=z33Wv2yvfklD/bHersSBuRqN3SZEjyC8+00cb19KRGk=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=GK643ap76aQdwSL0SXfMiDF6y94YzI5mTj1e0na0i30i9diZjKL9oKwbYHbyIvux5spmnNRI3pLKr5kIen9mlQlAYnGYAD3IMvseY4rJzyO10VmrRDfGrcZEDdjY43Yr3b6gAfkuITeW+LpRgGN6Dr68w5dLZRPu9cSo0ByQdWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=wVlP0Gtp; arc=none smtp.client-ip=162.62.57.137
+	s=arc-20240116; t=1739004317; c=relaxed/simple;
+	bh=J5mX84KnrzbDIJ/Zs3E706BBl/ys0tPdax4iGiBbC7E=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=MWbmKEViHjAZt4KF9GCr+55R+UOswZU+A5+v2HdcJ3kqzlWnKIF955X4QwViSdoHgdGiVMwmGdsFb2HbEDCBurEg1WYhX1u2NQCeA09snPPNfO5TxxOo8vqyPC42kaJp0lIvohriAx201aqWCDuHPdzqhK76z9A/Y//ZW9Jaiho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ArsdlewN; arc=none smtp.client-ip=162.62.57.252
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1739004162; bh=xa35FHGH+hKL0dDsszce8LNTvFipAzZjA1Vg6v2oLDg=;
+	t=1739004309; bh=MmXMjHgydLc4UZXP10Nze/S1FozzldGZhKnHd3Z4RF4=;
 	h=From:To:Cc:Subject:Date;
-	b=wVlP0GtpwxoAUV9hJaJ3xLvJCk5/9gHV2fk6+FCxPqLVLXFlpc1QfqW2SpRHV5zNy
-	 ilimvBtJjGEWLUkaX2jeHuMqRdsbickWev/dgn28pjOkIBOCL9Ik21eOaG1HQXy8Q0
-	 k2wt/xqYK+56gQzdk9dKrxP9H4P9jeHltCH6lw+0=
+	b=ArsdlewNwd/K20JCCnIa6VI+pY4/NUcJTORbK5NNA75O0SybX1X0VgKQofxvNW6wq
+	 FVE5Aymahm7yE5Nvzgrujp1EbesiQ8gNENkdmTRMzOp9bEJ62isblbbliPClc4avsF
+	 otmsCGZhc4z8J0qW+0NEyhCBikpLaNcs4Lje0wOQ=
 Received: from public ([120.244.194.36])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id A99966E9; Sat, 08 Feb 2025 16:42:25 +0800
-X-QQ-mid: xmsmtpt1739004145tqy8j21cb
-Message-ID: <tencent_CA2A6D5D0DDB079164A7B5098E0E0C7CC306@qq.com>
-X-QQ-XMAILINFO: MRLc0g//fdpv3DPca3qSQGDkQev8aSvrb/NcqgsqHXMtAPOqXWlWJtjhRJbZvA
-	 SoQV4S7Pa21Gwvi91505HX8VurYnufwtHLCEFT2e5/j9x5uSE3W5NVi6WBX1NKpdQRu9CyxTbySI
-	 AlYKp6puvZVSal7A6+LczAMILGkI+/s30jL9xeS1zEH9Zc2k1tM/P8eVuzVGTEsCFwPRyOyTM8Fd
-	 aXbDuKEL+XSDLuf30HH99aNJrXD4KqlnXYBWWcmb3qHzBaheHHY6lAHAJo91oJVCb37Yf7Cq+JoJ
-	 zrcpbVSdDto2noHHkkzAgt8/LiboOuXiTGLGlSYFVCBGNQ7m8PHe9DmUE6Nn1o0EI3FekL20/Fl/
-	 isrSyxUrdKFIkQUiA0sUIdrLmFwz6SJLkV5kjk+3i5/fIczy6DevPJQyNz304VqvR4xChJUm3+Pi
-	 d/QLSJVz7mPHaKdLpz9a46aNmGnL1mCJ/dnTRKtNGcj89QySm41gcXc0ILVudCEGH0vlEAY4Y2q0
-	 Ukq7q4BTT8Vt8caixHmqRjYzvXWJcO1cTt9Y3lGIm9zl61Feua3k0WwZDpgkKLpgwzSVwE2E4IBt
-	 sAzNQlsmq6VoobhlWm2hXzbHXiVEnvl9aHdpxUrVi/n+bAXiVRm4exa8MP/GwkUiH6tOVcwWPuRE
-	 q0sMmrGhV3s67wUBLy04D8AU9E6G5mqzswh+qf+dmcYCIXnYijyv6bc2Nmw+NbZKdDDjUBOdr7Xr
-	 WNdiTNNgCYGqnSQb0EjJcqU/zn2vogja+tb21MurgtJIyrNnqxEPG3WPsuXb+5C1bbv8janLFzgz
-	 +5eXMgjMENaG1qTIvJOvdOMHjNvXYKQ1eMqHac/oTtSzVwDZwhhvc0ZTOHyL65qwDal64hDOAwok
-	 7VqHqrrHowBPeSaGKbbAgP4gIa/kjEhQBtK+64DG8ESF5/rMXcqjFk+SklAY1DG9J2BFTTPU0c5Q
-	 YV9zkc938SNm67RbabO4KloBaHhBOhsETW8AJLMn8=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id AE80A416; Sat, 08 Feb 2025 16:43:40 +0800
+X-QQ-mid: xmsmtpt1739004220ta5xu864e
+Message-ID: <tencent_88A2019F96BD26EB234812CF7A176706E605@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNznbEXmb/9Ji6eDpAmSnDjiVWIjdUn22Ql6qwYXNGelPvSud4XWxB
+	 sAj+UfthBe7Z1DSJftF8beQBSm0SNNjXHfRsNyANE5u8F5J8VlnSNIxZXVTooumHIkOoRjitJDS1
+	 0GfQsGbCPuP1Ho9py57D2ied0llQ5B70Iwbt8vwNyIZ25MkBKyuJpOO28QQEgjhmEZ1p/wXgG9/j
+	 xePxNP3JJxQbwakFh/O+mjcvCzW/VIrf6xTdYPGuFSZszTgdVSlXkqltoMKYEju1n+GIy0NlMdq5
+	 sBiDMRQ60Z0oEMFFw1fyXbXqOjVQcCSBIanqSCOldlXB+q0v16LVJr6LKLtvVSzClRaYIUxY3Roy
+	 Hh/H8KnmHTPv1aETRtXtnRIvC0Sqm1p8BAoLf8rBBNSdLQ+lv1YPNGDTJ3XmwtDV6gdq52rlz6Sa
+	 FMTH+TXUNKCzSKt9wjQsqvY2cE64wvuzDMTpgiSquesnYtuSG2jBJbvN3YDprtu0LDEqRS9KJDIp
+	 6xe69wZW9UGAA5cVpuvFFgcxg1o9MfK5a+2QqIKTxqMCO+x+cCgeixQocyVZSwVRUb1+nCXwwa+L
+	 fEITID4g7FxiZJVBABbjj65JM6nNunZcXBtjO/DJCEXVG/pvrHphZjniNzIe4tbYmQj6cl8CCtJO
+	 bg5Bp8Fy+6k20eN4wEQNeAmERsdHJP/dr36zPlXr1o8GWwrJq5Ap283ldTikhAJs76aMtRC8RtP2
+	 AauK4tdluActIf31fIRhsKO7kbbxSX1P+f/ySmPkwESUqzFI49hj7rhEBwoGi+w4ZgoA4fNJX84l
+	 P5nueOKtEuGRUQTC9xLpAlmMxU5/JLTyWTFidDGTKte58G7Oq3L2ZcOW87Ap8FCtstYm2QiD9+nR
+	 FjHFAa3ZoMoeC36QedU6HYhJw36+n6RTPTnzRhslHitnq8u0fQjgohyYXLSS+uFFH2NXi0AyNJbK
+	 Ir10CCFGhqzgi6x4PshJNP7BTvjl3N04InxPQvNNbozg9UV6anH2cAwpDgE5TA82/bhT/9y1mUBv
+	 7YO7v2O0AGAKTfgRzfduTXMu5skrI=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
 From: lanbincn@qq.com
 To: stable@vger.kernel.org
 Cc: Zizhi Wo <wozizhi@huawei.com>,
 	David Howells <dhowells@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.6.y] cachefiles: Fix NULL pointer dereference in object->file
-Date: Sat,  8 Feb 2025 16:42:25 +0800
-X-OQ-MSGID: <20250208084225.2467-1-lanbincn@qq.com>
+Subject: [PATCH 6.1.y] cachefiles: Fix NULL pointer dereference in object->file
+Date: Sat,  8 Feb 2025 16:43:39 +0800
+X-OQ-MSGID: <20250208084339.2779-1-lanbincn@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -110,7 +111,7 @@ Signed-off-by: Bin Lan <lanbincn@qq.com>
  2 files changed, 34 insertions(+), 10 deletions(-)
 
 diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
-index 35ba2117a6f6..3e63cfe15874 100644
+index bde23e156a63..fd71775c703a 100644
 --- a/fs/cachefiles/interface.c
 +++ b/fs/cachefiles/interface.c
 @@ -327,6 +327,8 @@ static void cachefiles_commit_object(struct cachefiles_object *object,
