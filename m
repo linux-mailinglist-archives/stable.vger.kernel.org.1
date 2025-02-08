@@ -1,110 +1,216 @@
-Return-Path: <stable+bounces-114372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AFDA2D4D6
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 09:20:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F04FBA2D4EC
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 09:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD51716B04D
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:20:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108063AB0D8
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7941AA791;
-	Sat,  8 Feb 2025 08:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D93C19DF6A;
+	Sat,  8 Feb 2025 08:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="T9S2VnTZ"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="wVlP0Gtp"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7A028F3;
-	Sat,  8 Feb 2025 08:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C6519C575
+	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 08:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739002852; cv=none; b=CRkDzm70l3SR8WsGEaFcBBWdtvO3VBm/8f6dr2MjCRr09tiJ9/sZBRkVzIXHrvD2NycN09FUIqkPflMxzMJveBUqOW6PFKuUVTAmACrCVbtdyNm1ali8WZNnVQ+ubt9KaijgwkQiMD6vZEfvvGgluMMOl0uhUL2N8eB3iSgPaBQ=
+	t=1739004476; cv=none; b=m8+0Z81xpOcsZF59jou2CyL1ydTe/+sFnKzD3vtZbab2tlXCyJK6aUhvUzYpYVmJyOsCgYYMQi5+g4md7pNmvYOu/IVE6hOWO4uE04g269uh4AeBihpp10/TI8/rGr/OiVnQ81LrDPVfro8HBD9SKudkWsDfg2w8RWfocqmvngI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739002852; c=relaxed/simple;
-	bh=Q5tFmK9Dx/jYFT5jjn7eRKWJ/m+/EqD028c0bB+1lc0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FbF9/OCWWU2JHO9s6fNY5V/tFPq/7SynMuIofZqAvbi1IxflxcwcsBvAoioli3iYGE+n8q07cpUw4vTy1loluRglTuU06L+17/TxbCeDI5E84otm74lQS8C0izPGYkBYwcVjpoZeF86SL7B1hrskalBgCS1w3710FK28gyhOTmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=T9S2VnTZ; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=O/6oF6QZtuE1SEVVzE9A/EGVwIjr3rT++GFL4llueWU=;
-	b=T9S2VnTZknIrKIaxPKXR60KgUqlSz7dfFg5riq0RflWbjf9UVBNv7GZgTdNPXf
-	ONfYqhS1YC9s4QQFpuyufPGs3JFtbylMW1rBkve/H/cAOBhB4cuB8j3ixjXPYKDR
-	Ykm/0PBtQCOfzB7bzVDfyAj2luRlnuq7ia8m3B+zIhVSA=
-Received: from [172.19.20.199] (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PykvCgDXT2mME6dnD4_UAg--.46618S2;
-	Sat, 08 Feb 2025 16:19:25 +0800 (CST)
-Message-ID: <44348250-64f2-4420-a786-d42c3ad923b0@126.com>
-Date: Sat, 8 Feb 2025 16:19:24 +0800
+	s=arc-20240116; t=1739004476; c=relaxed/simple;
+	bh=z33Wv2yvfklD/bHersSBuRqN3SZEjyC8+00cb19KRGk=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=GK643ap76aQdwSL0SXfMiDF6y94YzI5mTj1e0na0i30i9diZjKL9oKwbYHbyIvux5spmnNRI3pLKr5kIen9mlQlAYnGYAD3IMvseY4rJzyO10VmrRDfGrcZEDdjY43Yr3b6gAfkuITeW+LpRgGN6Dr68w5dLZRPu9cSo0ByQdWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=wVlP0Gtp; arc=none smtp.client-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1739004162; bh=xa35FHGH+hKL0dDsszce8LNTvFipAzZjA1Vg6v2oLDg=;
+	h=From:To:Cc:Subject:Date;
+	b=wVlP0GtpwxoAUV9hJaJ3xLvJCk5/9gHV2fk6+FCxPqLVLXFlpc1QfqW2SpRHV5zNy
+	 ilimvBtJjGEWLUkaX2jeHuMqRdsbickWev/dgn28pjOkIBOCL9Ik21eOaG1HQXy8Q0
+	 k2wt/xqYK+56gQzdk9dKrxP9H4P9jeHltCH6lw+0=
+Received: from public ([120.244.194.36])
+	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
+	id A99966E9; Sat, 08 Feb 2025 16:42:25 +0800
+X-QQ-mid: xmsmtpt1739004145tqy8j21cb
+Message-ID: <tencent_CA2A6D5D0DDB079164A7B5098E0E0C7CC306@qq.com>
+X-QQ-XMAILINFO: MRLc0g//fdpv3DPca3qSQGDkQev8aSvrb/NcqgsqHXMtAPOqXWlWJtjhRJbZvA
+	 SoQV4S7Pa21Gwvi91505HX8VurYnufwtHLCEFT2e5/j9x5uSE3W5NVi6WBX1NKpdQRu9CyxTbySI
+	 AlYKp6puvZVSal7A6+LczAMILGkI+/s30jL9xeS1zEH9Zc2k1tM/P8eVuzVGTEsCFwPRyOyTM8Fd
+	 aXbDuKEL+XSDLuf30HH99aNJrXD4KqlnXYBWWcmb3qHzBaheHHY6lAHAJo91oJVCb37Yf7Cq+JoJ
+	 zrcpbVSdDto2noHHkkzAgt8/LiboOuXiTGLGlSYFVCBGNQ7m8PHe9DmUE6Nn1o0EI3FekL20/Fl/
+	 isrSyxUrdKFIkQUiA0sUIdrLmFwz6SJLkV5kjk+3i5/fIczy6DevPJQyNz304VqvR4xChJUm3+Pi
+	 d/QLSJVz7mPHaKdLpz9a46aNmGnL1mCJ/dnTRKtNGcj89QySm41gcXc0ILVudCEGH0vlEAY4Y2q0
+	 Ukq7q4BTT8Vt8caixHmqRjYzvXWJcO1cTt9Y3lGIm9zl61Feua3k0WwZDpgkKLpgwzSVwE2E4IBt
+	 sAzNQlsmq6VoobhlWm2hXzbHXiVEnvl9aHdpxUrVi/n+bAXiVRm4exa8MP/GwkUiH6tOVcwWPuRE
+	 q0sMmrGhV3s67wUBLy04D8AU9E6G5mqzswh+qf+dmcYCIXnYijyv6bc2Nmw+NbZKdDDjUBOdr7Xr
+	 WNdiTNNgCYGqnSQb0EjJcqU/zn2vogja+tb21MurgtJIyrNnqxEPG3WPsuXb+5C1bbv8janLFzgz
+	 +5eXMgjMENaG1qTIvJOvdOMHjNvXYKQ1eMqHac/oTtSzVwDZwhhvc0ZTOHyL65qwDal64hDOAwok
+	 7VqHqrrHowBPeSaGKbbAgP4gIa/kjEhQBtK+64DG8ESF5/rMXcqjFk+SklAY1DG9J2BFTTPU0c5Q
+	 YV9zkc938SNm67RbabO4KloBaHhBOhsETW8AJLMn8=
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+From: lanbincn@qq.com
+To: stable@vger.kernel.org
+Cc: Zizhi Wo <wozizhi@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Bin Lan <lanbincn@qq.com>
+Subject: [PATCH 6.6.y] cachefiles: Fix NULL pointer dereference in object->file
+Date: Sat,  8 Feb 2025 16:42:25 +0800
+X-OQ-MSGID: <20250208084225.2467-1-lanbincn@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: add an API to enable/disable concurrent memory
- allocation for the CMA
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, david@redhat.com, baolin.wang@linux.alibaba.com,
- aisheng.dong@nxp.com, liuzixing@hygon.cn
-References: <1737717687-16744-1-git-send-email-yangge1116@126.com>
- <20250127150412.875e666a728c3d7bde0726b0@linux-foundation.org>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <20250127150412.875e666a728c3d7bde0726b0@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PykvCgDXT2mME6dnD4_UAg--.46618S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw18ur1fCw15Xw45Jr48Crg_yoW8Ar47pr
-	WxXr4ayrn7JrZ3ArZ7ta1kZF1rua4fGF4UJF1YkwnrAw43Ww17Xr47t34F9as8ur9Iga1U
-	tw40v3WYyw4UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbHUDUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOgntG2enDWFDUQAAs7
 
+From: Zizhi Wo <wozizhi@huawei.com>
 
+commit 31ad74b20227ce6b40910ff78b1c604e42975cf1 upstream.
 
-在 2025/1/28 7:04, Andrew Morton 写道:
-> On Fri, 24 Jan 2025 19:21:27 +0800 yangge1116@126.com wrote:
-> 
->> From: yangge <yangge1116@126.com>
->>
->> Commit 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
->> simply reverts to the original method of using the cma_mutex to ensure
->> that alloc_contig_range() runs sequentially. This change was made to avoid
->> concurrency allocation failures. However, it can negatively impact
->> performance when concurrent allocation of CMA memory is required.
->>
->> To address this issue, we could introduce an API for concurrency settings,
->> allowing users to decide whether their CMA can perform concurrent memory
->> allocations or not.
-> 
-> The term "users" tends to refer to userspace code.  Here I'm thinking
-> you mean in-kernel code, so a better term to use is "callers".
-Ok, thank you. I will change it in the next version.
+At present, the object->file has the NULL pointer dereference problem in
+ondemand-mode. The root cause is that the allocated fd and object->file
+lifetime are inconsistent, and the user-space invocation to anon_fd uses
+object->file. Following is the process that triggers the issue:
 
-> 
-> This new interface has no callers.  We prefer not to merge unused code!
-> Please send along the patch which calls cma_set_concurrency() so we
-> can better understand this proposal and so that the new code is
-> testable.
-Ok, thank you. I will add the caller in the next version.
+	  [write fd]				[umount]
+cachefiles_ondemand_fd_write_iter
+				       fscache_cookie_state_machine
+					 cachefiles_withdraw_cookie
+  if (!file) return -ENOBUFS
+					   cachefiles_clean_up_object
+					     cachefiles_unmark_inode_in_use
+					     fput(object->file)
+					     object->file = NULL
+  // file NULL pointer dereference!
+  __cachefiles_write(..., file, ...)
 
-   In fact the patch has cc:stable, which makes things
-> stranger.  Why should the -stable maintainers merge a patch which
-> doesn't do anything?
-> 
-> And please quantify the benefit.  "negatively impact" is too vague.
-> How much benefit can we expect our users to see from this?  Some
-> runtime testing results would be good.
-> 
-> And please describe in more detail why this particular caller doesn't
-> require concurrency protection.  And help other developers understand
-> when it is safe for them to use concurr_alloc==false.
-Ok, thank you.
+Fix this issue by add an additional reference count to the object->file
+before write/llseek, and decrement after it finished.
+
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-5-wozizhi@huawei.com
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@qq.com>
+---
+ fs/cachefiles/interface.c | 14 ++++++++++----
+ fs/cachefiles/ondemand.c  | 30 ++++++++++++++++++++++++------
+ 2 files changed, 34 insertions(+), 10 deletions(-)
+
+diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
+index 35ba2117a6f6..3e63cfe15874 100644
+--- a/fs/cachefiles/interface.c
++++ b/fs/cachefiles/interface.c
+@@ -327,6 +327,8 @@ static void cachefiles_commit_object(struct cachefiles_object *object,
+ static void cachefiles_clean_up_object(struct cachefiles_object *object,
+ 				       struct cachefiles_cache *cache)
+ {
++	struct file *file;
++
+ 	if (test_bit(FSCACHE_COOKIE_RETIRED, &object->cookie->flags)) {
+ 		if (!test_bit(CACHEFILES_OBJECT_USING_TMPFILE, &object->flags)) {
+ 			cachefiles_see_object(object, cachefiles_obj_see_clean_delete);
+@@ -342,10 +344,14 @@ static void cachefiles_clean_up_object(struct cachefiles_object *object,
+ 	}
+ 
+ 	cachefiles_unmark_inode_in_use(object, object->file);
+-	if (object->file) {
+-		fput(object->file);
+-		object->file = NULL;
+-	}
++
++	spin_lock(&object->lock);
++	file = object->file;
++	object->file = NULL;
++	spin_unlock(&object->lock);
++
++	if (file)
++		fput(file);
+ }
+ 
+ /*
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index d1a0264b08a6..3389a373faf6 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -61,20 +61,26 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
+ {
+ 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
+ 	struct cachefiles_cache *cache = object->volume->cache;
+-	struct file *file = object->file;
++	struct file *file;
+ 	size_t len = iter->count;
+ 	loff_t pos = kiocb->ki_pos;
+ 	const struct cred *saved_cred;
+ 	int ret;
+ 
+-	if (!file)
++	spin_lock(&object->lock);
++	file = object->file;
++	if (!file) {
++		spin_unlock(&object->lock);
+ 		return -ENOBUFS;
++	}
++	get_file(file);
++	spin_unlock(&object->lock);
+ 
+ 	cachefiles_begin_secure(cache, &saved_cred);
+ 	ret = __cachefiles_prepare_write(object, file, &pos, &len, true);
+ 	cachefiles_end_secure(cache, saved_cred);
+ 	if (ret < 0)
+-		return ret;
++		goto out;
+ 
+ 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
+ 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
+@@ -83,6 +89,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
+ 		kiocb->ki_pos += ret;
+ 	}
+ 
++out:
++	fput(file);
+ 	return ret;
+ }
+ 
+@@ -90,12 +98,22 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
+ 					    int whence)
+ {
+ 	struct cachefiles_object *object = filp->private_data;
+-	struct file *file = object->file;
++	struct file *file;
++	loff_t ret;
+ 
+-	if (!file)
++	spin_lock(&object->lock);
++	file = object->file;
++	if (!file) {
++		spin_unlock(&object->lock);
+ 		return -ENOBUFS;
++	}
++	get_file(file);
++	spin_unlock(&object->lock);
+ 
+-	return vfs_llseek(file, pos, whence);
++	ret = vfs_llseek(file, pos, whence);
++	fput(file);
++
++	return ret;
+ }
+ 
+ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+-- 
+2.43.0
 
 
