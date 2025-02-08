@@ -1,91 +1,51 @@
-Return-Path: <stable+bounces-114369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE90FA2D46F
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:14:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3613A2D471
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091B23AA2D4
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6871B164655
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242CF1A8F74;
-	Sat,  8 Feb 2025 07:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B411AAE0B;
+	Sat,  8 Feb 2025 07:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYR2UTBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S94L/SWL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834001A5BA3;
-	Sat,  8 Feb 2025 07:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5571A83FF;
+	Sat,  8 Feb 2025 07:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738998875; cv=none; b=nQpjTWFuzDRZ0c0XUcFHJUkK27yK0Qkf8sParwM8pBWioXxPEySWAy51zncVoRWTVhptrDrZzjNe+YPWsxs6YJ2sibWnW0XrGqpP2aOKEb5unVVCW91SS2oArveHR80AtxMlyjxis8YQdw048o+fXXYSzLbC3qNtgKAlRNzi/ro=
+	t=1738998904; cv=none; b=GMXg/MD9GiOpbk5BmHZomKj8VJZ1+o6Zbu87FQIK1q3i3xrIIpv1Dd5oql9fsQjplxXvneXqaENClHcLTdweg9WfmPzUR8OtQqScGGp8i5dt5pV2k0/OFplQXMFvhAsVgjDTdoLj9leZ41mX0PZtsZ6esunYJfkvmrOcwZQGfK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738998875; c=relaxed/simple;
-	bh=5PPzswXLCYycw4FzLaiLH/vyU5KIFGf5TLEB/UdgT0Q=;
+	s=arc-20240116; t=1738998904; c=relaxed/simple;
+	bh=Iq3jiQK/RAsDjgRbxGyZobesn7rZGV66mz8pWo6XRLM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bpBcGvjTI7B4Na9AMLM+0OrfZDnj19GfVSJoffM/5h06lUrHVHDM+zq5Ksz/yT6TCy6WWXyXhsA4ZgHik3I/geWY06rWG1XjbPlqSrofzmXi3+cuRRUGWmpQxqV+0kxEJzxkMfbCMvjL6AS79FXo56hG17wCZ0HBcHlKbcvr0i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYR2UTBS; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2f9d627b5fbso5118342a91.2;
-        Fri, 07 Feb 2025 23:14:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738998874; x=1739603674; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
-        b=EYR2UTBS9O+h++KUNt41EmDNgMpG6JMYvANHkNYRqY4611QjUdZczw8yfznmNbArAm
-         /uEjAHQoJ6jmwX5iQ+6aNPp+DD3OQRrRW9qSXxpzLIcw6RT1spln9Mj77cgtd65pugRX
-         aI7b3vr3kqOg/23zKXJsmN+wUtejupIu87hnL82n8qoRvAJK9QavoCb9DGe4h07RWWEt
-         9b/Zq75+3hwmTTrR0IB0+8po4SrKuTg7r+FEUYl83Q1fWOK1aeVk8IWjHw/d5p27HJQu
-         t7PoEgKnSZZqNvsLByugL6XU2wxh9Oar7F/N5008ZuExOJdSzQh8OxrOiCN5akOvsrqK
-         3ZnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738998874; x=1739603674;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
-        b=TZRGrehbam22H7LHz2ZshWX15OjqjYa9ijN1mxXsM6A/hLVTHvvVa+HoFJdqJz1K6u
-         +iUMWeEi9oPxAy1TiCg8S1QD/20DtJOwXsTk28Ixe+aecklz4VMOLRwK0bDfuAcm0AGu
-         nCRPJPZeiVebMYU60ARrbQKZ0Laa2THEKmtAh6F4vDSsD+I9ZRVJBB4BJ7HoCNjGyTbw
-         XX6I4w5CYtGa63VaQlK82Kgk3yZ1ID9YcsUEGurnTNo9b4rfRJfvU4KfMuSAp9V9U8wv
-         jfX6jyHBr0gDkfBMFf9vUY2A4HOccDswf/sEx7FagdzJo+ByhB0lY7Ln8Rok9j2lD+wi
-         depg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFAcKAXDQKpnuyBR8S/RsEWncyi+It4b1/CnILxmeTx0rW4XYC9HKlmmJC6MEthzlBYzl/CtxZ@vger.kernel.org, AJvYcCVkwIqca5ccSIvttpNXxxeBKvsFPZg+aOTlxONvAQPjIrS120UYL8EeziYa4L/Ia+iOT2sNcHbX4lquW671PUE=@vger.kernel.org, AJvYcCX/W3aXm+VwXUdWvgWxQjaxjUjkEWd2RUgWUP+rZP6/bDJZpEGuHYhvDDXz23O4pVdnNYItnlGJw3Tsgis=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGIp3GqOk1qrJL4LY9nsNe8MP19RjLbF2auLye4sFBKP/AtZhf
-	E5bwDqi4TR5efhdT+HVYHLTbFdNFiLu/SkLwR48JCpAo46v6Ol/D7V1RtpOp
-X-Gm-Gg: ASbGncvr25hqAVvcNzNSBv/6JbNpmoRAl9LtjkeZ86wDw8+W+whu+y56/2tpGVF0sAZ
-	G8OfVvrqc24vvRTAqBzGkh3QwqFC82sQZbqYdh/FVMCTX9lGLOpo9qw/U8sKmu9ARKIcNFllwzN
-	JZgs8tz+4DVRM+Ux66jrK3oYhloNatijcTjT/z2cBZF+f6c5mfpdQq/Qen7I/AOBd/4nN9RtNF+
-	NI4/1CHa7Tq7Dh9iJ7L7oiaqvXuOVs0UE43cM/8T8UsteiyE89Ok+WFdQigQsQfhjeTDi/l4WBQ
-	3dCvcdDxrWoBpK/L
-X-Google-Smtp-Source: AGHT+IEH0fRD2QBs5bdODlFNhgw4SMnj2geK3gnFsTsUxiB7yi52Yig5fr8iMNQ8Mlq7WbrzHMPldA==
-X-Received: by 2002:a17:90b:4d05:b0:2fa:d95:4501 with SMTP id 98e67ed59e1d1-2fa24177388mr10674686a91.18.1738998873593;
-        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
-Received: from ohnotp ([2001:f70:860:4100:e712:ac1a:da07:2e53])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa5312f4c5sm285405a91.8.2025.02.07.23.14.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
-Date: Sat, 8 Feb 2025 16:14:37 +0900
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmKYOtQ/IjEZUT/zoDTlMRWiSz5M11V+L3BdxxDJsn1ufLysyiXX0AUKC/mzMrizyAr8uJGwh8bx5ediz4UWxT01fUXkNsPEwaz3ZUUFkBaU2nxLI7ta9pg1n57uODVDpwUvz+NjlomjOMHKR6jaxdfPQa+wmhGE62I5yn1QCFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S94L/SWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF32C4CED6;
+	Sat,  8 Feb 2025 07:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738998903;
+	bh=Iq3jiQK/RAsDjgRbxGyZobesn7rZGV66mz8pWo6XRLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S94L/SWLk8PB6NeA77WgvCCQk9OzrR7Q2Mq8MY2fkv/lkbdy+lS7slkRS417jf4nZ
+	 IgB/ZgngvBoKYwksYi67w4jRKUaAm666Z4HgLxWJnYDcXvOOAEEOxQHNLVSwq6BCFV
+	 gRdrF0LEWIhv37mLwRClO59amhkIFPl7mDnE4cLc=
+Date: Sat, 8 Feb 2025 08:14:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jill Donahue <jilliandonahue58@gmail.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: rbtree: fix overindented list item
-Message-ID: <Z6cEXXvAbbDa13j5@ohnotp>
-References: <20250206232022.599998-1-ojeda@kernel.org>
+Subject: Re: [PATCH v3] f_midi_complete to call tasklet_hi_schedule
+Message-ID: <2025020836-refining-gutless-0d5f@gregkh>
+References: <20250207203441.945196-1-jilliandonahue58@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,44 +54,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250206232022.599998-1-ojeda@kernel.org>
+In-Reply-To: <20250207203441.945196-1-jilliandonahue58@gmail.com>
 
-On 02/07, Miguel Ojeda wrote:
-> Starting with Rust 1.86.0 (to be released 2025-04-03), Clippy will have
-> a new lint, `doc_overindented_list_items` [1], which catches cases of
-> overindented list items.
+On Fri, Feb 07, 2025 at 01:34:41PM -0700, Jill Donahue wrote:
+> When using USB MIDI, a lock is attempted to be acquired twice through a
+> re-entrant call to f_midi_transmit, causing a deadlock.
 > 
-> The lint has been added by Yutaro Ohno, based on feedback from the kernel
-> [2] on a patch that fixed a similar case -- commit 0c5928deada1 ("rust:
-> block: fix formatting in GenDisk doc").
+> Fix it by using tasklet_hi_schedule() to schedule the inner
+> f_midi_transmit() via a tasklet from the completion handler.
 > 
-> Clippy reports a single case in the kernel, apart from the one already
-> fixed in the commit above:
+> Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
+> Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
+> ---
+>  drivers/usb/gadget/function/f_midi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->     error: doc list item overindented
->         --> rust/kernel/rbtree.rs:1152:5
->          |
->     1152 | ///     null, it is a pointer to the root of the [`RBTree`].
->          |     ^^^^ help: try using `  ` (2 spaces)
->          |
->          = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
->          = note: `-D clippy::doc-overindented-list-items` implied by `-D warnings`
->          = help: to override `-D warnings` add `#[allow(clippy::doc_overindented_list_items)]`
+> diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+> index 837fcdfa3840..37d438e5d451 100644
+> --- a/drivers/usb/gadget/function/f_midi.c
+> +++ b/drivers/usb/gadget/function/f_midi.c
+> @@ -283,7 +283,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
+>  			/* Our transmit completed. See if there's more to go.
+>  			 * f_midi_transmit eats req, don't queue it again. */
+>  			req->length = 0;
+> -			f_midi_transmit(midi);
+> +			tasklet_hi_schedule(&midi->tasklet);
+>  			return;
+>  		}
+>  		break;
+> -- 
+> 2.25.1
 > 
-> Thus clean it up.
 > 
-> Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
-> Fixes: a335e9591404 ("rust: rbtree: add `RBTree::entry`")
-> Link: https://github.com/rust-lang/rust-clippy/pull/13711 [1]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13601 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Hi Miguel,
-Nice to see this change so quickly.
+Hi,
 
-Reviewed-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-Cheers,
-Yutaro
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
