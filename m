@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-114403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32321A2D81C
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 19:55:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9115A2D81A
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 19:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABFEB3A735B
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 18:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3146218886BB
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 18:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1BA1F3B89;
-	Sat,  8 Feb 2025 18:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD39618C011;
+	Sat,  8 Feb 2025 18:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="S6hP4Ofg"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lqy/hUWg"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A56241134;
-	Sat,  8 Feb 2025 18:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD34424112E;
+	Sat,  8 Feb 2025 18:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739040942; cv=none; b=JwysHw5ojSuTmyOI47wO7DEMCzZ2hfGnzrYcWohpRs5wS9AtHn2+NZPUbK8pVX/4GmXijnuIOFE+ud/PgBBYzksPBzEJRiEhk8P2Pc82SvIDkBHEhWJIfo/Sn7pptOmX5PkJrZImfygjAec+oCdZdmob4WYJVnR1cbh5JePmYQw=
+	t=1739040941; cv=none; b=CY1LHw9AiQPan1ZE+XYzufcBo3pyrUZrR/LkVSj83u1phsStZHqZWzJMR6OCWzb0Rhrpb/4uIeFX3AbUDsU97OLMStND+r3UZ43rJNNZqsc5BNr8d3DwXIeVFht+Bux1Y3P8W4PCazxtXOfB5lt0KiOHG9zXMF3hfDg/RrRiMF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739040942; c=relaxed/simple;
-	bh=HKqV33l+kZ2z72IScOQG7xAkwT/BPdByY+o4H9NCoz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h+oqcIp2Ev2PzieDMguXcdrc07FY3N7JH9MW9A9GxHG4uLtsCbAjbdBT/clHf9GRFwiit4yoFNlfj0LbqdW6K4F5d5gDK54aE/fOKpkMaSWVyEK9JF+iBwVsO5qFKOk/M940BXc2YMzEdWHYSWwA3r/+ncSj+krTCfG8RTLi0zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=S6hP4Ofg; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1739040941; c=relaxed/simple;
+	bh=xn6O4hcyBoG6jfIPmE2BUztX9IAkzWLsFqt/36zAm8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TZSjpVkTdbX3ScX+j5TejOFH34+qgsBVD+6lGkBxXprHmk11Ai7AMXSweFslCjCuvhPqksInsuyLjFlw2JM6YscRCacxa/MUrtFJVcPyG4so0bYF0u6t7RH3wx+idhVAWUP0iBzPjWlCf9A409EeCblo1yZPS8NJpnJ2F05gbyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lqy/hUWg; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 518He2Dp014983;
-	Sat, 8 Feb 2025 18:55:28 GMT
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 518If6Hv019126;
+	Sat, 8 Feb 2025 18:55:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=vdo7MFKxncptUF+do3OtQBEpYKXq0
-	WHLoGEcRo2k7Uo=; b=S6hP4OfgK0SmL6/2E6vbz32bJPcImPI54cfeBauHxXuTD
-	NO5iQNvg1Ow3lXxTcMjnBWdlz9JxRwllc935BuPJ4LpEKUqfKPnSO1SxQb4GNgBS
-	nyFV7DKm08RtZRAbZQv9+5v2Bratp9CFt+nTNY4apoxW5jWzvIZjq1sXbcMQrHZo
-	9giIVgQ3XFhFlMomARE6kCiYqzPp+E1vNxvfy8RdJyuqXnvNDqP4V0pP1Nz7gOAN
-	HNmudY6/wXNBUGf8NAbfElJytwBI9nLElgT5qKti0ebV3dxt2iy9l/pCAdkWTGPz
-	RABJevcfcyEt3NA/nZyaQEd3YDnSvZdm+wXTDdIhQ==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=fCsEf
+	SVaRwCXP243Oo/tRUothvUlY4eFwHRjL+awpKc=; b=lqy/hUWgfQTqdnRlcGpJq
+	mYewRfafhD/Q6oUzUhLYinyvf5nlTnL+8ZcBoGAZmPCLRcnrXvPazoMh5Dd5mkJz
+	x6HliVOzHcANzMxEp3kuP4EbYXIJusUFUwMOEqYrKSYkw8NPxTb+CUThi6uWFIZn
+	DM7vI/i7lhL3SJWe5dECzGYX0UvXW25uofBzxrqVjc7C4RxEMwONRnVSjNycjCIo
+	wDtv4o+aEoOvlAuXRGbAr2eyzAtPd4kCIg352VJfwIRM9pHc2no6VHLKGuk3IQBm
+	RW8G4N8B5+ErmFUm0m52pZndYcarXFCl9Mmh3DvLERLu5jH2H7NAfO+0kfJXEZR5
+	A==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0sq0ebr-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qa8e7h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Feb 2025 18:55:28 +0000 (GMT)
+	Sat, 08 Feb 2025 18:55:31 +0000 (GMT)
 Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 518FDOB0002035;
-	Sat, 8 Feb 2025 18:55:27 GMT
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 518EFFHX001994;
+	Sat, 8 Feb 2025 18:55:31 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwq601sa-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwq601t9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Feb 2025 18:55:27 +0000
+	Sat, 08 Feb 2025 18:55:31 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 518ItR0G019946;
-	Sat, 8 Feb 2025 18:55:27 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 518ItR0I019946;
+	Sat, 8 Feb 2025 18:55:30 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 44nwq601ru-1;
-	Sat, 08 Feb 2025 18:55:27 +0000
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 44nwq601ru-2;
+	Sat, 08 Feb 2025 18:55:30 +0000
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 To: stable@vger.kernel.org
 Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
@@ -66,10 +68,12 @@ Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
         netdev@vger.kernel.org, stfomichev@gmail.com, shannon.nelson@amd.com,
         darren.kenny@oracle.com,
         Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12.y 0/2] Fix rtnetlink.sh kselftest failures in stable
-Date: Sat,  8 Feb 2025 10:55:19 -0800
-Message-ID: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12.y 1/2] netdevsim: print human readable IP address
+Date: Sat,  8 Feb 2025 10:55:20 -0800
+Message-ID: <20250208185521.2998155-2-harshit.m.mogalapalli@oracle.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
+References: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,172 +88,77 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxsc
  phishscore=0 bulkscore=0 malwarescore=0 adultscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
  definitions=main-2502080160
-X-Proofpoint-ORIG-GUID: b3yfw6qaANX7p5e0dLlsrrs_OiQXzSDw
-X-Proofpoint-GUID: b3yfw6qaANX7p5e0dLlsrrs_OiQXzSDw
+X-Proofpoint-GUID: NSyj4W0tam8B5ntoTUVov4XlV7nJRE5Y
+X-Proofpoint-ORIG-GUID: NSyj4W0tam8B5ntoTUVov4XlV7nJRE5Y
 
-This is reproducible on on stable kernels after the backport of commit:
-2cf567f421db ("netdevsim: copy addresses for both in and out paths") to
-stable kernels.
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-Using a single cover letter for all stable kernels but will send
-separate patches for each stable kernel
+[ Upstream commit c71bc6da6198a6d88df86094f1052bb581951d65 ]
 
-Which kselftests are particularly failing:
+Currently, IPSec addresses are printed in hexadecimal format, which is
+not user-friendly. e.g.
 
-2c2
-< sa[0] tx ipaddr=0x00000000 00000000 00000000 047ba8c0
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
+  sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
+  sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+
+This patch updates the code to print the IPSec address in a human-readable
+format for easier debug. e.g.
+
+ # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+ SA count=4 tx=40
+ sa[0] tx ipaddr=0.0.0.0
+ sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[1] rx ipaddr=192.168.0.1
+ sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[2] tx ipaddr=::
+ sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
+ sa[3] rx ipaddr=2000::1
+ sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+ sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit c71bc6da6198a6d88df86094f1052bb581951d65)
+[Harshit: backport to stable kernels]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 ---
-> sa[0] tx ipaddr=0x00000000 00000000 00000000 00000000
-FAIL: ipsec_offload incorrect driver data
-FAIL: ipsec_offload
+ drivers/net/netdevsim/ipsec.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
- 813         # does driver have correct offload info
- 814         diff $sysfsf - << EOF
- 815 SA count=2 tx=3
- 816 sa[0] tx ipaddr=0x00000000 00000000 00000000 00000000
- 817 sa[0]    spi=0x00000009 proto=0x32 salt=0x61626364 crypt=1
- 818 sa[0]    key=0x34333231 38373635 32313039 36353433
- 819 sa[1] rx ipaddr=0x00000000 00000000 00000000 037ba8c0
- 820 sa[1]    spi=0x00000009 proto=0x32 salt=0x61626364 crypt=1
- 821 sa[1]    key=0x34333231 38373635 32313039 36353433
- 822 EOF
- 823         if [ $? -ne 0 ] ; then
- 824                 echo "FAIL: ipsec_offload incorrect driver data"
- 825                 check_err 1
- 826         fi
- 827
-
-This part of check throws errors and the rtnetlink.sh fails on ipsec_offload.
-
-Reason is that the after the below patch:
-
-commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d
-Author: Hangbin Liu <liuhangbin@gmail.com>
-Date:   Thu Oct 10 04:00:26 2024 +0000
-
-    netdevsim: copy addresses for both in and out paths
-   
-    [ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
-   
-    The current code only copies the address for the in path, leaving the out
-    path address set to 0. This patch corrects the issue by copying the addresses
-    for both the in and out paths. Before this patch:
-   
-      # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-      SA count=2 tx=20
-      sa[0] tx ipaddr=0.0.0.0
-      sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-      sa[1] rx ipaddr=192.168.0.1
-      sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-   
-    After this patch:
-   
-      = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-      SA count=2 tx=20
-      sa[0] tx ipaddr=192.168.0.2
-      sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-      sa[1] rx ipaddr=192.168.0.1
-      sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-   
-    Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
-
-
-tx ip address is not 0.0.0.0 anymore, it is was 0.0.0.0 before above patch.
-
-So this commit: 3ec920bb978c ("selftests: rtnetlink: update netdevsim
-ipsec output format") which is not backported to stable kernels tries to
-address rtneltlink.sh fixing.
-
-fixes the change in handling tx ip address as well, so far so good!
-
-but when I apply this script fix it doesn't pass yet:
-
-2c2
-< sa[0] tx ipaddr=0x00000000 00000000 00000000 047ba8c0
----
-> sa[0] tx ipaddr=192.168.123.4
-5c5
-< sa[1] rx ipaddr=0x00000000 00000000 00000000 037ba8c0
----
-> sa[1] rx ipaddr=192.168.123.3
-FAIL: ipsec_offload incorrect driver data
-
-So it clearly suggest that addresses are not properly handled, IPSec addresses
-are printed in hexadecimal format, but the script expects it in more readable
-format, that hinted me whats missing, and that commit is:
-
-commit c71bc6da6198a6d88df86094f1052bb581951d65
-Author: Hangbin Liu <liuhangbin@gmail.com>
-Date:   Thu Oct 10 04:00:25 2024 +0000
-
-    netdevsim: print human readable IP address
-    
-    Currently, IPSec addresses are printed in hexadecimal format, which is
-    not user-friendly. e.g.
-    
-      # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-      SA count=2 tx=20
-      sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
-      sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-      sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
-      sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-      sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-    
-    This patch updates the code to print the IPSec address in a human-readable
-    format for easier debug. e.g.
-    
-     # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-     SA count=4 tx=40
-     sa[0] tx ipaddr=0.0.0.0
-     sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-     sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-     sa[1] rx ipaddr=192.168.0.1
-     sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-     sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-     sa[2] tx ipaddr=::
-     sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-     sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
-     sa[3] rx ipaddr=2000::1
-     sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-     sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
-
-Solution:
-========
-
-Backport both the commits commit: c71bc6da6198 ("netdevsim: print human
-readable IP address") and script fixup commit: 3ec920bb978c ("selftests:
-rtnetlink: update netdevsim ipsec output format") to all stable kernels
-which have commit: 2cf567f421db ("netdevsim: copy addresses for both in
-and out paths") in them.
-
-Another clue to say this is right way to do this is that these above
-three patches did go as patchset into net/ [1].
-
-I am sending patches for all stable trees differently, however I am
-using same cover letter.
-
-Tested all stable kernels after patching. This failure is no more
-reproducible.
-
-Thanks,
-Harshit
-
-[1] https://lore.kernel.org/all/172868703973.3018281.2970275743967117794.git-patchwork-notify@kernel.org/
-
-
-Hangbin Liu (2):
-  netdevsim: print human readable IP address
-  selftests: rtnetlink: update netdevsim ipsec output format
-
- drivers/net/netdevsim/ipsec.c            | 12 ++++++++----
- tools/testing/selftests/net/rtnetlink.sh |  4 ++--
- 2 files changed, 10 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index 3612b0633bd1..88187dd4eb2d 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -39,10 +39,14 @@ static ssize_t nsim_dbg_netdev_ops_read(struct file *filp,
+ 		if (!sap->used)
+ 			continue;
+ 
+-		p += scnprintf(p, bufsize - (p - buf),
+-			       "sa[%i] %cx ipaddr=0x%08x %08x %08x %08x\n",
+-			       i, (sap->rx ? 'r' : 't'), sap->ipaddr[0],
+-			       sap->ipaddr[1], sap->ipaddr[2], sap->ipaddr[3]);
++		if (sap->xs->props.family == AF_INET6)
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI6c\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr);
++		else
++			p += scnprintf(p, bufsize - (p - buf),
++				       "sa[%i] %cx ipaddr=%pI4\n",
++				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr[3]);
+ 		p += scnprintf(p, bufsize - (p - buf),
+ 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
+ 			       i, be32_to_cpu(sap->xs->id.spi),
 -- 
 2.46.0
 
