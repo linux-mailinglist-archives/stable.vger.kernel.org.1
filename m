@@ -1,165 +1,132 @@
-Return-Path: <stable+bounces-114382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B97A2D569
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 11:07:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C45EA2D5A3
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 11:41:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11EEB1693C0
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 10:07:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C8D188A2D3
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 10:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405701AF0CB;
-	Sat,  8 Feb 2025 10:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndo971Yb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAB31B4244;
+	Sat,  8 Feb 2025 10:40:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFF623C8D0;
-	Sat,  8 Feb 2025 10:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B981BBBEB
+	for <stable@vger.kernel.org>; Sat,  8 Feb 2025 10:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739009238; cv=none; b=WE3iWgjSbL9gdx7xzbUC3YeOt8Jysbfex3XLib+g+lTNxXh2fy2OgrHpx1jUkvdKdtmm1G7u/tH3XxJ2RoYKpQfxjnv54dDvLtRHBusUMSOGxs3kzcWoCTdyCXBOctGWv4lCXWfQFELynxx7TXxBtV3cacNJiyJX7MK7Iq3gT2c=
+	t=1739011227; cv=none; b=SONl8jqPGRl783n/N2m6xkx8glyggTVlwUddzdATgjIX4/Tu3AvtpB2Q4Y08NCUUC36UuLwbVmmGFngwhP4UMi2P8v+/5vsvLt9LfsLilsYhSYH5YwLOyW0UsUEJBlKoTj6NCvLmKwe6+2ozrepcbgcJPxE+G57lXVS9kZe2BiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739009238; c=relaxed/simple;
-	bh=OYYXHmEK4uC8uh1aKA3QInVH4oIIoO297mHhpIcVwmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M8xarE5VBHv23LeLlzEsyGN/+Xb6vTWwkvLMOiV98DX4KY9JkYrmP4nG/rLbfSpyEOFd8hoXZU0Wqz68HaeD2xkre49ZpsIiBFLZRKNi3VjO9Uu8C9AVA/fmdzE5YwBPVCLpuvr994etl4e4B+fyTU3o5/STa3k4MLY6qDQwRq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndo971Yb; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso505793166b.1;
-        Sat, 08 Feb 2025 02:07:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739009234; x=1739614034; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9pyb3ufJSTQ8U3pKurPleGgl26RyZuM45GOpbWBuw9I=;
-        b=ndo971YbKoWItPr39hG1nM0wHEeraYN3wlLEf50FMPvbGAlbFNxrucp8nCX2gHSOa8
-         rFradmRxN8MTiPp3HLYJcafjB94ZN+zD91KhR2KqYZrd/HwFBlMkFrKKIamz8/DTulsm
-         0ubmX5uu6EmNSXBrfZqRuayEf+9DKDUNxdKZFFutWkfhGnDl0FzXQ1xAT4RFeX+W4Z3M
-         drCtc3atA7f0RSRRxX1gMbnlZuyok2F8vGIeWKaEzVaG2Wrc+gg5spBzKkc03ETE9ouv
-         irPMRXX+1Hp93yWnXMzv7rxooBgY2UiglSX4PhD09LCcoNUYWW0d3CsZSTp2jBbJbrCC
-         wu7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739009234; x=1739614034;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9pyb3ufJSTQ8U3pKurPleGgl26RyZuM45GOpbWBuw9I=;
-        b=DGwS8bQRVRtVKVq6dGsGLd1dnGCImO6f1V4v1alL37ISPJL9My/Eyx9VYYErtK2mPj
-         gQvQyg0GjL26tgIDtnVPqJ9wQ++lWrx5+97rbsFpIQTsfiBrzxI7M12YS9HBEHd7GjiY
-         SUM1IRdGkjUICxml0Pz6LoW4GAoEvL5CTcEYSczsr2uCKya8TxL6A7j3gFJbLKffUjXV
-         BBIokzdpTAj2oplLLXYf/qfnAM1bXvyScFs4HWzrjwhtA+gneaD03UrMfCQ7PtiITx5E
-         Ln5Nh95d2dMr9CYmNsbBTnskfJuHvWvrtHm/5RGTOUJ8t/WOxI0p2WdBzUiHhKbnvODo
-         IPRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVP1Eu+t9tLv3QEwUctadit3L253V+d2d7b/Qv0kl+1Y4w69OSxhj86cwJcRjc4HmSCj2+0P6nQARpgQZlS@vger.kernel.org, AJvYcCXloM3IINYwOJh14ZFTPxlUSFv6k+PLFLzi9l+y/vDNa/XQnm7TUL2DSx5yznAPuWMIL0RxlbH7BntkuKT+@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFovpGcHw/XNF+kak1vSKu3tx5rlUzpuqc9WYiNKT0xjZleyuY
-	b4wyofNSlVHoSOeOj+g3tXWQlmSaD/IU2sGm6diCYVnhNDZE0pG9
-X-Gm-Gg: ASbGncsYFxULeBjYy1+Wj1INMwrh/fwClt3dVIioG93RoC7tcWMsyjkJZ0eU9pNgz67
-	h8SdyODwglMJWA65e+BacfaRRaTjQnERYRUJBFE5UASlxHsnKzRE8ZXblBzz+nRh03ynThNdu/Q
-	a88lyGVdC45kCYXPK/RxAj5Kk87Lo7Vi+apavPZuaIYY1BUq1bqxVor6Uo1w0eWG2X9yIeho45F
-	VVlTAXivdc8ZKORFbdQwZM/Vj6Civ0q+WJ8UF32GfEWwukEVgAYKDV3i0WHqGLq5uHwK5O0yVER
-	O60d4M5nCVWISEgtr1pIKogWa9U45wXCZFonDwO4ld2HfDN5FBxajexi
-X-Google-Smtp-Source: AGHT+IFothKq1c5gcI7clQBK7JiID9fpYLS2hgokmh6v32rCA6ZIVZGfs9O9ATM73c8F8fjW+P620Q==
-X-Received: by 2002:a17:907:7e97:b0:ab6:de35:730a with SMTP id a640c23a62f3a-ab789a9ebc9mr693900666b.8.1739009234265;
-        Sat, 08 Feb 2025 02:07:14 -0800 (PST)
-Received: from [192.168.3.32] (cpe-188-129-46-137.dynamic.amis.hr. [188.129.46.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7a8a3aa3esm36318066b.88.2025.02.08.02.07.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Feb 2025 02:07:13 -0800 (PST)
-Message-ID: <81563943-f5cc-4489-bfaa-d58ad3816516@gmail.com>
-Date: Sat, 8 Feb 2025 11:07:11 +0100
+	s=arc-20240116; t=1739011227; c=relaxed/simple;
+	bh=86tImnlX82BynRtV2Tzz1EH8dQlhNptEGIZQcPj843k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Mv3S8fAlhZepeXvOMkkXiI4G8a+8BriOyI8AW+FCijWe086/qjyA8Fh32AFLepmeefUNaQbLwbkxoWTCm2VR21bzFI+oHY3W/KQ4eS2QfikJyqCbpr99OeiMzkljRnEVOGDNIju1Nj4wgtgU1EfA4yRMKr45rbuYq6WPY95BDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tgiG4-0001Uk-VG
+	for stable@vger.kernel.org; Sat, 08 Feb 2025 11:40:20 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tgiG4-0047ti-2R
+	for stable@vger.kernel.org;
+	Sat, 08 Feb 2025 11:40:20 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 718F33BCC82
+	for <stable@vger.kernel.org>; Sat, 08 Feb 2025 10:40:20 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0D0D73BCC79;
+	Sat, 08 Feb 2025 10:40:15 +0000 (UTC)
+Received: from [172.20.34.65] (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d4e51cb2;
+	Sat, 8 Feb 2025 10:40:13 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Sat, 08 Feb 2025 11:40:10 +0100
+Subject: [PATCH] can: rockchip: rkcanfd_handle_rx_fifo_overflow_int(): bail
+ out if skb cannot be allocated
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mtd: rawnand: qcom: fix broken config in
- qcom_param_page_type_exec
-To: Christian Marangi <ansuelsmth@gmail.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Md Sadre Alam <quic_mdalam@quicinc.com>, linux-mtd@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250207195442.19157-1-ansuelsmth@gmail.com>
-Content-Language: en-US
-From: Robert Marko <robimarko@gmail.com>
-In-Reply-To: <20250207195442.19157-1-ansuelsmth@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250208-fix-rockchip-canfd-v1-1-ec533c8a9895@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIk0p2cC/x2MUQqAIBAFrxL73YKKQXWV6CPWZy2BhUIE0d2TP
+ gdm5qGCrCg0Ng9lXFr0SBVs25BsS1rBGiqTM64zzvQc9eZ8yC6bnixLioEFZoCFd15ANTwzqvV
+ Pp/l9P3aUMVNkAAAA
+X-Change-ID: 20250208-fix-rockchip-canfd-ce09e1e424ce
+To: kernel@pengutronix.de, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ Heiko Stuebner <heiko@sntech.de>
+Cc: linux-can@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kernel@pengutronix.de, Robin van der Gracht <robin@protonic.nl>, 
+ stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-33ea6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1171; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=PwbCo7t4iBsksyF7q8Utv/uAB57+6RRB9poqEpMgKGU=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBnpzSLeZF041hFWwJznMla/rYHo/Kr6M9ABoeEf
+ I30PGx2iY+JATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCZ6c0iwAKCRAMdGXf+ZCR
+ nK6oB/4/q1HDynZTpdxTvLZh2kNz03joEazK23rP5OaVDdzxMt39NZgK4+AzopoLbD3O8gbIXfl
+ QCtWdlnRVwaTcCtmmJqqb0yu8BRJICWoQKbf+ehUfQaztoL4BKL6/o3BYJidhBOyyuzursTjyjk
+ mjbs5geqx+qrD5WdFmZ+TUomvekUehuAs5CdXOesMv7B+1L1K992GB0UFt21sb7dz4KncplCeb8
+ MVhgA+oKUYX5VF4Cy5f5scDeCs7Mxry4VzUR78A9mhTVsATt1jIoY/JT/zivCTxDZSnlNbM3hra
+ yYzEOI+KVXmIsvCfzVzGKSaS3TksIKFye2pf1ocqtWO7zM4I
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+
+From: Robin van der Gracht <robin@protonic.nl>
+
+Fix NULL pointer check in rkcanfd_handle_rx_fifo_overflow_int() to
+bail out if skb cannot be allocated.
+
+Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index df18c85fc078..d9a937ba126c 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -622,7 +622,7 @@ rkcanfd_handle_rx_fifo_overflow_int(struct rkcanfd_priv *priv)
+ 	netdev_dbg(priv->ndev, "RX-FIFO overflow\n");
+ 
+ 	skb = rkcanfd_alloc_can_err_skb(priv, &cf, &timestamp);
+-	if (skb)
++	if (!skb)
+ 		return 0;
+ 
+ 	rkcanfd_get_berr_counter_corrected(priv, &bec);
+
+---
+base-commit: 1438f5d07b9a7afb15e1d0e26df04a6fd4e56a3c
+change-id: 20250208-fix-rockchip-canfd-ce09e1e424ce
+
+Best regards,
+-- 
+Marc Kleine-Budde <mkl@pengutronix.de>
 
 
-On 07. 02. 2025. 20:54, Christian Marangi wrote:
-> Fix broken config in qcom_param_page_type_exec caused by copy-paste error
-> from commit 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
->
-> In qcom_param_page_type_exec the value needs to be set to
-> nandc->regs->cfg0 instead of host->cfg0. This wrong configuration caused
-> the Qcom NANDC driver to malfunction on any device that makes use of it
-> (IPQ806x, IPQ40xx, IPQ807x, IPQ60xx) with the following error:
->
-> [    0.885369] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xaa
-> [    0.885909] nand: Micron NAND 256MiB 1,8V 8-bit
-> [    0.892499] nand: 256 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-> [    0.896823] nand: ECC (step, strength) = (512, 8) does not fit in OOB
-> [    0.896836] qcom-nandc 79b0000.nand-controller: No valid ECC settings possible
-> [    0.910996] bam-dma-engine 7984000.dma-controller: Cannot free busy channel
-> [    0.918070] qcom-nandc: probe of 79b0000.nand-controller failed with error -28
->
-> Restore original configuration fix the problem and makes the driver work
-> again.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Tested-by: Robert Marko <robimarko@gmail.com> #IPQ8074 and IPQ6018
-> ---
->   drivers/mtd/nand/raw/qcom_nandc.c | 24 ++++++++++++------------
->   1 file changed, 12 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-> index d2d2aeee42a7..4e3a3e049d9d 100644
-> --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> @@ -1881,18 +1881,18 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
->   	nandc->regs->addr0 = 0;
->   	nandc->regs->addr1 = 0;
->   
-> -	host->cfg0 = FIELD_PREP(CW_PER_PAGE_MASK, 0) |
-> -		     FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
-> -		     FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
-> -		     FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0);
-> -
-> -	host->cfg1 = FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
-> -		     FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
-> -		     FIELD_PREP(CS_ACTIVE_BSY, 0) |
-> -		     FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
-> -		     FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
-> -		     FIELD_PREP(WIDE_FLASH, 0) |
-> -		     FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1);
-> +	nandc->regs->cfg0 = FIELD_PREP(CW_PER_PAGE_MASK, 0) |
-> +			    FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
-> +			    FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
-> +			    FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0);
-> +
-> +	nandc->regs->cfg1 = FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
-> +			    FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
-> +			    FIELD_PREP(CS_ACTIVE_BSY, 0) |
-> +			    FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
-> +			    FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
-> +			    FIELD_PREP(WIDE_FLASH, 0) |
-> +			    FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1);
->   
->   	if (!nandc->props->qpic_version2)
->   		nandc->regs->ecc_buf_cfg = cpu_to_le32(ECC_CFG_ECC_DISABLE);
 
