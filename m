@@ -1,244 +1,137 @@
-Return-Path: <stable+bounces-114368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7BAA2D46C
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:13:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE90FA2D46F
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 08:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A173AA165
-	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:12:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091B23AA2D4
+	for <lists+stable@lfdr.de>; Sat,  8 Feb 2025 07:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5721A8F74;
-	Sat,  8 Feb 2025 07:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242CF1A8F74;
+	Sat,  8 Feb 2025 07:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="RS/09akt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYR2UTBS"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA2A2C6A3;
-	Sat,  8 Feb 2025 07:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834001A5BA3;
+	Sat,  8 Feb 2025 07:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738998772; cv=none; b=cUqMfRpWim7z/6wH+oM5ZNYHHXP8rYWUIje64GsDvJ7JEd10CP2yyGuRbelmeF2OVNbFYc8ZZqlGP5sGZ787Pj6K6agMZZbUZuEuBRfEAj0bFEaGW9itxI9RxY+3W5juS81KdfK20AXRMg0UO1DHmWYnK2VkiOJGafhV+bV2olU=
+	t=1738998875; cv=none; b=nQpjTWFuzDRZ0c0XUcFHJUkK27yK0Qkf8sParwM8pBWioXxPEySWAy51zncVoRWTVhptrDrZzjNe+YPWsxs6YJ2sibWnW0XrGqpP2aOKEb5unVVCW91SS2oArveHR80AtxMlyjxis8YQdw048o+fXXYSzLbC3qNtgKAlRNzi/ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738998772; c=relaxed/simple;
-	bh=qo2rmBOhkgUjavqEDJjhvu3pKNal74SswM8UWJCp9jc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/HS/kBOGU7GTMXxZXaCK9UsVmtgV3GmKnQhw6+gQhSWTXRRzTd7VdF6MvYIbLn/dbS/xluqvs0AmTQBT16JIwWVJP9YAfE7rV7HgNJObzr7Pr5p4/cQNEap3H+b9ZHAHZB2Ho+c+vu61/1o5H8TDjAI2uTyIRtPNMhyvz2/WfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=RS/09akt; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 5187CGxR3966865
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 Feb 2025 01:12:16 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1738998736;
-	bh=sjx4J8EG6AlNkv1ILZ/9qNmt0VFTmBM9+pJ2hNqo0EI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=RS/09aktS9Dik6z613nHKvdSki6zzDV8fcBHWH7j/CNqey1dSaV/KT2Sy44hkCKHl
-	 xVROcGbfIH5yyCuAxTjaovtOUlm5XbakEccpG9yZejvUgYvMPb+rDIdnxXF4YnWYBp
-	 RB5pewV2D2C390w8xr7JuJ/ioEf7m0w3Zt8k66rs=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 5187CGKW026088
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sat, 8 Feb 2025 01:12:16 -0600
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 8
- Feb 2025 01:12:16 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sat, 8 Feb 2025 01:12:16 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.104])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5187CF1x072376;
-	Sat, 8 Feb 2025 01:12:15 -0600
-Date: Sat, 8 Feb 2025 12:42:14 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Peter Chen <peter.chen@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <pawell@cadence.com>,
-        <rogerq@kernel.org>, <gregkh@linuxfoundation.org>, <balbi@kernel.org>,
-        <jun.li@nxp.com>, <linux-usb@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] usb: cdns3: exit cdns3_gadget_udc_start if
- FAST_REG_ACCESS cannot be set
-Message-ID: <miuivpqhatkgtw5g7rl6xj7o4gzxztz6hif53t765elwvhddsq@gqmbxkkabm2y>
-References: <20250206125943.786949-1-s-vadapalli@ti.com>
- <20250207022523.GA22848@nchen-desktop>
- <tf7qwkoybolexehzagzel67kdxdfsve2f3qdueomedld72v7pp@bquo47wpsxul>
- <20250208053944.GA28062@nchen-desktop>
+	s=arc-20240116; t=1738998875; c=relaxed/simple;
+	bh=5PPzswXLCYycw4FzLaiLH/vyU5KIFGf5TLEB/UdgT0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpBcGvjTI7B4Na9AMLM+0OrfZDnj19GfVSJoffM/5h06lUrHVHDM+zq5Ksz/yT6TCy6WWXyXhsA4ZgHik3I/geWY06rWG1XjbPlqSrofzmXi3+cuRRUGWmpQxqV+0kxEJzxkMfbCMvjL6AS79FXo56hG17wCZ0HBcHlKbcvr0i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYR2UTBS; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2f9d627b5fbso5118342a91.2;
+        Fri, 07 Feb 2025 23:14:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738998874; x=1739603674; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
+        b=EYR2UTBS9O+h++KUNt41EmDNgMpG6JMYvANHkNYRqY4611QjUdZczw8yfznmNbArAm
+         /uEjAHQoJ6jmwX5iQ+6aNPp+DD3OQRrRW9qSXxpzLIcw6RT1spln9Mj77cgtd65pugRX
+         aI7b3vr3kqOg/23zKXJsmN+wUtejupIu87hnL82n8qoRvAJK9QavoCb9DGe4h07RWWEt
+         9b/Zq75+3hwmTTrR0IB0+8po4SrKuTg7r+FEUYl83Q1fWOK1aeVk8IWjHw/d5p27HJQu
+         t7PoEgKnSZZqNvsLByugL6XU2wxh9Oar7F/N5008ZuExOJdSzQh8OxrOiCN5akOvsrqK
+         3ZnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738998874; x=1739603674;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
+        b=TZRGrehbam22H7LHz2ZshWX15OjqjYa9ijN1mxXsM6A/hLVTHvvVa+HoFJdqJz1K6u
+         +iUMWeEi9oPxAy1TiCg8S1QD/20DtJOwXsTk28Ixe+aecklz4VMOLRwK0bDfuAcm0AGu
+         nCRPJPZeiVebMYU60ARrbQKZ0Laa2THEKmtAh6F4vDSsD+I9ZRVJBB4BJ7HoCNjGyTbw
+         XX6I4w5CYtGa63VaQlK82Kgk3yZ1ID9YcsUEGurnTNo9b4rfRJfvU4KfMuSAp9V9U8wv
+         jfX6jyHBr0gDkfBMFf9vUY2A4HOccDswf/sEx7FagdzJo+ByhB0lY7Ln8Rok9j2lD+wi
+         depg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFAcKAXDQKpnuyBR8S/RsEWncyi+It4b1/CnILxmeTx0rW4XYC9HKlmmJC6MEthzlBYzl/CtxZ@vger.kernel.org, AJvYcCVkwIqca5ccSIvttpNXxxeBKvsFPZg+aOTlxONvAQPjIrS120UYL8EeziYa4L/Ia+iOT2sNcHbX4lquW671PUE=@vger.kernel.org, AJvYcCX/W3aXm+VwXUdWvgWxQjaxjUjkEWd2RUgWUP+rZP6/bDJZpEGuHYhvDDXz23O4pVdnNYItnlGJw3Tsgis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGIp3GqOk1qrJL4LY9nsNe8MP19RjLbF2auLye4sFBKP/AtZhf
+	E5bwDqi4TR5efhdT+HVYHLTbFdNFiLu/SkLwR48JCpAo46v6Ol/D7V1RtpOp
+X-Gm-Gg: ASbGncvr25hqAVvcNzNSBv/6JbNpmoRAl9LtjkeZ86wDw8+W+whu+y56/2tpGVF0sAZ
+	G8OfVvrqc24vvRTAqBzGkh3QwqFC82sQZbqYdh/FVMCTX9lGLOpo9qw/U8sKmu9ARKIcNFllwzN
+	JZgs8tz+4DVRM+Ux66jrK3oYhloNatijcTjT/z2cBZF+f6c5mfpdQq/Qen7I/AOBd/4nN9RtNF+
+	NI4/1CHa7Tq7Dh9iJ7L7oiaqvXuOVs0UE43cM/8T8UsteiyE89Ok+WFdQigQsQfhjeTDi/l4WBQ
+	3dCvcdDxrWoBpK/L
+X-Google-Smtp-Source: AGHT+IEH0fRD2QBs5bdODlFNhgw4SMnj2geK3gnFsTsUxiB7yi52Yig5fr8iMNQ8Mlq7WbrzHMPldA==
+X-Received: by 2002:a17:90b:4d05:b0:2fa:d95:4501 with SMTP id 98e67ed59e1d1-2fa24177388mr10674686a91.18.1738998873593;
+        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
+Received: from ohnotp ([2001:f70:860:4100:e712:ac1a:da07:2e53])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa5312f4c5sm285405a91.8.2025.02.07.23.14.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
+Date: Sat, 8 Feb 2025 16:14:37 +0900
+From: Yutaro Ohno <yutaro.ono.418@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rust: rbtree: fix overindented list item
+Message-ID: <Z6cEXXvAbbDa13j5@ohnotp>
+References: <20250206232022.599998-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250208053944.GA28062@nchen-desktop>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <20250206232022.599998-1-ojeda@kernel.org>
 
-On Sat, Feb 08, 2025 at 01:39:44PM +0800, Peter Chen wrote:
-> On 25-02-07 11:12:50, Siddharth Vadapalli wrote:
-> > On Fri, Feb 07, 2025 at 10:25:23AM +0800, Peter Chen wrote:
-> > 
-> > Hello Peter,
-> > 
-> > > On 25-02-06 18:29:36, Siddharth Vadapalli wrote:
-> > > > When the device is in a low power state, access to the following
-> > > > registers takes a long time:
-> > > > - EP_CFG
-> > > > - EP_TRADDR
-> > > > - EP_CMD
-> > > > - EP_SEL
-> > > > - EP_STS
-> > > > - USB_CONF
-
-[...]
-
-> > > > @@ -2997,6 +2997,20 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
-> > > >  	/* limit speed if necessary */
-> > > >  	max_speed = min(driver->max_speed, gadget->max_speed);
-> > > >  
-> > > > +	/*  keep Fast Access bit */
-> > > > +	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
-> > > > +	reg = readl(&priv_dev->regs->usb_pwr);
-> > > > +	if (!(reg & PUSB_PWR_FST_REG_ACCESS_STAT)) {
-> > > > +		ret = readl_poll_timeout_atomic(&priv_dev->regs->usb_pwr, reg,
-> > > > +						(reg & PUSB_PWR_FST_REG_ACCESS_STAT),
-> > > > +						10, 1000);
-> > > > +		if (ret) {
-> > > > +			dev_err(priv_dev->dev, "Failed to enable fast access\n");
-> > > > +			spin_unlock_irqrestore(&priv_dev->lock, flags);
-> > > > +			return ret;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > >  	switch (max_speed) {
-> > > >  	case USB_SPEED_FULL:
-> > > >  		writel(USB_CONF_SFORCE_FS, &priv_dev->regs->usb_conf);
-> > > 
-> > > Hi Siddharth,
-> > > 
-> > > Would you please keep this change at cdns3_gadget_config in case the
-> > > controller is power lost during the system suspend?
-> > 
-> > I did think of that initially, but the problem with doing so is that we
-> > are already accessing USB_CONF above in the "switch(max_speed)" section.
-> > The PUSB_PWR_FST_REG_ACCESS bit needs to be set before accessing any of:
-> > - EP_CFG
-> > - EP_TRADDR
-> > - EP_CMD
-> > - EP_SEL
-> > - EP_STS
-> > - USB_CONF
-> > 
-> > Please let me know if you have an alternate suggestion to address the
-> > above.
-> > 
+On 02/07, Miguel Ojeda wrote:
+> Starting with Rust 1.86.0 (to be released 2025-04-03), Clippy will have
+> a new lint, `doc_overindented_list_items` [1], which catches cases of
+> overindented list items.
 > 
-> How about move cdns3_gadget_config at the beginning of function
-> cdns3_gadget_udc_start, and add your changes at cdns3_gadget_config?
+> The lint has been added by Yutaro Ohno, based on feedback from the kernel
+> [2] on a patch that fixed a similar case -- commit 0c5928deada1 ("rust:
+> block: fix formatting in GenDisk doc").
+> 
+> Clippy reports a single case in the kernel, apart from the one already
+> fixed in the commit above:
+> 
+>     error: doc list item overindented
+>         --> rust/kernel/rbtree.rs:1152:5
+>          |
+>     1152 | ///     null, it is a pointer to the root of the [`RBTree`].
+>          |     ^^^^ help: try using `  ` (2 spaces)
+>          |
+>          = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
+>          = note: `-D clippy::doc-overindented-list-items` implied by `-D warnings`
+>          = help: to override `-D warnings` add `#[allow(clippy::doc_overindented_list_items)]`
+> 
+> Thus clean it up.
+> 
+> Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>
+> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+> Fixes: a335e9591404 ("rust: rbtree: add `RBTree::entry`")
+> Link: https://github.com/rust-lang/rust-clippy/pull/13711 [1]
+> Link: https://github.com/rust-lang/rust-clippy/issues/13601 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Yes, I could do that, but I will still move the following section within
-cdns3_gadget_config() function to the top of that function:
+Hi Miguel,
+Nice to see this change so quickly.
 
-	/*  keep Fast Access bit */
-	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
+Reviewed-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
 
-Additionally, I will update cdns3_gadget_config() to return an error
-code if Fast Access bit cannot be set. The diff corresponding to this is:
---------------------------------------------------------------------------------------------
-diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-index fd1beb10bba7..67d8b0805ba0 100644
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -2935,10 +2935,24 @@ static int cdns3_gadget_pullup(struct usb_gadget *gadget, int is_on)
- 	return 0;
- }
- 
--static void cdns3_gadget_config(struct cdns3_device *priv_dev)
-+static int cdns3_gadget_config(struct cdns3_device *priv_dev)
- {
- 	struct cdns3_usb_regs __iomem *regs = priv_dev->regs;
- 	u32 reg;
-+	int ret;
-+
-+	/*  keep Fast Access bit */
-+	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
-+	reg = readl(&priv_dev->regs->usb_pwr);
-+	if (!(reg & PUSB_PWR_FST_REG_ACCESS_STAT)) {
-+		ret = readl_poll_timeout_atomic(&priv_dev->regs->usb_pwr, reg,
-+						(reg & PUSB_PWR_FST_REG_ACCESS_STAT),
-+						10, 1000);
-+		if (ret) {
-+			dev_err(priv_dev->dev, "enabling fast access timed out\n");
-+			return ret;
-+		}
-+	}
- 
- 	cdns3_ep0_config(priv_dev);
- 
-@@ -2971,10 +2985,10 @@ static void cdns3_gadget_config(struct cdns3_device *priv_dev)
- 	/* enable generic interrupt*/
- 	writel(USB_IEN_INIT, &regs->usb_ien);
- 	writel(USB_CONF_CLK2OFFDS | USB_CONF_L1DS, &regs->usb_conf);
--	/*  keep Fast Access bit */
--	writel(PUSB_PWR_FST_REG_ACCESS, &priv_dev->regs->usb_pwr);
- 
- 	cdns3_configure_dmult(priv_dev, NULL);
-+
-+	return 0;
- }
- 
- /**
-@@ -2990,10 +3004,15 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
- 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
- 	unsigned long flags;
- 	enum usb_device_speed max_speed = driver->max_speed;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv_dev->lock, flags);
- 	priv_dev->gadget_driver = driver;
- 
-+	ret = cdns3_gadget_config(priv_dev);
-+	if (ret)
-+		return ret;
-+
- 	/* limit speed if necessary */
- 	max_speed = min(driver->max_speed, gadget->max_speed);
- 
-@@ -3018,7 +3037,6 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
- 		break;
- 	}
- 
--	cdns3_gadget_config(priv_dev);
- 	spin_unlock_irqrestore(&priv_dev->lock, flags);
- 	return 0;
- }
-@@ -3471,11 +3489,15 @@ __must_hold(&cdns->lock)
- static int cdns3_gadget_resume(struct cdns *cdns, bool hibernated)
- {
- 	struct cdns3_device *priv_dev = cdns->gadget_dev;
-+	int ret;
- 
- 	if (!priv_dev->gadget_driver)
- 		return 0;
- 
--	cdns3_gadget_config(priv_dev);
-+	ret = cdns3_gadget_config(priv_dev);
-+	if (ret)
-+		return ret;
-+
- 	if (hibernated)
- 		writel(USB_CONF_DEVEN, &priv_dev->regs->usb_conf);
---------------------------------------------------------------------------------------------
-
-Regards,
-Siddharth.
+Cheers,
+Yutaro
 
