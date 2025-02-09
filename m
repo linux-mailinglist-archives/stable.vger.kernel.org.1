@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-114436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF40A2DD82
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 13:12:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22561A2DD7D
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 13:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45DC43A6B58
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 12:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CA9165C4A
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 12:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3404F1DF24F;
-	Sun,  9 Feb 2025 12:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9691DF273;
+	Sun,  9 Feb 2025 12:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EGSU1MEQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iN9zG0nR"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A3F1DEFD4
-	for <stable@vger.kernel.org>; Sun,  9 Feb 2025 12:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3D01DF269
+	for <stable@vger.kernel.org>; Sun,  9 Feb 2025 12:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739103058; cv=none; b=S0Lw0k6aocKB0zglkxFuoawuJkX7AbaB/DuS4gkqyYM7CTdo2VUTNIvOgOdGCqMmMWmC/bsxTBg5urmD0pTsd/zxA954PhphKpqwFv+XrXCau5AyI+WSX0Twl5PVv7OB7HmG+5QllkKAbmH39U8w90cOg0REvFb8rjqiTCaH8DI=
+	t=1739103061; cv=none; b=ZW68RaIwufcBSMh1TPE5pU2vmBnHJqgqQPuI22oWISh8Wu8lQOtLlNvoOJY/DEInl2s3+AJ/dAmIu57kRWLMI3sa5l3yzNeo6jC18vWkxPw5j7lOT60uhXH8jsJezSElgEBZ70YZSIzzw8Beb39R7kObumLWzCh+P4JBUSNmKUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739103058; c=relaxed/simple;
-	bh=bjPTh/eZnoCnTNeoUcR5/668C+ehtyzYp3KWKu+oTdw=;
+	s=arc-20240116; t=1739103061; c=relaxed/simple;
+	bh=s2G+J19NZK1TXsD6vkUdLuGhxT6PQo3WegJ5QIpVsl0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mFmHdGQG0Cc4YapPJfmamNTB8L2NoCKAjmPcrlsYNhhmGINZd1kz3wSOlGfGdFYdFcGXEP/IH5OpASeZdEI3J1G7pkFvXQdquvsj55ZaAK5MEYEREgQd9Il4DZBze/UL3GIBx+5iTBn2WUgojhulPOWvzJ0nZ/vwKl2h5s0HbDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EGSU1MEQ; arc=none smtp.client-ip=95.215.58.181
+	 MIME-Version; b=endrtU7cs6YeFlwEcg+kaQghSSgBipPlUcL9h9jZxkGhhylyZVf2C/TO5nauQmRNOAJFn/2nYdvIJqyRbi3hM2qLWlKjNeF7nGnpx5kVGWp8EcrLqMkrpeUp2mbycYhtjI5pdKt6XZ2ouj1H10mxXiYGGvjayoHgryrGGHnCCpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iN9zG0nR; arc=none smtp.client-ip=95.215.58.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739103052;
+	t=1739103056;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0S49Zk7fAobZZGlxxCI89i+CPj4QBb1MtSlIx9oOS64=;
-	b=EGSU1MEQ3P1McdOzt4uWCTf++Z8dao8KcCWucACALvnhQ3ZrPElU9O04APa4H6ZY/XWatw
-	W78esqUKAnZ3dCBiejVrB6i5J6+okm289wvc2yAxXmXEUUghagadxJuRmvj3QolKqHficX
-	iru4CHZxEFjFbPchWHpXiSIbCR/1y1Q=
+	bh=1AtdoeZBtMQzIc97aHHIWX5FLSJyYkm5Bd4+tgcE9WM=;
+	b=iN9zG0nRxeky+9vZbPXegi9JEp4VLxvbt0Tu4ycMOalGtW1qWb2eFo1fAbz0lezXBbk5Xy
+	/8CNfAGokmyR+CIqzEjHCDTSO76uRkGSYJUJQhQ+Bruc9ScVmeNLO8HqUE9MYEzMIZkguD
+	hmv+YlQXBZl/BbNrw4bMyam9eqgx2gw=
 From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
@@ -66,9 +66,9 @@ Cc: Nishanth Menon <nm@ti.com>,
 	Linux Kernel List <linux-kernel@vger.kernel.org>,
 	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v9 03/13] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
-Date: Sun,  9 Feb 2025 17:40:22 +0530
-Message-Id: <20250209121032.32655-4-aradhya.bhatia@linux.dev>
+Subject: [PATCH v9 04/13] drm/bridge: cdns-dsi: Check return value when getting default PHY config
+Date: Sun,  9 Feb 2025 17:40:23 +0530
+Message-Id: <20250209121032.32655-5-aradhya.bhatia@linux.dev>
 In-Reply-To: <20250209121032.32655-1-aradhya.bhatia@linux.dev>
 References: <20250209121032.32655-1-aradhya.bhatia@linux.dev>
 Precedence: bulk
@@ -82,19 +82,8 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-The crtc_* mode parameters do not get generated (duplicated in this
-case) from the regular parameters before the mode validation phase
-begins.
-
-The rest of the code conditionally uses the crtc_* parameters only
-during the bridge enable phase, but sticks to the regular parameters
-for mode validation. In this singular instance, however, the driver
-tries to use the crtc_clock parameter even during the mode validation,
-causing the validation to fail.
-
-Allow the D-Phy config checks to use mode->clock instead of
-mode->crtc_clock during mode_valid checks, like everywhere else in the
-driver.
+Check for the return value of the phy_mipi_dphy_get_default_config()
+call, and in case of an error, return back the same.
 
 Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
@@ -103,29 +92,28 @@ Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
 Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index b0a1a6774ea6..19cc8734a4c8 100644
+index 19cc8734a4c8..87921a748cdb 100644
 --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
 +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -568,13 +568,14 @@ static int cdns_dsi_check_conf(struct cdns_dsi *dsi,
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long dsi_hss_hsa_hse_hbp;
- 	unsigned int nlanes = output->dev->lanes;
-+	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
- 	int ret;
- 
- 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
+@@ -575,9 +575,11 @@ static int cdns_dsi_check_conf(struct cdns_dsi *dsi,
  	if (ret)
  		return ret;
  
--	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
-+	phy_mipi_dphy_get_default_config(mode_clock * 1000,
- 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
- 					 nlanes, phy_cfg);
+-	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+-					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+-					 nlanes, phy_cfg);
++	ret = phy_mipi_dphy_get_default_config(mode_clock * 1000,
++					       mipi_dsi_pixel_format_to_bpp(output->dev->format),
++					       nlanes, phy_cfg);
++	if (ret)
++		return ret;
  
+ 	ret = cdns_dsi_adjust_phy_config(dsi, dsi_cfg, phy_cfg, mode, mode_valid_check);
+ 	if (ret)
 -- 
 2.34.1
 
