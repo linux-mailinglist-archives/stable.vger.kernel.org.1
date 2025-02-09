@@ -1,209 +1,120 @@
-Return-Path: <stable+bounces-114430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43F3A2DCA4
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 11:51:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B11A2DD0D
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 12:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B60C164299
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 10:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45811881F31
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 11:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E181C1598F4;
-	Sun,  9 Feb 2025 10:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93847185B62;
+	Sun,  9 Feb 2025 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="FYQ6biCv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gBaGWZ4C"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD6814A619;
-	Sun,  9 Feb 2025 10:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354B714A85;
+	Sun,  9 Feb 2025 11:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739098293; cv=none; b=Yz9zSaLeQ3CBich/8DPmIrvffmqnq+AT41o2eVTFggHyHKG+wJBbxXnEGo6ds/YprhMWCI+NdohrkW2XArkTJFba08dLowpzxkvV/GRS/bEHxWKEu6m6v5t9VIunyCxjp+Gp7bFRe4/uDO1JW5SUwRr44K0hjFsgT+C+p0kh8DA=
+	t=1739099858; cv=none; b=lzPnbV11piuFYmRvDYm3c11NcNMf3mD9uHiyJeP7HlQXlW2OOgGwYfygAR7cBcybOppJ07YDXM5MM/vQKMxovfl9ETBHhWosWxEj8xGUgRFNoevuSSYwEf6wsVsDIAbuVVrSt6KC/wXKEBd3rbwvMfnifVL3yJD86c1r3Z/faiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739098293; c=relaxed/simple;
-	bh=sHaB9f2fr1jzeJrGdv574DKDrbs9J4UBBMJBCFOdRGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fAxqdb5tCYjqfe8M4vjiUn2A5mY21dhmRnUMSu6l5uXeWi++mGWaUkdGF/zSlXiAZzOgzOjMYr/wVPAjtnqAmbqmOhKQUIBwpIQOyvgcfw01vkJ911KyrMQUZlXFAzSzpPItcEyPqTNsNWt2KpAP1LcQxE725zyj/I3RD6L0NKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=FYQ6biCv; arc=none smtp.client-ip=117.135.210.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=akvxBzNGg7jDeoykg2ST3OpylLpsQxNNSX0ReAXujes=;
-	b=FYQ6biCvxdySKjzXgIZwyQsBaY28b+vOe5YL3TVg7Ow11vsPtg3ZmlcMV3lk5c
-	ta8JHicIVelQzwbDMHBRl+VA30KSUxEM6atk9FqIT6TLKxO+P+pI+DBtODh5tyWP
-	q6ufXdqNDP7pPaMUDErKQfBJbE5ZxJuM2ON/PCfSjezuU=
-Received: from [172.19.20.199] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDH_3griKhnXq5iAw--.62977S2;
-	Sun, 09 Feb 2025 18:49:16 +0800 (CST)
-Message-ID: <20a21d17-77d8-4120-8643-c575304c39f2@126.com>
-Date: Sun, 9 Feb 2025 18:49:15 +0800
+	s=arc-20240116; t=1739099858; c=relaxed/simple;
+	bh=O2WKd3rTh2V+0WHq8QQS2/nSjwKsV6b5+kPTtAXbKyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B3CINb1SFpYDqdtNzGY5vH/y1zf+zBuGXmIF3lwnksdvNO0GA3eG2f/7ikSK+7fJqkedGoQ6WqTmvFNO5cDfh6prrCBU16bk+zjxH88Nf/aL5CVJVOYbNVI2k2S2zni6kkwxU0bXSapAP8J7v0JzK1GMApooyd2H+CXS6qyfiho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gBaGWZ4C; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739099857; x=1770635857;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=O2WKd3rTh2V+0WHq8QQS2/nSjwKsV6b5+kPTtAXbKyc=;
+  b=gBaGWZ4Ctsw2ccfWKCDUmt1RRNvI3DQJqJU4Mki2T09ltd8oSO3D+gje
+   910kd/i07cRrAJ10llKuyLOC4z7ZplStKcMka/nxClxxqb8TYwRrUggXR
+   AroHQYOxptRBSq1U91waITwNLixhQkhxcconUi1j1vm8rt546+8dr33ca
+   r/a88xTpBkZbnUxgrb9igLO0ucv5j20tKOEU8XHE8VYsfvaINvf4AVotA
+   PS66ZzoeuFmhVNSAiCljNdJ8ELkzqpRPKY7PT/jFjR/C8Sy/HSNy5150z
+   TbOa75ajLhCJNDMtKPAfBIElYdnVtuXFbB5HzkDb8dhK6rhOcsnG3lJ2L
+   A==;
+X-CSE-ConnectionGUID: mU/zJsDXQX+qbYQ//d/bOQ==
+X-CSE-MsgGUID: pcxkHw00Sl2CBhO2I73sMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="57109410"
+X-IronPort-AV: E=Sophos;i="6.13,272,1732608000"; 
+   d="scan'208";a="57109410"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 03:17:36 -0800
+X-CSE-ConnectionGUID: szZfvvQIRM6yM8k5mmU0gA==
+X-CSE-MsgGUID: AlSPyEq3QfWzD8hD9KVhYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="116013779"
+Received: from sannilnx-dsk.jer.intel.com ([10.12.231.107])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 03:17:33 -0800
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Reuven Abliyev <reuven.abliyev@intel.com>,
+	Oren Weil <oren.jer.weil@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tomas Winkler <tomasw@gmail.com>
+Subject: [char-misc] mei: me: add panther lake P DID
+Date: Sun,  9 Feb 2025 13:05:50 +0200
+Message-ID: <20250209110550.1582982-1-alexander.usyskin@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: add an API to enable/disable concurrent memory
- allocation for the CMA
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, david@redhat.com,
- baolin.wang@linux.alibaba.com, aisheng.dong@nxp.com, liuzixing@hygon.cn
-References: <1737717687-16744-1-git-send-email-yangge1116@126.com>
- <CAGsJ_4y2zjCzRUgxkx2GpspFBD9Yon=R3SLaGezk9drQz+ikrQ@mail.gmail.com>
- <28edc5df-eed5-45b8-ab6d-76e63ef635a9@126.com>
- <CAGsJ_4yC=950MCeLDc-8inT52zH6GSEGBBfk+A0dwWEDE5_CMg@mail.gmail.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <CAGsJ_4yC=950MCeLDc-8inT52zH6GSEGBBfk+A0dwWEDE5_CMg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDH_3griKhnXq5iAw--.62977S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3GFyftF4kJw1rJrykWrW5Awb_yoW7Gw4xpa
-	y8G3WYk3yrJrnrA3s2qw4093ZIq397GF4UWry7K3s7Zr98tFnFgr1UKw15urykArWkWF1I
-	vr4jq3ya9F15Z37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbHUDUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOh7uG2eoaOjRcAAAs-
 
+Add Panther Lake P device id.
 
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+---
+ drivers/misc/mei/hw-me-regs.h | 2 ++
+ drivers/misc/mei/pci-me.c     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-在 2025/2/9 5:34, Barry Song 写道:
-> On Sat, Feb 8, 2025 at 9:50 PM Ge Yang <yangge1116@126.com> wrote:
->>
->>
->>
->> 在 2025/1/28 17:58, Barry Song 写道:
->>> On Sat, Jan 25, 2025 at 12:21 AM <yangge1116@126.com> wrote:
->>>>
->>>> From: yangge <yangge1116@126.com>
->>>>
->>>> Commit 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
->>>> simply reverts to the original method of using the cma_mutex to ensure
->>>> that alloc_contig_range() runs sequentially. This change was made to avoid
->>>> concurrency allocation failures. However, it can negatively impact
->>>> performance when concurrent allocation of CMA memory is required.
->>>
->>> Do we have some data?
->> Yes, I will add it in the next version, thanks.
->>>
->>>>
->>>> To address this issue, we could introduce an API for concurrency settings,
->>>> allowing users to decide whether their CMA can perform concurrent memory
->>>> allocations or not.
->>>
->>> Who is the intended user of cma_set_concurrency?
->> We have some drivers that use cma_set_concurrency(), but they have not
->> yet been merged into the mainline. The cma_alloc_mem() function in the
->> mainline also supports concurrent allocation of CMA memory. By applying
->> this patch, we can also achieve significant performance improvements in
->> certain scenarios. I will provide performance data in the next version.
->> I also feel it is somewhat
->>> unsafe since cma->concurr_alloc is not protected by any locks.
->> Ok, thanks.
->>>
->>> Will a user setting cma->concurr_alloc = 1 encounter the original issue that
->>> commit 60a60e32cf91 was attempting to fix?
->>>
->> Yes, if a user encounters the issue described in commit 60a60e32cf91,
->> they will not be able to set cma->concurr_alloc to 1.
-> 
-> A user who hasn't encountered a problem yet doesn't mean they won't
-> encounter it; it most likely just means the testing time hasn't been long
-> enough.
-> 
-> Is it possible to implement a per-CMA lock or range lock that simultaneously
-> improves performance and prevents the original issue that commit
-> 60a60e32cf91 aimed to fix?
-> 
-Using per-CMA locks can improve performance and prevent the original 
-issue. I am currently preparing the patch. Thanks.
-> I strongly believe that cma->concurr_alloc is not the right approach. Let's
-> not waste our time on this kind of hack or workaround.  Instead, we should
-> find a proper fix that remains transparent to users.
-> 
->>>>
->>>> Fixes: 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
->>>> Signed-off-by: yangge <yangge1116@126.com>
->>>> Cc: <stable@vger.kernel.org>
->>>> ---
->>>>    include/linux/cma.h |  2 ++
->>>>    mm/cma.c            | 22 ++++++++++++++++++++--
->>>>    mm/cma.h            |  1 +
->>>>    3 files changed, 23 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/include/linux/cma.h b/include/linux/cma.h
->>>> index d15b64f..2384624 100644
->>>> --- a/include/linux/cma.h
->>>> +++ b/include/linux/cma.h
->>>> @@ -53,6 +53,8 @@ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
->>>>
->>>>    extern void cma_reserve_pages_on_error(struct cma *cma);
->>>>
->>>> +extern bool cma_set_concurrency(struct cma *cma, bool concurrency);
->>>> +
->>>>    #ifdef CONFIG_CMA
->>>>    struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
->>>>    bool cma_free_folio(struct cma *cma, const struct folio *folio);
->>>> diff --git a/mm/cma.c b/mm/cma.c
->>>> index de5bc0c..49a7186 100644
->>>> --- a/mm/cma.c
->>>> +++ b/mm/cma.c
->>>> @@ -460,9 +460,17 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
->>>>                   spin_unlock_irq(&cma->lock);
->>>>
->>>>                   pfn = cma->base_pfn + (bitmap_no << cma->order_per_bit);
->>>> -               mutex_lock(&cma_mutex);
->>>> +
->>>> +               /*
->>>> +                * If the user sets the concurr_alloc of CMA to true, concurrent
->>>> +                * memory allocation is allowed. If the user sets it to false or
->>>> +                * does not set it, concurrent memory allocation is not allowed.
->>>> +                */
->>>> +               if (!cma->concurr_alloc)
->>>> +                       mutex_lock(&cma_mutex);
->>>>                   ret = alloc_contig_range(pfn, pfn + count, MIGRATE_CMA, gfp);
->>>> -               mutex_unlock(&cma_mutex);
->>>> +               if (!cma->concurr_alloc)
->>>> +                       mutex_unlock(&cma_mutex);
->>>>                   if (ret == 0) {
->>>>                           page = pfn_to_page(pfn);
->>>>                           break;
->>>> @@ -610,3 +618,13 @@ int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
->>>>
->>>>           return 0;
->>>>    }
->>>> +
->>>> +bool cma_set_concurrency(struct cma *cma, bool concurrency)
->>>> +{
->>>> +       if (!cma)
->>>> +               return false;
->>>> +
->>>> +       cma->concurr_alloc = concurrency;
->>>> +
->>>> +       return true;
->>>> +}
->>>> diff --git a/mm/cma.h b/mm/cma.h
->>>> index 8485ef8..30f489d 100644
->>>> --- a/mm/cma.h
->>>> +++ b/mm/cma.h
->>>> @@ -16,6 +16,7 @@ struct cma {
->>>>           unsigned long   *bitmap;
->>>>           unsigned int order_per_bit; /* Order of pages represented by one bit */
->>>>           spinlock_t      lock;
->>>> +       bool concurr_alloc;
->>>>    #ifdef CONFIG_CMA_DEBUGFS
->>>>           struct hlist_head mem_head;
->>>>           spinlock_t mem_head_lock;
->>>> --
->>>> 2.7.4
->>>>
->>>>
->>>
-> 
-> Thanks
-> Barry
+diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
+index c3a6657dcd4a..a5f88ec97df7 100644
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,8 @@
+ 
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
++#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
++
+ /*
+  * MEI HW Section
+  */
+diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
+index 6589635f8ba3..d6ff9d82ae94 100644
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,8 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
+-- 
+2.43.0
 
 
