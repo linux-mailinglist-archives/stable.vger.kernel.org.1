@@ -1,122 +1,140 @@
-Return-Path: <stable+bounces-114451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDF8A2DED1
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 16:34:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C11BA2DEE0
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 16:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311AC1885644
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 15:34:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E5671654C4
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 15:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEACA1AF0BA;
-	Sun,  9 Feb 2025 15:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820551DF753;
+	Sun,  9 Feb 2025 15:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="BDAut/I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLwa2Yaq"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3639A54738;
-	Sun,  9 Feb 2025 15:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0B5199223;
+	Sun,  9 Feb 2025 15:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739115266; cv=none; b=Wj0Ar5a0Cz9ZgYBasqIpcdBrLacuifEi0JEB//tbMLhMO2BztTkDrxq6Jr4kr9DceS849fk6kL7iFEUDxc/p8wQURu1P2JvoyC1gfPFMaynwS1pSRxLuUVcxok6r0SGxgbrZW0BbgTL2CkvP5zWN9oEyqN08iRAyWM31tU3PpQI=
+	t=1739115898; cv=none; b=kROaJjGw+6rHEXpkgFNRYPn4m78feyDjLbN1LYQbyezViKonMiZoJ97z9DNjNKpehDpZ+uZXmUd8Qu4S6rtMnKRQ3e8idWAzKZlSEuEqQtTM0QLrRUIB2dfNJd5ajRKLTDFus8zAyvO5ezHgzcQebHC5TT0aNT/nXGTv8/D6ZtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739115266; c=relaxed/simple;
-	bh=WmsqJqDfGBjTiEEMO2Bvl+sBwNM3htxGNeXAIexYEn0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=T0LcYzkJh2gF/uAVIbsGQtPJ6O/V+zJEfaDShiTvUQjFxkiyu+NheCbQMZLOs5WIjg/pTwDkKXQ6OplD7VPugSnGjLhpOK+SAwDI7wF15DPLehiNF+/ON3dWIq9LurYzYaSWQFFHZm4tKUsIpCjuC+472N+xjw86PCbIhvPSbic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=BDAut/I+; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.155])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id B7D55200C0;
-	Sun,  9 Feb 2025 15:34:15 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay4.mymailcheap.com (Postfix) with ESMTPS id 5C105203CD;
-	Sun,  9 Feb 2025 15:34:08 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 51EB840098;
-	Sun,  9 Feb 2025 15:34:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1739115246; bh=WmsqJqDfGBjTiEEMO2Bvl+sBwNM3htxGNeXAIexYEn0=;
-	h=Date:To:Cc:From:Subject:From;
-	b=BDAut/I+aCsNzhQ9PXFaBVV8EUDUkumpeVgfixKehispIutQVQWuDhaXz1D7r+6SC
-	 2Ts89KRgOp6zIamaEjYmayCvwh79X77bcChAMnnUgSpqllcwrKeUAu/3lMif7Ps2mq
-	 qUPKL7gmaSx9LqB5WnCQEtj0UjTTpI2vPDqX+s/Q=
-Received: from [172.29.0.1] (unknown [203.175.14.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id C6E1E41423;
-	Sun,  9 Feb 2025 15:33:59 +0000 (UTC)
-Message-ID: <13267282-2b5d-4a9d-aa0e-bbf650ea2221@aosc.io>
-Date: Sun, 9 Feb 2025 23:33:55 +0800
+	s=arc-20240116; t=1739115898; c=relaxed/simple;
+	bh=fGPyO9IuWgybQPOtFj72YAAR4JfEYTTChgkn9rio7kY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=moTo+KrwQSRn7mCL4jmS/CFfLJhk8JTlnBZPSXBDsgSxR5kxDgsiNgH7sPB2RYbUucaqly2LdsTBGtkpuNloQJe9NGpuINVVUo8fvkJEBWpuzJT00YR8WrhuZorZFw04RfuYCXrUshVB0jeuzgJg53XLrJ2EZMuCw6FAyYdjUPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLwa2Yaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B777C4CEDD;
+	Sun,  9 Feb 2025 15:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739115897;
+	bh=fGPyO9IuWgybQPOtFj72YAAR4JfEYTTChgkn9rio7kY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gLwa2YaqweFwU75YdxHxJb4Hky60w0bsaZ1e/RUO1SlvfP0TGL5xJUb+DZ2csDZYu
+	 +EgIOblo5i0hae/XL2vQdlMm42jtDLvo+WqFyyBA5iE7Lxufh+HFSFtxC2n95o8RKr
+	 gQMtxKn5d34ASwhrJz1bkb8yZIj9vwo3kaDPZCIQ=
+Date: Sun, 9 Feb 2025 16:44:54 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-usb@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Oliver Neukum <oneukum@suse.com>, linux-renesas-soc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode
+ quirk
+Message-ID: <2025020939-mammary-prevalent-df29@gregkh>
+References: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Tom Chung <chiahsuan.chung@amd.com>,
- Aurabindo Pillai <aurabindo.pillai@amd.com>, Alex Hung <alex.hung@amd.com>,
- Sunil Khatri <sunil.khatri@amd.com>, Hamza Mahfooz <hamza.mahfooz@amd.com>,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, harico@yurier.net,
- Kexy Biscuit <kexybiscuit@aosc.io>
-From: Mingcong Bai <jeffbai@aosc.io>
-Subject: Please Apply: Revert "drm/amd/display: Fix green screen issue after
- suspend"
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 51EB840098
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [-0.10 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ONE(0.00)[1];
-	MID_RHS_MATCH_FROM(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[harico.yurier.net:server fail,jeffbai.aosc.io:server fail];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org,yurier.net,aosc.io];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
 
-The display on Lenovo Xiaoxin Pro 13 2019 (Lenovo XiaoXinPro-13API 2019) 
-briefly shows a garbled screen upon wakeup from S3 with kernel v6.13.2, 
-but not with v6.14-rc1. I have bisected to 
-04d6273faed083e619fc39a738ab0372b6a4db20 ("Revert "drm/amd/display: Fix 
-green screen issue after suspend"") as the fix to this issue.
+On Sun, Feb 09, 2025 at 03:56:11PM +0100, Marek Vasut wrote:
+> Add Renesas R-Car D3 USB Download mode quirk and update comments
+> on all the other Renesas R-Car USB Download mode quirks to discern
+> them from each other. This follows R-Car Series, 3rd Generation
+> reference manual Rev.2.00 chapter 19.2.8 USB download mode .
+> 
+> Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+> ---
+> Cc: Chris Brandt <chris.brandt@renesas.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Oliver Neukum <oneukum@suse.com>
+> Cc: linux-renesas-soc@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/usb/class/cdc-acm.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+> index 6b37d1c47fce1..06c7d86c5449e 100644
+> --- a/drivers/usb/class/cdc-acm.c
+> +++ b/drivers/usb/class/cdc-acm.c
+> @@ -1727,13 +1727,16 @@ static const struct usb_device_id acm_ids[] = {
+>  	{ USB_DEVICE(0x0870, 0x0001), /* Metricom GS Modem */
+>  	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
+>  	},
+> -	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas USB Download mode */
+> +	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas R-Car H3 USB Download mode */
+>  	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+>  	},
+> -	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas USB Download mode */
+> +	{ USB_DEVICE(0x045b, 0x0247),	/* Renesas R-Car D3 USB Download mode */
+>  	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+>  	},
+> -	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas USB Download mode */
+> +	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas R-Car M3-N USB Download mode */
+> +	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+> +	},
+> +	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
+>  	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+>  	},
+>  	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
+> -- 
+> 2.47.2
+> 
+> 
 
-However, it is quite strange that the title indicated a revert to the 
-fix for the exact issue I was experiencing - despite the commit claiming 
-that the maintainers "cannot see the issue" any more. It seems that I'm 
-running into some sort of unexpected issue that is outside of AMD's test 
-case.
+Hi,
 
-In any case, this commit fixes the issue on the device I have tested and 
-applies cleanly on 6.13. I would therefore like to request for this 
-commit to be backported to 6.13 (and maybe other branches, but I think 
-the maintainers may have a better idea on this).
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-Reported-By: Yang Wu <harico@yurier.net>
-Tested-by: Yang Wu <harico@yurier.net>
-Suggested-by: Mingcong Bai <jeffbai@aosc.io>
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
