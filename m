@@ -1,122 +1,129 @@
-Return-Path: <stable+bounces-114445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6575FA2DDF8
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 14:01:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3DCA2DE23
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 14:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B1783A02A7
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 13:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB16C3A4463
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 13:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504011DDC3F;
-	Sun,  9 Feb 2025 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F317176242;
+	Sun,  9 Feb 2025 13:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ni2PId0k"
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="y0KFlruF"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10021101.me.com (pv50p00im-ztdg10021101.me.com [17.58.6.44])
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.113.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E831DDA0E
-	for <stable@vger.kernel.org>; Sun,  9 Feb 2025 13:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D216148304;
+	Sun,  9 Feb 2025 13:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.113.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739106056; cv=none; b=Srgraj7RKj7MjaOKXQ7XEhqIeZlh4Qjbaj5TlEt6kG9X2TKEC/NBTuZt7xJoacn+tbMBt1GY1D6iYgJXJPE1sNyo3bkBq//dySexSoackrcdnXo0ZVS7Wl2oMt96PUu5CiNlm6PSEtTaUJcC4HQLh2MLyq9+L5OVUqWBOn7alVE=
+	t=1739108757; cv=none; b=dDntkgtrrFi1xyxzPcFnJ2r7SThBSyf5cK81yTY3aN4ETtwuJamv+heMQ/7DzOzztheyOLWcuW9VO1ppWFnZfdWEeUibJ4scDWPIxCk+Gu/1K1Mt0NnrBcR7J1PISfbiGb59V8qWG8KrxsdTv2+xmzWV8VdYsOGuuZkf62/Bm2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739106056; c=relaxed/simple;
-	bh=Xyffhkw9qVjtiT+ifySYWkBDJuug+7f9ej1i8+nxm94=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u0FGkoyAFmUDWF0ycfy/puXzq8deKydiajEYBK4N1SsZt7BPwnQDYEsLFNiyAji3VhtT2K2mlGhDUlUyIErA6BkS4wNIANTsjcEEKGNsM70C9UAiSYcK9cWFghv7HfQG2nK4+iqM26xWjEqB+YjnK4fvi/6Ohqdxcz7Vyc45IKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ni2PId0k; arc=none smtp.client-ip=17.58.6.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=ofZsMAmyfjKnHJmM1L8pFW96kyh2iTU8Cuekoza3vnU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme;
-	b=ni2PId0kD2I+JGoKi+GflL6oUUGbcUK4hRZo1utpqhbELS5X4D9/+3/h4yiQPKfUB
-	 9QoAB675ZX7cfzbbVYhDp0Uus51WOBX6zb9JUG4dod/xvP2MI9dNuDNlvD6quRSifY
-	 +HKuSvOp56N4ndRJ35InLV/DHxJ5HgjGIc3o+CAcr7LIUHkKjxorKEYgESWWpD/KLl
-	 0y7O7RsEAH6Jro1mGM6JM0wsSnA8yPUY9jX0fZUG10E8I4dgNQrRYlm9Z4FGRmc4lC
-	 Q5/N3sNS7leXC9W9e371mYTjfViGF3K2epKJV93IfsnFskWAFjl3RaK3baj0DjatdU
-	 Cvsc06thtFing==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021101.me.com (Postfix) with ESMTPSA id 12580D002C3;
-	Sun,  9 Feb 2025 13:00:29 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Sun, 09 Feb 2025 20:59:02 +0800
-Subject: [PATCH v2 9/9] of: resolver: Fix device node refcount leakage in
- of_resolve_phandles()
+	s=arc-20240116; t=1739108757; c=relaxed/simple;
+	bh=mpadslC3Y18hp4rMCA9uDRUbrl9f+GH5PCw3OLZAj/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a3lqsUauuTc8Xu3YmHbewjVUxIqndVSuDiPqdheTbpeL88x8NA+ZhrToQa8s8Z3OfTx/awTN6Wb8r5RIHERm2TcDesyRO8bIGHlAUz5UYP82vPqbfN9kRjpqk0VjH3gkzHcQPr5RrjtpNEXuKFVICrboCU7frIjyT/SkpCNlcOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=y0KFlruF; arc=none smtp.client-ip=195.154.113.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
+	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
+	bh=SnH+OYnhYIkCU2RM7qdGCNaQEjHiMO33pJewhtlNxe8=; b=y0KFlruFPBfUP160CyUMfjGOIT
+	MInQVI2/dlxQFksjTzLzpi4/fVVX7HAVFywvBLkvDWGxvt7e7orwNJBwVwXpfI19CZ0lERgtvY+zd
+	x9KVhz6Uf3flDzptxLonEy2pjWs4mU5+BUwWTz6yTMoEnu2ghh3xcX8rvPIITitkrGqKkZ21vy7pO
+	HShbBSqTp/pEBWPBAoX3tBeD+0W7Ac2GbMWcdADlaXmBXKYkI2BCv68OWU2H/vf209QyRgQQBQvf+
+	Vn67RZ4qZ15BKHVNNNZhaXYOb4JGq8alyFOIPQOCbxpqG65ofJDxkq5etxiCvAbhkjxAMAAIShz8t
+	xO2emA4A==;
+Received: from [2a01:e34:ec5d:a741:1ee1:92ff:feb4:5ec0] (helo=ohm.rr44.fr)
+	by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1th7MR-00BMal-20;
+	Sun, 09 Feb 2025 14:28:35 +0100
+Date: Sun, 9 Feb 2025 14:28:34 +0100
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>, Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH 6.12 026/114] phy: rockchip: naneng-combphy: fix phy reset
+Message-ID: <Z6itgi4kAoNWi0y_@aurel32.net>
+References: <20241230154218.044787220@linuxfoundation.org>
+ <20241230154219.070199198@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com>
-References: <20250209-of_irq_fix-v2-0-93e3a2659aa7@quicinc.com>
-In-Reply-To: <20250209-of_irq_fix-v2-0-93e3a2659aa7@quicinc.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>, 
- Stefan Wiehler <stefan.wiehler@nokia.com>, Tony Lindgren <tony@atomide.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
- Julia Lawall <Julia.Lawall@lip6.fr>
-Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: 44BrMHfmuQSbv_XCfJBl-CKTW9nR2hTC
-X-Proofpoint-ORIG-GUID: 44BrMHfmuQSbv_XCfJBl-CKTW9nR2hTC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-09_05,2025-02-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- mlxlogscore=809 phishscore=0 mlxscore=0 clxscore=1015 suspectscore=0
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502090116
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241230154219.070199198@linuxfoundation.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On 2024-12-30 16:42, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
 
-In of_resolve_phandles(), refcount of device node @local_fixups will be
-increased if the for_each_child_of_node() exits early, but nowhere to
-decrease the refcount, so cause refcount leakage for the node.
+It probably comes a bit late, but this patch broke usb and pcie on
+rk356x. The other commit from the same series, commit 8b9c12757f91
+("arm64: dts: rockchip: add reset-names for combphy on rk3568"), also
+needs to be backported.
 
-Fix by adding of_node_put(@local_fixups) before return.
+Regards
+Aurelien
 
-Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/of/resolver.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index 779db058c42f5b8198ee3417dfaab80c81b43e4c..b589e59667fd3ea2c2bd5240414803cb17707ec9 100644
---- a/drivers/of/resolver.c
-+++ b/drivers/of/resolver.c
-@@ -256,6 +256,7 @@ int of_resolve_phandles(struct device_node *overlay)
- 	phandle phandle, phandle_delta;
- 	int err;
- 
-+	local_fixups = NULL;
- 	tree_symbols = NULL;
- 
- 	if (!overlay) {
-@@ -332,6 +333,7 @@ int of_resolve_phandles(struct device_node *overlay)
- 	if (err)
- 		pr_err("overlay phandle fixup failed: %d\n", err);
- 	of_node_put(tree_symbols);
-+	of_node_put(local_fixups);
- 
- 	return err;
- }
+> ------------------
+> 
+> From: Chukun Pan <amadeus@jmu.edu.cn>
+> 
+> commit fbcbffbac994aca1264e3c14da96ac9bfd90466e upstream.
+> 
+> Currently, the USB port via combophy on the RK3528/RK3588 SoC is broken.
+> 
+>   usb usb8-port1: Cannot enable. Maybe the USB cable is bad?
+> 
+> This is due to the combphy of RK3528/RK3588 SoC has multiple resets, but
+> only "phy resets" need assert and deassert, "apb resets" don't need.
+> So change the driver to only match the phy resets, which is also what
+> the vendor kernel does.
+> 
+> Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
+> Cc: FUKAUMI Naoki <naoki@radxa.com>
+> Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>
+> Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+> Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+> Link: https://lore.kernel.org/r/20241122073006.99309-2-amadeus@jmu.edu.cn
+> Signed-off-by: Vinod Koul <vkoul@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+> +++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+> @@ -309,7 +309,7 @@ static int rockchip_combphy_parse_dt(str
+>  
+>  	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
+>  
+> -	priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
+> +	priv->phy_rst = devm_reset_control_get(dev, "phy");
+>  	if (IS_ERR(priv->phy_rst))
+>  		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
+>  
+> 
+> 
 
 -- 
-2.34.1
-
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
 
