@@ -1,106 +1,116 @@
-Return-Path: <stable+bounces-114463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D278A2DFA7
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 18:57:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C77A2DFDF
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 19:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025391645EE
-	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 17:57:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7962B7A056A
+	for <lists+stable@lfdr.de>; Sun,  9 Feb 2025 18:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DAD1DFE00;
-	Sun,  9 Feb 2025 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DA51E1C0F;
+	Sun,  9 Feb 2025 18:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VbWPdf9j"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jCLsmapj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFAD1D934D;
-	Sun,  9 Feb 2025 17:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8361E1A2B;
+	Sun,  9 Feb 2025 18:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739123840; cv=none; b=LwYNEqCcPUVipacz5laQisCgmpdlG0J90XYrf5IWdznclBShpzlGqJ8MIDauPJnokRmrC/U/rMmGiErbjijOptbByT8/ET9jzgwKJvuX4EGAbHJ4t1HggGw/ofDdvLfGpkJrfhE9ByA4QvBVRVFZa2CfvOhom4ybKrcLD/p6OPc=
+	t=1739124654; cv=none; b=dQu1QnxVx66c6WtIpD9X9UsjyvdZ8Icx2fJ8Wfs1BS4ouOO09izXepkvXe53+wsqZdsQa8r1q+ot4cYoif5GWZvkeXwk4p7D5WMvrQH4TYQ6csbaf9oBaX6V/IiTd+k1AODfQMGxWgUK6kZTvUUlCE5AF/wf0ugjKgCbvzARgKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739123840; c=relaxed/simple;
-	bh=EC7veTffKAd5tVYaCGrZbWssybzZhYfYxEDOCHodY+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tKFH4wqp2zKjhcObId96UdLvTe+aSuwreobU61KtPmnDWj4GTu7XPJIS4mkWkjVi/ag6G7asTeHiquvnNv7GpFfsDbU7kxq3SwaIsN1QP/UVFSRgXVtSfvPpS/tqku7QfiplTs3YiJ2/3KyhDbbFmBqK6kws+VOizCPc2mQho3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VbWPdf9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F0DC4CEDD;
-	Sun,  9 Feb 2025 17:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739123838;
-	bh=EC7veTffKAd5tVYaCGrZbWssybzZhYfYxEDOCHodY+E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VbWPdf9jLqIOwOut8//F8lPBUwQ+DMKYUh4agRZfCMFgbaFR0Of33F7Yq/5WqqSp8
-	 1ArtX6acOJ831WrC0SEwkHgh85VBt3ldcqbyMDhr52ZnT8yyJ5dZoHhAukdBcan2bv
-	 d+KFv+L/n6TLsTTzVEu/Vzzx/88bd9Me9B6VeKxT0lZDMZvEC4J1iV0su9BonGkiwv
-	 +PwSx95n5FhW+0XupHhHOAI/hTUv5PZGn020/4svalU7wUvdl6cs8rPaReaAVpWZEf
-	 PLAD0Dvhg03ZwDMrZxh2beWTaCI400yGZrsYYZi878CX4sPibHGOzreIbXOkWhqnFA
-	 4LHCy85a8OjyQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: sashal@kernel.org,
-	MPTCP Upstream <mptcp@lists.linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: prevent excessive coalescing on receive
-Date: Sun,  9 Feb 2025 18:57:12 +0100
-Message-ID: <20250209175711.3408345-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1739124654; c=relaxed/simple;
+	bh=qs23obNKKFe4op5JfkMxg4fN9JOyoeNp2uFOd+rxX5w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E2ErDs67oIdBntv8bUAToGK/6FuDx5guVnlyqNpN3lhZ+ZvmPHubxqePuBGUbkPdWR3itLJxQE7R6mBVw39HtD6JpFqNMgnW9O8vD0/ZyBUUzgHcDH+2Kzx2W+X9jSrwQ/BxJa4f82stUKdR8rq7pbPD1PncDNHhL2F3jl39rAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jCLsmapj; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4YrbNn432bz9sT9;
+	Sun,  9 Feb 2025 19:10:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1739124649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3iEJXijATj4tpFDjxXid73My73GWSrZLDbBzbHcKa+g=;
+	b=jCLsmapj787kULDtCV1AItpLkjIxAaWnx3D8eX0WtbbA73+zyi4xKkU/DV8DuYRJapqVmB
+	pjX0EXzo33B/LrWipxZglRMD+7EmqUlpWgFYPwwXJeqeE0pqdjmPsWfmOHHoztO3ryzPji
+	pnKg87NcU9MbYCTVi2TUkT6eXeZyy3Ipfg3PI8LEbgicxu/XUYCzjtOOwUTEKrK29MIdw+
+	pyOYPqVcKeAeAs33a/0JaT11RWO3BovCDBOeCZC+ah7lO+32UpyGjBuCVVS1aJIvs9wDM3
+	5CHbOzHfLsSYTnxPzf5h6hBndaUVVK1lv2yvRLWEcZERP3Cxb6OFjvnwdYI0qw==
+Message-ID: <e10ad19a-af26-4aff-9f49-5706946f735e@mailbox.org>
+Date: Sun, 9 Feb 2025 19:10:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1472; i=matttbe@kernel.org; h=from:subject; bh=thxsP8TyGc5dK4aecRo00/XRyPcVGAuaWLiqmY5zTpY=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnqOx3a4kSHqN7mjeqr+VIS3IYiBkS5SAS2qhbn NaRGS7AbrOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ6jsdwAKCRD2t4JPQmmg c8j/EADXKgfe9+8kADx6258rKfpkgrImopeHfkycgVZU+fZlQtA7UQiqOOftphjO1uXwD7zAqPC VYXqHFpR+vihAeH1mxMjNH8FYA10gi8R/AUvn1aT8XszNdFSnXORpZlFI4UdL8LAfMUaHY3MrLm CnXwiTEfOmFqOcxyq/Wcu6ZmIJyEJBvu8+S+Gk1qUuvut/MXkTOBCiJwR7ZoS2LT/m97b7vuY1K q2sDgsWz/xG6ETNZN4ZW4pstyv0JmfqmPMvIPDuajNkC63mHwR3on9YqgmSc6qcsZ4R9VMQiXZW Qq0qM2Pn/f04jfMXPG1cxiHA3ZzwYNFx/cnAkbQRS7/r8QakH70Y3oCVVTy9R7maI44J1rkHeMC 4RYKle2fiLoHP5wFqLVPe7O++7sdJS9XzYSipHzxCPFyFdUPkANYzhqhslChzOFK4gpoGlynGQc xyg59VeEeN+H2+tT+UyJwN9vglWa+g+yMhu9SIBbQeaNIADANitK7dhdX093QNu7FAmcpMqkeRB uG5exk/FcTudkNapYEkd+xY0JQYQ7sqeDHuUg9u7CMEn0r2hbNvh2cKBIjCgDbrz7bppJ5Vgfwv tulwgy+Sj/c79L2EV2TW6qjbLYCHEEqYuW/9xfh/phGUhbt0OvsMEFvCVNlgQz0QzzgVHVwpFmD l7NP73rwPwHnJpQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode
+ quirk
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Oliver Neukum <oneukum@suse.com>, linux-renesas-soc@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
+ <2025020939-mammary-prevalent-df29@gregkh>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <2025020939-mammary-prevalent-df29@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: bc6ef790259dcfb6dc1
+X-MBO-RS-META: 56a1wycbir85qm8hirdg96esbpkdx6bw
 
-From: Paolo Abeni <pabeni@redhat.com>
+On 2/9/25 4:44 PM, Greg Kroah-Hartman wrote:
+> On Sun, Feb 09, 2025 at 03:56:11PM +0100, Marek Vasut wrote:
+>> Add Renesas R-Car D3 USB Download mode quirk and update comments
+>> on all the other Renesas R-Car USB Download mode quirks to discern
+>> them from each other. This follows R-Car Series, 3rd Generation
+>> reference manual Rev.2.00 chapter 19.2.8 USB download mode .
+>>
+>> Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+>> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+>> ---
+>> Cc: Chris Brandt <chris.brandt@renesas.com>
+>> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: Oliver Neukum <oneukum@suse.com>
+>> Cc: linux-renesas-soc@vger.kernel.org
+>> Cc: linux-usb@vger.kernel.org
+>> Cc: stable@vger.kernel.org
 
-commit 56b824eb49d6258aa0bad09a406ceac3f643cdae upstream.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Currently the skb size after coalescing is only limited by the skb
-layout (the skb must not carry frag_list). A single coalesced skb
-covering several MSS can potentially fill completely the receive
-buffer. In such a case, the snd win will zero until the receive buffer
-will be empty again, affecting tput badly.
+[...]
 
-Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
-Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Notes:
- - We asked to delay the patch. There were no conflicts.
----
- net/mptcp/protocol.c | 1 +
- 1 file changed, 1 insertion(+)
+> You are receiving this message because of the following common error(s)
+> as indicated below:
+> 
+> - You have marked a patch with a "Fixes:" tag for a commit that is in an
+>    older released kernel, yet you do not have a cc: stable line in the
+>    signed-off-by area at all, which means that the patch will not be
+>    applied to any older kernel releases.  To properly fix this, please
+>    follow the documented rules in the
+>    Documentation/process/stable-kernel-rules.rst file for how to resolve
+>    this.
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index fac774825aff..42b239d9b2b3 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -136,6 +136,7 @@ static bool mptcp_try_coalesce(struct sock *sk, struct sk_buff *to,
- 	int delta;
- 
- 	if (MPTCP_SKB_CB(from)->offset ||
-+	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
- 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
- 		return false;
- 
+Cc: stable is right there, below --- so it wouldn't become part of the 
+commit message when the patch is applied. Is that OK too ?
+
 -- 
-2.47.1
-
+Best regards,
+Marek Vasut
 
