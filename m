@@ -1,123 +1,107 @@
-Return-Path: <stable+bounces-114474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66867A2E3C3
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 06:40:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCE8A2E3B7
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 06:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E2FC3A57D9
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 05:40:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB167A1F40
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 05:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936EC1922C0;
-	Mon, 10 Feb 2025 05:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02ABF189B8C;
+	Mon, 10 Feb 2025 05:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0r3cLW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxGko+tI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D4B191F94;
-	Mon, 10 Feb 2025 05:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A1214885B;
+	Mon, 10 Feb 2025 05:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739165987; cv=none; b=KiL65YVvJycn1H1Ww47M6Yd/SzLLhbSsRlKnUXekUyRSVBye7FYO8qpj4nSUPjBw06/wniTcUaQCreQU7PNHpyJJZNRARyY/uFM/yJp9WFOxIr3nlPkDD54URw9JiuUo6ko+r7Y+RTknygbuK1BKw9DLxtJfBI9yzWLrbR+sXos=
+	t=1739165829; cv=none; b=IzNbHbScJu7/FIDokiK8fV4FU2Po4AeL/LDcW1eFegUtKQzAjwcTeNza9G+0hxR/5LIw8JDC/kjZewdk8WjJhVB8ezlkkMWmEOdevIP+RLT/DQtC4ptXASfBnTchf0XrhdBgMBaSZ/TBL4eZ5b0p118ANPGZcCXQJpb9I+fqi2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739165987; c=relaxed/simple;
-	bh=buG6voVc5zfk4HiKSZp19+HKiFIsBIA6Ww+wD6EEDD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JWXeR+d/dcyu33GPwOQpeFd9ek2RQ+wvTBq0K4yirlWQ+rqn3TRPMMJtaOpDDNiec8kOJ7Jckg5C86O+tKznie+g/UhU1CjnqKIIYEYxzd4/zSxcXB2NNKaojfBq3zt47veKl69HdglsXGAr81PsF11+AXEBwGwrRCziL1SlKV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0r3cLW+; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739165985; x=1770701985;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=buG6voVc5zfk4HiKSZp19+HKiFIsBIA6Ww+wD6EEDD0=;
-  b=Q0r3cLW+0VpqEdkEZmfacVDpZMYOryGQDrcVznLaIWWcsyQFPRH4tmZV
-   SHzBc0Fkgd3HQcf6tttSCTrzU+KZZZ2NE+/NBwrDJraprEHcP3mQ1D8ct
-   zRDI+0CFXLx+8Xj7lv+28LhLhzpP18hHMq4dVhSR5O1jMnR+4yBhdCh0U
-   DEcFzSesAXNlHmbEerPdWdbHQJOvSkVhie7qWyAJB4YRro7GN6jQc6ka6
-   zZShhj06GVcJULmL3w9ZVn6t4sCRap4aWtivQYYVZYFuaXevtp9w1XPXW
-   Rs0mLZd2rFFO3ghYP01cIR3chzEBjse7fAbgl/OKBtHxgMj1IuW4Axx/s
-   Q==;
-X-CSE-ConnectionGUID: wzTWrSs6QzWcTjzLnI7oNg==
-X-CSE-MsgGUID: FkEm4cjnTK2Z26U3viJOUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43657951"
-X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="43657951"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 21:39:45 -0800
-X-CSE-ConnectionGUID: ApGwRRFvRWS+8W6N15XrDA==
-X-CSE-MsgGUID: gbY2Fzp2SgSxQBdk4A1XfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="112318428"
-Received: from pg15swiplab1181.png.altera.com ([10.244.232.167])
-  by fmviesa008.fm.intel.com with ESMTP; 09 Feb 2025 21:39:42 -0800
-From: niravkumar.l.rabara@intel.com
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	linux@treblig.org,
-	Shen Lichuan <shenlichuan@vivo.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	u.kleine-koenig@baylibre.com,
-	nirav.rabara@altera.com,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v3 3/3] mtd: rawnand: cadence: fix incorrect device in dma_unmap_single
-Date: Mon, 10 Feb 2025 13:35:51 +0800
-Message-Id: <20250210053551.2399716-4-niravkumar.l.rabara@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
-References: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
+	s=arc-20240116; t=1739165829; c=relaxed/simple;
+	bh=DtC2gku+n7uFp3rwtALBT1ZRRXnyZ/Hx/EryPEjObV8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KK5Doc9cFEzE/E7kWcYmZhW27yaRblJ2flhv5JUQD5pquUesWaaNm54o6RsEItSb3cx+eLVLX/toIAkjV9Oe34q7umF3PHGcex/B5KHhuS/MMEJL0K8QFnbNkGKlo1cn0CkkRuK7SH0OzoG141Omme7xqBWinFngsrpf4lgtkZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxGko+tI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA7AC4CED1;
+	Mon, 10 Feb 2025 05:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739165829;
+	bh=DtC2gku+n7uFp3rwtALBT1ZRRXnyZ/Hx/EryPEjObV8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MxGko+tIzkp6kuF2sQssWr4FuD35wjoEjtWP4bLvOMUlWzVgf04fQh45vyYAhAgYQ
+	 859mr36xcyY00dVQZHnfeJ8kFb02u35rpbCriYh1Id7oZZzDbMUNgWKoZOP8Nmoe8O
+	 WNpwvjTVPBr6QrMDKtuELuTsdScCnuce500J1YrM=
+Date: Mon, 10 Feb 2025 06:37:05 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: linux-usb@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Oliver Neukum <oneukum@suse.com>, linux-renesas-soc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode
+ quirk
+Message-ID: <2025021043-imply-blissful-b352@gregkh>
+References: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
+ <2025020939-mammary-prevalent-df29@gregkh>
+ <e10ad19a-af26-4aff-9f49-5706946f735e@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e10ad19a-af26-4aff-9f49-5706946f735e@mailbox.org>
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+On Sun, Feb 09, 2025 at 07:10:47PM +0100, Marek Vasut wrote:
+> On 2/9/25 4:44 PM, Greg Kroah-Hartman wrote:
+> > On Sun, Feb 09, 2025 at 03:56:11PM +0100, Marek Vasut wrote:
+> > > Add Renesas R-Car D3 USB Download mode quirk and update comments
+> > > on all the other Renesas R-Car USB Download mode quirks to discern
+> > > them from each other. This follows R-Car Series, 3rd Generation
+> > > reference manual Rev.2.00 chapter 19.2.8 USB download mode .
+> > > 
+> > > Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+> > > Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+> > > ---
+> > > Cc: Chris Brandt <chris.brandt@renesas.com>
+> > > Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Cc: Oliver Neukum <oneukum@suse.com>
+> > > Cc: linux-renesas-soc@vger.kernel.org
+> > > Cc: linux-usb@vger.kernel.org
+> > > Cc: stable@vger.kernel.org
+> 
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 
+> [...]
+> 
+> > You are receiving this message because of the following common error(s)
+> > as indicated below:
+> > 
+> > - You have marked a patch with a "Fixes:" tag for a commit that is in an
+> >    older released kernel, yet you do not have a cc: stable line in the
+> >    signed-off-by area at all, which means that the patch will not be
+> >    applied to any older kernel releases.  To properly fix this, please
+> >    follow the documented rules in the
+> >    Documentation/process/stable-kernel-rules.rst file for how to resolve
+> >    this.
+> 
+> Cc: stable is right there, below --- so it wouldn't become part of the
+> commit message when the patch is applied. Is that OK too ?
 
-dma_map_single is using physical/bus device (DMA) but dma_unmap_single
-is using framework device(NAND controller), which is incorrect.
-Fixed dma_unmap_single to use correct physical/bus device.
+No that is not, it needs to become part of the commit message, as per
+the kernel documentation.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
----
- drivers/mtd/nand/raw/cadence-nand-controller.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+thanks,
 
-diff --git a/drivers/mtd/nand/raw/cadence-nand-controller.c b/drivers/mtd/nand/raw/cadence-nand-controller.c
-index 47950a0ac6d2..0b2db4173e72 100644
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -1863,12 +1863,12 @@ static int cadence_nand_slave_dma_transfer(struct cdns_nand_ctrl *cdns_ctrl,
- 	dma_async_issue_pending(cdns_ctrl->dmac);
- 	wait_for_completion(&finished);
- 
--	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
-+	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
- 
- 	return 0;
- 
- err_unmap:
--	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
-+	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
- 
- err:
- 	dev_dbg(cdns_ctrl->dev, "Fall back to CPU I/O\n");
--- 
-2.25.1
-
+greg k-h
 
