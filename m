@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036D4A2EEF2
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD1CA2EEF4
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C08018853C9
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750131885250
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069A32309BF;
-	Mon, 10 Feb 2025 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238AD23099E;
+	Mon, 10 Feb 2025 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwBJ3Z/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLUkYtg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B969E22FDF9
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BEE2309A3
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739195717; cv=none; b=HFGUI5monUYQ4dTelhz9d6BDCkm4/YFQ8YYzp1eszpa5FJ2KloHyA17mL0hiOrY4s2lTENau3SczXQmJoDuBIg1sCdsi28ZPz2VQaQK8SOBSfoknaYCFB8ZWyGTX7POeLPWMlD+nvWF6dqq50j2/QpAkmY+cLrnZHTd9YxdBb3s=
+	t=1739195737; cv=none; b=i8LZdLnK4h4+GPMqgg6NwBdEKwFlUr++nlx5Ict94uSE4vAwNkUmPyw967o87UE+RksrYwCopB8pIa49tdt1v+onwCdo4hvpOgIcN7mRkn0gCBvBzg4Ac63Ez/huBSG3UKwEA/qyAkowbGf9mql9mSp/d2xmNxQJkwgKLSksPqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739195717; c=relaxed/simple;
-	bh=IL5R5wDz62ITKGq+EzMytmgnzmZOTqxlnZIvxY7ZbBo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UEVzvk1WI7/p6jEN/ac+H4k66cAGmEibHi2pp+AdQxKsRgaicka0SxvaFq/VMyfX7zZmlwkOXWhRnrOr5C1Gj6jHGciSK8LOA02ivsqn8uZzW2Bp5abgJWYhgJd7IbjEqkjcv/hcY0k3XDvut43BCNX6nR9GkFPsS2Tqg2wmrtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwBJ3Z/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC008C4CED1;
-	Mon, 10 Feb 2025 13:55:13 +0000 (UTC)
+	s=arc-20240116; t=1739195737; c=relaxed/simple;
+	bh=ypR+akZ0LR4G44fB6fQ7npP3uLF/mygvsoej9p2gH9M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=shqk7U7hyFjObadpwezBZ3mW2uHvR/uC6WbZ415e1Rw4IhEl6jUoE+YleU998knXS6YsYC7ZYMlm7URrxUPcGhy68kGki4L6CTKkKQDr9k/ymwt7PecU06p61Fe8Bi6Muj3LGfygLzfA88gen0TfLv3Ydm6DymxH0BCIyR4kfOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLUkYtg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0004C4CED1;
+	Mon, 10 Feb 2025 13:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739195714;
-	bh=IL5R5wDz62ITKGq+EzMytmgnzmZOTqxlnZIvxY7ZbBo=;
+	s=korg; t=1739195737;
+	bh=ypR+akZ0LR4G44fB6fQ7npP3uLF/mygvsoej9p2gH9M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mwBJ3Z/7JSXMo+8HuP6d0xfErzBC07pvywMBbMloRY7khhD/2tajy1l7IkPhi/+Ts
-	 jtYznG2S0cW8sLkh+QM2VlYZIFCYix759O8u4H6P5FcaOKtvBQN4A2FsIUxMareLCS
-	 U/LfgoJG8VtXBwy6xiujCOkhWB9wYH6yHB2WgrM4=
-Subject: FAILED: patch "[PATCH] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius" failed to apply to 6.1-stable tree
-To: wse@tuxedocomputers.com,ggo@tuxedocomputers.com,kwilczynski@kernel.org,mario.limonciello@amd.com,stable@vger.kernel.org
+	b=GLUkYtg74jmKqVVqYw6qDajZDToGGJUZslRGSMIb4bsIQIu5eXSgK02bobdJybnOk
+	 XOIsrjRVWnA99mwr8Y3mWAYP0cLjmn96ufiyY01s0EijVzj2vypDks1xy/RsQGIT17
+	 nsSM7yEV212SRbR/Jt5nmkleo5F9796fjZ0yA6L8=
+Subject: FAILED: patch "[PATCH] PCI: dwc: ep: Write BAR_MASK before iATU registers in" failed to apply to 6.6-stable tree
+To: cassel@kernel.org,kwilczynski@kernel.org,manivannan.sadhasivam@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 14:55:11 +0100
-Message-ID: <2025021011-blade-viselike-e35c@gregkh>
+Date: Mon, 10 Feb 2025 14:55:34 +0100
+Message-ID: <2025021034-upheaval-hydration-0e42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x b1049f2d68693c80a576c4578d96774a68df2bad
+git cherry-pick -x 33a6938e0c3373f2d11f92d098f337668cd64fdd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021011-blade-viselike-e35c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021034-upheaval-hydration-0e42@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,84 +77,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b1049f2d68693c80a576c4578d96774a68df2bad Mon Sep 17 00:00:00 2001
-From: Werner Sembach <wse@tuxedocomputers.com>
-Date: Tue, 14 Jan 2025 23:23:54 +0100
-Subject: [PATCH] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius
- Gen1
+From 33a6938e0c3373f2d11f92d098f337668cd64fdd Mon Sep 17 00:00:00 2001
+From: Niklas Cassel <cassel@kernel.org>
+Date: Fri, 13 Dec 2024 15:33:02 +0100
+Subject: [PATCH] PCI: dwc: ep: Write BAR_MASK before iATU registers in
+ pci_epc_set_bar()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend") sets the
-policy that all PCIe ports are allowed to use D3.  When the system is
-suspended if the port is not power manageable by the platform and won't be
-used for wakeup via a PME this sets up the policy for these ports to go
-into D3hot.
+The "DesignWare Cores PCI Express Controller Register Descriptions,
+Version 4.60a", section "1.21.70 IATU_LWR_TARGET_ADDR_OFF_INBOUND_i",
+fields LWR_TARGET_RW and LWR_TARGET_HW both state that:
+"Field size depends on log2(BAR_MASK+1) in BAR match mode."
 
-This policy generally makes sense from an OSPM perspective but it leads to
-problems with wakeup from suspend on the TUXEDO Sirius 16 Gen 1 with a
-specific old BIOS. This manifests as a system hang.
+I.e. only the upper bits are writable, and the number of writable bits is
+dependent on the configured BAR_MASK.
 
-On the affected Device + BIOS combination, add a quirk for the root port of
-the problematic controller to ensure that these root ports are not put into
-D3hot at suspend.
+If we do not write the BAR_MASK before writing the iATU registers, we are
+relying the reset value of the BAR_MASK being larger than the requested
+BAR size (which is supplied in the struct pci_epf_bar which is passed to
+pci_epc_set_bar()). The reset value of the BAR_MASK is SoC dependent.
 
-This patch is based on
+Thus, if the struct pci_epf_bar requests a BAR size that is larger than the
+reset value of the BAR_MASK, the iATU will try to write to read-only bits,
+which will cause the iATU to end up redirecting to a physical address that
+is different from the address that was intended.
 
-  https://lore.kernel.org/linux-pci/20230708214457.1229-2-mario.limonciello@amd.com
+Thus, we should always write the iATU registers after writing the BAR_MASK.
 
-but with the added condition both in the documentation and in the code to
-apply only to the TUXEDO Sirius 16 Gen 1 with a specific old BIOS and only
-the affected root ports.
-
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250114222436.1075456-1-wse@tuxedocomputers.com
-Co-developed-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
+Link: https://lore.kernel.org/r/20241213143301.4158431-9-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.1+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
 
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index 0681ecfe3430..f348a3179b2d 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -1010,4 +1010,34 @@ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
- DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index f3ac7d46a855..bad588ef69a4 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
+ 		return -EINVAL;
+ 
+-	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+-
+-	if (!(flags & PCI_BASE_ADDRESS_SPACE))
+-		type = PCIE_ATU_TYPE_MEM;
+-	else
+-		type = PCIE_ATU_TYPE_IO;
+-
+-	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
+-	if (ret)
+-		return ret;
+-
+ 	if (ep->epf_bar[bar])
+-		return 0;
++		goto config_atu;
 +
-+/*
-+ * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
-+ * may cause problems when the system attempts wake up from s2idle.
-+ *
-+ * On the TUXEDO Sirius 16 Gen 1 with a specific old BIOS this manifests as
-+ * a system hang.
-+ */
-+static const struct dmi_system_id quirk_tuxeo_rp_d3_dmi_table[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "APX958"),
-+			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "V1.00A00_20240108"),
-+		},
-+	},
-+	{}
-+};
++	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+ 
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
+@@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
+ 	}
+ 
+-	ep->epf_bar[bar] = epf_bar;
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+ 
++config_atu:
++	if (!(flags & PCI_BASE_ADDRESS_SPACE))
++		type = PCIE_ATU_TYPE_MEM;
++	else
++		type = PCIE_ATU_TYPE_IO;
 +
-+static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
-+{
-+	struct pci_dev *root_pdev;
++	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
++	if (ret)
++		return ret;
 +
-+	if (dmi_check_system(quirk_tuxeo_rp_d3_dmi_table)) {
-+		root_pdev = pcie_find_root_port(pdev);
-+		if (root_pdev)
-+			root_pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
-+	}
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
- #endif /* CONFIG_SUSPEND */
++	ep->epf_bar[bar] = epf_bar;
++
+ 	return 0;
+ }
+ 
 
 
