@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7B0A2F0E0
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F40BA2F0E2
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48C591889EDF
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:05:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57AD01883C84
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9265B76410;
-	Mon, 10 Feb 2025 15:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5DC2309AC;
+	Mon, 10 Feb 2025 15:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lK0Ja9dk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCRWgLe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5210425291A
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0F97082E
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199811; cv=none; b=WrIIN44UtRQf0pBXkOqiSqKkQoHZUnv6rfJpWOQW1aq2laUzOPX1q80ccQm2AzyIbxeUjEY7/OdqfdIhAhMQh7PQopAyOV8uguDx8Ha7HTqkgauUtECSUS/dQXP0rb0pnFQElWdeuZWLJF2sintjMRFqsyf05olKcMmkAYA8psY=
+	t=1739199902; cv=none; b=SrvhYZ+M4ldwALqiwyuV0dDqphaIaXu1Q4diececV9ncWnE7RtYY+2Vow5VTHiK7XTAvNJCV5+oCpMRDrN4DobjYVmPImJlZQOR162+cIlzx80yo1JxZU1n72aTIsU+I2Selq2hzAcCQh9eME5XJN+N68CV2Y7/O5cH/AleTb+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199811; c=relaxed/simple;
-	bh=lhNqzLJExm9m9OqbC35RI2sXPoZeRQ7qMuuUq+pij5M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k+ttoOi+7bvdvPl+hS7doa0dn3ld/dcDVXhuql4umtZ+X8nDHW/Yvd/or6HlG9uJbxvUE7NuYDb7RkvEKSsr2wCarbKvx0LPnPho1sXCeQDf4zx/X7zaGyMVNIpPPut3GNnu3R8t27nJKJWKKivVL3v7aV4C043pccEtIHb7dWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lK0Ja9dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52591C4CED1;
-	Mon, 10 Feb 2025 15:03:30 +0000 (UTC)
+	s=arc-20240116; t=1739199902; c=relaxed/simple;
+	bh=Bf3+ctUjEVsab6iAMWP7jY53vJOrr/j+KjX/038zQ/0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EBJHc28di/iQInwgWST+3ZjTlciIR3damVRU9TdvFfAEYAnP2vFqSLfrYpU5GDCCMU6XsLNK66OnPNz+1Te9x9GThwwZoNSIaZ41EfSQgk0XH8JxDZt2t7//1lwc3f7MOi4DqfP5eWaxzMFvFFo+LE+GZr5iaBOVx+800xhdNIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCRWgLe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5ADC4CED1;
+	Mon, 10 Feb 2025 15:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739199810;
-	bh=lhNqzLJExm9m9OqbC35RI2sXPoZeRQ7qMuuUq+pij5M=;
+	s=korg; t=1739199901;
+	bh=Bf3+ctUjEVsab6iAMWP7jY53vJOrr/j+KjX/038zQ/0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lK0Ja9dkKHVSjrikC3vvDW0EtFNP6h09Xe+as0g1ehQAEWX3Ua2uBcR6kPwJnK6Hn
-	 pOLYVsCcQVj8kT5ZzRr0Ks0Rq5XdMiJtsK+gx0BqxWhiAbCgpkaj3XUYtpJTCK9Cnb
-	 SSggk4Z9OUUJi9+OrEZVet3CgBudYKtGs3Kl9SHs=
-Subject: FAILED: patch "[PATCH] xfs: Add error handling for xfs_reflink_cancel_cow_range" failed to apply to 5.4-stable tree
-To: vulab@iscas.ac.cn,cem@kernel.org,djwong@kernel.org
+	b=YCRWgLe/nxZrTwKIIdHqoZ2kk3Pj1tgOlYhiIG7MnuwN49J8bmlObHs++5bUsGan9
+	 Z/YehW5hwMPkEKZcz54FiMzVnAjSgz+wkiZI4Pn0SMtOg+pmdCMzu5+xYtIHdMYK9H
+	 lK9+p3EyGKKy0HzddbFVkgC/zM+/247BQt3pltFs=
+Subject: FAILED: patch "[PATCH] kfence: skip __GFP_THISNODE allocations on NUMA systems" failed to apply to 5.15-stable tree
+To: elver@google.com,akpm@linux-foundation.org,cl@linux.com,dvyukov@google.com,glider@google.com,stable@vger.kernel.org,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 16:03:19 +0100
-Message-ID: <2025021019-constrain-diligent-85b6@gregkh>
+Date: Mon, 10 Feb 2025 16:04:58 +0100
+Message-ID: <2025021058-paramount-dance-41da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 26b63bee2f6e711c5a169997fd126fddcfb90848
+git cherry-pick -x e64f81946adf68cd75e2207dd9a51668348a4af8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021019-constrain-diligent-85b6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021058-paramount-dance-41da@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26b63bee2f6e711c5a169997fd126fddcfb90848 Mon Sep 17 00:00:00 2001
-From: Wentao Liang <vulab@iscas.ac.cn>
-Date: Fri, 24 Jan 2025 11:45:09 +0800
-Subject: [PATCH] xfs: Add error handling for xfs_reflink_cancel_cow_range
+From e64f81946adf68cd75e2207dd9a51668348a4af8 Mon Sep 17 00:00:00 2001
+From: Marco Elver <elver@google.com>
+Date: Fri, 24 Jan 2025 13:01:38 +0100
+Subject: [PATCH] kfence: skip __GFP_THISNODE allocations on NUMA systems
 
-In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
-without error handling, risking unnoticed failures and
-inconsistent behavior compared to other parts of the code.
+On NUMA systems, __GFP_THISNODE indicates that an allocation _must_ be on
+a particular node, and failure to allocate on the desired node will result
+in a failed allocation.
 
-Fix this issue by adding an error handling for the
-xfs_reflink_cancel_cow_range(), improving code robustness.
+Skip __GFP_THISNODE allocations if we are running on a NUMA system, since
+KFENCE can't guarantee which node its pool pages are allocated on.
 
-Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
-Cc: stable@vger.kernel.org # v4.17
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Link: https://lkml.kernel.org/r/20250124120145.410066-1-elver@google.com
+Fixes: 236e9f153852 ("kfence: skip all GFP_ZONEMASK allocations")
+Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Chistoph Lameter <cl@linux.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index c95fe1b1de4e..b1f9f156ec88 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1404,8 +1404,11 @@ xfs_inactive(
- 		goto out;
- 
- 	/* Try to clean out the cow blocks if there are any. */
--	if (xfs_inode_has_cow_data(ip))
--		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+	if (xfs_inode_has_cow_data(ip)) {
-+		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+		if (error)
-+			goto out;
-+	}
- 
- 	if (VFS_I(ip)->i_nlink != 0) {
- 		/*
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 67fc321db79b..102048821c22 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -21,6 +21,7 @@
+ #include <linux/log2.h>
+ #include <linux/memblock.h>
+ #include <linux/moduleparam.h>
++#include <linux/nodemask.h>
+ #include <linux/notifier.h>
+ #include <linux/panic_notifier.h>
+ #include <linux/random.h>
+@@ -1084,6 +1085,7 @@ void *__kfence_alloc(struct kmem_cache *s, size_t size, gfp_t flags)
+ 	 * properties (e.g. reside in DMAable memory).
+ 	 */
+ 	if ((flags & GFP_ZONEMASK) ||
++	    ((flags & __GFP_THISNODE) && num_online_nodes() > 1) ||
+ 	    (s->flags & (SLAB_CACHE_DMA | SLAB_CACHE_DMA32))) {
+ 		atomic_long_inc(&counters[KFENCE_COUNTER_SKIP_INCOMPAT]);
+ 		return NULL;
 
 
