@@ -1,219 +1,312 @@
-Return-Path: <stable+bounces-114488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C93A2E66D
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:29:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379B7A2E6DE
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 959DD168140
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 08:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CEA61652C4
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 08:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5571C2457;
-	Mon, 10 Feb 2025 08:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M+YP1i4o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED221C1F3B;
+	Mon, 10 Feb 2025 08:50:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF841BEF9C
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 08:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739176107; cv=none; b=Iv6BepHtDxqq5T0V2/F2W9MBF577Xb22r2csAt3wcZJ41VEbT0ktmbHMuHjunXP6W2/SKKjkvjoJmjaki7wwQdY2FMSqI0cZTFR4nveQfoi9cTg9Bi2MRYkJl7FbyEU+HT0dZVNcLdoObbyw4zGRYoedQRu1V5VJtMO7UYytDhE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739176107; c=relaxed/simple;
-	bh=V5wU/29c7mNYE3/QefZiuSHFC/1Vw5d/10zz4ZCU6wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N43TqdS9/SyAehxOttHBgK4Q5VVGBeOP8lhmiq75NqG9fpWJTC96qWmjnhHgps9hTWaokBtIiv2p40e1f/y4W234ML4CnJKXkvaoeBO2uBPjKmkEFxWplMNT8gqdO7xSWuz4zQQfaYRs6zUO6beZnpKrzBz9fr8+ehgWO9rDFb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M+YP1i4o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739176104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bicHG7zjx2UMOO4n8zha5UgWZ2e74X0E23kGVMNRanQ=;
-	b=M+YP1i4ov1YX7VO7QzVXrUeDafkSoLJJxts1lQqabdATlAc+sPwGUs1he2sfHX7lV71PNV
-	soeGAPSFKlD2tp18N94+lNkPNUVAWDSmyO9BdOS7MLWJuxHGV2I43tNp3YQHxyyiZYZyiP
-	PzhdqJCaCloavZCLxQxwmzlDPqzDedc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-TVFOjA4oNNKEgC8eA4nkaA-1; Mon, 10 Feb 2025 03:28:22 -0500
-X-MC-Unique: TVFOjA4oNNKEgC8eA4nkaA-1
-X-Mimecast-MFC-AGG-ID: TVFOjA4oNNKEgC8eA4nkaA
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43933b8d9b1so8412085e9.3
-        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 00:28:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739176101; x=1739780901;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bicHG7zjx2UMOO4n8zha5UgWZ2e74X0E23kGVMNRanQ=;
-        b=CTV6QeZdkrCo1dzpJylKkXcaLPoQIepMfqeZU5O3auJB46/ivnA4mO23biWJxo18iT
-         YLKNAPQUlC1ECnSlpePtPkc5zAFfYnhtw/AFB0jKnuHchp7h67JHeQ1Icbw4kJ4NhVfD
-         o+ZDQ9/0Kk2BtjKakwix2ezQINBjhSD8lH0P4OiHKlEa0wQfNBfw9acRbvVXdcuONWGK
-         /tZxkmX6A8eUMRqDWORNg5sWMUcVA4Utxse5xNpBnvI0A2PJF5GpYwGhOpYIbkDjpcWS
-         XXPlgoyUQr1wwub/ZfVWqYTIdmz1ihQi25IK1kzcml91k8UanfDWgF8xALqJr4EFHn6n
-         tGAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVL9XLHPy8b6XxsTMGYiTDR+gHVsMyJX2hdWqFgWGj30VHg6iuAO3gR5NYnPLiiQ6hw1VSORZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqWfGZt/Jf27+b5hmLFzwul1CYDbTWpq/fImqEG1EAjrqkkPvP
-	zTzSS+fmQkcVAY11yRXQie8lFDuEIWRbA+IOZtyOEcZI7CmWc7cQJiSnZmdncpvBUsnSINxx+SU
-	K/QiGgdlw/x7hQouZRIjczo9DLsZCzvmfbormPCGrdd0G3cHqtSZCrA==
-X-Gm-Gg: ASbGncuZMfZroe9DwQxwdEdSDafaWnuDwFZcTObzdoEC2f+9ZmbRaCrFKTcJ6WT5ULm
-	4v+XASuWGMU1h2Lf6RGnKo4jXFeVE2lujkEIbMVMfvtKkFGqKW80r5kLFZvYlyGfyobrvnoMmec
-	wkgJg4vjUby371gw7xHi8GG7f99J4CxSM+3HOP1zSTagyR0xuzJ32JvBPC3KVR0XiZAg9LYKsfL
-	LK1Lan4gylYJYRfcwxi4jmYBzYsCC1K/DjT0fFaWGKNuuyasH8wBDRw9aeHxYDTEVXkeHFuV6VJ
-	DapH24oT8LMPBLOibPSdwN6P0hN4hNSVhTt2qxnru+QWwlc6AAMn/mu7eK4zqibhcL1TBRYXiE2
-	VpiVFZCrT3UCINgyfHyk18z/poY4n7HuT
-X-Received: by 2002:a05:600c:3c8f:b0:439:3e90:c535 with SMTP id 5b1f17b1804b1-4393e90c71cmr40397955e9.0.1739176101209;
-        Mon, 10 Feb 2025 00:28:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGVe5xArCsukLiDpa1Z9D7uo1ruE78+ptabaMmnnCZmgUIOVJ8TIj/+l2P6inhlogLtasPzog==
-X-Received: by 2002:a05:600c:3c8f:b0:439:3e90:c535 with SMTP id 5b1f17b1804b1-4393e90c71cmr40397635e9.0.1739176100798;
-        Mon, 10 Feb 2025 00:28:20 -0800 (PST)
-Received: from ?IPV6:2003:cb:c734:b800:12c4:65cd:348a:aee6? (p200300cbc734b80012c465cd348aaee6.dip0.t-ipconnect.de. [2003:cb:c734:b800:12c4:65cd:348a:aee6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dd295200asm6517640f8f.44.2025.02.10.00.28.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2025 00:28:19 -0800 (PST)
-Message-ID: <bb2fbccc-f25b-4c31-98a3-e1699a86dbb5@redhat.com>
-Date: Mon, 10 Feb 2025 09:28:17 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072021C1F02;
+	Mon, 10 Feb 2025 08:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739177404; cv=fail; b=cwLNI42YkW42TEeAxXouGy7yNUednkfe6FS2Ck9F8Ju5HVsw5p13BcKdsz1XtwBoebx33qzl5ohjxiuEyQJ0BUT5Gy3eS5on0EaEb/Fw0P5kcj+V6dPIkhWImfcqBOLRda4DswGiHxCXICGjSj7c4MdgAihII9pASM/fsYyQXlA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739177404; c=relaxed/simple;
+	bh=qnQCVbas+j5ByRc844VZevRoYLxWxlfLcXG2CT86kRc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dEIx4135sMCjDdVRCPexZahOaHtAU88EAataqiMTocId2UPQIKwGDkziyYZXxG0feA8CYpOE0hreXWdHi8XO9FnR5HSBde1ebr5bGhP1yleo74plkCzNBfam1I/DEBsYkTFF7M1IuN3i2HMvavlYkKiGJvHne05SQyO5XwZl2GM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A7rG8r029750;
+	Mon, 10 Feb 2025 08:49:33 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2171.outbound.protection.outlook.com [104.47.59.171])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44nvg0srfa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Feb 2025 08:49:32 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EaKxktclxb7U+LzsRjENrTgsVwXK0l1HmMJ5Qufu1T22kJz6lN+LyJQlhOZLdSjb2a7VmSpkQCENJg4NeqD5UgNFCCoPAEPAX5xoOZs+q9qhQXzWBRuroruDMfu+gBk07TE/VJmsVBjRipK51lZFSqPOFxSRwi1zfwSs25AhaH9l1iSVbe7ovggY7IcwJ3Bm5oafiqKSsE+jGgBH4BbcU9QZyXT+PTMjmwQFecLr5abOu8J56N7o1cMA9PTYDr+Cq80+EN5Cjwt/CCr06qImd6xnn7zDyKFHapIFFAvKiEkntrFqX7HB1URulZ2xW4eWHNJaakvqHHYoIZhsHUOaWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v4G60WYg991mQvMgEQZ3JtzbWfWKVMSL1WbouzWWb2A=;
+ b=kc1XptH5J1x8H0fM2zqQVmjw/5zAJxR/XvfgnyV5TuwP4EnGNxpNVtT0tQ2E8jH9/FzNGMmmeZ4aNu3BjV6JwMhvS8ARHwsixTfHlvfbcGB3HqdnoBpfyEhbmZ2Wc3flPhmb6tTQG/EUrcZwwlJpgSbWQxFYb9VLUNC1jwMY9eUtGH90kAGuTl95gnGab7XAOTlA39a9AKFjkm1byikVqW5yVyUT1Fd/z+Lta7QqDpzW2Hu5AwsROVfMeOgeyCMVXgTKpcm9IRvhJ+fNEoaId7AMFWJNX7/sWnb/NJ/tcf1MSejGo5a3hIuPQ6PTtpY3KBpgykjY9C7ZVqxP7caMAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from SJ0PR11MB5866.namprd11.prod.outlook.com (2603:10b6:a03:429::10)
+ by PH7PR11MB6378.namprd11.prod.outlook.com (2603:10b6:510:1fa::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Mon, 10 Feb
+ 2025 08:49:26 +0000
+Received: from SJ0PR11MB5866.namprd11.prod.outlook.com
+ ([fe80::265f:31c0:f775:c25b]) by SJ0PR11MB5866.namprd11.prod.outlook.com
+ ([fe80::265f:31c0:f775:c25b%4]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
+ 08:49:26 +0000
+Message-ID: <6b8e73b7-668a-4832-ac51-b7da58fe1060@windriver.com>
+Date: Mon, 10 Feb 2025 16:49:17 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI: controller: Restore PCI_REASSIGN_ALL_BUS when
+ PCI_PROBE_ONLY is enabled
+To: Kexin.Hao@windriver.com
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Vidya Sagar <vidyas@nvidia.com>
+References: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
+Content-Language: en-US
+From: Bo Sun <Bo.Sun.CN@windriver.com>
+In-Reply-To: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR01CA0146.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::26) To SJ0PR11MB5866.namprd11.prod.outlook.com
+ (2603:10b6:a03:429::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: add an API to enable/disable concurrent memory
- allocation for the CMA
-To: Barry Song <21cnbao@gmail.com>, Ge Yang <yangge1116@126.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- baolin.wang@linux.alibaba.com, aisheng.dong@nxp.com, liuzixing@hygon.cn
-References: <1737717687-16744-1-git-send-email-yangge1116@126.com>
- <CAGsJ_4y2zjCzRUgxkx2GpspFBD9Yon=R3SLaGezk9drQz+ikrQ@mail.gmail.com>
- <28edc5df-eed5-45b8-ab6d-76e63ef635a9@126.com>
- <CAGsJ_4yC=950MCeLDc-8inT52zH6GSEGBBfk+A0dwWEDE5_CMg@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <CAGsJ_4yC=950MCeLDc-8inT52zH6GSEGBBfk+A0dwWEDE5_CMg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5866:EE_|PH7PR11MB6378:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72f92046-eb48-4600-e49b-08dd49afd2da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?THBYZUIycktSVVpQMEpJS3lJeGlyWDZXR0dpbFUzQW9KWUdaYTR0SGRoWHFu?=
+ =?utf-8?B?MEJKRnl5QTdQbDZ5RU0wemVabFJUVU93SGtxdHcyZkpnQUFaTXQwSFFFNDls?=
+ =?utf-8?B?MnZzam9GOFo1SUJ4Y2lNenpDck1sYzE3NGVPTFdvc0pObE5FU2MyQVFtSjlG?=
+ =?utf-8?B?d1hNNjFwTGNZMkNIMWVWK29hNUVHSzRVYzdzUGU1NzY3UTc2YjZIUUdPUFhu?=
+ =?utf-8?B?ZkRaSUx5MGV5UE5hc2owa09vV1ptYUZhNndnK0k0T0V2Zy9KNEtudm5MN1hE?=
+ =?utf-8?B?L1pZUEZIN2hUR0VmUEtWS0ZsZXo5S0xTZ3Fkbm5KdmNYY3BocXBuZGJKbjVB?=
+ =?utf-8?B?RWt1bGxLTkFDVFRCekp0MlpqOHJSWXZTUGxLQThqd3dGa0YrT2RIMVBEMjRv?=
+ =?utf-8?B?aTZKRUVhOW9oM2hJNGxORWVwOVNEMCtFa2t0UHVlbklCb0N4YjhUcFNrWFJn?=
+ =?utf-8?B?eWdOSU5hR3N6WEVFRmd2MnNNM3lheEU2UE9zZWdORUtsTHBnMzhOaTh3cTVn?=
+ =?utf-8?B?M0ZLVTlXbC85NUxNdFVtMzVsYkw5cE5ZSWhkdzJna05US0VEZUVtRlpyRHU0?=
+ =?utf-8?B?NTNlb055TVJoVDJvMWhPMG1qVzBiRWVEbVYrV3locEdnZXlaNmhBZWRZcFgr?=
+ =?utf-8?B?Mkp3Z3FDc3FneEdsRERMZzVid2VOdTl3NzVhNERNdnZUVWpLQVAybEtuKzJy?=
+ =?utf-8?B?amMrZld1dDJQVmJyZEI1eHR4dEEzUk03OHpSaW04UnAzdUlBVjIvNGlHbFBu?=
+ =?utf-8?B?L1ZLSVVHVXRWZlN2QWNpVHZxSURISlRHa25FaWJRNklqYWFVMmtkTkVMMEhF?=
+ =?utf-8?B?enNFTXRlMnlacFd1M3d2QUZRU28xZEJraVh0eUV0ZU45OExGMWZGdkloTnE3?=
+ =?utf-8?B?emlWamFNTUJ6eGwzSnNqZnhYYXRxQlZjaWdPSHZLYStFWHE3c3ZMZlpjVTZ5?=
+ =?utf-8?B?eE9TRXBVQ1FLY3lobUx5QW1kTGYvU3kwOEhUTU5tT2NFZDgvMGZXdlIrOFNS?=
+ =?utf-8?B?cVk2OGhzWWMxNzYxU0VLNGt0QWRNYVJoQ2NQZEtnaHpSb2JwMnVOMG0zaGhi?=
+ =?utf-8?B?MEo3ZlBDQ2c5QzJWUWxlVUZNd2hMQXpDVUZEVnZlVWU4Z1ArOFJKV2F6dFNy?=
+ =?utf-8?B?T3hUaE1JSnN6c2srUFVqMnB3UThzbzJGRzhqQlZQMGdvL3NWSjV2cHZYKzZk?=
+ =?utf-8?B?NUZnSjVxR2dJV3RqejZKaklSejN4QWY0aGxYbWxyY2NtanBHcWxpR2dlcUJs?=
+ =?utf-8?B?TDQrVWN5TFpvOXduK3M2dVBtMGFBem91YloyY2FjR3JDTVdLSXRReHhubXp3?=
+ =?utf-8?B?NGNka1NobzJzYnhKaGhkRlhVb3ZCd1FBT09zVXNiRzExTWpUQUp5K2tub2tm?=
+ =?utf-8?B?WWNlczU0bXpMbmkzN0QxNmE1dElvYkZaRWUzNjA4MkFnYklWMEtoN0pnSWNv?=
+ =?utf-8?B?WmYrTEhkWElsMGorcG1KcElrd203c2JVR2dQUndIRkhuRXpjaktiMGgwT2Va?=
+ =?utf-8?B?S3VBVk9hL3JyVTlUUWRUQVNYcXZ6LzRkQmpFUEExME5XQTVhUjRoRHFPR2tj?=
+ =?utf-8?B?N2ZLeGR1M082SXg2NEVKOXE4dDN1RFF0VWdHb1Z4RENuMjR3M3VKS2ZYQ3FL?=
+ =?utf-8?B?T0FiVFF0cHVOT3pEU0g2Ylp0L1RCR2ZZRnRXLzNFQUxCb3dzeXhPNnN1bWpJ?=
+ =?utf-8?B?Vmp4b2FVcGVyZ2lSUHJ0Q3YxNEpOMXN6VHhOWUwzaklBK0h0WVd4clFMWHk5?=
+ =?utf-8?B?VzZIS3FiWkJ5eFpXcWJ0NWhzNjlqbjVGU1VCYlAxd0RRSHArMlkzdzBWWVIx?=
+ =?utf-8?B?UUtJbmsySVBMSTREVGFNVmdKY0h0VDNzUkU4QzgrMkFza0RhQ3NSQW9nb2pF?=
+ =?utf-8?Q?HHzYZEB2C44xo?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5866.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b3ljbnBvN1JmdmhFd2NSMHFOakdMM21OdlFmM3NWK0pYUDllU0phSDFpL3dr?=
+ =?utf-8?B?L3NncU9pQkM3ZlFORTFnK2FFN21uT01Ob2E4Rm5oYTBlWHVPRGFSdzVKV3Zm?=
+ =?utf-8?B?UmswODhsQ01GemJpQ3U4S2ljdDZTb0FRSzliQ082bFRZTXZCak0vS2R6TWdi?=
+ =?utf-8?B?Z2JVNGs0Zi9LRUVBZGwzaFN6SmtDK1VSSG5tRFdNdWRuR2lzcWx1ZnI5cW1r?=
+ =?utf-8?B?S2hBblk5QUYyU1BFZER6TEJEMTMrWlhCSzBVL05BMDEzK0RpcHBjU1JsblJF?=
+ =?utf-8?B?bXBUempyZCszdSt5Yjl1WCs4WWRFbXkwUFJHaXVjS0NQcEloZ3dIQzc1dXVC?=
+ =?utf-8?B?ajgzQy8yOUFMUHFGYkcvUjdUWVozTDBuaEFtUndKclR4ZjVGbHZvK01ZMTZ1?=
+ =?utf-8?B?MitydGdFTHlkVVVnclVSUVQ5YzYzUkFFOVZSSE9yaVJYQU81akQvaGtpaUpB?=
+ =?utf-8?B?QWxuRXUyTiswMGtSVWtxdTFpOUg4Y1AyWGVZUTJPdGswOXZaTXVGNis3R0xR?=
+ =?utf-8?B?Y1pqb0VsY1pITjNRc0NjUm9sMXRRd3NsUnVybytOd3d0OXhvc2t6Q3Z0K2V4?=
+ =?utf-8?B?STdTNVFScTN6Z3NPd1BIcDhmNmdsMEtXV2Z6R01tZ3pMS2Y1RE9xMFNmRmV4?=
+ =?utf-8?B?TVIxbDFQZUV1cVF5dXJadkM4QW85TGNQTlJscWdaT3oxdWx2Y3RDcitLUjJr?=
+ =?utf-8?B?cFZYNEZmKzBNa3ZwV3k4YWFld2hUWFlTRTZkSVpqcDRxN1V5bXRwTFpuekdI?=
+ =?utf-8?B?akQ1bk5qZkZwQW1TTzlRZWpRaVBJVDFyTnY5a0duSkpQeWJNYUxWSDdaOFBs?=
+ =?utf-8?B?Mk55azNNUGVYNzl6TXd4Q01KQVJwK1lXc3o5R2xUVTJuUU5heTRtU1F6TGNS?=
+ =?utf-8?B?MXZQemJONEo0WTBPUXYwWWpXK1d4UnBtS09pZEdJVWFjWVJmMmw3VlU3alFV?=
+ =?utf-8?B?dEswcWpKZmFxQ2NQYVBYQlM3VzR1Wm9maXUzKzFkMW5nVW9RbnVXQkJuRzJk?=
+ =?utf-8?B?WTk3bE9VdXF2N24rbDUyakFEd09oeTFyWll0cjdrY1hGUVE3eUl4YWNJNElU?=
+ =?utf-8?B?RFVHMDdBVTZrTS9LeUFrNGZFWldzUGZPakRZTXZ6a3JQdDY5U2RZVm1lR01r?=
+ =?utf-8?B?Mms3ck9CNlY5NmdncUtROVdncVcxTGNrSWt2ZFR6TDNCbUM2QTVib1NzbXVR?=
+ =?utf-8?B?Y0tVeERLampueTE3VDlhb0RraDZpZDFSYWRrNm1NUStkdlprbXhxRkt2cHFn?=
+ =?utf-8?B?QzMzdTIrSjRYREtnOXl1RTVscHF2aFhOVDVEWWtMMU92VWluc0xob0RVRXFK?=
+ =?utf-8?B?aXZ0eVNpUlNwUStHOGtLSUpDRzZ0a3hRU1dITGxYb0t5WWdnUDNrS201ekZs?=
+ =?utf-8?B?UjNpTmdXSVkrOVI2NU9FZ1FXT3dCYnJKbW0yR05BblBXWHFWOXpZcXJibXV2?=
+ =?utf-8?B?YzM1eGRBL0NKZFpSLzNSRk01YzcyYUJzZzBmR2pvbE1WY0dNcUJKazdhV2xs?=
+ =?utf-8?B?aEFrSmdGTWsrSWp4SWxFeUEvMmw2Sng2eWp1V0RHWE1rMFRGM0JGL3lVVXRu?=
+ =?utf-8?B?OGp0b05NUW84ajluVXZ0cTNhbDIzWlRBRXNPZEp2cDcva0tYWG92WHYyNC9Q?=
+ =?utf-8?B?aVduL2R6d2E2dW94aTR6RW5XWlFxbHk1TitvRytMVW9SVlo4MjVpcVhVM0F5?=
+ =?utf-8?B?L1Bkb21zSjhKOFRZNnVvWGRwK3hva1B1aEZzb3VKTGFtSGNzVXVHQnZNNk5y?=
+ =?utf-8?B?YlMrQXo4Rkh1WDJNOS8xL3VNMTdWZjJjY29leStlMEpnUHltbW5IMmtNak16?=
+ =?utf-8?B?Y1IxN2U5YWVxTFluS0wva1pmV3VFUG5hSzZla1VlWXczTlBVT0xvMXBGaXEr?=
+ =?utf-8?B?aGxhR2dyYVU3T1FUR3ZMVXRPN2RGZm9vRGIyL0FqZ1JTNU1lM1VyTEpnTlEw?=
+ =?utf-8?B?YU1FMnlPYjZKMCtVYWhRQ29lcVBSeXd0SGtVaXV5RVpaOVNHdzR2NjEyOXlS?=
+ =?utf-8?B?MkdPRFFWM2lIc2o4SENxSjNrajlkL3I0cGJmcHBqNEh2UjhyQ2NXU1RlTEVh?=
+ =?utf-8?B?eVpJTGVkK3hBc3FOcG8yZFFRemV5dk5BUVZaWjVDZEFrbGVueTNqSUQwQ3BT?=
+ =?utf-8?B?SWMxSTVFUkdvbSs0OTY3M29kREJXYWJZcEtoY3h3bHVoMWhoVWVkczhheDRx?=
+ =?utf-8?B?K0E9PQ==?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72f92046-eb48-4600-e49b-08dd49afd2da
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5866.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 08:49:26.5467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AeK2ICF3weMmWHsE2eU+EPz0CT83mq6+B42B3wACHKTwp/3W5p16p97D2jqXMD4pjUaXidgciLtLtkBP66IxKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6378
+X-Proofpoint-GUID: ooG9kipDn7MndmcHZGUacdi2_I8W6hul
+X-Authority-Analysis: v=2.4 cv=UPwnHDfy c=1 sm=1 tr=0 ts=67a9bd9d cx=c_pps a=1mby/iHf9ieL9308fKykyA==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=bRTqI5nwn0kA:10
+ a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=1qlVYSn2M3m1R7bIfZ8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=zY0JdQc1-4EAyPf5TuXT:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: ooG9kipDn7MndmcHZGUacdi2_I8W6hul
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-10_04,2025-02-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2501170000
+ definitions=main-2502100073
 
-On 08.02.25 22:34, Barry Song wrote:
-> On Sat, Feb 8, 2025 at 9:50 PM Ge Yang <yangge1116@126.com> wrote:
->>
->>
->>
->> 在 2025/1/28 17:58, Barry Song 写道:
->>> On Sat, Jan 25, 2025 at 12:21 AM <yangge1116@126.com> wrote:
->>>>
->>>> From: yangge <yangge1116@126.com>
->>>>
->>>> Commit 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
->>>> simply reverts to the original method of using the cma_mutex to ensure
->>>> that alloc_contig_range() runs sequentially. This change was made to avoid
->>>> concurrency allocation failures. However, it can negatively impact
->>>> performance when concurrent allocation of CMA memory is required.
->>>
->>> Do we have some data?
->> Yes, I will add it in the next version, thanks.
->>>
->>>>
->>>> To address this issue, we could introduce an API for concurrency settings,
->>>> allowing users to decide whether their CMA can perform concurrent memory
->>>> allocations or not.
->>>
->>> Who is the intended user of cma_set_concurrency?
->> We have some drivers that use cma_set_concurrency(), but they have not
->> yet been merged into the mainline. The cma_alloc_mem() function in the
->> mainline also supports concurrent allocation of CMA memory. By applying
->> this patch, we can also achieve significant performance improvements in
->> certain scenarios. I will provide performance data in the next version.
->> I also feel it is somewhat
->>> unsafe since cma->concurr_alloc is not protected by any locks.
->> Ok, thanks.
->>>
->>> Will a user setting cma->concurr_alloc = 1 encounter the original issue that
->>> commit 60a60e32cf91 was attempting to fix?
->>>
->> Yes, if a user encounters the issue described in commit 60a60e32cf91,
->> they will not be able to set cma->concurr_alloc to 1.
+On 1/17/25 16:24, Bo Sun wrote:
+> On our Marvell OCTEON CN96XX board, we observed the following panic on
+> the latest kernel:
+> Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
+> Mem abort info:
+>    ESR = 0x0000000096000005
+>    EC = 0x25: DABT (current EL), IL = 32 bits
+>    SET = 0, FnV = 0
+>    EA = 0, S1PTW = 0
+>    FSC = 0x05: level 1 translation fault
+> Data abort info:
+>    ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+>    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [0000000000000080] user address but active_mm is swapper
+> Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+> Modules linked in:
+> CPU: 9 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc7-00149-g9bffa1ad25b8 #1
+> Hardware name: Marvell OcteonTX CN96XX board (DT)
+> pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : of_pci_add_properties+0x278/0x4c8
+> lr : of_pci_add_properties+0x258/0x4c8
+> sp : ffff8000822ef9b0
+> x29: ffff8000822ef9b0 x28: ffff000106dd8000 x27: ffff800081bc3b30
+> x26: ffff800081540118 x25: ffff8000813d2be0 x24: 0000000000000000
+> x23: ffff00010528a800 x22: ffff000107c50000 x21: ffff0001039c2630
+> x20: ffff0001039c2630 x19: 0000000000000000 x18: ffffffffffffffff
+> x17: 00000000a49c1b85 x16: 0000000084c07b58 x15: ffff000103a10f98
+> x14: ffffffffffffffff x13: ffff000103a10f96 x12: 0000000000000003
+> x11: 0101010101010101 x10: 000000000000002c x9 : ffff800080ca7acc
+> x8 : ffff0001038fd900 x7 : 0000000000000000 x6 : 0000000000696370
+> x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000822efa40
+> x2 : ffff800081341000 x1 : ffff000107c50000 x0 : 0000000000000000
+> Call trace:
+>   of_pci_add_properties+0x278/0x4c8 (P)
+>   of_pci_make_dev_node+0xe0/0x158
+>   pci_bus_add_device+0x158/0x210
+>   pci_bus_add_devices+0x40/0x98
+>   pci_host_probe+0x94/0x118
+>   pci_host_common_probe+0x120/0x1a0
+>   platform_probe+0x70/0xf0
+>   really_probe+0xb4/0x2a8
+>   __driver_probe_device+0x80/0x140
+>   driver_probe_device+0x48/0x170
+>   __driver_attach+0x9c/0x1b0
+>   bus_for_each_dev+0x7c/0xe8
+>   driver_attach+0x2c/0x40
+>   bus_add_driver+0xec/0x218
+>   driver_register+0x68/0x138
+>   __platform_driver_register+0x2c/0x40
+>   gen_pci_driver_init+0x24/0x38
+>   do_one_initcall+0x4c/0x278
+>   kernel_init_freeable+0x1f4/0x3d0
+>   kernel_init+0x28/0x1f0
+>   ret_from_fork+0x10/0x20
+> Code: aa1603e1 f0005522 d2800044 91000042 (f94040a0)
 > 
-> A user who hasn't encountered a problem yet doesn't mean they won't
-> encounter it; it most likely just means the testing time hasn't been long
-> enough.
+> This regression was introduced by commit 7246a4520b4b ("PCI: Use
+> preserve_config in place of pci_flags"). On our board, the 002:00:07.0
+> bridge is misconfigured by the bootloader. Both its secondary and
+> subordinate bus numbers are initialized to 0, while its fixed secondary
+> bus number is set to 8. However, bus number 8 is also assigned to another
+> bridge (0002:00:0f.0). Although this is a bootloader issue, before the
+> change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was
+> set by default when PCI_PROBE_ONLY was enabled, ensuing that all the
+> bus number for these bridges were reassigned, avoiding any conflicts.
 > 
-> Is it possible to implement a per-CMA lock or range lock that simultaneously
-> improves performance and prevents the original issue that commit
-> 60a60e32cf91 aimed to fix?
+> After the change introduced in commit 7246a4520b4b, the bus numbers
+> assigned by the bootloader are reused by all other bridges, except
+> the misconfigured 002:00:07.0 bridge. The kernel attempt to reconfigure
+> 002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
+> bootloader. However, since a pci_bus has already been allocated for
+> bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
+> 002:00:07.0. This results in a pci bridge device without a pci_bus
+> attached (pdev->subordinate == NULL). Consequently, accessing
+> pdev->subordinate in of_pci_prop_bus_range() leads to a NULL pointer
+> dereference.
 > 
-> I strongly believe that cma->concurr_alloc is not the right approach. Let's
-> not waste our time on this kind of hack or workaround.  Instead, we should
-> find a proper fix that remains transparent to users.
+> To summarize, we need to restore the PCI_REASSIGN_ALL_BUS flag when
+> PCI_PROBE_ONLY is enabled in order to work around issue like the one
+> described above.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7246a4520b4b ("PCI: Use preserve_config in place of pci_flags")
+> Signed-off-by: Bo Sun <Bo.Sun.CN@windriver.com>
+> ---
+>   drivers/pci/controller/pci-host-common.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+> index cf5f59a745b3..615923acbc3e 100644
+> --- a/drivers/pci/controller/pci-host-common.c
+> +++ b/drivers/pci/controller/pci-host-common.c
+> @@ -73,6 +73,10 @@ int pci_host_common_probe(struct platform_device *pdev)
+>   	if (IS_ERR(cfg))
+>   		return PTR_ERR(cfg);
+>   
+> +	/* Do not reassign resources if probe only */
+> +	if (!pci_has_flag(PCI_PROBE_ONLY))
+> +		pci_add_flags(PCI_REASSIGN_ALL_BUS);
+> +
+>   	bridge->sysdata = cfg;
+>   	bridge->ops = (struct pci_ops *)&ops->pci_ops;
+>   	bridge->msi_domain = true;
 
-Fully agreed.
+Dear All,
 
-IIUC, the problem is that we find a pageblock is already isolated. It 
-might be sufficient to return -EAGAIN in that case from 
-alloc_contig_range_noprof()->start_isolate_page_range() and retry in 
-CMA. ideally, we'd have a way to wait on some event (e.g., any pageblock 
-transitioning from isolated -> !isolated).
+I hope this message finds you well.
 
--- 
-Cheers,
+I’m writing to follow up on this patch. I understand the community may 
+be busy with numerous tasks, but I wanted to check if there has been any 
+feedback or progress on reviewing the patch. As the issue remains 
+unresolved, I just wanted to ensure my submission was received and is 
+being considered.
 
-David / dhildenb
+Thank you for your time and consideration.
 
+
+Best regards,
+Bo
 
