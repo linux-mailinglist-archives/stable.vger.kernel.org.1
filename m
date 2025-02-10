@@ -1,473 +1,186 @@
-Return-Path: <stable+bounces-114729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC7FA2FB7D
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 22:11:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317EFA2FBE7
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 22:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDCC93A34EA
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAA213A217A
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7781BD9F8;
-	Mon, 10 Feb 2025 21:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBA81C07D9;
+	Mon, 10 Feb 2025 21:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RsN9q8W0"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="o4ie3r4X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SH1JdfDf";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="o4ie3r4X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SH1JdfDf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867AE158874
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 21:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF3626462C
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 21:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739221890; cv=none; b=IvjCns9bgqvW6idRrcfaz79FYIxW+LqQVioBFhFRLwC4suH9Gbk2WmeUgGSToTBmY2uw3EilO/G37TDIvIm4hUdPyNdb9X/MkqeXbH51vjMObxMB83p0TtqNHxZLwJPqTBqWFXId36sLIzsl/fOsFgHCMeNYraKtQH1tT6HwrzY=
+	t=1739222488; cv=none; b=K9v4/U1IlS50YGhJkV6WyUkSM8lWHDf7IroLgXypYc79f5s2XL8unk5w7tHl8pDjTT/W4mPErEOkQPZQDbVjCL7gV+35qmK4rxonDDi4xqutpEr1wGVJSquPL0t7IXdshZUIuUNyM9CAPace28N3+woYUr+kI6LJ1fTATlvOZqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739221890; c=relaxed/simple;
-	bh=xR5X3LYlhUupbdJe0tYf/rX2Q0qTV+nSsE4Fs/kkGQY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SWX3+328hndzEZuGFdeBNhcPtjzzCpa9qEnTLIW+cYF1ISWBCKt0X4pX5x8GgufscxxOHNnJneUvsfY8hffmI6Khlz3yqgwaQmobLNmnIaq0ZlWskP5xdyGHjZiSsdA0FfAGzcar819p9XZ1BKKlkLUyW3oTopb8oqb3giHCOaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RsN9q8W0; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739221888; x=1770757888;
-  h=date:message-id:from:to:cc:subject:in-reply-to:
-   references:mime-version;
-  bh=xR5X3LYlhUupbdJe0tYf/rX2Q0qTV+nSsE4Fs/kkGQY=;
-  b=RsN9q8W0ISRcantsov3XVkM+py+zLS6z5JXKfpxstnBSPSGmpRKKGvLo
-   mRdMhcf/vFtiOaBjfnMgHiD4BBBkCko68EEjbjAxBruqoMu6duUqCUpSc
-   Fao0yYwmiRBt37SM5kQD2AsEqtVGz55ZI2OF/YvkNAcy5DyM2dSQA2UcW
-   K2Akb+kOaSFDp6MC361RVcp/vF+FIFleWSNSOl18AhZfjLV+R/ayVtUFd
-   ZH6VUTChmlmAE3dA8bjzRtueVGGRx/TsbGOPg1uMwg6TGPOg1Fyn0Yk86
-   maA7334kHnzvEG5J5PBItS7y94Fsbp9uEq1ZQm5jm7dpUaBo6mbzy8t4j
-   A==;
-X-CSE-ConnectionGUID: zcvhVasdQ46JH8HRWk6J2A==
-X-CSE-MsgGUID: 47si8PjuS3eJoqapAeijWw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="57362569"
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="57362569"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:11:28 -0800
-X-CSE-ConnectionGUID: nFuOlibFSLWyyDdRuMghlA==
-X-CSE-MsgGUID: cpnTye/ARa2NmaS7OS5n1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="117512767"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:11:28 -0800
-Date: Mon, 10 Feb 2025 13:11:27 -0800
-Message-ID: <85ikph33pc.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: umesh.nerlige.ramappa@intel.com,
-	jonathan.cavitt@intel.com,
-	matthew.brost@intel.com,
-	<stable@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] xe/oa: Fix query mode of operation for OAR/OAC" failed to apply to 6.13-stable tree
-In-Reply-To: <2025021014-cartridge-snooze-15bd@gregkh>
-References: <2025021014-cartridge-snooze-15bd@gregkh>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1739222488; c=relaxed/simple;
+	bh=u+q630rGM0hq0xtK+jIq7PM3K0NWpzLV/nCimPGEOgE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=PrIJXN1WfY1bjeoFkmBEUFnVIvziNO4tJO/EcXWXt3luMEY9yZ/MGuN/XNBIA0BqULRtRd2M1sr36VQ/2+2yuU4UF3DlD//mP1/bu/kLPQNIm7Vrej73is0cm965/+ZCrg/QZ6deK9JZmLNgI47uTbC3PawCoY2Poz1rjFhAwmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=o4ie3r4X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SH1JdfDf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=o4ie3r4X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SH1JdfDf; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 21CF51F387;
+	Mon, 10 Feb 2025 21:21:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1739222484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPnTMULYz2QKTxsTH6MKcOChxc1uI7LSyU7ezVi0xpU=;
+	b=o4ie3r4XADo3m/xdWdcfa72tBhZISpmv224m41s96SZD4LC+n22lB9HPlA+f7mrt21Ub3u
+	0NrjvpC38HPXzuSKLj6n3yROUV9bFLXCX5/6dN6qtGXNs/z2C+xLUIbSLnUe3ynV+YJDCW
+	qU0UapuyGj8HacaVG49z7Om1l/+wKMc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1739222484;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPnTMULYz2QKTxsTH6MKcOChxc1uI7LSyU7ezVi0xpU=;
+	b=SH1JdfDf+Hhedyb3uVW6+cWslip0WvcMzbAFGCxRcyhpdgmxwWlp3v+KBodcHuyVhQKGmo
+	5FKVZlaSAPac1oDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o4ie3r4X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SH1JdfDf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1739222484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPnTMULYz2QKTxsTH6MKcOChxc1uI7LSyU7ezVi0xpU=;
+	b=o4ie3r4XADo3m/xdWdcfa72tBhZISpmv224m41s96SZD4LC+n22lB9HPlA+f7mrt21Ub3u
+	0NrjvpC38HPXzuSKLj6n3yROUV9bFLXCX5/6dN6qtGXNs/z2C+xLUIbSLnUe3ynV+YJDCW
+	qU0UapuyGj8HacaVG49z7Om1l/+wKMc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1739222484;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPnTMULYz2QKTxsTH6MKcOChxc1uI7LSyU7ezVi0xpU=;
+	b=SH1JdfDf+Hhedyb3uVW6+cWslip0WvcMzbAFGCxRcyhpdgmxwWlp3v+KBodcHuyVhQKGmo
+	5FKVZlaSAPac1oDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE8EA13707;
+	Mon, 10 Feb 2025 21:21:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KhxaBdNtqmciIgAAD6G6ig
+	(envelope-from <krisman@suse.de>); Mon, 10 Feb 2025 21:21:23 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: Daniel Rosenberg <drosen@google.com>,  Todd Kjos <tkjos@google.com>,
+  Greg KH <gregkh@linuxfoundation.org>,  stable <stable@vger.kernel.org>,
+  Android Kernel Team <kernel-team@android.com>
+Subject: Re: f2fs: Introduce linear search for dentries
+In-Reply-To: <20250208053011.GK1130956@mit.edu> (Theodore Ts'o's message of
+	"Sat, 8 Feb 2025 00:30:11 -0500")
+Organization: SUSE
+References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
+	<2025020118-flap-sandblast-6a48@gregkh>
+	<CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
+	<CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
+	<20250208053011.GK1130956@mit.edu>
+Date: Mon, 10 Feb 2025 16:21:16 -0500
+Message-ID: <87pljpxzqr.fsf@mailhost.krisman.be>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 21CF51F387
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	HAS_ORG_HEADER(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+	TO_DN_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-On Mon, 10 Feb 2025 05:02:14 -0800, <gregkh@linuxfoundation.org> wrote:
->
+"Theodore Ts'o" <tytso@mit.edu> writes:
 
-Hi Greg,
+> Now, I'm not sure how much it's important to bring back the reverted
+> patch.  Yes, I know it's claimed that it fixes a "security issue", but
+> in my opinion, it's pretty bullshit worry.  First, almost no one uses
+> the case folded feature other than Android, and second, do you
+> *really* think someone will really be trying to run git under Termux
+> on their Pixel 9 Pro Fold?  I mean.... I guess; I do have Termux
+> installed on my P9PF, but even I'm not crazy enough to try install
+> git, emacs, gcc, etc., on an Android phone and expect to get aything
+> useful done.  Using ssh, or mosh, with Termux, sure.  But git?  Not
+> convinced....
+>
+> Anyway, if we *do* want bring back the reverted patch, it would need
+> to be reworked so that there is a bit in the encoding flags which
+> indicates how we are treating Unicode "ignorable" characters, so that
+> e2fsprogs and f2fs-tools can do the right thing.  Once the kernel can
+> handle things with and without ignorable characters, on a switchable
+> basis based on a bit in the superblock, then we wouldn't need to use
+> the linear fallback hack, with the attendant performance penalty.
+>
+> But honestly, I'm not sure it worth it.  But if someone sends me a
+> patch which handles the switchable unicode casefold, I'm willing to
+> spend time to get this integrated into e2fsprogs.
 
-> The patch below does not apply to the 6.13-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following commands:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 55039832f98c7e05f1cf9e0d8c12b2490abd0f16
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021014-cartridge-snooze-15bd@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
->
-> Possible dependencies:
+What I think would be a correct approach for commit 5c26d2f1d3f5
+("unicode: Don't special case ignorable code points") is to fold *some*
+code points: zero-length characters like ZWSP are folded as they should
+be, but we limit the list to not normalize those characters that make
+some sense, like the Variant Selectors.  This would be similar to what
+APFS seems to do.  This would be complex, but the user-visible semantics
+would be slightly more sane. It should be done with caution, with a bit
+marking this change and preserving the current unicode database, to
+prevent further breakage.  But given the damage this apparent simple
+patch has caused already, I myself won't pursue that without a real
+security motivation.
 
-This was a modified commit we had sent for 6.12. It will not apply to
-6.13. Neither is it needed for 6.13, since the original commit
+Thanks for the linear search patches.  Not great, but it solves the
+current situation. For your ext4 patch:
 
-	55039832f98c ("xe/oa: Fix query mode of operation for OAR/OAC")
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
 
-is already present in 6.13.
-
-Thanks.
---
-Ashutosh
-
->
->
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 Mon Sep 17 00:00:00 2001
-> From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Date: Fri, 20 Dec 2024 09:19:18 -0800
-> Subject: [PATCH] xe/oa: Fix query mode of operation for OAR/OAC
->
-> This is a set of squashed commits to facilitate smooth applying to
-> stable. Each commit message is retained for reference.
->
-> 1) Allow a GGTT mapped batch to be submitted to user exec queue
->
-> For a OA use case, one of the HW registers needs to be modified by
-> submitting an MI_LOAD_REGISTER_IMM command to the users exec queue, so
-> that the register is modified in the user's hardware context. In order
-> to do this a batch that is mapped in GGTT, needs to be submitted to the
-> user exec queue. Since all user submissions use q->vm and hence PPGTT,
-> add some plumbing to enable submission of batches mapped in GGTT.
->
-> v2: ggtt is zero-initialized, so no need to set it false (Matt Brost)
->
-> 2) xe/oa: Use MI_LOAD_REGISTER_IMMEDIATE to enable OAR/OAC
->
-> To enable OAR/OAC, a bit in RING_CONTEXT_CONTROL needs to be set.
-> Setting this bit cause the context image size to change and if not done
-> correct, can cause undesired hangs.
->
-> Current code uses a separate exec_queue to modify this bit and is
-> error-prone. As per HW recommendation, submit MI_LOAD_REGISTER_IMM to
-> the target hardware context to modify the relevant bit.
->
-> In v2 version, an attempt to submit everything to the user-queue was
-> made, but it failed the unprivileged-single-ctx-counters test. It
-> appears that the OACTXCONTROL must be modified from a remote context.
->
-> In v3 version, all context specific register configurations were moved
-> to use LOAD_REGISTER_IMMEDIATE and that seems to work well. This is a
-> cleaner way, since we can now submit all configuration to user
-> exec_queue and the fence handling is simplified.
->
-> v2:
-> (Matt)
-> - set job->ggtt to true if create job is successful
-> - unlock vm on job error
->
-> (Ashutosh)
-> - don't wait on job submission
-> - use kernel exec queue where possible
->
-> v3:
-> (Ashutosh)
-> - Fix checkpatch issues
-> - Remove extra spaces/new-lines
-> - Add Fixes: and Cc: tags
-> - Reset context control bit when OA stream is closed
-> - Submit all config via MI_LOAD_REGISTER_IMMEDIATE
->
-> (Umesh)
-> - Update commit message for v3 experiment
-> - Squash patches for easier port to stable
->
-> v4:
-> (Ashutosh)
-> - No need to pass q to xe_oa_submit_bb
-> - Do not support exec queues with width > 1
-> - Fix disabling of CTX_CTRL_OAC_CONTEXT_ENABLE
->
-> v5:
-> (Ashutosh)
-> - Drop reg_lri related comments
-> - Use XE_OA_SUBMIT_NO_DEPS in xe_oa_load_with_lri
->
-> Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset OAC_CONTEXT_ENABLE on OA stream close")
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com> # commit 1
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20241220171919.571528-2-umesh.nerlige.ramappa@intel.com
->
-> diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-> index ae94490b0eac..9add60097ab5 100644
-> --- a/drivers/gpu/drm/xe/xe_oa.c
-> +++ b/drivers/gpu/drm/xe/xe_oa.c
-> @@ -74,12 +74,6 @@ struct xe_oa_config {
->	struct rcu_head rcu;
->  };
->
-> -struct flex {
-> -	struct xe_reg reg;
-> -	u32 offset;
-> -	u32 value;
-> -};
-> -
->  struct xe_oa_open_param {
->	struct xe_file *xef;
->	u32 oa_unit_id;
-> @@ -605,19 +599,38 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
->	return ret;
->  }
->
-> +static void xe_oa_lock_vma(struct xe_exec_queue *q)
-> +{
-> +	if (q->vm) {
-> +		down_read(&q->vm->lock);
-> +		xe_vm_lock(q->vm, false);
-> +	}
-> +}
-> +
-> +static void xe_oa_unlock_vma(struct xe_exec_queue *q)
-> +{
-> +	if (q->vm) {
-> +		xe_vm_unlock(q->vm);
-> +		up_read(&q->vm->lock);
-> +	}
-> +}
-> +
->  static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa_submit_deps deps,
->					 struct xe_bb *bb)
->  {
-> +	struct xe_exec_queue *q = stream->exec_q ?: stream->k_exec_q;
->	struct xe_sched_job *job;
->	struct dma_fence *fence;
->	int err = 0;
->
-> -	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
-> -	job = xe_bb_create_job(stream->k_exec_q, bb);
-> +	xe_oa_lock_vma(q);
-> +
-> +	job = xe_bb_create_job(q, bb);
->	if (IS_ERR(job)) {
->		err = PTR_ERR(job);
->		goto exit;
->	}
-> +	job->ggtt = true;
->
->	if (deps == XE_OA_SUBMIT_ADD_DEPS) {
->		for (int i = 0; i < stream->num_syncs && !err; i++)
-> @@ -632,10 +645,13 @@ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa
->	fence = dma_fence_get(&job->drm.s_fence->finished);
->	xe_sched_job_push(job);
->
-> +	xe_oa_unlock_vma(q);
-> +
->	return fence;
->  err_put_job:
->	xe_sched_job_put(job);
->  exit:
-> +	xe_oa_unlock_vma(q);
->	return ERR_PTR(err);
->  }
->
-> @@ -684,65 +700,19 @@ static void xe_oa_free_configs(struct xe_oa_stream *stream)
->	dma_fence_put(stream->last_fence);
->  }
->
-> -static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
-> -			     struct xe_bb *bb, const struct flex *flex, u32 count)
-> -{
-> -	u32 offset = xe_bo_ggtt_addr(lrc->bo);
-> -
-> -	do {
-> -		bb->cs[bb->len++] = MI_STORE_DATA_IMM | MI_SDI_GGTT |
-> -				    MI_FORCE_WRITE_COMPLETION_CHECK |
-> -				    MI_SDI_NUM_DW(1);
-> -		bb->cs[bb->len++] = offset + flex->offset * sizeof(u32);
-> -		bb->cs[bb->len++] = 0;
-> -		bb->cs[bb->len++] = flex->value;
-> -
-> -	} while (flex++, --count);
-> -}
-> -
-> -static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
-> -				  const struct flex *flex, u32 count)
-> +static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri, u32 count)
->  {
->	struct dma_fence *fence;
->	struct xe_bb *bb;
->	int err;
->
-> -	bb = xe_bb_new(stream->gt, 4 * count, false);
-> +	bb = xe_bb_new(stream->gt, 2 * count + 1, false);
->	if (IS_ERR(bb)) {
->		err = PTR_ERR(bb);
->		goto exit;
->	}
->
-> -	xe_oa_store_flex(stream, lrc, bb, flex, count);
-> -
-> -	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
-> -	if (IS_ERR(fence)) {
-> -		err = PTR_ERR(fence);
-> -		goto free_bb;
-> -	}
-> -	xe_bb_free(bb, fence);
-> -	dma_fence_put(fence);
-> -
-> -	return 0;
-> -free_bb:
-> -	xe_bb_free(bb, NULL);
-> -exit:
-> -	return err;
-> -}
-> -
-> -static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
-> -{
-> -	struct dma_fence *fence;
-> -	struct xe_bb *bb;
-> -	int err;
-> -
-> -	bb = xe_bb_new(stream->gt, 3, false);
-> -	if (IS_ERR(bb)) {
-> -		err = PTR_ERR(bb);
-> -		goto exit;
-> -	}
-> -
-> -	write_cs_mi_lri(bb, reg_lri, 1);
-> +	write_cs_mi_lri(bb, reg_lri, count);
->
->	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
->	if (IS_ERR(fence)) {
-> @@ -762,71 +732,55 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
->  static int xe_oa_configure_oar_context(struct xe_oa_stream *stream, bool enable)
->  {
->	const struct xe_oa_format *format = stream->oa_buffer.format;
-> -	struct xe_lrc *lrc = stream->exec_q->lrc[0];
-> -	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
->	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
->		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
->
-> -	struct flex regs_context[] = {
-> +	struct xe_oa_reg reg_lri[] = {
->		{
->			OACTXCONTROL(stream->hwe->mmio_base),
-> -			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
->			enable ? OA_COUNTER_RESUME : 0,
->		},
-> +		{
-> +			OAR_OACONTROL,
-> +			oacontrol,
-> +		},
->		{
->			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
-> -			regs_offset + CTX_CONTEXT_CONTROL,
-> -			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE),
-> +			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
-> +				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0)
->		},
->	};
-> -	struct xe_oa_reg reg_lri = { OAR_OACONTROL, oacontrol };
-> -	int err;
->
-> -	/* Modify stream hwe context image with regs_context */
-> -	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
-> -				     regs_context, ARRAY_SIZE(regs_context));
-> -	if (err)
-> -		return err;
-> -
-> -	/* Apply reg_lri using LRI */
-> -	return xe_oa_load_with_lri(stream, &reg_lri);
-> +	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
->  }
->
->  static int xe_oa_configure_oac_context(struct xe_oa_stream *stream, bool enable)
->  {
->	const struct xe_oa_format *format = stream->oa_buffer.format;
-> -	struct xe_lrc *lrc = stream->exec_q->lrc[0];
-> -	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
->	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
->		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
-> -	struct flex regs_context[] = {
-> +	struct xe_oa_reg reg_lri[] = {
->		{
->			OACTXCONTROL(stream->hwe->mmio_base),
-> -			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
->			enable ? OA_COUNTER_RESUME : 0,
->		},
-> +		{
-> +			OAC_OACONTROL,
-> +			oacontrol
-> +		},
->		{
->			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
-> -			regs_offset + CTX_CONTEXT_CONTROL,
-> -			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE) |
-> +			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
-> +				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0) |
->			_MASKED_FIELD(CTX_CTRL_RUN_ALONE, enable ? CTX_CTRL_RUN_ALONE : 0),
->		},
->	};
-> -	struct xe_oa_reg reg_lri = { OAC_OACONTROL, oacontrol };
-> -	int err;
->
->	/* Set ccs select to enable programming of OAC_OACONTROL */
->	xe_mmio_write32(&stream->gt->mmio, __oa_regs(stream)->oa_ctrl,
->			__oa_ccs_select(stream));
->
-> -	/* Modify stream hwe context image with regs_context */
-> -	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
-> -				     regs_context, ARRAY_SIZE(regs_context));
-> -	if (err)
-> -		return err;
-> -
-> -	/* Apply reg_lri using LRI */
-> -	return xe_oa_load_with_lri(stream, &reg_lri);
-> +	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
->  }
->
->  static int xe_oa_configure_oa_context(struct xe_oa_stream *stream, bool enable)
-> @@ -2110,8 +2064,8 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
->		if (XE_IOCTL_DBG(oa->xe, !param.exec_q))
->			return -ENOENT;
->
-> -		if (param.exec_q->width > 1)
-> -			drm_dbg(&oa->xe->drm, "exec_q->width > 1, programming only exec_q->lrc[0]\n");
-> +		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1))
-> +			return -EOPNOTSUPP;
->	}
->
->	/*
-> diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
-> index 3a75a08b6be9..c8ab37fa0d19 100644
-> --- a/drivers/gpu/drm/xe/xe_ring_ops.c
-> +++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-> @@ -223,7 +223,10 @@ static int emit_pipe_imm_ggtt(u32 addr, u32 value, bool stall_only, u32 *dw,
->
->  static u32 get_ppgtt_flag(struct xe_sched_job *job)
->  {
-> -	return job->q->vm ? BIT(8) : 0;
-> +	if (job->q->vm && !job->ggtt)
-> +		return BIT(8);
-> +
-> +	return 0;
->  }
->
->  static int emit_copy_timestamp(struct xe_lrc *lrc, u32 *dw, int i)
-> diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
-> index f13f333f00be..d942b20a9f29 100644
-> --- a/drivers/gpu/drm/xe/xe_sched_job_types.h
-> +++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
-> @@ -56,6 +56,8 @@ struct xe_sched_job {
->	u32 migrate_flush_flags;
->	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
->	bool ring_ops_flush_tlb;
-> +	/** @ggtt: mapped in ggtt. */
-> +	bool ggtt;
->	/** @ptrs: per instance pointers. */
->	struct xe_job_ptrs ptrs[];
->  };
->
+-- 
+Gabriel Krisman Bertazi
 
