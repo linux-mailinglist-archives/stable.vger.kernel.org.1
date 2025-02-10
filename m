@@ -1,103 +1,132 @@
-Return-Path: <stable+bounces-114704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9F7A2F6BB
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:19:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3FDA2F6C5
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5525166033
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878A11881944
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F7B257455;
-	Mon, 10 Feb 2025 18:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752E4255E4C;
+	Mon, 10 Feb 2025 18:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="JYGLSQQ8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHaCjUey"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BB82566EB
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 18:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E5425B690
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 18:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739211488; cv=none; b=Gsu+dr3BbBcdSz9W6qJJDaLY2FZHLbCuRh6QUwqTdeJMLutcHHnHV+AFgqgOfUjYlSLMXrNiFb+paossjdBA4fCD1Zt+uc/3UOOZc4q2dHV9UKlA0G/wWpOrgLnC3gmD4wgGC7RGyx0E5SGSigAEFCRKnbZTKZHZNynMSC4/+2k=
+	t=1739211616; cv=none; b=DriWpAvS4IeAiXpq47VACAOTWLzVVtGt6cQNixEBwzQkpu9N4a9XE6jw+CB7AS9Q41EBmw4kXEY9CL/bmwYKSsw/u6meeUFEXcW7doCaTmP1EAkGbncqnW1irqIzS7kLb2vN7v0ZMCEUsqyO0744V7coNXkLlH+58XGvmVk6B8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739211488; c=relaxed/simple;
-	bh=WP2GX0lRf7cnQXbdHt+BeLm2SEKYPAt8D177Sm1NedM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RkvxaKWmrK6ko4KFlEFfkwgqJRAZYq0PLZww6+x8f0Nm1tC0yiIGqoUuurVLzvJ89Azwgk33+5+w2yYlywl87QsMKlD4Qn/emdGk3LzykEWV3IGnmKSSd2iwhZQ0vGHve6laWHsBPEMOXR3f/MEdUaV/F2DHOcdnl9nUb3wq6tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=JYGLSQQ8; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 95044A0012;
-	Mon, 10 Feb 2025 19:17:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=jNMZP/MEND6A1/9DI2zt
-	mU4pMdVhigV8aegZXs12/mo=; b=JYGLSQQ8vrJOwdevMv8GC/dB64erBCiN6dd0
-	0YSxo0gDICTUZz++V0+UUf9DW1YayMQ4uoiJUE4c2xSwYCILIdhcXhVGTqrq1/RZ
-	lIBPahv+MHShElT9EEwuhz04YcJyqnNOn81hWD/FTaMaqkOUwcF5FyjFX/yMr01q
-	kj7bKm8Uqxk2K7ZU4Mo3sBr9g5TTzAKecMrHcKx92PTqdcdvOkUV4alUTYjg85Mr
-	/ROtSW5ONPgQmSAH48RwRqiUpkMXkA+7VzxAnDdCDFT2ZBKtTi4WyEk157Ba0QgS
-	KXqg4Zv3iKyozyyj5HVN4Q60r8tn6ILKATEwTv1AnxZtLkZclelIf2F/uMj3X1Dd
-	FcCrLpZK4ctJBJwvfCCJfoh134PUgWNVmDtzmqe4rQXBaBAB7c4TZczMklXkqTxj
-	q6tx+C4I4BzxNIc4ZecOPiv1yp9vwB1Pv9mdH8dCUI6nPzsWIJOxjFw+x1gmNzbf
-	X38PakjAAZMH29Yg/ubAZNWmGYaSi4WMC1R5wCKXq6OBHPK4suXIvBx2ZFrbNm4f
-	ZFHALjW0Yk2hc1sIOTbtzPbdkOyPIwpoeI3NZ1FL0XqTnU626WmXhsntCdFCFmh6
-	sKHBLXVt3262jxtpR8pjiHy0GeSpLCuwsQRBinYtYRjLFApCDY5SHJJ5r7xtdUur
-	IcEGvRc=
-Message-ID: <fde3442f-3ea5-4742-af70-9d243678e303@prolan.hu>
-Date: Mon, 10 Feb 2025 19:17:54 +0100
+	s=arc-20240116; t=1739211616; c=relaxed/simple;
+	bh=W3QAGc5LW3FYdLUn7iW7HNDDQXI4yVqVYSST3W+bEUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFptmkSEakEqR/H4fRzxoB7p/1HsFBiYaPQ5A1NDws8GLUyCPyS1J5ogkMInzIjBobKUWfYeae3IPSfi53Ofvu2niF67mfvMUutv5ih44cZ+c+zD7ewbw4BsHbvdv5Tw95HxzEq+iV/26ZkMEN+TPAMEzFHlfn0eNjFGeO5jnaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHaCjUey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427D2C4CED1;
+	Mon, 10 Feb 2025 18:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739211615;
+	bh=W3QAGc5LW3FYdLUn7iW7HNDDQXI4yVqVYSST3W+bEUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HHaCjUeyImHZ6oNFBg92Mgwpw1VlhwyRXcVk5+i5KnHOxhoj+D8FKbbxReonNCz6b
+	 ESPMZaTfyYTtSVgGDUFPbObpAvagpxDhS9xjOCWiYpdR15N3XTKvNRj+0A3biZWbC1
+	 +U12EMiYZjVXVOnbYqujQXyHuGM5PwzkQnlpYz2x7eBwMU5RtcqPQCzKVQ3SPbqzxz
+	 25X1KqKBieCA12R+tMkcoPE8VtVuZrOCafycAwIgJTuLizifrdxJ+g6UsUec5MbY/0
+	 dGAGnTPgdlKFe3IDrbHdAwdktxM7x7mT3cCOn4E2xjHBPywSfLZZla8/OebUknXsxb
+	 7WoMtL0BHqRQw==
+Date: Mon, 10 Feb 2025 18:20:09 +0000
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <20250210182009.GB7926@willie-the-truck>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-9-mark.rutland@arm.com>
+ <20250210165325.GI7568@willie-the-truck>
+ <Z6o1t7ys2qVaZ-7n@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] spi: atmel-qspi: Memory barriers after
- memory-mapped I/O" failed to apply to 6.13-stable tree
-To: <gregkh@linuxfoundation.org>, <broonie@kernel.org>
-CC: <stable@vger.kernel.org>
-References: <2025021058-ruse-paradox-92e6@gregkh>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <2025021058-ruse-paradox-92e6@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852617666
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6o1t7ys2qVaZ-7n@J2N7QTR9R3>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi,
-
-On 2025. 02. 10. 13:52, gregkh@linuxfoundation.org wrote:
+On Mon, Feb 10, 2025 at 05:21:59PM +0000, Mark Rutland wrote:
+> On Mon, Feb 10, 2025 at 04:53:27PM +0000, Will Deacon wrote:
+> > On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
+> > > +static inline void fpsimd_lazy_switch_to_host(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	u64 zcr_el1, zcr_el2;
+> > > +
+> > > +	if (!guest_owns_fp_regs())
+> > > +		return;
+> > > +
+> > > +	if (vcpu_has_sve(vcpu)) {
+> > > +		zcr_el1 = read_sysreg_el1(SYS_ZCR);
+> > > +		__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)) = zcr_el1;
+> > > +
+> > > +		/*
+> > > +		 * The guest's state is always saved using the guest's max VL.
+> > > +		 * Ensure that the host has the guest's max VL active such that
+> > > +		 * the host can save the guest's state lazily, but don't
+> > > +		 * artificially restrict the host to the guest's max VL.
+> > > +		 */
+> > > +		if (has_vhe()) {
+> > > +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> > > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
+> > > +		} else {
+> > > +			zcr_el2 = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
+> > > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
+> > > +
+> > > +			zcr_el1 = vcpu_sve_max_vq(vcpu) - 1;
+> > > +			write_sysreg_el1(zcr_el1, SYS_ZCR);
+> > 
+> > Do we need an ISB before this to make sure that the CPTR traps have been
+> > deactivated properly?
 > 
-> The patch below does not apply to the 6.13-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> Sorry, I had meant to add a comment here that this relies upon a
+> subtlety that avoids the need for the ISB.
 
-There is a dependency, that I specified in the commit in accordance with 
-[1]:
+Ah yes, it really all hinges on guest_owns_fp_regs() and so I think a
+comment would be helpful, thanks.
 
-> Cc: stable@vger.kernel.org # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
-> Cc: stable@vger.kernel.org # 6.x.y
-> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-> Link: https://patch.msgid.link/20241219091258.395187-1-csokas.bence@prolan.hu
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+Just on this, though:
 
-[1] https://docs.kernel.org/process/stable-kernel-rules.html#option-1
+> When the guest owns the FP regs here, we know:
+> 
+> * If the guest doesn't have SVE, then we're not poking anything, and so
+>   no ISB is necessary.
+> 
+> * If the guest has SVE, then either:
+> 
+>   - The guest owned the FP regs when it was entered.
+> 
+>   - The guest *didn't* own the FP regs when it was entered, but acquired
+>     ownership via a trap which executed kvm_hyp_handle_fpsimd().
+> 
+>   ... and in either case, *after* disabling the traps there's been an
+>   ERET to the guest and an exception back to hyp, either of which
+>   provides the necessary context synchronization such that the traps are
+>   disabled here.
 
-Please re-pick with c0a0203cf579. As a side note, I also specified 6.x.y 
-because - in my experience - anything earlier will not cleanly apply 
-anyways. So you can safely drop these from the 5.x.y queues.
+What about the case where we find that there's an interrupt pending on
+return to the guest? In that case, I think we elide the ERET and go back
+to the host (see the check of isr_el1 in hyp/entry.S).
 
-Bence
-
+Will
 
