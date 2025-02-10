@@ -1,125 +1,111 @@
-Return-Path: <stable+bounces-114506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789CAA2E9D4
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:45:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DABA2E8BA
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F5607A1AC0
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:44:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 480D518831ED
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B13F1DE2A4;
-	Mon, 10 Feb 2025 10:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056241C5D6F;
+	Mon, 10 Feb 2025 10:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Rp9EA02h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lpgejfv6"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA65A1CAA82;
-	Mon, 10 Feb 2025 10:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF061B414F;
+	Mon, 10 Feb 2025 10:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739184309; cv=none; b=Bo2TwAGks7UW8SYWsNpUAaLoSVIXyLB/TEAJvvfId2D6g5hW6aUFtG7B2fxcegqol0VcNSEXOgdmqMsmH6vi2WFIlrnxJuLS4bUh8B/en1a5E1H1KOYKXr1DJVD4vkKVr0f8dF8IPghIND4M3HKrp1K5OCvF7C1BOU1iiwJR6jo=
+	t=1739182156; cv=none; b=nxeJ+gr5AYZ/J34Nd02HbIi5kZz1EbaZITtK8stQV2MV/IqYM16U3TOZE9w+q2P/CPb/hZOBBDRPwVne5Y9hsmVU/DC1niooJXAwPG5rUTDNisMyt9Zqm9DYxhvfgxn36Q74G0JcoQKfTC4xxtgyb0vsj6Jn2swfDmqchIrE0+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739184309; c=relaxed/simple;
-	bh=Cvj5SmS/2dD6/BHiaLLezmb1EqPOsWisTTunV3hF0qA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=UT15530gG2ZUvBsJQgLI2SiXWNS5vKoIu+vyzSn3laSwA1fjNY5O1mlylk2Dt+XD042Btn6PaLuV+3LMGrpv4RzFbPbB75h5V2zMkNSAdiO7cmWZrPoSyokvEIw3eGcQzBiwMC5trxtJCA78o/XAsouaYdxTYomsw68zByYUEtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Rp9EA02h; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A9esgn022216;
-	Mon, 10 Feb 2025 11:07:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	KrNQJraXZVjilPFdNhBPtBLSm+xWnPeDyMXrb2bQCls=; b=Rp9EA02hn4j6/zpf
-	9WS8gwiAvBc0R7ipgIptAfQyN02mO4Mw5Ll8jIAuhu3B4UVda1tW2VSZVOS8Srmd
-	rOLx0G8ukSY/k98zd1YrQn3FkjRV+Ih3fWyjqoclFZzz7pmqj+QZNgVd/BH8mwwI
-	PsCghMr5T+r/8EeBqw9I9+txbubOAZzObCz1koLomFf5ZxjYGGFBnXboTwzOnfS1
-	POSSuGMf4MYWxJUDbD5kbAhpSYRu3ZBtupaMrj+qItsRrTt1UmVpuCJe5/tjETgj
-	G3RRiy6buyBL3CRbwWQSQMD57qpFTpUnWoUkdSt/KITAncS6rQAri3DfxrEqWNfp
-	HKqNSA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44p0rhwv3v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 11:07:16 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id AC6B84004D;
-	Mon, 10 Feb 2025 11:06:16 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C587A2BEFA0;
-	Mon, 10 Feb 2025 11:05:02 +0100 (CET)
-Received: from localhost (10.252.6.236) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 10 Feb
- 2025 11:05:02 +0100
-From: Alain Volmat <alain.volmat@foss.st.com>
-Date: Mon, 10 Feb 2025 11:04:31 +0100
-Subject: [PATCH 2/2] dt-bindings: media: st,stmipid02: correct
- lane-polarities maxItems
+	s=arc-20240116; t=1739182156; c=relaxed/simple;
+	bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HLnDLas9bREASpuIhNgVuxbXiMs8qNIluaWB9iMqCvveaAHZBGIZEoeL5slil5JLrAqkXpebgSIXGbMGeytfnigZJs2N4w0b6p09dpNXgVWIJaCDkGmrwoJyoJYtD0aqWR8r62RmU1T/VpBYJZd6U2yjHmTRWpFch8FGQ4AND1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lpgejfv6; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5de4d3bbc76so4900011a12.3;
+        Mon, 10 Feb 2025 02:09:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739182152; x=1739786952; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
+        b=Lpgejfv6On9powqxnvhWENz+KFE38JVDUyEQ2Tz/Df9UwJDUVzjcK3+Jf6/wq7Z6H/
+         uoCobHj0cP9AMwxrplTbacGO4dnoAsLw1i6HeZ7pQtyTDXcZQshCH1ppgZjfMnHiOJNL
+         G88CamyxSTPdVegHkdzdtW3z6ncKLIcqps1c7mQ4HZ0/l4mdAjk4RAb44mNqarci5oIe
+         0HuL61NbZNSFF7hnkoFwRMYi1f4TBGy7UOeq4OTsDKFrNWSW7Al+jgWSN8+c2oylNFbi
+         0VzCFCkEhLvRTwIW5e18J6cp+TOqWVpdo2MniOEAAMu5Z7H0CYLmenpFuHpRYCUNu2iC
+         1Zmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739182152; x=1739786952;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
+        b=e+/WhpMFNoAbOjTJDWqi7ZiYc70N4NqAvS4PNCtdfeYIyzbrjy271TVih+r3+C0CnA
+         iyCN+YaU3XF5mHeRrdwrgE1b20V1WlXJ8g+XfpebBfE6QkjIft4peO5hxmPU3R+y090k
+         VtIuDETqS1g+IuOCvhFdB+XefECcO8L9M7v235q+/fc8+6jA3hLSthMgU9T70moqkWbL
+         JpemKi12hM8S5dCq2VFSyvNkxbPSCgSHLGymM0Tfm7+3iwwVbvTkWMgytzuftLjkl+4Q
+         g0HBiSLH549s8/GsDmYQ116sb/AYzT0XgeKESonB7AyzbiyKtuvpj3FbztrZeLXtUdsa
+         7nrA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwf2Sk+0fkHg5s5ODw8u2RJpWy4R+JxO4cp9DR4+gR6gJVJMnoi9qh7LK3JkWImw5BCwSia76q@vger.kernel.org, AJvYcCXI9i9QtFq0hJGpg3Eq/EjWy6mPIk7NSRy31BLI4PtEcyMjhvIwk0mwDAvD4E5QinUWN8A1KxFEGr2hCxc=@vger.kernel.org, AJvYcCXPVEm+c2s73Z4G/j4DcweokSrXjHeABwS5T449yb9YjNU1yjWjmzOqQ4LKN+b7Vdc6mShMFkhm0rYKLFCifl5AY+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZhymV3pIbZTsnqhf0X7qPuKXaLYYPNKZTqXE0WvppkjqmT2Z4
+	n3O+MXZcNx4d++nGQb2jKWc2rVDcjoypSD675zBlqGpEQkyHEQQQbNV4deXTLRTwkAQaYPjQJXt
+	A7QozIyQYL5H3XkHgZSMr8Qi7Pvo=
+X-Gm-Gg: ASbGncuux88gdgY4niWul+JSZR3SluEgCeWbrWPml93YRUdeQLKzagl1THha3DQ4N98
+	8K0Yc4rLedAIdVrZX5OnfCs5LQCkbkRnDyev7za6YMebRXDqgJqya5v61DNI68TuuplxSqg6J
+X-Google-Smtp-Source: AGHT+IH05m3EGDv37NgCHa7r72kurcQ8bsVSV4tB6ZTwaZHVAXVKJd9j8KrWy0sZ6Kd7oDJwTcHKTTZ7neMq4xpHZUE=
+X-Received: by 2002:a05:6402:42ce:b0:5dc:73fc:2693 with SMTP id
+ 4fb4d7f45d1cf-5de45023654mr16526726a12.18.1739182152139; Mon, 10 Feb 2025
+ 02:09:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250210-6-14-stm32-media-fixes-v1-2-c64ebe9af8bb@foss.st.com>
-References: <20250210-6-14-stm32-media-fixes-v1-0-c64ebe9af8bb@foss.st.com>
-In-Reply-To: <20250210-6-14-stm32-media-fixes-v1-0-c64ebe9af8bb@foss.st.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Sylvain Petinot
-	<sylvain.petinot@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Marek Vasut <marex@denx.de>
-CC: <devicetree@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, Alain Volmat <alain.volmat@foss.st.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_05,2025-02-10_01,2024-11-22_01
+References: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
+In-Reply-To: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
+From: Anand Moon <linux.amoon@gmail.com>
+Date: Mon, 10 Feb 2025 15:38:57 +0530
+X-Gm-Features: AWEUYZl-ymjB7hMb8tRQlI4jusE7F1xxvFV_L9geMxys9qNgTR3hdyKQc5pas2k
+Message-ID: <CANAwSgQAfwq2tmqB=+896YGhFFa1hJ18W-cAes2o2bseJiLUsQ@mail.gmail.com>
+Subject: Re: [PATCH] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and
+ SSC_REFCLKSEL masks in refclk
+To: Kaustabh Chakraborty <kauschluss@disroot.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Vivek Gautam <gautam.vivek@samsung.com>, linux-phy@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-The MIPID02 can use up to 2 data lanes which leads to having a maximum
-item number of 3 for the lane-polarities since this also contains the
-clock lane.
+Hi Kaustabh,
 
-CC: stable@vger.kernel.org
-Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
----
- Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Sun, 9 Feb 2025 at 00:30, Kaustabh Chakraborty
+<kauschluss@disroot.org> wrote:
+>
+> In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
+> PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
+> inverted when applied to the register values. Fix it.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
+> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-index b68141264c0e9fe0e530ce3b06fa3434fa712b38..4d40e75b4e1efff673647dff7bf984c89abca4cf 100644
---- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-@@ -71,7 +71,7 @@ properties:
-                 description:
-                   Any lane can be inverted or not.
-                 minItems: 1
--                maxItems: 2
-+                maxItems: 3
- 
-             required:
-               - data-lanes
+Reviewed-by: Anand Moon <linux.amoon@gmail.com>
 
--- 
-2.34.1
+Thanks
 
+-Anand
 
