@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-114514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F68A2ECE6
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:53:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB08A2ECEB
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ECCA18888E9
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB9EE188453F
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D052206A5;
-	Mon, 10 Feb 2025 12:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D0022578E;
+	Mon, 10 Feb 2025 12:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/qTvmR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIu+Q9iP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ECC1F3D41
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBFF2253B9
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739191940; cv=none; b=t0ruKxdx3GL6J1ZIswhEGTnxBO1h+NMgochQRGkXcGmavDXX2+DZ46ZTPNIXWHhVS1UkJgNDSLcZac0tw0uJnU1OwU6d3muttspra6Df/+y4Ao4s+VCdS44Cp/Nz+vHeJMav9XceZcW0ohPkLRJtEB9NvyOy35xMb9iUrbHHwhU=
+	t=1739191982; cv=none; b=tmhxH0jL8rMK2SPOAm4qhrTbDQVfP/7XRnDowWdDPUBDnA4z0K+Nd7H0V5//Fv+rHZlpk9bk6tt6pF8wEAeWcbxfUkiMTaBTHDpwBNqltZFwuENvLaU03kidMGEWpaP21JTasCLQV0a13/sCr2oSKUxTcU8+h6w6qSBogFQeWUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739191940; c=relaxed/simple;
-	bh=EWZP1Uf/RUzAPyPNMGOSiFHKQ2MKgiL2OiHgXUcIfGY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FzyQvbNDAv+9Vlngr5ccRbFCdDB47VsgaePz6a2lm7aKy7u72sbD5mgBkHcWvHqeUA0AwMSoQhYE150yUlkY2ntYRXarstJU3d2hPLeUw7OHP+rCnrT2O0EHt5+eKQ+3FUfQp82YcceB7ntwJxvtQSPTUNqVaijjPGVbmzbYdg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/qTvmR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08795C4CED1;
-	Mon, 10 Feb 2025 12:52:18 +0000 (UTC)
+	s=arc-20240116; t=1739191982; c=relaxed/simple;
+	bh=YnpPggVeK28az4EgnhY3igpVp4u5le6xMo24tL0rJmg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XkpuHxudfyLEybnnvp0F5amGQo94bWq1YVO48vYlZBJErusZ7CCxO4uE3sEVj4eh/jvwLbA/fwmRsvs/tioBhH2PpMC6GWXj8JUlDRyL/gs/tSkt3oEZWYtg/z6T+Bq4aWqrjMwFWigPZppV6U/ELma+NxnW3/EecBvnESz6jvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIu+Q9iP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB66C4CED1;
+	Mon, 10 Feb 2025 12:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739191939;
-	bh=EWZP1Uf/RUzAPyPNMGOSiFHKQ2MKgiL2OiHgXUcIfGY=;
+	s=korg; t=1739191982;
+	bh=YnpPggVeK28az4EgnhY3igpVp4u5le6xMo24tL0rJmg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=r/qTvmR+MUQhcet6mGPxTuoNhgMAL9CmjfpEAzzVUQzVUpXMxn1NzP9lOdhExIaM+
-	 r/JvNDmi8xhBDLVp6zfkiLXSQTxIVAhuVvDb+t+440bP4XdGZV565nMOaBobmDgveI
-	 /m215qSm3agC88wbJC3pSURHKX3E7kszQOAU/67s=
-Subject: FAILED: patch "[PATCH] cpufreq: fix using cpufreq-dt as module" failed to apply to 6.6-stable tree
-To: andreas@kemnade.info,javierm@redhat.com,rrendec@redhat.com,viresh.kumar@linaro.org
+	b=eIu+Q9iPXKAm5NXzgcCJiZPH5IrXu8qQ9kOPcAfnb3gDanBAuVczMuAbdVXStHcxr
+	 GhIcB1kfosaN7i+atPfQ/TiOyJHHhVC0EWKpPYluQnhai3YG9i3BNxCxUedFtqosXP
+	 UQmWklF35MxKhaUoqROCOJeTjwBncWsXRV/ISRRk=
+Subject: FAILED: patch "[PATCH] spi: atmel-qspi: Memory barriers after memory-mapped I/O" failed to apply to 6.13-stable tree
+To: csokas.bence@prolan.hu,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 13:52:11 +0100
-Message-ID: <2025021010-liquefy-pointer-8122@gregkh>
+Date: Mon, 10 Feb 2025 13:52:59 +0100
+Message-ID: <2025021058-ruse-paradox-92e6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x f1f010c9d9c62c865d9f54e94075800ba764b4d9
+git cherry-pick -x be92ab2de0ee1a13291c3b47b2d7eb24d80c0a2c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021010-liquefy-pointer-8122@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021058-ruse-paradox-92e6@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f1f010c9d9c62c865d9f54e94075800ba764b4d9 Mon Sep 17 00:00:00 2001
-From: Andreas Kemnade <andreas@kemnade.info>
-Date: Sun, 3 Nov 2024 22:02:51 +0100
-Subject: [PATCH] cpufreq: fix using cpufreq-dt as module
+From be92ab2de0ee1a13291c3b47b2d7eb24d80c0a2c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+Date: Thu, 19 Dec 2024 10:12:58 +0100
+Subject: [PATCH] spi: atmel-qspi: Memory barriers after memory-mapped I/O
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-This driver can be built as a module since commit 3b062a086984 ("cpufreq:
-dt-platdev: Support building as module"), but unfortunately this caused
-a regression because the cputfreq-dt-platdev.ko module does not autoload.
+The QSPI peripheral control and status registers are
+accessible via the SoC's APB bus, whereas MMIO transactions'
+data travels on the AHB bus.
 
-Usually, this is solved by just using the MODULE_DEVICE_TABLE() macro to
-export all the device IDs as module aliases. But this driver is special
-due how matches with devices and decides what platform supports.
+Microchip documentation and even sample code from Atmel
+emphasises the need for a memory barrier before the first
+MMIO transaction to the AHB-connected QSPI, and before the
+last write to its registers via APB. This is achieved by
+the following lines in `atmel_qspi_transfer()`:
 
-There are two of_device_id lists, an allow list that are for CPU devices
-that always match and a deny list that's for devices that must not match.
+	/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
+	(void)atmel_qspi_read(aq, QSPI_IFR);
 
-The driver registers a cpufreq-dt platform device for all the CPU device
-nodes that either are in the allow list or contain an operating-points-v2
-property and are not in the deny list.
+However, the current documentation makes no mention to
+synchronization requirements in the other direction, i.e.
+after the last data written via AHB, and before the first
+register access on APB.
 
-Enforce builtin compile of cpufreq-dt-platdev to make autoload work.
+In our case, we were facing an issue where the QSPI peripheral
+would cease to send any new CSR (nCS Rise) interrupts,
+leading to a timeout in `atmel_qspi_wait_for_completion()`
+and ultimately this panic in higher levels:
 
-Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as module")
-Link: https://lore.kernel.org/all/20241104201424.2a42efdd@akair/
-Link: https://lore.kernel.org/all/20241119111918.1732531-1-javierm@redhat.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reported-by: Radu Rendec <rrendec@redhat.com>
-Reported-by: Javier Martinez Canillas <javierm@redhat.com>
-[ Viresh: Picked commit log from Javier, updated tags ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+	ubi0 error: ubi_io_write: error -110 while writing 63108 bytes
+ to PEB 491:128, written 63104 bytes
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index 92a83a9bb2e1..ea9afdc119fb 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -232,7 +232,7 @@ config CPUFREQ_VIRT
- 	  If in doubt, say N.
+After months of extensive research of the codebase, fiddling
+around the debugger with kgdb, and back-and-forth with
+Microchip, we came to the conclusion that the issue is
+probably that the peripheral is still busy receiving on AHB
+when the LASTXFER bit is written to its Control Register
+on APB, therefore this write gets lost, and the peripheral
+still thinks there is more data to come in the MMIO transfer.
+This was first formulated when we noticed that doubling the
+write() of QSPI_CR_LASTXFER seemed to solve the problem.
+
+Ultimately, the solution is to introduce memory barriers
+after the AHB-mapped MMIO transfers, to ensure ordering.
+
+Fixes: d5433def3153 ("mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi")
+Cc: Hari.PrasathGE@microchip.com
+Cc: Mahesh.Abotula@microchip.com
+Cc: Marco.Cardellini@microchip.com
+Cc: stable@vger.kernel.org # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
+Cc: stable@vger.kernel.org # 6.x.y
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+Link: https://patch.msgid.link/20241219091258.395187-1-csokas.bence@prolan.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index f46da363574f..8fdc9d27a95e 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -661,13 +661,20 @@ static int atmel_qspi_transfer(struct spi_mem *mem,
+ 	(void)atmel_qspi_read(aq, QSPI_IFR);
  
- config CPUFREQ_DT_PLATDEV
--	tristate "Generic DT based cpufreq platdev driver"
-+	bool "Generic DT based cpufreq platdev driver"
- 	depends on OF
- 	help
- 	  This adds a generic DT based cpufreq platdev driver for frequency
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 2a3e8bd317c9..9c198bd4f7e9 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -235,5 +235,3 @@ static int __init cpufreq_dt_platdev_init(void)
- 			       sizeof(struct cpufreq_dt_platform_data)));
- }
- core_initcall(cpufreq_dt_platdev_init);
--MODULE_DESCRIPTION("Generic DT based cpufreq platdev driver");
--MODULE_LICENSE("GPL");
+ 	/* Send/Receive data */
+-	if (op->data.dir == SPI_MEM_DATA_IN)
++	if (op->data.dir == SPI_MEM_DATA_IN) {
+ 		memcpy_fromio(op->data.buf.in, aq->mem + offset,
+ 			      op->data.nbytes);
+-	else
++
++		/* Synchronize AHB and APB accesses again */
++		rmb();
++	} else {
+ 		memcpy_toio(aq->mem + offset, op->data.buf.out,
+ 			    op->data.nbytes);
+ 
++		/* Synchronize AHB and APB accesses again */
++		wmb();
++	}
++
+ 	/* Release the chip-select */
+ 	atmel_qspi_write(QSPI_CR_LASTXFER, aq, QSPI_CR);
+ 
 
 
