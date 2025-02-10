@@ -1,128 +1,163 @@
-Return-Path: <stable+bounces-114651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81955A2F0E9
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:07:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F30A2F0EA
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B04AF188BE98
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:06:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CDFC169588
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EA5204873;
-	Mon, 10 Feb 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220A81EF01;
+	Mon, 10 Feb 2025 15:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKVbmOEI"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElBl55uM"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F3E204861
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D213C35972
+	for <Stable@vger.kernel.org>; Mon, 10 Feb 2025 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199954; cv=none; b=fWhLzpboHSRJTpijbiZi/hocUS918w9w84Y2dcTK7K+xJ7VmFgXm96bIigAzO6yKgey9bdnfPSDO0wqSbHfOxCaCtipfze8ePLulw7Mmlgb1PFHV//iF7Rv9RnNwvlm0zxWc6UGXNh8+8l0BOE0405s/GpFgdya4h86qzUC40Ow=
+	t=1739199973; cv=none; b=iLjt0vKMxwlWpQtfyeZeM8zrN9aRB1tAThnZW6MGppcNoKEhHf2OLeookL7hT3DGDk3OwuQ0HAzZXn6cSJs1zYlH1uerCct23H3wft4RclqGguXBHwIC8TEaqAOGRS9Lk13xUjopUDeI5CkC52e1uK2UcnN5IbskP1Xd77vn2m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199954; c=relaxed/simple;
-	bh=P/ctmUMjn+LOgAtQLjjXfPgljir4CfZIfvWihq/RQb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jujLx6JzJJdv4cWcQDxhYGgeH9CptZzZp3WHxNfW1D4OVQEmsdS247S4PiJoQ82ODjy+rPKgDu9/g5TZOHPEkHVcufyoZng2VSBnfIaKgBHxEqmlzU1M8XKcUQK6Jt82eSxSmCvhqO1JadsKJIJHgTf0zjQTHkPpVHtu4w7aOjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKVbmOEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CEFC4CED1;
-	Mon, 10 Feb 2025 15:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739199952;
-	bh=P/ctmUMjn+LOgAtQLjjXfPgljir4CfZIfvWihq/RQb4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XKVbmOEI+9xMj+B/ZBdUanCUsJXeJ+tf3xSjizF7XHiidiI0oCjKLm1rvsiVJfmks
-	 Y+6YTMM7M0nndvs4nmZXPvP4HUWANgBQkZNsObDuJRCfbenFYz8Q//TKwEnMDzZK/u
-	 2H3xt80ZZq//MaB+IQAEY1QziAYcQHDKFz4Ee9Y/D4zUll2Uoy9RRiom8xNjJxRu7D
-	 eU5jyozckEhcyirSm81+Hqxlofaj1+qKdZUIc5iELmVgvi+hTb31STOnmu2m4cH4Ng
-	 C9n2T00pSwv+yycAYqQIrwLjASQbVHKThshzOtyZt7uYt/dyskcF/CQdS2pgiXFjB/
-	 z+lg2fAIgYl1A==
-Date: Mon, 10 Feb 2025 15:05:47 +0000
-From: Will Deacon <will@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
-	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
-	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
-	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
-	tabba@google.com, wilco.dijkstra@arm.com
-Subject: Re: [PATCH v2 1/8] KVM: arm64: Unconditionally save+flush host
- FPSIMD/SVE/SME state
-Message-ID: <20250210150546.GB7568@willie-the-truck>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
- <20250206141102.954688-2-mark.rutland@arm.com>
- <20250207122748.GA4839@willie-the-truck>
- <Z6YI6IvG_N4txgz7@J2N7QTR9R3>
+	s=arc-20240116; t=1739199973; c=relaxed/simple;
+	bh=/xEqUKYeqgcCiCm/mMwdCe8VKRNxijw3ZGE1f/dcaiM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=INV8BfanBZNqiP4CtzmZJrOl2dgMIm6oegmRbC42+qKbEkFrlcQgjHbKyKZL/64Y+XpvwyO1NbryZUb/rAK04pUWoS/D8HgyHXWstRy4qg0MOOsGGiWjNucpcIlY++SQxGctSoborallPSsjBGpAFmfD2WQBDv4KeqK8tnYdFJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElBl55uM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB28C4CEDF;
+	Mon, 10 Feb 2025 15:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739199973;
+	bh=/xEqUKYeqgcCiCm/mMwdCe8VKRNxijw3ZGE1f/dcaiM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ElBl55uMNd4mNmc6JFy6BYnKbbw9209YBN/iOyFbEVAr/LnNylsYcuWp/yrQDFAWi
+	 Y+DcDL2vqU6rx9UZdj9JuonRz5Q8r36DRXQ/bCN2JKlPV3hpQPqrMrxM6iNeeHMqvn
+	 CnBBcji41SH1Px8lSjAlq6aWmjU1DdXGKUAErj7w=
+Subject: FAILED: patch "[PATCH] iio: dac: ad3552r-common: fix ad3541/2r ranges" failed to apply to 6.12-stable tree
+To: adureghello@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 10 Feb 2025 16:06:10 +0100
+Message-ID: <2025021010-antarctic-untried-a72b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6YI6IvG_N4txgz7@J2N7QTR9R3>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 07, 2025 at 01:21:44PM +0000, Mark Rutland wrote:
-> On Fri, Feb 07, 2025 at 12:27:51PM +0000, Will Deacon wrote:
-> > On Thu, Feb 06, 2025 at 02:10:55PM +0000, Mark Rutland wrote:
-> > > There are several problems with the way hyp code lazily saves the host's
-> > > FPSIMD/SVE state, including:
-> > > 
-> > > * Host SVE being discarded unexpectedly due to inconsistent
-> > >   configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
-> > >   result in QEMU crashes where SVE is used by memmove(), as reported by
-> > >   Eric Auger:
-> > > 
-> > >   https://issues.redhat.com/browse/RHEL-68997
-> > > 
-> > > * Host SVE state is discarded *after* modification by ptrace, which was an
-> > >   unintentional ptrace ABI change introduced with lazy discarding of SVE state.
-> > > 
-> > > * The host FPMR value can be discarded when running a non-protected VM,
-> > >   where FPMR support is not exposed to a VM, and that VM uses
-> > >   FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
-> > >   before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
-> > >   value in memory.
-> > 
-> > How hard would it be to write tests for these three scenarios? If we
-> > had something to exercise the relevant paths then...
-> >
-> > > ... and so this eager save+flush probably needs to be backported to ALL
-> > > stable trees.
-> > 
-> > ... this backporting might be a little easier to be sure about?
-> 
-> For the first case I have a quick and dirty test, which I've pushed to
-> my arm64/kvm/fpsimd-tests branch in my kernel.org repo:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/
->   git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
-> 
-> For the last case it should be possible to do something similar, but I
-> hadn't had the time to dig in to the KVM selftests infrastructure and
-> figure out how to confiugre the guest appropriately.
-> 
-> For the ptrace case, the same symptoms can be provoked outside of KVM
-> (and I'm currently working to fix that). From my PoV the important thing
-> is that this fix happens to remove KVM from the set of cases the other
-> fixes need to care about.
-> 
-> FWIW I was assuming that I'd be handling the upstream backports, and I'd
-> be testing with the test above and some additional assertions hacked
-> into the kernel for testing.
 
-The backporting for Android will probably diverge slightly from upstream,
-so if I'm able to run your tests as well then it would really handy.
-Thanks for sharing the stuff you currently have.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The patch looks fine:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Acked-by: Will Deacon <will@kernel.org>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 1e758b613212b6964518a67939535910b5aee831
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021010-antarctic-untried-a72b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Will
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 1e758b613212b6964518a67939535910b5aee831 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <adureghello@baylibre.com>
+Date: Wed, 8 Jan 2025 18:29:15 +0100
+Subject: [PATCH] iio: dac: ad3552r-common: fix ad3541/2r ranges
+
+Fix ad3541/2r voltage ranges to be as per ad3542r datasheet,
+rev. C, table 38 (page 57).
+
+The wrong ad354xr ranges was generating erroneous Vpp output.
+
+In more details:
+- fix wrong number of ranges, they are 5 ranges, not 6,
+- remove non-existent 0-3V range,
+- adjust order, since ad3552r_find_range() get a wrong index,
+  producing a wrong Vpp as output.
+
+Retested all the ranges on real hardware, EVALAD3542RFMCZ:
+
+adi,output-range-microvolt (fdt):
+<(000000) (2500000)>;   ok (Rfbx1, switch 10)
+<(000000) (5000000)>;   ok (Rfbx1, switch 10)
+<(000000) (10000000)>;  ok (Rfbx1, switch 10)
+<(-5000000) (5000000)>; ok (Rfbx2, switch +/- 5)
+<(-2500000) (7500000)>; ok (Rfbx2, switch -2.5/7.5)
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-1-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
+index 0f495df2e5ce..03e0864f5084 100644
+--- a/drivers/iio/dac/ad3552r-common.c
++++ b/drivers/iio/dac/ad3552r-common.c
+@@ -22,11 +22,10 @@ EXPORT_SYMBOL_NS_GPL(ad3552r_ch_ranges, "IIO_AD3552R");
+ 
+ const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2] = {
+ 	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= { 0, 2500 },
+-	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= { 0, 3000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= { 0, 5000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= { 0, 10000 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 }
++	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 },
++	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 }
+ };
+ EXPORT_SYMBOL_NS_GPL(ad3542r_ch_ranges, "IIO_AD3552R");
+ 
+diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+index fd5a3dfd1d1c..4b5581039ae9 100644
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -131,7 +131,7 @@
+ #define AD3552R_CH1_ACTIVE				BIT(1)
+ 
+ #define AD3552R_MAX_RANGES	5
+-#define AD3542R_MAX_RANGES	6
++#define AD3542R_MAX_RANGES	5
+ #define AD3552R_QUAD_SPI	2
+ 
+ extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+@@ -189,16 +189,14 @@ enum ad3552r_ch_vref_select {
+ enum ad3542r_ch_output_range {
+ 	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
+ 	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
+-	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_0__3V,
+ 	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__5V,
+ 	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__10V,
+-	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ 	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
++	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
++	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ };
+ 
+ enum ad3552r_ch_output_range {
+
 
