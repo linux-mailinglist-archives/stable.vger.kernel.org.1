@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-114631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD85A2F098
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:00:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833B6A2F0A5
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10903A83AC
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44BF7188A390
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F0C25291A;
-	Mon, 10 Feb 2025 15:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241D723CEF3;
+	Mon, 10 Feb 2025 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/jRly18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHUl9d24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C9E222575
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BDE236A72
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199601; cv=none; b=HhPi+Kot+XwMoiggZzA/Czi7K3sMsZa0NLLCGBnSSe+RExLqJG5Qy/8WIksBuY6X3gN4ZRR/2nq79VniroSkKnDel9q/9Esv7fog/0NpOxjOwLdqj6i0X1tVgpADcZRgMhmmjEx6B9P04Iof4USsDLoFQQ7PW+8UjIKbipOYPxA=
+	t=1739199627; cv=none; b=i5iaXNsGn31GkcsWadkCeZnqjsjMBpsiLLEDW92Zc3h7wIdfK588juIQK7GCDkAH2EM8id6DZAF3B6ScwYOiRE8g5ModGaQ8vbJQCN5oUVnDB8VFqL00hJg8hN/5j+HY3pWoC4A1StucoAePXHQCk6nmdZsBKCfXOYOTIabbyT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199601; c=relaxed/simple;
-	bh=jYv6SXJtsUEv3IN+0aNTDdcD3HCKgJNZLjwz6/qYU2U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mrWlYzXOM38dhDywkh1VZvcTEGe6rOmQRy+51wCRJHbnbqg1oDRVV89ALqTZRYHTrbt7YWYMztxbUc2wJ5Q2WllXK23aXgTjZHyQ7HOKvdAJewu/ENs3fuXqGsvlq+CT6JnMUwKA3FIV7MQyQl8ANmQrCwLo/S6SosC1U8lc3m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/jRly18; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A777C4CED1;
-	Mon, 10 Feb 2025 14:59:59 +0000 (UTC)
+	s=arc-20240116; t=1739199627; c=relaxed/simple;
+	bh=ZsebOP7+DEA8dZraE4Zdn9tyMb0Hgkmlr4drdtIfaB8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b1/0DARxjsjKMJNz6Vt2GnfqGmWoPOq/CDZujs3QOxC9bj3i+J6vst2ejgblyRS6n3DHUKTSWwjEjkHBg4uiP/5/yrWFYtnxDBGKQ2KREOwJF6YcIXJ8LszFy0wJshmtWE8QwE3rbTMKTUcQK3CvGHtuHkEuhQ7PDmiyrRXOV0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHUl9d24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02DAC4CEE5;
+	Mon, 10 Feb 2025 15:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739199600;
-	bh=jYv6SXJtsUEv3IN+0aNTDdcD3HCKgJNZLjwz6/qYU2U=;
+	s=korg; t=1739199627;
+	bh=ZsebOP7+DEA8dZraE4Zdn9tyMb0Hgkmlr4drdtIfaB8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e/jRly18yFz7+wNWx0/bbazxZ9WiXGFpYjIJ1fbCTGdyLbYeOjgcyc7xVzepUpuD8
-	 irJgU8JrYmMyQFgHRges3dbOQHPvJ/GU/aPQEkOwoDMdMsoy9h934DNlQqAljlU/wy
-	 DYOSYbbxYtllC3ThZqc5MNMVpdSGmfmjZQvzFvaE=
-Subject: FAILED: patch "[PATCH] accel/ivpu: Fix error handling in recovery/reset" failed to apply to 6.12-stable tree
-To: jacek.lawrynowicz@linux.intel.com,maciej.falkowski@linux.intel.com,quic_jhugo@quicinc.com
+	b=tHUl9d245gQ83UAo+0dO+C0x5pNuDGBdcsYSo8YaEYCqAevsxNsw8ZT9z+s1Is0Qm
+	 AF/tEisdkXwm+AR50pVkqvTwcux1cPJI/yT5ramnlEknz4vC9bAa5oXi5+9ygmEy1i
+	 wf3xm5rsWXq6cTpG48hb92j2EIdPuC2FeU8aw9OU=
+Subject: FAILED: patch "[PATCH] tpm: Change to kvalloc() in eventlog/acpi.c" failed to apply to 6.1-stable tree
+To: jarkko@kernel.org,andy.liang@hpe.com,ardb@kernel.org,stefanb@linux.ibm.com,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 15:59:57 +0100
-Message-ID: <2025021056-earlobe-epidural-b92d@gregkh>
+Date: Mon, 10 Feb 2025 16:00:24 +0100
+Message-ID: <2025021024-rover-consensus-cde2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41a2d8286c905614f29007f1bc8e652d54654b82
+git cherry-pick -x a3a860bc0fd6c07332e4911cf9a238d20de90173
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021056-earlobe-epidural-b92d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021024-rover-consensus-cde2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,151 +77,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41a2d8286c905614f29007f1bc8e652d54654b82 Mon Sep 17 00:00:00 2001
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Date: Wed, 29 Jan 2025 13:40:09 +0100
-Subject: [PATCH] accel/ivpu: Fix error handling in recovery/reset
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From a3a860bc0fd6c07332e4911cf9a238d20de90173 Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Date: Fri, 27 Dec 2024 17:39:09 +0200
+Subject: [PATCH] tpm: Change to kvalloc() in eventlog/acpi.c
 
-Disable runtime PM for the duration of reset/recovery so it is possible
-to set the correct runtime PM state depending on the outcome of the
-`ivpu_resume()`. Don’t suspend or reset the HW if the NPU is suspended
-when the reset/recovery is requested. Also, move common reset/recovery
-code to separate functions for better code readability.
+The following failure was reported on HPE ProLiant D320:
 
-Fixes: 27d19268cf39 ("accel/ivpu: Improve recovery and reset support")
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129124009.1039982-4-jacek.lawrynowicz@linux.intel.com
+[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
+[   10.848132][    T1] ------------[ cut here ]------------
+[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
+[   10.862827][    T1] Modules linked in:
+[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
+[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
+[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
+[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
+[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
 
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index c3774d222132..8b2b050cc41a 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -115,41 +115,57 @@ static int ivpu_resume(struct ivpu_device *vdev)
+The above transcript shows that ACPI pointed a 16 MiB buffer for the log
+events because RSI maps to the 'order' parameter of __alloc_pages_noprof().
+Address the bug by moving from devm_kmalloc() to devm_add_action() and
+kvmalloc() and devm_add_action().
+
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.16+
+Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+Reported-by: Andy Liang <andy.liang@hpe.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Andy Liang <andy.liang@hpe.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index 69533d0bfb51..cf02ec646f46 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
+ 	return n == 0;
+ }
+ 
++static void tpm_bios_log_free(void *data)
++{
++	kvfree(data);
++}
++
+ /* read binary bios log */
+ int tpm_read_log_acpi(struct tpm_chip *chip)
+ {
+@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	}
+ 
+ 	/* malloc EventLog space */
+-	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
++	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+@@ -161,10 +166,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 		goto err;
+ 	}
+ 
++	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
++	if (ret) {
++		log->bios_event_log = NULL;
++		goto err;
++	}
++
+ 	return format;
+ 
+ err:
+-	devm_kfree(&chip->dev, log->bios_event_log);
++	tpm_bios_log_free(log->bios_event_log);
+ 	log->bios_event_log = NULL;
  	return ret;
  }
- 
--static void ivpu_pm_recovery_work(struct work_struct *work)
-+static void ivpu_pm_reset_begin(struct ivpu_device *vdev)
- {
--	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
--	struct ivpu_device *vdev = pm->vdev;
--	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
--	int ret;
--
--	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
--
--	ret = pm_runtime_resume_and_get(vdev->drm.dev);
--	if (ret)
--		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
--
--	ivpu_jsm_state_dump(vdev);
--	ivpu_dev_coredump(vdev);
-+	pm_runtime_disable(vdev->drm.dev);
- 
- 	atomic_inc(&vdev->pm->reset_counter);
- 	atomic_set(&vdev->pm->reset_pending, 1);
- 	down_write(&vdev->pm->reset_lock);
-+}
-+
-+static void ivpu_pm_reset_complete(struct ivpu_device *vdev)
-+{
-+	int ret;
- 
--	ivpu_suspend(vdev);
- 	ivpu_pm_prepare_cold_boot(vdev);
- 	ivpu_jobs_abort_all(vdev);
- 	ivpu_ms_cleanup_all(vdev);
- 
- 	ret = ivpu_resume(vdev);
--	if (ret)
-+	if (ret) {
- 		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
-+		pm_runtime_set_suspended(vdev->drm.dev);
-+	} else {
-+		pm_runtime_set_active(vdev->drm.dev);
-+	}
- 
- 	up_write(&vdev->pm->reset_lock);
- 	atomic_set(&vdev->pm->reset_pending, 0);
- 
--	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
- 	pm_runtime_mark_last_busy(vdev->drm.dev);
--	pm_runtime_put_autosuspend(vdev->drm.dev);
-+	pm_runtime_enable(vdev->drm.dev);
-+}
-+
-+static void ivpu_pm_recovery_work(struct work_struct *work)
-+{
-+	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
-+	struct ivpu_device *vdev = pm->vdev;
-+	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
-+
-+	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
-+
-+	ivpu_pm_reset_begin(vdev);
-+
-+	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
-+		ivpu_jsm_state_dump(vdev);
-+		ivpu_dev_coredump(vdev);
-+		ivpu_suspend(vdev);
-+	}
-+
-+	ivpu_pm_reset_complete(vdev);
-+
-+	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
- }
- 
- void ivpu_pm_trigger_recovery(struct ivpu_device *vdev, const char *reason)
-@@ -328,16 +344,13 @@ void ivpu_pm_reset_prepare_cb(struct pci_dev *pdev)
- 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
- 
- 	ivpu_dbg(vdev, PM, "Pre-reset..\n");
--	atomic_inc(&vdev->pm->reset_counter);
--	atomic_set(&vdev->pm->reset_pending, 1);
- 
--	pm_runtime_get_sync(vdev->drm.dev);
--	down_write(&vdev->pm->reset_lock);
--	ivpu_prepare_for_reset(vdev);
--	ivpu_hw_reset(vdev);
--	ivpu_pm_prepare_cold_boot(vdev);
--	ivpu_jobs_abort_all(vdev);
--	ivpu_ms_cleanup_all(vdev);
-+	ivpu_pm_reset_begin(vdev);
-+
-+	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
-+		ivpu_prepare_for_reset(vdev);
-+		ivpu_hw_reset(vdev);
-+	}
- 
- 	ivpu_dbg(vdev, PM, "Pre-reset done.\n");
- }
-@@ -345,18 +358,12 @@ void ivpu_pm_reset_prepare_cb(struct pci_dev *pdev)
- void ivpu_pm_reset_done_cb(struct pci_dev *pdev)
- {
- 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
--	int ret;
- 
- 	ivpu_dbg(vdev, PM, "Post-reset..\n");
--	ret = ivpu_resume(vdev);
--	if (ret)
--		ivpu_err(vdev, "Failed to set RESUME state: %d\n", ret);
--	up_write(&vdev->pm->reset_lock);
--	atomic_set(&vdev->pm->reset_pending, 0);
--	ivpu_dbg(vdev, PM, "Post-reset done.\n");
- 
--	pm_runtime_mark_last_busy(vdev->drm.dev);
--	pm_runtime_put_autosuspend(vdev->drm.dev);
-+	ivpu_pm_reset_complete(vdev);
-+
-+	ivpu_dbg(vdev, PM, "Post-reset done.\n");
- }
- 
- void ivpu_pm_init(struct ivpu_device *vdev)
 
 
