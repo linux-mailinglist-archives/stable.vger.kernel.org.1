@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D34CA2F0BA
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:03:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84A7A2F0BB
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E37168B6A
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78CD83A7804
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20A924418F;
-	Mon, 10 Feb 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F28204873;
+	Mon, 10 Feb 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrxkVKPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d2AxHl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F4524418D
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1B722FE1F
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199643; cv=none; b=YSdiyGxRQrBR+ZnVvHmBUxVtM3s9Eu73vHdUo+zXAwqawXz9dC3N9q4WjCygfnyruC0/+vkoIlI0UdW7NuxBY5vSfKp7NGYXozE4CxSXdCc8lP/GRu/Ihv3dB8Para7xcE03ZLSAWb5vypVKMhzNeg7Nzww/hXyr9WSJS+Jfmuk=
+	t=1739199661; cv=none; b=f+7MEHUpmwMd0c2UWfUxcmEv6ghKtwCIqOhe0dCdZO/2YbwR0JIduljEWi6fZg+RrDr32pYFd9KQMpsrXff84pZAMKhYOO8z5XSaRlguB2LGznJzzcQeR0qPBTT9S/AstQmx/CEKvPzv5SAOXft+tBrHhD42oSP//qY7UVq02G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199643; c=relaxed/simple;
-	bh=uR2HXHq9yHNRGMa6IFQhhvUN5rqFz9ZwCSsO4LZYvNg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RX6MpMuPJELcdJPD4TkuY1Q80aVs83OOfUAX+PPhwtwV47/UNwY7LdTLdR5pEdgiMZFah28mtoyiILAleb4rxuGsFXaVIkkTgEGBmi1xefHuVvRm13fP9Fjm35lADNsbySS8GDhW/Qcy27Jga3e6s4a9QFkjr7fd00c1ybCQHQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrxkVKPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B19C4CED1;
-	Mon, 10 Feb 2025 15:00:42 +0000 (UTC)
+	s=arc-20240116; t=1739199661; c=relaxed/simple;
+	bh=rf5lQH4zx5xyzD2s/AxGlzdYhnryXZTY+SgEkHrXEns=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t7xDMiE2jb1D7s8gwSq7XGdNV/zrQUTqQWTqN8qrNa7G3XC5QPJDoKF6otPUi3hDOT8H8gc7dk5CJkGrpj/qDaeXX0fXM8WWpOldvvg1PuCtxFsMDYNcFkNOmQUGu4JXQ5k7grMyBp6uo9xiAGtv015oS1jIf1UgF4sDhKZiPNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0d2AxHl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDD7C4CEE5;
+	Mon, 10 Feb 2025 15:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739199642;
-	bh=uR2HXHq9yHNRGMa6IFQhhvUN5rqFz9ZwCSsO4LZYvNg=;
+	s=korg; t=1739199661;
+	bh=rf5lQH4zx5xyzD2s/AxGlzdYhnryXZTY+SgEkHrXEns=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lrxkVKPkeAfdRCBfZyTBui8doil2DAZG6IOHkDAEMbcr4vzWxnblTV+pLWrg1ToIe
-	 5+2x74cz+k/mPwmxRIC4odd2AZDsoxowhN/z9KHCkPFPyoXgiNWA8t7vn35UmreZZW
-	 8hGWcGgs6QiMknGYQUnI7DSW4hcFObQKb/f76OPY=
-Subject: FAILED: patch "[PATCH] tpm: Change to kvalloc() in eventlog/acpi.c" failed to apply to 5.4-stable tree
-To: jarkko@kernel.org,andy.liang@hpe.com,ardb@kernel.org,stefanb@linux.ibm.com,tiwai@suse.de
+	b=0d2AxHl9ZCbeWwlXYzUoEG0A/VOyHBoTUKsfY4LfQ0wcSxKSXmYGPvMtYJh83c8Tj
+	 WxzyPWB0bqyLau76M1cq6zoWqxhezNBqcHuhC5kvNOZaylNcxVA5/PUIYD/NfseB4J
+	 l4Yzf7z1VJGIfMe0xKiiPzgnPXXD5EDkRn+NX1wc=
+Subject: FAILED: patch "[PATCH] s390/fpu: Add fpc exception handler / remove fixup section" failed to apply to 6.13-stable tree
+To: hca@linux.ibm.com,agordeev@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 16:00:26 +0100
-Message-ID: <2025021026-scribing-driven-fe23@gregkh>
+Date: Mon, 10 Feb 2025 16:00:57 +0100
+Message-ID: <2025021057-charred-koala-8496@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x a3a860bc0fd6c07332e4911cf9a238d20de90173
+git cherry-pick -x ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021026-scribing-driven-fe23@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021057-charred-koala-8496@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,83 +77,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a3a860bc0fd6c07332e4911cf9a238d20de90173 Mon Sep 17 00:00:00 2001
-From: Jarkko Sakkinen <jarkko@kernel.org>
-Date: Fri, 27 Dec 2024 17:39:09 +0200
-Subject: [PATCH] tpm: Change to kvalloc() in eventlog/acpi.c
+From ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179 Mon Sep 17 00:00:00 2001
+From: Heiko Carstens <hca@linux.ibm.com>
+Date: Fri, 10 Jan 2025 11:52:17 +0100
+Subject: [PATCH] s390/fpu: Add fpc exception handler / remove fixup section
+ again
 
-The following failure was reported on HPE ProLiant D320:
+The fixup section was added again by mistake when test_fp_ctl() was
+removed. The reason for the removal of the fixup section is described in
+commit 484a8ed8b7d1 ("s390/extable: add dedicated uaccess handler").
+Remove it again for the same reason.
 
-[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-[   10.848132][    T1] ------------[ cut here ]------------
-[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-[   10.862827][    T1] Modules linked in:
-[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
+Add an exception handler which handles exceptions when the floating point
+control register is attempted to be set to invalid values. The exception
+handler sets the floating point control register to zero and continues
+execution at the specified address.
 
-The above transcript shows that ACPI pointed a 16 MiB buffer for the log
-events because RSI maps to the 'order' parameter of __alloc_pages_noprof().
-Address the bug by moving from devm_kmalloc() to devm_add_action() and
-kvmalloc() and devm_add_action().
+The new sfpc inline assembly is open-coded to make back porting a bit
+easier.
 
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.16+
-Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-Reported-by: Andy Liang <andy.liang@hpe.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Tested-by: Andy Liang <andy.liang@hpe.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 702644249d3e ("s390/fpu: get rid of test_fp_ctl()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-index 69533d0bfb51..cf02ec646f46 100644
---- a/drivers/char/tpm/eventlog/acpi.c
-+++ b/drivers/char/tpm/eventlog/acpi.c
-@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
- 	return n == 0;
+diff --git a/arch/s390/include/asm/asm-extable.h b/arch/s390/include/asm/asm-extable.h
+index 4a6b0a8b6412..00a67464c445 100644
+--- a/arch/s390/include/asm/asm-extable.h
++++ b/arch/s390/include/asm/asm-extable.h
+@@ -14,6 +14,7 @@
+ #define EX_TYPE_UA_LOAD_REG	5
+ #define EX_TYPE_UA_LOAD_REGPAIR	6
+ #define EX_TYPE_ZEROPAD		7
++#define EX_TYPE_FPC		8
+ 
+ #define EX_DATA_REG_ERR_SHIFT	0
+ #define EX_DATA_REG_ERR		GENMASK(3, 0)
+@@ -84,4 +85,7 @@
+ #define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
+ 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
+ 
++#define EX_TABLE_FPC(_fault, _target)					\
++	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
++
+ #endif /* __ASM_EXTABLE_H */
+diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
+index de510c9f6efa..0f1b59eb4c5a 100644
+--- a/arch/s390/include/asm/fpu-insn.h
++++ b/arch/s390/include/asm/fpu-insn.h
+@@ -100,19 +100,12 @@ static __always_inline void fpu_lfpc(unsigned int *fpc)
+  */
+ static inline void fpu_lfpc_safe(unsigned int *fpc)
+ {
+-	u32 tmp;
+-
+ 	instrument_read(fpc, sizeof(*fpc));
+ 	asm_inline volatile(
+-		"0:	lfpc	%[fpc]\n"
+-		"1:	nopr	%%r7\n"
+-		".pushsection .fixup, \"ax\"\n"
+-		"2:	lghi	%[tmp],0\n"
+-		"	sfpc	%[tmp]\n"
+-		"	jg	1b\n"
+-		".popsection\n"
+-		EX_TABLE(1b, 2b)
+-		: [tmp] "=d" (tmp)
++		"	lfpc	%[fpc]\n"
++		"0:	nopr	%%r7\n"
++		EX_TABLE_FPC(0b, 0b)
++		:
+ 		: [fpc] "Q" (*fpc)
+ 		: "memory");
+ }
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 377b9aaf8c92..ff1ddba96352 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -52,7 +52,6 @@ SECTIONS
+ 		SOFTIRQENTRY_TEXT
+ 		FTRACE_HOTPATCH_TRAMPOLINES_TEXT
+ 		*(.text.*_indirect_*)
+-		*(.fixup)
+ 		*(.gnu.warning)
+ 		. = ALIGN(PAGE_SIZE);
+ 		_etext = .;		/* End of text section */
+diff --git a/arch/s390/mm/extable.c b/arch/s390/mm/extable.c
+index 0a0738a473af..812ec5be1291 100644
+--- a/arch/s390/mm/extable.c
++++ b/arch/s390/mm/extable.c
+@@ -77,6 +77,13 @@ static bool ex_handler_zeropad(const struct exception_table_entry *ex, struct pt
+ 	return true;
  }
  
-+static void tpm_bios_log_free(void *data)
++static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
 +{
-+	kvfree(data);
++	asm volatile("sfpc	%[val]\n" : : [val] "d" (0));
++	regs->psw.addr = extable_fixup(ex);
++	return true;
 +}
 +
- /* read binary bios log */
- int tpm_read_log_acpi(struct tpm_chip *chip)
+ bool fixup_exception(struct pt_regs *regs)
  {
-@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	const struct exception_table_entry *ex;
+@@ -99,6 +106,8 @@ bool fixup_exception(struct pt_regs *regs)
+ 		return ex_handler_ua_load_reg(ex, true, regs);
+ 	case EX_TYPE_ZEROPAD:
+ 		return ex_handler_zeropad(ex, regs);
++	case EX_TYPE_FPC:
++		return ex_handler_fpc(ex, regs);
  	}
- 
- 	/* malloc EventLog space */
--	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
-+	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
- 	if (!log->bios_event_log)
- 		return -ENOMEM;
- 
-@@ -161,10 +166,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 		goto err;
- 	}
- 
-+	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
-+	if (ret) {
-+		log->bios_event_log = NULL;
-+		goto err;
-+	}
-+
- 	return format;
- 
- err:
--	devm_kfree(&chip->dev, log->bios_event_log);
-+	tpm_bios_log_free(log->bios_event_log);
- 	log->bios_event_log = NULL;
- 	return ret;
+ 	panic("invalid exception table entry");
  }
 
 
