@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5BAA2ED06
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:56:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D76A2ED1C
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0BB163D01
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:56:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5191888B9A
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BB72236EC;
-	Mon, 10 Feb 2025 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABE1C07E5;
+	Mon, 10 Feb 2025 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr/sUffv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIqCbhPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A611F3D41
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0505181741
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739192188; cv=none; b=Z6pryyI0KRzto9SMRxrhbb2l8MiR9VbwTNKidcTeY+c+3yobn/NFC1fzzNqLlKEVXrktK8JdoYkOMnekw9qgTG3qJEUUL3BwNZDlxq4uvuvXlkLzdmbRWsomyqhioEViKvNWTSGvF3eF4YUsq7P4E6Tw+GKhHNTepGNaYwYjjfc=
+	t=1739192538; cv=none; b=bpwxIzq9r9uGKGpRMEjMtWVjUXn+gNuCx0ltsELl4GEsxq3qTR23wcN9hY+4WhxchC3JnFbN5TTuK4bFWj3QlVPQxpy5J3K27JWP/37xeRYvabChJAzz1I4ZIh97Pda/p13yIWyv6L0pYNozx6hmGM99TFoqKpXG/FwVj4qWjlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739192188; c=relaxed/simple;
-	bh=gE6vyR8TwW8MG56Xus+iumgXxMolyu8EFxsdHXPT6lc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hPMSKFyctDVweCJ7mz55LrluHCHcoClAtokT9y3CAHW9YzzsFBpS1wM3kKLcOnzgi3Zdg0tfAwiU9Fq16hDKXETTAjqxaR7pMwJ6P74DZGIdGCUVTqlzEeOfPlNydWXqQXVhGedra/JQ50XqaroxehoKtrTMNfAXs/sdDpTNGAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr/sUffv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF928C4CEDF;
-	Mon, 10 Feb 2025 12:56:27 +0000 (UTC)
+	s=arc-20240116; t=1739192538; c=relaxed/simple;
+	bh=OxiWVcrrway0x/MKyuWHYV7Eb4+X3CrR8/iQj/prwLE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hThblDABkZq17rzHuVrzd/qHpxcTDzX07UEpQz3Py+IWfbsYRWhpo5k7+bONyXRdTAZtQU9/ryinySGd8cm16nAe8WN5CuI9euRMOAhwdEvIeWjUIN0BdIVCJQIQ3hMGURO11P6Jo3YFU2qSERbEinuAkWxCKa7LybLWpbRdypU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIqCbhPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5268C4CED1;
+	Mon, 10 Feb 2025 13:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739192188;
-	bh=gE6vyR8TwW8MG56Xus+iumgXxMolyu8EFxsdHXPT6lc=;
+	s=korg; t=1739192536;
+	bh=OxiWVcrrway0x/MKyuWHYV7Eb4+X3CrR8/iQj/prwLE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Mr/sUffv2iPjiFR5OyokyYJirO7Ux5+otCB4Y+Rp5TrpKjMdpKjm2SkSk5srnqKUr
-	 zXrDU4luLSnknhQwR9QSCnlTw6fdtzjnSmE+4sK/UzaohnzwzSFEMhdAGqUES8bgSx
-	 8IUhS3+u9q9SY+u8ZkG2Bppof7Q0AeQDrBhirRlg=
-Subject: FAILED: patch "[PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented" failed to apply to 5.4-stable tree
-To: maz@kernel.org,broonie@kernel.org,catalin.marinas@arm.com,mark.rutland@arm.com,will@kernel.org
+	b=UIqCbhPszuzBN393C8UYrsN8cOfClCKwA0hYgg5eeqE1PTpxT0z08Grza9vCxtUMU
+	 wqNxAYpd3WWKi+ZkcyrHBby3ToFoYlxIuAWR1Iyjn5GNSFq+UghG3w2VZkFEWYFhkw
+	 nvec1sOpG8PuYUHAT4R0z0PmyfPM0QitEiCJS0qk=
+Subject: FAILED: patch "[PATCH] xe/oa: Fix query mode of operation for OAR/OAC" failed to apply to 6.12-stable tree
+To: umesh.nerlige.ramappa@intel.com,ashutosh.dixit@intel.com,jonathan.cavitt@intel.com,matthew.brost@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 13:56:17 +0100
-Message-ID: <2025021017-pardon-unpeeled-1e81@gregkh>
+Date: Mon, 10 Feb 2025 14:02:13 +0100
+Message-ID: <2025021013-cavalry-unsightly-0671@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 064737920bdbca86df91b96aed256e88018fef3a
+git cherry-pick -x 55039832f98c7e05f1cf9e0d8c12b2490abd0f16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021017-pardon-unpeeled-1e81@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021013-cavalry-unsightly-0671@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,202 +77,353 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 064737920bdbca86df91b96aed256e88018fef3a Mon Sep 17 00:00:00 2001
-From: Marc Zyngier <maz@kernel.org>
-Date: Tue, 7 Jan 2025 22:59:41 +0000
-Subject: [PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
+From 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 Mon Sep 17 00:00:00 2001
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Fri, 20 Dec 2024 09:19:18 -0800
+Subject: [PATCH] xe/oa: Fix query mode of operation for OAR/OAC
 
-The hwcaps code that exposes SVE features to userspace only
-considers ID_AA64ZFR0_EL1, while this is only valid when
-ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+This is a set of squashed commits to facilitate smooth applying to
+stable. Each commit message is retained for reference.
 
-The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+1) Allow a GGTT mapped batch to be submitted to user exec queue
 
-Things become a bit more interesting if the HW implements SME.
-In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-features. And these fields overlap with their SVE interpretations.
-But the architecture says that the SME and SVE feature sets must
-match, so we're still hunky-dory.
+For a OA use case, one of the HW registers needs to be modified by
+submitting an MI_LOAD_REGISTER_IMM command to the users exec queue, so
+that the register is modified in the user's hardware context. In order
+to do this a batch that is mapped in GGTT, needs to be submitted to the
+user exec queue. Since all user submissions use q->vm and hence PPGTT,
+add some plumbing to enable submission of batches mapped in GGTT.
 
-This goes wrong if the HW implements SME, but not SVE. In this
-case, we end-up advertising some SVE features to userspace, even
-if the HW has none. That's because we never consider whether SVE
-is actually implemented. Oh well.
+v2: ggtt is zero-initialized, so no need to set it false (Matt Brost)
 
-Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-being non-zero. The HWCAPS documentation is amended to reflect the
-actually checks performed by the kernel.
+2) xe/oa: Use MI_LOAD_REGISTER_IMMEDIATE to enable OAR/OAC
 
-Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
+To enable OAR/OAC, a bit in RING_CONTEXT_CONTROL needs to be set.
+Setting this bit cause the context image size to change and if not done
+correct, can cause undesired hangs.
+
+Current code uses a separate exec_queue to modify this bit and is
+error-prone. As per HW recommendation, submit MI_LOAD_REGISTER_IMM to
+the target hardware context to modify the relevant bit.
+
+In v2 version, an attempt to submit everything to the user-queue was
+made, but it failed the unprivileged-single-ctx-counters test. It
+appears that the OACTXCONTROL must be modified from a remote context.
+
+In v3 version, all context specific register configurations were moved
+to use LOAD_REGISTER_IMMEDIATE and that seems to work well. This is a
+cleaner way, since we can now submit all configuration to user
+exec_queue and the fence handling is simplified.
+
+v2:
+(Matt)
+- set job->ggtt to true if create job is successful
+- unlock vm on job error
+
+(Ashutosh)
+- don't wait on job submission
+- use kernel exec queue where possible
+
+v3:
+(Ashutosh)
+- Fix checkpatch issues
+- Remove extra spaces/new-lines
+- Add Fixes: and Cc: tags
+- Reset context control bit when OA stream is closed
+- Submit all config via MI_LOAD_REGISTER_IMMEDIATE
+
+(Umesh)
+- Update commit message for v3 experiment
+- Squash patches for easier port to stable
+
+v4:
+(Ashutosh)
+- No need to pass q to xe_oa_submit_bb
+- Do not support exec queues with width > 1
+- Fix disabling of CTX_CTRL_OAC_CONTEXT_ENABLE
+
+v5:
+(Ashutosh)
+- Drop reg_lri related comments
+- Use XE_OA_SUBMIT_NO_DEPS in xe_oa_load_with_lri
+
+Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset OAC_CONTEXT_ENABLE on OA stream close")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com> # commit 1
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241220171919.571528-2-umesh.nerlige.ramappa@intel.com
 
-diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
-index 2ff922a406ad..1a31723e79fd 100644
---- a/Documentation/arch/arm64/elf_hwcaps.rst
-+++ b/Documentation/arch/arm64/elf_hwcaps.rst
-@@ -178,22 +178,28 @@ HWCAP2_DCPODP
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index ae94490b0eac..9add60097ab5 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -74,12 +74,6 @@ struct xe_oa_config {
+ 	struct rcu_head rcu;
+ };
  
- HWCAP2_SVE2
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0001.
+-struct flex {
+-	struct xe_reg reg;
+-	u32 offset;
+-	u32 value;
+-};
+-
+ struct xe_oa_open_param {
+ 	struct xe_file *xef;
+ 	u32 oa_unit_id;
+@@ -605,19 +599,38 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
+ 	return ret;
+ }
  
- HWCAP2_SVEAES
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0001.
++static void xe_oa_lock_vma(struct xe_exec_queue *q)
++{
++	if (q->vm) {
++		down_read(&q->vm->lock);
++		xe_vm_lock(q->vm, false);
++	}
++}
++
++static void xe_oa_unlock_vma(struct xe_exec_queue *q)
++{
++	if (q->vm) {
++		xe_vm_unlock(q->vm);
++		up_read(&q->vm->lock);
++	}
++}
++
+ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa_submit_deps deps,
+ 					 struct xe_bb *bb)
+ {
++	struct xe_exec_queue *q = stream->exec_q ?: stream->k_exec_q;
+ 	struct xe_sched_job *job;
+ 	struct dma_fence *fence;
+ 	int err = 0;
  
- HWCAP2_SVEPMULL
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0010.
+-	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
+-	job = xe_bb_create_job(stream->k_exec_q, bb);
++	xe_oa_lock_vma(q);
++
++	job = xe_bb_create_job(q, bb);
+ 	if (IS_ERR(job)) {
+ 		err = PTR_ERR(job);
+ 		goto exit;
+ 	}
++	job->ggtt = true;
  
- HWCAP2_SVEBITPERM
--    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
+ 	if (deps == XE_OA_SUBMIT_ADD_DEPS) {
+ 		for (int i = 0; i < stream->num_syncs && !err; i++)
+@@ -632,10 +645,13 @@ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa
+ 	fence = dma_fence_get(&job->drm.s_fence->finished);
+ 	xe_sched_job_push(job);
  
- HWCAP2_SVESHA3
--    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
++	xe_oa_unlock_vma(q);
++
+ 	return fence;
+ err_put_job:
+ 	xe_sched_job_put(job);
+ exit:
++	xe_oa_unlock_vma(q);
+ 	return ERR_PTR(err);
+ }
  
- HWCAP2_SVESM4
--    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SM4 == 0b0001.
+@@ -684,65 +700,19 @@ static void xe_oa_free_configs(struct xe_oa_stream *stream)
+ 	dma_fence_put(stream->last_fence);
+ }
  
- HWCAP2_FLAGM2
-     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
-@@ -202,16 +208,20 @@ HWCAP2_FRINT
-     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
+-static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
+-			     struct xe_bb *bb, const struct flex *flex, u32 count)
+-{
+-	u32 offset = xe_bo_ggtt_addr(lrc->bo);
+-
+-	do {
+-		bb->cs[bb->len++] = MI_STORE_DATA_IMM | MI_SDI_GGTT |
+-				    MI_FORCE_WRITE_COMPLETION_CHECK |
+-				    MI_SDI_NUM_DW(1);
+-		bb->cs[bb->len++] = offset + flex->offset * sizeof(u32);
+-		bb->cs[bb->len++] = 0;
+-		bb->cs[bb->len++] = flex->value;
+-
+-	} while (flex++, --count);
+-}
+-
+-static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
+-				  const struct flex *flex, u32 count)
++static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri, u32 count)
+ {
+ 	struct dma_fence *fence;
+ 	struct xe_bb *bb;
+ 	int err;
  
- HWCAP2_SVEI8MM
--    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.I8MM == 0b0001.
- 
- HWCAP2_SVEF32MM
--    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F32MM == 0b0001.
- 
- HWCAP2_SVEF64MM
--    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F64MM == 0b0001.
- 
- HWCAP2_SVEBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0001.
- 
- HWCAP2_I8MM
-     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
-@@ -277,7 +287,8 @@ HWCAP2_EBF16
-     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
- 
- HWCAP2_SVE_EBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0010.
- 
- HWCAP2_CSSC
-     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
-@@ -286,7 +297,8 @@ HWCAP2_RPRFM
-     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
- 
- HWCAP2_SVE2P1
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0010.
- 
- HWCAP2_SME2
-     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
-@@ -313,7 +325,8 @@ HWCAP2_HBC
-     Functionality implied by ID_AA64ISAR2_EL1.BC == 0b0001.
- 
- HWCAP2_SVE_B16B16
--    Functionality implied by ID_AA64ZFR0_EL1.B16B16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.B16B16 == 0b0001.
- 
- HWCAP2_LRCPC3
-     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0011.
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index b105e6683571..678da3ffaef9 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3008,6 +3008,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.matches = match,						\
+-	bb = xe_bb_new(stream->gt, 4 * count, false);
++	bb = xe_bb_new(stream->gt, 2 * count + 1, false);
+ 	if (IS_ERR(bb)) {
+ 		err = PTR_ERR(bb);
+ 		goto exit;
  	}
  
-+#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
-+	{									\
-+		__HWCAP_CAP(#cap, cap_type, cap)				\
-+		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
-+		.matches = match,						\
-+	}
-+
- #ifdef CONFIG_ARM64_PTR_AUTH
- static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
- 	{
-@@ -3036,6 +3043,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
- };
- #endif
+-	xe_oa_store_flex(stream, lrc, bb, flex, count);
+-
+-	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+-	if (IS_ERR(fence)) {
+-		err = PTR_ERR(fence);
+-		goto free_bb;
+-	}
+-	xe_bb_free(bb, fence);
+-	dma_fence_put(fence);
+-
+-	return 0;
+-free_bb:
+-	xe_bb_free(bb, NULL);
+-exit:
+-	return err;
+-}
+-
+-static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
+-{
+-	struct dma_fence *fence;
+-	struct xe_bb *bb;
+-	int err;
+-
+-	bb = xe_bb_new(stream->gt, 3, false);
+-	if (IS_ERR(bb)) {
+-		err = PTR_ERR(bb);
+-		goto exit;
+-	}
+-
+-	write_cs_mi_lri(bb, reg_lri, 1);
++	write_cs_mi_lri(bb, reg_lri, count);
  
-+#ifdef CONFIG_ARM64_SVE
-+static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
+ 	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+ 	if (IS_ERR(fence)) {
+@@ -762,71 +732,55 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
+ static int xe_oa_configure_oar_context(struct xe_oa_stream *stream, bool enable)
+ {
+ 	const struct xe_oa_format *format = stream->oa_buffer.format;
+-	struct xe_lrc *lrc = stream->exec_q->lrc[0];
+-	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
+ 	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
+ 		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
+ 
+-	struct flex regs_context[] = {
++	struct xe_oa_reg reg_lri[] = {
+ 		{
+ 			OACTXCONTROL(stream->hwe->mmio_base),
+-			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
+ 			enable ? OA_COUNTER_RESUME : 0,
+ 		},
++		{
++			OAR_OACONTROL,
++			oacontrol,
++		},
+ 		{
+ 			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+-			regs_offset + CTX_CONTEXT_CONTROL,
+-			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE),
++			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
++				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0)
+ 		},
+ 	};
+-	struct xe_oa_reg reg_lri = { OAR_OACONTROL, oacontrol };
+-	int err;
+ 
+-	/* Modify stream hwe context image with regs_context */
+-	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
+-				     regs_context, ARRAY_SIZE(regs_context));
+-	if (err)
+-		return err;
+-
+-	/* Apply reg_lri using LRI */
+-	return xe_oa_load_with_lri(stream, &reg_lri);
++	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
+ }
+ 
+ static int xe_oa_configure_oac_context(struct xe_oa_stream *stream, bool enable)
+ {
+ 	const struct xe_oa_format *format = stream->oa_buffer.format;
+-	struct xe_lrc *lrc = stream->exec_q->lrc[0];
+-	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
+ 	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
+ 		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
+-	struct flex regs_context[] = {
++	struct xe_oa_reg reg_lri[] = {
+ 		{
+ 			OACTXCONTROL(stream->hwe->mmio_base),
+-			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
+ 			enable ? OA_COUNTER_RESUME : 0,
+ 		},
++		{
++			OAC_OACONTROL,
++			oacontrol
++		},
+ 		{
+ 			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+-			regs_offset + CTX_CONTEXT_CONTROL,
+-			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE) |
++			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
++				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0) |
+ 			_MASKED_FIELD(CTX_CTRL_RUN_ALONE, enable ? CTX_CTRL_RUN_ALONE : 0),
+ 		},
+ 	};
+-	struct xe_oa_reg reg_lri = { OAC_OACONTROL, oacontrol };
+-	int err;
+ 
+ 	/* Set ccs select to enable programming of OAC_OACONTROL */
+ 	xe_mmio_write32(&stream->gt->mmio, __oa_regs(stream)->oa_ctrl,
+ 			__oa_ccs_select(stream));
+ 
+-	/* Modify stream hwe context image with regs_context */
+-	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
+-				     regs_context, ARRAY_SIZE(regs_context));
+-	if (err)
+-		return err;
+-
+-	/* Apply reg_lri using LRI */
+-	return xe_oa_load_with_lri(stream, &reg_lri);
++	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
+ }
+ 
+ static int xe_oa_configure_oa_context(struct xe_oa_stream *stream, bool enable)
+@@ -2110,8 +2064,8 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+ 		if (XE_IOCTL_DBG(oa->xe, !param.exec_q))
+ 			return -ENOENT;
+ 
+-		if (param.exec_q->width > 1)
+-			drm_dbg(&oa->xe->drm, "exec_q->width > 1, programming only exec_q->lrc[0]\n");
++		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1))
++			return -EOPNOTSUPP;
+ 	}
+ 
+ 	/*
+diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
+index 3a75a08b6be9..c8ab37fa0d19 100644
+--- a/drivers/gpu/drm/xe/xe_ring_ops.c
++++ b/drivers/gpu/drm/xe/xe_ring_ops.c
+@@ -223,7 +223,10 @@ static int emit_pipe_imm_ggtt(u32 addr, u32 value, bool stall_only, u32 *dw,
+ 
+ static u32 get_ppgtt_flag(struct xe_sched_job *job)
+ {
+-	return job->q->vm ? BIT(8) : 0;
++	if (job->q->vm && !job->ggtt)
++		return BIT(8);
 +
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3078,19 +3092,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
- #ifdef CONFIG_ARM64_SVE
- 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
- #endif
- #ifdef CONFIG_ARM64_GCS
- 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
++	return 0;
+ }
+ 
+ static int emit_copy_timestamp(struct xe_lrc *lrc, u32 *dw, int i)
+diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
+index f13f333f00be..d942b20a9f29 100644
+--- a/drivers/gpu/drm/xe/xe_sched_job_types.h
++++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
+@@ -56,6 +56,8 @@ struct xe_sched_job {
+ 	u32 migrate_flush_flags;
+ 	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
+ 	bool ring_ops_flush_tlb;
++	/** @ggtt: mapped in ggtt. */
++	bool ggtt;
+ 	/** @ptrs: per instance pointers. */
+ 	struct xe_job_ptrs ptrs[];
+ };
 
 
