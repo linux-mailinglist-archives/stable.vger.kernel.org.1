@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-114728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03209A2FB59
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 22:04:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC7FA2FB7D
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 22:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9627D164E42
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDCC93A34EA
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B6926460B;
-	Mon, 10 Feb 2025 21:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7781BD9F8;
+	Mon, 10 Feb 2025 21:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D8Ukq6QX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RsN9q8W0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F023C264600
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 21:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867AE158874
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 21:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739221467; cv=none; b=j5GsXjjHYkjdsOY4R1VHl/EraEVICpIstWLvYNwRaWFBYDsOkJF1R9CEe9oHJ1qUSPHd16L1ogE0fW6AzJiBGRhA72/yXA+hpukIrsdfESR2uyhRqr9tZXokFNs54XVY5STgl5vXw6EF+/vMgWd+Q9Im/u2E6CCssqWpqjBFm1k=
+	t=1739221890; cv=none; b=IvjCns9bgqvW6idRrcfaz79FYIxW+LqQVioBFhFRLwC4suH9Gbk2WmeUgGSToTBmY2uw3EilO/G37TDIvIm4hUdPyNdb9X/MkqeXbH51vjMObxMB83p0TtqNHxZLwJPqTBqWFXId36sLIzsl/fOsFgHCMeNYraKtQH1tT6HwrzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739221467; c=relaxed/simple;
-	bh=uzt4HJYnpen6fD41hc7/tYcAQpGGRJWsyMlgV+yjVLY=;
+	s=arc-20240116; t=1739221890; c=relaxed/simple;
+	bh=xR5X3LYlhUupbdJe0tYf/rX2Q0qTV+nSsE4Fs/kkGQY=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pd2sqkgcvjXCkxPRbWaRwZTHWbQun7d0Cqp3SbTfxpldhosnFYbzOittH5oolBkq9PfJefEwDU8Brd7maDwvLsHL1HOpcPiAwf5Jsk6VHL7dgvMgRUQjdE680G3ALLhvZQodqx/61uSJ9SOQ/qK6/1Oi/WNWUzjv/+LeDKj7QiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D8Ukq6QX; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version:Content-Type; b=SWX3+328hndzEZuGFdeBNhcPtjzzCpa9qEnTLIW+cYF1ISWBCKt0X4pX5x8GgufscxxOHNnJneUvsfY8hffmI6Khlz3yqgwaQmobLNmnIaq0ZlWskP5xdyGHjZiSsdA0FfAGzcar819p9XZ1BKKlkLUyW3oTopb8oqb3giHCOaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RsN9q8W0; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739221465; x=1770757465;
+  t=1739221888; x=1770757888;
   h=date:message-id:from:to:cc:subject:in-reply-to:
    references:mime-version;
-  bh=uzt4HJYnpen6fD41hc7/tYcAQpGGRJWsyMlgV+yjVLY=;
-  b=D8Ukq6QXFdSU1QVMJMLT0J3dEbIdEN7tYfPe2CYobE+LK7pv0iIqz1l5
-   vyBw1JsGVtmPKytMF6WNuKumt0nmJeNkbcJsaLnDlk2lIO3uRhEEBQWli
-   GCK6p9t6bDT9a/R9lTf/3CoEg3edi8Ivs0ZAOpZmdnM8PcH5QZ2hCEBfF
-   GF+BgWdXDgbWeVwUhuU7UQl+u1GlTpQC9Wd5YoDseky/10DcsU2yq5WJk
-   lU/0gw5LI9/0dbBidF4pvNr3ZSYbqO/gE9dIhhRexSbdudJyjEpTv0xiE
-   YgP/Z4yDol43EuZ1Cpw5J1Wfb5vYeJPf2covptTGj/7WJGEGLyEPFL5mW
-   Q==;
-X-CSE-ConnectionGUID: XLr8iwLJQPuSj84Y3dFBng==
-X-CSE-MsgGUID: o7UvZtMFSGODwZhJwwXvrQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39737826"
+  bh=xR5X3LYlhUupbdJe0tYf/rX2Q0qTV+nSsE4Fs/kkGQY=;
+  b=RsN9q8W0ISRcantsov3XVkM+py+zLS6z5JXKfpxstnBSPSGmpRKKGvLo
+   mRdMhcf/vFtiOaBjfnMgHiD4BBBkCko68EEjbjAxBruqoMu6duUqCUpSc
+   Fao0yYwmiRBt37SM5kQD2AsEqtVGz55ZI2OF/YvkNAcy5DyM2dSQA2UcW
+   K2Akb+kOaSFDp6MC361RVcp/vF+FIFleWSNSOl18AhZfjLV+R/ayVtUFd
+   ZH6VUTChmlmAE3dA8bjzRtueVGGRx/TsbGOPg1uMwg6TGPOg1Fyn0Yk86
+   maA7334kHnzvEG5J5PBItS7y94Fsbp9uEq1ZQm5jm7dpUaBo6mbzy8t4j
+   A==;
+X-CSE-ConnectionGUID: zcvhVasdQ46JH8HRWk6J2A==
+X-CSE-MsgGUID: 47si8PjuS3eJoqapAeijWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="57362569"
 X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="39737826"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:04:25 -0800
-X-CSE-ConnectionGUID: Epw7QdR1RiO0QINT87TOOQ==
-X-CSE-MsgGUID: PmaebEf4QqS3l+TWgUjeUQ==
+   d="scan'208";a="57362569"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:11:28 -0800
+X-CSE-ConnectionGUID: nFuOlibFSLWyyDdRuMghlA==
+X-CSE-MsgGUID: cpnTye/ARa2NmaS7OS5n1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="112246699"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117512767"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:04:24 -0800
-Date: Mon, 10 Feb 2025 13:04:24 -0800
-Message-ID: <85jz9x3413.wl-ashutosh.dixit@intel.com>
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:11:28 -0800
+Date: Mon, 10 Feb 2025 13:11:27 -0800
+Message-ID: <85ikph33pc.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: <gregkh@linuxfoundation.org>
 Cc: umesh.nerlige.ramappa@intel.com,
 	jonathan.cavitt@intel.com,
 	matthew.brost@intel.com,
 	<stable@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] xe/oa: Fix query mode of operation for OAR/OAC" failed to apply to 6.12-stable tree
-In-Reply-To: <2025021013-cavalry-unsightly-0671@gregkh>
-References: <2025021013-cavalry-unsightly-0671@gregkh>
+Subject: Re: FAILED: patch "[PATCH] xe/oa: Fix query mode of operation for OAR/OAC" failed to apply to 6.13-stable tree
+In-Reply-To: <2025021014-cartridge-snooze-15bd@gregkh>
+References: <2025021014-cartridge-snooze-15bd@gregkh>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -80,38 +80,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
 
-On Mon, 10 Feb 2025 05:02:13 -0800, <gregkh@linuxfoundation.org> wrote:
+On Mon, 10 Feb 2025 05:02:14 -0800, <gregkh@linuxfoundation.org> wrote:
 >
 
 Hi Greg,
 
->
-> The patch below does not apply to the 6.12-stable tree.
+> The patch below does not apply to the 6.13-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
 >
 > To reproduce the conflict and resubmit, you may use the following commands:
 >
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 > git checkout FETCH_HEAD
 > git cherry-pick -x 55039832f98c7e05f1cf9e0d8c12b2490abd0f16
 > # <resolve conflicts, build, test, etc.>
 > git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021013-cavalry-unsightly-0671@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021014-cartridge-snooze-15bd@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 >
 > Possible dependencies:
 
-We had submitted a modified version of the patch, adapted for 6.12 here:
+This was a modified commit we had sent for 6.12. It will not apply to
+6.13. Neither is it needed for 6.13, since the original commit
 
-https://lore.kernel.org/stable/20250110205341.199539-1-umesh.nerlige.ramappa@intel.com/
+	55039832f98c ("xe/oa: Fix query mode of operation for OAR/OAC")
 
-Please take this patch for 6.12.
+is already present in 6.13.
 
 Thanks.
 --
 Ashutosh
-
 
 >
 >
