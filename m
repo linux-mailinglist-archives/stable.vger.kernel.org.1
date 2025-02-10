@@ -1,145 +1,156 @@
-Return-Path: <stable+bounces-114707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DA9A2F800
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:57:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F3BA2F939
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 20:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE4A93A6F10
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:56:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F40169545
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC46025E450;
-	Mon, 10 Feb 2025 18:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C882505BF;
+	Mon, 10 Feb 2025 19:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cG3g2vHX"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380D425E444
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 18:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8522505B3
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 19:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739213822; cv=none; b=nyEY8FzK6FPaRtopDanyT/xgDXXX7XRiyTGR6HYCO/mIe2n8+AredObXyVS7+WT6tBq+CrFrY/m81Hht75GoGxP0cPGLR6xkuLhS9bxDtD58RyUJ6ErwE3KL7YtZ4l2XHNpplwD7ZszwIHIP9NpFK90GnCTOd6soapG9zKndRw4=
+	t=1739216587; cv=none; b=KqKn+CREbX0h/6vnWXNwoFU/TenhFSnBIVwb315O+vug66w2/KGEsgFjsXSzyFu99G7xt9VYGFTMxBfziaVCuiQ/4OGK438f/ewcFSAtfpjfImY1UEjgaEryF70JbPGjfKK/qr51ldM6TTTLMbCd24490HxujK7OcUagjVn7aWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739213822; c=relaxed/simple;
-	bh=BV/j0szbMS+AKpEtgGQ0ZRsMB1+AGXw31OIe3ZPKRxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nlOJE8icDGyArgv1UgT90k68DO5laian2hoNbRTWiUKmvdVSMbD0iS8wX4/Mr4o5j30YRmklfuMhx5fLaJ2R/5rAOV/miGpQq6Og0NIpsv3+d+3gS0pzoyTxCjyd2Hdd2h3wpyCmA7Tx77iaoOwzgnGg8DG8c88X9Y6lt7HZfuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E80021477;
-	Mon, 10 Feb 2025 10:57:18 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE53E3F6A8;
-	Mon, 10 Feb 2025 10:56:54 -0800 (PST)
-Date: Mon, 10 Feb 2025 18:56:51 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
-	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
-	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
-	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
-	tabba@google.com, wilco.dijkstra@arm.com
-Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
-Message-ID: <Z6pL81_yi98o2vtS@J2N7QTR9R3>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
- <20250206141102.954688-9-mark.rutland@arm.com>
- <20250210165325.GI7568@willie-the-truck>
- <Z6o1t7ys2qVaZ-7n@J2N7QTR9R3>
- <20250210182009.GB7926@willie-the-truck>
+	s=arc-20240116; t=1739216587; c=relaxed/simple;
+	bh=zDOdwrtEgqL5utC5zX/sNmBwQ2znbX6ktSuLXgQgpws=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=LzMCVMYkx1LuW4ukF2SNCkzxfAN2KSmsdJzOnVc+I9FIvrQVawl119TakC9AzwYQ3psmdh2MeBbibRyAo3KyTlFnGZEPqbrCnSMloreeNW89wRL82c1ZfKaJdMVg/nEzitWxUPeqGEZEeIwUkDL88+NRrFHA7mnAPPf/G8PP5+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cG3g2vHX; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250210194303epoutp02966dbc0e0cd4401e96e56cf6118a4336~i8ESRTw5c1750417504epoutp02u
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 19:43:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250210194303epoutp02966dbc0e0cd4401e96e56cf6118a4336~i8ESRTw5c1750417504epoutp02u
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1739216583;
+	bh=Qrsvwbm83TIa/72fQltxAnMshkLGTHgkRYY1/Dx1x1g=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=cG3g2vHXZeNr3vRTI7qPxp094UfOoioi7+9R5n65bPh6mt2WJELuuEnwDdU0iYgD0
+	 npUPkmq4w0hb8bddgWlOcMyJxJkoXIwrpaD8L4kzGMIrgUf6WmcLzit4j6CP2sAnGR
+	 p4+Q6bei/PLEUE7iIhG6ZncSbv28LbHWna8TL5XQ=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+	20250210194302epcas5p3e69da3238905af70a86a3e58b7ef2b49~i8ERiHxZl2476124761epcas5p3b;
+	Mon, 10 Feb 2025 19:43:02 +0000 (GMT)
+Received: from epcpadp2new (unknown [182.195.40.142]) by
+	epsnrtp1.localdomain (Postfix) with ESMTP id 4YsFNk45Txz4x9Pr; Mon, 10 Feb
+	2025 19:43:02 +0000 (GMT)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250210131144epcas5p4a0599050f5973b495db0371021c21e27~i2un9NPY-0918109181epcas5p4D;
+	Mon, 10 Feb 2025 13:11:44 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20250210131144epsmtrp2efd616cee279f5e2c67f7838543d9d5d~i2un4wzLi1237012370epsmtrp2G;
+	Mon, 10 Feb 2025 13:11:44 +0000 (GMT)
+X-AuditID: b6c32a52-1f7ff700000083ab-83-67a9fb10fe47
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	81.B4.33707.01BF9A76; Mon, 10 Feb 2025 22:11:44 +0900 (KST)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250210131141epsmtip2d289bc772427d32592ed474915e32c75~i2ulW1MWr0730507305epsmtip28;
+	Mon, 10 Feb 2025 13:11:41 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: mathias.nyman@intel.com, gregkh@linuxfoundation.org,
+	WeitaoWang-oc@zhaoxin.com, Thinh.Nguyen@synopsys.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
+	alim.akhtar@samsung.com, thiagu.r@samsung.com, muhammed.ali@samsung.com,
+	pritam.sutar@samsung.com, cpgs@samsung.com, Selvarasu Ganesan
+	<selvarasu.g@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH] usb: xhci: Initialize unassigned variables to fix possible
+ errors
+Date: Mon, 10 Feb 2025 18:41:23 +0530
+Message-ID: <1891546521.01739216582564.JavaMail.epsvc@epcpadp2new>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210182009.GB7926@willie-the-truck>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrDLMWRmVeSWpSXmKPExsWy7bCSvK7A75XpBusuyli8ubqK1eLBvG1s
+	Fi8PaVrcWTCNyeLU8oVMFs2L17NZ/L19kdXi7sMfLBaXd81hs1i0rJXZonnTFFaL8y+6WC0+
+	Hf3PavHs3go2iyPLPzJZLNj4iNFiRTNQyaoFB9gtHv2cy+Qg7LF4z0smj/1z17B79G1Zxeix
+	Zf9nRo/Pm+Q8ft26xRLAFsVlk5Kak1mWWqRvl8CV0bNwIXvBdN6K5avmsTUwzuPuYuTkkBAw
+	kXjbt52xi5GLQ0hgO6PEkcc7WSAS0hKvZ3UxQtjCEiv/PWeHKPrKKHH36HSgIg4ONgFDiWcn
+	bEDiIgIbGCWunpnNCuIwC9xikjj49wMzSLewQJDE1Sdr2UFsFgFVicM7VoBt4BWwkrj24BAT
+	xAZNibV79zBBxAUlTs58AlbDLCAv0bx1NvMERr5ZSFKzkKQWMDKtYhRNLSjOTc9NLjDUK07M
+	LS7NS9dLzs/dxAiOEK2gHYzL1v/VO8TIxMF4iFGCg1lJhNdk4Yp0Id6UxMqq1KL8+KLSnNTi
+	Q4zSHCxK4rzKOZ0pQgLpiSWp2ampBalFMFkmDk6pBib13qfhsvzJDyerf8zfw2Dl6MV8aukm
+	O+HG4gmrtzNZZVtsdPJ++4Dtq9Cdy4GLz/qz8GhfjHRlbgjkFm+ZHFYanrFauifl5KqanRun
+	bFqlFRb/6FXeejFehfgELa72VYHVy7/eSH3ZaBGc4jnhb07hr6d56rN5TfdtPrOg9pfHtdSJ
+	X/QsU78z1ZdK/8s7/s7J8OlaxRtBM0IcelKeF39ri3t/aDP/pvkR4rvji25fenvQXODCqQuT
+	1YQt9JPf/Dxo/fjWbOZHV2en686O5FFqaHs51TRkQa5kT9yc29pce1Z6rWctPGAf66S8KU2G
+	ayp7tu/NJ7m7l/+T/nv0vAc/1xWNPz8y14j1ywhkbVBiKc5INNRiLipOBABUBjE1/wIAAA==
+X-CMS-MailID: 20250210131144epcas5p4a0599050f5973b495db0371021c21e27
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20250210131144epcas5p4a0599050f5973b495db0371021c21e27
+References: <CGME20250210131144epcas5p4a0599050f5973b495db0371021c21e27@epcas5p4.samsung.com>
 
-On Mon, Feb 10, 2025 at 06:20:09PM +0000, Will Deacon wrote:
-> On Mon, Feb 10, 2025 at 05:21:59PM +0000, Mark Rutland wrote:
-> > On Mon, Feb 10, 2025 at 04:53:27PM +0000, Will Deacon wrote:
-> > > On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
-> > > > +static inline void fpsimd_lazy_switch_to_host(struct kvm_vcpu *vcpu)
-> > > > +{
-> > > > +	u64 zcr_el1, zcr_el2;
-> > > > +
-> > > > +	if (!guest_owns_fp_regs())
-> > > > +		return;
-> > > > +
-> > > > +	if (vcpu_has_sve(vcpu)) {
-> > > > +		zcr_el1 = read_sysreg_el1(SYS_ZCR);
-> > > > +		__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)) = zcr_el1;
-> > > > +
-> > > > +		/*
-> > > > +		 * The guest's state is always saved using the guest's max VL.
-> > > > +		 * Ensure that the host has the guest's max VL active such that
-> > > > +		 * the host can save the guest's state lazily, but don't
-> > > > +		 * artificially restrict the host to the guest's max VL.
-> > > > +		 */
-> > > > +		if (has_vhe()) {
-> > > > +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-> > > > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
-> > > > +		} else {
-> > > > +			zcr_el2 = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
-> > > > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
-> > > > +
-> > > > +			zcr_el1 = vcpu_sve_max_vq(vcpu) - 1;
-> > > > +			write_sysreg_el1(zcr_el1, SYS_ZCR);
-> > > 
-> > > Do we need an ISB before this to make sure that the CPTR traps have been
-> > > deactivated properly?
-> > 
-> > Sorry, I had meant to add a comment here that this relies upon a
-> > subtlety that avoids the need for the ISB.
-> 
-> Ah yes, it really all hinges on guest_owns_fp_regs() and so I think a
-> comment would be helpful, thanks.
-> 
-> Just on this, though:
-> 
-> > When the guest owns the FP regs here, we know:
-> > 
-> > * If the guest doesn't have SVE, then we're not poking anything, and so
-> >   no ISB is necessary.
-> > 
-> > * If the guest has SVE, then either:
-> > 
-> >   - The guest owned the FP regs when it was entered.
-> > 
-> >   - The guest *didn't* own the FP regs when it was entered, but acquired
-> >     ownership via a trap which executed kvm_hyp_handle_fpsimd().
-> > 
-> >   ... and in either case, *after* disabling the traps there's been an
-> >   ERET to the guest and an exception back to hyp, either of which
-> >   provides the necessary context synchronization such that the traps are
-> >   disabled here.
-> 
-> What about the case where we find that there's an interrupt pending on
-> return to the guest? In that case, I think we elide the ERET and go back
-> to the host (see the check of isr_el1 in hyp/entry.S).
+Fix the following smatch errors:
 
-Ah; I had missed that, and evidently I had not looked at the entry code.
+drivers/usb/host/xhci-mem.c:2060 xhci_add_in_port() error: unassigned variable 'tmp_minor_revision'
+drivers/usb/host/xhci-hub.c:71 xhci_create_usb3x_bos_desc() error: unassigned variable 'bcdUSB'
 
-Given that, I think the options are:
+Fixes: d9b0328d0b8b ("xhci: Show ZHAOXIN xHCI root hub speed correctly")
+Fixes: eb02aaf21f29 ("usb: xhci: Rewrite xhci_create_usb3_bos_desc()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+---
+ drivers/usb/host/xhci-hub.c | 2 +-
+ drivers/usb/host/xhci-mem.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-(a) Add an ISB after disabling the traps, before returning to the guest.
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 9693464c0520..5715a8bdda7f 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -39,7 +39,7 @@ static int xhci_create_usb3x_bos_desc(struct xhci_hcd *xhci, char *buf,
+ 	struct usb_ss_cap_descriptor	*ss_cap;
+ 	struct usb_ssp_cap_descriptor	*ssp_cap;
+ 	struct xhci_port_cap		*port_cap = NULL;
+-	u16				bcdUSB;
++	u16				bcdUSB = 0;
+ 	u32				reg;
+ 	u32				min_rate = 0;
+ 	u8				min_ssid;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 92703efda1f7..8665893df894 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1980,7 +1980,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+ {
+ 	u32 temp, port_offset, port_count;
+ 	int i;
+-	u8 major_revision, minor_revision, tmp_minor_revision;
++	u8 major_revision, minor_revision, tmp_minor_revision = 0;
+ 	struct xhci_hub *rhub;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_port_cap *port_cap;
+-- 
+2.17.1
 
-(b) Add an ISB in fpsimd_lazy_switch_to_host() above.
 
-(c) Add an ISB in that sequence in hyp/entry.S, just before the ret, to
-    ensure that __guest_enter() always provides a context
-    synchronization event even when it doesn't enter the guest,
-    regardless of ARM64_HAS_RAS_EXTN.
-
-I think (c) is probably the nicest, since that avoids the need for
-redundant barriers in the common case, and those short-circuited exits
-are hopefully rare.
-
-Obviously that would mean adding comments in both __guest_enter() and
-fpsimd_lazy_switch_to_host().
-
-Mark.
 
