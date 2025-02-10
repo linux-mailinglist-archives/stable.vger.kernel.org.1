@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-114500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527C2A2E85A
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:56:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 659B9A2E859
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0F1D7A46B8
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:55:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137631673C2
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B271C5F1B;
-	Mon, 10 Feb 2025 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6261C3C10;
+	Mon, 10 Feb 2025 09:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpIAlVyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVzgDb69"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434B02E628
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 09:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CF11C3C01
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 09:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739181311; cv=none; b=kmVLPnWeuW3nOJpWTMpEeW/N2+9suui0vH+z//p09fi34HYux30f/8sUDpmoWSp2yb7pEb1UE5rNukkl3+ED5Gxxj7ybeKXaSN/bFOrZv1fYAoHrBt62Dn8LSY2q5RIi4rCECF8rkBbRvbIQmqYG4sWQ+2DhV5rbbo/Mu0mNUug=
+	t=1739181337; cv=none; b=U/ohN3//ukK5LqEsic19NdHPLnUEOTGJVoQCwVYbxReZauLwVSpTg7jTHR3wjIAKL4uQEicG2PkyK7ZjwJzZ6bpxAh8zhBQj6wssI4w1PmP+DFmU57tYIvWbbiLC1SWgppNxhF8mCtES/URm8SqoFzE89lum8TCNYMR43+TOWFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739181311; c=relaxed/simple;
-	bh=WnwaiUKed+7bA61mNNHwBp/N200H3X+Tbh6tQUzyvyw=;
+	s=arc-20240116; t=1739181337; c=relaxed/simple;
+	bh=noLKjX+tiagrq8KLYljIlHZfCLLHiCyrOmYtSmImgjA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XS+fx6s3JSLGIlkN4mkSswb70NSn/E3nAYkyQ9ufi1sqgjoJKtL+LWMgz/Yl6FKmwIX8NEaYN5XwUSQ2QB/2wSD3lWLayth1SBGm0kU03f4Ec4UjJe2VxBDEFhJUewwayjtVTZqoI3BQgf7Nsst2BOUlweUlKwAuqFRIFfl6GKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpIAlVyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318FEC4CED1;
-	Mon, 10 Feb 2025 09:55:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lVg2iiTJBB2Ca470CoS3jObjW+v+nFQmjuV2Pkh2xBOkKZahEMK0nuSCQwJIaTWQP4vFTb3BMXs9GPS8Z83Cs4Lz204ADw3tYks0HZgWatkYKwQCSIPq/fGz8oY7Mjisqk/GNmImw7K12sdDbKO16ysmJWAwdxiBVw8ZkfJYzRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVzgDb69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696CEC4CED1;
+	Mon, 10 Feb 2025 09:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739181310;
-	bh=WnwaiUKed+7bA61mNNHwBp/N200H3X+Tbh6tQUzyvyw=;
+	s=korg; t=1739181337;
+	bh=noLKjX+tiagrq8KLYljIlHZfCLLHiCyrOmYtSmImgjA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cpIAlVyLxy3c9u6u8bG34qvRhaUOg/Y5wQF1joNaD649NmxdrJXJt3D2V/cJtSoHe
-	 wHmfat59IooX2cRT3yatV6Mzsg8h0pQyKgj2iSnTOBf4tYr0hv3gnngIRX2XnajDqe
-	 KM3CS8q7Et9yfMHOLuo8QcUtjAAXD19rKI+d6cG0=
-Date: Mon, 10 Feb 2025 10:55:07 +0100
+	b=ZVzgDb69tOWwEJwxGAKOjrYHeMxX7ypyX/1sNgWn1H0oaNi/gxJH7nZKgVsLSeuD8
+	 CikSvPh57p/Ca1bpm2n/ZQj+1QdWyjoAF+iwxzirsBrrPtWWIxfuJ3id+slzcXGeoF
+	 r/NGG21LHwGnfT6NGz+iIgOh3umalcuPpy/NFGZg=
+Date: Mon, 10 Feb 2025 10:55:33 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: hsimeliere.opensource@witekio.com
-Cc: andrii@kernel.org, ast@kernel.org, bruno.vernay@se.com,
-	stable@vger.kernel.org, xukuohai@huawei.com
-Subject: Re: [PATCH v2 6.1] bpf: Prevent tail call between progs attached to
- different hooks
-Message-ID: <2025021027-repaying-purveyor-9744@gregkh>
-References: <2025012138-quarrel-uneaten-83da@gregkh>
- <20250210094407.209620-1-hsimeliere.opensource@witekio.com>
+Cc: bruno.vernay@se.com, kent.overstreet@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v5.15-v5.4] lib/generic-radix-tree.c: Don't overflow in
+ peek()
+Message-ID: <2025021020-tavern-regroup-785b@gregkh>
+References: <2025021059-waking-parlor-c55d@gregkh>
+ <20250210093913.209407-1-hsimeliere.opensource@witekio.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,24 +55,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250210094407.209620-1-hsimeliere.opensource@witekio.com>
+In-Reply-To: <20250210093913.209407-1-hsimeliere.opensource@witekio.com>
 
-On Mon, Feb 10, 2025 at 10:44:07AM +0100, hsimeliere.opensource@witekio.com wrote:
-> This patch is needed to correct CVE-2024-50063
+On Mon, Feb 10, 2025 at 10:39:13AM +0100, hsimeliere.opensource@witekio.com wrote:
+> This patch is needed to correct CVE-2021-47432
+> https://nvd.nist.gov/vuln/detail/cve-2021-47432
 
-What patch?  I see no context here :(
-
-> https://nvd.nist.gov/vuln/detail/CVE-2024-50063
-
-Never link to nvd, their "enhancements" are provably wrong and hurtful
-to the kernel ecosystem.  Always just refer to cve.org records or better
-yet, our own announcements.
-
-That being said, why do you feel this commit is really needed in those
-older kernels other than just trying to meet a "check box" requirement
-somewhere?
-
-thanks,
+Same comments here, this is not a valid answer, sorry.
 
 greg k-h
 
