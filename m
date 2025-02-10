@@ -1,306 +1,128 @@
-Return-Path: <stable+bounces-114650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA07BA2F0DD
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:06:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81955A2F0E9
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87023A8D0B
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B04AF188BE98
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B18D223310;
-	Mon, 10 Feb 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EA5204873;
+	Mon, 10 Feb 2025 15:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYF+nx5L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKVbmOEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A88F1CA84
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F3E204861
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199946; cv=none; b=rT26YSryBAaQYEwggbaI07jrGWQgDFWMovZ4R2JytVy1XxQM5S+5UoUabS3woK79105IokYouVz9IE5FIxBXPtaVk/CEPO1ac43qQUoYNOON8nLmLtXfzfmNR0+okzObIGhnbAIXV25nUBkaeiLXv8XK7ali2t4F4V1pZj/BVXY=
+	t=1739199954; cv=none; b=fWhLzpboHSRJTpijbiZi/hocUS918w9w84Y2dcTK7K+xJ7VmFgXm96bIigAzO6yKgey9bdnfPSDO0wqSbHfOxCaCtipfze8ePLulw7Mmlgb1PFHV//iF7Rv9RnNwvlm0zxWc6UGXNh8+8l0BOE0405s/GpFgdya4h86qzUC40Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199946; c=relaxed/simple;
-	bh=c8Gp2WB7DSAYGeBt5DaWz01qMglnH+RODJNwwa44KyE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DtiPUd8Sp4fFMGGB4UOqquRw5jUoBXKnQLgvQF9v2PlbbEbKVN54CZunV7SQUdFJCTiRgOGff+I2FuTmcFA9/tL1Uk7t+kgQlilnKp6eQPPBk4n4BzLZYreoBxdrKROinvojV8NnErv44trrkBd+u/RqOD+n90IriseZagUzE/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYF+nx5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD95C4CEDF;
-	Mon, 10 Feb 2025 15:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739199946;
-	bh=c8Gp2WB7DSAYGeBt5DaWz01qMglnH+RODJNwwa44KyE=;
-	h=Subject:To:Cc:From:Date:From;
-	b=BYF+nx5L8GvZ9LuXDEFBo3GwxdzCefuB8OX+izx2BygawgdDkbFNGK0tgu9rBNYS6
-	 2dwleolyqbiDJFomVpZwwl6QCPRkws1UHqxb/3YdQ9OHDoVW4m1BxNvOvL7wLfJEmz
-	 BdCYuGrmZ+coG/MkGe4cZJailPsEEi9hmyfl+DqE=
-Subject: FAILED: patch "[PATCH] mm/hugetlb: fix avoid_reserve to allow taking folio from" failed to apply to 5.4-stable tree
-To: peterx@redhat.com,ackerleytng@google.com,akpm@linux-foundation.org,leitao@debian.org,muchun.song@linux.dev,nao.horiguchi@gmail.com,osalvador@suse.de,riel@surriel.com,roman.gushchin@linux.dev,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 16:05:36 +0100
-Message-ID: <2025021036-joyride-vitality-e81d@gregkh>
+	s=arc-20240116; t=1739199954; c=relaxed/simple;
+	bh=P/ctmUMjn+LOgAtQLjjXfPgljir4CfZIfvWihq/RQb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jujLx6JzJJdv4cWcQDxhYGgeH9CptZzZp3WHxNfW1D4OVQEmsdS247S4PiJoQ82ODjy+rPKgDu9/g5TZOHPEkHVcufyoZng2VSBnfIaKgBHxEqmlzU1M8XKcUQK6Jt82eSxSmCvhqO1JadsKJIJHgTf0zjQTHkPpVHtu4w7aOjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKVbmOEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CEFC4CED1;
+	Mon, 10 Feb 2025 15:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739199952;
+	bh=P/ctmUMjn+LOgAtQLjjXfPgljir4CfZIfvWihq/RQb4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XKVbmOEI+9xMj+B/ZBdUanCUsJXeJ+tf3xSjizF7XHiidiI0oCjKLm1rvsiVJfmks
+	 Y+6YTMM7M0nndvs4nmZXPvP4HUWANgBQkZNsObDuJRCfbenFYz8Q//TKwEnMDzZK/u
+	 2H3xt80ZZq//MaB+IQAEY1QziAYcQHDKFz4Ee9Y/D4zUll2Uoy9RRiom8xNjJxRu7D
+	 eU5jyozckEhcyirSm81+Hqxlofaj1+qKdZUIc5iELmVgvi+hTb31STOnmu2m4cH4Ng
+	 C9n2T00pSwv+yycAYqQIrwLjASQbVHKThshzOtyZt7uYt/dyskcF/CQdS2pgiXFjB/
+	 z+lg2fAIgYl1A==
+Date: Mon, 10 Feb 2025 15:05:47 +0000
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v2 1/8] KVM: arm64: Unconditionally save+flush host
+ FPSIMD/SVE/SME state
+Message-ID: <20250210150546.GB7568@willie-the-truck>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-2-mark.rutland@arm.com>
+ <20250207122748.GA4839@willie-the-truck>
+ <Z6YI6IvG_N4txgz7@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6YI6IvG_N4txgz7@J2N7QTR9R3>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
+On Fri, Feb 07, 2025 at 01:21:44PM +0000, Mark Rutland wrote:
+> On Fri, Feb 07, 2025 at 12:27:51PM +0000, Will Deacon wrote:
+> > On Thu, Feb 06, 2025 at 02:10:55PM +0000, Mark Rutland wrote:
+> > > There are several problems with the way hyp code lazily saves the host's
+> > > FPSIMD/SVE state, including:
+> > > 
+> > > * Host SVE being discarded unexpectedly due to inconsistent
+> > >   configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
+> > >   result in QEMU crashes where SVE is used by memmove(), as reported by
+> > >   Eric Auger:
+> > > 
+> > >   https://issues.redhat.com/browse/RHEL-68997
+> > > 
+> > > * Host SVE state is discarded *after* modification by ptrace, which was an
+> > >   unintentional ptrace ABI change introduced with lazy discarding of SVE state.
+> > > 
+> > > * The host FPMR value can be discarded when running a non-protected VM,
+> > >   where FPMR support is not exposed to a VM, and that VM uses
+> > >   FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
+> > >   before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
+> > >   value in memory.
+> > 
+> > How hard would it be to write tests for these three scenarios? If we
+> > had something to exercise the relevant paths then...
+> >
+> > > ... and so this eager save+flush probably needs to be backported to ALL
+> > > stable trees.
+> > 
+> > ... this backporting might be a little easier to be sure about?
+> 
+> For the first case I have a quick and dirty test, which I've pushed to
+> my arm64/kvm/fpsimd-tests branch in my kernel.org repo:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/
+>   git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
+> 
+> For the last case it should be possible to do something similar, but I
+> hadn't had the time to dig in to the KVM selftests infrastructure and
+> figure out how to confiugre the guest appropriately.
+> 
+> For the ptrace case, the same symptoms can be provoked outside of KVM
+> (and I'm currently working to fix that). From my PoV the important thing
+> is that this fix happens to remove KVM from the set of cases the other
+> fixes need to care about.
+> 
+> FWIW I was assuming that I'd be handling the upstream backports, and I'd
+> be testing with the test above and some additional assertions hacked
+> into the kernel for testing.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The backporting for Android will probably diverge slightly from upstream,
+so if I'm able to run your tests as well then it would really handy.
+Thanks for sharing the stuff you currently have.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The patch looks fine:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 58db7c5fbe7daa42098d4965133a864f98ba90ba
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021036-joyride-vitality-e81d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+Acked-by: Will Deacon <will@kernel.org>
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 58db7c5fbe7daa42098d4965133a864f98ba90ba Mon Sep 17 00:00:00 2001
-From: Peter Xu <peterx@redhat.com>
-Date: Tue, 7 Jan 2025 15:39:56 -0500
-Subject: [PATCH] mm/hugetlb: fix avoid_reserve to allow taking folio from
- subpool
-
-Patch series "mm/hugetlb: Refactor hugetlb allocation resv accounting",
-v2.
-
-This is a follow up on Ackerley's series here as replacement:
-
-https://lore.kernel.org/r/cover.1728684491.git.ackerleytng@google.com
-
-The goal of this series is to cleanup hugetlb resv accounting, especially
-during folio allocation, to decouple a few things:
-
-  - Hugetlb folios v.s. Hugetlbfs: IOW, the hope is in the future hugetlb
-    folios can be allocated completely without hugetlbfs.
-
-  - Decouple VMA v.s. hugetlb folio allocations: allocating a hugetlb folio
-    should not always require a hugetlbfs VMA.  For example, either it got
-    allocated from the inode level (see hugetlbfs_fallocate() where it used
-    a pesudo VMA for allocation), or it can be allocated by other kernel
-    subsystems.
-
-It paves way for other users to allocate hugetlb folios out of either
-system reservations, or subpools (instead of hugetlbfs, as a file system).
-For longer term, this prepares hugetlb as a separate concept versus
-hugetlbfs, so that hugetlb folios can be allocated by not only hugetlbfs
-and other things.
-
-Tests I've done:
-
-- I had a reproducer in patch 1 for the bug I found, this will start to
-  work after patch 1 or the whole set applied.
-
-- Hugetlb regression tests (on x86_64 2MBs), includes:
-
-  - All vmtests on hugetlbfs
-
-  - libhugetlbfs test suite (which may fail some tests, but no new failures
-    will be introduced by this series, so all such failures happen before
-    this series so shouldn't be relevant).
-
-
-This patch (of 7):
-
-Since commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a
-process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed"),
-avoid_reserve was introduced for a special case of CoW on hugetlb private
-mappings, and only if the owner VMA is trying to allocate yet another
-hugetlb folio that is not reserved within the private vma reserved map.
-
-Later on, in commit d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle
-areas hole punched by fallocate"), alloc_huge_page() enforced to not
-consume any global reservation as long as avoid_reserve=true.  This
-operation doesn't look correct, because even if it will enforce the
-allocation to not use global reservation at all, it will still try to take
-one reservation from the spool (if the subpool existed).  Then since the
-spool reserved pages take from global reservation, it'll also take one
-reservation globally.
-
-Logically it can cause global reservation to go wrong.
-
-I wrote a reproducer below, trigger this special path, and every run of
-such program will cause global reservation count to increment by one, until
-it hits the number of free pages:
-
-  #define _GNU_SOURCE             /* See feature_test_macros(7) */
-  #include <stdio.h>
-  #include <fcntl.h>
-  #include <errno.h>
-  #include <unistd.h>
-  #include <stdlib.h>
-  #include <sys/mman.h>
-
-  #define  MSIZE  (2UL << 20)
-
-  int main(int argc, char *argv[])
-  {
-      const char *path;
-      int *buf;
-      int fd, ret;
-      pid_t child;
-
-      if (argc < 2) {
-          printf("usage: %s <hugetlb_file>\n", argv[0]);
-          return -1;
-      }
-
-      path = argv[1];
-
-      fd = open(path, O_RDWR | O_CREAT, 0666);
-      if (fd < 0) {
-          perror("open failed");
-          return -1;
-      }
-
-      ret = fallocate(fd, 0, 0, MSIZE);
-      if (ret != 0) {
-          perror("fallocate");
-          return -1;
-      }
-
-      buf = mmap(NULL, MSIZE, PROT_READ|PROT_WRITE,
-                 MAP_PRIVATE, fd, 0);
-
-      if (buf == MAP_FAILED) {
-          perror("mmap() failed");
-          return -1;
-      }
-
-      /* Allocate a page */
-      *buf = 1;
-
-      child = fork();
-      if (child == 0) {
-          /* child doesn't need to do anything */
-          exit(0);
-      }
-
-      /* Trigger CoW from owner */
-      *buf = 2;
-
-      munmap(buf, MSIZE);
-      close(fd);
-      unlink(path);
-
-      return 0;
-  }
-
-It can only reproduce with a sub-mount when there're reserved pages on the
-spool, like:
-
-  # sysctl vm.nr_hugepages=128
-  # mkdir ./hugetlb-pool
-  # mount -t hugetlbfs -o min_size=8M,pagesize=2M none ./hugetlb-pool
-
-Then run the reproducer on the mountpoint:
-
-  # ./reproducer ./hugetlb-pool/test
-
-Fix it by taking the reservation from spool if available.  In general,
-avoid_reserve is IMHO more about "avoid vma resv map", not spool's.
-
-I copied stable, however I have no intention for backporting if it's not a
-clean cherry-pick, because private hugetlb mapping, and then fork() on top
-is too rare to hit.
-
-Link: https://lkml.kernel.org/r/20250107204002.2683356-1-peterx@redhat.com
-Link: https://lkml.kernel.org/r/20250107204002.2683356-2-peterx@redhat.com
-Fixes: d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas hole punched by fallocate")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 312ed27b9721..a10d376cb1a8 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1398,8 +1398,7 @@ static unsigned long available_huge_pages(struct hstate *h)
- 
- static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 				struct vm_area_struct *vma,
--				unsigned long address, int avoid_reserve,
--				long chg)
-+				unsigned long address, long chg)
- {
- 	struct folio *folio = NULL;
- 	struct mempolicy *mpol;
-@@ -1415,10 +1414,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 	if (!vma_has_reserves(vma, chg) && !available_huge_pages(h))
- 		goto err;
- 
--	/* If reserves cannot be used, ensure enough pages are in the pool */
--	if (avoid_reserve && !available_huge_pages(h))
--		goto err;
--
- 	gfp_mask = htlb_alloc_mask(h);
- 	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
- 
-@@ -1434,7 +1429,7 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
- 							nid, nodemask);
- 
--	if (folio && !avoid_reserve && vma_has_reserves(vma, chg)) {
-+	if (folio && vma_has_reserves(vma, chg)) {
- 		folio_set_hugetlb_restore_reserve(folio);
- 		h->resv_huge_pages--;
- 	}
-@@ -3051,17 +3046,6 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		gbl_chg = hugepage_subpool_get_pages(spool, 1);
- 		if (gbl_chg < 0)
- 			goto out_end_reservation;
--
--		/*
--		 * Even though there was no reservation in the region/reserve
--		 * map, there could be reservations associated with the
--		 * subpool that can be used.  This would be indicated if the
--		 * return value of hugepage_subpool_get_pages() is zero.
--		 * However, if avoid_reserve is specified we still avoid even
--		 * the subpool reservations.
--		 */
--		if (avoid_reserve)
--			gbl_chg = 1;
- 	}
- 
- 	/* If this allocation is not consuming a reservation, charge it now.
-@@ -3084,7 +3068,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 * from the global free pool (global change).  gbl_chg == 0 indicates
- 	 * a reservation exists for the allocation.
- 	 */
--	folio = dequeue_hugetlb_folio_vma(h, vma, addr, avoid_reserve, gbl_chg);
-+	folio = dequeue_hugetlb_folio_vma(h, vma, addr, gbl_chg);
- 	if (!folio) {
- 		spin_unlock_irq(&hugetlb_lock);
- 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
-
+Will
 
