@@ -1,203 +1,144 @@
-Return-Path: <stable+bounces-114505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89857A2E9A3
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:37:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB110A2E9FF
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59791167B57
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:37:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17ED31888563
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69851CCEF0;
-	Mon, 10 Feb 2025 10:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F541CBA18;
+	Mon, 10 Feb 2025 10:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i+QMuXop"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="kMvbcLL8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52091CD1FD
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 10:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A646E192D7E
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 10:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739183835; cv=none; b=lrxkHpc/tZyVUCNpqYwbG6DLyOWMG20cjh4adVJtx9PDlm2a2LF2vS/jlZRj5VXLkhOq4A0BBvJNxDUYDiYsDQfEisqofVlq9tphwFtBoY3dHTlMwP7W2vVmiTbX9rJb9eftO1K8aeq6UihB5TGmxc5Syl/dNrZUrh/JDkDwMVc=
+	t=1739184728; cv=none; b=HXGURZopk2Qk5kv1uBLLpRWXSmZlf4mmonMLN/WFghn7yeFMl2QSgcfDARunoXUzmBprx3cqNFbfwf/+j42D/Mq5S7cVJT8/K1R4z+N/5iCiUg47b5hfpziGUpjjM+VAx3DzdIO50wJRbmWEPs46AQSMs9wwS6gku81oevsdlRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739183835; c=relaxed/simple;
-	bh=X2daA4b8KZBEmI/roOKQ/JNdi2WdnT0BXi6PoHlaWgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VI0dWT160gS74+evr4kf4p+6EwOc7ogzsI2qbLyFy+bAfLqSYfvWiOc7eggqvHJkMnUj2H5ln64OUpuJd/6jIey0t2VMyi1JzW9em8Nw11DrxrNJuUaDLxa1rPu0Qh4FgLeFtP7SbEGmp1NTX0i1mFd+vFHHyFDkutp5MMkfiL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i+QMuXop; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2fa40c0bab2so3663022a91.0
-        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 02:37:13 -0800 (PST)
+	s=arc-20240116; t=1739184728; c=relaxed/simple;
+	bh=BRWGzZuvtmwXMmkURqAYnIS2QtQklPosFB7K+YfF4t0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k9MQD6ElB5zxwlbcBrV3NmPVu5a1z0HAWz61UJGLJbnWjQetkhHrI+nzEul4gZ2zcHae8wUzX5CEqDgjoo73gqE1LvmgtD9//EcpaNIcZR0dGz/QKibyPWCzbPGIxn9xjVvfaZQN/2TUpUVXA+cnDK8Y8DrYXUtiqEzbA7ZgZ2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=kMvbcLL8; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43618283d48so28257585e9.1
+        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 02:52:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739183833; x=1739788633; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ed3HwmGDccuaWYbTyHyaVTzv4wASH1XGS6TfCk4H9oo=;
-        b=i+QMuXop+3T5Ds4jhR+tXfhx9arAvKL7/DPcNHwVJjE7gdp1S/ooAF+E/RE02vF9vy
-         yHi1MOu4TVGXWiG6Mxfrk3W5sZR7P7LLk9vXKsVqINZF0QkZhfdDm/TwKdrrNH94KVQH
-         04NBP2NtFSGzHVc/P9hFPlvZ2T/uIg/HLfTNmwavLOJ5AVuboNTXQFEI6ni26y2QQHYX
-         J9fh9VbNqvDDAGW5lEHq6g4Zcvz78ZMspV2YLI1JantdTDD8pe8MEpvS/+eN2bFvQKyF
-         SGSWhifzKRoU1si50CyBprvurgzIzWy0gIrjbXk/QrS7aHkMU5BOgUUH3WaWgsIhoxo5
-         o07A==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1739184725; x=1739789525; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=taqCovvHhkJXcdGrGiJbuI0yrUJJAsTV1+7Sh8JSxKI=;
+        b=kMvbcLL8oiwm5xnbKragiaGZYowqI7xmVSyVc+/TZ8bjSVYGa6p9mFTku5Ao14gqis
+         c4T+DNGeEL7mKlbKEfXXUkqU2pgnHCpaRNWbC053UUtygvNLr2MhHL0suy4zL3cG5JYW
+         CTI61ezYP3xerGcoKecXZllYqLDmHQRENqvJScd/dQHV9rznD95TarMvDMMcnHLCJUtF
+         Bk4Cx1lqXSk8uCJo9euFx9szsSnRhyPsVVwe6upWCMt5sbpZNCf90u1oB40KFAtZpDXI
+         upuhqtIriEeEN6awiclIgiy0uIrhwEe43gTky/HsueUcWUByhcHfKpkf2n8AvDELDvfP
+         Krbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739183833; x=1739788633;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ed3HwmGDccuaWYbTyHyaVTzv4wASH1XGS6TfCk4H9oo=;
-        b=OhgiZ3ApzEs6Qc+HIaE4Ws2jsiWTMwCDp7GsSgqmR1iG8J67OEfh8+IIhveQKxar3F
-         itv4MmUAkkicj9xVrxSq+TwWzR+o7Zi4avMOKkHUX6Ugk7e/tXGTDqtSzxP4DVGpLNJR
-         8728sqx5FqnLa4/7V7VUUhRCAsrbZEv7oBmtoxfDI9is5R/imsr8J8PtxY/9u3L4LdcF
-         u4xrUk9hWG5ONhp0xNxRcXn4c8rvAi57PgbN5It9Crrm98jbb4R/VeKtQ8QNauUhzzcC
-         7cQFVjvFFhOYpFeeyDjl/U0ESbXeYp9+5D2uqNS5OTURAxiTgKj41lSb7Onj1pEQvb5k
-         zLgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqK2H1dcnD4K4fh/bWOvgbhqna9Q551nQcJZtqUwsbI97bpc5AK2tYnDNIe7AqPncajGGD47o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQY+erD2tgyKB2X2SLCAhx2fEPP/S/rvw5ON+oQoMbhqhVmX31
-	2Ess5faq0FWHgUjYmIdW0KLTQkzCqAk1OMuvdaQig5Ch3cxzt6WB4robGUi4xA==
-X-Gm-Gg: ASbGncsO0LIgrjO+1DMEBH4C0Zft6ca8S88ab7dbBh8G8tRFJZ6G0m2vY4B71ZDX+rB
-	0xwfNDfxDB9PQ0lbGxjyiqbjOqptQFGAHbpQSdl1qHCGgGTquDpAiHhFsP5jPe7btC6bZ0JqdSw
-	MzRFHSuFcbX91GM0xJHrKbA0wXTgQDg61qOODWgf4wJHKry8YMyh3bsbH5RKcDC+G76dMoWw9wC
-	lJu30J8Nj/gBC61Lg4c7ceL7SGBsrRBAAu6YybGt9fvDuqblx5hFfRqp+oawUO6kPmvOrgxxssR
-	Dlb+J8fpWBlGqtSLKmxZpEK43/ko
-X-Google-Smtp-Source: AGHT+IH+EZSozw+jru34fUmFnJ9GiwELwA5qvlNGOOzM35DgohR3W+M4Z4wp+SiWS/lt6+tMpE0BSw==
-X-Received: by 2002:a17:90b:364d:b0:2ee:c4f2:a76d with SMTP id 98e67ed59e1d1-2fa24274bd2mr18771623a91.21.1739183832952;
-        Mon, 10 Feb 2025 02:37:12 -0800 (PST)
-Received: from thinkpad ([220.158.156.173])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa099f4dadsm8179079a91.10.2025.02.10.02.37.09
+        d=1e100.net; s=20230601; t=1739184725; x=1739789525;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=taqCovvHhkJXcdGrGiJbuI0yrUJJAsTV1+7Sh8JSxKI=;
+        b=th+nn2tx8PWIScr4PpVSaKVX4hiFg6yhRofT6lMPOk0pKd5FnR2DzZUrMNvcDNxPxj
+         09nobfoVC074IEH836jjeGus3scD9wF2TbfWJIDMCq7y/Qz2oRpOYlSs8LqgmszIlV66
+         o21kS0xoTCV/buJ20KFAlAPm545s5pLxOShbD9qOaiMeMTiPA+1TXmhrHmHAxcUM2Gly
+         i4pYE0PWJtwSWKkFo3GsAVQq2mDq+QdRdVKiQzKhs+AMtZ3unpxRhOmd2ixLcBetaG4e
+         lUm6MKSlphhg3ZBX5RrDRQuYHx9vMm4hBbWmLRvH5V9ek3CSh8GJDl5EkJkoIJUnbnyM
+         u9Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCVoLuX9lhP9k9j1zwPvAKCoB1g0i4fdbl/bEqF+RdM0+Hw470s65+iYY8WU1X8Z6rRrDUTXSqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEQgU6ayELzhdYSpSK/cdAPMPSvuX2QLbTLXR8VCVy25MHBbR8
+	9TAkIp64bnRsVWQrN8v4G9xjabBXefMcfbFWoeQjPWvssGY3Cz/kWpuLAlXEO6s=
+X-Gm-Gg: ASbGncs0iTBl2JANrg00GcW611y3wZ6Hc+n+DIdf+qQmXzw8x4OGmFpeCXX8NkuZFng
+	ffCa4JZVpNPxJxGMnoaUpQw9oTybKEpwMaeUPya0FOqbbRByMwDqHoqInbot5OCG+9Uk1ZRN+Hz
+	WnsI+neeRJ96Lnl0eu1rGVfVlzRH9YydAeFlQsl/mTimaDctf1FxJSUMW5jOgSuA/69E0CBYyZm
+	hilI0PGZGs5z2m785zVUHpArNZxmYgbPEUIzXAQUVXpj+NMiLlZFVi8JP8fOTorsV70OA8QgX+8
+	4f03UOTw
+X-Google-Smtp-Source: AGHT+IEObKpEn2IXGE5elfd1IjkU00GQGmFnrEcMXX4gngYVYTAaxTnLD0yHXcRDG4uysFv7rkTH1Q==
+X-Received: by 2002:a05:6000:2cf:b0:38d:dcc4:1dcb with SMTP id ffacd0b85a97d-38ddcc41f13mr3724665f8f.2.1739184724887;
+        Mon, 10 Feb 2025 02:52:04 -0800 (PST)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:f3e9:47d0:94c6:777f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc53ae9c0sm10557919f8f.101.2025.02.10.02.52.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 02:37:12 -0800 (PST)
-Date: Mon, 10 Feb 2025 16:07:07 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bo Sun <Bo.Sun.CN@windriver.com>
-Cc: Kexin.Hao@windriver.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Vidya Sagar <vidyas@nvidia.com>
-Subject: Re: [PATCH] PCI: controller: Restore PCI_REASSIGN_ALL_BUS when
- PCI_PROBE_ONLY is enabled
-Message-ID: <20250210103707.c5ubeaowk7xwt6p5@thinkpad>
-References: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
+        Mon, 10 Feb 2025 02:52:04 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH 0/8] gpiolib: sanitize return values of callbacks
+Date: Mon, 10 Feb 2025 11:51:54 +0100
+Message-Id: <20250210-gpio-sanitize-retvals-v1-0-12ea88506cb2@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEraqWcC/x3MQQqAIBBA0avErBtIyYKuEi0kRxsIFSciiu6et
+ HyL/x8QKkwCU/NAoZOFU6xQbQPrZmMgZFcNutO90kpjyJxQbOSDb8JCx2l3QW98T50bvBkd1DY
+ X8nz933l53w8f7BbNZwAAAA==
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1473;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=BRWGzZuvtmwXMmkURqAYnIS2QtQklPosFB7K+YfF4t0=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBnqdpSztjr3HpEnbCi39CQSGhQ1X8sw0XA8NyPo
+ gMP67Cl5q+JAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCZ6naUgAKCRARpy6gFHHX
+ cqFHEAC+U/HsgiKk06+qg43gmHNzU3lYq0XOFpDxCwsFvKNhi6QP3wHzV746Tq/Fg2zRCy+yQ8i
+ fiHgJtd+E9ftUH8EbQ/CGUhP1NkYIUFcYWvmru5oqORunt/4A2dqZGRzjPQYb2psa+e0SQ+tiJj
+ Qzmh/GAcK6NA0Drk+KmByaOb9kLPvS4NaQaKxRssW+6LhOf5SW/5Zd8LNfhMzVeq4s4/2jppEhg
+ mG559jXOeoA2Au/mlSfm1gmXGLxlDh55eFmnKLGiIHBSo5D4WKzCiT06Qix4kXxSY60LPzG1DMX
+ NhkBFmk35VYgGjNE6LxnpyZ14ETLFu+KpCgU5EOHt4N5F0WOL2JV3LMmyTKCRvsQlJQIJm6j4bf
+ 3aXpy6V1sIffmZrKuutdToomjBBCmOZQo3UIk6jgxriyv10uIFYhlPmA7bM2YC6D+nlQm0tUP6m
+ 6tirZtGWkppsav5yYdQvtZirbDrMulj84xwxBJ5GWjaph7/fOP6ojk+gwIySG1V6AJr6MudWi1O
+ XSjN5p0sucTbZLVwsfmvmYhgi1XGO1VLKC44UNOz8xqH+CdiBPf0PUHZKyTkiVyus7Dd36Caqmc
+ N2S7InL1ae3aD4DUgnw4FUV729Kyn7YMbFR8NWgkHHaI6qpE39xF0rMJdSiYoK8/Q6cyUJyE4vl
+ 3G94wfYUyeE5cdQ==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
-On Fri, Jan 17, 2025 at 04:24:14PM +0800, Bo Sun wrote:
-> On our Marvell OCTEON CN96XX board, we observed the following panic on
-> the latest kernel:
-> Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
-> Mem abort info:
->   ESR = 0x0000000096000005
->   EC = 0x25: DABT (current EL), IL = 32 bits
->   SET = 0, FnV = 0
->   EA = 0, S1PTW = 0
->   FSC = 0x05: level 1 translation fault
-> Data abort info:
->   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
->   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
->   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [0000000000000080] user address but active_mm is swapper
-> Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-> Modules linked in:
-> CPU: 9 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc7-00149-g9bffa1ad25b8 #1
-> Hardware name: Marvell OcteonTX CN96XX board (DT)
-> pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : of_pci_add_properties+0x278/0x4c8
-> lr : of_pci_add_properties+0x258/0x4c8
-> sp : ffff8000822ef9b0
-> x29: ffff8000822ef9b0 x28: ffff000106dd8000 x27: ffff800081bc3b30
-> x26: ffff800081540118 x25: ffff8000813d2be0 x24: 0000000000000000
-> x23: ffff00010528a800 x22: ffff000107c50000 x21: ffff0001039c2630
-> x20: ffff0001039c2630 x19: 0000000000000000 x18: ffffffffffffffff
-> x17: 00000000a49c1b85 x16: 0000000084c07b58 x15: ffff000103a10f98
-> x14: ffffffffffffffff x13: ffff000103a10f96 x12: 0000000000000003
-> x11: 0101010101010101 x10: 000000000000002c x9 : ffff800080ca7acc
-> x8 : ffff0001038fd900 x7 : 0000000000000000 x6 : 0000000000696370
-> x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000822efa40
-> x2 : ffff800081341000 x1 : ffff000107c50000 x0 : 0000000000000000
-> Call trace:
->  of_pci_add_properties+0x278/0x4c8 (P)
->  of_pci_make_dev_node+0xe0/0x158
->  pci_bus_add_device+0x158/0x210
->  pci_bus_add_devices+0x40/0x98
->  pci_host_probe+0x94/0x118
->  pci_host_common_probe+0x120/0x1a0
->  platform_probe+0x70/0xf0
->  really_probe+0xb4/0x2a8
->  __driver_probe_device+0x80/0x140
->  driver_probe_device+0x48/0x170
->  __driver_attach+0x9c/0x1b0
->  bus_for_each_dev+0x7c/0xe8
->  driver_attach+0x2c/0x40
->  bus_add_driver+0xec/0x218
->  driver_register+0x68/0x138
->  __platform_driver_register+0x2c/0x40
->  gen_pci_driver_init+0x24/0x38
->  do_one_initcall+0x4c/0x278
->  kernel_init_freeable+0x1f4/0x3d0
->  kernel_init+0x28/0x1f0
->  ret_from_fork+0x10/0x20
-> Code: aa1603e1 f0005522 d2800044 91000042 (f94040a0)
-> 
-> This regression was introduced by commit 7246a4520b4b ("PCI: Use
-> preserve_config in place of pci_flags"). On our board, the 002:00:07.0
-> bridge is misconfigured by the bootloader. Both its secondary and
-> subordinate bus numbers are initialized to 0, while its fixed secondary
-> bus number is set to 8.
+We've had instances of drivers returning invalid values from gpio_chip
+calbacks. In several cases these return values would be propagated to
+user-space and confuse programs that only expect 0 or negative errnos
+from ioctl()s. Let's sanitize the return values of callbacks and make
+sure we don't allow anyone see invalid ones.
 
-What do you mean by 'fixed secondary bus number'?
+The first patch checks the return values of get_direction() in kernel
+where needed and is a backportable fix.
 
-> However, bus number 8 is also assigned to another
-> bridge (0002:00:0f.0). Although this is a bootloader issue, before the
-> change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was
-> set by default when PCI_PROBE_ONLY was enabled, ensuing that all the
-> bus number for these bridges were reassigned, avoiding any conflicts.
-> 
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Bartosz Golaszewski (8):
+      gpiolib: check the return value of gpio_chip::get_direction()
+      gpiolib: sanitize the return value of gpio_chip::request()
+      gpiolib: sanitize the return value of gpio_chip::set_config()
+      gpiolib: sanitize the return value of gpio_chip::get()
+      gpiolib: sanitize the return value of gpio_chip::get_multiple()
+      gpiolib: sanitize the return value of gpio_chip::direction_output()
+      gpiolib: sanitize the return value of gpio_chip::direction_input()
+      gpiolib: sanitize the return value of gpio_chip::get_direction()
 
-Isn't the opposite? PCI_REASSIGN_ALL_BUS was only added if the PCI_PROBE_ONLY
-flag was not set:
+ drivers/gpio/gpiolib.c      | 144 +++++++++++++++++++++++++++++++++++---------
+ include/linux/gpio/driver.h |   6 +-
+ 2 files changed, 120 insertions(+), 30 deletions(-)
+---
+base-commit: a13f6e0f405ed0d3bcfd37c692c7d7fa3c052154
+change-id: 20241212-gpio-sanitize-retvals-f5f4e0d6f57d
 
-	/* Do not reassign resources if probe only */
-	if (!pci_has_flag(PCI_PROBE_ONLY))
-		pci_add_flags(PCI_REASSIGN_ALL_BUS);
-
-
-> After the change introduced in commit 7246a4520b4b, the bus numbers
-> assigned by the bootloader are reused by all other bridges, except
-> the misconfigured 002:00:07.0 bridge. The kernel attempt to reconfigure
-> 002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
-> bootloader. However, since a pci_bus has already been allocated for
-> bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
-> 002:00:07.0.
-
-How come 0002:00:0f.0 is enumerated before 0002:00:07.0 in a depth first manner?
-
-> This results in a pci bridge device without a pci_bus
-> attached (pdev->subordinate == NULL). Consequently, accessing
-> pdev->subordinate in of_pci_prop_bus_range() leads to a NULL pointer
-> dereference.
-> 
-
-Looks like it is a bug to let a bridge proceed without 'pdev->subordinate'
-assigned.
-
-- Mani
-
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
 
