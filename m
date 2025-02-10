@@ -1,198 +1,187 @@
-Return-Path: <stable+bounces-114692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE2AA2F47A
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:00:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0226A2F4BF
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66C7A1647CB
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F9333A3C1D
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82FA255E3D;
-	Mon, 10 Feb 2025 17:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD8D24FC1F;
+	Mon, 10 Feb 2025 17:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="grmkWbwR"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A56255E2C
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 17:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C1524FC16
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 17:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739206807; cv=none; b=uBotdizjj4x0vY1QuVr/BOG5d4TstjvTL6eye+DcUpjOSf0cZzaAdFaNP/vPCveDVfZiBEeY40i2Q6SKTCVABGZPhUds28hd00eKrZCMS6v5gYjtnt3QbwWxeJir5KHy8Ls7cKHeIMFJSqxXayrl3TVQNXwJ/qVF24++7/SGr7I=
+	t=1739207424; cv=none; b=J1Vw7ScvrCLA0Uj43GMskWgST8t/Czmlb5U3zgacO1VuIzsX0CIfbIRQHqt+f9FVHcRkISeDexn843JY76L/debI/4Qa6UkBYriDYXRv/Gq6lj4J5NjB2j+DmqGSPfg6om5zHsAbUK0+ljGvqapNfeDe6W9y9qbZ3bMetcuj9h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739206807; c=relaxed/simple;
-	bh=gEGlMyN4KxD8wEGW8cjK6yiEqE2H6pgZ7cF+GHA/cOY=;
+	s=arc-20240116; t=1739207424; c=relaxed/simple;
+	bh=33obMPf5mqSs6wPrXyBZW3o1+l4eJAntmMYywvCOYOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uzUYIbJVKBFImhtXqP5BP31apVsFBl3AwozB5b8rAzbQi3einsNq3aZCg6cJu3K9f5HM/RoyBoKDrs+LHcgPfQx9gEgimxnMxwpA0x1K2rEqwVz54ik3wLyJoGZvocfvWtGsSBHsUJB8xsgTR7oyowrE2rIa1xqilth/kFlDax4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 390341477;
-	Mon, 10 Feb 2025 09:00:26 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AEED3F58B;
-	Mon, 10 Feb 2025 09:00:02 -0800 (PST)
-Date: Mon, 10 Feb 2025 16:59:56 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
-	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
-	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
-	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
-	tabba@google.com, wilco.dijkstra@arm.com
-Subject: Re: [PATCH v2 2/8] KVM: arm64: Remove host FPSIMD saving for
- non-protected KVM
-Message-ID: <Z6owjEPNaJ55e9LM@J2N7QTR9R3>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
- <20250206141102.954688-3-mark.rutland@arm.com>
- <20250210161242.GC7568@willie-the-truck>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tXax+gb4gczCOIxh8lbyej2mzs+7Ylc/Y3MZcQ5HjwxZWAhtppRM1T0YxUt/AL7RNA7mtgOOKQt+OnHyz5z0oznWU9RBPWBBUswZiTknjSczl8LYpG+0s8rQK/gg82CfG/XnRDBBfB4rI3UEHv7BEkvCKITtW59y0yuDBHONEsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=grmkWbwR; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21f4a4fbb35so59968495ad.0
+        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 09:10:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739207422; x=1739812222; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iJBo65n/x3cGPmTDY6dfaDs6s3ZVqbAaIw7gB8ar1TU=;
+        b=grmkWbwRR61jXYhgSgX08nsc1LwM5cX/vF5k1XWhZ5s1ANfFcZoZQXettLtC/eZLhb
+         YbKMp/sk9BQc8hZxxK6FljCrN5O5+6yfJd9gzoDTkHQPRpNuZ9Ibs1cAuDrSI8FtHKO8
+         3xGn0R13WQFkqdTSDX9y1eT2kECEG3MA7eBfhkBv6Py/7NN+iPXOBbpExw5R4pwUvQE8
+         1WnNZpucv/DxGJJfJQloeL1gWNlFXTg2ZtFC1I4zvy99NNxaiTCwg5DfVz0L40/mADdo
+         +sXkwBQH1U+WLTPDjuWgxTujKcvuVSvTyqp0uFuUhQKq4zGAE8cfZTGz0R8XwtdT1fvd
+         b0zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739207422; x=1739812222;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iJBo65n/x3cGPmTDY6dfaDs6s3ZVqbAaIw7gB8ar1TU=;
+        b=oVwmTbGnKRl6oVZnmiN++i4982nhwopP5rgHxKw53x0SmWOCz5gAbEpWSefvzrUk5I
+         cxkaY/oyHwOuMDNRKMmO6O8SEmdoeD+qEA2a4xb5tBPOFpZcgroB1Z97dvuifG3d6EKe
+         GbE8iT0Q210fPlYyqFgR7CYSLM0xmhcHQCcVNwfv8Tg33eT8CevoMnDi8ZiQ55ZtPL0q
+         xNvW9ykMQNcxgApew+y1OrmGME6ND8OpPa2isGRf4N4xcq9bF9yyH7mr+ocv/Qf/3MTf
+         gk+j1p4uPVkNb2qMwoNF7Zi0tpRORQRFjZL3GoektKr2tH2LBiyAGf5m87D3pGVVkfB0
+         sj+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWPUpj+7J4M99/7RsN9PBAhAgDLIu2xTQcb/Y4L2w9FKYIu5xUG38BP2RonlPPsxhxyo7kwpwU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtepvteE/zWD7VGx/2N55SSLDM8D3gHTQr2zT3IqxPkn+7/4W+
+	eiLa49w3/T21ZNOm+M/HdEiApxl420ola5MtoG6sX+MhiLl4boBZ1LodPP8+WA==
+X-Gm-Gg: ASbGncsd6CeTXsUs7mbDwtkx7teRY4tXDK/rRcfoxKsJBmEYe3Ivxg07FiPTTDmvbjC
+	Amu52+vJmyL9JY5LKLHdOS1mQoQQg3TTdoG1g9tMd+Bs5DSLuu3WM28GfS3wlWA5EahkDQrzXAy
+	R47NvsK+oaCNA83jspHCtkfZCq8NQj7ZItu+ErZ4KjOaJ0Qu7Br+Yt7+x+1Kymeq+oqqAVUeT+2
+	BbuwKhJ7Bca47fqap4BnfwFEWkTt/bGTO8E4kwFTU7e9sXU1bdNuCJKicoxT8ZwRv0GAuBDk8qn
+	qfaFw9wcByjthHjF5VsDZxS4qS1h
+X-Google-Smtp-Source: AGHT+IF56qTkw7TJubOEXPIM9zfQyfQzn7+cZYQk9mn9YGpujIBnDlW/B1WsBT0lOvPG9bCSoLR7yg==
+X-Received: by 2002:a17:902:e54d:b0:21f:3823:482b with SMTP id d9443c01a7336-21fb6f54a29mr1014975ad.25.1739207395874;
+        Mon, 10 Feb 2025 09:09:55 -0800 (PST)
+Received: from thinkpad ([220.158.156.173])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f365446d7sm81455805ad.82.2025.02.10.09.09.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Feb 2025 09:09:55 -0800 (PST)
+Date: Mon, 10 Feb 2025 22:39:50 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Md Sadre Alam <quic_mdalam@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Robert Marko <robimarko@gmail.com>
+Subject: Re: [PATCH v2] mtd: rawnand: qcom: fix broken config in
+ qcom_param_page_type_exec
+Message-ID: <20250210170950.zxgm5hjeb2a4evfn@thinkpad>
+References: <20250209140941.16627-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250210161242.GC7568@willie-the-truck>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250209140941.16627-1-ansuelsmth@gmail.com>
 
-On Mon, Feb 10, 2025 at 04:12:43PM +0000, Will Deacon wrote:
-> On Thu, Feb 06, 2025 at 02:10:56PM +0000, Mark Rutland wrote:
-> > Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-> > non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-> > and the code to do this is never used. Protected KVM still needs to
-> > save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-> > the host (and to avoid revealing to the host whether the guest used
-> > FPSIMD/SVE/SME), and that code needs to be retained.
-> > 
-> > Remove the unused code and data structures.
-> > 
-> > To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-> > VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-> > header, where it is only invoked when KVM is in protected mode.
-> > 
-> > Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> > Reviewed-by: Mark Brown <broonie@kernel.org>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Fuad Tabba <tabba@google.com>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > Cc: Mark Brown <broonie@kernel.org>
-> > Cc: Oliver Upton <oliver.upton@linux.dev>
-> > Cc: Will Deacon <will@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/kvm_host.h       | 20 +++++-------------
-> >  arch/arm64/kvm/arm.c                    |  8 -------
-> >  arch/arm64/kvm/fpsimd.c                 |  2 --
-> >  arch/arm64/kvm/hyp/include/hyp/switch.h | 25 ++++++++++++++++++++--
-> >  arch/arm64/kvm/hyp/nvhe/hyp-main.c      |  2 +-
-> >  arch/arm64/kvm/hyp/nvhe/switch.c        | 28 -------------------------
-> >  arch/arm64/kvm/hyp/vhe/switch.c         |  8 -------
-> >  7 files changed, 29 insertions(+), 64 deletions(-)
+On Sun, Feb 09, 2025 at 03:09:38PM +0100, Christian Marangi wrote:
+> Fix broken config in qcom_param_page_type_exec caused by copy-paste error
+> from commit 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
 > 
-> [...]
+> In qcom_param_page_type_exec the value needs to be set to
+> nandc->regs->cfg0 instead of host->cfg0. This wrong configuration caused
+> the Qcom NANDC driver to malfunction on any device that makes use of it
+> (IPQ806x, IPQ40xx, IPQ807x, IPQ60xx) with the following error:
 > 
-> > diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-> > index f838a45665f26..c5b8a11ac4f50 100644
-> > --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-> > +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-> > @@ -375,7 +375,28 @@ static inline void __hyp_sve_save_host(void)
-> >  			 true);
-> >  }
-> >  
-> > -static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu);
-> > +static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
-> > +{
-> > +	/*
-> > +	 * Non-protected kvm relies on the host restoring its sve state.
-> > +	 * Protected kvm restores the host's sve state as not to reveal that
-> > +	 * fpsimd was used by a guest nor leak upper sve bits.
-> > +	 */
-> > +	if (system_supports_sve()) {
-> > +		__hyp_sve_save_host();
-> > +
-> > +		/* Re-enable SVE traps if not supported for the guest vcpu. */
-> > +		if (!vcpu_has_sve(vcpu))
-> > +			cpacr_clear_set(CPACR_EL1_ZEN, 0);
-> > +
-> > +	} else {
-> > +		__fpsimd_save_state(host_data_ptr(host_ctxt.fp_regs));
-> > +	}
-> > +
-> > +	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm)))
-> > +		*host_data_ptr(fpmr) = read_sysreg_s(SYS_FPMR);
-> > +}
-> > +
-> >  
-> >  /*
-> >   * We trap the first access to the FP/SIMD to save the host context and
-> > @@ -425,7 +446,7 @@ static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
-> >  	isb();
-> >  
-> >  	/* Write out the host state if it's in the registers */
-> > -	if (host_owns_fp_regs())
-> > +	if (is_protected_kvm_enabled() && host_owns_fp_regs())
-> >  		kvm_hyp_save_fpsimd_host(vcpu);
+
+I'm wondering whether the offending commit was really tested or not :(
+
+> [    0.885369] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xaa
+> [    0.885909] nand: Micron NAND 256MiB 1,8V 8-bit
+> [    0.892499] nand: 256 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+> [    0.896823] nand: ECC (step, strength) = (512, 8) does not fit in OOB
+> [    0.896836] qcom-nandc 79b0000.nand-controller: No valid ECC settings possible
+> [    0.910996] bam-dma-engine 7984000.dma-controller: Cannot free busy channel
+> [    0.918070] qcom-nandc: probe of 79b0000.nand-controller failed with error -28
 > 
-> I wondered briefly whether this would allow us to clean up the CPACR
-> handling a little and avoid the conditional SVE trap re-enabling inside
-> kvm_hyp_save_fpsimd_host() but I couldn't come up with a clean way to
-> do it without an additional ISB. Hrm.
+> Restore original configuration fix the problem and makes the driver work
+> again.
 > 
-> Anyway, as far as the patch goes:
+> Also restore the wrongly dropped cpu_to_le32 to correctly support BE
+> systems.
 > 
-> Acked-by: Will Deacon <will@kernel.org>
+> Cc: stable@vger.kernel.org
+> Fixes: 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
+> Tested-by: Robert Marko <robimarko@gmail.com> # IPQ8074 and IPQ6018
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-Thanks!
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-FWIW, I'd also considered that, and I'd concluded that if anything we
-could do a subsequent simplification by pulling that out of
-kvm_hyp_save_fpsimd_host() and have kvm_hyp_handle_fpsimd() do something
-like:
+Thanks for the fix!
 
-| static inline bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
-| {
-| 	...
-| 
-| 	/* Valid trap */
-| 
-| 	/*
-| 	 * Enable everything EL2 might need to save/restore state.
-| 	 * Maybe each of the bits should depend on system_has_xxx()
-| 	 */
-| 	cpacr_clear_set(0, CPACR_EL1_FPEN | CPACR_EL1_ZEN | CPACR_EL1_SMEN */
-| 	isb();
-| 
-| 	...
-| 
-| 	/* Write out the host state if it's in the registers */
-| 	if (is_protected_kvm_enabled() && host_owns_fp_regs())
-| 		kvm_hyp_save_fpsimd_host(vcpu);
-| 	
-| 	/* Restore guest state */
-| 
-| 	...
-| 
-| 	/*
-| 	 * Enable traps for the VCPU. The ERET will cause the traps to
-| 	 * take effect in the guest, so no ISB is necessary.
-| 	 */
-| 	cpacr_guest = CPACR_EL1_FPEN;
-| 	if (vcpu_has_sve(vcpu))
-| 		cpacr_guest |= CPACR_EL1_ZEN;
-| 	if (vcpu_has_sme(vcpu))			// whenever we add this
-| 		cpacr_guest |= CPACR_EL1_SMEN;
-| 	cpacr_clear_set(CPACR_EL1_FPEN | CPACR_EL1_ZEN | CPACR_EL1_SMEN,
-| 			cpacr_guest);
-| 
-| 	return true;
-| }
+- Mani
 
-... where we'd still have the CPACR write to re-enable traps, but it'd
-be unconditional, and wouldn't need an extra ISB.
+> ---
+> Changes v2:
+> - Fix smatch warning (add missing cpu_to_le32 that was also dropped
+>   from the FIELD_PREP patch)
+> 
+>  drivers/mtd/nand/raw/qcom_nandc.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+> index d2d2aeee42a7..6720b547892b 100644
+> --- a/drivers/mtd/nand/raw/qcom_nandc.c
+> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
+> @@ -1881,18 +1881,18 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
+>  	nandc->regs->addr0 = 0;
+>  	nandc->regs->addr1 = 0;
+>  
+> -	host->cfg0 = FIELD_PREP(CW_PER_PAGE_MASK, 0) |
+> -		     FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
+> -		     FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
+> -		     FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0);
+> -
+> -	host->cfg1 = FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
+> -		     FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
+> -		     FIELD_PREP(CS_ACTIVE_BSY, 0) |
+> -		     FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
+> -		     FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
+> -		     FIELD_PREP(WIDE_FLASH, 0) |
+> -		     FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1);
+> +	nandc->regs->cfg0 = cpu_to_le32(FIELD_PREP(CW_PER_PAGE_MASK, 0) |
+> +					FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
+> +					FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
+> +					FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0));
+> +
+> +	nandc->regs->cfg1 = cpu_to_le32(FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
+> +					FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
+> +					FIELD_PREP(CS_ACTIVE_BSY, 0) |
+> +					FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
+> +					FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
+> +					FIELD_PREP(WIDE_FLASH, 0) |
+> +					FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1));
+>  
+>  	if (!nandc->props->qpic_version2)
+>  		nandc->regs->ecc_buf_cfg = cpu_to_le32(ECC_CFG_ECC_DISABLE);
+> -- 
+> 2.47.1
+> 
 
-If that makes sense to you, I can go spin that as a subsequent cleanup
-atop this series.
-
-Mark.
+-- 
+மணிவண்ணன் சதாசிவம்
 
