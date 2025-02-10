@@ -1,144 +1,106 @@
-Return-Path: <stable+bounces-114689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A42A2F3C4
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:38:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4962EA2F3C3
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC9618847E8
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D59A3A7053
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBB11F462E;
-	Mon, 10 Feb 2025 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DBA1F4625;
+	Mon, 10 Feb 2025 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5rBXBsk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHOyquvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BF02580D6;
-	Mon, 10 Feb 2025 16:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7122D2580D6
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739205502; cv=none; b=Und1rJkP5VqP1LilWqgvn3sSKkCbMoH867y8j+arO9PKp7Cq976XVI+DJTdHy79J3mNE3obYzpDR8TjBgwBfIArbeQB3HIBhy09Mipdghf5ReR0XBoo2EbtU7ZsA867LOakgg1V3e7ijDeNfUKyCfx3aw4vJvbN8O3wxLzBfCsA=
+	t=1739205485; cv=none; b=GdEtYPPYS1SK8a8tCGJdnwzd/S8K4IqxoHgE7BNFof5nrupDwujKNKUc2UNz3eO0DHasnTzbiP9BL0vkw+JKiLh678cKLDK7FRnTMVYhO2z9VORpvP82ydnGePeT01lZTGjj6RQVkpmf4NZK4iOH76bEh/TEr+HgYPpadZy1a6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739205502; c=relaxed/simple;
-	bh=BrlyBYOHdwmEYDayFxtlpA2iHNc6mrkE85rK5gs1YDc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JQiGGGh5WpkH8JH3AefoqYgN4zXv0j+7V+qpDdQ4y6aIfuXVCvTGUCBa16fWdfeFhliWJQ/IGA2Kuogvi5FgCsrSv00Xzj+YTJlIZ0r3KsEcn16rWlsrKsbDG0sREOLKqQbz49Tf5nzPW2UjeNSB5gE56LR9zbi2Ysp9LHhbcwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5rBXBsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF6EC4CEDF;
-	Mon, 10 Feb 2025 16:38:17 +0000 (UTC)
+	s=arc-20240116; t=1739205485; c=relaxed/simple;
+	bh=CpnvGWn9LObSDvCOUkk4A82aFysg9bYSFv6Z/NeUo64=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TcvuFI1wX+oCOb/hltuVMrSZBcwqDySm1Lc4RtkjniNhdXonbKlT+qxSXSRWRZ8El+bxrjKuADA6PevKchD/+yK9G3fg3YRmu6PuPXD29is5HwUgnlpW58+Lah0MEhsAlYFuqcJRndE71VXo+mThRXHmB3D0Nr8VeUGwKWQJjiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHOyquvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2189C4CED1;
+	Mon, 10 Feb 2025 16:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739205501;
-	bh=BrlyBYOHdwmEYDayFxtlpA2iHNc6mrkE85rK5gs1YDc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=j5rBXBskdQQ38yxaaxqxcwOdrQ2n2Dl6Zq0oIrI3k4mWojL9/cCGlYVeEp5XEJOS7
-	 jPngsYrLr1GuSsaEL/WxEmMAUXLp1GtbV4VPsi7DAmD9g1x0jAQpgG1VtrK1O+ED9/
-	 7JOvaJJSZhi7B8TbX4SUrdvRZ6ARbeFOmTUkaD5QYU+xk1QUL/uh6sORIBnS8SUk67
-	 ult7oNQFW7EQubwCCSO4IbkaZyRPoXApc9QXXUHZit8/w5bgyDLRbH0b2qmTpxWOJa
-	 q8F1/Xa/7x2y8pISaNDSMlW4ZbsFGAgWSzraNt6ZRni6ttjiNkg+lN9WnEGUnAzxdx
-	 io3Bh9dt7+mBQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org (moderated for non-subscribers),
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org,
-	Matthew Maurer <mmaurer@google.com>,
-	Ralf Jung <post@ralfj.de>,
-	Jubilee Young <workingjubilee@gmail.com>
-Subject: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
-Date: Mon, 10 Feb 2025 17:37:32 +0100
-Message-ID: <20250210163732.281786-1-ojeda@kernel.org>
+	s=k20201202; t=1739205485;
+	bh=CpnvGWn9LObSDvCOUkk4A82aFysg9bYSFv6Z/NeUo64=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHOyquvKQYClxarZzFakPsDnC+F0MBb/5fr/Wn+7eF7S2lDuM+u4ydlKNF5TdgOy0
+	 U+XvVPvixZQplNaaTABdEPS7ozNSB7HJ6sUM5M1Rw9W8Y+w7OkSx5V9NaYQLiSB8CM
+	 Zf8lMAYyUib9MqYIG8D/ELNz8r5LLc9ADEU6MsgTNOE7tMOdmgfEjwA5BcVQ9M7weH
+	 IR2jtRrfx/5cON+7TUd/xyiYX0DstWQlO/4aPonGpgjLPOwehplGh3dOXJIzgcTrHX
+	 HPfSoHKo4W9z7fxzhcILyB40I43iiOqWAjCo8m2SeSUleHNtu5Ew8H8Es6gXLGIaXL
+	 /IuUTCcsW46Hg==
+Date: Mon, 10 Feb 2025 16:37:59 +0000
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v2 6/8] KVM: arm64: Refactor exit handlers
+Message-ID: <20250210163758.GG7568@willie-the-truck>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-7-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206141102.954688-7-mark.rutland@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
-[1] about disabling neon in the aarch64 hardfloat target:
+On Thu, Feb 06, 2025 at 02:11:00PM +0000, Mark Rutland wrote:
+> The hyp exit handling logic is largely shared between VHE and nVHE/hVHE,
+> with common logic in arch/arm64/kvm/hyp/include/hyp/switch.h. The code
+> in the header depends on function definitions provided by
+> arch/arm64/kvm/hyp/vhe/switch.c and arch/arm64/kvm/hyp/nvhe/switch.c
+> when they include the header.
+> 
+> This is an unusual header dependency, and prevents the use of
+> arch/arm64/kvm/hyp/include/hyp/switch.h in other files as this would
+> result in compiler warnings regarding missing definitions, e.g.
+> 
+> | In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
+> | ./arch/arm64/kvm/hyp/include/hyp/switch.h:733:31: warning: 'kvm_get_exit_handler_array' used but never defined
+> |   733 | static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu);
+> |       |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> | ./arch/arm64/kvm/hyp/include/hyp/switch.h:735:13: warning: 'early_exit_filter' used but never defined
+> |   735 | static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code);
+> |       |             ^~~~~~~~~~~~~~~~~
+> 
+> Refactor the logic such that the header doesn't depend on anything from
+> the C files. There should be no functional change as a result of this
+> patch.
+> 
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Will Deacon <will@kernel.org>
+> ---
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 30 +++++--------------------
+>  arch/arm64/kvm/hyp/nvhe/switch.c        | 30 ++++++++++++++-----------
+>  arch/arm64/kvm/hyp/vhe/switch.c         |  9 ++++----
+>  3 files changed, 27 insertions(+), 42 deletions(-)
 
-    warning: target feature `neon` cannot be toggled with
-             `-Ctarget-feature`: unsound on hard-float targets
-             because it changes float ABI
-      |
-      = note: this was previously accepted by the compiler but
-              is being phased out; it will become a hard error
-              in a future release!
-      = note: for more information, see issue #116344
-              <https://github.com/rust-lang/rust/issues/116344>
+Acked-by: Will Deacon <will@kernel.org>
 
-Thus, instead, use the softfloat target instead.
-
-While trying it out, I found that the kernel sanitizers were not enabled
-for that built-in target [2]. Upstream Rust agreed to backport
-the enablement for the current beta so that it is ready for
-the 1.85.0 release [3] -- thanks!
-
-However, that still means that before Rust 1.85.0, we cannot switch
-since sanitizers could be in use. Thus conditionally do so.
-
-Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Ralf Jung <post@ralfj.de>
-Cc: Jubilee Young <workingjubilee@gmail.com>
-Link: https://github.com/rust-lang/rust/pull/133417 [1]
-Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
-Link: https://github.com/rust-lang/rust/pull/135905 [3]
-Link: https://github.com/rust-lang/rust/issues/116344
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Matthew: if you could please give this a go and confirm that it is fine
-for Android (with sanitizers enabled, for 1.84.1 and 1.85.0), then a
-Tested-by tag would be great. Thanks!
-
-I would like to get this one into -rc3 if possible so that by the time
-the compiler releases we are already clean.
-
-I am sending another patch to introduce `rustc-min-version` and use it
-here, but I am doing so after this one rather than before so that this
-fix can be as simple as possible.
-
- arch/arm64/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 358c68565bfd..2b25d671365f 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -48,7 +48,11 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU) \
- KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
- KBUILD_AFLAGS	+= $(compat_vdso)
-
-+ifeq ($(call test-ge, $(CONFIG_RUSTC_VERSION), 108500),y)
-+KBUILD_RUSTFLAGS += --target=aarch64-unknown-none-softfloat
-+else
- KBUILD_RUSTFLAGS += --target=aarch64-unknown-none -Ctarget-feature="-neon"
-+endif
-
- KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
- KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
-
-base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
---
-2.48.1
+Will
 
