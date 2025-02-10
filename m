@@ -1,124 +1,139 @@
-Return-Path: <stable+bounces-114683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A6FA2F2FA
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:17:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31B6A2F352
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E22C2166D72
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B803A57AE
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A086D2580D2;
-	Mon, 10 Feb 2025 16:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD132580ED;
+	Mon, 10 Feb 2025 16:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TL/2g8ta"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sDGHHFtg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFF11B960
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 16:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12412580DF
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 16:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739204225; cv=none; b=QUL0ZtwmZzsCJY5QIkuofy2RaCie9/zqTLJwX+AHhyjrqAVZ+WJdC2q1KpW49d2svvoG98yDO2VCEG53qbwYYkA/GDoV4pMX6jK/452lMpbXTgpwMCF4GCwPAaj+9Sik7MloQ4mch3w39yO1qYFS82t1dGG4ZEmrEKy7uikSZfQ=
+	t=1739204615; cv=none; b=KAhUiZ86SV7UesAAS6AxpaQOGPTQnK7ADxShsVQO8FGP7xY2Z6Ep/ujdwFzMKJL4dwQf7cm2Ul1+n4CwJSF5lsZim9FypcdP4G2vCm1IHADIjVCmv02D6BRwV/lYomxL10pxSPCXWIExeh96NqmhIL9f4R9c5mtdcq5u+bednfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739204225; c=relaxed/simple;
-	bh=ErKSwxLO50h+kSbz6XppUCkzQZr/MW2XaZANa/yMCtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UzADqJimxcGWcnSWdTk4vWRUovGHbLocO2EZnqwTRDv/ptayCsB+zBqQWdv5UGIpn/egZMFmQ/sXGn6KQEyrPYlhMHXz072S9F6LJXTCIF6qqVqQDBHWbYSGC1u0NI3x7OJlFKfbqcBdEZXFmJgzAIQN1A9Uxx82N4EutfB9vI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TL/2g8ta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD192C4CED1;
-	Mon, 10 Feb 2025 16:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739204225;
-	bh=ErKSwxLO50h+kSbz6XppUCkzQZr/MW2XaZANa/yMCtQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TL/2g8ta3sY5fyUilVWWgsIHHDlVT/P2Uh3SNh3v0jTa86qEFPoMWb95H/eG4FqUq
-	 I43yjvvKLQi4I9ZEmsERBnHAxakT/I6ipauMfGbzINnyhFpHOqxIR3qoSAL6r2PK3L
-	 RNrlR9NGmorxA+N7kLfCBTwRR2DcWLCnILqk2cQ+TigGhMPalJUg+JDxavGwjqEhe3
-	 TP3KV2QMvADzQ1HzNFn5KQ24HsXlkj2sfcTD/kwJ8hxZ+eG1fyrZRTKYoeyuJ5uvaN
-	 GCs+C5SlA0sontLmupDo2p0NtZgr3BrNh5mDSwEcmf8exN2WInnlcodvsHjQEdUdag
-	 17/Xh6aZmLGOw==
-Date: Mon, 10 Feb 2025 16:16:59 +0000
-From: Will Deacon <will@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
-	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
-	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
-	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
-	tabba@google.com, wilco.dijkstra@arm.com
-Subject: Re: [PATCH v2 4/8] KVM: arm64: Remove VHE host restore of
- CPACR_EL1.SMEN
-Message-ID: <20250210161658.GE7568@willie-the-truck>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
- <20250206141102.954688-5-mark.rutland@arm.com>
+	s=arc-20240116; t=1739204615; c=relaxed/simple;
+	bh=Rzn8t5va8NpRQH2EPINPYw0RIov2GsAX+pxBrAby6HY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nz5r9GgTLcZbYcHeDKoQvpXzb3vbKvClskqpQC1SrolSGWe831ZAP7EKe79HLfjT/dMp+wYi+7PGHAgBcq6sce9JAcQwExfEAC7/xnXdH5XsqsZrSRjSU4LyUIjT/cCzbvSZX4TPIbdWgvQ2x69L5YBULujSYRX4ieeD+hC9sCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sDGHHFtg; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1739204610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q2arHOJIV6WsS55KzoD9Uj3bxGoXyKVwzSE4k4FtXWI=;
+	b=sDGHHFtg7fvWlXdFVd0ozPAZBeKzVqrHBoy/Lffqgx5kHAvIqmBFvgaZo0i9CgYb+gVjVs
+	dpShaoYXTm+f0mAWfrr5ApfFvIAKlP2UU8ba9TF8b8r0sk7DYwJEeVRhSqz6/Rl5Cgrkfu
+	Rs8NBZeNG0VsLbwqEabkY3j8w05Rac0=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: john.ogness@linutronix.de,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [PATCH 6.6.y] tty: xilinx_uartps: split sysrq handling
+Date: Mon, 10 Feb 2025 11:22:52 -0500
+Message-Id: <20250210162252.2134752-1-sean.anderson@linux.dev>
+In-Reply-To: <2025020949-press-evolve-b900@gregkh>
+References: <2025020949-press-evolve-b900@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206141102.954688-5-mark.rutland@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Feb 06, 2025 at 02:10:58PM +0000, Mark Rutland wrote:
-> When KVM is in VHE mode, the host kernel tries to save and restore the
-> configuration of CPACR_EL1.SMEN (i.e. CPTR_EL2.SMEN when HCR_EL2.E2H=1)
-> across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
-> configuration may be clobbered by hyp when running a vCPU. This logic
-> has historically been broken, and is currently redundant.
-> 
-> This logic was originally introduced in commit:
-> 
->   861262ab86270206 ("KVM: arm64: Handle SME host state when running guests")
-> 
-> At the time, the VHE hyp code would reset CPTR_EL2.SMEN to 0b00 when
-> returning to the host, trapping host access to SME state. Unfortunately,
-> this was unsafe as the host could take a softirq before calling
-> kvm_arch_vcpu_put_fp(), and if a softirq handler were to use kernel mode
-> NEON the resulting attempt to save the live FPSIMD/SVE/SME state would
-> result in a fatal trap.
-> 
-> That issue was limited to VHE mode. For nVHE/hVHE modes, KVM always
-> saved/restored the host kernel's CPACR_EL1 value, and configured
-> CPTR_EL2.TSM to 0b0, ensuring that host usage of SME would not be
-> trapped.
-> 
-> The issue above was incidentally fixed by commit:
-> 
->   375110ab51dec5dc ("KVM: arm64: Fix resetting SME trap values on reset for (h)VHE")
-> 
-> That commit changed the VHE hyp code to configure CPTR_EL2.SMEN to 0b01
-> when returning to the host, permitting host kernel usage of SME,
-> avoiding the issue described above. At the time, this was not identified
-> as a fix for commit 861262ab86270206.
-> 
-> Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
-> state, there's no need to save/restore the state of the EL0 SME trap.
-> The kernel can safely save/restore state without trapping, as described
-> above, and will restore userspace state (including trap controls) before
-> returning to userspace.
-> 
-> Remove the redundant logic.
-> 
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Mark Brown <broonie@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Will Deacon <will@kernel.org>
-> ---
->  arch/arm64/include/asm/kvm_host.h |  1 -
->  arch/arm64/kvm/fpsimd.c           | 21 ---------------------
->  2 files changed, 22 deletions(-)
+lockdep detects the following circular locking dependency:
 
-Acked-by: Will Deacon <will@kernel.org>
+CPU 0                      CPU 1
+========================== ============================
+cdns_uart_isr()            printk()
+  uart_port_lock(port)       console_lock()
+			     cdns_uart_console_write()
+                               if (!port->sysrq)
+                                 uart_port_lock(port)
+  uart_handle_break()
+    port->sysrq = ...
+  uart_handle_sysrq_char()
+    printk()
+      console_lock()
 
-Will
+The fixed commit attempts to avoid this situation by only taking the
+port lock in cdns_uart_console_write if port->sysrq unset. However, if
+(as shown above) cdns_uart_console_write runs before port->sysrq is set,
+then it will try to take the port lock anyway. This may result in a
+deadlock.
+
+Fix this by splitting sysrq handling into two parts. We use the prepare
+helper under the port lock and defer handling until we release the lock.
+
+Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
+Acked-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ resolved merge conflicts ]
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
+
+ drivers/tty/serial/xilinx_uartps.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
+index 2e5e86a00a77..7f83d2780017 100644
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -268,7 +268,7 @@ static void cdns_uart_handle_rx(void *dev_id, unsigned int isrstatus)
+ 				continue;
+ 		}
+ 
+-		if (uart_handle_sysrq_char(port, data))
++		if (uart_prepare_sysrq_char(port, data))
+ 			continue;
+ 
+ 		if (is_rxbs_support) {
+@@ -369,7 +369,7 @@ static irqreturn_t cdns_uart_isr(int irq, void *dev_id)
+ 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
+ 		cdns_uart_handle_rx(dev_id, isrstatus);
+ 
+-	spin_unlock(&port->lock);
++	uart_unlock_and_check_sysrq(port);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1229,10 +1229,8 @@ static void cdns_uart_console_write(struct console *co, const char *s,
+ 	unsigned int imr, ctrl;
+ 	int locked = 1;
+ 
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
+-		locked = spin_trylock_irqsave(&port->lock, flags);
++	if (oops_in_progress)
++		locked = uart_port_trylock_irqsave(port, &flags);
+ 	else
+ 		spin_lock_irqsave(&port->lock, flags);
+ 
+-- 
+2.35.1.1320.gc452695387.dirty
+
 
