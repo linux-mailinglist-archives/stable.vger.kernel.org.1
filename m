@@ -1,108 +1,112 @@
-Return-Path: <stable+bounces-114679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCD1A2F1B2
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:29:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8DCA2F266
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4557167CCF
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B52F3A2A41
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B423F26C;
-	Mon, 10 Feb 2025 15:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F06244E9E;
+	Mon, 10 Feb 2025 16:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GBziaNKF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZR77zNc"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBE824BD00;
-	Mon, 10 Feb 2025 15:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C235244E8A;
+	Mon, 10 Feb 2025 16:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739201225; cv=none; b=sn6QAbu0j27JWqQihJgNuGAjyNSYXJ5XBap8g54T8cg9TljUgq63NIRH7PoMY4aYa1QlnoP7EM/HnKkPPKQIFqy/5xbYOx3XSgHiC+LfycTFzZiowlz1gTZFIlZfLN1WQtE3q9yrGruTIRLZZ06Vw0bLfzRiTgiqegkL28euCi0=
+	t=1739203316; cv=none; b=Ik58fsKYQM8/B2LXC4MDnP0wPpqOej9Is1053SimzREkCU2r0JXimc5KwymI2hNTFPKewwxP1yr4e4PGUSVUUsqvI4zgvdS8rkZj1MwO1N7b4gtBqblra5mf5k3IfF5Jr4OTmjOUNAyuhUQxgeptloZ9LDtTldjl9WEemQcBBuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739201225; c=relaxed/simple;
-	bh=8nO+xL0xvAUxQXLyv8lbUUhQKgTEHzCCFPQaA3a+aUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KGHV0AZ6mCH/fpevbPdLoRlcZqOeUr0jY43QnIHLNi20TCpQw0OOSY9EegFQJyPggbofER8GMdI1hWVM5H1rqKZwSN87XuaXwyrOwXYkqtxJPoVrKtAEavmBAaGST3/CbisSkreN1X8A5/rZku8SUMRCsoKmaUqbSUqnOFobbj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GBziaNKF; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EF459204A1;
-	Mon, 10 Feb 2025 15:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739201221;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NfteH80PM3ST7bvqhv9G7FOT+Y/mpIyoF6NjchenmzY=;
-	b=GBziaNKFwVWu+pN3NcdtktbCzUqKd/a2TjDy7/Y0bwj6Qj8RVV25qG74q1Yef/oo3wNPUX
-	lmBtuKV3O/vjATJvuwo30PFzKTbxX68Ctwn4s4efgfoLQyRDyhukIn0lYHD930GFFd5DZS
-	Wgq1kw/pI4CIw5HVPALE/xb/0VFT4nWTUD3DHbq6j1aiEREr9KFtg22LhIy2bx+DVCnwr/
-	qNz1Pi+OExJ6Jq5Y8IiUBb8204pLhpRrmQrCdsYNOGyfu/tfbuwomMun0GpVKyja9hL6yV
-	R4a5RnNEg1W0qLgOk7cjWrVmiOyIwQ2PPhCfCBefNH+vhWkEo0HxCScv1lT6NQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux@treblig.org,
-	Shen Lichuan <shenlichuan@vivo.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	u.kleine-koenig@baylibre.com,
-	nirav.rabara@altera.com,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	niravkumar.l.rabara@intel.com
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] mtd: rawnand: cadence: improvement and fixes
-Date: Mon, 10 Feb 2025 16:26:53 +0100
-Message-ID: <173920118908.61047.14353398163992295945.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
-References: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
+	s=arc-20240116; t=1739203316; c=relaxed/simple;
+	bh=KgsQFKr9kZXuSxFXBCI+ddBpGxj4Ol0vJGkM0lyg/QA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dlZPkp+YE39NCGQR3Q31wjRNtnJeFgzzLpu0tZmjMKomV7m+vKUEgYyiMl0VC8fcVIfjguO9NkXLbKJ17mo1DjGyfIQ/TtJ5uQ3KEQhuIe6w0sdG3T5qihlNu7FhG7lzPzJEB2ilhLXnRXQLoReT83J+2oWZvdby/zNxPXu8Zpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZR77zNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220E7C4CEE5;
+	Mon, 10 Feb 2025 16:01:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739203315;
+	bh=KgsQFKr9kZXuSxFXBCI+ddBpGxj4Ol0vJGkM0lyg/QA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OZR77zNcmbEatn6Nlvm/AtrwdTa9H2zBG4fcD021/7mzvZqFiI9N54xKvCZXB/h3A
+	 ZhQfUlRsf2L47MDuw75fl6dh43LQTM1/Qnesrse+kZUK10zdX6ny6NrJyJRFDRwIsU
+	 MLAQ+vLyZPxztzLnnTAIo0XiFklB2SGKEZDfPxhdb69xEXMHXP7yiVVwckCzaqglT8
+	 PQ29juUMysxLBwo6Ob98bSQB+sBfjHvlDpePGTIyIToGDChfgVkeaPD3dmeys9E2L5
+	 PJJnoHP9/wfUHc2CImMyjRq/aMJMp0S9UoWWBoWMxA5RumEAeHOBNl2LwX7Rq9qog+
+	 OYqi0QDq1mH7w==
+Date: Mon, 10 Feb 2025 17:01:50 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Wilczynski <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] misc: pci_endpoint_test: Fix irq_type to convey
+ the correct type
+Message-ID: <Z6oi7lH7hhA3uN46@ryzen>
+References: <20250210075812.3900646-1-hayashi.kunihiko@socionext.com>
+ <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefkeegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfeeugfdvffefhfduhfetfffgieeiudeugeffvdehvddvledujeejvedvgfdtvefgnecukfhppeelvddrudekgedrleekrdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedrleekrdekgedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddvpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepshhhvghnlhhitghhuhgrnhesvhhivhhordgtohhmpdhrtghpthhtoheprhhurghnjhhinhhjihgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehurdhklhgvi
- hhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehnihhrrghvrdhrrggsrghrrgesrghlthgvrhgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
 
-On Mon, 10 Feb 2025 13:35:48 +0800, niravkumar.l.rabara@intel.com wrote:
-> From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+On Mon, Feb 10, 2025 at 04:58:10PM +0900, Kunihiko Hayashi wrote:
+> There are two variables that indicate the interrupt type to be used
+> in the next test execution, "irq_type" as global and test->irq_type.
 > 
-> This patchset introduces improvements and fixes for cadence nand driver.
-> The changes include:
+> The global is referenced from pci_endpoint_test_get_irq() to preserve
+> the current type for ioctl(PCITEST_GET_IRQTYPE).
 > 
-> 1. Replace dma_request_channel() with dma_request_chan_by_mask() and use
->    helper functions to return proper error code instead of fixed -EBUSY.
-> 2. Remap the slave DMA I/O resources to enhance driver portability.
-> 3. Fixed dma_unmap_single to use correct physical/bus device.
+> The type set in this function isn't reflected in the global "irq_type",
+> so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+> As a result, the wrong type will be displayed in "pcitest" as follows:
 > 
-> [...]
+>     # pcitest -i 0
+>     SET IRQ TYPE TO LEGACY:         OKAY
+>     # pcitest -I
+>     GET IRQ TYPE:           MSI
+> 
+> Fix this issue by propagating the current type to the global "irq_type".
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+> Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+> ---
+>  drivers/misc/pci_endpoint_test.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+> index f13fa32ef91a..6a0972e7674f 100644
+> --- a/drivers/misc/pci_endpoint_test.c
+> +++ b/drivers/misc/pci_endpoint_test.c
+> @@ -829,6 +829,7 @@ static int pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+>  		return ret;
+>  	}
+>  
+> +	irq_type = test->irq_type;
 
-Applied to mtd/fixes, thanks!
+It feels a bit silly to add this line, when you remove this exact line in
+the next patch. Perhaps just drop this patch?
 
-[1/3] mtd: rawnand: cadence: fix error code in cadence_nand_init()
-      commit: 2b9df00cded911e2ca2cfae5c45082166b24f8aa
-[2/3] mtd: rawnand: cadence: use dma_map_resource for sdma address
-      commit: d76d22b5096c5b05208fd982b153b3f182350b19
-[3/3] mtd: rawnand: cadence: fix incorrect device in dma_unmap_single
-      commit: f37d135b42cb484bdecee93f56b9f483214ede78
-
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
 
 Kind regards,
-Miquèl
+Niklas
 
