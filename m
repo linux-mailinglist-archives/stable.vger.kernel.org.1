@@ -1,139 +1,173 @@
-Return-Path: <stable+bounces-114684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31B6A2F352
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:24:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC3A2F3A1
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B803A57AE
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:23:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A994D1628E2
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD132580ED;
-	Mon, 10 Feb 2025 16:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF642580E4;
+	Mon, 10 Feb 2025 16:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sDGHHFtg"
+	dkim=pass (1024-bit key) header.d=WITEKIO.onmicrosoft.com header.i=@WITEKIO.onmicrosoft.com header.b="pYC1b0bm"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2109.outbound.protection.outlook.com [40.107.247.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12412580DF
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 16:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739204615; cv=none; b=KAhUiZ86SV7UesAAS6AxpaQOGPTQnK7ADxShsVQO8FGP7xY2Z6Ep/ujdwFzMKJL4dwQf7cm2Ul1+n4CwJSF5lsZim9FypcdP4G2vCm1IHADIjVCmv02D6BRwV/lYomxL10pxSPCXWIExeh96NqmhIL9f4R9c5mtdcq5u+bednfg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739204615; c=relaxed/simple;
-	bh=Rzn8t5va8NpRQH2EPINPYw0RIov2GsAX+pxBrAby6HY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nz5r9GgTLcZbYcHeDKoQvpXzb3vbKvClskqpQC1SrolSGWe831ZAP7EKe79HLfjT/dMp+wYi+7PGHAgBcq6sce9JAcQwExfEAC7/xnXdH5XsqsZrSRjSU4LyUIjT/cCzbvSZX4TPIbdWgvQ2x69L5YBULujSYRX4ieeD+hC9sCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sDGHHFtg; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739204610;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q2arHOJIV6WsS55KzoD9Uj3bxGoXyKVwzSE4k4FtXWI=;
-	b=sDGHHFtg7fvWlXdFVd0ozPAZBeKzVqrHBoy/Lffqgx5kHAvIqmBFvgaZo0i9CgYb+gVjVs
-	dpShaoYXTm+f0mAWfrr5ApfFvIAKlP2UU8ba9TF8b8r0sk7DYwJEeVRhSqz6/Rl5Cgrkfu
-	Rs8NBZeNG0VsLbwqEabkY3j8w05Rac0=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: john.ogness@linutronix.de,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 6.6.y] tty: xilinx_uartps: split sysrq handling
-Date: Mon, 10 Feb 2025 11:22:52 -0500
-Message-Id: <20250210162252.2134752-1-sean.anderson@linux.dev>
-In-Reply-To: <2025020949-press-evolve-b900@gregkh>
-References: <2025020949-press-evolve-b900@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568B62580C8
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 16:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.109
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739205177; cv=fail; b=AlBwM4dU67afAvGI5Wg14VZN/Eem8aUsSQ969CovfjUTiOohBSOJyYyUhLrUxHn3mdDpAY/5OJW4gKNgvF1TGWUA3jA+mGfX8azt3mG5SnQb9UemvODObnDlGOEaU/2juEVZZrCR5xSxw+ryg17c7hWlib2xoxRrGvgIv5rznoo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739205177; c=relaxed/simple;
+	bh=NzLgXcIElykJZ7bNvnKuvtaOC58C/1x0+BRVfNusIcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aCDd1UhM1wUlLfox3AOVC5hhiXrKMi1Vo8dwX1X/yawk1FX9LHFGUSZKM6mVZJ9zSwjaYtGHz4APyk+0twZS4nWL3GDsmnKaZDMAMe/V/jcwjDC0fkfP62WG7cxGfqHsyxb0AxmWRs7YZTxwS2gI0gstVQh+4Xcy3PVORwPyZ4s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com; spf=pass smtp.mailfrom=witekio.com; dkim=pass (1024-bit key) header.d=WITEKIO.onmicrosoft.com header.i=@WITEKIO.onmicrosoft.com header.b=pYC1b0bm; arc=fail smtp.client-ip=40.107.247.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=witekio.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X5c/hGVHl3VphBMFoJLZSqGZFvfEwUME798Bmr0S88Xb90gLy4XO9d6XqQpsLucxkUiH1+pf6Qmyn334tHLMxa0P+p9mhtpUiNbONaYD81GN0xBda+nmzQt7EJxrnvjzoMp5CzTDrdlBnhgPY7Qd5ig5tFsqj3WSAyeqobeWOBrLDQueGVMavutlzuigf5bsxXz1F96Dre+68TcnpSrKpk0Y3Ow5Kg9JraZ4YCDMN0ScCStNrRak9AVfh0uPavHwDsVRe6QX6ta3Sp2jCYinSCUoZKQKA3EExEjo7w00hY05KYebb/jE8NoIJGDJALGjcY5RWVLh2Ce3r6nWXEy0WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A3kJGvPeVxEeOiSVezIf/DjxDhr9X2RcmsUUxUK0JEY=;
+ b=hwOdOqOrKXk5rHWF+68BLuqRJMcugpYhj+inNBFnDbejxTokX0zT+0i1aLOvN+WfriH2V7yq9CLIPFhuI+8iSA548ZItRrUEoIso3mJc8Rmte+jtMfkgsXfjREQ9RHYKykLFIT1PoZRwjFAwnNRsHZ1NqEgH0L42osK1YOSv6W4Nz9ecBsodWTWn3VmOkIT4rntNxJRb5Jolb0+wpPV9mUbrD2WNLzExWyY+GxG6vzksZu/h1TEVmTzLvVPxVNGNJRL1Ping3nlPjPtqkyCvBmSFVXMPbxud3knaGNk5n/ONQ3EuOllFxUcfKs+JNfDW1UWr7TNqHK6EtauvYnxh2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=witekio.com; dmarc=pass action=none header.from=witekio.com;
+ dkim=pass header.d=witekio.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=WITEKIO.onmicrosoft.com; s=selector2-WITEKIO-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A3kJGvPeVxEeOiSVezIf/DjxDhr9X2RcmsUUxUK0JEY=;
+ b=pYC1b0bmgAG0JcxLH7BwVCSvipD8fPJvERMmEHfdZZNuGoTd0c+aov8ftmvC+Tegd4gZVzoTStMhApSjjCXncpauES7uGT9O0X5GlP5UVVUOv4b8zMVqoNrKw/R28aj2+VCmdVNRW+cPfWco9wiKFo+9W1FSA2KvEu9idmy6Ymo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=witekio.com;
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:48::10)
+ by DBAP192MB0938.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:1c3::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Mon, 10 Feb
+ 2025 16:32:50 +0000
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091]) by PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091%4]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
+ 16:32:50 +0000
+From: hsimeliere.opensource@witekio.com
+To: gregkh@linuxfoundation.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	bruno.vernay@se.com,
+	hsimeliere.opensource@witekio.com,
+	stable@vger.kernel.org,
+	xukuohai@huawei.com
+Subject: Re: [PATCH v2 6.1] bpf: Prevent tail call between progs attached to different hooks
+Date: Mon, 10 Feb 2025 17:32:33 +0100
+Message-ID: <20250210163233.6445-1-hsimeliere.opensource@witekio.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025021027-repaying-purveyor-9744@gregkh>
+References: <2025021027-repaying-purveyor-9744@gregkh>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PR0P264CA0254.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100::26)
+ To PR3P192MB0714.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:48::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR3P192MB0714:EE_|DBAP192MB0938:EE_
+X-MS-Office365-Filtering-Correlation-Id: cea5f30b-c37e-4c3a-d588-08dd49f08edd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZVOwplEFnGJQLwPuuV59RTBscW0B+yPg6bzUkEYyJgb1eZcL+n9+QMZU/21p?=
+ =?us-ascii?Q?suU11+VdNyQu0+o2Hp0FJyrbC6TNTIrJ++zTRss+VieJrmPNObhzQn0LGAbc?=
+ =?us-ascii?Q?lYmrXb3k980xgfECbLk2wh2KJV2QE7UP9NFym40QfzDTAD2gtiFSUKd5kx6Q?=
+ =?us-ascii?Q?SRWd1S40VrEO+IqyGQQmORCjtadO4NZ76Njh/IGEAIQTd90exVQcaIRWZ+R/?=
+ =?us-ascii?Q?xXPuMpu5uXvBbl84T45zq4pspln/aPBQUk4HI3dC5JH+0+h4mzXfe5zShvPI?=
+ =?us-ascii?Q?+Nq0DZ5ZZrUBVfkJFz7BSBecuC7qf4xd18whaZ1vttOgr1ge9z7PFzP9WvUO?=
+ =?us-ascii?Q?fYA9yB+UaLAc/2TuDXQtWaWMzKAGm7M/USTK8FZi6O5ee+rAlHaClFUJMir3?=
+ =?us-ascii?Q?RkvZcES83QTaxf98SsgotUakfUZshqLSz61Yx0NbrnkJ9ASL2D6glmw6tCpK?=
+ =?us-ascii?Q?1bKYry8s7qvpkBTUrNtHjrS9K0kYit4MSlhutG08J/SsGytYW5DLUADfoXzr?=
+ =?us-ascii?Q?nDyPRlmdlaoXuDt9hzF9yA1DCE2179TgkjO5xZSLjB/dA/Ajq60vIXomtoCS?=
+ =?us-ascii?Q?rqXMZCsEkhYWbNuD4tagydzc8sOHHA++54njgZO8pJe4aQ9F2OrB0UW/sKmS?=
+ =?us-ascii?Q?JiHTNZfUjs7U9Zp3fYg+Jnnm2uqrlt8hVXxlUTnkH6qsngjUXjWppdevbEfq?=
+ =?us-ascii?Q?xQJUYuOt2qg+aiwgnPduvF8Wxhjb8FbpC4GkzyktGxq5iEzlEmtLE3CPpXHR?=
+ =?us-ascii?Q?i+Qu5M4QuoCK0MpeIiFKCT+CyiiyYmiivuqkHCMWg5SX6ThQOPXHXonzFDc1?=
+ =?us-ascii?Q?fcYQ0uCQ228f6tlamW4QiaDUqQjepBxDEYDovvGmRbTtaC8am4y7x2SAZV/K?=
+ =?us-ascii?Q?R5cZkE9jUiujjSdGvWFWo+ZcsQpnb5jMTiOTQbIJTW8vmDyL0vew+pEVvBmX?=
+ =?us-ascii?Q?TmesLJgCzoZreNhCB2b7J0raFk3/mNmk+4KsOdY44rBlBmYPiX5tvAAp/gFm?=
+ =?us-ascii?Q?pR2ifJ4shQtjkiWLgfZU3w33vV7O0DjCMwJ7w7+YnqpDW+nYS3oV9YV0Ad8k?=
+ =?us-ascii?Q?c8OhcVfN7Ul60ZcXMkUKNiAx1XmX5PSSPdxVJcAaXeSvnDmIapOeUDOccaWv?=
+ =?us-ascii?Q?gxwr3i6mvHhkuafNh8dC0hqOggNVMcdel71nwyuq5FhQw/vJbXRVBLU6WtVH?=
+ =?us-ascii?Q?N9OpHOERBXUpjgeROxMGLxpGZEj2lSjzzDoWLuoNPYXJ5+y44ho05C5kMCwu?=
+ =?us-ascii?Q?C5m0RDkQUTQ+7d6WYLFDad1w0v3Mqp+SDRckuxzYpY6RQG6iyR4CGaDc8kZX?=
+ =?us-ascii?Q?5nXTGva4Y6ZWt3Uriakvi9fzQpktKm9gyk3HY4LgnETvXWpXV6/OHEgcqLy8?=
+ =?us-ascii?Q?0TPquJwMcqQLll3xs8l2+Lki09NWu3fFEqkei7d8YlaBikLIN2q7XMbLbE9b?=
+ =?us-ascii?Q?eJDDujAe8fPQwwj2WAHW31ioepizabQF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P192MB0714.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?j4bEB0f6RTdvZg4it8hkSGlTLfIJxORQheIsnje+n9oVtS2/vxbg9OI+SG5H?=
+ =?us-ascii?Q?ER6wKWZxfwZrLwPUPZ0oUGjDWZSDMq2y/wz+NN3q2UYjRCRsxiKBzPFRg9/Y?=
+ =?us-ascii?Q?TCCzSJsQxl8N223kaxSdyiYY7rVPBJH2SwxhlDslr8AiT/3acIVgh66Sh0nx?=
+ =?us-ascii?Q?BaDhTe26vpZxDJhDsLiP+eSqfP5sPhR+tGk7SQmtW0jmp1l9Ms5lVo66qVMN?=
+ =?us-ascii?Q?KR7M5S1kCz2EjMFN0VsewMTejHNPZDXZkAcPIPD/cEBZbGC5V7d91maipsNx?=
+ =?us-ascii?Q?KBfwn+oTqo3fFPvbiLxYiIru1ksWvZCIItxRnWdhV0Je2UHw10geROwFg3t4?=
+ =?us-ascii?Q?ErPyTAK6l4zBfV8P8wiQSDKYM6C62CviFYIkulM3FECqypx7aqKtWJvMeVVS?=
+ =?us-ascii?Q?7Nm7/qb0Zq4OYGSCftSAHiymlHDcQD8n8PIx5Lhs54LUrLrM9tfhkvmmXCVZ?=
+ =?us-ascii?Q?u19Xb4uSj5u08HdSFNAGwQxgjfM0MchoN+UlFlKDIis5xKCXwsbZMBg7yMH+?=
+ =?us-ascii?Q?WUyVQkQUzd2MsgyAOtFS8Ilrab8UdfgFRjKCx1tQLPFJULq6aEDhgfSmunNk?=
+ =?us-ascii?Q?QOCGAFYTS3rZR3wImwkcb2ayWS1OgYl9xwrGRc0xLYbpP7VCEl3FkUrwtMX3?=
+ =?us-ascii?Q?bpo7Efk2ZwC7hBXfW+hSnw1wQSM+6xALcueV5KSeEVJh/25u1segNm5rK+MC?=
+ =?us-ascii?Q?qyRj5B7cqFNLqnmapXDDjxRl/+TyUPlNPrpHc468PBR56HzTm2leYGTOhqjO?=
+ =?us-ascii?Q?iqGixb3EFTtLuSYgI3OWKwZ+QJyupzKaDSI+uvvGyY895mUua9/OXBVI7T+W?=
+ =?us-ascii?Q?8mg7Q3zNnhkLZCp+JvpmM4koi0WMXKHlmVy+6YrV2wLpNcg74e1LZx/VwgEl?=
+ =?us-ascii?Q?yALwBr6X6YFk7O3lU+O59TOFsnxSpE2dBua++AKhxw/voefgssNqw8d1aZkI?=
+ =?us-ascii?Q?ggkgmvqHGXVMKy6rBk+bZddo6bhqcGQk7RvNOMYpPd29gLuh6ku/v8aunxKg?=
+ =?us-ascii?Q?TzfxhsdLG2/clDEr+RYcUMvIur8+0/E0aZenLT+MiJOVjOLo8qX4YtBI0JOH?=
+ =?us-ascii?Q?oi0ZuKtr2hAdjLgi7tJrJ5U4aON5w4QqYkSsNerpGUYxS+MNayrrHA+i0vRY?=
+ =?us-ascii?Q?LfAHilUZOBeNjKUepRotKptz7T5Trh1DBJwAvdSQaOE1+VA1dyOal0BJHG3g?=
+ =?us-ascii?Q?v+IaqVhmGk6IM0y+AuCzNf5abOLGwQvCvu6Z41DxnY7sy2f3huUg6zet4a0j?=
+ =?us-ascii?Q?QG3prmHIDkd6zrdVv/iL7QwSqYWRTEmLlAgWKlzJik5u+8hBVwT9x0qg6AYR?=
+ =?us-ascii?Q?lj0XWyW9aW9trXwmp3mSDr0RVSVeIX+wS9Gb7O+VUAvtRecQUSiPqvXVmNr9?=
+ =?us-ascii?Q?Vn9yagMthSKa4/vtZGeQyq2VNQVWKBQvaj3Z1vSg85HgfLqGnexcVR6d+Pxz?=
+ =?us-ascii?Q?22Pk2tGGY9DaSR8zL3xSU31Duf+KtGeh2BfbbYdT5+ytxcb6wx1Jd3tvF3oY?=
+ =?us-ascii?Q?bwiKusxmx/TdDEsJifWu5ZkCWZzlQqldh0HdRYDCo1Nc6yJJbVXymsGj+j3a?=
+ =?us-ascii?Q?fSTLVyD0kce33Md+IBS1OrbkOWUF3w442QriFwNaBenG2Aue7v8iQu5Wt+1J?=
+ =?us-ascii?Q?DA=3D=3D?=
+X-OriginatorOrg: witekio.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cea5f30b-c37e-4c3a-d588-08dd49f08edd
+X-MS-Exchange-CrossTenant-AuthSource: PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 16:32:50.0488
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 317e086a-301a-49af-9ea4-48a1c458b903
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Jq8wqSLDt91dqW/qbQ4doKulZrJtUhCwZlHsWBjaIc1ubQuRFgfg6E2eaHCNvwjclBOImyzHxaP5YRCltWjmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAP192MB0938
 
-lockdep detects the following circular locking dependency:
+On Mon, Feb 10, 2025 at 10:55:07AM +0100, gregkh@linuxfoundation.org wrote:
 
-CPU 0                      CPU 1
-========================== ============================
-cdns_uart_isr()            printk()
-  uart_port_lock(port)       console_lock()
-			     cdns_uart_console_write()
-                               if (!port->sysrq)
-                                 uart_port_lock(port)
-  uart_handle_break()
-    port->sysrq = ...
-  uart_handle_sysrq_char()
-    printk()
-      console_lock()
+> Never link to nvd, their "enhancements" are provably wrong and hurtful
+> to the kernel ecosystem.  Always just refer to cve.org records or better
+> yet, our own announcements.
 
-The fixed commit attempts to avoid this situation by only taking the
-port lock in cdns_uart_console_write if port->sysrq unset. However, if
-(as shown above) cdns_uart_console_write runs before port->sysrq is set,
-then it will try to take the port lock anyway. This may result in a
-deadlock.
+Thank you for this information, I will take note of it for our next contribution.
+So the CVE must be under a CNA or CISA score for the patch to be required by the kernel?  
+Where can I find your own announcements? 
 
-Fix this by splitting sysrq handling into two parts. We use the prepare
-helper under the port lock and defer handling until we release the lock.
-
-Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
-Acked-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ resolved merge conflicts ]
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
-
- drivers/tty/serial/xilinx_uartps.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
-index 2e5e86a00a77..7f83d2780017 100644
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -268,7 +268,7 @@ static void cdns_uart_handle_rx(void *dev_id, unsigned int isrstatus)
- 				continue;
- 		}
- 
--		if (uart_handle_sysrq_char(port, data))
-+		if (uart_prepare_sysrq_char(port, data))
- 			continue;
- 
- 		if (is_rxbs_support) {
-@@ -369,7 +369,7 @@ static irqreturn_t cdns_uart_isr(int irq, void *dev_id)
- 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
- 		cdns_uart_handle_rx(dev_id, isrstatus);
- 
--	spin_unlock(&port->lock);
-+	uart_unlock_and_check_sysrq(port);
- 	return IRQ_HANDLED;
- }
- 
-@@ -1229,10 +1229,8 @@ static void cdns_uart_console_write(struct console *co, const char *s,
- 	unsigned int imr, ctrl;
- 	int locked = 1;
- 
--	if (port->sysrq)
--		locked = 0;
--	else if (oops_in_progress)
--		locked = spin_trylock_irqsave(&port->lock, flags);
-+	if (oops_in_progress)
-+		locked = uart_port_trylock_irqsave(port, &flags);
- 	else
- 		spin_lock_irqsave(&port->lock, flags);
- 
--- 
-2.35.1.1320.gc452695387.dirty
-
+Thanks,
+Hugo Simeliere
 
