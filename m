@@ -1,88 +1,162 @@
-Return-Path: <stable+bounces-114695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFADA2F50B
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0D0A2F51D
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 18:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 472F03A9939
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D217A3AA236
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 17:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062B9255E3D;
-	Mon, 10 Feb 2025 17:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUTANN9W"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F72C255E4C;
+	Mon, 10 Feb 2025 17:22:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62E24BD0B;
-	Mon, 10 Feb 2025 17:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2323F255E49
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 17:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739208055; cv=none; b=ZxNHK43Bk/4qHdxvco3KZmaulYRf57XpdqJJZHBXmimDJGh5PM8TEIS7hSFzHh6TDBYyYxnt0cV9vayHD8dXkqW53CjLgZFxaAtjRsFNOtHzG0RkaxHFSR2mbCZptAgbpp2uGNWHYZKDLoBBnT/y9P6dElEg/qxLBgPLU3g8Ic0=
+	t=1739208127; cv=none; b=bZstjg9YxYWSj8T8fMlYEWqxoIWDoYd46avWKXt6524IbEsgcuo9NsSY/8MKAmDaiksOlrkSl94+WhUWkC6hUlWGfD9gQrR8VoJOeGND582mjZVbziBFLiI8H2UL8ljqHuCzCAjMDUWT+JS0j3kQrq0dsVgmuXuSlWFK0SJA7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739208055; c=relaxed/simple;
-	bh=V26EiT5mL/pxNNUMLsG/dGA25oNWdXvljO6PAFlqOjI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Iu4Ti+c3Y9W/upcrslGTETJM/B5Y0VtmvPn4d9NaTSsLcchh/X+i8lSjVA1sfQtnNFAAECckm2YFzq9bmcKWsQRsv3GaaMCFM/FRpz0W2FvjuNJxi1Ny2abFRsErJLHU8/ydyF1xiFxQT+YWBTxD3sdkwQ2P3ogdDy7XzRqkYME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUTANN9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DB8C4CEE5;
-	Mon, 10 Feb 2025 17:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739208055;
-	bh=V26EiT5mL/pxNNUMLsG/dGA25oNWdXvljO6PAFlqOjI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=nUTANN9W7dquWHQ/NP4187pKGh7HLk821eT5gKGwwbIpaeD8JRt1d7NTIDDBB4jbU
-	 EuTmFxJm2/Hv6xCYqmj0wuUF6tnjUCtLER8thOgjk/z8d3Z3/kKLM9c4iur7P5vbbv
-	 asgf8Cl8844O9zQWCxWUP5PqRey2ATWDXa9WW1/d+XFILBXYShpkc9pyDFHH/fVXpD
-	 ScUu67Ot5I1IWNN1irYeRB05C+FIUSKCZv1fDzrJoU/mXUw7U0Tof4s8SbFIkOw1yD
-	 N5roBSClFT6sbqx3myU/szPU37hRIO9tU/p/TI2KQS9HCs+7kEsSrwgdtHdvwOLoYN
-	 L1DRnF8VEUzGg==
-From: Vinod Koul <vkoul@kernel.org>
-To: Kishon Vijay Abraham I <kishon@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Vivek Gautam <gautam.vivek@samsung.com>, 
- Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: linux-phy@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
-References: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
-Subject: Re: [PATCH] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and
- SSC_REFCLKSEL masks in refclk
-Message-Id: <173920805196.103688.17713863876397258769.b4-ty@kernel.org>
-Date: Mon, 10 Feb 2025 22:50:51 +0530
+	s=arc-20240116; t=1739208127; c=relaxed/simple;
+	bh=J+b3teOJ96VB98T8v05ziixP6IhO/vv2MEtW5qFIJEM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uhLtaDBl/LALsXq8J0tCmJwFhqabQF59gj1YFBqMYwlslTOUOdG0ho/gssy9A+qBSweJ2SClIKfmWzPdCP3CoZTLYpPNsBwZX8pC6HnF3zlahLXQUlyROYBRA6YXo6yYfSr3P7xyVI3ohDM69QS/a36/kPmd9YJPf3iGoddhUVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA1731477;
+	Mon, 10 Feb 2025 09:22:25 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBB193F58B;
+	Mon, 10 Feb 2025 09:22:01 -0800 (PST)
+Date: Mon, 10 Feb 2025 17:21:59 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <Z6o1t7ys2qVaZ-7n@J2N7QTR9R3>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-9-mark.rutland@arm.com>
+ <20250210165325.GI7568@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210165325.GI7568@willie-the-truck>
 
-
-On Sun, 09 Feb 2025 00:29:30 +0530, Kaustabh Chakraborty wrote:
-> In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
-> PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
-> inverted when applied to the register values. Fix it.
+On Mon, Feb 10, 2025 at 04:53:27PM +0000, Will Deacon wrote:
+> On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
+> > Fix this and make this a bit easier to reason about by always eagerly
+> > switching ZCR_EL{1,2} at hyp during guest<->host transitions. With this
+> > happening, there's no need to trap host SVE usage, and the nVHE/nVHVE
 > 
+> nit: nVHVE?
 > 
+> (also, note to Fuad: I think we're trapping FPSIMD/SVE from the host with
+>  pKVM in Android, so we'll want to fix that when we take this patch via
+>  -stable)
+> 
+> > __deactivate_cptr_traps() logic can be simplified enable host access to
+> 
+> nit: to enable
+> 
+> > all present FPSIMD/SVE/SME features.
+> > 
+> > In protected nVHE/hVHVE modes, the host's state is always saved/restored
+> 
+> nit: hVHVE
+> 
+> (something tells me these acronyms aren't particularly friendly!)
 
-Applied, thanks!
+Aargh, sorry about those -- I've fixed those up and I'll give the series
+another once-over.
 
-[1/1] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and SSC_REFCLKSEL masks in refclk
-      commit: e2158c953c973adb49383ddea2504faf08d375b7
+[...]
 
-Best regards,
--- 
-~Vinod
+> > +static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
+> > +{
+> > +	u64 zcr_el1, zcr_el2;
+> > +
+> > +	if (!guest_owns_fp_regs())
+> > +		return;
+> > +
+> > +	if (vcpu_has_sve(vcpu)) {
+> > +		/* A guest hypervisor may restrict the effective max VL. */
+> > +		if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu))
+> > +			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+> > +		else
+> > +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> > +
+> > +		write_sysreg_el2(zcr_el2, SYS_ZCR);
+> > +
+> > +		zcr_el1 = __vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu));
+> > +		write_sysreg_el1(zcr_el1, SYS_ZCR);
+> > +	}
+> > +}
+> > +
+> > +static inline void fpsimd_lazy_switch_to_host(struct kvm_vcpu *vcpu)
+> > +{
+> > +	u64 zcr_el1, zcr_el2;
+> > +
+> > +	if (!guest_owns_fp_regs())
+> > +		return;
+> > +
+> > +	if (vcpu_has_sve(vcpu)) {
+> > +		zcr_el1 = read_sysreg_el1(SYS_ZCR);
+> > +		__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)) = zcr_el1;
+> > +
+> > +		/*
+> > +		 * The guest's state is always saved using the guest's max VL.
+> > +		 * Ensure that the host has the guest's max VL active such that
+> > +		 * the host can save the guest's state lazily, but don't
+> > +		 * artificially restrict the host to the guest's max VL.
+> > +		 */
+> > +		if (has_vhe()) {
+> > +			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
+> > +		} else {
+> > +			zcr_el2 = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
+> > +			write_sysreg_el2(zcr_el2, SYS_ZCR);
+> > +
+> > +			zcr_el1 = vcpu_sve_max_vq(vcpu) - 1;
+> > +			write_sysreg_el1(zcr_el1, SYS_ZCR);
+> 
+> Do we need an ISB before this to make sure that the CPTR traps have been
+> deactivated properly?
 
+Sorry, I had meant to add a comment here that this relies upon a
+subtlety that avoids the need for the ISB.
 
+When the guest owns the FP regs here, we know:
+
+* If the guest doesn't have SVE, then we're not poking anything, and so
+  no ISB is necessary.
+
+* If the guest has SVE, then either:
+
+  - The guest owned the FP regs when it was entered.
+
+  - The guest *didn't* own the FP regs when it was entered, but acquired
+    ownership via a trap which executed kvm_hyp_handle_fpsimd().
+
+  ... and in either case, *after* disabling the traps there's been an
+  ERET to the guest and an exception back to hyp, either of which
+  provides the necessary context synchronization such that the traps are
+  disabled here.
+
+Does that make sense to you?
+
+Mark.
 
