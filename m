@@ -1,111 +1,116 @@
-Return-Path: <stable+bounces-114503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DABA2E8BA
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EF2A2E980
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 480D518831ED
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85161188A0A3
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056241C5D6F;
-	Mon, 10 Feb 2025 10:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lpgejfv6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8578E1C760A;
+	Mon, 10 Feb 2025 10:33:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF061B414F;
-	Mon, 10 Feb 2025 10:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646D515624D;
+	Mon, 10 Feb 2025 10:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739182156; cv=none; b=nxeJ+gr5AYZ/J34Nd02HbIi5kZz1EbaZITtK8stQV2MV/IqYM16U3TOZE9w+q2P/CPb/hZOBBDRPwVne5Y9hsmVU/DC1niooJXAwPG5rUTDNisMyt9Zqm9DYxhvfgxn36Q74G0JcoQKfTC4xxtgyb0vsj6Jn2swfDmqchIrE0+c=
+	t=1739183594; cv=none; b=G/TgK17u80K3AhSJkK8T80P19tL8OwHN//Ml4uB99/Ia18/Q2ZUFJ44iFQ4mE4SsOUz7x0A/elPbhQLHzPCQe3H2R1MIDLy7QIOIuZp4s34yqgv+GHrZuxwGKfVwawmmVB10JidBvdOVIf1keeE8w2xB5sM7IvaByk77lUYuVCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739182156; c=relaxed/simple;
-	bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
+	s=arc-20240116; t=1739183594; c=relaxed/simple;
+	bh=PRIjYgukVL9xgLkbU+1wVGhjbrbQ2a1ytqYVNW0rzA0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HLnDLas9bREASpuIhNgVuxbXiMs8qNIluaWB9iMqCvveaAHZBGIZEoeL5slil5JLrAqkXpebgSIXGbMGeytfnigZJs2N4w0b6p09dpNXgVWIJaCDkGmrwoJyoJYtD0aqWR8r62RmU1T/VpBYJZd6U2yjHmTRWpFch8FGQ4AND1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lpgejfv6; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=s5r4Yh0oZTuMOBysMM7Q4wkANWGH4BU/ES/VqIHfk+i3t6dO6+LPB8ZoOq8gOmh2tCcGLXoUPNz2K/FQaYNdEv7dotk5z3U+O0+EUJ7ewOSQ2ycQqwwij9pjLIIA3KGrOJoKCvBbWbpMCM1XcvmKhbKH+QBxNr5hHtof2ZdRWx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5de4d3bbc76so4900011a12.3;
-        Mon, 10 Feb 2025 02:09:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739182152; x=1739786952; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
-        b=Lpgejfv6On9powqxnvhWENz+KFE38JVDUyEQ2Tz/Df9UwJDUVzjcK3+Jf6/wq7Z6H/
-         uoCobHj0cP9AMwxrplTbacGO4dnoAsLw1i6HeZ7pQtyTDXcZQshCH1ppgZjfMnHiOJNL
-         G88CamyxSTPdVegHkdzdtW3z6ncKLIcqps1c7mQ4HZ0/l4mdAjk4RAb44mNqarci5oIe
-         0HuL61NbZNSFF7hnkoFwRMYi1f4TBGy7UOeq4OTsDKFrNWSW7Al+jgWSN8+c2oylNFbi
-         0VzCFCkEhLvRTwIW5e18J6cp+TOqWVpdo2MniOEAAMu5Z7H0CYLmenpFuHpRYCUNu2iC
-         1Zmw==
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4ba86dee27bso915237137.3;
+        Mon, 10 Feb 2025 02:33:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739182152; x=1739786952;
+        d=1e100.net; s=20230601; t=1739183590; x=1739788390;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5dzyKtWqZnepXYQlMsqs3T0zFLasKzwLYo+Yn/dRQyU=;
-        b=e+/WhpMFNoAbOjTJDWqi7ZiYc70N4NqAvS4PNCtdfeYIyzbrjy271TVih+r3+C0CnA
-         iyCN+YaU3XF5mHeRrdwrgE1b20V1WlXJ8g+XfpebBfE6QkjIft4peO5hxmPU3R+y090k
-         VtIuDETqS1g+IuOCvhFdB+XefECcO8L9M7v235q+/fc8+6jA3hLSthMgU9T70moqkWbL
-         JpemKi12hM8S5dCq2VFSyvNkxbPSCgSHLGymM0Tfm7+3iwwVbvTkWMgytzuftLjkl+4Q
-         g0HBiSLH549s8/GsDmYQ116sb/AYzT0XgeKESonB7AyzbiyKtuvpj3FbztrZeLXtUdsa
-         7nrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwf2Sk+0fkHg5s5ODw8u2RJpWy4R+JxO4cp9DR4+gR6gJVJMnoi9qh7LK3JkWImw5BCwSia76q@vger.kernel.org, AJvYcCXI9i9QtFq0hJGpg3Eq/EjWy6mPIk7NSRy31BLI4PtEcyMjhvIwk0mwDAvD4E5QinUWN8A1KxFEGr2hCxc=@vger.kernel.org, AJvYcCXPVEm+c2s73Z4G/j4DcweokSrXjHeABwS5T449yb9YjNU1yjWjmzOqQ4LKN+b7Vdc6mShMFkhm0rYKLFCifl5AY+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZhymV3pIbZTsnqhf0X7qPuKXaLYYPNKZTqXE0WvppkjqmT2Z4
-	n3O+MXZcNx4d++nGQb2jKWc2rVDcjoypSD675zBlqGpEQkyHEQQQbNV4deXTLRTwkAQaYPjQJXt
-	A7QozIyQYL5H3XkHgZSMr8Qi7Pvo=
-X-Gm-Gg: ASbGncuux88gdgY4niWul+JSZR3SluEgCeWbrWPml93YRUdeQLKzagl1THha3DQ4N98
-	8K0Yc4rLedAIdVrZX5OnfCs5LQCkbkRnDyev7za6YMebRXDqgJqya5v61DNI68TuuplxSqg6J
-X-Google-Smtp-Source: AGHT+IH05m3EGDv37NgCHa7r72kurcQ8bsVSV4tB6ZTwaZHVAXVKJd9j8KrWy0sZ6Kd7oDJwTcHKTTZ7neMq4xpHZUE=
-X-Received: by 2002:a05:6402:42ce:b0:5dc:73fc:2693 with SMTP id
- 4fb4d7f45d1cf-5de45023654mr16526726a12.18.1739182152139; Mon, 10 Feb 2025
- 02:09:12 -0800 (PST)
+        bh=aUtEWKWBGl+RUz1Aa17blZ/xFUbDXxxGPDURQS+ed2U=;
+        b=cbgo5X2mrmAsj+Qd08NCsCP4Q4x2e9ys7oWKOvpbeY1IXOEAp983/NHKKwuBgbx1rr
+         gYB+v8J0nNDtq6Cnh1aXwoHCK6nu+9ZUA202q4TSWoaSGW1rOCMkEXBz2e5b33eu0Dhc
+         B95QqQayesTPFPNF5nq/BJ+E9hdvBd9BVQ/u8FTmz4V2tage733ZJvDR3xVcn7W91ZiA
+         8xErwet9Dmo7t/hONcQSK0HeACRABdlKxXf2gu/nUUajl1SGqu5ZzxY+AhXl4fYaa35w
+         2KKS1J/WoyIQIKUBnT3tmmalHGQ0bmoL7olYtpj7JPOe3GrnHBb+v3zhtMrCauuQ8HYt
+         oRuw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOXL6oN9ZG0UNl1zkkaROQDEOmUeo03ptsUM8KqwmqJOQdoYse5f2OqYYDu+ytckUl5CiCfWNbRwfmBt7c89S9/A==@vger.kernel.org, AJvYcCX+nDf4595rEscMR6rwRKV7H4AjYLZ1hwzgmN3jBQAKcuO1ROjyjvdKMLzyXUnUqguTx2wpYHZY@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFdwd99RaQNSbULYjZVesYiMH4terrqQJuY/BX7xgWw+iTxxOf
+	3zNJw4Rfbb4IzIx9DygL9EUEKfFiFK4rWqqWp4V2p7R/0nIFoRFWUmj1kVOf
+X-Gm-Gg: ASbGncv2evASU0VkeTGArt9RBXRTV37GHr8uWWb4qKQSsgaNyp1/nztllgPtzF4gatl
+	kVjubUk1hY7J7pmrAs2E7jLzYm5L5s6uEUkZ5gKrycjIl4eiLQKkpMnuUYXq3L7B0ZyLqCojawH
+	8jcpyf1gT906EBR9fzRdo7K2nGs4oSUKMzwqzrqVQBQjw01oS5YZ0WG/WV3DVhnlLwCPOcPZnA0
+	GHwF7Wv3abUp0NczndNvVVMp0HO5MMDU1t+18Sc874p0BDkWDh2FoNhDOzn9d4UWpMmwgM9/2EE
+	4Ps4TR2wKciBXzdbVvCiDcPxNnIX1tXAO+kmbxNkJvrSavjlkDCDzQ==
+X-Google-Smtp-Source: AGHT+IGr1wI/ui11E/7W4s+nrw9dlq/BMYZbSD+t+rtOTgS2KEyBzyXBxmMw9XgsKhHMKKkLMHE8vw==
+X-Received: by 2002:a05:6102:441f:b0:4b4:7cb0:ac99 with SMTP id ada2fe7eead31-4ba85da2bf5mr7484459137.2.1739183590079;
+        Mon, 10 Feb 2025 02:33:10 -0800 (PST)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4bbcf5660c0sm258639137.18.2025.02.10.02.33.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Feb 2025 02:33:09 -0800 (PST)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-864e4f5b253so1114230241.1;
+        Mon, 10 Feb 2025 02:33:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU3G0SoTFix7+61Kx4/iHQTsZtJOyoIRjLhiackMvxTXNJjfrhUNJuHC1jCxXwf9XXWmBx9EaVciPoj/H98ni2elQ==@vger.kernel.org, AJvYcCWRCqVDd2wsg2wUbNiYEPoZxySGQTYDpKC1EEyk5uXjDo4gfuqZAQF7+P2owClc5iB1A7h2yNmm@vger.kernel.org
+X-Received: by 2002:a05:6102:3046:b0:4b2:48cc:5c5a with SMTP id
+ ada2fe7eead31-4ba85e8d160mr8493000137.15.1739183589499; Mon, 10 Feb 2025
+ 02:33:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
-In-Reply-To: <20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org>
-From: Anand Moon <linux.amoon@gmail.com>
-Date: Mon, 10 Feb 2025 15:38:57 +0530
-X-Gm-Features: AWEUYZl-ymjB7hMb8tRQlI4jusE7F1xxvFV_L9geMxys9qNgTR3hdyKQc5pas2k
-Message-ID: <CANAwSgQAfwq2tmqB=+896YGhFFa1hJ18W-cAes2o2bseJiLUsQ@mail.gmail.com>
-Subject: Re: [PATCH] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and
- SSC_REFCLKSEL masks in refclk
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Vivek Gautam <gautam.vivek@samsung.com>, linux-phy@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
+In-Reply-To: <20250209145708.106914-1-marek.vasut+renesas@mailbox.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 10 Feb 2025 11:32:57 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX9krvWfZma-A_X6O18q0J8+jizEDL0C8rkoEXpk2KiAw@mail.gmail.com>
+X-Gm-Features: AWEUYZkwJD0lEVOPrylUzlQHEumsgN92-kbxnCCiZTEdO_bmGEawanoxd2ni2JQ
+Message-ID: <CAMuHMdX9krvWfZma-A_X6O18q0J8+jizEDL0C8rkoEXpk2KiAw@mail.gmail.com>
+Subject: Re: [PATCH] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode quirk
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-usb@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Oliver Neukum <oneukum@suse.com>, linux-renesas-soc@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Kaustabh,
+Hi Marek,
 
-On Sun, 9 Feb 2025 at 00:30, Kaustabh Chakraborty
-<kauschluss@disroot.org> wrote:
+On Sun, 9 Feb 2025 at 15:57, Marek Vasut
+<marek.vasut+renesas@mailbox.org> wrote:
+> Add Renesas R-Car D3 USB Download mode quirk and update comments
+> on all the other Renesas R-Car USB Download mode quirks to discern
+> them from each other. This follows R-Car Series, 3rd Generation
+> reference manual Rev.2.00 chapter 19.2.8 USB download mode .
 >
-> In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
-> PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
-> inverted when applied to the register values. Fix it.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
-> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-Reviewed-by: Anand Moon <linux.amoon@gmail.com>
+Thanks for your patch!
 
-Thanks
+Still true in Rev.2.40 of the documentation ;-)
 
--Anand
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
