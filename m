@@ -1,106 +1,136 @@
-Return-Path: <stable+bounces-114513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DAEA2EC4D
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:08:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F68A2ECE6
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A87188A032
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:08:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ECCA18888E9
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873C221DA8;
-	Mon, 10 Feb 2025 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D052206A5;
+	Mon, 10 Feb 2025 12:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KPiGQUg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/qTvmR+"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C677D221D8F
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ECC1F3D41
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739189277; cv=none; b=kAIXqpekQR4QbRXTWEyVInHoPCjyXvNiROhxKfFvCvAtQoLQYxekCcsEMPRKxq0bkeam6GU57FZT6yRruWizAotSQTwtQuSi5YiCT19LQwJCFo/rWqVAAEI5LQlpYNCZ6SUmH3kJjQ1zNzzV5y44fVMH+zxVooYIF1aZBnIiZ4E=
+	t=1739191940; cv=none; b=t0ruKxdx3GL6J1ZIswhEGTnxBO1h+NMgochQRGkXcGmavDXX2+DZ46ZTPNIXWHhVS1UkJgNDSLcZac0tw0uJnU1OwU6d3muttspra6Df/+y4Ao4s+VCdS44Cp/Nz+vHeJMav9XceZcW0ohPkLRJtEB9NvyOy35xMb9iUrbHHwhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739189277; c=relaxed/simple;
-	bh=BtQ9N1MvirivDuLCQDNFtrplYfp2RM+U8t6UQeof8HE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XhJC3L+jcElpKL2OT8kIeRQeNlLc4sGXzeipUvZZVY5+ZBt7lZ8vbbQGsUJDHqvwgLzGoJF7T2phpLLdwYPFgAScG6TNzrk+vqrDUL5i0vGJBVNXYkD0gLfbdnitvxwfCiWTMPJjWzZoAeA1Wq3ssCLx6RpPiyHgIcVgd1wmc40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KPiGQUg2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739189274;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TNwsmie5gRPqqyVCLb3IhqDqH4N/saJWdmlC5n8Dh5I=;
-	b=KPiGQUg2Hg8idDWxRnRgUcnRUM1jMb7/TiybuCfsxYmjm8svdl/7uios9t40Rg38Z0zakv
-	wt//gNC6Y/Tulth8xwr6uDm4fDVcpoAGH8jgD5FHTYcyrazRN/BY5tIk1xAg+RIyUL6YQB
-	EC7MYKlAHGUYLENkjzsn6AxfFjxNKpk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-jW7P-b8EOCOzDHiXADTIjw-1; Mon,
- 10 Feb 2025 07:07:49 -0500
-X-MC-Unique: jW7P-b8EOCOzDHiXADTIjw-1
-X-Mimecast-MFC-AGG-ID: jW7P-b8EOCOzDHiXADTIjw
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98008195608E;
-	Mon, 10 Feb 2025 12:07:45 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.113])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 811B8180035E;
-	Mon, 10 Feb 2025 12:07:38 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 10 Feb 2025 13:07:19 +0100 (CET)
-Date: Mon, 10 Feb 2025 13:07:10 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, bpf@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH bpf-next] uprobes: Harden uretprobe syscall trampoline
- check
-Message-ID: <20250210120710.GB32480@redhat.com>
-References: <20250209220515.2554058-1-jolsa@kernel.org>
+	s=arc-20240116; t=1739191940; c=relaxed/simple;
+	bh=EWZP1Uf/RUzAPyPNMGOSiFHKQ2MKgiL2OiHgXUcIfGY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FzyQvbNDAv+9Vlngr5ccRbFCdDB47VsgaePz6a2lm7aKy7u72sbD5mgBkHcWvHqeUA0AwMSoQhYE150yUlkY2ntYRXarstJU3d2hPLeUw7OHP+rCnrT2O0EHt5+eKQ+3FUfQp82YcceB7ntwJxvtQSPTUNqVaijjPGVbmzbYdg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/qTvmR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08795C4CED1;
+	Mon, 10 Feb 2025 12:52:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739191939;
+	bh=EWZP1Uf/RUzAPyPNMGOSiFHKQ2MKgiL2OiHgXUcIfGY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=r/qTvmR+MUQhcet6mGPxTuoNhgMAL9CmjfpEAzzVUQzVUpXMxn1NzP9lOdhExIaM+
+	 r/JvNDmi8xhBDLVp6zfkiLXSQTxIVAhuVvDb+t+440bP4XdGZV565nMOaBobmDgveI
+	 /m215qSm3agC88wbJC3pSURHKX3E7kszQOAU/67s=
+Subject: FAILED: patch "[PATCH] cpufreq: fix using cpufreq-dt as module" failed to apply to 6.6-stable tree
+To: andreas@kemnade.info,javierm@redhat.com,rrendec@redhat.com,viresh.kumar@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 10 Feb 2025 13:52:11 +0100
+Message-ID: <2025021010-liquefy-pointer-8122@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250209220515.2554058-1-jolsa@kernel.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 02/09, Jiri Olsa wrote:
->
-> [1] https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Eyal Birger <eyal.birger@gmail.com>
-> Cc: stable@vger.kernel.org
-> Reported-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> ---
->  arch/x86/kernel/uprobes.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x f1f010c9d9c62c865d9f54e94075800ba764b4d9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021010-liquefy-pointer-8122@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f1f010c9d9c62c865d9f54e94075800ba764b4d9 Mon Sep 17 00:00:00 2001
+From: Andreas Kemnade <andreas@kemnade.info>
+Date: Sun, 3 Nov 2024 22:02:51 +0100
+Subject: [PATCH] cpufreq: fix using cpufreq-dt as module
+
+This driver can be built as a module since commit 3b062a086984 ("cpufreq:
+dt-platdev: Support building as module"), but unfortunately this caused
+a regression because the cputfreq-dt-platdev.ko module does not autoload.
+
+Usually, this is solved by just using the MODULE_DEVICE_TABLE() macro to
+export all the device IDs as module aliases. But this driver is special
+due how matches with devices and decides what platform supports.
+
+There are two of_device_id lists, an allow list that are for CPU devices
+that always match and a deny list that's for devices that must not match.
+
+The driver registers a cpufreq-dt platform device for all the CPU device
+nodes that either are in the allow list or contain an operating-points-v2
+property and are not in the deny list.
+
+Enforce builtin compile of cpufreq-dt-platdev to make autoload work.
+
+Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as module")
+Link: https://lore.kernel.org/all/20241104201424.2a42efdd@akair/
+Link: https://lore.kernel.org/all/20241119111918.1732531-1-javierm@redhat.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reported-by: Radu Rendec <rrendec@redhat.com>
+Reported-by: Javier Martinez Canillas <javierm@redhat.com>
+[ Viresh: Picked commit log from Javier, updated tags ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index 92a83a9bb2e1..ea9afdc119fb 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -232,7 +232,7 @@ config CPUFREQ_VIRT
+ 	  If in doubt, say N.
+ 
+ config CPUFREQ_DT_PLATDEV
+-	tristate "Generic DT based cpufreq platdev driver"
++	bool "Generic DT based cpufreq platdev driver"
+ 	depends on OF
+ 	help
+ 	  This adds a generic DT based cpufreq platdev driver for frequency
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index 2a3e8bd317c9..9c198bd4f7e9 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -235,5 +235,3 @@ static int __init cpufreq_dt_platdev_init(void)
+ 			       sizeof(struct cpufreq_dt_platform_data)));
+ }
+ core_initcall(cpufreq_dt_platdev_init);
+-MODULE_DESCRIPTION("Generic DT based cpufreq platdev driver");
+-MODULE_LICENSE("GPL");
 
 
