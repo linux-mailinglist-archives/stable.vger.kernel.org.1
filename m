@@ -1,152 +1,131 @@
-Return-Path: <stable+bounces-114509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7287DA2EA24
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E94AA2EA7D
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C60F9188BF39
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D872C188471B
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0462E1DF992;
-	Mon, 10 Feb 2025 10:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A71E32D9;
+	Mon, 10 Feb 2025 11:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KchrQEqe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFi9RzOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D091CF284
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 10:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7561DFE0A;
+	Mon, 10 Feb 2025 11:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739184783; cv=none; b=k0o+9Jo+3aTk2ibuO4RNrZ8VVPSdXaZVHmgnxB2VliMqBJXH0zW5xIEaTkDx4YC1fludBhK6E95kdyqMjsPPNQUY8TvzWA06nXbWArfnmAknnr7o8Sgq+3AXVjDihwC7XIiHSNZwx3hOHZhOR3uplT5tlANH2qfxS7X8BEuMYv0=
+	t=1739185341; cv=none; b=LbV7u3Zv+bg7ROKw+JsRFoIJKP4Cm5ClglK+0CT9I0CTqP2ggg1YbglcLB8YDWgqBPjKgn9J+GEQiZBcox5LHudrPouiougQxIFeJSMfDbpIq/OYGenZaed8LqVVVPhHPJyNfiit+9QhK5pDhmGx+FyAFbhymDsKdMU0auMRWsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739184783; c=relaxed/simple;
-	bh=vgTPE3xe46V2x7gdz7fa9olKRfCjrvhdK4blayLK5PY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PdG+tJrC0O+i1uDTzpnRXfZvhPkBbvvxIsGgxfqWfiwp2mu/BDil0es1lj3E7pimmXx14zPEpYKpUYqHnlaFKFBG+++hJuImNx10wP72gWq62JDREahG2QXwsWffrCCDsLHCI7SX6EdfYfGDXgvq7gS4gJA/UnjC0Utm1vWIo0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KchrQEqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8F2C4CEE4;
-	Mon, 10 Feb 2025 10:53:03 +0000 (UTC)
+	s=arc-20240116; t=1739185341; c=relaxed/simple;
+	bh=+bQSTsB4Vv/HxWV6R2rogqlCT+gRGmi76Ize4bLvKOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dq45tyHmK+7RstHfyoaQ7qjYvSj7hHkPb5oAa54oZWYfinkiYX7Yu2u2Ykd7eTX2KKXgqkVJ9ydy6F6A1bbxyBnZXwf1ORmKOosm6tXthritZly4FBsc+cRQPRqV6uJxsyyNOlFKQ6JmBv0sFwaeJgKU89GjKQ9oxHNH0P2nZl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFi9RzOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1768C4CED1;
+	Mon, 10 Feb 2025 11:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739184783;
-	bh=vgTPE3xe46V2x7gdz7fa9olKRfCjrvhdK4blayLK5PY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KchrQEqezA5QGPzloKV80L0+UL1QJMyW4sL20PSTV76V6wiRstbZWePRB7YIY5/uF
-	 +qIPiIl8/vSX85V29qAENTivUog4zhF42Hu5Yrl4OZJgULiDtZha1EsNhMBHu+l6Uy
-	 gfO4odDj1CCezpxwX7bbrLfaSze/ObInfM9VycbSPwViSEg6cQuQDQ2pcdtoQ4VXav
-	 uuEos/JwhlkTrYHq2OFv7wLF6p3UMZqqz32UD2QRIXUVrnjUYw8gnb3rI6d63XoFYP
-	 BTIU2DCGGUQGyNTvz39LUCN0DHJXBeUBEv8dTvBzjoL1MBhAqSmW7I7gDBymvaUQ84
-	 fhBSCI7nV2bcg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1thRPQ-002Vh5-Rp;
-	Mon, 10 Feb 2025 10:53:01 +0000
-Date: Mon, 10 Feb 2025 10:53:00 +0000
-Message-ID: <865xlit6k3.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	eauger@redhat.com,
-	eric.auger@redhat.com,
-	fweimer@redhat.com,
-	jeremy.linton@arm.com,
-	oliver.upton@linux.dev,
-	pbonzini@redhat.com,
-	stable@vger.kernel.org,
-	tabba@google.com,
-	wilco.dijkstra@arm.com
-Subject: Re: [PATCH v2 1/8] KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
-In-Reply-To: <Z6YI6IvG_N4txgz7@J2N7QTR9R3>
-References: <20250206141102.954688-1-mark.rutland@arm.com>
-	<20250206141102.954688-2-mark.rutland@arm.com>
-	<20250207122748.GA4839@willie-the-truck>
-	<Z6YI6IvG_N4txgz7@J2N7QTR9R3>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1739185340;
+	bh=+bQSTsB4Vv/HxWV6R2rogqlCT+gRGmi76Ize4bLvKOQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NFi9RzOL1k+ov+pc74A7K5ye6mCYgMOvRO8KUzA6AkGEMjzA9wG90kVDi/DfMWNdO
+	 gQnsEv6rir1+/d9fl7HS04QqUN4coTk7t6aQMqWInRzJLB8yC6JHfXAhSanHHotMm8
+	 kDSdJd5wfz5PRBaAmWaUOXyUaQeL2sUq2ZWunma8XlYFdl2xoVVATSiHALipP8CT7Y
+	 JJ5AI7Sgk9IecQfVKi/LO4r5oArqXnj1ypTUBp2JG1SyqN6jOC3NPENe/sbK5ZBaLa
+	 yCsb4PqMvUztQFfbhBZxONxMD9GQ5AMHU5wVaIoUG1m0YmQ39MJre4+XPgpllvihTR
+	 0r2zZU+mrsXGA==
+Date: Mon, 10 Feb 2025 16:32:16 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Mohan Kumar D <mkumard@nvidia.com>
+Cc: thierry.reding@gmail.com, jonathanh@nvidia.com,
+	dmaengine@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4 1/2] dmaengine: tegra210-adma: Fix build error due to
+ 64-by-32 division
+Message-ID: <Z6ncuLHotCAw61b5@vaman>
+References: <20250205033131.3920801-1-mkumard@nvidia.com>
+ <20250205033131.3920801-2-mkumard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, broonie@kernel.org, catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205033131.3920801-2-mkumard@nvidia.com>
 
-On Fri, 07 Feb 2025 13:21:44 +0000,
-Mark Rutland <mark.rutland@arm.com> wrote:
-> 
-> On Fri, Feb 07, 2025 at 12:27:51PM +0000, Will Deacon wrote:
-> > On Thu, Feb 06, 2025 at 02:10:55PM +0000, Mark Rutland wrote:
-> > > There are several problems with the way hyp code lazily saves the host's
-> > > FPSIMD/SVE state, including:
-> > > 
-> > > * Host SVE being discarded unexpectedly due to inconsistent
-> > >   configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
-> > >   result in QEMU crashes where SVE is used by memmove(), as reported by
-> > >   Eric Auger:
-> > > 
-> > >   https://issues.redhat.com/browse/RHEL-68997
-> > > 
-> > > * Host SVE state is discarded *after* modification by ptrace, which was an
-> > >   unintentional ptrace ABI change introduced with lazy discarding of SVE state.
-> > > 
-> > > * The host FPMR value can be discarded when running a non-protected VM,
-> > >   where FPMR support is not exposed to a VM, and that VM uses
-> > >   FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
-> > >   before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
-> > >   value in memory.
-> > 
-> > How hard would it be to write tests for these three scenarios? If we
-> > had something to exercise the relevant paths then...
-> >
-> > > ... and so this eager save+flush probably needs to be backported to ALL
-> > > stable trees.
-> > 
-> > ... this backporting might be a little easier to be sure about?
-> 
-> For the first case I have a quick and dirty test, which I've pushed to
-> my arm64/kvm/fpsimd-tests branch in my kernel.org repo:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/
->   git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
-> 
-> For the last case it should be possible to do something similar, but I
-> hadn't had the time to dig in to the KVM selftests infrastructure and
-> figure out how to confiugre the guest appropriately.
-> 
-> For the ptrace case, the same symptoms can be provoked outside of KVM
-> (and I'm currently working to fix that). From my PoV the important thing
-> is that this fix happens to remove KVM from the set of cases the other
-> fixes need to care about.
-> 
-> FWIW I was assuming that I'd be handling the upstream backports, and I'd
-> be testing with the test above and some additional assertions hacked
-> into the kernel for testing.
+Hi Mohan,
 
-I agree that having the tests around would be great, if only to catch
-potential repressions.
+On 05-02-25, 09:01, Mohan Kumar D wrote:
+> Kernel test robot reported the build errors on 32-bit platforms due to
+> plain 64-by-32 division. Following build erros were reported.
 
-However, I really don't want to gate the fixes on these tests. So
-unless someone shouts, I intend to take this series in very shortly.
-We can always merge the tests as a subsequent improvement.
+Patch should describe the change! Please revise subject to describe that
+and not fix build error... This can come in changelog and below para is
+apt
 
-Thanks,
-
-	M.
+> 
+>    "ERROR: modpost: "__udivdi3" [drivers/dma/tegra210-adma.ko] undefined!
+>     ld: drivers/dma/tegra210-adma.o: in function `tegra_adma_probe':
+>     tegra210-adma.c:(.text+0x12cf): undefined reference to `__udivdi3'"
+> 
+> This can be fixed by using div_u64() for the adma address space
+> 
+> Fixes: 68811c928f88 ("dmaengine: tegra210-adma: Support channel page")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202412250204.GCQhdKe3-lkp@intel.com/
+> Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
+> ---
+>  drivers/dma/tegra210-adma.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
+> index 6896da8ac7ef..a0bd4822ed80 100644
+> --- a/drivers/dma/tegra210-adma.c
+> +++ b/drivers/dma/tegra210-adma.c
+> @@ -887,7 +887,8 @@ static int tegra_adma_probe(struct platform_device *pdev)
+>  	const struct tegra_adma_chip_data *cdata;
+>  	struct tegra_adma *tdma;
+>  	struct resource *res_page, *res_base;
+> -	int ret, i, page_no;
+> +	u64 page_no, page_offset;
+> +	int ret, i;
+>  
+>  	cdata = of_device_get_match_data(&pdev->dev);
+>  	if (!cdata) {
+> @@ -914,10 +915,16 @@ static int tegra_adma_probe(struct platform_device *pdev)
+>  
+>  		res_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "global");
+>  		if (res_base) {
+> -			page_no = (res_page->start - res_base->start) / cdata->ch_base_offset;
+> -			if (page_no <= 0)
+> +			if (WARN_ON(res_page->start <= res_base->start))
+>  				return -EINVAL;
+> -			tdma->ch_page_no = page_no - 1;
+> +
+> +			page_offset = res_page->start - res_base->start;
+> +			page_no = div_u64(page_offset, cdata->ch_base_offset);
+> +
+> +			if (WARN_ON(page_no == 0))
+> +				return -EINVAL;
+> +
+> +			tdma->ch_page_no = lower_32_bits(page_no) - 1;
+>  			tdma->base_addr = devm_ioremap_resource(&pdev->dev, res_base);
+>  			if (IS_ERR(tdma->base_addr))
+>  				return PTR_ERR(tdma->base_addr);
+> -- 
+> 2.25.1
 
 -- 
-Without deviation from the norm, progress is not possible.
+~Vinod
 
