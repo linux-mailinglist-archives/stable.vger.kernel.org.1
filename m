@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418B5A2F109
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:13:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30787A2F12B
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:15:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79F027A2840
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B10918835DA
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE9B75809;
-	Mon, 10 Feb 2025 15:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED5C236431;
+	Mon, 10 Feb 2025 15:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT5HYyfW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9CmdYtA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905952528E1
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A37204870
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739200375; cv=none; b=CeVSk3O547Gb/2xyeo0zGYlADQcLppAkHsI0TN+sUkdUZL4h5SGwL1L6Tbu7E/K1SCOK8XE4Z3G+GyheOtG7Fi9+NzRGOYV9TnRHLqNzP9/gIEErny9wZW+4OG+Q09RT1Zap10MFWYGsF8t/6UzNvnP7RTTB62HPPGuYY+Tx/58=
+	t=1739200391; cv=none; b=YPhYidF+69eEfD3RmFVbKwpia0iKfi79uIQYmqmtWDzkdld3JjqoieN3yEMLRLh2wDjVZvm6v1Omkrcvp2q49NvbsskfKyrP9/e5AxXplRScWDvMkvH9VGbn2MccDCiU4UxKC2O68F8z+w7SxQ8f2Wlfj/LlbJ/Q2CP6qf9Atug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739200375; c=relaxed/simple;
-	bh=BxGtVep93Jt6CFcTAI9AZ1lJKPSk+tyHhBrKEx0jitI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Vuyzba/Ata52heXrBpQHNBUjTsb/6iYm+6WGqqkwaqrV+ER0Ny5Dr1JrahyJG/WpIQfdzzz3zHLI6QwGgkRYoCKHSQTknHDXDgyFrVY9Gp+oCG+ApbeLlNh2+w85kBcwrSCmY+LJQXWnOzSXCA5WMtYv/1BDCcrRTEmXl4Q9SGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT5HYyfW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBC2C4CED1;
-	Mon, 10 Feb 2025 15:12:53 +0000 (UTC)
+	s=arc-20240116; t=1739200391; c=relaxed/simple;
+	bh=rik6zauZnnU198zaU/coDJ+Y1XlGeVWmHYFC4GP+t2Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y9TeXeir4qGXqUD4PG8FtDBqu5RO0HJahzqc8vDyXLOEJh05nJ0fd9YT9+Mgn56KaN7vaq81fimvUT/Y3lhtd9GaiSawHLaEn4jlkaHbEuIAu+UPicSaX802uxFPhFqZgbI+Jd1EU7wtoI+OJlWP0OQSu/pWaJ+Y/Gu8kRifN7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9CmdYtA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6115C4CED1;
+	Mon, 10 Feb 2025 15:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739200374;
-	bh=BxGtVep93Jt6CFcTAI9AZ1lJKPSk+tyHhBrKEx0jitI=;
+	s=korg; t=1739200391;
+	bh=rik6zauZnnU198zaU/coDJ+Y1XlGeVWmHYFC4GP+t2Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hT5HYyfWYaa0HsLcqu+ZJ0/CLHYttdWm5dXJ7hdxQ9pEEhYZebiSjyd93p99qRQXs
-	 eHvvEwf6r+ZnoAtQvVXxjsC1ooUCDjbn1DUEItdVJtNMBcl/r2Y/w704M1aQeqQqg6
-	 7MOyLC2Uo3Srj0jAFDXE2y7huft4pMO8v6Xs/ZMc=
-Subject: FAILED: patch "[PATCH] media: uvcvideo: Remove dangling pointers" failed to apply to 5.4-stable tree
-To: ribalda@chromium.org,hdegoede@redhat.com,laurent.pinchart@ideasonboard.com,mchehab+huawei@kernel.org
+	b=u9CmdYtA00pmz3jECfN0xs1U35x3U5hdNrbxH0/UsrLMwZhLY03T9bEk6X0u9ILF6
+	 fnTbfI+4+JWg35uU/V+sZauWhWYx7g1gcGewxa5kN7Pfmuf6fr5CRaQNeyfcNkQB4+
+	 sMkF4GTQ2LJtEjSJt+ZyIanGjxmQ4FtRl9qweaBM=
+Subject: FAILED: patch "[PATCH] mm: gup: fix infinite loop within __get_longterm_locked" failed to apply to 6.6-stable tree
+To: zhaoyang.huang@unisoc.com,aijun.sun@unisoc.com,akpm@linux-foundation.org,apopple@nvidia.com,david@redhat.com,jhubbard@nvidia.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 16:12:37 +0100
-Message-ID: <2025021037-enactment-bartender-d80d@gregkh>
+Date: Mon, 10 Feb 2025 16:13:08 +0100
+Message-ID: <2025021008-recharger-fastball-ffab@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 221cd51efe4565501a3dbf04cc011b537dcce7fb
+git cherry-pick -x 1aaf8c122918aa8897605a9aa1e8ed6600d6f930
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021037-enactment-bartender-d80d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021008-recharger-fastball-ffab@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,171 +77,86 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 221cd51efe4565501a3dbf04cc011b537dcce7fb Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Tue, 3 Dec 2024 21:20:10 +0000
-Subject: [PATCH] media: uvcvideo: Remove dangling pointers
+From 1aaf8c122918aa8897605a9aa1e8ed6600d6f930 Mon Sep 17 00:00:00 2001
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Date: Tue, 21 Jan 2025 10:01:59 +0800
+Subject: [PATCH] mm: gup: fix infinite loop within __get_longterm_locked
 
-When an async control is written, we copy a pointer to the file handle
-that started the operation. That pointer will be used when the device is
-done. Which could be anytime in the future.
+We can run into an infinite loop in __get_longterm_locked() when
+collect_longterm_unpinnable_folios() finds only folios that are isolated
+from the LRU or were never added to the LRU.  This can happen when all
+folios to be pinned are never added to the LRU, for example when
+vm_ops->fault allocated pages using cma_alloc() and never added them to
+the LRU.
 
-If the user closes that file descriptor, its structure will be freed,
-and there will be one dangling pointer per pending async control, that
-the driver will try to use.
+Fix it by simply taking a look at the list in the single caller, to see if
+anything was added.
 
-Clean all the dangling pointers during release().
+[zhaoyang.huang@unisoc.com: move definition of local]
+  Link: https://lkml.kernel.org/r/20250122012604.3654667-1-zhaoyang.huang@unisoc.com
+Link: https://lkml.kernel.org/r/20250121020159.3636477-1-zhaoyang.huang@unisoc.com
+Fixes: 67e139b02d99 ("mm/gup.c: refactor check_and_migrate_movable_pages()")
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aijun Sun <aijun.sun@unisoc.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-To avoid adding a performance penalty in the most common case (no async
-operation), a counter has been introduced with some logic to make sure
-that it is properly handled.
-
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-3-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index b05b84887e51..4837d8df9c03 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1579,6 +1579,40 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
- 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
- }
- 
-+static void uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
-+				struct uvc_fh *new_handle)
-+{
-+	lockdep_assert_held(&handle->chain->ctrl_mutex);
-+
-+	if (new_handle) {
-+		if (ctrl->handle)
-+			dev_warn_ratelimited(&handle->stream->dev->udev->dev,
-+					     "UVC non compliance: Setting an async control with a pending operation.");
-+
-+		if (new_handle == ctrl->handle)
-+			return;
-+
-+		if (ctrl->handle) {
-+			WARN_ON(!ctrl->handle->pending_async_ctrls);
-+			if (ctrl->handle->pending_async_ctrls)
-+				ctrl->handle->pending_async_ctrls--;
-+		}
-+
-+		ctrl->handle = new_handle;
-+		handle->pending_async_ctrls++;
-+		return;
-+	}
-+
-+	/* Cannot clear the handle for a control not owned by us.*/
-+	if (WARN_ON(ctrl->handle != handle))
-+		return;
-+
-+	ctrl->handle = NULL;
-+	if (WARN_ON(!handle->pending_async_ctrls))
-+		return;
-+	handle->pending_async_ctrls--;
-+}
-+
- void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 			   struct uvc_control *ctrl, const u8 *data)
- {
-@@ -1589,7 +1623,8 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 	mutex_lock(&chain->ctrl_mutex);
- 
- 	handle = ctrl->handle;
--	ctrl->handle = NULL;
-+	if (handle)
-+		uvc_ctrl_set_handle(handle, ctrl, NULL);
- 
- 	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
- 		s32 value = __uvc_ctrl_get_value(mapping, data);
-@@ -1863,7 +1898,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 
- 		if (!rollback && handle &&
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			ctrl->handle = handle;
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
- 	return 0;
-@@ -2772,6 +2807,26 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
- 	return 0;
- }
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
-+{
-+	struct uvc_entity *entity;
-+
-+	guard(mutex)(&handle->chain->ctrl_mutex);
-+
-+	if (!handle->pending_async_ctrls)
-+		return;
-+
-+	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
-+		for (unsigned int i = 0; i < entity->ncontrols; ++i) {
-+			if (entity->controls[i].handle != handle)
-+				continue;
-+			uvc_ctrl_set_handle(handle, &entity->controls[i], NULL);
-+		}
-+	}
-+
-+	WARN_ON(handle->pending_async_ctrls);
-+}
-+
+diff --git a/mm/gup.c b/mm/gup.c
+index 9aaf338cc1f4..3883b307780e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2320,13 +2320,13 @@ static void pofs_unpin(struct pages_or_folios *pofs)
  /*
-  * Cleanup device controls.
+  * Returns the number of collected folios. Return value is always >= 0.
   */
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index dee6feeba274..93c6cdb23881 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -671,6 +671,8 @@ static int uvc_v4l2_release(struct file *file)
+-static unsigned long collect_longterm_unpinnable_folios(
++static void collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
+-	unsigned long i, collected = 0;
+ 	struct folio *prev_folio = NULL;
+ 	bool drain_allow = true;
++	unsigned long i;
  
- 	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
+ 	for (i = 0; i < pofs->nr_entries; i++) {
+ 		struct folio *folio = pofs_get_folio(pofs, i);
+@@ -2338,8 +2338,6 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 		if (folio_is_longterm_pinnable(folio))
+ 			continue;
  
-+	uvc_ctrl_cleanup_fh(handle);
-+
- 	/* Only free resources if this is a privileged handle. */
- 	if (uvc_has_privileges(handle))
- 		uvc_queue_release(&stream->queue);
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 965a789ed03e..5690cfd61e23 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -338,7 +338,11 @@ struct uvc_video_chain {
- 	struct uvc_entity *processing;		/* Processing unit */
- 	struct uvc_entity *selector;		/* Selector unit */
+-		collected++;
+-
+ 		if (folio_is_device_coherent(folio))
+ 			continue;
  
--	struct mutex ctrl_mutex;		/* Protects ctrl.info */
-+	struct mutex ctrl_mutex;		/*
-+						 * Protects ctrl.info,
-+						 * ctrl.handle and
-+						 * uvc_fh.pending_async_ctrls
-+						 */
+@@ -2361,8 +2359,6 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 				    NR_ISOLATED_ANON + folio_is_file_lru(folio),
+ 				    folio_nr_pages(folio));
+ 	}
+-
+-	return collected;
+ }
  
- 	struct v4l2_prio_state prio;		/* V4L2 priority state */
- 	u32 caps;				/* V4L2 chain-wide caps */
-@@ -613,6 +617,7 @@ struct uvc_fh {
- 	struct uvc_video_chain *chain;
- 	struct uvc_streaming *stream;
- 	enum uvc_handle_state state;
-+	unsigned int pending_async_ctrls;
- };
+ /*
+@@ -2439,11 +2435,9 @@ static long
+ check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
+ {
+ 	LIST_HEAD(movable_folio_list);
+-	unsigned long collected;
  
- struct uvc_driver {
-@@ -798,6 +803,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
- int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 		      struct uvc_xu_control_query *xqry);
+-	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
+-						       pofs);
+-	if (!collected)
++	collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
++	if (list_empty(&movable_folio_list))
+ 		return 0;
  
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
-+
- /* Utility functions */
- struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
- 					    u8 epaddr);
+ 	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
 
 
