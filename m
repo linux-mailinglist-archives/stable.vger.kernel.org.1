@@ -1,147 +1,108 @@
-Return-Path: <stable+bounces-114678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80EF4A2F160
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:22:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCD1A2F1B2
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A976C7A14E3
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:21:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4557167CCF
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B652204879;
-	Mon, 10 Feb 2025 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B423F26C;
+	Mon, 10 Feb 2025 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRjEdQNj"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GBziaNKF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0CB23643C
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBE824BD00;
+	Mon, 10 Feb 2025 15:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739200919; cv=none; b=ZV1EkFaa13qvBPA99bSzQEq9oS6HED0R0A92Yyn4cRzt3HMvoFPTUzqdEv/iSaqZwIsIsXR249cN6yE4F/PqhMW/JS48vGPEBUfvWvA4oyXup8kHucpmjvcGqtJ78MwyeToh2VQ8K6gwXJ3ktzaIjcr4e9cJIAj6KdwDjrS/yTY=
+	t=1739201225; cv=none; b=sn6QAbu0j27JWqQihJgNuGAjyNSYXJ5XBap8g54T8cg9TljUgq63NIRH7PoMY4aYa1QlnoP7EM/HnKkPPKQIFqy/5xbYOx3XSgHiC+LfycTFzZiowlz1gTZFIlZfLN1WQtE3q9yrGruTIRLZZ06Vw0bLfzRiTgiqegkL28euCi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739200919; c=relaxed/simple;
-	bh=Zr9pHjatWYEDLqOxVW+gAhdTFZCk+p+4bh8UZoKtCKQ=;
+	s=arc-20240116; t=1739201225; c=relaxed/simple;
+	bh=8nO+xL0xvAUxQXLyv8lbUUhQKgTEHzCCFPQaA3a+aUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/GUqq5iQ7hyzJPu/TX4jsd7LpSKh5wrtppL25CLJkFqP0KzYtSJn+NZBMglQUOANCEfcoP2phofoOSfY3HT2a5G5reNDJZrB/Achp8WDpbqV2buCnT9F8DljXsfJE2UJ/Fk6ygU9aYa1KJ0CBYA8WaIPW2rdpjWFszfbCK6gL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRjEdQNj; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaeec07b705so709470266b.2
-        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 07:21:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739200916; x=1739805716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+olSB00Ju+bmptgOdIEZo87aFJNqrzYF/ItANXDlPRE=;
-        b=SRjEdQNjyT0oYxplDeogTtnE4QO8Ueom0s0/RWMBXejhywxWIOGbK6BUDGv3ZwTtbY
-         TI5/GvVDOo2+A9ZEqwt/WyUuYaY7XIDTNTwmorglilo4tB2Jmkq2G5/Keyf82F1b1jGm
-         a1c36FiqZ56o+J5JJs+K6PSC9zF9d/CSewDVujqvke33I9V/VvOV17LTIi1ol/ltUvXW
-         Dy7o5a3FkzaxfNKa9fkuksmbgY/Kl8XTz/yD6vBHEgBWLem90gfRMCZm5QXfSSwPnRlD
-         MRjwtANj2lBPqcSjT9o8eK2iPMl4uyhGtwT4/J+kPLXrN2GOitYLlJrRh+eWL0BsY9ru
-         pu6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739200916; x=1739805716;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+olSB00Ju+bmptgOdIEZo87aFJNqrzYF/ItANXDlPRE=;
-        b=Pm5h9pEC7FrI/xxuwbUkE+JRpjWmYjN2m7itMaopPO9lHRuJNGgrra+zId+SmMhD0y
-         Dd9uLhDBoq0bHxK+QVzkYbKiWhGgNPVKhc2txLAQLusNCV2YUwo6LKO+1oom0B8PibLm
-         caNnTaPvr8qnurLqRgp593M6ozCJNucCjY5OQ7+Fg1VOegRMdPggIsEiyEKFJ2h1ZrU/
-         DdVRTgAI7QLkna2bRd9e++bPHSaOm2xZlljPbG4D+FG2ZRroL67JXQsrX5sEE7reua6G
-         T2RimT58l1VttVczZb7EY8J6eD11etIU8K+e60wXomYqw7cz3YoN/eWhvH8iv/amk0s4
-         FJtQ==
-X-Gm-Message-State: AOJu0YxEWRR7rAvL3dbn+xEjJPDIIHXQdv7nQhBx/EzsQ2fSAQkH3tdH
-	W4oYjkU9gdesQwp7tEyN+BVrW6UddyuZINmj9sldKzwE2S5m+2i4EoznQA==
-X-Gm-Gg: ASbGncu2X9scXufxTGjvOpaxB0CQIs7SYS8jlGIP/ySDVntm3IvFCvRBvumHYZ1bI4/
-	7IZnF+qABntf8G2AgZR8BcAqrIN1Nw7JHlQFERRr+t3r4XTVobqbKIrQmIIthHPy3v82QMprxaM
-	xLRIPMDznWiplgt12mm9ew7eqGFJLvQ6Kf57XygSyyCGbuJAolsV3TFdSpU7kzElQ90MCDCgxXU
-	B+NDF6Yd5kxZEY8iyeeOTr13fu5exCGMyVALaZDwX82HBZZ3tUKl1nQuM4BsNYoQruk1w3/l8g=
-X-Google-Smtp-Source: AGHT+IH84rFlarOiYAR1juWIIdguov2PziPhini3CMt4zMmZpqXIc/pYR9C1m269z+bqEL/Hih+MSQ==
-X-Received: by 2002:a17:907:948f:b0:aa6:5d30:d971 with SMTP id a640c23a62f3a-ab789a688b5mr1441364566b.11.1739200915666;
-        Mon, 10 Feb 2025 07:21:55 -0800 (PST)
-Received: from 127.com ([2620:10d:c092:600::1:e0cd])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7d2c1797asm69587166b.22.2025.02.10.07.21.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 07:21:54 -0800 (PST)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: stable@vger.kernel.org
-Cc: Muhammad Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Jacob Soo <jacob.soo@starlabs.sg>,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH stable-6.6 3/3] io_uring/rw: commit provided buffer state on async
-Date: Mon, 10 Feb 2025 15:21:38 +0000
-Message-ID: <cb9ec75521cc59ee1ab3119d8d28a8697cd9cae1.1738772087.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1738772087.git.asml.silence@gmail.com>
-References: <cover.1738772087.git.asml.silence@gmail.com>
+	 MIME-Version:Content-Type; b=KGHV0AZ6mCH/fpevbPdLoRlcZqOeUr0jY43QnIHLNi20TCpQw0OOSY9EegFQJyPggbofER8GMdI1hWVM5H1rqKZwSN87XuaXwyrOwXYkqtxJPoVrKtAEavmBAaGST3/CbisSkreN1X8A5/rZku8SUMRCsoKmaUqbSUqnOFobbj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GBziaNKF; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EF459204A1;
+	Mon, 10 Feb 2025 15:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739201221;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NfteH80PM3ST7bvqhv9G7FOT+Y/mpIyoF6NjchenmzY=;
+	b=GBziaNKFwVWu+pN3NcdtktbCzUqKd/a2TjDy7/Y0bwj6Qj8RVV25qG74q1Yef/oo3wNPUX
+	lmBtuKV3O/vjATJvuwo30PFzKTbxX68Ctwn4s4efgfoLQyRDyhukIn0lYHD930GFFd5DZS
+	Wgq1kw/pI4CIw5HVPALE/xb/0VFT4nWTUD3DHbq6j1aiEREr9KFtg22LhIy2bx+DVCnwr/
+	qNz1Pi+OExJ6Jq5Y8IiUBb8204pLhpRrmQrCdsYNOGyfu/tfbuwomMun0GpVKyja9hL6yV
+	R4a5RnNEg1W0qLgOk7cjWrVmiOyIwQ2PPhCfCBefNH+vhWkEo0HxCScv1lT6NQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux@treblig.org,
+	Shen Lichuan <shenlichuan@vivo.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	u.kleine-koenig@baylibre.com,
+	nirav.rabara@altera.com,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	niravkumar.l.rabara@intel.com
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] mtd: rawnand: cadence: improvement and fixes
+Date: Mon, 10 Feb 2025 16:26:53 +0100
+Message-ID: <173920118908.61047.14353398163992295945.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
+References: <20250210053551.2399716-1-niravkumar.l.rabara@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefkeegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfeeugfdvffefhfduhfetfffgieeiudeugeffvdehvddvledujeejvedvgfdtvefgnecukfhppeelvddrudekgedrleekrdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedrleekrdekgedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddvpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepshhhvghnlhhitghhuhgrnhesvhhivhhordgtohhmpdhrtghpthhtoheprhhurghnjhhinhhjihgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehurdhklhgvi
+ hhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehnihhrrghvrdhrrggsrghrrgesrghlthgvrhgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-[ upstream commit d63b0e8a628e62ca85a0f7915230186bb92f8bb4 ]
+On Mon, 10 Feb 2025 13:35:48 +0800, niravkumar.l.rabara@intel.com wrote:
+> From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+> 
+> This patchset introduces improvements and fixes for cadence nand driver.
+> The changes include:
+> 
+> 1. Replace dma_request_channel() with dma_request_chan_by_mask() and use
+>    helper functions to return proper error code instead of fixed -EBUSY.
+> 2. Remap the slave DMA I/O resources to enhance driver portability.
+> 3. Fixed dma_unmap_single to use correct physical/bus device.
+> 
+> [...]
 
-When we get -EIOCBQUEUED, we need to ensure that the buffer is consumed
-from the provided buffer ring, which can be done with io_kbuf_recycle()
-+ REQ_F_PARTIAL_IO.
+Applied to mtd/fixes, thanks!
 
-Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
-Fixes: c7fb19428d67d ("io_uring: add support for ring mapped supplied buffers")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/rw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+[1/3] mtd: rawnand: cadence: fix error code in cadence_nand_init()
+      commit: 2b9df00cded911e2ca2cfae5c45082166b24f8aa
+[2/3] mtd: rawnand: cadence: use dma_map_resource for sdma address
+      commit: d76d22b5096c5b05208fd982b153b3f182350b19
+[3/3] mtd: rawnand: cadence: fix incorrect device in dma_unmap_single
+      commit: f37d135b42cb484bdecee93f56b9f483214ede78
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index a62f84e28bac..75b001febb4d 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -793,6 +793,8 @@ static int __io_read(struct io_kiocb *req, unsigned int issue_flags)
- 			goto done;
- 		ret = 0;
- 	} else if (ret == -EIOCBQUEUED) {
-+		req->flags |= REQ_F_PARTIAL_IO;
-+		io_kbuf_recycle(req, issue_flags);
- 		if (iovec)
- 			kfree(iovec);
- 		return IOU_ISSUE_SKIP_COMPLETE;
-@@ -816,6 +818,9 @@ static int __io_read(struct io_kiocb *req, unsigned int issue_flags)
- 		goto done;
- 	}
- 
-+	req->flags |= REQ_F_PARTIAL_IO;
-+	io_kbuf_recycle(req, issue_flags);
-+
- 	io = req->async_data;
- 	s = &io->s;
- 	/*
-@@ -956,6 +961,11 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
- 	else
- 		ret2 = -EINVAL;
- 
-+	if (ret2 == -EIOCBQUEUED) {
-+		req->flags |= REQ_F_PARTIAL_IO;
-+		io_kbuf_recycle(req, issue_flags);
-+	}
-+
- 	if (req->flags & REQ_F_REISSUE) {
- 		req->flags &= ~REQ_F_REISSUE;
- 		ret2 = -EAGAIN;
--- 
-2.47.1
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
 
+Kind regards,
+Miquèl
 
