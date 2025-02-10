@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73390A2EE99
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:44:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF36A2EEBD
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD2C1883073
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1782A3A3903
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780A422F397;
-	Mon, 10 Feb 2025 13:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BBA231A3B;
+	Mon, 10 Feb 2025 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtPpe26u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MydZtCbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3644618E1A
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14E22F16D
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739195081; cv=none; b=Ekg1PjmUgaJ9Yr/ZQJO33Nckf0ipF5OCRunytGZXpced4k+2p6ewO8dowuGnDFcQ8XGVdI8Y6JYmEqjFVvK1i4SKlv/gWL2CN8I3wZqjYMqiDFcXVnLDaA51CBvBBZ4dFkyDAf2uITIQs6cdr/Ht0WAmOKZap/axzy90MZUx2xo=
+	t=1739195320; cv=none; b=H/aUB0UCwNHYSFu/sI7HPrCrGGMsOfXNOCHJNbfnZGf6aRZ9EhPypa6gaJreS7NvQ8E1FkUuwpkyvLZoRLjABG44DA/43FZOAzNWF73MBnlTLvNNWbXtGSpc4s/j5F0/Cr1SBvCZk5Rqe4QjHle1xPSPyxKwPTD0QsxdjK/9eTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739195081; c=relaxed/simple;
-	bh=UbnUQdPtnxfb18R9r797KRMYX+iDSXg8FZ3dlywx2Uw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kv4wITau61bZQbHn6ZoCsbWbSaU2k4nQMGiTA+S63vAK2K0UFhCpAKd8unaq2mgTLeI5v2TvJll3TLic6A/AksSYWIdqG4okzE7xMf4mi20al301FyFfA0w5u60Ue+EnYs3eufrEeqXepFZ2mjfV1/LkIo697vDLYAJFBDeRNy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtPpe26u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B40CC4CED1;
-	Mon, 10 Feb 2025 13:44:40 +0000 (UTC)
+	s=arc-20240116; t=1739195320; c=relaxed/simple;
+	bh=ANkRbD52LR5nk1Xp9DUmS8/8+jon14/gUPM31l3vGnc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jTNPsmEl96/4YbR1Ofgoc7pM4NNuJcUWlNrtyT1aqDoTMhuLWcXx5mPnYOm+Q6dOpUfHPFCk/cxbtU4T0xOGc9rkHjgnE0dDqY0Lk/o4zlGn9taSa+bdPRSAluo1MNDYBzuTtiHQjRpGVJjlA8t+nWwuhrld6p14G/LtjJSnd5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MydZtCbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F51C4CED1;
+	Mon, 10 Feb 2025 13:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739195081;
-	bh=UbnUQdPtnxfb18R9r797KRMYX+iDSXg8FZ3dlywx2Uw=;
+	s=korg; t=1739195320;
+	bh=ANkRbD52LR5nk1Xp9DUmS8/8+jon14/gUPM31l3vGnc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KtPpe26uIiETy4vAfcacXD93LAChO0put+4L8vP3450L6mB/sZXg8RXvmL+B+7+4h
-	 gZSBU50g1z86JYV49gdBjKc1gMr4K5XQYiN7VA5bRYT5npqqTSE0/LdGFPdxoEIM33
-	 15x5gfG/2v7rjvcsB64LZi8cRJJxyiqpSTzBj0Fw=
-Subject: FAILED: patch "[PATCH] wifi: mt76: mt7915: add module param to select 5 GHz or 6 GHz" failed to apply to 6.1-stable tree
-To: shayne.chen@mediatek.com,nbd@nbd.name
+	b=MydZtCbzmqmnyIPU7dW+i+qbWk0/5YmIPvoRtkqKy/jhGxjVxUsdDSky6kzLVXLa5
+	 Ns0iMZkn/uBGHZexff9v4I5iMvhKWbV+eT29qLsPFPv7tixx8L1Q8/KDXmhw9u6hyZ
+	 1cnDI4F7ZCTfL0WGnyEiU9+uKez5HiZBjQkjxA1I=
+Subject: FAILED: patch "[PATCH] ASoC: renesas: rz-ssi: Terminate all the DMA transactions" failed to apply to 6.12-stable tree
+To: claudiu.beznea.uj@bp.renesas.com,biju.das.jz@bp.renesas.com,broonie@kernel.org,geert+renesas@glider.be
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 14:44:37 +0100
-Message-ID: <2025021037-retype-jaunt-6b0b@gregkh>
+Date: Mon, 10 Feb 2025 14:48:36 +0100
+Message-ID: <2025021036-humorist-voltage-3645@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 57af267d2b8f5d88485c6372761386d79c5e6a1a
+git cherry-pick -x 541011dc2d7c4c82523706f726f422a5e23cc86f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021037-retype-jaunt-6b0b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021036-humorist-voltage-3645@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,93 +77,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 57af267d2b8f5d88485c6372761386d79c5e6a1a Mon Sep 17 00:00:00 2001
-From: Shayne Chen <shayne.chen@mediatek.com>
-Date: Thu, 10 Oct 2024 10:38:16 +0200
-Subject: [PATCH] wifi: mt76: mt7915: add module param to select 5 GHz or 6 GHz
- on MT7916
+From 541011dc2d7c4c82523706f726f422a5e23cc86f Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Date: Tue, 10 Dec 2024 19:09:33 +0200
+Subject: [PATCH] ASoC: renesas: rz-ssi: Terminate all the DMA transactions
 
-Due to a limitation in available memory, the MT7916 firmware can only
-handle either 5 GHz or 6 GHz at a time. It does not support runtime
-switching without a full restart.
+The stop trigger invokes rz_ssi_stop() and rz_ssi_stream_quit().
+- The purpose of rz_ssi_stop() is to disable TX/RX, terminate DMA
+  transactions, and set the controller to idle.
+- The purpose of rz_ssi_stream_quit() is to reset the substream-specific
+  software data by setting strm->running and strm->substream appropriately.
 
-On older firmware, this accidentally worked to some degree due to missing
-checks, but couldn't be supported properly, because it left the 6 GHz
-channels uncalibrated.
-Newer firmware refuses to start on either band if the passed EEPROM
-data indicates support for both.
+The function rz_ssi_is_stream_running() checks if both strm->substream and
+strm->running are valid and returns true if so. Its implementation is as
+follows:
 
-Deal with this limitation by using a module parameter to specify the
-preferred band in case both are supported.
+static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
+{
+    return strm->substream && strm->running;
+}
 
-Fixes: b4d093e321bd ("mt76: mt7915: add 6 GHz support")
+When the controller is configured in full-duplex mode (with both playback
+and capture active), the rz_ssi_stop() function does not modify the
+controller settings when called for the first substream in the full-duplex
+setup. Instead, it simply sets strm->running = 0 and returns if the
+companion substream is still running. The following code illustrates this:
+
+static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
+{
+    strm->running = 0;
+
+    if (rz_ssi_is_stream_running(&ssi->playback) ||
+        rz_ssi_is_stream_running(&ssi->capture))
+        return 0;
+
+    // ...
+}
+
+The controller settings, along with the DMA termination (for the last
+stopped substream), are only applied when the last substream in the
+full-duplex setup is stopped.
+
+While applying the controller settings only when the last substream stops
+is not problematic, terminating the DMA operations for only one substream
+causes failures when starting and stopping full-duplex operations multiple
+times in a loop.
+
+To address this issue, call dmaengine_terminate_async() for both substreams
+involved in the full-duplex setup when the last substream in the setup is
+stopped.
+
+Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20241010083816.51880-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20241210170953.2936724-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index bfdbc15abaa9..928e0b07a9bf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -2,9 +2,14 @@
- /* Copyright (C) 2020 MediaTek Inc. */
+diff --git a/sound/soc/renesas/rz-ssi.c b/sound/soc/renesas/rz-ssi.c
+index 6efd017aaa7f..2d8721156099 100644
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
+ 	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
  
- #include <linux/firmware.h>
-+#include <linux/moduleparam.h>
- #include "mt7915.h"
- #include "eeprom.h"
+ 	/* Cancel all remaining DMA transactions */
+-	if (rz_ssi_is_dma_enabled(ssi))
+-		dmaengine_terminate_async(strm->dma_ch);
++	if (rz_ssi_is_dma_enabled(ssi)) {
++		if (ssi->playback.dma_ch)
++			dmaengine_terminate_async(ssi->playback.dma_ch);
++		if (ssi->capture.dma_ch)
++			dmaengine_terminate_async(ssi->capture.dma_ch);
++	}
  
-+static bool enable_6ghz;
-+module_param(enable_6ghz, bool, 0644);
-+MODULE_PARM_DESC(enable_6ghz, "Enable 6 GHz instead of 5 GHz on hardware that supports both");
-+
- static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
- {
- 	struct mt76_dev *mdev = &dev->mt76;
-@@ -170,8 +175,20 @@ static void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
- 			phy->mt76->cap.has_6ghz = true;
- 			return;
- 		case MT_EE_V2_BAND_SEL_5GHZ_6GHZ:
--			phy->mt76->cap.has_5ghz = true;
--			phy->mt76->cap.has_6ghz = true;
-+			if (enable_6ghz) {
-+				phy->mt76->cap.has_6ghz = true;
-+				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
-+						 MT_EE_V2_BAND_SEL_6GHZ,
-+						 MT_EE_WIFI_CONF0_BAND_SEL);
-+			} else {
-+				phy->mt76->cap.has_5ghz = true;
-+				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
-+						 MT_EE_V2_BAND_SEL_5GHZ,
-+						 MT_EE_WIFI_CONF0_BAND_SEL);
-+			}
-+			/* force to buffer mode */
-+			dev->flash_mode = true;
-+
- 			return;
- 		default:
- 			phy->mt76->cap.has_2ghz = true;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6bef96e3d2a3..f82216d1bda0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -1239,14 +1239,14 @@ int mt7915_register_device(struct mt7915_dev *dev)
- 	if (ret)
- 		goto unreg_dev;
+ 	rz_ssi_set_idle(ssi);
  
--	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
--
- 	if (phy2) {
- 		ret = mt7915_register_ext_phy(dev, phy2);
- 		if (ret)
- 			goto unreg_thermal;
- 	}
- 
-+	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
-+
- 	dev->recovery.hw_init_done = true;
- 
- 	ret = mt7915_init_debugfs(&dev->phy);
 
 
