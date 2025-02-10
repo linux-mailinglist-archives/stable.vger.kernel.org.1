@@ -1,158 +1,157 @@
-Return-Path: <stable+bounces-114741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA42A2FE2B
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 00:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC1DA2FE67
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 00:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63FEE3A514D
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 23:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D35843A16E7
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 23:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C016025EFB0;
-	Mon, 10 Feb 2025 23:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59718261364;
+	Mon, 10 Feb 2025 23:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rdRZs0HW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hd66x9VG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3DC25EF84;
-	Mon, 10 Feb 2025 23:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8928025EF99
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 23:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739228753; cv=none; b=iqxszhAdKPTW2ZBwFKfD81iJAMVb4CbuUTTpxRp20OmDIk7u5XUgDWNp8J70f/dzAfyPfo3l4oE6fRHzpn2G0TuvI0lJnk1PdqBG2ty/ont6q8y/sfFCdHOaE2awRc/iputLGWa5ZIdFn/29hSMiv1Bd6dPDSOaoLJmCBVxWbgo=
+	t=1739229997; cv=none; b=gHoR1tUrkGRZ+ysFDQ38zuV9XngfB655sYajbZO7Wy4YtgQZZPDIFsDDrQo2YwG+pdrdYpjtFeG3PfYcJyNVnlgzsTSebKukWbJ1TxdoleV8U6ot1KSE4UAcyliIBUkYk1sdrVRp6LHoD8+z/vN+Wu8ZpGgnTtYbWNzDW9h8iks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739228753; c=relaxed/simple;
-	bh=2OKe/j8KBcW32fBRenN4q+PLAO1LNPx14OrSWrFC0YQ=;
-	h=Date:To:From:Subject:Message-Id; b=YINglEAC3ckXLO3H6P2bsAkAZV22OXrkFAuxKm3X+eLbutETtp6h4KUn/WF2ctwVqI80wuhnk6jsPdjKb+RfCqALAIiAkK85THxFluJGDTBdw9g2J5LagIQVn6pefEQEa8Yg98cfNxZeBCyei2n9Tr0Y3iQYmmAhjgZE3uMLRPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rdRZs0HW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD89FC4CED1;
-	Mon, 10 Feb 2025 23:05:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739228753;
-	bh=2OKe/j8KBcW32fBRenN4q+PLAO1LNPx14OrSWrFC0YQ=;
-	h=Date:To:From:Subject:From;
-	b=rdRZs0HW5D2XQJUGbGcLFYjPRTAn4S6fPxfU+Xl49u1JyNRfRSCD8msP5+xlkNTfF
-	 APuoe9+TEsfPgszUEiYK56BxnDz6i/MSw17pnPTdsHuVy1OLzF1skvqmWT9nxIjeOu
-	 lgdnUi4mmxzgnvcx3juxUvTjedTDoGH9rh/GwwvE=
-Date: Mon, 10 Feb 2025 15:05:52 -0800
-To: mm-commits@vger.kernel.org,v-songbaohua@oppo.com,vbabka@suse.cz,stable@vger.kernel.org,sj@kernel.org,si.yanteng@linux.dev,simona.vetter@ffwll.ch,peterz@infradead.org,peterx@redhat.com,pasha.tatashin@soleen.com,oleg@redhat.com,mhiramat@kernel.org,lyude@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kherbst@redhat.com,jhubbard@nvidia.com,jglisse@redhat.com,jgg@nvidia.com,jannh@google.com,dakr@kernel.org,corbet@lwn.net,apopple@nvidia.com,alexs@kernel.org,airlied@gmail.com,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch added to mm-unstable branch
-Message-Id: <20250210230552.DD89FC4CED1@smtp.kernel.org>
+	s=arc-20240116; t=1739229997; c=relaxed/simple;
+	bh=CZUuCkyIQKxrQKqZgTjofTXSaKOijvZTvpLRa0qIBYc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M9wCXYNkMQZtCKuNWGqVLQNHelawvlKv2/29mfdqVQo3KE29W5jYC49Y0wtUN273W/0UqXZX59fGRMfAwdyFkWC5XJRWNQk3TPuKSXnFuJNk7UiJxYhDQ1bOGnjGrxvaEm1i1NWWSc6KcROPtx8AFzkePZ5jC5uUuyB1RbUNrQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hd66x9VG; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fa228b4151so7654313a91.1
+        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:26:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739229995; x=1739834795; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=N13YWUx1ZcMp4aHrnqOQBLoLE9MvfQbfztaxnyfAGFw=;
+        b=Hd66x9VGDcm2JK88pL3NjkgZkvlo0GCR4ZKAihjjA0HGgIQharerCxBLtHAoviherz
+         f+W7aL/oJjIRYEHUq75GJ06Nhsso9tWNRixagzEUSkR87kaBZ7MlmggwaKBC/PsOIr+a
+         UqmDp6Wo0K7g2zMyAvVkuzV+RSmI/S6n1jqNCWt7Lh9l7V+Nav0PKk7dg2eiLqQXhgWp
+         NEzvlQhoI0AM6DIOYsobGPTkj8gaiBpa6jEEQYB0d8KXCnMnPyXOAGRirn9kNjk+0PLF
+         xTNhCKdyA7KLEB2zGfp1N9htBLvp5m5wdW7ce9SjAFcJjMxsZNV8RjBpVEAqCGN4uYBa
+         uJ1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739229995; x=1739834795;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N13YWUx1ZcMp4aHrnqOQBLoLE9MvfQbfztaxnyfAGFw=;
+        b=oNUNNXss3O6fqNS0jcqtm1C23U3v7dnMDJLFg5BNcoriqMttBQYV3frafYJWtHrxDt
+         u5ULxOWsF84j6V5ml5rK88vAlw3qyG4kqaqVamLhKEgmcXGK+xaNsJG1c7MEA9lK/+h2
+         quXJBFlZLPFsU3+xtvjXXfzNbj0aaRYxkmqxftwWEpefh/w9VpdWg4acspI6p/i/axcN
+         9bX/7ocs5PwsjBhgoCS2M2f+aLWeE81ZpsrdlhuhPvK/OtxWA0G8Zx5VuzgiElGUkNEZ
+         PCuQrV8yyjHUiqpKPHQ+IYG34bEDvr6RZE8wCBc4K2TbF7BS6A3nv+98yz49xMCSrHuy
+         A6JA==
+X-Gm-Message-State: AOJu0YwEbHiEktgUUCWOvAyTQNpJf9vfFvgSpUoKy63r4Mp/OH3+rVVG
+	K0CfYBenC6FiC9JtCjw3OJ3NZOy2hH4ZKrWkS04bhggV+KKR2SPkrPv8ypq0kxlwNU9w0wXkvWM
+	n6Q==
+X-Google-Smtp-Source: AGHT+IGm0+JsmWI296vnskXjZiOxE0M7+6W9zIY8b2iMsGIzFtHjxI6dIj7DeYM2tlVXej/AvWmzm0+JARc=
+X-Received: from pjh8.prod.google.com ([2002:a17:90b:3f88:b0:2ef:8eb8:e4eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:f94f:b0:2ee:96a5:721c
+ with SMTP id 98e67ed59e1d1-2fa2417c12fmr21582579a91.21.1739229994767; Mon, 10
+ Feb 2025 15:26:34 -0800 (PST)
+Date: Mon, 10 Feb 2025 15:26:33 -0800
+In-Reply-To: <20250205222651.3784169-2-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <2024100123-unreached-enrage-2cb1@gregkh> <20250205222651.3784169-1-jthoughton@google.com>
+ <20250205222651.3784169-2-jthoughton@google.com>
+Message-ID: <Z6qLKdvdJ0WeNx6R@google.com>
+Subject: Re: [PATCH 6.6.y 1/2] KVM: x86: Make x2APIC ID 100% readonly
+From: Sean Christopherson <seanjc@google.com>
+To: James Houghton <jthoughton@google.com>
+Cc: stable@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Gavin Guo <gavinguo@igalia.com>, 
+	Michal Luczaj <mhal@rbox.co>, Haoyu Wu <haoyuwu254@gmail.com>, 
+	syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
+On Wed, Feb 05, 2025, James Houghton wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Ignore the userspace provided x2APIC ID when fixing up APIC state for
+> KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
+> a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
+> register"), which added the fixup, didn't intend to allow userspace to
+> modify the x2APIC ID.  In fact, that commit is when KVM first started
+> treating the x2APIC ID as readonly, apparently to fix some race:
+> 
+>  static inline u32 kvm_apic_id(struct kvm_lapic *apic)
+>  {
+> -       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
+> +       /* To avoid a race between apic_base and following APIC_ID update when
+> +        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
+> +        */
+> +       if (apic_x2apic_mode(apic))
+> +               return apic->vcpu->vcpu_id;
+> +
+> +       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+>  }
+> 
+> Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
+> modified x2APIC ID, but KVM *does* return the modified value on a guest
+> RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
+> work with a modified x2APIC ID.
+> 
+> Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
+> calculation, which expects the LDR to align with the x2APIC ID.
+> 
+>   WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+>   CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
+>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
+>   RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+>   Call Trace:
+>    <TASK>
+>    kvm_apic_set_state+0x1cf/0x5b0 [kvm]
+>    kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
+>    kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
+>    __x64_sys_ioctl+0xb8/0xf0
+>    do_syscall_64+0x56/0x80
+>    entry_SYSCALL_64_after_hwframe+0x46/0xb0
+>   RIP: 0033:0x7fade8b9dd6f
+> 
+> Unfortunately, the WARN can still trigger for other CPUs than the current
+> one by racing against KVM_SET_LAPIC, so remove it completely.
+> 
+> Reported-by: Michal Luczaj <mhal@rbox.co>
+> Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
+> Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
+> Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
+> Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Message-ID: <20240802202941.344889-2-seanjc@google.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> (cherry picked from commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071)
 
-The patch titled
-     Subject: mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch
+FWIW, for upstream LTS backports, the upstream commit information is usually place
+at the top, before the original commit's changelog begins, and the blurb explicitly
+calls out that it's an upstream commit.  I personally like this style:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch
+  [ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+as I find it easy to visually parse/separate from the original changelog.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
-Date: Mon, 10 Feb 2025 20:37:44 +0100
-
-Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
-let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
-reworked.
-
-In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
-generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
-returned a page.  In particular, hugetlb folios that are not PMD-sized
-would never have been prone to FOLL_SPLIT_PMD.
-
-hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
-not really prepared for handling them at all.  So let's spell that out.
-
-Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/rmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/rmap.c~mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive
-+++ a/mm/rmap.c
-@@ -2499,7 +2499,7 @@ static bool folio_make_device_exclusive(
- 	 * Restrict to anonymous folios for now to avoid potential writeback
- 	 * issues.
- 	 */
--	if (!folio_test_anon(folio))
-+	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
- 		return false;
- 
- 	rmap_walk(folio, &rwc);
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-gup-reject-foll_split_pmd-with-hugetlb-vmas.patch
-mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch
-mm-rmap-convert-make_device_exclusive_range-to-make_device_exclusive.patch
-mm-rmap-implement-make_device_exclusive-using-folio_walk-instead-of-rmap-walk.patch
-mm-memory-detect-writability-in-restore_exclusive_pte-through-can_change_pte_writable.patch
-mm-use-single-swp_device_exclusive-entry-type.patch
-mm-page_vma_mapped-device-exclusive-entries-are-not-migration-entries.patch
-kernel-events-uprobes-handle-device-exclusive-entries-correctly-in-__replace_page.patch
-mm-ksm-handle-device-exclusive-entries-correctly-in-write_protect_page.patch
-mm-rmap-handle-device-exclusive-entries-correctly-in-try_to_unmap_one.patch
-mm-rmap-handle-device-exclusive-entries-correctly-in-try_to_migrate_one.patch
-mm-rmap-handle-device-exclusive-entries-correctly-in-page_vma_mkclean_one.patch
-mm-page_idle-handle-device-exclusive-entries-correctly-in-page_idle_clear_pte_refs_one.patch
-mm-damon-handle-device-exclusive-entries-correctly-in-damon_folio_young_one.patch
-mm-damon-handle-device-exclusive-entries-correctly-in-damon_folio_mkold_one.patch
-mm-rmap-keep-mapcount-untouched-for-device-exclusive-entries.patch
-mm-rmap-avoid-ebusy-from-make_device_exclusive.patch
-
+Acked-by: Sean Christopherson <seanjc@google.com>
 
