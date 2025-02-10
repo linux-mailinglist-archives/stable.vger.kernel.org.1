@@ -1,215 +1,188 @@
-Return-Path: <stable+bounces-114660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27258A2F0F5
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:09:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9066A2F0FD
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764AA1884B51
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925A4163A20
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F9E1F8BBD;
-	Mon, 10 Feb 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171FF75809;
+	Mon, 10 Feb 2025 15:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ODE4SzYm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnree/h7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F091F8BDA
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFD5252906
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739200179; cv=none; b=k4l2j5tu8hVQFSmeuI3cId18GORMXmAxRaf7Ad9j3/hm7ygcob9baMGRHAKYF7xvNPSFAM4r+iJJ3ma+aWTZyW2ceuQHRGN1/Wt40J+y1TL4286Sgk+Rj7MsuTdZ8fWc+3jvphCvB6eaAA1NZhMSeTPoWBDOoKtblG7nsMj7zlo=
+	t=1739200295; cv=none; b=L631aMWM9fg1pvaM4DKX09sX78Z7h4ZxNz1/xThaPEqrp54mO31al+8qU1PGfnc+bFyfnVQxY8ua1ULy9KRbz/WhtzJymKIrS0wCB8HLNCDQP2KteTOmbDevjCCxxkVyFiTDS4vmz85x++QlFselUjeRkRYz3OedKR6MYEQf9c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739200179; c=relaxed/simple;
-	bh=8xW1qpxGPuJbKIEKzYxe2Augwz9P+TJaMrcKdlv5Wp4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L+9SBrjkdW3wH17NNAV8DdjyIFkRhj3+Te6acNm9EQQ82X3vyGCDpYOq0UHt6fnHEVF8kjqrHkko6jZyoLQORPAz1Z+Vk+KfhnvLlMvIVINORme2HLNlvcqr74KoAx2O5Ux0W5dGKfNAfBgqgiaStpbbcI61YWa3vmivEToecJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ODE4SzYm; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739200178; x=1770736178;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8xW1qpxGPuJbKIEKzYxe2Augwz9P+TJaMrcKdlv5Wp4=;
-  b=ODE4SzYmKxboqdv+iYvFnZF34mtv+R8AE+8mCASeyMnPoKGU1ltu6bYj
-   2zRsgH5Fyx3ejPEeUyFD21ALncM+C3v0WT2XN7hVYpCOOVWho5DbW4mVj
-   bJttDzDlfXrgwWhiGQxowh7GzbsW54zgR/PtinaZ9+DYvgwMGam+oPXeX
-   Ekh1Jr1Iz4h/CLEZa+N2mqzIEIhoMzwJD9TLIC2L+v3YbkM6RtNxnHirS
-   tiLaczSUezvLsP9FWuS4HAd5yzTZcZSQbb4tdF8HasifT6f5TsZ4+690f
-   ve1TzEc/cdwgXoxcuIAXwtspb/3XFU9yZPK98fkqVxen76lynJQXSQeI2
-   g==;
-X-CSE-ConnectionGUID: Q4ShGGcsSeywpspgfSUB7w==
-X-CSE-MsgGUID: M1lN+PgbSIGj2eHYNPJRAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39652153"
-X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; 
-   d="scan'208";a="39652153"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 07:09:37 -0800
-X-CSE-ConnectionGUID: ooyx0ID0Re+uAbn+tjAfhg==
-X-CSE-MsgGUID: LiZymh/ASxGtpPjBMNSIpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="135474681"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.177.152]) ([10.245.177.152])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 07:09:35 -0800
-Message-ID: <9c548c30-d95d-469f-af49-3b2b15886c31@linux.intel.com>
-Date: Mon, 10 Feb 2025 16:09:32 +0100
+	s=arc-20240116; t=1739200295; c=relaxed/simple;
+	bh=kdaDyvMhck11y4PSCAlNWaECozUibFs0d4GcY0vony8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sIQZAHXkd/4aCBa+vdVCt96d3KDBv15vDCeRMqjormwc5jDxZv8zKk4rfZWSUNzEp0I9/wNQG7ZgPjdWklVSsq28d2TjrvccdWVFtPLmFoAIAVCmyMYYxAyeL9dRHAseanZV7axlmsTP5L3cZasQxIx4rVlQRKXbsFYld9GKe2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnree/h7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D32C4CED1;
+	Mon, 10 Feb 2025 15:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739200295;
+	bh=kdaDyvMhck11y4PSCAlNWaECozUibFs0d4GcY0vony8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xnree/h7K4NX2VGqnZBOP5BGekgHMHDKelvdUHB+e4k8dSmJOM6iJQphSF1V5kp/l
+	 wkqbxRxUw7j6+LBkCK0pgguFAWGoHMbGr0RbHf0xSs3agaqN1kNNca+AKDLW8nvlFl
+	 ZinUbtpkpNkOjdEJsYmDcmH++LpVS6cd31+STUno=
+Subject: FAILED: patch "[PATCH] media: uvcvideo: Fix crash during unbind if gpio unit is in" failed to apply to 6.1-stable tree
+To: ribalda@chromium.org,laurent.pinchart@ideasonboard.com,mchehab+huawei@kernel.org,senozhatsky@chromium.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 10 Feb 2025 16:11:32 +0100
+Message-ID: <2025021032-enlisted-headband-7a1c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe: Carve out wopcm portion from the stolen memory
-To: Lucas De Marchi <lucas.demarchi@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
-Cc: intel-xe@lists.freedesktop.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Matthew Auld <matthew.auld@intel.com>, stable@vger.kernel.org
-References: <20250207164334.1393054-1-nirmoy.das@intel.com>
- <qx2azqvhrnpyhyag73mhddkje2s5rvb74uhcnx4fcd6sr6na4l@w45ubhrjcidt>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <qx2azqvhrnpyhyag73mhddkje2s5rvb74uhcnx4fcd6sr6na4l@w45ubhrjcidt>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-On 2/7/2025 11:55 PM, Lucas De Marchi wrote:
-> On Fri, Feb 07, 2025 at 05:43:34PM +0100, Nirmoy Das wrote:
->> Top of stolen memory is wopcm which shouldn't be accessed so remove
->> that portion of memory from the stolen memory.
->
-> humn... we are already doing this for integrated. The copy & paste is
-> small here to deserve a refactor, but maybe mention that this is already
-> done for integrated and it was missed on the discrete side?
->
->>
->> Fixes: d8b52a02cb40 ("drm/xe: Implement stolen memory.")
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Matthew Auld <matthew.auld@intel.com>
->> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.8+
->
-> I'd rather do this 6.11+. It's not important before that as we didn't
-> have any platform out of force probe or close to be out of force probe.
->
-> We will most likely not be able to apply this patch on 6.8.
->
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->> ---
->> drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c | 54 ++++++++++++++------------
->> 1 file changed, 30 insertions(+), 24 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
->> index 423856cc18d4..d414421f8c13 100644
->> --- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
->> +++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
->> @@ -57,12 +57,35 @@ bool xe_ttm_stolen_cpu_access_needs_ggtt(struct xe_device *xe)
->>     return GRAPHICS_VERx100(xe) < 1270 && !IS_DGFX(xe);
->> }
->>
->> +static u32 get_wopcm_size(struct xe_device *xe)
->> +{
->> +    u32 wopcm_size;
->> +    u64 val;
->> +
->> +    val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
->> +    val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
->> +
->> +    switch (val) {
->> +    case 0x5 ... 0x6:
->> +        val--;
->> +        fallthrough;
->> +    case 0x0 ... 0x3:
->> +        wopcm_size = (1U << val) * SZ_1M;
->> +        break;
->> +    default:
->> +        WARN(1, "Missing case wopcm_size=%llx\n", val);
->> +        wopcm_size = 0;
->> +    }
->> +
->> +    return wopcm_size;
->> +}
->
-> Please also mention in the commit message the code movement here, that
-> is done just for the function to be called by detect_bar2_dgfx()
->
-> Other than that, Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021032-enlisted-headband-7a1c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
 
 
-Thanks Lucas, sent out a v2 with better commit message and stable tag with 6.11+.
 
+thanks,
 
-Nirmoy
+greg k-h
 
->
-> thanks
-> Lucas De Marchi
->
->> +
->> static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
->> {
->>     struct xe_tile *tile = xe_device_get_root_tile(xe);
->>     struct xe_mmio *mmio = xe_root_tile_mmio(xe);
->>     struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
->> -    u64 stolen_size;
->> +    u64 stolen_size, wopcm_size;
->>     u64 tile_offset;
->>     u64 tile_size;
->>
->> @@ -74,7 +97,13 @@ static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
->>     if (drm_WARN_ON(&xe->drm, tile_size < mgr->stolen_base))
->>         return 0;
->>
->> +    /* Carve out the top of DSM as it contains the reserved WOPCM region */
->> +    wopcm_size = get_wopcm_size(xe);
->> +    if (drm_WARN_ON(&xe->drm, !wopcm_size))
->> +        return 0;
->> +
->>     stolen_size = tile_size - mgr->stolen_base;
->> +    stolen_size -= wopcm_size;
->>
->>     /* Verify usage fits in the actual resource available */
->>     if (mgr->stolen_base + stolen_size <= pci_resource_len(pdev, LMEM_BAR))
->> @@ -89,29 +118,6 @@ static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
->>     return ALIGN_DOWN(stolen_size, SZ_1M);
->> }
->>
->> -static u32 get_wopcm_size(struct xe_device *xe)
->> -{
->> -    u32 wopcm_size;
->> -    u64 val;
->> -
->> -    val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
->> -    val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
->> -
->> -    switch (val) {
->> -    case 0x5 ... 0x6:
->> -        val--;
->> -        fallthrough;
->> -    case 0x0 ... 0x3:
->> -        wopcm_size = (1U << val) * SZ_1M;
->> -        break;
->> -    default:
->> -        WARN(1, "Missing case wopcm_size=%llx\n", val);
->> -        wopcm_size = 0;
->> -    }
->> -
->> -    return wopcm_size;
->> -}
->> -
->> static u32 detect_bar2_integrated(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
->> {
->>     struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
->> -- 
->> 2.46.0
->>
+------------------ original commit in Linus's tree ------------------
+
+From a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5 Mon Sep 17 00:00:00 2001
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Wed, 6 Nov 2024 20:36:07 +0000
+Subject: [PATCH] media: uvcvideo: Fix crash during unbind if gpio unit is in
+ use
+
+We used the wrong device for the device managed functions. We used the
+usb device, when we should be using the interface device.
+
+If we unbind the driver from the usb interface, the cleanup functions
+are never called. In our case, the IRQ is never disabled.
+
+If an IRQ is triggered, it will try to access memory sections that are
+already free, causing an OOPS.
+
+We cannot use the function devm_request_threaded_irq here. The devm_*
+clean functions may be called after the main structure is released by
+uvc_delete.
+
+Luckily this bug has small impact, as it is only affected by devices
+with gpio units and the user has to unbind the device, a disconnect will
+not trigger this error.
+
+Cc: stable@vger.kernel.org
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index b3c8411dc05c..5bace40bafd7 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 	struct gpio_desc *gpio_privacy;
+ 	int irq;
+ 
+-	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
++	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+ 					       GPIOD_IN);
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 
+ 	irq = gpiod_to_irq(gpio_privacy);
+ 	if (irq < 0)
+-		return dev_err_probe(&dev->udev->dev, irq,
++		return dev_err_probe(&dev->intf->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
+ 
+ 	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+@@ -1329,15 +1329,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ static int uvc_gpio_init_irq(struct uvc_device *dev)
+ {
+ 	struct uvc_entity *unit = dev->gpio_unit;
++	int ret;
+ 
+ 	if (!unit || unit->gpio.irq < 0)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+-					 uvc_gpio_irq,
+-					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+-					 IRQF_TRIGGER_RISING,
+-					 "uvc_privacy_gpio", dev);
++	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
++				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
++				   IRQF_TRIGGER_RISING,
++				   "uvc_privacy_gpio", dev);
++
++	unit->gpio.initialized = !ret;
++
++	return ret;
++}
++
++static void uvc_gpio_deinit(struct uvc_device *dev)
++{
++	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
++		return;
++
++	free_irq(dev->gpio_unit->gpio.irq, dev);
+ }
+ 
+ /* ------------------------------------------------------------------------
+@@ -1934,6 +1946,8 @@ static void uvc_unregister_video(struct uvc_device *dev)
+ {
+ 	struct uvc_streaming *stream;
+ 
++	uvc_gpio_deinit(dev);
++
+ 	list_for_each_entry(stream, &dev->streams, list) {
+ 		/* Nothing to do here, continue. */
+ 		if (!video_is_registered(&stream->vdev))
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 07f9921d83f2..965a789ed03e 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -234,6 +234,7 @@ struct uvc_entity {
+ 			u8  *bmControls;
+ 			struct gpio_desc *gpio_privacy;
+ 			int irq;
++			bool initialized;
+ 		} gpio;
+ 	};
+ 
+
 
