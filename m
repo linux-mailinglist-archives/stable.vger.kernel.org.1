@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D6AA2F0D9
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:06:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F43CA2F0DF
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 16:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 231D5188A1E8
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193A5160CB1
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 15:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D20723CEFB;
-	Mon, 10 Feb 2025 15:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE6C20485F;
+	Mon, 10 Feb 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qxw36rjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpeU97Fn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E81A2309B4
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6B976410
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199731; cv=none; b=RbA1EvsaZ8+FnoGIP/1SzRyG8B7P6dirVySnHV04lFauvxdkLO1u/905Ii1fSJJcOhd6A5t7q4HXJFf4rOXQeIiAa9cluXRHhvLT2J9eo+mDGNdjYPf2R1VshnUsI0zcpAl58cHM+2t93l/6p3p6OgCFz88kJD6x85PP19LSchk=
+	t=1739199802; cv=none; b=owXR0oa8nh2LG7QP/gWEHq+dDKfdQhJ5j8zUw5sIotE4r5Np5V9WjfoIgf03uDles2AzOV3IiBBLMvyByxJiot7YUJB1PFwInYCZSuUpWC2ylNjoUO3sUJG1D5gFP2FsaE2vnybawqRB3DmboTethW9OVa0KG3Avh4Z863wBFtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199731; c=relaxed/simple;
-	bh=hD6+Q2cJyI8gZN1/qWrjA7FhfkW2bTQUJFTSdj/zUkY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WmTCVMk15oZ/dg0Ez9MFiaKc2y/QGzEcjrwx9Ef9hdTp7Iwb5wHorq2TCXlGhIAgpeaL+omqZs52zmA6NEONVjCKRtZznvudJn3sjZ1YyQKQS679GJ9Gp02nDX3Nx29jA1yh6Zs7HdmKshBSbaL9N49QqSrf5nvXfa25rZwMTKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qxw36rjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBD0C4CEDF;
-	Mon, 10 Feb 2025 15:02:09 +0000 (UTC)
+	s=arc-20240116; t=1739199802; c=relaxed/simple;
+	bh=mHspZemBjKSuLxivUAvqeDi+ma9vd/n1Mr0dkx0iWsg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X4KvH7jdVv6REdhQVjM9O/KKTQ9mRPr+nJFNGviHtb/ob3oxy8vBQEKVZ/WAy83YlSFVPJ7FRZv4i9ALTewS64gDIyEtSIro44FLXPHQcfWns5rOIEePTAhJGE+hsys6O70HJm14cN7lGaUcTdEFUd2Fy+EzOAW6kMjQmbOTNAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpeU97Fn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC807C4CED1;
+	Mon, 10 Feb 2025 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739199730;
-	bh=hD6+Q2cJyI8gZN1/qWrjA7FhfkW2bTQUJFTSdj/zUkY=;
+	s=korg; t=1739199802;
+	bh=mHspZemBjKSuLxivUAvqeDi+ma9vd/n1Mr0dkx0iWsg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Qxw36rjlWVjx4j7wqF1+9OwEGtzqTBIBBoPzqtlvou9nCDRR4Ljtm7sgYpq/EDxD7
-	 Bar7p/c9nKUJ8mrSuRVA9ONjstfZWFUU6L8dyk3fx3LKB/ntTdj7Y0kHz+RTaagiam
-	 kAGZVzZbM5skChJSRTmoUCuVgcKz08009DzUhBVA=
-Subject: FAILED: patch "[PATCH] hrtimers: Force migrate away hrtimers queued after" failed to apply to 5.4-stable tree
-To: frederic@kernel.org,paulmck@kernel.org,tglx@linutronix.de,usamaarif642@gmail.com,vlad.wing@gmail.com
+	b=lpeU97FnFesB7nR7pihKA0qeEyFFUjpZdu+FWE59sb7kiXgvqHoEZlslKH5gS+3iL
+	 y4RUyQtF5Gec3rBlM0/OSiZjrUhjwchupACZQO7Kjyoqh+WTgHfl35EVfz8HxHpAlR
+	 cv0cWmFdbFSiff5A72+4LUrxasRcsx9ZqZCC7mz8=
+Subject: FAILED: patch "[PATCH] xfs: Add error handling for xfs_reflink_cancel_cow_range" failed to apply to 5.10-stable tree
+To: vulab@iscas.ac.cn,cem@kernel.org,djwong@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 16:01:56 +0100
-Message-ID: <2025021056-sincere-reformist-1cc5@gregkh>
+Date: Mon, 10 Feb 2025 16:03:14 +0100
+Message-ID: <2025021014-dedicate-recycled-1738@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 53dac345395c0d2493cbc2f4c85fe38aef5b63f5
+git cherry-pick -x 26b63bee2f6e711c5a169997fd126fddcfb90848
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021056-sincere-reformist-1cc5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021014-dedicate-recycled-1738@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,269 +77,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 Mon Sep 17 00:00:00 2001
-From: Frederic Weisbecker <frederic@kernel.org>
-Date: Sat, 18 Jan 2025 00:24:33 +0100
-Subject: [PATCH] hrtimers: Force migrate away hrtimers queued after
- CPUHP_AP_HRTIMERS_DYING
+From 26b63bee2f6e711c5a169997fd126fddcfb90848 Mon Sep 17 00:00:00 2001
+From: Wentao Liang <vulab@iscas.ac.cn>
+Date: Fri, 24 Jan 2025 11:45:09 +0800
+Subject: [PATCH] xfs: Add error handling for xfs_reflink_cancel_cow_range
 
-hrtimers are migrated away from the dying CPU to any online target at
-the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
-handling tasks involved in the CPU hotplug forward progress.
+In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
+without error handling, risking unnoticed failures and
+inconsistent behavior compared to other parts of the code.
 
-However wakeups can still be performed by the outgoing CPU after
-CPUHP_AP_HRTIMERS_DYING. Those can result again in bandwidth timers being
-armed. Depending on several considerations (crystal ball power management
-based election, earliest timer already enqueued, timer migration enabled or
-not), the target may eventually be the current CPU even if offline. If that
-happens, the timer is eventually ignored.
+Fix this issue by adding an error handling for the
+xfs_reflink_cancel_cow_range(), improving code robustness.
 
-The most notable example is RCU which had to deal with each and every of
-those wake-ups by deferring them to an online CPU, along with related
-workarounds:
+Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
+Cc: stable@vger.kernel.org # v4.17
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 
-_ e787644caf76 (rcu: Defer RCU kthreads wakeup when CPU is dying)
-_ 9139f93209d1 (rcu/nocb: Fix RT throttling hrtimer armed from offline CPU)
-_ f7345ccc62a4 (rcu/nocb: Fix rcuog wake-up from offline softirq)
-
-The problem isn't confined to RCU though as the stop machine kthread
-(which runs CPUHP_AP_HRTIMERS_DYING) reports its completion at the end
-of its work through cpu_stop_signal_done() and performs a wake up that
-eventually arms the deadline server timer:
-
-   WARNING: CPU: 94 PID: 588 at kernel/time/hrtimer.c:1086 hrtimer_start_range_ns+0x289/0x2d0
-   CPU: 94 UID: 0 PID: 588 Comm: migration/94 Not tainted
-   Stopper: multi_cpu_stop+0x0/0x120 <- stop_machine_cpuslocked+0x66/0xc0
-   RIP: 0010:hrtimer_start_range_ns+0x289/0x2d0
-   Call Trace:
-   <TASK>
-     start_dl_timer
-     enqueue_dl_entity
-     dl_server_start
-     enqueue_task_fair
-     enqueue_task
-     ttwu_do_activate
-     try_to_wake_up
-     complete
-     cpu_stopper_thread
-
-Instead of providing yet another bandaid to work around the situation, fix
-it in the hrtimers infrastructure instead: always migrate away a timer to
-an online target whenever it is enqueued from an offline CPU.
-
-This will also allow to revert all the above RCU disgraceful hacks.
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Reported-by: Vlad Poenaru <vlad.wing@gmail.com>
-Reported-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
-Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
-
-diff --git a/include/linux/hrtimer_defs.h b/include/linux/hrtimer_defs.h
-index c3b4b7ed7c16..84a5045f80f3 100644
---- a/include/linux/hrtimer_defs.h
-+++ b/include/linux/hrtimer_defs.h
-@@ -125,6 +125,7 @@ struct hrtimer_cpu_base {
- 	ktime_t				softirq_expires_next;
- 	struct hrtimer			*softirq_next_timer;
- 	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
-+	call_single_data_t		csd;
- } ____cacheline_aligned;
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index c95fe1b1de4e..b1f9f156ec88 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1404,8 +1404,11 @@ xfs_inactive(
+ 		goto out;
  
- 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 4fb81f8c6f1c..deb1aa32814e 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -58,6 +58,8 @@
- #define HRTIMER_ACTIVE_SOFT	(HRTIMER_ACTIVE_HARD << MASK_SHIFT)
- #define HRTIMER_ACTIVE_ALL	(HRTIMER_ACTIVE_SOFT | HRTIMER_ACTIVE_HARD)
- 
-+static void retrigger_next_event(void *arg);
-+
- /*
-  * The timer bases:
-  *
-@@ -111,7 +113,8 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
- 			.clockid = CLOCK_TAI,
- 			.get_time = &ktime_get_clocktai,
- 		},
--	}
-+	},
-+	.csd = CSD_INIT(retrigger_next_event, NULL)
- };
- 
- static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
-@@ -124,6 +127,14 @@ static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
- 	[CLOCK_TAI]		= HRTIMER_BASE_TAI,
- };
- 
-+static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
-+{
-+	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
-+		return true;
-+	else
-+		return likely(base->online);
-+}
-+
- /*
-  * Functions and macros which are different for UP/SMP systems are kept in a
-  * single place
-@@ -178,27 +189,54 @@ struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
- }
- 
- /*
-- * We do not migrate the timer when it is expiring before the next
-- * event on the target cpu. When high resolution is enabled, we cannot
-- * reprogram the target cpu hardware and we would cause it to fire
-- * late. To keep it simple, we handle the high resolution enabled and
-- * disabled case similar.
-+ * Check if the elected target is suitable considering its next
-+ * event and the hotplug state of the current CPU.
-+ *
-+ * If the elected target is remote and its next event is after the timer
-+ * to queue, then a remote reprogram is necessary. However there is no
-+ * guarantee the IPI handling the operation would arrive in time to meet
-+ * the high resolution deadline. In this case the local CPU becomes a
-+ * preferred target, unless it is offline.
-+ *
-+ * High and low resolution modes are handled the same way for simplicity.
-  *
-  * Called with cpu_base->lock of target cpu held.
-  */
--static int
--hrtimer_check_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base)
-+static bool hrtimer_suitable_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base,
-+				    struct hrtimer_cpu_base *new_cpu_base,
-+				    struct hrtimer_cpu_base *this_cpu_base)
- {
- 	ktime_t expires;
- 
-+	/*
-+	 * The local CPU clockevent can be reprogrammed. Also get_target_base()
-+	 * guarantees it is online.
-+	 */
-+	if (new_cpu_base == this_cpu_base)
-+		return true;
-+
-+	/*
-+	 * The offline local CPU can't be the default target if the
-+	 * next remote target event is after this timer. Keep the
-+	 * elected new base. An IPI will we issued to reprogram
-+	 * it as a last resort.
-+	 */
-+	if (!hrtimer_base_is_online(this_cpu_base))
-+		return true;
-+
- 	expires = ktime_sub(hrtimer_get_expires(timer), new_base->offset);
--	return expires < new_base->cpu_base->expires_next;
-+
-+	return expires >= new_base->cpu_base->expires_next;
- }
- 
--static inline
--struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base,
--					 int pinned)
-+static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base, int pinned)
- {
-+	if (!hrtimer_base_is_online(base)) {
-+		int cpu = cpumask_any_and(cpu_online_mask, housekeeping_cpumask(HK_TYPE_TIMER));
-+
-+		return &per_cpu(hrtimer_bases, cpu);
-+	}
-+
- #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
- 	if (static_branch_likely(&timers_migration_enabled) && !pinned)
- 		return &per_cpu(hrtimer_bases, get_nohz_timer_target());
-@@ -249,8 +287,8 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		raw_spin_unlock(&base->cpu_base->lock);
- 		raw_spin_lock(&new_base->cpu_base->lock);
- 
--		if (new_cpu_base != this_cpu_base &&
--		    hrtimer_check_target(timer, new_base)) {
-+		if (!hrtimer_suitable_target(timer, new_base, new_cpu_base,
-+					     this_cpu_base)) {
- 			raw_spin_unlock(&new_base->cpu_base->lock);
- 			raw_spin_lock(&base->cpu_base->lock);
- 			new_cpu_base = this_cpu_base;
-@@ -259,8 +297,7 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		}
- 		WRITE_ONCE(timer->base, new_base);
- 	} else {
--		if (new_cpu_base != this_cpu_base &&
--		    hrtimer_check_target(timer, new_base)) {
-+		if (!hrtimer_suitable_target(timer, new_base,  new_cpu_base, this_cpu_base)) {
- 			new_cpu_base = this_cpu_base;
- 			goto again;
- 		}
-@@ -706,8 +743,6 @@ static inline int hrtimer_is_hres_enabled(void)
- 	return hrtimer_hres_enabled;
- }
- 
--static void retrigger_next_event(void *arg);
--
- /*
-  * Switch to high resolution mode
-  */
-@@ -1195,6 +1230,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 				    u64 delta_ns, const enum hrtimer_mode mode,
- 				    struct hrtimer_clock_base *base)
- {
-+	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
- 	struct hrtimer_clock_base *new_base;
- 	bool force_local, first;
- 
-@@ -1206,9 +1242,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	 * and enforce reprogramming after it is queued no matter whether
- 	 * it is the new first expiring timer again or not.
- 	 */
--	force_local = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
-+	force_local = base->cpu_base == this_cpu_base;
- 	force_local &= base->cpu_base->next_timer == timer;
- 
-+	/*
-+	 * Don't force local queuing if this enqueue happens on a unplugged
-+	 * CPU after hrtimer_cpu_dying() has been invoked.
-+	 */
-+	force_local &= this_cpu_base->online;
-+
- 	/*
- 	 * Remove an active timer from the queue. In case it is not queued
- 	 * on the current CPU, make sure that remove_hrtimer() updates the
-@@ -1238,8 +1280,27 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	}
- 
- 	first = enqueue_hrtimer(timer, new_base, mode);
--	if (!force_local)
--		return first;
-+	if (!force_local) {
-+		/*
-+		 * If the current CPU base is online, then the timer is
-+		 * never queued on a remote CPU if it would be the first
-+		 * expiring timer there.
-+		 */
-+		if (hrtimer_base_is_online(this_cpu_base))
-+			return first;
-+
-+		/*
-+		 * Timer was enqueued remote because the current base is
-+		 * already offline. If the timer is the first to expire,
-+		 * kick the remote CPU to reprogram the clock event.
-+		 */
-+		if (first) {
-+			struct hrtimer_cpu_base *new_cpu_base = new_base->cpu_base;
-+
-+			smp_call_function_single_async(new_cpu_base->cpu, &new_cpu_base->csd);
-+		}
-+		return 0;
+ 	/* Try to clean out the cow blocks if there are any. */
+-	if (xfs_inode_has_cow_data(ip))
+-		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++	if (xfs_inode_has_cow_data(ip)) {
++		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++		if (error)
++			goto out;
 +	}
  
- 	/*
- 	 * Timer was forced to stay on the current CPU to avoid
+ 	if (VFS_I(ip)->i_nlink != 0) {
+ 		/*
 
 
