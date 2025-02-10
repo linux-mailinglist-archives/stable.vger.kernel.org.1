@@ -1,84 +1,80 @@
-Return-Path: <stable+bounces-114712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F3BA2F939
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 20:46:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DD6A2F842
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 20:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F40169545
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:45:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F8116842F
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 19:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C882505BF;
-	Mon, 10 Feb 2025 19:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4124BD03;
+	Mon, 10 Feb 2025 19:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cG3g2vHX"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="j4PdrqpC"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8522505B3
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 19:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE24825E463
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 19:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739216587; cv=none; b=KqKn+CREbX0h/6vnWXNwoFU/TenhFSnBIVwb315O+vug66w2/KGEsgFjsXSzyFu99G7xt9VYGFTMxBfziaVCuiQ/4OGK438f/ewcFSAtfpjfImY1UEjgaEryF70JbPGjfKK/qr51ldM6TTTLMbCd24490HxujK7OcUagjVn7aWk=
+	t=1739214682; cv=none; b=kJouUENiqmFJ0qMdVhgloFqhL0wHf+DOh2M9L8L3FIgu6CQ+YG7RWDycQy0TU/7A9TARQ/l3QdBqRnI8xA7ceq7Kj+EJTzqh6m+ATA1lr8y1zQfylU1Vud8+ahgXPaFlLbGz1hP51NogOVdaHTUVv4SzbwYhgxDD00+poZFCTB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739216587; c=relaxed/simple;
-	bh=zDOdwrtEgqL5utC5zX/sNmBwQ2znbX6ktSuLXgQgpws=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=LzMCVMYkx1LuW4ukF2SNCkzxfAN2KSmsdJzOnVc+I9FIvrQVawl119TakC9AzwYQ3psmdh2MeBbibRyAo3KyTlFnGZEPqbrCnSMloreeNW89wRL82c1ZfKaJdMVg/nEzitWxUPeqGEZEeIwUkDL88+NRrFHA7mnAPPf/G8PP5+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cG3g2vHX; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250210194303epoutp02966dbc0e0cd4401e96e56cf6118a4336~i8ESRTw5c1750417504epoutp02u
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 19:43:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250210194303epoutp02966dbc0e0cd4401e96e56cf6118a4336~i8ESRTw5c1750417504epoutp02u
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739216583;
-	bh=Qrsvwbm83TIa/72fQltxAnMshkLGTHgkRYY1/Dx1x1g=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=cG3g2vHXZeNr3vRTI7qPxp094UfOoioi7+9R5n65bPh6mt2WJELuuEnwDdU0iYgD0
-	 npUPkmq4w0hb8bddgWlOcMyJxJkoXIwrpaD8L4kzGMIrgUf6WmcLzit4j6CP2sAnGR
-	 p4+Q6bei/PLEUE7iIhG6ZncSbv28LbHWna8TL5XQ=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-	20250210194302epcas5p3e69da3238905af70a86a3e58b7ef2b49~i8ERiHxZl2476124761epcas5p3b;
-	Mon, 10 Feb 2025 19:43:02 +0000 (GMT)
-Received: from epcpadp2new (unknown [182.195.40.142]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4YsFNk45Txz4x9Pr; Mon, 10 Feb
-	2025 19:43:02 +0000 (GMT)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250210131144epcas5p4a0599050f5973b495db0371021c21e27~i2un9NPY-0918109181epcas5p4D;
-	Mon, 10 Feb 2025 13:11:44 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250210131144epsmtrp2efd616cee279f5e2c67f7838543d9d5d~i2un4wzLi1237012370epsmtrp2G;
-	Mon, 10 Feb 2025 13:11:44 +0000 (GMT)
-X-AuditID: b6c32a52-1f7ff700000083ab-83-67a9fb10fe47
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	81.B4.33707.01BF9A76; Mon, 10 Feb 2025 22:11:44 +0900 (KST)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250210131141epsmtip2d289bc772427d32592ed474915e32c75~i2ulW1MWr0730507305epsmtip28;
-	Mon, 10 Feb 2025 13:11:41 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: mathias.nyman@intel.com, gregkh@linuxfoundation.org,
-	WeitaoWang-oc@zhaoxin.com, Thinh.Nguyen@synopsys.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
-	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
-	alim.akhtar@samsung.com, thiagu.r@samsung.com, muhammed.ali@samsung.com,
-	pritam.sutar@samsung.com, cpgs@samsung.com, Selvarasu Ganesan
-	<selvarasu.g@samsung.com>, stable@vger.kernel.org
-Subject: [PATCH] usb: xhci: Initialize unassigned variables to fix possible
- errors
-Date: Mon, 10 Feb 2025 18:41:23 +0530
-Message-ID: <1891546521.01739216582564.JavaMail.epsvc@epcpadp2new>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1739214682; c=relaxed/simple;
+	bh=VtPDo7IM1T02mCad0u7MsSJbtDJvlGO622e86WJ/UIY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GrjUwMKiEQatsFwF5YiWGcFAgH0LeBWGp/hcvmL6Gb7/NmF5tZVTgHpuIYS8sUTK1UhFPpyauIojbTGdPn9ZTaXUVL9zW1HseLl8QJ4BBrkONdDoVFJLgylFC7iNYyAE0R5/ChTubHLjUZLH42421PMU7HQNVbaoXFvmBypcIQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=j4PdrqpC; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1739214682; x=1770750682;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Jl475qfeV7Dgsnu0TGpEYP0VzEjAfVYauQNa5Bpd2dg=;
+  b=j4PdrqpCNIYJB74BGKPFMbbcCwEK73NTSpRZWN32bFqx3+iPAf8JkZtF
+   qbKteLmsZXLgfojff6CqZAAhjbTNuzc14CHE9N3Xp9MMcqizHr9zBAA/p
+   aBLTtKp5yiteLw1uLxs+c5AYqwalp3O3SrwTehVIeAiV9Pmopo9iDDcab
+   0=;
+X-IronPort-AV: E=Sophos;i="6.13,275,1732579200"; 
+   d="scan'208";a="376136794"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 19:11:17 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:16300]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.35.229:2525] with esmtp (Farcaster)
+ id eebc1289-a144-4932-9511-459ce49bdd5f; Mon, 10 Feb 2025 19:11:15 +0000 (UTC)
+X-Farcaster-Flow-ID: eebc1289-a144-4932-9511-459ce49bdd5f
+Received: from EX19D028EUB002.ant.amazon.com (10.252.61.43) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Mon, 10 Feb 2025 19:11:14 +0000
+Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
+ EX19D028EUB002.ant.amazon.com (10.252.61.43) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Mon, 10 Feb 2025 19:11:14 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-f5cd2367.us-west-2.amazon.com
+ (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.39 via Frontend Transport; Mon, 10 Feb 2025 19:11:14 +0000
+Received: from dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com (dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com [172.19.91.144])
+	by email-imr-corp-prod-pdx-all-2b-f5cd2367.us-west-2.amazon.com (Postfix) with ESMTP id 8DE08C11A2;
+	Mon, 10 Feb 2025 19:11:13 +0000 (UTC)
+Received: by dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com (Postfix, from userid 23027615)
+	id 20F246669; Mon, 10 Feb 2025 19:11:13 +0000 (UTC)
+From: Pratyush Yadav <ptyadav@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Shu Han <ebpqwerty472123@gmail.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, <patches@lists.linux.dev>, Stephen Smalley
+	<stephen.smalley.work@gmail.com>, Paul Moore <paul@paul-moore.com>, Bin Lan
+	<bin.lan.cn@windriver.com>, Pratyush Yadav <ptyadav@amazon.de>
+Subject: [PATCH 5.10] mm: call the security_mmap_file() LSM hook in remap_file_pages()
+Date: Mon, 10 Feb 2025 19:10:54 +0000
+Message-ID: <20250210191056.58787-1-ptyadav@amazon.de>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,71 +82,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrDLMWRmVeSWpSXmKPExsWy7bCSvK7A75XpBusuyli8ubqK1eLBvG1s
-	Fi8PaVrcWTCNyeLU8oVMFs2L17NZ/L19kdXi7sMfLBaXd81hs1i0rJXZonnTFFaL8y+6WC0+
-	Hf3PavHs3go2iyPLPzJZLNj4iNFiRTNQyaoFB9gtHv2cy+Qg7LF4z0smj/1z17B79G1Zxeix
-	Zf9nRo/Pm+Q8ft26xRLAFsVlk5Kak1mWWqRvl8CV0bNwIXvBdN6K5avmsTUwzuPuYuTkkBAw
-	kXjbt52xi5GLQ0hgO6PEkcc7WSAS0hKvZ3UxQtjCEiv/PWeHKPrKKHH36HSgIg4ONgFDiWcn
-	bEDiIgIbGCWunpnNCuIwC9xikjj49wMzSLewQJDE1Sdr2UFsFgFVicM7VoBt4BWwkrj24BAT
-	xAZNibV79zBBxAUlTs58AlbDLCAv0bx1NvMERr5ZSFKzkKQWMDKtYhRNLSjOTc9NLjDUK07M
-	LS7NS9dLzs/dxAiOEK2gHYzL1v/VO8TIxMF4iFGCg1lJhNdk4Yp0Id6UxMqq1KL8+KLSnNTi
-	Q4zSHCxK4rzKOZ0pQgLpiSWp2ampBalFMFkmDk6pBib13qfhsvzJDyerf8zfw2Dl6MV8aukm
-	O+HG4gmrtzNZZVtsdPJ++4Dtq9Cdy4GLz/qz8GhfjHRlbgjkFm+ZHFYanrFauifl5KqanRun
-	bFqlFRb/6FXeejFehfgELa72VYHVy7/eSH3ZaBGc4jnhb07hr6d56rN5TfdtPrOg9pfHtdSJ
-	X/QsU78z1ZdK/8s7/s7J8OlaxRtBM0IcelKeF39ri3t/aDP/pvkR4rvji25fenvQXODCqQuT
-	1YQt9JPf/Dxo/fjWbOZHV2en686O5FFqaHs51TRkQa5kT9yc29pce1Z6rWctPGAf66S8KU2G
-	ayp7tu/NJ7m7l/+T/nv0vAc/1xWNPz8y14j1ywhkbVBiKc5INNRiLipOBABUBjE1/wIAAA==
-X-CMS-MailID: 20250210131144epcas5p4a0599050f5973b495db0371021c21e27
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20250210131144epcas5p4a0599050f5973b495db0371021c21e27
-References: <CGME20250210131144epcas5p4a0599050f5973b495db0371021c21e27@epcas5p4.samsung.com>
+Content-Type: text/plain
 
-Fix the following smatch errors:
+From: Shu Han <ebpqwerty472123@gmail.com>
 
-drivers/usb/host/xhci-mem.c:2060 xhci_add_in_port() error: unassigned variable 'tmp_minor_revision'
-drivers/usb/host/xhci-hub.c:71 xhci_create_usb3x_bos_desc() error: unassigned variable 'bcdUSB'
+commit ea7e2d5e49c05e5db1922387b09ca74aa40f46e2 upstream.
 
-Fixes: d9b0328d0b8b ("xhci: Show ZHAOXIN xHCI root hub speed correctly")
-Fixes: eb02aaf21f29 ("usb: xhci: Rewrite xhci_create_usb3_bos_desc()")
+The remap_file_pages syscall handler calls do_mmap() directly, which
+doesn't contain the LSM security check. And if the process has called
+personality(READ_IMPLIES_EXEC) before and remap_file_pages() is called for
+RW pages, this will actually result in remapping the pages to RWX,
+bypassing a W^X policy enforced by SELinux.
+
+So we should check prot by security_mmap_file LSM hook in the
+remap_file_pages syscall handler before do_mmap() is called. Otherwise, it
+potentially permits an attacker to bypass a W^X policy enforced by
+SELinux.
+
+The bypass is similar to CVE-2016-10044, which bypass the same thing via
+AIO and can be found in [1].
+
+The PoC:
+
+$ cat > test.c
+
+int main(void) {
+	size_t pagesz = sysconf(_SC_PAGE_SIZE);
+	int mfd = syscall(SYS_memfd_create, "test", 0);
+	const char *buf = mmap(NULL, 4 * pagesz, PROT_READ | PROT_WRITE,
+		MAP_SHARED, mfd, 0);
+	unsigned int old = syscall(SYS_personality, 0xffffffff);
+	syscall(SYS_personality, READ_IMPLIES_EXEC | old);
+	syscall(SYS_remap_file_pages, buf, pagesz, 0, 2, 0);
+	syscall(SYS_personality, old);
+	// show the RWX page exists even if W^X policy is enforced
+	int fd = open("/proc/self/maps", O_RDONLY);
+	unsigned char buf2[1024];
+	while (1) {
+		int ret = read(fd, buf2, 1024);
+		if (ret <= 0) break;
+		write(1, buf2, ret);
+	}
+	close(fd);
+}
+
+$ gcc test.c -o test
+$ ./test | grep rwx
+7f1836c34000-7f1836c35000 rwxs 00002000 00:01 2050 /memfd:test (deleted)
+
+Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
 Cc: stable@vger.kernel.org
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Signed-off-by: Shu Han <ebpqwerty472123@gmail.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject line tweaks]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
 ---
- drivers/usb/host/xhci-hub.c | 2 +-
- drivers/usb/host/xhci-mem.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ mm/mmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index 9693464c0520..5715a8bdda7f 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -39,7 +39,7 @@ static int xhci_create_usb3x_bos_desc(struct xhci_hcd *xhci, char *buf,
- 	struct usb_ss_cap_descriptor	*ss_cap;
- 	struct usb_ssp_cap_descriptor	*ssp_cap;
- 	struct xhci_port_cap		*port_cap = NULL;
--	u16				bcdUSB;
-+	u16				bcdUSB = 0;
- 	u32				reg;
- 	u32				min_rate = 0;
- 	u8				min_ssid;
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 92703efda1f7..8665893df894 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1980,7 +1980,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- {
- 	u32 temp, port_offset, port_count;
- 	int i;
--	u8 major_revision, minor_revision, tmp_minor_revision;
-+	u8 major_revision, minor_revision, tmp_minor_revision = 0;
- 	struct xhci_hub *rhub;
- 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_port_cap *port_cap;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 9f76625a1743..2c17eb840e44 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -3078,8 +3078,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	}
+ 
+ 	file = get_file(vma->vm_file);
++	ret = security_mmap_file(vma->vm_file, prot, flags);
++	if (ret)
++		goto out_fput;
+ 	ret = do_mmap(vma->vm_file, start, size,
+ 			prot, flags, pgoff, &populate, NULL);
++out_fput:
+ 	fput(file);
+ out:
+ 	mmap_write_unlock(mm);
 -- 
-2.17.1
-
+2.47.1
 
 
