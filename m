@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-114521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3FAA2ECF2
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:54:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85450A2ED02
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC7EB3A7FC4
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75C71883E1E
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 12:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E842236FC;
-	Mon, 10 Feb 2025 12:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613EF1F3D41;
+	Mon, 10 Feb 2025 12:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPXZlhiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6Me3H81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7402236E5
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9861C07E5
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 12:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739192003; cv=none; b=Tl8CrhoegMhGFG+fUolAxm7uyVfQHR+wwJdPBadP746DtEmyAilwzYoALYWCr6eSrseJSwUGhQ2I992wgOsmgG30u3rOol4NN1YUysL8ihWlKvRwxD76juKs0ou8yvCN5zxLp/lRnvCjf7mDfNpphaLkoJkai+60RVjaBag2FnY=
+	t=1739192168; cv=none; b=RR81f3bgaarZtXZmosT4cE0hwrNpSp0mn7WRK3lw0rmORJhUn08hudu1ohbFdFy6zoMISn+8cHuPGZC0sGu6TUrpcj250LcJ0IKbsF5ig2vdSszOeApyVM+J5/ZrHxhE+7W+tSL3KgrBMfyXFaS7WsD6jQs9F9e/0DRjb6Ty2Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739192003; c=relaxed/simple;
-	bh=lfbI0Bbz45ZKnKqg/XLjIBrVe3NBNIBE0LlD2nwhbDc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QtqVlvg4IvlbyQLBISxRvou3n0k61A0hdT6GcVJ3cLdU/yPJ6wIcncwaUenKaOXXRgYeTlkwSx/dNmiLtrj4b5pBbYuNPhfcdg90zrbfy0dvNhwg1K/OGuta8YrhAz4Nhnw0lnqOG7p+1t+yBTbIekaIWn/tdPp/1HAIh8gwgYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPXZlhiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51957C4CED1;
-	Mon, 10 Feb 2025 12:53:22 +0000 (UTC)
+	s=arc-20240116; t=1739192168; c=relaxed/simple;
+	bh=xc48ecTTJ3UABEtjBo7QG8XEZPKoTEBJoSQqOEsu5Rg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hpxIZdmhgyZwHtjChEX9AK8ctaXSNMHKoQ6kE1a4aVF66YbBDNOEL1wSu1ZFnWm+ngNGvLXIi21i8XWW2Qd1labKAs2s86Af1EFdJ8bO+qmgkXNkAOOHNVMYPYyvqUvnTsc/tERVuha+A8jDehMR1SIEzTVLvCIJUQGy5gArxPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6Me3H81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1AFC4CEDF;
+	Mon, 10 Feb 2025 12:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739192002;
-	bh=lfbI0Bbz45ZKnKqg/XLjIBrVe3NBNIBE0LlD2nwhbDc=;
+	s=korg; t=1739192168;
+	bh=xc48ecTTJ3UABEtjBo7QG8XEZPKoTEBJoSQqOEsu5Rg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FPXZlhiOgy+Xhf6Bg2ks5AsTv8aw3yEiigiaZPXtSnrmvkrq44d63CF2RsGY6c0hH
-	 +ftVQlzbBmNJPpP5Ote3gFqUEm1c3K2I4UerpwfFQ2wMF3NsGvQ51dRMv+/WS1Bt3f
-	 LNAGigySNHTgNmm1EE8KKhaMty4596Ntb3QjeK/E=
-Subject: FAILED: patch "[PATCH] spi: atmel-qspi: Memory barriers after memory-mapped I/O" failed to apply to 5.4-stable tree
-To: csokas.bence@prolan.hu,broonie@kernel.org
+	b=K6Me3H81TEIbkrmJEiJ+bULKTmJS80ceO5IRyvM5OHjCST41dRAmkqg544HphdUjh
+	 +dRE7BKcc5RbcgEKerTXfzAirqGlKeuXrHrzqv0LNIJuzfHYtfuQncRs7bydZSCy1R
+	 Rk3n5QKlHmKXbAKSYsC7nfJW7hwY7avVS0GJyRAU=
+Subject: FAILED: patch "[PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented" failed to apply to 6.6-stable tree
+To: maz@kernel.org,broonie@kernel.org,catalin.marinas@arm.com,mark.rutland@arm.com,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 13:53:05 +0100
-Message-ID: <2025021005-grain-faucet-6a4d@gregkh>
+Date: Mon, 10 Feb 2025 13:56:04 +0100
+Message-ID: <2025021004-lung-polyester-844c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x be92ab2de0ee1a13291c3b47b2d7eb24d80c0a2c
+git cherry-pick -x 064737920bdbca86df91b96aed256e88018fef3a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021005-grain-faucet-6a4d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021004-lung-polyester-844c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,89 +77,202 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From be92ab2de0ee1a13291c3b47b2d7eb24d80c0a2c Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Thu, 19 Dec 2024 10:12:58 +0100
-Subject: [PATCH] spi: atmel-qspi: Memory barriers after memory-mapped I/O
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 064737920bdbca86df91b96aed256e88018fef3a Mon Sep 17 00:00:00 2001
+From: Marc Zyngier <maz@kernel.org>
+Date: Tue, 7 Jan 2025 22:59:41 +0000
+Subject: [PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
 
-The QSPI peripheral control and status registers are
-accessible via the SoC's APB bus, whereas MMIO transactions'
-data travels on the AHB bus.
+The hwcaps code that exposes SVE features to userspace only
+considers ID_AA64ZFR0_EL1, while this is only valid when
+ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
 
-Microchip documentation and even sample code from Atmel
-emphasises the need for a memory barrier before the first
-MMIO transaction to the AHB-connected QSPI, and before the
-last write to its registers via APB. This is achieved by
-the following lines in `atmel_qspi_transfer()`:
+The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+ID_AA64ZFR0_EL1 register is also 0. So far, so good.
 
-	/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
-	(void)atmel_qspi_read(aq, QSPI_IFR);
+Things become a bit more interesting if the HW implements SME.
+In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+features. And these fields overlap with their SVE interpretations.
+But the architecture says that the SME and SVE feature sets must
+match, so we're still hunky-dory.
 
-However, the current documentation makes no mention to
-synchronization requirements in the other direction, i.e.
-after the last data written via AHB, and before the first
-register access on APB.
+This goes wrong if the HW implements SME, but not SVE. In this
+case, we end-up advertising some SVE features to userspace, even
+if the HW has none. That's because we never consider whether SVE
+is actually implemented. Oh well.
 
-In our case, we were facing an issue where the QSPI peripheral
-would cease to send any new CSR (nCS Rise) interrupts,
-leading to a timeout in `atmel_qspi_wait_for_completion()`
-and ultimately this panic in higher levels:
+Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+being non-zero. The HWCAPS documentation is amended to reflect the
+actually checks performed by the kernel.
 
-	ubi0 error: ubi_io_write: error -110 while writing 63108 bytes
- to PEB 491:128, written 63104 bytes
-
-After months of extensive research of the codebase, fiddling
-around the debugger with kgdb, and back-and-forth with
-Microchip, we came to the conclusion that the issue is
-probably that the peripheral is still busy receiving on AHB
-when the LASTXFER bit is written to its Control Register
-on APB, therefore this write gets lost, and the peripheral
-still thinks there is more data to come in the MMIO transfer.
-This was first formulated when we noticed that doubling the
-write() of QSPI_CR_LASTXFER seemed to solve the problem.
-
-Ultimately, the solution is to introduce memory barriers
-after the AHB-mapped MMIO transfers, to ensure ordering.
-
-Fixes: d5433def3153 ("mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi")
-Cc: Hari.PrasathGE@microchip.com
-Cc: Mahesh.Abotula@microchip.com
-Cc: Marco.Cardellini@microchip.com
-Cc: stable@vger.kernel.org # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
-Cc: stable@vger.kernel.org # 6.x.y
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20241219091258.395187-1-csokas.bence@prolan.hu
+Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
+Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index f46da363574f..8fdc9d27a95e 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -661,13 +661,20 @@ static int atmel_qspi_transfer(struct spi_mem *mem,
- 	(void)atmel_qspi_read(aq, QSPI_IFR);
+diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
+index 2ff922a406ad..1a31723e79fd 100644
+--- a/Documentation/arch/arm64/elf_hwcaps.rst
++++ b/Documentation/arch/arm64/elf_hwcaps.rst
+@@ -178,22 +178,28 @@ HWCAP2_DCPODP
+     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
  
- 	/* Send/Receive data */
--	if (op->data.dir == SPI_MEM_DATA_IN)
-+	if (op->data.dir == SPI_MEM_DATA_IN) {
- 		memcpy_fromio(op->data.buf.in, aq->mem + offset,
- 			      op->data.nbytes);
--	else
-+
-+		/* Synchronize AHB and APB accesses again */
-+		rmb();
-+	} else {
- 		memcpy_toio(aq->mem + offset, op->data.buf.out,
- 			    op->data.nbytes);
+ HWCAP2_SVE2
+-    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SVEver == 0b0001.
  
-+		/* Synchronize AHB and APB accesses again */
-+		wmb();
+ HWCAP2_SVEAES
+-    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.AES == 0b0001.
+ 
+ HWCAP2_SVEPMULL
+-    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.AES == 0b0010.
+ 
+ HWCAP2_SVEBITPERM
+-    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
+ 
+ HWCAP2_SVESHA3
+-    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
+ 
+ HWCAP2_SVESM4
+-    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SM4 == 0b0001.
+ 
+ HWCAP2_FLAGM2
+     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
+@@ -202,16 +208,20 @@ HWCAP2_FRINT
+     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
+ 
+ HWCAP2_SVEI8MM
+-    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.I8MM == 0b0001.
+ 
+ HWCAP2_SVEF32MM
+-    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.F32MM == 0b0001.
+ 
+ HWCAP2_SVEF64MM
+-    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.F64MM == 0b0001.
+ 
+ HWCAP2_SVEBF16
+-    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BF16 == 0b0001.
+ 
+ HWCAP2_I8MM
+     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
+@@ -277,7 +287,8 @@ HWCAP2_EBF16
+     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
+ 
+ HWCAP2_SVE_EBF16
+-    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BF16 == 0b0010.
+ 
+ HWCAP2_CSSC
+     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
+@@ -286,7 +297,8 @@ HWCAP2_RPRFM
+     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
+ 
+ HWCAP2_SVE2P1
+-    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SVEver == 0b0010.
+ 
+ HWCAP2_SME2
+     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
+@@ -313,7 +325,8 @@ HWCAP2_HBC
+     Functionality implied by ID_AA64ISAR2_EL1.BC == 0b0001.
+ 
+ HWCAP2_SVE_B16B16
+-    Functionality implied by ID_AA64ZFR0_EL1.B16B16 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.B16B16 == 0b0001.
+ 
+ HWCAP2_LRCPC3
+     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0011.
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index b105e6683571..678da3ffaef9 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3008,6 +3008,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.matches = match,						\
+ 	}
+ 
++#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
++	{									\
++		__HWCAP_CAP(#cap, cap_type, cap)				\
++		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
++		.matches = match,						\
 +	}
 +
- 	/* Release the chip-select */
- 	atmel_qspi_write(QSPI_CR_LASTXFER, aq, QSPI_CR);
+ #ifdef CONFIG_ARM64_PTR_AUTH
+ static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
+ 	{
+@@ -3036,6 +3043,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
+ };
+ #endif
  
++#ifdef CONFIG_ARM64_SVE
++static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
++{
++	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
++}
++#endif
++
+ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
+@@ -3078,19 +3092,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
+ #ifdef CONFIG_ARM64_SVE
+ 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
+ #endif
+ #ifdef CONFIG_ARM64_GCS
+ 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
 
 
