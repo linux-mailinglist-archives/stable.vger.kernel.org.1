@@ -1,274 +1,237 @@
-Return-Path: <stable+bounces-114490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCB3A2E6FE
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761B6A2E711
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 09:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F403A4B09
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 08:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF8E3A144D
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 08:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40521C1F00;
-	Mon, 10 Feb 2025 08:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12F81C1AB4;
+	Mon, 10 Feb 2025 08:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jcLSpBn4";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="jgzFjWA+";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jcLSpBn4";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="jgzFjWA+"
+	dkim=pass (1024-bit key) header.d=WITEKIO.onmicrosoft.com header.i=@WITEKIO.onmicrosoft.com header.b="iUiKn4jJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2111.outbound.protection.outlook.com [40.107.20.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722AF1C07EC;
-	Mon, 10 Feb 2025 08:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739177527; cv=none; b=HqG87OzYymC62kn+sq5F4pU1FzoKq8GFgXbrJXe3XV19JgHlcIjj86GKZEngpJtJk18olh1RJIYOK7jXjGc3wT8Z0OPSyve1Q1MNfQut3Uui/kzMR5y1XWOwqWNEdqX3NzvIju+NXkt8L/z/QAioTiC7yI1quZ5C/i9hU7pth2s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739177527; c=relaxed/simple;
-	bh=tx0SakQudmWy7pQ2yssX7Lq1PY1uAjUJ2xYm5K/RDPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GqEVUNa2BLJZLrFLfrnZ0q0Of6hOdaGRjpo4z6yWH5Wf6Cxah8B6Tgt3yWXiG5w8nZzk6pQYn29m51btzzl+CZzwGrsxoObGw7mQDwaPXUhjCX16b7JcpWwa6zQMWzr0kBPLpFn/4KnPsE73XJWrIdG2e1nsvMOsI/EeKlciyC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jcLSpBn4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=jgzFjWA+; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jcLSpBn4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=jgzFjWA+; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 91CC41F37E;
-	Mon, 10 Feb 2025 08:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739177523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X7ImRDEq0mvCvZM+o+oq2w3SAOJ+hD1BFuS0nDAv2EA=;
-	b=jcLSpBn4p1UMOPYdW+8hqUByIr2BdL8MqW4gx999LZGDMCotBeiIyxhkPzEpoalBFlPYNs
-	3TQVYh6QZhaLzZT/srK7Bqb0sxBoU7GE/xHb5u9y9ah2y93pG9MovMT0v8dtZGd17ts034
-	qlIl99fJ3Xv1ny2HJWheNoVX+crd7yE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739177523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X7ImRDEq0mvCvZM+o+oq2w3SAOJ+hD1BFuS0nDAv2EA=;
-	b=jgzFjWA+T5ZWTCqA3ZauMbMytyB2f96a6FyrBcJamtP5wn8hyf5YsXVNyqBrScn3oMiYSg
-	ogUzS1ZOqB97zdCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739177523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X7ImRDEq0mvCvZM+o+oq2w3SAOJ+hD1BFuS0nDAv2EA=;
-	b=jcLSpBn4p1UMOPYdW+8hqUByIr2BdL8MqW4gx999LZGDMCotBeiIyxhkPzEpoalBFlPYNs
-	3TQVYh6QZhaLzZT/srK7Bqb0sxBoU7GE/xHb5u9y9ah2y93pG9MovMT0v8dtZGd17ts034
-	qlIl99fJ3Xv1ny2HJWheNoVX+crd7yE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739177523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X7ImRDEq0mvCvZM+o+oq2w3SAOJ+hD1BFuS0nDAv2EA=;
-	b=jgzFjWA+T5ZWTCqA3ZauMbMytyB2f96a6FyrBcJamtP5wn8hyf5YsXVNyqBrScn3oMiYSg
-	ogUzS1ZOqB97zdCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 78A0D13707;
-	Mon, 10 Feb 2025 08:52:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GtoIHTO+qWcoKgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 10 Feb 2025 08:52:03 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-To: miklos@szeredi.hu
-Cc: christian@heusel.eu,
-	joannelkoong@gmail.com,
-	josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mszeredi@redhat.com,
-	regressions@lists.linux.dev,
-	willy@infradead.org,
-	Vlastimil Babka <vbabka@suse.cz>,
-	=?UTF-8?q?Mantas=20Mikul=C4=97nas?= <grawity@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fuse: prevent folio use-after-free in readahead
-Date: Mon, 10 Feb 2025 09:52:03 +0100
-Message-ID: <20250210085202.14943-2-vbabka@suse.cz>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <CAJfpegtaTET+R7Tc1MozTQWmYfgsRp6Bzc=HKonO=Uq1h6Nzgw@mail.gmail.com>
-References: <CAJfpegtaTET+R7Tc1MozTQWmYfgsRp6Bzc=HKonO=Uq1h6Nzgw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FECC178395
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 08:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739177801; cv=fail; b=t6fxSFYtYuqgQ7poKw1NkP+lx7x357Qkeo7Cx13M05yzHe5jTOsujtB5o9+JRzLmi+O98WG57LyuMlnp+GqaiXzH6Nc9jLRSBWXI/zCiV1R3xh0iZx7div5lBBNjpx45cXBRR8q6klXHlPKlaRhRirqKATbPUVtqTcEskXe3zuY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739177801; c=relaxed/simple;
+	bh=krGWUXIDM3mY60s94aGyjbWjYLJof/9LPPOaoVw7qz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=azS93AnZ2kX/Lb+L9/wBHfC+gObV5gzERT2mqz9LT/qIsA/Rqb3TTKUTr0GVGz/vdi+pmlW5gnTq3LmisK1xP4lj+8MrfGq5qeXgtYHbTtIE3moHV18fpV5/I2N7GzoEyBU3jvjVxUaSmS3XFFv1BlhGJG6A8g0xJ5wWmXidiKo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com; spf=pass smtp.mailfrom=witekio.com; dkim=pass (1024-bit key) header.d=WITEKIO.onmicrosoft.com header.i=@WITEKIO.onmicrosoft.com header.b=iUiKn4jJ; arc=fail smtp.client-ip=40.107.20.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=witekio.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vdza28gGATcsokeq0fnWvi1oJpQCLmeLOpupQ1KbXFGD+URcgpBUexr2fudGzlQp4b29CAjfV8KnP1OBT7Vs433zX6Vl9WyllVPRLp0bPoAQPe6CF91MaQE9KPQ8l7go0xqTLOpRElh2bPPQCWgofucGqeZr36Gd0U/WPj3BdhOWJmeYjiwHJ6LxvXqfF3AgcjTdDLz+CH9hxJUYapwDtDJzGvyDnDmC5+k+93nMhR2ApelFvLH/27qdPIUnei7KLHDLRmXHCsOIvNIxgkoZXqVgwyxC0HtfGv4zZ3wQ6uOhXCeTyIGL/Sw365kKdsW68jcN21BUIxP9xP4Vu1xzZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5kI6uN+Mkk8SxQb/IiMW/sgrnHVF+Qa2CbY4bY3Qpfo=;
+ b=fvIDUJrfWN0WseiZh7W48xiCacAwMKtihy9B023ouzTttShTGZl1idPZ/pJaOmEVn09OBuuQnUJpFuznGE3SMah68zS+W2V4k8SIotxuBfL35be0jP71402UMpSI+k9v34uetHiI9aG3cUuxK4BwgI7DU35UC3q74v4W7JKPBJWeiDxo1aOLrgKWIE2RCIobRrwvSNq7ie2Mf9mlGSXuAQ0MLMzMzFSuQRwuXCBWuOtQZhf2+OrIIgGJUXIuJtjhUmZSrRMbImUTYdZ4lUTdE0hjBLcMskoaM2+aBvAGVHFX/l1j++swDZnhiQcXDbrmMQBo+wNl/IpmcviDKtxW8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=witekio.com; dmarc=pass action=none header.from=witekio.com;
+ dkim=pass header.d=witekio.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=WITEKIO.onmicrosoft.com; s=selector2-WITEKIO-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5kI6uN+Mkk8SxQb/IiMW/sgrnHVF+Qa2CbY4bY3Qpfo=;
+ b=iUiKn4jJDk4Sr3Q9nDiulMofHKvMwrGWaHcqjSBQ49DVW8jmcYvfY3LtyEe4hYvnV/RUlE4heiaHD6xq/G8MRkJwLw1sXuNSIYOvUahbyzlOKEcpie93yJakoDkNA31PIgdcv8xcNAb+iawjQ2eZdoNqsc7OpeorzBNKDGfhkcw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=witekio.com;
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:48::10)
+ by AS8P192MB2176.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:639::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.16; Mon, 10 Feb
+ 2025 08:56:34 +0000
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091]) by PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091%4]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
+ 08:56:34 +0000
+From: hsimeliere.opensource@witekio.com
+To: stable@vger.kernel.org
+Cc: Steve Wahl <steve.wahl@hpe.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH v6.6-v6.1] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+Date: Mon, 10 Feb 2025 09:56:09 +0100
+Message-ID: <20250210085609.91495-1-hsimeliere.opensource@witekio.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PA7P264CA0226.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:372::16) To PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:102:48::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[heusel.eu,gmail.com,toxicpanda.com,vger.kernel.org,kvack.org,redhat.com,lists.linux.dev,infradead.org,suse.cz];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,opensuse.org:url]
-X-Spam-Score: -3.30
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR3P192MB0714:EE_|AS8P192MB2176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6dd56c5b-7562-49d2-0a39-08dd49b0d1c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ei9WKmBTKEAZwKNG8st4nQJ1n46Dw/Y+X9K9GNKIjro9wOkquxs0ub9FGch2?=
+ =?us-ascii?Q?Nv6JoI32FSJKHhwSFTbjPhj4eDHUDSJZQFMXM57AYHtmFsVC7aKGEgpc6ymP?=
+ =?us-ascii?Q?px0gU7dyyVSXbL+KhJKs+3WtLc0a/I9geMFkrsc5nmM6FItoNw4IFvugCmC0?=
+ =?us-ascii?Q?N8hc3ecb/joaYgKuTmHvenLJZFOoE3tFLSzeDNyYNakASEzJmPCSZOqbw4fR?=
+ =?us-ascii?Q?ven79FXAiXr1n0D6UGl9hpXd18XtjG0WyC7F/6w8y+LdhpM+zzaQO4QrWv5l?=
+ =?us-ascii?Q?EZ2xsMDE8GpGoWOUZEZjK1eN9nwYn409mqvo0MkuzYDUZs5c3bWh2vyfmSY+?=
+ =?us-ascii?Q?HcfWZq+vReqEsfae7us48O3c/dxrClY5QKx2XChr+Dg3tCAu5NgQO43cS+zY?=
+ =?us-ascii?Q?fnmBPT4YeX5WsDxDEp3+t8zGAC9ohOSLpPEpL/WTksAGqYhnQNbACEiB2l/g?=
+ =?us-ascii?Q?e9WIZz0fMQ0GopRbtjhc2Ndnf1nIeiXdi3UkVQl8BDm0EfDuBwYCtfQmkfTM?=
+ =?us-ascii?Q?1UKySPz7JOLyD+rY+3ZB3NxdY6kZw1tOEyTJ4N0y8VQREWDCMHCx4o+x4LyP?=
+ =?us-ascii?Q?fLCsUNslEDYrpfFoNi6tJpLhBM0NKEaQFj7k1zfN5ZBWZWk8W+88DV2RImL4?=
+ =?us-ascii?Q?eYobm7LY/dPB189UVknWhaLxhq7+gNYhGBamkcDuGfN/yVjhTgbNZSoh2q3n?=
+ =?us-ascii?Q?ACJ/dBzM3iKCpj9yC7yqnm+UjkDD90VYS5ENQ1fqb+wEWwuZ9TsZRjvA+Ld5?=
+ =?us-ascii?Q?82ej7Q9ayFYUzrG90GIyG391eaMvcd00EWbszdAyBiFKkfSoGEPrQVr4ex2j?=
+ =?us-ascii?Q?7tq+XXEIDAVXH428XYGBHjnzJ0o3248feRioHupx1Rf+cj4kDtubDt7W95Yj?=
+ =?us-ascii?Q?8MeRK46VKt3dHZJ5iTZczKsSAXXVnoObx3ylqAUX0vO4M2CruznvlbQKo+f9?=
+ =?us-ascii?Q?qkztzhhIOaTapnRbUV0oB+4NEzxAb+XHkRbnGk4LEi/wVOxxv8NPeZgXowmL?=
+ =?us-ascii?Q?qrBaOXg2z4mYlaTLPFjruWal1VCXk956muVwo1Nekb8t7sgKaKkuftjzhdxh?=
+ =?us-ascii?Q?tU/LLuQ+rn/b025w8SmjBm+N7re9Cujlhp/5vpD69knzvh4X/ktrmFDZwecV?=
+ =?us-ascii?Q?VX8wPsgSRxdTFFTkVYsOz5azDyiDzm1pfFrGcur10q/+2yaq8R4/BvQSV1RA?=
+ =?us-ascii?Q?79ehwcW1MSM+oNyqB+cKPVPSoSf/KppNKpR+uHE7k7nfFbP4m57kg8phfUBm?=
+ =?us-ascii?Q?cf4npjqJfW7PoYIUKCqwg13IAaF72zfzFjm53k5nK8Vl/O42rVTpV86vcUJZ?=
+ =?us-ascii?Q?m83XFVfYV55nHMwYQoPlYxeHp28R+lu7QPvdlq9EtiOEvxUMQZA+hTcVqOZQ?=
+ =?us-ascii?Q?AwwykQCLPHn/tTZxpm3AuwqZ2htiaKEPTVkBBiLtik1cIDXQ1YeGom4zPEaC?=
+ =?us-ascii?Q?sP7v50rlFbAFPshN0I6gyDw+jDqKjMF1?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P192MB0714.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8eV/E4WN2J/iEjhg9dhDuNIaiAIR6onluEeoekhudgcZivr8c/4gQCfEhg+6?=
+ =?us-ascii?Q?f0/VWK7bNq49Hi0+TlzME9jiLakdGJHN0gmoGeWx1uZD2Ih1/qUwZwFJ7xLs?=
+ =?us-ascii?Q?nHnnbGTOa3Zrv7ZwTDlU26i9frlVC/tcAQwsSMNMggU+Ev2rb5s3vVhSGU4O?=
+ =?us-ascii?Q?AQ3VDCxElqMWPfXNuqaG6ZJY2vhJHAIHaCXqqVWUnS/V/wwPUjfB1MElfyvX?=
+ =?us-ascii?Q?udDDmxNeJqkZ25pNMPx786bSOiH9rYjEp8AbKlb9Y8IInlehCgRN2ne/Zi0j?=
+ =?us-ascii?Q?kC9EZQAtqM3DUy4diyvm3LdsQ63qliRQiKLsy/+M8tO+HhlFIVYJWh6Pulcm?=
+ =?us-ascii?Q?jd9dTR+m0Mo9ye4e5C/LWaxvTIoN/H808L+2Eg0dOnOpMdTAygpQS9vbQKNC?=
+ =?us-ascii?Q?aEypPhkZyITKtp0b074dyETQNxreO+HQB4FHnVNTAW+UvpeCs5FeEpKzODX5?=
+ =?us-ascii?Q?VcsVzLU+ICaXSeiNn9h74/ajqz4mUcfLlJ0ZxhImvMydbYBsmt9hgO+Iwl8R?=
+ =?us-ascii?Q?KMYdnbJuKpgBS7PMiW5KzT1cvfjrJu8k41T5mxmkfDpz3a9HHtjw7TItqC4j?=
+ =?us-ascii?Q?Xe22OrxjhggP96Tl4ZoXRhXhJPdzxd9EBBnixLsFDNxV8D3XUF0LvMv2YDG+?=
+ =?us-ascii?Q?orGh0LbLHzUWamVO3IO77hmF+QVdet9h10W5a4+vveRmLM/0i7e4+muHqv1C?=
+ =?us-ascii?Q?tA2VXHEGbc5Xw6ZDHE/0SqZ4ODJMtRSEdj5xSkMJK+fzvfPADF8ChSL4l/+9?=
+ =?us-ascii?Q?PLJMe/pstgMhYhXx5l8v9exQYsX5ihtTwxYniGdA2xB1z3nWXKv6yE6g8MPU?=
+ =?us-ascii?Q?FW36kwJaL/xkfK2JdSpEBMjh71AS3W4/7EmHqZHjditTm1dvYwKv+gJCVHBq?=
+ =?us-ascii?Q?Yf805YNlzVyRA35/ZXuawuMHemx08ZeEDPeMwSMamOWDbf/lsfiUnlWU2WPN?=
+ =?us-ascii?Q?cm/L4hx80rdDdEpZYACNoc9d3sNue6uzbUmvutrwKwrOimYZwD02hLYxfrhQ?=
+ =?us-ascii?Q?NRSozsUapectuc4cXL95ZGVW/mQdwdrwNc30VvdLa0DNnR/EgleRlopxZeBN?=
+ =?us-ascii?Q?DtwAp7oet5uTnkAx/fZO5MdEwcBCr8ODz7yABQrIbS+4YJLLsWfIyv8tn6B4?=
+ =?us-ascii?Q?clzjQ45se6AG8JEJTzHxd8Ou4OnSwpUAiHGEEytOhN0D8R19myI0yBAvEctW?=
+ =?us-ascii?Q?b0/rIFK73j/cKNGrFIEIqWdziMnwXxkAtZYHHqPy8lDQpWgl9ogbGrhK/s48?=
+ =?us-ascii?Q?bOJZCRWoDrfGratSxJN5KGarissaKWpRzpHSfQfwoHoZex1mT57a3tlM/TWk?=
+ =?us-ascii?Q?+SyuKjRPBLyDh1k2goqMRoya/TE4LO4pTDh5rI0CQUDbHgMG5dImbnIq/YgU?=
+ =?us-ascii?Q?ff/0NdAT6VyvECNtViuINn1PXxeDScEtCobSlcKrqy4C7+58fUoBp7LFib5P?=
+ =?us-ascii?Q?CrDbVAhPPMc2IVcn6ylbhGnh4xhCoKg5qpsQG6BqSwzcCzAfXh09s3Y3hiFy?=
+ =?us-ascii?Q?gvm6rrgsZ5tLT+cxiBiXi497jrv4aXcadUNUpP38eRIS8aYijXGSB+7cPpZd?=
+ =?us-ascii?Q?rzKFRY5OYmgKHHeNOjm939KI+aIz2TPPbeHvMtAi?=
+X-OriginatorOrg: witekio.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6dd56c5b-7562-49d2-0a39-08dd49b0d1c9
+X-MS-Exchange-CrossTenant-AuthSource: PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 08:56:34.5362
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 317e086a-301a-49af-9ea4-48a1c458b903
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NTGZnCNjZ0iw0EBFnfSmu0aREVeXOPGTDIyGUnUVYpONysEXNO1AbrMH7SzlHm4lcl3Rb448QHR/rImjrxNr+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P192MB2176
 
-There have been crash reports in 6.13+ kernels related to FUSE and
-Flatpak, such as from Christian:
+From: Steve Wahl <steve.wahl@hpe.com>
 
- BUG: Bad page state in process rnote  pfn:67587
- page: refcount:-1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x67587
- flags: 0xfffffc8000020(lru|node=0|zone=1|lastcpupid=0x1fffff)
- raw: 000fffffc8000020 dead000000000100 dead000000000122 0000000000000000
- raw: 0000000000000000 0000000000000000 ffffffffffffffff 0000000000000000
- page dumped because: PAGE_FLAGS_CHECK_AT_PREP flag(s) set
- CPU: 0 UID: 1000 PID: 1962 Comm: rnote Not tainted 6.14.0-rc1-1-mainline #1 715c0460cf5d3cc18e3178ef3209cee42e97ae1c
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
- Call Trace:
+[ Upstream commit cc31744a294584a36bf764a0ffa3255a8e69f036 ]
 
-  dump_stack_lvl+0x5d/0x80
-  bad_page.cold+0x7a/0x91
-  __rmqueue_pcplist+0x200/0xc50
-  get_page_from_freelist+0x2ae/0x1740
-  ? srso_return_thunk+0x5/0x5f
-  ? __pm_runtime_suspend+0x69/0xc0
-  ? srso_return_thunk+0x5/0x5f
-  ? __seccomp_filter+0x303/0x520
-  ? srso_return_thunk+0x5/0x5f
-  __alloc_frozen_pages_noprof+0x184/0x330
-  alloc_pages_mpol+0x7d/0x160
-  folio_alloc_mpol_noprof+0x14/0x40
-  vma_alloc_folio_noprof+0x69/0xb0
-  do_anonymous_page+0x32a/0x8b0
-  ? srso_return_thunk+0x5/0x5f
-  ? ___pte_offset_map+0x1b/0x180
-  __handle_mm_fault+0xb5e/0xfe0
-  handle_mm_fault+0xe2/0x2c0
-  do_user_addr_fault+0x217/0x620
-  exc_page_fault+0x81/0x1b0
-  asm_exc_page_fault+0x26/0x30
- RIP: 0033:0x7fcfc31c8cf9
+When ident_pud_init() uses only GB pages to create identity maps, large
+ranges of addresses not actually requested can be included in the resulting
+table; a 4K request will map a full GB.  This can include a lot of extra
+address space past that requested, including areas marked reserved by the
+BIOS.  That allows processor speculation into reserved regions, that on UV
+systems can cause system halts.
 
-Or Mantas:
+Only use GB pages when map creation requests include the full GB page of
+space.  Fall back to using smaller 2M pages when only portions of a GB page
+are included in the request.
 
- list_add corruption. next->prev should be prev (ffff889c8f5bd5f0), but was ffff889940066a10. (next=ffffe3ce8b683548).
- WARNING: CPU: 3 PID: 2184 at lib/list_debug.c:29 __list_add_valid_or_report+0x62/0xb0
-  spi_intel_pci soundcore nvme_core spi_intel rfkill rtsx_pci nvme_auth cec i8042 video serio wmi
- CPU: 3 UID: 1000 PID: 2184 Comm: fuse mainloop Tainted: G     U     OE      6.13.1-arch1-1 #1 c1258adae10e6ad423427764ae6ad3679b7d8e8a
- Tainted: [U]=USER, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
- Hardware name: LENOVO 20S6003QPB/20S6003QPB, BIOS N2XET42W (1.32 ) 06/12/2024
- RIP: 0010:__list_add_valid_or_report+0x62/0xb0
+No attempt is made to coalesce mapping requests. If a request requires a
+map entry at the 2M (pmd) level, subsequent mapping requests within the
+same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full GB page.
+Existing usage starts with larger regions and then adds smaller regions, so
+this should not have any great consequence.
 
- Call Trace:
-  <TASK>
-  ? __list_add_valid_or_report+0x62/0xb0
-  ? __warn.cold+0x93/0xf6
-  ? __list_add_valid_or_report+0x62/0xb0
-  ? report_bug+0xff/0x140
-  ? handle_bug+0x58/0x90
-  ? exc_invalid_op+0x17/0x70
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? __list_add_valid_or_report+0x62/0xb0
-  free_unref_page_commit.cold+0x9/0x12
-  free_unref_page+0x46e/0x570
-  fuse_copy_page+0x37e/0x6c0
-  fuse_copy_args+0x186/0x210
-  fuse_dev_do_write+0x796/0x12a0
-  fuse_dev_splice_write+0x29d/0x380
-  do_splice+0x308/0x890
-  __do_splice+0x204/0x220
-  __x64_sys_splice+0x84/0xf0
-  do_syscall_64+0x82/0x190
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x77e0dde36e56
-
-Christian bisected the issue to 3eab9d7bc2f4 ("fuse: convert readahead
-to use folios"). The bug reports suggest a refcount underflow on struct
-page due to a use after free or double free. The bisected commit
-switches fuse_readahead() to readahead_folio() which includes a
-folio_put() and removes folio_put() from fuse_readpages_end(). As a
-result folios on the ap->folios (previously ap->pages) don't have an
-elevated refcount. According to Matthew the folio lock should protect
-them from being freed prematurely. It's unclear why not, but before this
-is fully resolved we can stop the kernels from crashing by having the
-refcount relevated again. Thus switch to __readahead_folio() that does
-not drop the refcount, and reinstate folio_put() in
-fuse_readpages_end().
-
-Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
-Reported-by: Christian Heusel <christian@heusel.eu>
-Closes: https://lore.kernel.org/all/2f681f48-00f5-4e09-8431-2b3dbfaa881e@heusel.eu/
-Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/110
-Reported-by: Mantas Mikulėnas <grawity@gmail.com>
-Closes: https://lore.kernel.org/all/34feb867-09e2-46e4-aa31-d9660a806d1a@gmail.com/
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1236660
-Tested-by: Joanne Koong <joannelkoong@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Link: https://lore.kernel.org/all/20240717213121.3064030-3-steve.wahl@hpe.com
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 ---
-Given the impact on users and positive testing feedback, this is the
-proper patch in case Miklos decides to mainline and stable it before the
-full picture is known.
+ arch/x86/mm/ident_map.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
- fs/fuse/file.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 7d92a5479998..a40d65ffb94d 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -955,8 +955,10 @@ static void fuse_readpages_end(struct fuse_mount *fm, struct fuse_args *args,
- 		fuse_invalidate_atime(inode);
- 	}
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index 968d7005f4a7..a204a332c71f 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
--	for (i = 0; i < ap->num_folios; i++)
-+	for (i = 0; i < ap->num_folios; i++) {
- 		folio_end_read(ap->folios[i], !err);
-+		folio_put(ap->folios[i]);
-+	}
- 	if (ia->ff)
- 		fuse_file_put(ia->ff, false);
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
  
-@@ -1048,7 +1050,7 @@ static void fuse_readahead(struct readahead_control *rac)
- 		ap = &ia->ap;
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_leaf(*pud))
++			continue;
++
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
  
- 		while (ap->num_folios < cur_pages) {
--			folio = readahead_folio(rac);
-+			folio = __readahead_folio(rac);
- 			ap->folios[ap->num_folios] = folio;
- 			ap->descs[ap->num_folios].length = folio_size(folio);
- 			ap->num_folios++;
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
++
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
++
++		if (use_gbpage) {
++			pud_t pudval;
+ 
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 -- 
-2.48.1
+2.43.0
 
 
