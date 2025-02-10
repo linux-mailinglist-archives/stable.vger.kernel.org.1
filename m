@@ -1,66 +1,67 @@
-Return-Path: <stable+bounces-114502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE88A2E8B6
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:08:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789CAA2E9D4
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 11:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECDBE3AB5DE
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:07:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F5607A1AC0
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 10:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7151BD9DD;
-	Mon, 10 Feb 2025 10:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B13F1DE2A4;
+	Mon, 10 Feb 2025 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="4xWJWD3A"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Rp9EA02h"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB351C5F12;
-	Mon, 10 Feb 2025 10:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA65A1CAA82;
+	Mon, 10 Feb 2025 10:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739182069; cv=none; b=D1lLvJB0ZDe1KoJN+citeHO8W/VzUEeunsh9kSHQXfd+fbKkaX8Q4PeSO2ym71PrRobQFlES8xwSjvR1LDF0Asjr15uPMDpDc0YJ/ckWhVQFG7aEr7RVR/t6G+Puu3OqmGx75OjIWT3b0C1+yfbaIlZYEbALw/YNOuY9N7wCkuk=
+	t=1739184309; cv=none; b=Bo2TwAGks7UW8SYWsNpUAaLoSVIXyLB/TEAJvvfId2D6g5hW6aUFtG7B2fxcegqol0VcNSEXOgdmqMsmH6vi2WFIlrnxJuLS4bUh8B/en1a5E1H1KOYKXr1DJVD4vkKVr0f8dF8IPghIND4M3HKrp1K5OCvF7C1BOU1iiwJR6jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739182069; c=relaxed/simple;
-	bh=qQ68sf6xTmfS+0HraBhqE6LqqgYEwQblx/dTeVABmZ0=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=drcQNbGE2ulmizYOpHgU+6+8JavgSZ06KQvtDwzIDkTKVaIMAqMUXVCgPSDJuM/6uoP24TLPwkRo158LcurO/hYsKCKa59f6iRp9F5xYX5+DLQ3LgUJYkQjWsd6psiWafIMwQSb1fN7e2ZM2QWxkc2y6iSoTjADFPlpoamV+bxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=4xWJWD3A; arc=none smtp.client-ip=91.207.212.93
+	s=arc-20240116; t=1739184309; c=relaxed/simple;
+	bh=Cvj5SmS/2dD6/BHiaLLezmb1EqPOsWisTTunV3hF0qA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=UT15530gG2ZUvBsJQgLI2SiXWNS5vKoIu+vyzSn3laSwA1fjNY5O1mlylk2Dt+XD042Btn6PaLuV+3LMGrpv4RzFbPbB75h5V2zMkNSAdiO7cmWZrPoSyokvEIw3eGcQzBiwMC5trxtJCA78o/XAsouaYdxTYomsw68zByYUEtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Rp9EA02h; arc=none smtp.client-ip=185.132.182.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A9epr5012596;
-	Mon, 10 Feb 2025 11:07:13 +0100
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A9esgn022216;
+	Mon, 10 Feb 2025 11:07:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=selector1; bh=/H+us+EpN5gsIUBiB28735
-	vhfURAgKzhJf8uRl0O2pI=; b=4xWJWD3AB2S4EH6i28/FicuBfQaDy5KGsqp9Yy
-	xQ3UBm+EpK9IRp4LP1dIXUoCjDHyicQORR+48DCdMMmhBbmktc28Zsfnj5QvEnwH
-	0e+JPa6a9TGy5l3D/wk7wrHYxTaH/XyA/9mkPDzDKKRk0Kz4xSS+L3i+avQUfNfJ
-	VbdxPRlKddOdD7xVAs+pyKXyoqOF0j4bPj3zVbPEDdWYZJPvXPSRLKKFxkCY2Uin
-	81krOXng//YV27/HSDLEkfTQFv/IFj5wFPnT3QPkgLpon+SONoaMhEzhqU8MzRIY
-	QPfTEBYkS8msORr6G3foOogx3CbFw1PxxllHUJjFYlhjYpdw==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	KrNQJraXZVjilPFdNhBPtBLSm+xWnPeDyMXrb2bQCls=; b=Rp9EA02hn4j6/zpf
+	9WS8gwiAvBc0R7ipgIptAfQyN02mO4Mw5Ll8jIAuhu3B4UVda1tW2VSZVOS8Srmd
+	rOLx0G8ukSY/k98zd1YrQn3FkjRV+Ih3fWyjqoclFZzz7pmqj+QZNgVd/BH8mwwI
+	PsCghMr5T+r/8EeBqw9I9+txbubOAZzObCz1koLomFf5ZxjYGGFBnXboTwzOnfS1
+	POSSuGMf4MYWxJUDbD5kbAhpSYRu3ZBtupaMrj+qItsRrTt1UmVpuCJe5/tjETgj
+	G3RRiy6buyBL3CRbwWQSQMD57qpFTpUnWoUkdSt/KITAncS6rQAri3DfxrEqWNfp
+	HKqNSA==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44p0wswptp-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44p0rhwv3v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 11:07:13 +0100 (CET)
+	Mon, 10 Feb 2025 11:07:16 +0100 (CET)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id B2C4E4004C;
-	Mon, 10 Feb 2025 11:06:14 +0100 (CET)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id AC6B84004D;
+	Mon, 10 Feb 2025 11:06:16 +0100 (CET)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9629D2BE929;
-	Mon, 10 Feb 2025 11:05:00 +0100 (CET)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C587A2BEFA0;
+	Mon, 10 Feb 2025 11:05:02 +0100 (CET)
 Received: from localhost (10.252.6.236) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 10 Feb
- 2025 11:05:00 +0100
+ 2025 11:05:02 +0100
 From: Alain Volmat <alain.volmat@foss.st.com>
-Subject: [PATCH 0/2] ARM: dts: stm32: correct dtsi and yaml related to
- dcmipp & mipid02
-Date: Mon, 10 Feb 2025 11:04:29 +0100
-Message-ID: <20250210-6-14-stm32-media-fixes-v1-0-c64ebe9af8bb@foss.st.com>
+Date: Mon, 10 Feb 2025 11:04:31 +0100
+Subject: [PATCH 2/2] dt-bindings: media: st,stmipid02: correct
+ lane-polarities maxItems
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,10 +70,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC3PqWcC/x3LSQqAMAxA0atI1gaa2jpdRVw4RM3CgUZEEO9uc
- fn4/AeUg7BCnTwQ+BKVfYugNIFh6baZUcZosMZ6Y8lgjuRQzzWzuPIoHU5ys6IvyfRu4r6iAuJ
- 8BP5DfJv2fT/o7CZcaAAAAA==
-X-Change-ID: 20250210-6-14-stm32-media-fixes-5810b4feb917
+Message-ID: <20250210-6-14-stm32-media-fixes-v1-2-c64ebe9af8bb@foss.st.com>
+References: <20250210-6-14-stm32-media-fixes-v1-0-c64ebe9af8bb@foss.st.com>
+In-Reply-To: <20250210-6-14-stm32-media-fixes-v1-0-c64ebe9af8bb@foss.st.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Maxime Coquelin
@@ -94,25 +94,32 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-10_05,2025-02-10_01,2024-11-22_01
 
-This series corrects two issues found on the stm32mp135f-dk related
-to a missing clock-names property within the stm32mp135.dtsi and a
-st-mipid02 device-tree bindings issue.
+The MIPID02 can use up to 2 data lanes which leads to having a maximum
+item number of 3 for the lane-polarities since this also contains the
+clock lane.
 
+CC: stable@vger.kernel.org
+Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 ---
-Alain Volmat (2):
-      ARM: dts: stm32: add missing dcmipp kclk clock-names in stm32mp135.dtsi
-      dt-bindings: media: st,stmipid02: correct lane-polarities maxItems
-
  Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml | 2 +-
- arch/arm/boot/dts/st/stm32mp135.dtsi                           | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
----
-base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
-change-id: 20250210-6-14-stm32-media-fixes-5810b4feb917
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
+index b68141264c0e9fe0e530ce3b06fa3434fa712b38..4d40e75b4e1efff673647dff7bf984c89abca4cf 100644
+--- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
+@@ -71,7 +71,7 @@ properties:
+                 description:
+                   Any lane can be inverted or not.
+                 minItems: 1
+-                maxItems: 2
++                maxItems: 3
+ 
+             required:
+               - data-lanes
+
 -- 
-Alain Volmat <alain.volmat@foss.st.com>
+2.34.1
 
 
