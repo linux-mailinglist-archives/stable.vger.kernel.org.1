@@ -1,213 +1,160 @@
-Return-Path: <stable+bounces-114581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6ACA2EEF0
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 036D4A2EEF2
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD451884FA0
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C08018853C9
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08436231A41;
-	Mon, 10 Feb 2025 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069A32309BF;
+	Mon, 10 Feb 2025 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cDMoMEU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwBJ3Z/7"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2069.outbound.protection.outlook.com [40.107.236.69])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18418231A33;
-	Mon, 10 Feb 2025 13:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739195683; cv=fail; b=CHbS0UzhPkbo3aOGs1TVCmoJ0e2sc7wqh/SW5hVtxERPMT7/U8sEjFI1nWAyvxrnj59IY7FkqCuodp6NjlUUDZTCyB/HCk1PP6kQQ9R10tR0MuQo96Q8s8iwFWgrtRWAI8jYDMD0ox9CFq/HOGqfX1ajhZmR0NY9tLar5Ji6nPo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739195683; c=relaxed/simple;
-	bh=mTZlIDl5QLOJMDxUNc064lRgwWcsH/y6kKXHt8iigVY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eoAHTgKLoqAkQHV4k9JUfIAGkC1MO/9NRI+C2Ur4rVkN2zkaLFoVbHNYKagQcUOHp7p5X1xp7aHpl7lU9rTcqGFJfyOLYDdHALmvkfn1SeK2ZqD2VsjtCyD4wftZX1UN6VJOV8NjREE4GqgLQzhmsi2c8o3YlU3+Rq/xt+mOg1I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cDMoMEU3; arc=fail smtp.client-ip=40.107.236.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a8n7KfGL6Kw8gVHcEibbDTnrDZkOTp6bpDrdLi9AdOAZSNuVIRD5CDVvqZ5KPAi6poYdJGIkkcbxpBCvk25ti40SqK8CGSgHEudkAredF5KXMDqcutcpeq8ozFfPEc71WkPGJ+fgDomlHHPsxAwIWx+RM53qtXVMKyhjo3vwMX/7ZZVzqK+ykG74WDXiVChkYAZMVDC/QEDBwZx0AZV67Akh251TV3U6bxwrxTvp534SHSa3B4g263NGUx4uKTdiTdHvMtpFqSzEminW9PZLtHIFfk4BfYwD7s/Lmq8xvwpw0XMgkjZubcHKkDs1mpDbrzw0aYF9+veFZaYK32+L5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jAqld6ACD9cKd6Gw08149R6YFUi92EZgC/qWPxiJrjI=;
- b=hiwLwwv3Ck52nMLgS9dOw8ApL1TlSEHfnrC1ykJzt+T2VAw6FbS2Lf+KVJF+WiUOVIxIKduretxs/BxxDcz70tx+JClwVUsMp/VeW1ieC1Ma02uohsFBOEE4xF6pwKLei/iaMFketDmwX/q62ObCcd/xhQmO4dZpCC27xgoqHeaHAZEduB/vTMiE2EONJRfPtSGypjzSKk2HtT0hrIbnZSfCU34O71QNKqeNTZS94KN9iap7JPrl00rAgar8yRtReMEeFRbCZdkRhtAlULfXepIMGr5ULFnjp9PE9jBin4qYA5YeRTniVh3XHQmIS+WyJYrK3darom02n71W2mHxCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jAqld6ACD9cKd6Gw08149R6YFUi92EZgC/qWPxiJrjI=;
- b=cDMoMEU3vertz1L50IM+jHbJFIv4J8gkLLjbxkW2+KRfUB/9Eu4vpHODOMQQs5CIwNPPU0LJuQQRyN7ifw0UXwncZFrvii++mTATzXNxH2B2cYYFTkbrNOy4zut5mmb9U+9W2VnmrhxarMQhaeF+ed5atZjs0EcbkSgGv/72+OVw2deCqGA1JOeQdwAqp/0q5NUOBPJ4VdI3h+xs54AZy8FzjcwzpLb/OM2arqbRBWXcNckeYh3Rt+yu/MKtIbNN7/qQg2Ascj6FkH2yUSFGgjpNt7xR9CqRe56YsYAToPy87hsrcGcCFKsAAmSCRulf28kZBVCW5daP6KxrdpYK+w==
-Received: from SN6PR2101CA0029.namprd21.prod.outlook.com
- (2603:10b6:805:106::39) by SN7PR12MB6960.namprd12.prod.outlook.com
- (2603:10b6:806:260::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.12; Mon, 10 Feb
- 2025 13:54:35 +0000
-Received: from SN1PEPF0002BA50.namprd03.prod.outlook.com
- (2603:10b6:805:106:cafe::a8) by SN6PR2101CA0029.outlook.office365.com
- (2603:10b6:805:106::39) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.2 via Frontend Transport; Mon,
- 10 Feb 2025 13:54:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SN1PEPF0002BA50.mail.protection.outlook.com (10.167.242.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.10 via Frontend Transport; Mon, 10 Feb 2025 13:54:35 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 10 Feb
- 2025 05:54:26 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 10 Feb 2025 05:54:26 -0800
-Received: from 13db4e1-lcedt.nvidia.com (10.127.8.11) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Mon, 10 Feb 2025 05:54:23 -0800
-From: Mohan Kumar D <mkumard@nvidia.com>
-To: <vkoul@kernel.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
-CC: <dmaengine@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Mohan Kumar D
-	<mkumard@nvidia.com>, Thierry Reding <treding@nvidia.com>
-Subject: [PATCH v5 2/2] dmaengine: tegra210-adma: check for adma max page
-Date: Mon, 10 Feb 2025 19:24:13 +0530
-Message-ID: <20250210135413.2504272-3-mkumard@nvidia.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250210135413.2504272-1-mkumard@nvidia.com>
-References: <20250210135413.2504272-1-mkumard@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B969E22FDF9
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739195717; cv=none; b=HFGUI5monUYQ4dTelhz9d6BDCkm4/YFQ8YYzp1eszpa5FJ2KloHyA17mL0hiOrY4s2lTENau3SczXQmJoDuBIg1sCdsi28ZPz2VQaQK8SOBSfoknaYCFB8ZWyGTX7POeLPWMlD+nvWF6dqq50j2/QpAkmY+cLrnZHTd9YxdBb3s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739195717; c=relaxed/simple;
+	bh=IL5R5wDz62ITKGq+EzMytmgnzmZOTqxlnZIvxY7ZbBo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UEVzvk1WI7/p6jEN/ac+H4k66cAGmEibHi2pp+AdQxKsRgaicka0SxvaFq/VMyfX7zZmlwkOXWhRnrOr5C1Gj6jHGciSK8LOA02ivsqn8uZzW2Bp5abgJWYhgJd7IbjEqkjcv/hcY0k3XDvut43BCNX6nR9GkFPsS2Tqg2wmrtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwBJ3Z/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC008C4CED1;
+	Mon, 10 Feb 2025 13:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739195714;
+	bh=IL5R5wDz62ITKGq+EzMytmgnzmZOTqxlnZIvxY7ZbBo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=mwBJ3Z/7JSXMo+8HuP6d0xfErzBC07pvywMBbMloRY7khhD/2tajy1l7IkPhi/+Ts
+	 jtYznG2S0cW8sLkh+QM2VlYZIFCYix759O8u4H6P5FcaOKtvBQN4A2FsIUxMareLCS
+	 U/LfgoJG8VtXBwy6xiujCOkhWB9wYH6yHB2WgrM4=
+Subject: FAILED: patch "[PATCH] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius" failed to apply to 6.1-stable tree
+To: wse@tuxedocomputers.com,ggo@tuxedocomputers.com,kwilczynski@kernel.org,mario.limonciello@amd.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 10 Feb 2025 14:55:11 +0100
+Message-ID: <2025021011-blade-viselike-e35c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA50:EE_|SN7PR12MB6960:EE_
-X-MS-Office365-Filtering-Correlation-Id: c27da0e4-0b83-4ed3-ddc1-08dd49da7418
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?i+LwoC0WHLtwdDvuIvo++fLjvE6D09jLpdjUjsrxfLS4D+TWlFWCVoRP4J24?=
- =?us-ascii?Q?bmFALpX1udFcq1ndTq4B9C867+Yw1Ix+zoRb+zxlIUvEKY1sUKwKjuqLwSAJ?=
- =?us-ascii?Q?W37yU/dIOKO7+VDuqUl016jEx2h+OfT8fb62QXXHF93s/XSrwfwke6ld3ge1?=
- =?us-ascii?Q?9++oSSfl5bxV4UtBPost6EE8i29oEVD+plX4ROHanRitNO0hX8duFDKB5zA8?=
- =?us-ascii?Q?+IBpgRDiMhitzp1w+IT2H1EbL4jU2+eCyApvxlTjYoc8EPlSulAnYPo6F4eJ?=
- =?us-ascii?Q?icuaOg4kHdMzbbNmL42HJLjwNU9MrL6f/hGEU4w5yOj/t3PCJMb6vjKQkNBz?=
- =?us-ascii?Q?JZL9FTbqtGrhd40UCNzF1Er86X+h3ZXtgGc1N5XrnHfl9apyRe7+IbFc1YdO?=
- =?us-ascii?Q?o9jkiuU4VKed0Xqcc9BUrK/lbcpCilNsBsou5hgKwxt0S6KCik4wdbuPltv1?=
- =?us-ascii?Q?MdN2luxuy8q8zFy3Cqgr5CyGZy89ngrmAqW0h0/Nn7roptKjtFLJlwNt+Pev?=
- =?us-ascii?Q?2Ciqv6UTa8AvJ7tpJaDVZBYfF6oUz6c+VIaoUpGpl1r9zfH0+JcADvnwGGR+?=
- =?us-ascii?Q?S0MxIE4HAV1wRhJI8aLBeRRNo6jGKT3xnNvkvYfb+rId7q08iUtU0MQaix1Y?=
- =?us-ascii?Q?wWNEjwPGUFRDbX6yxfT6hJ1PFN8fI30IlbxjldLezEdNU5IwK3LXi+rTZg9H?=
- =?us-ascii?Q?J8xZ51Qwx5bc+Z06GYYWm/3171YqkerRzdo1WTWHLZCaLtLrjp/lsrbvaQDw?=
- =?us-ascii?Q?bbqTiujuHLnZBDXQVsRY1IIqZ1z8Ca0WhvCl9HLy1jjCWnRU+OmHiuSR30Us?=
- =?us-ascii?Q?9zAkAl+maY64+NPiuH7puaLN65lEt4F0rqKMYClUKc87B3t8YUNI9fDjhH3J?=
- =?us-ascii?Q?NfSntbvSo/FXiWcwuWybeNdj7UOv8nQ8/pKfxD0uh+Oz3mstB9MNG9Yfp9is?=
- =?us-ascii?Q?F0i8nR3bkOP1XT3o87sYZL38N/igCtyitz99tr8L2OHlmBa5xttz6gF9neZn?=
- =?us-ascii?Q?IyOkKU11wKzkZOEP6OlaPwzI38UXrsXQge99U3QQrsf4aCVIEPfgPNnZY6pS?=
- =?us-ascii?Q?q4YL/Gh37iOUAzT1GYmkhiy6V9d55bwlBf6fIHJzC9J1TMIMHVjbzuaexBGi?=
- =?us-ascii?Q?JH24E/YaiSiWoyS2YgzSMFF3XHFfpuw34wqmVybB1WAQFB6MiAD+t3Dg19oB?=
- =?us-ascii?Q?qTgI5ChKPNuIBwzvIf6xWz4oK5yWIUzDN7aU/xRuMCgvPafjmqC3NC4B8oML?=
- =?us-ascii?Q?FHF8+lVeC7urTQc4L9Pj1X3qR7AoXHtOc8DA0Th5YIksyqzsLKz4z5rRXFha?=
- =?us-ascii?Q?0qigDXW6TsglWCg6uPRvEE8xe5ImwOsR5lqM1u8LdAYi5TCjp/GP2/8bImI7?=
- =?us-ascii?Q?mjEnQQ3m13qiYfHm56+czG6bJ6lc60q2DQvpFWfI0uvIUqSH+hiublVeScIp?=
- =?us-ascii?Q?gpYDqSE6p58ptBmBP85T/dgvANdfVmxQOwvGCe56ECIvWfPH0ikxieNvg8fe?=
- =?us-ascii?Q?ClCzlewxHdGTzDc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 13:54:35.4713
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c27da0e4-0b83-4ed3-ddc1-08dd49da7418
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002BA50.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6960
 
-Have additional check for max channel page during the probe
-to cover if any offset overshoot happens due to wrong DT
-configuration.
 
-Fixes: 68811c928f88 ("dmaengine: tegra210-adma: Support channel page")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
----
- drivers/dma/tegra210-adma.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
-index a0bd4822ed80..801740ad8e0d 100644
---- a/drivers/dma/tegra210-adma.c
-+++ b/drivers/dma/tegra210-adma.c
-@@ -83,7 +83,9 @@ struct tegra_adma;
-  * @nr_channels: Number of DMA channels available.
-  * @ch_fifo_size_mask: Mask for FIFO size field.
-  * @sreq_index_offset: Slave channel index offset.
-+ * @max_page: Maximum ADMA Channel Page.
-  * @has_outstanding_reqs: If DMA channel can have outstanding requests.
-+ * @set_global_pg_config: Global page programming.
-  */
- struct tegra_adma_chip_data {
- 	unsigned int (*adma_get_burst_config)(unsigned int burst_size);
-@@ -99,6 +101,7 @@ struct tegra_adma_chip_data {
- 	unsigned int nr_channels;
- 	unsigned int ch_fifo_size_mask;
- 	unsigned int sreq_index_offset;
-+	unsigned int max_page;
- 	bool has_outstanding_reqs;
- 	void (*set_global_pg_config)(struct tegra_adma *tdma);
- };
-@@ -854,6 +857,7 @@ static const struct tegra_adma_chip_data tegra210_chip_data = {
- 	.nr_channels		= 22,
- 	.ch_fifo_size_mask	= 0xf,
- 	.sreq_index_offset	= 2,
-+	.max_page		= 0,
- 	.has_outstanding_reqs	= false,
- 	.set_global_pg_config	= NULL,
- };
-@@ -871,6 +875,7 @@ static const struct tegra_adma_chip_data tegra186_chip_data = {
- 	.nr_channels		= 32,
- 	.ch_fifo_size_mask	= 0x1f,
- 	.sreq_index_offset	= 4,
-+	.max_page		= 4,
- 	.has_outstanding_reqs	= true,
- 	.set_global_pg_config	= tegra186_adma_global_page_config,
- };
-@@ -921,7 +926,7 @@ static int tegra_adma_probe(struct platform_device *pdev)
- 			page_offset = res_page->start - res_base->start;
- 			page_no = div_u64(page_offset, cdata->ch_base_offset);
- 
--			if (WARN_ON(page_no == 0))
-+			if (WARN_ON(page_no == 0 || page_no > cdata->max_page))
- 				return -EINVAL;
- 
- 			tdma->ch_page_no = lower_32_bits(page_no) - 1;
--- 
-2.25.1
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x b1049f2d68693c80a576c4578d96774a68df2bad
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021011-blade-viselike-e35c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b1049f2d68693c80a576c4578d96774a68df2bad Mon Sep 17 00:00:00 2001
+From: Werner Sembach <wse@tuxedocomputers.com>
+Date: Tue, 14 Jan 2025 23:23:54 +0100
+Subject: [PATCH] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius
+ Gen1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend") sets the
+policy that all PCIe ports are allowed to use D3.  When the system is
+suspended if the port is not power manageable by the platform and won't be
+used for wakeup via a PME this sets up the policy for these ports to go
+into D3hot.
+
+This policy generally makes sense from an OSPM perspective but it leads to
+problems with wakeup from suspend on the TUXEDO Sirius 16 Gen 1 with a
+specific old BIOS. This manifests as a system hang.
+
+On the affected Device + BIOS combination, add a quirk for the root port of
+the problematic controller to ensure that these root ports are not put into
+D3hot at suspend.
+
+This patch is based on
+
+  https://lore.kernel.org/linux-pci/20230708214457.1229-2-mario.limonciello@amd.com
+
+but with the added condition both in the documentation and in the code to
+apply only to the TUXEDO Sirius 16 Gen 1 with a specific old BIOS and only
+the affected root ports.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250114222436.1075456-1-wse@tuxedocomputers.com
+Co-developed-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.1+
+
+diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+index 0681ecfe3430..f348a3179b2d 100644
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -1010,4 +1010,34 @@ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
+ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
++
++/*
++ * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
++ * may cause problems when the system attempts wake up from s2idle.
++ *
++ * On the TUXEDO Sirius 16 Gen 1 with a specific old BIOS this manifests as
++ * a system hang.
++ */
++static const struct dmi_system_id quirk_tuxeo_rp_d3_dmi_table[] = {
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "APX958"),
++			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "V1.00A00_20240108"),
++		},
++	},
++	{}
++};
++
++static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
++{
++	struct pci_dev *root_pdev;
++
++	if (dmi_check_system(quirk_tuxeo_rp_d3_dmi_table)) {
++		root_pdev = pcie_find_root_port(pdev);
++		if (root_pdev)
++			root_pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
++	}
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
+ #endif /* CONFIG_SUSPEND */
 
 
