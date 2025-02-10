@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-114592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727D3A2EF08
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:57:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2835A2EF0A
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 14:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D50F164734
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:57:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D416C18850A6
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 13:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27BF23099D;
-	Mon, 10 Feb 2025 13:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D052230998;
+	Mon, 10 Feb 2025 13:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJQGwk92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFSyPqzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548801DF744
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D23014B08C
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 13:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739195849; cv=none; b=Me4BPp/H0w4VS/ae0x3Xw6/wioYU1l+slcS+R0SuzsVi/Xo+WCJtUqbavaYG5boTLXqQ+Xd9L6ucHKTW5d9pvBzZbmaLi0se6ZBCokTTwUKdk1KL0cNH0dBDYRyPsjceRT9KjvGTiR/TUwIvRT6VBWKb4GQnbMh0ovn0U+6fw5o=
+	t=1739195865; cv=none; b=lLfctWau9JTGo1z62aSy5CZt9DnjPmDYzP5MgaQGRsy6jafXywgYZvwOKkbKyxUulO01/9S5F1/8TK+K7GgiP7QxbTkzpw86KSoy/+Mr0lEa26iWCywPKnSrzNsf1387/LHpItKt5gxqRDWT9ldn27zPCwzSollM6Kb4273RbtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739195849; c=relaxed/simple;
-	bh=Tgm71iiPUpu8AdWy+ETn5mQ+ls0PrNRvkiuh7W58YvI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IgQVIha6FWY34P1cL5EfyRIsSaiHkky6jUPzKRezP4985NEBpj9S59WY/FlbLGLygpWohaTkvhqtTpnIB2KuGSt1gvhku9BlGHId/VEFB0S2/0fCz57A4PlFJiM5Vt5meD6udazJigJinI/h861FuF1c8AZDCczJOBGTzYUToRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJQGwk92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F12C4CED1;
-	Mon, 10 Feb 2025 13:57:27 +0000 (UTC)
+	s=arc-20240116; t=1739195865; c=relaxed/simple;
+	bh=LJ+ptJILJcZCMQJYEwtkQ7ZkqOFZ1GLQS4RaIaGuhgA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XIA7Zln+BHy4S/HEjF82MwBcrmK5KFGdxsZCwWBM9ol0p3oPM+TAIvjOVrumwOZ1NgFuLm//CzHKeEzVj+BNuSpzjofKoDSyKqtp8K/fs+0kvGWD0hovdSUVkUxnhgWv/Pi/A5dNaHNstFr0waLvMpNKbBJghMO408o8cw+dNzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFSyPqzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B22FC4CED1;
+	Mon, 10 Feb 2025 13:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739195848;
-	bh=Tgm71iiPUpu8AdWy+ETn5mQ+ls0PrNRvkiuh7W58YvI=;
+	s=korg; t=1739195865;
+	bh=LJ+ptJILJcZCMQJYEwtkQ7ZkqOFZ1GLQS4RaIaGuhgA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HJQGwk92wgicCeD3wcvZoAA9Ti9UCbtsgY3MC0NCd8hb0MVMEqAA9TZtidx5PWNlb
-	 0b9tp80bgMNmnTBGNZYNkrIORemMxYicJMG+e7yE9hKGK8c94tHuQbRSiLiFXZr8jY
-	 FAPD7lqmH8r4IC/zjhMN4kYx6XnERoOO72eoxokk=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Move FCE Trace buffer allocation to user" failed to apply to 5.4-stable tree
-To: qutran@marvell.com,himanshu.madhani@oracle.com,martin.petersen@oracle.com,njavali@marvell.com
+	b=YFSyPqzQY9hM8EUndwIKEJCMyAAtNhq2qnxhYztSEtT5ys6CGu/3u4y1e7jEH5VD4
+	 y1UtasnhdAwnDps615HuPIcUe55Ps15Vk3LWvuSG5eMjIcpXTqUMyH95UhjUYnTOc+
+	 vg+87WuqmgwVjuF7+0GUMB6JGjyU82xKV01AfzMw=
+Subject: FAILED: patch "[PATCH] scsi: ufs: core: Fix use-after free in init error and remove" failed to apply to 6.6-stable tree
+To: andre.draszik@linaro.org,beanhuo@micron.com,ebiggers@kernel.org,manivannan.sadhasivam@linaro.org,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 10 Feb 2025 14:57:20 +0100
-Message-ID: <2025021020-sappiness-encode-393a@gregkh>
+Date: Mon, 10 Feb 2025 14:57:41 +0100
+Message-ID: <2025021041-mouth-gumdrop-827e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 841df27d619ee1f5ca6473e15227b39d6136562d
+git cherry-pick -x f8fb2403ddebb5eea0033d90d9daae4c88749ada
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021020-sappiness-encode-393a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021041-mouth-gumdrop-827e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,299 +77,260 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 841df27d619ee1f5ca6473e15227b39d6136562d Mon Sep 17 00:00:00 2001
-From: Quinn Tran <qutran@marvell.com>
-Date: Fri, 15 Nov 2024 18:33:09 +0530
-Subject: [PATCH] scsi: qla2xxx: Move FCE Trace buffer allocation to user
- control
+From f8fb2403ddebb5eea0033d90d9daae4c88749ada Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
+Date: Fri, 24 Jan 2025 15:09:00 +0000
+Subject: [PATCH] scsi: ufs: core: Fix use-after free in init error and remove
+ paths
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Currently FCE Tracing is enabled to log additional ELS events. Instead,
-user will enable or disable this feature through debugfs.
+devm_blk_crypto_profile_init() registers a cleanup handler to run when
+the associated (platform-) device is being released. For UFS, the
+crypto private data and pointers are stored as part of the ufs_hba's
+data structure 'struct ufs_hba::crypto_profile'. This structure is
+allocated as part of the underlying ufshcd and therefore Scsi_host
+allocation.
 
-Modify existing DFS knob to allow user to enable or disable this
-feature.
+During driver release or during error handling in ufshcd_pltfrm_init(),
+this structure is released as part of ufshcd_dealloc_host() before the
+(platform-) device associated with the crypto call above is released.
+Once this device is released, the crypto cleanup code will run, using
+the just-released 'struct ufs_hba::crypto_profile'. This causes a
+use-after-free situation:
 
-echo [1 | 0] > /sys/kernel/debug/qla2xxx/qla2xxx_??/fce
-cat  /sys/kernel/debug/qla2xxx/qla2xxx_??/fce
+  Call trace:
+   kfree+0x60/0x2d8 (P)
+   kvfree+0x44/0x60
+   blk_crypto_profile_destroy_callback+0x28/0x70
+   devm_action_release+0x1c/0x30
+   release_nodes+0x6c/0x108
+   devres_release_all+0x98/0x100
+   device_unbind_cleanup+0x20/0x70
+   really_probe+0x218/0x2d0
 
+In other words, the initialisation code flow is:
+
+  platform-device probe
+    ufshcd_pltfrm_init()
+      ufshcd_alloc_host()
+        scsi_host_alloc()
+          allocation of struct ufs_hba
+          creation of scsi-host devices
+    devm_blk_crypto_profile_init()
+      devm registration of cleanup handler using platform-device
+
+and during error handling of ufshcd_pltfrm_init() or during driver
+removal:
+
+  ufshcd_dealloc_host()
+    scsi_host_put()
+      put_device(scsi-host)
+        release of struct ufs_hba
+  put_device(platform-device)
+    crypto cleanup handler
+
+To fix this use-after free, change ufshcd_alloc_host() to register a
+devres action to automatically cleanup the underlying SCSI device on
+ufshcd destruction, without requiring explicit calls to
+ufshcd_dealloc_host(). This way:
+
+    * the crypto profile and all other ufs_hba-owned resources are
+      destroyed before SCSI (as they've been registered after)
+    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
+      side-effect
+    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
+      it's not needed anymore
+    * no future drivers using ufshcd_alloc_host() could ever forget
+      adding the cleanup
+
+Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
+Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
 Cc: stable@vger.kernel.org
-Fixes: df613b96077c ("[SCSI] qla2xxx: Add Fibre Channel Event (FCE) tracing support.")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 15066c112817..cb95b7b12051 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -4098,6 +4098,8 @@ struct qla_hw_data {
- 		uint32_t	npiv_supported		:1;
- 		uint32_t	pci_channel_io_perm_failure	:1;
- 		uint32_t	fce_enabled		:1;
-+		uint32_t	user_enabled_fce	:1;
-+		uint32_t	fce_dump_buf_alloced	:1;
- 		uint32_t	fac_supported		:1;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index d3741b1f4382..d2de80b2bba4 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10226,16 +10226,6 @@ int ufshcd_system_thaw(struct device *dev)
+ EXPORT_SYMBOL_GPL(ufshcd_system_thaw);
+ #endif /* CONFIG_PM_SLEEP  */
  
- 		uint32_t	chip_reset_done		:1;
-diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
-index a1545dad0c0c..08273520c777 100644
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -409,27 +409,32 @@ qla2x00_dfs_fce_show(struct seq_file *s, void *unused)
+-/**
+- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
+- * @hba: pointer to Host Bus Adapter (HBA)
+- */
+-void ufshcd_dealloc_host(struct ufs_hba *hba)
+-{
+-	scsi_host_put(hba->host);
+-}
+-EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
+-
+ /**
+  * ufshcd_set_dma_mask - Set dma mask based on the controller
+  *			 addressing capability
+@@ -10254,12 +10244,26 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
+ 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
+ }
  
- 	mutex_lock(&ha->fce_mutex);
- 
--	seq_puts(s, "FCE Trace Buffer\n");
--	seq_printf(s, "In Pointer = %llx\n\n", (unsigned long long)ha->fce_wr);
--	seq_printf(s, "Base = %llx\n\n", (unsigned long long) ha->fce_dma);
--	seq_puts(s, "FCE Enable Registers\n");
--	seq_printf(s, "%08x %08x %08x %08x %08x %08x\n",
--	    ha->fce_mb[0], ha->fce_mb[2], ha->fce_mb[3], ha->fce_mb[4],
--	    ha->fce_mb[5], ha->fce_mb[6]);
-+	if (ha->flags.user_enabled_fce) {
-+		seq_puts(s, "FCE Trace Buffer\n");
-+		seq_printf(s, "In Pointer = %llx\n\n", (unsigned long long)ha->fce_wr);
-+		seq_printf(s, "Base = %llx\n\n", (unsigned long long)ha->fce_dma);
-+		seq_puts(s, "FCE Enable Registers\n");
-+		seq_printf(s, "%08x %08x %08x %08x %08x %08x\n",
-+			   ha->fce_mb[0], ha->fce_mb[2], ha->fce_mb[3], ha->fce_mb[4],
-+			   ha->fce_mb[5], ha->fce_mb[6]);
- 
--	fce = (uint32_t *) ha->fce;
--	fce_start = (unsigned long long) ha->fce_dma;
--	for (cnt = 0; cnt < fce_calc_size(ha->fce_bufs) / 4; cnt++) {
--		if (cnt % 8 == 0)
--			seq_printf(s, "\n%llx: ",
--			    (unsigned long long)((cnt * 4) + fce_start));
--		else
--			seq_putc(s, ' ');
--		seq_printf(s, "%08x", *fce++);
-+		fce = (uint32_t *)ha->fce;
-+		fce_start = (unsigned long long)ha->fce_dma;
-+		for (cnt = 0; cnt < fce_calc_size(ha->fce_bufs) / 4; cnt++) {
-+			if (cnt % 8 == 0)
-+				seq_printf(s, "\n%llx: ",
-+					   (unsigned long long)((cnt * 4) + fce_start));
-+			else
-+				seq_putc(s, ' ');
-+			seq_printf(s, "%08x", *fce++);
-+		}
++/**
++ * ufshcd_devres_release - devres cleanup handler, invoked during release of
++ *			   hba->dev
++ * @host: pointer to SCSI host
++ */
++static void ufshcd_devres_release(void *host)
++{
++	scsi_host_put(host);
++}
 +
-+		seq_puts(s, "\nEnd\n");
-+	} else {
-+		seq_puts(s, "FCE Trace is currently not enabled\n");
-+		seq_puts(s, "\techo [ 1 | 0 ] > fce\n");
+ /**
+  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
+  * @dev: pointer to device handle
+  * @hba_handle: driver private handle
+  *
+  * Return: 0 on success, non-zero value on failure.
++ *
++ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
++ * keeps track of its allocations using devres and deallocates everything on
++ * device removal automatically.
+  */
+ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ {
+@@ -10281,6 +10285,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ 		err = -ENOMEM;
+ 		goto out_error;
+ 	}
++
++	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
++				       host);
++	if (err)
++		return dev_err_probe(dev, err,
++				     "failed to add ufshcd dealloc action\n");
++
+ 	host->nr_maps = HCTX_TYPE_POLL + 1;
+ 	hba = shost_priv(host);
+ 	hba->host = host;
+diff --git a/drivers/ufs/host/ufshcd-pci.c b/drivers/ufs/host/ufshcd-pci.c
+index ea39c5d5b8cf..9cfcaad23cf9 100644
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -562,7 +562,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
+ 	pm_runtime_forbid(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
+ 	ufshcd_remove(hba);
+-	ufshcd_dealloc_host(hba);
+ }
+ 
+ /**
+@@ -605,7 +604,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	err = ufshcd_init(hba, mmio_base, pdev->irq);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Initialization failed\n");
+-		ufshcd_dealloc_host(hba);
+ 		return err;
  	}
  
--	seq_puts(s, "\nEnd\n");
--
- 	mutex_unlock(&ha->fce_mutex);
+diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
+index 505572d4fa87..ffe5d1d2b215 100644
+--- a/drivers/ufs/host/ufshcd-pltfrm.c
++++ b/drivers/ufs/host/ufshcd-pltfrm.c
+@@ -465,21 +465,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	struct device *dev = &pdev->dev;
+ 
+ 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mmio_base)) {
+-		err = PTR_ERR(mmio_base);
+-		goto out;
+-	}
++	if (IS_ERR(mmio_base))
++		return PTR_ERR(mmio_base);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		err = irq;
+-		goto out;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	err = ufshcd_alloc_host(dev, &hba);
+ 	if (err) {
+ 		dev_err(dev, "Allocation failed\n");
+-		goto out;
++		return err;
+ 	}
+ 
+ 	hba->vops = vops;
+@@ -488,13 +484,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	if (err) {
+ 		dev_err(dev, "%s: clock parse failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 	err = ufshcd_parse_regulator_info(hba);
+ 	if (err) {
+ 		dev_err(dev, "%s: regulator init failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	ufshcd_init_lanes_per_dir(hba);
+@@ -502,25 +498,20 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	err = ufshcd_parse_operating_points(hba);
+ 	if (err) {
+ 		dev_err(dev, "%s: OPP parse failed %d\n", __func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	err = ufshcd_init(hba, mmio_base, irq);
+ 	if (err) {
+ 		dev_err_probe(dev, err, "Initialization failed with error %d\n",
+ 			      err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
  
  	return 0;
-@@ -467,7 +472,7 @@ qla2x00_dfs_fce_release(struct inode *inode, struct file *file)
- 	struct qla_hw_data *ha = vha->hw;
- 	int rval;
- 
--	if (ha->flags.fce_enabled)
-+	if (ha->flags.fce_enabled || !ha->fce)
- 		goto out;
- 
- 	mutex_lock(&ha->fce_mutex);
-@@ -488,11 +493,88 @@ qla2x00_dfs_fce_release(struct inode *inode, struct file *file)
- 	return single_release(inode, file);
+-
+-dealloc_host:
+-	ufshcd_dealloc_host(hba);
+-out:
+-	return err;
  }
+ EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
  
-+static ssize_t
-+qla2x00_dfs_fce_write(struct file *file, const char __user *buffer,
-+		      size_t count, loff_t *pos)
-+{
-+	struct seq_file *s = file->private_data;
-+	struct scsi_qla_host *vha = s->private;
-+	struct qla_hw_data *ha = vha->hw;
-+	char *buf;
-+	int rc = 0;
-+	unsigned long enable;
-+
-+	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
-+	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha)) {
-+		ql_dbg(ql_dbg_user, vha, 0xd034,
-+		       "this adapter does not support FCE.");
-+		return -EINVAL;
-+	}
-+
-+	buf = memdup_user_nul(buffer, count);
-+	if (IS_ERR(buf)) {
-+		ql_dbg(ql_dbg_user, vha, 0xd037,
-+		    "fail to copy user buffer.");
-+		return PTR_ERR(buf);
-+	}
-+
-+	enable = kstrtoul(buf, 0, 0);
-+	rc = count;
-+
-+	mutex_lock(&ha->fce_mutex);
-+
-+	if (enable) {
-+		if (ha->flags.user_enabled_fce) {
-+			mutex_unlock(&ha->fce_mutex);
-+			goto out_free;
-+		}
-+		ha->flags.user_enabled_fce = 1;
-+		if (!ha->fce) {
-+			rc = qla2x00_alloc_fce_trace(vha);
-+			if (rc) {
-+				ha->flags.user_enabled_fce = 0;
-+				mutex_unlock(&ha->fce_mutex);
-+				goto out_free;
-+			}
-+
-+			/* adjust fw dump buffer to take into account of this feature */
-+			if (!ha->flags.fce_dump_buf_alloced)
-+				qla2x00_alloc_fw_dump(vha);
-+		}
-+
-+		if (!ha->flags.fce_enabled)
-+			qla_enable_fce_trace(vha);
-+
-+		ql_dbg(ql_dbg_user, vha, 0xd045, "User enabled FCE .\n");
-+	} else {
-+		if (!ha->flags.user_enabled_fce) {
-+			mutex_unlock(&ha->fce_mutex);
-+			goto out_free;
-+		}
-+		ha->flags.user_enabled_fce = 0;
-+		if (ha->flags.fce_enabled) {
-+			qla2x00_disable_fce_trace(vha, NULL, NULL);
-+			ha->flags.fce_enabled = 0;
-+		}
-+
-+		qla2x00_free_fce_trace(ha);
-+		/* no need to re-adjust fw dump buffer */
-+
-+		ql_dbg(ql_dbg_user, vha, 0xd04f, "User disabled FCE .\n");
-+	}
-+
-+	mutex_unlock(&ha->fce_mutex);
-+out_free:
-+	kfree(buf);
-+	return rc;
-+}
-+
- static const struct file_operations dfs_fce_ops = {
- 	.open		= qla2x00_dfs_fce_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
- 	.release	= qla2x00_dfs_fce_release,
-+	.write		= qla2x00_dfs_fce_write,
- };
+@@ -534,7 +525,6 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
  
- static int
-@@ -626,8 +708,6 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
- 	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
- 	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha))
- 		goto out;
--	if (!ha->fce)
--		goto out;
- 
- 	if (qla2x00_dfs_root)
- 		goto create_dir;
-diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.h
-index cededfda9d0e..e556f57c91af 100644
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -11,6 +11,9 @@
- /*
-  * Global Function Prototypes in qla_init.c source file.
-  */
-+int  qla2x00_alloc_fce_trace(scsi_qla_host_t *);
-+void qla2x00_free_fce_trace(struct qla_hw_data *ha);
-+void qla_enable_fce_trace(scsi_qla_host_t *);
- extern int qla2x00_initialize_adapter(scsi_qla_host_t *);
- extern int qla24xx_post_prli_work(struct scsi_qla_host *vha, fc_port_t *fcport);
- 
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 31fc6a0eca3e..79cdfec2bca3 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2681,7 +2681,7 @@ qla83xx_nic_core_fw_load(scsi_qla_host_t *vha)
- 	return rval;
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	ufshcd_remove(hba);
+-	ufshcd_dealloc_host(hba);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
  }
- 
--static void qla_enable_fce_trace(scsi_qla_host_t *vha)
-+void qla_enable_fce_trace(scsi_qla_host_t *vha)
- {
- 	int rval;
- 	struct qla_hw_data *ha = vha->hw;
-@@ -3717,25 +3717,24 @@ qla24xx_chip_diag(scsi_qla_host_t *vha)
- 	return rval;
- }
- 
--static void
--qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
-+int qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
- {
- 	dma_addr_t tc_dma;
- 	void *tc;
- 	struct qla_hw_data *ha = vha->hw;
- 
- 	if (!IS_FWI2_CAPABLE(ha))
--		return;
-+		return -EINVAL;
- 
- 	if (!IS_QLA25XX(ha) && !IS_QLA81XX(ha) && !IS_QLA83XX(ha) &&
- 	    !IS_QLA27XX(ha) && !IS_QLA28XX(ha))
--		return;
-+		return -EINVAL;
- 
- 	if (ha->fce) {
- 		ql_dbg(ql_dbg_init, vha, 0x00bd,
- 		       "%s: FCE Mem is already allocated.\n",
- 		       __func__);
--		return;
-+		return -EIO;
- 	}
- 
- 	/* Allocate memory for Fibre Channel Event Buffer. */
-@@ -3745,7 +3744,7 @@ qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
- 		ql_log(ql_log_warn, vha, 0x00be,
- 		       "Unable to allocate (%d KB) for FCE.\n",
- 		       FCE_SIZE / 1024);
--		return;
-+		return -ENOMEM;
- 	}
- 
- 	ql_dbg(ql_dbg_init, vha, 0x00c0,
-@@ -3754,6 +3753,16 @@ qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
- 	ha->fce_dma = tc_dma;
- 	ha->fce = tc;
- 	ha->fce_bufs = FCE_NUM_BUFFERS;
-+	return 0;
-+}
-+
-+void qla2x00_free_fce_trace(struct qla_hw_data *ha)
-+{
-+	if (!ha->fce)
-+		return;
-+	dma_free_coherent(&ha->pdev->dev, FCE_SIZE, ha->fce, ha->fce_dma);
-+	ha->fce = NULL;
-+	ha->fce_dma = 0;
- }
- 
- static void
-@@ -3844,9 +3853,10 @@ qla2x00_alloc_fw_dump(scsi_qla_host_t *vha)
- 		if (ha->tgt.atio_ring)
- 			mq_size += ha->tgt.atio_q_length * sizeof(request_t);
- 
--		qla2x00_alloc_fce_trace(vha);
--		if (ha->fce)
-+		if (ha->fce) {
- 			fce_size = sizeof(struct qla2xxx_fce_chain) + FCE_SIZE;
-+			ha->flags.fce_dump_buf_alloced = 1;
-+		}
- 		qla2x00_alloc_eft_trace(vha);
- 		if (ha->eft)
- 			eft_size = EFT_SIZE;
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index 650ff238cd74..8bf31e6ca4e5 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1309,7 +1309,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
+ void ufshcd_enable_irq(struct ufs_hba *hba);
+ void ufshcd_disable_irq(struct ufs_hba *hba);
+ int ufshcd_alloc_host(struct device *, struct ufs_hba **);
+-void ufshcd_dealloc_host(struct ufs_hba *);
+ int ufshcd_hba_enable(struct ufs_hba *hba);
+ int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
+ int ufshcd_link_recovery(struct ufs_hba *hba);
 
 
