@@ -1,205 +1,474 @@
-Return-Path: <stable+bounces-114727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2C8A2FB0C
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:50:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03209A2FB59
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 22:04:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69AD43A1EBB
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 20:50:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9627D164E42
+	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 21:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647BC192D8E;
-	Mon, 10 Feb 2025 20:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B6926460B;
+	Mon, 10 Feb 2025 21:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="guHJ8h9a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D8Ukq6QX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6542A264609;
-	Mon, 10 Feb 2025 20:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F023C264600
+	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 21:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739220610; cv=none; b=f+DiTmHgLQN7HZRiWZhoPMHHbb47BcpEoSDpjHdCWFJ68qssJZprPtNIi54CNoefaxSpVX8ESqlAUE31CrXKBjeYmI5RjqTpCnmC0W5b4dWvpH8OQSG3Dwnt8joHeGsHOQeEDARQLcdaU9iCZzRyBtnAPTCizsvsisgk9ctYQGo=
+	t=1739221467; cv=none; b=j5GsXjjHYkjdsOY4R1VHl/EraEVICpIstWLvYNwRaWFBYDsOkJF1R9CEe9oHJ1qUSPHd16L1ogE0fW6AzJiBGRhA72/yXA+hpukIrsdfESR2uyhRqr9tZXokFNs54XVY5STgl5vXw6EF+/vMgWd+Q9Im/u2E6CCssqWpqjBFm1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739220610; c=relaxed/simple;
-	bh=8PdGzdMAw141j5O17SG3txWU1gZMeelmxkXkuHaKQdU=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PKmOHylujxyGZCXa3w0DUJ4Dk/eattt7/dOpv1NB553P/ArV+ClvCLi2uWQSGemDE9Chx7qbYmOZ2P+ok3nXzGgXmz0YSFUg+mV62HKq/D3hoj5vovVG5GbMyQdv+sCuJt92f+/0LxgX5TGZ2TKCzMwx7PQ8uPicGsLALMRNmt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=guHJ8h9a; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so2535501f8f.0;
-        Mon, 10 Feb 2025 12:50:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739220607; x=1739825407; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2dJefyF8Ntih0gd63NWW8Bntajol0MzpM/Fx+CJZc70=;
-        b=guHJ8h9a5Ip2Cm4HT3us7CIF+CMtMvBJyzLDwxku9KmAhFzFi00b6zfieaiqFfg1Ix
-         AQWYU11Oumxy9Izbcdg9iAyo8S+MT1ct36cYtep8V97rJ9h6tNR51l98ttbkYqp0oIIT
-         FWcOIiC+nDkmadWI6oHf/6+d866LCm/HfkN7obroPTa/3D2daobXEJ91+84a2Ne0cxx7
-         0r4aWoMeEgH/Rm9EBFVN9ecX3BwDIw59bS77YeACjnwtkgmZc/7QbwDT3BCGBbH079kk
-         q8htIM83OeJNMg5FqElsluD7k++/Gf/fiCbev7pdwodz82Np2uj8wFljN/vgtbY43WIe
-         nXMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739220607; x=1739825407;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2dJefyF8Ntih0gd63NWW8Bntajol0MzpM/Fx+CJZc70=;
-        b=S+u22TlE8BDmZ6qq8leS7Jy97TDR3K+MZ9mPMyTaMs6c0+vsF8++mWZT2i69WtajQs
-         HqdSOK0zIg5xxa/q2O6qMDwPP8GkKH+YGZ4ErAqyj7F9Dh1AvclYEOsE5toTFEOxOnFn
-         tSMALGcZTFOxb+2vIVlR29jSjp9ezt5lgDxeZ26Es0SgWb67GbKiaCfSnzTYkKLPEAOH
-         8RnIEU/9DhpHOheGTAc9ukBcmWkf8OHkVHFXAKOi/bkf2SyNkkseU+6yFKx2pEO73oIk
-         JOireXUQErN5X21fRXTE4X6lHIows9mwk3gDpZg6Velqcxq70ZmtJIhcv2GdebwY8W6e
-         SDdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVefL2Daz+rrwh2I3X4Y+F3f4bwtZVtdAI84euI16fq28cnB/vjgYgLWgRGYl6rhrk4TCFd5GYhz9GbEl5n@vger.kernel.org, AJvYcCW8XBcVlkXsMyP7M8szSVrPjfdtSGZVy3BLlOsyEDIc7dMrpbRDmdVyoBEUTCWORlIZ+KKjdOCu@vger.kernel.org, AJvYcCXOP64VJCeu3XfvxnY+kUin8smQggZX1/Y/rV6zF5DJ6+rE4FKBFB1ylpa5dM7w20OxgJe7gIPLojuuotwA@vger.kernel.org
-X-Gm-Message-State: AOJu0YymK6waKpvl0sLpss74o4iApeFRv4N8PmM5YGGt015Z+wndvQqW
-	lLrZKslfYWhbyLIQccpbr/HJN9/YWqipHxGaFdjaYCSCCSuZHWkK
-X-Gm-Gg: ASbGncstu9naD7CXBVkehvdqKZX8LOJcZRUzTmZD4AQWSoZILjzwQ7/Q5z6TG46s+aT
-	ZI379lQysqR2gFhPKuYeK38PmJYLJLh+PYGUShTQ7MM/FL65oEzUz5cOMoho2QxskB+bQi86WD7
-	IFCNwQ/FlOQ7KOdGp2NUI/DwxfDYgPAqXEAzdgdOGTUXEzK4RGhzoACMwTbNgDA9siSFCgt/t7q
-	KpVxOv13aoYIWHLbNRrl+Dd/mWgdQOVS+qVpPtskx93EozZ5oVWwOulfaqBiwIZnxvnnvR8kQXM
-	6qWvrmj4nPCE/iQP0eOWtnhAUfs5EovCSOsp8m7PfUzKLAs=
-X-Google-Smtp-Source: AGHT+IFIiQmFF40j4k+DZN1cv4CpJRfjsukU/nNRgBxij1fWcbwCzmkxQC0FA+Nto3thlx1zvIp20g==
-X-Received: by 2002:a5d:6da6:0:b0:38d:e0d2:55c6 with SMTP id ffacd0b85a97d-38de0d256bdmr3397519f8f.17.1739220606489;
-        Mon, 10 Feb 2025 12:50:06 -0800 (PST)
-Received: from Ansuel-XPS. (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dd02e2a90sm9105954f8f.98.2025.02.10.12.50.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 12:50:06 -0800 (PST)
-Message-ID: <67aa667e.5d0a0220.10ff3e.24a6@mx.google.com>
-X-Google-Original-Message-ID: <Z6pmezDoznGIoXH0@Ansuel-XPS.>
-Date: Mon, 10 Feb 2025 21:50:03 +0100
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Robert Marko <robimarko@gmail.com>
-Subject: Re: [PATCH v2] mtd: rawnand: qcom: fix broken config in
- qcom_param_page_type_exec
-References: <20250209140941.16627-1-ansuelsmth@gmail.com>
- <20250210170950.zxgm5hjeb2a4evfn@thinkpad>
+	s=arc-20240116; t=1739221467; c=relaxed/simple;
+	bh=uzt4HJYnpen6fD41hc7/tYcAQpGGRJWsyMlgV+yjVLY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pd2sqkgcvjXCkxPRbWaRwZTHWbQun7d0Cqp3SbTfxpldhosnFYbzOittH5oolBkq9PfJefEwDU8Brd7maDwvLsHL1HOpcPiAwf5Jsk6VHL7dgvMgRUQjdE680G3ALLhvZQodqx/61uSJ9SOQ/qK6/1Oi/WNWUzjv/+LeDKj7QiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D8Ukq6QX; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739221465; x=1770757465;
+  h=date:message-id:from:to:cc:subject:in-reply-to:
+   references:mime-version;
+  bh=uzt4HJYnpen6fD41hc7/tYcAQpGGRJWsyMlgV+yjVLY=;
+  b=D8Ukq6QXFdSU1QVMJMLT0J3dEbIdEN7tYfPe2CYobE+LK7pv0iIqz1l5
+   vyBw1JsGVtmPKytMF6WNuKumt0nmJeNkbcJsaLnDlk2lIO3uRhEEBQWli
+   GCK6p9t6bDT9a/R9lTf/3CoEg3edi8Ivs0ZAOpZmdnM8PcH5QZ2hCEBfF
+   GF+BgWdXDgbWeVwUhuU7UQl+u1GlTpQC9Wd5YoDseky/10DcsU2yq5WJk
+   lU/0gw5LI9/0dbBidF4pvNr3ZSYbqO/gE9dIhhRexSbdudJyjEpTv0xiE
+   YgP/Z4yDol43EuZ1Cpw5J1Wfb5vYeJPf2covptTGj/7WJGEGLyEPFL5mW
+   Q==;
+X-CSE-ConnectionGUID: XLr8iwLJQPuSj84Y3dFBng==
+X-CSE-MsgGUID: o7UvZtMFSGODwZhJwwXvrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="39737826"
+X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
+   d="scan'208";a="39737826"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:04:25 -0800
+X-CSE-ConnectionGUID: Epw7QdR1RiO0QINT87TOOQ==
+X-CSE-MsgGUID: PmaebEf4QqS3l+TWgUjeUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
+   d="scan'208";a="112246699"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:04:24 -0800
+Date: Mon, 10 Feb 2025 13:04:24 -0800
+Message-ID: <85jz9x3413.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: umesh.nerlige.ramappa@intel.com,
+	jonathan.cavitt@intel.com,
+	matthew.brost@intel.com,
+	<stable@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] xe/oa: Fix query mode of operation for OAR/OAC" failed to apply to 6.12-stable tree
+In-Reply-To: <2025021013-cavalry-unsightly-0671@gregkh>
+References: <2025021013-cavalry-unsightly-0671@gregkh>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250210170950.zxgm5hjeb2a4evfn@thinkpad>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 
-On Mon, Feb 10, 2025 at 10:39:50PM +0530, Manivannan Sadhasivam wrote:
-> On Sun, Feb 09, 2025 at 03:09:38PM +0100, Christian Marangi wrote:
-> > Fix broken config in qcom_param_page_type_exec caused by copy-paste error
-> > from commit 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
-> > 
-> > In qcom_param_page_type_exec the value needs to be set to
-> > nandc->regs->cfg0 instead of host->cfg0. This wrong configuration caused
-> > the Qcom NANDC driver to malfunction on any device that makes use of it
-> > (IPQ806x, IPQ40xx, IPQ807x, IPQ60xx) with the following error:
-> > 
-> 
-> I'm wondering whether the offending commit was really tested or not :(
+On Mon, 10 Feb 2025 05:02:13 -0800, <gregkh@linuxfoundation.org> wrote:
 >
 
-Wellllllll..... It was but it wasn't. The series where this was
-introduced was to push the new Qcom QPIC driver driven by a dedicated
-SPI controller. That part works and was probably where this was tested.
-What was not tested is if these changes affected SNAND driver for other
-devices. Saddly it's always difficult to test these changes that affects
-lors of devices, in OpenWrt we are working on implementing some kind of testbed
-to test images on real devices. (it's currently only an idea and we are
-far from having it but it's something I would love to have it so we
-could catch these kind of regression faster than getting Issue spammed
-with devices getting bricked)
+Hi Greg,
 
-> > [    0.885369] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xaa
-> > [    0.885909] nand: Micron NAND 256MiB 1,8V 8-bit
-> > [    0.892499] nand: 256 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-> > [    0.896823] nand: ECC (step, strength) = (512, 8) does not fit in OOB
-> > [    0.896836] qcom-nandc 79b0000.nand-controller: No valid ECC settings possible
-> > [    0.910996] bam-dma-engine 7984000.dma-controller: Cannot free busy channel
-> > [    0.918070] qcom-nandc: probe of 79b0000.nand-controller failed with error -28
-> > 
-> > Restore original configuration fix the problem and makes the driver work
-> > again.
-> > 
-> > Also restore the wrongly dropped cpu_to_le32 to correctly support BE
-> > systems.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
-> > Tested-by: Robert Marko <robimarko@gmail.com> # IPQ8074 and IPQ6018
-> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> 
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> Thanks for the fix!
-> 
-> - Mani
-> 
-> > ---
-> > Changes v2:
-> > - Fix smatch warning (add missing cpu_to_le32 that was also dropped
-> >   from the FIELD_PREP patch)
-> > 
-> >  drivers/mtd/nand/raw/qcom_nandc.c | 24 ++++++++++++------------
-> >  1 file changed, 12 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-> > index d2d2aeee42a7..6720b547892b 100644
-> > --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> > +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> > @@ -1881,18 +1881,18 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
-> >  	nandc->regs->addr0 = 0;
-> >  	nandc->regs->addr1 = 0;
-> >  
-> > -	host->cfg0 = FIELD_PREP(CW_PER_PAGE_MASK, 0) |
-> > -		     FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
-> > -		     FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
-> > -		     FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0);
-> > -
-> > -	host->cfg1 = FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
-> > -		     FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
-> > -		     FIELD_PREP(CS_ACTIVE_BSY, 0) |
-> > -		     FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
-> > -		     FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
-> > -		     FIELD_PREP(WIDE_FLASH, 0) |
-> > -		     FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1);
-> > +	nandc->regs->cfg0 = cpu_to_le32(FIELD_PREP(CW_PER_PAGE_MASK, 0) |
-> > +					FIELD_PREP(UD_SIZE_BYTES_MASK, 512) |
-> > +					FIELD_PREP(NUM_ADDR_CYCLES_MASK, 5) |
-> > +					FIELD_PREP(SPARE_SIZE_BYTES_MASK, 0));
-> > +
-> > +	nandc->regs->cfg1 = cpu_to_le32(FIELD_PREP(NAND_RECOVERY_CYCLES_MASK, 7) |
-> > +					FIELD_PREP(BAD_BLOCK_BYTE_NUM_MASK, 17) |
-> > +					FIELD_PREP(CS_ACTIVE_BSY, 0) |
-> > +					FIELD_PREP(BAD_BLOCK_IN_SPARE_AREA, 1) |
-> > +					FIELD_PREP(WR_RD_BSY_GAP_MASK, 2) |
-> > +					FIELD_PREP(WIDE_FLASH, 0) |
-> > +					FIELD_PREP(DEV0_CFG1_ECC_DISABLE, 1));
-> >  
-> >  	if (!nandc->props->qpic_version2)
-> >  		nandc->regs->ecc_buf_cfg = cpu_to_le32(ECC_CFG_ECC_DISABLE);
-> > -- 
-> > 2.47.1
-> > 
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
+>
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 55039832f98c7e05f1cf9e0d8c12b2490abd0f16
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021013-cavalry-unsightly-0671@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+>
+> Possible dependencies:
 
--- 
-	Ansuel
+We had submitted a modified version of the patch, adapted for 6.12 here:
+
+https://lore.kernel.org/stable/20250110205341.199539-1-umesh.nerlige.ramappa@intel.com/
+
+Please take this patch for 6.12.
+
+Thanks.
+--
+Ashutosh
+
+
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 Mon Sep 17 00:00:00 2001
+> From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Date: Fri, 20 Dec 2024 09:19:18 -0800
+> Subject: [PATCH] xe/oa: Fix query mode of operation for OAR/OAC
+>
+> This is a set of squashed commits to facilitate smooth applying to
+> stable. Each commit message is retained for reference.
+>
+> 1) Allow a GGTT mapped batch to be submitted to user exec queue
+>
+> For a OA use case, one of the HW registers needs to be modified by
+> submitting an MI_LOAD_REGISTER_IMM command to the users exec queue, so
+> that the register is modified in the user's hardware context. In order
+> to do this a batch that is mapped in GGTT, needs to be submitted to the
+> user exec queue. Since all user submissions use q->vm and hence PPGTT,
+> add some plumbing to enable submission of batches mapped in GGTT.
+>
+> v2: ggtt is zero-initialized, so no need to set it false (Matt Brost)
+>
+> 2) xe/oa: Use MI_LOAD_REGISTER_IMMEDIATE to enable OAR/OAC
+>
+> To enable OAR/OAC, a bit in RING_CONTEXT_CONTROL needs to be set.
+> Setting this bit cause the context image size to change and if not done
+> correct, can cause undesired hangs.
+>
+> Current code uses a separate exec_queue to modify this bit and is
+> error-prone. As per HW recommendation, submit MI_LOAD_REGISTER_IMM to
+> the target hardware context to modify the relevant bit.
+>
+> In v2 version, an attempt to submit everything to the user-queue was
+> made, but it failed the unprivileged-single-ctx-counters test. It
+> appears that the OACTXCONTROL must be modified from a remote context.
+>
+> In v3 version, all context specific register configurations were moved
+> to use LOAD_REGISTER_IMMEDIATE and that seems to work well. This is a
+> cleaner way, since we can now submit all configuration to user
+> exec_queue and the fence handling is simplified.
+>
+> v2:
+> (Matt)
+> - set job->ggtt to true if create job is successful
+> - unlock vm on job error
+>
+> (Ashutosh)
+> - don't wait on job submission
+> - use kernel exec queue where possible
+>
+> v3:
+> (Ashutosh)
+> - Fix checkpatch issues
+> - Remove extra spaces/new-lines
+> - Add Fixes: and Cc: tags
+> - Reset context control bit when OA stream is closed
+> - Submit all config via MI_LOAD_REGISTER_IMMEDIATE
+>
+> (Umesh)
+> - Update commit message for v3 experiment
+> - Squash patches for easier port to stable
+>
+> v4:
+> (Ashutosh)
+> - No need to pass q to xe_oa_submit_bb
+> - Do not support exec queues with width > 1
+> - Fix disabling of CTX_CTRL_OAC_CONTEXT_ENABLE
+>
+> v5:
+> (Ashutosh)
+> - Drop reg_lri related comments
+> - Use XE_OA_SUBMIT_NO_DEPS in xe_oa_load_with_lri
+>
+> Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset OAC_CONTEXT_ENABLE on OA stream close")
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com> # commit 1
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20241220171919.571528-2-umesh.nerlige.ramappa@intel.com
+>
+> diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+> index ae94490b0eac..9add60097ab5 100644
+> --- a/drivers/gpu/drm/xe/xe_oa.c
+> +++ b/drivers/gpu/drm/xe/xe_oa.c
+> @@ -74,12 +74,6 @@ struct xe_oa_config {
+>	struct rcu_head rcu;
+>  };
+>
+> -struct flex {
+> -	struct xe_reg reg;
+> -	u32 offset;
+> -	u32 value;
+> -};
+> -
+>  struct xe_oa_open_param {
+>	struct xe_file *xef;
+>	u32 oa_unit_id;
+> @@ -605,19 +599,38 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
+>	return ret;
+>  }
+>
+> +static void xe_oa_lock_vma(struct xe_exec_queue *q)
+> +{
+> +	if (q->vm) {
+> +		down_read(&q->vm->lock);
+> +		xe_vm_lock(q->vm, false);
+> +	}
+> +}
+> +
+> +static void xe_oa_unlock_vma(struct xe_exec_queue *q)
+> +{
+> +	if (q->vm) {
+> +		xe_vm_unlock(q->vm);
+> +		up_read(&q->vm->lock);
+> +	}
+> +}
+> +
+>  static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa_submit_deps deps,
+>					 struct xe_bb *bb)
+>  {
+> +	struct xe_exec_queue *q = stream->exec_q ?: stream->k_exec_q;
+>	struct xe_sched_job *job;
+>	struct dma_fence *fence;
+>	int err = 0;
+>
+> -	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
+> -	job = xe_bb_create_job(stream->k_exec_q, bb);
+> +	xe_oa_lock_vma(q);
+> +
+> +	job = xe_bb_create_job(q, bb);
+>	if (IS_ERR(job)) {
+>		err = PTR_ERR(job);
+>		goto exit;
+>	}
+> +	job->ggtt = true;
+>
+>	if (deps == XE_OA_SUBMIT_ADD_DEPS) {
+>		for (int i = 0; i < stream->num_syncs && !err; i++)
+> @@ -632,10 +645,13 @@ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa
+>	fence = dma_fence_get(&job->drm.s_fence->finished);
+>	xe_sched_job_push(job);
+>
+> +	xe_oa_unlock_vma(q);
+> +
+>	return fence;
+>  err_put_job:
+>	xe_sched_job_put(job);
+>  exit:
+> +	xe_oa_unlock_vma(q);
+>	return ERR_PTR(err);
+>  }
+>
+> @@ -684,65 +700,19 @@ static void xe_oa_free_configs(struct xe_oa_stream *stream)
+>	dma_fence_put(stream->last_fence);
+>  }
+>
+> -static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
+> -			     struct xe_bb *bb, const struct flex *flex, u32 count)
+> -{
+> -	u32 offset = xe_bo_ggtt_addr(lrc->bo);
+> -
+> -	do {
+> -		bb->cs[bb->len++] = MI_STORE_DATA_IMM | MI_SDI_GGTT |
+> -				    MI_FORCE_WRITE_COMPLETION_CHECK |
+> -				    MI_SDI_NUM_DW(1);
+> -		bb->cs[bb->len++] = offset + flex->offset * sizeof(u32);
+> -		bb->cs[bb->len++] = 0;
+> -		bb->cs[bb->len++] = flex->value;
+> -
+> -	} while (flex++, --count);
+> -}
+> -
+> -static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
+> -				  const struct flex *flex, u32 count)
+> +static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri, u32 count)
+>  {
+>	struct dma_fence *fence;
+>	struct xe_bb *bb;
+>	int err;
+>
+> -	bb = xe_bb_new(stream->gt, 4 * count, false);
+> +	bb = xe_bb_new(stream->gt, 2 * count + 1, false);
+>	if (IS_ERR(bb)) {
+>		err = PTR_ERR(bb);
+>		goto exit;
+>	}
+>
+> -	xe_oa_store_flex(stream, lrc, bb, flex, count);
+> -
+> -	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+> -	if (IS_ERR(fence)) {
+> -		err = PTR_ERR(fence);
+> -		goto free_bb;
+> -	}
+> -	xe_bb_free(bb, fence);
+> -	dma_fence_put(fence);
+> -
+> -	return 0;
+> -free_bb:
+> -	xe_bb_free(bb, NULL);
+> -exit:
+> -	return err;
+> -}
+> -
+> -static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
+> -{
+> -	struct dma_fence *fence;
+> -	struct xe_bb *bb;
+> -	int err;
+> -
+> -	bb = xe_bb_new(stream->gt, 3, false);
+> -	if (IS_ERR(bb)) {
+> -		err = PTR_ERR(bb);
+> -		goto exit;
+> -	}
+> -
+> -	write_cs_mi_lri(bb, reg_lri, 1);
+> +	write_cs_mi_lri(bb, reg_lri, count);
+>
+>	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+>	if (IS_ERR(fence)) {
+> @@ -762,71 +732,55 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
+>  static int xe_oa_configure_oar_context(struct xe_oa_stream *stream, bool enable)
+>  {
+>	const struct xe_oa_format *format = stream->oa_buffer.format;
+> -	struct xe_lrc *lrc = stream->exec_q->lrc[0];
+> -	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
+>	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
+>		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
+>
+> -	struct flex regs_context[] = {
+> +	struct xe_oa_reg reg_lri[] = {
+>		{
+>			OACTXCONTROL(stream->hwe->mmio_base),
+> -			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
+>			enable ? OA_COUNTER_RESUME : 0,
+>		},
+> +		{
+> +			OAR_OACONTROL,
+> +			oacontrol,
+> +		},
+>		{
+>			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+> -			regs_offset + CTX_CONTEXT_CONTROL,
+> -			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE),
+> +			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
+> +				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0)
+>		},
+>	};
+> -	struct xe_oa_reg reg_lri = { OAR_OACONTROL, oacontrol };
+> -	int err;
+>
+> -	/* Modify stream hwe context image with regs_context */
+> -	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
+> -				     regs_context, ARRAY_SIZE(regs_context));
+> -	if (err)
+> -		return err;
+> -
+> -	/* Apply reg_lri using LRI */
+> -	return xe_oa_load_with_lri(stream, &reg_lri);
+> +	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
+>  }
+>
+>  static int xe_oa_configure_oac_context(struct xe_oa_stream *stream, bool enable)
+>  {
+>	const struct xe_oa_format *format = stream->oa_buffer.format;
+> -	struct xe_lrc *lrc = stream->exec_q->lrc[0];
+> -	u32 regs_offset = xe_lrc_regs_offset(lrc) / sizeof(u32);
+>	u32 oacontrol = __format_to_oactrl(format, OAR_OACONTROL_COUNTER_SEL_MASK) |
+>		(enable ? OAR_OACONTROL_COUNTER_ENABLE : 0);
+> -	struct flex regs_context[] = {
+> +	struct xe_oa_reg reg_lri[] = {
+>		{
+>			OACTXCONTROL(stream->hwe->mmio_base),
+> -			stream->oa->ctx_oactxctrl_offset[stream->hwe->class] + 1,
+>			enable ? OA_COUNTER_RESUME : 0,
+>		},
+> +		{
+> +			OAC_OACONTROL,
+> +			oacontrol
+> +		},
+>		{
+>			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+> -			regs_offset + CTX_CONTEXT_CONTROL,
+> -			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE) |
+> +			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
+> +				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0) |
+>			_MASKED_FIELD(CTX_CTRL_RUN_ALONE, enable ? CTX_CTRL_RUN_ALONE : 0),
+>		},
+>	};
+> -	struct xe_oa_reg reg_lri = { OAC_OACONTROL, oacontrol };
+> -	int err;
+>
+>	/* Set ccs select to enable programming of OAC_OACONTROL */
+>	xe_mmio_write32(&stream->gt->mmio, __oa_regs(stream)->oa_ctrl,
+>			__oa_ccs_select(stream));
+>
+> -	/* Modify stream hwe context image with regs_context */
+> -	err = xe_oa_modify_ctx_image(stream, stream->exec_q->lrc[0],
+> -				     regs_context, ARRAY_SIZE(regs_context));
+> -	if (err)
+> -		return err;
+> -
+> -	/* Apply reg_lri using LRI */
+> -	return xe_oa_load_with_lri(stream, &reg_lri);
+> +	return xe_oa_load_with_lri(stream, reg_lri, ARRAY_SIZE(reg_lri));
+>  }
+>
+>  static int xe_oa_configure_oa_context(struct xe_oa_stream *stream, bool enable)
+> @@ -2110,8 +2064,8 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+>		if (XE_IOCTL_DBG(oa->xe, !param.exec_q))
+>			return -ENOENT;
+>
+> -		if (param.exec_q->width > 1)
+> -			drm_dbg(&oa->xe->drm, "exec_q->width > 1, programming only exec_q->lrc[0]\n");
+> +		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1))
+> +			return -EOPNOTSUPP;
+>	}
+>
+>	/*
+> diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
+> index 3a75a08b6be9..c8ab37fa0d19 100644
+> --- a/drivers/gpu/drm/xe/xe_ring_ops.c
+> +++ b/drivers/gpu/drm/xe/xe_ring_ops.c
+> @@ -223,7 +223,10 @@ static int emit_pipe_imm_ggtt(u32 addr, u32 value, bool stall_only, u32 *dw,
+>
+>  static u32 get_ppgtt_flag(struct xe_sched_job *job)
+>  {
+> -	return job->q->vm ? BIT(8) : 0;
+> +	if (job->q->vm && !job->ggtt)
+> +		return BIT(8);
+> +
+> +	return 0;
+>  }
+>
+>  static int emit_copy_timestamp(struct xe_lrc *lrc, u32 *dw, int i)
+> diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
+> index f13f333f00be..d942b20a9f29 100644
+> --- a/drivers/gpu/drm/xe/xe_sched_job_types.h
+> +++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
+> @@ -56,6 +56,8 @@ struct xe_sched_job {
+>	u32 migrate_flush_flags;
+>	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
+>	bool ring_ops_flush_tlb;
+> +	/** @ggtt: mapped in ggtt. */
+> +	bool ggtt;
+>	/** @ptrs: per instance pointers. */
+>	struct xe_job_ptrs ptrs[];
+>  };
+>
 
