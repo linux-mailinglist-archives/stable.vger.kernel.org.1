@@ -1,92 +1,65 @@
-Return-Path: <stable+bounces-114936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5A8A310A3
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:06:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F110A31162
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB9C7188C0AB
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965B01881456
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F95A253B5A;
-	Tue, 11 Feb 2025 16:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127521E5B87;
+	Tue, 11 Feb 2025 16:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="Drzx0dHm"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="R1eyWf/m"
 X-Original-To: stable@vger.kernel.org
-Received: from toucan.tulip.relay.mailchannels.net (toucan.tulip.relay.mailchannels.net [23.83.218.254])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DFD1EC006;
-	Tue, 11 Feb 2025 16:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.254
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739289865; cv=pass; b=IiqDhs8Ddtsk2K2m0baNpghD5KOpxx/KjvkYF9QITmW2BEqpeN25MXrfzjSar6FR86tPslskLW8DfYkihMnK4z4pSqy/Z7t0pYVvvvfXV4LXGrTLi/AYCAcIWYplLXogQY1Ph/aLP4ftNK7us1poNPNJ+XiPIHuY063hiqEuZ80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739289865; c=relaxed/simple;
-	bh=45NgEGR9xVWRGZYDQUczRCjAkPb1nJoRAiQu3v41Pgs=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=KfQxPWyJQmLBrc9meg6iGq9W0pfSHEgfxBaKY+WKbGb3Co1zmVV72BvDG+ZpQGgBCfGAYuaDdqMPbIz5qW5zxkI1D0DbFmoMyReayiTG7rGdvoR3/GEfyNuar1f1le3htOATxEjcT5gvaKHSRQ1YPXvHWIOO4UUFQCCx9APprwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=Drzx0dHm; arc=pass smtp.client-ip=23.83.218.254
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 7446E2C22D3;
-	Tue, 11 Feb 2025 15:58:42 +0000 (UTC)
-Received: from uk-fast-smtpout1.hostinger.io (trex-2.trex.outbound.svc.cluster.local [100.97.28.83])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 40A062C3EAC;
-	Tue, 11 Feb 2025 15:58:41 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1739289522; a=rsa-sha256;
-	cv=none;
-	b=iEsWLmfuOVyQY8gZ86qjVDUWVsoWQXaCYToGCxV6SQc8bc2eW1xE2XyHXyqELTGmTiv1t6
-	RgSYuTWuX1aqFoCxEf7zucErUNTEwZj9Tss6z2HgXvdLcNC+iop6OASkZ8LImPJgjtk8Q6
-	b2Y64+BeMp7L9Ftc1dmvriNp0KHA1aRlK7mg8vQAs3foY41Uovj5xCj/q6Sv0P76pdASkn
-	FpLR34iEyQJVFz99w2xeAMNdq3BH5ZMYipkifa4F6cDefrN2J1wBuyBrwVBWRX+bK2Oi0Y
-	4js3UnaIS9CCcjqJTwlqu2WGPBe8HPYwj73OseClTgjnMa+QItDdy5YTv2DD9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1739289522;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dmNS9CAOB7kYkRhMFY6pna4SlgHCcaggJmkRXUL8i1o=;
-	b=E2EO8/P4q5Ue8hjMtxmqK/b5jyhJzoKpJoYoobL4QyqE3g3qIb8NDxQop+z4TPlXGV4TUx
-	czFLVLu1hoqcSRAS+BKXZxRGU8srFah7EEfmicrObklSm8P4BvcJ7sSPpd9PbRWG35MUbi
-	pmfRXpm35CAa/luJa6Ci196MNkfnYc1IA7c/sRpBYIxAzSbnqneqA3fWtjuyiVgntMwxiV
-	TEN7i8LhK7/UZAWcs1REkKPz6ucZ42tWlrHLaTxIWjyfl9J1fOG0DycgRsr0QYyHpBC4O0
-	LTugkMKlXqOIzs4aPJwX6eY7g54xoXXrZrR4XtKGyLgxhpBOOULc+5xaTVMsnQ==
-ARC-Authentication-Results: i=1;
-	rspamd-68c88d6cff-gjpcx;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=chester.a.unal@arinc9.com
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Hook-Unite: 76d5b96a6e666518_1739289522197_3869686461
-X-MC-Loop-Signature: 1739289522197:3951695925
-X-MC-Ingress-Time: 1739289522197
-Received: from uk-fast-smtpout1.hostinger.io (uk-fast-smtpout1.hostinger.io
- [31.220.23.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.97.28.83 (trex/7.0.2);
-	Tue, 11 Feb 2025 15:58:42 +0000
-Message-ID: <4a7f0b18-af29-4a49-863c-5a079d11c11c@arinc9.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com;
-	s=hostingermail-a; t=1739289519;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dmNS9CAOB7kYkRhMFY6pna4SlgHCcaggJmkRXUL8i1o=;
-	b=Drzx0dHmMiSw1d/wwpkx62bKcUGlVPc0vctiF8Hkyjx/+DWtE5Ba7UcUe1TXCLJIP2ZJ/4
-	4txruVyxSvwLlrVoTFiK8m0QnP45QIAiDRM0Ezbgwaugw/pzsn5Tf31nX+07lVSOz4PjEB
-	OJV+qH8EiQbRo3B9pMhEy+P0q0Q52YK1yVhtZqdnKWFfJVNVJV+IefEqZ7HhRgfxgrguAD
-	CZAiNkN7+UXXnA/xpEeSG31nkWWCfjYHKU0uvkge4YKW8ULzpOpUOAsMiAbvZykF6OS2Kd
-	gBywdEcr7ttVL/kauGYs+rr9CVv8hDHoYFH1bbDqkKYtrU8jWvd4qLGa7NDFTQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55752AE6A;
+	Tue, 11 Feb 2025 16:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739291441; cv=none; b=MLRimuJj4Scyr6/OCvuEqAEfEqwi4vpiPQUFDk4tezX56GludNrm+ZqUYXDSTN5eoALTVa0fai9c1A/mFObq2vLN5iJCL90PiffD+FReHfnwnCANjGoLx0aPp1bnyQMhS1RvFIzr4xYpljLI1s6dMhRtFzGCxbkNpycvJNqbXDw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739291441; c=relaxed/simple;
+	bh=blWk8OYXAKWZt4nEyYBk3rcMjLdQvE088z87QuEQYcU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KByZ/nJamAbjR7ax0UrELxXZ+Qa1SJxLFKnwm1ZeVlnueTCKMyeRBtN7lDpdC7dc7l9sC2Q5SjuMkOZ7ldWpQz6TV6Z6MRdwFinglbtDlwOByJEcZFdvLarqzxeJ/xO11Z6vsjvNv6E++KAx9ZPuZKR8S2/uy+9R2yTIVye33PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=R1eyWf/m; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B4vo81003866;
+	Tue, 11 Feb 2025 10:30:32 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=9E82TJqdSUGHUuRV0fGif+EouUYylC7G+GekqeDR0R8=; b=
+	R1eyWf/mJidquPtQn+fUtWSP7lrEQt2n4uJoNpQNsRZhGtmWstPtBXuhMNljbvga
+	fIaZ53RjFxfUsrWh4opw7HW/wRz3y7gl4YPqttFYsYlc/j6pMrP3W7yUDbgAQkNJ
+	Hh//P61JCytBBhNjt+t3wZUuSICPmKB7agB7yrop4b1qxxqnavChSAFZc36KpouP
+	RhUfSQnK2WMFa28D2vKnGLLSuUtvK5wDduAzdIxa8mfIkAcYcY4BDBgY+ouYxWCS
+	Rah6I7JWwqqpy01BShumlyWnwf9x8r/trpgJBRvrF0dMGejwjBQUnRooewcXkr4K
+	wY3+W/VgHTKo8FbzW3eIig==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 44p4jmw2dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Feb 2025 10:30:32 -0600 (CST)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 11 Feb
+ 2025 16:30:26 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server id
+ 15.2.1544.14 via Frontend Transport; Tue, 11 Feb 2025 16:30:26 +0000
+Received: from [198.90.208.18] (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 26323820248;
+	Tue, 11 Feb 2025 16:30:26 +0000 (UTC)
+Message-ID: <8a785b3d-1c77-4905-832b-4f4acaec1ff3@opensource.cirrus.com>
+Date: Tue, 11 Feb 2025 16:30:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,92 +67,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] USB: serial: option: drop MeiG Smart defines
-To: Johan Hovold <johan@kernel.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250211145547.32517-1-johan@kernel.org>
-Content-Language: en-US
-From: "Chester A. Unal" <chester.a.unal@arinc9.com>
-In-Reply-To: <20250211145547.32517-1-johan@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Tue, 11 Feb 2025 15:58:37 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=FuFX/Hrq c=1 sm=1 tr=0 ts=67ab73af a=xK2r8zoKF9vSrBIo2YuqYg==:117 a=xK2r8zoKF9vSrBIo2YuqYg==:17 a=IkcTkHD0fZMA:10 a=GvHEsTVZAAAA:8 a=VwQbUJbxAAAA:8 a=wvxYl3FCeEmcF220GPsA:9 a=QEXdDO2ut3YA:10 a=aajZ2D0djhd3YR65f-bR:22
-X-CM-Envelope: MS4xfOcm6ZRhG5bD1p2vu4vvBI9ghtHy1aUXBhRItoYE0FVCkfgPwrDyVwTqaFMvmHwlOBYc+DvBsaNPQ16/Vaeg1ZUzNTCWOq4tekq8LtecCRRkrv+O4Q/x 1PZZU8jV/Wx3HbMthR7PtRQp4BM4Zgji3ztOcjVCNjOeBJhYU72LHylV+0QoPK3e7wa7hoBvsXq3WuJ/LCJohUegbzsleqRHMqUoS4oKU4WhnSKSJMNUC9Vd tb5Mv6QIO6Pee/bimwWLn9k6cJZpJL9dXr/INy2QfvkYUlBmZLc11cSVqWbIwDjpcQn0wk9KG0krCt3CPTlypA==
-X-AuthUser: chester.a.unal@arinc9.com
+Subject: Re: [PATCH] firmware: cs_dsp: test_control_parse: null-terminate test
+ strings
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+CC: Simon Trimmer <simont@opensource.cirrus.com>,
+        Charles Keepax
+	<ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>, <patches@opensource.cirrus.com>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+ <d1c9a0f3-5bc5-4b78-abfa-d17e90c36f48@opensource.cirrus.com>
+ <20250211161448-c6560879-7bc9-4fe1-a9cf-713f029c1ee7@linutronix.de>
+Content-Language: en-GB
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <20250211161448-c6560879-7bc9-4fe1-a9cf-713f029c1ee7@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=PNv1+eqC c=1 sm=1 tr=0 ts=67ab7b28 cx=c_pps a=uGhh+3tQvKmCLpEUO+DX4w==:117 a=uGhh+3tQvKmCLpEUO+DX4w==:17 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=xpmXR35279-dqAzjWgoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: e9r7MIn-42D0RhUNrOckl23MdUcm-rwF
+X-Proofpoint-ORIG-GUID: e9r7MIn-42D0RhUNrOckl23MdUcm-rwF
+X-Proofpoint-Spam-Reason: safe
 
-Looks good to me. Thanks Johan.
-
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-
-Chester A.
-
-On 11/02/2025 14:55, Johan Hovold wrote:
-> Several MeiG Smart modems apparently use the same product id, making the
-> defines even less useful.
+On 11/02/2025 3:21 pm, Thomas Weißschuh wrote:
+> On Tue, Feb 11, 2025 at 03:10:38PM +0000, Richard Fitzgerald wrote:
+>> On 11/02/2025 3:00 pm, Thomas Weißschuh wrote:
+>>> The char pointers in 'struct cs_dsp_mock_coeff_def' are expected to
+>>> point to C strings. They need to be terminated by a null byte.
+>>> However the code does not allocate that trailing null byte and only
+>>> works if by chance the allocation is followed by such a null byte.
+>>>
+>>> Refactor the repeated string allocation logic into a new helper which
+>>> makes sure the terminating null is always present.
+>>> It also makes the code more readable.
+>>>
+>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>>> Fixes: 83baecd92e7c ("firmware: cs_dsp: Add KUnit testing of control parsing")
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>>    .../cirrus/test/cs_dsp_test_control_parse.c        | 51 ++++++++--------------
+>>>    1 file changed, 19 insertions(+), 32 deletions(-)
+>>>
+>>> diff --git a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+>>> index cb90964740ea351113dac274f0366de7cedfd3d1..942ba1af5e7c1e47e8a2fbe548a7993b94f96515 100644
+>>> --- a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+>>> +++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+>>> @@ -73,6 +73,18 @@ static const struct cs_dsp_mock_coeff_def mock_coeff_template = {
+>>>    	.length_bytes = 4,
+>>>    };
+>>> +static char *cs_dsp_ctl_alloc_test_string(struct kunit *test, char c, size_t len)
+>>> +{
+>>> +	char *str;
+>>> +
+>>> +	str = kunit_kmalloc(test, len + 1, GFP_KERNEL);
+>>> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, str);
+>>> +	memset(str, c, len);
+>>> +	str[len] = '\0';
+>>> +
+>>> +	return str;
+>>> +}
+>>> +
+>>>    /* Algorithm info block without controls should load */
+>>>    static void cs_dsp_ctl_parse_no_coeffs(struct kunit *test)
+>>>    {
+>>> @@ -160,12 +172,8 @@ static void cs_dsp_ctl_parse_max_v1_name(struct kunit *test)
+>>>    	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+>>>    	struct cs_dsp_coeff_ctl *ctl;
+>>>    	struct firmware *wmfw;
+>>> -	char *name;
+>>> -	name = kunit_kzalloc(test, 256, GFP_KERNEL);
+>>
+>> This allocates 256 bytes of zero-filled memory...
+>>
+>>> -	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, name);
+>>> -	memset(name, 'A', 255);
+>>
+>> ... and this fills the first 255 bytes, leaving the last byte still as
+>> zero. So the string is zero-terminated. I don't see a problem here.
 > 
-> Drop them in favour of using comments consistently to make the id table
-> slightly less unwieldy.
+> This single instance it is indeed correct.
+> In all other five it's broken.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
->   drivers/usb/serial/option.c | 28 ++++++++--------------------
->   1 file changed, 8 insertions(+), 20 deletions(-)
+>> Just fix the other allocs to be kzalloc with the correct length?
 > 
-> diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-> index 887a1c687b52..ba8c0a4047de 100644
-> --- a/drivers/usb/serial/option.c
-> +++ b/drivers/usb/serial/option.c
-> @@ -619,18 +619,6 @@ static void option_instat_callback(struct urb *urb);
->   /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
->   #define LUAT_PRODUCT_AIR720U			0x4e00
->   
-> -/* MeiG Smart Technology products */
-> -#define MEIGSMART_VENDOR_ID			0x2dee
-> -/*
-> - * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
-> - * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
-> - */
-> -#define MEIGSMART_PRODUCT_SRM825L		0x4d22
-> -/* MeiG Smart SLM320 based on UNISOC UIS8910 */
-> -#define MEIGSMART_PRODUCT_SLM320		0x4d41
-> -/* MeiG Smart SLM770A based on ASR1803 */
-> -#define MEIGSMART_PRODUCT_SLM770A		0x4d57
-> -
->   /* Device flags */
->   
->   /* Highest interface number which can be used with NCTRL() and RSVD() */
-> @@ -2350,6 +2338,14 @@ static const struct usb_device_id option_ids[] = {
->   	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
-> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
-> @@ -2406,14 +2402,6 @@ static const struct usb_device_id option_ids[] = {
->   	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
->   	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
->   	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
-> -	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
->   	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
->   	  .driver_info = NCTRL(1) },
->   	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
+> If you prefer that, sure I can change it.
+> 
+> Personally I like the helper much better. One does not have to look at a
+> dense block of code to see what the actual intention is.
+> Assuming the location in cs_dsp_ctl_parse_max_v1_name() was fixed when
+> some breakage was observed, with a helper it would have been fixed for
+> all locations and not crept into upstream code.
+> 
+> 
+> Thomas
 
+Actually I try to avoid helpers in tests. The trouble is that the
+function name _sounds_ like they do what you want, but you have to go
+and look at the helper to see what it _really_ does. More helpers means
+it's more difficult to review whether the test case does what it should
+do. I went through this early on where I had a lot more helpers for all
+that similar code in the test cases, and I found that I had test cases
+that were wrong but that was difficult to see because the test procedure
+was hidden across a lot of helper functions.
+
+For these strings there are some cases where it's important for the
+string to NOT have a NULL terminator in the firmware file so I'm a bit
+concerned that it was intended to create a string without a terminator
+and the bug is failure to handle this. But I'm really busy right now
+with other things so haven't got much time to look at this, If you
+and Mark want to take this patch to prevent the string overruns I'll
+come back when I have time and do a follow-up patch if I think the
+test framework should handle the non-terminated strings.
 
