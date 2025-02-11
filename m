@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-114773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9438A3006A
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:36:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5F9A3006E
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18E7D166A70
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825433A5E25
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092741F12FA;
-	Tue, 11 Feb 2025 01:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1611F1512;
+	Tue, 11 Feb 2025 01:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zpxz+jvQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WN8sMJQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E4B1F12F2;
-	Tue, 11 Feb 2025 01:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465501F0E42;
+	Tue, 11 Feb 2025 01:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237460; cv=none; b=C0ZMQVsNcFFDM6WNjVZipCLunV4cbQwRNPcMVGCSqYesrB2T8ZRKyB3128HXZYogpWwGg/GdgRUsxzDazo02GDPUJnDeCqJrYh1RBzQAM59TsM7fSyA7fgu3n1GVKGNpOfMqsr/k/MGKUm4lFNQ2QsedWnUzZNRmeyCcNEafuwc=
+	t=1739237462; cv=none; b=CGZX6M4ZUncE2TASsQfCV+GQ9si0VPWwgcRKxjGwh+LMKl87v809tqsCToA0L1CRn0rCxIWFmfAyCQZZNuwrImgJz+ZDHcJR3WXKXo+XX1s4jXXUFpE/h24xHgIqdCeQLPkFqkPpJTMsNn13SX22aWIcz+s3DZ5tZ3WAudDjhMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237460; c=relaxed/simple;
-	bh=Q0FnytlgEyxNSe5xTnqjy3UtG3XE9+2p9g5n5auPW6Q=;
+	s=arc-20240116; t=1739237462; c=relaxed/simple;
+	bh=bjvXG49dTpKT0QJS7J3gn7tqEEJFTEJiy5VTXshl5+E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SAAnOR8YvMXd/lylxbN0Yjz5MKIoU4HxwiD6UclaCNYPDk+wfAgopgrEazqgO3IWw290H7KDXBGCEilNJZPCbGilTDkaLwcFQ9evWTLBBJBaSYln3U253KPV3I9gsx0xQ4PD0Yrzq/jQjmyvwypzi3rPMXZ5ejBnACA9IiMilKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zpxz+jvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A895C4CEE9;
-	Tue, 11 Feb 2025 01:30:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FyLA1I7A3iyXhcj27tzuB4qm3GfmjKbShsr9/WaRzvqgwsW3tzCGa8+0ytsQm2PHjoF/C5Al6C6yGn170nDd8X+u4zLbR3WbUenDefXhFjo3uk2Hpt9ShiCZOyTEf/LzhI4K0AQi1KUuNjLQXmOn86zVDifqyfY3eRzc9MX0jKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WN8sMJQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A408C4CED1;
+	Tue, 11 Feb 2025 01:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237460;
-	bh=Q0FnytlgEyxNSe5xTnqjy3UtG3XE9+2p9g5n5auPW6Q=;
+	s=k20201202; t=1739237462;
+	bh=bjvXG49dTpKT0QJS7J3gn7tqEEJFTEJiy5VTXshl5+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zpxz+jvQGjGV8/s/yIof/zWneSQcc6T6rd0/E+J80mkiqkq29odK3T8P6xLhg7Qkl
-	 BgS2v0PzB7WUC7MN9xjUGWt7ByWWGuBUR4xdh/0TAEUm8xFuXcSV2y2wlmfwTqR4Ix
-	 l176jPzdtTH2pE26ecz/VCr/IITqxS5M99ghMc8iM5Dff4Hq01jsfqd0LBC12mMHeF
-	 qStnCp8gz0b2ULUhBYWgRqVMkquo5B3JHku6Vsj7dhtT23yDNNfJ2KAno/xmeAR3Z8
-	 4NP6oZ2PdxY1Cf7Zg7U2p1bRY+B40SIpILcUXSl6WJiYnJb89pexQ1aMsPdkWaiAsA
-	 b9aon+rYt2VrA==
+	b=WN8sMJQOyxDhlmYeuoxjX1r0VyNrkXWyCAyxwz/i9DX3IcnY39TKKDSKvOEOikMe5
+	 dY+58A6gDyTwtoPgA8w5gI8VpKmZJlaFDMp/J4xDIhI/lEdn6hNfjObAFqtnXu+M9s
+	 eMOu3RmQUruX9MMchqAiIhJZRTKP0wZpn2DOv0gvyrVHgY7t6n2+ARvs7zwceuIcbg
+	 cC0OA1hfYDEU5ikf7OagnGlelFEM0oJnx8BHOFF3tGmSh4gonP47pW33GoN/qO5Mwj
+	 Pox6VJCT1CLM4HtpOotgFin53A1IApsplVAenty7V7HZdelQtn+xp9jdOJO5r7dFy+
+	 h/gUQoP2tFmWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Loehle <christian.loehle@arm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 6.12 08/19] sched/debug: Provide slice length for fair tasks
-Date: Mon, 10 Feb 2025 20:30:36 -0500
-Message-Id: <20250211013047.4096767-8-sashal@kernel.org>
+	david.e.box@intel.com,
+	hdegoede@redhat.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 09/19] platform/x86/intel: pmc: fix ltr decode in pmc_core_ltr_show()
+Date: Mon, 10 Feb 2025 20:30:37 -0500
+Message-Id: <20250211013047.4096767-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013047.4096767-1-sashal@kernel.org>
 References: <20250211013047.4096767-1-sashal@kernel.org>
@@ -63,47 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.13
 Content-Transfer-Encoding: 8bit
 
-From: Christian Loehle <christian.loehle@arm.com>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-[ Upstream commit 9065ce69754dece78606c8bbb3821449272e56bf ]
+[ Upstream commit 583ef25bb2a094813351a727ddec38b35a15b9f8 ]
 
-Since commit:
+In pmc_core_ltr_show(), promote 'val' to 'u64' to avoid possible integer
+overflow. Values (10 bit) are multiplied by the scale, the result of
+expression is in a range from 1 to 34,326,183,936 which is bigger then
+UINT32_MAX. Compile tested only.
 
-  857b158dc5e8 ("sched/eevdf: Use sched_attr::sched_runtime to set request/slice suggestion")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-... we have the userspace per-task tunable slice length, which is
-a key parameter that is otherwise difficult to obtain, so provide
-it in /proc/$PID/sched.
-
-[ mingo: Clarified the changelog. ]
-
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/453349b1-1637-42f5-a7b2-2385392b5956@arm.com
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250123220739.68087-1-d.kandybka@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/debug.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/intel/pmc/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 82b165bf48c42..1e3bc0774efd5 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -1264,6 +1264,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
- 	if (task_has_dl_policy(p)) {
- 		P(dl.runtime);
- 		P(dl.deadline);
-+	} else if (fair_policy(p->policy)) {
-+		P(se.slice);
- 	}
- #ifdef CONFIG_SCHED_CLASS_EXT
- 	__PS("ext.enabled", task_on_scx(p));
+diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
+index 4e9c8c96c8cce..257c03c59fd95 100644
+--- a/drivers/platform/x86/intel/pmc/core.c
++++ b/drivers/platform/x86/intel/pmc/core.c
+@@ -625,8 +625,8 @@ static u32 convert_ltr_scale(u32 val)
+ static int pmc_core_ltr_show(struct seq_file *s, void *unused)
+ {
+ 	struct pmc_dev *pmcdev = s->private;
+-	u64 decoded_snoop_ltr, decoded_non_snoop_ltr;
+-	u32 ltr_raw_data, scale, val;
++	u64 decoded_snoop_ltr, decoded_non_snoop_ltr, val;
++	u32 ltr_raw_data, scale;
+ 	u16 snoop_ltr, nonsnoop_ltr;
+ 	unsigned int i, index, ltr_index = 0;
+ 
 -- 
 2.39.5
 
