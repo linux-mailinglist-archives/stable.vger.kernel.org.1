@@ -1,94 +1,133 @@
-Return-Path: <stable+bounces-114893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E47AA30881
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:29:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F3A30882
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4680165A8C
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4D2165AF7
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202521F460E;
-	Tue, 11 Feb 2025 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006B11F4262;
+	Tue, 11 Feb 2025 10:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCu/YfMp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HT7wZxHr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BFD1F4606
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24081F37BC
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739269739; cv=none; b=LRMCmfcytiBc8eceQksI5ArJ2sqXlqmr0pwKzblICKVgUXjoIkW3B8HGsWj4qYc9oibR+/dzAQdHirA4qos8PhPsRcEwZOvvAeQ7AY3EUXwB45F6MoMiGbaL5nJgTywcEzCBYHH5KkGhGoUtI/3vvrEpYGtMN5KA1i2ulMvHocY=
+	t=1739269766; cv=none; b=HX+fJP5+yCzXS7g6ZyTOdomtMxSeKLgwVplHIC5yJ3HzOM7o+koOSGZhs+hiCupy9wigGktOs+oT4ZEM3w2b8kotqw6ornls73qIREJ3aATg02kziFWZuXsvMR8fDWlLH3K+HIpRMDhqIawK4rBdL1sMlwGmtNukR2r1qfBF7ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739269739; c=relaxed/simple;
-	bh=su9jxncekXcfI91HhoC4h8DA7KnfPatOCFUwD86v13E=;
+	s=arc-20240116; t=1739269766; c=relaxed/simple;
+	bh=HaHabSl+wxC8yeelHmSr2+qIEdKDU6K4yefBEnZQXy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MiUsEQLhuAU6m6KYfOQ6urGiz4+XJgEAvdKSDbGpImWBYFvTlzuBqj6HFbC5IU79mDggzCOhnPcxg6FwsEZgiaFpnwXfZ2qec39vex8C6EV8ziWWwK40ITt6TshG/nvvcFnxIsWNpSUWHYbiVGj0VKO0jtXbfAc1T6ztgZB7meA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCu/YfMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5E5C4CEDD;
-	Tue, 11 Feb 2025 10:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739269739;
-	bh=su9jxncekXcfI91HhoC4h8DA7KnfPatOCFUwD86v13E=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=P+0z4HefrZMVY3IPeg/qqyT20xtz8hb51dZ9HYEMQ9VFkyz8ChRlW0w63Qn/nE1KgGbZqlDzm+5qHHCcH2VdWgs1LGIVezed+MP9O5zg0NKEgQwAEpcS8OXlBVbW/VF5plfbZof4Jy8aQ3hXPSK5bhr4Yqr24uhLjnP2QaxTvaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HT7wZxHr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17ECC4CEDD;
+	Tue, 11 Feb 2025 10:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739269766;
+	bh=HaHabSl+wxC8yeelHmSr2+qIEdKDU6K4yefBEnZQXy8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HCu/YfMpgx9ESoiqSG8KJgKInEk1obhw7SatoVlPzFia/9nBe6S8vHsnwqV2+EuSZ
-	 ec63Cod0+2E0eUBYQ9wrE1Y8RrbR843zlmu0DFEvMVIofjwiMeIkZK1nFqo2OXEpsx
-	 BcKAf7fVGojV+RQdCRPeffU+atloFpP6eljscpBI=
-Date: Tue, 11 Feb 2025 11:28:56 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
-Cc: broonie@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] spi: atmel-qspi: Memory barriers after
- memory-mapped I/O" failed to apply to 6.13-stable tree
-Message-ID: <2025021128-recognize-hardhead-67f0@gregkh>
-References: <2025021058-ruse-paradox-92e6@gregkh>
- <fde3442f-3ea5-4742-af70-9d243678e303@prolan.hu>
+	b=HT7wZxHrLIu2yMUWmOIWFnrP7uTpA6e1zrfjmnBecJYeZzPHp4RnYchuY8B9yLQV3
+	 rGR3bQZPj4Ik5esTM/eyWiJlLvf8SGl4bDmT+pJ7cXrSWbXEPeJSiTprCzigx6Z/7c
+	 UpZ74U6s6A3iK+l8+3nLoG5thLel7eiamb4mdJXvfKcThJ1U+0kv1P0ARw2m9zqreS
+	 0eTHJkiiJXc0Q2SKFVfrQgAlrm12f5kCkBPu4zQVANIrrrMxxihp5ytLVAquFObbxK
+	 TAr9UUjHMjOfLuXfBbaw/K3X839Dfq67ToIN6UNCk9yC1qE6v4a3E4/uhZOvOgZpCk
+	 q0s4nehs9XTgA==
+Date: Tue, 11 Feb 2025 10:29:19 +0000
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <20250211102918.GA8653@willie-the-truck>
+References: <20250206141102.954688-1-mark.rutland@arm.com>
+ <20250206141102.954688-9-mark.rutland@arm.com>
+ <20250210165325.GI7568@willie-the-truck>
+ <Z6o1t7ys2qVaZ-7n@J2N7QTR9R3>
+ <20250210182009.GB7926@willie-the-truck>
+ <Z6pL81_yi98o2vtS@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fde3442f-3ea5-4742-af70-9d243678e303@prolan.hu>
+In-Reply-To: <Z6pL81_yi98o2vtS@J2N7QTR9R3>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Feb 10, 2025 at 07:17:54PM +0100, Csókás Bence wrote:
-> Hi,
-> 
-> On 2025. 02. 10. 13:52, gregkh@linuxfoundation.org wrote:
+On Mon, Feb 10, 2025 at 06:56:51PM +0000, Mark Rutland wrote:
+> On Mon, Feb 10, 2025 at 06:20:09PM +0000, Will Deacon wrote:
+> > On Mon, Feb 10, 2025 at 05:21:59PM +0000, Mark Rutland wrote:
+> > > On Mon, Feb 10, 2025 at 04:53:27PM +0000, Will Deacon wrote:
+> > > > On Thu, Feb 06, 2025 at 02:11:02PM +0000, Mark Rutland wrote:
+> > > Sorry, I had meant to add a comment here that this relies upon a
+> > > subtlety that avoids the need for the ISB.
 > > 
-> > The patch below does not apply to the 6.13-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
+> > Ah yes, it really all hinges on guest_owns_fp_regs() and so I think a
+> > comment would be helpful, thanks.
+> > 
+> > Just on this, though:
+> > 
+> > > When the guest owns the FP regs here, we know:
+> > > 
+> > > * If the guest doesn't have SVE, then we're not poking anything, and so
+> > >   no ISB is necessary.
+> > > 
+> > > * If the guest has SVE, then either:
+> > > 
+> > >   - The guest owned the FP regs when it was entered.
+> > > 
+> > >   - The guest *didn't* own the FP regs when it was entered, but acquired
+> > >     ownership via a trap which executed kvm_hyp_handle_fpsimd().
+> > > 
+> > >   ... and in either case, *after* disabling the traps there's been an
+> > >   ERET to the guest and an exception back to hyp, either of which
+> > >   provides the necessary context synchronization such that the traps are
+> > >   disabled here.
+> > 
+> > What about the case where we find that there's an interrupt pending on
+> > return to the guest? In that case, I think we elide the ERET and go back
+> > to the host (see the check of isr_el1 in hyp/entry.S).
 > 
-> There is a dependency, that I specified in the commit in accordance with
-> [1]:
+> Ah; I had missed that, and evidently I had not looked at the entry code.
 > 
-> > Cc: stable@vger.kernel.org # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
-> > Cc: stable@vger.kernel.org # 6.x.y
-> > Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-> > Link: https://patch.msgid.link/20241219091258.395187-1-csokas.bence@prolan.hu
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
+> Given that, I think the options are:
 > 
-> [1] https://docs.kernel.org/process/stable-kernel-rules.html#option-1
+> (a) Add an ISB after disabling the traps, before returning to the guest.
+> 
+> (b) Add an ISB in fpsimd_lazy_switch_to_host() above.
+> 
+> (c) Add an ISB in that sequence in hyp/entry.S, just before the ret, to
+>     ensure that __guest_enter() always provides a context
+>     synchronization event even when it doesn't enter the guest,
+>     regardless of ARM64_HAS_RAS_EXTN.
+> 
+> I think (c) is probably the nicest, since that avoids the need for
+> redundant barriers in the common case, and those short-circuited exits
+> are hopefully rare.
 
-Sorry, I missed that.
+(c) sounds like the most robust thing to do and, even though the ISB
+might be expensive, we're still avoiding an ERET+IRQ.
 
-> Please re-pick with c0a0203cf579. As a side note, I also specified 6.x.y
-> because - in my experience - anything earlier will not cleanly apply
-> anyways. So you can safely drop these from the 5.x.y queues.
+> Obviously that would mean adding comments in both __guest_enter() and
+> fpsimd_lazy_switch_to_host().
 
-It failed to apply to 6.1.y as well, please provide backports for that
-tree if you want it there.
+Yup.
 
-thanks,
+Cheers,
 
-greg k-h
+Will
 
