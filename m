@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-114780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E80A3007D
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:37:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C6BA30080
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218F81887BEB
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF951887C0C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CD11F2B9E;
-	Tue, 11 Feb 2025 01:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A8C1F2C28;
+	Tue, 11 Feb 2025 01:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWKH8oMa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XutgXRV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C259F1F2B95;
-	Tue, 11 Feb 2025 01:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5601F2BB7;
+	Tue, 11 Feb 2025 01:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237483; cv=none; b=tuRJPVNzVKMv1mPd8hdBk1SE67ImkebvNyA41jS5LQMzUbabYo+O3ErULpzELmUx5Ai5n61ppPmDwQvcKaVKcmdCLIImIAipm6Mj9tVhvkvrOt4gKpbsIj75kSTguPHIS1KTOfWgM4ug73l4ezUqUXpJUvCFySBCgFyhhv7rlXw=
+	t=1739237485; cv=none; b=RFj4ayi/v4UP9kdxIfNiqhsQEcVQGqVxTBDmE2w+mG86IYiLjFaZU5IrG5ZFry3SOa2X1NyX5U9bQ5LCDpHkWn7mJyaiHdWwa0DIXnRr9VIVoL3xzTSBEW4isY+cbia+kbBHZuFIxuXSdQwocdXSIpAvjqJUkLAJCYIEeCetovU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237483; c=relaxed/simple;
-	bh=ySLUvMMBTHzlJLmqpRqysEHyKgwvuX6j+Zt4vOn+2mU=;
+	s=arc-20240116; t=1739237485; c=relaxed/simple;
+	bh=Sf5wf3nrMe44/8779lMbahSKanPXfB9Q29I0zhUYPsI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Hm9vBau9kHCh9hzgPsUaAF5jOCTK1RmpV9551RvIKu+RFzXJ0dF7J4HbqW24I1kq6VU8k73x2pxUr6h7A4lrzfm6bGnmMGf2dhbt0LfQnJojdLIrVoAB7QeqwmCfDd9DGb4uCmeuvq4eegGLgREjigEQ551BKFkTRkuvU3zofNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWKH8oMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F6AC4CED1;
-	Tue, 11 Feb 2025 01:31:22 +0000 (UTC)
+	 MIME-Version; b=S6mCH+M4H41jYLFpkFtBs/K+uZ2VvX4pJCea0D5Ocsf1/ZOxC/OgmLoBE6HWdkJigusFuHvbqz2CuwK7gSXxJjDUIYFVf7xQgfvf+M8Rj6lHk/5npcosQWqXtDM9h49Y3FAAV53nQ7n7JA/E63Yu2qgLVGT4wjxZzSzVHXn6k/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XutgXRV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA15C4CED1;
+	Tue, 11 Feb 2025 01:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237483;
-	bh=ySLUvMMBTHzlJLmqpRqysEHyKgwvuX6j+Zt4vOn+2mU=;
+	s=k20201202; t=1739237485;
+	bh=Sf5wf3nrMe44/8779lMbahSKanPXfB9Q29I0zhUYPsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWKH8oMatWOzlugut+56fh/2VxznLUrvN9cEw5+SBSTkxoHfad5qkmjqcvqpEcvbl
-	 GPeOf1RvGKPJltx7s7CJ5sju0aD3wb1cBJhnM1lCMBC0LmoUHtNBeCCz0bIX2ww/K8
-	 2YefgvP4XSeAHLg/c5aiGeEJUmqlr7f9m8KeD5k6KIQcWoW+nwZ8TX6Ybf4XcCesf2
-	 O0uMXYJcjEQewl5m6djjgMcdHwI5yhnjOjskcB6SAHdX1xJukGvepDKtyBUOG+tv4R
-	 OgcAw6vBdiVJBhTUwqCl0PHbUw5QSGY/NRUbbagjWRkEAad8gVLBvOYxFVPK1p3oAc
-	 3edcrW0XHog5g==
+	b=XutgXRV1EF+lmd6nPnSQf3R9Gf7zj89x/LH183BTUg/Mw+/rEMn6FftR2lntof6m5
+	 j1pRJTG9+TM4UPvG5c83dq8a/MeulmbGu0IYaONWOyEU3KbH2QoqE29u5s6XCoMrc4
+	 LkiHVXpd0JX2/vNktRPSPvAERz+Sk5SL8kb+BjsvqOfrkF3IS78Y9rRmWOs57mWtVy
+	 WPNXn9dOtbxDiEpL2cscWJV8SLOnsp+FRohld3EFqAxP/D4DynGZVfnOn+TgPWCd9l
+	 T/UkbEwGA5NWwV/fn8hLUCRcqEKU0dKpSTp9ovyScmNJnHisHm25+/wG1X7jryxD2W
+	 iHU9hqzCNDOEA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gannon Kolding <gannon.kolding@gmail.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/19] ACPI: resource: IRQ override for Eluktronics MECH-17
-Date: Mon, 10 Feb 2025 20:30:43 -0500
-Message-Id: <20250211013047.4096767-15-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.12 16/19] smb: client: fix noisy when tree connecting to DFS interlink targets
+Date: Mon, 10 Feb 2025 20:30:44 -0500
+Message-Id: <20250211013047.4096767-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013047.4096767-1-sashal@kernel.org>
 References: <20250211013047.4096767-1-sashal@kernel.org>
@@ -66,41 +67,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.13
 Content-Transfer-Encoding: 8bit
 
-From: Gannon Kolding <gannon.kolding@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
+[ Upstream commit 773dc23ff81838b6f74d7fabba5a441cc6a93982 ]
 
-The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-keyboard to work.
+When the client attempts to tree connect to a domain-based DFS
+namespace from a DFS interlink target, the server will return
+STATUS_BAD_NETWORK_NAME and the following will appear on dmesg:
 
-Adding a DMI_MATCH entry for this laptop model makes the internal
-keyboard function normally.
+	CIFS: VFS:  BAD_NETWORK_NAME: \\dom\dfs
 
-Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
-Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Since a DFS share might contain several DFS interlinks and they expire
+after 10 minutes, the above message might end up being flooded on
+dmesg when mounting or accessing them.
+
+Print this only once per share.
+
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/smb/client/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 90aaec923889c..b4cd14e7fa76c 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-+		},
-+	},
- 	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 4750505465ae6..80d5705649f36 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2175,7 +2175,7 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
+ 
+ tcon_error_exit:
+ 	if (rsp && rsp->hdr.Status == STATUS_BAD_NETWORK_NAME)
+-		cifs_tcon_dbg(VFS, "BAD_NETWORK_NAME: %s\n", tree);
++		cifs_dbg(VFS | ONCE, "BAD_NETWORK_NAME: %s\n", tree);
+ 	goto tcon_exit;
+ }
+ 
 -- 
 2.39.5
 
