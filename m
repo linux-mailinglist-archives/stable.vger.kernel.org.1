@@ -1,100 +1,99 @@
-Return-Path: <stable+bounces-114910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA324A30BEC
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 13:39:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2393FA30C17
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 13:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 937BB3A1979
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 12:39:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD69188AE1E
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 12:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257586FB9;
-	Tue, 11 Feb 2025 12:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C954121480A;
+	Tue, 11 Feb 2025 12:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F+l6vk3/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SJq348vP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3A61B85FD
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 12:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21AF20C47F;
+	Tue, 11 Feb 2025 12:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739277548; cv=none; b=JKJSHJ+mtD7dOB0R+dKqKhuy8AuP/guOesogVFjvmzHfwkI8lhNCnVZFwp8gWoPy1hY33tX2qnxPaM+633z5c32wrV5knvL08n0VEvusIVmE3vYG/FhSxqL9lNBhtBIgXXzvkpl0OaWybp3OGBT4/4yISFrZWWEzgJs4Tgrg09c=
+	t=1739278508; cv=none; b=edMvi6iqpS8bdZUlD9VOJnjo4u1l0e1c4cR8silAYY/2ITc2pDh6yuONv/69rU8UOdiOHvkhdCBMZY4FWzcrJiLXZL3g5PAxx/xYAwTp8eEHkJquw9JL7uzC5Elgzkym5Mmn+u8SLB05O2W1OVSl2gUJQ9LbBlWXIJM/+RHaQ3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739277548; c=relaxed/simple;
-	bh=I3J6efnR0PjvI0I/FjS01Lo8ztCyGXHUdF+cwbVzSxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=obI9u6Fppf1tz3nN3uYYUqSWarkqHnfmI4yVWRSrZmPk0SKGDk+SjJufD4f6eqYFLaKU1sqP6jrJ0MFmX4Me6oyjr1miRiTPR+Qxr7qBPWKuKCm3seoLKjVmEzQU7BSqPkpH57sUDQnCG6HL5vZZMNBklK0UtmEmlZG+ozdbTXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F+l6vk3/; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739277548; x=1770813548;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=I3J6efnR0PjvI0I/FjS01Lo8ztCyGXHUdF+cwbVzSxE=;
-  b=F+l6vk3/XZKyqKaUwapGUrkzVLy3fFAeQhnUuLYg8wdfn5db7UaDDz6c
-   S7xTWtuaHHsE4Cno4q/EIs7pjkC6N9EfCgXp+IqGv8DsxLdk0mxXkmRTW
-   8yiWvDpbsFkYfraI7t8GxaH8WR7R2N+edKD9WE2nuRh8I432nHlGq3a2z
-   /CECOrMwQg1WEI0TMKMCJuYl2sZxDevpIKDIcsz/PEFvRcX9dIRGsU8ny
-   pd784q/nAv9w+JVvkOTJzP+ay2f5aesfIFpZE+t6DY9ZHjpuPEPqtkh5W
-   oV1cH7i9Kq177zo0PsIkhf7Se5eMLy5/ESPmOTc3XQos+kTxT+Pz2M1ab
-   w==;
-X-CSE-ConnectionGUID: aDHO9HKdReOKPhJJQKlSnQ==
-X-CSE-MsgGUID: F9wbvQe2RPmwzStXFV73/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="43654459"
-X-IronPort-AV: E=Sophos;i="6.13,277,1732608000"; 
-   d="scan'208";a="43654459"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 04:39:07 -0800
-X-CSE-ConnectionGUID: iBSdd4hTSWG2I/WPqMSRag==
-X-CSE-MsgGUID: dhOJaEZjSGWT/2NbF+iHKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,277,1732608000"; 
-   d="scan'208";a="112455841"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 11 Feb 2025 04:39:06 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1thpXb-0014A7-2r;
-	Tue, 11 Feb 2025 12:39:03 +0000
-Date: Tue, 11 Feb 2025 20:38:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] usb: xhci: Handle quirky SuperSpeed isoc error reporting
- by Etron HCs
-Message-ID: <Z6tE3r7f-r-vYGo6@a4552a453fea>
+	s=arc-20240116; t=1739278508; c=relaxed/simple;
+	bh=E/D4r8Njpis3Lv6czODLlg8GcE73pPznWAgOjZkvmMs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nTQN0NUgGy6qYjTYrik/Utl7jMrgNVtyxIVi1uuXAg2IbnFkaj2SDiJDgy19FHJMeygb+A1wzfFIJIWEnZtNcEm1t7ilGtIYiWxJ4hTDZZ9SWmlPqtLIcIi1W/iS6z44czSnVbBeTjaVNO0sW3yBdSiKLcjttJbA9LFML+M+Vuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SJq348vP; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4A4EE4318D;
+	Tue, 11 Feb 2025 12:54:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739278498;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LCp+sFwjp6X53Xy6vUp3gJOZ41+nmTUyiZmaz+Sg4LQ=;
+	b=SJq348vPQLBZmcy3A5kV8BgiAobDhxS8qQOy+ZMAe2bNi74xWjryciNfDqrAHEXGjTS9dZ
+	p8H9vVx/ArmWe5WiyNrqXQAwPR37GY2iYjXKxQApVBG/B5rc6GTHJSyOiFl830kk6U8Wr7
+	AmnqKnpoyJ/7hOj3r/vpbfNP0DO4DCCAKEWQrIn8ZcJS3B38HkAHnZV3u3PZzQAUFzlpde
+	4yIK1B836k+RUeK7+BUXkYKhtdxDy88GBylg82VbCksyyo39L0N5RPtKenw4GgLr2qT8HV
+	INeFOoRYZ+C5B84vCQ13mdKFOkQNSFHaebILSCWQkiHWg1BQ2PmkvMrxh/VPag==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Md Sadre Alam <quic_mdalam@quicinc.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org, Robert Marko <robimarko@gmail.com>
+In-Reply-To: <20250209140941.16627-1-ansuelsmth@gmail.com>
+References: <20250209140941.16627-1-ansuelsmth@gmail.com>
+Subject: Re: [PATCH v2] mtd: rawnand: qcom: fix broken config in
+ qcom_param_page_type_exec
+Message-Id: <173927849590.126930.12542924757341380520.b4-ty@bootlin.com>
+Date: Tue, 11 Feb 2025 13:54:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250211133614.5d64301f@foxbook>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeguddthecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtkeertdertdejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeifffhueelgfdtleetgfelvefggfehudelvdehuddulefgheelgfehieevvdegnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrgedvrdegiegnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhitghhrghrugesnhhou
+ gdrrghtpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehkohhnrhgrugdrugihsggtihhosehoshhsrdhquhgrlhgtohhmmhdrtghomhdprhgtphhtthhopegrnhhsuhgvlhhsmhhthhesghhmrghilhdrtghomh
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi,
+On Sun, 09 Feb 2025 15:09:38 +0100, Christian Marangi wrote:
+> Fix broken config in qcom_param_page_type_exec caused by copy-paste error
+> from commit 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
+> 
+> In qcom_param_page_type_exec the value needs to be set to
+> nandc->regs->cfg0 instead of host->cfg0. This wrong configuration caused
+> the Qcom NANDC driver to malfunction on any device that makes use of it
+> (IPQ806x, IPQ40xx, IPQ807x, IPQ60xx) with the following error:
+> 
+> [...]
 
-Thanks for your patch.
+Applied to mtd/fixes, thanks!
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+[1/1] mtd: rawnand: qcom: fix broken config in qcom_param_page_type_exec
+      commit: 86ede0a61f8576a84bb0a93c5d9861d2ec1cdf9a
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] usb: xhci: Handle quirky SuperSpeed isoc error reporting by Etron HCs
-Link: https://lore.kernel.org/stable/20250211133614.5d64301f%40foxbook
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Kind regards,
+Miquèl
 
 
