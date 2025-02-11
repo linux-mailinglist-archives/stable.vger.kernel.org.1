@@ -1,217 +1,154 @@
-Return-Path: <stable+bounces-114849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBF4A304AE
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:41:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73739A304D6
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A2EB3A574D
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E6E63A8024
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871961EDA11;
-	Tue, 11 Feb 2025 07:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503FF1EE019;
+	Tue, 11 Feb 2025 07:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="q4C+y7eq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHcR0VR2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AF71E3DF7
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6E31D7E57
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739259680; cv=none; b=mBurmGQIA+ZNsPNBCSKE2WoIkmL42kqduFKq7iEgcyFIRL0DUpY9zIFFLwac6pNcaQCijUBmHwbEpZXitLF/3rdjLbnsDnjpwwW94gSKA2MDE4QL2/pdrHk9W+aU1Z6dhbVwUJ0QHDaqMxHBdq/deLffkgn3fcQWBQSBYublPh8=
+	t=1739260109; cv=none; b=qQwSkVB6odIzFPnJ8hSqBKGxK9cVIA+lPkW+MdTC60t3GQyUT7gno0met0q0NtMybBNwKcVXgrGOlXXSUgHnwYHswqd9dXC3x84HRL2+yfdrL6gyxVS38JbpEAlT4lqdk2i8k3RpmZOktkDR4BQypT8fEFhxLGGBboJeWGJIchQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739259680; c=relaxed/simple;
-	bh=ynwm1bdzEF1ub54nG+ogujpMFyfu9aqbKs29ozNc6tA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcPtQvf+kdxzMFhOFHK36RzxdcyFpm7cCFRzsDYDk/wl5VGHpmv25BkIKslWvet/mtfJ0D3wLKwtBT//UOEAShDJ05Qja+SN+Vl20bGRPSH115d7yIVFW4xZXlNfv38ec9YwYEVxHsV969apm7EMMqKpFqcU6B/h72WZz5xUTfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=q4C+y7eq; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B1fJfJ023563
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=36rbHyyIMconnVOEU
-	ihPaqQC2OBIIf3fDahr2u5xYuc=; b=q4C+y7eqXBHaxtEAxKmnx1zwTIYYfTpZJ
-	HOMRJJQxe17Um9ou+dobgAX2ad0MjwLACb1nsR6xzxGt9XU7JyCc7EzVPXRfT3+h
-	4sxijSJfNcZG7QhYwquqeMwYh+OrZO2Y4+QLVqWv5qX5yi7IHWlkhXGynTIwAkGh
-	6iMVR/37GWhayuq0hMeJCy5OTT7neUoNVNVO2iuzNNkbu+EKMcaelCIkDMrl0KOL
-	STaL0er4kQ7PnIFVcFlB1efJnIA/BVLzJsxPiFGVRiOqtde5WU6zNFMV3Fpfv9/0
-	2OzcvuFBmKFvsgFY84gzDcWDdbzQYGWuqQ8uZEohO9BkSUs/ctw0w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qm9tkh3y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:17 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51B70YHH029203
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:16 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pma1hufv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:16 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51B7fCRO44171722
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Feb 2025 07:41:13 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC8AE20043;
-	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C523820040;
-	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
-From: Heiko Carstens <hca@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.12.y] s390/fpu: Add fpc exception handler / remove fixup section again
-Date: Tue, 11 Feb 2025 08:41:11 +0100
-Message-ID: <20250211074111.3756357-1-hca@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2025021058-supplier-busybody-2b89@gregkh>
-References: <2025021058-supplier-busybody-2b89@gregkh>
+	s=arc-20240116; t=1739260109; c=relaxed/simple;
+	bh=ti7SQMSGkZmBsu1MPhxB4Tlzh7MdbHJL2VwMogA5Doo=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dMahhtyIV0Z1IKJbHFroUJXNbjUdzjchbIxpdqdE53Rzgp7dQ2sxqrrOuTtbBLEMDbxM1zei0AlGdkA/+TtaAu9/5/gqQ7kD3YL7JYh1XThyBrJW+TKq8g0oLbDd9lyEy/7YhjeoC9Q+J6BSal+F+QPPa+T+CJBTruCk/NtL8Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHcR0VR2; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5de3c29e9b3so7451153a12.3
+        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 23:48:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739260105; x=1739864905; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Lco/NiUiU4FOOJ/aVWa7MAjUSliO26a1kIkwUe28IU=;
+        b=FHcR0VR2s87h79MR48MO8oTkQhS4xLTC5FnHrwqdH+TcESfXFhciQBFhbuP3Ilby31
+         1Z8YXrdmc//TmNuEGNL2bTUQQS1N0VgMjHc6/a8OSmRwlOowKjKQNXLk0DwO9XhHrXFL
+         tSV2cI5VBD/wGxZ8hDxfjI8oYY8p5sOD4U4LtNqNFLDWr2cyTPRWhVjpIVRsJ+uvjzqy
+         GEZyzgyiSYcz2+g+7K4BafYETOR74mOcpquBlF3X1Phr79rkxsfeWNlfvZn6zmjj+iFU
+         TQeD1sMjbWeFMaSxx0Cun6tzfGbqLk1EoCiyXcyvXjZBjp41RKHEZiXQOSxTWjCK0DW3
+         /Qhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739260105; x=1739864905;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4Lco/NiUiU4FOOJ/aVWa7MAjUSliO26a1kIkwUe28IU=;
+        b=OaSX5JllxuXLvyhGdiYHUspEXxmQWpiKV2wOL0iOed7Svt3QKhQGKAqBYTUG2rofQd
+         9O6oOLV6QpkGwxr1eVVuFOsAT5wym1om/Klj1s0gaSLp0Eab1snP5BJBBnv8fJrEFR9L
+         p+3HpxnjqARIgOSx95audwIkTg6ZjE5IpqQv6MX1yvo3JP/CId/ot6IfLFcXXfT1mEMI
+         Li25l7We4JwuLojdq/8ZfoKDRAywZvsCGXt9a5P4K2ttCGcNHAQ0WkG48j8NpXXEwmP6
+         tsg8as3CwUythv9rxPgc/5lxPeWiejZ7/Q4KPeFVottO579SJftgl1ginvDu/jXcfGK4
+         ZE/w==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Vz2/KW8Gjp6llTSEOam+yH7MWtw328PVrHhv5NrahZMhX5RsIya1AG2SQMGDTfeTBN+2rKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykedg7jZ70mb3uMKT4gthQRPnf2SMU5OMHv1BDFFPjsW3dZveM
+	kztuPdy3acOpP1tuchi7Outdq0aTb2X+/gN7xtjzcPKP6j0/KcTL
+X-Gm-Gg: ASbGncs43Zl631lsa5LdOE7qHSlG7I5pqUkRbir/8aeIebqdtKLbXoqgidlBFJ9eAQg
+	ZO9XnKwmTMj4BDfCE0m0nf/mar1vh4CRESZT7vMvsQq5FoTXAtZMQV0R+Kj7PP8YtZz6NNu01TK
+	gnG3OvGKSo0pze5/F4CB6rfw7KyEXQtHIvabyZqCTWZPkj9B+TP1eY7rTBlKb3ayfEs7+JhnkhH
+	HrQK4l7n6FDBdKf+Dl824khgN/IwaV59sEgiR2uznn8+D6nmq0wlB03Q2JGuW0P55hrlg4qPYrZ
+	wuX7tJCHkSTDLr8=
+X-Google-Smtp-Source: AGHT+IFSA8kWoH4jOKBbAt4r5rTe1V2Nv0LS3cE4VqImV5sRNitQvfeFRSmzdfin6q2KuMw8ZMEahg==
+X-Received: by 2002:a05:6402:358f:b0:5dc:7f72:5eae with SMTP id 4fb4d7f45d1cf-5de4508dc87mr15326343a12.23.1739260105319;
+        Mon, 10 Feb 2025 23:48:25 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5de5e6ac118sm6089594a12.17.2025.02.10.23.48.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 10 Feb 2025 23:48:23 -0800 (PST)
+Date: Tue, 11 Feb 2025 07:48:21 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	maple-tree@lists.infradead.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] maple_tree: may miss to set node dead on destroy
+Message-ID: <20250211074821.uw43qk5mk2shrndk@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250208011852.31434-1-richard.weiyang@gmail.com>
+ <20250208011852.31434-2-richard.weiyang@gmail.com>
+ <42meyihs3gnp3bbvn5o76tzh6h2txwquqdfur5yfpfu36gapha@rtb73qgdvfag>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C-xsGnjlXJdQmIzacQ8G_E36_4LQE31i
-X-Proofpoint-ORIG-GUID: C-xsGnjlXJdQmIzacQ8G_E36_4LQE31i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-11_03,2025-02-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 phishscore=0 impostorscore=0 mlxlogscore=852 adultscore=0
- malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502110044
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42meyihs3gnp3bbvn5o76tzh6h2txwquqdfur5yfpfu36gapha@rtb73qgdvfag>
+User-Agent: NeoMutt/20170113 (1.7.2)
 
-commit ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179 upstream.
+On Mon, Feb 10, 2025 at 09:19:46AM -0500, Liam R. Howlett wrote:
+>* Wei Yang <richard.weiyang@gmail.com> [250207 20:26]:
+>> On destroy, we should set each node dead. But current code miss this
+>> when the maple tree has only the root node.
+>> 
+>> The reason is mt_destroy_walk() leverage mte_destroy_descend() to set
+>> node dead, but this is skipped since the only root node is a leaf.
+>> 
+>> This patch fixes this by setting the root dead before mt_destroy_walk().
+>> 
+>> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> CC: Liam R. Howlett <Liam.Howlett@Oracle.com>
+>> Cc: <stable@vger.kernel.org>
+>> ---
+>>  lib/maple_tree.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>> 
+>> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+>> index 198c14dd3377..d31f0a2858f7 100644
+>> --- a/lib/maple_tree.c
+>> +++ b/lib/maple_tree.c
+>> @@ -5347,6 +5347,8 @@ static inline void mte_destroy_walk(struct maple_enode *enode,
+>>  {
+>>  	struct maple_node *node = mte_to_node(enode);
+>>  
+>> +	mte_set_node_dead(enode);
+>> +
+>
+>This belongs in mt_destroy_walk().
 
-The fixup section was added again by mistake when test_fp_ctl() was
-removed. The reason for the removal of the fixup section is described in
-commit 484a8ed8b7d1 ("s390/extable: add dedicated uaccess handler").
-Remove it again for the same reason.
+You prefer a change like this?
 
-Add an exception handler which handles exceptions when the floating point
-control register is attempted to be set to invalid values. The exception
-handler sets the floating point control register to zero and continues
-execution at the specified address.
-
-The new sfpc inline assembly is open-coded to make back porting a bit
-easier.
-
-Fixes: 702644249d3e ("s390/fpu: get rid of test_fp_ctl()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
----
- arch/s390/include/asm/asm-extable.h |  4 ++++
- arch/s390/include/asm/fpu-insn.h    | 17 +++++------------
- arch/s390/kernel/vmlinux.lds.S      |  1 -
- arch/s390/mm/extable.c              |  9 +++++++++
- 4 files changed, 18 insertions(+), 13 deletions(-)
-
-diff --git a/arch/s390/include/asm/asm-extable.h b/arch/s390/include/asm/asm-extable.h
-index 4a6b0a8b6412..00a67464c445 100644
---- a/arch/s390/include/asm/asm-extable.h
-+++ b/arch/s390/include/asm/asm-extable.h
-@@ -14,6 +14,7 @@
- #define EX_TYPE_UA_LOAD_REG	5
- #define EX_TYPE_UA_LOAD_REGPAIR	6
- #define EX_TYPE_ZEROPAD		7
-+#define EX_TYPE_FPC		8
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index e64ffa5b9970..79f8632c61a3 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5288,6 +5288,7 @@ static void mt_destroy_walk(struct maple_enode *enode, struct maple_tree *mt,
+ 	struct maple_enode *start;
  
- #define EX_DATA_REG_ERR_SHIFT	0
- #define EX_DATA_REG_ERR		GENMASK(3, 0)
-@@ -84,4 +85,7 @@
- #define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
- 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
- 
-+#define EX_TABLE_FPC(_fault, _target)					\
-+	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
-+
- #endif /* __ASM_EXTABLE_H */
-diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
-index c1e2e521d9af..a4c9b4db62ff 100644
---- a/arch/s390/include/asm/fpu-insn.h
-+++ b/arch/s390/include/asm/fpu-insn.h
-@@ -100,19 +100,12 @@ static __always_inline void fpu_lfpc(unsigned int *fpc)
-  */
- static inline void fpu_lfpc_safe(unsigned int *fpc)
- {
--	u32 tmp;
--
- 	instrument_read(fpc, sizeof(*fpc));
--	asm volatile("\n"
--		"0:	lfpc	%[fpc]\n"
--		"1:	nopr	%%r7\n"
--		".pushsection .fixup, \"ax\"\n"
--		"2:	lghi	%[tmp],0\n"
--		"	sfpc	%[tmp]\n"
--		"	jg	1b\n"
--		".popsection\n"
--		EX_TABLE(1b, 2b)
--		: [tmp] "=d" (tmp)
-+	asm_inline volatile(
-+		"	lfpc	%[fpc]\n"
-+		"0:	nopr	%%r7\n"
-+		EX_TABLE_FPC(0b, 0b)
-+		:
- 		: [fpc] "Q" (*fpc)
- 		: "memory");
- }
-diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index 377b9aaf8c92..ff1ddba96352 100644
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -52,7 +52,6 @@ SECTIONS
- 		SOFTIRQENTRY_TEXT
- 		FTRACE_HOTPATCH_TRAMPOLINES_TEXT
- 		*(.text.*_indirect_*)
--		*(.fixup)
- 		*(.gnu.warning)
- 		. = ALIGN(PAGE_SIZE);
- 		_etext = .;		/* End of text section */
-diff --git a/arch/s390/mm/extable.c b/arch/s390/mm/extable.c
-index 0a0738a473af..812ec5be1291 100644
---- a/arch/s390/mm/extable.c
-+++ b/arch/s390/mm/extable.c
-@@ -77,6 +77,13 @@ static bool ex_handler_zeropad(const struct exception_table_entry *ex, struct pt
- 	return true;
- }
- 
-+static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
-+{
-+	asm volatile("sfpc	%[val]\n" : : [val] "d" (0));
-+	regs->psw.addr = extable_fixup(ex);
-+	return true;
-+}
-+
- bool fixup_exception(struct pt_regs *regs)
- {
- 	const struct exception_table_entry *ex;
-@@ -99,6 +106,8 @@ bool fixup_exception(struct pt_regs *regs)
- 		return ex_handler_ua_load_reg(ex, true, regs);
- 	case EX_TYPE_ZEROPAD:
- 		return ex_handler_zeropad(ex, regs);
-+	case EX_TYPE_FPC:
-+		return ex_handler_fpc(ex, regs);
+ 	if (mte_is_leaf(enode)) {
++		mte_set_node_dead(enode);
+ 		node->type = mte_node_type(enode);
+ 		goto free_leaf;
  	}
- 	panic("invalid exception table entry");
- }
--- 
-2.45.2
+>
+>>  	if (mt_in_rcu(mt)) {
+>>  		mt_destroy_walk(enode, mt, false);
+>>  		call_rcu(&node->rcu, mt_free_walk);
+>> -- 
+>> 2.34.1
+>> 
 
+-- 
+Wei Yang
+Help you, Help me
 
