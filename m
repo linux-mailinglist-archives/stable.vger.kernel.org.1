@@ -1,112 +1,106 @@
-Return-Path: <stable+bounces-114819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AA6A300E8
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:46:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCA3A300EB
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B4C3A1FC8
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:45:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8981887415
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92455268361;
-	Tue, 11 Feb 2025 01:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370481E98FF;
+	Tue, 11 Feb 2025 01:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJdqx2SG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="keMhmnCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D105268353;
-	Tue, 11 Feb 2025 01:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8821E98F3;
+	Tue, 11 Feb 2025 01:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237568; cv=none; b=Ag4hElAfOY9iE/RKlxOmhj3Fn47r3qXjBpbwU1zjCtNPGWNhGpuSMi9+YSueQQHAjfzm7IZGjwug8B3B85wD3jT+jFSh8FrtXaY6VexHdAM9IKgXlHuWohXZKpLmBsUticBXdAUmmpO0NMJyAw8FDv/HcSUxwWmTAI5N41HJuuM=
+	t=1739237571; cv=none; b=PvkYyK54RIehQQ3bDAZ0qwasegwmttPEqK2J4EYJYL24lNqLkMs+Zpha7BjKJ8cX75UfAjlWhTlUuLdQPKXVedQkIZCEFv1ywh4Z0H6OwivBCha35ZjAKOd0jr9NcgYlVmLNOinODcEA1cHy86duH6YiIxZfZMcrO6RLuwvrAlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237568; c=relaxed/simple;
-	bh=OQNUzGizrNbSp6MOMrDJCWnxrsY/qqoTfQ60hKwmtn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pbCgW3V+ax3wnQ/Sd/wJqvNZ3RAs8REtSo71s8Pw7lO0NisahgAUUEUb1J1RIxjWskz58i6xxbwu3KMNKp8UC6y/7HrER4nJvEbTMUk5CQCg2LUjSroqv0GW+ySVOcO+q6Wzr7cYXp+OY+n39FPgmhNp3HgVcTSDhOo6Z1lOuVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJdqx2SG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E77FC4CED1;
-	Tue, 11 Feb 2025 01:32:47 +0000 (UTC)
+	s=arc-20240116; t=1739237571; c=relaxed/simple;
+	bh=vBCEJhkvhL8m42FZn4nwtaID0zY/K448LpVIKyP3ksw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a7Os0KVkXM25qRZIkfUf+ZoMcgByOLAaFKS7sitSd5IL11Vk4Ch900q+UZXpOeeW8umjkFxrO5+MKABZMBcK8goftSNvF4326KNsWK0Oph7J2384YxeOtxP+6mamCLFVSbmNsC8NH1kO5ZiU9m9hYVxfkwKGL3876nCcWJP59WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=keMhmnCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FD2C4CED1;
+	Tue, 11 Feb 2025 01:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237568;
-	bh=OQNUzGizrNbSp6MOMrDJCWnxrsY/qqoTfQ60hKwmtn8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJdqx2SGu+bep8ZqAf7RLrwTnpgYUec6Y15VGpnfhtxBxl8DDAA6vVT6otfrPAUN2
-	 VlU24bKT6AG31yKXWSFtLjuJWPUEOMKUwhlr9cpVrQ6Ywj2DVfHzOcJ8++bdphcTe1
-	 rL1jMMOwnc7SBrB64nRhYmz2cqYJh2tSSjiXN2TpGEDl0JUk298jVpnnNIsviuQpOb
-	 2k6gWUehLabImqV2rIlyi5IU3Dp0ID+cu2a8AWhMqxI9bfdWdBvLhnNWEijZhoaENW
-	 n3poQHRH23a4JbAQ8aZbCxk0hdfOjlo2TxXv1l63yDS7RlMKraXchkvhp+0YaJrdV/
-	 PaIZebLZAcsQQ==
+	s=k20201202; t=1739237571;
+	bh=vBCEJhkvhL8m42FZn4nwtaID0zY/K448LpVIKyP3ksw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=keMhmnCcaLb9RHzcWFPVWGRqu+d7iofi+cYSn4nj8Hq+duxm+zW2t68RKJg4aCrXk
+	 1DS7VkwTMW0MD+kOjzObBWBzHDO8NZno5UhFz7KiJuzDNvXG4k1L6xEns4yZja5Awn
+	 zRyBpuTktl0IkgOV4DHloBLRqVThDHxFioS2cXBkZETbcsf/QjmMcD8dbVS+eQlGsS
+	 UxUkzNF++uP/By120JIGAfY+tWZk+M5EtHPvp5zsQdFCvDk225knjSF3ya2HVxjyf1
+	 9I7OauV4HbwQPh0yrHH3ZdoDFfZMIgAGs8VHnNLEdySdq+UeZTUNebufY/lZfH6sun
+	 qRKY+x3BULm5A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Daniel Wagner <wagi@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 9/9] vboxsf: fix building with GCC 15
-Date: Mon, 10 Feb 2025 20:32:30 -0500
-Message-Id: <20250211013230.4098681-9-sashal@kernel.org>
+	james.smart@broadcom.com,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 1/8] nvme-fc: go straight to connecting state when initializing
+Date: Mon, 10 Feb 2025 20:32:41 -0500
+Message-Id: <20250211013248.4098848-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250211013230.4098681-1-sashal@kernel.org>
-References: <20250211013230.4098681-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.178
+X-stable-base: Linux 5.10.234
 Content-Transfer-Encoding: 8bit
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-Building with GCC 15 results in build error
-fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
-   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-      |                                                      ^~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-Due to GCC having enabled -Werror=unterminated-string-initialization[0]
-by default. Separately initializing each array element of
-VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
-and fixing the build error.
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
 
-[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
-index 44725007ccc2c..20cfb2a9e8707 100644
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -21,7 +21,8 @@
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 8e05239073ef2..f49e98c2e31db 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3536,8 +3536,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
- #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
- 
--static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-+static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
-+						       '\375' };
- 
- static int follow_symlinks;
- module_param(follow_symlinks, int, 0444);
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
