@@ -1,281 +1,170 @@
-Return-Path: <stable+bounces-114968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF364A31907
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 23:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024C6A31920
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 23:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 946AD1676EF
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 22:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC8701689AA
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 22:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA9727293E;
-	Tue, 11 Feb 2025 22:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF191F3FC1;
+	Tue, 11 Feb 2025 22:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GI5rlr0R"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JC1O4tmS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DBD272905;
-	Tue, 11 Feb 2025 22:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386C3272908;
+	Tue, 11 Feb 2025 22:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739314302; cv=none; b=Apa/HW2Wc+aGVuJQPpIVjjbfqSR1Zw6+P5ENfjJU4+Y1g/2qPD+RVURPp+On6nzyk620EgdnqNXHbG1b5kUOTz0d/X/eC8zFW5XFVGGNS8MWps1ARA3iwa+9w9+OXrWlOpseePfrYHu+jiCYtL2sdnnOS0wAwBSZ5WrFrm5b4p8=
+	t=1739314672; cv=none; b=L9d44DiQePZVDo5SHz1i/E+KW7dZPQfoVx0meR11YInq6zaGST3Y59faqTQqfgHmOl+l1xcnLueihL1qk+eV5K85UCnKhQVlVgJrLFQG1CoMf82ZIrxDE52zPCNnepUIBY/ah/3uxo4mlHx9B4Gi5AV13BcBRcSJM0zjHPiTt+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739314302; c=relaxed/simple;
-	bh=wIxUZEd+00TmCiNMDTMEX0eVV3GSpdk9fEt2kd93gUc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gvC0yl+G3LJMAFGxSIG5rwUoyYG2g5veAv57DO9zTicvEdnWeQPmAEfhrTXGt0NR0Pgyp30VACGx9A6TQEBmSZfoAFQNJUzo6OTSmSEv6St6udoN8NxxL/2Tl370Rd+U+F6XfN/ED3BlEjU5mBSXhBiDccODcfEsIXKFFwfMLFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GI5rlr0R; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38dd935a267so2591138f8f.1;
-        Tue, 11 Feb 2025 14:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739314298; x=1739919098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ICnvzQMQAmp2cYz72i//djwS7X/1914dqOn5NPL1JfE=;
-        b=GI5rlr0RlyinDILVmvqvkxEntgFY9MGuRnd5YshO1MFVALq/SqJ3XnUSZjlxSkW273
-         3CcJZZwzq2p/TTiovNI0uEjy6LDOvnLdwQtRpXXeqPImWGSYFd+/skxlYdhKWIEcvDp5
-         k+wjkVqwxoTKSc6GFuuMO4lIWZxO/daHyb3F9vMFmtuMVy30roTcE1iSgQ+EnzYgOCf8
-         FhK8L/GegNCm5QNJ5iNpLFjFgPV9gDv5rHmzTM5Yj3Mv6NKF/UFSFGADR5FJv5Iem02y
-         iPX05WyfpDzPmZbGz2v47UeKGD5Q5LRh6a5uI1DlcCE6lEj3M9WNmgRoR66qNZ7VsOJu
-         hRrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739314298; x=1739919098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ICnvzQMQAmp2cYz72i//djwS7X/1914dqOn5NPL1JfE=;
-        b=eqfMaFQkNqUhee+wQGH+ZH/4LxMuXDudnJ7yZrVTJsLsHDNUxWzgEs1XfkNX1dds/b
-         ZN0li04Pv6twogblW8/GTGpBJx2qKy2XL6pN2rBlEsPVzCQuZKg0Iq953Z2KDX+UmzZk
-         ytc5bJYQYt6KBnQKhBHGpT4QqFRU1JSCF1KrFRM85T75Jt9DXlFuAETR2dGXsbxzKEJU
-         RBrCwclmM1lg+81UFdru5PhQ644i6VizWqRSWl3p1Bs18tFb1Uo1o7aj07M+zcQcFxAs
-         5mjddpqYPGAG+74nDzN8bhz9gJej9oVq/OczQMaurlEg8vzKXQwWxTh/0hGddnkemWgz
-         yRzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJxUO7c8OHlPM8g3RYIhtUZV5gz3bwZXdNv549WL6MJMlC2joXXDPHL36hKHY861jCyP9Dtu4Z@vger.kernel.org, AJvYcCWLxN9p0PSFNLFodZJc/dZoIxU7D0KboOV75B9tSt1yXI13S66+nCzc5XCVzjB2jQXQ5/3IWwgewO8xorc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjOyDGhByWzubGxzyJyuTvLBd7++GbNMfbpAOcGJ9gytIWgl5L
-	fNJatdodZarC8y75KAyXtUP+M5wd82kIh49OIMgYgCEpxPcAQAEw0pkLB2aA
-X-Gm-Gg: ASbGncszfi1pZs8WXaRhG1rnWUrsMWolfQAZxJ9AOUkDWgjqzVNwIt9Gjzk2Cpvjn7h
-	iFLNu7yFgW8jwuey5hGf8Gin5Irosi5js4dn22kj5cFAF85nGjtPYm07GSIDeb1lCf5ZIs/4xs0
-	r2NjzzkaO/MEfZUBxqIJDZRGxSjNbBl5nZgXEy6Eh700yyqTyL63EexO1bHcP3mwYMhEvVqnqtP
-	yL1fgtksxtVJF+jvY0u+2KU2/3Gajm0KF8cMyIQrUsl5rgqIGWODg2cWcgLKUxbEU6xX717KDBP
-	u+wf65Ixa8TxKAX7vkzF0c+QXrIJaegfQdYqDaw=
-X-Google-Smtp-Source: AGHT+IFxSPr6Ik7EeG3X0laBlqQHQTytex4TBrPuw7lJ3kcVufJXL07N44Lupr/3PCF86v+ptpn2rQ==
-X-Received: by 2002:a5d:59ab:0:b0:38d:d8b2:ceef with SMTP id ffacd0b85a97d-38dea2709b9mr565800f8f.13.1739314298204;
-        Tue, 11 Feb 2025 14:51:38 -0800 (PST)
-Received: from localhost.localdomain ([109.175.243.75])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394f3b8485sm19109895e9.1.2025.02.11.14.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 14:51:37 -0800 (PST)
-From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-To: linux-input@vger.kernel.org
-Cc: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] HID: corsair-void: Update power supply values with a unified work handler
-Date: Tue, 11 Feb 2025 22:46:35 +0000
-Message-ID: <20250211224705.13576-3-stuart.a.hayhurst@gmail.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1739314672; c=relaxed/simple;
+	bh=oUV6Ci2wrXg0RwC2lTlfl6pXAwiSc6nTNV8kazRpBVU=;
+	h=Date:To:From:Subject:Message-Id; b=Ym7cASQQpdam478GHQgrKEJbTuAoRjJNLBglyoqBSpZI4Kj9pP9FnAaYO29nhXCYvy9phgHQzYh4OXZQSoct2a3N8TZfopCxYPqdDC6+sUjuLfo+gdFP9mIKnplSs/xizACEHpXK1SDlwgSqJEdGzAbeRp39tjR4p6fmy1xLamk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JC1O4tmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DDEC4CEDD;
+	Tue, 11 Feb 2025 22:57:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1739314671;
+	bh=oUV6Ci2wrXg0RwC2lTlfl6pXAwiSc6nTNV8kazRpBVU=;
+	h=Date:To:From:Subject:From;
+	b=JC1O4tmS+SO1ttU91Lq5MyeQxDwAkFJs0B4VrRD8iBC47g4VWQlt8GigIwkWAHp33
+	 390a/B4AYwy70R821BfExKe28nS/T4sFP3F8JzMJ4jtinE7PisJbW7hkyAPcT2gVBb
+	 yyPQBppfTfK2AJ9oqVM3VNFr6lNRRRNkX7N28A18=
+Date: Tue, 11 Feb 2025 14:57:50 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,rostedt@goodmis.org,npache@redhat.com,glider@google.com,dvyukov@google.com,bigeasy@linutronix.de,andreyknvl@gmail.com,longman@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kasan-dont-call-find_vm_area-in-rt-kernel.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250211225751.78DDEC4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-corsair_void_process_receiver can be called from an interrupt context,
-locking battery_mutex in it was causing a kernel panic.
-Fix it by moving the critical section into its own work, sharing this
-work with battery_add_work and battery_remove_work to remove the need
-for any locking
 
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1236843
+The patch titled
+     Subject: kasan: don't call find_vm_area() in RT kernel
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kasan-dont-call-find_vm_area-in-rt-kernel.patch
 
-Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-dont-call-find_vm_area-in-rt-kernel.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Waiman Long <longman@redhat.com>
+Subject: kasan: don't call find_vm_area() in RT kernel
+Date: Tue, 11 Feb 2025 11:07:50 -0500
+
+The following bug report appeared with a test run in a RT debug kernel.
+
+[ 3359.353842] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[ 3359.353848] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 140605, name: kunit_try_catch
+[ 3359.353853] preempt_count: 1, expected: 0
+  :
+[ 3359.353933] Call trace:
+  :
+[ 3359.353955]  rt_spin_lock+0x70/0x140
+[ 3359.353959]  find_vmap_area+0x84/0x168
+[ 3359.353963]  find_vm_area+0x1c/0x50
+[ 3359.353966]  print_address_description.constprop.0+0x2a0/0x320
+[ 3359.353972]  print_report+0x108/0x1f8
+[ 3359.353976]  kasan_report+0x90/0xc8
+[ 3359.353980]  __asan_load1+0x60/0x70
+
+print_address_description() is run with a raw_spinlock_t acquired and
+interrupt disabled.  find_vm_area() needs to acquire a spinlock_t which
+becomes a sleeping lock in the RT kernel.  IOW, we can't call
+find_vm_area() in a RT kernel.  Fix this bug report by skipping the
+find_vm_area() call in this case and just print out the address as is.
+
+For !RT kernel, follow the example set in commit 0cce06ba859a
+("debugobjects,locking: Annotate debug_object_fill_pool() wait type
+violation") and use DEFINE_WAIT_OVERRIDE_MAP() to avoid a spinlock_t
+inside raw_spinlock_t warning.
+
+Link: https://lkml.kernel.org/r/20250211160750.1301353-1-longman@redhat.com
+Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-v1 -> v2:
- - Actually remove the mutex
+ mm/kasan/report.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
----
- drivers/hid/hid-corsair-void.c | 87 ++++++++++++++++++----------------
- 1 file changed, 47 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/hid/hid-corsair-void.c b/drivers/hid/hid-corsair-void.c
-index 56e858066c3c..2f70db8a2370 100644
---- a/drivers/hid/hid-corsair-void.c
-+++ b/drivers/hid/hid-corsair-void.c
-@@ -71,11 +71,9 @@
- 
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
--#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/hid.h>
- #include <linux/module.h>
--#include <linux/mutex.h>
- #include <linux/power_supply.h>
- #include <linux/usb.h>
- #include <linux/workqueue.h>
-@@ -107,6 +105,10 @@
- #define CORSAIR_VOID_SIDETONE_MAX_WIRELESS	55
- #define CORSAIR_VOID_SIDETONE_MAX_WIRED		4096
- 
-+#define CORSAIR_VOID_ADD_BATTERY		BIT(0)
-+#define CORSAIR_VOID_REMOVE_BATTERY		BIT(1)
-+#define CORSAIR_VOID_UPDATE_BATTERY		BIT(2)
-+
- enum {
- 	CORSAIR_VOID_WIRELESS,
- 	CORSAIR_VOID_WIRED,
-@@ -155,12 +157,12 @@ struct corsair_void_drvdata {
- 
- 	struct power_supply *battery;
- 	struct power_supply_desc battery_desc;
--	struct mutex battery_mutex;
- 
- 	struct delayed_work delayed_status_work;
- 	struct delayed_work delayed_firmware_work;
--	struct work_struct battery_remove_work;
--	struct work_struct battery_add_work;
-+
-+	unsigned long battery_work_flags;
-+	struct work_struct battery_work;
- };
- 
- /*
-@@ -260,11 +262,9 @@ static void corsair_void_process_receiver(struct corsair_void_drvdata *drvdata,
- 
- 	/* Inform power supply if battery values changed */
- 	if (memcmp(&orig_battery_data, battery_data, sizeof(*battery_data))) {
--		scoped_guard(mutex, &drvdata->battery_mutex) {
--			if (drvdata->battery) {
--				power_supply_changed(drvdata->battery);
--			}
--		}
-+		set_bit(CORSAIR_VOID_UPDATE_BATTERY,
-+			&drvdata->battery_work_flags);
-+		schedule_work(&drvdata->battery_work);
+--- a/mm/kasan/report.c~kasan-dont-call-find_vm_area-in-rt-kernel
++++ a/mm/kasan/report.c
+@@ -398,9 +398,20 @@ static void print_address_description(vo
+ 		pr_err("\n");
  	}
- }
  
-@@ -536,29 +536,11 @@ static void corsair_void_firmware_work_handler(struct work_struct *work)
+-	if (is_vmalloc_addr(addr)) {
+-		struct vm_struct *va = find_vm_area(addr);
++	if (!is_vmalloc_addr(addr))
++		goto print_page;
  
- }
- 
--static void corsair_void_battery_remove_work_handler(struct work_struct *work)
--{
--	struct corsair_void_drvdata *drvdata;
--
--	drvdata = container_of(work, struct corsair_void_drvdata,
--			       battery_remove_work);
--	scoped_guard(mutex, &drvdata->battery_mutex) {
--		if (drvdata->battery) {
--			power_supply_unregister(drvdata->battery);
--			drvdata->battery = NULL;
--		}
--	}
--}
--
--static void corsair_void_battery_add_work_handler(struct work_struct *work)
-+static void corsair_void_add_battery(struct corsair_void_drvdata *drvdata)
- {
--	struct corsair_void_drvdata *drvdata;
- 	struct power_supply_config psy_cfg = {};
- 	struct power_supply *new_supply;
- 
--	drvdata = container_of(work, struct corsair_void_drvdata,
--			       battery_add_work);
--	guard(mutex)(&drvdata->battery_mutex);
- 	if (drvdata->battery)
- 		return;
- 
-@@ -583,16 +565,48 @@ static void corsair_void_battery_add_work_handler(struct work_struct *work)
- 	drvdata->battery = new_supply;
- }
- 
-+static void corsair_void_battery_work_handler(struct work_struct *work)
-+{
-+	struct corsair_void_drvdata *drvdata = container_of(work,
-+		struct corsair_void_drvdata, battery_work);
++	/*
++	 * RT kernel cannot call find_vm_area() in atomic context.
++	 * For !RT kernel, prevent spinlock_t inside raw_spinlock_t warning
++	 * by raising wait-type to WAIT_SLEEP.
++	 */
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT)) {
++		static DEFINE_WAIT_OVERRIDE_MAP(vmalloc_map, LD_WAIT_SLEEP);
++		struct vm_struct *va;
 +
-+	bool add_battery = test_and_clear_bit(CORSAIR_VOID_ADD_BATTERY,
-+					      &drvdata->battery_work_flags);
-+	bool remove_battery = test_and_clear_bit(CORSAIR_VOID_REMOVE_BATTERY,
-+						 &drvdata->battery_work_flags);
-+	bool update_battery = test_and_clear_bit(CORSAIR_VOID_UPDATE_BATTERY,
-+						 &drvdata->battery_work_flags);
-+
-+	/* Add, remove or skip battery */
-+	if (add_battery && !remove_battery) {
-+		corsair_void_add_battery(drvdata);
-+	} else if (remove_battery && !add_battery) {
-+		if (drvdata->battery) {
-+			power_supply_unregister(drvdata->battery);
-+			drvdata->battery = NULL;
-+		}
-+	}
-+
-+	/* Communicate that battery values changed */
-+	if (update_battery) {
-+		if (drvdata->battery)
-+			power_supply_changed(drvdata->battery);
-+	}
-+
-+}
-+
- static void corsair_void_headset_connected(struct corsair_void_drvdata *drvdata)
- {
--	schedule_work(&drvdata->battery_add_work);
-+	set_bit(CORSAIR_VOID_ADD_BATTERY, &drvdata->battery_work_flags);
-+	schedule_work(&drvdata->battery_work);
- 	schedule_delayed_work(&drvdata->delayed_firmware_work,
- 			      msecs_to_jiffies(100));
- }
++		lock_map_acquire_try(&vmalloc_map);
++		va = find_vm_area(addr);
+ 		if (va) {
+ 			pr_err("The buggy address belongs to the virtual mapping at\n"
+ 			       " [%px, %px) created by:\n"
+@@ -410,8 +421,13 @@ static void print_address_description(vo
  
- static void corsair_void_headset_disconnected(struct corsair_void_drvdata *drvdata)
- {
--	schedule_work(&drvdata->battery_remove_work);
-+	set_bit(CORSAIR_VOID_REMOVE_BATTERY, &drvdata->battery_work_flags);
-+	schedule_work(&drvdata->battery_work);
+ 			page = vmalloc_to_page(addr);
+ 		}
++		lock_map_release(&vmalloc_map);
++	} else {
++		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n",
++			addr);
+ 	}
  
- 	corsair_void_set_unknown_wireless_data(drvdata);
- 	corsair_void_set_unknown_batt(drvdata);
-@@ -678,13 +692,7 @@ static int corsair_void_probe(struct hid_device *hid_dev,
- 	drvdata->battery_desc.get_property = corsair_void_battery_get_property;
- 
- 	drvdata->battery = NULL;
--	INIT_WORK(&drvdata->battery_remove_work,
--		  corsair_void_battery_remove_work_handler);
--	INIT_WORK(&drvdata->battery_add_work,
--		  corsair_void_battery_add_work_handler);
--	ret = devm_mutex_init(drvdata->dev, &drvdata->battery_mutex);
--	if (ret)
--		return ret;
-+	INIT_WORK(&drvdata->battery_work, corsair_void_battery_work_handler);
- 
- 	ret = sysfs_create_group(&hid_dev->dev.kobj, &corsair_void_attr_group);
- 	if (ret)
-@@ -721,8 +729,7 @@ static void corsair_void_remove(struct hid_device *hid_dev)
- 	struct corsair_void_drvdata *drvdata = hid_get_drvdata(hid_dev);
- 
- 	hid_hw_stop(hid_dev);
--	cancel_work_sync(&drvdata->battery_remove_work);
--	cancel_work_sync(&drvdata->battery_add_work);
-+	cancel_work_sync(&drvdata->battery_work);
- 	if (drvdata->battery)
- 		power_supply_unregister(drvdata->battery);
- 
--- 
-2.47.2
++print_page:
+ 	if (page) {
+ 		pr_err("The buggy address belongs to the physical page:\n");
+ 		dump_page(page, "kasan: bad access detected");
+_
+
+Patches currently in -mm which might be from longman@redhat.com are
+
+kasan-dont-call-find_vm_area-in-rt-kernel.patch
 
 
