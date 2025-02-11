@@ -1,82 +1,86 @@
-Return-Path: <stable+bounces-114866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AC0A306EB
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426F0A30739
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB3DD7A1092
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:24:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 442C27A06C3
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39361F150B;
-	Tue, 11 Feb 2025 09:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FEC1F03F2;
+	Tue, 11 Feb 2025 09:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="SyNdxhaj"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="RpsEXz+0"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8941E4106
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 09:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666261BD9D2
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 09:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739265906; cv=none; b=IfhNdYL+88HfjxhrvuEnBxgXEi8R2wAyqhYG3YTUmjziW5CxLMzfW5/8+xJ068JQM4hiullc4Cs1eM2tV9ECGeeA2lSLeqw+OOcEd9GJ6x/CMIK3bKXcvDZNRdxTVq72l7oeVTU5znpBcT5N43VPCRhmwOrRU27ZL8RcW+alzKg=
+	t=1739266481; cv=none; b=SnYiQOrXrT9gadFVAKfa9EAGUz0AOjlJrZndOOZoYDCFEeN0z8kUFda0cLKQFUk2FIuyAO4T/CVltMlTPuXQln1L4cQ9Q470AoiY5nWZaxYOH38vwImxL2ogGVoJ69MEXyV2BD95cx8N1olzH3u9655sjpOVO4x6nZAx+0vxulU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739265906; c=relaxed/simple;
-	bh=btuuGAHN0yAwnIydrz9luogYPZ/niqFXv+Dh58AVsiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=pfswwvwBmIkoeLy8M93sE8E+B5YFm/dcXR1CSL1FTXCfcUNDirnVcEre4WQfVBQKW/y5HNmA36pQL6bwtcL04L+zCU1FQMu8KnETeMd6ynhA+4Jkq3/UdGsMUAyhBVf6ySfslqWaCNCPGOs0uol1LPHamblv2Zt9/4ij/9tr6xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=SyNdxhaj; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250211092500epoutp04c03cd958f795c5c8ca3b2229f02220a6~jHR8yJmLR3212232122epoutp04X
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 09:25:00 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250211092500epoutp04c03cd958f795c5c8ca3b2229f02220a6~jHR8yJmLR3212232122epoutp04X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739265900;
-	bh=xYvadG4L9+uv4OCgstcXZU5FpbGiAZUr3Y8c/BN7ytA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyNdxhajVN8CJLiKw2mZsjZegpfE03gJmp4vGrgW7V7CMFFX2WLZBp2MbBKTT4Y5T
-	 xFfCSQQErAIKBXF+1UlItxH5B1+nvZGOG8lWtgj4Ruw53bu7V2bdToWT91X8CspfOq
-	 4AvPEoD54Hy3Kq/1e73BcPeHG1CQmb166R4/5iuM=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-	20250211092500epcas5p2943131243b93ec51e576eda06d4a8056~jHR8jp-cN2828128281epcas5p2l;
-	Tue, 11 Feb 2025 09:25:00 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.174]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4Ysbd71w95z4x9Q1; Tue, 11 Feb
-	2025 09:24:59 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-	epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	B8.94.20052.B671BA76; Tue, 11 Feb 2025 18:24:59 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa~jHR66ATql2787027870epcas5p1i;
-	Tue, 11 Feb 2025 09:24:58 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250211092458epsmtrp2c38eaad29f64f394db7786c95d34ebb7~jHR65ZyIO1011310113epsmtrp2t;
-	Tue, 11 Feb 2025 09:24:58 +0000 (GMT)
-X-AuditID: b6c32a49-3d20270000004e54-cf-67ab176b936e
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	85.2F.18729.A671BA76; Tue, 11 Feb 2025 18:24:58 +0900 (KST)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250211092458epsmtip2a05281605fd6beefd31ed7c163d826c2~jHR6Z4jVd3218032180epsmtip2M;
-	Tue, 11 Feb 2025 09:24:58 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: selvarasu.g@samsung.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/2] usb: xhci: Fix unassigned variable 'bcdUSB' in
- xhci_create_usb3x_bos_desc()
-Date: Tue, 11 Feb 2025 14:53:55 +0530
-Message-ID: <20250211092400.734-3-selvarasu.g@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
-In-Reply-To: <20250211092400.734-1-selvarasu.g@samsung.com>
+	s=arc-20240116; t=1739266481; c=relaxed/simple;
+	bh=2DXwQ0Dv3SXEo6ey+zzdnIRAelLdPDTRqsXXy4q80eM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kjZURZQIF/wu5//UdY2KDarHF+WdnIZN905CSIn3KPh8WQo4dEu6uIURXenzhxdlLTvJ7mI/+jGZ9PlMt2GrSd6DjBcrwsOeRpdAJNsu/W9Sv27ElLauZ25DQ0wMatQmR+ws/Y8/O+yh+6LQXrkUjcIiod9BRsMJaHzWsPu1E4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=RpsEXz+0; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ab7c81b8681so273084666b.0
+        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 01:34:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1739266476; x=1739871276; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JWZrRCAqmm1HJq4yoBamD/E8kURmTGZ8stbmrSYpKAI=;
+        b=RpsEXz+0YGVNnagI7zi1C2UxT+s2mHVfGewazCxjPDQSjRzOupgvhJdx1d/AjYBGBA
+         KClSyqHrRZphgDDgtdsYFy7nNiBqxaRuXImfKKirKMFzybYlSwL6g4ign0m9ZJLmlQlN
+         CRAkzKNWeuS2clhjAgOzEkr1YP1qRyTNpEZRvIE0IvPK5QvESWsHkqBem+doESEsDtqz
+         TzyOvCFrrACshhfj96wWsQIaLCAgYJFI3oT4bux1E0pSqwB9s54EbgtMjJl6ptmTDZlg
+         3KFRGP65aWI8n8CxKA5HBwjy6ar1QM7zqWoNbwU+4yOn6058qYrqNd6P240mItDkCLSl
+         xFBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739266476; x=1739871276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JWZrRCAqmm1HJq4yoBamD/E8kURmTGZ8stbmrSYpKAI=;
+        b=SSEmEz2mLKo8pRVSivk0TPtG6oC0cJGjAPT4vb2HAByhhgf7+U+gV7JLq4mdfpEKLK
+         10/ThhLZkiFQH2vOlMdKeoLya8t4TdPus6+Onh6K4iyL/Zus0VVoWWj/scGzlnTvkTGX
+         zyZ3OgK08UAHgn5sT/XeMzXxRewW4jACGSUtnRqTjHDdlDm1+itaeGLPcAyBse4vOIDr
+         q7s7XLU5daj6N0s59uZyqy4YMzBr4hcCntswj1TvDzLvRPv3Yfqq6xIfmWtc7KuCxxIV
+         os0+oQMR+pZfRxRg5q0U9jX/x0gujz1Ux3I6YqEq5zF6jDR+YCAz5rCb0pXaufpsMiFw
+         3Pgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBuLXo5reZyRLN+8PPOdPRaTpNIaCXU57k2cK4IGjEsVwZzf1Xbl+V/IQgvNznJhBdYkys67o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoVpcZ30AWBpwR2VIkYgefAyXpvYfoXHdJDBxy9pQdczx4g4eB
+	Si3xH2/xD5yi+qc73Y4UG7hapR4UhIs6sxBMM6GmGFBkpGug9nhLnJOPg2h8N0U=
+X-Gm-Gg: ASbGncvP7jPb9BUA2Mw9J4WKHaAsEyFVkXc2ebP5GxTwTbeZDhcA81SMY8DWnvkOiKd
+	sXk5KryUn/geyD1ADLs+ZQg2BviQbmK5wMMeJ2tHugilh1VfQHm75KvUfHe6i+3+qbDdQFZLEGv
+	yKbJ9NKhjjRgSCFGszSvk1/ABJ6FV1BrfCz7tVCY0INra64I6nlmNf+jkFmyKa8X6YB4gSHi7s5
+	WBpnmwpMqVbCt4UYoL9Sie8RFdWYGgUbRt4A9xC8PZ8Z2pxf55DfVlqKib9ZKja1/rfYxnKZS6s
+	zQnd83iu3Zij5sJ7Fr2yYdFklkKkCMZizU+uZubM7JeIE2CdXj0gz2zs1SjUOSIq2UsNAUgFTSX
+	MNwSvB5x72c39Cqg=
+X-Google-Smtp-Source: AGHT+IHDDasHCdrvqrKdpCEPB2/a6ZQXLLnon5IvhjBOb5WHhk7B9V6sO1FIu7eIIDlvI9dDI7iAoA==
+X-Received: by 2002:a17:907:96aa:b0:ab2:bd0b:acdf with SMTP id a640c23a62f3a-ab7da4be883mr295839466b.36.1739266475632;
+        Tue, 11 Feb 2025 01:34:35 -0800 (PST)
+Received: from raven.intern.cm-ag (p200300dc6f19d800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f19:d800:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7bbf40b2bsm418668666b.23.2025.02.11.01.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 01:34:35 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v6.13] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
+Date: Tue, 11 Feb 2025 10:34:32 +0100
+Message-ID: <20250211093432.3524035-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,70 +88,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFKsWRmVeSWpSXmKPExsWy7bCmpm62+Op0g1V93BZHln9ksliw8RGj
-	A5NH35ZVjB6fN8kFMEVl22SkJqakFimk5iXnp2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qba
-	Krn4BOi6ZeYAjVdSKEvMKQUKBSQWFyvp29kU5ZeWpCpk5BeX2CqlFqTkFJgU6BUn5haX5qXr
-	5aWWWBkaGBiZAhUmZGdcv/6YtaCJveLHzZVMDYwfWLsYOTkkBEwkZm34zdbFyMUhJLCbUeJS
-	yztGkISQwCdGid4mA4jEN0aJrzdmwXV0HHoE1bGXUWLq3CfMEM53RonJrbeZuhg5ONgEDCWe
-	nbABaRARkJaYtfEsM4jNLCAlse7TITYQW1ggSWLu+WdgNouAqsS3+Y1gm3kFrCTWbHzMDrFM
-	U2Lt3j1MIDangLXEyelroWoEJU7OfMICMVNeonnrbLAbJATWsUs0PpkG1ewiceXlfGYIW1ji
-	1fEtUHEpic/v9rJB2MkSeyZ9gYpnSBxadQiq3l5i9YIzrCC/MAMdsX6XPsQuPone30/AXpQQ
-	4JXoaBOCqFaVONV4GWqitMS9JdegYeUh8enoG1ZI8PQxSrStXs82gVF+FpIXZiF5YRbCtgWM
-	zKsYJVMLinPTU4tNCwzzUsvh8Zqcn7uJEZzItDx3MN598EHvECMTB+MhRgkOZiURXpOFK9KF
-	eFMSK6tSi/Lji0pzUosPMZoCw3gis5Rocj4wleaVxBuaWBqYmJmZmVgamxkqifM272xJFxJI
-	TyxJzU5NLUgtgulj4uCUamCqklQRsH6jqv5ZrSddrGDxI5Ptf1/u7/gkU3s8Ntqiahfr7GCF
-	w//LCounVH9jPaGmw/SQt+Ln2dWOkvNzxKWdPm9TTz7s+INrW6d9zhGf02vcmV/MMoz8F/6K
-	x4KHNerR45wTS2pWPbE+7Ldl2YPfjH032H9EJ176nP9C6ob2Fyu2PctVjsoYbGeYcfqV5Jdw
-	85UHfINeWu3RFNzAudr01sL6WdNc95yaMvXPCt+WEzpLwn2envgzZ/PqxSqVDF6nH6aEJemG
-	7C8TbBW3rZl4tTfK/GmlReTpXyptPM/Msn128X5R+R5d8u4VX+qugwfk3Ptv+2dyLbTp2DVx
-	3RTz/0ymIvrdmRVazJt/dYQrsRRnJBpqMRcVJwIARapZ+e0DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLLMWRmVeSWpSXmKPExsWy7bCSvG6W+Op0gwX3DC2OLP/IZLFg4yNG
-	ByaPvi2rGD0+b5ILYIrisklJzcksSy3St0vgyrh+/TFrQRN7xY+bK5kaGD+wdjFyckgImEh0
-	HHrE1sXIxSEksJtR4nF/HztEQlri9awuRghbWGLlv+fsEEVfGSVWP3vP0sXIwcEmYCjx7IQN
-	SI0IUP2sjWeZQWxmASmJdZ8OsYHYwgIJEk0HvoPNZBFQlfg2vxFsJq+AlcSajY+hdmlKrN27
-	hwnE5hSwljg5fS0jyHghoJoba10gygUlTs58wgIxXl6ieets5gmMArOQpGYhSS1gZFrFKJla
-	UJybnltsWGCYl1quV5yYW1yal66XnJ+7iREcglqaOxi3r/qgd4iRiYPxEKMEB7OSCK/JwhXp
-	QrwpiZVVqUX58UWlOanFhxilOViUxHnFX/SmCAmkJ5akZqemFqQWwWSZODilGpjY772I6NUx
-	ebUxt8BSpO1evtUC3quMVyrTXiVoLBSdnrbDMi6Hc/OqiEsej1wVvxYLbYk68vrWU88zQovf
-	XJqxbr/+sZpS43dcnb5R19ZOnTmbIY3vhfVk39f8e3lmygjsvefyTpn92Z8loR+CYk+E/LFe
-	96Z03y5m0QbGN+52gXblc7NzRXxVvif/mBa+ZKmmfNbpJyWOH70+MG/kWHKHXXL7lBfO122V
-	ni7czu/eHOn6Kzjw0rvQBc6CqoIhcg92hmSG6aq5MLGd5Zq+YE3NlZfvSlP7Xe++y72qzuCX
-	VGBXE7r3gsW5xBz199vL5Gduf23Bub/mirncxrLF599ktGlsSmPQX2gfcsP5HIMSS3FGoqEW
-	c1FxIgBcF639sAIAAA==
-X-CMS-MailID: 20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa
-References: <20250211092400.734-1-selvarasu.g@samsung.com>
-	<CGME20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa@epcas5p1.samsung.com>
 
-Fix the following smatch error:
-drivers/usb/host/xhci-hub.c:71 xhci_create_usb3x_bos_desc() error: unassigned variable 'bcdUSB'
+When checking whether the edges of adjacent subrequests touch, the
+`prev` variable is deferenced, but it might not have been initialized.
+This causes crashes like this one:
 
-Fixes: eb02aaf21f29 ("usb: xhci: Rewrite xhci_create_usb3_bos_desc()")
+ BUG: unable to handle page fault for address: 0000000181343843
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 8000001c66db0067 P4D 8000001c66db0067 PUD 0
+ Oops: Oops: 0000 [#1] SMP PTI
+ CPU: 1 UID: 33333 PID: 24424 Comm: php-cgi8.2 Kdump: loaded Not tainted 6.13.2-cm4all0-hp+ #427
+ Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 11/23/2021
+ RIP: 0010:netfs_consume_read_data.isra.0+0x5ef/0xb00
+ Code: fe ff ff 48 8b 83 88 00 00 00 48 8b 4c 24 30 4c 8b 43 78 48 85 c0 48 8d 51 70 75 20 48 8b 73 30 48 39 d6 74 17 48 8b 7c 24 40 <48> 8b 4f 78 48 03 4f 68 48 39 4b 68 0f 84 ab 02 00 00 49 29 c0 48
+ RSP: 0000:ffffc90037adbd00 EFLAGS: 00010283
+ RAX: 0000000000000000 RBX: ffff88811bda0600 RCX: ffff888620e7b980
+ RDX: ffff888620e7b9f0 RSI: ffff88811bda0428 RDI: 00000001813437cb
+ RBP: 0000000000000000 R08: 0000000000004000 R09: 0000000000000000
+ R10: ffffffff82e070c0 R11: 0000000007ffffff R12: 0000000000004000
+ R13: ffff888620e7bb68 R14: 0000000000008000 R15: ffff888620e7bb68
+ FS:  00007ff2e0e7ddc0(0000) GS:ffff88981f840000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000181343843 CR3: 0000001bc10ba006 CR4: 00000000001706f0
+ Call Trace:
+  <TASK>
+  ? __die+0x1f/0x60
+  ? page_fault_oops+0x15c/0x450
+  ? search_extable+0x22/0x30
+  ? netfs_consume_read_data.isra.0+0x5ef/0xb00
+  ? search_module_extables+0xe/0x40
+  ? exc_page_fault+0x5e/0x100
+  ? asm_exc_page_fault+0x22/0x30
+  ? netfs_consume_read_data.isra.0+0x5ef/0xb00
+  ? intel_iommu_unmap_pages+0xaa/0x190
+  ? __pfx_cachefiles_read_complete+0x10/0x10
+  netfs_read_subreq_terminated+0x24f/0x390
+  cachefiles_read_complete+0x48/0xf0
+  iomap_dio_bio_end_io+0x125/0x160
+  blk_update_request+0xea/0x3e0
+  scsi_end_request+0x27/0x190
+  scsi_io_completion+0x43/0x6c0
+  blk_complete_reqs+0x40/0x50
+  handle_softirqs+0xd1/0x280
+  irq_exit_rcu+0x91/0xb0
+  common_interrupt+0x3b/0xa0
+  asm_common_interrupt+0x22/0x40
+ RIP: 0033:0x55fe8470d2ab
+ Code: 00 00 3c 7e 74 3b 3c b6 0f 84 dd 03 00 00 3c 1e 74 2f 83 c1 01 48 83 c2 38 48 83 c7 30 44 39 d1 74 3e 48 63 42 08 85 c0 79 a3 <49> 8b 46 48 8b 04 38 f6 c4 04 75 0b 0f b6 42 30 83 e0 0c 3c 04 75
+ RSP: 002b:00007ffca5ef2720 EFLAGS: 00000216
+ RAX: 0000000000000023 RBX: 0000000000000008 RCX: 000000000000001b
+ RDX: 00007ff2e0cdb6f8 RSI: 0000000000000006 RDI: 0000000000000510
+ RBP: 00007ffca5ef27a0 R08: 00007ffca5ef2720 R09: 0000000000000001
+ R10: 000000000000001e R11: 00007ff2e0c10d08 R12: 0000000000000001
+ R13: 0000000000000120 R14: 00007ff2e0cb1ed0 R15: 00000000000000b0
+  </TASK>
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Cc: stable@vger.kernel.org
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- drivers/usb/host/xhci-hub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+David/Greg: just like the other two netfs patches I sent yesterday,
+this one doesn't apply to v6.14 as it was obsoleted by commit
+e2d46f2ec332 ("netfs: Change the read result collector to only use one
+work item").
+---
+ fs/netfs/read_collect.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index 9693464c0520..5715a8bdda7f 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -39,7 +39,7 @@ static int xhci_create_usb3x_bos_desc(struct xhci_hcd *xhci, char *buf,
- 	struct usb_ss_cap_descriptor	*ss_cap;
- 	struct usb_ssp_cap_descriptor	*ssp_cap;
- 	struct xhci_port_cap		*port_cap = NULL;
--	u16				bcdUSB;
-+	u16				bcdUSB = 0;
- 	u32				reg;
- 	u32				min_rate = 0;
- 	u8				min_ssid;
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index e8624f5c7fcc..a7f285c52a79 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -258,17 +258,19 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
+ 	 */
+ 	if (!subreq->consumed &&
+ 	    !prev_donated &&
+-	    !list_is_first(&subreq->rreq_link, &rreq->subrequests) &&
+-	    subreq->start == prev->start + prev->len) {
++	    !list_is_first(&subreq->rreq_link, &rreq->subrequests)) {
+ 		prev = list_prev_entry(subreq, rreq_link);
+-		WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
+-		subreq->start += subreq->len;
+-		subreq->len = 0;
+-		subreq->transferred = 0;
+-		trace_netfs_donate(rreq, subreq, prev, subreq->len,
+-				   netfs_trace_donate_to_prev);
+-		trace_netfs_sreq(subreq, netfs_sreq_trace_donate_to_prev);
+-		goto remove_subreq_locked;
++		if (subreq->start == prev->start + prev->len) {
++			prev = list_prev_entry(subreq, rreq_link);
++			WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
++			subreq->start += subreq->len;
++			subreq->len = 0;
++			subreq->transferred = 0;
++			trace_netfs_donate(rreq, subreq, prev, subreq->len,
++					   netfs_trace_donate_to_prev);
++			trace_netfs_sreq(subreq, netfs_sreq_trace_donate_to_prev);
++			goto remove_subreq_locked;
++		}
+ 	}
+ 
+ 	/* If we can't donate down the chain, donate up the chain instead. */
 -- 
-2.17.1
+2.47.2
 
 
