@@ -1,170 +1,171 @@
-Return-Path: <stable+bounces-114846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6306EA30464
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFC4A30476
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53DB33A70AA
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19A116654C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0130A1EEA3B;
-	Tue, 11 Feb 2025 07:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDE11EC014;
+	Tue, 11 Feb 2025 07:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="Nko3S0IT"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="KAVy5F4q"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30601EDA37;
-	Tue, 11 Feb 2025 07:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984DE1EB9F4
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739258612; cv=none; b=PZXpsmvZNZO+IEKuCJxbmhaQr2kjtvjpQ2TtMmCTDGGF7HzZuDb6/BeJynYQAHmoRFs8pSdMOqOIYfI7RMRg9zoiCdMf9wvICObEezLEr6ZkggIYzmEosmY7g/0sEsJyPtmgMSdNpTGv/sOlbyPT+9epEcJ2mvCkq2+POf5slcw=
+	t=1739258895; cv=none; b=lSNPHoblP6+jlKPtA5JB7w8udLDM9okv7O1tz9se0t5xcMfERYsN4iKaD5Vgw4EUnOMGA8z47wvbRz8LlcluOQkF00B8hNwRAFnXQmu/wz8QIbiJYdsHuf+csBcQB8Csi+l5H7XkibAAm+9BnzCcWfh4j117fhbH4d4SN7cpIqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739258612; c=relaxed/simple;
-	bh=UWJM5C0X6jg73GF3CAKzpkI5JGcapvJ3PDDVYAlgRc0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Tkir7h7cQCfySEbXYU/7bmWXDgCq/BYSOzS26CjtLbX0J/pJ9fX3rzMJbYJuGhCVj6J3Aq/uSgvQjmnpTc5dShiM8Emb28+nZTXIIvykCrjf2hHbSat49syVyG0Qh3daEUKJ+qFtd8GFPzvw0EoGhSAYUcikHkpmjn7E6dpe/38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=Nko3S0IT; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gXAxZaL3ngoWD1PltbbXQgbkIXLOLON/P4Nk8X4kGkY=; t=1739258609; x=1739863409; 
-	b=Nko3S0ITgh1+CDQWxBwJuX7fcsmQAsjjDSbVVOPkaADjdY4HQjuzqObLaiLxMkkzgLQIhUGotE+
-	VcDvMgG6x/aU0zsbmvnI1g/sy2rc173GpBrHy1IdusOXTxAD5c8s6CbyMkUwRzZsVCU0w4tUB0jXZ
-	yy1K6bQpMI13KuXC8ib8kxCI30x1G/7auP1mQqmjVW1kzKkGT+mPfEFcKOIjbgd7by2lS8C5QEsiD
-	K2ec8MLyHO5eodrIq2ffIOtGPvT2vo5+CnBF17ueM+keeH4Y+AFlLDZvMdhq5T2FYeM6i/vmJ7NE2
-	o6rdlp57BPqc7h+A+PN0xYoA+mo0FsA8Y4rg==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1thkYo-00000003Hlj-0Vvt; Tue, 11 Feb 2025 08:19:58 +0100
-Received: from p5dc5515a.dip0.t-ipconnect.de ([93.197.81.90] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1thkYn-00000000VEl-3bs6; Tue, 11 Feb 2025 08:19:58 +0100
-Message-ID: <9a70a5806083499db5649f8c76167a1a61cde058.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v3 0/3] alpha: stack fixes
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Ivan Kokshaysky <ink@unseen.parts>, Richard Henderson	
- <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Oleg
- Nesterov	 <oleg@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>, Arnd
- Bergmann	 <arnd@arndb.de>, "Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>, Magnus Lindholm
- <linmag7@gmail.com>, 	linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	stable@vger.kernel.org
-Date: Tue, 11 Feb 2025 08:19:57 +0100
-In-Reply-To: <20250204223524.6207-1-ink@unseen.parts>
-References: <20250204223524.6207-1-ink@unseen.parts>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	s=arc-20240116; t=1739258895; c=relaxed/simple;
+	bh=xDphkzp7YOwassCx3klJnQSoSwa0N8eY8DjCLu7euf4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CZWVKu2C2nWNFNfSws4uEPNG8SbQ1CovpgmehFxQL+e+cV02k1cj7MXioKLYuYeTHdgwnHZKp4g7uT52oQpX1zt2ObgJYczKTM3+rcjPJAoXJYAHLZcEmnzsvPly0Sf6QEoVi2O2A5aqvWoIxRSseGq4FnfGp2Yh4EOJYvx4rAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=KAVy5F4q; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2fa345713a8so6758076a91.2
+        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 23:28:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1739258892; x=1739863692; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u8JvwZe222+nCD5D0NlDaqFgopE4s8QEJ665TCjR17Q=;
+        b=KAVy5F4qSoiLjA+7OYEDq7MqwzJY7gIB72ynzU1CY1DcFkTAYzC/kX8KGPZ4GVjiFW
+         7z5mYuPFyWdKsTLBD4pVsBrC/+0GvFUMq043BmjnaBPwuMrDzm23jsqQQo2eBj3LvhEi
+         WRL39VjNnuXSErih5638WF0lFM/CWPj4h2sMCI4cFMEzYVLhyNNAUpYm6uVDou36ZZmx
+         uy4myemNHB1NzCjeH5oxHorWvbUE8Y6iiaNgUJfYdcvq22d/6MwpxDAZcrZ6+PQZJXCP
+         UcSNLgat75JZ3zPkTmFa46XKnkSui333Tiw1vy/epquGXZPYreHjQOsTNWB9Lr+TjD9i
+         0uRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739258892; x=1739863692;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u8JvwZe222+nCD5D0NlDaqFgopE4s8QEJ665TCjR17Q=;
+        b=UF8t3F1rKna0nXtZNqn4IRoY9TCvyQO3bqaJ7EkC4uHgCyaJOUjZvv6x1L3GG1VxM2
+         gx1kAWc5dXmQbhBrbfuzRyJ/ZTJejWkvKHIKyK+ISyUWtDNlt6cj18YvpX6ZaxBThBWB
+         iITAoeEovIQxE1NGUtEGaLmRLuoEm5MS/cElSk3jiG1obU4imDm83FyogiesX51Sy9uL
+         S8UFXUIkQ6Ur2PiK4BGFtr+dRoKIdEZL1yxAUHqfEQxJQt7smIXAv6EgFiRFrcXMmDw7
+         AAo4bC51vXNBynLQiYxCvhOkm3wM5363KWX7vlcBzISuqP6QKJ7JzuZF2ctXo1m/Qcnp
+         amNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOh3VuM7sd/te2pLakeP7e1H00F+Bn4TAO+VYbs7QmTXD0fNxERribejVR4pQLz7suH2uuD5k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcG9ZBBADtCsOBehRa/iWOn8ln6ppKs6Sh19e+lbA3pW4GgNKE
+	c/qDvmM/NdPl3vqzBfy+oc1zgZowr0r6UjvIxgk3R5jkGw57xTTSd8LOXdv5W2o=
+X-Gm-Gg: ASbGncu3iJq1aDHzhXe6nwVoU6qDX3oXbuPoIthyQKo1+EaLb19Uswf1wiV3lt16XNz
+	VRGbTPnnQ0ssRuOO2w3a3b/a+QnUb2S+ttWJu2NcjIVYrSf/pF+HDz3raJDLYkNHxlpOoZvR955
+	y6dSpcb+b0QbgcurVed2BljBK5MsxKpnfi8UXmVxF5JrsWgEnwGkpzh95G1QkSpRqi/GgAWB6F6
+	U3Wxuy9TP/7M/9bSXwtMoAqoIyRqYqGL3iaylzseqdEXgfvcjYtMYGf3ZbJ5zTBPzDqeUQaOWOk
+	rEuJ1agfI6WtQGrxBxwYCc16q9UQB+8x1MeixUxGkuuZQfEAucAm2zyc
+X-Google-Smtp-Source: AGHT+IEGFQNt5sPJaZzJIBOUWjXNir7ONpzC/zGumrQumqkRxYesmObQGhXHsFIIUFr5ys2Z+8JnCg==
+X-Received: by 2002:a05:6a21:350d:b0:1ed:9e58:5195 with SMTP id adf61e73a8af0-1ee03a45ccdmr32137005637.13.1739258891851;
+        Mon, 10 Feb 2025 23:28:11 -0800 (PST)
+Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.150])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad54a066811sm3946778a12.8.2025.02.10.23.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Feb 2025 23:28:11 -0800 (PST)
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+To: brauner@kernel.org,
+	willy@infradead.org,
+	ziy@nvidia.com,
+	quwenruo.btrfs@gmx.com,
+	david@redhat.com,
+	jannh@google.com,
+	akpm@linux-foundation.org,
+	david@fromorbit.com,
+	djwong@kernel.org,
+	muchun.song@linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: pgtable: fix incorrect reclaim of non-empty PTE pages
+Date: Tue, 11 Feb 2025 15:26:25 +0800
+Message-Id: <20250211072625.89188-1-zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Transfer-Encoding: 8bit
 
-Hi,
+In zap_pte_range(), if the pte lock was released midway, the pte entries
+may be refilled with physical pages by another thread, which may cause a
+non-empty PTE page to be reclaimed and eventually cause the system to
+crash.
 
-On Tue, 2025-02-04 at 23:35 +0100, Ivan Kokshaysky wrote:
-> This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
-> Thanks to Magnus Lindholm for identifying that remarkably longstanding
-> bug.
->=20
-> The problem is that GCC expects 16-byte alignment of the incoming stack
-> since early 2004, as Maciej found out [2]:
->   Having actually dug speculatively I can see that the psABI was changed =
-in
->  GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long doub=
-le
->  improperly aligned)") back in Mar 2004, when the stack pointer alignment
->  was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S ha=
-s
->  various suspicious stack pointer adjustments, starting with SP_OFF which
->  is not a whole multiple of 16.
->=20
-> Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
->  D.3.1 Stack Alignment
->   This standard requires that stacks be octaword aligned at the time a
->   new procedure is invoked.
->=20
-> However:
-> - the "normal" kernel stack is always misaligned by 8 bytes, thanks to
->   the odd number of 64-bit words in 'struct pt_regs', which is the very
->   first thing pushed onto the kernel thread stack;
-> - syscall, fault, interrupt etc. handlers may, or may not, receive aligne=
-d
->   stack depending on numerous factors.
->=20
-> Somehow we got away with it until recently, when we ended up with
-> a stack corruption in kernel/smp.c:smp_call_function_single() due to
-> its use of 32-byte aligned local data and the compiler doing clever
-> things allocating it on the stack.
->=20
-> Patche 1 is preparatory; 2 - the main fix; 3 - fixes remaining
-> special cases.
->=20
-> Ivan.
->=20
-> [1] https://lore.kernel.org/rcu/CA+=3DFv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=3D=
-Ei90G98ukRcRJA@mail.gmail.com/#r
-> [2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie=
-.orcam.me.uk/
-> [3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19=
-900427.pdf
-> ---
-> Changes in v2:
-> - patch #1: provide empty 'struct pt_regs' to fix compile failure in libb=
-pf,
->   reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
->   update comment and commit message accordingly;
-> - cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as we=
-ll.
->=20
-> Changes in v3:
-> - patch #1 dropped for the time being;
-> - updated commit messages as Maciej suggested.
-> ---
-> Ivan Kokshaysky (3):
->   alpha: replace hardcoded stack offsets with autogenerated ones
->   alpha: make stack 16-byte aligned (most cases)
->   alpha: align stack for page fault and user unaligned trap handlers
->=20
->  arch/alpha/include/uapi/asm/ptrace.h |  2 ++
->  arch/alpha/kernel/asm-offsets.c      |  4 ++++
->  arch/alpha/kernel/entry.S            | 24 ++++++++++--------------
->  arch/alpha/kernel/traps.c            |  2 +-
->  arch/alpha/mm/fault.c                |  4 ++--
->  5 files changed, 19 insertions(+), 17 deletions(-)
+To fix it, fall back to the slow path in this case to recheck if all pte
+entries are still none.
 
-Can we get this landed this week, maybe for v6.14-rc3? This way it will qui=
-ckly
-backported to various stable kernels which means it will reach Debian unsta=
-ble
-within a few days.
+Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+Reported-by: Christian Brauner <brauner@kernel.org>
+Closes: https://lore.kernel.org/all/20250207-anbot-bankfilialen-acce9d79a2c7@brauner/
+Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Closes: https://lore.kernel.org/all/152296f3-5c81-4a94-97f3-004108fba7be@gmx.com/
+Tested-by: Zi Yan <ziy@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ mm/memory.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-Thanks,
-Adrian
+diff --git a/mm/memory.c b/mm/memory.c
+index a8196ae72e9ae..7c7193cb21248 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1721,7 +1721,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 	pmd_t pmdval;
+ 	unsigned long start = addr;
+ 	bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
+-	bool direct_reclaim = false;
++	bool direct_reclaim = true;
+ 	int nr;
+ 
+ retry:
+@@ -1736,8 +1736,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 	do {
+ 		bool any_skipped = false;
+ 
+-		if (need_resched())
++		if (need_resched()) {
++			direct_reclaim = false;
+ 			break;
++		}
+ 
+ 		nr = do_zap_pte_range(tlb, vma, pte, addr, end, details, rss,
+ 				      &force_flush, &force_break, &any_skipped);
+@@ -1745,11 +1747,20 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 			can_reclaim_pt = false;
+ 		if (unlikely(force_break)) {
+ 			addr += nr * PAGE_SIZE;
++			direct_reclaim = false;
+ 			break;
+ 		}
+ 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+ 
+-	if (can_reclaim_pt && addr == end)
++	/*
++	 * Fast path: try to hold the pmd lock and unmap the PTE page.
++	 *
++	 * If the pte lock was released midway (retry case), or if the attempt
++	 * to hold the pmd lock failed, then we need to recheck all pte entries
++	 * to ensure they are still none, thereby preventing the pte entries
++	 * from being repopulated by another thread.
++	 */
++	if (can_reclaim_pt && direct_reclaim && addr == end)
+ 		direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
+ 
+ 	add_mm_rss_vec(mm, rss);
+-- 
+2.20.1
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
