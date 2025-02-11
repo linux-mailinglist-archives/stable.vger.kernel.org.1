@@ -1,176 +1,107 @@
-Return-Path: <stable+bounces-114744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89937A2FEA0
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 00:51:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09493A3000B
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE8D1886F47
-	for <lists+stable@lfdr.de>; Mon, 10 Feb 2025 23:51:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58F387A14CF
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93995260A27;
-	Mon, 10 Feb 2025 23:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01401ADC68;
+	Tue, 11 Feb 2025 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="391O7On5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAnlS7yf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64FF1E32D7
-	for <stable@vger.kernel.org>; Mon, 10 Feb 2025 23:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5AF5223;
+	Tue, 11 Feb 2025 01:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739231488; cv=none; b=fIIKcZSPzhrCwrLOx3Cfacy/MDHdIHfh/oWeGOkP4k64dV6hVGMdV9bUbmhub6MRlaRwJdSnnuNZyEzqHdzaLcGUBdEku+dkmqwBoBYN2b1RY1ur5P9fHGXVHr9Kr2//GFn4mFzPKThILNhD59rKHfhAwRUNEJlYSKFff4JBwrA=
+	t=1739237397; cv=none; b=RQpP0bb98N6DFOeMNLUR6JLb7uuFmP2AF21h0D0ZdsnTR1g5IZXENMCOdZIe2xqOrY8EhOWm4hvP8RlotdvYxn1214CJiFxgqxqbmpLkRK9PcJN4dk1UjqmLovJKQKnA7DffcLmdWC/dq0fIcaM0Bvcm1UjqMylOL/LuS+2VYdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739231488; c=relaxed/simple;
-	bh=8y93GLx5oEKFbWriKxxtGuKxC4nVxTakpj0q+7BExtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T8tbIhFJqFD58h47uf7Hvvuj9K+TAMZoJpCQwKAai4zVrOlWBfl72nNz1Akc3GK/L3FVAOkZ5MWZGrMut21pfUHybqVnWiJmL3qrdF7ysIhF7RIt0BlJi/yc5DlVslMx06SH853pXOr0zSRssWi87ZHoHGzX1CBMx/zzbd7s2VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=391O7On5; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3f3b83185d6so626401b6e.1
-        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 15:51:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739231486; x=1739836286; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZe22CX8bjEljQqE/X18PzQlBgx3VPOHv4ii+2JauZk=;
-        b=391O7On5S5fpUro0UKr9Vvl4bpoU+TW7WkyIJgY5D/vj/3137QDWjcaTlR6KI56XlM
-         exFdmJnls1Zvp04aZ1OcOtK9mh9E4t4o2jUBj9UIQjX9W0yKfoI/erAIx3IzPrH2nFNK
-         0QNBwGu+UIwrYImZG+EqW4+TvDVobG0Ge27Pf4e00Ouiw8XL3Z3x4aLaETcj3mMbg1KO
-         r1fXxMMxrY6VUqiyh6cweb2iqMNcEIlWKY76n71VCU845ScmYp/HmaaPnxx1Y0+dbk61
-         KVaIDJi8bqopT6F9hmjKwhfH7YgU74tr8+/1cWyR22lhfz4sxq76fH5OgyjBmn3Yl2ds
-         4BwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739231486; x=1739836286;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dZe22CX8bjEljQqE/X18PzQlBgx3VPOHv4ii+2JauZk=;
-        b=UbC6N5dlGO/gT6QzM20D/BUaMz47bN9fmUmOA/iz9IvK+KZAeRAlcnrOj6X53NUgZ4
-         kNTC8JC5UA4NHpX9U0M/gsIzbGQOg1WI836Ob5CpQ9d5WKetYECwaBDudlqXxwkvb+I7
-         FFSgptUdmZBKq/u5M+og0D0uo4XKbOOJQDmcV+W0XXToTrfrbKiJdLxMzK2ElYgq+H0H
-         kfUEMGcmpB6s1x5WZYkPgzo4myYziFebYRkSTfnDscwGv2zE0H9TGu9tvcHBfm2HTqy1
-         AK7l3j5MKpAIwCIlvIR6LVVe8Re5aD5BIEQbSMgIOLP5gTrAF19hRB3TWzHUpsSLMwwq
-         l60w==
-X-Forwarded-Encrypted: i=1; AJvYcCVa21LC4/V6n3TrsIZZnO+s/YDZhZzOCf+j/Pz0S0MiUc+BLs8zA4z/HwLe2gsZqmt8F0q0bh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx1d3ABF8N1NKRt0ZJ87RbaQ88YMNoHi5GBkA4bWBDrR7oIHhp
-	sFJjlmUPgow/heZbGoT/LVZFjXCzbKwo+xuFljMsBlhLf30w6ex1bXHVuAbQF2VUWS3lgjnfn2t
-	wPyxUuH21FqgMdM7lt+262++yF5275estLz77
-X-Gm-Gg: ASbGncudtwvF7tWoH1HlHYFKNAdR1K0B1mlMrHlmsvjvzx/q9HFIYD5BJt2pdA5FnUS
-	Fy06ExuvDVB0hlHtAYUlNcthA9Hvpcf7mwcbYRG2kFS1vfUm4Qxyn595kJJzhQOpT5XRl0kRrjE
-	nSGEK8FXeZY7R+TrA5WOlQtCxVW2hSlg==
-X-Google-Smtp-Source: AGHT+IHuLnSHtPuNOUUDo6eSZSjQuYoUXhNNwpTBsmKLj0FndJlhcTPSRnjIBXPGqVasrsFQ14d0yUnIUP9l3ZkERZc=
-X-Received: by 2002:a05:6808:1886:b0:3f0:5c90:f511 with SMTP id
- 5614622812f47-3f3921e7ed2mr9342232b6e.1.1739231485512; Mon, 10 Feb 2025
- 15:51:25 -0800 (PST)
+	s=arc-20240116; t=1739237397; c=relaxed/simple;
+	bh=WFxr/y9LJF0Ox1+qtFw5ab55rZwBdjgkMAZy8r9P928=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H3C126Uu3j7jC+6XTG9wK3NQQ8xVO7ZTkze6VUUjRbP239WKjJlaSNM56kK2PoaCyguNjqgigs20V11XiAKGOpr+hiatV4LD/WmGP72s7wRZoWWGl6y7wKGRm8thDkg3J3iBeGoqDphH2gtOZ7y3RSkn4IQWBI0EIAiV4DXO/DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAnlS7yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23EFC4CED1;
+	Tue, 11 Feb 2025 01:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739237397;
+	bh=WFxr/y9LJF0Ox1+qtFw5ab55rZwBdjgkMAZy8r9P928=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GAnlS7yfmwbl8AyrDqVrzU8T78BAouRQEMBCdH6okFpB5Wz9BT7zNO/frGthPVAAx
+	 OaXtdeUtlmN6V8cZkfs7GxNn4eu4jUNfea+15pYVgPZ6ydqv0w4009PI4t2XxtRpNq
+	 2fI4S/3JBUsMCyhQw5vlcFTDacMpeApTYhhAmvEo2GEET9yCsyf+tO8luf1s9kqVPk
+	 0Zvf0UuvSB5vR6XXGDUMdplD+7z8uOa56ICr8gOcpZ49a/LSZYEg+xvMYvNdgL9hjX
+	 8cJq8YIfCJXUC7B1WynpCZrEnUS59t4XAMctMLfAnw8F4nF0kBBRjy31YVPAAXAVoJ
+	 fpOVLnVhD5YWg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Daniel Wagner <wagi@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	james.smart@broadcom.com,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 01/21] nvme-fc: go straight to connecting state when initializing
+Date: Mon, 10 Feb 2025 20:29:34 -0500
+Message-Id: <20250211012954.4096433-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250209071752.69530-1-joswang1221@gmail.com> <5d504702-270f-4227-afd6-a41814c905e3@google.com>
-In-Reply-To: <5d504702-270f-4227-afd6-a41814c905e3@google.com>
-From: Badhri Jagan Sridharan <badhri@google.com>
-Date: Mon, 10 Feb 2025 15:50:47 -0800
-X-Gm-Features: AWEUYZmTqkrNQX7oj5ITMhk6PrY78GVnEbkrYb-DvR7qcJ1kKFIz7qBgYPD1m_0
-Message-ID: <CAPTae5+Z3UcDcdFcn=Ref5aQSUEEyz-yVbRqoPJ1LogP4MzJdg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] usb: typec: tcpm: PSSourceOffTimer timeout in PR_Swap
- enters ERROR_RECOVERY
-To: Amit Sunil Dhamne <amitsd@google.com>
-Cc: joswang <joswang1221@gmail.com>, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.2
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 10, 2025 at 3:02=E2=80=AFPM Amit Sunil Dhamne <amitsd@google.co=
-m> wrote:
->
->
-> On 2/8/25 11:17 PM, joswang wrote:
-> > From: Jos Wang <joswang@lenovo.com>
-nit: From https://elixir.bootlin.com/linux/v6.13.1/source/Documentation/pro=
-cess/submitting-patches.rst#L619
+From: Daniel Wagner <wagi@kernel.org>
 
-  - A ``from`` line specifying the patch author, followed by an empty
-    line (only needed if the person sending the patch is not the author).
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-Given that you are the author, wondering why do you have an explicit "From:=
-" ?
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-> >
-> > As PD2.0 spec ("6.5.6.2 PSSourceOffTimer")=EF=BC=8Cthe PSSourceOffTimer=
- is
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
 
-nit: https://elixir.bootlin.com/linux/v6.13.1/source/Documentation/process/=
-submitting-patches.rst#L619
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- - The body of the explanation, line wrapped at 75 columns, which will
-    be copied to the permanent changelog to describe this patch.
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index b81af7919e94c..d45ab530ff9b7 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3579,8 +3579,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
+ 
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
+-- 
+2.39.5
 
-
-> > used by the Policy Engine in Dual-Role Power device that is currently
-> > acting as a Sink to timeout on a PS_RDY Message during a Power Role
-> > Swap sequence. This condition leads to a Hard Reset for USB Type-A and
-> > Type-B Plugs and Error Recovery for Type-C plugs and return to USB
-> > Default Operation.
-> >
-> > Therefore, after PSSourceOffTimer timeout, the tcpm state machine shoul=
-d
-> > switch from PR_SWAP_SNK_SRC_SINK_OFF to ERROR_RECOVERY. This can also s=
-olve
-> > the test items in the USB power delivery compliance test:
-> > TEST.PD.PROT.SNK.12 PR_Swap =E2=80=93 PSSourceOffTimer Timeout
-
-Thanks for fixing this !
-
-> >
-> > [1] https://usb.org/document-library/usb-power-delivery-compliance-test=
--specification-0/USB_PD3_CTS_Q4_2025_OR.zip
-> >
-> > Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-> > Cc: stable@vger.kernel.org
-> >
-nit: Empty line not needed here.
-
-> > Signed-off-by: Jos Wang <joswang@lenovo.com>
->
-> Tested-by: Amit Sunil Dhamne <amitsd@google.com>
-
-
->
->
-> Regards,
->
-> Amit
->
-> > ---
-> >   drivers/usb/typec/tcpm/tcpm.c | 3 +--
-> >   1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcp=
-m.c
-> > index 47be450d2be3..6bf1a22c785a 100644
-> > --- a/drivers/usb/typec/tcpm/tcpm.c
-> > +++ b/drivers/usb/typec/tcpm/tcpm.c
-> > @@ -5591,8 +5591,7 @@ static void run_state_machine(struct tcpm_port *p=
-ort)
-> >               tcpm_set_auto_vbus_discharge_threshold(port, TYPEC_PWR_MO=
-DE_USB,
-> >                                                      port->pps_data.act=
-ive, 0);
-> >               tcpm_set_charge(port, false);
-> > -             tcpm_set_state(port, hard_reset_state(port),
-> > -                            port->timings.ps_src_off_time);
-> > +             tcpm_set_state(port, ERROR_RECOVERY, port->timings.ps_src=
-_off_time);
-> >               break;
-> >       case PR_SWAP_SNK_SRC_SOURCE_ON:
-> >               tcpm_enable_auto_vbus_discharge(port, true);
 
