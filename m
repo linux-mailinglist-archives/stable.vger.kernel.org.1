@@ -1,191 +1,149 @@
-Return-Path: <stable+bounces-114931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2532A30F2F
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:06:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11AFA30F4E
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CF5418832FC
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:06:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD1A3A1186
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B562512C7;
-	Tue, 11 Feb 2025 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5A0250C14;
+	Tue, 11 Feb 2025 15:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bEsNap3V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CJ8hnyRs"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="T8pnfREc"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22A126BD9C;
-	Tue, 11 Feb 2025 15:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED47626BD8C;
+	Tue, 11 Feb 2025 15:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739286370; cv=none; b=rBaXE+koBVQnDdFJFNqjMaEEqmHfuG3gcHrGdyCqcMYurHYIhrs+/4d1+Nj7ygqD564EP5DV3Ke+nZwByp24roocYgmCfiHUcyCg95KsXySD4ckWRlrn3lL3SfCjOgwA7yqC3Rz2UjzyEjvVj+YMaqrY1W3OuNC/5R38AvVUHlc=
+	t=1739286668; cv=none; b=iResZLq+hyfLrAnOnCSh8zET/k9BgO9ju5Imc8kivpl/Vp8gL/Eb6uH9p61x57M5XH+8r+R0UT6eUpPnC21hAzsG0kAnJh9OHihz3Rp/c4tgYjVMdYscsXNQe5lxc0flKZwS7d63YDvoewGflDeO+N8YTJLx/4iA3jqF+piHe+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739286370; c=relaxed/simple;
-	bh=R/7A2NvhQNEJcZS4cgpl4qGXqNgGP+wzHAKlWlxAIDU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PpePYBsOLRhigbO68yGNl34xapJacdq08J68iTF5IffE9qDoPeAdpsnyAMwi5x6HRYaNqc6zPPrQDW2MIntWCkPBKuqic+uPbVOhd97SmOZHx3335uc0I3M3nk1qcdTK1gca6tnvxaE1i5QKeZ+KrwDqdLoA4u3bcOkNnoARVRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bEsNap3V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CJ8hnyRs; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 11 Feb 2025 15:06:06 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739286367;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i1fB+4qbBULrKAnQhEvPC9k1uoEJ+L+hYMxA32am+Ww=;
-	b=bEsNap3VkdefPGp1+maLo8k5Wh8ze/e0faO1wHpabz2Ve5Rks6WTrpZ3rpPt2Y6MKwy8eL
-	9TXWaGZzORLKtGddCjHyLK+hNDyABu7i3HvrKyFrQLysqcBFxiRI54lh/zD4PnGMOWEthV
-	esyCmzUw3HPjpjrYqUvj25OhFyG+N/H/0WPbpJ/7yf9qoOCKGP6sYFlMj56Ui4wHPwnuzS
-	6MmdgBQKRbNe8qaAh5ZVkdWLwRTt0PLpkbKjsm0E1IffOdlOJiSvWtLjgOwgoaVZdNKoCN
-	em48q6Ywtt0mgomAfgbn+AnVnWtJVyaPCD3+gjnEts8y1Z2b4WlnHc04aU+gCA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739286367;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i1fB+4qbBULrKAnQhEvPC9k1uoEJ+L+hYMxA32am+Ww=;
-	b=CJ8hnyRsjNNLh0muIun/rESH8LR7QtLdCu3MASALoKNaBdCMv/EnVP/fqI+6W3waE5AEqA
-	KXD7/NRRt+5fUFAg==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-Cc: Kan Liang <kan.liang@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250129154820.3755948-3-kan.liang@linux.intel.com>
-References: <20250129154820.3755948-3-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1739286668; c=relaxed/simple;
+	bh=obWpRWXFO0BmcJk5O5meIK0OX3KFC/pPcUicI/GFgBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=iyN+O/Q2IxUafcbOn4m9iomcm3K6u9Dk58Vhl1iWMd+7kc+rabJ5uYHFhjQHZsVwZ2Huq8lKhU2oZ5/+ynuPzkpI4v01hbd3EHA9SbJeLGg+NymvjjNRMNkT7TAfUTRI5eOhJTn/KyW5geigC8GYpDNeKd+9eMnIzNTxMbIiNL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=T8pnfREc; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B4vo2q003866;
+	Tue, 11 Feb 2025 09:10:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=yUrdzzly1HlXlFqlA9rB3BgFsAXXPpFRmV9em8w60ko=; b=
+	T8pnfREcqgY9R2pNNte3IR4Dyegn4xNWjjV3UAVgdJ9C2uObMEiBI+NmQ25IE23j
+	zmektAA5QnYXNb+hB2twdNvhhi0MtdefJUgcI19EcWobw5Q2qNRVkQXXJBN5j/iZ
+	briN4aiaB4KAYSCYedJ+OLPdMRBXwBK+CePGn9x3PaiJg5ym58gEePeuZBKWEeQ7
+	lOHpDzhuVUgS7Rso+ULVx0o2xqodKEeqHlo2WLC1ZKjK9kpm/Yatdut6gU96OkcN
+	xCL/hzsrn54yWQQWexI/9r2c4/2MgPhJH5w1EOB1397ilz6CXYowCUfp/hzuOl/G
+	jJm+ISVDjL5eFxM6v0y9LA==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 44p4jmvwn3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Feb 2025 09:10:39 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 11 Feb
+ 2025 15:10:38 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.14 via Frontend Transport; Tue, 11 Feb 2025 15:10:38 +0000
+Received: from [198.90.208.18] (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 3838C820248;
+	Tue, 11 Feb 2025 15:10:38 +0000 (UTC)
+Message-ID: <d1c9a0f3-5bc5-4b78-abfa-d17e90c36f48@opensource.cirrus.com>
+Date: Tue, 11 Feb 2025 15:10:38 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173928636641.10177.8036083101201125379.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] firmware: cs_dsp: test_control_parse: null-terminate test
+ strings
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+        "Simon Trimmer" <simont@opensource.cirrus.com>,
+        Charles Keepax
+	<ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>
+CC: <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+Content-Language: en-GB
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=PNv1+eqC c=1 sm=1 tr=0 ts=67ab686f cx=c_pps a=uGhh+3tQvKmCLpEUO+DX4w==:117 a=uGhh+3tQvKmCLpEUO+DX4w==:17 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=hVoct8NOfsc9t3BWKfUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: _GsbeqKrF1tAwPzizDm-TvKdxzzwjbuT
+X-Proofpoint-ORIG-GUID: _GsbeqKrF1tAwPzizDm-TvKdxzzwjbuT
+X-Proofpoint-Spam-Reason: safe
 
-The following commit has been merged into the perf/urgent branch of tip:
+On 11/02/2025 3:00 pm, Thomas Weißschuh wrote:
+> The char pointers in 'struct cs_dsp_mock_coeff_def' are expected to
+> point to C strings. They need to be terminated by a null byte.
+> However the code does not allocate that trailing null byte and only
+> works if by chance the allocation is followed by such a null byte.
+> 
+> Refactor the repeated string allocation logic into a new helper which
+> makes sure the terminating null is always present.
+> It also makes the code more readable.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Fixes: 83baecd92e7c ("firmware: cs_dsp: Add KUnit testing of control parsing")
+> Cc: stable@vger.kernel.org
+> ---
+>   .../cirrus/test/cs_dsp_test_control_parse.c        | 51 ++++++++--------------
+>   1 file changed, 19 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+> index cb90964740ea351113dac274f0366de7cedfd3d1..942ba1af5e7c1e47e8a2fbe548a7993b94f96515 100644
+> --- a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+> +++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+> @@ -73,6 +73,18 @@ static const struct cs_dsp_mock_coeff_def mock_coeff_template = {
+>   	.length_bytes = 4,
+>   };
+>   
+> +static char *cs_dsp_ctl_alloc_test_string(struct kunit *test, char c, size_t len)
+> +{
+> +	char *str;
+> +
+> +	str = kunit_kmalloc(test, len + 1, GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, str);
+> +	memset(str, c, len);
+> +	str[len] = '\0';
+> +
+> +	return str;
+> +}
+> +
+>   /* Algorithm info block without controls should load */
+>   static void cs_dsp_ctl_parse_no_coeffs(struct kunit *test)
+>   {
+> @@ -160,12 +172,8 @@ static void cs_dsp_ctl_parse_max_v1_name(struct kunit *test)
+>   	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+>   	struct cs_dsp_coeff_ctl *ctl;
+>   	struct firmware *wmfw;
+> -	char *name;
+>   
+> -	name = kunit_kzalloc(test, 256, GFP_KERNEL);
 
-Commit-ID:     47a973fd75639fe80d59f9e1860113bb2a0b112b
-Gitweb:        https://git.kernel.org/tip/47a973fd75639fe80d59f9e1860113bb2a0b112b
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 29 Jan 2025 07:48:19 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 08 Feb 2025 15:47:25 +01:00
+This allocates 256 bytes of zero-filled memory...
 
-perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+> -	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, name);
+> -	memset(name, 'A', 255);
 
-The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
-To tell the availability of the sub-leaf 1 (enumerate the counter mask),
-perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
+... and this fills the first 255 bytes, leaving the last byte still as
+zero. So the string is zero-terminated. I don't see a problem here.
 
-The error is not user-visible on bare metal. Because the sub-leaf 0 and
-the sub-leaf 1 are always available. However, it may bring issues in a
-virtualization environment when a VMM only enumerates the sub-leaf 0.
+Just fix the other allocs to be kzalloc with the correct length?
 
-Introduce the cpuid35_e?x to replace the macros, which makes the
-implementation style consistent.
 
-Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250129154820.3755948-3-kan.liang@linux.intel.com
----
- arch/x86/events/intel/core.c      | 18 ++++++++++--------
- arch/x86/include/asm/perf_event.h | 28 +++++++++++++++++++++++++---
- 2 files changed, 35 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 966f783..f3d5b71 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4905,20 +4905,22 @@ static inline bool intel_pmu_broken_perf_cap(void)
- 
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps, eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
- 
--	cpuid(ARCH_PERFMON_EXT_LEAF, &sub_bitmaps, &ebx, &ecx, &edx);
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
- 
--	if (ebx & ARCH_PERFMON_EXT_UMASK2)
-+	if (ebx.split.umask2)
- 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_UMASK2;
--	if (ebx & ARCH_PERFMON_EXT_EQ)
-+	if (ebx.split.eq)
- 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
- 
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->cntr_mask64 = eax;
--		pmu->fixed_cntr_mask64 = ebx;
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->cntr_mask64 = cntr;
-+		pmu->fixed_cntr_mask64 = fixed_cntr;
- 	}
- 
- 	if (!intel_pmu_broken_perf_cap()) {
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 1ac79f3..0ba8d20 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -188,11 +188,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_EXT_UMASK2			0x1
--#define ARCH_PERFMON_EXT_EQ			0x2
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 
