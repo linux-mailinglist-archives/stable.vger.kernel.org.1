@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-114750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1613EA3001C
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:31:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E194DA30021
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51CDE1886D2F
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CF1E3A3808
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C99B1D8DE4;
-	Tue, 11 Feb 2025 01:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4171C1E04B5;
+	Tue, 11 Feb 2025 01:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ueTEKO/D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfObNTjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5496D34CF5;
-	Tue, 11 Feb 2025 01:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19833EA76;
+	Tue, 11 Feb 2025 01:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237405; cv=none; b=uznaJapGtO3Jdhk2ngIKbJmhaSAn2wvkQl4pIgEFLdQIinCkzMrzFMEQWDhIc2+B1H1LkiJVUKJbM+F8+vNw0CdgF4sXG968/EZ2TUacBZWb4LKI2uWvK5+DXP+9+SBx0j0Q3SlmoAJkrywJlO/abibk0QbzrwrKrRar2emrQoc=
+	t=1739237407; cv=none; b=kap2lVyOptb4FsXRpGjdJpWYr6eHfnO9he/Tx2hNzYsgEPAcu25uBr6yWYAAQaKPFtmi6Zhy24bV9jW8kV6Rwn1pzURCRAPB5W9WUArgAWT6cD0fjymyhxQGZg+iU0i9TqstHNY+z+i5TaIv7R5Bt8InvhrHW+8B/yqqFYVcLhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237405; c=relaxed/simple;
-	bh=hFtL0x/+GUZwi7+zGRJFNZQHyYh0YyIT9e3JHkAa0hI=;
+	s=arc-20240116; t=1739237407; c=relaxed/simple;
+	bh=O0uRPqFkoL/37XU7UWWZV0ARYrC8R2rnUfUL+3Jfoig=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mHCB8OoWXq3yUj7Ezenk6vUBHGcq8EGE8WL4KsEXcUSAC3Xo8g2bon6qmBH1n9+RXEDEAx6FTplnncxjG0ucPEBoiaPNfGZAcVgdZR9QtJNF/TkIKGKoKY5O7h89c7VxAEnQUleGU6bTpCZhfxoaDKsj82pCR0cThOIjwXGqN4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ueTEKO/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE317C116C6;
-	Tue, 11 Feb 2025 01:30:03 +0000 (UTC)
+	 MIME-Version; b=TgFxKgD1laARS55ZF0lkhk7bcVSX+TsGX0+w2rJUPaiVxHVK23nxUlwA1ombs2jDrOvNfA7ZiLaCV7m6CrSWIJ8AfZjjiWxYBUSCzJLD6zTtJ7J+M7pgFagJAqPy8NEcypPN/8/Vfg4XQkJ2NIpDNbeMdtZI0zhXQOer569aGvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfObNTjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A653C4AF09;
+	Tue, 11 Feb 2025 01:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237404;
-	bh=hFtL0x/+GUZwi7+zGRJFNZQHyYh0YyIT9e3JHkAa0hI=;
+	s=k20201202; t=1739237406;
+	bh=O0uRPqFkoL/37XU7UWWZV0ARYrC8R2rnUfUL+3Jfoig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueTEKO/DsAyGDfIvo2ko+OO8cP+C5P90b42cF+OoAsh4n45+q2IOVRXpyW2hUcoLw
-	 SPp3rozDRr38vjBvjcjkqxoicfAif4lR/Lnxf9C4z/sdXvheuWY05HW3hGyPCcO4GU
-	 DMlM7LSpQ9qityJ+hUXC3YcfYNk/298txONa5VmW7e9xngMcXTdt6K+MWd6WKw0vWC
-	 uAu77vgJJrnT8kvW3o8k1kZOeQMdciBZiXJYt53emfFJmm1aNTKQfeQVSpXd8rgtK1
-	 IDnRTID5+1MqXX+5SMA4EVH5iilJxChEEV5KO2UYA+Q434lC+S8QIP1869e/mwBPPw
-	 VSt8PWiAOGoQQ==
+	b=XfObNTjq5brsNiDHvtd5SxkxhFCwqrY200exrZ1lN/eulkwG63sJMAlWP/LjITiFq
+	 MHOIroSOBLNmxey3MB57vZr635kTVVca5IuwLB6FM671PuMkhmLWM+GjxwYglZD0n+
+	 i9nLL6mEymTdUZKwxYgFjFevNDXv1Zelz6DrJFs5PRJ/90xZmxO4gNg733EECEobFF
+	 4oMmfA6TMmwCzX1hWGlfxRtfxo4yjKZxyeykSCh9w7KyM1c0hy/y81AeKh5BityGDw
+	 ySdlf76h4l0RiyK+BLcUb5KaokWsvDL3GotwQLUEFBzkK5P75zAhaC8AaeifhOK077
+	 0pkLJChfSgQHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Jann Horn <jannh@google.com>,
+Cc: Xu Lu <luxu.kernel@bytedance.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	asml.silence@gmail.com,
-	mingo@redhat.com,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 06/21] futex: Pass in task to futex_queue()
-Date: Mon, 10 Feb 2025 20:29:39 -0500
-Message-Id: <20250211012954.4096433-6-sashal@kernel.org>
+	anup@brainfault.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 07/21] irqchip/riscv: Ensure ordering of memory writes and IPI writes
+Date: Mon, 10 Feb 2025 20:29:40 -0500
+Message-Id: <20250211012954.4096433-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211012954.4096433-1-sashal@kernel.org>
 References: <20250211012954.4096433-1-sashal@kernel.org>
@@ -68,146 +69,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.2
 Content-Transfer-Encoding: 8bit
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Xu Lu <luxu.kernel@bytedance.com>
 
-[ Upstream commit 5e0e02f0d7e52cfc8b1adfc778dd02181d8b47b4 ]
+[ Upstream commit 825c78e6a60c309a59d18d5ac5968aa79cef0bd6 ]
 
-futex_queue() -> __futex_queue() uses 'current' as the task to store in
-the struct futex_q->task field. This is fine for synchronous usage of
-the futex infrastructure, but it's not always correct when used by
-io_uring where the task doing the initial futex_queue() might not be
-available later on. This doesn't lead to any issues currently, as the
-io_uring side doesn't support PI futexes, but it does leave a
-potentially dangling pointer which is never a good idea.
+RISC-V distinguishes between memory accesses and device I/O and uses FENCE
+instruction to order them as viewed by other RISC-V harts and external
+devices or coprocessors. The FENCE instruction can order any combination of
+device input(I), device output(O), memory reads(R) and memory
+writes(W). For example, 'fence w, o' is used to ensure all memory writes
+from instructions preceding the FENCE instruction appear earlier in the
+global memory order than device output writes from instructions after the
+FENCE instruction.
 
-Have futex_queue() take a task_struct argument, and have the regular
-callers pass in 'current' for that. Meanwhile io_uring can just pass in
-NULL, as the task should never be used off that path. In theory
-req->tctx->task could be used here, but there's no point populating it
-with a task field that will never be used anyway.
+RISC-V issues IPIs by writing to the IMSIC/ACLINT MMIO registers, which is
+regarded as device output operation. However, the existing implementation
+of the IMSIC/ACLINT drivers issue the IPI via writel_relaxed(), which does
+not guarantee the order of device output operation and preceding memory
+writes. As a consequence the hart receiving the IPI might not observe the
+IPI related data.
 
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by replacing writel_relaxed() with writel() when issuing IPIs,
+which uses 'fence w, o' to ensure all previous writes made by the current
+hart are visible to other harts before they receive the IPI.
+
+Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/22484a23-542c-4003-b721-400688a0d055@kernel.dk
+Link: https://lore.kernel.org/all/20250127093846.98625-1-luxu.kernel@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/futex.c        |  2 +-
- kernel/futex/core.c     |  5 +++--
- kernel/futex/futex.h    | 11 ++++++++---
- kernel/futex/pi.c       |  2 +-
- kernel/futex/waitwake.c |  4 ++--
- 5 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-early.c      | 2 +-
+ drivers/irqchip/irq-thead-c900-aclint-sswi.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/futex.c b/io_uring/futex.c
-index e29662f039e1a..f108da4ff863c 100644
---- a/io_uring/futex.c
-+++ b/io_uring/futex.c
-@@ -349,7 +349,7 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
- 		hlist_add_head(&req->hash_node, &ctx->futex_list);
- 		io_ring_submit_unlock(ctx, issue_flags);
- 
--		futex_queue(&ifd->q, hb);
-+		futex_queue(&ifd->q, hb, NULL);
- 		return IOU_ISSUE_SKIP_COMPLETE;
- 	}
- 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index ebdd76b4ecbba..3db8567f5a44e 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -532,7 +532,8 @@ void futex_q_unlock(struct futex_hash_bucket *hb)
- 	futex_hb_waiters_dec(hb);
- }
- 
--void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
-+void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+		   struct task_struct *task)
+diff --git a/drivers/irqchip/irq-riscv-imsic-early.c b/drivers/irqchip/irq-riscv-imsic-early.c
+index c5c2e6929a2f5..275df50057057 100644
+--- a/drivers/irqchip/irq-riscv-imsic-early.c
++++ b/drivers/irqchip/irq-riscv-imsic-early.c
+@@ -27,7 +27,7 @@ static void imsic_ipi_send(unsigned int cpu)
  {
- 	int prio;
+ 	struct imsic_local_config *local = per_cpu_ptr(imsic->global.local, cpu);
  
-@@ -548,7 +549,7 @@ void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
- 
- 	plist_node_init(&q->list, prio);
- 	plist_add(&q->list, &hb->chain);
--	q->task = current;
-+	q->task = task;
+-	writel_relaxed(IMSIC_IPI_ID, local->msi_va);
++	writel(IMSIC_IPI_ID, local->msi_va);
  }
  
- /**
-diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index 99b32e728c4ad..6b2f4c7eb720f 100644
---- a/kernel/futex/futex.h
-+++ b/kernel/futex/futex.h
-@@ -285,13 +285,15 @@ static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
- }
+ static void imsic_ipi_starting_cpu(void)
+diff --git a/drivers/irqchip/irq-thead-c900-aclint-sswi.c b/drivers/irqchip/irq-thead-c900-aclint-sswi.c
+index b0e366ade4271..8ff6e7a1363bd 100644
+--- a/drivers/irqchip/irq-thead-c900-aclint-sswi.c
++++ b/drivers/irqchip/irq-thead-c900-aclint-sswi.c
+@@ -31,7 +31,7 @@ static DEFINE_PER_CPU(void __iomem *, sswi_cpu_regs);
  
- extern void __futex_unqueue(struct futex_q *q);
--extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb);
-+extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+				struct task_struct *task);
- extern int futex_unqueue(struct futex_q *q);
- 
- /**
-  * futex_queue() - Enqueue the futex_q on the futex_hash_bucket
-  * @q:	The futex_q to enqueue
-  * @hb:	The destination hash bucket
-+ * @task: Task queueing this futex
-  *
-  * The hb->lock must be held by the caller, and is released here. A call to
-  * futex_queue() is typically paired with exactly one call to futex_unqueue().  The
-@@ -299,11 +301,14 @@ extern int futex_unqueue(struct futex_q *q);
-  * or nothing if the unqueue is done as part of the wake process and the unqueue
-  * state is implicit in the state of woken task (see futex_wait_requeue_pi() for
-  * an example).
-+ *
-+ * Note that @task may be NULL, for async usage of futexes.
-  */
--static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
-+static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+			       struct task_struct *task)
- 	__releases(&hb->lock)
+ static void thead_aclint_sswi_ipi_send(unsigned int cpu)
  {
--	__futex_queue(q, hb);
-+	__futex_queue(q, hb, task);
- 	spin_unlock(&hb->lock);
+-	writel_relaxed(0x1, per_cpu(sswi_cpu_regs, cpu));
++	writel(0x1, per_cpu(sswi_cpu_regs, cpu));
  }
  
-diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
-index d62cca5ed8f4c..635c7d5d42220 100644
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -982,7 +982,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
- 	/*
- 	 * Only actually queue now that the atomic ops are done:
- 	 */
--	__futex_queue(&q, hb);
-+	__futex_queue(&q, hb, current);
- 
- 	if (trylock) {
- 		ret = rt_mutex_futex_trylock(&q.pi_state->pi_mutex);
-diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
-index 3a10375d95218..a9056acb75eef 100644
---- a/kernel/futex/waitwake.c
-+++ b/kernel/futex/waitwake.c
-@@ -350,7 +350,7 @@ void futex_wait_queue(struct futex_hash_bucket *hb, struct futex_q *q,
- 	 * access to the hash list and forcing another memory barrier.
- 	 */
- 	set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
--	futex_queue(q, hb);
-+	futex_queue(q, hb, current);
- 
- 	/* Arm the timer */
- 	if (timeout)
-@@ -461,7 +461,7 @@ int futex_wait_multiple_setup(struct futex_vector *vs, int count, int *woken)
- 			 * next futex. Queue each futex at this moment so hb can
- 			 * be unlocked.
- 			 */
--			futex_queue(q, hb);
-+			futex_queue(q, hb, current);
- 			continue;
- 		}
- 
+ static void thead_aclint_sswi_ipi_clear(void)
 -- 
 2.39.5
 
