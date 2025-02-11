@@ -1,132 +1,155 @@
-Return-Path: <stable+bounces-114851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1955A30537
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:06:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D71A30543
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 668631885EB6
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BFBD3A4EDA
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2E81EE03C;
-	Tue, 11 Feb 2025 08:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDB81EEA48;
+	Tue, 11 Feb 2025 08:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="K4wyEUEk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MNJ/M+P4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2465C1EE00D
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 08:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB671EDA2B
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 08:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739261159; cv=none; b=ftW7ck1Z3Y4w3YKH5Ahm5seVruWihxhmdBCqRPY+zHVBwkGjeEbxKu+o+tOQYY1fiTe9pFrPGZw1Duiavb2IXvWBLHGrbskerCW+uWUsmbYCxqoCXj41HbDh5CLhZE6eETLMqQTQlJKzwjDSFuXLzcyDAwJt8dKwOSg7sExAssM=
+	t=1739261293; cv=none; b=Ga9ekoPK+dbbFVoDnodiFFgY0/IsbS7jVIBcYtJm2yztUg6KIW9cp915Pk8/4EwAvdOA+Gr5X8MP0VgWC2yfB0z1tSUv8eOD8kVQw+X41a35TRmmGuXVkzHqcM3UMn8iWClOhV4yaFoYjArQ0ZgDJZCLCMDmxTC1FMWI1D6GYdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739261159; c=relaxed/simple;
-	bh=oZul2d/wKFmYJJHdQwxELki+d2o5+CW8gJ8R+CmprR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pyOGTktE/B69LeSJ4/pgv/ZKPjU9b8ZcUCsCZfT/1R66oB6iayhPj/otDjVQAlfzQTHfehb8uOcYVSjh3G5JcYu4KJoHCpbpa/1RzAU+eWFkmBCwhkzVgl+BcM9Ze6eoj/nzzeD2dUs+c/ZBCBh3wz0/X0W8uKL82tGyeRMSHA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=K4wyEUEk; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ab2b29dfc65so805804366b.1
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 00:05:56 -0800 (PST)
+	s=arc-20240116; t=1739261293; c=relaxed/simple;
+	bh=sSpoVF5tKRxtaZqs6uZeX1TfHNKBHsN9FJ2ZMpPBbCM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pxQ65uKuddjfX+44029nEoB8oDalLYk5U3Pl4YPkt+R83zZm6/xdlyfb9inDcHek7gIsl/gCBsScbnZUqTLYdO5jv4Qa2V8uQqq7BsmnsDDQWrmJCLBJUherHea9tDjs8b2y6HGfn7WIUlyg4GsBuASgRr3YSVxdzyOXsXbVYIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MNJ/M+P4; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38dcb33cba1so1912217f8f.2
+        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 00:08:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1739261155; x=1739865955; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VJrOUp+F89GFnzwAsaIErFuCcKPjmLvk5s9hg9IRNZc=;
-        b=K4wyEUEkD1EmMy5T2wBjcdSdS3491zZV0bOXg0j6PIHJFsnR0+dO1V+JewGd/4Qx87
-         wMLCDL/WOLOR2aXEnBfw8YSX9hj0j7hKq+RsZqRWO22J5iCihdRDgF6doQYDn3xIOffm
-         UCRNrSXNiOaQRNw+bVwUKcbpuHA6iHlQgAuPJKZSlkVIZwSbbJkAMaRQSS7lJD+LbR23
-         QHNiWxKd+9Q59/7uMYBm+8ZsJpWOT9qBmxInOCK6lI3yhqHUboFprkkvf8xR/rfvXy5G
-         tcJ3lzFzNBagjFW4RONrkCEfjCY2wWtaVUMwYM0WJr0cW8Wb2x/DwkLZU16c71OWCLDG
-         Yw7Q==
+        d=linaro.org; s=google; t=1739261289; x=1739866089; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WiK7BHSVgTdQkQZzP88yLZAKhA2S6bWhUg1LMOvnPkc=;
+        b=MNJ/M+P44eCpvjNzhHf+T9kXx8foal5f8Jnktvpw+2I/lFKyFtcVVrR9E5PGbVYp5k
+         2nqq0spvzUITEVqIZkkXWL71H0zknQ7lpVPzWrSoMp3OEG3Of336/LFERHEaG0tOf5Vw
+         Yb8YXX240uaaEUWDk6iTywKWqYUj4B+nN8H09uS9fA/0eAnpgVuCWEgEFCuNLTR0Q6Xb
+         PXvjTPLbFxwNBcidp4QYnJMJsbLVprlXzMKuopJOsoInH76/KA0aD3U+3cX0cFP984TH
+         zrm/RH8TYZ55+Af/vdd0B2KLEoq1PxK/wzUgmq85iBwu/6y2JRATl8/dZ4tFCk7BN514
+         tbaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739261155; x=1739865955;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VJrOUp+F89GFnzwAsaIErFuCcKPjmLvk5s9hg9IRNZc=;
-        b=kl66aryb/iNMkgvFGwAM0Yfk5XcBuU7ToxKEDa0QliMZt9IqdNmdsKQuIpEZ6hoaf/
-         6H7yS1hdZuys8AJY4GWzwJFj7bF1Hce3rVbZNYBzVsrLC/kvi4dm/adQnPmG6HF7R+Ac
-         6rFXX3DPJ1NjKyLPv6vBSiaC5uItsHZafTbrqPshFYBqvmkEFpS145kEp47hcSDw4bus
-         71Qg7HAf76JlYfIIOPkQRTQJTtosc1lLQhM89FdXv3X1v5BnHtaDsfdzyjEtkXt40H/d
-         rMHjbzicxGmQ4EcHUTL/fqN6pv6TLTzne/S/hqj+kuDeBq3Kz7Gze8kOE03nCEnRrkuQ
-         Vrzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtYobfh8P3txZvl8VOB3enk8lyEnbuDf8eDZe75hBQISRlXMcd67h05X6IvJxHwKMyfiz0Y+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBLG4wUZ8OKmlWFtvftN8P/Ii7l1Ckh+DhCyPcNdhwcSGmm+12
-	IhQrRsBGibJla/z8bGmdvPNKrnlUSPz7GQiC3LifH5+yZ6XgXrVRmq8Z4Z00LRxwhr+kGW7/rrC
-	hVTPvNnFNat4EtWDuy9fp3AEiEEeNJMFBPdv5oQ==
-X-Gm-Gg: ASbGncs5lvW7J4lCK5RPXFd7weO+ddmc5Qp/234Wt3X1e425Blw3JZSqpYBeF2MiN/u
-	ylBzbR/agmIZcCzIwgzDEAU7HGEAB7tJD4RrbnMXAy8CZCmpLjkXEdr6Gd8lGipk5myauEhStvS
-	l5spdYd7J11vAKA1VVZDucFSLAXA==
-X-Google-Smtp-Source: AGHT+IEvCt8BeOXdJg8lh6Pl0LfjKQqELNkqQazSvkXvBC8ZT59e0sRDOAAy7KvIr0fZcwzxkMFleImklwBwEspDSj8=
-X-Received: by 2002:a17:906:6a29:b0:aa6:a572:49fd with SMTP id
- a640c23a62f3a-ab789ca2972mr1452330266b.54.1739261155397; Tue, 11 Feb 2025
- 00:05:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739261289; x=1739866089;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WiK7BHSVgTdQkQZzP88yLZAKhA2S6bWhUg1LMOvnPkc=;
+        b=hB98tTogQwIpnRfwT5iJqVE1HYb0YlNi8vP45uSvNZGINXWfm3jYgGUdhfrar6hjub
+         fWwcJpy2XnsihmQs1MRmQQz6TMGhs6QZBPWNXiao1rQrnnZf+rRoVuAui0K4ldaj8m44
+         M/Akss9Tu6loOwBEGBiiQkXs8fBW8XsG+K/8ywoBHVmXwEjNv4Tu3frMnIyHxdQ1z5qB
+         5n0IDHXhorYUFfaFbytuKF232wxyDIRW9fRKMym+10d3rSCjE8u5NbAooGx9+xLXxL2M
+         eGjDY6coPo/VkFywzk2teBPgfawC5BALnPFi4PfVF8UOjg2GOm6y7SCNemtlDhlKvR/C
+         nbIw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/Q/7zRp4ZC7uVDAYpFlJjWAD97ZGrTKUajnx9Oy4OUi4/yRyrCJwqZVlnTCWINvtJdkDHBmI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyU/dhsPAmiOTwz1srtFZ39gDlokz3ndBZD2GgNOW8j8Mx4VfA
+	hmaEr2uShPDhGwS03KL3a9ydQCXCesSZz8GtJQ3t7xzccsl8wJT5z2ZK6eC0oG4=
+X-Gm-Gg: ASbGncvKGNZQaDXeoTTY+mginpnOy93Y8JkpWi+9yxHM65ztduKBScRGHRo6VXxB7jW
+	Grw8XbSmtPgJcuAvJ21+tb1b98TL/UOWuIFczTw//my+wy6NmA/YeWr8F2rbwrGrRUiMLDtDrxd
+	serqAZ+kF8uUzqxfjsllf/2KSsEsstUGP1rqwLHEEfLk/Z89BnnpGZZ5kNlO81zh3SnCGGa0Yjz
+	FqNPu9q56LrMD4NOcrHmuIPCt4HQMuwGNvSuUnq2XdMZmptlrByqFqcINQLgN+baF322k0HPK1A
+	ud/yFt6KVoWKiYEQqYNyvJ3v77ef170bu579A9tvGHwj70NI1WG+dIs=
+X-Google-Smtp-Source: AGHT+IE2oWYuWjmjvpu3ABr0HEe1925aEaOPbTS7VONKBvqKWoMObjwVOs9MsKRzrKKQMRmZMw7JGQ==
+X-Received: by 2002:a05:6000:1561:b0:38d:e38a:5910 with SMTP id ffacd0b85a97d-38de38a59bfmr2866271f8f.28.1739261289162;
+        Tue, 11 Feb 2025 00:08:09 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4392fc7ceacsm102977005e9.20.2025.02.11.00.08.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Feb 2025 00:08:08 -0800 (PST)
+Message-ID: <0b37e5e1-6dd6-49fc-b874-741e75c8d56a@linaro.org>
+Date: Tue, 11 Feb 2025 09:08:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210223144.3481766-1-max.kellermann@ionos.com> <2025021138-track-liberty-f5d9@gregkh>
-In-Reply-To: <2025021138-track-liberty-f5d9@gregkh>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 11 Feb 2025 09:05:44 +0100
-X-Gm-Features: AWEUYZn8IYtLkGvSdhSF9RacLZqPPLjjSSgyWsPBEwf3ckYtzh6gc1WMb8IYbZw
-Message-ID: <CAKPOu+-Mi1oCNvk3SJnui3484wpfru3fE1gA72XVcX77PFOjVA@mail.gmail.com>
-Subject: Re: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without `marks3`
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] thermal/drivers/rockchip: add missing rk3328 mapping
+ entry
+To: Dragan Simic <dsimic@manjaro.org>, Trevor Woerner <twoerner@gmail.com>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+ Heiko Stuebner <heiko@sntech.de>, Caesar Wang <wxt@rock-chips.com>,
+ Rocky Hao <rocky.hao@rock-chips.com>, linux-pm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20250207175048.35959-1-twoerner@gmail.com>
+ <5f9cf65221690452d7e842ee98535192@manjaro.org>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <5f9cf65221690452d7e842ee98535192@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 11, 2025 at 7:30=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On 11/02/2025 02:40, Dragan Simic wrote:
+> Hello Trevor,
+> 
+> On 2025-02-07 18:50, Trevor Woerner wrote:
+>> The mapping table for the rk3328 is missing the entry for -25C which is
+>> found in the TRM section 9.5.2 "Temperature-to-code mapping".
+>>
+>> NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+>>       4096-<code in table>. Whereas the table in the TRM gives the code
+>>       "3774" for -25C, the kernel uses 4096-3774=322.
+> 
+> After going through the RK3308 and RK3328 TRMs, as well as through the
+> downstream kernel code, it seems we may have some troubles at our hands.
+> Let me explain, please.
+> 
+> To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that the
+> equation for the output when tsadc_q_sel equals 1 is (4096 - tsadc_q),
+> while part 1 of the RK3328 TRM v1.2 says that the output equation is
+> (1024 - tsadc_q) in that case.
+> 
+> The downstream kernel code, however, treats the RK3308 and RK3328
+> tables and their values as being the same.  It even mentions 1024 as
+> the "offset" value in a comment block for the rk_tsadcv3_control()
+> function, just like the upstream code does, which is obviously wrong
+> "offset" value when correlated with the table on page 544 of part 1
+> of the RK3308 TRM v1.1.
+> 
+> With all this in mind, it's obvious that more work is needed to make
+> it clear where's the actual mistake (it could be that the TRM is wrong),
+> which I'll volunteer for as part of the SoC binning project.  In the
+> meantime, this patch looks fine as-is to me, by offering what's a clear
+> improvement to the current state of the upstream code, so please feel
+> free to include:
+> 
+> Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+> 
+> However, it would be good to include some additional notes into the
+> patch description in the v3, which would briefly sum up the above-
+> described issues and discrepancies, for future reference.
 
-> > Note this patch doesn't apply to v6.14 as it was obsoleted by commit
-> > e2d46f2ec332 ("netfs: Change the read result collector to only use one
-> > work item").
->
-> Why can't we just take what is upstream instead?
->
-> Diverging from that ALWAYS ends up being more work and problems in the
-> end.  Only do so if you have no other choice.
 
-Usually I agree with that, and I trust that you will make the right decisio=
-n.
+Applied and added the additional notes in the patch description.
 
-Before you decide, let me point out that netfs has been extremely
-unstable since 6.10 (July 2024), ever since commit 2e9d7e4b984a ("mm:
-Remove the PG_fscache alias for PG_private_2). All of our web servers
-have been crashing since 6.10 all the time (see
-https://lore.kernel.org/netfs/CAKPOu+_DA8XiMAA2ApMj7Pyshve_YWknw8Hdt1=3DzCy=
-9Y87R1qw@mail.gmail.com/
-for one of several bug reports I posted), and I went through
-considerable trouble by resisting the pressure from people asking me
-to downgrade to 6.6. (I want the bugs fixed, I don't want to go back.)
-For several months, 6.12 had been crashing instantly on boot due to
-yet another netfs regression
-(https://lore.kernel.org/netfs/CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=3Dgcmkz=
-wYSY4syqw@mail.gmail.com/)
-which wasn't fixed until 6.12.11, so our production servers are still
-on 6.11.11 today.
-Before these bugs got ironed out, v6.11 commit ee4cdf7ba857 ("netfs:
-Speed up buffered reading") wreaked more havoc, leading to 8 "Fixes"
-commits so far, plus the 2 I posted yesterday.
+Thanks
 
-I wrote that e2d46f2ec332 has obsoleted my patch (actually both
-patches), but I don't know if it really fixes both bugs. The code that
-was buggy does not exist anymore in the form that my patch addresses,
-but I don't know if it was just refactored and the bugs were kept (or
-maybe yet more bugs sneaked in).
+   -- D.
 
 
-Max
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
