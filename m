@@ -1,114 +1,173 @@
-Return-Path: <stable+bounces-114938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD56A31196
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:34:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E675EA311FA
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F581631BE
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C0661634C1
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213EB254B11;
-	Tue, 11 Feb 2025 16:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5766725EF82;
+	Tue, 11 Feb 2025 16:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pp1aP8m8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JNv3zrtu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977FD24E4C3;
-	Tue, 11 Feb 2025 16:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9505325C6F1;
+	Tue, 11 Feb 2025 16:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739291655; cv=none; b=mzukvdp9ITq5VGEy/GpIYnGZuomUy2sh6rId58OQ4dUL+Qzr/cNytwsKlr4oPmOHgXn1eQNGUuuDKUz7pImD1VGZr4ILv1utof6KwqRkJSEH/W1layjA7zT0qywcVxWmh9cDg8WhMw9N7O7tD0Ywk5339xABe4CSb6JEgpDdYyo=
+	t=1739292453; cv=none; b=KGWVgZUGRRODhxR6+WVvXIh5ZnyzdNPPtJpHGwQaDp1C1uC8s/89T5kmU1t1rwIJFU+vlsCRvYqlxnFWYxuvEoOcMy3Vb/bc1Sv2OwAycnQ0DCD6ozN45HgmgNRQzwzMPWoeO7bMVj6cL0vtuAz420nDThhuJhWy+LnJB2gxq/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739291655; c=relaxed/simple;
-	bh=v9zLtYVKdZh0APwPkClRT1ytoQtcPi31gcSlauDEj6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0XQoTVxtY6zzaSQ/owI3S4WiKpLLPEq4UWbvfgHPB9OuYxYCo4uc3HxGua3iWF7T6vavkhOlAZVOuPBrJfWCmY0QS4HVJfVxlotwoKYpiShJzHqAyHzSDaSdGY+tKfcQON1M+p8zQpap9LCiJLvlVGqeCAo7aCHVHsulHbpatM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pp1aP8m8; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1739292453; c=relaxed/simple;
+	bh=9qfKloJ1Sdb7kUwKMngycijFydBKVCi5IB7EhWLxtVQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u19ZVAAXZGiMTHlGz5BrlfVaoCEX1KylNih59ZQ/PQfGqqJ7MJ+mzI/NR7tNwgVzplVU8pcXR0zIj6sjnqr56bDtEes4GQHxf7R/r+4s19x/dtBRTao+5zT2WjpBYgPhAATyMVbNVQ6g/jYrydGQtsM1cqE1XiiWWPIlzBJcDBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JNv3zrtu; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21f7f03d7c0so59588545ad.3;
-        Tue, 11 Feb 2025 08:34:14 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21f7f03d856so53897475ad.1;
+        Tue, 11 Feb 2025 08:47:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739291654; x=1739896454; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1739292451; x=1739897251; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FCvaWLA1E4CzjqUu9l+t753ewbJQ4VFl2FPDikYcRnQ=;
-        b=Pp1aP8m87NDk6E3Km12qTb61DD4STbBF7LUubXkVSZJR2pbvwxwX9bIgwa/pRHWZHG
-         h/u7NL+RvLdaouefprE89yiN4u6PAM5JLlYF9YVEa6rLruNLJzoawaek5tgxJHruP9oN
-         PWTR5kiTKEuqXWKAhJtbJxs8K2gGfXcw66NLQtzbnZNoqT98PauEEg4duof+6IfEHzG4
-         5qYKATyTsop9bUuvBwyBm4E2tllgUBHZNo3YGBDRPAaAVVdVWlc2d5z54O9jbnI/wutm
-         vS4cjxbgef6g4d+d/Pe1GJ+9bRI6+Of1M833qP47QIlYYJ64ZCgEcnDdCwcHo9jldRp/
-         vKag==
+        bh=9RUzvp1ZG0y8AnaFa56cpTK5bp8QlW6Oa2OethA2BWA=;
+        b=JNv3zrtufXAtqGg3N7InBVF0BWul/O3ij5ThonjBV6FHvhfTi836Ma5II9LglP3C8j
+         a3drlJGvMoMu68y4bldyNGfusCq2BI9gp8HsZQroiJzq+e58IZE5gBlIbZMkk56JhwUP
+         d+VAOKICfIev+YfoWcMoTfdHzuaMAsaNfo1cM6FWpyU/xDsGRa9Vu0uKAMHuuyaJK/we
+         P2U235mNz2oOFKQ9xVdikiZ7OqLa+gJ4lcilld9BVr+EpgTeEVyMSsbzNQPU1wU0ORwb
+         ApB0HBkyJNOVMXEUC5Lw+24yADRUrT3kNl2ZsiJyc9hTuiM1UizT/z0whnBtPU0V7tnT
+         VGqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739291654; x=1739896454;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1739292451; x=1739897251;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FCvaWLA1E4CzjqUu9l+t753ewbJQ4VFl2FPDikYcRnQ=;
-        b=hGVWMAWVgcGttCB6Bgkuy4DCjXzeT6m5Lml7NJwOxf2xDg03rBSoS30v8+c3zXL5q+
-         inqsOd7t+lXFDff0R5oqMasU0skwb1PyeSFF1M/X6E/QdkpTXxj381obQNiRnSdcr8Cu
-         EWhAjozGHKXhPPWUMqfKEa/7btZJtDuyXBeG3wb5zteI57QyQbhB4rgUyPCn10Oz17IS
-         alwmRBnYCXWqcsDjakmo3Lp/qB50Rj4wAhGPB7yXeHN8ZQxkFYOgKO2vu4tERJGJFuKR
-         TIkuCd/oYx4Ilj7NfM3tpUZrtErp2ZR+v1bWif+eEC2p6HXViQRWBoTb70lMkZyOvs5t
-         60OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUiwIVqwSoSCW2gnojDZ+JCsxSUUk4CFBJRZW9a11K/rBtbAOYwI09EL5aBWll0mFLUBr9TIA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHdFWMjUGsOodKWwpCnDiH3fWAltiwrducEhgkjzTIi6CxlrZp
-	Ic6yrrMQgRzCD1L8fgvXs35HE8/vwkSQ6iN87KTGCRWvQatUDU6nRJcB6XF3e64=
-X-Gm-Gg: ASbGncsJbgEUlK9RfDucfqu3u4JIpXIw9+jVYYb4OhGanHynmbvbzQpQEaZAs8k3rsP
-	vLVyvnYQRDdUXN17EJdfqUvItmQZOxD1G2P371crwSI3pQYayfyab7KGVHco8gBhVBwohcx/jDN
-	lBv0qc6ebYL+6+v02mJ8bhjSQn+8ZzDwlyw57/B9Ug8xKtVkaKkycytO2g3q52LZ0twAMc+qve7
-	bjt6LGsC1FhSgFpYuFDa2S62hi3DBnsVvOaLApj7tYuiygja/UuUpiNUOgfFTTauUNR1tsjbgq9
-	LUBUqVsttn/vvmg2BBBaIT7Yxv15KyFOt25A1Q8jeV6aNXlApLUnV7nqIhFQT/MojA==
-X-Google-Smtp-Source: AGHT+IGjW/zCkX97HmZHi26NEipPvk1XdZKRzP6dBliNGPkOqdivQDCCF0Rj2L8R9nq2pYZlfU1Uag==
-X-Received: by 2002:a05:6a20:cf83:b0:1e1:9fef:e960 with SMTP id adf61e73a8af0-1ee03a24b89mr30282217637.6.1739291653442;
-        Tue, 11 Feb 2025 08:34:13 -0800 (PST)
-Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-730aad5535fsm2716349b3a.51.2025.02.11.08.34.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 08:34:13 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-wireless@vger.kernel.org,
-	pkshih@realtek.com,
-	stable@vger.kernel.org,
-	zenmchen@gmail.com
-Subject: RE: [PATCH v6.12] wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
-Date: Wed, 12 Feb 2025 00:34:09 +0800
-Message-ID: <20250211163409.1177-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025021143-neurosis-snout-c9b3@gregkh>
-References: <2025021143-neurosis-snout-c9b3@gregkh>
+        bh=9RUzvp1ZG0y8AnaFa56cpTK5bp8QlW6Oa2OethA2BWA=;
+        b=DaKT8NfovrtL9S/QUJYErR76GH5jPfe25lCbeClw2uzscOlq89BEHaZ5+e088GM1xv
+         2k9vPXgf8lZmVOF94bPzNZky3z9RUo78rw4DKa3KKNhBZwQ2LLVOgPuE01AESlOkJFZ0
+         izQOgLHcF+FxPf7zAvt33db0ffWxtMwzlwhD34EThLZYIpFHG+xzENkvO4R0UJ68flXD
+         NgXWF9ZGlYUQCkV0wNQ16RjPHcgc1fNxlrzwWNxMD5nTSXcIXLSz9VZwXk5CAKOEDlSf
+         Y53UPZbHYSLb41l9dHyGH8FZcn32I6F/vYloFYX1WRpaae8wrSljwquZLAVnNPvb48mo
+         7HFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUOyBWxyQrSsolypzskRgQdkwh4fPvWXTWhhfrQ8gPvh2PMUYgvczUazotAJrZe8rftPtTWZB2@vger.kernel.org, AJvYcCVFliWoSio8QLq9NQJ+BxFq1BDvCPMb+W77PXsXBWckMMasiKOYTsJOyemO6xTA1LWJZjNa0WQkflbB@vger.kernel.org, AJvYcCVnLqVXMl/D0nlls9mv6/IIC7a7aAo4SsmTgfIbmJ0SHBToBla4k0O0ELYUeMk5gE/HUJY=@vger.kernel.org, AJvYcCWOrq+bPCBMWJgJB5rHa7sVwzk9/3e7di4c849QObyV4sXq6eeo2Emic3KsTl1tUae6KE66ACCXsgo3nYRlH3Y8cH9v@vger.kernel.org, AJvYcCXcDBk3kEyjwEShWHzzTlXJBEFYn67l9kJgPveOppnOGlHhzcVQ0LdvY35tlG+iokF3u8ullbbvIDrGRoAW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5LGXbplhtj/aZt8dd09KM7iMpfdcHDQIMzwvbZ39g4zLt0F5S
+	Q/xod1L5fsohneW/ohdCtSgpvFqkOe2zEydlgkJ5NT/LRZpakXuLx9wfRtV0yPRuh9MLo/ESkzN
+	c2cOGW92RYEdN0BlYnWoliQHEgyE=
+X-Gm-Gg: ASbGncs9unPnew5uhjUwwxhllmEgHSWAVq1+EuvZZmORx23v4uu0F+6xI/SFamRg3yF
+	zcb8WnsZhe4zZlWU8fV0fYMs4Gt326XrAqAdRIBmzmMP9NG/Rd5pJfP1R5HlD3dlxmYjHr/+IoN
+	hz3d/q4rLdX3W7
+X-Google-Smtp-Source: AGHT+IEELJ655DrjeaM+rroctVnf4elYF5IHZCLHCw4dEP2dpIbZwF+siQVA2GTnQaJTu2aqS+be48SXQ+7EaUjBAOA=
+X-Received: by 2002:aa7:8894:0:b0:730:9752:d02a with SMTP id
+ d2e1a72fcca58-7309752d29dmr9553456b3a.4.1739292450533; Tue, 11 Feb 2025
+ 08:47:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250211111559.2984778-1-jolsa@kernel.org>
+In-Reply-To: <20250211111559.2984778-1-jolsa@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 11 Feb 2025 08:47:18 -0800
+X-Gm-Features: AWEUYZlR5xmU_PonJ8aeN81Mk0X1T2Cpls2DEXwC15pznh_L4ZPcGMH7kF4zKRI
+Message-ID: <CAEf4BzYPmtUirnO3Bp+3F3d4++4ttL_MZAG+yGcTTKTRK2X2vw@mail.gmail.com>
+Subject: Re: [PATCHv2 perf/core] uprobes: Harden uretprobe syscall trampoline check
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>, Eyal Birger <eyal.birger@gmail.com>, 
+	stable@vger.kernel.org, Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, 
+	bpf@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Andy Lutomirski <luto@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> It also needs to go to 6.13.y too, right?  Please provide backports for
-> both as we can not take them only for older kernels as you would have a
-> regression when upgrading.
+On Tue, Feb 11, 2025 at 3:16=E2=80=AFAM Jiri Olsa <jolsa@kernel.org> wrote:
+>
+> Jann reported [1] possible issue when trampoline_check_ip returns
+> address near the bottom of the address space that is allowed to
+> call into the syscall if uretprobes are not set up.
+>
+> Though the mmap minimum address restrictions will typically prevent
+> creating mappings there, let's make sure uretprobe syscall checks
+> for that.
+>
+> [1] https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d41=
+6df341b8fbc11737dacbcd29f0054413cbbf
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Eyal Birger <eyal.birger@gmail.com>
+> Cc: stable@vger.kernel.org
+> Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return pr=
+obe")
+> Reported-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+> v2 changes:
+> - adding UPROBE_NO_TRAMPOLINE_VADDR macro (Andrii)
+> - rebased on top of perf/core
+>
+>  arch/x86/kernel/uprobes.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> index 5a952c5ea66b..e8d3c59aa9f7 100644
+> --- a/arch/x86/kernel/uprobes.c
+> +++ b/arch/x86/kernel/uprobes.c
+> @@ -357,19 +357,25 @@ void *arch_uprobe_trampoline(unsigned long *psize)
+>         return &insn;
+>  }
+>
+> -static unsigned long trampoline_check_ip(void)
+> +static unsigned long trampoline_check_ip(unsigned long tramp)
+>  {
+> -       unsigned long tramp =3D uprobe_get_trampoline_vaddr();
+> -
+>         return tramp + (uretprobe_syscall_check - uretprobe_trampoline_en=
+try);
+>  }
+>
+> +#define UPROBE_NO_TRAMPOLINE_VADDR ((unsigned long)-1)
+> +
+>  SYSCALL_DEFINE0(uretprobe)
+>  {
+>         struct pt_regs *regs =3D task_pt_regs(current);
+> -       unsigned long err, ip, sp, r11_cx_ax[3];
+> +       unsigned long err, ip, sp, r11_cx_ax[3], tramp;
+> +
+> +       /* If there's no trampoline, we are called from wrong place. */
+> +       tramp =3D uprobe_get_trampoline_vaddr();
+> +       if (tramp =3D=3D UPROBE_NO_TRAMPOLINE_VADDR)
+> +               goto sigill;
+>
+> -       if (regs->ip !=3D trampoline_check_ip())
+> +       /* Make sure the ip matches the only allowed sys_uretprobe caller=
+. */
+> +       if (regs->ip !=3D trampoline_check_ip(tramp))
+>                 goto sigill;
+>
 
-Hi Greg,
+LGTM. I don't know if that would make any difference, but I'd sprinkle
+unlikely() around these two conditions to make sure they don't
+interfere with instruction flow much
 
-Thanks for reminding! The patch for kernel 6.13 is here:
-https://lore.kernel.org/stable/20250211130432.1091-1-zenmchen@gmail.com/T/#u
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
 
-Tested with RTL8852BE on Arch Linux (kernel version: 6.13.2-arch1-1)
-and it did fix the issue.
-
-thanks!
-
-> 
-> thanks,
-> 
-> greg k-h
-
+>         err =3D copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof=
+(r11_cx_ax));
+> --
+> 2.48.1
+>
 
