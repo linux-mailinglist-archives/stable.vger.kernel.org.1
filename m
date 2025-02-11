@@ -1,173 +1,94 @@
-Return-Path: <stable+bounces-114966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028E1A31876
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 23:18:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB1A318F3
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 23:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CEE81888306
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 22:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5B2816A4C2
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 22:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BCE262D21;
-	Tue, 11 Feb 2025 22:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D38272930;
+	Tue, 11 Feb 2025 22:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="b+TUNzpp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VnZM01BE"
 X-Original-To: stable@vger.kernel.org
-Received: from hall.aurel32.net (hall.aurel32.net [195.154.113.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E39F267735;
-	Tue, 11 Feb 2025 22:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.113.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BAF272931;
+	Tue, 11 Feb 2025 22:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312320; cv=none; b=dPDnslOAyucarboSgBhFadAkU53+ymbYt+0bn3z6xXyiPZ9iFK2ZhPh/rfF8DGt4/NhSVcuowmeUWFEY4u7k4wjCRrBY6Yjo0OXdixsjs7H7pWL+mGkQfg1OGzIA3GhRsy9CG3/fpnw23tXtG3bkXBXm9NvTUuOikcGuVbVPD8Y=
+	t=1739313615; cv=none; b=p2P6GYQyZxigL5dnEbOqSJzi5OPPsakOi0wOVpA7KmgTKyClUIyucT1Af+dfnggj80JFTddVicXTqTx4wQCsqZb3DKIssEZBAY0Np+tD8QbPGcKpNBXyTlf740KFDkt8913CwHkOcos5aRoDfrc6METJ3aZjStp2XFTw56EkQKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739312320; c=relaxed/simple;
-	bh=fg+mdDs/1hxV8xrps0GKi/M2rnTsDoaggfZkwa0Y7Dw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bjuYwr3UNaSZtBj0FMvUEwKQS1yk1y7HE6c6wn5wRfNlWQMPynQQWemMjW1XCmCHq+SrZUevP37Uj+VDa4qbBP6uEz60nHUYt3feMdpneGFXzZD2m19HT/5jDmbwZZJI8GKNuafT0fFtcFZMvipHnn+0zX5vHaUkuVpBtdXl8Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=b+TUNzpp; arc=none smtp.client-ip=195.154.113.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
-	; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
-	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
-	bh=qDrZkc0qPpSqWL5jahZOhNW47jDrNmc5iD9eUvdSGT0=; b=b+TUNzpplgqHMDLrvchwqjOBSP
-	OrVNYOwYvJcZQ4UfJmrtOGlIU796xsh/bOMu1u/hSLbVbgdqYkOar0Vm6/Z6iWV0vJuLBCZI631PV
-	bU6fgHoHV5oiqKcDv8ErJfwYQ+EiBr2YsRo9M0ez/uRNGJdIvYUTaveY7EvHh34uS0nZdfqSEXO4O
-	XP32NYXHPdvbAik+q9w5gH3hQrIHeyjxQ0O75bQKrHqzwE5sd+HEu/wTMep0Jxs5NF5g2C8AFw6bd
-	hCtn4vWuTR3Jj16rwuIuJzpSTIFR7miB/72hnXg1J6adcL5uKOgD5RWaiXNZxNhTVWeOyLPF2XWCy
-	skyJn96Q==;
-Received: from [2a01:e34:ec5d:a741:1ee1:92ff:feb4:5ec0] (helo=ohm.rr44.fr)
-	by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1thyaD-00EdMB-2u;
-	Tue, 11 Feb 2025 23:18:21 +0100
-Date: Tue, 11 Feb 2025 23:18:21 +0100
-From: Aurelien Jarno <aurelien@aurel32.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Michael Zimmermann <sigmaepsilon92@gmail.com>,
-	Chukun Pan <amadeus@jmu.edu.cn>, Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH 6.12 026/114] phy: rockchip: naneng-combphy: fix phy reset
-Message-ID: <Z6vMrX2-rhE1r1E4@aurel32.net>
-References: <20241230154218.044787220@linuxfoundation.org>
- <20241230154219.070199198@linuxfoundation.org>
- <Z6itgi4kAoNWi0y_@aurel32.net>
- <2025021128-untrimmed-city-0ead@gregkh>
+	s=arc-20240116; t=1739313615; c=relaxed/simple;
+	bh=NNxrtO18GZ4dS1TCwUxF0B+yGMSUs8j5v77nPirBMWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gRtBCI2ISKuDMtR+7xSLTkUO2529+Iapl7zNKYKx56wNgDaY/EfSKtebllxTgwf1usD0yF0yNdWzGbLwxJ/kNS/UEcCBHUhfq/lCfHkTCDZyHx2orjCeVLhpYoVXF2fepZiWqXLXLxqeLWFUiBPsrxgB9iqt7byDweju8tK4gfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VnZM01BE; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38dc9f3cc80so1763898f8f.0;
+        Tue, 11 Feb 2025 14:40:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739313611; x=1739918411; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NNxrtO18GZ4dS1TCwUxF0B+yGMSUs8j5v77nPirBMWU=;
+        b=VnZM01BEH7WEh8XE0uh415NSRwHtOUBTEZe1xvkJOCpgU9p1u3NeGcpDTb3JabAjuy
+         z8v6j80bb2CGJEx6NsPQXuMlg1vYz9E3jDhzIya+TTJqLpZusxHzNlwaRYblsBT3jLkP
+         6sPHg+1aIYs7Vtt5AfM7p5tJwDr2u8K02yhUnX9uMuebgtQGLaAe8MN8XzCdcMtX/278
+         jKZ8byGmxuOrjsnbiM/3PIdMZ58YTajMAlIWwtES7wfxE2F7YrlSYisjtpC59Re+6AUy
+         PstcshQvUTJMIsF01ZwFwbXudrIyMzOtqolHQ5LbUHXoNsPMWDLfjsRzp8RTMdGAY/YA
+         oMTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739313611; x=1739918411;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NNxrtO18GZ4dS1TCwUxF0B+yGMSUs8j5v77nPirBMWU=;
+        b=NGN5XzXajxCGM3DHTdgiuHAM8rRUGdmK7YVUp7ZiF5mWthBMLnXHKZxtR2aFVQ6RQQ
+         tc1w2ojkVg4rLBh3dLZbVkja9uAYZREujuWT8rnwwwO0ZSTl+P5TZGrUlV8oQxj1XePM
+         orCiFWhs+NjAjn0jGwQe1rR5mrgp/RHD/fsQcZIgLNvjStSrQv6022SpTX51xUv0xMyD
+         iuav4IAfglI7yqhjEVxNLywd/RY5Mo5bxXPhsmQDbmWmFHK3Ttj2a9BxeGff14Vpi58D
+         1D2tZuIUjqDqu5nsZnAZdZo6+grzNOuNjGk34YahZygtGu6GtXdSVikS2XEzKfhnEu8N
+         xzbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDSEFIMed+Dk3SPAcxstLq4UOr3ooHbsrlODZnTsH66mONioGcow7vWOgU+Mfe217hAC6H5rI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBm5uQkiotsXWQjflpta0aivOyLNgE2wwkkdvaHkyGWje6gDJK
+	9J+wUn39FLnzkrASoFYvYcdt2lDZVdEzI2tE2VwGRMyvtirjIiDuG5wEbn30n4O0ZLfACWfvjGR
+	D1Snck0Vd30BH9kdSg6hdDuEKKRKcDMym
+X-Gm-Gg: ASbGncuNwGPfyRDNHnbrsnCI6INg4+M9c58EBXO1RqLMcKVHT6/NVesZL5TebxhhQ6s
+	58nPRSfAE9gVV4hPFQWTTLq4adzfB9eqA+PxMVQGSsL4i3qtcQK1LJe8nSd+v83p5IXIrCSFNmA
+	==
+X-Google-Smtp-Source: AGHT+IG46pBy2FPQ6rt4xrqHMQHWtkChBV6sfTBLfvu7fMz7Q0jy8kxHrNhoDt2anVWXlYcvHS96k5/8f7WmJ8bLWRE=
+X-Received: by 2002:a5d:5f50:0:b0:38d:cbc2:29c3 with SMTP id
+ ffacd0b85a97d-38dea28d03bmr586397f8f.33.1739313611022; Tue, 11 Feb 2025
+ 14:40:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="f8+tZLrNsWWEuN1a"
-Content-Disposition: inline
-In-Reply-To: <2025021128-untrimmed-city-0ead@gregkh>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+References: <20250211213833.9182-2-stuart.a.hayhurst@gmail.com>
+In-Reply-To: <20250211213833.9182-2-stuart.a.hayhurst@gmail.com>
+From: Stuart <stuart.a.hayhurst@gmail.com>
+Date: Tue, 11 Feb 2025 22:39:59 +0000
+X-Gm-Features: AWEUYZlSAoOZ4pw6NsobzIoLIP9LzzucrzNMaDXSZ2G1rv2H-T93x0m2o4GwZd4
+Message-ID: <CALTg27n5ECDgOUc6x48b_Qen3QdpuG3WBYUOezN5v+SVMvJ9OA@mail.gmail.com>
+Subject: Re: [PATCH] HID: corsair-void: Update power supply values with a
+ unified work handler
+To: linux-input@vger.kernel.org
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Whoops, I forgot to actually remove the mutex despite talking about it
 
---f8+tZLrNsWWEuN1a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Ignore this one, I'll send another. Sorry for the noise.
 
-Hi Greg,
-
-On 2025-02-11 11:29, Greg Kroah-Hartman wrote:
-> On Sun, Feb 09, 2025 at 02:28:34PM +0100, Aurelien Jarno wrote:
-> > On 2024-12-30 16:42, Greg Kroah-Hartman wrote:
-> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > It probably comes a bit late, but this patch broke usb and pcie on
-> > rk356x. The other commit from the same series, commit 8b9c12757f91
-> > ("arm64: dts: rockchip: add reset-names for combphy on rk3568"), also
-> > needs to be backported.
-> 
-> That commit does not apply, can you please provide a working backport
-> for us to queue up?
-
-That sounds strange, it applies fine against v6.12.13 here, and I do not
-see any changes to the two files it modifies in queue-6.12.
-
-Anyway please find a backport attached, i can also send it directly to
-the list if you prefer.
-
-Thanks
-Aurelien
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                     http://aurel32.net
-
---f8+tZLrNsWWEuN1a
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-arm64-dts-rockchip-add-reset-names-for-combphy-on-rk.patch"
-Content-Transfer-Encoding: quoted-printable
-
-=46rom e04594d6a86171593ede97987c9f99bfe51a74de Mon Sep 17 00:00:00 2001
-=46rom: Chukun Pan <amadeus@jmu.edu.cn>
-Date: Fri, 22 Nov 2024 15:30:05 +0800
-Subject: [PATCH] arm64: dts: rockchip: add reset-names for combphy on rk3568
-
-commit 8b9c12757f919157752646faf3821abf2b7d2a64 upstream.
-
-The reset-names of combphy are missing, add it.
-
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Fixes: fd3ac6e80497 ("dt-bindings: phy: rockchip: rk3588 has two reset line=
-s")
-Link: https://lore.kernel.org/r/20241122073006.99309-1-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
----
- arch/arm64/boot/dts/rockchip/rk3568.dtsi | 1 +
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 ++
- 2 files changed, 3 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts=
-/rockchip/rk3568.dtsi
-index 0946310e8c124..6fd67ae271174 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -262,6 +262,7 @@ combphy0: phy@fe820000 {
- 		assigned-clocks =3D <&pmucru CLK_PCIEPHY0_REF>;
- 		assigned-clock-rates =3D <100000000>;
- 		resets =3D <&cru SRST_PIPEPHY0>;
-+		reset-names =3D "phy";
- 		rockchip,pipe-grf =3D <&pipegrf>;
- 		rockchip,pipe-phy-grf =3D <&pipe_phy_grf0>;
- 		#phy-cells =3D <1>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts=
-/rockchip/rk356x.dtsi
-index 0ee0ada6f0ab0..bc0f57a26c2ff 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -1762,6 +1762,7 @@ combphy1: phy@fe830000 {
- 		assigned-clocks =3D <&pmucru CLK_PCIEPHY1_REF>;
- 		assigned-clock-rates =3D <100000000>;
- 		resets =3D <&cru SRST_PIPEPHY1>;
-+		reset-names =3D "phy";
- 		rockchip,pipe-grf =3D <&pipegrf>;
- 		rockchip,pipe-phy-grf =3D <&pipe_phy_grf1>;
- 		#phy-cells =3D <1>;
-@@ -1778,6 +1779,7 @@ combphy2: phy@fe840000 {
- 		assigned-clocks =3D <&pmucru CLK_PCIEPHY2_REF>;
- 		assigned-clock-rates =3D <100000000>;
- 		resets =3D <&cru SRST_PIPEPHY2>;
-+		reset-names =3D "phy";
- 		rockchip,pipe-grf =3D <&pipegrf>;
- 		rockchip,pipe-phy-grf =3D <&pipe_phy_grf2>;
- 		#phy-cells =3D <1>;
---=20
-2.45.2
-
-
---f8+tZLrNsWWEuN1a--
+Stuart
 
