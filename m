@@ -1,135 +1,123 @@
-Return-Path: <stable+bounces-114899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74058A308A3
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:37:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7038DA30927
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:54:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 191AF16754E
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:37:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8AD6188278D
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF771F5420;
-	Tue, 11 Feb 2025 10:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958541F3BBE;
+	Tue, 11 Feb 2025 10:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7PeTo+m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFSyAug4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D421F4606
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559381F193C
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739270206; cv=none; b=YMAeERptWvXjhMklBewrRJuJiSH8CX+o0HjUpd9C2eJxaHrF3RVZ+8BhlQqg0nmbd+c/N2hhw/kYIP5/qcORhO/CdyFFDOhwgMAnQC3t4XX2aft8YQrrfEmnw0Zw/OO5/Q6zyGuWAFkRKFisu2858pc8MKTBgGUgVla8bCtTOTg=
+	t=1739271255; cv=none; b=c592Ggz0dF1mEBxtYRK4J7wvA7z/Y0lLsqMlYye12jjEXONi9j+Pxvm/VuB8HOkz/yZRqeO7VJKR6h88vwPt6D+dDsAjpkdfoEct5ZvOEgUpWNUJQ2s+UwKkR8AVx0FTszzmjA5CtTLqc2MbkP5E37aWWm75mADD+1JKEnOnc7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739270206; c=relaxed/simple;
-	bh=1zu6tZCsh7aYgjU+gNDoFE87fQ7V3td5jRhPpf0IkJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z62rHHeLgI+OiPhkjk/o/QUyiG6lj40XaVkuEMmYgMfKx+Zsp/IZ2SSYHUlf/udRnDvTA59OGg6hEui1nl81HG/ku11NmGWXNIMkihCIyMfog3KDVGekPHhYv/+3+eWdhxmZKkgAjxMe9ItEbOlPvvL1/PkF6t9AH/eSrUKYURc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7PeTo+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F66C4CEDD;
-	Tue, 11 Feb 2025 10:36:43 +0000 (UTC)
+	s=arc-20240116; t=1739271255; c=relaxed/simple;
+	bh=gvR5Gc98h3L06ABJw2i/dOoJfPGho486AqmDRVgdMOA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VB0xGSrb2vTpPR6UqpJwZJH8u0fA1hEXH9K399bOi3AUcMyfGrkdqY4MfD2L/xoeVO6HQiKySZGfu7EOiH6S4irg0EibMt+t4Bsu/iBBJTKW6pkgwxvgVLBHF9YAK3vn8vMXMzz18U5g05YIFYnb0jxzDIiXMxn1w23XdhiHUYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFSyAug4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53B8C4CEDD;
+	Tue, 11 Feb 2025 10:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739270206;
-	bh=1zu6tZCsh7aYgjU+gNDoFE87fQ7V3td5jRhPpf0IkJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q7PeTo+mIHLgO6J81jy2uDEEgKkM36ufdVbuMhZ/59KgG5zQ1LJh+QVcxwcwx4yvF
-	 ProIcvwKivCw/KPeE+b7gvzH73GuebXeXtowVmkFCQXj6C8iJkRaTw5idJ38nCPLHT
-	 IYkO8u/DbQLxcqWAG5mOoAZPW13xQKfoGmCVh+9gILOu8Z3E7OPhr/bXP+kpwa7Bam
-	 qRc17nfSTVIK0tiDr+OUh9FMoUQ01c0pHgAATOP12e9XPbtzJY8k5LpMPOPYqRM/wD
-	 jb5+W7GB0Yol98C8imPPwB/LeLUcvcne0J/wBA+nQgxT5Tj8ACwd7REbUpj+hmMRVd
-	 lrPp0nv59CHGg==
-Date: Tue, 11 Feb 2025 10:36:40 +0000
-From: Will Deacon <will@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
-	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
-	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
-	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
-	tabba@google.com, wilco.dijkstra@arm.com
-Subject: Re: [PATCH v3 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
-Message-ID: <20250211103640.GC8653@willie-the-truck>
+	s=k20201202; t=1739271254;
+	bh=gvR5Gc98h3L06ABJw2i/dOoJfPGho486AqmDRVgdMOA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HFSyAug4djM4VTvlW8FibumaKBvYyycTQ4EuBGQg8H5bkMvWCWMXnONvdHt9B5GFN
+	 frKMeJW+8w7G1xoiQ8pt8HXhKr2tYRgSTe3qyynJDGh24UhvdfCsKtQV+KR7YBi8le
+	 5diAMPikhsHrZSQl+TkZP0MHa42H5WEVw3PpoIbTSe5X1p13cJIwaSbrfMciwibS7U
+	 4Cxb4ykpw3hkE1hZKRnB1LoNd6558478BJs4sy5ONvOV8Dw5f41i2YMROyaefMkbJz
+	 rcwGCRmeMbGRN8qYD36jvOVbM4UIN4rAX0/0GWyYTtwrkJYKR7f5QREt8rlkzmpZbs
+	 8qluE4hc/fEfg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1thnu7-002wLB-Uj;
+	Tue, 11 Feb 2025 10:54:12 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	Mark Rutland <mark.rutland@arm.com>
+Cc: broonie@kernel.org,
+	catalin.marinas@arm.com,
+	eauger@redhat.com,
+	eric.auger@redhat.com,
+	fweimer@redhat.com,
+	jeremy.linton@arm.com,
+	oliver.upton@linux.dev,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	tabba@google.com,
+	wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH v3 0/8] KVM: arm64: FPSIMD/SVE/SME fixes
+Date: Tue, 11 Feb 2025 10:54:08 +0000
+Message-Id: <173927124349.2205649.5810375580627240253.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250210195226.1215254-1-mark.rutland@arm.com>
 References: <20250210195226.1215254-1-mark.rutland@arm.com>
- <20250210195226.1215254-9-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210195226.1215254-9-mark.rutland@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Feb 10, 2025 at 07:52:26PM +0000, Mark Rutland wrote:
-> In non-protected KVM modes, while the guest FPSIMD/SVE/SME state is live on the
-> CPU, the host's active SVE VL may differ from the guest's maximum SVE VL:
+On Mon, 10 Feb 2025 19:52:18 +0000, Mark Rutland wrote:
+> These patches fix some issues with the way KVM manages FPSIMD/SVE/SME
+> state. The series supersedes my earlier attempt at fixing the host SVE
+> state corruption issue:
 > 
-> * For VHE hosts, when a VM uses NV, ZCR_EL2 contains a value constrained
->   by the guest hypervisor, which may be less than or equal to that
->   guest's maximum VL.
+>   https://lore.kernel.org/linux-arm-kernel/20250121100026.3974971-1-mark.rutland@arm.com/
 > 
->   Note: in this case the value of ZCR_EL1 is immaterial due to E2H.
+> Patch 1 addresses the host SVE state corruption issue by always saving
+> and unbinding the host state when loading a vCPU, as discussed on the
+> earlier patch:
 > 
-> * For nVHE/hVHE hosts, ZCR_EL1 contains a value written by the guest,
->   which may be less than or greater than the guest's maximum VL.
-> 
->   Note: in this case hyp code traps host SVE usage and lazily restores
->   ZCR_EL2 to the host's maximum VL, which may be greater than the
->   guest's maximum VL.
-> 
-> This can be the case between exiting a guest and kvm_arch_vcpu_put_fp().
-> If a softirq is taken during this period and the softirq handler tries
-> to use kernel-mode NEON, then the kernel will fail to save the guest's
-> FPSIMD/SVE state, and will pend a SIGKILL for the current thread.
-> 
-> This happens because kvm_arch_vcpu_ctxsync_fp() binds the guest's live
-> FPSIMD/SVE state with the guest's maximum SVE VL, and
-> fpsimd_save_user_state() verifies that the live SVE VL is as expected
-> before attempting to save the register state:
-> 
-> | if (WARN_ON(sve_get_vl() != vl)) {
-> |         force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
-> |         return;
-> | }
-> 
-> Fix this and make this a bit easier to reason about by always eagerly
-> switching ZCR_EL{1,2} at hyp during guest<->host transitions. With this
-> happening, there's no need to trap host SVE usage, and the nVHE/nVHE
-> __deactivate_cptr_traps() logic can be simplified to enable host access
-> to all present FPSIMD/SVE/SME features.
-> 
-> In protected nVHE/hVHE modes, the host's state is always saved/restored
-> by hyp, and the guest's state is saved prior to exit to the host, so
-> from the host's PoV the guest never has live FPSIMD/SVE/SME state, and
-> the host's ZCR_EL1 is never clobbered by hyp.
-> 
-> Fixes: 8c8010d69c132273 ("KVM: arm64: Save/restore SVE state for nVHE")
-> Fixes: 2e3cf82063a00ea0 ("KVM: arm64: nv: Ensure correct VL is loaded before saving SVE state")
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Mark Brown <broonie@kernel.org>
-> Tested-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Will Deacon <will@kernel.org>
-> ---
->  arch/arm64/kvm/fpsimd.c                 | 30 -------------
->  arch/arm64/kvm/hyp/entry.S              |  5 +++
->  arch/arm64/kvm/hyp/include/hyp/switch.h | 59 +++++++++++++++++++++++++
->  arch/arm64/kvm/hyp/nvhe/hyp-main.c      | 13 +++---
->  arch/arm64/kvm/hyp/nvhe/switch.c        |  6 +--
->  arch/arm64/kvm/hyp/vhe/switch.c         |  4 ++
->  6 files changed, 76 insertions(+), 41 deletions(-)
+> [...]
 
-Acked-by: Will Deacon <will@kernel.org>
+Applied to fixes, thanks!
 
-Thanks for the quick re-spin!
+[1/8] KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
+      commit: b671313b36591cab3d4cb4fe40ffdbac213635d1
+[2/8] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+      commit: f000c2b1bcb471e35bb65cc0f0c31cb18d8677d8
+[3/8] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+      commit: 82695cf636f155917eae61b9f86565184a683d76
+[4/8] KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
+      commit: 8adb7db3c85f917ca59a76205e4be1ee82a289da
+[5/8] KVM: arm64: Refactor CPTR trap deactivation
+      commit: 1afdd3f832570aa27ae82819020bd319820337ce
+[6/8] KVM: arm64: Refactor exit handlers
+      commit: d59128af7ac954f80636548a60f1b1b41a7d067f
+[7/8] KVM: arm64: Mark some header functions as inline
+      commit: 03ce3e0db4f42252de4eeae01c5e5fa832af7585
+[8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+      commit: 9a053b84b508b32b824d4a088cf3f5091a3e7c15
 
-Will
+Cheers,
+
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
+
+
 
