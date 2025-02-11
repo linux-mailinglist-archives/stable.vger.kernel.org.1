@@ -1,99 +1,212 @@
-Return-Path: <stable+bounces-114911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2393FA30C17
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 13:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C4AA30C6B
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 14:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD69188AE1E
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 12:55:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DBDC3A5B5D
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 13:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C954121480A;
-	Tue, 11 Feb 2025 12:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834311FCFF3;
+	Tue, 11 Feb 2025 13:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SJq348vP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jj3Yg24Z"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21AF20C47F;
-	Tue, 11 Feb 2025 12:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9FD1FCF72;
+	Tue, 11 Feb 2025 13:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739278508; cv=none; b=edMvi6iqpS8bdZUlD9VOJnjo4u1l0e1c4cR8silAYY/2ITc2pDh6yuONv/69rU8UOdiOHvkhdCBMZY4FWzcrJiLXZL3g5PAxx/xYAwTp8eEHkJquw9JL7uzC5Elgzkym5Mmn+u8SLB05O2W1OVSl2gUJQ9LbBlWXIJM/+RHaQ3s=
+	t=1739279082; cv=none; b=q+dZYPoWzmZGD3A5N8KkyDwKsIu/1cPAhYuM/xFTsoeZ9x5ca5eN4XsBTjjweodIHGTw79/X8Jxwxz9n+RWiUsUCkRobCltry+znWRrSXO8AP5HyXee/VWlEvxqhObDyoApZ8mKqZ600ixmxesZXyY59PxNbmrqvedwUpH4sw2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739278508; c=relaxed/simple;
-	bh=E/D4r8Njpis3Lv6czODLlg8GcE73pPznWAgOjZkvmMs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nTQN0NUgGy6qYjTYrik/Utl7jMrgNVtyxIVi1uuXAg2IbnFkaj2SDiJDgy19FHJMeygb+A1wzfFIJIWEnZtNcEm1t7ilGtIYiWxJ4hTDZZ9SWmlPqtLIcIi1W/iS6z44czSnVbBeTjaVNO0sW3yBdSiKLcjttJbA9LFML+M+Vuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SJq348vP; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4A4EE4318D;
-	Tue, 11 Feb 2025 12:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739278498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LCp+sFwjp6X53Xy6vUp3gJOZ41+nmTUyiZmaz+Sg4LQ=;
-	b=SJq348vPQLBZmcy3A5kV8BgiAobDhxS8qQOy+ZMAe2bNi74xWjryciNfDqrAHEXGjTS9dZ
-	p8H9vVx/ArmWe5WiyNrqXQAwPR37GY2iYjXKxQApVBG/B5rc6GTHJSyOiFl830kk6U8Wr7
-	AmnqKnpoyJ/7hOj3r/vpbfNP0DO4DCCAKEWQrIn8ZcJS3B38HkAHnZV3u3PZzQAUFzlpde
-	4yIK1B836k+RUeK7+BUXkYKhtdxDy88GBylg82VbCksyyo39L0N5RPtKenw4GgLr2qT8HV
-	INeFOoRYZ+C5B84vCQ13mdKFOkQNSFHaebILSCWQkiHWg1BQ2PmkvMrxh/VPag==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Md Sadre Alam <quic_mdalam@quicinc.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org, Robert Marko <robimarko@gmail.com>
-In-Reply-To: <20250209140941.16627-1-ansuelsmth@gmail.com>
-References: <20250209140941.16627-1-ansuelsmth@gmail.com>
-Subject: Re: [PATCH v2] mtd: rawnand: qcom: fix broken config in
- qcom_param_page_type_exec
-Message-Id: <173927849590.126930.12542924757341380520.b4-ty@bootlin.com>
-Date: Tue, 11 Feb 2025 13:54:55 +0100
+	s=arc-20240116; t=1739279082; c=relaxed/simple;
+	bh=MWz8r53x6JKskpZTb3ZcKNyWb9ZN4JNbsQQMjFXtmFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JB7y34phDJS682MiMMHpekgsIYcXj+mLuj/hbZow/BVzSQROVoj+A3gcGW/C0uqObhM6ZpyY+K29Sz6hq+xenGvtEJSuK2CFtBAALbC/UftCT8iiSV2fBIBkrwaUTQ51FluoojRsMi0y6PvsCktGjF7PJ833PbJGuitr76+ZozY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jj3Yg24Z; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21f5a224544so45886705ad.0;
+        Tue, 11 Feb 2025 05:04:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739279080; x=1739883880; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AWVQ5JDwyWX96+y/ZkNAFitVnZqUVOS0KXpyg4X4zAA=;
+        b=Jj3Yg24ZKRHxiQqkYWGd2nozWJg1xpPlYO/VtzUcgJJRWRnkTlYVs6GHowkmddcxJI
+         OjviiC8jMbw+O6JEuM5Or/uXy+lfCxmpAsKfZYISXIXpCuwic4CgqE/hdgv26iztEAwB
+         ISPwSoqJgg3ZK658tSr4KK9vEFYrYRpm82wsf5nXUfKhFmxgm0v7yDNWBHF8OTZ+ygov
+         renBvQUK/gRXS5D4udLdreQDiqXU1bSKyGA+il0w4ok5FLc7Z9e2neeT5b3f6IvaKY4C
+         AOTneIGKWpRimHBZ0/T6C9InD7fbdbXsXS2zqW1I2J4mewvOUk491jsXs82mcGLbdZFM
+         Hb7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739279080; x=1739883880;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AWVQ5JDwyWX96+y/ZkNAFitVnZqUVOS0KXpyg4X4zAA=;
+        b=wNPIWI4Ht8Jrp6N0jDThEQxVDHVNR+26KVzJsvcJdzjQvPyEnmNLanvOWOKftqvgJ/
+         T6dLVtfjQ4JWLYzbXNgROBHiZJ+jVgnOu18b0+tMFjKf4EA+zoSkHU8lmGiEE/ac6JgB
+         ZwRmWfx6NFuxyKLGRrtiVEwrjJPD0IelMeRchA/MKRH+5EmYAykOsSqOEdqT8lH1tGla
+         176Zmxi+a5CHAnYjeEzRUiK7DTq99rsd2kcY1Qkir/Ad2G/6UGIWHJ4l2u/RvlW78nBx
+         HiNlSNa91Uv4XFE4/zfciDYlDYk1E4bpnrseeWty1F4b0iqOHPnmYS1Kh6Wl4aodk9X5
+         Pp1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVy0hxPXj1j24b555ZKX8+1qr9plB5fqUV7TkGeK8vyFKQHr2RADl1Oi6Hjq783NlNMOtchOEXxysqPeaxLEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWm0jnVKI1fubSvQIu5XD9cHcDjbpKsRG/QLGrDkboLbNThMG/
+	jdAAWVbUMOPLlcRLbqfMHLzfhD0IXNeY/6t741qYISPEY+piQbQWEr9wf/st
+X-Gm-Gg: ASbGnctT0CTamlW57kNzJrr1P3HzPsgYfoEfkzCyWZ6Aiz7fCKkAP/KcCyj/SeQbdOV
+	vfO+9o9tGzelcJAoRdBX3ZkYjjQn0VgG36LvOpvP5AyYKyt0XAsmNjwBLvmjshRzqu4tsEmjy7E
+	ENUjj6SJex9dAW1vb2u88UMlEUNGLaVphHsEUFGX2fozEQqCPcdD7dKsDDWhDB06yKllmx4KwNx
+	9w9vtpScrfz0qL1UVdXnho9sDcttz7NXObVn9/9d6Kl269xHu6v87XgEbNaDScd1x+w5SCMbNAY
+	DNdRz8Vc0s4rEVpvc1/rmeFQBdJ718653WOKet4TzFT9LyXA15ZA6Ju8PLXoeFQOYQ==
+X-Google-Smtp-Source: AGHT+IFBTmud6yU40zzjppMHvaz99oJnfYbiEIsUUwtcHHijXBfZLBQLRdIcmELGtmZukO2XX8K3JQ==
+X-Received: by 2002:a05:6a21:3115:b0:1e1:c03c:b420 with SMTP id adf61e73a8af0-1ee03b415acmr35203584637.31.1739279079546;
+        Tue, 11 Feb 2025 05:04:39 -0800 (PST)
+Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-730775e4896sm5781703b3a.39.2025.02.11.05.04.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 05:04:39 -0800 (PST)
+From: Zenm Chen <zenmchen@gmail.com>
+To: stable@vger.kernel.org
+Cc: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org,
+	Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH v6.13] wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
+Date: Tue, 11 Feb 2025 21:04:32 +0800
+Message-ID: <20250211130432.1091-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeguddthecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtkeertdertdejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeifffhueelgfdtleetgfelvefggfehudelvdehuddulefgheelgfehieevvdegnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrgedvrdegiegnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhitghhrghrugesnhhou
- gdrrghtpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehkohhnrhgrugdrugihsggtihhosehoshhsrdhquhgrlhgtohhmmhdrtghomhdprhgtphhtthhopegrnhhsuhgvlhhsmhhthhesghhmrghilhdrtghomh
-X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Sun, 09 Feb 2025 15:09:38 +0100, Christian Marangi wrote:
-> Fix broken config in qcom_param_page_type_exec caused by copy-paste error
-> from commit 0c08080fd71c ("mtd: rawnand: qcom: use FIELD_PREP and GENMASK")
-> 
-> In qcom_param_page_type_exec the value needs to be set to
-> nandc->regs->cfg0 instead of host->cfg0. This wrong configuration caused
-> the Qcom NANDC driver to malfunction on any device that makes use of it
-> (IPQ806x, IPQ40xx, IPQ807x, IPQ60xx) with the following error:
-> 
-> [...]
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Applied to mtd/fixes, thanks!
+[ Upstream commit 9c1df813e08832c3836c254bc8a2f83ff22dbc06 ]
 
-[1/1] mtd: rawnand: qcom: fix broken config in qcom_param_page_type_exec
-      commit: 86ede0a61f8576a84bb0a93c5d9861d2ec1cdf9a
+The PCIE wake bit is to control PCIE wake signal to host. When PCIE is
+going down, clear this bit to prevent waking up host unexpectedly.
 
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241111063835.15454-1-pkshih@realtek.com
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+Some users of RTL8852BE chip may encounter a shutdown issue [1] and this
+upstream patch fixes it, so backport it to kernel 6.13.
 
-Kind regards,
-Miquèl
+[1] https://github.com/lwfinger/rtw89/issues/372
+---
+ drivers/net/wireless/realtek/rtw89/pci.c    | 16 +++++++++++++---
+ drivers/net/wireless/realtek/rtw89/pci.h    |  9 +++++++++
+ drivers/net/wireless/realtek/rtw89/pci_be.c |  1 +
+ 3 files changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index f923bec03..c3a027735 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2516,7 +2516,7 @@ static int rtw89_pci_dphy_delay(struct rtw89_dev *rtwdev)
+ 				       PCIE_DPHY_DLY_25US, PCIE_PHY_GEN1);
+ }
+ 
+-static void rtw89_pci_power_wake(struct rtw89_dev *rtwdev, bool pwr_up)
++static void rtw89_pci_power_wake_ax(struct rtw89_dev *rtwdev, bool pwr_up)
+ {
+ 	if (pwr_up)
+ 		rtw89_write32_set(rtwdev, R_AX_HCI_OPT_CTRL, BIT_WAKE_CTRL);
+@@ -2825,6 +2825,8 @@ static int rtw89_pci_ops_deinit(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 
++	rtw89_pci_power_wake(rtwdev, false);
++
+ 	if (rtwdev->chip->chip_id == RTL8852A) {
+ 		/* ltr sw trigger */
+ 		rtw89_write32_set(rtwdev, R_AX_LTR_CTRL_0, B_AX_APP_LTR_IDLE);
+@@ -2867,7 +2869,7 @@ static int rtw89_pci_ops_mac_pre_init_ax(struct rtw89_dev *rtwdev)
+ 		return ret;
+ 	}
+ 
+-	rtw89_pci_power_wake(rtwdev, true);
++	rtw89_pci_power_wake_ax(rtwdev, true);
+ 	rtw89_pci_autoload_hang(rtwdev);
+ 	rtw89_pci_l12_vmain(rtwdev);
+ 	rtw89_pci_gen2_force_ib(rtwdev);
+@@ -2912,6 +2914,13 @@ static int rtw89_pci_ops_mac_pre_init_ax(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static int rtw89_pci_ops_mac_pre_deinit_ax(struct rtw89_dev *rtwdev)
++{
++	rtw89_pci_power_wake_ax(rtwdev, false);
++
++	return 0;
++}
++
+ int rtw89_pci_ltr_set(struct rtw89_dev *rtwdev, bool en)
+ {
+ 	u32 val;
+@@ -4325,7 +4334,7 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
+ 					    B_AX_RDU_INT},
+ 
+ 	.mac_pre_init = rtw89_pci_ops_mac_pre_init_ax,
+-	.mac_pre_deinit = NULL,
++	.mac_pre_deinit = rtw89_pci_ops_mac_pre_deinit_ax,
+ 	.mac_post_init = rtw89_pci_ops_mac_post_init_ax,
+ 
+ 	.clr_idx_all = rtw89_pci_clr_idx_all_ax,
+@@ -4343,6 +4352,7 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
+ 	.l1ss_set = rtw89_pci_l1ss_set_ax,
+ 
+ 	.disable_eq = rtw89_pci_disable_eq_ax,
++	.power_wake = rtw89_pci_power_wake_ax,
+ };
+ EXPORT_SYMBOL(rtw89_pci_gen_ax);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index b68e2d82e..d52db4ca1 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -1290,6 +1290,7 @@ struct rtw89_pci_gen_def {
+ 	void (*l1ss_set)(struct rtw89_dev *rtwdev, bool enable);
+ 
+ 	void (*disable_eq)(struct rtw89_dev *rtwdev);
++	void (*power_wake)(struct rtw89_dev *rtwdev, bool pwr_up);
+ };
+ 
+ #define RTW89_PCI_SSID(v, d, ssv, ssd, cust) \
+@@ -1805,4 +1806,12 @@ static inline void rtw89_pci_disable_eq(struct rtw89_dev *rtwdev)
+ 	gen_def->disable_eq(rtwdev);
+ }
+ 
++static inline void rtw89_pci_power_wake(struct rtw89_dev *rtwdev, bool pwr_up)
++{
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
++	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
++
++	gen_def->power_wake(rtwdev, pwr_up);
++}
++
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/pci_be.c b/drivers/net/wireless/realtek/rtw89/pci_be.c
+index 34154506f..cd39eebe8 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci_be.c
++++ b/drivers/net/wireless/realtek/rtw89/pci_be.c
+@@ -691,5 +691,6 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_be = {
+ 	.l1ss_set = rtw89_pci_l1ss_set_be,
+ 
+ 	.disable_eq = rtw89_pci_disable_eq_be,
++	.power_wake = _patch_pcie_power_wake_be,
+ };
+ EXPORT_SYMBOL(rtw89_pci_gen_be);
+-- 
+2.48.1
 
 
