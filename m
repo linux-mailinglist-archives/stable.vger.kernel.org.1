@@ -1,110 +1,179 @@
-Return-Path: <stable+bounces-114857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CB9A305DF
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:35:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39D8A305E1
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF75B1882EA9
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:35:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCA637A2A2C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEE91F03E4;
-	Tue, 11 Feb 2025 08:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB811F0E29;
+	Tue, 11 Feb 2025 08:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU2frQLp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E3t3f8oi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FE71EC016;
-	Tue, 11 Feb 2025 08:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA017192B86;
+	Tue, 11 Feb 2025 08:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739262881; cv=none; b=sh58WIClUG08fR007cpoFaBITOVeSkKjIz9/9nlX9LkdhRRTHyvrS/174ttx1tWpO/cS+hewc9yuZVo7Z8WouFlZscg6yxVZt0hIvQvrbtdM/OBtjSQWKHSs6yrDS9FCjMTBOOCGOkHgGaJoeAD5CIa+oXY31B1MLDDcRInAypM=
+	t=1739262909; cv=none; b=PifcJAETL6fcNel/NOBaMMN2hMR2TStx12su5Y5gH6kg3QqWt9blIo+0jll1aEfqBrnRXydopClxV2vwjCaT6qmjPGT8BRp2O0cbHQyiHEXo8TtCUJAtGAMVuH1RR1JT5lBzMxTUX0VyKMRY8Kq+/u1jLorEuCMxFZzy3mamCME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739262881; c=relaxed/simple;
-	bh=wDToOM1hlLokp7aJKzSY8hKy9R43xTUITT0mnAALLAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VIoqAoRe8dJJc/qyBn/4UYDuLPS3py9xCcBDxD/ZM079O2d5lTS/37QfQ/sedUTjnhGn5jW5BFogJEhmbkARXeNB/Shu0A/Zow93HMc2YSaNq9GFR/Uec95PuxR0o0qkD2kEI0UDcEhgogpdsLT40q/IO03tLpQLFdVz8U0csRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU2frQLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62982C4CEDD;
-	Tue, 11 Feb 2025 08:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739262881;
-	bh=wDToOM1hlLokp7aJKzSY8hKy9R43xTUITT0mnAALLAI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yU2frQLpLc4x3SFxu4Cui5Zn6M9PL3Bux1ZkatyR3JpSIg467kMzfIUDAz6J+yK+6
-	 ZsBIXY8r8QCZuvtDwBwazH9rcp+1FWXQ+HTNYfHUnLvw/9y3RDhFc/1NbtZ9Rumh50
-	 oEhsCCfhgpzSsxiZnJBtq8N8Mc3MBC0FJpCUQwy4=
-Date: Tue, 11 Feb 2025 09:34:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
-Message-ID: <2025021147-pacifier-richly-ce1e@gregkh>
-References: <20250206155234.095034647@linuxfoundation.org>
- <cd10a924-ae65-4b02-aea2-e629947ca7a3@roeck-us.net>
+	s=arc-20240116; t=1739262909; c=relaxed/simple;
+	bh=OK6F/HpVrCSuxMq+p1p7tMOUXLCHNYzj2Ljkd7ptjpk=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qeo9RJIFqyFrMnH/XiflJ09h/y0fkn9bSOHn85hu2bMUiCoPAZgJxxmvx3mQqXuwKzX+A3ttdlrI4l6grSf02slujSTF7P6qJfwMNI+nVHSt/PMx6Hi2KcUXU/FYmj/sWjnc5DHtIzZnjU9G3WuMoOWE9CxvQUoq4dBOe1kYwQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E3t3f8oi; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43618283dedso52401215e9.3;
+        Tue, 11 Feb 2025 00:35:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739262906; x=1739867706; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bwJ01W7//5Ak1H8YG47QHAAd+AKMdSyCszB536sJQvU=;
+        b=E3t3f8oizJxrlhvwwggy/a43bgEm1NkOMoPgtRRuVJNUt63+5WNsYiqYxb5KaDmier
+         in4EOlSS1WnO+PNOMl0lukDrK1T0sWmf4AJVJvEbiYa0n2EAIgqPf8TC78OSEI8YlSzY
+         l+eG2Mevni1zuCrMSZilSVwX9XMzJUFG9Ej5vpioM3CkwWI7xjWPL1+DLQ5mJb2IX2Xh
+         IxJ8WwNn/7GCmdRaU6nUvCRZMeCLTuteHhEgS2t1c7T0qXulJ1VKuSpL8iWP7ix4b5pA
+         NO92S1opx8MnHard5i2FQZbSTPYg3JGCwz5oHnLD+J7PgPflQ9i82wAkOrV4aawrepX0
+         t3zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739262906; x=1739867706;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bwJ01W7//5Ak1H8YG47QHAAd+AKMdSyCszB536sJQvU=;
+        b=R+8gHEr6WO330QNq/ETBw9JlUkmQqJcVx/E4Qqky9l1j5DtwBQK3H5v3jni1YQoPoE
+         ZquCcPKRuxnZXNBOaewtDf+kNk4qQevBBkUXpC7k72c/1TKdgwD4yqCiknJhltEDKf8u
+         M1eGaA9eWp7SSsmtSG2ZO/2kloSh9kMpRaxM5WutR/Gg0IGGuxtlwltoEctqOREAwNF7
+         K72pQaQAK+X1bUxt5BgZdMZqemV7hf3LpW7Ajbe8eHlURPH2kYYmXfi2yjaXHiZbFQ7c
+         TKJPDFTmSlAKOk4diZGAc+Y6897FYvcV4SSAXGqTVzlJNPMXY4F18Jki5ajOaBw47Up1
+         caeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8n3zdcwvvgPiU8SG+f0uFCrYV+hyFamHIazYkD3B4rB+vw+Jk9dotUDvrikbmsyQsUnRc3+U0@vger.kernel.org, AJvYcCW+gtj9qVW5+aj0TDbXKYy67goS638EmfWl1a5tmrOuGVSus1jGyR+DkVDr9kUfx/9IC7aIswN++T/bpVu6F9xZk16D@vger.kernel.org, AJvYcCXIL51a0d1ZQyrIv2WUebIqhIbETY+qz5U67wW8jc716erClgpnhR9KX8o5RXp8UK6pdMHNIdPyOCjO+R4F@vger.kernel.org, AJvYcCXVzlZcPmVxwVG0SgFFuoOPhQE6AwL7ko2iKvjK7A7j13BksTV0LXolDsxAoqfrd7qlKz9D+AbjwmP5@vger.kernel.org, AJvYcCXkNLjf/fpmn9/QHHIwvy8dM2Fc7RH9wWuw4R28CvdpVID+AKje9ayz8SVW4W2FwmZJs38=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT+cZ9mQ5FE8kNgl4g51Mn3nEyNfjYkYFFu26ADkBJpMw/PY4E
+	bPptaQCb2yi8rC/kzUOzXGqYqo7eXzrqG8ABYu4x8iwbSE1XFAqs
+X-Gm-Gg: ASbGncvPx1jyK44SQ+hvcgx68gWrDDV6boUgv1h2SUJ+2jC+S2+7Uu7yQ9DCix5OU8Y
+	iQNbktAB5r2SlfkPdtEFz+kHR/cJZCt3Hkp0J3ZDyLk7hTdtkyS9CwafknsSAJhUadnRpfbNsXE
+	CVdKbq41VA+Sb/4sg41Yi12CT9/5jailmDYdykkI1sWXZl3M7pcCsbYuzwXcqBEbw84ioeF1r8S
+	PMERJJUoflwOnLM0wxNuvVTfST/TQySph+2dFLgZ21hWk1e09qav9yAMTV7vEVZagQLikNmZI8E
+	uA==
+X-Google-Smtp-Source: AGHT+IHqJLfevdgNRazeDfFwqCjxzNygsDkj1WnutgwyUmf3yGls7DVNaIZ/issKMhM6u7+e3HvTmQ==
+X-Received: by 2002:a05:600c:4254:b0:439:30bd:7df9 with SMTP id 5b1f17b1804b1-43930bd7f9fmr85110685e9.9.1739262905439;
+        Tue, 11 Feb 2025 00:35:05 -0800 (PST)
+Received: from krava ([173.38.220.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc3a10fffsm13362157f8f.12.2025.02.11.00.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 00:35:05 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Tue, 11 Feb 2025 09:35:02 +0100
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, bpf@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH bpf-next] uprobes: Harden uretprobe syscall trampoline
+ check
+Message-ID: <Z6sLthPEqVuGKQSL@krava>
+References: <20250209220515.2554058-1-jolsa@kernel.org>
+ <CAEf4BzbpKReuNhdH6RnwYOyYxFwgJjjgUB_2xwU=dGkC--K=Kg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cd10a924-ae65-4b02-aea2-e629947ca7a3@roeck-us.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEf4BzbpKReuNhdH6RnwYOyYxFwgJjjgUB_2xwU=dGkC--K=Kg@mail.gmail.com>
 
-On Sun, Feb 09, 2025 at 07:19:33AM -0800, Guenter Roeck wrote:
-> On 2/6/25 08:06, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.6.76 release.
-> > There are 389 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
-> > Anything received after that time might be too late.
-> > 
-> [ ... ]
+On Mon, Feb 10, 2025 at 09:26:53AM -0800, Andrii Nakryiko wrote:
+> On Sun, Feb 9, 2025 at 2:05 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> >
+> > Jann reported [1] possible issue when trampoline_check_ip returns
+> > address near the bottom of the address space that is allowed to
+> > call into the syscall if uretprobes are not set up.
+> >
+> > Though the mmap minimum address restrictions will typically prevent
+> > creating mappings there, let's make sure uretprobe syscall checks
+> > for that.
+> >
+> > [1] https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+> > Cc: Kees Cook <kees@kernel.org>
+> > Cc: Eyal Birger <eyal.birger@gmail.com>
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Jann Horn <jannh@google.com>
+> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> > ---
+> >  arch/x86/kernel/uprobes.c | 14 +++++++++-----
+> >  1 file changed, 9 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> > index 5a952c5ea66b..109d6641a1b3 100644
+> > --- a/arch/x86/kernel/uprobes.c
+> > +++ b/arch/x86/kernel/uprobes.c
+> > @@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
+> >         return &insn;
+> >  }
+> >
+> > -static unsigned long trampoline_check_ip(void)
+> > +static unsigned long trampoline_check_ip(unsigned long tramp)
+> >  {
+> > -       unsigned long tramp = uprobe_get_trampoline_vaddr();
+> > -
+> >         return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+> >  }
+> >
+> >  SYSCALL_DEFINE0(uretprobe)
+> >  {
+> >         struct pt_regs *regs = task_pt_regs(current);
+> > -       unsigned long err, ip, sp, r11_cx_ax[3];
+> > +       unsigned long err, ip, sp, r11_cx_ax[3], tramp;
+> > +
+> > +       /* If there's no trampoline, we are called from wrong place. */
+> > +       tramp = uprobe_get_trampoline_vaddr();
+> > +       if (tramp == -1)
 > 
-> > Hongbo Li <lihongbo22@huawei.com>
-> >      hostfs: fix the host directory parse when mounting.
+> slight nit: mixing -1 and unsigned long looks sloppy. Maybe let's add
+> something like
 > 
-> This patch results in:
+> #define UPROBE_NO_TRAMPOLINE_VADDR ((unsigned long)-1)
 > 
-> Building um:defconfig ... failed
-> --------------
-> Error log:
-> fs/hostfs/hostfs_kern.c:972:9: error: implicit declaration of function 'fsparam_string_empty'; did you mean 'fsparam_string'? [-Werror=implicit-function-declaration]
->   972 |         fsparam_string_empty("hostfs",          Opt_hostfs),
-> 
-> because fsparam_string_empty() is not declared globally in v6.6.y.
-> 
-> The patch declaring it is 7b30851a70645 ("fs_parser: move fsparam_string_empty()
-> helper into header"). Applying that patch on top of 6.6.76 fixes the problem.
-> 
-> The problem only affects "um" builds since hostfs (CONFIG_HOSTFS) is only available
-> and used there. Oddly enough, the patch breaks the build of this file instead of
-> fixing the problem it claims to fix, and it looks like no one noticed.
-> On top of that, "hostfs: convert hostfs to use the new mount API" was obviously
-> not tested. It looks like a substantial change which would definitely warrant
-> testing when backported.
-> 
-> That makes me wonder: Should I stop build testing "um" images in older kernels ?
+> and return that from uprobe_get_trampoline_vaddr()?
 
-No, it's good for testing and I'm pretty sure that Android still uses it
-for their test infrastructure so it matters.  I'll go do some reverts
-now and push out a new release with this fixed as it's now shown up on
-the kernel.ci build reports as well.
+ok, will add that
 
-thanks for pointing it out.
+thanks,
+jirka
 
-greg k-h
+> 
+> > +               goto sigill;
+> >
+> > -       if (regs->ip != trampoline_check_ip())
+> > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
+> > +       if (regs->ip != trampoline_check_ip(tramp))
+> >                 goto sigill;
+> >
+> >         err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+> > --
+> > 2.48.1
+> >
 
