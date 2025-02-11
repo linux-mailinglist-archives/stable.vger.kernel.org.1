@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-114791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FC8A30099
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5B0A3009C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013941883978
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:40:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00811885614
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8F21F7075;
-	Tue, 11 Feb 2025 01:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D19E1F868C;
+	Tue, 11 Feb 2025 01:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPV/OpVK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aX/g1c7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD821F560D;
-	Tue, 11 Feb 2025 01:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CD81F7910;
+	Tue, 11 Feb 2025 01:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237507; cv=none; b=hQvDraOg9+i3Xg+nyfDCp5TPJBz50XQvnsP+LyBODGoKu/j+jfrRReZfEJ/OR1atWzAuHIuiQdXYSYBy9KyhJX3QYrwcqEm+eglJv6bC9vDX6zaJoR8tcLyRggVJCHfD+H+OJaWidl8Gp1TWUcJbQYUxoC0It+8tarbqTOaKYjI=
+	t=1739237509; cv=none; b=r4V8kLo4nS1cHBzdLLdYt0wOMTCouJjro9m3gc0c0dGDZtwrMkxoNd5eNK7u3cdMltXC8u0/E7S8J/nhc/JKbCLEhOKmr+MQlLQ4H/zZpUg31qOvotvwbXYOSBA/rbGaYCI0QD5rWTdMnDKH2E96b5un4dFoPa93nC4HYUcGPpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237507; c=relaxed/simple;
-	bh=n+osBj6Upb51Pt/VXXopU94SryNtIsoSq6/ehsPDblg=;
+	s=arc-20240116; t=1739237509; c=relaxed/simple;
+	bh=XmFhPgocvk5M8n3X6b6Z/pyIVE09pHfdrlXGz9mvK7g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=swU8d64H1WQ9HehKU+yOU6xtvbKeLXTSGKdyLSNXlzKOKJYZaONgcOFVkLXOR2sunF+N+sVuI0YYusq5s8L7gley30ykSvUPxEC1JpDCO9gcj9z8xRlb0+oitdrbgO7mM82bn1GUyWw59/h4HcO9n4XouEHu9iZmXex60Bw+1Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPV/OpVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00604C4CEDF;
-	Tue, 11 Feb 2025 01:31:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hzBcq/AHgKYu2gmW2Gu8x8W8S8LfW06D1Z0O92hm4jZYwf1OykkhkQEa+VdDCQcBmJpzxmDZLvi59IV4BH/MriH5uUO+yPDC7KLAaRgj4dCoklqO9fAdET0QpB6EEbwZU5iiR7kYvPLltvJRIzTE/jhLT04C/O02MZD2Fcb80yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aX/g1c7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B93BC4CEE5;
+	Tue, 11 Feb 2025 01:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237507;
-	bh=n+osBj6Upb51Pt/VXXopU94SryNtIsoSq6/ehsPDblg=;
+	s=k20201202; t=1739237508;
+	bh=XmFhPgocvk5M8n3X6b6Z/pyIVE09pHfdrlXGz9mvK7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPV/OpVKZxMHRAR8Bv/ynWOceFZNDlXMQ5uOTXvTJ/JuCfedgsaVrKpsITbwbSDHa
-	 FCbvid3utK5j8LJV8vjWf73EI9XV9oaaGh87ji0dGXc/rzk+HRiJza7+GyW0zqyDAV
-	 xNkKXgssAh0X9i5iM03q+fbUK8/VilTUM3KZDA3z/iGEqzT4SulcHMXZY9IlK11mmm
-	 AK3bKg3Igfp/7/FKgQyKI2z6HaocGIjMKi94g5xQcHMNbyh9TPG8vEOZaRuif0CoU6
-	 ld+6ENK+smEnsZHmioYwyvBMPgNRE+tiWQN69F+gowHO4T3hBXBWZRe/eduizhdMBK
-	 1OabJWxZgp7zA==
+	b=aX/g1c7ssEXIz3QaDAlWCksh8vGqZjDD5PvePX4eiYA0oDN/A3YH3bpS9UKNNioYb
+	 au5XxrLkGKAEDo8HQrRdEeRnwRg76K7C0kgEJwAorbeU3s3GIzkUzjbNNO5T5vYw4H
+	 AAbfdzHVYDm3adKmxGJ1bX79dAeF49X3jdoHhtgXtbA+6IT3T6OSTmQQaMvPvE526C
+	 Ybjr1CAravNExYrZxQAPjuH/KbId8dGsu1o3NR2YbMZQ/XawhrImsrW3tzDXlqogDh
+	 3e3VpqZXJb1JMF1HFyHFUOZEdr5gjUGwB5WNV865zQQSOFaEzRG1gBnyWSbuUWTr6l
+	 VJT6pmJw6MLUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Rik van Riel <riel@surriel.com>,
+	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	david.e.box@intel.com,
-	hdegoede@redhat.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/15] platform/x86/intel: pmc: fix ltr decode in pmc_core_ltr_show()
-Date: Mon, 10 Feb 2025 20:31:27 -0500
-Message-Id: <20250211013136.4098219-7-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/15] scsi: core: Use GFP_NOIO to avoid circular locking dependency
+Date: Mon, 10 Feb 2025 20:31:28 -0500
+Message-Id: <20250211013136.4098219-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013136.4098219-1-sashal@kernel.org>
 References: <20250211013136.4098219-1-sashal@kernel.org>
@@ -69,42 +69,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.76
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 583ef25bb2a094813351a727ddec38b35a15b9f8 ]
+[ Upstream commit 5363ee9d110e139584c2d92a0b640bc210588506 ]
 
-In pmc_core_ltr_show(), promote 'val' to 'u64' to avoid possible integer
-overflow. Values (10 bit) are multiplied by the scale, the result of
-expression is in a range from 1 to 34,326,183,936 which is bigger then
-UINT32_MAX. Compile tested only.
+Filesystems can write to disk from page reclaim with __GFP_FS
+set. Marc found a case where scsi_realloc_sdev_budget_map() ends up in
+page reclaim with GFP_KERNEL, where it could try to take filesystem
+locks again, leading to a deadlock.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+WARNING: possible circular locking dependency detected
+6.13.0 #1 Not tainted
+------------------------------------------------------
+kswapd0/70 is trying to acquire lock:
+ffff8881025d5d78 (&q->q_usage_counter(io)){++++}-{0:0}, at: blk_mq_submit_bio+0x461/0x6e0
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250123220739.68087-1-d.kandybka@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+but task is already holding lock:
+ffffffff81ef5f40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x9f/0x760
+
+The full lockdep splat can be found in Marc's report:
+
+https://lkml.org/lkml/2025/1/24/1101
+
+Avoid the potential deadlock by doing the allocation with GFP_NOIO, which
+prevents both filesystem and block layer recursion.
+
+Reported-by: Marc Aurèle La France <tsi@tuyoix.net>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/20250129104525.0ae8421e@fangorn
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/scsi_scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index 022afb97d531c..2fb73e924bd64 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -620,8 +620,8 @@ static u32 convert_ltr_scale(u32 val)
- static int pmc_core_ltr_show(struct seq_file *s, void *unused)
- {
- 	struct pmc_dev *pmcdev = s->private;
--	u64 decoded_snoop_ltr, decoded_non_snoop_ltr;
--	u32 ltr_raw_data, scale, val;
-+	u64 decoded_snoop_ltr, decoded_non_snoop_ltr, val;
-+	u32 ltr_raw_data, scale;
- 	u16 snoop_ltr, nonsnoop_ltr;
- 	int i, index, ltr_index = 0;
- 
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index ca99be7341d9b..cead0fbbe5dbd 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -245,7 +245,7 @@ static int scsi_realloc_sdev_budget_map(struct scsi_device *sdev,
+ 	}
+ 	ret = sbitmap_init_node(&sdev->budget_map,
+ 				scsi_device_max_queue_depth(sdev),
+-				new_shift, GFP_KERNEL,
++				new_shift, GFP_NOIO,
+ 				sdev->request_queue->node, false, true);
+ 	if (!ret)
+ 		sbitmap_resize(&sdev->budget_map, depth);
 -- 
 2.39.5
 
