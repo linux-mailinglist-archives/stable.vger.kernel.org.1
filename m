@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-114898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E468EA30892
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:33:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74058A308A3
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 039D4188320D
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:33:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 191AF16754E
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674CB1F4632;
-	Tue, 11 Feb 2025 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF771F5420;
+	Tue, 11 Feb 2025 10:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQHS5bOK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7PeTo+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190F11F4295;
-	Tue, 11 Feb 2025 10:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D421F4606
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739270020; cv=none; b=SEjra9fEnZKHqpyCW8ox8BP6fqapgV+ZnnYwG3UuoDqWhJqaKptHUcWpO0K5ovRARAf7dOPYZ5yZg7d5L4UCf42rR1nYUWmCdIgBedJNKPj70Bsbf2PMKUfAqvQXsKaRUbWnRhXkXXgOwk2QiTOm2HNpg2E6chLyt8wWlerNdY4=
+	t=1739270206; cv=none; b=YMAeERptWvXjhMklBewrRJuJiSH8CX+o0HjUpd9C2eJxaHrF3RVZ+8BhlQqg0nmbd+c/N2hhw/kYIP5/qcORhO/CdyFFDOhwgMAnQC3t4XX2aft8YQrrfEmnw0Zw/OO5/Q6zyGuWAFkRKFisu2858pc8MKTBgGUgVla8bCtTOTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739270020; c=relaxed/simple;
-	bh=PquzBB/oX7egHymBp+a6B/TaN2ihpzSc+j9dImCu2IQ=;
+	s=arc-20240116; t=1739270206; c=relaxed/simple;
+	bh=1zu6tZCsh7aYgjU+gNDoFE87fQ7V3td5jRhPpf0IkJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gp3+9tEz0UgSE9L7RUDXwjRdP5hL6PDk3ZPrAmZ+jyCrlyTnKaqmMJ2F91DD46liKyhDhYz58yq15Zt6kaAWJc7ct+lx/gxGKYy8bSjKEaBiScrrebef4vlUd5bMGWo994zqShi4TM0aHXDaD8tHahqV54Zmse8+4J0AH7R6yTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQHS5bOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD89EC4CEE7;
-	Tue, 11 Feb 2025 10:33:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z62rHHeLgI+OiPhkjk/o/QUyiG6lj40XaVkuEMmYgMfKx+Zsp/IZ2SSYHUlf/udRnDvTA59OGg6hEui1nl81HG/ku11NmGWXNIMkihCIyMfog3KDVGekPHhYv/+3+eWdhxmZKkgAjxMe9ItEbOlPvvL1/PkF6t9AH/eSrUKYURc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7PeTo+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F66C4CEDD;
+	Tue, 11 Feb 2025 10:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739270019;
-	bh=PquzBB/oX7egHymBp+a6B/TaN2ihpzSc+j9dImCu2IQ=;
+	s=k20201202; t=1739270206;
+	bh=1zu6tZCsh7aYgjU+gNDoFE87fQ7V3td5jRhPpf0IkJA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BQHS5bOKvoiVMPGh7qf8LYf4J9+tJWgM8GbiFoUwZLrDAKub6cdlgLNUzhT1kU4YN
-	 4ocP9I5pp1pMbnKBAzuFLhs1S+lXy5h+k6Bx5ohEa9P3sVaBv/WwXgklP7kfUwFpJ6
-	 duSrPvzOGEJJvwoxqI8Z9YN6vS9qjfypf1xuY55rmm/ulzPehfjDYv30KeNrEX760R
-	 PObIad9+Gsij7RfvEJ0/l4cJcjLYaRG6su/s1q1a6V1gq4Jcg+kHWRgTtVvDHYsT8q
-	 3RiAbclp1tfY2e4Y6oGlTfpaV6ZRNJq5JYu+Hb/oLGHGw69iQQgG17gSdr5eZyesWA
-	 kR4LDQQ59QSOg==
-Date: Tue, 11 Feb 2025 10:33:33 +0000
+	b=Q7PeTo+mIHLgO6J81jy2uDEEgKkM36ufdVbuMhZ/59KgG5zQ1LJh+QVcxwcwx4yvF
+	 ProIcvwKivCw/KPeE+b7gvzH73GuebXeXtowVmkFCQXj6C8iJkRaTw5idJ38nCPLHT
+	 IYkO8u/DbQLxcqWAG5mOoAZPW13xQKfoGmCVh+9gILOu8Z3E7OPhr/bXP+kpwa7Bam
+	 qRc17nfSTVIK0tiDr+OUh9FMoUQ01c0pHgAATOP12e9XPbtzJY8k5LpMPOPYqRM/wD
+	 jb5+W7GB0Yol98C8imPPwB/LeLUcvcne0J/wBA+nQgxT5Tj8ACwd7REbUpj+hmMRVd
+	 lrPp0nv59CHGg==
+Date: Tue, 11 Feb 2025 10:36:40 +0000
 From: Will Deacon <will@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev, stable@vger.kernel.org,
-	Matthew Maurer <mmaurer@google.com>, Ralf Jung <post@ralfj.de>,
-	Jubilee Young <workingjubilee@gmail.com>
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat
- target
-Message-ID: <20250211103333.GB8653@willie-the-truck>
-References: <20250210163732.281786-1-ojeda@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, eric.auger@redhat.com,
+	fweimer@redhat.com, jeremy.linton@arm.com, maz@kernel.org,
+	oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org,
+	tabba@google.com, wilco.dijkstra@arm.com
+Subject: Re: [PATCH v3 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <20250211103640.GC8653@willie-the-truck>
+References: <20250210195226.1215254-1-mark.rutland@arm.com>
+ <20250210195226.1215254-9-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,54 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250210163732.281786-1-ojeda@kernel.org>
+In-Reply-To: <20250210195226.1215254-9-mark.rutland@arm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Feb 10, 2025 at 05:37:32PM +0100, Miguel Ojeda wrote:
-> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
-> [1] about disabling neon in the aarch64 hardfloat target:
+On Mon, Feb 10, 2025 at 07:52:26PM +0000, Mark Rutland wrote:
+> In non-protected KVM modes, while the guest FPSIMD/SVE/SME state is live on the
+> CPU, the host's active SVE VL may differ from the guest's maximum SVE VL:
 > 
->     warning: target feature `neon` cannot be toggled with
->              `-Ctarget-feature`: unsound on hard-float targets
->              because it changes float ABI
->       |
->       = note: this was previously accepted by the compiler but
->               is being phased out; it will become a hard error
->               in a future release!
->       = note: for more information, see issue #116344
->               <https://github.com/rust-lang/rust/issues/116344>
+> * For VHE hosts, when a VM uses NV, ZCR_EL2 contains a value constrained
+>   by the guest hypervisor, which may be less than or equal to that
+>   guest's maximum VL.
 > 
-> Thus, instead, use the softfloat target instead.
+>   Note: in this case the value of ZCR_EL1 is immaterial due to E2H.
 > 
-> While trying it out, I found that the kernel sanitizers were not enabled
-> for that built-in target [2]. Upstream Rust agreed to backport
-> the enablement for the current beta so that it is ready for
-> the 1.85.0 release [3] -- thanks!
+> * For nVHE/hVHE hosts, ZCR_EL1 contains a value written by the guest,
+>   which may be less than or greater than the guest's maximum VL.
 > 
-> However, that still means that before Rust 1.85.0, we cannot switch
-> since sanitizers could be in use. Thus conditionally do so.
+>   Note: in this case hyp code traps host SVE usage and lazily restores
+>   ZCR_EL2 to the host's maximum VL, which may be greater than the
+>   guest's maximum VL.
 > 
-> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+> This can be the case between exiting a guest and kvm_arch_vcpu_put_fp().
+> If a softirq is taken during this period and the softirq handler tries
+> to use kernel-mode NEON, then the kernel will fail to save the guest's
+> FPSIMD/SVE state, and will pend a SIGKILL for the current thread.
+> 
+> This happens because kvm_arch_vcpu_ctxsync_fp() binds the guest's live
+> FPSIMD/SVE state with the guest's maximum SVE VL, and
+> fpsimd_save_user_state() verifies that the live SVE VL is as expected
+> before attempting to save the register state:
+> 
+> | if (WARN_ON(sve_get_vl() != vl)) {
+> |         force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
+> |         return;
+> | }
+> 
+> Fix this and make this a bit easier to reason about by always eagerly
+> switching ZCR_EL{1,2} at hyp during guest<->host transitions. With this
+> happening, there's no need to trap host SVE usage, and the nVHE/nVHE
+> __deactivate_cptr_traps() logic can be simplified to enable host access
+> to all present FPSIMD/SVE/SME features.
+> 
+> In protected nVHE/hVHE modes, the host's state is always saved/restored
+> by hyp, and the guest's state is saved prior to exit to the host, so
+> from the host's PoV the guest never has live FPSIMD/SVE/SME state, and
+> the host's ZCR_EL1 is never clobbered by hyp.
+> 
+> Fixes: 8c8010d69c132273 ("KVM: arm64: Save/restore SVE state for nVHE")
+> Fixes: 2e3cf82063a00ea0 ("KVM: arm64: nv: Ensure correct VL is loaded before saving SVE state")
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Reviewed-by: Mark Brown <broonie@kernel.org>
+> Tested-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
 > Cc: Will Deacon <will@kernel.org>
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Ralf Jung <post@ralfj.de>
-> Cc: Jubilee Young <workingjubilee@gmail.com>
-> Link: https://github.com/rust-lang/rust/pull/133417 [1]
-> Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
-> Link: https://github.com/rust-lang/rust/pull/135905 [3]
-> Link: https://github.com/rust-lang/rust/issues/116344
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
-> Matthew: if you could please give this a go and confirm that it is fine
-> for Android (with sanitizers enabled, for 1.84.1 and 1.85.0), then a
-> Tested-by tag would be great. Thanks!
+>  arch/arm64/kvm/fpsimd.c                 | 30 -------------
+>  arch/arm64/kvm/hyp/entry.S              |  5 +++
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 59 +++++++++++++++++++++++++
+>  arch/arm64/kvm/hyp/nvhe/hyp-main.c      | 13 +++---
+>  arch/arm64/kvm/hyp/nvhe/switch.c        |  6 +--
+>  arch/arm64/kvm/hyp/vhe/switch.c         |  4 ++
+>  6 files changed, 76 insertions(+), 41 deletions(-)
 
-Patch looks fine to me, but I'll wait for Matthew to confirm that it
-works for them. I'm also fine with adding the rustc-min-version helper
-at the same time, tbh -- it's not exactly rocket science, but it would
-need an Ack from Masahiro.
+Acked-by: Will Deacon <will@kernel.org>
+
+Thanks for the quick re-spin!
 
 Will
 
