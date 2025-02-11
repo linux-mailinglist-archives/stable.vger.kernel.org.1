@@ -1,338 +1,220 @@
-Return-Path: <stable+bounces-114921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519C1A30EEE
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:59:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D965BA30EF0
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0252A3A7F97
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 14:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2926C188143A
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396CA2512EC;
-	Tue, 11 Feb 2025 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677571F9ED2;
+	Tue, 11 Feb 2025 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xARWJ7LU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tJKYtolD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DZL1p6f9"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2048.outbound.protection.outlook.com [40.107.100.48])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED5E2512E1
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 14:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739285979; cv=fail; b=FbkW4n+5e+uPJvX5d7iPdy3w0ck3wloZzpNFsuD+bBy5NtNaJt6qMoVn8SsGV7hdn1nR85eE9W2PdoZz5esBTRgmq/xJWxdaiikjDNpcVFDExDye3VBPsgrRtjPZBOp6SXVeXoKBgfw2JXq/FZYnvcj6noiVOxfDZY1pWFd8IJk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739285979; c=relaxed/simple;
-	bh=JJbBnV/ByGsWYouhK6LQvuykRS3su+2zBfAeL6pcmLE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W1AohiMrhTH/tLvSPSRZOyl30lwKlLhX64VoIUbpDFUyfHjoQpX2XOIz6iQetvqsh8MuLK07k2jVroqzCj5tqQWz5JWc1wvQZoO9TtDFejFA5cUCF0K2Y3ZtxKG06u5tbafZ3zEhOPpDpMneobvUgQ/ai+fQ9y84blc90XpDOVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xARWJ7LU; arc=fail smtp.client-ip=40.107.100.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L1pO4V/UddYm+cmNlYrIvd66HP+cVJpaoigWvHgyK0hDbk8DrPDU48dMwdt381HBRTWs0cd+GSVVFyqQ7Qfic5u5jz/ssHu//H3b96nq57nJZS+4eS0ql51WfFgfLErXGy7n5QlrDsztm9Fm2BUuoCavOPRCWILWuEvw+mQJq8yLXGt2JvoSIyB2MmfB57uXuFLvvgtGsu5k4RWtRXQx4FFgiz9CsgqDFYx58uLS7s7u7R4HNFo6BWYcrcgCIEEtPXz0Jfi2PnJMRgJiIUcyx33qRjiSJFFbcxbhUgT/pA9f9thLGVG6NLidbuLK79Md2af2y0JCE7r0+ZEQZTT6kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C+7D2ueN5smI/ajCqjSTnyZQHMsgJwYQIYI9yvFMr5s=;
- b=pPcR26n7mbJtVqGV+8KXT5f723LHdFtd9P//QLAYTXgzZWCNHdniVuIWG1xTt4WhUrAHvqrSCo7zM71OkNBOgIDb68aYMwswxX+BLD+La4UWBgknjER/KVO+Z316nt5Aqz2i0VfKdFElKyPWAiJZcrx/ZtwSAcHJC3WKYX8R7hJ53ziD97s2hww0LlQgLzAxlsr+r9i2Fmazi6Pgbe0eo7v75dZJ+T+PhCYD1Erw+8LC2nBzeEafSUeRKSa6O8gNU+SehrmP9lMtlIP+RFSYEQhohrQGTAVsbfnbHjUlQe093zZXdnA96lNGKr9OZ0miNw//80aLSQtnTTiDGQOW6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C+7D2ueN5smI/ajCqjSTnyZQHMsgJwYQIYI9yvFMr5s=;
- b=xARWJ7LUIJ19rfFVuCeRYbD/ENbB0TM+T+n1quEQSdFGzeKb+o0xHWHBx9myuzMuMtHIpvqO2OzS6vkkAEihKa6FbymjJg27jHxh2r/y4sn+6Mym6G7fxZlcm271hxeigW6q6ZZ0GrTCre1BJ3C0wJXcQKbbkH0sARzqMdBV7KE=
-Received: from BN9PR03CA0877.namprd03.prod.outlook.com (2603:10b6:408:13c::12)
- by CY5PR12MB6405.namprd12.prod.outlook.com (2603:10b6:930:3e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Tue, 11 Feb
- 2025 14:59:31 +0000
-Received: from BN2PEPF000044A0.namprd02.prod.outlook.com
- (2603:10b6:408:13c:cafe::28) by BN9PR03CA0877.outlook.office365.com
- (2603:10b6:408:13c::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.12 via Frontend Transport; Tue,
- 11 Feb 2025 14:59:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000044A0.mail.protection.outlook.com (10.167.243.151) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8445.10 via Frontend Transport; Tue, 11 Feb 2025 14:59:30 +0000
-Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 11 Feb
- 2025 08:59:29 -0600
-From: Alex Deucher <alexander.deucher@amd.com>
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<sashal@kernel.org>
-CC: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Pierre-Eric Pelloux-Prayer
-	<pierre-eric.pelloux-prayer@amd.com>, Yang Wu <harico@yurier.net>, "Mingcong
- Bai" <jeffbai@aosc.io>, Daniel Wheeler <daniel.wheeler@amd.com>, "Aurabindo
- Pillai" <aurabindo.pillai@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] Revert "drm/amd/display: Fix green screen issue after suspend"
-Date: Tue, 11 Feb 2025 09:58:43 -0500
-Message-ID: <20250211145843.1350590-1-alexander.deucher@amd.com>
-X-Mailer: git-send-email 2.48.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEF4250C1D;
+	Tue, 11 Feb 2025 15:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739286015; cv=none; b=D2S4I1bqMilvUiRa8FfU7uWd/1nNVrQ+187LMaoWGeJdJllI0IFnSYMkTtKQ0VHcIA4iuBTWu1VSgBgqRyoh04BHSifzjYsyvEW7CdskjoDjtmlZBGa3jOzDg8WJRs1OubYHRJpY3UBAglhONkNriMkuyTDTeDgye/sAfNRS9SI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739286015; c=relaxed/simple;
+	bh=X7gsBc4YvTswGAe3ipvZe8BWphWuMO5WFT/+YrV/kNg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TQNgcKtP6n4jtcH7KqPscnqXmGdY0aF4xtg1vmJEMaU4FeN3zw2pZ/5MpQlp4Av3g8TVnYWYdeKi/YplNyWYeynZJbkcV9iEOBGX+A4kPe+Z3zv7iQBDC4yOYzvsY4SmNdthKNDNtc8M1zsTBqRypyxNOSKLmkf1pUXBsK1gf8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tJKYtolD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DZL1p6f9; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739286011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MBBgFwIPM9ArG/++02kDCovbUubj1A6raG2FsdxYOuE=;
+	b=tJKYtolDpLQQMdRIym5NWiwB2mwjLhhs1BcvWJujfPWs2ZDZ7GNif057a10MPMBZr2amVA
+	iOFG0QiQLoeQ6jjjJWpD5g52c47SKFPqgVNwVfJ6kAP59QmKIfOS85vhsOQnpoUdjAT92z
+	v6CAHQclY4VhWcc78w0P1TI0xMYXDBy02wOpMqtbbi0x/dquAXd0cI0cDcawgGG34d/77d
+	nyiiKOG0TrkZF8hdVYhQqPj8DWzgnr32mmiKtp92bDyic0wfDSPoF6zDlJ5MrRqvZ7n+QT
+	iGg561ts50rFsrcVUHwVl+Ca96kIFsNiU1ZJGPlt/qxsszLGPgaL9JBVKA2FZA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739286011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MBBgFwIPM9ArG/++02kDCovbUubj1A6raG2FsdxYOuE=;
+	b=DZL1p6f91Nar035wPIk9SrnGEGIQeCzI5Yd7bVZXkOzMcIDljzGZeflfMwxDm8LlDDdH/Z
+	7v7ZQ2jvy1ITpUBw==
+Date: Tue, 11 Feb 2025 16:00:02 +0100
+Subject: [PATCH] firmware: cs_dsp: test_control_parse: null-terminate test
+ strings
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A0:EE_|CY5PR12MB6405:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3804aae-85cf-4e12-cac1-08dd4aacb063
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013|7053199007|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?55Dq5FSGcJyViUaYJj4et4u/iuUnxQg6dQl9/fHyOwZSDtTjiEtzU1rUSNKA?=
- =?us-ascii?Q?8pyqGXPeBCxbeUsYvxN88N31iDzQL4qod+wZqvLlKVCi8/V3Wq/FmzZ7bsym?=
- =?us-ascii?Q?3Jpaaj+OPF386t4J3buw+Fg1NsExWF7qht7+PGPCx4TNUtJrRnQdRFvGgp6R?=
- =?us-ascii?Q?3LNu5X9kx6oEKkPSA+aWjVrsFZFigwW5P74+T63yVRMl0RQgJ68XuQqCe90a?=
- =?us-ascii?Q?iABgzm3rOOQFf97fIaUE+b83qetuwi4ABTmmuVmDl48tTYVlDnyxarwt1fqY?=
- =?us-ascii?Q?xuAMc2adGnlZpNqEVWjukLkbusjAaKtiyWQUInTaehCDsRex24Y7Rh6gQU2d?=
- =?us-ascii?Q?937q1fkRx0YU6kBYWsphVBGnt2eeCz2UBXDvRn0afvxccu+r9brGOKZ5Oe3m?=
- =?us-ascii?Q?idXv1dXzKwDFjvtu71CtmmAakQmOAO9cQOWqiXIKHDkvVIWvwpE87zaoFZXL?=
- =?us-ascii?Q?20tSgVcfEP/j0VjhWZsI/tRWe5JUa6NttQjrIYneLEy1m0wfPa/DzSyG/xsm?=
- =?us-ascii?Q?WQziSUTwkyZcRZ+lmI0UUhjxSh6KmDC+Qp8Jr27AcVkiG77jDFTR7XYxCC7u?=
- =?us-ascii?Q?dhzN8ehkBrC3dqeLyRNIpj1fwSzyvncKJpZ4sBivSlsNjWGXuIV19sJ4Y1UJ?=
- =?us-ascii?Q?gyUnfxhejBC/wPV5x3NgoGlzVxFygx2G/+pAsVI9Q3WJ30C8JQqw4PORqw6n?=
- =?us-ascii?Q?0PKV00cbMfJfzJm7NrwghamW2eWegBTxfS7shu3Y6A5gjYFZNe7D1bMx56O6?=
- =?us-ascii?Q?fk7VflxGU9N8UrD8wQ16pUHTHbJxzs69huTNIqBi8U+zRADfvnOd6TWRCB3W?=
- =?us-ascii?Q?xbUzjfiOl11XmYWgX8XyEvIS1rENYEZERoHtUZwySw4nmzq+ajmyhSZUjJOp?=
- =?us-ascii?Q?0630vbIHV40uqRszM6TektMdVBRzf8Pvm7oWPsXx/SxZ8hKEuEya/+Q4qETo?=
- =?us-ascii?Q?NjF0gwlxgEnrFgDLGwxPRc/iBSfawebCI0GautAtxN36sjutwGCIlxddg0z7?=
- =?us-ascii?Q?djAdVHcRQzh/gfzEPgE1LF0wTwjjBNKsVxOZwydSvTeoc0bDzonwnYDGpNJq?=
- =?us-ascii?Q?+XUnU4fnbFJirXq/NAxyJjIF/25jgg2nMpC1XK3c6a2ASTlMb+FMTUy4LGuG?=
- =?us-ascii?Q?zj13jFmjLXtkwfirr1IFzxdoJjPHncIhVQ8Rfb63iQj/KknZDsr8McnFnNMb?=
- =?us-ascii?Q?Xitw5jxPU6oApCp87aRcX0TXyI3EyHuhcQuwGYxpZkbB0L0eRLz554947PDJ?=
- =?us-ascii?Q?yZXibFdPgH8iwLkSK9Al8mzf4yWU/9wNIURkWHa0hK1GHhpJagECgH7YhJuT?=
- =?us-ascii?Q?d1rguQPgfhhObU153fum3VTni+gziYguzOy9ekbG7miSMuAnyVinPPwyBEJS?=
- =?us-ascii?Q?/Zub28kKb7rvdmF4OPSV3P3nYqV352n0f+qMQ/Zv6Olfz4OeIxNSMa6pjlUn?=
- =?us-ascii?Q?OjHw8Q3oVNU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013)(7053199007)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 14:59:30.9701
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3804aae-85cf-4e12-cac1-08dd4aacb063
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A0.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6405
+Message-Id: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAPFlq2cC/x3M0QpAQBBA0V/RPJvaHUR+RZLsYFJLO0ht/t3m8
+ TzcG0E5CCu0WYTAt6jsPsHmGUzr6BdGcclAhipD1uKkg9MDt8vLiXoG8YviXBZMtakbdgQpPQL
+ P8vzbrn/fD8LuW6RmAAAA
+X-Change-ID: 20250211-cs_dsp-kunit-strings-f43e27078ed2
+To: Simon Trimmer <simont@opensource.cirrus.com>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: patches@opensource.cirrus.com, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739286007; l=5499;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=X7gsBc4YvTswGAe3ipvZe8BWphWuMO5WFT/+YrV/kNg=;
+ b=hxNYiKtuDcPhzRD4UnAaXybfto5jOrZDWGSbfJG3+XB4mIo0DR98Go1CKKjogVG1Pohs2lUcE
+ NWJw+nD5ao+CdFkioBDNxtmRBW1y65nd9FOAqRAXWrUwUlG824KbkrH
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+The char pointers in 'struct cs_dsp_mock_coeff_def' are expected to
+point to C strings. They need to be terminated by a null byte.
+However the code does not allocate that trailing null byte and only
+works if by chance the allocation is followed by such a null byte.
 
-This reverts commit 87b7ebc2e16c14d32a912f18206a4d6cc9abc3e8.
+Refactor the repeated string allocation logic into a new helper which
+makes sure the terminating null is always present.
+It also makes the code more readable.
 
-A long time ago, we had an issue with the Raven system when it was
-connected to two displays: one with DP and another with HDMI. After the
-system woke up from suspension, we saw a solid green screen caused by an
-underflow generated by bad DCC metadata. To workaround this issue, the
-'commit 87b7ebc2e16c ("drm/amd/display: Fix green screen issue after
-suspend")' was introduced to disable the DCC for a few frames after in
-the resume phase. However, in hindsight, this solution was probably a
-workaround at the kernel level for some issues from another part
-(probably other driver components or user space). After applying this
-patch and trying to reproduce the green issue in a similar hardware
-system but using the latest kernel and userspace, we cannot see the
-issue, which makes this workaround obsolete and creates extra
-unnecessary complexity to the code; for all of this reason, this commit
-reverts the original change.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3960
-Reported-By: Yang Wu <harico@yurier.net>
-Tested-by: Yang Wu <harico@yurier.net>
-Suggested-by: Mingcong Bai <jeffbai@aosc.io>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 04d6273faed083e619fc39a738ab0372b6a4db20)
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Fixes: 83baecd92e7c ("firmware: cs_dsp: Add KUnit testing of control parsing")
 Cc: stable@vger.kernel.org
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++------
- .../amd/display/amdgpu_dm/amdgpu_dm_plane.c   | 22 +++++++------------
- .../amd/display/amdgpu_dm/amdgpu_dm_plane.h   |  3 +--
- 3 files changed, 13 insertions(+), 24 deletions(-)
+ .../cirrus/test/cs_dsp_test_control_parse.c        | 51 ++++++++--------------
+ 1 file changed, 19 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 53694baca966..8224a290dac5 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5522,8 +5522,7 @@ fill_dc_plane_info_and_addr(struct amdgpu_device *adev,
- 			    const u64 tiling_flags,
- 			    struct dc_plane_info *plane_info,
- 			    struct dc_plane_address *address,
--			    bool tmz_surface,
--			    bool force_disable_dcc)
-+			    bool tmz_surface)
+diff --git a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+index cb90964740ea351113dac274f0366de7cedfd3d1..942ba1af5e7c1e47e8a2fbe548a7993b94f96515 100644
+--- a/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
++++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_parse.c
+@@ -73,6 +73,18 @@ static const struct cs_dsp_mock_coeff_def mock_coeff_template = {
+ 	.length_bytes = 4,
+ };
+ 
++static char *cs_dsp_ctl_alloc_test_string(struct kunit *test, char c, size_t len)
++{
++	char *str;
++
++	str = kunit_kmalloc(test, len + 1, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, str);
++	memset(str, c, len);
++	str[len] = '\0';
++
++	return str;
++}
++
+ /* Algorithm info block without controls should load */
+ static void cs_dsp_ctl_parse_no_coeffs(struct kunit *test)
  {
- 	const struct drm_framebuffer *fb = plane_state->fb;
- 	const struct amdgpu_framebuffer *afb =
-@@ -5622,7 +5621,7 @@ fill_dc_plane_info_and_addr(struct amdgpu_device *adev,
- 					   &plane_info->tiling_info,
- 					   &plane_info->plane_size,
- 					   &plane_info->dcc, address,
--					   tmz_surface, force_disable_dcc);
-+					   tmz_surface);
- 	if (ret)
- 		return ret;
+@@ -160,12 +172,8 @@ static void cs_dsp_ctl_parse_max_v1_name(struct kunit *test)
+ 	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+ 	struct cs_dsp_coeff_ctl *ctl;
+ 	struct firmware *wmfw;
+-	char *name;
  
-@@ -5643,7 +5642,6 @@ static int fill_dc_plane_attributes(struct amdgpu_device *adev,
- 	struct dc_scaling_info scaling_info;
- 	struct dc_plane_info plane_info;
- 	int ret;
--	bool force_disable_dcc = false;
+-	name = kunit_kzalloc(test, 256, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, name);
+-	memset(name, 'A', 255);
+-	def.fullname = name;
++	def.fullname = cs_dsp_ctl_alloc_test_string(test, 'A', 255);
  
- 	ret = amdgpu_dm_plane_fill_dc_scaling_info(adev, plane_state, &scaling_info);
- 	if (ret)
-@@ -5654,13 +5652,11 @@ static int fill_dc_plane_attributes(struct amdgpu_device *adev,
- 	dc_plane_state->clip_rect = scaling_info.clip_rect;
- 	dc_plane_state->scaling_quality = scaling_info.scaling_quality;
+ 	cs_dsp_mock_wmfw_start_alg_info_block(local->wmfw_builder,
+ 					      cs_dsp_ctl_parse_test_algs[0].id,
+@@ -252,14 +260,9 @@ static void cs_dsp_ctl_parse_max_short_name(struct kunit *test)
+ 	struct cs_dsp_test_local *local = priv->local;
+ 	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+ 	struct cs_dsp_coeff_ctl *ctl;
+-	char *name;
+ 	struct firmware *wmfw;
  
--	force_disable_dcc = adev->asic_type == CHIP_RAVEN && adev->in_suspend;
- 	ret = fill_dc_plane_info_and_addr(adev, plane_state,
- 					  afb->tiling_flags,
- 					  &plane_info,
- 					  &dc_plane_state->address,
--					  afb->tmz_surface,
--					  force_disable_dcc);
-+					  afb->tmz_surface);
- 	if (ret)
- 		return ret;
+-	name = kunit_kmalloc(test, 255, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, name);
+-	memset(name, 'A', 255);
+-
+-	def.shortname = name;
++	def.shortname = cs_dsp_ctl_alloc_test_string(test, 'A', 255);
  
-@@ -9068,7 +9064,7 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 			afb->tiling_flags,
- 			&bundle->plane_infos[planes_count],
- 			&bundle->flip_addrs[planes_count].address,
--			afb->tmz_surface, false);
-+			afb->tmz_surface);
+ 	cs_dsp_mock_wmfw_start_alg_info_block(local->wmfw_builder,
+ 					      cs_dsp_ctl_parse_test_algs[0].id,
+@@ -273,7 +276,7 @@ static void cs_dsp_ctl_parse_max_short_name(struct kunit *test)
+ 	ctl = list_first_entry_or_null(&priv->dsp->ctl_list, struct cs_dsp_coeff_ctl, list);
+ 	KUNIT_ASSERT_NOT_NULL(test, ctl);
+ 	KUNIT_EXPECT_EQ(test, ctl->subname_len, 255);
+-	KUNIT_EXPECT_MEMEQ(test, ctl->subname, name, ctl->subname_len);
++	KUNIT_EXPECT_MEMEQ(test, ctl->subname, def.shortname, ctl->subname_len);
+ 	KUNIT_EXPECT_EQ(test, ctl->flags, def.flags);
+ 	KUNIT_EXPECT_EQ(test, ctl->type, def.type);
+ 	KUNIT_EXPECT_EQ(test, ctl->len, def.length_bytes);
+@@ -323,12 +326,8 @@ static void cs_dsp_ctl_parse_with_max_fullname(struct kunit *test)
+ 	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+ 	struct cs_dsp_coeff_ctl *ctl;
+ 	struct firmware *wmfw;
+-	char *fullname;
  
- 		drm_dbg_state(state->dev, "plane: id=%d dcc_en=%d\n",
- 				 new_plane_state->plane->index,
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index 495e3cd70426..83c7c8853ede 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -309,8 +309,7 @@ static int amdgpu_dm_plane_fill_gfx9_plane_attributes_from_modifiers(struct amdg
- 								     const struct plane_size *plane_size,
- 								     union dc_tiling_info *tiling_info,
- 								     struct dc_plane_dcc_param *dcc,
--								     struct dc_plane_address *address,
--								     const bool force_disable_dcc)
-+								     struct dc_plane_address *address)
- {
- 	const uint64_t modifier = afb->base.modifier;
- 	int ret = 0;
-@@ -318,7 +317,7 @@ static int amdgpu_dm_plane_fill_gfx9_plane_attributes_from_modifiers(struct amdg
- 	amdgpu_dm_plane_fill_gfx9_tiling_info_from_modifier(adev, tiling_info, modifier);
- 	tiling_info->gfx9.swizzle = amdgpu_dm_plane_modifier_gfx9_swizzle_mode(modifier);
+-	fullname = kunit_kmalloc(test, 255, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, fullname);
+-	memset(fullname, 'A', 255);
+-	def.fullname = fullname;
++	def.fullname = cs_dsp_ctl_alloc_test_string(test, 'A', 255);
  
--	if (amdgpu_dm_plane_modifier_has_dcc(modifier) && !force_disable_dcc) {
-+	if (amdgpu_dm_plane_modifier_has_dcc(modifier)) {
- 		uint64_t dcc_address = afb->address + afb->base.offsets[1];
- 		bool independent_64b_blks = AMD_FMT_MOD_GET(DCC_INDEPENDENT_64B, modifier);
- 		bool independent_128b_blks = AMD_FMT_MOD_GET(DCC_INDEPENDENT_128B, modifier);
-@@ -360,8 +359,7 @@ static int amdgpu_dm_plane_fill_gfx12_plane_attributes_from_modifiers(struct amd
- 								      const struct plane_size *plane_size,
- 								      union dc_tiling_info *tiling_info,
- 								      struct dc_plane_dcc_param *dcc,
--								      struct dc_plane_address *address,
--								      const bool force_disable_dcc)
-+								      struct dc_plane_address *address)
- {
- 	const uint64_t modifier = afb->base.modifier;
- 	int ret = 0;
-@@ -371,7 +369,7 @@ static int amdgpu_dm_plane_fill_gfx12_plane_attributes_from_modifiers(struct amd
+ 	cs_dsp_mock_wmfw_start_alg_info_block(local->wmfw_builder,
+ 					      cs_dsp_ctl_parse_test_algs[0].id,
+@@ -392,12 +391,8 @@ static void cs_dsp_ctl_parse_with_max_description(struct kunit *test)
+ 	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+ 	struct cs_dsp_coeff_ctl *ctl;
+ 	struct firmware *wmfw;
+-	char *description;
  
- 	tiling_info->gfx9.swizzle = amdgpu_dm_plane_modifier_gfx9_swizzle_mode(modifier);
+-	description = kunit_kmalloc(test, 65535, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, description);
+-	memset(description, 'A', 65535);
+-	def.description = description;
++	def.description = cs_dsp_ctl_alloc_test_string(test, 'A', 65535);
  
--	if (amdgpu_dm_plane_modifier_has_dcc(modifier) && !force_disable_dcc) {
-+	if (amdgpu_dm_plane_modifier_has_dcc(modifier)) {
- 		int max_compressed_block = AMD_FMT_MOD_GET(DCC_MAX_COMPRESSED_BLOCK, modifier);
+ 	cs_dsp_mock_wmfw_start_alg_info_block(local->wmfw_builder,
+ 					      cs_dsp_ctl_parse_test_algs[0].id,
+@@ -429,17 +424,9 @@ static void cs_dsp_ctl_parse_with_max_fullname_and_description(struct kunit *tes
+ 	struct cs_dsp_mock_coeff_def def = mock_coeff_template;
+ 	struct cs_dsp_coeff_ctl *ctl;
+ 	struct firmware *wmfw;
+-	char *fullname, *description;
+-
+-	fullname = kunit_kmalloc(test, 255, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, fullname);
+-	memset(fullname, 'A', 255);
+-	def.fullname = fullname;
  
- 		dcc->enable = 1;
-@@ -839,8 +837,7 @@ int amdgpu_dm_plane_fill_plane_buffer_attributes(struct amdgpu_device *adev,
- 			     struct plane_size *plane_size,
- 			     struct dc_plane_dcc_param *dcc,
- 			     struct dc_plane_address *address,
--			     bool tmz_surface,
--			     bool force_disable_dcc)
-+			     bool tmz_surface)
- {
- 	const struct drm_framebuffer *fb = &afb->base;
- 	int ret;
-@@ -900,16 +897,14 @@ int amdgpu_dm_plane_fill_plane_buffer_attributes(struct amdgpu_device *adev,
- 		ret = amdgpu_dm_plane_fill_gfx12_plane_attributes_from_modifiers(adev, afb, format,
- 										 rotation, plane_size,
- 										 tiling_info, dcc,
--										 address,
--										 force_disable_dcc);
-+										 address);
- 		if (ret)
- 			return ret;
- 	} else if (adev->family >= AMDGPU_FAMILY_AI) {
- 		ret = amdgpu_dm_plane_fill_gfx9_plane_attributes_from_modifiers(adev, afb, format,
- 										rotation, plane_size,
- 										tiling_info, dcc,
--										address,
--										force_disable_dcc);
-+										address);
- 		if (ret)
- 			return ret;
- 	} else {
-@@ -1000,14 +995,13 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
- 	    dm_plane_state_old->dc_state != dm_plane_state_new->dc_state) {
- 		struct dc_plane_state *plane_state =
- 			dm_plane_state_new->dc_state;
--		bool force_disable_dcc = !plane_state->dcc.enable;
+-	description = kunit_kmalloc(test, 65535, GFP_KERNEL);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, description);
+-	memset(description, 'A', 65535);
+-	def.description = description;
++	def.fullname = cs_dsp_ctl_alloc_test_string(test, 'A', 255);
++	def.description = cs_dsp_ctl_alloc_test_string(test, 'A', 65535);
  
- 		amdgpu_dm_plane_fill_plane_buffer_attributes(
- 			adev, afb, plane_state->format, plane_state->rotation,
- 			afb->tiling_flags,
- 			&plane_state->tiling_info, &plane_state->plane_size,
- 			&plane_state->dcc, &plane_state->address,
--			afb->tmz_surface, force_disable_dcc);
-+			afb->tmz_surface);
- 	}
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h
-index 6498359bff6f..2eef13b1c05a 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h
-@@ -51,8 +51,7 @@ int amdgpu_dm_plane_fill_plane_buffer_attributes(struct amdgpu_device *adev,
- 				 struct plane_size *plane_size,
- 				 struct dc_plane_dcc_param *dcc,
- 				 struct dc_plane_address *address,
--				 bool tmz_surface,
--				 bool force_disable_dcc);
-+				 bool tmz_surface);
- 
- int amdgpu_dm_plane_init(struct amdgpu_display_manager *dm,
- 			 struct drm_plane *plane,
+ 	cs_dsp_mock_wmfw_start_alg_info_block(local->wmfw_builder,
+ 					      cs_dsp_ctl_parse_test_algs[0].id,
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250211-cs_dsp-kunit-strings-f43e27078ed2
+
+Best regards,
 -- 
-2.48.1
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
