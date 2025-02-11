@@ -1,93 +1,116 @@
-Return-Path: <stable+bounces-114961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556B0A316EE
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:54:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D166A317D0
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 22:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A971887638
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:54:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D633A0F67
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9682641CF;
-	Tue, 11 Feb 2025 20:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DCB26A1A5;
+	Tue, 11 Feb 2025 21:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="BiA+qjSD"
-X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yt2jK6fM"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382F81CA84;
-	Tue, 11 Feb 2025 20:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8C2268FE8
+	for <Stable@vger.kernel.org>; Tue, 11 Feb 2025 21:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739307271; cv=none; b=km61gTznUmRRGbGaoZEIcabYRwW6qnLCfxN276ekHOlwwXWWsSFF4NNs/qig5rW9u9iypBvnFsqP9z0czHrhEwexc3CMSDScBnNLGcdVo3x4yzrga3kRwa8IAS4drGINT4RGVExubqjLneW4L2lASqLr3PTNZmA04129LR816II=
+	t=1739309525; cv=none; b=D3298yvofhoGm91GskN51JQKZW0B2IWGibp3Lx9kxU7M48I5u6zmsIYeK44gVR0Vlf+m6UG8QZOPc8kRYdzDbM8vhdcLajU4WlRZeRGK2noLEsI9CVfXkYPIeZLCtlcwsnyU2L5GEjZHEBgnx7y1x6kSH/ufoCLZQM4/4TufPfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739307271; c=relaxed/simple;
-	bh=YOdj3Ibcjs80c3SuLcD+Qwr+/jgda6an4ycWCDSIkxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mbH1b+DVVsaBo7gvTbcX0cV9V4B8Lwrmlph16EBWvSOJgCTm94o7OYCZ6QiLqIIsoi9P8TFntuq7+qgmr+5YV5MfzqsM7c9xy3nHwkTfWZSahIJkY+HnMAxMtKfT3MMLuita2oMf62si8/Nxj+bqgf/FwCCnY+kDNSQz6kIit+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=BiA+qjSD; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1iJ8xpWA2sBU7gPbf/7jmmtf2ADvi1y7fZeAsq52FKE=; b=BiA+qjSDDrhzqu8WyRazJdREyv
-	TTRJ9bo67PwyXjoW8WRk2wKH7q4oJLL4QDkdNLfxd0xStATm8o2jvhvsfKVsG9WveH49v420Yoan9
-	zrw3szvDIXYnlD0/dxUDCV6GONU9I5dDNI5rL+mOp+LIsTC2iuaCK/NUDK/mnfvCY0ARVFdsCg1ZN
-	JQd51sfc1AAZ+jd6o/+VcgfjFhSKIR4axpBoFiKh7CVnxEPaXuxiTuWq2RwB+QnPwSnvLuP1iMpaH
-	qFqK144LG4OfpXjVEnbTAX+bD27vRYTUn7O/HIQYwVc4fRYajba45DBi/KnP3rzYNDFzKOVGckKdh
-	on4LlfFw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1thxGs-0000000Axan-1W0F;
-	Tue, 11 Feb 2025 20:54:18 +0000
-Date: Tue, 11 Feb 2025 20:54:18 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Zicheng Qu <quzicheng@huawei.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>, jlayton@kernel.org,
-	axboe@kernel.dk, joel.granados@kernel.org, tglx@linutronix.de,
-	hch@lst.de, len.brown@intel.com, pavel@ucw.cz, pengfei.xu@intel.com,
-	rafael@kernel.org, tanghui20@huawei.com, zhangqiao22@huawei.com,
-	judy.chenhui@huawei.com, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-	linux-pm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] acct: block access to kernel internal filesystems
-Message-ID: <20250211205418.GI1977892@ZenIV>
-References: <20250211-work-acct-v1-0-1c16aecab8b3@kernel.org>
- <20250211-work-acct-v1-2-1c16aecab8b3@kernel.org>
+	s=arc-20240116; t=1739309525; c=relaxed/simple;
+	bh=+LUKvtaq5+tVeSV8nn8P/esQQflfMiqhA8o10k5cyOo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n0QOeNbeJiMJc+f3ZcIUdOe33zfeLCWsoXfMNTgRrFflJcpKRm8NU8bjyS9FESzcEqTBARQ0ACus0htQRLHZKIUUVaPFfDl29/LcUMZsWhN/iYWUyfpMIFyfFHMhWh2KSdlQJxFdEplA2KpeP7BLItkKKk3CwuH/o06EV2WCd2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yt2jK6fM; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-21f6a47d5d7so107320005ad.0
+        for <Stable@vger.kernel.org>; Tue, 11 Feb 2025 13:31:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739309516; x=1739914316; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VkaRbODbKGzYYO3d8B5U658Dnrd7njXNzj1iv9zbjaI=;
+        b=Yt2jK6fMaUwYFu0R9BfXwO83HnbAB3nmoxfLcm+fATbbAFSn9X7ilBa+qr+46Ak5wv
+         iBBTLZEDyCzyyvBIAQuRe4nFLpU4yySP/Byy2S1Z5yPhuPYoBbjLcFWX4YFBMcHFWhcP
+         5Yst1KkcHP+8EKveA5hY8hkId7TjWtpZok0ywaEQVAdRz4aado8DP+BptaqpMn7P6kFI
+         gPK1GUc0CdwBK25lpYhSAFb7aC1gR4Cv6u4MKpJJQz3Q/E7J0zACyDAj1wd01JZRspu0
+         KX2yG4lTy7WjQjNhjO6+A/aKApo3DiTLZxx+0v8eO6FqzvqBsGIuSsbbEdbtEatj3BtJ
+         Kt9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739309516; x=1739914316;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VkaRbODbKGzYYO3d8B5U658Dnrd7njXNzj1iv9zbjaI=;
+        b=Ay2hEbLQVNY9j+g8vqg6eB4q43wN5OK6d1qlSbntyB9NgOeWeodTtBTMTJs9J+vcMC
+         FHBA1+kPJoPt+N0b5OxesBRYu8kNsN9I578mH7k48qUaZDPspD+vh1xcVIKyxjaxdJ8u
+         aF3FPLRKq63Co/qHi543t7PCBNy250Lkm0JS6nuzm3ezCzXPcgV0hctGuB43XL075x0p
+         amcNaYaVP7x9HnamdLo6YEH/YU29ClSp3YqHihauxkYzCSHYRAqct1BgJgGtsDGMA9wC
+         qZ3fnGkmn5wm/uxpNLRuTuXpvqzxwAWHORPX/9VBhrfI/NsBaD8soRbBFSN3mcbxD8dd
+         2wOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTqcZOC3n9Vy85FaqQjE4nvO1zw6PZZM57imEpitHoL9DQRfBIE7eszB6zLSH95kWQXO0KmD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8VuFrzJAfRORkDaCyoXignxQGUkZoGnO3nRNYoywJYbCwIAHA
+	r21NMUukkaIWP97ifsbLveouXmT7L2a8fjJo6NjoXZSkKfeMv36zgntHpMEDGNT5wIo/OZStMeu
+	f2g==
+X-Google-Smtp-Source: AGHT+IF0fRIVtQzGjHRyYmnEnH/8CimtcIxuPGCWLPNdmuUYuFVbVgvZHz2rDvO254ixr09jUnGGcU4Rzps=
+X-Received: from pfblb14.prod.google.com ([2002:a05:6a00:4f0e:b0:730:8a7b:24e0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2d06:b0:1e4:8fdd:8c77
+ with SMTP id adf61e73a8af0-1ee5c733c61mr1455053637.8.1739309515854; Tue, 11
+ Feb 2025 13:31:55 -0800 (PST)
+Date: Tue, 11 Feb 2025 13:31:54 -0800
+In-Reply-To: <cover.1739226950.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250211-work-acct-v1-2-1c16aecab8b3@kernel.org>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Mime-Version: 1.0
+References: <cover.1739226950.git.ashish.kalra@amd.com>
+Message-ID: <Z6vByjY9t8X901hQ@google.com>
+Subject: Re: [PATCH v4 0/3] Fix broken SNP support with KVM module built-in
+From: Sean Christopherson <seanjc@google.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, joro@8bytes.org, suravee.suthikulpanit@amd.com, 
+	will@kernel.org, robin.murphy@arm.com, michael.roth@amd.com, 
+	dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org, 
+	kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, vasant.hegde@amd.com, 
+	Stable@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev, 
+	iommu@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Feb 11, 2025 at 06:16:00PM +0100, Christian Brauner wrote:
-> There's no point in allowing anything kernel internal nor procfs or
-> sysfs.
+On Mon, Feb 10, 2025, Ashish Kalra wrote:
+> Ashish Kalra (1):
+>   x86/sev: Fix broken SNP support with KVM module built-in
+> 
+> Sean Christopherson (2):
+>   crypto: ccp: Add external API interface for PSP module initialization
+>   KVM: SVM: Ensure PSP module is initialized if KVM module is built-in
 
-> +	/* Exclude kernel kernel internal filesystems. */
-> +	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
-> +		kfree(acct);
-> +		filp_close(file, NULL);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Exclude procfs and sysfs. */
-> +	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
-> +		kfree(acct);
-> +		filp_close(file, NULL);
-> +		return -EINVAL;
-> +	}
+Unless I've overlooked a dependency, patch 3 (IOMMU vs. RMP) is entirely
+independent of patches 1 and 2 (PSP vs. KVM).  If no one objects, I'll take the
+first two patches through the kvm-x86 tree, and let the tip/iommu maintainers
+sort out the last patch.
 
-That looks like a really weird way to test it, especially the second
-part...
+>  arch/x86/include/asm/sev.h  |  2 ++
+>  arch/x86/kvm/svm/sev.c      | 10 ++++++++++
+>  arch/x86/virt/svm/sev.c     | 23 +++++++----------------
+>  drivers/crypto/ccp/sp-dev.c | 14 ++++++++++++++
+>  drivers/iommu/amd/init.c    | 34 ++++++++++++++++++++++++++++++----
+>  include/linux/psp-sev.h     |  9 +++++++++
+>  6 files changed, 72 insertions(+), 20 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
