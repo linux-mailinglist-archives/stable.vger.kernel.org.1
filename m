@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-114822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382AEA300F0
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:46:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4074BA300F1
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C8CF1886E59
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F84163BB5
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8411253B76;
-	Tue, 11 Feb 2025 01:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1075E1D514A;
+	Tue, 11 Feb 2025 01:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unvcpvtC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD6GRDKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F84A253B6D;
-	Tue, 11 Feb 2025 01:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1861253B74;
+	Tue, 11 Feb 2025 01:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237575; cv=none; b=J+DCBXw71/STKNl4cI7UQgwhhuT/tMYvnJLpY+fYpOm8hwvMIMezmbsLmJau1lUj0TLJNE9TH/L5xtfY9XbIF5O3K5g0ArDsBk271C6fFXcVg297SFY3jwax94hEd7m/NmsVxcsL1azUqExnlBX5OeGpMXwqtr1Yrf8BqcTayUw=
+	t=1739237575; cv=none; b=VfCM6N1jy0xzA55pptfAuwa15ivBNelyv+3ifkYnTcJ84vHqiSHoXJxFmCjpa88M+QMkWNe3J2WUvXK2w22HrQ5nmi3WzJB/NnqG8Hnclx1dkh44Zei2TFFaaKFDSVWdwrgEy78CGzq/GTbV6OZNGVjKkVAljz8qltathX9AOzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739237575; c=relaxed/simple;
-	bh=yjSVntJ6iXt8W9c259Qi78e29HqQPMM1IRfLfxua9SM=;
+	bh=KufTdAMR8pZA9otpNfJUJB9G7SALCvrPjOzcgNOR4RA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dbkR7lXbzV3Cl5DkVEEfv5aGYIVEG2iu0PARW3t6O0Y2BSB/kWXuIhCnLUInLPrvOV5O6TxdbCLy2agu06ASOfhGdiMQz0VRISIk1I2vp7TURI3VfUqeU784n2TgU7yjTV7wZh5kT2e/4KIRWSHJ2+R8wjZT9KFr99LVhgGRkSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unvcpvtC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A75EC4CEDF;
-	Tue, 11 Feb 2025 01:32:53 +0000 (UTC)
+	 MIME-Version; b=C/ViI7322yrkMA2RVBI32FrFN/APmhgPx9lanYasA0YFio6LFbx5k/rSBCc0N3BepG1sfog1Pwvk9T0e7HYurpFt0RUpQdfoGfBrKyOPqxOIUVhmfRbm5ZZOT/zr1L2ItASsJ0Cc16cwF0smUOl4UpGCN9o6gbyN1kM5H4S7FCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD6GRDKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A8C4CEE7;
+	Tue, 11 Feb 2025 01:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237574;
-	bh=yjSVntJ6iXt8W9c259Qi78e29HqQPMM1IRfLfxua9SM=;
+	s=k20201202; t=1739237575;
+	bh=KufTdAMR8pZA9otpNfJUJB9G7SALCvrPjOzcgNOR4RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unvcpvtCD38t/sIOD4iBwdsfOnpm0Hg5oOcVhfmxQkp6osbpr9glV5OIxJnKsnZAc
-	 KDbtQN9fe4GlJqHDjtHuu0q9/gNYZSY9WB0QEPzQcme5BJE8ByqfzHcAcrU46UE9oo
-	 KaZJrCRSI1LeayWfeRapIfL9IbLCksycgVI00cpiKL3VnPkIseWXA284x98SKUBMSX
-	 TAplB62CwGcYC2XuDC2WZvy2KpJp0DJRY2jC4XplTdKFNOSMLaBq3Eq5ChTbUThZf+
-	 Ds5YoT+Q5kumdQj8X77rTyhu3Y9wuUN6VwjdRxgj9ncYef37if5cyBW+p2tyDnlxmS
-	 QUh5EkR2WbLfg==
+	b=MD6GRDKdH6SmddAeIfvHEcJH/i52nFJX906idXj5Bys7Fo4DQmEy6pEnktmTzVx3W
+	 kLynXFka86e/63M6Td/1QNNf4pkXZCTWBQypXXAoCdjpisSTdBDti5sZ7tMeUVksSu
+	 yFNkC1/SGXcNhdf/xnognwrg4Zu+zEpm+/QouLiUwIp9iMxm/X1hRTlZGR4uXVRJIm
+	 XINnLANGhiUWrIe+WoF7joB87O3Hj3bL47/6HVnxiJZhXhiovPRBNcKFx1eSs5Ajxe
+	 hT+L6Oxa9lihMer9vpnQNRnD2Lm2QkereydYMQ51v+WTDda9WryLevfT+SXyu+HoXA
+	 ANSmGgoakDBgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Chengen Du <chengen.du@canonical.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/8] powercap: call put_device() on an error path in powercap_register_control_type()
-Date: Mon, 10 Feb 2025 20:32:43 -0500
-Message-Id: <20250211013248.4098848-3-sashal@kernel.org>
+	pjones@redhat.com,
+	konrad@kernel.org
+Subject: [PATCH AUTOSEL 5.10 4/8] iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
+Date: Mon, 10 Feb 2025 20:32:44 -0500
+Message-Id: <20250211013248.4098848-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013248.4098848-1-sashal@kernel.org>
 References: <20250211013248.4098848-1-sashal@kernel.org>
@@ -66,43 +66,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.234
 Content-Transfer-Encoding: 8bit
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 93c66fbc280747ea700bd6199633d661e3c819b3 ]
+[ Upstream commit 07e0d99a2f701123ad3104c0f1a1e66bce74d6e5 ]
 
-powercap_register_control_type() calls device_register(), but does not
-release the refcount of the device when it fails.
+When performing an iSCSI boot using IPv6, iscsistart still reads the
+/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
+length is 64, this causes the shift exponent to become negative,
+triggering a UBSAN warning. As the concept of a subnet mask does not
+apply to IPv6, the value is set to ~0 to suppress the warning message.
 
-Call put_device() before returning an error to balance the refcount.
-
-Since the kfree(control_type) will be done by powercap_release(), remove
-the lines in powercap_register_control_type() before returning the error.
-
-This bug was found by an experimental verifier that I am developing.
-
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20250110010554.1583411-1-joe@pf.is.s.u-tokyo.ac.jp
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/powercap_sys.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/firmware/iscsi_ibft.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index 7a3109a538813..fe5d05da7ce7a 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -627,8 +627,7 @@ struct powercap_control_type *powercap_register_control_type(
- 	dev_set_name(&control_type->dev, "%s", name);
- 	result = device_register(&control_type->dev);
- 	if (result) {
--		if (control_type->allocated)
--			kfree(control_type);
-+		put_device(&control_type->dev);
- 		return ERR_PTR(result);
- 	}
- 	idr_init(&control_type->idr);
+diff --git a/drivers/firmware/iscsi_ibft.c b/drivers/firmware/iscsi_ibft.c
+index 7127a04bca195..0d96dbbba74e6 100644
+--- a/drivers/firmware/iscsi_ibft.c
++++ b/drivers/firmware/iscsi_ibft.c
+@@ -312,7 +312,10 @@ static ssize_t ibft_attr_show_nic(void *data, int type, char *buf)
+ 		str += sprintf_ipaddr(str, nic->ip_addr);
+ 		break;
+ 	case ISCSI_BOOT_ETH_SUBNET_MASK:
+-		val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
++		if (nic->subnet_mask_prefix > 32)
++			val = cpu_to_be32(~0);
++		else
++			val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
+ 		str += sprintf(str, "%pI4", &val);
+ 		break;
+ 	case ISCSI_BOOT_ETH_PREFIX_LEN:
 -- 
 2.39.5
 
