@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-114787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA54A3008F
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:39:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7087EA30094
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F17C1635C1
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:39:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75053A6530
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF3A1F3FED;
-	Tue, 11 Feb 2025 01:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DF31F4285;
+	Tue, 11 Feb 2025 01:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRIc5N5k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJAoyxJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE6D1F3FD9;
-	Tue, 11 Feb 2025 01:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC7C1E3DEF;
+	Tue, 11 Feb 2025 01:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237501; cv=none; b=hKpPi/+uYg70YR2Ujybq+XUYzAOkJOFkjvLf7eIUg6/YBCOsys3na0O9xVN73auNsD82r1HtLkKYJtSPkPFiW09uGG8NTtdVp0Km/OcSL3yIB7ay/x+uSh2FUMbYC6seU3mOFRh6/DVXM57LC9Oz3Q6ebPDiYh8m2AiTghDQr2o=
+	t=1739237503; cv=none; b=K+3pGp5uabIOTJf5R8Nolykfj6wMn2x0ezgVmg/FevTyyQfhf/aIv25X2p7r0ZH8c9r2IcjnQWUiWoZATdwn3OAiPZu9rOnTGazIWkPL0gZ4HzErjVLM5F8lPTpkvg+qutQsgG1fMTSZfFWxAtKa65gNOTJ75gxDvh0jMOH6hkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237501; c=relaxed/simple;
-	bh=tzInMHi9KMI970TSdYOun3wuGAiQ+onTovH56YsppvU=;
+	s=arc-20240116; t=1739237503; c=relaxed/simple;
+	bh=7bMjJEnwl4VKz9B0kjecL5TqCguIfjhP5xC90w54YSA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tqt8jmxlro3w7XZL/wd6YJ5+xdG8zd/nfhZnnjiERjwz8X8pLo7KARMItAWJwddRIOn1wlrEALFR29i2DFPstSbuS4I6Hffr8E4Hq7biUU6kpqQCkYZsJvHNFtix90regiil7UR/4hcxTIhCbrSDedz24u0P/uDCjSlKN/YOkIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRIc5N5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F82C4CED1;
-	Tue, 11 Feb 2025 01:31:40 +0000 (UTC)
+	 MIME-Version; b=ArfTEraXHueZCpT6eMtvvYaOk3zqwPaxcKAiqstiW/em2QT+yVfccyjGQhmbFgrVGT5kjJmdrzvQyk1qIfHSak4v4loCyG/c3z1VSGlKZEyq/G6baIakU9OT91r5mb7YjfFdLEiif9sj1H+0IqX+eMeazEc7jRu/ZByNzZuhYN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJAoyxJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B1DC4CEE7;
+	Tue, 11 Feb 2025 01:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237501;
-	bh=tzInMHi9KMI970TSdYOun3wuGAiQ+onTovH56YsppvU=;
+	s=k20201202; t=1739237502;
+	bh=7bMjJEnwl4VKz9B0kjecL5TqCguIfjhP5xC90w54YSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRIc5N5kf/rzzn3ctYsLizWbJDrTxsKIG8eCt0R0Al0pz7r8583jWNV46Cm7zsT/t
-	 MBT2pTUPrh3Qh91spzXKgQO/QjYx2jeKXt/DrivC1ZUKsYZOSqYHqDfZtRY8YRdty4
-	 3KdbwGELjyEt0RPkSlVt04D0xqs2wkw+a1cC+DuJhBHoqeczyic6VJSp2aO0RB7FjW
-	 QQUfXm9JkJXno5afcI62tWpFG6+SaF/UX1X87/IQxwIrm3PvaGpi/PhDBm3PG9Ksaz
-	 gwCfYyRDR9Wn4wwO89kbpz7nuRiPgt5uF0zY6O4YFXqC2ymoQz+J/PCGaPiWV2Jm5v
-	 cV/DsZPQksUJA==
+	b=eJAoyxJhc8LIBuNComBF+gt0JBxzuzJXyzsTJdhWQTjfVMN9077y+oN/MKOkktOaZ
+	 kUn+T4CALT9Taaoc4artNZVrF7SDbJvsgdX1/WB7A6QSm3cllpi0bg8u/wofiJQLaz
+	 uNfGdOCnuYDfQesCcB7oT4VKmyau4whYZ4be28yQdadXldb2/n0/z0TOvaLl8WLe+K
+	 3vb8SdKordnUTcvtd9wZzPF+qKPinX9H5eWynTWjPLRfkPY+zoX8bIOLP6ORCIxa5G
+	 etV0UTTEdqjflbgCBNkhZZUewm2ZJQ5CwOO/m0uJbiZ7tIIMF/adSFA5noHbtOUgby
+	 32WywAO7xqhhA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	nathan@kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 03/15] hrtimers: Mark is_migration_base() with __always_inline
-Date: Mon, 10 Feb 2025 20:31:23 -0500
-Message-Id: <20250211013136.4098219-3-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 04/15] powercap: call put_device() on an error path in powercap_register_control_type()
+Date: Mon, 10 Feb 2025 20:31:24 -0500
+Message-Id: <20250211013136.4098219-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013136.4098219-1-sashal@kernel.org>
 References: <20250211013136.4098219-1-sashal@kernel.org>
@@ -68,77 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.76
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
+[ Upstream commit 93c66fbc280747ea700bd6199633d661e3c819b3 ]
 
-When is_migration_base() is unused, it prevents kernel builds
-with clang, `make W=1` and CONFIG_WERROR=y:
+powercap_register_control_type() calls device_register(), but does not
+release the refcount of the device when it fails.
 
-kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
-  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
-      |                    ^~~~~~~~~~~~~~~~~
+Call put_device() before returning an error to balance the refcount.
 
-Fix this by marking it with __always_inline.
+Since the kfree(control_type) will be done by powercap_release(), remove
+the lines in powercap_register_control_type() before returning the error.
 
-[ tglx: Use __always_inline instead of __maybe_unused and move it into the
-  	usage sites conditional ]
+This bug was found by an experimental verifier that I am developing.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250110010554.1583411-1-joe@pf.is.s.u-tokyo.ac.jp
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/powercap/powercap_sys.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index e99b1305e1a5f..d5d1b745506a9 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -145,11 +145,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
- 
- #define migration_base	migration_cpu_base.clock_base[0]
- 
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return base == &migration_base;
--}
--
- /*
-  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
-  * means that all timers which are tied to this base via timer->base are
-@@ -275,11 +270,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 
- #else /* CONFIG_SMP */
- 
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return false;
--}
--
- static inline struct hrtimer_clock_base *
- lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
- 	__acquires(&timer->base->cpu_base->lock)
-@@ -1381,6 +1371,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
+index 52c32dcbf7d84..4112a00973382 100644
+--- a/drivers/powercap/powercap_sys.c
++++ b/drivers/powercap/powercap_sys.c
+@@ -627,8 +627,7 @@ struct powercap_control_type *powercap_register_control_type(
+ 	dev_set_name(&control_type->dev, "%s", name);
+ 	result = device_register(&control_type->dev);
+ 	if (result) {
+-		if (control_type->allocated)
+-			kfree(control_type);
++		put_device(&control_type->dev);
+ 		return ERR_PTR(result);
  	}
- }
- 
-+#ifdef CONFIG_SMP
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return base == &migration_base;
-+}
-+#else
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * This function is called on PREEMPT_RT kernels when the fast path
-  * deletion of a timer failed because the timer callback function was
+ 	idr_init(&control_type->idr);
 -- 
 2.39.5
 
