@@ -1,193 +1,188 @@
-Return-Path: <stable+bounces-114942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD483A3126D
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 18:07:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18021A31286
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 18:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DEBF3A54D3
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:07:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD083163594
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 17:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B00262163;
-	Tue, 11 Feb 2025 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5990725A32A;
+	Tue, 11 Feb 2025 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cEXWz926"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbTu3voo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCABF262150
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 17:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5E1FDA9C;
+	Tue, 11 Feb 2025 17:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739293641; cv=none; b=POb85hI21iNSWMPTzVvaZAbJBiLZ2BOnVkAcul6sdr9mMOs60kexnhqIKnEtsco7/J49rJ9WY90QAUTW7u0dlUL/Fq5gpLYJtxSI1Ye49SuNIKx4G2M5Pe+O4LRG4RuwjDpUhdLHbSJWY5/p5ySkvEJZNW9HBzoXanVXlwGulfM=
+	t=1739294142; cv=none; b=oxpBHbEs8IdMDvJ7D6p2b3sftzcRlovDYCT0a9EGM2LuOM27Yh0oJwk6UKx1aRUfQFviALp6SfgOnR6FwiWmpON2+suaUvOaxDA1W3kOKvMRITWXst3WnYJZj/g450bp5HJ1AJX51dGcvwZN2Jpdr0SasbPj7lIh7DXqqoXe0x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739293641; c=relaxed/simple;
-	bh=rbe5Y2Ln2SSnKxfB/YNLvURbuJdqZXf4Y5kS17Vit80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYilDFpr9Xd3YMi0rc9ovQ6/fxl++pA59hiGNTYkctskQg1QhVnN1MWDtNxpZ7jv+sG9ZNxVPQWZImyLyDj/DkTQQXjr+Pthji8eXqFiIu69fxy38VdhaY56sn+ekan1IG+kWe6y+9LvCUc6l3e67Ph4k9WmkhC57afLKyeIHR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cEXWz926; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B8vDi0001448
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 17:07:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=1GMVTG1cg17eCXjRnwy0UFsT
-	hrjnHjAWCsStfcLb0Kg=; b=cEXWz926r09ZKs3nPknOWcICCAD5njRLq+4/RD5A
-	zN9N9tdtPhe4QW4UuRAezP2RiBGYzr71biVrP6lBk2faA51E+bJHIyuk612cp/kN
-	cQPLh37cGbcQ4FZfl42o9SjRyT4VfVRNouMS0y9QSbWukVtAuJTJhCIHyQMirqER
-	4bswWhdhH30LS40XM9Q3VYjeKoMQkWD+oIMFiAFO65PFaYDt3G4MGGSFGzTQHvfw
-	sbda7lPo72qH/p/IRXZG09OzFS2feUW8H/18wl22p0fT/yurAH/3OOw8WIaqbaw0
-	0rwMzHReIhVPLdTl5SyJZZf8dak70wDAbM9hiln8WFUl0A==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44qepxmrke-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 17:07:18 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-216266cc0acso129879005ad.0
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 09:07:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739293637; x=1739898437;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1739294142; c=relaxed/simple;
+	bh=T1Q1rk0OE80nhZXV4WGQJSdwO49rfsJCVQlO2XadBdM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WsBhM7zohunlnNecxNhUnQ9RfNFwHpS7A/6+ns/Bj3ZU/np9AgDaxYYur3L/sykksfNBle9eRTEBaTMm/sREwSpqt32Lc1Y6WnfxoVZRQKthSvxwoJvh46iWT3/oLrLWvFahMEqxhasvrud8pRrfyr5+KeGECC1ReCxjn1C/JZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbTu3voo; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30227c56b11so60401211fa.3;
+        Tue, 11 Feb 2025 09:15:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739294138; x=1739898938; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1GMVTG1cg17eCXjRnwy0UFsThrjnHjAWCsStfcLb0Kg=;
-        b=ZeVUZUA5N9Rt048BXynGpSme3x0pvNBFHk5nG6XtRzjbUiZwhXf5sFCpeISmzddL/4
-         26bRJ6h9CxJK/Bsto+0lXrEHYF4igy/1eWMDXIFrbXcqGwk2KCFtpAsHd6xFE2kkY60k
-         0hcFGrXGkTsRgcTq1v6N4AuK9S8pwz3guq9Fk+JtI7gCnjXR4Z35N+yEEFb21+GmmYE8
-         Mdqa0jdWZQQ4lv4zG4bLaHfIx5rpAyuXJlWAf3vgJdnVJqay7UBtP4E7RHEJJdjmj32A
-         O8RiAfp6QN3j1kocCaLj7SH6apliTd6ruHCImYKWkCNevmuDgJh2t3MSzBjLpfEt9NYk
-         7+fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsIZMKh9aq6U7mnm8okBFV6n1PXLfRPcho+NIm/kPN6V8QUKvH1AfLQTmSkOXMEe42M5Pou8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1y28NmDJ84AAKTmzsAbszb4O01vO50YlrjjrN0egSuWD4Remo
-	AbXrkqMwq6WGdR0tfU1HqtdhzY1O/iO79zZln1L+mCyXkOExvh33sauXU0xE4WARm2temNrZYNn
-	OCky9LZEiZvSEfhtjPriZMUFgwjNEkrMYxEiJ6cdaECAmopf32Mr/1LM=
-X-Gm-Gg: ASbGnctxlTJ7dh3qeq6OunO1+rfRB6x8rIUWsJexGJs1d5DwVx2nk0zOlvHiq1HEQvj
-	2VcYqxk3fKMzwOzY/BI2+Y2CnWv+Pte4fhLVq68/0CeI5qtspvE0cqmMCALrTbqxviPYndVXXdb
-	b2U9aOarqwSV0e9lHoy3+7Ig4uePw8ktoHvRSMEr5javXP7xbUpwsH6eY0wEw+wzzbArBs88ue5
-	jw2JiuV4eXKX1VqrXGK1QGXYNOgJdGqknAe9b0sN2ZDhjzYduKg4LlA0I41s4ISzl5/sV5PbRbF
-	V8+tlZisFyVHI/QIEHCaj5Bo340ERZhK
-X-Received: by 2002:a05:6a00:ad86:b0:730:fb0a:4842 with SMTP id d2e1a72fcca58-73218c5366cmr6150982b3a.9.1739293636898;
-        Tue, 11 Feb 2025 09:07:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEaAarcp1qmTm66w1HLya6eJdieVpL0WZWQEQCxqmomvF7dLUVo+c7WY3hwt8HvtzUA+Eqvng==
-X-Received: by 2002:a05:6a00:ad86:b0:730:fb0a:4842 with SMTP id d2e1a72fcca58-73218c5366cmr6150938b3a.9.1739293636467;
-        Tue, 11 Feb 2025 09:07:16 -0800 (PST)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-730964e7866sm3360074b3a.56.2025.02.11.09.07.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 09:07:16 -0800 (PST)
-Date: Tue, 11 Feb 2025 22:37:11 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, konradybcio@kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Saranya R <quic_sarar@quicinc.com>,
-        Frank Oltmanns <frank@oltmanns.dev>
-Subject: Re: [PATCH v2] soc: qcom: pdr: Fix the potential deadlock
-Message-ID: <Z6uDv3c3DkmgumnM@hu-mojha-hyd.qualcomm.com>
-References: <20250129155544.1864854-1-mukesh.ojha@oss.qualcomm.com>
- <nqsuml3jcblwkp6mcriiekfiz5wlxjypooiygvgd5fjtmfnvdc@zfoaolcjecpl>
- <Z6nE0kxF2ipItB2r@hu-mojha-hyd.qualcomm.com>
- <Z6nKOz97Neb1zZOa@hovoldconsulting.com>
+        bh=kfGl96TFJZs2GWRZT7rxZNxukJBT7ZKMuf9258x9V60=;
+        b=bbTu3voom/QhAAf5sJcArCFcCcbNY1CYqjvacHrutrp4T1L0WC3x36xYInuJGzvvJu
+         lrKpib6NxkVLH4twUmvmWzGYkq0oEfpLecMK/2nCl8go5EN49n5ijSVMR1pZq+hPZRAP
+         gXWGTz2hoB2nScEO9CuSDCpc72fZ6jHOdbG/iBd8N0v0drEzSDAPisaKxKK6G43GgwtL
+         ZXoA1/+LqWTcQmlCKuag3lOI6fSxNTIXfWJGjVWJUbyeN+aM3uCQaayK7GqASxJBPOUN
+         YC9P/WQyzFIg0CSWmMQ0J/gB51gO9Tec9utmQOv2Lyu+EVAV1uE1KHXezsv6we6yU7Kf
+         xulg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739294138; x=1739898938;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kfGl96TFJZs2GWRZT7rxZNxukJBT7ZKMuf9258x9V60=;
+        b=BkU4d/ekxlHrZ/0Z31t+oln0jjlTP9XGFAhMusP1/sNl53auvcQ4r/Lgd/nPuAf64o
+         LRox10eFvJ/axQv65KQ73h30oLruEyzHiYAYgkUvxcGS5UDUg+o8J6WssKKLBMD/NNWD
+         vFpKKpGxWh7bVd4vnthotN254kkslfxz5DyebFa41BjQOKgZ7qkvzqepPC3FjEMNm+hK
+         P1YnqFW9/EHDOde3Nvk9zTalZE/tdG1JpC5pYOBhGUIyJtQG4oKQGi/RdnvSyFgsBo3F
+         NJi2chySE6n/wuxAidBf8O1BPBsIemFGVS1MvrZri2RpuhuCty+MD+VwldSW3tQxgR+j
+         WN+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUkUC/II9T1pQlhzHwg+FnVKTgIbudaI+VodwlJy1i2P9UX1+gBTd87cuQJuQgIjeg/CHd47cX43O7ScsYm@vger.kernel.org, AJvYcCW9SaO3aGmWer6AsEZJHc185YCRKDhQR0rkNTLD8i3o/9BgGGLKbou9wz5uBRSDegghAShloStg6Wzd2Q==@vger.kernel.org, AJvYcCXAmj9pawRe6E+ANaRzkOK2lZKHlbmaS0kzgadO0C+gc6Ffgu8vLZjpeV16IjKVWiQuNxnKMaZP@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOuX5shYLCMlH4rsOAWd5fduPAD5EF+zgE8L15H1DP+RsRdER+
+	T9+f9ayYMd8nc3ol4QevCMcT88gMkTHDAQYBVX+0ePsqA3q7E/DQWdSJDzsMTTOwPk2JbgHADCb
+	QoESuPSeWXtYOh4kJWSWlzNikNC+V065g
+X-Gm-Gg: ASbGnctH7S0dHoKSoICdYsjPYDLfmKRrYi3ntsknzYzNClzPJhG6hPVF+7B5Gczu0D7
+	UMSeswKGWXvqGt4e9aP2CFOO8ooZP80G9m4Qq+pE25OTpW5Z1OlvrsU0PRuIyO8JNUVqMJ2g=
+X-Google-Smtp-Source: AGHT+IHXhXIil0mJkKjM0UNPwB+/GIcgp4QxQg+uZGbCFB7Hzd0beIjAU9fNHW0TvAqCYPNh0xLEqV7JrtPYjKUwYE4=
+X-Received: by 2002:a05:651c:4cb:b0:308:eb34:1037 with SMTP id
+ 38308e7fff4ca-309036d7af3mr1310821fa.23.1739294138031; Tue, 11 Feb 2025
+ 09:15:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6nKOz97Neb1zZOa@hovoldconsulting.com>
-X-Proofpoint-GUID: AuTobID8lxlsO1sSS6dOnfgVzvSDdIDU
-X-Proofpoint-ORIG-GUID: AuTobID8lxlsO1sSS6dOnfgVzvSDdIDU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-11_07,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- phishscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
- mlxlogscore=999 clxscore=1015 lowpriorityscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502110112
+References: <20250204223524.6207-1-ink@unseen.parts> <9a70a5806083499db5649f8c76167a1a61cde058.camel@physik.fu-berlin.de>
+In-Reply-To: <9a70a5806083499db5649f8c76167a1a61cde058.camel@physik.fu-berlin.de>
+From: Matt Turner <mattst88@gmail.com>
+Date: Tue, 11 Feb 2025 12:15:25 -0500
+X-Gm-Features: AWEUYZkLtW6GbKRbmIuUzfDkea097tD_F3kJE3D2DWvxdVKj23WttOx86_vFV4g
+Message-ID: <CAEdQ38EwN5Ybm31GxOdo-tE6U8Wa4imWZgY=VjmGB=X_XQSaog@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] alpha: stack fixes
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Ivan Kokshaysky <ink@unseen.parts>, Richard Henderson <richard.henderson@linaro.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+	Magnus Lindholm <linmag7@gmail.com>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 10, 2025 at 10:43:23AM +0100, Johan Hovold wrote:
-> On Mon, Feb 10, 2025 at 02:50:18PM +0530, Mukesh Ojha wrote:
-> > On Thu, Feb 06, 2025 at 04:13:25PM -0600, Bjorn Andersson wrote:
-> > 
-> > > On Wed, Jan 29, 2025 at 09:25:44PM +0530, Mukesh Ojha wrote:
-> > > > When some client process A call pdr_add_lookup() to add the look up for
-> > > > the service and does schedule locator work, later a process B got a new
-> > > > server packet indicating locator is up and call pdr_locator_new_server()
-> > > > which eventually sets pdr->locator_init_complete to true which process A
-> > > > sees and takes list lock and queries domain list but it will timeout due
-> > > > to deadlock as the response will queued to the same qmi->wq and it is
-> > > > ordered workqueue and process B is not able to complete new server
-> > > > request work due to deadlock on list lock.
-> > > > 
-> > > >        Process A                        Process B
-> > > > 
-> > > >                                      process_scheduled_works()
-> > > > pdr_add_lookup()                      qmi_data_ready_work()
-> > > >  process_scheduled_works()             pdr_locator_new_server()
-> > > >                                          pdr->locator_init_complete=true;
-> > > >    pdr_locator_work()
-> > > >     mutex_lock(&pdr->list_lock);
-> > > > 
-> > > >      pdr_locate_service()                  mutex_lock(&pdr->list_lock);
-> > > > 
-> > > >       pdr_get_domain_list()
-> > > >        pr_err("PDR: %s get domain list
-> > > >                txn wait failed: %d\n",
-> > > >                req->service_name,
-> > > >                ret);
-> > > > 
-> > > > Fix it by removing the unnecessary list iteration as the list iteration
-> > > > is already being done inside locator work, so avoid it here and just
-> > > > call schedule_work() here.
-> > > > 
-> > > 
-> > > I came to the same patch while looking into the issue related to
-> > > in-kernel pd-mapper reported here:
-> > > https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
-> > > 
-> > > So:
-> > > Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> > > Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+On Tue, Feb 11, 2025 at 2:20=E2=80=AFAM John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
+>
+> Hi,
+>
+> On Tue, 2025-02-04 at 23:35 +0100, Ivan Kokshaysky wrote:
+> > This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
+> > Thanks to Magnus Lindholm for identifying that remarkably longstanding
+> > bug.
+> >
+> > The problem is that GCC expects 16-byte alignment of the incoming stack
+> > since early 2004, as Maciej found out [2]:
+> >   Having actually dug speculatively I can see that the psABI was change=
+d in
+> >  GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long do=
+uble
+> >  improperly aligned)") back in Mar 2004, when the stack pointer alignme=
+nt
+> >  was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S =
+has
+> >  various suspicious stack pointer adjustments, starting with SP_OFF whi=
+ch
+> >  is not a whole multiple of 16.
+> >
+> > Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
+> >  D.3.1 Stack Alignment
+> >   This standard requires that stacks be octaword aligned at the time a
+> >   new procedure is invoked.
+> >
+> > However:
+> > - the "normal" kernel stack is always misaligned by 8 bytes, thanks to
+> >   the odd number of 64-bit words in 'struct pt_regs', which is the very
+> >   first thing pushed onto the kernel thread stack;
+> > - syscall, fault, interrupt etc. handlers may, or may not, receive alig=
+ned
+> >   stack depending on numerous factors.
+> >
+> > Somehow we got away with it until recently, when we ended up with
+> > a stack corruption in kernel/smp.c:smp_call_function_single() due to
+> > its use of 32-byte aligned local data and the compiler doing clever
+> > things allocating it on the stack.
+> >
+> > Patche 1 is preparatory; 2 - the main fix; 3 - fixes remaining
+> > special cases.
+> >
+> > Ivan.
+> >
+> > [1] https://lore.kernel.org/rcu/CA+=3DFv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=
+=3DEi90G98ukRcRJA@mail.gmail.com/#r
+> > [2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@ang=
+ie.orcam.me.uk/
+> > [3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_=
+19900427.pdf
+> > ---
+> > Changes in v2:
+> > - patch #1: provide empty 'struct pt_regs' to fix compile failure in li=
+bbpf,
+> >   reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
+> >   update comment and commit message accordingly;
+> > - cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as =
+well.
+> >
+> > Changes in v3:
+> > - patch #1 dropped for the time being;
+> > - updated commit messages as Maciej suggested.
+> > ---
+> > Ivan Kokshaysky (3):
+> >   alpha: replace hardcoded stack offsets with autogenerated ones
+> >   alpha: make stack 16-byte aligned (most cases)
+> >   alpha: align stack for page fault and user unaligned trap handlers
+> >
+> >  arch/alpha/include/uapi/asm/ptrace.h |  2 ++
+> >  arch/alpha/kernel/asm-offsets.c      |  4 ++++
+> >  arch/alpha/kernel/entry.S            | 24 ++++++++++--------------
+> >  arch/alpha/kernel/traps.c            |  2 +-
+> >  arch/alpha/mm/fault.c                |  4 ++--
+> >  5 files changed, 19 insertions(+), 17 deletions(-)
+>
+> Can we get this landed this week, maybe for v6.14-rc3? This way it will q=
+uickly
+> backported to various stable kernels which means it will reach Debian uns=
+table
+> within a few days.
+>
+> Thanks,
+> Adrian
 
-Should i add this in next version ?
+Yeah, I'll vacuum the patches up and send them to Linus.
 
-> 
-> I was gonna ask if you have confirmed that this indeed fixes the audio
-> regression with the in-kernel pd-mapper?
-> 
-> Is this how you discovered the issue as well, Mukesh and Saranya?
+I've been running them on my ES47 and while my ES47 is still unstable,
+these patches definitely solve this bug [1] and fix failures I saw
+with the rcu_torture module!
 
-No, we are not using in kernel pd-mapper yet in downstream..
+Thanks a bunch to all of you!
 
-> 
-> If so, please mention that in the commit message, but in any case also
-> include the corresponding error messages directly so that people running
-> into this can find the fix more easily. (I see the pr_err now, but it's
-> not as greppable).
-
-Below is the sample log which got in downstream when we hit this issue
-
-13.799119:   PDR: tms/servreg get domain list txn wait failed: -110
-13.799146:   PDR: service lookup for msm/adsp/sensor_pd:tms/servreg failed: -110
-
-> 
-> A Link tag to my report would be good to have as well if this fixes the
-> audio regression.
-
-I see this is somehow matching the logs you have reported, but this deadlock
-is there from the very first day of pdr_interface driver.
-
-[   14.565059] PDR: avs/audio get domain list txn wait failed: -110
-[   14.571943] PDR: service lookup for avs/audio failed: -110
-
--Mukesh
-> 
-> Johan
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D213143
 
