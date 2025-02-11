@@ -1,116 +1,68 @@
-Return-Path: <stable+bounces-114885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2848A30817
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:10:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D69A30840
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B2918899D4
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:10:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB1097A4B50
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9841F3D59;
-	Tue, 11 Feb 2025 10:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E191F3FD3;
+	Tue, 11 Feb 2025 10:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeYtoRNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liIUTY+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA701F37C0
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F161F3FC2
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739268582; cv=none; b=Ce3FOMW2B+6+IeDeeF08ywkBQfyrGbFOT8Lf96oWc863BOqJC29gaw/fmzpcHRyMXsQuhAxQYCl34jL3jRslCjxqvTv7TFkbmSSD8RdC2z4/L0ElaqlHyz3JAIs611xuVu0tmXP6UkmNNprZ+Dq1ZkgsfRYnbGrp2aKQ8MJTJfs=
+	t=1739268974; cv=none; b=tkeb1oBsNsm8yxcKSdQXM7OymaGWmf0Lrj7KkFM/28Q+aPPnFJCZmEXSrpN7Wf4ceGXKLu9is8zsCgLh3Me4Qp8NDmA4XXMHX1p5qOSfyV/QTzX8bKaMz72MPzgr3EeDHdh1T7/o/na6qhSqUS8zCDd8Eu9H8z7ZVKsOA2lVYwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739268582; c=relaxed/simple;
-	bh=BBu7B5nH7iav87sRQX2zBDVAeGpoZhX9Ft9JOkcX7nY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l3aog7njDaYs9ulkeyXNdcWQq0awLfHhu5YsiZLWeQn8IeGNvWzNZNwFEai89kZq7e7KvqB0cznGXa+BEW/n4XZJ9aylfwxqGdDj+/RdQjAAcjd9CrXIElrM+V/ZGCYpzkhZVzyXLm59hQ3l3b8kkkUDXv1tFtjjjUpD4H+pi6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeYtoRNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CFCC4CEDD;
-	Tue, 11 Feb 2025 10:09:41 +0000 (UTC)
+	s=arc-20240116; t=1739268974; c=relaxed/simple;
+	bh=7ZqtHGTgQlaoWV5JHS4dW2g8wuESDYUux5BetaLKdVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDEjZJ1uiJ445h3a8DscuFii0pKDYLb9NklVB5RBt1mkywZH8dRWiOtvwyehRSdckIvAnELto+7GanpjUE3s2P+3O0nBNLx2aF79qcdEKJMh1tlX2/4UkLOZJah66vJ/PkGv4F/m+ZJ3XbzhnYRUP+uDYlPe5DMqrhDm9vmeOKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liIUTY+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24B4C4CEDD;
+	Tue, 11 Feb 2025 10:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739268582;
-	bh=BBu7B5nH7iav87sRQX2zBDVAeGpoZhX9Ft9JOkcX7nY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=MeYtoRNCqFAg8ilMChnVFkLG2Bjo8/PfeYT+8Z4Fs+D5irEVdVB+UPKVlrXQ+U5px
-	 6iNBpSCK6hVGbdmeBeHL5HDIfZFxrT5wLPwS1lMGnooV3ueko+MqvSPsLrDF/+sKa7
-	 xcixdUxI6TKzV5sPBE5mRPSkPd7DY/+CxAJxtzR8=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix copy buffer page size" failed to apply to 5.10-stable tree
-To: quic_ekangupt@quicinc.com,gregkh@linuxfoundation.org,srinivas.kandagatla@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 11 Feb 2025 11:06:34 +0100
-Message-ID: <2025021134-attendant-greedless-c5c8@gregkh>
+	s=korg; t=1739268974;
+	bh=7ZqtHGTgQlaoWV5JHS4dW2g8wuESDYUux5BetaLKdVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=liIUTY+39H3PSBxu+LBYJWT7+5ZDsDxqQG9OJ5wsnsOspl4qp1DoLEXo0TtvCkcDG
+	 0+dp+cG1GsPC+LNqEOGy0UTF2jZvqj4HtUE+qxwvxNn0W9IPD1ZSlxwEoLggICxps9
+	 Lh0jegYTjq/amOnO3tXhdhvS6QN8+7pYe7MMUoKo=
+Date: Tue, 11 Feb 2025 11:16:11 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: stable@vger.kernel.org, Muhammad Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Jacob Soo <jacob.soo@starlabs.sg>, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH stable-6.6 3/3] io_uring/rw: commit provided buffer state
+ on async
+Message-ID: <2025021156-fiction-shifter-3f49@gregkh>
+References: <cover.1738772087.git.asml.silence@gmail.com>
+ <cb9ec75521cc59ee1ab3119d8d28a8697cd9cae1.1738772087.git.asml.silence@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb9ec75521cc59ee1ab3119d8d28a8697cd9cae1.1738772087.git.asml.silence@gmail.com>
 
+On Mon, Feb 10, 2025 at 03:21:38PM +0000, Pavel Begunkov wrote:
+> [ upstream commit d63b0e8a628e62ca85a0f7915230186bb92f8bb4 ]
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Wrong commit id :(
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x e966eae72762ecfdbdb82627e2cda48845b9dd66
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021134-attendant-greedless-c5c8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e966eae72762ecfdbdb82627e2cda48845b9dd66 Mon Sep 17 00:00:00 2001
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Date: Fri, 10 Jan 2025 13:42:39 +0000
-Subject: [PATCH] misc: fastrpc: Fix copy buffer page size
-
-For non-registered buffer, fastrpc driver copies the buffer and
-pass it to the remote subsystem. There is a problem with current
-implementation of page size calculation which is not considering
-the offset in the calculation. This might lead to passing of
-improper and out-of-bounds page size which could result in
-memory issue. Calculate page start and page end using the offset
-adjusted address instead of absolute address.
-
-Fixes: 02b45b47fbe8 ("misc: fastrpc: fix remote page size calculation")
-Cc: stable@kernel.org
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 56dc3b3a8940..7b7a22c91fe4 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1019,8 +1019,8 @@ static int fastrpc_get_args(u32 kernel, struct fastrpc_invoke_ctx *ctx)
- 					(pkt_size - rlen);
- 			pages[i].addr = pages[i].addr &	PAGE_MASK;
- 
--			pg_start = (args & PAGE_MASK) >> PAGE_SHIFT;
--			pg_end = ((args + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
-+			pg_start = (rpra[i].buf.pv & PAGE_MASK) >> PAGE_SHIFT;
-+			pg_end = ((rpra[i].buf.pv + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
- 			pages[i].size = (pg_end - pg_start + 1) * PAGE_SIZE;
- 			args = args + mlen;
- 			rlen -= mlen;
-
+Let me figure out what went wrong here...
 
