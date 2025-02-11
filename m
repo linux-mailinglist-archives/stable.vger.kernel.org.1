@@ -1,280 +1,142 @@
-Return-Path: <stable+bounces-116475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6F1A36BAB
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 04:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5BDA31B13
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CCC8169F4A
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 03:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F743A3844
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 01:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B5C6BB5B;
-	Sat, 15 Feb 2025 03:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780EC35956;
+	Wed, 12 Feb 2025 01:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="RTiG0Mb5"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA86748D
-	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 03:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902541DA21
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 01:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739590390; cv=none; b=Zy8Ov1wxYjYltX7MAZWht8tjajjo9+kbVw4cYsvxZknPr+QPEyJR0X8TFj8Exb/jBqyA4O2ScY5OO/ZvRAaT6PKPowoGSoqEGCniXXqjntuJYv+Um70Bjj/K2bTlzMNmC0QUzVBNlQgLZR76GfBNqp6NH/lpw4SOhz38KLjdhqY=
+	t=1739322788; cv=none; b=LiYu4fDOrYQB7EZ9k+BwGovNXbhl2r+0dBLc277plDCAvntAFEiqlybT+kYYkkL38Sxug7Si11Mw0lefPOKAiwIOtYymnbHBr7R1whUEOtz4w/NeXns4V+EFKv3Cd0AkQ1GagFu2ny3wxkWx8jInJV/EKc8H7pN3KmdDrMFI0b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739590390; c=relaxed/simple;
-	bh=jrfDV439+PBxi7vphNJyj+/dqvueeIoqO/Oyb0oVB5E=;
-	h=From:Date:Subject:To:Message-Id; b=XEJKi36PZW7KbZyLm10URT7COvNNuHbjmb+uuYONk3hgsR8VDQfxKvAMi3lbw+v3tGw3PiQbq6qQJGBS2H6MS1QpA7LViXvox0i//jkFaCqO+5j43fykXaVXHkNN2cCKEAruzSuYrO/eRNtwhXKUKc7XMKuAKuz/1AUiDLV0e24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=purestorage.com; spf=none smtp.mailfrom=debian.org; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <noahm@debian.org>)
-	id 1tj8vR-00A1OX-Le
-	for stable@vger.kernel.org; Sat, 15 Feb 2025 03:33:05 +0000
-Received: from [fd00:80db:0:4::7766] (helo=lore)
-	by minas.morgul.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <noahm@debian.org>)
-	id 1tj8vP-002owa-0Z
-	for stable@vger.kernel.org;
-	Fri, 14 Feb 2025 22:33:03 -0500
-Received: from noahm by lore with local (Exim 4.96)
-	(envelope-from <noahm@debian.org>)
-	id 1tj8vO-00471h-2H
-	for stable@vger.kernel.org;
-	Fri, 14 Feb 2025 22:33:02 -0500
-From: Casey Chen <cachen@purestorage.com>
-Date: Wed, 7 Jul 2021 14:14:31 -0700
-Subject: [PATCH 5.10] nvme-pci: fix multiple races in nvme_setup_io_queues
-To: stable@vger.kernel.org
-Message-Id: <E1tj8vO-00471h-2H@lore>
-X-Debian-User: noahm
+	s=arc-20240116; t=1739322788; c=relaxed/simple;
+	bh=dficntmdLBv88Uvc4N5XgHBbu1lCoeFFI/9KziADYdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=dl7hkkQRfA5isl5TXATuP8Gya5Ts6rMKtZdhVnUXsXyrQ2E8u0NqOh+krVnnpTw0jXUTil/i93LsXWb6IhAsc7kHIlofDD5q//M9USU7QGggpNxD+ZwtLqA3Hrxq+OhwtQ1mp/uzbhtk3powW1umFlkOmsmiU/O/INTRe9bcQ70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=RTiG0Mb5; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250212011303epoutp015263b87be79e7cba5dc8d6e40ff8a339~jUNtDoeu60340103401epoutp01Y
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 01:13:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250212011303epoutp015263b87be79e7cba5dc8d6e40ff8a339~jUNtDoeu60340103401epoutp01Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1739322783;
+	bh=3HLbLMPJmzSucOlsqmhUhAS8S4GVvP2o0xrz+vP8sis=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RTiG0Mb5p2MtZr1TdjddPxTC2KxaBgkE1rOnXtf8UcANI8/Q2AEfRi6/oxPoyN7bd
+	 6aevd8iAeObxqRdCWzV2mBZxcQyQlMpSypfl/soy+OrQZry9oKwoIt7hr0yrNZBk46
+	 4qBlomJI4C2SzKxtzNJfbjDjkUHgdk7o8OCzlCeE=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+	20250212011302epcas5p28020604cdb00c19235513d3ef565a4ea~jUNsRLknA0371103711epcas5p2_;
+	Wed, 12 Feb 2025 01:13:02 +0000 (GMT)
+Received: from epcpadp2new (unknown [182.195.40.142]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4Yt0g26By2z4x9Q5; Wed, 12 Feb
+	2025 01:13:02 +0000 (GMT)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250211115711epcas5p46b72b2670571d636c229d80378284ed9~jJW0YLaLe0222102221epcas5p4T;
+	Tue, 11 Feb 2025 11:57:11 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20250211115711epsmtrp258739bba45f10fb2728bb34917757df9~jJW0XQ6h60217602176epsmtrp2j;
+	Tue, 11 Feb 2025 11:57:11 +0000 (GMT)
+X-AuditID: b6c32a52-1f7ff700000083ab-40-67ab3b17898d
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	58.85.33707.71B3BA76; Tue, 11 Feb 2025 20:57:11 +0900 (KST)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250211115708epsmtip1711c2c42544aa172628f5a287620cdbc~jJWxnQNma1948519485epsmtip1U;
+	Tue, 11 Feb 2025 11:57:08 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: mathias.nyman@intel.com, gregkh@linuxfoundation.org,
+	WeitaoWang-oc@zhaoxin.com, Thinh.Nguyen@synopsys.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, h10.kim@samsung.com, eomji.oh@samsung.com,
+	alim.akhtar@samsung.com, thiagu.r@samsung.com, muhammed.ali@samsung.com,
+	pritam.sutar@samsung.com, cpgs@samsung.com, Selvarasu Ganesan
+	<selvarasu.g@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH 1/2] usb: xhci: Fix unassigned variable 'tmp_minor_revision'
+ in xhci_add_in_port()
+Date: Tue, 11 Feb 2025 17:26:29 +0530
+Message-ID: <1296674576.21739322782868.JavaMail.epsvc@epcpadp2new>
+X-Mailer: git-send-email 2.46.0.windows.1
+In-Reply-To: <20250211115635.757-1-selvarasu.g@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmphkeLIzCtJLcpLzFFi42LZdlhJTlfcenW6wdnNchZvrq5itXgwbxub
+	xctDmhZ3Fkxjsji1fCGTRfPi9WwWf29fZLW4+/AHi8XlXXPYLBYta2W2aN40hdXi/IsuVotP
+	R/+zWjy7t4LN4sjyj0wWCzY+YrRY0QxUsmrBAXaLRz/nMjkIeyze85LJY//cNewefVtWMXps
+	2f+Z0ePzJjmPX7dusQSwRXHZpKTmZJalFunbJXBl3P9zlK3gAnvF/mtHWBsYj7N1MXJySAiY
+	SPzc9p6li5GLQ0hgO6PE5SM72SES0hKvZ3UxQtjCEiv/PWeHKPrKKLF88nfWLkYODjYBQ4ln
+	J2xA4iICGxglrp6ZzQriMAvcYpI4+PcDM0i3sECSxKyfK8AmsQioSizf8IsJxOYVsJKY/uY8
+	E8QGTYm1e/eA2ZwC1hIvT74HqxcCqpl8cis7RL2gxMmZT1hAbGYBeYnmrbOZJzAKzEKSmoUk
+	tYCRaRWjaGpBcW56bnKBoV5xYm5xaV66XnJ+7iZGcERpBe1gXLb+r94hRiYOxkOMEhzMSiK8
+	JgtXpAvxpiRWVqUW5ccXleakFh9ilOZgURLnVc7pTBESSE8sSc1OTS1ILYLJMnFwSjUwucvk
+	9WWlfsjX/zJh5jMux+vr+cvabSbm7i65degzG1/UvGPGezbpTniWUqdTezdMqETpyKUtmU9j
+	wu/tWdZrdtiOU0OilLmzerpV/5P8y4nSd34I751y13IGL7ORdcJPVuZoT91k3xNTg2/q5PQf
+	zk9d2Cp0ebLzlV+PJ0bt+uUUt99v0S2J9hfzS0OrfPcUMoo5+e7K3cId6brpXeGPexxSLyuD
+	PO0W1Z7/5BvKX68bcKXmcE5plZF47T/DVds/6/64Z+pV+ivqDlf+Frc5Ps0rz1n+403ffevT
+	vVUvs+PvxQMT6oa5awN0Ck/qmilorjjc5710kvFBbu+12ecjI2PK+ZpsvAr1Zy9Y9leJpTgj
+	0VCLuag4EQBhLhm7FwMAAA==
+X-CMS-MailID: 20250211115711epcas5p46b72b2670571d636c229d80378284ed9
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20250211115711epcas5p46b72b2670571d636c229d80378284ed9
+References: <20250211115635.757-1-selvarasu.g@samsung.com>
+	<CGME20250211115711epcas5p46b72b2670571d636c229d80378284ed9@epcas5p4.samsung.com>
 
-commit e4b9852a0f4afe40604afb442e3af4452722050a upstream.
+Fix the following smatch error:
+drivers/usb/host/xhci-mem.c:2060 xhci_add_in_port() error: unassigned variable 'tmp_minor_revision'
 
-Below two paths could overlap each other if we power off a drive quickly
-after powering it on. There are multiple races in nvme_setup_io_queues()
-because of shutdown_lock missing and improper use of NVMEQ_ENABLED bit.
-
-nvme_reset_work()                                nvme_remove()
-  nvme_setup_io_queues()                           nvme_dev_disable()
-  ...                                              ...
-A1  clear NVMEQ_ENABLED bit for admin queue          lock
-    retry:                                       B1  nvme_suspend_io_queues()
-A2    pci_free_irq() admin queue                 B2  nvme_suspend_queue() admin queue
-A3    pci_free_irq_vectors()                         nvme_pci_disable()
-A4    nvme_setup_irqs();                         B3    pci_free_irq_vectors()
-      ...                                            unlock
-A5    queue_request_irq() for admin queue
-      set NVMEQ_ENABLED bit
-      ...
-      nvme_create_io_queues()
-A6      result = queue_request_irq();
-        set NVMEQ_ENABLED bit
-      ...
-      fail to allocate enough IO queues:
-A7      nvme_suspend_io_queues()
-        goto retry
-
-If B3 runs in between A1 and A2, it will crash if irqaction haven't
-been freed by A2. B2 is supposed to free admin queue IRQ but it simply
-can't fulfill the job as A1 has cleared NVMEQ_ENABLED bit.
-
-Fix: combine A1 A2 so IRQ get freed as soon as the NVMEQ_ENABLED bit
-gets cleared.
-
-After solved #1, A2 could race with B3 if A2 is freeing IRQ while B3
-is checking irqaction. A3 also could race with B2 if B2 is freeing
-IRQ while A3 is checking irqaction.
-
-Fix: A2 and A3 take lock for mutual exclusion.
-
-A3 could race with B3 since they could run free_msi_irqs() in parallel.
-
-Fix: A3 takes lock for mutual exclusion.
-
-A4 could fail to allocate all needed IRQ vectors if A3 and A4 are
-interrupted by B3.
-
-Fix: A4 takes lock for mutual exclusion.
-
-If A5/A6 happened after B2/B1, B3 will crash since irqaction is not NULL.
-They are just allocated by A5/A6.
-
-Fix: Lock queue_request_irq() and setting of NVMEQ_ENABLED bit.
-
-A7 could get chance to pci_free_irq() for certain IO queue while B3 is
-checking irqaction.
-
-Fix: A7 takes lock.
-
-nvme_dev->online_queues need to be protected by shutdown_lock. Since it
-is not atomic, both paths could modify it using its own copy.
-
-Co-developed-by: Yuanyuan Zhong <yzhong@purestorage.com>
-Signed-off-by: Casey Chen <cachen@purestorage.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-[noahm@debian.org: backported to 5.10]
-Link: https://lore.kernel.org/linux-nvme/20210707211432.29536-1-cachen@purestorage.com/
-Signed-off-by: Noah Meyerhans <noahm@debian.org>
+Fixes: d9b0328d0b8b ("xhci: Show ZHAOXIN xHCI root hub speed correctly")
+Cc: stable@vger.kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 ---
- drivers/nvme/host/pci.c | 66 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 58 insertions(+), 8 deletions(-)
+ drivers/usb/host/xhci-mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 875ebef6adc7..ae04bdce560a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1563,6 +1563,28 @@ static void nvme_init_queue(struct nvme_queue *nvmeq, u16 qid)
- 	wmb(); /* ensure the first interrupt sees the initialization */
- }
- 
-+/*
-+ * Try getting shutdown_lock while setting up IO queues.
-+ */
-+static int nvme_setup_io_queues_trylock(struct nvme_dev *dev)
-+{
-+	/*
-+	 * Give up if the lock is being held by nvme_dev_disable.
-+	 */
-+	if (!mutex_trylock(&dev->shutdown_lock))
-+		return -ENODEV;
-+
-+	/*
-+	 * Controller is in wrong state, fail early.
-+	 */
-+	if (dev->ctrl.state != NVME_CTRL_CONNECTING) {
-+		mutex_unlock(&dev->shutdown_lock);
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
- static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 92703efda1f7..8665893df894 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1980,7 +1980,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
  {
- 	struct nvme_dev *dev = nvmeq->dev;
-@@ -1591,8 +1613,11 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
- 		goto release_cq;
- 
- 	nvmeq->cq_vector = vector;
--	nvme_init_queue(nvmeq, qid);
- 
-+	result = nvme_setup_io_queues_trylock(dev);
-+	if (result)
-+		return result;
-+	nvme_init_queue(nvmeq, qid);
- 	if (!polled) {
- 		result = queue_request_irq(nvmeq);
- 		if (result < 0)
-@@ -1600,10 +1625,12 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
- 	}
- 
- 	set_bit(NVMEQ_ENABLED, &nvmeq->flags);
-+	mutex_unlock(&dev->shutdown_lock);
- 	return result;
- 
- release_sq:
- 	dev->online_queues--;
-+	mutex_unlock(&dev->shutdown_lock);
- 	adapter_delete_sq(dev, qid);
- release_cq:
- 	adapter_delete_cq(dev, qid);
-@@ -2182,7 +2209,18 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	if (nr_io_queues == 0)
- 		return 0;
- 	
--	clear_bit(NVMEQ_ENABLED, &adminq->flags);
-+	/*
-+	 * Free IRQ resources as soon as NVMEQ_ENABLED bit transitions
-+	 * from set to unset. If there is a window to it is truely freed,
-+	 * pci_free_irq_vectors() jumping into this window will crash.
-+	 * And take lock to avoid racing with pci_free_irq_vectors() in
-+	 * nvme_dev_disable() path.
-+	 */
-+	result = nvme_setup_io_queues_trylock(dev);
-+	if (result)
-+		return result;
-+	if (test_and_clear_bit(NVMEQ_ENABLED, &adminq->flags))
-+		pci_free_irq(pdev, 0, adminq);
- 
- 	if (dev->cmb_use_sqes) {
- 		result = nvme_cmb_qdepth(dev, nr_io_queues,
-@@ -2198,14 +2236,17 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 		result = nvme_remap_bar(dev, size);
- 		if (!result)
- 			break;
--		if (!--nr_io_queues)
--			return -ENOMEM;
-+		if (!--nr_io_queues) {
-+			result = -ENOMEM;
-+			goto out_unlock;
-+		}
- 	} while (1);
- 	adminq->q_db = dev->dbs;
- 
-  retry:
- 	/* Deregister the admin queue's interrupt */
--	pci_free_irq(pdev, 0, adminq);
-+	if (test_and_clear_bit(NVMEQ_ENABLED, &adminq->flags))
-+		pci_free_irq(pdev, 0, adminq);
- 
- 	/*
- 	 * If we enable msix early due to not intx, disable it again before
-@@ -2214,8 +2255,10 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	pci_free_irq_vectors(pdev);
- 
- 	result = nvme_setup_irqs(dev, nr_io_queues);
--	if (result <= 0)
--		return -EIO;
-+	if (result <= 0) {
-+		result = -EIO;
-+		goto out_unlock;
-+	}
- 
- 	dev->num_vecs = result;
- 	result = max(result - 1, 1);
-@@ -2229,8 +2272,9 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	 */
- 	result = queue_request_irq(adminq);
- 	if (result)
--		return result;
-+		goto out_unlock;
- 	set_bit(NVMEQ_ENABLED, &adminq->flags);
-+	mutex_unlock(&dev->shutdown_lock);
- 
- 	result = nvme_create_io_queues(dev);
- 	if (result || dev->online_queues < 2)
-@@ -2239,6 +2283,9 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	if (dev->online_queues - 1 < dev->max_qid) {
- 		nr_io_queues = dev->online_queues - 1;
- 		nvme_disable_io_queues(dev);
-+		result = nvme_setup_io_queues_trylock(dev);
-+		if (result)
-+			return result;
- 		nvme_suspend_io_queues(dev);
- 		goto retry;
- 	}
-@@ -2247,6 +2294,9 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 					dev->io_queues[HCTX_TYPE_READ],
- 					dev->io_queues[HCTX_TYPE_POLL]);
- 	return 0;
-+out_unlock:
-+	mutex_unlock(&dev->shutdown_lock);
-+	return result;
- }
- 
- static void nvme_del_queue_end(struct request *req, blk_status_t error)
+ 	u32 temp, port_offset, port_count;
+ 	int i;
+-	u8 major_revision, minor_revision, tmp_minor_revision;
++	u8 major_revision, minor_revision, tmp_minor_revision = 0;
+ 	struct xhci_hub *rhub;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_port_cap *port_cap;
 -- 
-2.39.5
+2.17.1
+
 
 
