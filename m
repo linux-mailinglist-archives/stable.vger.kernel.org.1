@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-114955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E012A315FA
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:52:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36E9A3158B
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77ED1889CB2
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F063A4A78
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1E8265CBF;
-	Tue, 11 Feb 2025 19:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1562626E62C;
+	Tue, 11 Feb 2025 19:43:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85973264F87
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 19:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B126E62B
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 19:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303409; cv=none; b=unrUZU5UB6Xp2vha7B2vXO1K2LPicl9FOeaQqsm393q7b314vupPrhrgLwcSeleFCQ6nesFvaaO3N574zrGZjxCMNlv/TR9ZjgSRMdAbwn5z71juxoqc1YZYEgcoDOopkcY6WvhbcP8oySvv67UGDhfQzq4nwzBPB/4Vn8CGe/U=
+	t=1739302990; cv=none; b=OYTEy7394aGIKkVSviQV1KDn1RJQk5cySjUYoitrwoO/F3VgbmJ8e2VdXWoH1MJmDRHKQl7/T8ITDK4kLSVBm/G3YiQ4aR0KxHGyovss22zebcm2CIVLZ2/bZq5WEBIAgkteGZ3Iz9C/PX9Gj0spI4fqCDPd4WlsedHpKrgz/Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739303409; c=relaxed/simple;
-	bh=TPTL1DQ/DAWf4IHgk+aE1BgJcbneVyGhJG5wVLoIYEw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ixrxPlUMV4TNzr+wZCpUko7XJcvEnLmkgs9RLQpukI5RnSlIBUrrJxEawyXQKSXiH2EiFC4zf2slEYcROZajm5Fr+uwBsgBURpMbfsG9ijuU1uJORrsy2Sjej2yQ4WOTm+j38hBiFOBp+I+QRsINZGMQ7GfGwE8PJ+ffDdseKok=
+	s=arc-20240116; t=1739302990; c=relaxed/simple;
+	bh=f2EAReHL8knCs08MkvOmet8+UuoNR7LIwBKR9P7db2Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dtqXoW8uHiB0rX/W6iLjLtpAaPBl84Yzswa37/fT/CA4Lw13sKUVd4wpHz1GSc+WYdbyAhimPMvgs6bDK3LXTcHi2OOu6IpAZVAiO2iKZBtoKT2dwLE/aY7IusvvGxFI6OGgrJjxBxIVKzAHsWB4FpkWmoGnzppuMOPDSMlcKBc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id B1A49233B7;
-	Tue, 11 Feb 2025 22:42:08 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id C5505233BA;
+	Tue, 11 Feb 2025 22:43:02 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
 Cc: lvc-project@linuxtesting.org,
@@ -47,9 +47,9 @@ Cc: lvc-project@linuxtesting.org,
 	Changwei Ge <gechangwei@live.cn>,
 	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1/6.6/6.12] ocfs2: check dir i_size in ocfs2_find_entry
-Date: Tue, 11 Feb 2025 22:41:46 +0300
-Message-Id: <20250211194146.645780-1-kovalev@altlinux.org>
+Subject: [PATCH 5.10/5.15] ocfs2: check dir i_size in ocfs2_find_entry
+Date: Tue, 11 Feb 2025 22:43:00 +0300
+Message-Id: <20250211194300.645847-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -205,7 +205,7 @@ Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
  1 file changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/fs/ocfs2/dir.c b/fs/ocfs2/dir.c
-index 213206ebdd581..7799f4d16ce99 100644
+index c9797dd067851..441818535bfc5 100644
 --- a/fs/ocfs2/dir.c
 +++ b/fs/ocfs2/dir.c
 @@ -1065,26 +1065,39 @@ int ocfs2_find_entry(const char *name, int namelen,
@@ -251,15 +251,15 @@ index 213206ebdd581..7799f4d16ce99 100644
  }
  
  /*
-@@ -2010,6 +2023,7 @@ int ocfs2_lookup_ino_from_name(struct inode *dir, const char *name,
+@@ -2011,6 +2024,7 @@ int ocfs2_lookup_ino_from_name(struct inode *dir, const char *name,
   *
   * Return 0 if the name does not exist
   * Return -EEXIST if the directory contains the name
 + * Return -EFSCORRUPTED if found corruption
   *
-  * Callers should have i_rwsem + a cluster lock on dir
+  * Callers should have i_mutex + a cluster lock on dir
   */
-@@ -2023,9 +2037,12 @@ int ocfs2_check_dir_for_entry(struct inode *dir,
+@@ -2024,9 +2038,12 @@ int ocfs2_check_dir_for_entry(struct inode *dir,
  	trace_ocfs2_check_dir_for_entry(
  		(unsigned long long)OCFS2_I(dir)->ip_blkno, namelen, name);
  
