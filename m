@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D16A307FC
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:06:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD7BA30801
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A543A744F
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:06:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B03EC166DA6
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34DF1F2C4B;
-	Tue, 11 Feb 2025 10:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBAA1F238B;
+	Tue, 11 Feb 2025 10:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHTxFJaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r679JzHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9227E1F12E3
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3D81F3B92
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 10:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739268389; cv=none; b=mp52Yo9w0lOYX04SKmVHs0AHVsR1n4RvQQCTiGDH5tG81REZjcOE18N3j4pC1ocyJn53efOLP0xFxPVI2ENhbMzWgJ+qWyxz2IwFU9sC889CcqVHV7em8wodUx6Wf0G4dfm2Za6xDPpRDxU/WnecvqBUU6/qxVyie53bnq9/WdA=
+	t=1739268524; cv=none; b=FuDUXfK6MlY5Z4eYvNFpyU0RuM7Gb3Wj8IQ1PoqQVuaJGx6KxpLZzZ7IVglzrisY+D+6DSd5X69/18HDP/2IcuvH+Gi+ChkZA6jBLi8TTPn2Ts3c76nPPT2kRDDoQKFGVWhJ2ESc19RO9Otqu4pwPBOlGm3bU7fkUWV8Auk1svY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739268389; c=relaxed/simple;
-	bh=HcBtzsaL9K1qMFPHIrO8dfD/9ReIB7u8z/CD9b8l6gw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iRDN8QfXNdyNpA5OAay771bGbxvdxbJY2zDp8diq87xCMpe5yM2pxoWOYUMdo6sDJQvO5phPWmEbIrhU8ywu7Q9G9Et7yyEsXpufEwLgDkj4du3YBLOpidUQZeKSFwREez6n8KGnmotPF5m18tQknIinGfWwQruZiP6iISnNSfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHTxFJaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43F9C4CEDD;
-	Tue, 11 Feb 2025 10:06:28 +0000 (UTC)
+	s=arc-20240116; t=1739268524; c=relaxed/simple;
+	bh=0lE8Gsj1+pCMcuF2B1MPbqMlGr4+ueskWi6zzf7idyQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KQ9W88pZVrxC0P2wRnLBfNwpsYtcgXutP5wCyKsoRXZWLA1Ya4uN1+4r4bhptogpyDErnU5VNOyl54xALOYrMXH1MK8II+oXbP9TqN9ozx0XwsZf9+dgHz7zOeceTsooSYi5nfURxWAFESJSCUZtUgeLR62fDAFzmff/HbUuWjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r679JzHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB468C4CEDD;
+	Tue, 11 Feb 2025 10:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739268389;
-	bh=HcBtzsaL9K1qMFPHIrO8dfD/9ReIB7u8z/CD9b8l6gw=;
+	s=korg; t=1739268524;
+	bh=0lE8Gsj1+pCMcuF2B1MPbqMlGr4+ueskWi6zzf7idyQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LHTxFJaKWdDseauAuqby2DBRJF07+iurD4/OOtyVVjEYgIkmaxxVsrH8AUqvJtRKS
-	 cWgvQ8NS8VdiMf+zGdQaJQ/uM492v/rbZx+bdLR+/VOcl7uYZsVF/FVtMFyis6rpqA
-	 gFR/yqpKzhPS3W3NvSkhMIQHHYEBOE0AyOvvrwGI=
-Subject: FAILED: patch "[PATCH] nvmem: imx-ocotp-ele: fix MAC address byte order" failed to apply to 6.6-stable tree
-To: s.hauer@pengutronix.de,gregkh@linuxfoundation.org,peng.fan@nxp.com,srinivas.kandagatla@linaro.org,stable@kernel.org
+	b=r679JzHF3SkWXTUE+sxqacUnqgmjZUZ+AXleFJ0g9BJHDCKhjIQUCkvtfq+LEol4j
+	 T/5B8Eb5nNgO2WrgAjkNab73JBqm2oLOgpKt1F30f0RzYcx2d64b8Zp6WMcEH69R3Y
+	 poUe2A9jtxZBD+0axd42+HYh1TrgSPduA/XBxUAY=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix copy buffer page size" failed to apply to 5.15-stable tree
+To: quic_ekangupt@quicinc.com,gregkh@linuxfoundation.org,srinivas.kandagatla@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 11 Feb 2025 11:03:41 +0100
-Message-ID: <2025021141-negotiate-many-f58a@gregkh>
+Date: Tue, 11 Feb 2025 11:05:39 +0100
+Message-ID: <2025021139-bounce-growl-6d4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 391b06ecb63e6eacd054582cb4eb738dfbf5eb77
+git cherry-pick -x e966eae72762ecfdbdb82627e2cda48845b9dd66
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021141-negotiate-many-f58a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021139-bounce-growl-6d4e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,74 +77,40 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 391b06ecb63e6eacd054582cb4eb738dfbf5eb77 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Dec 2024 14:18:58 +0000
-Subject: [PATCH] nvmem: imx-ocotp-ele: fix MAC address byte order
+From e966eae72762ecfdbdb82627e2cda48845b9dd66 Mon Sep 17 00:00:00 2001
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Date: Fri, 10 Jan 2025 13:42:39 +0000
+Subject: [PATCH] misc: fastrpc: Fix copy buffer page size
 
-According to the i.MX93 Fusemap the two MAC addresses are stored in
-words 315 to 317 like this:
+For non-registered buffer, fastrpc driver copies the buffer and
+pass it to the remote subsystem. There is a problem with current
+implementation of page size calculation which is not considering
+the offset in the calculation. This might lead to passing of
+improper and out-of-bounds page size which could result in
+memory issue. Calculate page start and page end using the offset
+adjusted address instead of absolute address.
 
-315	MAC1_ADDR_31_0[31:0]
-316	MAC1_ADDR_47_32[47:32]
-	MAC2_ADDR_15_0[15:0]
-317	MAC2_ADDR_47_16[31:0]
-
-This means the MAC addresses are stored in reverse byte order. We have
-to swap the bytes before passing them to the upper layers. The storage
-format is consistent to the one used on i.MX6 using imx-ocotp driver
-which does the same byte swapping as introduced here.
-
-With this patch the MAC address on my i.MX93 TQ board correctly reads as
-00:d0:93:6b:27:b8 instead of b8:27:6b:93:d0:00.
-
-Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Fixes: 02b45b47fbe8 ("misc: fastrpc: fix remote page size calculation")
+Cc: stable@kernel.org
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-4-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20250110134239.123603-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index b2d21a5f77bc..422a6d53b10e 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -111,6 +111,26 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
- 	return 0;
- };
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 56dc3b3a8940..7b7a22c91fe4 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1019,8 +1019,8 @@ static int fastrpc_get_args(u32 kernel, struct fastrpc_invoke_ctx *ctx)
+ 					(pkt_size - rlen);
+ 			pages[i].addr = pages[i].addr &	PAGE_MASK;
  
-+static int imx_ocotp_cell_pp(void *context, const char *id, int index,
-+			     unsigned int offset, void *data, size_t bytes)
-+{
-+	u8 *buf = data;
-+	int i;
-+
-+	/* Deal with some post processing of nvmem cell data */
-+	if (id && !strcmp(id, "mac-address"))
-+		for (i = 0; i < bytes / 2; i++)
-+			swap(buf[i], buf[bytes - i - 1]);
-+
-+	return 0;
-+}
-+
-+static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
-+					 struct nvmem_cell_info *cell)
-+{
-+	cell->read_post_process = imx_ocotp_cell_pp;
-+}
-+
- static int imx_ele_ocotp_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -137,6 +157,8 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
- 	priv->config.stride = 1;
- 	priv->config.priv = priv;
- 	priv->config.read_only = true;
-+	priv->config.add_legacy_fixed_of_cells = true;
-+	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
- 	mutex_init(&priv->lock);
- 
- 	nvmem = devm_nvmem_register(dev, &priv->config);
+-			pg_start = (args & PAGE_MASK) >> PAGE_SHIFT;
+-			pg_end = ((args + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
++			pg_start = (rpra[i].buf.pv & PAGE_MASK) >> PAGE_SHIFT;
++			pg_end = ((rpra[i].buf.pv + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
+ 			pages[i].size = (pg_end - pg_start + 1) * PAGE_SIZE;
+ 			args = args + mlen;
+ 			rlen -= mlen;
 
 
