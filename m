@@ -1,95 +1,82 @@
-Return-Path: <stable+bounces-114847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFC4A30476
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:28:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D119A3048B
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19A116654C
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467CE188AB01
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDE11EC014;
-	Tue, 11 Feb 2025 07:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361961EB186;
+	Tue, 11 Feb 2025 07:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="KAVy5F4q"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="j5D4ti9c"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984DE1EB9F4
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6350F26BD8B
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739258895; cv=none; b=lSNPHoblP6+jlKPtA5JB7w8udLDM9okv7O1tz9se0t5xcMfERYsN4iKaD5Vgw4EUnOMGA8z47wvbRz8LlcluOQkF00B8hNwRAFnXQmu/wz8QIbiJYdsHuf+csBcQB8Csi+l5H7XkibAAm+9BnzCcWfh4j117fhbH4d4SN7cpIqE=
+	t=1739259295; cv=none; b=pOS3g3QQAQPw5rNaWeI3s7FBE0XOuHMGSYYzeslaU4+4E9oezu1BcjRtGlJFqMEu7kDNToQ80j62Z6I4kn0yP2PZXYxgyVmAoVXN/F1cN+3rmotIFDD42PcRxtaex2A3kvy43fYC8AY0iJ8ORsUqG7oTI+KL/uh+2ykQc9qaflY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739258895; c=relaxed/simple;
-	bh=xDphkzp7YOwassCx3klJnQSoSwa0N8eY8DjCLu7euf4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CZWVKu2C2nWNFNfSws4uEPNG8SbQ1CovpgmehFxQL+e+cV02k1cj7MXioKLYuYeTHdgwnHZKp4g7uT52oQpX1zt2ObgJYczKTM3+rcjPJAoXJYAHLZcEmnzsvPly0Sf6QEoVi2O2A5aqvWoIxRSseGq4FnfGp2Yh4EOJYvx4rAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=KAVy5F4q; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2fa345713a8so6758076a91.2
-        for <stable@vger.kernel.org>; Mon, 10 Feb 2025 23:28:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1739258892; x=1739863692; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u8JvwZe222+nCD5D0NlDaqFgopE4s8QEJ665TCjR17Q=;
-        b=KAVy5F4qSoiLjA+7OYEDq7MqwzJY7gIB72ynzU1CY1DcFkTAYzC/kX8KGPZ4GVjiFW
-         7z5mYuPFyWdKsTLBD4pVsBrC/+0GvFUMq043BmjnaBPwuMrDzm23jsqQQo2eBj3LvhEi
-         WRL39VjNnuXSErih5638WF0lFM/CWPj4h2sMCI4cFMEzYVLhyNNAUpYm6uVDou36ZZmx
-         uy4myemNHB1NzCjeH5oxHorWvbUE8Y6iiaNgUJfYdcvq22d/6MwpxDAZcrZ6+PQZJXCP
-         UcSNLgat75JZ3zPkTmFa46XKnkSui333Tiw1vy/epquGXZPYreHjQOsTNWB9Lr+TjD9i
-         0uRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739258892; x=1739863692;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u8JvwZe222+nCD5D0NlDaqFgopE4s8QEJ665TCjR17Q=;
-        b=UF8t3F1rKna0nXtZNqn4IRoY9TCvyQO3bqaJ7EkC4uHgCyaJOUjZvv6x1L3GG1VxM2
-         gx1kAWc5dXmQbhBrbfuzRyJ/ZTJejWkvKHIKyK+ISyUWtDNlt6cj18YvpX6ZaxBThBWB
-         iITAoeEovIQxE1NGUtEGaLmRLuoEm5MS/cElSk3jiG1obU4imDm83FyogiesX51Sy9uL
-         S8UFXUIkQ6Ur2PiK4BGFtr+dRoKIdEZL1yxAUHqfEQxJQt7smIXAv6EgFiRFrcXMmDw7
-         AAo4bC51vXNBynLQiYxCvhOkm3wM5363KWX7vlcBzISuqP6QKJ7JzuZF2ctXo1m/Qcnp
-         amNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOh3VuM7sd/te2pLakeP7e1H00F+Bn4TAO+VYbs7QmTXD0fNxERribejVR4pQLz7suH2uuD5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcG9ZBBADtCsOBehRa/iWOn8ln6ppKs6Sh19e+lbA3pW4GgNKE
-	c/qDvmM/NdPl3vqzBfy+oc1zgZowr0r6UjvIxgk3R5jkGw57xTTSd8LOXdv5W2o=
-X-Gm-Gg: ASbGncu3iJq1aDHzhXe6nwVoU6qDX3oXbuPoIthyQKo1+EaLb19Uswf1wiV3lt16XNz
-	VRGbTPnnQ0ssRuOO2w3a3b/a+QnUb2S+ttWJu2NcjIVYrSf/pF+HDz3raJDLYkNHxlpOoZvR955
-	y6dSpcb+b0QbgcurVed2BljBK5MsxKpnfi8UXmVxF5JrsWgEnwGkpzh95G1QkSpRqi/GgAWB6F6
-	U3Wxuy9TP/7M/9bSXwtMoAqoIyRqYqGL3iaylzseqdEXgfvcjYtMYGf3ZbJ5zTBPzDqeUQaOWOk
-	rEuJ1agfI6WtQGrxBxwYCc16q9UQB+8x1MeixUxGkuuZQfEAucAm2zyc
-X-Google-Smtp-Source: AGHT+IEGFQNt5sPJaZzJIBOUWjXNir7ONpzC/zGumrQumqkRxYesmObQGhXHsFIIUFr5ys2Z+8JnCg==
-X-Received: by 2002:a05:6a21:350d:b0:1ed:9e58:5195 with SMTP id adf61e73a8af0-1ee03a45ccdmr32137005637.13.1739258891851;
-        Mon, 10 Feb 2025 23:28:11 -0800 (PST)
-Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad54a066811sm3946778a12.8.2025.02.10.23.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 23:28:11 -0800 (PST)
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-To: brauner@kernel.org,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	quwenruo.btrfs@gmx.com,
-	david@redhat.com,
-	jannh@google.com,
-	akpm@linux-foundation.org,
-	david@fromorbit.com,
-	djwong@kernel.org,
-	muchun.song@linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: pgtable: fix incorrect reclaim of non-empty PTE pages
-Date: Tue, 11 Feb 2025 15:26:25 +0800
-Message-Id: <20250211072625.89188-1-zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+	s=arc-20240116; t=1739259295; c=relaxed/simple;
+	bh=ynwm1bdzEF1ub54nG+ogujpMFyfu9aqbKs29ozNc6tA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A+Wr6pXUl4zeHUfQpoapLxbQ1r+lCYsQKBcCn9StwmorWEvA1DS8prOlXXeXgezMKdJ3r7E/WczYvvcc1tOCGsVPtbAuXMsP+KtjxFj6E+/ziw2oj8o5Us1iSist+r/3P3L+eLPU3U3oN3BaidYho5SuC6v03aNjC3Jc2xS0+MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=j5D4ti9c; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B1fLZZ002074
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=36rbHyyIMconnVOEU
+	ihPaqQC2OBIIf3fDahr2u5xYuc=; b=j5D4ti9ccg5sW3DCgMTOnEnf/bZjRMa2V
+	aL3zcDTRl5pyu3TwlKJN3u5jHJA8d0fITWV9XVInskDxYVnXuILye6gB8i2qeb/G
+	nkf3sqWvMU1rkWby48sGY0tTnsys0Y2TFKFsRJLUk68Kij0BPX7kinssXmc5l7wC
+	X2mmN14NH8lczUxKmPOI0SzEBhr6XfwtX5rpoOUDlKCfiPDrcMXVQkKG4PAYi7Q3
+	NhfJlLK2VqKG/qDlH4rXd0UHsSkFFFS5rJSKwHd+hCdaMkD4B+9le9sLG7yLLySO
+	cdGvldb3JvsuFUcWYjhBoecYL3dvZhtASk4bxZAWA5Heah3BfgPhQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qvma18eh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51B3Nci2021706
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44phksjcmm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:51 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51B7YlMR27590976
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Feb 2025 07:34:47 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B920D20043;
+	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E68720040;
+	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: stable@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.13.y] s390/fpu: Add fpc exception handler / remove fixup section again
+Date: Tue, 11 Feb 2025 08:34:38 +0100
+Message-ID: <20250211073438.3521869-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2025021057-charred-koala-8496@gregkh>
+References: <2025021057-charred-koala-8496@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,75 +84,134 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AJ8A5dJQqQW9Y_PmIcCr8Dj31nSNSWt_
+X-Proofpoint-ORIG-GUID: AJ8A5dJQqQW9Y_PmIcCr8Dj31nSNSWt_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-11_03,2025-02-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ clxscore=1015 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 mlxlogscore=812 spamscore=0 suspectscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502110044
 
-In zap_pte_range(), if the pte lock was released midway, the pte entries
-may be refilled with physical pages by another thread, which may cause a
-non-empty PTE page to be reclaimed and eventually cause the system to
-crash.
+commit ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179 upstream.
 
-To fix it, fall back to the slow path in this case to recheck if all pte
-entries are still none.
+The fixup section was added again by mistake when test_fp_ctl() was
+removed. The reason for the removal of the fixup section is described in
+commit 484a8ed8b7d1 ("s390/extable: add dedicated uaccess handler").
+Remove it again for the same reason.
 
-Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
-Reported-by: Christian Brauner <brauner@kernel.org>
-Closes: https://lore.kernel.org/all/20250207-anbot-bankfilialen-acce9d79a2c7@brauner/
-Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Closes: https://lore.kernel.org/all/152296f3-5c81-4a94-97f3-004108fba7be@gmx.com/
-Tested-by: Zi Yan <ziy@nvidia.com>
+Add an exception handler which handles exceptions when the floating point
+control register is attempted to be set to invalid values. The exception
+handler sets the floating point control register to zero and continues
+execution at the specified address.
+
+The new sfpc inline assembly is open-coded to make back porting a bit
+easier.
+
+Fixes: 702644249d3e ("s390/fpu: get rid of test_fp_ctl()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- mm/memory.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/asm-extable.h |  4 ++++
+ arch/s390/include/asm/fpu-insn.h    | 17 +++++------------
+ arch/s390/kernel/vmlinux.lds.S      |  1 -
+ arch/s390/mm/extable.c              |  9 +++++++++
+ 4 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index a8196ae72e9ae..7c7193cb21248 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1721,7 +1721,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	pmd_t pmdval;
- 	unsigned long start = addr;
- 	bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
--	bool direct_reclaim = false;
-+	bool direct_reclaim = true;
- 	int nr;
+diff --git a/arch/s390/include/asm/asm-extable.h b/arch/s390/include/asm/asm-extable.h
+index 4a6b0a8b6412..00a67464c445 100644
+--- a/arch/s390/include/asm/asm-extable.h
++++ b/arch/s390/include/asm/asm-extable.h
+@@ -14,6 +14,7 @@
+ #define EX_TYPE_UA_LOAD_REG	5
+ #define EX_TYPE_UA_LOAD_REGPAIR	6
+ #define EX_TYPE_ZEROPAD		7
++#define EX_TYPE_FPC		8
  
- retry:
-@@ -1736,8 +1736,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	do {
- 		bool any_skipped = false;
+ #define EX_DATA_REG_ERR_SHIFT	0
+ #define EX_DATA_REG_ERR		GENMASK(3, 0)
+@@ -84,4 +85,7 @@
+ #define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
+ 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
  
--		if (need_resched())
-+		if (need_resched()) {
-+			direct_reclaim = false;
- 			break;
-+		}
++#define EX_TABLE_FPC(_fault, _target)					\
++	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
++
+ #endif /* __ASM_EXTABLE_H */
+diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
+index c1e2e521d9af..a4c9b4db62ff 100644
+--- a/arch/s390/include/asm/fpu-insn.h
++++ b/arch/s390/include/asm/fpu-insn.h
+@@ -100,19 +100,12 @@ static __always_inline void fpu_lfpc(unsigned int *fpc)
+  */
+ static inline void fpu_lfpc_safe(unsigned int *fpc)
+ {
+-	u32 tmp;
+-
+ 	instrument_read(fpc, sizeof(*fpc));
+-	asm volatile("\n"
+-		"0:	lfpc	%[fpc]\n"
+-		"1:	nopr	%%r7\n"
+-		".pushsection .fixup, \"ax\"\n"
+-		"2:	lghi	%[tmp],0\n"
+-		"	sfpc	%[tmp]\n"
+-		"	jg	1b\n"
+-		".popsection\n"
+-		EX_TABLE(1b, 2b)
+-		: [tmp] "=d" (tmp)
++	asm_inline volatile(
++		"	lfpc	%[fpc]\n"
++		"0:	nopr	%%r7\n"
++		EX_TABLE_FPC(0b, 0b)
++		:
+ 		: [fpc] "Q" (*fpc)
+ 		: "memory");
+ }
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 377b9aaf8c92..ff1ddba96352 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -52,7 +52,6 @@ SECTIONS
+ 		SOFTIRQENTRY_TEXT
+ 		FTRACE_HOTPATCH_TRAMPOLINES_TEXT
+ 		*(.text.*_indirect_*)
+-		*(.fixup)
+ 		*(.gnu.warning)
+ 		. = ALIGN(PAGE_SIZE);
+ 		_etext = .;		/* End of text section */
+diff --git a/arch/s390/mm/extable.c b/arch/s390/mm/extable.c
+index 0a0738a473af..812ec5be1291 100644
+--- a/arch/s390/mm/extable.c
++++ b/arch/s390/mm/extable.c
+@@ -77,6 +77,13 @@ static bool ex_handler_zeropad(const struct exception_table_entry *ex, struct pt
+ 	return true;
+ }
  
- 		nr = do_zap_pte_range(tlb, vma, pte, addr, end, details, rss,
- 				      &force_flush, &force_break, &any_skipped);
-@@ -1745,11 +1747,20 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 			can_reclaim_pt = false;
- 		if (unlikely(force_break)) {
- 			addr += nr * PAGE_SIZE;
-+			direct_reclaim = false;
- 			break;
- 		}
- 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
- 
--	if (can_reclaim_pt && addr == end)
-+	/*
-+	 * Fast path: try to hold the pmd lock and unmap the PTE page.
-+	 *
-+	 * If the pte lock was released midway (retry case), or if the attempt
-+	 * to hold the pmd lock failed, then we need to recheck all pte entries
-+	 * to ensure they are still none, thereby preventing the pte entries
-+	 * from being repopulated by another thread.
-+	 */
-+	if (can_reclaim_pt && direct_reclaim && addr == end)
- 		direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
- 
- 	add_mm_rss_vec(mm, rss);
++static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
++{
++	asm volatile("sfpc	%[val]\n" : : [val] "d" (0));
++	regs->psw.addr = extable_fixup(ex);
++	return true;
++}
++
+ bool fixup_exception(struct pt_regs *regs)
+ {
+ 	const struct exception_table_entry *ex;
+@@ -99,6 +106,8 @@ bool fixup_exception(struct pt_regs *regs)
+ 		return ex_handler_ua_load_reg(ex, true, regs);
+ 	case EX_TYPE_ZEROPAD:
+ 		return ex_handler_zeropad(ex, regs);
++	case EX_TYPE_FPC:
++		return ex_handler_fpc(ex, regs);
+ 	}
+ 	panic("invalid exception table entry");
+ }
 -- 
-2.20.1
+2.45.2
 
 
