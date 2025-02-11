@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-114926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E08A30EFB
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F955A30EFD
 	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB2C11883135
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:01:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1443188398F
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61641DFE11;
-	Tue, 11 Feb 2025 15:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B301F1908;
+	Tue, 11 Feb 2025 15:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ny1TuIRw"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="d1jS3OiU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59A03D69
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 15:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075703D69
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 15:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739286061; cv=none; b=PJtvN1EQrEsH87/83+yxxn1Sw3UgtbWqrk0kx3SyG4yEXOsm4+6FOPSSV6ZkHfNeld/yObF3L5ECAzmQU390oaABpEq374mKukfbxTl/mhVFeUOPu/byVvdcP2/cqNVSs8h5NmwE/aTo8CFYNDwaco0l3ZlBjHxURbIWviBvRak=
+	t=1739286069; cv=none; b=lGzbj1zBwgG9XUn074IRFE5/75D557fsWmJVLfqKxmn+ZnXftweddHeMc1VnZVHbDkVT2Tbm5wgI7WvWKQ1NW77tw69KxI+sD6cMtlunAct5dsnCQZ+c81fy4VX1uNQmVhJdjUX08/nDK7o38OQpQEMtFVPSzkphvdeDjSg8J9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739286061; c=relaxed/simple;
-	bh=pKdc7y35FYYNllndJlSKxsCtAy/PcFLSMfsLCFLDrMA=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=k6s/ArEIPOWLrErCrlIiGfS4AgzzyG38t38xbP6k7IyX3BuwBAsNbg8sl9w9HlRQ9bOG3Wavi/sPuAEywzFU6TK3lZOS3vlx+Pl/ygDO4ScKJgiEeVGSJN+jZNiqKiMb8fWo5J7wnmadnaWVyUY92xdNJItkZU30T8uPBBEDm8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=ny1TuIRw; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1739286069; c=relaxed/simple;
+	bh=Ofa5dbIJCu+eVTjOissChnoO2iIcMxHa67pbWTdFTE8=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=R5mEiLLSxxZtJwB4lfxKv1K9H4v3KGEu5GyJi0UMsc6Wa+2NAyn1XNfKsjiw/iXui9itp1pgsP+aGNa85A9v2eh50/MX5x4B3z79tXIJ9SfgETmM7ykEKnk2jZBUrbsP2Z/yd4T5XB6Us7W3w/dA0ijzFpY+eq6YR5lI10L2zDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=d1jS3OiU; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5de6e26db8eso5172028a12.2
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:00:59 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5de727f7f05so4089208a12.1
+        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:01:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1739286058; x=1739890858; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1739286065; x=1739890865; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1uC+nn22ue4OI2Q+YL8Q+4lxLe6sk2S29PFDwCXrQA=;
-        b=ny1TuIRwEcDjKo3MhHgN0tQWBWdP7cQ3X0jovExd/o0xsS/nDTELb8l4XAvfHPORcq
-         ZqK1IvCnes8SpTE5JZZrlk4+SyR0muYcjTt6U2ePO+IWuPjI8uL99Sc0ge1vYlpBCnnf
-         8T5LluQLSM/6023u1sdjmGQOm3srCT2STddGfJFP/LSPEhdMu0hsNFWVxpcmFT0FMpaT
-         GDFrVPqgElc4TjrL2I88uD/7lVoQQQR3o93OVQiJTBRYqYtp4gT+hHgeu/QFeRI/ctSt
-         D4TS/2m4uyrZNbdTSn2kfbfZcFqZQHBWwHGEeAbSa/7GpIDmmmobpuugf2Bri9bDab8H
-         Gglg==
+        bh=T/pm50ZRzdw2JfPDCT7+uPkJhcS1ZAC7CzSLPTgGKBc=;
+        b=d1jS3OiUzhl7PhE2cy6psTWdSY8mQU6BxuibJaTZiNUwqc1ZHRqp3r6n+GqJFY7/Sj
+         BcPKxxCtyC0VMvHfYRk6XEVaxdqfRN88l4J5+oMprixWtGtqyIdpH1ZmWt1ud8mtzxde
+         t7JYaOnK5ky7xRexHdsMvjYQXYE534EBCWHqvc8sfpatHdgM5pWi0Bn8O3fB32df62qj
+         miEowypG+ZQGFUjAyaQO1hedyMx6ojDv6w65uh5mK+WYFqTBCLGVjlGbtI9nb1REJLfs
+         qlBzTUk60IpZNEpQd5C1mi4TXeOFVvosZ2k9P0yBlUfXpiYVpWBmKTIdOIKezJOsQsOr
+         cjmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739286058; x=1739890858;
+        d=1e100.net; s=20230601; t=1739286065; x=1739890865;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+1uC+nn22ue4OI2Q+YL8Q+4lxLe6sk2S29PFDwCXrQA=;
-        b=APkVmDT/LOhln8LG3au7yj6/0fNVI177NZqhegYcoMbhYdLZ6OHA/OhW29qWGrKKrI
-         2VNBXbKKseq69KNHrTckg3MoJxvbMFcesIvTp+h2JpQfdSIBGQBNVVi6lGL3VWU9W9Uy
-         QccOFL8GYWCY1n8fFIeZCLP2B4TzehfzTz18Hyuh1ltyCJY0tipolMLYVzlzPZvQjvsG
-         SLgWkzxM2+wrelg3bmKZ7MabVJKjZ4XG+qjpXAqFeBUjdMeTC1b3zDWWMl/9J6fOhPs9
-         j3L3+1nZ20P7Qbrxcg/PQckoM9DW2CrmB1A8/01Dtw2YLE1lZ3InwDo9sxpppCktcrwr
-         QaqA==
-X-Gm-Message-State: AOJu0Yxq33HnEMbc310fNRU3mjVv8bP495R/5/3rHbgKGjbQSUdU48bM
-	RJyjQzSuKGEaHyg64p9D9NksS2WIzvtRgMl5tpeE9cmaiO0th6buakOJvMk9rGSYLSW4x9Lsf8h
-	D8ClNxoXRhwNYSrDwEIWtPLVFo1McuuBgAzNwEA==
-X-Gm-Gg: ASbGncuLFYIfHMUzDBykIPoVxEmoMGVCixlyE5M7VvCAgyB43asGY+5LWwBmjk/P/ES
-	Xdq6ZazHl1IDN1fWtwr0UofyPYC0g/Knck9p6LIBBgJs/JHqvlJQvmYxhAbQxCup89Dq6fWwJaM
-	fRU1zqK2pg0SVSZBilVTYkT6ALPU2RkA==
-X-Google-Smtp-Source: AGHT+IFJVqBJfa3cr9qLsp1B1Q5bKOwcM8zYuXvZ9fMygvQI3w07LyP+FzZ8duD1psjP8V8HqzVyDKoM2hzlxvDGS5s=
-X-Received: by 2002:a05:6402:2189:b0:5de:39fd:b2f5 with SMTP id
- 4fb4d7f45d1cf-5de44fea40dmr16669580a12.1.1739286056491; Tue, 11 Feb 2025
- 07:00:56 -0800 (PST)
+        bh=T/pm50ZRzdw2JfPDCT7+uPkJhcS1ZAC7CzSLPTgGKBc=;
+        b=ppUZReK5rt4r04SfBbwnOOKfFV7dXvBL0veKr5zGmiQ20M72eyseQMeNAXfWu4Yr6g
+         9GRQBQ1MhoWGD5N4zCJGlp5RSgKGroiJUU3kOiT84rRVKKGhgrIHHhswObYdYZvjOkL3
+         m3OImInTO4w1A8DXqFXwx6A/MjfWLY665wlWFV8F9+0PX8w3hL/KB+M2r/XiMkkT+x1P
+         tolyGQY6/xDJn7YigX8KP6Mm6OKEbOEdWknZsQDan2MpZlSDScYBn0gUMTZpx3mGYrHz
+         yEFYJnMQANdg9E5bpOdpH47UGHzpWmygw8FtLXkhErWoI3rtolbUYhMC5zFBufXbejrI
+         Ehxw==
+X-Gm-Message-State: AOJu0YzP716ANYEZ3Jq07eJT40alvfSyH8c0p8V2C6hTJJXqUThLR3om
+	B1/1C6zFbT1hDpmMVygYsRh0pB8JdFaEvUg70SDA5Csj0QXbG5LBHbAIH3+iCRM4Jq4oRu5YG16
+	Ej5zBimPM88OWN2ArM0ghc7MyFU/bEZQfv6Gs5anSrM4TpSgSlWg=
+X-Gm-Gg: ASbGnct27bZKD5LiIUmy4I9t1yb5+3Gdi8+qhTxoXZi5/k230ruIZA8zyEdiCnG1smh
+	NnuT5Y8vy6rqo2ZvF++ZX1L+dcpaZEqwITAnDwCLkRU46i+vHVjIT2iOk4dF8fojPKX3iDhQq8w
+	U8Pn9UPBHFEill5C4H3Sax3dkrmLMigA==
+X-Google-Smtp-Source: AGHT+IEB/MFleqFDKJ/smFprr/HUvEtKLkQYuN9V7ZbaWSG2/U5GFIFUEw259P7exZglK6XpC03Xmwim4X+4BlhiSsQ=
+X-Received: by 2002:a05:6402:2086:b0:5d0:bcdd:ff8f with SMTP id
+ 4fb4d7f45d1cf-5de44feaa42mr16314877a12.4.1739286063741; Tue, 11 Feb 2025
+ 07:01:03 -0800 (PST)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Feb 2025 07:00:55 -0800
+ HTTPREST; Tue, 11 Feb 2025 07:01:02 -0800
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Feb 2025 07:00:55 -0800
+ HTTPREST; Tue, 11 Feb 2025 07:01:02 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,12 +76,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
-Date: Tue, 11 Feb 2025 07:00:55 -0800
-X-Gm-Features: AWEUYZliL3EUPDqVy-hVXZl4QL263kAzctYaNX0_r-PDMBeDh66g4wL7xI6v3UU
-Message-ID: <CACo-S-3xq+AdNLV74UGJzFSVar76c+_t6W1gCCw+4KjYx9xOgg@mail.gmail.com>
-Subject: =?UTF-8?B?c3RhYmxlLXJjL2xpbnV4LTUuMTAueTogbmV3IGJ1aWxkIHJlZ3Jlc3Npb246IOKAmHN0cg==?=
-	=?UTF-8?B?dWN0IGRybV9jb25uZWN0b3LigJkgaGFzIG5vIG1lbWJlciBuYW1lZCDigJhlbGRfbXV0ZXjigJkgaS4u?=
-	=?UTF-8?B?Lg==?=
+Date: Tue, 11 Feb 2025 07:01:02 -0800
+X-Gm-Features: AWEUYZnV7cP7uXRjL0IrMpWPPja6DQ_GxauiPfDvNovF4cKnJ5sLHvic4C75LdA
+Message-ID: <CACo-S-0xbf-iwB+im4SRNywx+ovf0Lv-CzFb++jizY_nCSKBfQ@mail.gmail.com>
+Subject: =?UTF-8?B?c3RhYmxlLXJjL2xpbnV4LTUuNC55OiBuZXcgYnVpbGQgcmVncmVzc2lvbjog4oCYc3RydQ==?=
+	=?UTF-8?B?Y3QgZHJtX2Nvbm5lY3RvcuKAmSBoYXMgbm8gbWVtYmVyIG5hbWVkIOKAmGVsZF9tdXRleOKAmSBpLi4u?=
 To: kernelci-results@groups.io
 Cc: stable@vger.kernel.org, gus@collabora.com
 Content-Type: text/plain; charset="UTF-8"
@@ -89,7 +88,7 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-New build issue found on stable-rc/linux-5.10.y:
+New build issue found on stable-rc/linux-5.4.y:
 
 ---
  =E2=80=98struct drm_connector=E2=80=99 has no member named =E2=80=98eld_mu=
@@ -98,28 +97,27 @@ drivers/gpu/drm/sti/sti_hdmi.o (drivers/gpu/drm/sti/sti_hdmi.c)
 [logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://dashboard.kernelci.org/issue/maestro:fa367257079874773=
-0c198595392890f2f99404c
+- dashboard: https://dashboard.kernelci.org/issue/maestro:5e925d96a3540cf43=
+ab1b679d0e9b4356b623237
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
 le-rc.git
-- commit HEAD:  a12eb63b1d685a20c1abe34c84c383f0b7b829b5
+- commit HEAD:  16f808b001a697126972a39c8a2600c33a616ebf
 
 
 Log excerpt:
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D
-drivers/gpu/drm/sti/sti_hdmi.c:1216:30: error: =E2=80=98struct drm_connecto=
+drivers/gpu/drm/sti/sti_hdmi.c:1217:30: error: =E2=80=98struct drm_connecto=
 r=E2=80=99
 has no member named =E2=80=98eld_mutex=E2=80=99
- 1216 |         mutex_lock(&connector->eld_mutex);
+ 1217 |         mutex_lock(&connector->eld_mutex);
       |                              ^~
-drivers/gpu/drm/sti/sti_hdmi.c:1218:32: error: =E2=80=98struct drm_connecto=
+drivers/gpu/drm/sti/sti_hdmi.c:1219:32: error: =E2=80=98struct drm_connecto=
 r=E2=80=99
 has no member named =E2=80=98eld_mutex=E2=80=99
- 1218 |         mutex_unlock(&connector->eld_mutex);
+ 1219 |         mutex_unlock(&connector->eld_mutex);
       |                                ^~
-  CC [M]  drivers/gpu/drm/msm/dp/dp_display.o
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -130,11 +128,11 @@ has no member named =E2=80=98eld_mutex=E2=80=99
 
 ## multi_v7_defconfig on (arm):
 - compiler: gcc-12
-- dashboard: https://dashboard.kernelci.org/build/maestro:67ab302ab27a1f56c=
-c37e05b
+- dashboard: https://dashboard.kernelci.org/build/maestro:67ab2fc1b27a1f56c=
+c37dfff
 
 
-#kernelci issue maestro:fa3672570798747730c198595392890f2f99404c
+#kernelci issue maestro:5e925d96a3540cf43ab1b679d0e9b4356b623237
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
