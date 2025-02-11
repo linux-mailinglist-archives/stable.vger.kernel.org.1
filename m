@@ -1,279 +1,122 @@
-Return-Path: <stable+bounces-114954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36E9A3158B
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:43:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323B4A31612
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F063A4A78
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:43:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D79E83A0864
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1562626E62C;
-	Tue, 11 Feb 2025 19:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA8C2641D6;
+	Tue, 11 Feb 2025 19:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="a5DtbJVv"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B126E62B
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 19:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9155526561E
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 19:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739302990; cv=none; b=OYTEy7394aGIKkVSviQV1KDn1RJQk5cySjUYoitrwoO/F3VgbmJ8e2VdXWoH1MJmDRHKQl7/T8ITDK4kLSVBm/G3YiQ4aR0KxHGyovss22zebcm2CIVLZ2/bZq5WEBIAgkteGZ3Iz9C/PX9Gj0spI4fqCDPd4WlsedHpKrgz/Bo=
+	t=1739303687; cv=none; b=m9ofDlxLF2mTVCruABrHD9UlTA/5/F8tLIh5pd6ix99qyExxYdnAuOhg67wYseUSOznYFSW0jfzV89aM4TVrdIefQVWS2cno2RHE6jsAff7POyeLTtIDQXp8/LzUn4xokBln18b4CUUSx13YVPnihiSfYA3QJqiHm1hluQ3Wav8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739302990; c=relaxed/simple;
-	bh=f2EAReHL8knCs08MkvOmet8+UuoNR7LIwBKR9P7db2Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dtqXoW8uHiB0rX/W6iLjLtpAaPBl84Yzswa37/fT/CA4Lw13sKUVd4wpHz1GSc+WYdbyAhimPMvgs6bDK3LXTcHi2OOu6IpAZVAiO2iKZBtoKT2dwLE/aY7IusvvGxFI6OGgrJjxBxIVKzAHsWB4FpkWmoGnzppuMOPDSMlcKBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id C5505233BA;
-	Tue, 11 Feb 2025 22:43:02 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: lvc-project@linuxtesting.org,
-	kovalev@altlinux.org,
-	Su Yue <glass.su@suse.com>,
-	Jiacheng Xu <stitch@zju.edu.cn>,
-	syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10/5.15] ocfs2: check dir i_size in ocfs2_find_entry
-Date: Tue, 11 Feb 2025 22:43:00 +0300
-Message-Id: <20250211194300.645847-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1739303687; c=relaxed/simple;
+	bh=vLPYepmCn4mhfGlDn5smbuR/5pRrA54KLcq81jDIMU0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BzolE4AakC8w68JjYcxHSTWgJ2S8yNdIckjOqiPOd7DtBQFiz5FtrfA6o9z+3hu4c7yLaTdjy5FLSfrSzm/gyt4B1+kGA+q+bAbMB7K7I85UKEs/ERo7HLcP+a97r+M/So1/IKBpepFM0s51XXosb1B52Y3g+/CR/zc9KJUz9wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=a5DtbJVv; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
+	s=key1; t=1739303673;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bjtWxBs83BeuDmTbDt+EHDOyKdhyT00WLwVNCX8IS6s=;
+	b=a5DtbJVvwtvk4xeAZlHBtFv9PNrT5Ibudy9tbKBSrDOeYgmOY/LhvzgXaqIKmHU1rVRGR1
+	lNMhh4/6bI/At3zCJVrIrDttdqUXM8Sl9oQL+fAs5hgs/DJIkWZJ76RfQixqvNhHeJrzIN
+	4wsV1Eomj/5177fqUXxiQLl63Q731+b5Jvc0k/ZlQ1SkYIWlOIfO73OCNIfX7CS8K20mzM
+	+Vyha15mA1vpWiOVmPaRTS9XBhDmYUP0gqtfPGgu93Z6ghvXIx51Jxt0GbE/06f+4/rLE5
+	x2NxelrrE4Ibh4JhDXqXi5kHM1FINGakkaulLE6b9SKPuBfKEu9jsjxdlmdQ0g==
+From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Subject: [PATCH 0/7] PCI: apple: support t6020
+Date: Tue, 11 Feb 2025 14:54:25 -0500
+Message-Id: <20250211-pcie-t6-v1-0-b60e6d2501bb@rosenzweig.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPGqq2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDI0ND3YLkzFTdEjNd4zQTC0uL5FTLJMMUJaDqgqLUtMwKsEnRsbW1AIz
+ yLv1ZAAAA
+X-Change-ID: 20250211-pcie-t6-3f4898ce9b1d
+To: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Mark Kettenis <kettenis@openbsd.org>, 
+ Marc Zyngier <maz@kernel.org>, Stan Skowronek <stan@corellium.com>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+ Janne Grunau <j@jannau.net>, stable@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1159; i=alyssa@rosenzweig.io;
+ h=from:subject:message-id; bh=vLPYepmCn4mhfGlDn5smbuR/5pRrA54KLcq81jDIMU0=;
+ b=owEBbQKS/ZANAwAIAf7+UFoK9VgNAcsmYgBnq6r1hX/zYTOcr8IsxIdT6f8LIeprpn21i7hFi
+ FMMsjhwAHmJAjMEAAEIAB0WIQRDXuCbsK8A0B2q9jj+/lBaCvVYDQUCZ6uq9QAKCRD+/lBaCvVY
+ DQBfD/9Vrm3zDhNnwWZJlv0XHhz5dXaXNFpop4FmbBwlOS1GI18cZWC6vaX65sUOGm2pLgG4i6F
+ Tf9Vo6DRIEdQYPMkzZMg6AvsXjLrPO2CypPLGd8TOkmk9VowXTedeU+ub2KgUJXmOY7LQEO6VtY
+ T+JF8DkiGLjvlxHrjkhRm0R7seTPpMfIP5Z+lSeJ3bS+LhkxSfC24d+CcX+1A02MZNAudHhiqWm
+ SkxTDbiHRvJm5mjkXfnoIg0Q+2c4re8xd5TC0pk6wnTN+5XvZbZC3DirRGxAcEAN02OUddXVpVC
+ Ong9Db+NV9xXoaRUhEiinE+emBlAabt1lIAdJOXe5pCWvP+8LZmtaeCofozy5ztqIWU+C1YjDY/
+ Hrt9EZFGQUpypV0USyXLl/LAepePjC9SVaBhCcI2iSVV66RW4VBNyn3TZkQOlEneA/PzmG0jIHt
+ sSgxbr19Yz0IHLZURp12jlSXDHojbbWknY1uPrrmL/llw8YoQQacVI5s6mfCYEiXDfwXv6w4WwK
+ bwP5XF7iiqm8ZToXwAAhfzHfro6D/Ep6r0f6RuyNxJ2SHKJYavuyaDY8yQs0k6lhiorhWIOR1wg
+ ykDz6mRLBMLq2oXcp9Jpvb1/VJH4/+wznxYsYZahNfiSVGPu8Sh4MP5unjkI5x5Y3WY4m+CkqA6
+ iwEjEi2dojl2iGA==
+X-Developer-Key: i=alyssa@rosenzweig.io; a=openpgp;
+ fpr=435EE09BB0AF00D01DAAF638FEFE505A0AF5580D
+X-Migadu-Flow: FLOW_OUT
 
-From: Su Yue <glass.su@suse.com>
+This series adds T6020 support to the Apple PCIe controller. Mostly
+Apple shuffled registers around (presumably to accommodate the larger
+configurations on those machines). So there's a bit of churn here but
+not too much in the way of functional changes.
 
-commit b0fce54b8c0d8e5f2b4c243c803c5996e73baee8 upstream.
-
-syz reports an out of bounds read:
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ocfs2_match fs/ocfs2/dir.c:334
-[inline]
-BUG: KASAN: slab-out-of-bounds in ocfs2_search_dirblock+0x283/0x6e0
-fs/ocfs2/dir.c:367
-Read of size 1 at addr ffff88804d8b9982 by task syz-executor.2/14802
-
-CPU: 0 UID: 0 PID: 14802 Comm: syz-executor.2 Not tainted 6.13.0-rc4 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
-04/01/2014
-Sched_ext: serialise (enabled+all), task: runnable_at=-10ms
-Call Trace:
-<TASK>
-__dump_stack lib/dump_stack.c:94 [inline]
-dump_stack_lvl+0x229/0x350 lib/dump_stack.c:120
-print_address_description mm/kasan/report.c:378 [inline]
-print_report+0x164/0x530 mm/kasan/report.c:489
-kasan_report+0x147/0x180 mm/kasan/report.c:602
-ocfs2_match fs/ocfs2/dir.c:334 [inline]
-ocfs2_search_dirblock+0x283/0x6e0 fs/ocfs2/dir.c:367
-ocfs2_find_entry_id fs/ocfs2/dir.c:414 [inline]
-ocfs2_find_entry+0x1143/0x2db0 fs/ocfs2/dir.c:1078
-ocfs2_find_files_on_disk+0x18e/0x530 fs/ocfs2/dir.c:1981
-ocfs2_lookup_ino_from_name+0xb6/0x110 fs/ocfs2/dir.c:2003
-ocfs2_lookup+0x30a/0xd40 fs/ocfs2/namei.c:122
-lookup_open fs/namei.c:3627 [inline]
-open_last_lookups fs/namei.c:3748 [inline]
-path_openat+0x145a/0x3870 fs/namei.c:3984
-do_filp_open+0xe9/0x1c0 fs/namei.c:4014
-do_sys_openat2+0x135/0x1d0 fs/open.c:1402
-do_sys_open fs/open.c:1417 [inline]
-__do_sys_openat fs/open.c:1433 [inline]
-__se_sys_openat fs/open.c:1428 [inline]
-__x64_sys_openat+0x15d/0x1c0 fs/open.c:1428
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xf6/0x210 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f01076903ad
-Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89
-f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
-f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f01084acfc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f01077cbf80 RCX: 00007f01076903ad
-RDX: 0000000000105042 RSI: 0000000020000080 RDI: ffffffffffffff9c
-RBP: 00007f01077cbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000000001ff R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f01077cbf80 R14: 00007f010764fc90 R15: 00007f010848d000
-</TASK>
-==================================================================
-
-And a general protection fault in ocfs2_prepare_dir_for_insert:
-
-==================================================================
-loop0: detected capacity change from 0 to 32768
-JBD2: Ignoring recovery information on journal
-ocfs2: Mounting device (7,0) on (node local, slot 0) with ordered data
-mode.
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 0 UID: 0 PID: 5096 Comm: syz-executor792 Not tainted
-6.11.0-rc4-syzkaller-00002-gb0da640826ba #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:ocfs2_find_dir_space_id fs/ocfs2/dir.c:3406 [inline]
-RIP: 0010:ocfs2_prepare_dir_for_insert+0x3309/0x5c70 fs/ocfs2/dir.c:4280
-Code: 00 00 e8 2a 25 13 fe e9 ba 06 00 00 e8 20 25 13 fe e9 4f 01 00 00
-e8 16 25 13 fe 49 8d 7f 08 49 8d 5f 09 48 89 f8 48 c1 e8 03 <42> 0f b6
-04 20 84 c0 0f 85 bd 23 00 00 48 89 d8 48 c1 e8 03 42 0f
-RSP: 0018:ffffc9000af9f020 EFLAGS: 00010202
-RAX: 0000000000000001 RBX: 0000000000000009 RCX: ffff88801e27a440
-RDX: 0000000000000000 RSI: 0000000000000400 RDI: 0000000000000008
-RBP: ffffc9000af9f830 R08: ffffffff8380395b R09: ffffffff838090a7
-R10: 0000000000000002 R11: ffff88801e27a440 R12: dffffc0000000000
-R13: ffff88803c660878 R14: f700000000000088 R15: 0000000000000000
-FS:  000055555a677380(0000) GS:ffff888020800000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000560bce569178 CR3: 000000001de5a000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-ocfs2_mknod+0xcaf/0x2b40 fs/ocfs2/namei.c:292
-vfs_mknod+0x36d/0x3b0 fs/namei.c:4088
-do_mknodat+0x3ec/0x5b0
-__do_sys_mknodat fs/namei.c:4166 [inline]
-__se_sys_mknodat fs/namei.c:4163 [inline]
-__x64_sys_mknodat+0xa7/0xc0 fs/namei.c:4163
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2dafda3a99
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89
-f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08
-0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8
-64 89 01 48
-RSP: 002b:00007ffe336a6658 EFLAGS: 00000246 ORIG_RAX:
-0000000000000103
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX:
-00007f2dafda3a99
-RDX: 00000000000021c0 RSI: 0000000020000040 RDI:
-00000000ffffff9c
-RBP: 00007f2dafe1b5f0 R08: 0000000000004480 R09:
-000055555a6784c0
-R10: 0000000000000103 R11: 0000000000000246 R12:
-00007ffe336a6680
-R13: 00007ffe336a68a8 R14: 431bde82d7b634db R15:
-00007f2dafdec03b
-</TASK>
-==================================================================
-
-The two reports are all caused invalid negative i_size of dir inode.  For
-ocfs2, dir_inode can't be negative or zero.
-
-Here add a check in which is called by ocfs2_check_dir_for_entry().  It
-fixes the second report as ocfs2_check_dir_for_entry() must be called
-before ocfs2_prepare_dir_for_insert().  Also set a up limit for dir with
-OCFS2_INLINE_DATA_FL.  The i_size can't be great than blocksize.
-
-Link: https://lkml.kernel.org/r/20250106140640.92260-1-glass.su@suse.com
-Reported-by: Jiacheng Xu <stitch@zju.edu.cn>
-Link: https://lore.kernel.org/ocfs2-devel/17a04f01.1ae74.19436d003fc.Coremail.stitch@zju.edu.cn/T/#u
-Reported-by: syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000005894f3062018caf1@google.com/T/
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
 ---
- fs/ocfs2/dir.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+Alyssa Rosenzweig (1):
+      dt-bindings: pci: apple,pcie: Add t6020 support
 
-diff --git a/fs/ocfs2/dir.c b/fs/ocfs2/dir.c
-index c9797dd067851..441818535bfc5 100644
---- a/fs/ocfs2/dir.c
-+++ b/fs/ocfs2/dir.c
-@@ -1065,26 +1065,39 @@ int ocfs2_find_entry(const char *name, int namelen,
- {
- 	struct buffer_head *bh;
- 	struct ocfs2_dir_entry *res_dir = NULL;
-+	int ret = 0;
- 
- 	if (ocfs2_dir_indexed(dir))
- 		return ocfs2_find_entry_dx(name, namelen, dir, lookup);
- 
-+	if (unlikely(i_size_read(dir) <= 0)) {
-+		ret = -EFSCORRUPTED;
-+		mlog_errno(ret);
-+		goto out;
-+	}
- 	/*
- 	 * The unindexed dir code only uses part of the lookup
- 	 * structure, so there's no reason to push it down further
- 	 * than this.
- 	 */
--	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL)
-+	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
-+		if (unlikely(i_size_read(dir) > dir->i_sb->s_blocksize)) {
-+			ret = -EFSCORRUPTED;
-+			mlog_errno(ret);
-+			goto out;
-+		}
- 		bh = ocfs2_find_entry_id(name, namelen, dir, &res_dir);
--	else
-+	} else {
- 		bh = ocfs2_find_entry_el(name, namelen, dir, &res_dir);
-+	}
- 
- 	if (bh == NULL)
- 		return -ENOENT;
- 
- 	lookup->dl_leaf_bh = bh;
- 	lookup->dl_entry = res_dir;
--	return 0;
-+out:
-+	return ret;
- }
- 
- /*
-@@ -2011,6 +2024,7 @@ int ocfs2_lookup_ino_from_name(struct inode *dir, const char *name,
-  *
-  * Return 0 if the name does not exist
-  * Return -EEXIST if the directory contains the name
-+ * Return -EFSCORRUPTED if found corruption
-  *
-  * Callers should have i_mutex + a cluster lock on dir
-  */
-@@ -2024,9 +2038,12 @@ int ocfs2_check_dir_for_entry(struct inode *dir,
- 	trace_ocfs2_check_dir_for_entry(
- 		(unsigned long long)OCFS2_I(dir)->ip_blkno, namelen, name);
- 
--	if (ocfs2_find_entry(name, namelen, dir, &lookup) == 0) {
-+	ret = ocfs2_find_entry(name, namelen, dir, &lookup);
-+	if (ret == 0) {
- 		ret = -EEXIST;
- 		mlog_errno(ret);
-+	} else if (ret == -ENOENT) {
-+		ret = 0;
- 	}
- 
- 	ocfs2_free_dir_lookup_result(&lookup);
+Hector Martin (5):
+      PCI: apple: Fix missing OF node reference in apple_pcie_setup_port
+      PCI: apple: Move port PHY registers to their own reg items
+      PCI: apple: Drop poll for CORE_RC_PHYIF_STAT_REFCLK
+      PCI: apple: Use gpiod_set_value_cansleep in probe flow
+      PCI: apple: Add T602x PCIe support
+
+Janne Grunau (1):
+      PCI: apple: Set only available ports up
+
+ .../devicetree/bindings/pci/apple,pcie.yaml        |   1 +
+ drivers/pci/controller/pcie-apple.c                | 189 ++++++++++++++++-----
+ 2 files changed, 146 insertions(+), 44 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250211-pcie-t6-3f4898ce9b1d
+
+Best regards,
 -- 
-2.42.2
+Alyssa Rosenzweig <alyssa@rosenzweig.io>
 
 
