@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-114848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D119A3048B
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:35:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBF4A304AE
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467CE188AB01
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:35:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A2EB3A574D
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361961EB186;
-	Tue, 11 Feb 2025 07:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871961EDA11;
+	Tue, 11 Feb 2025 07:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="j5D4ti9c"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="q4C+y7eq"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6350F26BD8B
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AF71E3DF7
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739259295; cv=none; b=pOS3g3QQAQPw5rNaWeI3s7FBE0XOuHMGSYYzeslaU4+4E9oezu1BcjRtGlJFqMEu7kDNToQ80j62Z6I4kn0yP2PZXYxgyVmAoVXN/F1cN+3rmotIFDD42PcRxtaex2A3kvy43fYC8AY0iJ8ORsUqG7oTI+KL/uh+2ykQc9qaflY=
+	t=1739259680; cv=none; b=mBurmGQIA+ZNsPNBCSKE2WoIkmL42kqduFKq7iEgcyFIRL0DUpY9zIFFLwac6pNcaQCijUBmHwbEpZXitLF/3rdjLbnsDnjpwwW94gSKA2MDE4QL2/pdrHk9W+aU1Z6dhbVwUJ0QHDaqMxHBdq/deLffkgn3fcQWBQSBYublPh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739259295; c=relaxed/simple;
+	s=arc-20240116; t=1739259680; c=relaxed/simple;
 	bh=ynwm1bdzEF1ub54nG+ogujpMFyfu9aqbKs29ozNc6tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+Wr6pXUl4zeHUfQpoapLxbQ1r+lCYsQKBcCn9StwmorWEvA1DS8prOlXXeXgezMKdJ3r7E/WczYvvcc1tOCGsVPtbAuXMsP+KtjxFj6E+/ziw2oj8o5Us1iSist+r/3P3L+eLPU3U3oN3BaidYho5SuC6v03aNjC3Jc2xS0+MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=j5D4ti9c; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=KcPtQvf+kdxzMFhOFHK36RzxdcyFpm7cCFRzsDYDk/wl5VGHpmv25BkIKslWvet/mtfJ0D3wLKwtBT//UOEAShDJ05Qja+SN+Vl20bGRPSH115d7yIVFW4xZXlNfv38ec9YwYEVxHsV969apm7EMMqKpFqcU6B/h72WZz5xUTfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=q4C+y7eq; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B1fLZZ002074
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 GMT
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B1fJfJ023563
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
 	:mime-version:references:subject:to; s=pp1; bh=36rbHyyIMconnVOEU
-	ihPaqQC2OBIIf3fDahr2u5xYuc=; b=j5D4ti9ccg5sW3DCgMTOnEnf/bZjRMa2V
-	aL3zcDTRl5pyu3TwlKJN3u5jHJA8d0fITWV9XVInskDxYVnXuILye6gB8i2qeb/G
-	nkf3sqWvMU1rkWby48sGY0tTnsys0Y2TFKFsRJLUk68Kij0BPX7kinssXmc5l7wC
-	X2mmN14NH8lczUxKmPOI0SzEBhr6XfwtX5rpoOUDlKCfiPDrcMXVQkKG4PAYi7Q3
-	NhfJlLK2VqKG/qDlH4rXd0UHsSkFFFS5rJSKwHd+hCdaMkD4B+9le9sLG7yLLySO
-	cdGvldb3JvsuFUcWYjhBoecYL3dvZhtASk4bxZAWA5Heah3BfgPhQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qvma18eh-1
+	ihPaqQC2OBIIf3fDahr2u5xYuc=; b=q4C+y7eqXBHaxtEAxKmnx1zwTIYYfTpZJ
+	HOMRJJQxe17Um9ou+dobgAX2ad0MjwLACb1nsR6xzxGt9XU7JyCc7EzVPXRfT3+h
+	4sxijSJfNcZG7QhYwquqeMwYh+OrZO2Y4+QLVqWv5qX5yi7IHWlkhXGynTIwAkGh
+	6iMVR/37GWhayuq0hMeJCy5OTT7neUoNVNVO2iuzNNkbu+EKMcaelCIkDMrl0KOL
+	STaL0er4kQ7PnIFVcFlB1efJnIA/BVLzJsxPiFGVRiOqtde5WU6zNFMV3Fpfv9/0
+	2OzcvuFBmKFvsgFY84gzDcWDdbzQYGWuqQ8uZEohO9BkSUs/ctw0w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44qm9tkh3y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:52 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51B3Nci2021706
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:51 GMT
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:17 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51B70YHH029203
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:16 GMT
 Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44phksjcmm-1
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pma1hufv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:34:51 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51B7YlMR27590976
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:41:16 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51B7fCRO44171722
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Feb 2025 07:34:47 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B920D20043;
-	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E68720040;
-	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
+	Tue, 11 Feb 2025 07:41:13 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DC8AE20043;
+	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C523820040;
+	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Feb 2025 07:34:47 +0000 (GMT)
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Feb 2025 07:41:12 +0000 (GMT)
 From: Heiko Carstens <hca@linux.ibm.com>
 To: stable@vger.kernel.org
 Cc: Heiko Carstens <hca@linux.ibm.com>,
         Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.13.y] s390/fpu: Add fpc exception handler / remove fixup section again
-Date: Tue, 11 Feb 2025 08:34:38 +0100
-Message-ID: <20250211073438.3521869-1-hca@linux.ibm.com>
+Subject: [PATCH 6.12.y] s390/fpu: Add fpc exception handler / remove fixup section again
+Date: Tue, 11 Feb 2025 08:41:11 +0100
+Message-ID: <20250211074111.3756357-1-hca@linux.ibm.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2025021057-charred-koala-8496@gregkh>
-References: <2025021057-charred-koala-8496@gregkh>
+In-Reply-To: <2025021058-supplier-busybody-2b89@gregkh>
+References: <2025021058-supplier-busybody-2b89@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,15 +85,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AJ8A5dJQqQW9Y_PmIcCr8Dj31nSNSWt_
-X-Proofpoint-ORIG-GUID: AJ8A5dJQqQW9Y_PmIcCr8Dj31nSNSWt_
+X-Proofpoint-GUID: C-xsGnjlXJdQmIzacQ8G_E36_4LQE31i
+X-Proofpoint-ORIG-GUID: C-xsGnjlXJdQmIzacQ8G_E36_4LQE31i
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-11_03,2025-02-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 mlxlogscore=812 spamscore=0 suspectscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 phishscore=0 impostorscore=0 mlxlogscore=852 adultscore=0
+ malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2501170000 definitions=main-2502110044
 
 commit ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179 upstream.
