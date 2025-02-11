@@ -1,109 +1,93 @@
-Return-Path: <stable+bounces-114959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BDBA316AF
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:32:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD173A316B3
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784A61674FB
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5828F3A6C8A
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE5726217C;
-	Tue, 11 Feb 2025 20:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FBD2638B1;
+	Tue, 11 Feb 2025 20:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCNT6rVb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTdX6qiu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EE126562F;
-	Tue, 11 Feb 2025 20:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DE0265626;
+	Tue, 11 Feb 2025 20:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739305956; cv=none; b=Vc7u2ftLS99SUbRrnCywhjEBJcTlKA0ifBtVLtk7fhfhiAKyNDi5gXbZjFh1LqvxZk5j8My6Vvv2tvM8+tGYgROFbWAd+PAKxNHj3KfWSIWeSpvHcPCKiY8BCpgq+Zk+6WG9CrrDWq4aSAsfYY9jJRvQ4/k5l0suB++5KOuIf6c=
+	t=1739306006; cv=none; b=XjUarAgWLuEHH5E3NSjmty+ZqpaMnQsH+1ew0ccMFvpmcY2duv+RVrEPH/HZjEigxlaTMFlykILWDGbCY/cSR40Fstt5j32p0zPnI+xrw8gquujiDRma6hcSslmATh2LClFpt8G7lXmfUUBHmV7Z+2kMtDufHDiz5d5890pFqVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739305956; c=relaxed/simple;
-	bh=YwqbFY8kQo+k/M9mG0aEQqMh0W+Fv1ls/QqF2dj3uBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iY41b1iMccz0wMgQ7QFcjj/QKQkxfXPPfcuPr7x8Nhxv+I869zvLYujSJ/3Ix4bvalJzIgo24QcvqS+yuV63YCYN+/RJbD5/Zt4FuUaMQrqWygqEgxLRvbQeX0wVKM88dzXn7oYW/CsQotwHa5qsrP/H+SkGglu76cC1qMNK8Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCNT6rVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A97C4CEDD;
-	Tue, 11 Feb 2025 20:32:33 +0000 (UTC)
+	s=arc-20240116; t=1739306006; c=relaxed/simple;
+	bh=m6uW5LI+RTAP6gZ7LY7Y5BSyq7TILP8ZnWmH47ViD2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Mx60pV2h1saoDuigKbhDj4yr0MzUZaZt71OM8DHDyLA74bHQGXpaNQj9MLCHP3o2qxLPe72fhW7HVThRXJ8+lpRsr3NNNtDol1gFCt1d+egiyrDU92ras1I6SqgI3ewpH2TzxWz61l6BFFdjOyH+n1fWhE84aMb+LCEiE9fGZnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTdX6qiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87328C4CEDD;
+	Tue, 11 Feb 2025 20:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739305954;
-	bh=YwqbFY8kQo+k/M9mG0aEQqMh0W+Fv1ls/QqF2dj3uBU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NCNT6rVbUC215i2jkP9u2t0CEQ7Y/gw5BzRB51yr6RqQJ6DKuR+P4jRZaH/eXR/WS
-	 peHPKNiMdqWxnPiRh63tAPyfCxyE1j6mIqLagZd3rLYYKdFs52sTWxQt++YX2tJCAf
-	 uJAVY70EMhaRzhMBAbTKANfmfjT/nEYrxgB/Un+1Z1s6ugT6d2ZVyq4pADeIeZLgGg
-	 G+GDwai0SZuNfl04LUgvtESUtKSSPQxDs+7fIfFhId+m6t9h+1aOkVoxfpGqNaASCX
-	 06r8o2/zXAOn+w9eGaH2lkN47NuIUjSP5x+3HDpFIbElOOiPzTqoKT4ulBU0pRIU6x
-	 M/BdAodAMPfNw==
-From: Mario Limonciello <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	westeri@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl
-Cc: stable@vger.kernel.org,
-	Delgan <delgan.py@gmail.com>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
-Date: Tue, 11 Feb 2025 14:32:01 -0600
-Message-ID: <20250211203222.761206-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1739306005;
+	bh=m6uW5LI+RTAP6gZ7LY7Y5BSyq7TILP8ZnWmH47ViD2g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=YTdX6qiu5L9Qs3vdGhuZHTeLKJ+uNTRPgU7exdn7QBMmY3Qpg5Pj1ddbM9Yc2QIRJ
+	 PwbclK47wvCBblffZ5zBpGhqUUioRkitHcw6goGkSoaw0sz/H9VZcARqQns8tp4KT/
+	 CCGIfMqiWN4KcwxADPpWeq9mi0/qXZx+KzkMIH/dspacbbgiKf7GurrDfexv6J73ol
+	 VOVyqq/3Z4R/lOzgm/YVjAGq7S2tjEPZ10GrQniJ6CW8y0y0eW7DSzHfgyQmZUanyy
+	 QQUiqgz6FkHptDJ8xe72SvxEWaJml+MotLbMRYLEtMre02yjeoKjmwd/7LrorrRflZ
+	 Bdy5xqiS4MTrg==
+Date: Tue, 11 Feb 2025 14:33:24 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Cc: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mark Kettenis <kettenis@openbsd.org>, Marc Zyngier <maz@kernel.org>,
+	Stan Skowronek <stan@corellium.com>, asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Janne Grunau <j@jannau.net>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/7] PCI: apple: Set only available ports up
+Message-ID: <20250211203324.GA54082@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250211-pcie-t6-v1-3-b60e6d2501bb@rosenzweig.io>
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+On Tue, Feb 11, 2025 at 02:54:28PM -0500, Alyssa Rosenzweig wrote:
+> From: Janne Grunau <j@jannau.net>
+> 
+> Fixes "interrupt-map" parsing in of_irq_parse_raw() which takes the
+> node's availability into account.
+> 
+> This became apparent after disabling unused PCIe ports in the Apple
+> silicon device trees instead of disabling them.
 
-Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
-specified as an edge triggered input and also a wake source but this pin is
-supposed to be an output pin for an LED, so it's effectively floating.
+Is there something missing from this sentence?  "... after disabling
+unused ports instead of disabling them" doesn't sound quite complete.
 
-Block the interrupt from getting set up for this GPIO on this device.
+> Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
+> Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
+> Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
+> Cc: stable@vger.kernel.org
 
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: Delgan <delgan.py@gmail.com>
-Close: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpio/gpiolib-acpi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Can we have a hint about what makes this "stable" material?  I can't
+tell from the commit log what the impact of this change is.
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 1f9fe50bba005..f7746c57ba76a 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1689,6 +1689,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "PNP0C50:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from GPIO 11
-+		 * Found in BIOS 1.04
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_interrupt = "AMDI0030:00@11",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
- 
--- 
-2.43.0
-
+Bjorn
 
