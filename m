@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-114769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6305A30060
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:35:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA466A30062
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:35:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E28807A17DF
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BF351887AD4
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E940F1F03D2;
-	Tue, 11 Feb 2025 01:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9C1F03D6;
+	Tue, 11 Feb 2025 01:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJ7M1Mzt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bds69DQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10F31EF0A6;
-	Tue, 11 Feb 2025 01:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8139F1F03FB;
+	Tue, 11 Feb 2025 01:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237454; cv=none; b=W6DzvpnxxVPVLKjCZMv5L4eyUgAlOtr68YHOxAcHRBqDpH1G2C9beOcLSiqOq1JZd0838DENG+FrTQg3Tq3XicwyxuDD80B65T0+A3iNagJjX/hTaRarxzziJ1A6d4PPuVqYWsiachQeAwuzWSfBMqzU1ea7/BNGqh4PT+ghQHc=
+	t=1739237456; cv=none; b=gS4A/gP8epCyd4iGDqkYyMc9y9Q6Lu+xzvZiEGbakA4qMmlXNMOKYklaZEJgX9PqTj+6KTPOzGXfxXXigYt/cF1G+CLPNkNc/85pdygUrNouWEl7uh++CH5Z4UUilDQenGpWErrvWi9xvinVJ7FXraCTLHs1E1ZK2/PTMDm3SEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237454; c=relaxed/simple;
-	bh=7bMjJEnwl4VKz9B0kjecL5TqCguIfjhP5xC90w54YSA=;
+	s=arc-20240116; t=1739237456; c=relaxed/simple;
+	bh=WVNXBusgGVJ6fi3CBC6UXvcYQ1dn530rgquMYqU08SI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bq2hZr1ZITCFP3TBXogu7GNAwThoTxRhjJ8uFRsqMrl5Wbm3gK/dthiXFMAEYsgp4lIyZhPfD7HKEAfbuaWJ+67lA2bRsBO6xeA00U1/ncmCcEe/QzuCPtNNXt6zYbykuEblBrFUV7ATgSqyhN+okdCCdcuQTftaHRc//dYJh6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJ7M1Mzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2FFC4CEE5;
-	Tue, 11 Feb 2025 01:30:53 +0000 (UTC)
+	 MIME-Version; b=rkV8rGz/JP/ajxzj5gWzTzZEpa7XAaDEgCguTKvUcBcHGg/mV0mkiMzgFRcMYd+ldxLzW6l/07FToBqcdZIrPqGBJSkh62U1xGc7F8S/mNwclnlTIbvZxGP8C6DrdXaUr7qTgcmaRP6G9pQ+XKm80nInEOnoMbR7ovkMSCs4Wzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bds69DQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10870C4CED1;
+	Tue, 11 Feb 2025 01:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237454;
-	bh=7bMjJEnwl4VKz9B0kjecL5TqCguIfjhP5xC90w54YSA=;
+	s=k20201202; t=1739237456;
+	bh=WVNXBusgGVJ6fi3CBC6UXvcYQ1dn530rgquMYqU08SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJ7M1MztAx8llPrNxt6CkNJaOUEZiawMjfpz7G5pw+sSvITE8PilZ9Qr8os1JqV/D
-	 MNvJcxrdyjxk2weeETee32FnfqBSyzUkiG4Ffql1POkI7YGLpyxuaRAKvBDtlfICOO
-	 Hj1CH5pX7vejsb1QyWZlCBV2LwQqnzWa9BpRe9m/84ImQjEyfArSV2O29e12DPvnMm
-	 L35iL72zzLUoYC6fItntKpvQaIAHVMP5nRWY8g9phEiXXvHqFTmF8RcMQYozDaojju
-	 ZapMawaaMG/wZMDoC+XktXXz92a+GyX1vUYDLyaFLh5bIB3LILB/k3kR7GMgSEAvD3
-	 S1xM4fMr66J9Q==
+	b=bds69DQrhWFbDNMdp3/EKckvQb6X9a3buMIfu/bwgGLS39kOp5LscY6Ri9jnaEPfD
+	 BIklQRL6ALnBiH1c3RB/Vh2aUTbCVxugr0Aup2/dVIjMAfqbaw4OxJv2+iGgRE1qVS
+	 nuz7e462dWPUpmIWIP9mekd7tZ4M9t37UUaSkyqs/HPAyccn/RePRMo6zJ0/NCyr+J
+	 WDxHsX6yX4fEx2HjbZ9AU3C+f0+KSOj8K75zNSISU9Uf2lvSFxsvLb1H5ejCyCe6SA
+	 Y6RtsXaAWf05H3V419+X551AjMQSGTqnEUX9k1E15euesHMzpQDmqVXznInymogn5e
+	 J5D5yMfa5PF1A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 04/19] powercap: call put_device() on an error path in powercap_register_control_type()
-Date: Mon, 10 Feb 2025 20:30:32 -0500
-Message-Id: <20250211013047.4096767-4-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 05/19] btrfs: avoid starting new transaction when cleaning qgroup during subvolume drop
+Date: Mon, 10 Feb 2025 20:30:33 -0500
+Message-Id: <20250211013047.4096767-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013047.4096767-1-sashal@kernel.org>
 References: <20250211013047.4096767-1-sashal@kernel.org>
@@ -66,43 +68,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.13
 Content-Transfer-Encoding: 8bit
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 93c66fbc280747ea700bd6199633d661e3c819b3 ]
+[ Upstream commit fdef89ce6fada462aef9cb90a140c93c8c209f0f ]
 
-powercap_register_control_type() calls device_register(), but does not
-release the refcount of the device when it fails.
+At btrfs_qgroup_cleanup_dropped_subvolume() all we want to commit the
+current transaction in order to have all the qgroup rfer/excl numbers up
+to date. However we are using btrfs_start_transaction(), which joins the
+current transaction if there is one that is not yet committing, but also
+starts a new one if there is none or if the current one is already
+committing (its state is >= TRANS_STATE_COMMIT_START). This later case
+results in unnecessary IO, wasting time and a pointless rotation of the
+backup roots in the super block.
 
-Call put_device() before returning an error to balance the refcount.
+So instead of using btrfs_start_transaction() followed by a
+btrfs_commit_transaction(), use btrfs_commit_current_transaction() which
+achieves our purpose and avoids starting and committing new transactions.
 
-Since the kfree(control_type) will be done by powercap_release(), remove
-the lines in powercap_register_control_type() before returning the error.
-
-This bug was found by an experimental verifier that I am developing.
-
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20250110010554.1583411-1-joe@pf.is.s.u-tokyo.ac.jp
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/powercap_sys.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/qgroup.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index 52c32dcbf7d84..4112a00973382 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -627,8 +627,7 @@ struct powercap_control_type *powercap_register_control_type(
- 	dev_set_name(&control_type->dev, "%s", name);
- 	result = device_register(&control_type->dev);
- 	if (result) {
--		if (control_type->allocated)
--			kfree(control_type);
-+		put_device(&control_type->dev);
- 		return ERR_PTR(result);
- 	}
- 	idr_init(&control_type->idr);
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 4fcd6cd4c1c24..887e34559a1fa 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1899,11 +1899,7 @@ int btrfs_qgroup_cleanup_dropped_subvolume(struct btrfs_fs_info *fs_info, u64 su
+ 	 * Commit current transaction to make sure all the rfer/excl numbers
+ 	 * get updated.
+ 	 */
+-	trans = btrfs_start_transaction(fs_info->quota_root, 0);
+-	if (IS_ERR(trans))
+-		return PTR_ERR(trans);
+-
+-	ret = btrfs_commit_transaction(trans);
++	ret = btrfs_commit_current_transaction(fs_info->quota_root);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
