@@ -1,145 +1,274 @@
-Return-Path: <stable+bounces-114928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62A3A30EFE
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:01:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E070A30F28
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 16:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9DE21882D50
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:01:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B02160537
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 15:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85851EDA28;
-	Tue, 11 Feb 2025 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21F824F5AA;
+	Tue, 11 Feb 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="DZOmzf76"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="UZXfgyE/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DXx9IwbI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6071DFE11
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 15:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C52026BD9C;
+	Tue, 11 Feb 2025 15:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739286080; cv=none; b=ncWyZ7YeOaatRnwz9cLqV3fmYbQq2GFuHSPXatOlt0LBJ8Gv+HalBe5nulDfPYAbCAMRl9U9XHtQIvdWzK/KA2az9iH2EnROuPRk4/ClSQHiTKeuT/QeYGXJz0+P0KxOnlNa9DMnKR7TaoqMZ0HnB4Cgd7Z2MbMdWtbUBusrIuo=
+	t=1739286343; cv=none; b=tsSXe57qEnOfGHKymShnDhAJGndZ+vNEnFwuwF7/8/BzbIMS4k9CA6bPe4vQFIULQYeaq9dnXRS8yKgXTXEQ4T3YJHwlgHKHCGHgS7PlM12+HCINhMQQHGClxaCUcwqdsV5qlKj2N7hlkFxBBHuTRMhowgvcr6tkVHmdBP4cJwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739286080; c=relaxed/simple;
-	bh=Ne+9yC0HOznRz8p7lTsKhBcNJgAJ20piItJceKLJz2k=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=X40XM0fStMwVUWYoCuW54E44Fm1hBG2nHmkfTWmm+u0hWd2bawLGf7jKdtxi9ojnLi+owJKxl0Zqm7dNPqkDY08iZS65MaV8g7CNsGCOVCyZ0uM5OWfvwG9xB4fHm8F4GafDiEet/NnMOPrNUpkDMbC5R0Nl9l6HblOzhS+6c80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=DZOmzf76; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab7e80c4b55so109061466b.0
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 07:01:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1739286077; x=1739890877; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=e7SVrnRYXWq8YlC1nAk6TknCge+mlT3ZmKPNftk8oWs=;
-        b=DZOmzf76eOnro96PNLoHhNI8nJgwXG5tdRJhlK8Oo5nb+9DePvjeWOvNZ7wP4sjufg
-         OxPwQ6u9ecli6cZe8H/ZsI+3yKVBpBE5cloNQyxMGhg8aGB1ozOfuF6xCBsUHInTfiaL
-         WcEFU2M0uTCkYxX2moasulU0NelnpennXcUeXG/ftOUMXUIYS32g6703TdjzeNHXJiZu
-         0u4YOsOS7haUCPLr0WAvZK8PZMqLttGiRB9D2+VK2sZc1StiuRAq5R55abw+8cKPhif6
-         e46l1ARHyYvSEtqfSnxenZrqlbaBa0a3eUBN62NBjrqfo3YZK+W0gzwGGCozocXCtxsf
-         zdnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739286077; x=1739890877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e7SVrnRYXWq8YlC1nAk6TknCge+mlT3ZmKPNftk8oWs=;
-        b=oSg42IRdfBwiuhjQBtrhFSfOs1n56MqLJXvKVQzHxAk2op8DWno1nedIndkU81zZ9b
-         rs2Z9yDLxu/UvweUBahsDmO7b+eSCwhBI3yCnkBvmo6FGU1JhHuUdKsTU2v920XbeROw
-         fqSaSt0yTYKi66cO7F3lmsDFBKmlbq7g/YwnqH3H4kcfFhFNGcRXNK3apZ2a1NZ+Dech
-         CAsPzMlHxCUDm0ytnb68uM7XY4mfSRTBMwTWKG8lYMesHgo50hT1ZgjQjJw3qUgJLWg0
-         /ROUHwvyYQQaX+5ARS2kjg/M1fi1Ykw2ReXQudStkCSP+4xnOe6ZxKny3kHUz1gFaUmX
-         ZTeg==
-X-Gm-Message-State: AOJu0YzZpKnes+2hlCyaNKd1FNIZPimip0Flof9kmggx8PRpgQBU+njk
-	gMNChGNxijiICvdeH2+qDT9Dpu2hy2/ebojC4wbtd+wJKEI2Lxco5t3tqzuYsxv/PiE+eOKuc1q
-	oqIkNPui4I9WlXnPKo5RhNhb6naOhCBIZwsQNNg==
-X-Gm-Gg: ASbGncuu58hrVCJPxBUYAB/Ue4R/nEI3Vpiu5fP9abw4QZ7fRByuAR1ls6/cmOgPQcH
-	2e0QxibWVJpWf1Hpt3A+EfJMJvAofExP+2WF6fOh+ar1T5AiCs2IJe3FP6mwvr8wmUZkWYIZ2EH
-	7wfglt/znDo7UDoylNgHJR7C6LW4XbeQ==
-X-Google-Smtp-Source: AGHT+IF6MvXsgI4UqbTQqt+kC5NrZjKZHUzL7oV9ore4R3f8cMl/tumJHVaTYC+uXDuUbUQmZfyUHVuJP+PwF0ZoPfI=
-X-Received: by 2002:a17:907:72cd:b0:ab7:a679:4b00 with SMTP id
- a640c23a62f3a-ab7a6795bcamr1350104166b.40.1739286075386; Tue, 11 Feb 2025
- 07:01:15 -0800 (PST)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Feb 2025 15:01:12 +0000
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Feb 2025 15:01:12 +0000
+	s=arc-20240116; t=1739286343; c=relaxed/simple;
+	bh=pK7wwx9SVBb/t9cDWPPmU/QNvvDUShUMo8z50n5diB0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=IlwB/mJV1alAkDnjK/BztqTaQUT8DuP/p2W2TW4+7j/FKAobuuOVmYuvHquXUuiWNHIEYGZz8n5vMK/xLBZbhFglxDZgqOdIYN1/QGaS629t22wZh90PKCYrGil2K715bDPg9z3rGwUe7gP9UDcjvaUKWCC8Z3leYeG9+HJe1P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=UZXfgyE/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DXx9IwbI; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 53CFB1140123;
+	Tue, 11 Feb 2025 10:05:39 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-02.internal (MEProxy); Tue, 11 Feb 2025 10:05:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1739286339;
+	 x=1739372739; bh=/N1ern3xpY1CU833/SifUcUn0BSm+HC+YjRriOA6Ues=; b=
+	UZXfgyE/b53ktvnjWEHDqkkw1zLCJem+7GweMm7e3FJR+8/SjRC/wrZGMgP8M8RA
+	OpuGgZbuCn9Yb28i04Deu5/ptmcOm2saFlWbz419t7+/Ml2ZfD5phIYGRgfb2EAX
+	Ct3vvxYPiUfxu2gYWs0AT3f8EVqWuv/3WOrn2bTy28ufGI/xcDKS6s92oxJEglSV
+	sm3z53k2gxbaryclP4y13PqWHpGCNMYPCtMJQtw9PcStL7QQHiznaZW3qvFrV89q
+	1lsiDnmaEocuQYydHqaxO57Ca8NLPj0R+SDsVkQ9PWiILvNx9rYNhcXGkJ/cjebS
+	pquAFf3aSm9tD8fMxoTMyg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739286339; x=
+	1739372739; bh=/N1ern3xpY1CU833/SifUcUn0BSm+HC+YjRriOA6Ues=; b=D
+	Xx9IwbIfcAE+PEez40DVt9OBrR1sIh35PUVkv/gP3hlxPrsI5Zvy41zpT0WA4qlv
+	h9xebjZ9dvqhjmTemSxvdles5Koi96sNFjHDI1YJjgjokK7vjyLDIefJ1LXPqKC8
+	82oaKXCDbJJPJvjmLx92PcOYWgGyt65ogybrPIqubZD30xsa6cF5zWBJUNvc0AL/
+	6aWfnyBE0yedI3TWM4YquuAqehZ3SOWpuO1iMSB1CjPtd65Nw9hqsjM1tQeUORt5
+	P+yMcx+pOXyXGFbqGDPOrLHP79gZdaKq3g6jH19yk277NtV7UsKPzxojmt9DRkX0
+	F98w5ocMAqb9Ci7cI4T9w==
+X-ME-Sender: <xms:QmerZz8VhyhyZs0O1TuJfffSfk-LsreYXnTRgTGMWZosIBsuaUNgKg>
+    <xme:QmerZ_vBpB4Z00NkBWTP52p58NmHB_qzDlVnqYhgt8ZaJcNsPL07XGlCjGYPO1rwD
+    K-AwfeiE5B3qg9Vfb8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegudefudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhepleevvdeihfffgeel
+    ieeugedtiefggeelledtheektdduudeggeefheeuleduvdehnecuffhomhgrihhnpehgih
+    hthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquh
+    gvsggsrdgtrgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpth
+    htohepshgrmhhithholhhvrghnvghnsehgohhoghhlvgdrtghomhdprhgtphhtthhopehl
+    khhmlhesjhhohhhnrhhofihlvgihrdhmvgdprhgtphhtthhopehkvggvsheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehllhhvmheslhhishhtshdrlhhinhhugidruggv
+    vhdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:QmerZxByMocufgxC9mxPdt4-2R6pJI7B9xNKg-z7QEQKMq-X3BOwTg>
+    <xmx:QmerZ_dcmC4GS78T0KJfXIX-Mu08pnVv8m809fRH7p52A_cUenoikw>
+    <xmx:QmerZ4NDXdxsfQGWmXFluPguDiq7P_QyItILiD1THkrLlGeIEA7LZQ>
+    <xmx:QmerZxkNCPbV7l0wWEV3zp943RmBecRqGWAfVs7XgsdW1khtUFyJ2w>
+    <xmx:Q2erZ0m8IDWnvUs4Mpbnfjqjbxj2k-cyaAX1aMlnslynh1WhkD418kf8>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id BF18A3C0069; Tue, 11 Feb 2025 10:05:38 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Date: Tue, 11 Feb 2025 15:01:12 +0000
-X-Gm-Features: AWEUYZm9qvwxVv3riUtiJhozhthsKxqC7JFedaZHzOR9XUTL8ditNAnb82tP2Fk
-Message-ID: <CACo-S-1Oh=ak5U4zZoFPM_TWZq7MGvpRBrA1XgjnGx=hZpzyZQ@mail.gmail.com>
-Subject: =?UTF-8?B?c3RhYmxlLXJjL2xpbnV4LTYuMS55OiBuZXcgYnVpbGQgcmVncmVzc2lvbjog4oCYc3RydQ==?=
-	=?UTF-8?B?Y3QgZHJtX2Nvbm5lY3RvcuKAmSBoYXMgbm8gbWVtYmVyIG5hbWVkIOKAmGVsZF9tdXRleOKAmSBpLi4u?=
-To: kernelci-results@groups.io
-Cc: stable@vger.kernel.org, gus@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Tue, 11 Feb 2025 10:05:18 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Nathan Chancellor" <nathan@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>
+Cc: "Hans de Goede" <hdegoede@redhat.com>,
+ "Limonciello, Mario" <mario.limonciello@amd.com>,
+ "Kees Cook" <kees@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev,
+ stable@vger.kernel.org, "John Rowley" <lkml@johnrowley.me>
+Message-Id: <52c49252-7a81-4d27-a8a9-b2f1e5f837df@app.fastmail.com>
+In-Reply-To: 
+ <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
+References: 
+ <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
+Subject: Re: [PATCH v3] ACPI: platform-profile: Fix CFI violation when accessing sysfs
+ files
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Hi Nathan
 
-New build issue found on stable-rc/linux-6.1.y:
+On Mon, Feb 10, 2025, at 9:28 PM, Nathan Chancellor wrote:
+> When an attribute group is created with sysfs_create_group(), the
+> ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+> and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+> respectively. These functions use container_of() to get the respective
+> callback from the passed attribute, meaning that these callbacks need to
+> be the same type as the callbacks in 'struct kobj_attribute'.
+>
+> However, the platform_profile sysfs functions have the type of the
+> ->show() and ->store() callbacks in 'struct device_attribute', which
+> results a CFI violation when accessing platform_profile or
+> platform_profile_choices under /sys/firmware/acpi because the types do
+> not match:
+>
+>   CFI failure at kobj_attr_show+0x19/0x30 (target: 
+> platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+>
+> There is no functional issue from the type mismatch because the layout
+> of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+> so the container_of() cast does not break anything aside from CFI.
+>
+> Change the type of platform_profile_choices_show() and
+> platform_profile_{show,store}() to match the callbacks in
+> 'struct kobj_attribute' and update the attribute variables to match,
+> which resolves the CFI violation.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+> Reported-by: John Rowley <lkml@johnrowley.me>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+> Tested-by: John Rowley <lkml@johnrowley.me>
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> Changes in v3:
+> - Rebase on 6.14-rc1, which includes updates to the driver to address
+>   Greg's previous concerns but this change is still needed for the
+>   legacy sysfs interface. v2 can be used for the stable backport.
+> - Link to v2: 
+> https://lore.kernel.org/r/20241118-acpi-platform_profile-fix-cfi-violation-v2-1-62ff952804de@kernel.org
+>
+> Changes in v2:
+> - Rebase on linux-pm/acpi
+> - Pick up Sami's reviewed-by tag
+> - Adjust wording around why there is no functional issue from the
+>   mismatched types
+> - Link to v1: 
+> https://lore.kernel.org/r/20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org
+> ---
+>  drivers/acpi/platform_profile.c | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/acpi/platform_profile.c 
+> b/drivers/acpi/platform_profile.c
+> index fc92e43d0fe9..1b6317f759f9 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -260,14 +260,14 @@ static int _aggregate_choices(struct device *dev, 
+> void *data)
+> 
+>  /**
+>   * platform_profile_choices_show - Show the available profile choices 
+> for legacy sysfs interface
+> - * @dev: The device
+> + * @kobj: The kobject
+>   * @attr: The attribute
+>   * @buf: The buffer to write to
+>   *
+>   * Return: The number of bytes written
+>   */
+> -static ssize_t platform_profile_choices_show(struct device *dev,
+> -					     struct device_attribute *attr,
+> +static ssize_t platform_profile_choices_show(struct kobject *kobj,
+> +					     struct kobj_attribute *attr,
+>  					     char *buf)
+>  {
+>  	unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> @@ -333,14 +333,14 @@ static int _store_and_notify(struct device *dev, 
+> void *data)
+> 
+>  /**
+>   * platform_profile_show - Show the current profile for legacy sysfs interface
+> - * @dev: The device
+> + * @kobj: The kobject
+>   * @attr: The attribute
+>   * @buf: The buffer to write to
+>   *
+>   * Return: The number of bytes written
+>   */
+> -static ssize_t platform_profile_show(struct device *dev,
+> -				     struct device_attribute *attr,
+> +static ssize_t platform_profile_show(struct kobject *kobj,
+> +				     struct kobj_attribute *attr,
+>  				     char *buf)
+>  {
+>  	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+> @@ -362,15 +362,15 @@ static ssize_t platform_profile_show(struct device *dev,
+> 
+>  /**
+>   * platform_profile_store - Set the profile for legacy sysfs interface
+> - * @dev: The device
+> + * @kobj: The kobject
+>   * @attr: The attribute
+>   * @buf: The buffer to read from
+>   * @count: The number of bytes to read
+>   *
+>   * Return: The number of bytes read
+>   */
+> -static ssize_t platform_profile_store(struct device *dev,
+> -				      struct device_attribute *attr,
+> +static ssize_t platform_profile_store(struct kobject *kobj,
+> +				      struct kobj_attribute *attr,
+>  				      const char *buf, size_t count)
+>  {
+>  	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+> @@ -401,12 +401,12 @@ static ssize_t platform_profile_store(struct device *dev,
+>  	return count;
+>  }
+> 
+> -static DEVICE_ATTR_RO(platform_profile_choices);
+> -static DEVICE_ATTR_RW(platform_profile);
+> +static struct kobj_attribute attr_platform_profile_choices = 
+> __ATTR_RO(platform_profile_choices);
+> +static struct kobj_attribute attr_platform_profile = 
+> __ATTR_RW(platform_profile);
+> 
+>  static struct attribute *platform_profile_attrs[] = {
+> -	&dev_attr_platform_profile_choices.attr,
+> -	&dev_attr_platform_profile.attr,
+> +	&attr_platform_profile_choices.attr,
+> +	&attr_platform_profile.attr,
+>  	NULL
+>  };
+> 
+>
+> ---
+> base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+> change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+>
+> Best regards,
+> -- 
+> Nathan Chancellor <nathan@kernel.org>
 
----
- =E2=80=98struct drm_connector=E2=80=99 has no member named =E2=80=98eld_mu=
-tex=E2=80=99 in
-drivers/gpu/drm/sti/sti_hdmi.o (drivers/gpu/drm/sti/sti_hdmi.c)
-[logspec:kbuild,kbuild.compiler.error]
----
+Just a note to say thank you for noticing my email address change - the old lenovo one was awful to use so I dropped it a while back, but it meant I missed your first two patches (my mail filters for the list should have caught it and I'll have to figure out why not...)
 
-- dashboard: https://dashboard.kernelci.org/issue/maestro:7fe27892aa3e055cf=
-7cbc7660b69219ecce56688
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  5beb9a3ea62e7725d8cd88410dbd269ebf683ce0
+From the V1 patch there was a question about why it was done this way: I believe I just copied how it seems to be done everywhere else in the kernel. I can't remember what I used as a reference exactly, but I went and checked a few random drivers and it seems to be everywhere.
 
+Patch looks fine (I'd like to try it out on my system - will aim to do that today). I didn't know what CFI was (and have lightly educated myself now). 
+Is there a better way to fix this so it's common across all drivers somehow? Updating every individual instance is going to be a lot.
 
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-drivers/gpu/drm/sti/sti_hdmi.c:1223:30: error: =E2=80=98struct drm_connecto=
-r=E2=80=99
-has no member named =E2=80=98eld_mutex=E2=80=99
- 1223 |         mutex_lock(&connector->eld_mutex);
-      |                              ^~
-drivers/gpu/drm/sti/sti_hdmi.c:1225:32: error: =E2=80=98struct drm_connecto=
-r=E2=80=99
-has no member named =E2=80=98eld_mutex=E2=80=99
- 1225 |         mutex_unlock(&connector->eld_mutex);
-      |                                ^~
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-
-# Builds where the incident occurred:
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-12
-- dashboard: https://dashboard.kernelci.org/build/maestro:67ab310db27a1f56c=
-c37e118
-
-
-#kernelci issue maestro:7fe27892aa3e055cf7cbc7660b69219ecce56688
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kerneci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Mark
 
