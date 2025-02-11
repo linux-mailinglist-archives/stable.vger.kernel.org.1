@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-114832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C2FA3010B
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:48:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7A0A30110
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 398DF3A436A
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4089162185
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E8A26B689;
-	Tue, 11 Feb 2025 01:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF34B26BD8A;
+	Tue, 11 Feb 2025 01:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9uDfetU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UC7/TSSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C22E26B680;
-	Tue, 11 Feb 2025 01:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC126AF1B;
+	Tue, 11 Feb 2025 01:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237593; cv=none; b=Aa4IG3Zav1RiEp7D3KQRyTRow788Uqcm6oEFbz9QkLSMcOAgiFlOwriqzP6c0jS26aOpaDERqa027jTEIie3btLI81HAQEmKKidpZcCGhttFpg3rIS3+GRbSmmRww63UhrnH9d6tOtyM/aWTprgRoCKIhavcWBIn/5JEmlkytTg=
+	t=1739237594; cv=none; b=Tt96JpVL9V7b1B6HeTBhpkaz5EJXRcGAvDBE98rdwVK1K/dcUbjJm8zuWtrgJrVhX92pNzucdYMgHklD9bK5zC6HWF84PkxCVsGTbi1Wp4uIXiTj7afR1NIKKwYQRZqX74kYEzzmqurnZp+l5ufA5MFTukUPF9bcR27P6M6ytX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237593; c=relaxed/simple;
-	bh=sVpWVyVIi/UBNokcUGfr0YLYO3PC27CRMpOSlEF7m64=;
+	s=arc-20240116; t=1739237594; c=relaxed/simple;
+	bh=E5LmpeFAtLI6LtdbB2tnrznp67tncjJzsmwwr77pD3g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lIhuNzdXdBfG+0L1CR6B88FWeZVKocsXCMS45aoqnTeVRyjL0fFr+yDPSveRs5Num0TTCvqjUmf0Voi51y6PdpXF2NGzlVduBCQql31UOHPpq0ot4NYAD5j7nXwsHsBdytZfxbUAn6J84b9/jflLrUfqhpNT4pSEUXBIK6Hq5D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9uDfetU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5B6C4CED1;
-	Tue, 11 Feb 2025 01:33:12 +0000 (UTC)
+	 MIME-Version; b=CU3VOTUz5oIIrEPpwRpVM5UNmOrgfL3Grl4sHzdlbczCP4ZQxYnPVfVm/lH8Stl2WQ2ywRiP3HRgbbTQI3tmPUkApbI+Izqj28wLeaTAvVotd4fwfKZeUWQwjfURmJo4rF0EgpjN3Cv0XQ3bhLvmvM+msgbXpJIaaujakUbOjfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UC7/TSSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB67C4CED1;
+	Tue, 11 Feb 2025 01:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237593;
-	bh=sVpWVyVIi/UBNokcUGfr0YLYO3PC27CRMpOSlEF7m64=;
+	s=k20201202; t=1739237594;
+	bh=E5LmpeFAtLI6LtdbB2tnrznp67tncjJzsmwwr77pD3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9uDfetUpCIWeBIRtMg2dHIoS5NgzDzsjf+zDNHdllHafjyZQsaDBlfR1KA+2KfxA
-	 DWkeNzAvdsAvSlapsOJ4OnNya1Fs6Pa03kca1D/KyEf2/HwEDIUnRMAuywQGRJpc4m
-	 UruFJTW8KsLrTOtnDQJYGldi8M3ANcAyhxX8FemON69OwY7R/DAUYuQ5x0p1757rNF
-	 d0b84dCawZgKN6zVoQmqhlAMw7geusviIuAFm8pnVCAbPd24b9PYiI0A0Z/d1RxSVM
-	 yqMra5addcqhkjg++iYOldqqqwSSlQUcB70hA6if4auz3hrXiyc+/mN9OzLDwF2CN1
-	 vfG06KxwRTP6Q==
+	b=UC7/TSSlN0c587xPuI50aDJG/E3BjjSGgCbgrQJofn3Yc+HnQ5WMxQJuAJIXu2sJ5
+	 w8Z/0eghsmUUaNpNtESKH0WnWhO5UoiQUOhavtykZW9ojCSF2huPR2K1sIVrn85dem
+	 MGM8vKqAA6hqpYjh08ke9jnzpG+QfXqARezfjgG7qx2KZEp/FyvKhyTcF4mm0ojwAq
+	 SxWtJSmFk4f3UWsTTvbt3kgqT9GVxGdVm5L9aUelGxFw+ushz8NWbgQhFYUDD5FG8s
+	 z5rz9Fh4V4WuqfORSBqAMR6HQXxc2MSkax4E7ewjRdwdTNzI84pWxF4egfB7YsVDVF
+	 cjGrDvKRvO5XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Magnus Lindholm <linmag7@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Gannon Kolding <gannon.kolding@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mdr@sgi.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/6] scsi: qla1280: Fix kernel oops when debug level > 2
-Date: Mon, 10 Feb 2025 20:33:04 -0500
-Message-Id: <20250211013305.4099014-5-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 6/6] ACPI: resource: IRQ override for Eluktronics MECH-17
+Date: Mon, 10 Feb 2025 20:33:05 -0500
+Message-Id: <20250211013305.4099014-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013305.4099014-1-sashal@kernel.org>
 References: <20250211013305.4099014-1-sashal@kernel.org>
@@ -67,36 +66,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.290
 Content-Transfer-Encoding: 8bit
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Gannon Kolding <gannon.kolding@gmail.com>
 
-[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
+[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
 
-A null dereference or oops exception will eventually occur when qla1280.c
-driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
-think its clear from the code that the intention here is sg_dma_len(s) not
-length of sg_next(s) when printing the debug info.
+The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
+keyboard to work.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Adding a DMI_MATCH entry for this laptop model makes the internal
+keyboard function normally.
+
+Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
+Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
-index 832af42130467..a13db27b04ede 100644
---- a/drivers/scsi/qla1280.c
-+++ b/drivers/scsi/qla1280.c
-@@ -2871,7 +2871,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
- 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
- 				cpu_to_le32(upper_32_bits(dma_handle)),
- 				cpu_to_le32(lower_32_bits(dma_handle)),
--				cpu_to_le32(sg_dma_len(sg_next(s))));
-+				cpu_to_le32(sg_dma_len(s)));
- 			remseg--;
- 		}
- 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 2750518a5d5e1..11264bb4061e7 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -482,6 +482,12 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
 -- 
 2.39.5
 
