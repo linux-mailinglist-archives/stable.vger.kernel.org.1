@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-114841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6F7A30392
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:26:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA5EA30393
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 07:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603851885F19
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 06:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52436167AAB
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 06:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4E1E990E;
-	Tue, 11 Feb 2025 06:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36891E990D;
+	Tue, 11 Feb 2025 06:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw4B60uG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Z2ikvrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786AB1E8823;
-	Tue, 11 Feb 2025 06:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8156E1D54C2;
+	Tue, 11 Feb 2025 06:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739255161; cv=none; b=XKsp3/Sj/j4R955qHU+0Yl81YkUM00QS0EKFUUGkNiZI+i3hmTmX/cEtHkrMp75BSlIwXnTQ67ipKBBlzsP9L3RMZMIai3wNH4vZWyMAYzUBV6nBGB1eeB0eeURt4vbpmxuFTfZcwFW+qEqRaaMtXKYhM8T8QqXw5jtIh2LhSOw=
+	t=1739255314; cv=none; b=a+dxJPtIfgJhbvyIsNSSLbKLYgwQb1UTO5s2NndtznqTJUq3IxECLa4BP7kkL+69jYS+MHiYNu+Huk5XVB6PHna9ZSId8UtZo+epXKcbe/FIcuPtiFvBMXjytHEihFQ+uSAl1VsJes5qMw3jVkkj5QSMoxHW+TS1yRHzTbAvPWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739255161; c=relaxed/simple;
-	bh=S0NbAIcHcvY0e+8fQPYNhsOqY3NudlTCV4wB9XpcpD8=;
+	s=arc-20240116; t=1739255314; c=relaxed/simple;
+	bh=Vi3lGBXEhmoQzEyU+5dzG33UvVcHa1ftzEK7IGthpzo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XzBLLQFo1pOHJMrkrfFIuAM7aCyrFYvGkfbMAF8IwcUihqNl5WYwi3/aN2XDt7B0jDNv0/KkFwsFvIKFmURWOstkdtDUqc8GSBVKZBibViXcm1Xhf63evDeOnwP2FH93oaDMMvIW5Ri/KlRlP3JJroAGmP/d+1jHHxc/gTo49lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw4B60uG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2888C4CEDD;
-	Tue, 11 Feb 2025 06:26:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwBJ366vHTfZaCDUXDnGEw7SlO/hC/3POhw9lujV0c16ANExLDO5d361lVHptS6+r6QF4i+SecvhpdDJR4wtkxOA+WwLNuXYlPqASGtZGd/mFAVOFsmOy7CUuSa57EYTldXolwLPUX2f4inKjMeqXG7slvA0+ZoSk/x9IxhOdbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Z2ikvrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BE4C4CEDD;
+	Tue, 11 Feb 2025 06:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739255161;
-	bh=S0NbAIcHcvY0e+8fQPYNhsOqY3NudlTCV4wB9XpcpD8=;
+	s=korg; t=1739255314;
+	bh=Vi3lGBXEhmoQzEyU+5dzG33UvVcHa1ftzEK7IGthpzo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lw4B60uGgtEkyaeDRSoWneQuhVvUaDsrfMVcTZlvHL5gsx5/XctSePKHrCmVwowXz
-	 6bQ+HR6P417DDJmG8I7efhrdVF9xWQ/nFEheddxMxlDz6uR+w/hMCsIZ8jXrtBtLfj
-	 s/QwUSu1Wp0CUTVHsjC+QYZzT2EIwT7fQTJNMT1s=
-Date: Tue, 11 Feb 2025 07:24:58 +0100
+	b=1Z2ikvrw7YUYBNUkp4Lj4Q9etGh7f/7BSJDQUzNnYKlE8chnhTl6L1WeaTambTQlk
+	 QVY73jj7nHzMtTXRgWJDqvRoEmPUvHuJtT83cFHHPzAvXgM8BxknQ8V4DAPROARruA
+	 hr9Jicn/LIPPM3SajdgcEDHVeZ73L5/6nymSXZfk=
+Date: Tue, 11 Feb 2025 07:27:31 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: "shuah@kernel.org" <shuah@kernel.org>,
-	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: Re: [External] : Re: [PATCH v2 Linux-6.12.y Linux-6.13.y 1/1]
- selftests/mm: build with -O2
-Message-ID: <2025021143-limes-babble-e137@gregkh>
-References: <20250204214723.1991309-1-yifei.l.liu@oracle.com>
- <2025020544-preview-worshiper-8539@gregkh>
- <C8A5840D-B312-40DC-A75D-3BA14614F8C4@oracle.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev, stable@vger.kernel.org,
+	John Rowley <lkml@johnrowley.me>
+Subject: Re: [PATCH v3] ACPI: platform-profile: Fix CFI violation when
+ accessing sysfs files
+Message-ID: <2025021105-simply-stubbed-1744@gregkh>
+References: <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,30 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <C8A5840D-B312-40DC-A75D-3BA14614F8C4@oracle.com>
+In-Reply-To: <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
 
-A: http://en.wikipedia.org/wiki/Top_post
-Q: Were do I find info about this thing called top-posting?
-A: Because it messes up the order in which people normally read text.
-Q: Why is top-posting such a bad thing?
-A: Top-posting.
-Q: What is the most annoying thing in e-mail?
+On Mon, Feb 10, 2025 at 09:28:25PM -0500, Nathan Chancellor wrote:
+> When an attribute group is created with sysfs_create_group(), the
+> ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+> and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+> respectively. These functions use container_of() to get the respective
+> callback from the passed attribute, meaning that these callbacks need to
+> be the same type as the callbacks in 'struct kobj_attribute'.
+> 
+> However, the platform_profile sysfs functions have the type of the
+> ->show() and ->store() callbacks in 'struct device_attribute', which
+> results a CFI violation when accessing platform_profile or
+> platform_profile_choices under /sys/firmware/acpi because the types do
+> not match:
+> 
+>   CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+> 
+> There is no functional issue from the type mismatch because the layout
+> of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+> so the container_of() cast does not break anything aside from CFI.
+> 
+> Change the type of platform_profile_choices_show() and
+> platform_profile_{show,store}() to match the callbacks in
+> 'struct kobj_attribute' and update the attribute variables to match,
+> which resolves the CFI violation.
 
-A: No.
-Q: Should I include quotations after my reply?
+Nice catch.
 
-http://daringfireball.net/2007/07/on_top
+> Cc: stable@vger.kernel.org
+> Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+> Reported-by: John Rowley <lkml@johnrowley.me>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+> Tested-by: John Rowley <lkml@johnrowley.me>
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> Changes in v3:
+> - Rebase on 6.14-rc1, which includes updates to the driver to address
+>   Greg's previous concerns but this change is still needed for the
+>   legacy sysfs interface. v2 can be used for the stable backport.
+> - Link to v2: https://lore.kernel.org/r/20241118-acpi-platform_profile-fix-cfi-violation-v2-1-62ff952804de@kernel.org
 
-On Mon, Feb 10, 2025 at 06:43:49PM +0000, Yifei Liu wrote:
-> Hi Greg, 
-> Yes, looks we only need this for linux-6.12.y. Maybe we could use the v1 version which does not include the linux-6.13.y tag. Or I can send a v3 with the linux-6.12.y only. 
+I'll never find that, so be prepared for a "FAILED" email when this hits
+Linus's tree :)
 
-As you know, we can't take patches for only older kernels and not newer
-ones.  Please submit them for all relevant branches, AND test your
-patches before you submit them so that they don't fail on our side, as
-that just wastes our energy :(
-
-thanks,
-
-greg k-h
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
