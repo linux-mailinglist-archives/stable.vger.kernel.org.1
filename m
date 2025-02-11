@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-114778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B919DA30075
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD475A3007A
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C6BC1887BB8
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9291887BFA
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07741F2370;
-	Tue, 11 Feb 2025 01:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D1C1F2394;
+	Tue, 11 Feb 2025 01:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONS/ZjAR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/DvhSFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A571F2364;
-	Tue, 11 Feb 2025 01:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645071E1A32;
+	Tue, 11 Feb 2025 01:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237478; cv=none; b=Bqi6I/mueE1ZsJ7dKEhksB4MLPjcJel9MHCuBnfXq5cjOog8D1t0SCJl2bR5ge+EiA8u7yjMdecc528eJ8BV0nkQNXCP8GjDCAeeTQRR7RnXZEmvSPkpvjWdNR4CyV2TAkwOvWiG/2v1wEOv1TUTstmkmm1RxHjULS6EQFp05TU=
+	t=1739237482; cv=none; b=Wjx5Abxd/U72hdLJJzIK5XV0ZIdHmW3enQSPNG1Mx2owNAPPWHRgRS3GnzXPDZx3OyzUtq3qiv5jllN7CfA7M7AFaB02vLcQb2YMLSPCnQ5dAF0PO1iNsV2BnTT5fHgwbOs/bXKE/68ezpGDFeg1tw7tTqTC5xct9hdxtg5sYhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237478; c=relaxed/simple;
-	bh=2p3d9rcWhiRUyaYYBIzZpSMMGDD62ma37zHkTzTzjz0=;
+	s=arc-20240116; t=1739237482; c=relaxed/simple;
+	bh=CldXpmG6Dc3d/Ou2AorcC3lzQ+3tHThCMCZH/1f+pAg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZKZ93xJX5ed9idJLilwYZrXXZA5GqbFZXfQYySotaed7egMwrh53wJTQqW5Tm0ZF5eNsW98JQQNURXamOSnm2XaP97+6lrff9W2FyVo8xyRSXSANQpGn46dgsK4PEpt6Bo8ncI6dvxR8f6+nqtwd2FWeaJGdIMPZ8ihfGOApIRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONS/ZjAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF8BC4CED1;
-	Tue, 11 Feb 2025 01:31:17 +0000 (UTC)
+	 MIME-Version; b=X9tiQjn25QiM5aWyIiH3kCiDis+nnR1J2Zusi7JYOOx4O8Ol8CL3pjaXULEtlpPLRh8CfDTiavC0S46FGdC3QlkVTedn077sCuMFjGDEefHiTVAgr1EpopRwRS5cxXSdGbHxrwwR1tXiWrc+e0Rs6vcAvVRQQvjKYhordNZCqps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/DvhSFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C7AC4CEDF;
+	Tue, 11 Feb 2025 01:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237478;
-	bh=2p3d9rcWhiRUyaYYBIzZpSMMGDD62ma37zHkTzTzjz0=;
+	s=k20201202; t=1739237482;
+	bh=CldXpmG6Dc3d/Ou2AorcC3lzQ+3tHThCMCZH/1f+pAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONS/ZjARYgCIjTEkse16nVGFqBmXXHAGz4krgkrpvp8wU5DKckBqUafJwLH/aNQg0
-	 uaK5CpirCtQ9Teccx5vbqV70ZJNf4/0z8TPrglOJ8wUO6SFouPajfbGzwX6NACh04T
-	 cOZ4tOF8NLvDlyG9Dc18QRrcxiaSvGgDW3WZFGw5HN/kF7jCloB+b/ALR2eyqJ/QWo
-	 qxSfvaFVrYzq/JmB7EK9QKDE8dbsjUavE7AXnahDLzr6IXr2e8ATlJfgReLvDZq8KG
-	 6UZS1ae/Lh56XQxcu495AfDXNXeuk7O4BdsETJJB0X78tlgrtckSs3dWUNaFr53ZVH
-	 YbAVm2Tw/iVKQ==
+	b=F/DvhSFcQCZmPf/u0iYTGrHOYs+g7shatVRD+UpdA3K8pSBxBmSlPRbw2sEfRM48g
+	 QQIO+2jXKtfCfPnfA0+BF4gdJLwQ4UJNnp/czXOIaz/wUrkQdnavcRfhE8DF91/nhU
+	 IZ06qQVV9EViSsDd1lzkkeRW+NyNLBNZV1yumx8EqKPC6VOHoZLPXhriYh79xBI5qG
+	 Z8W1qC7FxDfT362nbzlE+/i5eB8vmVx6ICw1sMOLaGTX0MfBWm0QeScHL0fiIPsWgT
+	 S26A8OJAs91hSB+YpDoln+B2CvWcntmF76zkgRqAzr8Brv/xglug/JmgiTxjypM02N
+	 kVpMiFpZoyRcw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Magnus Lindholm <linmag7@gmail.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Tom Chung <chiahsuan.chung@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mdr@sgi.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 13/19] scsi: qla1280: Fix kernel oops when debug level > 2
-Date: Mon, 10 Feb 2025 20:30:41 -0500
-Message-Id: <20250211013047.4096767-13-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	aurabindo.pillai@amd.com,
+	robin.chen@amd.com,
+	martin.tsai@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 14/19] Revert "drm/amd/display: Use HW lock mgr for PSR1"
+Date: Mon, 10 Feb 2025 20:30:42 -0500
+Message-Id: <20250211013047.4096767-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013047.4096767-1-sashal@kernel.org>
 References: <20250211013047.4096767-1-sashal@kernel.org>
@@ -67,36 +77,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.13
 Content-Transfer-Encoding: 8bit
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
+[ Upstream commit f245b400a223a71d6d5f4c72a2cb9b573a7fc2b6 ]
 
-A null dereference or oops exception will eventually occur when qla1280.c
-driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
-think its clear from the code that the intention here is sg_dma_len(s) not
-length of sg_next(s) when printing the debug info.
+This reverts commit
+a2b5a9956269 ("drm/amd/display: Use HW lock mgr for PSR1")
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Because it may cause system hang while connect with two edp panel.
+
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
-index 8958547ac111a..fed07b1460702 100644
---- a/drivers/scsi/qla1280.c
-+++ b/drivers/scsi/qla1280.c
-@@ -2867,7 +2867,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
- 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
- 				cpu_to_le32(upper_32_bits(dma_handle)),
- 				cpu_to_le32(lower_32_bits(dma_handle)),
--				cpu_to_le32(sg_dma_len(sg_next(s))));
-+				cpu_to_le32(sg_dma_len(s)));
- 			remseg--;
- 		}
- 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+index 5bb8b78bf250a..bf636b28e3e16 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -63,8 +63,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
+ 
+ bool should_use_dmub_lock(struct dc_link *link)
+ {
+-	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
+-	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
++	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+ 		return true;
+ 
+ 	if (link->replay_settings.replay_feature_enabled)
 -- 
 2.39.5
 
