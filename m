@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-114960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD173A316B3
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:33:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556B0A316EE
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 21:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5828F3A6C8A
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:33:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A971887638
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FBD2638B1;
-	Tue, 11 Feb 2025 20:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9682641CF;
+	Tue, 11 Feb 2025 20:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTdX6qiu"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="BiA+qjSD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DE0265626;
-	Tue, 11 Feb 2025 20:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382F81CA84;
+	Tue, 11 Feb 2025 20:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739306006; cv=none; b=XjUarAgWLuEHH5E3NSjmty+ZqpaMnQsH+1ew0ccMFvpmcY2duv+RVrEPH/HZjEigxlaTMFlykILWDGbCY/cSR40Fstt5j32p0zPnI+xrw8gquujiDRma6hcSslmATh2LClFpt8G7lXmfUUBHmV7Z+2kMtDufHDiz5d5890pFqVE=
+	t=1739307271; cv=none; b=km61gTznUmRRGbGaoZEIcabYRwW6qnLCfxN276ekHOlwwXWWsSFF4NNs/qig5rW9u9iypBvnFsqP9z0czHrhEwexc3CMSDScBnNLGcdVo3x4yzrga3kRwa8IAS4drGINT4RGVExubqjLneW4L2lASqLr3PTNZmA04129LR816II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739306006; c=relaxed/simple;
-	bh=m6uW5LI+RTAP6gZ7LY7Y5BSyq7TILP8ZnWmH47ViD2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Mx60pV2h1saoDuigKbhDj4yr0MzUZaZt71OM8DHDyLA74bHQGXpaNQj9MLCHP3o2qxLPe72fhW7HVThRXJ8+lpRsr3NNNtDol1gFCt1d+egiyrDU92ras1I6SqgI3ewpH2TzxWz61l6BFFdjOyH+n1fWhE84aMb+LCEiE9fGZnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTdX6qiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87328C4CEDD;
-	Tue, 11 Feb 2025 20:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739306005;
-	bh=m6uW5LI+RTAP6gZ7LY7Y5BSyq7TILP8ZnWmH47ViD2g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=YTdX6qiu5L9Qs3vdGhuZHTeLKJ+uNTRPgU7exdn7QBMmY3Qpg5Pj1ddbM9Yc2QIRJ
-	 PwbclK47wvCBblffZ5zBpGhqUUioRkitHcw6goGkSoaw0sz/H9VZcARqQns8tp4KT/
-	 CCGIfMqiWN4KcwxADPpWeq9mi0/qXZx+KzkMIH/dspacbbgiKf7GurrDfexv6J73ol
-	 VOVyqq/3Z4R/lOzgm/YVjAGq7S2tjEPZ10GrQniJ6CW8y0y0eW7DSzHfgyQmZUanyy
-	 QQUiqgz6FkHptDJ8xe72SvxEWaJml+MotLbMRYLEtMre02yjeoKjmwd/7LrorrRflZ
-	 Bdy5xqiS4MTrg==
-Date: Tue, 11 Feb 2025 14:33:24 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Cc: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Mark Kettenis <kettenis@openbsd.org>, Marc Zyngier <maz@kernel.org>,
-	Stan Skowronek <stan@corellium.com>, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Janne Grunau <j@jannau.net>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/7] PCI: apple: Set only available ports up
-Message-ID: <20250211203324.GA54082@bhelgaas>
+	s=arc-20240116; t=1739307271; c=relaxed/simple;
+	bh=YOdj3Ibcjs80c3SuLcD+Qwr+/jgda6an4ycWCDSIkxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mbH1b+DVVsaBo7gvTbcX0cV9V4B8Lwrmlph16EBWvSOJgCTm94o7OYCZ6QiLqIIsoi9P8TFntuq7+qgmr+5YV5MfzqsM7c9xy3nHwkTfWZSahIJkY+HnMAxMtKfT3MMLuita2oMf62si8/Nxj+bqgf/FwCCnY+kDNSQz6kIit+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=BiA+qjSD; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1iJ8xpWA2sBU7gPbf/7jmmtf2ADvi1y7fZeAsq52FKE=; b=BiA+qjSDDrhzqu8WyRazJdREyv
+	TTRJ9bo67PwyXjoW8WRk2wKH7q4oJLL4QDkdNLfxd0xStATm8o2jvhvsfKVsG9WveH49v420Yoan9
+	zrw3szvDIXYnlD0/dxUDCV6GONU9I5dDNI5rL+mOp+LIsTC2iuaCK/NUDK/mnfvCY0ARVFdsCg1ZN
+	JQd51sfc1AAZ+jd6o/+VcgfjFhSKIR4axpBoFiKh7CVnxEPaXuxiTuWq2RwB+QnPwSnvLuP1iMpaH
+	qFqK144LG4OfpXjVEnbTAX+bD27vRYTUn7O/HIQYwVc4fRYajba45DBi/KnP3rzYNDFzKOVGckKdh
+	on4LlfFw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1thxGs-0000000Axan-1W0F;
+	Tue, 11 Feb 2025 20:54:18 +0000
+Date: Tue, 11 Feb 2025 20:54:18 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Zicheng Qu <quzicheng@huawei.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, jlayton@kernel.org,
+	axboe@kernel.dk, joel.granados@kernel.org, tglx@linutronix.de,
+	hch@lst.de, len.brown@intel.com, pavel@ucw.cz, pengfei.xu@intel.com,
+	rafael@kernel.org, tanghui20@huawei.com, zhangqiao22@huawei.com,
+	judy.chenhui@huawei.com, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+	linux-pm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] acct: block access to kernel internal filesystems
+Message-ID: <20250211205418.GI1977892@ZenIV>
+References: <20250211-work-acct-v1-0-1c16aecab8b3@kernel.org>
+ <20250211-work-acct-v1-2-1c16aecab8b3@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,27 +67,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250211-pcie-t6-v1-3-b60e6d2501bb@rosenzweig.io>
+In-Reply-To: <20250211-work-acct-v1-2-1c16aecab8b3@kernel.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Tue, Feb 11, 2025 at 02:54:28PM -0500, Alyssa Rosenzweig wrote:
-> From: Janne Grunau <j@jannau.net>
-> 
-> Fixes "interrupt-map" parsing in of_irq_parse_raw() which takes the
-> node's availability into account.
-> 
-> This became apparent after disabling unused PCIe ports in the Apple
-> silicon device trees instead of disabling them.
+On Tue, Feb 11, 2025 at 06:16:00PM +0100, Christian Brauner wrote:
+> There's no point in allowing anything kernel internal nor procfs or
+> sysfs.
 
-Is there something missing from this sentence?  "... after disabling
-unused ports instead of disabling them" doesn't sound quite complete.
+> +	/* Exclude kernel kernel internal filesystems. */
+> +	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
+> +		kfree(acct);
+> +		filp_close(file, NULL);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Exclude procfs and sysfs. */
+> +	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
+> +		kfree(acct);
+> +		filp_close(file, NULL);
+> +		return -EINVAL;
+> +	}
 
-> Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
-> Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
-> Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
-> Cc: stable@vger.kernel.org
-
-Can we have a hint about what makes this "stable" material?  I can't
-tell from the commit log what the impact of this change is.
-
-Bjorn
+That looks like a really weird way to test it, especially the second
+part...
 
