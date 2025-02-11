@@ -1,172 +1,179 @@
-Return-Path: <stable+bounces-114879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4FCA307AA
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:52:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE20A307DC
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 11:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 204551887AD8
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:52:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A01F7A2431
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 10:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58491F0E35;
-	Tue, 11 Feb 2025 09:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824691F238B;
+	Tue, 11 Feb 2025 10:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjVdmOgj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QzZRn0YJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9F1D90CD
-	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 09:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A611F236C;
+	Tue, 11 Feb 2025 10:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739267539; cv=none; b=U/sjRspNur54ctPjNqugGFV1zKMfZn/hHkVqHP95VIac59Aje13fE0rniJm53GDSnkmw72UQU3WPz36PzogJe/NEF1MSVpYzpF3zLBW8PAWsNywE1donFRmyluTWsNwxrrkrfHufh4X+BO1AauhgWwhwJ0FKgbSHoQbPz6Ii37M=
+	t=1739268090; cv=none; b=C679065kmAriTa3LKwEj61D8J0SxG4/bjQSoTWUv6HXK2KZYkhBFhQCIUhmFM2EHFJLy7ZZMC1Wl+ne4wdn4Y8IXdrXnYyb2NBl5gvLdkB4au2mrRoL9IhfobYievN/XO1KjEyD0Oa4aXZP/z45DB0BKDm6V+LQ2GraxRV5tWas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739267539; c=relaxed/simple;
-	bh=1h9po6Ud8+upZWkbtk+agPyhshYS10XuFge5GuStD6c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M1kpFF2lGel1rckK+nPUNo34q+eXoRxmn9p0+hNqZXUYbUtyRGxN3e0blpdwm5RouQw6Vd1vXfpYrpFKUsRhS6BDBW1WM1nwFXFDT+cGJiDeB//+VKYMeUo9p1laIjKKAZHoTf/KaAvd1CUWVRCDEVCwv0qeqod3fH+QwuWaN24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjVdmOgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1D0C4CEDD;
-	Tue, 11 Feb 2025 09:52:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739267538;
-	bh=1h9po6Ud8+upZWkbtk+agPyhshYS10XuFge5GuStD6c=;
-	h=Subject:To:Cc:From:Date:From;
-	b=XjVdmOgjKLZaUdwGjYml3JCkA8xuVfpEiWKcEzjc8RvYJ0iLDKbNoygFxjKz6X5Kr
-	 pKYxipPi4PLJIiTyHQRD9rUwdejWqBKcdQDB+LroJQLmn/GBjqc/AMG41dnPJ4V9+c
-	 ZnDrdSLWFG4duOCaXLkcdZvVbBWZLmvxB4/Cd3SQ=
-Subject: FAILED: patch "[PATCH] statmount: let unset strings be empty" failed to apply to 6.12-stable tree
-To: mszeredi@redhat.com,brauner@kernel.org,jlayton@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 11 Feb 2025 10:52:10 +0100
-Message-ID: <2025021110-demeaning-mushroom-9922@gregkh>
+	s=arc-20240116; t=1739268090; c=relaxed/simple;
+	bh=iErw32Uq4t5PXKFtsL4Eo9itj9Sq8wa9Jeeaqn9/UuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l6AOlCaW206zvVtQVpLiX0tyLEFr9USNWslFpt+S5qxIvwm+e9K8zaZC6gj8nJncSy7JsH84mCCl5WaE1EmUeG35fDLzJA3dM9wRJ4+4fdjX38kkpP/zrCy4PwpwGIfRsGyDdzfqvICWOWAJZdbAen9CzJEOSq+TuIuuTUya/hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QzZRn0YJ; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21fa56e1583so26484945ad.3;
+        Tue, 11 Feb 2025 02:01:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739268087; x=1739872887; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmVkjN/JH5TLrtl/d3KpNoTShOymLH1OzzxUyH/meaQ=;
+        b=QzZRn0YJcKcrREdF0ydAGNJCPt916zxB//L8UALm21bJGAzAghLMZ3NP5pllyiamEe
+         Z14OHIJrK/MWCXREBcmwXABfYlSU01OkMps1JkSPNCfRPfgYtBvQurOlSVVHBwH/sFB7
+         OWGKChWqTJKehZOWy+LCRv+CBTf6I3GGHwm4HgQ+qZsdGcdQcNzzRAWxYXyRIsOAvMuU
+         /OG+FXn/KDnrTHWrQZta+q8IB0SSOUAcP2vtp5SafTYmhC1uxOTdMhGNGeIRKfG+QGVg
+         p+mwEEcZfsNbMtj3aT7R/lMVT6WbrivO1Z+a6h0+qigjbgDuZPKqDu9HVkwnYuQRhF3t
+         aZyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739268087; x=1739872887;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lmVkjN/JH5TLrtl/d3KpNoTShOymLH1OzzxUyH/meaQ=;
+        b=fZ7lc79ABDJfonAM/uSVDjbzPA5SmwTX1AgDyzl+NdKfVRQxscxkDLITVIUr2FE1HB
+         Jb0YbGZMANkHA/oGwqbmIs/SOd4tFVemEh2LDAZY/APCGPn1Usl4UQFn2jdQJbsZizUa
+         TrNIiSnP7+o/uATj0OgHZsRuskG/8X5wLDajGt8PWJb9A67Q0NTd4rNWQa3J0ckdFnSh
+         OjuD40EKHVvqlPmww+R4xJhRBrW8VBt3KicQTVUfjINEyCqYQN6653pGR/H8otMcYI+M
+         W7pVduRH7r/eY8iF/oS3IueTuWol1GugbK+nezkMfGaVgrNFi8Eve2GTPFjJ27YGDrSL
+         z7gw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkA90pRZJQJWN8Q/Au9gX1Fjfl6HN8PGDQcb0uYIFj1ZB3WIZvVarEqjW3DfCN/8o43iVzSYE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGgn1GaPchJxft6d8ltVQig3vH1C0JpDpTQuGrrnMX1wz6TEpw
+	fBGp2EiGKowEsEEtvlt/5y5pvJWazDpWBdkeRgCNm7TbLiJq9Xc0Cfc1XoeM
+X-Gm-Gg: ASbGnctS5zkqRdHAIYnrsQJ8wTYjLFsBxCF5Ipe5yQNcfdCHlGU/4vn1NtYSWBx0AiJ
+	la7Eb3J4ZUCf0tyjT+hwP0/5IkCYhvwtWf5L6hGwCvf05oIDtFcdqDgxkCvmZ/CldGaneQ0U2Q0
+	KhNR1n2aysNsVruu3WJ9BWWsMxpGu96lRuBs8ZpOJAlHifu/khNz6Zo/6ZXQczSz47njxXhPLAO
+	qSx0QM+NV27uZH4fU5sCQliuRcNP0sKZKp5BdRPPAx++nSJsDFGZKqwKmJv7YzpG9jgchTuxDfH
+	sGbElBnif24K2D1V7WKNXj/8941CdtoMS5N1K4NS1WskDzBFwA2IIA==
+X-Google-Smtp-Source: AGHT+IGwW3HaNtNKHyCPGuM4og62OtaS9MMOw3inzVQNLyl2Sw1Mg5Lr9Z9adTxVQM3L1qegaH75gw==
+X-Received: by 2002:a05:6a21:2d05:b0:1e1:ffec:b1bf with SMTP id adf61e73a8af0-1ee03b12947mr25752977637.26.1739268087234;
+        Tue, 11 Feb 2025 02:01:27 -0800 (PST)
+Received: from lindev-local-latest.corp.microsoft.com ([2404:f801:8028:1:7e0e:5dff:fea8:2c14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73085eb5facsm4297730b3a.11.2025.02.11.02.01.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 02:01:26 -0800 (PST)
+From: nspmangalore@gmail.com
+X-Google-Original-From: sprasad@microsoft.com
+To: linux-cifs@vger.kernel.org,
+	smfrench@gmail.com,
+	pc@manguebit.com,
+	bharathsm@microsoft.com,
+	tom@talpey.com,
+	dhowells@redhat.com
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] cifs: pick channels for individual subrequests
+Date: Tue, 11 Feb 2025 10:00:25 +0000
+Message-ID: <20250211100053.9485-1-sprasad@microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The netfs library could break down a read request into
+multiple subrequests. When multichannel is used, there is
+potential to improve performance when each of these
+subrequests pick a different channel.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Today we call cifs_pick_channel when the main read request
+is initialized in cifs_init_request. This change moves this to
+cifs_prepare_read, which is the right place to pick channel since
+it gets called for each subrequest.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x e52e97f09fb66fd868260d05bd6b74a9a3db39ee
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021110-demeaning-mushroom-9922@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Interestingly cifs_prepare_write already does channel selection
+for individual subreq, but looks like it was missed for read.
+This is especially important when multichannel is used with
+increased rasize.
 
-Possible dependencies:
+In my test setup, with rasize set to 8MB, a sequential read
+of large file was taking 11.5s without this change. With the
+change, it completed in 9s. The difference is even more signigicant
+with bigger rasize.
 
+Cc: <stable@vger.kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+---
+ fs/smb/client/cifsglob.h | 1 -
+ fs/smb/client/file.c     | 7 ++++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e52e97f09fb66fd868260d05bd6b74a9a3db39ee Mon Sep 17 00:00:00 2001
-From: Miklos Szeredi <mszeredi@redhat.com>
-Date: Thu, 30 Jan 2025 13:15:00 +0100
-Subject: [PATCH] statmount: let unset strings be empty
-
-Just like it's normal for unset values to be zero, unset strings should be
-empty instead of containing random values.
-
-It seems to be a typical mistake that the mask returned by statmount is not
-checked, which can result in various bugs.
-
-With this fix, these bugs are prevented, since it is highly likely that
-userspace would just want to turn the missing mask case into an empty
-string anyway (most of the recently found cases are of this type).
-
-Link: https://lore.kernel.org/all/CAJfpegsVCPfCn2DpM8iiYSS5DpMsLB8QBUCHecoj6s0Vxf4jzg@mail.gmail.com/
-Fixes: 68385d77c05b ("statmount: simplify string option retrieval")
-Fixes: 46eae99ef733 ("add statmount(2) syscall")
-Cc: stable@vger.kernel.org # v6.8
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20250130121500.113446-1-mszeredi@redhat.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-diff --git a/fs/namespace.c b/fs/namespace.c
-index a3ed3f2980cb..9c4d307a82cd 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5191,39 +5191,45 @@ static int statmount_string(struct kstatmount *s, u64 flag)
- 	size_t kbufsize;
- 	struct seq_file *seq = &s->seq;
- 	struct statmount *sm = &s->sm;
--	u32 start = seq->count;
-+	u32 start, *offp;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index a68434ad744a..243e4881528c 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1508,7 +1508,6 @@ struct cifs_io_parms {
+ struct cifs_io_request {
+ 	struct netfs_io_request		rreq;
+ 	struct cifsFileInfo		*cfile;
+-	struct TCP_Server_Info		*server;
+ 	pid_t				pid;
+ };
+ 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 79de2f2f9c41..8582cf61242c 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -147,7 +147,7 @@ static int cifs_prepare_read(struct netfs_io_subrequest *subreq)
+ 	struct netfs_io_request *rreq = subreq->rreq;
+ 	struct cifs_io_subrequest *rdata = container_of(subreq, struct cifs_io_subrequest, subreq);
+ 	struct cifs_io_request *req = container_of(subreq->rreq, struct cifs_io_request, rreq);
+-	struct TCP_Server_Info *server = req->server;
++	struct TCP_Server_Info *server;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(rreq->inode->i_sb);
+ 	size_t size;
+ 	int rc = 0;
+@@ -156,6 +156,8 @@ static int cifs_prepare_read(struct netfs_io_subrequest *subreq)
+ 		rdata->xid = get_xid();
+ 		rdata->have_xid = true;
+ 	}
 +
-+	/* Reserve an empty string at the beginning for any unset offsets */
-+	if (!seq->count)
-+		seq_putc(seq, 0);
-+
-+	start = seq->count;
++	server = cifs_pick_channel(tlink_tcon(req->cfile->tlink)->ses);
+ 	rdata->server = server;
  
- 	switch (flag) {
- 	case STATMOUNT_FS_TYPE:
--		sm->fs_type = start;
-+		offp = &sm->fs_type;
- 		ret = statmount_fs_type(s, seq);
- 		break;
- 	case STATMOUNT_MNT_ROOT:
--		sm->mnt_root = start;
-+		offp = &sm->mnt_root;
- 		ret = statmount_mnt_root(s, seq);
- 		break;
- 	case STATMOUNT_MNT_POINT:
--		sm->mnt_point = start;
-+		offp = &sm->mnt_point;
- 		ret = statmount_mnt_point(s, seq);
- 		break;
- 	case STATMOUNT_MNT_OPTS:
--		sm->mnt_opts = start;
-+		offp = &sm->mnt_opts;
- 		ret = statmount_mnt_opts(s, seq);
- 		break;
- 	case STATMOUNT_OPT_ARRAY:
--		sm->opt_array = start;
-+		offp = &sm->opt_array;
- 		ret = statmount_opt_array(s, seq);
- 		break;
- 	case STATMOUNT_OPT_SEC_ARRAY:
--		sm->opt_sec_array = start;
-+		offp = &sm->opt_sec_array;
- 		ret = statmount_opt_sec_array(s, seq);
- 		break;
- 	case STATMOUNT_FS_SUBTYPE:
--		sm->fs_subtype = start;
-+		offp = &sm->fs_subtype;
- 		statmount_fs_subtype(s, seq);
- 		break;
- 	case STATMOUNT_SB_SOURCE:
--		sm->sb_source = start;
-+		offp = &sm->sb_source;
- 		ret = statmount_sb_source(s, seq);
- 		break;
- 	default:
-@@ -5251,6 +5257,7 @@ static int statmount_string(struct kstatmount *s, u64 flag)
+ 	if (cifs_sb->ctx->rsize == 0)
+@@ -198,7 +200,7 @@ static void cifs_issue_read(struct netfs_io_subrequest *subreq)
+ 	struct netfs_io_request *rreq = subreq->rreq;
+ 	struct cifs_io_subrequest *rdata = container_of(subreq, struct cifs_io_subrequest, subreq);
+ 	struct cifs_io_request *req = container_of(subreq->rreq, struct cifs_io_request, rreq);
+-	struct TCP_Server_Info *server = req->server;
++	struct TCP_Server_Info *server = rdata->server;
+ 	int rc = 0;
  
- 	seq->buf[seq->count++] = '\0';
- 	sm->mask |= flag;
-+	*offp = start;
- 	return 0;
- }
- 
+ 	cifs_dbg(FYI, "%s: op=%08x[%x] mapping=%p len=%zu/%zu\n",
+@@ -266,7 +268,6 @@ static int cifs_init_request(struct netfs_io_request *rreq, struct file *file)
+ 		open_file = file->private_data;
+ 		rreq->netfs_priv = file->private_data;
+ 		req->cfile = cifsFileInfo_get(open_file);
+-		req->server = cifs_pick_channel(tlink_tcon(req->cfile->tlink)->ses);
+ 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_RWPIDFORWARD)
+ 			req->pid = req->cfile->pid;
+ 	} else if (rreq->origin != NETFS_WRITEBACK) {
+-- 
+2.43.0
 
 
