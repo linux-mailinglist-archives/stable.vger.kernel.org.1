@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-114795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CACA300A5
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:40:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D35A300AB
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99C921886A07
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:40:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D62E3A60F3
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4361FAC53;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DE61FBE8D;
 	Tue, 11 Feb 2025 01:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJlhwGW7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/flqF05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7822A1FA165;
-	Tue, 11 Feb 2025 01:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92DE1FAC4E;
+	Tue, 11 Feb 2025 01:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237518; cv=none; b=AhQPp6rhsJJZrjtQznLY9yUHUeHrZSBdv8IKzniZAXn78FrZrN+ut9iQ3bLkdCE+FjnyDSuix0A3s4l5XXFxQu0pVG2H/P6LI7jIdFW9Nk4voP2XUl+4eXtlR4jkdSOKk0RMKBALTmR/7bEtZ5JA8zgf9ru4ghLdCr5ZT124Alk=
+	t=1739237518; cv=none; b=C1Kc3uYlrX2OMQGH6bhLXhSZ5n2ICqG323AHq3sqXWWkNmsYD8n3VsRVdsrKvjnrbBbsFXri8gw4RnFSdKf2EcixfuD7YU/YgOiV12T6Ogu2lAQGsYcF35erOB76US4tMurImMMI+QyvqVyNH8398GFaQUAyNCxiLrUqtCn7eTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739237518; c=relaxed/simple;
-	bh=9xbyoiiCrVaAK6nAs5sT0F6NPRxlRa3Hr5Y2YELtFug=;
+	bh=4EW6MTr5HsKmXs7QIO4MEotqn1ZDrm8EU7rTJmBn1TI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A4iaQS2tybSnT2j0MCCgEClnRKzBYmP5AdTP0CjmTmXaDdaakzcfw9AoKsg68kUIPdKnCmCf7d+wc+Aly5kzPf7weSBjTgUXccGF0XJglXnDqlIZHknIm8GmHTn62BUnQ0ClRtWC4l3xOFtnE2V28fW4m1e6v/DKV6KAuN/PLe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJlhwGW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460C9C4CEE5;
-	Tue, 11 Feb 2025 01:31:55 +0000 (UTC)
+	 MIME-Version; b=Y3DLX2dSE0LvTp0+xn1SG4yVczq1h1K/BlybW0rnW5KvDbWTOqqCue739/B5rMyysXCRXSfdV9isemHqTpq36eAg/dLjKWn37l0epVLrnS8/JtQMBpQmIKXxtctc2WIlSiFZNBtj2ZxKtEnlgGD9+TlJJ5tPL5NPwvlMm4FoL4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/flqF05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A07C4CED1;
+	Tue, 11 Feb 2025 01:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237516;
-	bh=9xbyoiiCrVaAK6nAs5sT0F6NPRxlRa3Hr5Y2YELtFug=;
+	s=k20201202; t=1739237518;
+	bh=4EW6MTr5HsKmXs7QIO4MEotqn1ZDrm8EU7rTJmBn1TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJlhwGW7KXwjdG4rLkI6mgYGMOWoHKfULV+MTwgRjQuVprQQXo20VoV8taLGT/F6H
-	 0TLJbGSrfQUavLLRrt1J/UYg1DAtrDPitSG3AEkW4E1w9AgghbfihrEYGZuyMyfj0H
-	 4qHGjVTT9OxybqOt5Q9Cgxl5xfDC1sLbwxwsiFhtQFctBwTdWY7JCIgZhgYSPYSBxI
-	 9bfqjM6dqBKhmniSVWMEAULgeS7bziLhAwH1dTyMMg38ymRIYvELLGG4KgbC8LyYaT
-	 jfP/oB37xBB3mlSKd+KEDfJMTVQ0Jon7IGFW0wsJyGM4CZtyIPbsTiWUCW7ZesJ2sa
-	 xGoDJEf3CM4dA==
+	b=k/flqF055czNbsMfy3LO0PGdchJ34AMgCReJyZQky5XKy5+iqD7EmnsF3XCKe8bqG
+	 FtcHz2WYnAEiHE1+nEZZp5b3JmNIdQ6mguCxvrUx7c5SYjenP6dSrhUVyAyN7aCQqv
+	 n/ly7xZWnC93bLEwR9Wh1G9gf0YMhXmoQXH0JOfWlKjTQxW3DGhsAnrFfaUK8LJI4z
+	 Q4vUM9uvZVTwbCa0bAto0dZwm4yoAxETME/X5CwNR6fhOz6AZXnD74QdlXaA9EYfPk
+	 2BZIoDpop8M4kEPaxoa9N3wIiZ2JruejIkX5BEuA4WH/0rWtS+n6M2UBg1AfDWzphm
+	 Qx7HO+ReYPuiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tom Chung <chiahsuan.chung@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Gannon Kolding <gannon.kolding@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	martin.tsai@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 11/15] Revert "drm/amd/display: Use HW lock mgr for PSR1"
-Date: Mon, 10 Feb 2025 20:31:31 -0500
-Message-Id: <20250211013136.4098219-11-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 12/15] ACPI: resource: IRQ override for Eluktronics MECH-17
+Date: Mon, 10 Feb 2025 20:31:32 -0500
+Message-Id: <20250211013136.4098219-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013136.4098219-1-sashal@kernel.org>
 References: <20250211013136.4098219-1-sashal@kernel.org>
@@ -75,37 +66,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.76
 Content-Transfer-Encoding: 8bit
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Gannon Kolding <gannon.kolding@gmail.com>
 
-[ Upstream commit f245b400a223a71d6d5f4c72a2cb9b573a7fc2b6 ]
+[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
 
-This reverts commit
-a2b5a9956269 ("drm/amd/display: Use HW lock mgr for PSR1")
+The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
+keyboard to work.
 
-Because it may cause system hang while connect with two edp panel.
+Adding a DMI_MATCH entry for this laptop model makes the internal
+keyboard function normally.
 
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
+Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-index f11b071a896f5..2aa0e01a6891b 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -63,8 +63,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
- 
- bool should_use_dmub_lock(struct dc_link *link)
- {
--	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
--	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
- 		return true;
- 	return false;
- }
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 64d83ff3c0d90..96a987506e717 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -549,6 +549,12 @@ static const struct dmi_system_id maingear_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
 -- 
 2.39.5
 
