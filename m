@@ -1,315 +1,144 @@
-Return-Path: <stable+bounces-114861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E3EA3062A
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:45:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E69A30653
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 09:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B52161142
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:45:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 269097A1B96
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 08:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3A11F0E4A;
-	Tue, 11 Feb 2025 08:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC13E1F0E4C;
+	Tue, 11 Feb 2025 08:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUEUZRqK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q0m6pnsN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A391EE7D2;
-	Tue, 11 Feb 2025 08:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56161F03C7
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 08:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739263511; cv=none; b=CzcCBiFLWdzsjfMLAZLMhyRU2s2PlxTGKDo6gAJnJcKxBOmvex5sNhUEFT0PN4/zX4Yoz5J9Z/Afygo3fJtZ5tTWzO4H8zex86GCL4doqRmCw78S3ZLaCyawaeJeqeRfW6rdDGVenZT1hGbSkGLeZdnQfSlLK9PB7bdahzjPfCc=
+	t=1739263878; cv=none; b=KmzbwUrXrqrYJuZuQ3uuLGXljZu6XNCYsl7f3SbMH0ozXgHCHJI+stFJEX+R2IfsbCC9AraPc7pCrJoIy+6B8gBtUqGuIeyh41syAu/5PxldYVww7FepIiKADVyl0pcmpiTeGuP6myBjsfNDMAq64EELDKgRxK3tJVVPXKQ/tdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739263511; c=relaxed/simple;
-	bh=lykx5EWzw+9XqeTPJI1ls5uYpIwKGRHJsE11lnC47BU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bxblG1LpmqCVQf+ckA1kT3RR/6MQ5a9QVodeVkYW9hctsNwIUvHEc28WIzeeQHNt9A2yzL0oLctByCdxkRqycuA1xfQXzi+RTI1vDlf2NqQzcFsJdHxLznCQGwdnM4c7JEF3wwJXLRY7nHlGOL8qKDSDQ793NUjtTTnQZuJkUVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUEUZRqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BF1C4CEDD;
-	Tue, 11 Feb 2025 08:45:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739263511;
-	bh=lykx5EWzw+9XqeTPJI1ls5uYpIwKGRHJsE11lnC47BU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUEUZRqKCp7kILvi+k6ByeNIpqewDMLRQ1UD7V7oFqcEFA8J8YCP/gburTIaHLa7Q
-	 me/6pvaFfkZbrxQO93qKXGvyjl06GaV/zf1qRQc9089t5WjqhCSuWlOtTPmgvivi/r
-	 7A0dqQ5ORyT1UyWijFNmte0snV/col62c0JHFWEk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.6.77
-Date: Tue, 11 Feb 2025 09:44:58 +0100
-Message-ID: <2025021111-unrelated-immodest-318c@gregkh>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025021111-senate-unburned-9456@gregkh>
-References: <2025021111-senate-unburned-9456@gregkh>
+	s=arc-20240116; t=1739263878; c=relaxed/simple;
+	bh=uwOvEKjgbgfkSheXhWF/TM+S9VjTRURKDguxj/FPaIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qlDCKRzAKZfjiK+dwgIREz6yIjINAWXjUpZD8GLiPbpvnppkCN5MjKkihscZLy7SXt1e7nxP4G0VjgzgdE8ISLRodBA+wFrHqNgWyEx2Aqkjtf2mdKA+XFkX1/ql2ISmvpNH0SeQS6iMpN0WgI2uCoXYEwx+849YEdZxYRySB5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q0m6pnsN; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43675b1155bso58545635e9.2
+        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 00:51:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739263875; x=1739868675; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MBuVpfBGZc5QukwlLAhOoPlDs013WB9zKRqFDryvqwM=;
+        b=q0m6pnsNvD08BHOucBX1kSYTIvBNSLzODyqxsTlpHsZObXnQW3MdeGchgJ8x81jSMu
+         GMrnxwPnFJgLVBXORKgHFx5ueoxvxNPzxrWYIzQ07r3WXRm7weK67XME1GV6dCSak01x
+         v/ooB54Bacc44aacXw5oy0L8URk2k4ZTwK8DD7TIZUt1NSZN8SfIvqzFEXu4aR01/lFG
+         CudSrovyme/UgWOn5HIc4qvZgLohffsVwZ6aGc0appLsUPOgD6z3A+fJN5+c0yuqQt2i
+         dQApsFfmFPq1NKBRTB0T65yG9KnsoD8bhqqaBcscISfaz5k4HLR3mcGOzoZjWxKcJ/PA
+         kWmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739263875; x=1739868675;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MBuVpfBGZc5QukwlLAhOoPlDs013WB9zKRqFDryvqwM=;
+        b=qrkH7wJ8le+Vyb6RbPx8JQr0SzYBWRZLNHq7ssqfFfCksZQ80f8n/OrKjtOTYka7FF
+         uPKUDvWMWU0/bQYGBNW9A6900Xgtiw3aXp8PG2prdgObnB3fl3m/n85P/d80rA2gLSLf
+         p5keu5EfzJbGfIp3jQpXNcNQvy2XC4ItRvAfXkEvou/BVD8MjG3KF4I2j4ifK8kV/nzn
+         avDQUpWfGHUkkMcuAb5jh13KE/dfqCxqK5JFCglVTs8tYoSR7Sn/P4cCCk3omH1Cxmuz
+         UUDvwn5cXxfOzUfgwkolibdr428NT9Tmp/b0UGr1x1aD+AC3LDRH64OuUjR+9jzqt/TE
+         dzcg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8zBd2N0zPfBemvdOdH+X5GEewRchjbFtLNmT4YB6kHH1l629ir283YvjZsiOCJlzn6XLsq60=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKC7bn9tz8hLDPByYqogj/ftL/1rqJdiEjxRUXB2txDy9sbads
+	blebAurDGEmyt+IdRdDeYhyVwDEhcXssckCz3LrTwwsQKgzUQLmyoFg+zjzZvlE=
+X-Gm-Gg: ASbGncv7pwHio+VAjzYcDGyAeHipRtyzSEEgAFFqLCAjTUIBRwcvZXA1kaNOaYbq1YI
+	i0pw7nj34QbEQelxMMZ9nQpbgbeKE96jWPoZBLAtZNrj2oBZUknrcGzCxzGVbe/BaSuZmXrmTY2
+	PhwM+u2pp1zHb7ysyQVdEbDsbl0iwJXkbucjo81J2eqOTY7kH0OR13HQyfqwU52OYP+Iu78gqtN
+	WLEstsxcK1m3qM/xMA5I3aewh6+JRBWDn8BC7mAalfryBfY0LbgxLw1qres10UB8ya8ROOZ5FM0
+	+C8PhG4rU0RI0+imfw2wVEcXfP7KnxCeSt75nZhsvSHDfycfvZEYrpk=
+X-Google-Smtp-Source: AGHT+IFO+zzAA08bfzxBeaVgp6Y5tU1Gn5sLS7Hh+RKdG5t/UoXpSO2gVdVDv0cTsXvcW1Ndi56IrA==
+X-Received: by 2002:a05:6000:154f:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-38dc8d98e9amr11900744f8f.2.1739263875007;
+        Tue, 11 Feb 2025 00:51:15 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38dc0c5a894sm13914977f8f.95.2025.02.11.00.51.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Feb 2025 00:51:14 -0800 (PST)
+Message-ID: <fe0b0066-5f06-412e-b66a-f3cf6ba74e9d@linaro.org>
+Date: Tue, 11 Feb 2025 09:51:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 0/5] thermal/drivers/mediatek/lvts: Fixes for
+ suspend and IRQ storm, and cleanups
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alexandre Mergnat <amergnat@baylibre.com>, Balsam CHIHI <bchihi@baylibre.com>
+Cc: kernel@collabora.com, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Hsin-Te Yuan <yuanhsinte@chromium.org>,
+ Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?=
+ <bero@baylibre.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ stable@vger.kernel.org
+References: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-diff --git a/Makefile b/Makefile
-index d679a3dd5a58..1391d545aee9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 6
--SUBLEVEL = 76
-+SUBLEVEL = 77
- EXTRAVERSION =
- NAME = Pinguïn Aangedreven
- 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 9cddd78b11d4..ff201753fd18 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -16,17 +16,11 @@
- #include <linux/seq_file.h>
- #include <linux/writeback.h>
- #include <linux/mount.h>
--#include <linux/fs_context.h>
--#include <linux/fs_parser.h>
- #include <linux/namei.h>
- #include "hostfs.h"
- #include <init.h>
- #include <kern.h>
- 
--struct hostfs_fs_info {
--	char *host_root_path;
--};
--
- struct hostfs_inode_info {
- 	int fd;
- 	fmode_t mode;
-@@ -94,17 +88,30 @@ __uml_setup("hostfs=", hostfs_args,
- static char *__dentry_name(struct dentry *dentry, char *name)
- {
- 	char *p = dentry_path_raw(dentry, name, PATH_MAX);
--	struct hostfs_fs_info *fsi = dentry->d_sb->s_fs_info;
--	char *root = fsi->host_root_path;
--	size_t len = strlen(root);
-+	char *root;
-+	size_t len;
-+
-+	root = dentry->d_sb->s_fs_info;
-+	len = strlen(root);
-+	if (IS_ERR(p)) {
-+		__putname(name);
-+		return NULL;
-+	}
- 
--	if (IS_ERR(p) || len > p - name) {
-+	/*
-+	 * This function relies on the fact that dentry_path_raw() will place
-+	 * the path name at the end of the provided buffer.
-+	 */
-+	BUG_ON(p + strlen(p) + 1 != name + PATH_MAX);
-+
-+	strscpy(name, root, PATH_MAX);
-+	if (len > p - name) {
- 		__putname(name);
- 		return NULL;
- 	}
- 
--	memcpy(name, root, len);
--	memmove(name + len, p, name + PATH_MAX - p);
-+	if (p > name + len)
-+		strcpy(name + len, p);
- 
- 	return name;
- }
-@@ -189,10 +196,8 @@ static int hostfs_statfs(struct dentry *dentry, struct kstatfs *sf)
- 	long long f_bavail;
- 	long long f_files;
- 	long long f_ffree;
--	struct hostfs_fs_info *fsi;
- 
--	fsi = dentry->d_sb->s_fs_info;
--	err = do_statfs(fsi->host_root_path,
-+	err = do_statfs(dentry->d_sb->s_fs_info,
- 			&sf->f_bsize, &f_blocks, &f_bfree, &f_bavail, &f_files,
- 			&f_ffree, &sf->f_fsid, sizeof(sf->f_fsid),
- 			&sf->f_namelen);
-@@ -240,11 +245,7 @@ static void hostfs_free_inode(struct inode *inode)
- 
- static int hostfs_show_options(struct seq_file *seq, struct dentry *root)
- {
--	struct hostfs_fs_info *fsi;
--	const char *root_path;
--
--	fsi = root->d_sb->s_fs_info;
--	root_path = fsi->host_root_path;
-+	const char *root_path = root->d_sb->s_fs_info;
- 	size_t offset = strlen(root_ino) + 1;
- 
- 	if (strlen(root_path) > offset)
-@@ -923,10 +924,10 @@ static const struct inode_operations hostfs_link_iops = {
- 	.get_link	= hostfs_get_link,
- };
- 
--static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
-+static int hostfs_fill_sb_common(struct super_block *sb, void *d, int silent)
- {
--	struct hostfs_fs_info *fsi = sb->s_fs_info;
- 	struct inode *root_inode;
-+	char *host_root_path, *req_root = d;
- 	int err;
- 
- 	sb->s_blocksize = 1024;
-@@ -939,7 +940,16 @@ static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		return err;
- 
--	root_inode = hostfs_iget(sb, fsi->host_root_path);
-+	/* NULL is printed as '(null)' by printf(): avoid that. */
-+	if (req_root == NULL)
-+		req_root = "";
-+
-+	sb->s_fs_info = host_root_path =
-+		kasprintf(GFP_KERNEL, "%s/%s", root_ino, req_root);
-+	if (host_root_path == NULL)
-+		return -ENOMEM;
-+
-+	root_inode = hostfs_iget(sb, host_root_path);
- 	if (IS_ERR(root_inode))
- 		return PTR_ERR(root_inode);
- 
-@@ -947,7 +957,7 @@ static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 		char *name;
- 
- 		iput(root_inode);
--		name = follow_link(fsi->host_root_path);
-+		name = follow_link(host_root_path);
- 		if (IS_ERR(name))
- 			return PTR_ERR(name);
- 
-@@ -964,92 +974,11 @@ static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	return 0;
- }
- 
--enum hostfs_parma {
--	Opt_hostfs,
--};
--
--static const struct fs_parameter_spec hostfs_param_specs[] = {
--	fsparam_string_empty("hostfs",		Opt_hostfs),
--	{}
--};
--
--static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
--{
--	struct hostfs_fs_info *fsi = fc->s_fs_info;
--	struct fs_parse_result result;
--	char *host_root;
--	int opt;
--
--	opt = fs_parse(fc, hostfs_param_specs, param, &result);
--	if (opt < 0)
--		return opt;
--
--	switch (opt) {
--	case Opt_hostfs:
--		host_root = param->string;
--		if (!*host_root)
--			host_root = "";
--		fsi->host_root_path =
--			kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
--		if (fsi->host_root_path == NULL)
--			return -ENOMEM;
--		break;
--	}
--
--	return 0;
--}
--
--static int hostfs_parse_monolithic(struct fs_context *fc, void *data)
--{
--	struct hostfs_fs_info *fsi = fc->s_fs_info;
--	char *host_root = (char *)data;
--
--	/* NULL is printed as '(null)' by printf(): avoid that. */
--	if (host_root == NULL)
--		host_root = "";
--
--	fsi->host_root_path =
--		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
--	if (fsi->host_root_path == NULL)
--		return -ENOMEM;
--
--	return 0;
--}
--
--static int hostfs_fc_get_tree(struct fs_context *fc)
--{
--	return get_tree_nodev(fc, hostfs_fill_super);
--}
--
--static void hostfs_fc_free(struct fs_context *fc)
--{
--	struct hostfs_fs_info *fsi = fc->s_fs_info;
--
--	if (!fsi)
--		return;
--
--	kfree(fsi->host_root_path);
--	kfree(fsi);
--}
--
--static const struct fs_context_operations hostfs_context_ops = {
--	.parse_monolithic = hostfs_parse_monolithic,
--	.parse_param	= hostfs_parse_param,
--	.get_tree	= hostfs_fc_get_tree,
--	.free		= hostfs_fc_free,
--};
--
--static int hostfs_init_fs_context(struct fs_context *fc)
-+static struct dentry *hostfs_read_sb(struct file_system_type *type,
-+			  int flags, const char *dev_name,
-+			  void *data)
- {
--	struct hostfs_fs_info *fsi;
--
--	fsi = kzalloc(sizeof(*fsi), GFP_KERNEL);
--	if (!fsi)
--		return -ENOMEM;
--
--	fc->s_fs_info = fsi;
--	fc->ops = &hostfs_context_ops;
--	return 0;
-+	return mount_nodev(type, flags, data, hostfs_fill_sb_common);
- }
- 
- static void hostfs_kill_sb(struct super_block *s)
-@@ -1059,11 +988,11 @@ static void hostfs_kill_sb(struct super_block *s)
- }
- 
- static struct file_system_type hostfs_type = {
--	.owner			= THIS_MODULE,
--	.name			= "hostfs",
--	.init_fs_context	= hostfs_init_fs_context,
--	.kill_sb		= hostfs_kill_sb,
--	.fs_flags		= 0,
-+	.owner 		= THIS_MODULE,
-+	.name 		= "hostfs",
-+	.mount	 	= hostfs_read_sb,
-+	.kill_sb	= hostfs_kill_sb,
-+	.fs_flags 	= 0,
- };
- MODULE_ALIAS_FS("hostfs");
- 
+On 13/01/2025 14:27, Nícolas F. R. A. Prado wrote:
+> Patches 1 and 2 of this series fix the issue reported by Hsin-Te Yuan
+> [1] where MT8192-based Chromebooks are not able to suspend/resume 10
+> times in a row. Either one of those patches on its own is enough to fix
+> the issue, but I believe both are desirable, so I've included them both
+> here.
+> 
+> Patches 3-5 fix unrelated issues that I've noticed while debugging.
+> Patch 3 fixes IRQ storms when the temperature sensors drop to 20
+> Celsius. Patches 4 and 5 are cleanups to prevent future issues.
+> 
+> To test this series, I've run 'rtcwake -m mem -d 60' 10 times in a row
+> on a MT8192-Asurada-Spherion-rev3 Chromebook and checked that the wakeup
+> happened 60 seconds later (+-5 seconds). I've repeated that test on 10
+> separate runs. Not once did the chromebook wake up early with the series
+> applied.
+> 
+> I've also checked that during those runs, the LVTS interrupt didn't
+> trigger even once, while before the series it would trigger a few times
+> per run, generally during boot or resume.
+> 
+> Finally, as a sanity check I've verified that the interrupts still work
+> by lowering the thermal trip point to 45 Celsius and running 'stress -c
+> 8'. Indeed they still do, and the temperature showed by the
+> thermal_temperature ftrace event matched the expected value.
+> 
+> [1] https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
+> 
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+
+Applied, thanks
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
