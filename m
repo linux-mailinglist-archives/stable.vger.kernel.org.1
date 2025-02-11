@@ -1,107 +1,142 @@
-Return-Path: <stable+bounces-114833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7A0A30110
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6409DA30114
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:49:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4089162185
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:49:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4C9161238
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF34B26BD8A;
-	Tue, 11 Feb 2025 01:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE551D5147;
+	Tue, 11 Feb 2025 01:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UC7/TSSl"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="FChz8yT/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC126AF1B;
-	Tue, 11 Feb 2025 01:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72F234CF5;
+	Tue, 11 Feb 2025 01:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237594; cv=none; b=Tt96JpVL9V7b1B6HeTBhpkaz5EJXRcGAvDBE98rdwVK1K/dcUbjJm8zuWtrgJrVhX92pNzucdYMgHklD9bK5zC6HWF84PkxCVsGTbi1Wp4uIXiTj7afR1NIKKwYQRZqX74kYEzzmqurnZp+l5ufA5MFTukUPF9bcR27P6M6ytX8=
+	t=1739238038; cv=none; b=b5tGaLGiTklkyrl8NtOhcs5sF+F7iAVA/K+KDnh5tCrEo7knwzlZDDJQmwVbIozDNq+Ml9DqqxeuyjcsHB6DTqsqiec/M8mquJpVgQdb/3SzpSGw7kEXDO+POKClvyaKn4lxHlfbgT6SRJjpfSZyAZeeM3HSpsHvG1q8VMQXBRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237594; c=relaxed/simple;
-	bh=E5LmpeFAtLI6LtdbB2tnrznp67tncjJzsmwwr77pD3g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CU3VOTUz5oIIrEPpwRpVM5UNmOrgfL3Grl4sHzdlbczCP4ZQxYnPVfVm/lH8Stl2WQ2ywRiP3HRgbbTQI3tmPUkApbI+Izqj28wLeaTAvVotd4fwfKZeUWQwjfURmJo4rF0EgpjN3Cv0XQ3bhLvmvM+msgbXpJIaaujakUbOjfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UC7/TSSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB67C4CED1;
-	Tue, 11 Feb 2025 01:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237594;
-	bh=E5LmpeFAtLI6LtdbB2tnrznp67tncjJzsmwwr77pD3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UC7/TSSlN0c587xPuI50aDJG/E3BjjSGgCbgrQJofn3Yc+HnQ5WMxQJuAJIXu2sJ5
-	 w8Z/0eghsmUUaNpNtESKH0WnWhO5UoiQUOhavtykZW9ojCSF2huPR2K1sIVrn85dem
-	 MGM8vKqAA6hqpYjh08ke9jnzpG+QfXqARezfjgG7qx2KZEp/FyvKhyTcF4mm0ojwAq
-	 SxWtJSmFk4f3UWsTTvbt3kgqT9GVxGdVm5L9aUelGxFw+ushz8NWbgQhFYUDD5FG8s
-	 z5rz9Fh4V4WuqfORSBqAMR6HQXxc2MSkax4E7ewjRdwdTNzI84pWxF4egfB7YsVDVF
-	 cjGrDvKRvO5XQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Gannon Kolding <gannon.kolding@gmail.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/6] ACPI: resource: IRQ override for Eluktronics MECH-17
-Date: Mon, 10 Feb 2025 20:33:05 -0500
-Message-Id: <20250211013305.4099014-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250211013305.4099014-1-sashal@kernel.org>
-References: <20250211013305.4099014-1-sashal@kernel.org>
+	s=arc-20240116; t=1739238038; c=relaxed/simple;
+	bh=7Nm1gW9SBC848if3tPgYD+lvEF9LgkfI3EQ1+O1q+tg=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Vl+nphF3fz9PyC5ApQYYXpEU40nPZI031NxrGwId2zFyIAmMtYFwmbnJ0seFF2VI+SqxiRxrqLNItAnY87E+Ve2nTcppKZsY6aj6pm22UZhnjQbfIi3DeS3+PQXrkgtaCKF9YDQaN7sH2+3q2QKPQuv6tCBYCV2TEBXcm/whTYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=FChz8yT/; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.290
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1739238034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=59d5DCmTv0tcVe/lLttR0UbGP6r3tAFEV70fpHz4iEE=;
+	b=FChz8yT/sCzvZpcb9Y6uCUI5b+dSKm4yzDwWaNUwL9UXG8DeR2W2gsIOeAINStfcmoKgSX
+	sfiX2wotwRPsz2j/DBMOamYY7oJQ2XK2yjuyDZvMqWDetYoXnKhAnGWCJDrsfHAtHXAgAJ
+	jtZbsFW5Rwl4gnTM6vTrDv5azgAVpKLYeFpJpnmaSKhiT5uFSNfFvMnGOPQ9je2r8rtGS2
+	/3DcwHEaqDSM38lnwWxYhLivzGeB5r9NnmJjZPeWA8mYdr5isFJkCtYsULAQiwIRssE1M5
+	mjjY6t+F/C3yAq7TdoghYKQZyS0OudDiNquHZdKQl6vvHLTP+1uJkxUENyFXFA==
+Date: Tue, 11 Feb 2025 02:40:33 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Trevor Woerner <twoerner@gmail.com>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Heiko Stuebner <heiko@sntech.de>, Caesar
+ Wang <wxt@rock-chips.com>, Rocky Hao <rocky.hao@rock-chips.com>,
+ linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] thermal/drivers/rockchip: add missing rk3328 mapping
+ entry
+In-Reply-To: <20250207175048.35959-1-twoerner@gmail.com>
+References: <20250207175048.35959-1-twoerner@gmail.com>
+Message-ID: <5f9cf65221690452d7e842ee98535192@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-From: Gannon Kolding <gannon.kolding@gmail.com>
+Hello Trevor,
 
-[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
+On 2025-02-07 18:50, Trevor Woerner wrote:
+> The mapping table for the rk3328 is missing the entry for -25C which is
+> found in the TRM section 9.5.2 "Temperature-to-code mapping".
+> 
+> NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+>       4096-<code in table>. Whereas the table in the TRM gives the code
+>       "3774" for -25C, the kernel uses 4096-3774=322.
 
-The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-keyboard to work.
+After going through the RK3308 and RK3328 TRMs, as well as through the
+downstream kernel code, it seems we may have some troubles at our hands.
+Let me explain, please.
 
-Adding a DMI_MATCH entry for this laptop model makes the internal
-keyboard function normally.
+To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that the
+equation for the output when tsadc_q_sel equals 1 is (4096 - tsadc_q),
+while part 1 of the RK3328 TRM v1.2 says that the output equation is
+(1024 - tsadc_q) in that case.
 
-Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
-Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The downstream kernel code, however, treats the RK3308 and RK3328
+tables and their values as being the same.  It even mentions 1024 as
+the "offset" value in a comment block for the rk_tsadcv3_control()
+function, just like the upstream code does, which is obviously wrong
+"offset" value when correlated with the table on page 544 of part 1
+of the RK3308 TRM v1.1.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 2750518a5d5e1..11264bb4061e7 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -482,6 +482,12 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-+		},
-+	},
- 	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
--- 
-2.39.5
+With all this in mind, it's obvious that more work is needed to make
+it clear where's the actual mistake (it could be that the TRM is wrong),
+which I'll volunteer for as part of the SoC binning project.  In the
+meantime, this patch looks fine as-is to me, by offering what's a clear
+improvement to the current state of the upstream code, so please feel
+free to include:
 
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+
+However, it would be good to include some additional notes into the
+patch description in the v3, which would briefly sum up the above-
+described issues and discrepancies, for future reference.
+
+> Link:
+> https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+> Cc: stable@vger.kernel.org
+> Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in
+> thermal driver")
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+> changes in v2:
+> - remove non-ascii characters in commit message
+> - remove dangling [1] reference in commit message
+> - include "Fixes:"
+> - add request for stable backport
+> ---
+>  drivers/thermal/rockchip_thermal.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/thermal/rockchip_thermal.c
+> b/drivers/thermal/rockchip_thermal.c
+> index f551df48eef9..a8ad85feb68f 100644
+> --- a/drivers/thermal/rockchip_thermal.c
+> +++ b/drivers/thermal/rockchip_thermal.c
+> @@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_code_table[] 
+> = {
+>  	{296, -40000},
+>  	{304, -35000},
+>  	{313, -30000},
+> +	{322, -25000},
+>  	{331, -20000},
+>  	{340, -15000},
+>  	{349, -10000},
 
