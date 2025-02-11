@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-114749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97EDA30018
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:30:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1613EA3001C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5417F1886FCA
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:30:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51CDE1886D2F
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88C61D79B8;
-	Tue, 11 Feb 2025 01:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C99B1D8DE4;
+	Tue, 11 Feb 2025 01:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEEyZt+b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ueTEKO/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA311D6DC4;
-	Tue, 11 Feb 2025 01:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5496D34CF5;
+	Tue, 11 Feb 2025 01:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237403; cv=none; b=jkpOLKghiM8kRlUqOnGIed2Sh7tkweb2hulPeDK/pW4x7p6uoep22i8LYSDwm47eeXCjITw0L+D3Ia3cx4A+uXsqeVl8e8E6RZXyRTh/Tm2DAtUiKV15+oi7dm+8ZBlTjxtWREe6NX91r3oACtnVWFwJ7KsbKbwJZSbGpEDsGGs=
+	t=1739237405; cv=none; b=uznaJapGtO3Jdhk2ngIKbJmhaSAn2wvkQl4pIgEFLdQIinCkzMrzFMEQWDhIc2+B1H1LkiJVUKJbM+F8+vNw0CdgF4sXG968/EZ2TUacBZWb4LKI2uWvK5+DXP+9+SBx0j0Q3SlmoAJkrywJlO/abibk0QbzrwrKrRar2emrQoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237403; c=relaxed/simple;
-	bh=gKW0kP7yL+Rw5rf7hyeBNDzaJZGvcYRZqN4DEP2WTwc=;
+	s=arc-20240116; t=1739237405; c=relaxed/simple;
+	bh=hFtL0x/+GUZwi7+zGRJFNZQHyYh0YyIT9e3JHkAa0hI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eWiISYbCxCvWFTxgxYAjUGhCW8NB6xgsYjPTAAUVCqWjJ4KoWMT5fA4UE35MfSVm3vnEDP5tGwrHTBGlvHYwAHGnk4YDq5Y7HMt62RVE2QH6kR9VzjUAAPe97vnHlr4eNFUkRrueiG/Nm6fKw2Ja3WfUHPulM/JxwLM2jpGVpJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEEyZt+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53B4C4CED1;
-	Tue, 11 Feb 2025 01:30:01 +0000 (UTC)
+	 MIME-Version; b=mHCB8OoWXq3yUj7Ezenk6vUBHGcq8EGE8WL4KsEXcUSAC3Xo8g2bon6qmBH1n9+RXEDEAx6FTplnncxjG0ucPEBoiaPNfGZAcVgdZR9QtJNF/TkIKGKoKY5O7h89c7VxAEnQUleGU6bTpCZhfxoaDKsj82pCR0cThOIjwXGqN4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ueTEKO/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE317C116C6;
+	Tue, 11 Feb 2025 01:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237402;
-	bh=gKW0kP7yL+Rw5rf7hyeBNDzaJZGvcYRZqN4DEP2WTwc=;
+	s=k20201202; t=1739237404;
+	bh=hFtL0x/+GUZwi7+zGRJFNZQHyYh0YyIT9e3JHkAa0hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEEyZt+bvCqhzRYgyDprGq+l3FtwxopigNYZCiVqIQ9mfwkzjqOv7f1Ri46TiPnyo
-	 Hx22O11HLdWp92zf5RlltoPa7kfXBnDvrCsSjeCIdD2AAV1FO6PmrNrAkbfRCptU8P
-	 a3IvRv5MYDJ8L7Ku6XKqjoHlZ3SLo9Up2sXpIrKVyVFWLXWYk8zq7805nkKUaEnNQn
-	 wwVSspdILX/9loPpdw/wRFaZGcafc9TbfqbVJS581q++G5riXA/tdvEkdoIgnFnggx
-	 4c9kdqJI/UJ0BexALfUivQ/yrsdqkU0Ok+qUccmvSfOZD70QwK5BD6kFWgs3yoOV3E
-	 YJ7cIfW8zRKdA==
+	b=ueTEKO/DsAyGDfIvo2ko+OO8cP+C5P90b42cF+OoAsh4n45+q2IOVRXpyW2hUcoLw
+	 SPp3rozDRr38vjBvjcjkqxoicfAif4lR/Lnxf9C4z/sdXvheuWY05HW3hGyPCcO4GU
+	 DMlM7LSpQ9qityJ+hUXC3YcfYNk/298txONa5VmW7e9xngMcXTdt6K+MWd6WKw0vWC
+	 uAu77vgJJrnT8kvW3o8k1kZOeQMdciBZiXJYt53emfFJmm1aNTKQfeQVSpXd8rgtK1
+	 IDnRTID5+1MqXX+5SMA4EVH5iilJxChEEV5KO2UYA+Q434lC+S8QIP1869e/mwBPPw
+	 VSt8PWiAOGoQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Jann Horn <jannh@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 05/21] btrfs: avoid starting new transaction when cleaning qgroup during subvolume drop
-Date: Mon, 10 Feb 2025 20:29:38 -0500
-Message-Id: <20250211012954.4096433-5-sashal@kernel.org>
+	asml.silence@gmail.com,
+	mingo@redhat.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 06/21] futex: Pass in task to futex_queue()
+Date: Mon, 10 Feb 2025 20:29:39 -0500
+Message-Id: <20250211012954.4096433-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211012954.4096433-1-sashal@kernel.org>
 References: <20250211012954.4096433-1-sashal@kernel.org>
@@ -68,47 +68,145 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.2
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit fdef89ce6fada462aef9cb90a140c93c8c209f0f ]
+[ Upstream commit 5e0e02f0d7e52cfc8b1adfc778dd02181d8b47b4 ]
 
-At btrfs_qgroup_cleanup_dropped_subvolume() all we want to commit the
-current transaction in order to have all the qgroup rfer/excl numbers up
-to date. However we are using btrfs_start_transaction(), which joins the
-current transaction if there is one that is not yet committing, but also
-starts a new one if there is none or if the current one is already
-committing (its state is >= TRANS_STATE_COMMIT_START). This later case
-results in unnecessary IO, wasting time and a pointless rotation of the
-backup roots in the super block.
+futex_queue() -> __futex_queue() uses 'current' as the task to store in
+the struct futex_q->task field. This is fine for synchronous usage of
+the futex infrastructure, but it's not always correct when used by
+io_uring where the task doing the initial futex_queue() might not be
+available later on. This doesn't lead to any issues currently, as the
+io_uring side doesn't support PI futexes, but it does leave a
+potentially dangling pointer which is never a good idea.
 
-So instead of using btrfs_start_transaction() followed by a
-btrfs_commit_transaction(), use btrfs_commit_current_transaction() which
-achieves our purpose and avoids starting and committing new transactions.
+Have futex_queue() take a task_struct argument, and have the regular
+callers pass in 'current' for that. Meanwhile io_uring can just pass in
+NULL, as the task should never be used off that path. In theory
+req->tctx->task could be used here, but there's no point populating it
+with a task field that will never be used anyway.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/22484a23-542c-4003-b721-400688a0d055@kernel.dk
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ io_uring/futex.c        |  2 +-
+ kernel/futex/core.c     |  5 +++--
+ kernel/futex/futex.h    | 11 ++++++++---
+ kernel/futex/pi.c       |  2 +-
+ kernel/futex/waitwake.c |  4 ++--
+ 5 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 993b5e803699e..f6a024744ba0e 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1898,11 +1898,7 @@ int btrfs_qgroup_cleanup_dropped_subvolume(struct btrfs_fs_info *fs_info, u64 su
- 	 * Commit current transaction to make sure all the rfer/excl numbers
- 	 * get updated.
+diff --git a/io_uring/futex.c b/io_uring/futex.c
+index e29662f039e1a..f108da4ff863c 100644
+--- a/io_uring/futex.c
++++ b/io_uring/futex.c
+@@ -349,7 +349,7 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
+ 		hlist_add_head(&req->hash_node, &ctx->futex_list);
+ 		io_ring_submit_unlock(ctx, issue_flags);
+ 
+-		futex_queue(&ifd->q, hb);
++		futex_queue(&ifd->q, hb, NULL);
+ 		return IOU_ISSUE_SKIP_COMPLETE;
+ 	}
+ 
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index ebdd76b4ecbba..3db8567f5a44e 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -532,7 +532,8 @@ void futex_q_unlock(struct futex_hash_bucket *hb)
+ 	futex_hb_waiters_dec(hb);
+ }
+ 
+-void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
++void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++		   struct task_struct *task)
+ {
+ 	int prio;
+ 
+@@ -548,7 +549,7 @@ void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
+ 
+ 	plist_node_init(&q->list, prio);
+ 	plist_add(&q->list, &hb->chain);
+-	q->task = current;
++	q->task = task;
+ }
+ 
+ /**
+diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+index 99b32e728c4ad..6b2f4c7eb720f 100644
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -285,13 +285,15 @@ static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
+ }
+ 
+ extern void __futex_unqueue(struct futex_q *q);
+-extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb);
++extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++				struct task_struct *task);
+ extern int futex_unqueue(struct futex_q *q);
+ 
+ /**
+  * futex_queue() - Enqueue the futex_q on the futex_hash_bucket
+  * @q:	The futex_q to enqueue
+  * @hb:	The destination hash bucket
++ * @task: Task queueing this futex
+  *
+  * The hb->lock must be held by the caller, and is released here. A call to
+  * futex_queue() is typically paired with exactly one call to futex_unqueue().  The
+@@ -299,11 +301,14 @@ extern int futex_unqueue(struct futex_q *q);
+  * or nothing if the unqueue is done as part of the wake process and the unqueue
+  * state is implicit in the state of woken task (see futex_wait_requeue_pi() for
+  * an example).
++ *
++ * Note that @task may be NULL, for async usage of futexes.
+  */
+-static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
++static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++			       struct task_struct *task)
+ 	__releases(&hb->lock)
+ {
+-	__futex_queue(q, hb);
++	__futex_queue(q, hb, task);
+ 	spin_unlock(&hb->lock);
+ }
+ 
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index d62cca5ed8f4c..635c7d5d42220 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -982,7 +982,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
+ 	/*
+ 	 * Only actually queue now that the atomic ops are done:
  	 */
--	trans = btrfs_start_transaction(fs_info->quota_root, 0);
--	if (IS_ERR(trans))
--		return PTR_ERR(trans);
--
--	ret = btrfs_commit_transaction(trans);
-+	ret = btrfs_commit_current_transaction(fs_info->quota_root);
- 	if (ret < 0)
- 		return ret;
+-	__futex_queue(&q, hb);
++	__futex_queue(&q, hb, current);
+ 
+ 	if (trylock) {
+ 		ret = rt_mutex_futex_trylock(&q.pi_state->pi_mutex);
+diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
+index 3a10375d95218..a9056acb75eef 100644
+--- a/kernel/futex/waitwake.c
++++ b/kernel/futex/waitwake.c
+@@ -350,7 +350,7 @@ void futex_wait_queue(struct futex_hash_bucket *hb, struct futex_q *q,
+ 	 * access to the hash list and forcing another memory barrier.
+ 	 */
+ 	set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
+-	futex_queue(q, hb);
++	futex_queue(q, hb, current);
+ 
+ 	/* Arm the timer */
+ 	if (timeout)
+@@ -461,7 +461,7 @@ int futex_wait_multiple_setup(struct futex_vector *vs, int count, int *woken)
+ 			 * next futex. Queue each futex at this moment so hb can
+ 			 * be unlocked.
+ 			 */
+-			futex_queue(q, hb);
++			futex_queue(q, hb, current);
+ 			continue;
+ 		}
  
 -- 
 2.39.5
