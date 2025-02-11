@@ -1,135 +1,279 @@
-Return-Path: <stable+bounces-114953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91DDA3155D
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:30:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E012A315FA
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 20:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9BD1627F0
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:30:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77ED1889CB2
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 19:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2A326D5A9;
-	Tue, 11 Feb 2025 19:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ji8JsRAe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1E8265CBF;
+	Tue, 11 Feb 2025 19:50:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729E12690DF;
-	Tue, 11 Feb 2025 19:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85973264F87
+	for <stable@vger.kernel.org>; Tue, 11 Feb 2025 19:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739302001; cv=none; b=BK1noy9g8OSkyr4Ch8/E66G2VwRTFW28T9K/N/0aBe/q8wpnmFIwRjwQGpmuGQe+DbHup1aQZIvVLcxgZ12IOUv3JDYeyiaN76PjVPyINfH+V86reO9T96knedbASs44j96dYfHJbYoifkIfyARSMCV0MEntCF92EajSCQ2DOYQ=
+	t=1739303409; cv=none; b=unrUZU5UB6Xp2vha7B2vXO1K2LPicl9FOeaQqsm393q7b314vupPrhrgLwcSeleFCQ6nesFvaaO3N574zrGZjxCMNlv/TR9ZjgSRMdAbwn5z71juxoqc1YZYEgcoDOopkcY6WvhbcP8oySvv67UGDhfQzq4nwzBPB/4Vn8CGe/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739302001; c=relaxed/simple;
-	bh=zY11n/8locnzNnbkUCvqokaSEOgtoe+VYyolUrGzvFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6/yQ3lcVT0yl4y1woVNZjLwXjHTSMgedxI3tjT1zU3pvq9b2lqWRHQwZpn10Vpyn4GEjXtti+/zcsOQcPgHESfjua50LD/6zlBMQjOZ4eaVXu7OgpE2F/2+OPOJaQcvcWofEXiVa9CPc76IHe3YtqwD2tawpRhmqizB2nZIruI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ji8JsRAe; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38dd93ace00so1712376f8f.1;
-        Tue, 11 Feb 2025 11:26:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739301998; x=1739906798; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iHUiGt2p3SNBSvSE4F77dmu0tTDl367av9kzRSudXp4=;
-        b=Ji8JsRAeKf6ee1r8oKkq8W5INpTh0fz1BO5t6uiPEGT1plPxWOVuhSFITnpkbS02rv
-         BQocHsGGsTsUzGVRk+wp1Mu6BFaLhECo4W3VAK/J69E9BOJ8+92ocdc+G9qS0vk/UBkl
-         nTUoeBBi3EkrWQChWakj+Fw0t1+utVsoUbFbhUYookPyRDxZnj+yWbglt1pBCR7u7eb7
-         hbQN38fIBNqXqXjl3k0sFcwosXwLc6EY1oXDNlXOry1mOtFqWSNK5hgykuGcnf1kmUe6
-         ZRkxAGxzSl3gwyld/jK6Jn5gpZsWEOJxS/2kzoS3DHlC6xybeXFpNQoNYvs6vvbadDym
-         YMVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739301998; x=1739906798;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iHUiGt2p3SNBSvSE4F77dmu0tTDl367av9kzRSudXp4=;
-        b=ljrFPngoUB0JhXwnTnUsRHEbx/0X5HZ/JNkXP2Xt2nom0lU70aEimBoLGceCi8L2ky
-         2C4Vi2aSYnU2hcKMVMrHPXrfCnp4zY6571HWInP7kPx/mVtNm82rGJU935pQhpEABLrP
-         CN+4v1/xG0KU0KSF2uvEn94NNcjYBC3hC2WkwcuBFJ52Uqk5opNNOK8Wik85dSieIhCF
-         d+lupNsfS/Nz+GuPJcc2yk4r5W+OZ4Md/QZ16WJ997TmMQ507SzFla+MckQkZ3ZviA0I
-         B2bdSCyndqSHgln3D5MyyqoOo8jsxB9/1aV2G/8Y3eth1xSw0JwMLZ47i25AzqzgLrPt
-         7pnw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9+fp5z5WYCmlPlOisqj6+ixE+TszrfKAIHTrsMpBnaKM5eJik4n+L/V7ILSz0BMsauDuGZCX9@vger.kernel.org, AJvYcCXUi/aD9d55kglBlML02KuWflXI6F5OlHZQ8e5Ts2DD8ItoiXNELbhQcvKz2ruweV1430KazxpRhaiBy68=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9O5/HdOWjvUTHTkZR1SCxA4SJbz5ZO+n3rVKUa2aiLoTj53e9
-	gO8P2VmggajRxjiceSvTb0pachMJQUv9O8r71bVoq3tMC8qVTVZa
-X-Gm-Gg: ASbGncv0seKdjuL3klCPfF3Cex7WrbMloKwAGFhjl/25oDHdpUMoPfpuxLupFcxrL4F
-	aWD6+yKSOnTIFQWVZO1qBLM2ZZDtEDTRGpTF4nsqbECxmP3qAhhWuAX4xSny1RgMHolTD1Uo4R2
-	6GkEnsGfBrVcze+HxMJjm3LjBbeumiW2B524BMN3vGfV1R8T6kBMmfosc1rF3T4RyARWcwSruvB
-	iQ8NzhtgsAvxMBIlQHE9PDZyRYwVkBj4yAIteZlR9LUBIPIla6Woh/3eymQgR8rCBAwqX9QgPWE
-	Q+NszqlU+ECsDAQ5t/PBpmfxBsbqNXYbZXDIRwQxyF0RwoML
-X-Google-Smtp-Source: AGHT+IGyH6u7C+JHOMK24CSqsOZoQFhGFN1iCccM/JmeDZM3j0hw0pWZnQFg6iEPrhN9OMVzP5k3xA==
-X-Received: by 2002:adf:cd87:0:b0:38d:cd8f:db00 with SMTP id ffacd0b85a97d-38dea28e259mr153109f8f.32.1739301997477;
-        Tue, 11 Feb 2025 11:26:37 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dcd0fac67sm12549012f8f.54.2025.02.11.11.26.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 11:26:36 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 1230DBE2EE7; Tue, 11 Feb 2025 20:26:36 +0100 (CET)
-Date: Tue, 11 Feb 2025 20:26:36 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-	Radoslav =?iso-8859-1?Q?Bod=F3?= <radoslav.bodo@igalileo.cz>,
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: Re: [6.1.y] Regression from b1e6e80a1b42 ("xen/swiotlb: add
- alignment check for dma buffers") when booting with Xen and mpt3sas_cm0
- _scsih_probe failures
-Message-ID: <Z6ukbNnyQVdw4kh0@eldamar.lan>
-References: <Z6d-l2nCO1mB4_wx@eldamar.lan>
- <fd650c88-9888-46bc-a448-9c1ddcf2b066@oracle.com>
+	s=arc-20240116; t=1739303409; c=relaxed/simple;
+	bh=TPTL1DQ/DAWf4IHgk+aE1BgJcbneVyGhJG5wVLoIYEw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ixrxPlUMV4TNzr+wZCpUko7XJcvEnLmkgs9RLQpukI5RnSlIBUrrJxEawyXQKSXiH2EiFC4zf2slEYcROZajm5Fr+uwBsgBURpMbfsG9ijuU1uJORrsy2Sjej2yQ4WOTm+j38hBiFOBp+I+QRsINZGMQ7GfGwE8PJ+ffDdseKok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id B1A49233B7;
+	Tue, 11 Feb 2025 22:42:08 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: lvc-project@linuxtesting.org,
+	kovalev@altlinux.org,
+	Su Yue <glass.su@suse.com>,
+	Jiacheng Xu <stitch@zju.edu.cn>,
+	syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1/6.6/6.12] ocfs2: check dir i_size in ocfs2_find_entry
+Date: Tue, 11 Feb 2025 22:41:46 +0300
+Message-Id: <20250211194146.645780-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fd650c88-9888-46bc-a448-9c1ddcf2b066@oracle.com>
 
-Hi Harshit,
+From: Su Yue <glass.su@suse.com>
 
-On Sun, Feb 09, 2025 at 01:45:38AM +0530, Harshit Mogalapalli wrote:
-> Hi Salvatore,
-> 
-> On 08/02/25 21:26, Salvatore Bonaccorso wrote:
-> > Hi Juergen, hi all,
-> > 
-> > Radoslav Bodó reported in Debian an issue after updating our kernel
-> > from 6.1.112 to 6.1.115. His report in full is at:
-> > 
-> > https://bugs.debian.org/1088159
-> > 
-> 
-> Note:
-> We have seen this on 5.4.y kernel: More details here:
-> https://lore.kernel.org/all/9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com/
+commit b0fce54b8c0d8e5f2b4c243c803c5996e73baee8 upstream.
 
-Thanks for the pointer, so looking at that thread I suspect the three
-referenced bugs in Debian are in the end all releated. We have one as
-well relating to the megasas_sas driver, this one for the mpt3sas
-driver and one for the i40e driver).
+syz reports an out of bounds read:
 
-AFAICS, there is not yet a patch which has landed upstream which I can
-redirect to a affected user to test?
+==================================================================
+BUG: KASAN: slab-out-of-bounds in ocfs2_match fs/ocfs2/dir.c:334
+[inline]
+BUG: KASAN: slab-out-of-bounds in ocfs2_search_dirblock+0x283/0x6e0
+fs/ocfs2/dir.c:367
+Read of size 1 at addr ffff88804d8b9982 by task syz-executor.2/14802
 
-Regards,
-Salvatore
+CPU: 0 UID: 0 PID: 14802 Comm: syz-executor.2 Not tainted 6.13.0-rc4 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
+04/01/2014
+Sched_ext: serialise (enabled+all), task: runnable_at=-10ms
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:94 [inline]
+dump_stack_lvl+0x229/0x350 lib/dump_stack.c:120
+print_address_description mm/kasan/report.c:378 [inline]
+print_report+0x164/0x530 mm/kasan/report.c:489
+kasan_report+0x147/0x180 mm/kasan/report.c:602
+ocfs2_match fs/ocfs2/dir.c:334 [inline]
+ocfs2_search_dirblock+0x283/0x6e0 fs/ocfs2/dir.c:367
+ocfs2_find_entry_id fs/ocfs2/dir.c:414 [inline]
+ocfs2_find_entry+0x1143/0x2db0 fs/ocfs2/dir.c:1078
+ocfs2_find_files_on_disk+0x18e/0x530 fs/ocfs2/dir.c:1981
+ocfs2_lookup_ino_from_name+0xb6/0x110 fs/ocfs2/dir.c:2003
+ocfs2_lookup+0x30a/0xd40 fs/ocfs2/namei.c:122
+lookup_open fs/namei.c:3627 [inline]
+open_last_lookups fs/namei.c:3748 [inline]
+path_openat+0x145a/0x3870 fs/namei.c:3984
+do_filp_open+0xe9/0x1c0 fs/namei.c:4014
+do_sys_openat2+0x135/0x1d0 fs/open.c:1402
+do_sys_open fs/open.c:1417 [inline]
+__do_sys_openat fs/open.c:1433 [inline]
+__se_sys_openat fs/open.c:1428 [inline]
+__x64_sys_openat+0x15d/0x1c0 fs/open.c:1428
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xf6/0x210 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f01076903ad
+Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89
+f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f01084acfc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: ffffffffffffffda RBX: 00007f01077cbf80 RCX: 00007f01076903ad
+RDX: 0000000000105042 RSI: 0000000020000080 RDI: ffffffffffffff9c
+RBP: 00007f01077cbf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000000001ff R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f01077cbf80 R14: 00007f010764fc90 R15: 00007f010848d000
+</TASK>
+==================================================================
+
+And a general protection fault in ocfs2_prepare_dir_for_insert:
+
+==================================================================
+loop0: detected capacity change from 0 to 32768
+JBD2: Ignoring recovery information on journal
+ocfs2: Mounting device (7,0) on (node local, slot 0) with ordered data
+mode.
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 5096 Comm: syz-executor792 Not tainted
+6.11.0-rc4-syzkaller-00002-gb0da640826ba #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:ocfs2_find_dir_space_id fs/ocfs2/dir.c:3406 [inline]
+RIP: 0010:ocfs2_prepare_dir_for_insert+0x3309/0x5c70 fs/ocfs2/dir.c:4280
+Code: 00 00 e8 2a 25 13 fe e9 ba 06 00 00 e8 20 25 13 fe e9 4f 01 00 00
+e8 16 25 13 fe 49 8d 7f 08 49 8d 5f 09 48 89 f8 48 c1 e8 03 <42> 0f b6
+04 20 84 c0 0f 85 bd 23 00 00 48 89 d8 48 c1 e8 03 42 0f
+RSP: 0018:ffffc9000af9f020 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000009 RCX: ffff88801e27a440
+RDX: 0000000000000000 RSI: 0000000000000400 RDI: 0000000000000008
+RBP: ffffc9000af9f830 R08: ffffffff8380395b R09: ffffffff838090a7
+R10: 0000000000000002 R11: ffff88801e27a440 R12: dffffc0000000000
+R13: ffff88803c660878 R14: f700000000000088 R15: 0000000000000000
+FS:  000055555a677380(0000) GS:ffff888020800000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000560bce569178 CR3: 000000001de5a000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+ocfs2_mknod+0xcaf/0x2b40 fs/ocfs2/namei.c:292
+vfs_mknod+0x36d/0x3b0 fs/namei.c:4088
+do_mknodat+0x3ec/0x5b0
+__do_sys_mknodat fs/namei.c:4166 [inline]
+__se_sys_mknodat fs/namei.c:4163 [inline]
+__x64_sys_mknodat+0xa7/0xc0 fs/namei.c:4163
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2dafda3a99
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89
+f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08
+0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8
+64 89 01 48
+RSP: 002b:00007ffe336a6658 EFLAGS: 00000246 ORIG_RAX:
+0000000000000103
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX:
+00007f2dafda3a99
+RDX: 00000000000021c0 RSI: 0000000020000040 RDI:
+00000000ffffff9c
+RBP: 00007f2dafe1b5f0 R08: 0000000000004480 R09:
+000055555a6784c0
+R10: 0000000000000103 R11: 0000000000000246 R12:
+00007ffe336a6680
+R13: 00007ffe336a68a8 R14: 431bde82d7b634db R15:
+00007f2dafdec03b
+</TASK>
+==================================================================
+
+The two reports are all caused invalid negative i_size of dir inode.  For
+ocfs2, dir_inode can't be negative or zero.
+
+Here add a check in which is called by ocfs2_check_dir_for_entry().  It
+fixes the second report as ocfs2_check_dir_for_entry() must be called
+before ocfs2_prepare_dir_for_insert().  Also set a up limit for dir with
+OCFS2_INLINE_DATA_FL.  The i_size can't be great than blocksize.
+
+Link: https://lkml.kernel.org/r/20250106140640.92260-1-glass.su@suse.com
+Reported-by: Jiacheng Xu <stitch@zju.edu.cn>
+Link: https://lore.kernel.org/ocfs2-devel/17a04f01.1ae74.19436d003fc.Coremail.stitch@zju.edu.cn/T/#u
+Reported-by: syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/0000000000005894f3062018caf1@google.com/T/
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ fs/ocfs2/dir.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/fs/ocfs2/dir.c b/fs/ocfs2/dir.c
+index 213206ebdd581..7799f4d16ce99 100644
+--- a/fs/ocfs2/dir.c
++++ b/fs/ocfs2/dir.c
+@@ -1065,26 +1065,39 @@ int ocfs2_find_entry(const char *name, int namelen,
+ {
+ 	struct buffer_head *bh;
+ 	struct ocfs2_dir_entry *res_dir = NULL;
++	int ret = 0;
+ 
+ 	if (ocfs2_dir_indexed(dir))
+ 		return ocfs2_find_entry_dx(name, namelen, dir, lookup);
+ 
++	if (unlikely(i_size_read(dir) <= 0)) {
++		ret = -EFSCORRUPTED;
++		mlog_errno(ret);
++		goto out;
++	}
+ 	/*
+ 	 * The unindexed dir code only uses part of the lookup
+ 	 * structure, so there's no reason to push it down further
+ 	 * than this.
+ 	 */
+-	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL)
++	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
++		if (unlikely(i_size_read(dir) > dir->i_sb->s_blocksize)) {
++			ret = -EFSCORRUPTED;
++			mlog_errno(ret);
++			goto out;
++		}
+ 		bh = ocfs2_find_entry_id(name, namelen, dir, &res_dir);
+-	else
++	} else {
+ 		bh = ocfs2_find_entry_el(name, namelen, dir, &res_dir);
++	}
+ 
+ 	if (bh == NULL)
+ 		return -ENOENT;
+ 
+ 	lookup->dl_leaf_bh = bh;
+ 	lookup->dl_entry = res_dir;
+-	return 0;
++out:
++	return ret;
+ }
+ 
+ /*
+@@ -2010,6 +2023,7 @@ int ocfs2_lookup_ino_from_name(struct inode *dir, const char *name,
+  *
+  * Return 0 if the name does not exist
+  * Return -EEXIST if the directory contains the name
++ * Return -EFSCORRUPTED if found corruption
+  *
+  * Callers should have i_rwsem + a cluster lock on dir
+  */
+@@ -2023,9 +2037,12 @@ int ocfs2_check_dir_for_entry(struct inode *dir,
+ 	trace_ocfs2_check_dir_for_entry(
+ 		(unsigned long long)OCFS2_I(dir)->ip_blkno, namelen, name);
+ 
+-	if (ocfs2_find_entry(name, namelen, dir, &lookup) == 0) {
++	ret = ocfs2_find_entry(name, namelen, dir, &lookup);
++	if (ret == 0) {
+ 		ret = -EEXIST;
+ 		mlog_errno(ret);
++	} else if (ret == -ENOENT) {
++		ret = 0;
+ 	}
+ 
+ 	ocfs2_free_dir_lookup_result(&lookup);
+-- 
+2.42.2
+
 
