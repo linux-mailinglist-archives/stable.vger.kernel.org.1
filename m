@@ -1,142 +1,212 @@
-Return-Path: <stable+bounces-114834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6409DA30114
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:49:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E297DA3017C
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 03:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4C9161238
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:49:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DE227A13E9
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE551D5147;
-	Tue, 11 Feb 2025 01:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAE91B4243;
+	Tue, 11 Feb 2025 02:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="FChz8yT/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKr82Q/c"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72F234CF5;
-	Tue, 11 Feb 2025 01:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9206979C0;
+	Tue, 11 Feb 2025 02:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739238038; cv=none; b=b5tGaLGiTklkyrl8NtOhcs5sF+F7iAVA/K+KDnh5tCrEo7knwzlZDDJQmwVbIozDNq+Ml9DqqxeuyjcsHB6DTqsqiec/M8mquJpVgQdb/3SzpSGw7kEXDO+POKClvyaKn4lxHlfbgT6SRJjpfSZyAZeeM3HSpsHvG1q8VMQXBRA=
+	t=1739240913; cv=none; b=ih+22JbmXOC7ZfA+rXYd/udR9oqEtuVtf0XD8u+Hi+Q8FR3FxktiAvd1nVt9j1QIkeBIf+4CSSRyWWVkRULvT/Gy2Ej5RwRWRDTILD3XlhJgFSlGw+Hz+k2SoyPFix+HmroaD3pobykC4BpKM2IQjXFRASBw4cpWj7Ysu4r/Qrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739238038; c=relaxed/simple;
-	bh=7Nm1gW9SBC848if3tPgYD+lvEF9LgkfI3EQ1+O1q+tg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Vl+nphF3fz9PyC5ApQYYXpEU40nPZI031NxrGwId2zFyIAmMtYFwmbnJ0seFF2VI+SqxiRxrqLNItAnY87E+Ve2nTcppKZsY6aj6pm22UZhnjQbfIi3DeS3+PQXrkgtaCKF9YDQaN7sH2+3q2QKPQuv6tCBYCV2TEBXcm/whTYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=FChz8yT/; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1739240913; c=relaxed/simple;
+	bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oadewpRKDv2+fJbqSz57KDRlYShFebx0/RFOCobinXTvZ9Y0oDEFCvaPn2NZkXC/Gkf2dLjNxhmoo1BGux5jRl3W6GtehK3JrniNklDp7tbJDu4mpkILicDmAxK5HZt7pEV+LksczzxFB6LJLDN46dPt7zfJjBJ3mKhm7hsQN9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKr82Q/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBF4C4CED1;
+	Tue, 11 Feb 2025 02:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739240913;
+	bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=VKr82Q/cLYkXPxs7/4SjA1T8sL4Ut5cgGO4Ap2nTh4Loc2/gy9nfuE6kgpOewbs4R
+	 Kg/OsoATbwL4RY4CDNS/jSygTBaRdFcJHnSJIymjmvfB/OtHDUwncs/m521Niaus0+
+	 +00oCrVbU6fiZeML4YhrrEHcdToCcNONbdjVtmM462N+Sl486sceXJjyv9AXg9/nxQ
+	 +pZvsz4a1Kp2MiuVBDjCm2TsvjBONKkn+PUpe83VWfF+dgmDF62dByBnn6YL/1Wuau
+	 c5PbEXhfCjSKPptvUrUXvzen3goP/Em5mZo025yU4hPFBKdXnZkfZPomX1Nyyefqmm
+	 CGuRsZdn5zozQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 10 Feb 2025 21:28:25 -0500
+Subject: [PATCH v3] ACPI: platform-profile: Fix CFI violation when
+ accessing sysfs files
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1739238034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=59d5DCmTv0tcVe/lLttR0UbGP6r3tAFEV70fpHz4iEE=;
-	b=FChz8yT/sCzvZpcb9Y6uCUI5b+dSKm4yzDwWaNUwL9UXG8DeR2W2gsIOeAINStfcmoKgSX
-	sfiX2wotwRPsz2j/DBMOamYY7oJQ2XK2yjuyDZvMqWDetYoXnKhAnGWCJDrsfHAtHXAgAJ
-	jtZbsFW5Rwl4gnTM6vTrDv5azgAVpKLYeFpJpnmaSKhiT5uFSNfFvMnGOPQ9je2r8rtGS2
-	/3DcwHEaqDSM38lnwWxYhLivzGeB5r9NnmJjZPeWA8mYdr5isFJkCtYsULAQiwIRssE1M5
-	mjjY6t+F/C3yAq7TdoghYKQZyS0OudDiNquHZdKQl6vvHLTP+1uJkxUENyFXFA==
-Date: Tue, 11 Feb 2025 02:40:33 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Trevor Woerner <twoerner@gmail.com>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Heiko Stuebner <heiko@sntech.de>, Caesar
- Wang <wxt@rock-chips.com>, Rocky Hao <rocky.hao@rock-chips.com>,
- linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] thermal/drivers/rockchip: add missing rk3328 mapping
- entry
-In-Reply-To: <20250207175048.35959-1-twoerner@gmail.com>
-References: <20250207175048.35959-1-twoerner@gmail.com>
-Message-ID: <5f9cf65221690452d7e842ee98535192@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Message-Id: <20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMi1qmcC/5WNQQ6CMBBFr2K6dgwtBYor72GMQTqFiUibljQaw
+ t0tLEzc6fLN/Lw3s4CeMLDjbmYeIwWyY4J8v2Nt34wdAunETGRCZorX0LSOwA3NZKx/XJ23hgY
+ EQ09oDUEkm17JARpFpaoiv+nCsGRzHtNoK50viXsKk/WvLRz5ev2/ETlwkFWdl4VWUpnydEc/4
+ nCwvmNrJIqPmHOufheLJC6FMXUhVCY1fomXZXkDGloBgTgBAAA=
+X-Change-ID: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ Mario Limonciello <mario.limonciello@amd.com>, Kees Cook <kees@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, John Rowley <lkml@johnrowley.me>, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5348; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=iTjzNwKewvmLzaCQagxyKDVXUVMNYwcrtDjaQM3gppg=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOmrtp5blaIVvLV1SeXyV/Y8noURHTvfFfz83GHJ3nX74
+ qyHzyZM6ShlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQATmejKyNDoO7P1ok4wQ9Il
+ PQOPk0pqqxTUPZ5Z7D13q5GhcDOvqxHDP+s/fybdeKM8YxuTuMHFScKS5sdc5QycZjq8b18sV3N
+ JihkA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hello Trevor,
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be the same type as the callbacks in 'struct kobj_attribute'.
 
-On 2025-02-07 18:50, Trevor Woerner wrote:
-> The mapping table for the rk3328 is missing the entry for -25C which is
-> found in the TRM section 9.5.2 "Temperature-to-code mapping".
-> 
-> NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
->       4096-<code in table>. Whereas the table in the TRM gives the code
->       "3774" for -25C, the kernel uses 4096-3774=322.
+However, the platform_profile sysfs functions have the type of the
+->show() and ->store() callbacks in 'struct device_attribute', which
+results a CFI violation when accessing platform_profile or
+platform_profile_choices under /sys/firmware/acpi because the types do
+not match:
 
-After going through the RK3308 and RK3328 TRMs, as well as through the
-downstream kernel code, it seems we may have some troubles at our hands.
-Let me explain, please.
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
 
-To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that the
-equation for the output when tsadc_q_sel equals 1 is (4096 - tsadc_q),
-while part 1 of the RK3328 TRM v1.2 says that the output equation is
-(1024 - tsadc_q) in that case.
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
 
-The downstream kernel code, however, treats the RK3308 and RK3328
-tables and their values as being the same.  It even mentions 1024 as
-the "offset" value in a comment block for the rk_tsadcv3_control()
-function, just like the upstream code does, which is obviously wrong
-"offset" value when correlated with the table on page 544 of part 1
-of the RK3308 TRM v1.1.
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to match,
+which resolves the CFI violation.
 
-With all this in mind, it's obvious that more work is needed to make
-it clear where's the actual mistake (it could be that the TRM is wrong),
-which I'll volunteer for as part of the SoC binning project.  In the
-meantime, this patch looks fine as-is to me, by offering what's a clear
-improvement to the current state of the upstream code, so please feel
-free to include:
+Cc: stable@vger.kernel.org
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+Changes in v3:
+- Rebase on 6.14-rc1, which includes updates to the driver to address
+  Greg's previous concerns but this change is still needed for the
+  legacy sysfs interface. v2 can be used for the stable backport.
+- Link to v2: https://lore.kernel.org/r/20241118-acpi-platform_profile-fix-cfi-violation-v2-1-62ff952804de@kernel.org
 
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Changes in v2:
+- Rebase on linux-pm/acpi
+- Pick up Sami's reviewed-by tag
+- Adjust wording around why there is no functional issue from the
+  mismatched types
+- Link to v1: https://lore.kernel.org/r/20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org
+---
+ drivers/acpi/platform_profile.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-However, it would be good to include some additional notes into the
-patch description in the v3, which would briefly sum up the above-
-described issues and discrepancies, for future reference.
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index fc92e43d0fe9..1b6317f759f9 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -260,14 +260,14 @@ static int _aggregate_choices(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_choices_show - Show the available profile choices for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					     struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					     struct kobj_attribute *attr,
+ 					     char *buf)
+ {
+ 	unsigned long aggregate[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -333,14 +333,14 @@ static int _store_and_notify(struct device *dev, void *data)
+ 
+ /**
+  * platform_profile_show - Show the current profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to write to
+  *
+  * Return: The number of bytes written
+  */
+-static ssize_t platform_profile_show(struct device *dev,
+-				     struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++				     struct kobj_attribute *attr,
+ 				     char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_LAST;
+@@ -362,15 +362,15 @@ static ssize_t platform_profile_show(struct device *dev,
+ 
+ /**
+  * platform_profile_store - Set the profile for legacy sysfs interface
+- * @dev: The device
++ * @kobj: The kobject
+  * @attr: The attribute
+  * @buf: The buffer to read from
+  * @count: The number of bytes to read
+  *
+  * Return: The number of bytes read
+  */
+-static ssize_t platform_profile_store(struct device *dev,
+-				      struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++				      struct kobj_attribute *attr,
+ 				      const char *buf, size_t count)
+ {
+ 	unsigned long choices[BITS_TO_LONGS(PLATFORM_PROFILE_LAST)];
+@@ -401,12 +401,12 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
 
-> Link:
-> https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
-> Cc: stable@vger.kernel.org
-> Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in
-> thermal driver")
-> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-> ---
-> changes in v2:
-> - remove non-ascii characters in commit message
-> - remove dangling [1] reference in commit message
-> - include "Fixes:"
-> - add request for stable backport
-> ---
->  drivers/thermal/rockchip_thermal.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/thermal/rockchip_thermal.c
-> b/drivers/thermal/rockchip_thermal.c
-> index f551df48eef9..a8ad85feb68f 100644
-> --- a/drivers/thermal/rockchip_thermal.c
-> +++ b/drivers/thermal/rockchip_thermal.c
-> @@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_code_table[] 
-> = {
->  	{296, -40000},
->  	{304, -35000},
->  	{313, -30000},
-> +	{322, -25000},
->  	{331, -20000},
->  	{340, -15000},
->  	{349, -10000},
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
