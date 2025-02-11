@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-114783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B632A30087
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:38:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180B5A30089
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 02:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C003A4DC5
-	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:38:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889661885172
+	for <lists+stable@lfdr.de>; Tue, 11 Feb 2025 01:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B7F1F2C5B;
-	Tue, 11 Feb 2025 01:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71661F37DC;
+	Tue, 11 Feb 2025 01:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbeGbyfq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E9DsXNI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB421F2C49;
-	Tue, 11 Feb 2025 01:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9931F30A0;
+	Tue, 11 Feb 2025 01:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739237493; cv=none; b=ey+M/f2zZi5CMTknP3g2A29H26jDjygUvD6IYUqvbuhmuQjahL10slwPOqlpE3ukQFvxq08pfC/WjoCQ2CQDx2Nf8xyByMXxsBMpX7lfgaG0SphS3xj+bdRR+RRBtprCYVIb/VPe/ZYk08eOktTkrew2qmi99ZKwVLVp9Q4uzSE=
+	t=1739237495; cv=none; b=XEygXJVqexUUuKexWERvTE6zTKbR+I9/amd59U5amNyNbE4Y3lvChp9ZmmASNb9tC45SXt6I3VqaoLsjotxNBthP+CcDoJq+zP6zK8kwYUi0eQafvdbQtdlzCCV3i7/VH5PDjfr3mg79PIVSh6jno6VI2q3b1dUcDbymkOWLRrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739237493; c=relaxed/simple;
-	bh=M2o2pjvV6GmDtkDKgCAzdZyI9a4yVUIBYtGJWCHpJkw=;
+	s=arc-20240116; t=1739237495; c=relaxed/simple;
+	bh=TiLj7HwEVKOBAnkvBspSiz6TPGHyAeGqz+2v8yYPd1M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ISkg9ka0HBX+Hf7wg0FEk6iJzORjwgIB4iL3d1DEm3i/2JgaSmnRGp/CSzX3EcaPRY8wgU0UELFtH1L/DJxAwUkm7Kggyid1vUoRaFBEmig/VLaU2xi0KMOL6+qm7JOIhqJCTfj+tuKWXnUd2u/AzdGMES3NbXsfnGxcpd0KoJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbeGbyfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAC2C4CEE5;
-	Tue, 11 Feb 2025 01:31:31 +0000 (UTC)
+	 MIME-Version; b=bfXZ0jYBdbuKE1Dp9Qvsyo8fir6RL+yxmhjWE1m+I8qCHe7+lHUAqxp9Zt1+GtL4CXxk4YrnuVJ9dD+vTXwW3RanFpuGVHm1iHeDH/IlWGWxBs9rN/YB/Y9xL/GktEhbec9344bfey13I+ZKtd5Z/QhQXQy0eDkm7YxIbY4UgC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E9DsXNI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D3BC4CEE5;
+	Tue, 11 Feb 2025 01:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739237492;
-	bh=M2o2pjvV6GmDtkDKgCAzdZyI9a4yVUIBYtGJWCHpJkw=;
+	s=k20201202; t=1739237495;
+	bh=TiLj7HwEVKOBAnkvBspSiz6TPGHyAeGqz+2v8yYPd1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbeGbyfqyemsXBEPC28n9sdmiUpAG93JjKNuqPWgLcKhs6bYTavlWZ6iKHlT3lpWZ
-	 zsdja6N6KPOf9ROd5QgQev6u9MyY/JVu0cG6nyxLq6Y3PtDlArXIX0DPbZE9+mac9D
-	 h6L5ha/5lZgp+iR2+472uQn3DdmJRSyOESJPY++bRu9eYlk31kKs2HatMigKQ+igip
-	 LNKQo46MKHLNa8lgAhWT5o3pYQiX1B07FmOyEgQC2dxtX1VUU6/gzF+KMuZnDzHmP+
-	 4E7f0Vn4rxGaap3GrRRnObqtBZX05hUH0le7eW5Wkcw6Zhb00rvkNi1i399jY7I5u9
-	 yBvicrAUY8pqA==
+	b=E9DsXNI3wjZyxR1NnAyJDZtFi7EsIKD0JJKc4gm7EpCr3Nph0Sc9yBf+FKVD/n2+t
+	 FlHI4Fqd0BfqUQHPyHSM9d2XDOzyA6j8cFQOYx5Rhp3cCLR8Cz+xeBYNbCCFQAKkVZ
+	 H1bDB22U6rI55JhFENTldpT1UUx965vGAThMb5aHO27LSg5pntbv6ziWBFl42iqEXS
+	 5Pj+084PfOKicMxCoLkB3RU5Zh9p5RfFc4ov83svUqyXHB76VfwlxofPTTpzx2zveM
+	 r/+/UQ6sFStselhZa8nF0jXQyrbn57WjT9ONoBNahx7i3r6mjwBRPwotLbVx7R63R4
+	 pP2pB85mZDa2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Miklos Szeredi <mszeredi@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 18/19] vboxsf: fix building with GCC 15
-Date: Mon, 10 Feb 2025 20:30:46 -0500
-Message-Id: <20250211013047.4096767-18-sashal@kernel.org>
+	shuah@kernel.org,
+	usama.anjum@collabora.com,
+	josef@toxicpanda.com,
+	amer.shanawany@gmail.com,
+	jack@suse.cz,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 19/19] selftests: always check mask returned by statmount(2)
+Date: Mon, 10 Feb 2025 20:30:47 -0500
+Message-Id: <20250211013047.4096767-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250211013047.4096767-1-sashal@kernel.org>
 References: <20250211013047.4096767-1-sashal@kernel.org>
@@ -61,52 +65,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.13
 Content-Transfer-Encoding: 8bit
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
+[ Upstream commit 2cc02059fbc79306b53a44b1f1a4444aa3c76598 ]
 
-Building with GCC 15 results in build error
-fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
-   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-      |                                                      ^~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+STATMOUNT_MNT_OPTS can actually be missing if there are no options.  This
+is a change of behavior since 75ead69a7173 ("fs: don't let statmount return
+empty strings").
 
-Due to GCC having enabled -Werror=unterminated-string-initialization[0]
-by default. Separately initializing each array element of
-VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
-and fixing the build error.
+The other checks shouldn't actually trigger, but add them for correctness
+and for easier debugging if the test fails.
 
-[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/r/20250129160641.35485-1-mszeredi@redhat.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../filesystems/statmount/statmount_test.c    | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
-index e95b8a48d8a02..1d94bb7841081 100644
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -21,7 +21,8 @@
+diff --git a/tools/testing/selftests/filesystems/statmount/statmount_test.c b/tools/testing/selftests/filesystems/statmount/statmount_test.c
+index c773334bbcc95..550e5d762c23f 100644
+--- a/tools/testing/selftests/filesystems/statmount/statmount_test.c
++++ b/tools/testing/selftests/filesystems/statmount/statmount_test.c
+@@ -383,6 +383,10 @@ static void test_statmount_mnt_point(void)
+ 		return;
+ 	}
  
- #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
++	if (!(sm->mask & STATMOUNT_MNT_POINT)) {
++		ksft_test_result_fail("missing STATMOUNT_MNT_POINT in mask\n");
++		return;
++	}
+ 	if (strcmp(sm->str + sm->mnt_point, "/") != 0) {
+ 		ksft_test_result_fail("unexpected mount point: '%s' != '/'\n",
+ 				      sm->str + sm->mnt_point);
+@@ -408,6 +412,10 @@ static void test_statmount_mnt_root(void)
+ 				      strerror(errno));
+ 		return;
+ 	}
++	if (!(sm->mask & STATMOUNT_MNT_ROOT)) {
++		ksft_test_result_fail("missing STATMOUNT_MNT_ROOT in mask\n");
++		return;
++	}
+ 	mnt_root = sm->str + sm->mnt_root;
+ 	last_root = strrchr(mnt_root, '/');
+ 	if (last_root)
+@@ -437,6 +445,10 @@ static void test_statmount_fs_type(void)
+ 				      strerror(errno));
+ 		return;
+ 	}
++	if (!(sm->mask & STATMOUNT_FS_TYPE)) {
++		ksft_test_result_fail("missing STATMOUNT_FS_TYPE in mask\n");
++		return;
++	}
+ 	fs_type = sm->str + sm->fs_type;
+ 	for (s = known_fs; s != NULL; s++) {
+ 		if (strcmp(fs_type, *s) == 0)
+@@ -464,6 +476,11 @@ static void test_statmount_mnt_opts(void)
+ 		return;
+ 	}
  
--static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-+static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
-+						       '\375' };
++	if (!(sm->mask & STATMOUNT_MNT_BASIC)) {
++		ksft_test_result_fail("missing STATMOUNT_MNT_BASIC in mask\n");
++		return;
++	}
++
+ 	while (getline(&line, &len, f_mountinfo) != -1) {
+ 		int i;
+ 		char *p, *p2;
+@@ -514,7 +531,10 @@ static void test_statmount_mnt_opts(void)
+ 		if (p2)
+ 			*p2 = '\0';
  
- static int follow_symlinks;
- module_param(follow_symlinks, int, 0444);
+-		statmount_opts = sm->str + sm->mnt_opts;
++		if (sm->mask & STATMOUNT_MNT_OPTS)
++			statmount_opts = sm->str + sm->mnt_opts;
++		else
++			statmount_opts = "";
+ 		if (strcmp(statmount_opts, p) != 0)
+ 			ksft_test_result_fail(
+ 				"unexpected mount options: '%s' != '%s'\n",
 -- 
 2.39.5
 
