@@ -1,127 +1,112 @@
-Return-Path: <stable+bounces-115013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043DDA3202D
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:43:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1A1A32072
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:58:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419541882E51
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:43:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEDA3A641D
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D7F204C0F;
-	Wed, 12 Feb 2025 07:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="H/hn7/sX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E132046A5;
+	Wed, 12 Feb 2025 07:58:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F44204682;
-	Wed, 12 Feb 2025 07:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAA6204694;
+	Wed, 12 Feb 2025 07:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739346192; cv=none; b=ACTzo7eebXIHGfLwexrGzaE3YaXayztq0IM1rWYHHFmoSJ9b9Op2psQpL2EcQlmV9vxLyQbbquXQep3ahk5Drs1rVB98gD9TQ9adZ+bChm0B/Hfx6Y/1MteWeEq5+ifeLnZlooe+ighAN1JvjG6r1M4mP75OudwkNLjq375sluQ=
+	t=1739347086; cv=none; b=E+6V2t1NIaU/IMO1Q4CvkYk5DKuvDJV3R+ZvB+8Kl83ys5k0KL+W+axG/PCtDapLlFcKV9bI9PiC7jYL5EF425r3ObvvRlxSEkVblk0JLmvSdFizd2+dpxHUf+qNaD+QZ1pmj4e04Z6y5RNT6QPQ6qUzA+yAkpAX5GgPr0C9wZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739346192; c=relaxed/simple;
-	bh=dNEJPQCFXFXFYv8LsS8D1rVs3y39N2Beg7o2UW6ryMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uA1ZTyCiwjJZqb+EwkUbx50hew3cNUGKhpUB+5nGxMJMGkLz3Oe1MYZSTJrloStLGWFtIW/leWkwaeR1/ZbrARyUOFQi9o/7tr0DhZaECE5DsCT+rgjyCb/3TFpUl3jaIw2xjt2FR2Q649w6m/AHm3KVCZSulDkd7Y3ftEBiTjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=H/hn7/sX; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1739345687; bh=dNEJPQCFXFXFYv8LsS8D1rVs3y39N2Beg7o2UW6ryMM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H/hn7/sX5xM/uw2kg30IfwLHDywFTYAajrHTQq3WN22+Jmf6LCU4Po3PR5oZVnBu6
-	 KDSBUlfksxwBNExOvWdUR3v9Wt3mNE5iQg56I3tYms3SM0yOIExAka4cfZ/ZSrx6gU
-	 NpSnAI3A7GGQgE2vW16DX7RsFEuqEmSF+XKvA7X4=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 267B22050FE1;
-	Wed, 12 Feb 2025 08:34:47 +0100 (CET)
-Message-ID: <1cfca789-bbb9-4899-92e9-94ff78d07c50@ralfj.de>
-Date: Wed, 12 Feb 2025 08:34:44 +0100
+	s=arc-20240116; t=1739347086; c=relaxed/simple;
+	bh=jApVUzcy8MyCArNkxM7BCn/Tj8nhvBhjS6yVZQKRLnA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mnd8K6LMA8qiZCwMPslgD2KBNHIvhc0hZNkrkVFVf0qF9bZcGvfEVQ/091VZ/0lNhNW/axWg4YNzOFjhRgRZItqSQWnkW+AIM1O1MjkfA6Iefh68dX0acEncsnUp6iUDsIcBIZutOIP4yhHof5PPLabovdsLgX+7kLl4g6wIzfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowABXX6N+VKxnCLBmDA--.44042S2;
+	Wed, 12 Feb 2025 15:57:52 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915: Check drm_syncobj_fence_get return value in eb_fences_add
+Date: Wed, 12 Feb 2025 15:57:35 +0800
+Message-ID: <20250212075736.922-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat
- target
-To: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev, stable@vger.kernel.org,
- Matthew Maurer <mmaurer@google.com>, Jubilee Young <workingjubilee@gmail.com>
-References: <20250210163732.281786-1-ojeda@kernel.org>
- <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABXX6N+VKxnCLBmDA--.44042S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KryrArWrCrWkKw1kAry7ZFb_yoW8Gr1Upa
+	1fKFyjyrs0yw40q3Z7Ar1YyFy3C3WxK3WfKw4qywn5uw4YyF1qqryFvrWjqFyUArs3K347
+	Jr1qkFWSvryUArUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUb8hL5UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8LA2esUh4H3AAAsS
 
+The function drm_syncobj_fence_get() may return NULL if the syncobj
+has no fence. In eb_fences_add(), this return value is not checked,
+leading to a potential NULL pointer dereference in
+i915_request_await_dma_fence().
 
+This patch adds a check for the return value of drm_syncobj_fence_get
+and returns an error if it is NULL, preventing the NULL pointer
+dereference.
 
-On 11.02.25 12:10, Trevor Gross wrote:
-> On Mon, Feb 10, 2025 at 10:38 AM Miguel Ojeda <ojeda@kernel.org> wrote:
->>
->> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
->> [1] about disabling neon in the aarch64 hardfloat target:
->>
->>      warning: target feature `neon` cannot be toggled with
->>               `-Ctarget-feature`: unsound on hard-float targets
->>               because it changes float ABI
->>        |
->>        = note: this was previously accepted by the compiler but
->>                is being phased out; it will become a hard error
->>                in a future release!
->>        = note: for more information, see issue #116344
->>                <https://github.com/rust-lang/rust/issues/116344>
->>
->> Thus, instead, use the softfloat target instead.
->>
->> While trying it out, I found that the kernel sanitizers were not enabled
->> for that built-in target [2]. Upstream Rust agreed to backport
->> the enablement for the current beta so that it is ready for
->> the 1.85.0 release [3] -- thanks!
->>
->> However, that still means that before Rust 1.85.0, we cannot switch
->> since sanitizers could be in use. Thus conditionally do so.
->>
->> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Matthew Maurer <mmaurer@google.com>
->> Cc: Alice Ryhl <aliceryhl@google.com>
->> Cc: Ralf Jung <post@ralfj.de>
->> Cc: Jubilee Young <workingjubilee@gmail.com>
->> Link: https://github.com/rust-lang/rust/pull/133417 [1]
->> Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
->> Link: https://github.com/rust-lang/rust/pull/135905 [3]
->> Link: https://github.com/rust-lang/rust/issues/116344
->> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> This is consistent with what has been discussed for a while on the Rust side.
-> 
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+Cc: stable@vger.kernel.org # 5.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-I don't know the kernel side of this, but from a Rust compiler perspective using 
-the "-softfloat" target is definitely the right call here, at least for now 
-(where none of the crypto/compression code that needs SIMD is written in Rust).
-
-Reviewed-by: Ralf Jung <post@ralfj.de>
-
-Kind regards,
-Ralf
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index f151640c1d13..7da65535feb9 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -3252,6 +3252,12 @@ eb_fences_add(struct i915_execbuffer *eb, struct i915_request *rq,
+ 		struct dma_fence *fence;
+ 
+ 		fence = drm_syncobj_fence_get(eb->gem_context->syncobj);
++		if (!fence) {
++			drm_dbg(&eb->i915->drm,
++				"Syncobj handle has no fence\n");
++			return ERR_PTR(-EINVAL);
++		}
++
+ 		err = i915_request_await_dma_fence(rq, fence);
+ 		dma_fence_put(fence);
+ 		if (err)
+-- 
+2.42.0.windows.2
 
 
