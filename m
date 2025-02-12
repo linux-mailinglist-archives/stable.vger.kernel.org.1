@@ -1,109 +1,275 @@
-Return-Path: <stable+bounces-115019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC195A320F8
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:25:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E299A32118
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6717188A64A
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C203A2ECD
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEC0205ABA;
-	Wed, 12 Feb 2025 08:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9639F2054FF;
+	Wed, 12 Feb 2025 08:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SzsOk28V"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="VPllBvtC"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E927183A;
-	Wed, 12 Feb 2025 08:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A64B2054E0
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 08:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739348642; cv=none; b=mLgy3F2Wjit/6l/pzL1pqmWY5WSpWiZbRdw66DVjLYtPLHmwqX0o80JExSh+t0i7ctPIQBYw3fCShXQ/8WT1xbZfEddUjIISpAK3z9lS1YitDD5+Gfe0kLupdmD+H7uz15uL10990o7SIJiBeCcL7SKZpvzhAB6oHYSfXJTxC04=
+	t=1739348935; cv=none; b=N4aiCYrl1GfKVrL5H0bFV4LSPy5oOuPCnjGN4U5P3BxBap8bWCSoxCF209JaH/oF0UuaSyrTY/oCOPS8zl7ATAuklSNXucvnKfdqy4LiRfWJMeK5xk5eMc6QgQmhdmk8jY2Fb1cKrO6QSpNQivzzNJxUTRpfLN+Rs7ecnJVPcrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739348642; c=relaxed/simple;
-	bh=d0rMPfnONv/9V88xXXShYjjqNokK2s86RyuUEgMmcI0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZIEol5acXlp+umQC4dBNBCR9nC19bDULZsODwt1khU4U1TrgmlL07b5Jb3HY4AE2Cp4irEBjegQqiDmGubnvcGODy2P6m+WM3smhepkoOVMQgMgsAqb+MJu4TpKmlnNP7fg5wpfMyWKnhBA2augPYvmW7s1j9ERT8QN1Ggw6llg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SzsOk28V; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7E51D4328E;
-	Wed, 12 Feb 2025 08:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739348632;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RR2/+YTVmAUHPpKBQsKq78NYGWJcAyMxsNjAeG/knP4=;
-	b=SzsOk28V8Ypgm0NnAD52AU2GxIBtbWOEXyQS/dJYPFwn9LVPqnA8XfXFsJtAUcBCAkPsp5
-	KKnZ8itnI5uvJHTxKK7w2+IUAywMcCyy7IS/mZI7Yhe4snIoB+4MkDdBd9pTWg+B1szRPJ
-	tGyxtKzwFSr7FceHFyn3HidLDqIlFZAyOHK+27ZFrYJm1qydnw45m4ayCDfdXDc27PT9U6
-	j7nnddQxUX8QX09nfrFDC6HRuudDVpDLw+55mQzbbGvPjOpKC7fl8bUBos39qcsXRySOzk
-	RHP1sVBGYgJmnqBfbjn/ZkIJNQG6Jclh8b7pKwiZKi8KVn1/oeEVo+/I4ZkGkw==
-From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
-Date: Wed, 12 Feb 2025 09:23:48 +0100
-Subject: [PATCH net 2/2] rtnetlink: Release nets when leaving
- rtnl_setlink()
+	s=arc-20240116; t=1739348935; c=relaxed/simple;
+	bh=3rvb4R31pOJPM6kPOEXa54Gw9ZSCN3adegC963dSIn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t2It4yDGlfZtjtQXOEzgucvj6xpUJS6ahBNRWRBjchrf14s25n0s+hA1CScdS9S3SbQY584FqZw7gYHUExyEmMw4Ul1HDCW8jbzPXFfGn81n4Wt/M6iDMH74ZbYeFMy/8WsrselXf2lh4zbNZkBNLEsENh/c1gcUc+JRDxYEAGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=VPllBvtC; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f5a224544so58430255ad.0
+        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 00:28:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1739348933; x=1739953733; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=612jIvxL1e9qxD4qIQOZLpI6wF7davzI0ud5ar8CQG0=;
+        b=VPllBvtCuVo0lxl7HlgesPeZo93hk4bRA1VR0pnSN1zQT8PByVxiD1enHrk7Bou28T
+         3/s9SEm2UZCkoP5B7s885JUmICvv6tj+yPBiCs4e5/IR/n65QJJl0RzVIzNDvKwp8/gi
+         7iNueJjVHlfjmL+M0hQ32141UT76SGIx+c53Uy76+jkqzMSeXkLBrKHpofnBO04nRhVF
+         UHIqha8iMcpFdk+rFP1ZwKFRClAo9PUX8ZQoOuHeJtYzoZLvNQfu5fpLjuiNllExEn4K
+         WDfj4odUOxmECh/4+JNlED2U3aRqS2DLDse1hDPFUC3qOVSt0y4i3/El9fIHjn/EYFiH
+         3RDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739348933; x=1739953733;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=612jIvxL1e9qxD4qIQOZLpI6wF7davzI0ud5ar8CQG0=;
+        b=iZ5Lu2XKrMzxqfQq2WeHoYwL05hkGmJ3uKNeWrAg7Cb1KrcBF10bA8EK2LnZNz/tLh
+         CcijecZypVYZdGTofpdKuRILFnxXubBrNpqgrQBojSeOxX0cfrvEjwZAhqsuaEW4rqfe
+         M7X7xps/RGs1UlGAO7cv/VZgk0XqkGAvUpcUptUa351ueJDPqJMj7oMQfgxHARe9k0c9
+         m2AQbOhFJjrGp7DxnWCbzfOJc23dDheuqHAVrzpTh0SfnX4DcIESrV21XOa8QDzApBoz
+         QYH4c/QXBQ+BSQGSYsmGaAc1zd725jLt92jfghECj1ZxSrniYITzRIeNhPSrIGrjVwxp
+         YwQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpGfu/kZDE2hx6GiCDwBavP7rfqalqSsQi3YRly/q18bwxFfPFVWH0fyrwDH+aHsG7DKFjRtg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeUoSfdaueR8M/E8K4WAHbAaequQW6F+LNQNN7QoBFIVDX+4hN
+	yyKF9frlYkjVLJYNN8xtP2K53Lo2DyIC8Lsry2QMXV6Bo3EYW5WNvNyRGneesGQ=
+X-Gm-Gg: ASbGncs/77ICt+hCCpk3G6Pq3RChlZ1llkmmEj/mvt7++VLMCZGmeAfePORuSmc4aZb
+	/WfluQuoGCOX878UswNBNEUP38IroZXDIzCKy/dsrKhPrB7qeLtmcMWCkA5YaSBGPxtgkZCX9aS
+	BfPGLUsev4QUCUkMyEIGYPyYE2xoWKd8/LLt1xZrwirW222MCRRuEazHfAA5MmUfXfS8dKpYxsr
+	iBCjWVLH97ne3UH+9KBkIHAQ0A6m4V1kfWJytkqAeLdeF+Lo0jjr6Zqq6+khLKvbOMLwAVyhnQ4
+	1+tRYRy6XuAxMwZSwpMx1V+456reqapQhdj8k6BIOw==
+X-Google-Smtp-Source: AGHT+IHo8yGkr5oWd5KwlTZvIww/CgYd/mju7TZBIcFxDlPlQYOvlk0NqYOCKf+nhwBq6H3RsyfUFg==
+X-Received: by 2002:a05:6a21:7a4c:b0:1db:f68a:d943 with SMTP id adf61e73a8af0-1ee5c74731bmr3748745637.17.1739348932670;
+        Wed, 12 Feb 2025 00:28:52 -0800 (PST)
+Received: from [10.84.150.121] ([203.208.167.154])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51aeccfc5sm10700388a12.17.2025.02.12.00.28.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 00:28:52 -0800 (PST)
+Message-ID: <54c30b02-c19e-4e51-8faf-7d6c5560ef6f@bytedance.com>
+Date: Wed, 12 Feb 2025 16:28:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250212-rtnetlink_leak-v1-2-27bce9a3ac9a@bootlin.com>
-References: <20250212-rtnetlink_leak-v1-0-27bce9a3ac9a@bootlin.com>
-In-Reply-To: <20250212-rtnetlink_leak-v1-0-27bce9a3ac9a@bootlin.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Alexis Lothore <alexis.lothore@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpedfuegrshhtihgvnhcuvehurhhuthgthhgvthculdgvuefrhfcuhfhouhhnuggrthhiohhnmddfuceosggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeefudfhuedttdeiffetffeljeffkeevveeiuddtgeejleeftdejgedtjedttdfhnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrgedvrdehgegnpdhmrghilhhfrhhomhepsggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhunhhihihusegrmhgriihonhdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhin
- hdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-X-GND-Sasl: bastien.curutchet@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm: pgtable: fix NULL pointer dereference issue
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: linux@armlinux.org.uk, ezra@easyb.ch, hughd@google.com,
+ ryan.roberts@arm.com, akpm@linux-foundation.org, muchun.song@linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <be323425-2465-423a-a6f4-affbaa1efe09@bytedance.com>
+ <20250212064002.55598-1-zhengqi.arch@bytedance.com>
+ <d5bba68b-1dba-4367-8d4f-103348b80229@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <d5bba68b-1dba-4367-8d4f-103348b80229@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-rtnl_setlink() uses the rtnl_nets_* helpers but never calls the
-rtnl_nets_destroy(). It leads to small memory leaks.
 
-Call rtnl_nets_destroy() before exiting to properly decrement the nets'
-reference counters.
 
-Fixes: 636af13f213b ("rtnetlink: Register rtnl_dellink() and rtnl_setlink() with RTNL_FLAG_DOIT_PERNET_WIP.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
----
- net/core/rtnetlink.c | 1 +
- 1 file changed, 1 insertion(+)
+On 2025/2/12 16:20, David Hildenbrand wrote:
+> On 12.02.25 07:40, Qi Zheng wrote:
+>> When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
+>> parameter is NULL, which will cause a NULL pointer dereference issue in
+>> adjust_pte():
+>>
+>> Unable to handle kernel NULL pointer dereference at virtual address 
+>> 00000030 when read
+>> Hardware name: Atmel AT91SAM9
+>> PC is at update_mmu_cache_range+0x1e0/0x278
+>> LR is at pte_offset_map_rw_nolock+0x18/0x2c
+>> Call trace:
+>>   update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
+>>   remove_migration_pte from rmap_walk_file+0xcc/0x130
+>>   rmap_walk_file from remove_migration_ptes+0x90/0xa4
+>>   remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
+>>   migrate_pages_batch from migrate_pages+0x188/0x488
+>>   migrate_pages from compact_zone+0x56c/0x954
+>>   compact_zone from compact_node+0x90/0xf0
+>>   compact_node from kcompactd+0x1d4/0x204
+>>   kcompactd from kthread+0x120/0x12c
+>>   kthread from ret_from_fork+0x14/0x38
+>> Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
+>>
+>> To fix it, do not rely on whether 'ptl' is equal to decide whether to 
+>> hold
+>> the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
+>> enabled. In addition, if two vmas map to the same PTE page, there is no
+>> need to hold the pte lock again, otherwise a deadlock will occur. Just 
+>> add
+>> the need_lock parameter to let adjust_pte() know this information.
+>>
+>> Reported-by: Ezra Buehler <ezra@easyb.ch>
+>> Closes: 
+>> https://lore.kernel.org/lkml/CAM1KZSmZ2T_riHvay+7cKEFxoPgeVpHkVFTzVVEQ1BO0cLkHEQ@mail.gmail.com/
+>> Fixes: fc9c45b71f43 ("arm: adjust_pte() use pte_offset_map_rw_nolock()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   arch/arm/mm/fault-armv.c | 40 ++++++++++++++++++++++++++++------------
+>>   1 file changed, 28 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+>> index 2bec87c3327d2..3627bf0957c75 100644
+>> --- a/arch/arm/mm/fault-armv.c
+>> +++ b/arch/arm/mm/fault-armv.c
+>> @@ -62,7 +62,7 @@ static int do_adjust_pte(struct vm_area_struct *vma, 
+>> unsigned long address,
+>>   }
+>>   static int adjust_pte(struct vm_area_struct *vma, unsigned long 
+>> address,
+>> -              unsigned long pfn, struct vm_fault *vmf)
+>> +              unsigned long pfn, bool need_lock)
+>>   {
+>>       spinlock_t *ptl;
+>>       pgd_t *pgd;
+>> @@ -99,12 +99,11 @@ static int adjust_pte(struct vm_area_struct *vma, 
+>> unsigned long address,
+>>       if (!pte)
+>>           return 0;
+>> -    /*
+>> -     * If we are using split PTE locks, then we need to take the page
+>> -     * lock here.  Otherwise we are using shared mm->page_table_lock
+>> -     * which is already locked, thus cannot take it.
+>> -     */
+>> -    if (ptl != vmf->ptl) {
+>> +    if (need_lock) {
+>> +        /*
+>> +         * Use nested version here to indicate that we are already
+>> +         * holding one similar spinlock.
+>> +         */
+>>           spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>>           if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+>>               pte_unmap_unlock(pte, ptl);
+>> @@ -114,7 +113,7 @@ static int adjust_pte(struct vm_area_struct *vma, 
+>> unsigned long address,
+>>       ret = do_adjust_pte(vma, address, pfn, pte);
+>> -    if (ptl != vmf->ptl)
+>> +    if (need_lock)
+>>           spin_unlock(ptl);
+>>       pte_unmap(pte);
+>> @@ -123,16 +122,17 @@ static int adjust_pte(struct vm_area_struct 
+>> *vma, unsigned long address,
+>>   static void
+>>   make_coherent(struct address_space *mapping, struct vm_area_struct 
+>> *vma,
+>> -          unsigned long addr, pte_t *ptep, unsigned long pfn,
+>> -          struct vm_fault *vmf)
+>> +          unsigned long addr, pte_t *ptep, unsigned long pfn)
+>>   {
+>>       struct mm_struct *mm = vma->vm_mm;
+>>       struct vm_area_struct *mpnt;
+>>       unsigned long offset;
+>> +    unsigned long start;
+>>       pgoff_t pgoff;
+>>       int aliases = 0;
+>>       pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+>> +    start = ALIGN_DOWN(addr, PMD_SIZE);
+> 
+> I assume you can come up with a better name than "start" :)
+> 
+> aligned_addr ... pmd_start_addr ...
+> 
+> Maybe simply
+> 
+> pmd_start_addr = ALIGN_DOWN(addr, PMD_SIZE);
+> pmd_end_addr = addr + PMD_SIZE;
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 94111d3383788566f2296039e68549e2b40d5a4a..e4ac14c081a48e36f5381e025a3991c90827c2bf 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3441,6 +3441,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	rtnl_nets_unlock(&rtnl_nets);
- errout:
-+	rtnl_nets_destroy(&rtnl_nets);
- 	return err;
- }
- 
+you mean:
 
--- 
-2.48.1
+pmd_end_addr = pmd_start_addr + PMD_SIZE;
 
+Right?
+
+> 
+> Then the comparison below also becomes easier to read.
+> 
+>>       /*
+>>        * If we have any shared mappings that are in the same mm
+>> @@ -141,6 +141,14 @@ make_coherent(struct address_space *mapping, 
+>> struct vm_area_struct *vma,
+>>        */
+>>       flush_dcache_mmap_lock(mapping);
+>>       vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+>> +        unsigned long mpnt_addr;
+>> +        /*
+>> +         * If we are using split PTE locks, then we need to take the pte
+>> +         * lock. Otherwise we are using shared mm->page_table_lock which
+>> +         * is already locked, thus cannot take it.
+>> +         */
+>> +        bool need_lock = IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS);
+> 
+> Nit: move "unsigned long mpnt_addr;" below this longer variable+init.
+
+OK, will do.
+
+> 
+>> +
+>>           /*
+>>            * If this VMA is not in our MM, we can ignore it.
+>>            * Note that we intentionally mask out the VMA
+>> @@ -151,7 +159,15 @@ make_coherent(struct address_space *mapping, 
+>> struct vm_area_struct *vma,
+>>           if (!(mpnt->vm_flags & VM_MAYSHARE))
+>>               continue;
+>>           offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+>> -        aliases += adjust_pte(mpnt, mpnt->vm_start + offset, pfn, vmf);
+>> +        mpnt_addr = mpnt->vm_start + offset;
+>> +        /*
+>> +         * If mpnt_addr and addr are mapped to the same PTE page, there
+>> +         * is no need to hold the pte lock again, otherwise a deadlock
+>> +         * will occur.
+> 
+> /*
+>   * Avoid deadlocks by not grabbing the PTE lock if we already hold the
+>   * PTE lock of this PTE table in the caller.
+>   */
+
+Maybe just:
+
+/* Avoid deadlocks by not grabbing the same PTE lock again. */
+
+Thanks,
+Qi
+
+> 
+> ?
+> 
+>> +         */
+>> +        if (mpnt_addr >= start && mpnt_addr - start < PMD_SIZE)
+>> +            need_lock = false;
+> 
+> 
+> 
 
