@@ -1,129 +1,308 @@
-Return-Path: <stable+bounces-115015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F13FA320AC
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:13:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F91A320CA
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C642E163FAA
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25E083A6108
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C534204C3B;
-	Wed, 12 Feb 2025 08:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF9F204F65;
+	Wed, 12 Feb 2025 08:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LYRDhC/l"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NVD08XIG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792F22046BD;
-	Wed, 12 Feb 2025 08:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78931E9B3B
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 08:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739347982; cv=none; b=iOf8na8aTXb0HmD9o406v9SAoAUQahxZmlqIbZqoni6nhEGYp6LHSoW0jRi6eBwWzW8tarzumSiWd0neLLO/JuS2w+oySdbj5xg81mCswu3YYw5R7IBDDk3FX2x8M/7B1bORHlaH4phJb2D7ls6P4xR/MTsG3vghLmbENKLwlHw=
+	t=1739348428; cv=none; b=RmREq4HrqHmEaNV1RtigAWnNk0r3cnv0n+2uQqC7hrUUjhNodf2Ori+Yu3Rb3xI0Ek4LsNmD7B94S1mRQrxGb1uPcHLvSc3yIjuUpwYFsivmpc3JuiVcsuotZA7kqwI/84oeExpSX15phJjnY0vP0LUJmXrhfb8UAD/2ID3sUOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739347982; c=relaxed/simple;
-	bh=K6xZtvcBX7VHLllZ0U21xVUVPmHeVbAT8lLiQebLSdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NlW+7gv5FRXIZyA+JwbTiSrPLnArN7/wL7X2lqiw4wj/SLe868ut/NniaWSm0O89NnjYXwVtapQZ9GflB02q3+AyEJQVI8RetMvOabRdHa+sx+SaXwQIYb2ilgu8ErSijoZIzaOOfrw+lA+SfV2WYFi+MLPJg4P5xF69+JQma5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LYRDhC/l; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab7c07e8b9bso524879466b.1;
-        Wed, 12 Feb 2025 00:13:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739347979; x=1739952779; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AGGKJfp191wArHnRVFLB5wmtEKHrnNDmIP220p0KWvw=;
-        b=LYRDhC/lh7LcIbTXPES0U8FcXjSJDT2hvfYTRjgc471gq28PoaRYPpjD5Peo8Cgvdm
-         RYJ1Kq26yrqHEKeMtbTxSIIVvqLa3jSaYOsndFVd5D9SReakLPU8w53ykWqtAKmnr/id
-         Ir3VlRROElKfZax5DIEOg+vahg0ATmtBZBD4aR929jUnE5A9tACDw/xAJ28fLVaQu8Ei
-         38fELF9Uph4wqDSvwQVv62h8avY4gV4ZXbz+GSSvhNDZwSJ+pu9YoBZN8Hjtp40yQJ2y
-         crkyKk3ZUociGt69QW5QK4Dabq1FmL2p44LYD0c1Y7tc3PGO3c84C9BqaTL3gxRji7bL
-         gRZg==
+	s=arc-20240116; t=1739348428; c=relaxed/simple;
+	bh=vXyH1NMNryqwPgzRty5BYg1Vg9bBpgYGPf93ZiPDx1c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EjBbayUxw+eX0B14CH0ROEnlhTW6RUrql98yZpRNDgCmPZMyq7VofJw/XVMflk4cNP6XDQ3giNL8iDpFvRBs8G8t7N+LaEk6w2MXpVI+zqSMeY9a+pRElQItrAOzAy1sxBTDqf3CFX2rj0X+pSRw4PQHw4g0/3lTW+8//bww+h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NVD08XIG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739348425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ip9E1CfkRC9Vcb9bxsI6NSkr9QdKRS3qpRbaSmxdcRY=;
+	b=NVD08XIGxbvJw8aCJmgnDV/AuPQt4b08oNOzlQ4rLoyFFOVeSGHE+TebxlrFepAeqel44u
+	vZ6E6k6A4Aj4cFPLYnxvHr+QnlhgmGkMJWHFPr7qqooIER7vIr5gxHUJddfnJvoom0gtkQ
+	rOLoMVxSK1Cmdr6fSiCyAdQe26XY0FU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-310-4W0eab_VPlO4-OvXFVkZQg-1; Wed, 12 Feb 2025 03:20:24 -0500
+X-MC-Unique: 4W0eab_VPlO4-OvXFVkZQg-1
+X-Mimecast-MFC-AGG-ID: 4W0eab_VPlO4-OvXFVkZQg
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38de1668f18so1346005f8f.0
+        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 00:20:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739347979; x=1739952779;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AGGKJfp191wArHnRVFLB5wmtEKHrnNDmIP220p0KWvw=;
-        b=d8zscsdIEOFNk0TVTHwdflDU+5WaLZzF599f7Yvpc6nbt1YUbl4Avw5JXIBSdE5wf0
-         eAiq/cWtB631+v7O8dSluIfozB0uazXvqxd+FFek7DpLahGKMoLIf7qGdmpu2VYkYdQs
-         hf3W4cojLhPVbetXFLLBGIoqHOdgx43fwWGwdbi6yasNP9SRzSz6jR6DZ2GP7IN2TcBr
-         dBX5JJKDfWo4HmX3kqQ/EoWS3w8tLx636DyzTHhCQViS3uqi12k2JmZlFvkazyCHX7L7
-         N6MpMntKYot/EFp9kJumLE/FjFkBbdmD/kpMS237u8KJsLn3xJgu/Qhcu/ToFCQTDhgB
-         hjxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwwCVOY/3MMY/Z4wWDCm38Ii89HIvpUqwCxuBcTbV4V9gLDV+Ywv/+2rRbs9FYZS7Eoa4f1vJ01kzkfQw=@vger.kernel.org, AJvYcCW9JpYyaO8nsiZtNNtpCxxjDk2kGbLLMYDMaMAFuFqnXeiS14jmyNCNv10/zY5I/0+I5OB1e79J@vger.kernel.org, AJvYcCXWHnbE9fQwnGRb8cZ2o8JQ0a4cGVYM7ysQM3JKKa3BskKLcc0xj9DS4vTUQUxfHj3GFNyD2cjsqCSO@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY1ovS7SjLZ5NSyg0Bpg0s+ycRvqMzf/XnO6bKZ5dWQ0wBeqEM
-	kGRKZxnLIFBCLZATOAb/n2qir0k9xK2mGdI5p6A8fNjei2atlk1v
-X-Gm-Gg: ASbGncszC8XHVNI5iOT97pQXoEQif46Ek52ZlO+t5RYkelfEEomlupQobkEIZwhrL/s
-	tkVioMOrP5oU+fO714gpRR+gvSis5J3RlVSzs3Gm9Tr+Hmdwcu4ANMrsZ++fEia+EXu7d4Cj2Jo
-	gpXgsfB5zrEToAD/UMID0MCNKDpBDuaH8Q8M6o5mWQhspA1UJTTJNnpFaBScNJ5zMVo3Lsgls9d
-	Wup7/FgZUKOkRhI7t1ewjzOCg6x6NxOzk5NeQxVtmfcqIp72kbWdM42++QWRUDzMQgdSM28PO5k
-	Wn3yafuAUOddcJVKqRQhjuOxFFreKbtb
-X-Google-Smtp-Source: AGHT+IELRgBORrlG4zy3zq7i6yGArccsPGRJu5FNsBQxgON585YtybG9n6qwQB5N+eUMjCgZIU2rHw==
-X-Received: by 2002:a17:906:7807:b0:ab7:6369:83fc with SMTP id a640c23a62f3a-ab7f34af3d5mr163581466b.38.1739347978353;
-        Wed, 12 Feb 2025 00:12:58 -0800 (PST)
-Received: from foxbook (adth118.neoplus.adsl.tpnet.pl. [79.185.219.118])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7b8f73d51sm647210166b.100.2025.02.12.00.12.57
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Wed, 12 Feb 2025 00:12:58 -0800 (PST)
-Date: Wed, 12 Feb 2025 09:12:54 +0100
-From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
-To: Kuangyi Chiang <ki.chiang65@gmail.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, mathias.nyman@intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: xhci: Handle quirky SuperSpeed isoc error
- reporting by Etron HCs
-Message-ID: <20250212091254.50653eee@foxbook>
-In-Reply-To: <CAHN5xi05h+4Fz2SwD=4xjU=Yq7=QuQfnnS01C=Ur3SqwTGxy9A@mail.gmail.com>
-References: <20250205234205.73ca4ff8@foxbook>
-	<b19218ab-5248-47ba-8111-157818415247@linux.intel.com>
-	<20250210095736.6607f098@foxbook>
-	<20250211133614.5d64301f@foxbook>
-	<CAHN5xi05h+4Fz2SwD=4xjU=Yq7=QuQfnnS01C=Ur3SqwTGxy9A@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1739348423; x=1739953223;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ip9E1CfkRC9Vcb9bxsI6NSkr9QdKRS3qpRbaSmxdcRY=;
+        b=YSJZPa+jBmHmhYLA78by7aI0d37Vdk0d1LG7GpeF5MhslM4fu5p/5waQwGz+tw227V
+         OmnJARf9/r9iDkHt5PRSGpCsFAeRlYFBIIeYqgfwIl082v5kQQvVqNRTTwh2ZwU4Dovs
+         uhaRpuLW8NJ8wsXO4OR/KoRcDityIb+fK1/0GzinbybAZHE/1zjWr2+mSbH59ZPCQDkB
+         2uz4fFB0xnegzRXshdnHbK8LUDsL7re2vw2X9nr4Ah3/TTRJz+dTirqeLR2k3S6x1sPB
+         L0/HEkeO7Bhu44/Jk8Cd4WwkSYlltdtoROhst0aRJYY4mpmkLtrjVWd9ySzL9ny0FHbS
+         gGbg==
+X-Forwarded-Encrypted: i=1; AJvYcCURvgvJN0pNt/lz56ISdt0sK0p5MeazpTSPqShunfn8+JrR2j+5j8DVnc+zlOiISwcyc/+jn6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1rKvVr/hk7wEsWfW7sYLC9CSxcKSnVu93QZ8X5Dr09w4cRw4t
+	aHFdTHjcEmP+HlYD5YzKmxIEFAXxuNIqhJzWQi220M1GXy6CdT4IwihYTux1qsRbpKkjycRdrzE
+	4wlBgRDf9M5ZbDwNweyOOJ01mRGVZJ4izPEpMK2NGWnJ98Au514ZuUQ==
+X-Gm-Gg: ASbGnctA0VIi/x0BH7g97xw8BsmBVbfC3Hsfq57/Fok783pa6jkj8rR7E6ydPJYFmMY
+	2DPfi6wpikBjyvLawszDu3ttCOW1UG0rzrjUzcyBzxBYJwThPvSrOPUYApFrX4ywY3Gqk+LuRLw
+	BEdBPK43i4YsgJuWNKhaEQ8UhFn00VECji3+VtAgD/9yLKwBTOhtZuOZqoSFRbA+PqZcXhfhrLK
+	SpWOezwNhSqJ+05IZCnX6bv8N3Cg7LgaIDHWDzpJ57F1fIt0z8wWopNOdtXogn5rFTJarXulkZH
+	2dl+xpZClJ3J4qpZ97rIDnY5Q+qKmCqFAMCeFN00bYiykggzCgo+H9bKqDgWHciNzdA9dN4puip
+	AK0sFZi9/p4RbaGnOyDyUnEmJ45fAXw==
+X-Received: by 2002:a5d:4ac3:0:b0:38d:db8b:f518 with SMTP id ffacd0b85a97d-38dea289689mr1334155f8f.22.1739348422653;
+        Wed, 12 Feb 2025 00:20:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDiAn5jK616MdAOfAfYMVUT9zNM9+jEtMDT3b0cH3qnNzPUlBYFG45nWaSD905rA0F+LnzPA==
+X-Received: by 2002:a5d:4ac3:0:b0:38d:db8b:f518 with SMTP id ffacd0b85a97d-38dea289689mr1334131f8f.22.1739348422230;
+        Wed, 12 Feb 2025 00:20:22 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70c:a600:1e3e:c75:d269:867a? (p200300cbc70ca6001e3e0c75d269867a.dip0.t-ipconnect.de. [2003:cb:c70c:a600:1e3e:c75:d269:867a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dcd0fac67sm13744585f8f.54.2025.02.12.00.20.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 00:20:21 -0800 (PST)
+Message-ID: <d5bba68b-1dba-4367-8d4f-103348b80229@redhat.com>
+Date: Wed, 12 Feb 2025 09:20:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm: pgtable: fix NULL pointer dereference issue
+To: Qi Zheng <zhengqi.arch@bytedance.com>, linux@armlinux.org.uk,
+ ezra@easyb.ch, hughd@google.com, ryan.roberts@arm.com,
+ akpm@linux-foundation.org, muchun.song@linux.dev
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <be323425-2465-423a-a6f4-affbaa1efe09@bytedance.com>
+ <20250212064002.55598-1-zhengqi.arch@bytedance.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250212064002.55598-1-zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Feb 2025 13:59:49 +0800, Kuangyi Chiang wrote:
-> > +       if (xhci->quirks & XHCI_ETRON_HOST && td->urb->dev->speed == USB_SPEED_SUPER) {
-> > +               td->error_mid_td |= error_event;
-> > +               etron_quirk |= error_event;  
+On 12.02.25 07:40, Qi Zheng wrote:
+> When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
+> parameter is NULL, which will cause a NULL pointer dereference issue in
+> adjust_pte():
 > 
-> This would be the same as etron_quirk = error_event; right?
+> Unable to handle kernel NULL pointer dereference at virtual address 00000030 when read
+> Hardware name: Atmel AT91SAM9
+> PC is at update_mmu_cache_range+0x1e0/0x278
+> LR is at pte_offset_map_rw_nolock+0x18/0x2c
+> Call trace:
+>   update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
+>   remove_migration_pte from rmap_walk_file+0xcc/0x130
+>   rmap_walk_file from remove_migration_ptes+0x90/0xa4
+>   remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
+>   migrate_pages_batch from migrate_pages+0x188/0x488
+>   migrate_pages from compact_zone+0x56c/0x954
+>   compact_zone from compact_node+0x90/0xf0
+>   compact_node from kcompactd+0x1d4/0x204
+>   kcompactd from kthread+0x120/0x12c
+>   kthread from ret_from_fork+0x14/0x38
+> Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
+> 
+> To fix it, do not rely on whether 'ptl' is equal to decide whether to hold
+> the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
+> enabled. In addition, if two vmas map to the same PTE page, there is no
+> need to hold the pte lock again, otherwise a deadlock will occur. Just add
+> the need_lock parameter to let adjust_pte() know this information.
+> 
+> Reported-by: Ezra Buehler <ezra@easyb.ch>
+> Closes: https://lore.kernel.org/lkml/CAM1KZSmZ2T_riHvay+7cKEFxoPgeVpHkVFTzVVEQ1BO0cLkHEQ@mail.gmail.com/
+> Fixes: fc9c45b71f43 ("arm: adjust_pte() use pte_offset_map_rw_nolock()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>   arch/arm/mm/fault-armv.c | 40 ++++++++++++++++++++++++++++------------
+>   1 file changed, 28 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+> index 2bec87c3327d2..3627bf0957c75 100644
+> --- a/arch/arm/mm/fault-armv.c
+> +++ b/arch/arm/mm/fault-armv.c
+> @@ -62,7 +62,7 @@ static int do_adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   }
+>   
+>   static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+> -		      unsigned long pfn, struct vm_fault *vmf)
+> +		      unsigned long pfn, bool need_lock)
+>   {
+>   	spinlock_t *ptl;
+>   	pgd_t *pgd;
+> @@ -99,12 +99,11 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   	if (!pte)
+>   		return 0;
+>   
+> -	/*
+> -	 * If we are using split PTE locks, then we need to take the page
+> -	 * lock here.  Otherwise we are using shared mm->page_table_lock
+> -	 * which is already locked, thus cannot take it.
+> -	 */
+> -	if (ptl != vmf->ptl) {
+> +	if (need_lock) {
+> +		/*
+> +		 * Use nested version here to indicate that we are already
+> +		 * holding one similar spinlock.
+> +		 */
+>   		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>   		if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+>   			pte_unmap_unlock(pte, ptl);
+> @@ -114,7 +113,7 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   
+>   	ret = do_adjust_pte(vma, address, pfn, pte);
+>   
+> -	if (ptl != vmf->ptl)
+> +	if (need_lock)
+>   		spin_unlock(ptl);
+>   	pte_unmap(pte);
+>   
+> @@ -123,16 +122,17 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   
+>   static void
+>   make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+> -	      unsigned long addr, pte_t *ptep, unsigned long pfn,
+> -	      struct vm_fault *vmf)
+> +	      unsigned long addr, pte_t *ptep, unsigned long pfn)
+>   {
+>   	struct mm_struct *mm = vma->vm_mm;
+>   	struct vm_area_struct *mpnt;
+>   	unsigned long offset;
+> +	unsigned long start;
+>   	pgoff_t pgoff;
+>   	int aliases = 0;
+>   
+>   	pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	start = ALIGN_DOWN(addr, PMD_SIZE);
 
-Yeah, same thing I guess.
+I assume you can come up with a better name than "start" :)
 
-> I tested this with Etron EJ168 and EJ188 under Linux-6.13.1. It works.
+aligned_addr ... pmd_start_addr ...
 
-Well, I found one case where it doesn't work optimally. There is a
-separate patch to skip "Missed Service Error" TDs immediately when the
-error is reported and also to treat MSE as another 'error mid TD', so
-with this Etron patch we would end up expecting spurious success after
-an MSE on the last TRB.
+Maybe simply
 
-Well, AFAIS, no such event is generated by Etron in this case so we are
-back to waiting till next event and then giving back the missed TD.
+pmd_start_addr = ALIGN_DOWN(addr, PMD_SIZE);
+pmd_end_addr = addr + PMD_SIZE;
+
+Then the comparison below also becomes easier to read.
+
+>   
+>   	/*
+>   	 * If we have any shared mappings that are in the same mm
+> @@ -141,6 +141,14 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+>   	 */
+>   	flush_dcache_mmap_lock(mapping);
+>   	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+> +		unsigned long mpnt_addr;
+> +		/*
+> +		 * If we are using split PTE locks, then we need to take the pte
+> +		 * lock. Otherwise we are using shared mm->page_table_lock which
+> +		 * is already locked, thus cannot take it.
+> +		 */
+> +		bool need_lock = IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS);
+
+Nit: move "unsigned long mpnt_addr;" below this longer variable+init.
+
+> +
+>   		/*
+>   		 * If this VMA is not in our MM, we can ignore it.
+>   		 * Note that we intentionally mask out the VMA
+> @@ -151,7 +159,15 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+>   		if (!(mpnt->vm_flags & VM_MAYSHARE))
+>   			continue;
+>   		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+> -		aliases += adjust_pte(mpnt, mpnt->vm_start + offset, pfn, vmf);
+> +		mpnt_addr = mpnt->vm_start + offset;
+> +		/*
+> +		 * If mpnt_addr and addr are mapped to the same PTE page, there
+> +		 * is no need to hold the pte lock again, otherwise a deadlock
+> +		 * will occur.
+
+/*
+  * Avoid deadlocks by not grabbing the PTE lock if we already hold the
+  * PTE lock of this PTE table in the caller.
+  */
+
+?
+
+> +		 */
+> +		if (mpnt_addr >= start && mpnt_addr - start < PMD_SIZE)
+> +			need_lock = false;
 
 
-Maybe I will seriously look into decoupling giveback and dequeue ptr
-tracking, not only for those spurious Etron events but everywhere.
 
-Mathias is right that HW has no sensible reason to touch DMA buffers
-after an error, I will look if the spec is very explicit about it.
-If so, we could give back TDs after the first event and merely keep
-enough information to recognize and silently ignore further events.
+-- 
+Cheers,
 
-Michal
+David / dhildenb
+
 
