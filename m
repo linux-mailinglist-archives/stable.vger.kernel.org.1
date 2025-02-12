@@ -1,186 +1,169 @@
-Return-Path: <stable+bounces-115077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D80A330E1
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 21:35:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5E9A331F1
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 23:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FE8167F0B
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 20:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F483A2777
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 22:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A846200B95;
-	Wed, 12 Feb 2025 20:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E3E20370D;
+	Wed, 12 Feb 2025 22:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agGalzwQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNSZTm9B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38797134A8;
-	Wed, 12 Feb 2025 20:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18EF1EBA0C;
+	Wed, 12 Feb 2025 22:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739392544; cv=none; b=H0EAlbEFrOA5tOSkgrm2gvpEOE1IHLj6eW4+LRn7FS4LH5pMaYR6VMtknxQyV3BDcI7JFTeXKRmfbHphS9KqgmfZEwAFNSZVMJIWFWsCBl8YTrazN3OoyiI616bzNM9std3LIcw8vmn4xncEJbpaZiM17KZwysZpstAXgIR6JS0=
+	t=1739397880; cv=none; b=BdwQbSg0wScJRJkrhiiHSvxTLe5aBTDSpZvroh/7OOqz9bM3+3td9sV0UVAgPt2SbZZItUx4vFtV8tiNHEe4bul8KwKPubOJg3RwkyA8xUQjVzy8AsL0Hic/SkJlz7sXYNek7zekvjh6+EmjJQ5mcxuO79RTj0nSIYZxFDSF9MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739392544; c=relaxed/simple;
-	bh=m3fSLrs8RwTeycQL/yS8zwR0LdKMfmutI4GsL4BAGbc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FeB62XxudMMx0Ljxf30mtin9jwZGy0Po6GODW57t6IUnfMc0O+rg+2LdvClgSMhoHZPh+FO90eA3qppulZvIEEKJYOFvyc8fbZ3DqS4Axfzu+qH7PoJriU7Sf7vdfA1Z93aKgvZ+CHwOh18kUjAcrPONWGGgpqGtw6vi+aRurDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agGalzwQ; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5450f38393aso73156e87.0;
-        Wed, 12 Feb 2025 12:35:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739392540; x=1739997340; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KOlyctz2EGvuteVNgI+DOj0oV4+D7fwYRa1j2XIcfNc=;
-        b=agGalzwQFJkwsH3x3xMy2o9HC1gRRPDM3CNCZjbygSJ5LFfodKYwuhQ4+zidS6OVgu
-         LaBM9XjqTl3DAN1oXFVsg0Mav65a5dH95EaBZkWYJ7w8K7qB8PmmVEMhb+Kb3+pwsK1q
-         8ofbxmnlo2G8yiA4Df8QMXmr85yySeQ11Mnp9fWn+4PEtEEyv9ll++++WtAM6dQ5InOU
-         mpgHsssheVstEbwKh7exyLStw/RKtEJul5wL3ic9c3uqvaZIeLhaxqSvBhodfZAnUg6P
-         wg9g2tk100Co2xzxrq4KaAlaE/pa926T2AKilSsZthuSSOeYGFKoptzBXUEdCrT6/TD4
-         G9Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739392540; x=1739997340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KOlyctz2EGvuteVNgI+DOj0oV4+D7fwYRa1j2XIcfNc=;
-        b=ds3TqeMdziT3q6CFhBmnMqmjVS3gjbVNHxY3vX6zJ/9cO+V5MzWKukSPZfvHw/MYuM
-         VSJmKwV2hzp169GXtEAG9nFWzVnEsU50WKaixS8zGy6+qh9u8vOibDclMeLOjTjOmFr3
-         QKvVBtOruIsJB2kR0B0RNl99iNxuX4NvjM6HtphZ9gY+l5JdQDcZuXPYYpW538LS/tsL
-         t+NP49TnfJYZDqCCi93Lhue5HxoEC3DdwawLYz59tKL63OEDGAdKIsT3U/CAn7cTGCpI
-         MV45l2BdN84pNkzNgldL63aOSPNUdoS05YAREaAD9b+gxtSLcZOkwF/dp1L8uFE2EC+e
-         8qtA==
-X-Forwarded-Encrypted: i=1; AJvYcCUa9N8p5QXhbUcMp5+PgFfatQ8E7fHB8ucf4zxOxXjRBKGewSHHlTl9TBqDMPhVUgXpGRXxapc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWUiZr9jq2TE16LI2fLmyJOhNyqQKEzrIWIp5ZUaBu6mcFWrsk
-	7wic9N1IPNDDvk9fRg/HzjbM7k8wwhwn0qeQDKs+yzDSIpMOUw/Zi1kV3pliJGk14bi7bYn3eIm
-	9F1dQcCAyzYnCgrC47auk2rTApfk=
-X-Gm-Gg: ASbGncu05uMKQzdf34r4EDZAWN1b4Li+FzTRCLc7dwg5PHT+dMJ7qrd1ucMsJ5o7Ng/
-	Mm7GXSApHFXAY2IrVQJm36jfv0uWDyfjELgZ00ZgQgyK8Dd2DSL1hDIAKrKXb36L4G1lvFQEoBA
-	==
-X-Google-Smtp-Source: AGHT+IFZTsIUwQQj/o2a13UQOeNCyuQkKukbW3ljCaZATn9oPt0/nKLvJha06/abaaebuj29iscOoN5W1tgymjejgjU=
-X-Received: by 2002:ac2:4e05:0:b0:545:aaf:13f5 with SMTP id
- 2adb3069b0e04-545184a3aa5mr1636607e87.37.1739392539951; Wed, 12 Feb 2025
- 12:35:39 -0800 (PST)
+	s=arc-20240116; t=1739397880; c=relaxed/simple;
+	bh=CcYVxa9xyH1ghrceusX7zFgvExtcGhzL7hteTpBaJGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZsPSRzj/mPGaMXBOgkCfuhmL6LdxyjYw/VceHxPZtXHS7ySoMHcxrNTlMHZC3AgABab1JoP8oUneLNDfDlp7eCHsNcDz3DVtTCR9yUeIfR00Cw+zEB7dtPJIQLk+uUIxnmQXIQpQc1J1Xxg13Wl4dvT+91fvDw9mHWiGz0bNRGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNSZTm9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B002C4CEDF;
+	Wed, 12 Feb 2025 22:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739397880;
+	bh=CcYVxa9xyH1ghrceusX7zFgvExtcGhzL7hteTpBaJGA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mNSZTm9B6IiEXhUT8QVroFXKRMRoNK/RD8891uUZFx6GA/o21oCSsPEmWqKZtrq7e
+	 FPwCaxcxmolHuV8wrAgpVMZszhYwJaTlh9FJVVsW/YcplPWn8fY4iRHP14GDd6ewVx
+	 DBCE3LSPjfA1Ba2dlq7gY/oiP/zd8F5uMFbAoWtPvdWpQcEsjEcGERLrRuOtjGAubT
+	 opNwOQ5slglV6IBmHmxo8isP71YQsBv8jObDYFw7ZmaJTw635q69FGpoYxxGq1PCD/
+	 QqoiYWMf7XBBxRJkC7rVaMxZLKl/AW+YFgBbj3Vbosn3mePEC62PPQEOjWtCUZ9pwv
+	 kx7o9T7gsFbqg==
+From: Jiri Olsa <jolsa@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	x86@kernel.org,
+	bpf@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline check
+Date: Wed, 12 Feb 2025 23:04:33 +0100
+Message-ID: <20250212220433.3624297-1-jolsa@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212073440.12538-1-sprasad@microsoft.com>
-In-Reply-To: <20250212073440.12538-1-sprasad@microsoft.com>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 12 Feb 2025 14:35:27 -0600
-X-Gm-Features: AWEUYZmbbLBi0xo7rSe-aBd_dDmdlPLbJKvrX_yDK96Q0OtS8SExk0NpP-MFV_U
-Message-ID: <CAH2r5mtOoCrMwo=O+9XxcSuis2GH_Qo2fXhmXd2EyWGKtoBcMA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] cifs: deal with the channel loading lag while picking channels
-To: nspmangalore@gmail.com
-Cc: linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com, 
-	Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-tentatively merged into cifs-2.6.git for-next pending more reviews and test=
-ing
+Jann reported [1] possible issue when trampoline_check_ip returns
+address near the bottom of the address space that is allowed to
+call into the syscall if uretprobes are not set up.
 
-On Wed, Feb 12, 2025 at 1:35=E2=80=AFAM <nspmangalore@gmail.com> wrote:
->
-> From: Shyam Prasad N <sprasad@microsoft.com>
->
-> Our current approach to select a channel for sending requests is this:
-> 1. iterate all channels to find the min and max queue depth
-> 2. if min and max are not the same, pick the channel with min depth
-> 3. if min and max are same, round robin, as all channels are equally load=
-ed
->
-> The problem with this approach is that there's a lag between selecting
-> a channel and sending the request (that increases the queue depth on the =
-channel).
-> While these numbers will eventually catch up, there could be a skew in th=
-e
-> channel usage, depending on the application's I/O parallelism and the ser=
-ver's
-> speed of handling requests.
->
-> With sufficient parallelism, this lag can artificially increase the queue=
- depth,
-> thereby impacting the performance negatively.
->
-> This change will change the step 1 above to start the iteration from the =
-last
-> selected channel. This is to reduce the skew in channel usage even in the=
- presence
-> of this lag.
->
-> Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requ=
-ests")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-> ---
->  fs/smb/client/transport.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-> index 0dc80959ce48..e2fbf8b18eb2 100644
-> --- a/fs/smb/client/transport.c
-> +++ b/fs/smb/client/transport.c
-> @@ -1015,14 +1015,16 @@ struct TCP_Server_Info *cifs_pick_channel(struct =
-cifs_ses *ses)
->         uint index =3D 0;
->         unsigned int min_in_flight =3D UINT_MAX, max_in_flight =3D 0;
->         struct TCP_Server_Info *server =3D NULL;
-> -       int i;
-> +       int i, start, cur;
->
->         if (!ses)
->                 return NULL;
->
->         spin_lock(&ses->chan_lock);
-> +       start =3D atomic_inc_return(&ses->chan_seq);
->         for (i =3D 0; i < ses->chan_count; i++) {
-> -               server =3D ses->chans[i].server;
-> +               cur =3D (start + i) % ses->chan_count;
-> +               server =3D ses->chans[cur].server;
->                 if (!server || server->terminate)
->                         continue;
->
-> @@ -1039,17 +1041,15 @@ struct TCP_Server_Info *cifs_pick_channel(struct =
-cifs_ses *ses)
->                  */
->                 if (server->in_flight < min_in_flight) {
->                         min_in_flight =3D server->in_flight;
-> -                       index =3D i;
-> +                       index =3D cur;
->                 }
->                 if (server->in_flight > max_in_flight)
->                         max_in_flight =3D server->in_flight;
->         }
->
->         /* if all channels are equally loaded, fall back to round-robin *=
-/
-> -       if (min_in_flight =3D=3D max_in_flight) {
-> -               index =3D (uint)atomic_inc_return(&ses->chan_seq);
-> -               index %=3D ses->chan_count;
-> -       }
-> +       if (min_in_flight =3D=3D max_in_flight)
-> +               index =3D (uint)start % ses->chan_count;
->
->         server =3D ses->chans[index].server;
->         spin_unlock(&ses->chan_lock);
-> --
-> 2.43.0
->
+Though the mmap minimum address restrictions will typically prevent
+creating mappings there, let's make sure uretprobe syscall checks
+for that.
 
+[1] https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+Cc: Kees Cook <kees@kernel.org>
+Cc: Eyal Birger <eyal.birger@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Reported-by: Jann Horn <jannh@google.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+---
+v3 changes:
+ - used ~0UL instead of -1 [Alexei]
+ - used UPROBE_NO_TRAMPOLINE_VADDR in uprobe_get_trampoline_vaddr [Masami]
+ - added unlikely [Andrii]
+ - I kept the review/ack tags, because I think the change is basically
+   the same, please scream otherwise
 
---=20
-Thanks,
+ arch/x86/kernel/uprobes.c | 14 +++++++++-----
+ include/linux/uprobes.h   |  2 ++
+ kernel/events/uprobes.c   |  2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-Steve
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 5a952c5ea66b..9194695662b2 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
+ 	return &insn;
+ }
+ 
+-static unsigned long trampoline_check_ip(void)
++static unsigned long trampoline_check_ip(unsigned long tramp)
+ {
+-	unsigned long tramp = uprobe_get_trampoline_vaddr();
+-
+ 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+ }
+ 
+ SYSCALL_DEFINE0(uretprobe)
+ {
+ 	struct pt_regs *regs = task_pt_regs(current);
+-	unsigned long err, ip, sp, r11_cx_ax[3];
++	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++
++	/* If there's no trampoline, we are called from wrong place. */
++	tramp = uprobe_get_trampoline_vaddr();
++	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
++		goto sigill;
+ 
+-	if (regs->ip != trampoline_check_ip())
++	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
++	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+ 		goto sigill;
+ 
+ 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index a40efdda9052..2e46b69ff0a6 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -39,6 +39,8 @@ struct page;
+ 
+ #define MAX_URETPROBE_DEPTH		64
+ 
++#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
++
+ struct uprobe_consumer {
+ 	/*
+ 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 597b9e036e5f..c5d6307bc5bc 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2156,8 +2156,8 @@ void uprobe_copy_process(struct task_struct *t, unsigned long flags)
+  */
+ unsigned long uprobe_get_trampoline_vaddr(void)
+ {
++	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+ 	struct xol_area *area;
+-	unsigned long trampoline_vaddr = -1;
+ 
+ 	/* Pairs with xol_add_vma() smp_store_release() */
+ 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+-- 
+2.48.1
+
 
