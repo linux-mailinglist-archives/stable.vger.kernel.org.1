@@ -1,120 +1,189 @@
-Return-Path: <stable+bounces-115052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E608A32738
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:34:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898BDA32755
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51033A73FB
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:34:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FB437A01D0
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E712320E013;
-	Wed, 12 Feb 2025 13:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DE920E700;
+	Wed, 12 Feb 2025 13:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Q2jwX79f"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="AwiZsHXW"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4274520AF89;
-	Wed, 12 Feb 2025 13:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03BB20E6FB;
+	Wed, 12 Feb 2025 13:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739367285; cv=none; b=ZeMAIV1NvYuDY5jlgURyUcp8qkxDU0qEeb+OZ4MZoV4qBTmqWylqtwq/vRvYWfsXww0Cq+M+bEiVyRZzwDmmLpKggR3z9tOCEbPuNCfv0mdYPFBclsxDE/ItH5gZxu2OiO5Nf7CxxfDe7SZ7bPQtY0qUMGPXH0Vu6VYxI7qgV+g=
+	t=1739367716; cv=none; b=OfX7dXvp8eAAoFFMan2KOEKbmI42ng5J7ZdRBGQJNG2DUtJDvBAhIdiU9GPiQhX6nWzAD2Muvpn2V05Uh6CEtwdwV5UOxZ40WkAUyDBLZrhVXo9snWU7/EycHr6OE23K4Onr2J1aPDvYyvmnYGHbIBC2UTU/9RFwpKxTLlrovQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739367285; c=relaxed/simple;
-	bh=IJpXWBH0NGGKrYEeXnn9LivG+hfjpqHbcrFfOBiO3zs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=jNl68zlDSo1cMOVZd3KI3OE3GC42MJNWTx2RP+Yjwrlj6/Z7MfJWmQ3nIBeR+rb60aACgv09czXavpPmaZQZdyof/KFlGrM/clnQdQSGhzHhmn8380C/oQj3uIkpv5PLBg/NpEAdiiOkh3GPpJ2ZHTFTuFsL3OMjMM3QZ4Vu2VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Q2jwX79f; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1739367280; x=1739972080; i=markus.elfring@web.de;
-	bh=IJpXWBH0NGGKrYEeXnn9LivG+hfjpqHbcrFfOBiO3zs=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Q2jwX79fHL+oIeGvcLSN+e/paohTILpNb1XLyHcpSqr362FvvLRbEmk7joRXxw73
-	 97VrmswABL6sFJkxSvUXVQWg4D2mcnNWukichLhcKXY9MSz76BoZP0lI3XpnTBLf6
-	 xfAGpkMX9/VjbHYjSkauy9X8Opfc1BO452IPxUeWbGVJygZmEk/3n0LnQ6tAu4eAb
-	 e5qcrpbJsEjIPmUcxd1Ci7dyPmFcf/Z+TX97CRBgf/zseP7NDosPdkQW+9gDwxtlD
-	 YnHDNxQ49GeAHU/bhG16x/A6oMQe/kRYg9pgcC6XRf5NfXJlVdF00S188Et5zfPnF
-	 rvx87oy0n4OAEqomKw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.11]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N79NA-1tIprg0n9A-012ZCp; Wed, 12
- Feb 2025 14:34:40 +0100
-Message-ID: <82e2c0f3-6cb7-425e-bc68-923f6d0d5b35@web.de>
-Date: Wed, 12 Feb 2025 14:34:38 +0100
+	s=arc-20240116; t=1739367716; c=relaxed/simple;
+	bh=TZT5R2eitdFgRj0GA9fKVPD0Pm3cWU0d9sQiyh5DmcU=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dzstz3F7NsmIk0uS31fNhZYMBC3EpmV3tqMly+afrxQsYFSqPER06jvnNL2InGMlltJeAC1DiMLPiaMgzOHLvwrYzFtOA4/zlFplx1frvj/p9ARYLLfks17hdrzaf03rKMw/3afZG07M8kf7gZvflmJBNhe3gAz/GzJDjBp8J3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=AwiZsHXW; arc=none smtp.client-ip=91.244.183.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id BF277106B922;
+	Wed, 12 Feb 2025 16:41:51 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru BF277106B922
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1739367712; bh=/bAj5hq2MsJG0KFKRNkqn4MOUfRTT/Tgyz72UhKpIzY=;
+	h=From:To:CC:Subject:Date:From;
+	b=AwiZsHXW3oUF2F6fQeYVPMLgvMEe3uGZFTzDOThcF81u6/gPijzZV4P/6UtBqVZ68
+	 Z5YWZDaojQbEFi7aKRzgFOKDTOVja4KjkvKuB0ORxUUmR3E/QmaexJB5985wXl2o5I
+	 /kxVWkj2sAI5Gnoyftube5izbWK0enSJuN78GbkY=
+Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
+	by mx0.infotecs-nt (Postfix) with ESMTP id BBE233063333;
+	Wed, 12 Feb 2025 16:41:51 +0300 (MSK)
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+To: Neil Horman <nhorman@tuxdriver.com>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH net] drop_monitor: fix incorrect initialization order
+Thread-Topic: [PATCH net] drop_monitor: fix incorrect initialization order
+Thread-Index: AQHbfVPeGhCgtX+tO0OFhEPE/MmNpQ==
+Date: Wed, 12 Feb 2025 13:41:51 +0000
+Message-ID: <20250212134150.377169-1-Ilia.Gavrilov@infotecs.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Tao Zhou <tao.zhou1@amd.com>, Xinhui Pan <Xinhui.Pan@amd.com>,
- YiPeng Chai <YiPeng.Chai@amd.com>
-References: <20250212070302.806-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] drm/amdgpu: Remove redundant return value checks for
- amdgpu_ras_error_data_init()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250212070302.806-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cWJedd82uv0Epg92CPpPp3225yjZ//OUtDWkiqg6LCifP3RO6n1
- pDnGZyjNHVPzcH/A88Rv3MTYzodPxsoqf9/vmfxrHdJxe+uR6w0wCfDgV4X9HXkiBzRG+am
- Ujo0JA2ERuQ3e58QjEtuGWmY/DQFDVgWS6ipBod3AS5VIXWJFDtu7VMyoAC9Y/WdyLse4ta
- rv6wTzLJSggGYUSuzVg1w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KnRxe6PDBMo=;cmKBneo8zFhq7Q14wnqOGsrEIce
- JGtjiAy7ptnusOCTqtpJ+HHSs+BiZCQU/EaOZI0mX3KcbXYQQIjuUhF9i9IEYDmmUnS/XYyFs
- dYECaM9rfbVDHyes066fSE2aUY5JumpqTm7Zw2BcdQ8dQorZ3CWymSPPojF3/yBIrcewsMwH5
- 6YntjosxuZJNSXwwOTLh1N52QrK6FenYbBjBo879IL2KwAguSAccUWjOuQR8+afb8WCKbyR1Q
- Rd8t1LWRt1g9RcDxOzxfW9PReNB12r3uAB7HW8QbLoT5SGxSIDyPDLJUNd9R5Z8y1JflAWXJT
- z7FrWDL0LcTqmA2R30qpBjdtM9KbbFLA/owqe7Faei+NL0meYFvsNA/7SuLVblf7OenOrs1vd
- 0IlFxVtI3uiAKpi9o1Vv41+8tx6Iqh3BjVAOdW7MbFcD2kbp9FuyHtqPVFwz7vs6ORCmZ9og5
- kKrlDXlw/Vxs0tNhdjDP0NdLfqI343VGp1l9v/tZ+iAyPjSpUz1qPVoxP1396x27vuf4uRmXX
- 6kganKVJXQr/tKjRHUT1WE3YMoDhQu51gxWeZCd8uPpXFhyTLxQnB+6WRE/2YUJg4lyXYpW5r
- dbaRxOLn4+1KnpsD2YJ1D2za3OzSHFqmSq64sPTM76A2gJfbhH6sjrcexzMNyaze7n9/hZ2MG
- NKlEMmr7rCfnX1xIXeNsX5I3wf2WJTkez8EuNl9O6zCjk/3GWVJbfLbk/KZxBVPjg4Gxq10cw
- Rm62OsAM2q294+QJLwN1TLOAOlgiTHmyceXijGUah7tOYrmX9Qbbqu9rSjKhk/arv8O7HqaGg
- 6P1PoQd8hevagglWH/5XF/R7rjWWGVP6vw2MCo8+rWL0+wXhXAwAc8uKeYmi4toM4YwTaKwhk
- yu0YuCbwPC3WVhtkzaQDH33JS8rVlzhcO7O7DbBqzgAJKNvILOLxjjRmpx0HK9Lu0Ogu/NP5Z
- mBQ69V2Oej7QkCNvpy0Vf98MGpf7Vb42Ow0Lw8BGPHuFD3EUH2FN8aQqyKhp66q/LEe4lj6sC
- O6K1PB1OtleydaYgIsNN+hDwMv8uUj0hjLLmMyp1ia7lOM80TqOiriyCfe58GeVLmMBp1yvBj
- 0EVI9Ywe37ZEM6RdLAhrvOD9o57gQYgJFEN8hMwRQnqDohkuCWh4J7tfqm3f1ak4XlASDzR0z
- 5fnMHIioYUR8h0B9v72voXCSAv3150/Q75QkjkmOR3p9f0dMkgpM/R+Vj5HnFUGm+QR50sR3X
- kl8/kBsNU1AiCPVOfckY+0+n765w7Pd8ldL7LDiA2zkp5cJeaknqLYUR5JOAJgJEPBUKWxWj/
- puL8BByC6VaJ0oeU1RSW13TMj8BTvXT8VzxOSBBw/JEIgGjfS45t8h5ZyhQ1yoXWYqDRkhqfY
- +m2tabE65duCIQbH6FHQULVrLEdoEIyIvWwrLHX5uK4LidNIKG+uusUJkQfK7HWlWCvW+fxFW
- V7cbYOMA7xd4Nizkahesm/0jftaQ=
+X-KLMS-Rule-ID: 5
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2025/02/12 10:45:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/02/12 10:17:00 #27183182
+X-KLMS-AntiVirus-Status: Clean, skipped
 
-> =E2=80=A6 This patch changes its return type =E2=80=A6
+Syzkaller reports the following bug:
 
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.14-rc2#n94
+BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
+ lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu:=
+ 0
+CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+=
+ #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference=
+ Platform, BIOS 6.00 11/12/2020
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x119/0x179 lib/dump_stack.c:118
+ debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
+ do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
+ _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
+ reset_per_cpu_data+0xe6/0x240 [drop_monitor]
+ net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
+ genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
+ genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ __sock_sendmsg+0x157/0x190 net/socket.c:663
+ ____sys_sendmsg+0x712/0x870 net/socket.c:2378
+ ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
+ __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x62/0xc7
+RIP: 0033:0x7f3f9815aee9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 =
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
+f 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
+RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
+RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
 
+If drop_monitor is built as a kernel module, syzkaller may have time
+to send a netlink NET_DM_CMD_START message during the module loading.
+This will call the net_dm_monitor_start() function that uses
+a spinlock that has not yet been initialized.
 
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+To fix this, let's place resource initialization above the registration
+of a generic netlink family.
 
-How good does such an email address fit to the Developer's Certificate of =
-Origin?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.14-rc2#n440
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Regards,
-Markus
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementat=
+ion & Netlink protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+---
+ net/core/drop_monitor.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index 6efd4cccc9dd..9755d2010e70 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -1734,6 +1734,11 @@ static int __init init_net_drop_monitor(void)
+ 		return -ENOSPC;
+ 	}
+=20
++	for_each_possible_cpu(cpu) {
++		net_dm_cpu_data_init(cpu);
++		net_dm_hw_cpu_data_init(cpu);
++	}
++
+ 	rc =3D genl_register_family(&net_drop_monitor_family);
+ 	if (rc) {
+ 		pr_err("Could not create drop monitor netlink family\n");
+@@ -1749,11 +1754,6 @@ static int __init init_net_drop_monitor(void)
+=20
+ 	rc =3D 0;
+=20
+-	for_each_possible_cpu(cpu) {
+-		net_dm_cpu_data_init(cpu);
+-		net_dm_hw_cpu_data_init(cpu);
+-	}
+-
+ 	goto out;
+=20
+ out_unreg:
+@@ -1772,13 +1772,12 @@ static void exit_net_drop_monitor(void)
+ 	 * Because of the module_get/put we do in the trace state change path
+ 	 * we are guaranteed not to have any current users when we get here
+ 	 */
++	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
+=20
+ 	for_each_possible_cpu(cpu) {
+ 		net_dm_hw_cpu_data_fini(cpu);
+ 		net_dm_cpu_data_fini(cpu);
+ 	}
+-
+-	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
+ }
+=20
+ module_init(init_net_drop_monitor);
+--=20
+2.39.5
 
