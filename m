@@ -1,49 +1,75 @@
-Return-Path: <stable+bounces-115024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C82A32125
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:32:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0336AA32168
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9DC3165361
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:32:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA642163D0E
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18DE2054E9;
-	Wed, 12 Feb 2025 08:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6079C20551D;
+	Wed, 12 Feb 2025 08:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="uwUw8sPa"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3D91DED5F;
-	Wed, 12 Feb 2025 08:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14AB271828;
+	Wed, 12 Feb 2025 08:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739349152; cv=none; b=grSQeJZvJsLTGgbzBGcQrX47sWt33SZu0zfVBpgZcbNH8bnhQSyA/epFXlyJbUTvI0EuNiin2GnZmucWthaAY6Mkltzkxw2UYnjPSDqBmu9cEB8KoGAz/DCdDwN7vkW1h1JCkmcV7DyfNH01eSRrpBPnimSREQGOOL2aiDaoXEA=
+	t=1739349961; cv=none; b=tQEtkKlYNbG2Hxju5q9bkszC2jTMnWo03JESaHH8XzlP3MVO2wlfohfA1Y2yHZt1ykePNIer+mNeaV2xdmAolf0WyDNKVo6dHDOijLAa7T7sbHVpHMZXTCIcyfM+ibsoLQLuwBtHjTDk8O+u4F0gxlPDgEFoNV090p1JA34CugY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739349152; c=relaxed/simple;
-	bh=M6WO1IkI0Q7T3bIAJj97I6HVMTsXJ9vlKr3NrrCq6kM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q4GXorLIVfx9U7ey0u28jPyJ0BD76M6t5yN4izdOC8El/0eTd4mB0tSRrQz7FJtTEqZ6bi3OxqY9AwNMDRADaDFZwt70kT/WYbrk0C0ziEyf8CU1yjPyllhdT+HOd7/6XFkQgJaB5HMSLwz1ZZNxGU3GyXVv9r3qn0caavdXy6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowAAnkMmUXKxnuhRoDA--.44357S2;
-	Wed, 12 Feb 2025 16:32:22 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: tj@kernel.org,
-	josef@toxicpanda.com,
-	axboe@kernel.dk
-Cc: cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] block: Check blkg_to_lat return value to avoid NULL dereference
-Date: Wed, 12 Feb 2025 16:32:03 +0800
-Message-ID: <20250212083203.1030-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1739349961; c=relaxed/simple;
+	bh=SP/+UeGY2ctHk9D8AJWeItEVLVTLyVkEN8JUn948NJ8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n5etVZAe0nVjMvifCwz1Bm1QWqmVSMAKBN1Y6BRSm9Okx6dJeztWNYP/kFjjEH2Uh7m+u2j0QRGOJp5y8kSieDG5xf2Lw4BJisuZc1lvF2GeQs3XeGVvfJliseWtPoo76Hfv0oW2AATyoIOM1xtAqPD3svrzkfGw4zG1N/lxzh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=uwUw8sPa; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739349959; x=1770885959;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SP/+UeGY2ctHk9D8AJWeItEVLVTLyVkEN8JUn948NJ8=;
+  b=uwUw8sPaXh9R+l4zIFLY2XwPH1oh9l88fV9C2yR23b2SX8HBL85geYB3
+   du85wktevt6tvz3WLPlgUmzcgIrgc3/DL+Pabwqoe9hybAPOhplsTLWDA
+   IdDN6pXi0f/3epVFTMWlX14HO0yWB1gt5PKup23XiPloCTIKpYWQajVsA
+   I=;
+X-IronPort-AV: E=Sophos;i="6.13,279,1732579200"; 
+   d="scan'208";a="798132496"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 08:45:34 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:45084]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.208:2525] with esmtp (Farcaster)
+ id b0720d08-eebd-4a10-9586-a1e26bdbbb8e; Wed, 12 Feb 2025 08:45:34 +0000 (UTC)
+X-Farcaster-Flow-ID: b0720d08-eebd-4a10-9586-a1e26bdbbb8e
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 12 Feb 2025 08:45:34 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.118.243.86) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 12 Feb 2025 08:45:29 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <bastien.curutchet@bootlin.com>
+CC: <alexis.lothore@bootlin.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <horms@kernel.org>, <kuba@kernel.org>,
+	<kuniyu@amazon.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <razor@blackwall.org>,
+	<stable@vger.kernel.org>, <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH net 1/2] rtnetlink: Fix rtnl_net_cmp_locks() when DEBUG is off
+Date: Wed, 12 Feb 2025 17:45:19 +0900
+Message-ID: <20250212084519.38648-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250212-rtnetlink_leak-v1-1-27bce9a3ac9a@bootlin.com>
+References: <20250212-rtnetlink_leak-v1-1-27bce9a3ac9a@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,63 +77,20 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAnkMmUXKxnuhRoDA--.44357S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWDZrykZry8JF4DXF1xGrg_yoW8XF1rpa
-	18urZFvay5Gw47XF18Ka1rCryrCr4UKFyUCFZ5Aa4FkF1IgF4rtF10vF10yFWrAFWUCrs8
-	Jr1UtFZYvr45C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjMqcUUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAULA2esWj4JCwAAss
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWA001.ant.amazon.com (10.13.139.92) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-The function blkg_to_lat() may return NULL if the blkg is not associated
-with an iolatency group. In iolatency_set_min_lat_nsec() and
-iolatency_pd_init(), the return values are not checked, leading to
-potential NULL pointer dereferences.
+From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
+Date: Wed, 12 Feb 2025 09:23:47 +0100
+> rtnl_net_cmp_locks() always returns -1 if CONFIG_DEBUG_NET_SMALL_RTNL is
+> disabled. However, if CONFIG_DEBUG_NET_SMALL_RTNL is enabled, it returns 0
+> when both inputs are equal. It is then used by rtnl_nets_add() to call
+> put_net() if the net to be added is already present in the struct
+> rtnl_nets. As a result, when rtnl_nets_add() is called on an already
+> present net, put_net() is called only if DEBUG is on.
 
-This patch adds checks for the return values of blkg_to_lat and let it
-returns early if it is NULL, preventing the NULL pointer dereference.
-
-Fixes: d70675121546 ("block: introduce blk-iolatency io controller")
-Cc: stable@vger.kernel.org # 4.19+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- block/blk-iolatency.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/block/blk-iolatency.c b/block/blk-iolatency.c
-index ebb522788d97..398f0a1747c4 100644
---- a/block/blk-iolatency.c
-+++ b/block/blk-iolatency.c
-@@ -787,6 +787,8 @@ static int blk_iolatency_init(struct gendisk *disk)
- static void iolatency_set_min_lat_nsec(struct blkcg_gq *blkg, u64 val)
- {
- 	struct iolatency_grp *iolat = blkg_to_lat(blkg);
-+	if (!iolat)
-+		return;
- 	struct blk_iolatency *blkiolat = iolat->blkiolat;
- 	u64 oldval = iolat->min_lat_nsec;
- 
-@@ -1013,6 +1015,8 @@ static void iolatency_pd_init(struct blkg_policy_data *pd)
- 	 */
- 	if (blkg->parent && blkg_to_pd(blkg->parent, &blkcg_policy_iolatency)) {
- 		struct iolatency_grp *parent = blkg_to_lat(blkg->parent);
-+		if (!parent)
-+			return;
- 		atomic_set(&iolat->scale_cookie,
- 			   atomic_read(&parent->child_lat.scale_cookie));
- 	} else {
--- 
-2.42.0.windows.2
-
+If CONFIG_DEBUG_NET_SMALL_RTNL is disabled, every duplicate net is
+added to rtnl_nets, so put_net() is expected to be called for each
+in rtnl_nets_destroy().
 
