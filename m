@@ -1,229 +1,230 @@
-Return-Path: <stable+bounces-115007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8740CA31F99
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:03:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F87A31F9D
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B71C3A9369
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:03:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D40D7A27DF
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8319C1F8BCA;
-	Wed, 12 Feb 2025 07:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9321FCF4F;
+	Wed, 12 Feb 2025 07:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sj6xgGTX"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5771FF1C8;
-	Wed, 12 Feb 2025 07:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA321F8BCA;
+	Wed, 12 Feb 2025 07:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739343817; cv=none; b=TOM0xJRC5lPNiGn2NN0iaoezkJYDJM0s9A5JBewynRxMamoOooosZJPdtFnKmgB/IHPNeDN6nmR4JQBC46HJVDNVxDTpm0QRRIx9k/SXMmxMR+ehYNaI63xKLH7svptoc+k8IrYGWn0BW5cIBWBZ44SWfYxOT5u5w6lzBcZOwOk=
+	t=1739343875; cv=none; b=S80Hysq/QXlma8glRRtb0Wkz3Tj1JlwOBbrMVS2OPQtv+WMQM/CU7a1oej8AVSLNNA+MlbCYDKGnzzFt9tp8CzoWSdzTFwXJB0NuagywGAT/eNNJmAo5QdboZXSUwuyD3X0vH9rhWW1QNpkljIlB+nAYHPtVDnMmP3CS4rKPZPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739343817; c=relaxed/simple;
-	bh=Hjjh5CZxpHBr3a17is6d8bIBWnOgwJ0mtloGTX3Bkjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fI0UDPFf8OAdpbyaUtCsY4xAeW74lzwdUFpDRUs3050FIvXWsN7a2SNeQwt0nY6GtQWoBNHeWdZC87CWeCCv2sekIdLd9sL41NykRsbANHhTWmWHbLhUWI2jLAAWPQSV+NEbKT7oRLOX+P73OTSTvrZ0++nrR4HO+KDDXkF6QKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowAAXHW24R6xnvvadDA--.50898S2;
-	Wed, 12 Feb 2025 15:03:25 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	YiPeng.Chai@amd.com,
-	tao.zhou1@amd.com
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: Remove redundant return value checks for amdgpu_ras_error_data_init
-Date: Wed, 12 Feb 2025 15:03:02 +0800
-Message-ID: <20250212070302.806-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1739343875; c=relaxed/simple;
+	bh=7aYZTVeKHA59epQdC4mpWCUcpBLfULI6G5NrOYtBcEc=;
+	h=Date:To:From:Subject:Message-Id; b=E5NOkBTI/zTws0GeCcS/6JTf7pK4Jq9zOsfBVBELIUya4x62VgG/DcrbhNxqiKr2ch7PMRwAKZdPQoGKF1Msj4cm/yWIUXylLpEf49tquEgLhFSf8vn0KejHVpujldOE5r9GAXgNj8cvt18CvTmFs9Mu1RQYqZqHuhyHRJG/75o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sj6xgGTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC518C4CEDF;
+	Wed, 12 Feb 2025 07:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1739343875;
+	bh=7aYZTVeKHA59epQdC4mpWCUcpBLfULI6G5NrOYtBcEc=;
+	h=Date:To:From:Subject:From;
+	b=sj6xgGTXmke2mmIPTg/wZBlOdw4/vcOlWcy6VQdFiOTiJC1hwyaG+pdzZ1Oxma6af
+	 tQekat5jnTma/STgxWnSdvz3BBwFMHHhL+1UOOSqY2XFSDjRt6ezG8TExShmmUl597
+	 gJPQ9gxbUTO153i/fsTm+QMopLUBUCo01+plirdA=
+Date: Tue, 11 Feb 2025 23:04:34 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,muchun.song@linux.dev,linux@armlinux.org.uk,hughd@google.com,ezra@easyb.ch,david@redhat.com,zhengqi.arch@bytedance.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + arm-pgtable-fix-null-pointer-dereference-issue.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250212070434.EC518C4CEDF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAXHW24R6xnvvadDA--.50898S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuw17Xw4UZrW7Xw4fXrW3Awb_yoWxJrW7pF
-	WrJw1DZryUZFnrJrykAFyDuasIyw1SvFy8KF40ya4I93W5CrW5XF1rtw40q3ZrKr4DCwsI
-	vrWDW3yUWF1qvF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GF4l42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeJ5rDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8LA2esAO-aZgAAsW
 
-The function amdgpu_ras_error_data_init() always returns 0, making its
-return value checks redundant. This patch changes its return type to
-void and removes all unnecessary checks in the callers.
 
-This simplifies the code and avoids confusion about the function's
-behavior. Additionally, this change keeps the usage consistent with
-amdgpu_ras_do_page_retirement(), which also does not check the return
-value.
+The patch titled
+     Subject: arm: pgtable: fix NULL pointer dereference issue
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     arm-pgtable-fix-null-pointer-dereference-issue.patch
 
-Fixes: 5b1270beb380 ("drm/amdgpu: add ras_err_info to identify RAS error source")
-Cc: stable@vger.kernel.org # 6.7+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm-pgtable-fix-null-pointer-dereference-issue.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: arm: pgtable: fix NULL pointer dereference issue
+Date: Wed, 12 Feb 2025 14:40:02 +0800
+
+When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
+parameter is NULL, which will cause a NULL pointer dereference issue in
+adjust_pte():
+
+Unable to handle kernel NULL pointer dereference at virtual address 00000030 when read
+Hardware name: Atmel AT91SAM9
+PC is at update_mmu_cache_range+0x1e0/0x278
+LR is at pte_offset_map_rw_nolock+0x18/0x2c
+Call trace:
+ update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
+ remove_migration_pte from rmap_walk_file+0xcc/0x130
+ rmap_walk_file from remove_migration_ptes+0x90/0xa4
+ remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
+ migrate_pages_batch from migrate_pages+0x188/0x488
+ migrate_pages from compact_zone+0x56c/0x954
+ compact_zone from compact_node+0x90/0xf0
+ compact_node from kcompactd+0x1d4/0x204
+ kcompactd from kthread+0x120/0x12c
+ kthread from ret_from_fork+0x14/0x38
+Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
+
+To fix it, do not rely on whether 'ptl' is equal to decide whether to hold
+the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
+enabled. In addition, if two vmas map to the same PTE page, there is no
+need to hold the pte lock again, otherwise a deadlock will occur. Just add
+the need_lock parameter to let adjust_pte() know this information.
+
+Link: https://lkml.kernel.org/r/20250212064002.55598-1-zhengqi.arch@bytedance.com
+Fixes: fc9c45b71f43 ("arm: adjust_pte() use pte_offset_map_rw_nolock()")
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reported-by: Ezra Buehler <ezra@easyb.ch>
+Closes: https://lore.kernel.org/lkml/CAM1KZSmZ2T_riHvay+7cKEFxoPgeVpHkVFTzVVEQ1BO0cLkHEQ@mail.gmail.com/
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 19 +++++--------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h |  2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c |  8 ++------
- drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c  |  3 +--
- drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c  |  3 +--
- 5 files changed, 10 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 4c9fa24dd972..aef1b2b713a2 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -182,9 +182,7 @@ static int amdgpu_reserve_page_direct(struct amdgpu_device *adev, uint64_t addre
- 		return 0;
- 	}
- 
--	ret = amdgpu_ras_error_data_init(&err_data);
--	if (ret)
--		return ret;
-+	amdgpu_ras_error_data_init(&err_data);
- 
- 	memset(&err_rec, 0x0, sizeof(struct eeprom_table_record));
- 	err_data.err_addr = &err_rec;
-@@ -687,8 +685,7 @@ static struct ras_manager *amdgpu_ras_create_obj(struct amdgpu_device *adev,
- 	if (alive_obj(obj))
- 		return NULL;
- 
--	if (amdgpu_ras_error_data_init(&obj->err_data))
--		return NULL;
-+	amdgpu_ras_error_data_init(&obj->err_data)
- 
- 	obj->head = *head;
- 	obj->adev = adev;
-@@ -1428,9 +1425,7 @@ static int amdgpu_ras_query_error_status_with_event(struct amdgpu_device *adev,
- 	if (!obj)
- 		return -EINVAL;
- 
--	ret = amdgpu_ras_error_data_init(&err_data);
--	if (ret)
--		return ret;
-+	amdgpu_ras_error_data_init(&err_data);
- 
- 	if (!amdgpu_ras_get_error_query_mode(adev, &error_query_mode))
- 		return -EINVAL;
-@@ -2255,9 +2250,7 @@ static void amdgpu_ras_interrupt_umc_handler(struct ras_manager *obj,
- 	if (!data->cb)
- 		return;
- 
--	ret = amdgpu_ras_error_data_init(&err_data);
--	if (ret)
--		return;
-+	amdgpu_ras_error_data_init(&err_data);
- 
- 	/* Let IP handle its data, maybe we need get the output
- 	 * from the callback to update the error type/count, etc
-@@ -4623,13 +4616,11 @@ void amdgpu_ras_inst_reset_ras_error_count(struct amdgpu_device *adev,
- 	}
+ arch/arm/mm/fault-armv.c |   40 +++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
+
+--- a/arch/arm/mm/fault-armv.c~arm-pgtable-fix-null-pointer-dereference-issue
++++ a/arch/arm/mm/fault-armv.c
+@@ -62,7 +62,7 @@ static int do_adjust_pte(struct vm_area_
  }
  
--int amdgpu_ras_error_data_init(struct ras_err_data *err_data)
-+void amdgpu_ras_error_data_init(struct ras_err_data *err_data)
+ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+-		      unsigned long pfn, struct vm_fault *vmf)
++		      unsigned long pfn, bool need_lock)
  {
- 	memset(err_data, 0, sizeof(*err_data));
+ 	spinlock_t *ptl;
+ 	pgd_t *pgd;
+@@ -99,12 +99,11 @@ again:
+ 	if (!pte)
+ 		return 0;
  
- 	INIT_LIST_HEAD(&err_data->err_node_list);
--
--	return 0;
- }
+-	/*
+-	 * If we are using split PTE locks, then we need to take the page
+-	 * lock here.  Otherwise we are using shared mm->page_table_lock
+-	 * which is already locked, thus cannot take it.
+-	 */
+-	if (ptl != vmf->ptl) {
++	if (need_lock) {
++		/*
++		 * Use nested version here to indicate that we are already
++		 * holding one similar spinlock.
++		 */
+ 		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+ 		if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+ 			pte_unmap_unlock(pte, ptl);
+@@ -114,7 +113,7 @@ again:
  
- static void amdgpu_ras_error_node_release(struct ras_err_node *err_node)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-index 6db772ecfee4..5f88e70fbf5c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-@@ -931,7 +931,7 @@ void amdgpu_ras_inst_reset_ras_error_count(struct amdgpu_device *adev,
- 					   uint32_t reg_list_size,
- 					   uint32_t instance);
+ 	ret = do_adjust_pte(vma, address, pfn, pte);
  
--int amdgpu_ras_error_data_init(struct ras_err_data *err_data);
-+void amdgpu_ras_error_data_init(struct ras_err_data *err_data);
- void amdgpu_ras_error_data_fini(struct ras_err_data *err_data);
- int amdgpu_ras_error_statistic_ce_count(struct ras_err_data *err_data,
- 					struct amdgpu_smuio_mcm_config_info *mcm_info,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
-index 896f3609b0ee..5de6e332c2cd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
-@@ -52,9 +52,7 @@ int amdgpu_umc_page_retirement_mca(struct amdgpu_device *adev,
- 	struct ras_err_data err_data;
- 	int ret;
+-	if (ptl != vmf->ptl)
++	if (need_lock)
+ 		spin_unlock(ptl);
+ 	pte_unmap(pte);
  
--	ret = amdgpu_ras_error_data_init(&err_data);
--	if (ret)
--		return ret;
-+	amdgpu_ras_error_data_init(&err_data);
+@@ -123,16 +122,17 @@ again:
  
- 	err_data.err_addr =
- 		kcalloc(adev->umc.max_ras_err_cnt_per_query,
-@@ -230,9 +228,7 @@ int amdgpu_umc_pasid_poison_handler(struct amdgpu_device *adev,
- 			};
- 			struct ras_manager *obj = amdgpu_ras_find_obj(adev, &head);
+ static void
+ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+-	      unsigned long addr, pte_t *ptep, unsigned long pfn,
+-	      struct vm_fault *vmf)
++	      unsigned long addr, pte_t *ptep, unsigned long pfn)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct vm_area_struct *mpnt;
+ 	unsigned long offset;
++	unsigned long start;
+ 	pgoff_t pgoff;
+ 	int aliases = 0;
  
--			ret = amdgpu_ras_error_data_init(&err_data);
--			if (ret)
--				return ret;
-+			amdgpu_ras_error_data_init(&err_data);
+ 	pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
++	start = ALIGN_DOWN(addr, PMD_SIZE);
  
- 			ret = amdgpu_umc_do_page_retirement(adev, &err_data, NULL, reset);
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-index a26a9be58eac..d4bdfe280c88 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-@@ -364,8 +364,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
- 	struct ras_err_data err_data;
- 	struct amdgpu_ras *ras = amdgpu_ras_get_context(adev);
- 
--	if (amdgpu_ras_error_data_init(&err_data))
--		return;
-+	amdgpu_ras_error_data_init(&err_data);
- 
- 	if (adev->asic_type == CHIP_ALDEBARAN)
- 		bif_doorbell_intr_cntl = RREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL_ALDE);
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-index 8a0a63ac88d2..c79ed1adf681 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-@@ -537,8 +537,7 @@ static void nbio_v7_9_handle_ras_controller_intr_no_bifring(struct amdgpu_device
- 	struct ras_err_data err_data;
- 	struct amdgpu_ras *ras = amdgpu_ras_get_context(adev);
- 
--	if (amdgpu_ras_error_data_init(&err_data))
--		return;
-+	amdgpu_ras_error_data_init(&err_data);
- 
- 	bif_doorbell_intr_cntl = RREG32_SOC15(NBIO, 0, regBIF_BX0_BIF_DOORBELL_INT_CNTL);
- 
--- 
-2.42.0.windows.2
+ 	/*
+ 	 * If we have any shared mappings that are in the same mm
+@@ -141,6 +141,14 @@ make_coherent(struct address_space *mapp
+ 	 */
+ 	flush_dcache_mmap_lock(mapping);
+ 	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
++		unsigned long mpnt_addr;
++		/*
++		 * If we are using split PTE locks, then we need to take the pte
++		 * lock. Otherwise we are using shared mm->page_table_lock which
++		 * is already locked, thus cannot take it.
++		 */
++		bool need_lock = IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS);
++
+ 		/*
+ 		 * If this VMA is not in our MM, we can ignore it.
+ 		 * Note that we intentionally mask out the VMA
+@@ -151,7 +159,15 @@ make_coherent(struct address_space *mapp
+ 		if (!(mpnt->vm_flags & VM_MAYSHARE))
+ 			continue;
+ 		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+-		aliases += adjust_pte(mpnt, mpnt->vm_start + offset, pfn, vmf);
++		mpnt_addr = mpnt->vm_start + offset;
++		/*
++		 * If mpnt_addr and addr are mapped to the same PTE page, there
++		 * is no need to hold the pte lock again, otherwise a deadlock
++		 * will occur.
++		 */
++		if (mpnt_addr >= start && mpnt_addr - start < PMD_SIZE)
++			need_lock = false;
++		aliases += adjust_pte(mpnt, mpnt_addr, pfn, need_lock);
+ 	}
+ 	flush_dcache_mmap_unlock(mapping);
+ 	if (aliases)
+@@ -194,7 +210,7 @@ void update_mmu_cache_range(struct vm_fa
+ 		__flush_dcache_folio(mapping, folio);
+ 	if (mapping) {
+ 		if (cache_is_vivt())
+-			make_coherent(mapping, vma, addr, ptep, pfn, vmf);
++			make_coherent(mapping, vma, addr, ptep, pfn);
+ 		else if (vma->vm_flags & VM_EXEC)
+ 			__flush_icache_all();
+ 	}
+_
+
+Patches currently in -mm which might be from zhengqi.arch@bytedance.com are
+
+mm-pgtable-fix-incorrect-reclaim-of-non-empty-pte-pages.patch
+arm-pgtable-fix-null-pointer-dereference-issue.patch
 
 
