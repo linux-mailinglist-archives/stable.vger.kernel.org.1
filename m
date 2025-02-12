@@ -1,186 +1,124 @@
-Return-Path: <stable+bounces-115004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534E8A31EA7
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:21:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17E4A31EE6
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D6A3A93D0
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 06:21:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F01A57A24B9
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 06:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0EB1FBE8B;
-	Wed, 12 Feb 2025 06:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727331FC107;
+	Wed, 12 Feb 2025 06:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBuV9ISy"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="EMAxMEDK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842B21FBC9B;
-	Wed, 12 Feb 2025 06:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A998D1FBEA6;
+	Wed, 12 Feb 2025 06:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739341270; cv=none; b=RGZPS2yE2Bhj8ujtSMqSd5CMMZ0R/W2Opxj7ItESeLNO3y9BSarBOWVv1fi0mOnAV3gVMDalU+DkRGo1y46JnttsXg2P16RTR6/0Xmo1hR9Zo7ee2fHlNJDLg6FXmMXB+CZSe9867Z8jLjXkPoL4NTJzUBw1re5KPvsJ9+X2ONo=
+	t=1739341624; cv=none; b=XTYW1NT/E8A3AzZHANRpwaerdAF28xWIGsCNClzOaBmmvvpz72VA37dY2e0uu/rf1RWj1AQofAcxpFKrq6jRXSEENyYBKZhds2MJJElVOcY6IQU5ijegH101qAzDOoy1Z+3pmbh2OFB+CYVGaITuYIOnYxRZXeZRRoofnl21bh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739341270; c=relaxed/simple;
-	bh=hUFRZ3/2nTYL00SOXKKlnbj0aavoCWScgajjbamPQDc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uwz4xvFvWMu5pulZRttUilE71oXfRu+Y4Dz7sZ/NqLUyeRz+XsiONurEdcUxUF8MiUdfTAxnFyR0eZEbXadUE4ixSDQj1Y0zTE4ZJ1JUHWKBaQs8goMnld/oxU38EkhGG23gfCTqQIC3ZOmsk0VFan8iCik0sStrUBF3j6JgJxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBuV9ISy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D1AC4CEDF;
-	Wed, 12 Feb 2025 06:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739341270;
-	bh=hUFRZ3/2nTYL00SOXKKlnbj0aavoCWScgajjbamPQDc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZBuV9ISyt6Hv5bBoESuCD0ATGfFRij9LSG+q99ghFLcuN/356mHRwXW2zHX429XHx
-	 gUkISxIQLqRs6APfoYmyBahdpBXGxL89xCT48W/gW7H6Z16rANAlJ/3VpmtV3ncWO0
-	 jBRZk6o3QhLwzxBjaTjxIQif/zyFZtbMkvA1Z9En1QURY1yiEgkkEtiLeuzXyO+7Ia
-	 IKQIdnXyOyO0QENXaEt5jR8Yr76Xg95O1QHcV1A0RlMFpJnMj10B4efWoy7VwJsWCy
-	 9B7zFb/G4+vUS4f1LZvoBdsclOeeoJ52hZi54Eia1huToSdKiYqNkviCHlKHkoIaiE
-	 qDHlyS6s1oqSw==
-Message-ID: <49bc1a59-1f5b-456b-aba4-be056d091e26@kernel.org>
-Date: Wed, 12 Feb 2025 07:21:06 +0100
+	s=arc-20240116; t=1739341624; c=relaxed/simple;
+	bh=65IGQQyNlGL97eMSscE+Db1rh6uKwtQ4wn+Khd1QG0g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oOct6qB3ZseyUhGFiWT/NAefXDD4NTWi+6wS+sY+z9kaIxSAIfBWCU/d34wjo4kaVtaJ+D+x4Yi9k9Xr1Ylv7PU1Dyu50XP9ViJUehkaA47v+QYmtIXfJEL8CVLD27nM4tlofmvGTbH0BZThoctzMOMH2AnDWbFn/THDJaPUTyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=EMAxMEDK; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Yt7d86tH4z9tFG;
+	Wed, 12 Feb 2025 07:26:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1739341613;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7N+XpMkRRdoh+Bj42XO2iok1EBcqM54SUgrwByemnI=;
+	b=EMAxMEDKouOdv9tfDkWZG9Kxvn1mxdnuLb9WNeAiCvYXxc3nVbfTsgU1q415iHfhYwMkt3
+	zmElKwAwm9kd1tc9HhilRWGK6l26GIvDEdQrmRDVt4bGZYe9GdOiuy4xQs4hRe6WrQPMU4
+	RcmKm8z2Vq1eUAlNA5jGkJq6lZrpGrjOI12C8UNWS0+Cr9PAvkx7oTPy8VA3tGo3zw1JpP
+	aS13FsSF/ENWFui/8nYg3htTcVtf8MauFZB0Ecs0Ai81Rzlh0JT+1Igxkp9nCsJgKn/bTm
+	NKTlPIkeOMH+7bw99qXZ4Hmjkjphs8qfeznOTf2sOzwRoH7nKC2iQml3GjXbIw==
+From: Frank Oltmanns <frank@oltmanns.dev>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
+ <konradybcio@kernel.org>,  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+  Chris Lew <quic_clew@quicinc.com>,  linux-arm-msm@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Stephan Gerhold
+ <stephan.gerhold@linaro.org>,  Johan Hovold <johan+linaro@kernel.org>,
+  Caleb Connolly <caleb.connolly@linaro.org>,  Joel Selvaraj
+ <joelselvaraj.oss@gmail.com>,  Alexey Minnekhanov
+ <alexeymin@postmarketos.org>,  stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: pd-mapper: defer probing on sdm845
+In-Reply-To: <9f8cf902-85a3-43db-bce9-4fc9b876c473@kernel.org> (Krzysztof
+	Kozlowski's message of "Wed, 12 Feb 2025 06:45:17 +0100")
+References: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
+	<9f8cf902-85a3-43db-bce9-4fc9b876c473@kernel.org>
+Date: Wed, 12 Feb 2025 07:26:43 +0100
+Message-ID: <871pw38yqk.fsf@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] HID: corsair-void: Update power supply values with a
- unified work handler
-To: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>, linux-input@vger.kernel.org
-Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250211224705.13576-3-stuart.a.hayhurst@gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250211224705.13576-3-stuart.a.hayhurst@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4Yt7d86tH4z9tFG
 
-On 11. 02. 25, 23:46, Stuart Hayhurst wrote:
-> corsair_void_process_receiver can be called from an interrupt context,
-> locking battery_mutex in it was causing a kernel panic.
-> Fix it by moving the critical section into its own work, sharing this
-> work with battery_add_work and battery_remove_work to remove the need
-> for any locking
-> 
-> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1236843
-> 
+Hi Krzysztof,
 
-No \n ^^ here.
+On 2025-02-12 at 06:45:17 +0100, Krzysztof Kozlowski <krzk@kernel.org> wrot=
+e:
+> On 05/02/2025 22:57, Frank Oltmanns wrote:
+>> +static const struct of_device_id qcom_pdm_defer[] __maybe_unused =3D {
+>> +	{ .compatible =3D "qcom,sdm845", .data =3D &first_dev_remoteproc3, },
+>> +	{},
+>> +};
+>>  static void qcom_pdm_stop(struct qcom_pdm_data *data)
+>>  {
+>>  	qcom_pdm_free_domains(data);
+>> @@ -637,6 +651,25 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
+>>  	return ERR_PTR(ret);
+>>  }
+>>
+>> +static bool qcom_pdm_ready(struct auxiliary_device *auxdev)
+>> +{
+>> +	const struct of_device_id *match;
+>> +	struct device_node *root;
+>> +	struct qcom_pdm_probe_first_dev_quirk *first_dev;
+>> +
+>> +	root =3D of_find_node_by_path("/");
+>> +	if (!root)
+>> +		return true;
+>> +
+>> +	match =3D of_match_node(qcom_pdm_defer, root);
+>
+> Aren't you open-coding machine is compatible?
+>
 
-> Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-> ---
-> --- a/drivers/hid/hid-corsair-void.c
-> +++ b/drivers/hid/hid-corsair-void.c
-...
-> @@ -107,6 +105,10 @@
->   #define CORSAIR_VOID_SIDETONE_MAX_WIRELESS	55
->   #define CORSAIR_VOID_SIDETONE_MAX_WIRED		4096
->   
-> +#define CORSAIR_VOID_ADD_BATTERY		BIT(0)
-> +#define CORSAIR_VOID_REMOVE_BATTERY		BIT(1)
-> +#define CORSAIR_VOID_UPDATE_BATTERY		BIT(2)
+Thanks for pointing out of_machine_is_compatible =E2=80=94 I wasn't aware o=
+f it!
 
-I would do an enum, but it's a matter of taste/preference.
+The patch was already NACK'ed by Bjorn, but I still learned something
+from your feedback.
 
-> @@ -583,16 +565,48 @@ static void corsair_void_battery_add_work_handler(struct work_struct *work)
->   	drvdata->battery = new_supply;
->   }
->   
-> +static void corsair_void_battery_work_handler(struct work_struct *work)
-> +{
-> +	struct corsair_void_drvdata *drvdata = container_of(work,
-> +		struct corsair_void_drvdata, battery_work);
-> +
-> +	bool add_battery = test_and_clear_bit(CORSAIR_VOID_ADD_BATTERY,
-> +					      &drvdata->battery_work_flags);
-> +	bool remove_battery = test_and_clear_bit(CORSAIR_VOID_REMOVE_BATTERY,
-> +						 &drvdata->battery_work_flags);
-> +	bool update_battery = test_and_clear_bit(CORSAIR_VOID_UPDATE_BATTERY,
-> +						 &drvdata->battery_work_flags);
-> +
-> +	/* Add, remove or skip battery */
+Thanks,
+  Frank
 
-What is to skip a battery? Anyway, the comments here seem to be 
-superfluous as the code is obvious™.
-
-> +	if (add_battery && !remove_battery) {
-> +		corsair_void_add_battery(drvdata);
-> +	} else if (remove_battery && !add_battery) {
-> +		if (drvdata->battery) {
-
-Perhaps '&& drvdata->battery' instead of the nested 'if'?
-
-> +			power_supply_unregister(drvdata->battery);
-> +			drvdata->battery = NULL;
-> +		}
-> +	}
-> +
-> +	/* Communicate that battery values changed */
-> +	if (update_battery) {
-> +		if (drvdata->battery)
-
-Ditto.
-
-> +			power_supply_changed(drvdata->battery);
-> +	}
-> +
-> +}
-
-Overall, LGTM.
-
-thanks,
--- 
-js
-suse labs
+>
+>
+>
+> Best regards,
+> Krzysztof
 
