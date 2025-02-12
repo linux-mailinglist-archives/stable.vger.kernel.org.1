@@ -1,108 +1,108 @@
-Return-Path: <stable+bounces-115042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAE6A32382
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:32:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5810A323CD
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDEBD3A2C72
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F68C166836
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9602080EA;
-	Wed, 12 Feb 2025 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC276208964;
+	Wed, 12 Feb 2025 10:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1LECqaT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZC7aKLme"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697E41F9A83;
-	Wed, 12 Feb 2025 10:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF802AF19;
+	Wed, 12 Feb 2025 10:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739356363; cv=none; b=MhBJnjz6kRo/HqSd9ibcbn213MalxJZ7B7oxqIdXFCo8FOiRwuMfyl6weXo5IzGIqVxgQnL6lpMgNsrzegnIr3UimoNeV0XtPCXZLyvuBeCnG6Dn4E6OTyBf7SWn3+1O9/kydZ9r/bAbeQJmyz5Aaozy3UBhjM5ugXZlyoZaVaY=
+	t=1739357197; cv=none; b=HSsf3axcwsI/r4AVqBmOoMyX08sQ/66daB7xM/jyCOa8Tl2s+KZjsy/5LJ9udBjebzS///tgyJjI0eBmlZHy9afeVwJ38GGgpSrvIwYm6j5e94Pvckq0Xc5XmJh1Yed34n2AW/tYcVk8mA5sqJBzQv/FNqqo/gSS4xF1aqwZhZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739356363; c=relaxed/simple;
-	bh=sedcMzGgzynwVSx2PMNV5XsP9/FbqRF4gvQt3ENTXFc=;
+	s=arc-20240116; t=1739357197; c=relaxed/simple;
+	bh=ODbnclSY3LR9KpwCFhYSaDBnzqSzIyKsMqRNqOXAPjM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOCauOBAP07PMpJKm1gvr/7fsDfdx+4gJapzC4rtd9Rd6xb/E2gj2iOKJy/q6+MrgTFSjNZIDGrohczwontR3x+ucw7FHu3Q5ThDQQu2u+szYWXA0UPxLaRqYqXY72uJ2D/U7/6Y60YQL4lS9UZmHPRZwcr1j7/HjRsMHvaqhwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1LECqaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1FBC4CEE7;
-	Wed, 12 Feb 2025 10:32:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739356362;
-	bh=sedcMzGgzynwVSx2PMNV5XsP9/FbqRF4gvQt3ENTXFc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l1LECqaT0XrgFE/9ADMpysXjoQNy4yf3s8rfaVAsPxi5rkLSEog+21fU2BV2ts7FO
-	 Md1N5KkbjGuphksamJVPmlFGpGXjlmr/sazwEM+L9sUbhInNr8Q7esex1ICl3l53No
-	 1X8nFqEYX0BBwOwQV4Kaefx2kMPSbAwaXon+HbHiMz95BMidLFJZY3s1/tiYyaT0JA
-	 JEaGdXGwkTJhb4L6my8Rl74SRHc/bcEXQcF7ffgr+pgeVCHNUfmEmCjVgjp+MUHRoP
-	 E3UZ77odtmgcKJfkmBfvVvtiMl+hpBZDccmmC9TNP0dLBMfEQ6MzO2wUaSftts9oyv
-	 +UWWuITkV/5AA==
-Date: Wed, 12 Feb 2025 11:32:35 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Zicheng Qu <quzicheng@huawei.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, jlayton@kernel.org, axboe@kernel.dk, joel.granados@kernel.org, 
-	tglx@linutronix.de, hch@lst.de, len.brown@intel.com, pavel@ucw.cz, 
-	pengfei.xu@intel.com, rafael@kernel.org, tanghui20@huawei.com, zhangqiao22@huawei.com, 
-	judy.chenhui@huawei.com, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, linux-pm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] acct: block access to kernel internal filesystems
-Message-ID: <20250212-summen-vergibt-6c6562c0b0bd@brauner>
-References: <20250211-work-acct-v1-0-1c16aecab8b3@kernel.org>
- <20250211-work-acct-v1-2-1c16aecab8b3@kernel.org>
- <20250211205418.GI1977892@ZenIV>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GcS3/09vFKQ40b0YGxsSR5MFzuqS7SfLJBojNEUjNjHRtMFSspXjyWgIaq9I0TV6XlM/XF5T5I4WohS8YOakZjhuX0TWmEcSRsOw6Hf+i6XWFcKaANugm+63aL8STSsLpN6WPw/YaKc/CR1f6IZ83J6GcIWyYg/070NOxqqjJGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZC7aKLme; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739357196; x=1770893196;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ODbnclSY3LR9KpwCFhYSaDBnzqSzIyKsMqRNqOXAPjM=;
+  b=ZC7aKLmeQjobrF9DqtKspFGmLOiSGP7HIu9vluhUI67F0cN0Y4LQMnR5
+   XdxZmv2MtFD/l5aS1iE+9nhZN+lpomR37d4NK0I2WCBw3/Q4ax4mDAI1V
+   dLu65/Ud9DOMydgaEpyTa4J+HgwqBVm/aNwajafF4f3X+O9LgclDAnIF7
+   Kepbw2Qk+WFBsjupCYLcOw+AqcexPfSJecfV92qBybnUqjGTVWAfFdT7O
+   d5eMZXgx5gZECvN9htmFoza+aweSB2PJTEy+HaXMusaYBm6+vtAso6SOI
+   FyfeWq8IMI6CWPSN4Hy2ieEHdHtd820HrFJ33AQJSzRqARmHAPxe+6TG6
+   Q==;
+X-CSE-ConnectionGUID: zfQu473BT9Gm5RYqHBg8aw==
+X-CSE-MsgGUID: nSq2VWytQQSehHcwFIG5uQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39710583"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="39710583"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:46:36 -0800
+X-CSE-ConnectionGUID: TGg3wbbkQgaVoMSQBy5hgg==
+X-CSE-MsgGUID: h5/nJTE6SNOAWC3yBz6oFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113282741"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:46:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tiAGE-0000000Ao7P-3MqD;
+	Wed, 12 Feb 2025 12:46:30 +0200
+Date: Wed, 12 Feb 2025 12:46:30 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: mario.limonciello@amd.com, westeri@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl, stable@vger.kernel.org, Delgan <delgan.py@gmail.com>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
+Message-ID: <Z6x8BvavGHz8qMP3@smile.fi.intel.com>
+References: <20250211203222.761206-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250211205418.GI1977892@ZenIV>
+In-Reply-To: <20250211203222.761206-1-superm1@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Feb 11, 2025 at 08:54:18PM +0000, Al Viro wrote:
-> On Tue, Feb 11, 2025 at 06:16:00PM +0100, Christian Brauner wrote:
-> > There's no point in allowing anything kernel internal nor procfs or
-> > sysfs.
+On Tue, Feb 11, 2025 at 02:32:01PM -0600, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> > +	/* Exclude kernel kernel internal filesystems. */
-> > +	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
-> > +		kfree(acct);
-> > +		filp_close(file, NULL);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	/* Exclude procfs and sysfs. */
-> > +	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
-> > +		kfree(acct);
-> > +		filp_close(file, NULL);
-> > +		return -EINVAL;
-> > +	}
+> Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
+> specified as an edge triggered input and also a wake source but this pin is
+> supposed to be an output pin for an LED, so it's effectively floating.
 > 
-> That looks like a really weird way to test it, especially the second
-> part...
+> Block the interrupt from getting set up for this GPIO on this device.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-and-tested-by: Delgan <delgan.py@gmail.com>
+> Close: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
 
-SB_I_USERNS_VISIBLE has only ever applied to procfs and sysfs.
+Closes:
 
-Granted, it's main purpose is to indicate that a caller in an
-unprivileged userns might have a restricted view of sysfs/procfs already
-so mounting it again must be prevented to not reveal any overmounted
-entities (A Strong candidate for the price of least transparent cause of
-EPERMs from the kernel imho.).
+Otherwise,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-That flag could reasonably go and be replaced by explicit checks for
-procfs and sysfs in general because we haven't ever grown any additional
-candidates for that mess and it's unlikely that we ever will. But as
-long as we have this I don't mind using it. If it's important to you
-I'll happily change it. If you can live with the comment I added I'll
-leave it.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-To be perfectly blunt: Imho, this api isn't worth massaging a single
-line of VFS code which is why this isn't going to win the price of
-prettiest fix of a NULL-deref.
+
 
