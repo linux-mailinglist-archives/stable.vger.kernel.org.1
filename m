@@ -1,122 +1,141 @@
-Return-Path: <stable+bounces-115074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A394CA32EAC
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 19:28:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C273A32EC2
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 19:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 244AE1887B0E
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 18:28:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82DD3A3F53
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 18:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B41825E47A;
-	Wed, 12 Feb 2025 18:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0562C25E452;
+	Wed, 12 Feb 2025 18:34:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCC525E446;
-	Wed, 12 Feb 2025 18:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149AC27180B;
+	Wed, 12 Feb 2025 18:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739384926; cv=none; b=oETWMoq28JmpP5nDad7+5vY70HgQSNextQn7emqITd6CLFF6Ead3G9VVajY1y/qwXB4TQGG/PWK9sqTDzSF/DYZViDd90xf24As0F8R4n0rfDV8OiLFspKV+6iufs/L/JRaGs8ags6aOxXrAJRS5btIkE0+of6Pk6PmOPJaL08I=
+	t=1739385281; cv=none; b=suhs5Oke8YphULahJj5paPemGe/N0GOgUukdZ9G2KcrBc/bawXnHoGkOPI5Mgy2FGAQXmKJYvnMle80PhYNcPBSB6iG9EPTrnZCryJ8Q7EGYBGzDWwhVq4M+HR8wYzzT2AEIvsDX/kZltJLMv2k3fqB5rMPQQXOA6/6HWU97ihA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739384926; c=relaxed/simple;
-	bh=MEkWB4ja2rW/5DxYBYUfS8Zpe+WMG31MnhY7TpmVYNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BAlUqLsRKv19v5rQEzWU0ebjTw471rd6s9+dYfeYTzzDuEtzocyuyWfsiPagsP0EdOheCTUkJzrWSaj0CIAdsCU9Rzyw5QHW7GeYHFyzTJS1fTixvfrhvBzcVFGaFjXRKVJdtn68WKUCPUmn9OlT57mxgTixTGkU+vaRRzQjAJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD73C4CEDF;
-	Wed, 12 Feb 2025 18:28:42 +0000 (UTC)
-Date: Wed, 12 Feb 2025 18:28:40 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Cc: anshuman.khandual@arm.com, will@kernel.org, ardb@kernel.org,
-	ryan.roberts@arm.com, mark.rutland@arm.com, joey.gouly@arm.com,
-	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
-	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	quic_tingweiz@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-Message-ID: <Z6zoWMejCDlN2YF9@arm.com>
-References: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
+	s=arc-20240116; t=1739385281; c=relaxed/simple;
+	bh=u8Mj2f4Ky3af2LxP5bM5f51X8/5c/v2NRTvy9yypnhk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=d3wK+v0b9n86LB6f0+9SBLJvrCm5ZMnGl6tdFD4Ycw5hGAgosURDn/AbxvPLZlFEKxUcLRc5z8LKnBdA27i98EJ3Q9m5hCi7YvKk0nNix73wifAHU0h/NIMulwSacQRm9NswOIaW5zuMKNCEAYlFLKXScNM1ibnj7WbfU88J9ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ab744d5e567so4657166b.1;
+        Wed, 12 Feb 2025 10:34:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739385278; x=1739990078;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z+nB/4+H4IgI8wgO/HTb7HVIL1m/yp3K3cNW/qW6EO4=;
+        b=XBkXZheEqIl16nezeMSKtXn6T3PO3jBTEsn+C4p4QjM4saSMiv6MxR65mdHjODcv1d
+         6BSXF2mCXUnSstZeGrBj12nw+iQKu+XpKSmxCIGZ/RcOzg3Hgx/uLl5pHktieDm7tmvb
+         0bstXxYKUNDFmLyw6f79gEnnIlf+lhN4i0TxOzNWQUwCn4NofsqvrdW/k3ZijC+Z1AfI
+         h2n0bOjgKvHXq76goDNk4WQu1feQjpIy1v6Em9CBV4BTlxLlDysCXOFpE46nmQoLbIyc
+         76pUnWAM8aQ6m80C3B1uhx1WnCzeCNxEGXFYdidIRNmzR5F7MoGV5gZ35rBtF22vXc4t
+         oVUg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6cP1ckWzOX67BWONP18nFc3u6wJxM0gKszB5sMlrEGPD6cEtLM/QEbq9mk7sW7KRiQrOW01OA@vger.kernel.org, AJvYcCVuhmVgZ+0kqWMKum5zp7Md/8NdWXUetOYGaHNKfa/33zXe1UjzCZh1dl19UVtNu4dt43XRHNhQjVn8PHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM2gcvJ3HZSYiikiu9+WPNdAmIPK0KOqGwy++U9HPfXEEzzxAA
+	HHjAzdd7PiUWJc9q3bW2QWsomV206qDjte3FmrEVywak1/ZoxbSI
+X-Gm-Gg: ASbGnctG333i7yVJBV23QnHSjHLewmAcoCfbjb1HLm8x84eu2IWbjX4MdhrLinMr32y
+	fCkq4wjrhrzb+BBHRtNTfPZbs6LvDVNsYBjtDWlUPCr+MyWdLZVLkQOrNr89rqa2mR8mKgKUkAE
+	4inYN9mU83VdoX5WS/XyFWHms9VBBlA/smIr6Ddp9PhLvxRY0B9uVierEa/DUq2JwyifyEwk9Iu
+	7MNYlSdMIIjsfJKt5Ht8GkFWQ5njDtstET7sFEK1zxrG4LBqrdR1n7WUJLc48mjzuXuM/Srhq8E
+	F3etrgs=
+X-Google-Smtp-Source: AGHT+IFCX0Y3wgXy426TeuJE+FiQhABLo3aftnl060EWxggaUXQjHOuam39ExfyyTi9NkjJiI+zHlQ==
+X-Received: by 2002:a17:907:d1c:b0:ab7:d44b:355f with SMTP id a640c23a62f3a-aba17159e9amr33003866b.25.1739385278058;
+        Wed, 12 Feb 2025 10:34:38 -0800 (PST)
+Received: from localhost ([2a03:2880:30ff:71::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7d855b61fsm433358166b.124.2025.02.12.10.34.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Feb 2025 10:34:37 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 12 Feb 2025 10:34:22 -0800
+Subject: [PATCH net] netdevsim: disable local BH when scheduling NAPI
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
+X-B4-Tracking: v=1; b=H4sIAK7prGcC/x3MQQqAIBAF0KsMf62QA1Z4lWgROdUsstCQILp70
+ DvAe1AkqxQEepClatEjIZAzhHmb0ipWIwKBG/YNO7ZJrii16G7Z95Fjy73rPAzhzLLo/V8Dklw
+ Y3/cD5KbPaWAAAAA=
+X-Change-ID: 20250212-netdevsim-258d2d628175
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ paulmck@kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1420; i=leitao@debian.org;
+ h=from:subject:message-id; bh=u8Mj2f4Ky3af2LxP5bM5f51X8/5c/v2NRTvy9yypnhk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnrOm8K0cdWJEi+dhd9KtwveqxaxumG27ROINAA
+ yYK31zDnaGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ6zpvAAKCRA1o5Of/Hh3
+ bZWRD/9PFlyKC8K71F3bBSy9LDPmdO4A1AWtnouoP8B8PIolh0Ayx4Ef9ZSAr7V8+9/WsTNZo0R
+ AOIWnkhQCgYNJs+2nF6feU7rql3w/UEPI5Y3+Qqq6TCkSLnCLdBbO7WX5k5G6OsWRw+oIMVhxBq
+ SYQacu2IJuI5zygw9rOhd0+Jjcsajsodsu6lpwciUdqZeu4b61xFJ3SPuAlU/hk6wbdBNCAj+0k
+ +hicJPwH2GljOqT2k27O60CtTXhJfH2ZydafJTXdp2c9AVPEUogw+HDlYfg8EfvwNd7uaLxnZup
+ SnWoRr9PX3OfpPSvXtGnf0kv7+HZ+hSi4Deky156ctghkV4lLQMTuJ4FtBvvmu3XiBs5nFYxDz7
+ hUpiL6DcZInOSzg7WBoRUwY5atOhjqlbLB4rmdKsTasw1f2ahcrS2B1Uh1VnhRi3QaNGoax7aGx
+ 1Ha93QvzfAw+tvpAog+gwSLLtJZkjWld7EUWtlKAbzciv9lO1nWVr7Y5YJuc7fSMsthPlF/rGzb
+ uGDVXPEco8bhdsa0mPG+Q3MXeSyT3mOJNDW0TsjNm/aJXSnNf6pqSZWDn6qK1ZsJm6mvoyiDaVc
+ vvI1dfq0QOzoF1WP8Xt5uoIwA/WCwaQqzX3DIo8MKc5j3qMQcc8i5zG8gzhtqqrRi9Itc1jNAr9
+ mcuHh6OfBiU0gpQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Thu, Jan 09, 2025 at 05:38:24PM +0800, Zhenhua Huang wrote:
-> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
-> to 27, making one section 128M. The related page struct which vmemmap
-> points to is 2M then.
-> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
-> vmemmap to populate at the PMD section level which was suitable
-> initially since hot plug granule is always one section(128M). However,
-> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
-> existing arm64 assumptions.
-> 
-> Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
-> pmd_sect() is true, the entire PMD section is cleared, even if there is
-> other effective subsection. For example page_struct_map1 and
-> page_strcut_map2 are part of a single PMD entry and they are hot-added
-> sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
-> the entire PMD entry freeing the struct page map for the whole section,
-> even though page_struct_map2 is still active. Similar problem exists
-> with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
-> base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
-> Tearing down the entire PMD mapping too will leave other subsections
-> unmapped in the linear mapping.
-> 
-> To address the issue, we need to prevent PMD/PUD/CONT mappings for both
-> linear and vmemmap for non-boot sections if corresponding size on the
-> given base page exceeds SUBSECTION_SIZE(2MB now).
-> 
-> Cc: stable@vger.kernel.org # v5.4+
-> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> ---
-> Hi Catalin and Anshuman,
-> I have addressed comments so far, please help review.
-> One outstanding point which not finalized is in vmemmap_populate(): how to judge hotplug
-> section. Currently I am using system_state, discussion:
-> https://lore.kernel.org/linux-mm/1515dae4-cb53-4645-8c72-d33b27ede7eb@quicinc.com/
+The netdevsim driver was getting NOHZ tick-stop errors during packet
+transmission due to pending softirq work when calling napi_schedule().
 
-The patch looks fine to me, apart from one nit and a question below:
+This is showing the following message when running netconsole selftest.
 
-> @@ -1339,9 +1349,27 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  		    struct mhp_params *params)
->  {
->  	int ret, flags = NO_EXEC_MAPPINGS;
-> +	unsigned long start_pfn = PFN_DOWN(start);
-> +	struct mem_section *ms = __pfn_to_section(start_pfn);
->  
->  	VM_BUG_ON(!mhp_range_allowed(start, size, true));
->  
-> +	/* should not be invoked by early section */
-> +	WARN_ON(early_section(ms));
+	NOHZ tick-stop error: local softirq work is pending, handler #08!!!
 
-I don't remember the discussion, do we still need this warning here if
-the sections are not marked as early? I guess we can keep it if one does
-an arch_add_memory() on an early section.
+Add local_bh_disable()/enable() around the napi_schedule() call to
+prevent softirqs from being handled during this xmit.
 
-I think I suggested to use a WARN_ON_ONCE(!present_section()) but I
-completely forgot the memory hotplug code paths.
+Cc: stable@vger.kernel.org
+Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netdevsim/netdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +
-> +	/*
-> +	 * Disallow BlOCK/CONT mappings if the corresponding size exceeds
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 42f247cbdceecbadf27f7090c030aa5bd240c18a..6aeb081b06da226ab91c49f53d08f465570877ae 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -87,7 +87,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (unlikely(nsim_forward_skb(peer_dev, skb, rq) == NET_RX_DROP))
+ 		goto out_drop_cnt;
+ 
++	local_bh_disable();
+ 	napi_schedule(&rq->napi);
++	local_bh_enable();
+ 
+ 	rcu_read_unlock();
+ 	u64_stats_update_begin(&ns->syncp);
 
-Nit: capital L in BlOCK.
+---
+base-commit: cf33d96f50903214226b379b3f10d1f262dae018
+change-id: 20250212-netdevsim-258d2d628175
 
-Either way,
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
