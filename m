@@ -1,95 +1,117 @@
-Return-Path: <stable+bounces-115029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77DFA321C0
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:07:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFD5A321C9
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3021889D1E
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8FE3A5A89
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A8E205AD4;
-	Wed, 12 Feb 2025 09:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9361F205AD1;
+	Wed, 12 Feb 2025 09:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="l5DppFAX"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="rHoWqk9K"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0EA1D86F2;
-	Wed, 12 Feb 2025 09:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431C5205AC7
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 09:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739351263; cv=none; b=VA4N2ms1uGGIpkktKNzPZgylqPc3XRc4DBKEelQeCcSeRjBkc0t2MrA7TGy76/4N+6P1ST6zFVdZ25CU3a6SWiorM8P9fE/OT22feHRbqBH4FobGJS3JH4y1RibDTndbs7/yN3AnsK6lIS/3xzfD4I+cNhOU4PgWzU9yUMkTvPM=
+	t=1739351341; cv=none; b=CUZC+HTFbJZMJtZQiuzDqFM3XF47cS/GeFtV1o65CfajoC9QIqE74osEJsGD670QZMUmgicDDLP2V3jbrN8agHsG2R3kEUetJWwbzpZwr7gTUH6r0B/amhpXgHpEY5Ib8QpTxsDdpD7g1HWcUorFLxF8HSnopnAOWDyMX5j0NYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739351263; c=relaxed/simple;
-	bh=4vWwTPj7CPp+P6c0oReSosDGvc+tz5Kxfec4CrpBq/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W+fk0viqMqsBqL2j2FREtqEokm9TmGnv38iN2hCjnoSnrHLSd3YKn+iT7jF7/Z+2wvXN//FxuJXmmFA3oEbaWPILYOPt1plepIHktgl0jJbO+JMSbSmvGOMU3YGx6z2FwkRUiXSFP2zUyDJFhykyR4FBOJpbH+zG7EzaVZ+QJb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=l5DppFAX; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6EA6A204A8;
-	Wed, 12 Feb 2025 09:07:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739351259;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=goUycZkn0foMdzRm1ILExkPq1ZpIX7VLEl5diWuJzUI=;
-	b=l5DppFAXBP9XMVJojhRDgAuY9zRuB+J0n9pa+IcFl+k182795VmZh7UeXjjMn5p6LkIs0g
-	Nu0PcWy8SmyzIoDOTrhcFABom430/SwItcxqCQbi4QzrgfWPMGbBn4jPPNJTuCUjT9N1pY
-	nqPm95X5HS1mP08yv7kLVtFKtWJkHmi9R0/IRNDUuacaSNHHcUr5HKGw+byAKzJBn7Mtg5
-	/7++wEyky6rAfgBWlhn8kn3+d5Hu+qDZc2qx5SN7jP4FOrxHOsm7SNkQOJ0w4iTHwrLIQD
-	dUsmCFXtGU5YiWfDYXsyaCtHinvNhi3Jz7fClMkUG425zU1TM6BIDFa0wCLXDg==
-Message-ID: <edb5f1ba-52b8-4c18-be31-a24491c79d66@bootlin.com>
-Date: Wed, 12 Feb 2025 10:07:37 +0100
+	s=arc-20240116; t=1739351341; c=relaxed/simple;
+	bh=n5wGpnFwIRrA8Xe201rtdK31/WPbH4qcC7pqdJpe9PM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NZiHPMW9xInY8Bpk8Q4F+6EVS2X5t+Hs5fBFhwc3u7l23WQCyqnr+4TMBsokAPjMAQjtfT/n+x5T65yukZL5iyA0N164SvV/cxkUwwWC/xeM2YnLKeeqvEaCWD7ivUB0hNOTCePAg26nsFdvBNYsrMZ4vz1Z2FBjjeWPc2SkpfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=rHoWqk9K; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54505191cdcso4203867e87.2
+        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 01:08:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1739351337; x=1739956137; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n5wGpnFwIRrA8Xe201rtdK31/WPbH4qcC7pqdJpe9PM=;
+        b=rHoWqk9KET0/UQ/ypo46bbvtDE7KVr2A0Su0zP99gIi13A5YypM+5rtXFlf9+Pi9XG
+         S1p7zWrmM6Cpf4+oEjbBfjNNPAUn4RXEJWT2lB92AYtmk7OU1OOF53vNerZYnsRNcrit
+         3WTY4zd57B3VAxztrC4hOGhKP1xPmbrur1pGgTi3NnrMX8uA0MC8gPyUn5Pe0t4WyMb/
+         J8e6BstzphqbwUUjxcB3b+EjL91JKnWq/UhyrShnawCmKwugtdXjAYBhPMNPiKeV96ch
+         LBzU8yDrM0bj2PSV/7FG5WlLQ7SPkcRxwobkU6MfLZcs8L1cfH9tfnrHAbbyKnSciCcq
+         6ImQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739351337; x=1739956137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n5wGpnFwIRrA8Xe201rtdK31/WPbH4qcC7pqdJpe9PM=;
+        b=NPrGO8IkJMH0SE3mDuw+UC406n+2pMO9OwH8qSt6cnT4dnhwf1U1o9cdDqDNKOO26S
+         D8o61H+yGHKF6qCBl6eJUDber3OUIXB0mWp7jEsLbc2S3r/ZAr0upMn03mYV0A8XNP7n
+         ZtOlRJZSOT5nfASYko5NOetAlP1FqMCwTYTuSXp/81QuOcq7THdxb2YU75uI0TmDRL2H
+         2uUcHDG2Ufb4lt/jpJHHt1KfOOaLeWiaNDohpI92bRGS0j+NxMLCCy5qdY7bUgoW5CR2
+         HzBcaXvkOsLXesP5lLyV0hFM/8l00YgeZ9rHT4qYntHQTQJK2VpCCAFR2528nGjHhpOP
+         46FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX19IAwxebFGu4rgSOQUBQd7maQtzMU7j32s6+qUsl+p7fJMkemI0ehw8KpWb1mFutfdsgIHDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwA0OWLnHbkCc5Szzv9FD2tHaGUWdGaLO+q+nx7UFzu85ED6WYs
+	GuxMocIrjmkF4rZFqL+vtqFetfHHnXBstsjICSxggTOjNNHTWEZUNF3mDm7YdNWE14Em9PMtmKp
+	9tfngB5M/8qhBBzvWPEz+CiVdxpAIev5FK+JTzw==
+X-Gm-Gg: ASbGncsLR1Uz+Z+BxEdBIF4KobawbS5zFxtLZ7AtxnO462ar2E9J6vjqLYAl5b1/IiT
+	J1doOQY0JTxHgOjZHFy1dNqVEiBY+MKUkchTL8yOzgcVXyNoouiKj9upM7hsx8j0BHruT+utfmK
+	YWNEQzyRHra2ySprYeHIsx8h5BFlVC
+X-Google-Smtp-Source: AGHT+IHMVhNH1DsYiwDgLt8aoqLJRbGu0lSkpmAHQUbgHbclESRiO+lCCFE5NmUMNPANjy2YyCxX/m9IzHXzQl+nN4A=
+X-Received: by 2002:a05:6512:6d6:b0:545:450:74b9 with SMTP id
+ 2adb3069b0e04-54517f7b432mr715928e87.0.1739351337360; Wed, 12 Feb 2025
+ 01:08:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] rtnetlink: Fix rtnl_net_cmp_locks() when DEBUG is
- off
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: alexis.lothore@bootlin.com, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org,
- stable@vger.kernel.org, thomas.petazzoni@bootlin.com
-References: <20250212-rtnetlink_leak-v1-1-27bce9a3ac9a@bootlin.com>
- <20250212084519.38648-1-kuniyu@amazon.com>
-Content-Language: en-US
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-In-Reply-To: <20250212084519.38648-1-kuniyu@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeurghsthhivghnucevuhhruhhttghhvghtuceosggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfehgefgteffkeehveeuvdekvddvueefgeejvefgleevveevteffveefgfehieejnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrudegngdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehkuhhnihihuhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlr
- dhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: bastien.curutchet@bootlin.com
+References: <20250211203222.761206-1-superm1@kernel.org>
+In-Reply-To: <20250211203222.761206-1-superm1@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 12 Feb 2025 10:08:45 +0100
+X-Gm-Features: AWEUYZlOaG0fdFZcvnZdGV-_YBOc5ks7TZt7wQR5Pn3UZrMzduFNjTZra-BNIVw
+Message-ID: <CAMRc=MfOjfHWYGWMx3jcqQpnn6Kn+TFHVLZ355P7zG27JkqFDQ@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
+To: Mario Limonciello <superm1@kernel.org>
+Cc: mario.limonciello@amd.com, westeri@kernel.org, 
+	andriy.shevchenko@linux.intel.com, linus.walleij@linaro.org, 
+	stable@vger.kernel.org, Delgan <delgan.py@gmail.com>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/12/25 9:45 AM, Kuniyuki Iwashima wrote:
-> From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
-> Date: Wed, 12 Feb 2025 09:23:47 +0100
->> rtnl_net_cmp_locks() always returns -1 if CONFIG_DEBUG_NET_SMALL_RTNL is
->> disabled. However, if CONFIG_DEBUG_NET_SMALL_RTNL is enabled, it returns 0
->> when both inputs are equal. It is then used by rtnl_nets_add() to call
->> put_net() if the net to be added is already present in the struct
->> rtnl_nets. As a result, when rtnl_nets_add() is called on an already
->> present net, put_net() is called only if DEBUG is on.
-> 
-> If CONFIG_DEBUG_NET_SMALL_RTNL is disabled, every duplicate net is
-> added to rtnl_nets, so put_net() is expected to be called for each
-> in rtnl_nets_destroy().
+On Tue, Feb 11, 2025 at 9:32=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
+rg> wrote:
+>
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>
+> Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO =
+11 is
+> specified as an edge triggered input and also a wake source but this pin =
+is
+> supposed to be an output pin for an LED, so it's effectively floating.
+>
+> Block the interrupt from getting set up for this GPIO on this device.
+>
+> Cc: stable@vger.kernel.org
+> Reported-and-tested-by: Delgan <delgan.py@gmail.com>
 
-I see, sorry for the irrelevant series then ...
+Please refer to process/submitting-patches.rst - don't combine tags.
 
-Best regards,
-Bastien
+> Close: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
+
+This should be `Closes`, not `Close`.
+
+I fixed the two above myself but please keep it in mind next time.
+
+Bartosz
 
