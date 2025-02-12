@@ -1,107 +1,207 @@
-Return-Path: <stable+bounces-115032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B73A321EC
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBBEA3221A
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E931164A38
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:19:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142A6162F14
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3029205E18;
-	Wed, 12 Feb 2025 09:19:41 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4DC205E2D;
+	Wed, 12 Feb 2025 09:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq6hXY2X"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A8205ADD;
-	Wed, 12 Feb 2025 09:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46162046A1
+	for <Stable@vger.kernel.org>; Wed, 12 Feb 2025 09:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739351981; cv=none; b=Bm0lvGvPfpYF+EdJSdFCdNWMvbbYpPxAPUVJnPlLdA3MuzVH74wZZyqSOuoTHS7GscnyBeX9FqTmoampRU3ElHtneLKwxtpir6Y/x8mWB/6wO7bCn2EcS8x85M4VHewUFE9dRAgNOX83ClV4uJyoK3Z06zFUK4suZ0bTcTqlCyk=
+	t=1739352491; cv=none; b=Ah3RgWxbp3Z3TCa3FBQCDoPub57F3IuSo/9hZJzcxbrSQiaD5L2IrDON4MpxfYHRqleHdHpRgnV2lXN4kMNb1akKplfatnd6YOQ6HNKZmc1SGX9TjVpnUszwzrDTOV1K5bLwIWr7nzcZPk+HBShf4lLVSx2khy6ReYo6fE4dBkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739351981; c=relaxed/simple;
-	bh=2IQGUnrfpIddw8m2be7/PbtVzTD7MU+eoP3y4GoMQmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZinIqQ5a8zTGZpM6OClRnt6FiYyH5Q41Ux7uRLrQT2ny++UhoCdqIqX/7KzudkVszaDKmfS6pB/ChI75kbHjrlgzz0b7EkffM3tCUMaLUNvw1fW44VNc2c6fYJ6lYkXi1Ytoq/PvFB+C8zYiqaw7phvq2KVfF4dpLi2mS3sbiP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowACXkziTZ6xnDxaiDA--.30403S2;
-	Wed, 12 Feb 2025 17:19:17 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com
-Cc: UNGLinuxDriver@microchip.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: microchip: sparx5: Fix potential NULL pointer dereference in debugfs
-Date: Wed, 12 Feb 2025 17:18:46 +0800
-Message-ID: <20250212091846.1166-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1739352491; c=relaxed/simple;
+	bh=FynD9hXo1mfZXebrUeblGm6q78LfK4KgjsEQVMnLaWU=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=C2lc69JiPSW5rghV3mO75Wb78bORVgcaG6Z1Yc91UOrRMtnuWhsBWU5p6wb8vc+9lQymotMQqWvw+XWNwXhk1bMR+loJQLPK96JvaMq6VIZDXehJZ1lSrwUpYdMAbbxLeRtqumWr5NOUam3niV9TcKPJEVhFt1XWD2vPhzflU8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq6hXY2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B625EC4CEDF;
+	Wed, 12 Feb 2025 09:28:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739352489;
+	bh=FynD9hXo1mfZXebrUeblGm6q78LfK4KgjsEQVMnLaWU=;
+	h=Subject:To:From:Date:From;
+	b=cq6hXY2XGtWfBvXizzR7vA4f8ZIsaxPYBXIBRYiGo4hGK7sKhVCb9IUAA8iTWx9Sl
+	 8Jt4oGi+B0ZGso2yDYobYV1MmKZ8X1/vISdWfHLS5G5Iv0RducNi8Dh/XbrTwvlhwp
+	 wj8C1JeIizIwI6cv2efkdGQKdDpDt/m61//BTUxA=
+Subject: patch "iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value" added to char-misc-linus
+To: nayabbasha.sayed@microchip.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 12 Feb 2025 10:27:03 +0100
+Message-ID: <2025021203-jackpot-stuffing-3061@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACXkziTZ6xnDxaiDA--.30403S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWftrykur4rZFWkKw4fAFb_yoW8JFWDpa
-	1DuFyYg3ykAwsxGw17Cw48XFyrWan0gFyfWrWruwn5ZFnYgFZ3Xr15CrWF9ryFqrZxGrnx
-	tF45Za9IyF1qyFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUb8hL5UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcLA2esWj42QgAAsY
 
-In vcap_debugfs_show_rule_keyset(), the function vcap_keyfields()
-returns a NULL pointer upon allocation failure. This can lead to
-a NULL pointer dereference in vcap_debugfs_show_rule_keyfield().
-To prevent this, add a check for a NULL return value from
-vcap_keyfields() and continue the loop if it is NULL.
 
-Fixes: 610c32b2ce66 ("net: microchip: vcap: Add vcap_get_rule")
-Cc: stable@vger.kernel.org # 6.2+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+This is a note to let you know that I've just added the patch titled
+
+    iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
+
+
+From aa5119c36d19639397d29ef305aa53a5ecd72b27 Mon Sep 17 00:00:00 2001
+From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+Date: Wed, 15 Jan 2025 11:37:04 +0530
+Subject: iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+
+The number of valid bits in SAMA7G5 ADC channel data register are 16.
+Hence changing the realbits value to 16
+
+Fixes: 840bf6cb983f ("iio: adc: at91-sama5d2_adc: add support for sama7g5 device")
+Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
+Link: https://patch.msgid.link/20250115-fix-sama7g5-adc-realbits-v2-1-58a6e4087584@microchip.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/at91-sama5d2_adc.c | 68 ++++++++++++++++++------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c b/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
-index 59bfbda29bb3..e9e2f7af9be3 100644
---- a/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
-+++ b/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
-@@ -202,6 +202,8 @@ static int vcap_debugfs_show_rule_keyset(struct vcap_rule_internal *ri,
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index 8e5aaf15a921..c3a1dea2aa82 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ #define AT91_HWFIFO_MAX_SIZE_STR	"128"
+ #define AT91_HWFIFO_MAX_SIZE		128
  
- 	list_for_each_entry(ckf, &ri->data.keyfields, ctrl.list) {
- 		keyfield = vcap_keyfields(vctrl, admin->vtype, ri->data.keyset);
-+		if (!keyfield)
-+			continue;
- 		vcap_debugfs_show_rule_keyfield(vctrl, out, ckf->ctrl.key,
- 						keyfield, &ckf->data);
+-#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.channel = num,						\
+@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 'u',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.indexed = 1,						\
  	}
+ 
+-#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
++
++#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
++
++#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.differential = 1,					\
+@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 's',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.indexed = 1,						\
+ 	}
+ 
++#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
++
++#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
++
+ #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
+ 	{								\
+ 		.type = IIO_POSITIONRELATIVE,				\
+@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_sama5d2_adc_channels[] = {
+ };
+ 
+ static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
+-	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
+-	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
+-	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
+-	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
+-	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
+-	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
+-	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
+-	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
+-	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
+-	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
+-	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
+-	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
+-	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
+-	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
+-	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
+-	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
+-	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
+-	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
+-	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
+-	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
+-	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
+-	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
+-	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
+-	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
++	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
++	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
++	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
++	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
++	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
++	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
++	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
++	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
++	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
++	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
++	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
++	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
++	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
++	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
++	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
++	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
++	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
++	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
++	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
++	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
++	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
++	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
+ 	IIO_CHAN_SOFT_TIMESTAMP(24),
+ 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
+ };
 -- 
-2.42.0.windows.2
+2.48.1
+
 
 
