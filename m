@@ -1,60 +1,103 @@
-Return-Path: <stable+bounces-115054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CABA32785
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:49:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB18A3278D
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D16017A319C
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:49:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75D6E188194C
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AB1205ABC;
-	Wed, 12 Feb 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF9920E009;
+	Wed, 12 Feb 2025 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dQ61uXg/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="er8PhO+V"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD41C695;
-	Wed, 12 Feb 2025 13:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A651DFDE;
+	Wed, 12 Feb 2025 13:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739368192; cv=none; b=QVwFpPjka2t7945jvl24XtA/GDgtHh/5Tahx3RMDtEH9Z6JHxjSIe7brPO7jSZyzYU5x1eN/Y0tpwMPRFsovr9bqxwIJTFUTPfa1QV8riJexMuOTqHO4YPtDvnW13JlNue31UYdV9q9bvPxd4LKnP/nNft0NiFlLB61X26lR15c=
+	t=1739368295; cv=none; b=QAkDno5AvwPms2umjBRxm4VWZAlL7K6Usw6k0T5pOc3NjH6yABb3vrzJW5Ch0jL78NEFJpXV92Z5Kfbnt8pWyocZ4EXSRFU21mjo/XmrMa40Z23+XsPS/k2gSRcRqy8DkJSnidgjEdDLPTXrKvxxKxPdZGQKy3ueHK7H+HBcQkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739368192; c=relaxed/simple;
-	bh=RcEvR6kg6kxofvCyZBw+YcQC8qJGSVlA6wGyaOGGXVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fe5Ls93O3VCzmWEqQo3UVNeJnLf4kvL85M7cng3EgX5SuPYV9QTM0BgeIMiODQHC5zPUlOUgexkVtaFz+SdfLwl+cYl1e3tUW77V6oXZUoW6FCreR8ae6YbLg+9x1TCYfcWRTwhgR9s90hcASG7m7p4mD/EZt/eTvx0+9Y/fOC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dQ61uXg/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=V8awgjnRjIsQYZrQ1w+BZZzdEbNxt1fTjOjgKBl+PTA=; b=dQ61uXg/y0xbYja2bf7zcT/eVR
-	zapLmhSRz5uBvVcFNUDd+FGSKT1XYRt65ZGx9yYTNQE2UjzMajSjXy6ntPXGIVQETeEi9r1EGhvGd
-	0NxNkxkoZrqwEPu3cQ561OSAW7fs49NlMDif0v764+I2bWTZ++ZKLDxeZbkEiJVk/dMQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tiD7S-00DPPM-4W; Wed, 12 Feb 2025 14:49:38 +0100
-Date: Wed, 12 Feb 2025 14:49:38 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: microchip: sparx5: Fix potential NULL pointer
- dereference in debugfs
-Message-ID: <86cd2c99-7006-4ce1-abb1-8fe5e535fedb@lunn.ch>
-References: <20250212091846.1166-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1739368295; c=relaxed/simple;
+	bh=9YjzMBkUgd4USe1LdFDokt2j7fxzypWig1WTfc8rg1s=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dLxII1Iv0W5XhZ63OPN++R/jeDWtM2wsWdTpYaYOSSfNEgVGWJpk+sRhazM1UHGVCBjz62I0q9Woc6a64hGQkv8VhseEJudEerkgOwfLhZfTIc9h9RhRedOmQlU5FXi0dQECT2rMp7T99hzWaCoJyxi4QhPNZiXCWIZCmYbcAZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=er8PhO+V; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab7fa1bc957so73308366b.2;
+        Wed, 12 Feb 2025 05:51:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739368292; x=1739973092; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QWgaRORqR0FRFMsVrMYjxpMIPGLqqeGvJvZVUdyaQXc=;
+        b=er8PhO+V70RG0D6ktEM8M68OzOCGGlX8JWXUvqOEA/a4AldCBTe+WP8Ic3oVBr8Bsj
+         mjW5w/34rS0yeldeAprtjW/PXNB+dabiubzd4GXjN/JatPh2BzLuz3JE6JwvbXrwxedO
+         4MlZh5mBBhhUHB0ykpZ6aGY5QIvQyGs3aq7SBqS3hljy9nsX9d/0THUXmi9vLRfwpDKx
+         b03xnToJD5XGPAmQgJnjK6V1yqmgB0D0RMzWVJ9d0oUeT/JlFt0Ls0vt/ylZ6WG26VUM
+         Q05intpJNGTqOWzdjC6eewQxY7lOij8HCyQIvij+YUdokVpB74ri034UMpz3i+hVz6Iy
+         JoSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739368292; x=1739973092;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QWgaRORqR0FRFMsVrMYjxpMIPGLqqeGvJvZVUdyaQXc=;
+        b=FP204KvAwCA1rXRpzGgweBB0qxg3MgVnO93ZR4k/0oJvSyykcexvou+wuvIlgV0WZg
+         yni3RfSnbl4RmJ1JuY07lNNemcjcgHf4W/9Zh81W2bA1ulxtNYG8i3WD6JAPXwTtD+M8
+         e0TbREKsxxvIdREoawAdBa45vppKWggeVKN0uU7QEyb2cj/Bru/qecgvK0HHqLlH4r6n
+         bRGxGkZhumRLeyWNvkdceS86EXRs5IFarYoHZdf7oF0G42gRk+PoMbMnzAps6FsbXKb8
+         Ij74paT7OwsZ/ebmjbYZn52T4N8tQwAxMKwnSIZfxQq8XsO2Et14RHKzv0DO3zVUdjGH
+         S5dw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCSLnW3MyjV1GRAFhvhGopeuZTef4nNDtASFPmwL0NYh0RB5JJkkXfd4vI/Nbf+YkvxWFZIN+AYaLL7mqN@vger.kernel.org, AJvYcCWU46EZ3r57vSEME7OxzaTgNnWriCZ2UI/z+W7tOeJK5QHEQEME/RWKKnqZGj4CHDBYLqM=@vger.kernel.org, AJvYcCWWCMz0OIxFiPpubQsxJ8qXhIfn0a4QH7uvrKGAyuTDgsd0BBu4z2+Y6lNPiGkpm6DlZhARcVzKAeQ8@vger.kernel.org, AJvYcCWcwF3y2pJR3PK9FzLU4+PmFVXcxgZLPO87aDVybOCAvzAYADIvOG0zmCG/8cmXIuta8u+IfjdW/8vmfSEeDTOfbN/b@vger.kernel.org, AJvYcCWs5MkpRBFhRlgxw17QoCTnkgItpkl5uJfHeZ5xrPnNI6epb2q8vyB51JFXDbd3qDgHnD7rD9jD@vger.kernel.org
+X-Gm-Message-State: AOJu0YzinVksDhon430LWd6XhEWbeWslq/anZ91ACLkQfDhtC4li1MlS
+	ofZtSuyh3YbE0FIeNzokgSWOG5gb2I+yfIr92NTWldDHvYV1QDjF
+X-Gm-Gg: ASbGncvm3J172nAYIOOHp+YWcR9/C1v9lf0vX9AHGAjE6/JuQ9CCFj+gf8q20eVTe4A
+	apYBLLXDfXAy7uA35zdppOswh1eg/H/AcZoDtNU6ODkDKivHWyPStitlkRa3DEEPU5ByJ8YoeHx
+	f2tfWYERlyyMjgSrFAT5zTE4hPP6kxu/jFjN1/0VIa03JnRwebFBipjPJ9ZPqU3fPRWdp8RrmvT
+	evpwjpyXz1MH1oNT25DV9L0VOblixLUPDUNSkwNP25dJuMLps1y1/sH28hMa+xbQ5ix534xX9P1
+	nCkVyEI=
+X-Google-Smtp-Source: AGHT+IFX9i/vrDhYBpxdXVYrHiw2AvtaHV+PAHbqipVnrLTRgL04qKCaZmY29JuXIGDQq2EMjSNTaA==
+X-Received: by 2002:a17:907:1909:b0:ab7:f24d:4874 with SMTP id a640c23a62f3a-ab7f33444abmr306419466b.1.1739368291818;
+        Wed, 12 Feb 2025 05:51:31 -0800 (PST)
+Received: from krava ([2a00:102a:5024:e483:e531:7f9e:99e:ba32])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7aa374d92sm850029366b.153.2025.02.12.05.51.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Feb 2025 05:51:31 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Wed, 12 Feb 2025 14:51:28 +0100
+To: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	stable <stable@vger.kernel.org>, Jann Horn <jannh@google.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
+	Linux API <linux-api@vger.kernel.org>, X86 ML <x86@kernel.org>,
+	bpf <bpf@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCHv2 perf/core] uprobes: Harden uretprobe syscall trampoline
+ check
+Message-ID: <Z6ynYCT-xS7DQ5iq@krava>
+References: <20250211111559.2984778-1-jolsa@kernel.org>
+ <CAEf4BzYPmtUirnO3Bp+3F3d4++4ttL_MZAG+yGcTTKTRK2X2vw@mail.gmail.com>
+ <CAADnVQJ05xkXw+c_T1qB+ECUqO5sJxDVJ3bypjS3KSQCTJb-1g@mail.gmail.com>
+ <20250211165940.GB9174@redhat.com>
+ <20250212130509.ce1987095c6b17b26d3ee40a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,30 +106,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250212091846.1166-1-vulab@iscas.ac.cn>
+In-Reply-To: <20250212130509.ce1987095c6b17b26d3ee40a@kernel.org>
 
-On Wed, Feb 12, 2025 at 05:18:46PM +0800, Wentao Liang wrote:
-> In vcap_debugfs_show_rule_keyset(), the function vcap_keyfields()
-> returns a NULL pointer upon allocation failure.
+On Wed, Feb 12, 2025 at 01:05:09PM +0900, Masami Hiramatsu wrote:
+> On Tue, 11 Feb 2025 17:59:41 +0100
+> Oleg Nesterov <oleg@redhat.com> wrote:
+> 
+> > On 02/11, Alexei Starovoitov wrote:
+> > >
+> > > > > +#define UPROBE_NO_TRAMPOLINE_VADDR ((unsigned long)-1)
+> > >
+> > > If you respin anyway maybe use ~0UL instead?
+> > > In the above and in
+> > > uprobe_get_trampoline_vaddr(),
+> > > since
+> > >
+> > > unsigned long trampoline_vaddr = -1;
+> > 
+> > ... or -1ul in both cases.
+> > 
+> > I agree, UPROBE_NO_TRAMPOLINE_VADDR has a single user, looks
+> > a bit strange...
+> 
+> I think both this function and uprobe_get_trampoline_vaddr()
+> should use the same macro as a token.
+> (and ~0UL is a bit more comfortable for me too :) )
+> 
+> ----
+> unsigned long uprobe_get_trampoline_vaddr(void)
+> {
+> 	struct xol_area *area;
+> 	unsigned long trampoline_vaddr = -1;
+> ----
 
-/* Return the list of keyfields for the keyset */
-const struct vcap_field *vcap_keyfields(struct vcap_control *vctrl,
-					enum vcap_type vt,
-					enum vcap_keyfield_set keyset)
-{
-	/* Check that the keyset exists in the vcap keyset list */
-	if (keyset >= vctrl->vcaps[vt].keyfield_set_size)
-		return NULL;
-	return vctrl->vcaps[vt].keyfield_set_map[keyset];
-}
 
-I don't see any allocations here which can fail. I do agree it can
-return NULL thought. So you code change looks correct, but you commit
-message is broken.
+sounds good, I'll send new version with change below if there
+are no objections
 
+thanks,
+jirka
 
-    Andrew
 
 ---
-pw-bot: cr
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 5a952c5ea66b..015b2a6bac11 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
+ 	return &insn;
+ }
+ 
+-static unsigned long trampoline_check_ip(void)
++static unsigned long trampoline_check_ip(unsigned long tramp)
+ {
+-	unsigned long tramp = uprobe_get_trampoline_vaddr();
+-
+ 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+ }
+ 
+ SYSCALL_DEFINE0(uretprobe)
+ {
+ 	struct pt_regs *regs = task_pt_regs(current);
+-	unsigned long err, ip, sp, r11_cx_ax[3];
++	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
++
++	/* If there's no trampoline, we are called from wrong place. */
++	tramp = uprobe_get_trampoline_vaddr();
++	if (tramp == UPROBE_NO_TRAMPOLINE_VADDR)
++		goto sigill;
+ 
+-	if (regs->ip != trampoline_check_ip())
++	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
++	if (regs->ip != trampoline_check_ip(tramp))
+ 		goto sigill;
+ 
+ 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index b1df7d792fa1..a6bec560bdbc 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -39,6 +39,8 @@ struct page;
+ 
+ #define MAX_URETPROBE_DEPTH		64
+ 
++#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
++
+ struct uprobe_consumer {
+ 	/*
+ 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 2ca797cbe465..e8af2f75b094 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2160,8 +2160,8 @@ void uprobe_copy_process(struct task_struct *t, unsigned long flags)
+  */
+ unsigned long uprobe_get_trampoline_vaddr(void)
+ {
++	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+ 	struct xol_area *area;
+-	unsigned long trampoline_vaddr = -1;
+ 
+ 	/* Pairs with xol_add_vma() smp_store_release() */
+ 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
 
