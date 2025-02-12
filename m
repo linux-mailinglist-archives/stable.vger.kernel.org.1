@@ -1,106 +1,116 @@
-Return-Path: <stable+bounces-114989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840AEA31C60
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 03:54:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC24A31C63
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 03:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010F21888D4E
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91BFC188966E
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D891D63C4;
-	Wed, 12 Feb 2025 02:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233D91D61A2;
+	Wed, 12 Feb 2025 02:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="Gkd7Xqx5"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-io1-f97.google.com (mail-io1-f97.google.com [209.85.166.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDAA1CAA7F;
-	Wed, 12 Feb 2025 02:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0E81D47AD
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 02:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739328874; cv=none; b=gXdZOR+dCZYhdTIZO8hX2arAFkJXhrWi43Z4nYmLx8LOumsALB03ODFArvTSgoKpfS+ztIZIkayP1NjITsfqx2F2v0I/kuJhxuzDegSu/b1RSaTBsKxVmenXX47xLR7xy7rTvkLKC+1R27esQwDNhnANUT9hmFQiiTa4aWGuKUw=
+	t=1739328939; cv=none; b=RA1GWzJSZ4Wb5BGYIBSESmy5vwz4hN0rPihxsCxwQF6WMclbS4q65Ie0MPxQTiM8XitxFA5GktFituOjT9p0eMM61IAYIsr+QKkT5EkciYCBYAmOk9Sweid7ORooveDKQJUz/RMlkON7mjtGN9/2rrKk14if+l84uZb7cWCWhZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739328874; c=relaxed/simple;
-	bh=5e4nqBQj9+FTs/Lw1huds1GxtSzJtquW0xbwEbljHYs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nvonzPXasodvIwzjTS1HOE6OYawTzQiOwLXBmHLv9mO+RI1k1jomDju72dQRYByLcFgIQgJVB7oLzcoclsfUQ+x0ehaRu+WlgBPR5Mh12ZDT8brxdHod0enZrImRkjU3OFIj0xDcyVH1kj9YX6Gx+LKLazHh0dDMFJ0nHr3q5xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowAAnVPtaDaxnZnmTDA--.32612S2;
-	Wed, 12 Feb 2025 10:54:20 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: borisp@nvidia.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] tls: Check return value of get_cipher_desc in fill_sg_out
-Date: Wed, 12 Feb 2025 10:53:50 +0800
-Message-ID: <20250212025351.380-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1739328939; c=relaxed/simple;
+	bh=2ad/znqCNoyQ+ZTs2xBkO3ND0L+BNXu6FMlZtVsnzS4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GjPCz6A2zDsLKoHmpmuRya+ccBuq6oCLfavibvoaNZjzyDeQUnob55llFS5v0T82KRfd+xXJHu4w7wk2FzanA08ppNSElSaZrlnLOPQvu95LbAx9QbYHX6hRNE74OtU6OZoGMw35Obom4+Uv2LuNOzvLYwf+BqhGccFN0UO3uwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=Gkd7Xqx5; arc=none smtp.client-ip=209.85.166.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
+Received: by mail-io1-f97.google.com with SMTP id ca18e2360f4ac-8552a0f329eso203062839f.3
+        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 18:55:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739328937; x=1739933737;
+        h=content-transfer-encoding:message-id:date:subject:cc:to:from
+         :dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n8tVUaKQKbAKW1vM1CYtqG8Jnsk6c7w+FYLFg/LVTqg=;
+        b=A/6blwH/S3nftrvNYkRdvOvO0leB19eH6/uRI8lmUfLLpuo6UbbU8zl/tCzgyo1HUh
+         B6I+iLuau9H9vMvh56K8zkDcM8gkWJEXLEQjT3NzzTuEHx1xQpdQivybzsg+ztFAovrD
+         s1NhuIjUYRZb1LYesgundqh9vPvLozzBe4sTEobPxrfy6+Y4mLOHAMAVj3WPBtLe+GFv
+         VqwcZGiDDiCzs5nEGdPVclLpKpSB9hygW65CEOdsbARFvHZLrhq6/LbowTiOpcPR7j+S
+         EBt2wPHmjtmjaDJblNP01rwQFA0KEcCXlNuirolcKcbaYrXomPmgVWbCtKToddOP+4LY
+         aujQ==
+X-Gm-Message-State: AOJu0YzgzZdqogHxmLxZv/T1oDQYN3XPeS+qGrVrargY6L4u+b5YK1iz
+	mh7iwt06HbDvASvs9gRB0kXdm199y768UUj3xyGvbuA6xMSazEtiNSCMYPMT27tMkuJ0fG6xQ++
+	UeE7GLeTpqhbBhRdcJ9IWChKdwlwNng==
+X-Gm-Gg: ASbGncv3O4nhpiEJmEJx+gbyZmZDQOaTMcLe9r3Em8AxH62ird2qgO4gXT2kvNEoR1j
+	XdR631kd/Nx+057XuTVzO5OGhI3NbxIyfZOJM5OLPiCArxXJv//fn+AFmmlzdEnCsXOkQBeeT+U
+	s2ecK2SvubA3TVSzFxRv41pkhpE9OB4ssx/erBWL12UGj75L7iHK7OYVdYIQf/TByQ6DwHWDYd5
+	eOJA6Qbxlrx7nILQzWbGhb9ThqbYBtQz+WNhOESNhWCnXsVeB3szofCd42ZsgRrxqmgtRjpFz3f
+	shQkXq24sEakJcU=
+X-Google-Smtp-Source: AGHT+IGoauzQQ3unxGhUCWuRXD2qiOu71ESdQclUlYGMrWTPjNv5kwESZ+mLTTC6pmiSys8FLf81ZN7G4gce
+X-Received: by 2002:a05:6602:489:b0:855:2bc8:69df with SMTP id ca18e2360f4ac-85555dd6a10mr215851739f.14.1739328937268;
+        Tue, 11 Feb 2025 18:55:37 -0800 (PST)
+Received: from smtp.aristanetworks.com ([74.123.28.25])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-4ecef0d4a31sm397423173.23.2025.02.11.18.55.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 18:55:37 -0800 (PST)
+X-Relaying-Domain: arista.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arista.com;
+	s=Arista-A; t=1739328936;
+	bh=n8tVUaKQKbAKW1vM1CYtqG8Jnsk6c7w+FYLFg/LVTqg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Gkd7Xqx5OPYRkiKEt9x4gbeAPlFpE+KUa8E+D8GbCdVUmaYS7Tr3qIuVYPbJxAxi7
+	 0ppxN9+jT9nDlCNenaR3CilthfMXgTnAa6rMe+QPI96peRC+SlOBpRvs4dN7wK8tss
+	 0/9tg5gWwdImVD8bBNVQAdlDNUHA4dqDQOR1oLzNd56aXyXRMjAtsxpzO57algscBi
+	 j/e/GTpbgp5e8+nfd4xj1N+fAxeryipBux95ajuCsre2uP8MFFdWyHRaBEMixT8Fr6
+	 fSAsMKA1T5pLyD15AqWwo8eN6sSdWqvkOw0FXwYCuOsASb0MdeNaOoqRg0tPZDyEe/
+	 FjWeOPRzxRk3g==
+Received: from visor.sjc.aristanetworks.com. (unknown [172.22.75.75])
+	by smtp.aristanetworks.com (Postfix) with ESMTP id 33ABD10023B;
+	Wed, 12 Feb 2025 02:55:36 +0000 (UTC)
+X-SMTP-Authentication: Allow-List-permitted
+X-SMTP-Authentication: Allow-List-permitted
+From: Ivan Delalande <colona@arista.com>
+To: stable@vger.kernel.org
+Cc: Olivier Matz <olivier.matz@6wind.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Ivan Delalande <colona@arista.com>
+Subject: [PATCH 5.4/5.10 0/2] vlan: fix netdev refcount leak
+Date: Tue, 11 Feb 2025 18:54:53 -0800
+Message-Id: <20250212025455.252772-1-colona@arista.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAnVPtaDaxnZnmTDA--.32612S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4fCr18tF1UXry7Cr47CFg_yoW8Jw1Upr
-	yq9FZ7K345WF15t3WUAF1kWa47Can0yay3Wr48ZryjkrsxtrWDJFy8JrWYyF45X39xAFyv
-	yryqgw1fZ3WDCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRELA2esAO8qlgAAsI
 
-The function get_cipher_desc() may return NULL if the cipher type is
-invalid or unsupported. In fill_sg_out(), the return value is used
-without any checks, which could lead to a NULL pointer dereference.
+We started hitting the same netdevice refcount leak that had been
+reported and fixed in mainline, and that Olivier had backported into
+v5.15.142. So this is the same series further backported to the
+latest v5.10 which fixes the issues we were seeing there.
 
-This patch adds a DEBUG_NET_WARN_ON_ONCE check to ensure that
-cipher_desc is valid and offloadable before proceeding. This prevents
-potential crashes and provides a clear warning in debug builds.
+This version also applies without change on v5.4 which should also
+be affected, but it was only build-tested there as we don't have an
+easy way to run our tests on that version.
 
-Fixes: 8db44ab26beb ("tls: rename tls_cipher_size_desc to tls_cipher_desc")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- net/tls/tls_device_fallback.c | 1 +
- 1 file changed, 1 insertion(+)
+Reference: https://lore.kernel.org/stable/20231201133004.3853933-1-olivier.matz@6wind.com/
 
-diff --git a/net/tls/tls_device_fallback.c b/net/tls/tls_device_fallback.c
-index f9e3d3d90dcf..0f93a0833ec2 100644
---- a/net/tls/tls_device_fallback.c
-+++ b/net/tls/tls_device_fallback.c
-@@ -306,6 +306,7 @@ static void fill_sg_out(struct scatterlist sg_out[3], void *buf,
- {
- 	const struct tls_cipher_desc *cipher_desc =
- 		get_cipher_desc(tls_ctx->crypto_send.info.cipher_type);
-+	DEBUG_NET_WARN_ON_ONCE(!cipher_desc || !cipher_desc->offloadable);
- 
- 	sg_set_buf(&sg_out[0], dummy_buf, sync_size);
- 	sg_set_buf(&sg_out[1], nskb->data + tcp_payload_offset, payload_len);
+Xin Long (2):
+  vlan: introduce vlan_dev_free_egress_priority
+  vlan: move dev_put into vlan_dev_uninit
+
+ net/8021q/vlan.h         |  2 +-
+ net/8021q/vlan_dev.c     | 15 +++++++++++----
+ net/8021q/vlan_netlink.c |  7 ++++---
+ 3 files changed, 16 insertions(+), 8 deletions(-)
+
 -- 
-2.42.0.windows.2
+2.34.1
 
 
