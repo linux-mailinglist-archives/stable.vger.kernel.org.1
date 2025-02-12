@@ -1,141 +1,134 @@
-Return-Path: <stable+bounces-115075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C273A32EC2
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 19:34:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6330A32EFA
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 19:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82DD3A3F53
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 18:34:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4289E18891F0
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 18:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0562C25E452;
-	Wed, 12 Feb 2025 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B1260A33;
+	Wed, 12 Feb 2025 18:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mojI/bFq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149AC27180B;
-	Wed, 12 Feb 2025 18:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2C25EF81
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 18:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739385281; cv=none; b=suhs5Oke8YphULahJj5paPemGe/N0GOgUukdZ9G2KcrBc/bawXnHoGkOPI5Mgy2FGAQXmKJYvnMle80PhYNcPBSB6iG9EPTrnZCryJ8Q7EGYBGzDWwhVq4M+HR8wYzzT2AEIvsDX/kZltJLMv2k3fqB5rMPQQXOA6/6HWU97ihA=
+	t=1739386548; cv=none; b=kkg8L10vUMRPAGSfzL4vToJgcAgl+T2zYrsWTxqUuqe9vvaMmYfLDm7GKH9luu2QFRgTHAyUAixCM/QAMrljSVNh/sd8E6XjDVRufBgcR74mJkEa+XmeTFr3BgGKd0VADH6gdQKB/nsD4EHfEFdD3+3EgE1JAID6xCUbEL6Jh7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739385281; c=relaxed/simple;
-	bh=u8Mj2f4Ky3af2LxP5bM5f51X8/5c/v2NRTvy9yypnhk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=d3wK+v0b9n86LB6f0+9SBLJvrCm5ZMnGl6tdFD4Ycw5hGAgosURDn/AbxvPLZlFEKxUcLRc5z8LKnBdA27i98EJ3Q9m5hCi7YvKk0nNix73wifAHU0h/NIMulwSacQRm9NswOIaW5zuMKNCEAYlFLKXScNM1ibnj7WbfU88J9ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ab744d5e567so4657166b.1;
-        Wed, 12 Feb 2025 10:34:39 -0800 (PST)
+	s=arc-20240116; t=1739386548; c=relaxed/simple;
+	bh=CVMGdoYDL8T1fr+KrjJAoYlnGkxM8XNvTPZrejVoMJM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bJJ8g9RDveG2yujXvxalkW0v65ZzX0uPBf4fla0ew1D1SoKTsO5aRrVPaq3Zga/WHG9XkoYPeTbT5wsJthmcOu6wKlKCiQ0bqtojhF4WT9dTzCI0S8KD7avAO4Vyz2hb7JajGnlzGENF3GOFp9sr2cX6mojdXk3pw/EOr/++bE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mojI/bFq; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5de51a735acso14882a12.0
+        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 10:55:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739386545; x=1739991345; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
+        b=mojI/bFq64VDLGVn4okoRdSh1uOirl93u3OgiJu2w/yPT9Sdo+70AwCom7n519LHPY
+         Z0P5if1rCC++SzpOWaKjswutjKgD+ZZ0a98JuyVLC6DWC/3bo5RS18kg1U4eVCnasrh7
+         R5faWFOj1U3gIzlVDMfAfOAnTy9piqC3MApX6ZfndQd8PuA71d/8i32ILePJ0R+Wnxzc
+         Pe21mE1TPgKnFm9UNehLL94eCpZEAM3shNPdDTrhPvI4wnQ2ig61EsWOTz2kBWo5MCBl
+         UtV8BT8DzIozU41MBcOv8hrklTQ2ooLuR3psH+d8oiFzAnsFhHXjU2Pew0GcolBViwEt
+         lKSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739385278; x=1739990078;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z+nB/4+H4IgI8wgO/HTb7HVIL1m/yp3K3cNW/qW6EO4=;
-        b=XBkXZheEqIl16nezeMSKtXn6T3PO3jBTEsn+C4p4QjM4saSMiv6MxR65mdHjODcv1d
-         6BSXF2mCXUnSstZeGrBj12nw+iQKu+XpKSmxCIGZ/RcOzg3Hgx/uLl5pHktieDm7tmvb
-         0bstXxYKUNDFmLyw6f79gEnnIlf+lhN4i0TxOzNWQUwCn4NofsqvrdW/k3ZijC+Z1AfI
-         h2n0bOjgKvHXq76goDNk4WQu1feQjpIy1v6Em9CBV4BTlxLlDysCXOFpE46nmQoLbIyc
-         76pUnWAM8aQ6m80C3B1uhx1WnCzeCNxEGXFYdidIRNmzR5F7MoGV5gZ35rBtF22vXc4t
-         oVUg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6cP1ckWzOX67BWONP18nFc3u6wJxM0gKszB5sMlrEGPD6cEtLM/QEbq9mk7sW7KRiQrOW01OA@vger.kernel.org, AJvYcCVuhmVgZ+0kqWMKum5zp7Md/8NdWXUetOYGaHNKfa/33zXe1UjzCZh1dl19UVtNu4dt43XRHNhQjVn8PHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM2gcvJ3HZSYiikiu9+WPNdAmIPK0KOqGwy++U9HPfXEEzzxAA
-	HHjAzdd7PiUWJc9q3bW2QWsomV206qDjte3FmrEVywak1/ZoxbSI
-X-Gm-Gg: ASbGnctG333i7yVJBV23QnHSjHLewmAcoCfbjb1HLm8x84eu2IWbjX4MdhrLinMr32y
-	fCkq4wjrhrzb+BBHRtNTfPZbs6LvDVNsYBjtDWlUPCr+MyWdLZVLkQOrNr89rqa2mR8mKgKUkAE
-	4inYN9mU83VdoX5WS/XyFWHms9VBBlA/smIr6Ddp9PhLvxRY0B9uVierEa/DUq2JwyifyEwk9Iu
-	7MNYlSdMIIjsfJKt5Ht8GkFWQ5njDtstET7sFEK1zxrG4LBqrdR1n7WUJLc48mjzuXuM/Srhq8E
-	F3etrgs=
-X-Google-Smtp-Source: AGHT+IFCX0Y3wgXy426TeuJE+FiQhABLo3aftnl060EWxggaUXQjHOuam39ExfyyTi9NkjJiI+zHlQ==
-X-Received: by 2002:a17:907:d1c:b0:ab7:d44b:355f with SMTP id a640c23a62f3a-aba17159e9amr33003866b.25.1739385278058;
-        Wed, 12 Feb 2025 10:34:38 -0800 (PST)
-Received: from localhost ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7d855b61fsm433358166b.124.2025.02.12.10.34.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 10:34:37 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 12 Feb 2025 10:34:22 -0800
-Subject: [PATCH net] netdevsim: disable local BH when scheduling NAPI
+        d=1e100.net; s=20230601; t=1739386545; x=1739991345;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
+        b=qwLldTsqzpTOrBOWJ/5pV75hPY8Wz+6/c5DzUWQucyhinJcVRcChErgGAadQlZ318r
+         vHC5Mka+lI0ur/b0vkwjsgyQjgrn6PyOwYnnssiE36zd4gqAFGU+lUBTacd6ubqnMVN2
+         039AxnRfRuhrlvVqkhAOqghMy1CuIhMOQ4McdDrerA8oeO/PKOU3WeXJRTqzZzXdFz2l
+         olGZCnjnWvUn+hxjhpMszq0I+WM/l6FLLMwg5+7A8rg/PPqknugu3K35tU4OpttkqjeC
+         giqyWMfzevOTi/jz4PBiuGWO2HREGTlVMRr28PDn/+ndhVW9PJNgYjHycM8E+/gZjYps
+         wXig==
+X-Forwarded-Encrypted: i=1; AJvYcCWrwHOYN5beqpH+YUti0mgP45jCIHaQ9Eljs6RmVFxIHK0QewOove7DTkel5+/MUxrSc/duecs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfg3KtpMEZIQCmuqSc6yqE+hLhy8eSnraLUE0NREr4wmBbblsI
+	yL85uIpfM+q/krY7u5Q7XEBWKOAgTrOzEPG3KkpvmsA4tE5+uSp0u628vaKnmOU+qp60U2ekWNy
+	YVklI2C4ia/cXH8+1rhEjQbZLAhXMvA9Drjnu
+X-Gm-Gg: ASbGncuVhaisKtNv4DR6EAtVZuXnEgtSYrIDXHJ4oCEFzB8LGC9ZGVm7DZJsnDhW4Y8
+	RTUC6+nHuwDHVzX6T+dPdYWa3zsrdOpKF3rMSUslIcALgrVt1JJ2vPGI0RhPEl9v05qomN8Psxw
+	==
+X-Google-Smtp-Source: AGHT+IG55X34wS789mMJieuUREdopLjA3B44FyJjV3/cSlysBfK2oTbNjkWAOTqEn89wiamATCHt8vdoRDXvCYynFHo=
+X-Received: by 2002:a05:6402:913:b0:5db:d9ac:b302 with SMTP id
+ 4fb4d7f45d1cf-5deca0122e2mr249031a12.32.1739386544998; Wed, 12 Feb 2025
+ 10:55:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
-X-B4-Tracking: v=1; b=H4sIAK7prGcC/x3MQQqAIBAF0KsMf62QA1Z4lWgROdUsstCQILp70
- DvAe1AkqxQEepClatEjIZAzhHmb0ipWIwKBG/YNO7ZJrii16G7Z95Fjy73rPAzhzLLo/V8Dklw
- Y3/cD5KbPaWAAAAA=
-X-Change-ID: 20250212-netdevsim-258d2d628175
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- paulmck@kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1420; i=leitao@debian.org;
- h=from:subject:message-id; bh=u8Mj2f4Ky3af2LxP5bM5f51X8/5c/v2NRTvy9yypnhk=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnrOm8K0cdWJEi+dhd9KtwveqxaxumG27ROINAA
- yYK31zDnaGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ6zpvAAKCRA1o5Of/Hh3
- bZWRD/9PFlyKC8K71F3bBSy9LDPmdO4A1AWtnouoP8B8PIolh0Ayx4Ef9ZSAr7V8+9/WsTNZo0R
- AOIWnkhQCgYNJs+2nF6feU7rql3w/UEPI5Y3+Qqq6TCkSLnCLdBbO7WX5k5G6OsWRw+oIMVhxBq
- SYQacu2IJuI5zygw9rOhd0+Jjcsajsodsu6lpwciUdqZeu4b61xFJ3SPuAlU/hk6wbdBNCAj+0k
- +hicJPwH2GljOqT2k27O60CtTXhJfH2ZydafJTXdp2c9AVPEUogw+HDlYfg8EfvwNd7uaLxnZup
- SnWoRr9PX3OfpPSvXtGnf0kv7+HZ+hSi4Deky156ctghkV4lLQMTuJ4FtBvvmu3XiBs5nFYxDz7
- hUpiL6DcZInOSzg7WBoRUwY5atOhjqlbLB4rmdKsTasw1f2ahcrS2B1Uh1VnhRi3QaNGoax7aGx
- 1Ha93QvzfAw+tvpAog+gwSLLtJZkjWld7EUWtlKAbzciv9lO1nWVr7Y5YJuc7fSMsthPlF/rGzb
- uGDVXPEco8bhdsa0mPG+Q3MXeSyT3mOJNDW0TsjNm/aJXSnNf6pqSZWDn6qK1ZsJm6mvoyiDaVc
- vvI1dfq0QOzoF1WP8Xt5uoIwA/WCwaQqzX3DIo8MKc5j3qMQcc8i5zG8gzhtqqrRi9Itc1jNAr9
- mcuHh6OfBiU0gpQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+References: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
+In-Reply-To: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 12 Feb 2025 19:55:32 +0100
+X-Gm-Features: AWEUYZleq88KnF_kE4nPNRYzraS7tQ5dHAAtHxK4ii3MnHWveDWf1gwFIVTqsms
+Message-ID: <CANn89iKnqeDCrEsa4=vf1XV4N6+FUbfB8S6tXG6n8V+LKGfBEg@mail.gmail.com>
+Subject: Re: [PATCH net] netdevsim: disable local BH when scheduling NAPI
+To: Breno Leitao <leitao@debian.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, 
+	kernel-team@meta.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The netdevsim driver was getting NOHZ tick-stop errors during packet
-transmission due to pending softirq work when calling napi_schedule().
+On Wed, Feb 12, 2025 at 7:34=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
+ote:
+>
+> The netdevsim driver was getting NOHZ tick-stop errors during packet
+> transmission due to pending softirq work when calling napi_schedule().
+>
+> This is showing the following message when running netconsole selftest.
+>
+>         NOHZ tick-stop error: local softirq work is pending, handler #08!=
+!!
+>
+> Add local_bh_disable()/enable() around the napi_schedule() call to
+> prevent softirqs from being handled during this xmit.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
+> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/netdevsim/netdev.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netde=
+v.c
+> index 42f247cbdceecbadf27f7090c030aa5bd240c18a..6aeb081b06da226ab91c49f53=
+d08f465570877ae 100644
+> --- a/drivers/net/netdevsim/netdev.c
+> +++ b/drivers/net/netdevsim/netdev.c
+> @@ -87,7 +87,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb,=
+ struct net_device *dev)
+>         if (unlikely(nsim_forward_skb(peer_dev, skb, rq) =3D=3D NET_RX_DR=
+OP))
+>                 goto out_drop_cnt;
+>
+> +       local_bh_disable();
+>         napi_schedule(&rq->napi);
+> +       local_bh_enable();
+>
 
-This is showing the following message when running netconsole selftest.
+I thought all ndo_start_xmit() were done under local_bh_disable()
 
-	NOHZ tick-stop error: local softirq work is pending, handler #08!!!
-
-Add local_bh_disable()/enable() around the napi_schedule() call to
-prevent softirqs from being handled during this xmit.
-
-Cc: stable@vger.kernel.org
-Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netdevsim/netdev.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 42f247cbdceecbadf27f7090c030aa5bd240c18a..6aeb081b06da226ab91c49f53d08f465570877ae 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -87,7 +87,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (unlikely(nsim_forward_skb(peer_dev, skb, rq) == NET_RX_DROP))
- 		goto out_drop_cnt;
- 
-+	local_bh_disable();
- 	napi_schedule(&rq->napi);
-+	local_bh_enable();
- 
- 	rcu_read_unlock();
- 	u64_stats_update_begin(&ns->syncp);
-
----
-base-commit: cf33d96f50903214226b379b3f10d1f262dae018
-change-id: 20250212-netdevsim-258d2d628175
-
-Best regards,
--- 
-Breno Leitao <leitao@debian.org>
-
+Could you give more details ?
 
