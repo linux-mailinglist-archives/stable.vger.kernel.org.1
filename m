@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-115058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDEAA32836
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 15:17:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF88A32841
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 15:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D3C188804E
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:17:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B9053A5CF2
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C55820FA93;
-	Wed, 12 Feb 2025 14:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626F20FA8F;
+	Wed, 12 Feb 2025 14:19:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885EB1A5AA;
-	Wed, 12 Feb 2025 14:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DEE1A5AA;
+	Wed, 12 Feb 2025 14:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739369823; cv=none; b=YfJCkz/CHmbkYYzPYjPoh8hna8Y016KaPMe0huSaWi2hopfcRiMScaB5jwP4EGiNfqJYuCNMiWL4fzgne2BfppXOWPzMYVCyuJ0HAItqHVAl6CKsGO8Q2MOacBgi66Q3iNTAaNj9zZ8lgqBG9dp1Tx4xXxyntc9syBNVJhtZuZU=
+	t=1739369956; cv=none; b=BZpJSeO0A+3zLNHS002kKx+xYGwh19YG/W+/JYWIeg7p4JVPQzrgR0U4Kgp5C+CYJuA1RxpZgxrFv3FRqaShHHsPIL3PX0KCS5d9uUp+2q2BRquJF6ety6Wrxbq617qjyDlQGPZ2vCoq5VwjcxHJB9xjaUK6QHWQR9owJVm7DMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739369823; c=relaxed/simple;
-	bh=E7GrwC0pOKXDDZPTfqpnhVvP9PN+YrM0iMkoJ69auwY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ogkn/c8AfqqciVCgDe7HEM6kSzWgyelpBUq5ZD50gs18CCQEUtoxGtqjKHYC3ACzmnCE1wWzaFBJRN5yq6nwERiP2MmlyPbsFxTXAxyWlOTxl6E2lM4v/1xixBJf/BBnWyjE/kWGaCSOfVgUV6Q7ZcRruKdxLVAI/9o2hVE4zDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.156])
-	by gateway (Coremail) with SMTP id _____8AxaeFXraxnNi1zAA--.25365S3;
-	Wed, 12 Feb 2025 22:16:55 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.156])
-	by front1 (Coremail) with SMTP id qMiowMAxHsdTraxnd_ANAA--.3470S2;
-	Wed, 12 Feb 2025 22:16:54 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	linux-pm@vger.kernel.org,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org,
-	Yuli Wang <wangyuli@uniontech.com>
-Subject: [PATCH] mm/slab: Initialise random_kmalloc_seed after initcalls
-Date: Wed, 12 Feb 2025 22:16:48 +0800
-Message-ID: <20250212141648.599661-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1739369956; c=relaxed/simple;
+	bh=hePOXBAyH+DtbFWymWK4E16ILxWpqBJfArdmWI3Upn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bEdYn6KUX2jqD7IMGyWVtlalcq8GQOJsN2PEVYMPzKP46ulpKSjy24o6k0NIfWxrRIJHd1eYhdteCNI8TEpwSP8xYte+OsKub4z93blvk+udfzO2COZsz4MbRXBRWAIltpddYTN82y+x8SiHR3yEXsp9BkPtR4TTkHiDhe138CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowAD3YMrEraxnexx3DA--.41351S2;
+	Wed, 12 Feb 2025 22:18:46 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Steen.Hegelund@microchip.com,
+	daniel.machon@microchip.com
+Cc: UNGLinuxDriver@microchip.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] net: microchip: sparx5: Fix potential NULL pointer dereference
+Date: Wed, 12 Feb 2025 22:18:28 +0800
+Message-ID: <20250212141829.1214-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,74 +56,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxHsdTraxnd_ANAA--.3470S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZrykCrW5JFy5Cw1DKr43XFc_yoW8AFyUpr
-	Z2gF1jqrykAr4Uur47C3y8urn5ZaykGFW7CwsIkwnrZw1UAw10gFWkXFsF9rn3XFW5JayS
-	vFyvkFn0ya45ZwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
-	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
+X-CM-TRANSID:zQCowAD3YMrEraxnexx3DA--.41351S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrZw4rAF47Zw4xWw13KrWDtwb_yoW8Jr13pa
+	1DuFy5Ww4kArsxG347Cw48Xry8Xan0gF93WrWrCwn5ZFnYqrZ3Xr1rCrWF9ryFqrZxGrnx
+	tF4Yva9IyF1qyrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUb8hL5UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoLA2espowP7AABsG
 
-Hibernation assumes the memory layout after resume be the same as that
-before sleep, but CONFIG_RANDOM_KMALLOC_CACHES breaks this assumption.
-At least on LoongArch and ARM64 we observed failures of resuming from
-hibernation (on LoongArch non-boot CPUs fail to bringup, on ARM64 some
-devices are unusable).
+Check the return value of vcap_keyfields() in
+vcap_debugfs_show_rule_keyset(). If vcap_keyfields()
+returns NULL, skip the keyfield to prevent a NULL pointer
+dereference when calling vcap_debugfs_show_rule_keyfield().
 
-software_resume_initcall(), the function which resume the target kernel
-is a initcall function. So, move the random_kmalloc_seed initialisation
-after all initcalls.
-
-Cc: stable@vger.kernel.org
-Fixes: 3c6152940584290668 ("Randomized slab caches for kmalloc()")
-Reported-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 610c32b2ce66 ("net: microchip: vcap: Add vcap_get_rule")
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- init/main.c      | 3 +++
- mm/slab_common.c | 3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/init/main.c b/init/main.c
-index 2a1757826397..1362957bdbe4 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1458,6 +1458,9 @@ static int __ref kernel_init(void *unused)
- 	/* need to finish all async __init code before freeing the memory */
- 	async_synchronize_full();
+diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c b/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
+index 59bfbda29bb3..e9e2f7af9be3 100644
+--- a/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
++++ b/drivers/net/ethernet/microchip/vcap/vcap_api_debugfs.c
+@@ -202,6 +202,8 @@ static int vcap_debugfs_show_rule_keyset(struct vcap_rule_internal *ri,
  
-+#ifdef CONFIG_RANDOM_KMALLOC_CACHES
-+	random_kmalloc_seed = get_random_u64();
-+#endif
- 	system_state = SYSTEM_FREEING_INITMEM;
- 	kprobe_free_init_mem();
- 	ftrace_free_init_mem();
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 4030907b6b7d..23e324aee218 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -971,9 +971,6 @@ void __init create_kmalloc_caches(void)
- 		for (i = KMALLOC_SHIFT_LOW; i <= KMALLOC_SHIFT_HIGH; i++)
- 			new_kmalloc_cache(i, type);
+ 	list_for_each_entry(ckf, &ri->data.keyfields, ctrl.list) {
+ 		keyfield = vcap_keyfields(vctrl, admin->vtype, ri->data.keyset);
++		if (!keyfield)
++			continue;
+ 		vcap_debugfs_show_rule_keyfield(vctrl, out, ckf->ctrl.key,
+ 						keyfield, &ckf->data);
  	}
--#ifdef CONFIG_RANDOM_KMALLOC_CACHES
--	random_kmalloc_seed = get_random_u64();
--#endif
- 
- 	/* Kmalloc array is now usable */
- 	slab_state = UP;
 -- 
-2.47.1
+2.42.0.windows.2
 
 
