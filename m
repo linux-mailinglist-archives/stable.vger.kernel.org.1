@@ -1,167 +1,127 @@
-Return-Path: <stable+bounces-115012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A31A3200C
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:35:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043DDA3202D
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98D56161E47
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:35:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419541882E51
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5737E1FC7C3;
-	Wed, 12 Feb 2025 07:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D7F204C0F;
+	Wed, 12 Feb 2025 07:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCYqwWQ8"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="H/hn7/sX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02B11FF1C8;
-	Wed, 12 Feb 2025 07:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F44204682;
+	Wed, 12 Feb 2025 07:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739345709; cv=none; b=t5JO5hceY21ILLYk0vZcQzHRrdgK95sktXHLTpdPV5f2i06th5wL0nJHYwo8R4StNlzFDJENePKohdzj4hW+XjlrJo/vJpemHBSsy8gwLsOsX0z4KdhBPPgCxtOQyKCgmd7faIDYiT29dX6aBvVxuzJVP0Wt9FqHrj6sHCYF3JU=
+	t=1739346192; cv=none; b=ACTzo7eebXIHGfLwexrGzaE3YaXayztq0IM1rWYHHFmoSJ9b9Op2psQpL2EcQlmV9vxLyQbbquXQep3ahk5Drs1rVB98gD9TQ9adZ+bChm0B/Hfx6Y/1MteWeEq5+ifeLnZlooe+ighAN1JvjG6r1M4mP75OudwkNLjq375sluQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739345709; c=relaxed/simple;
-	bh=vzAYFgD6NsPtoPoanmFtwkOgtB83JG3kaQy+7FvwREk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tdr35Z+SyIsdK32/cdKuWiyPxPu95wa5qdFReXu20964fS2lUZ+oi2V9W+WRzLSueMyrExD/U+EpliOH80aK6aGIz9I06Pu+sSbaHI3VCoeHf94Jo+BNjjtNuUktrsNR4b1LMqZhUGehz8o1UlhWnKAaGwbN5oxbs2sucnDk9ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCYqwWQ8; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fbf77b2b64so871132a91.2;
-        Tue, 11 Feb 2025 23:35:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739345706; x=1739950506; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=55MQT8EffuBkX0+zq144/b95PKg1mZ4gkJfdfqwu5qA=;
-        b=RCYqwWQ8GMzu3k1ptD9mPxmvHgqBj5AmWoMcVBEEFuj1MzM/CQcqVcIVJ1Svgjfqgj
-         oDc5N4I6vQYdFbqamLDsji0AZWn6saVL4PfQx1GLIu6NOeGrDuYu5sIMvn1v6EuEASFI
-         Nqe7m6nWoFyMxgRg1RXD8kHNMByWX8wu8WGTInGttdOP7FRhaDUSwYEeYd6MlF8nL09w
-         gA97LDHSfT+YdD6Po6pfemJGj/tD7WO8GzYfgWs3rXXufAGkCumqbwgtSmNyURNwQoTz
-         G6vaL2E81VGMHRQfSHA1rKMHTdGgdSiQlQ0B/4FElquYSqPXJTwpKQr49r6Hr/5v+NlS
-         y5+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739345706; x=1739950506;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=55MQT8EffuBkX0+zq144/b95PKg1mZ4gkJfdfqwu5qA=;
-        b=VW/5sNCGf/DU+xfvalVUK5TDeBzDbsOIm+RIFEH4VZqdwzBTiOrdzcgp7TgVTEe+ME
-         tq3USM8Ga8Z5lPIuotv+3DwfDbquid/THPKK1AYr7ymysBljkuinakXThGavUv7z/13i
-         FVh8Pj33s9RIH6QvybRj/w9Gm8801a11bEye3QUJhDxw/BhRIT3SxC3W/HG+2kpxePgz
-         rN4ZDtLOylm348sYr+9LXYx7VmWpFcZO6jeaXCxS3VqzGOi52m1a1s56Ds9H0F6bha0u
-         faBVNy54b6srD/rccPfJt9VwB+OfIgOCAu56NsX4741L+DkXdzq+2SqEi1V4oeLocb8K
-         DX6g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4yhgHrqIZhGau35IVAsnpVTat2ffwu19d/BNnN6lZXRywgBqQ6IW5uTtmfs59lZZZk01187c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMT49NdA5FGLvR2DNPIzRj0svrkQe6CyxNRfguEIzXlsBwfXA9
-	77N+GJUdvAbRHW5FsTbt/iJXiPdDKrRAv321NH1yDvCf1hJOzT4DUe/prXeI
-X-Gm-Gg: ASbGncvWGrCI6yqG21zzbTFDRMkdcqR+k1BzBjqF/QBmeeZp/pcSxQPJCxmiMTG00PR
-	SUXlt/NNSflHuM6Akf8g3vXZROXbrm0uNEzMQAnPoNF2NM4XcoBoh3OdeD2naJkuNb0tVfzR54/
-	Bzy3FZHqGoZhTlc11qhIWk9lw524J2BMDZAvCTXAsHq9lwDehXaBofCRdWJcKefeg87wdJh2f42
-	Ygb6nmGNEocZb0UaX5W6TjsvN7UMNwddl+dIvUPC93+YQXrSFDfDX/bpYhdE/TN/Iyh/VHsoDAf
-	iWWsCkw0sx1dqBtUCcyn/prj4y55IjwWXdV0DM/ruVlXvt49ZSetZg==
-X-Google-Smtp-Source: AGHT+IFKh3ZqNVRzGTbQ7qYPkmNpUAXO/KlxJwa21Zg54QcVSt7HzrYyauglTnv0Np9RgQtl5B/qfg==
-X-Received: by 2002:a17:90a:fc4c:b0:2ee:48bf:7dc9 with SMTP id 98e67ed59e1d1-2fbf5c1bfc6mr3596216a91.15.1739345706358;
-        Tue, 11 Feb 2025 23:35:06 -0800 (PST)
-Received: from lindev-local-latest.corp.microsoft.com ([2404:f801:8028:1:7e0e:5dff:fea8:2c14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf989bdcfsm789978a91.3.2025.02.11.23.35.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 23:35:05 -0800 (PST)
-From: nspmangalore@gmail.com
-X-Google-Original-From: sprasad@microsoft.com
-To: linux-cifs@vger.kernel.org,
-	smfrench@gmail.com,
-	pc@manguebit.com,
-	bharathsm@microsoft.com
-Cc: Shyam Prasad N <sprasad@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] cifs: deal with the channel loading lag while picking channels
-Date: Wed, 12 Feb 2025 07:33:43 +0000
-Message-ID: <20250212073440.12538-1-sprasad@microsoft.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1739346192; c=relaxed/simple;
+	bh=dNEJPQCFXFXFYv8LsS8D1rVs3y39N2Beg7o2UW6ryMM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uA1ZTyCiwjJZqb+EwkUbx50hew3cNUGKhpUB+5nGxMJMGkLz3Oe1MYZSTJrloStLGWFtIW/leWkwaeR1/ZbrARyUOFQi9o/7tr0DhZaECE5DsCT+rgjyCb/3TFpUl3jaIw2xjt2FR2Q649w6m/AHm3KVCZSulDkd7Y3ftEBiTjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=H/hn7/sX; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1739345687; bh=dNEJPQCFXFXFYv8LsS8D1rVs3y39N2Beg7o2UW6ryMM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=H/hn7/sX5xM/uw2kg30IfwLHDywFTYAajrHTQq3WN22+Jmf6LCU4Po3PR5oZVnBu6
+	 KDSBUlfksxwBNExOvWdUR3v9Wt3mNE5iQg56I3tYms3SM0yOIExAka4cfZ/ZSrx6gU
+	 NpSnAI3A7GGQgE2vW16DX7RsFEuqEmSF+XKvA7X4=
+Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 267B22050FE1;
+	Wed, 12 Feb 2025 08:34:47 +0100 (CET)
+Message-ID: <1cfca789-bbb9-4899-92e9-94ff78d07c50@ralfj.de>
+Date: Wed, 12 Feb 2025 08:34:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat
+ target
+To: Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev, stable@vger.kernel.org,
+ Matthew Maurer <mmaurer@google.com>, Jubilee Young <workingjubilee@gmail.com>
+References: <20250210163732.281786-1-ojeda@kernel.org>
+ <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Shyam Prasad N <sprasad@microsoft.com>
 
-Our current approach to select a channel for sending requests is this:
-1. iterate all channels to find the min and max queue depth
-2. if min and max are not the same, pick the channel with min depth
-3. if min and max are same, round robin, as all channels are equally loaded
 
-The problem with this approach is that there's a lag between selecting
-a channel and sending the request (that increases the queue depth on the channel).
-While these numbers will eventually catch up, there could be a skew in the
-channel usage, depending on the application's I/O parallelism and the server's
-speed of handling requests.
+On 11.02.25 12:10, Trevor Gross wrote:
+> On Mon, Feb 10, 2025 at 10:38 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+>>
+>> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
+>> [1] about disabling neon in the aarch64 hardfloat target:
+>>
+>>      warning: target feature `neon` cannot be toggled with
+>>               `-Ctarget-feature`: unsound on hard-float targets
+>>               because it changes float ABI
+>>        |
+>>        = note: this was previously accepted by the compiler but
+>>                is being phased out; it will become a hard error
+>>                in a future release!
+>>        = note: for more information, see issue #116344
+>>                <https://github.com/rust-lang/rust/issues/116344>
+>>
+>> Thus, instead, use the softfloat target instead.
+>>
+>> While trying it out, I found that the kernel sanitizers were not enabled
+>> for that built-in target [2]. Upstream Rust agreed to backport
+>> the enablement for the current beta so that it is ready for
+>> the 1.85.0 release [3] -- thanks!
+>>
+>> However, that still means that before Rust 1.85.0, we cannot switch
+>> since sanitizers could be in use. Thus conditionally do so.
+>>
+>> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Matthew Maurer <mmaurer@google.com>
+>> Cc: Alice Ryhl <aliceryhl@google.com>
+>> Cc: Ralf Jung <post@ralfj.de>
+>> Cc: Jubilee Young <workingjubilee@gmail.com>
+>> Link: https://github.com/rust-lang/rust/pull/133417 [1]
+>> Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
+>> Link: https://github.com/rust-lang/rust/pull/135905 [3]
+>> Link: https://github.com/rust-lang/rust/issues/116344
+>> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> This is consistent with what has been discussed for a while on the Rust side.
+> 
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-With sufficient parallelism, this lag can artificially increase the queue depth,
-thereby impacting the performance negatively.
+I don't know the kernel side of this, but from a Rust compiler perspective using 
+the "-softfloat" target is definitely the right call here, at least for now 
+(where none of the crypto/compression code that needs SIMD is written in Rust).
 
-This change will change the step 1 above to start the iteration from the last
-selected channel. This is to reduce the skew in channel usage even in the presence
-of this lag.
+Reviewed-by: Ralf Jung <post@ralfj.de>
 
-Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
----
- fs/smb/client/transport.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 0dc80959ce48..e2fbf8b18eb2 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1015,14 +1015,16 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
- 	uint index = 0;
- 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
- 	struct TCP_Server_Info *server = NULL;
--	int i;
-+	int i, start, cur;
- 
- 	if (!ses)
- 		return NULL;
- 
- 	spin_lock(&ses->chan_lock);
-+	start = atomic_inc_return(&ses->chan_seq);
- 	for (i = 0; i < ses->chan_count; i++) {
--		server = ses->chans[i].server;
-+		cur = (start + i) % ses->chan_count;
-+		server = ses->chans[cur].server;
- 		if (!server || server->terminate)
- 			continue;
- 
-@@ -1039,17 +1041,15 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
- 		 */
- 		if (server->in_flight < min_in_flight) {
- 			min_in_flight = server->in_flight;
--			index = i;
-+			index = cur;
- 		}
- 		if (server->in_flight > max_in_flight)
- 			max_in_flight = server->in_flight;
- 	}
- 
- 	/* if all channels are equally loaded, fall back to round-robin */
--	if (min_in_flight == max_in_flight) {
--		index = (uint)atomic_inc_return(&ses->chan_seq);
--		index %= ses->chan_count;
--	}
-+	if (min_in_flight == max_in_flight)
-+		index = (uint)start % ses->chan_count;
- 
- 	server = ses->chans[index].server;
- 	spin_unlock(&ses->chan_lock);
--- 
-2.43.0
+Kind regards,
+Ralf
 
 
