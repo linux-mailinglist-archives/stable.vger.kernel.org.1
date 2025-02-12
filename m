@@ -1,76 +1,65 @@
-Return-Path: <stable+bounces-115043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5810A323CD
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:46:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA544A3241E
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F68C166836
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:46:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9033E3A5DAA
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 10:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC276208964;
-	Wed, 12 Feb 2025 10:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47C9209F41;
+	Wed, 12 Feb 2025 10:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZC7aKLme"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMLmFD/O"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF802AF19;
-	Wed, 12 Feb 2025 10:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD06209F35;
+	Wed, 12 Feb 2025 10:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739357197; cv=none; b=HSsf3axcwsI/r4AVqBmOoMyX08sQ/66daB7xM/jyCOa8Tl2s+KZjsy/5LJ9udBjebzS///tgyJjI0eBmlZHy9afeVwJ38GGgpSrvIwYm6j5e94Pvckq0Xc5XmJh1Yed34n2AW/tYcVk8mA5sqJBzQv/FNqqo/gSS4xF1aqwZhZw=
+	t=1739357969; cv=none; b=ZzCrdtl+uYShwu9z0TVPuwQAKWCCsgeSUeglVBHDqnhbwQ8CNXnER4v0lh0i7DhYCsgeYqoS3bu5VTe89TMdgGuOKckGvBhG3lMrpYvICUP2tv35U6PuG3se0Gr4vFF5jVvDRDzs3aKwZu5Kj5m2r9pXPE7LA6f+5j46YE4RhTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739357197; c=relaxed/simple;
-	bh=ODbnclSY3LR9KpwCFhYSaDBnzqSzIyKsMqRNqOXAPjM=;
+	s=arc-20240116; t=1739357969; c=relaxed/simple;
+	bh=SWfK5E+asiqNvK5yZlVvwPZxamhKEoIr2RspAVaSiYY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GcS3/09vFKQ40b0YGxsSR5MFzuqS7SfLJBojNEUjNjHRtMFSspXjyWgIaq9I0TV6XlM/XF5T5I4WohS8YOakZjhuX0TWmEcSRsOw6Hf+i6XWFcKaANugm+63aL8STSsLpN6WPw/YaKc/CR1f6IZ83J6GcIWyYg/070NOxqqjJGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZC7aKLme; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739357196; x=1770893196;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ODbnclSY3LR9KpwCFhYSaDBnzqSzIyKsMqRNqOXAPjM=;
-  b=ZC7aKLmeQjobrF9DqtKspFGmLOiSGP7HIu9vluhUI67F0cN0Y4LQMnR5
-   XdxZmv2MtFD/l5aS1iE+9nhZN+lpomR37d4NK0I2WCBw3/Q4ax4mDAI1V
-   dLu65/Ud9DOMydgaEpyTa4J+HgwqBVm/aNwajafF4f3X+O9LgclDAnIF7
-   Kepbw2Qk+WFBsjupCYLcOw+AqcexPfSJecfV92qBybnUqjGTVWAfFdT7O
-   d5eMZXgx5gZECvN9htmFoza+aweSB2PJTEy+HaXMusaYBm6+vtAso6SOI
-   FyfeWq8IMI6CWPSN4Hy2ieEHdHtd820HrFJ33AQJSzRqARmHAPxe+6TG6
-   Q==;
-X-CSE-ConnectionGUID: zfQu473BT9Gm5RYqHBg8aw==
-X-CSE-MsgGUID: nSq2VWytQQSehHcwFIG5uQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39710583"
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="39710583"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:46:36 -0800
-X-CSE-ConnectionGUID: TGg3wbbkQgaVoMSQBy5hgg==
-X-CSE-MsgGUID: h5/nJTE6SNOAWC3yBz6oFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="113282741"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:46:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tiAGE-0000000Ao7P-3MqD;
-	Wed, 12 Feb 2025 12:46:30 +0200
-Date: Wed, 12 Feb 2025 12:46:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, westeri@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl, stable@vger.kernel.org, Delgan <delgan.py@gmail.com>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
-Message-ID: <Z6x8BvavGHz8qMP3@smile.fi.intel.com>
-References: <20250211203222.761206-1-superm1@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pHIVf9L5LBHQ4gPCCTIEeggGUeC+5mZf1q37iX6nFlyT7PMiQ1IgnFJsNmw6QPt3HNrJkCuIUXmsBOwrDoA7mt3nMfO/FA04/otuos2mW0N6CT96vNwmh2JDCGrAZOV9VCthvTbB28wxJ/lBYTrhnnZ2M2sH5WYzGUA2qhRGo9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMLmFD/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03CEC4CEDF;
+	Wed, 12 Feb 2025 10:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739357968;
+	bh=SWfK5E+asiqNvK5yZlVvwPZxamhKEoIr2RspAVaSiYY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tMLmFD/OmNgxxb45yMeX28QBLtpg/DOvT+SjeE+Uyd+Yp9CTpS5fuVbZEludZP2ga
+	 rpLj5CYe4nBU0aCo5nI+g1JzfU7MrgC+vVXh0wOvUvL5KYUekmR/MzHeakrFX7wqgZ
+	 GTa6N7eMr/0opIkPgDCFwrB2iC+6pd61wKpfbMjbWeVnpjaiwqO4wZAZG70v0C+EQF
+	 ohI094oTMCz7nEWhWaMepScQy4Sq+CwvTAMj9PEHXUZbz+1YYAb0cSiAUrNgnDft6a
+	 QH9Mo2AifpiuGfl2mT0CxEhTwoi7Oktz4uYOJmWNlypp8b7Iiv3lMzbQ3wFi6x+vY+
+	 4O0wMJYDUN5Xw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tiASu-000000001ca-0GAw;
+	Wed, 12 Feb 2025 11:59:36 +0100
+Date: Wed, 12 Feb 2025 11:59:36 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Saranya R <quic_sarar@quicinc.com>,
+	Frank Oltmanns <frank@oltmanns.dev>
+Subject: Re: [PATCH v2] soc: qcom: pdr: Fix the potential deadlock
+Message-ID: <Z6x_GJg92ddzoRwQ@hovoldconsulting.com>
+References: <20250129155544.1864854-1-mukesh.ojha@oss.qualcomm.com>
+ <nqsuml3jcblwkp6mcriiekfiz5wlxjypooiygvgd5fjtmfnvdc@zfoaolcjecpl>
+ <Z6nE0kxF2ipItB2r@hu-mojha-hyd.qualcomm.com>
+ <Z6nKOz97Neb1zZOa@hovoldconsulting.com>
+ <Z6uDv3c3DkmgumnM@hu-mojha-hyd.qualcomm.com>
+ <Z6xr3ylNSC6iYf-C@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,30 +68,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250211203222.761206-1-superm1@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <Z6xr3ylNSC6iYf-C@hovoldconsulting.com>
 
-On Tue, Feb 11, 2025 at 02:32:01PM -0600, Mario Limonciello wrote:
-> From: Mario Limonciello <mario.limonciello@amd.com>
+On Wed, Feb 12, 2025 at 10:37:35AM +0100, Johan Hovold wrote:
+> On Tue, Feb 11, 2025 at 10:37:11PM +0530, Mukesh Ojha wrote:
+> > On Mon, Feb 10, 2025 at 10:43:23AM +0100, Johan Hovold wrote:
+
+> > > A Link tag to my report would be good to have as well if this fixes the
+> > > audio regression.
+> > 
+> > I see this is somehow matching the logs you have reported, but this deadlock
+> > is there from the very first day of pdr_interface driver.
+> > 
+> > [   14.565059] PDR: avs/audio get domain list txn wait failed: -110
+> > [   14.571943] PDR: service lookup for avs/audio failed: -110
 > 
-> Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
-> specified as an edge triggered input and also a wake source but this pin is
-> supposed to be an output pin for an LED, so it's effectively floating.
+> Yes, but using the in-kernel pd-mapper has exposed a number of existing
+> bugs since it changes the timing of events enough to make it easier to
+> hit them.
 > 
-> Block the interrupt from getting set up for this GPIO on this device.
+> The audio regression is a very real regression for users of Snapdragon
+> based laptops like, for example, the Lenovo Yoga Slim 7x.
 > 
-> Cc: stable@vger.kernel.org
-> Reported-and-tested-by: Delgan <delgan.py@gmail.com>
-> Close: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
+> If Bjorn has confirmed that this is the same issue (I can try to
+> instrument the code based on your analysis to confirm this too), then I
+> think it would be good to mention this in the commit message and link to
+> the report, for example:
+> 
+> 	This specifically also fixes an audio regression when using the
+> 	in-kernel pd-mapper as that makes it easier to hit this race. [1]
+> 
+> 	Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/ # [1]
+> 
+> or similar.
 
-Closes:
+I can confirm that audio regression with the in-kernel pd-mapper appears
+to be caused by the race that this patch fixes.
 
-Otherwise,
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+If I insert a short (100-200 ms) sleep before taking the list lock in
+pdr_locator_new_server() to increase the race window, I see the audio
+service failing to register on both the X1E CRD and Lenovo ThinkPad
+X13s:
 
--- 
-With Best Regards,
-Andy Shevchenko
+[   11.118557] pdr_add_lookup - tms/servreg / msm/adsp/charger_pd
+[   11.443632] pdr_locator_new_server
+[   11.558122] pdr_locator_new_server - taking list lock
+[   11.563939] pdr_locator_new_server - releasing list lock
+[   11.582178] pdr_locator_work - taking list lock
+[   11.594468] pdr_locator_work - releasing list lock
+[   11.992018] pdr_add_lookup - avs/audio / msm/adsp/audio_pd
+[   11.992034] pdr_add_lookup - avs/audio / msm/adsp/audio_pd
+[   11.992224] pdr_locator_new_server
+    < 100 ms sleep inserted before taking lock in pdr_locator_new_server() >
+[   11.997937] pdr_locator_work - taking list lock
+[   12.093984] pdr_locator_new_server - taking list lock
+[   17.120169] PDR: avs/audio get domain list txn wait failed: -110
+[   17.127066] PDR: service lookup for avs/audio failed: -110
+[   17.132893] pdr_locator_work - releasing list lock
+[   17.139885] pdr_locator_new_server - releasing list lock
 
+[ On the X13s, where I have not hit this issue with the in-kernel
+  pd-mapper, I had to make sure to insert the sleep only on the second
+  call, possibly because of interaction with the charger_pd registration
+  which happened closer to the audio registration. ]
 
+Please add a comment and link to the audio regression report as I
+suggested above, and feel free to include my:
+
+	Tested-by: Johan Hovold <johan+linaro@kernel.org>
+
+Thanks for fixing this!
+
+Johan
 
