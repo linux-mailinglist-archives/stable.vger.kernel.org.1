@@ -1,151 +1,112 @@
-Return-Path: <stable+bounces-115020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88181A32111
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:28:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991DCA320F2
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 09:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07A41881368
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:28:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0CC17A23F1
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4FE2054E0;
-	Wed, 12 Feb 2025 08:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2E92054E0;
+	Wed, 12 Feb 2025 08:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="R/GGP3VP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NnTp4/IK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC1D1D86F2;
-	Wed, 12 Feb 2025 08:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904CC13C9B3;
+	Wed, 12 Feb 2025 08:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739348885; cv=none; b=Sjt+8Cjl+Xhn+cxOn9gki6cYK37bzZqMUtvQRJunBr3luALZTLbWNt3Qz6nf2cIA1nwvxWKhP37eCXzpmEmmVzJ074WozEusph6t+7/URO1Emce9HQoRjRIKAnYM32JpAMRagoJrXZfwrCNFE9WXkwUFO+gn39WP46rLvQCjs3A=
+	t=1739348641; cv=none; b=eRoQy/bpSd3u0TZliz1bNhE+lp1YcCspxHFZFZi/3oiWGOXHmgxZQyEx6hJR7I2PIjPwmNHIDjDMDFQtQy1MdBq8qMtB/iEPxEhL5szoXVlYde9j5rmY3DH63xJyXQo0Q6AfzrlX68QCTFLDSlXta5fzNWxEyp/A3CbrhV/MQQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739348885; c=relaxed/simple;
-	bh=1yEjyPyPd55xrfzDLQha4JqWN0HhYlvPPLP2kUZIZwM=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EUqbXXK154N1ux1tlDO/fQeq0oLAF+HIPczRWt2kjE8WP5pXDOyzbuPUEDNwqd4Z/hLlUaSYzXEq97pDyM565Ay2cHijH17RFJbSeYqd21DLN6BKNXerb47ruLlH6QjLC4yswc+g1IOodH82JP6jFCMdDCqPsT53EAc08hjC344=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=R/GGP3VP; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id DC74E10713A7;
-	Wed, 12 Feb 2025 11:21:25 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru DC74E10713A7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1739348486; bh=xsDP1LEoMSu7HIkQ5w960VASY/onF6JaEzOXJrcEgEk=;
-	h=From:To:CC:Subject:Date:From;
-	b=R/GGP3VPFBshVBKCYNDVeuaRJ6ofhSHY3zwm4ngu5NYxJ7L7vv8ju9FGARhg+7WEN
-	 f78GERTrCAtF1Z5d2WvSwaPwJv7vp37wwIIBS2UCfhoNRIwQjmhODoqMYnh3ojjM2X
-	 afVVSfkkLMwS6RW6mUZelurZiuMFih5o190WIHBg=
-Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
-	by mx0.infotecs-nt (Postfix) with ESMTP id D937F3045BCA;
-	Wed, 12 Feb 2025 11:21:25 +0300 (MSK)
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Julan Hsu <julanhsu@google.com>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH v4] wifi: mac80211: fix integer overflow in
- hwmp_route_info_get()
-Thread-Topic: [PATCH v4] wifi: mac80211: fix integer overflow in
- hwmp_route_info_get()
-Thread-Index: AQHbfScbaA7QH0ty/EqZGebnxR+Xlw==
-Date: Wed, 12 Feb 2025 08:21:25 +0000
-Message-ID: <20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1739348641; c=relaxed/simple;
+	bh=41oRUPaUFlJuFpT0qxGUd6zD6GuKe3mpoJ1IuxQKq9k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TpYL/fNOc3QQEqQJgsh2ULCDLodWQdQFf0p1SmYOXuYwyb3RFaZdoFbCQvFiy01icqfopOSSannmK8WK+ChZaEIh8YSH0BEjUOU8sG9dhqC1Q0Twr3yFfbpqztHQtkLap3b+g53TBHwRaqE4APSUB0WnVFAHg3IcVd8UmbqN38g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NnTp4/IK; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B4BF743284;
+	Wed, 12 Feb 2025 08:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739348630;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8xCSKqhDUpuPkZmj4vQowe/WposBKGNhZ/XQWdD8D3E=;
+	b=NnTp4/IKL3UDJsvhrS+lP+3DUVPgf3VXZ21HhS218PY08yS5300z1UOHFzgdStoy3BDJBJ
+	6/w4VAk/sy7B1yJCnHTTFtQ5CDsSshMBwDi0NOOumwGPjA8RBFcG1+7i2fG+gLAgSP9VC1
+	KR0whZBWA5Nv6rxdpauYMi1xUFLQg5p+OXOON73W/yU4SXr9xb/eDKknf3gQdPWHLHPOlz
+	FdxkHRWWc8fQ1FpKm1eW6QpnHI0Np9B73gjfl6Xrkx2wIJymjODsgG6SgTOIBvBnuNgp5E
+	bz8keJ87Y52RYmpZ40hzlzScggx+vppVBEc5BcYlQtcpb7F5at2YLnbpZDMZYg==
+From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net 0/2] rtnetlink: Fix small memory leaks
+Date: Wed, 12 Feb 2025 09:23:46 +0100
+Message-Id: <20250212-rtnetlink_leak-v1-0-27bce9a3ac9a@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/02/12 06:53:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/02/12 04:08:00 #27176921
-X-KLMS-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJJarGcC/x2MQQqAIBAAvyJ7TmiNQPpKRJittSQWGhFEf2/pO
+ DAzDxTKTAU69UCmiwvvSQArBX51aSHNszCY2rS1QdT5THRGTtsYyW3aTmi8a71tQgMSHZkC3/+
+ wBzFheN8PxXHFX2UAAAA=
+X-Change-ID: 20250211-rtnetlink_leak-8b12ca5c83f3
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Nikolay Aleksandrov <razor@blackwall.org>, 
+ Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Alexis Lothore <alexis.lothore@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpedfuegrshhtihgvnhcuvehurhhuthgthhgvthculdgvuefrhfcuhfhouhhnuggrthhiohhnmddfuceosggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffdvfedvtedvkeduudffueeifedujedvveekfedvteeguddugfeklefhhefhudeunecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrdegvddrheegngdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhhnihihuhesrghmrgiiohhnrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegsrghsthhivghnr
+ dgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
+X-GND-Sasl: bastien.curutchet@bootlin.com
 
-Since the new_metric and last_hop_metric variables can reach
-the MAX_METRIC(0xffffffff) value, an integer overflow may occur
-when multiplying them by 10/9. It can lead to incorrect behavior.
+Hi all,
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+I ran into a small memory leak while working on the BPF selftests suite
+on the bpf-next tree. It leads to an oom-kill after thousands of iterations
+in the qemu environment provided by tools/testing/selftests/bpf/vmtest.sh.
 
-Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is a=
-t least 10% better")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+To reproduce the issue from the net-next tree:
+$ git remote add bpf-next https://github.com/kernel-patches/bpf
+$ git fetch bpf-next
+$ git cherry-pick 723f1b9ce332^..edb996fae276
+$ tools/testing/selftests/bpf/vmtest.sh -i -s "bash -c 'for i in {1..8192}; do ./test_progs -t xdp_veth_redirect; done'"
+[... coffee break ...]
+[ XXXX.YYYYYY] sh invoked oom-killer: gfp_mask=0x440dc0(GFP_KERNEL_ACCOUNT|__GFP_COMP|__GFP_ZERO), order=0, oom_score_adj=0
+[...]
+[ XXXX.YYYYYY] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/,task=bash,pid=116,uid=0
+[ XXXX.YYYYYY] Out of memory: Killed process 116 (bash) total-vm:6816kB, anon-rss:2816kB, file-rss:240kB, shmem-rss:0kB, UID:0 pgtables:48kB oom_score_adj:0
+
+Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
 ---
-v2:
-- Remove 64-bit arithmetic according to https://lore.kernel.org/all/a6bd38c=
-58f2f7685eac53844f2336432503c328e.camel@sipsolutions.net/
-- Replace multiplication by 10/9 with a function that compares metrics by a=
-dding 10% without integer overflow
-v3:
-- Fix a typo (persent->percent)
-v4:
-- Simplify the is_metric_better() function
-- Remove 'inline', add a comment
- net/mac80211/mesh_hwmp.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Bastien Curutchet (eBPF Foundation) (2):
+      rtnetlink: Fix rtnl_net_cmp_locks() when DEBUG is off
+      rtnetlink: Release nets when leaving rtnl_setlink()
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 4e9546e998b6..c94a9c7ca960 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -367,6 +367,12 @@ u32 airtime_link_metric_get(struct ieee80211_local *lo=
-cal,
- 	return (u32)result;
- }
-=20
-+/* Check that the first metric is at least 10% better than the second one =
-*/
-+static bool is_metric_better(u32 x, u32 y)
-+{
-+	return (x < y) && (x < (y - x / 10));
-+}
-+
- /**
-  * hwmp_route_info_get - Update routing info to originator and transmitter
-  *
-@@ -458,8 +464,8 @@ static u32 hwmp_route_info_get(struct ieee80211_sub_if_=
-data *sdata,
- 				    (mpath->sn =3D=3D orig_sn &&
- 				     (rcu_access_pointer(mpath->next_hop) !=3D
- 						      sta ?
--					      mult_frac(new_metric, 10, 9) :
--					      new_metric) >=3D mpath->metric)) {
-+					      !is_metric_better(new_metric, mpath->metric) :
-+					      new_metric >=3D mpath->metric))) {
- 					process =3D false;
- 					fresh_info =3D false;
- 				}
-@@ -533,8 +539,8 @@ static u32 hwmp_route_info_get(struct ieee80211_sub_if_=
-data *sdata,
- 			if ((mpath->flags & MESH_PATH_FIXED) ||
- 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
- 			     ((rcu_access_pointer(mpath->next_hop) !=3D sta ?
--				       mult_frac(last_hop_metric, 10, 9) :
--				       last_hop_metric) > mpath->metric)))
-+				      !is_metric_better(last_hop_metric, mpath->metric) :
-+				       last_hop_metric > mpath->metric))))
- 				fresh_info =3D false;
- 		} else {
- 			mpath =3D mesh_path_add(sdata, ta);
---=20
-2.39.5
+ net/core/rtnetlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+---
+base-commit: 5d332c1ad3226c0a31653dbf2391bd332e157625
+change-id: 20250211-rtnetlink_leak-8b12ca5c83f3
+
+Best regards,
+-- 
+Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
+
 
