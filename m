@@ -1,151 +1,167 @@
-Return-Path: <stable+bounces-115011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6451A32006
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:33:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A31A3200C
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 08:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702FD1618EA
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:33:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98D56161E47
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 07:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9DD2046A2;
-	Wed, 12 Feb 2025 07:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5737E1FC7C3;
+	Wed, 12 Feb 2025 07:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="NUMBZw9v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCYqwWQ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA9720468F
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 07:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02B11FF1C8;
+	Wed, 12 Feb 2025 07:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739345607; cv=none; b=W0MbV7t41kf/bRt2hshBi9XswXRbxjQLwLysdTLsUQce5K+pVBCfLMQIf35mxddsFjGc3Z3WvHcStdjLnA51THXrmFxsGtWNFmYpH2KtQbiryWot+1JXZ+ZlTGNjMxSgq9obgwo0/dS9eKPC//OgyDUssUIVs467C2o1Il6Omf4=
+	t=1739345709; cv=none; b=t5JO5hceY21ILLYk0vZcQzHRrdgK95sktXHLTpdPV5f2i06th5wL0nJHYwo8R4StNlzFDJENePKohdzj4hW+XjlrJo/vJpemHBSsy8gwLsOsX0z4KdhBPPgCxtOQyKCgmd7faIDYiT29dX6aBvVxuzJVP0Wt9FqHrj6sHCYF3JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739345607; c=relaxed/simple;
-	bh=bIFAFWBKWpZ07y7ctOBZ70nTlK0JeLPnASpipllNb7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sZwOhL7ZM6lkrTwRmKNL+S5JmTbx8yehD2FZHyHEXzXPzuMY/6M38DjF0uYHuRfKD78ffS3ouVESLV5nKEy/rrTcAlTbFMNqxH9Q/TugdVMkENDwX9DReskR034J3myE5z9OT1AJjGzhQTA5TTxVi50j8KnmxFPx8fra2mdNcaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=NUMBZw9v; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21f6d264221so49427895ad.1
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 23:33:25 -0800 (PST)
+	s=arc-20240116; t=1739345709; c=relaxed/simple;
+	bh=vzAYFgD6NsPtoPoanmFtwkOgtB83JG3kaQy+7FvwREk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tdr35Z+SyIsdK32/cdKuWiyPxPu95wa5qdFReXu20964fS2lUZ+oi2V9W+WRzLSueMyrExD/U+EpliOH80aK6aGIz9I06Pu+sSbaHI3VCoeHf94Jo+BNjjtNuUktrsNR4b1LMqZhUGehz8o1UlhWnKAaGwbN5oxbs2sucnDk9ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCYqwWQ8; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fbf77b2b64so871132a91.2;
+        Tue, 11 Feb 2025 23:35:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1739345605; x=1739950405; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fkwC4yo/St1MU9GrbOiGWT5f1H9mKSQMNgvX57ikxsY=;
-        b=NUMBZw9vPlXuscejlvYcNB0QaLN/b5qskT0WdWzTG5nm7a9DkMYmYX46tFTHRn3KRF
-         mojBEaXe0ZgJdS5qHjlRPD6xSB1VWef1o7+MIIwwaiplQUyOSvR5DMqxAtrlWxLubQ6Z
-         dk91FQToMAeSOOLhC69avYWbQ/hVOYk/7bMdKKItrMX8rf1E4ZReor2B3iPNDnjOdtD4
-         Gla5JHdCywkWkdx1ll5twsM+h9Q3XaipD7qnK0cuAwqL9lJwydG5dVr7hFg4Ag5m9Y7w
-         8j6QuuJrDsOJwHozgdVcPvEzLw2qlcCfvn5ywL+dXldeMzAFmeJf2v8vyyJlKVjvS+yG
-         VXFw==
+        d=gmail.com; s=20230601; t=1739345706; x=1739950506; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=55MQT8EffuBkX0+zq144/b95PKg1mZ4gkJfdfqwu5qA=;
+        b=RCYqwWQ8GMzu3k1ptD9mPxmvHgqBj5AmWoMcVBEEFuj1MzM/CQcqVcIVJ1Svgjfqgj
+         oDc5N4I6vQYdFbqamLDsji0AZWn6saVL4PfQx1GLIu6NOeGrDuYu5sIMvn1v6EuEASFI
+         Nqe7m6nWoFyMxgRg1RXD8kHNMByWX8wu8WGTInGttdOP7FRhaDUSwYEeYd6MlF8nL09w
+         gA97LDHSfT+YdD6Po6pfemJGj/tD7WO8GzYfgWs3rXXufAGkCumqbwgtSmNyURNwQoTz
+         G6vaL2E81VGMHRQfSHA1rKMHTdGgdSiQlQ0B/4FElquYSqPXJTwpKQr49r6Hr/5v+NlS
+         y5+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739345605; x=1739950405;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fkwC4yo/St1MU9GrbOiGWT5f1H9mKSQMNgvX57ikxsY=;
-        b=F8oTsLSiFp55ji876CQf59facyU1nVd4fVx+jZ55yW8jb6Cs/Va8ymn3TBFGgQDJ1x
-         N3FmcGz3bgUnMUcyX1NBtSkoFanhkn7GmshCUw0Fq+9quD7sOS8kesWUufKD6EFqRgES
-         WwhZ/Ps1Zct/8b5ggVYv7Aunx6jKp1cyBRQkatZ8WVPOB03QXdDRGfN+SThXkwchovOk
-         ASB1R6EwuoGj9jFJotQ96IOSiUaqk5eXC+pXlr81iSUkyTJRBs35/rwakDJYoUw6wMbB
-         hhPe617JtQG90HOJf1oXkX+Bx26y3facSTcpH7ja9oyGS85LGVRKvsYJTW4Jz04Y0lhh
-         9kew==
-X-Forwarded-Encrypted: i=1; AJvYcCXXAjRWT/W+WTWq3YrsrETh1sXMbuB2I/whfBPKeR4B4ZHSlp0J79QIPpxha2UrxETWDQBxUdo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoPbuGy27VN1Z0ffMt9Yd6lKfWJnwQk3IH0KlSqGGXHbS1Ppn1
-	wHJ+aXkAYsWQ2PKRdCZo/ufaWUhc+p0f7jHcHqrzVPazrLK6cmumifuGeeYvjTM=
-X-Gm-Gg: ASbGncuP+CjGKzzXZZKqBpJ1zXg3ubhop5j25u34CsmX6THHF5zevOw9MGh+1kuhAAh
-	VImxdd2X21eJR+uBbSOAM4hwqXuN2TQq2F5y2dzeOKVfLEg+64Y+u0Ft4FV2qOJMOLEGNQWecrf
-	x6A3ISrbQRqzKE+hXgPk6AlXU3iWRO9KHD/y7bUWy2r9V6+Sahg/L/d/y1cejInvibMeJC4gWnJ
-	IOp3kuzumlJWp05SpVlflaU0sNaaulNX2EW+LqpGT70FAHIgj8Lpohek0XC6bTA7zjdBe6unyuk
-	cT2jvLya29SUpPKmLwC2Yoa9K6Vj9eAX5FyMW5MGjg==
-X-Google-Smtp-Source: AGHT+IGiuGc7iBWpCw3G4pXH50ZiqqPYc7UNNfOGWQ0h2PpQXVIqAav7BnmCxlwuHgBLLmHBduzIkw==
-X-Received: by 2002:a17:902:fc4f:b0:21f:7821:55b6 with SMTP id d9443c01a7336-220bbae2543mr35144095ad.13.1739345605349;
-        Tue, 11 Feb 2025 23:33:25 -0800 (PST)
-Received: from [10.84.150.121] ([203.208.167.153])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3650ce0bsm106755595ad.21.2025.02.11.23.33.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 23:33:24 -0800 (PST)
-Message-ID: <2e194c31-c177-496b-8e53-a20625e20a2b@bytedance.com>
-Date: Wed, 12 Feb 2025 15:32:04 +0800
+        d=1e100.net; s=20230601; t=1739345706; x=1739950506;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=55MQT8EffuBkX0+zq144/b95PKg1mZ4gkJfdfqwu5qA=;
+        b=VW/5sNCGf/DU+xfvalVUK5TDeBzDbsOIm+RIFEH4VZqdwzBTiOrdzcgp7TgVTEe+ME
+         tq3USM8Ga8Z5lPIuotv+3DwfDbquid/THPKK1AYr7ymysBljkuinakXThGavUv7z/13i
+         FVh8Pj33s9RIH6QvybRj/w9Gm8801a11bEye3QUJhDxw/BhRIT3SxC3W/HG+2kpxePgz
+         rN4ZDtLOylm348sYr+9LXYx7VmWpFcZO6jeaXCxS3VqzGOi52m1a1s56Ds9H0F6bha0u
+         faBVNy54b6srD/rccPfJt9VwB+OfIgOCAu56NsX4741L+DkXdzq+2SqEi1V4oeLocb8K
+         DX6g==
+X-Forwarded-Encrypted: i=1; AJvYcCV4yhgHrqIZhGau35IVAsnpVTat2ffwu19d/BNnN6lZXRywgBqQ6IW5uTtmfs59lZZZk01187c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMT49NdA5FGLvR2DNPIzRj0svrkQe6CyxNRfguEIzXlsBwfXA9
+	77N+GJUdvAbRHW5FsTbt/iJXiPdDKrRAv321NH1yDvCf1hJOzT4DUe/prXeI
+X-Gm-Gg: ASbGncvWGrCI6yqG21zzbTFDRMkdcqR+k1BzBjqF/QBmeeZp/pcSxQPJCxmiMTG00PR
+	SUXlt/NNSflHuM6Akf8g3vXZROXbrm0uNEzMQAnPoNF2NM4XcoBoh3OdeD2naJkuNb0tVfzR54/
+	Bzy3FZHqGoZhTlc11qhIWk9lw524J2BMDZAvCTXAsHq9lwDehXaBofCRdWJcKefeg87wdJh2f42
+	Ygb6nmGNEocZb0UaX5W6TjsvN7UMNwddl+dIvUPC93+YQXrSFDfDX/bpYhdE/TN/Iyh/VHsoDAf
+	iWWsCkw0sx1dqBtUCcyn/prj4y55IjwWXdV0DM/ruVlXvt49ZSetZg==
+X-Google-Smtp-Source: AGHT+IFKh3ZqNVRzGTbQ7qYPkmNpUAXO/KlxJwa21Zg54QcVSt7HzrYyauglTnv0Np9RgQtl5B/qfg==
+X-Received: by 2002:a17:90a:fc4c:b0:2ee:48bf:7dc9 with SMTP id 98e67ed59e1d1-2fbf5c1bfc6mr3596216a91.15.1739345706358;
+        Tue, 11 Feb 2025 23:35:06 -0800 (PST)
+Received: from lindev-local-latest.corp.microsoft.com ([2404:f801:8028:1:7e0e:5dff:fea8:2c14])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf989bdcfsm789978a91.3.2025.02.11.23.35.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 23:35:05 -0800 (PST)
+From: nspmangalore@gmail.com
+X-Google-Original-From: sprasad@microsoft.com
+To: linux-cifs@vger.kernel.org,
+	smfrench@gmail.com,
+	pc@manguebit.com,
+	bharathsm@microsoft.com
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] cifs: deal with the channel loading lag while picking channels
+Date: Wed, 12 Feb 2025 07:33:43 +0000
+Message-ID: <20250212073440.12538-1-sprasad@microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm: pgtable: fix NULL pointer dereference issue
-Content-Language: en-US
-To: Ezra Buehler <ezra@easyb.ch>
-Cc: linux@armlinux.org.uk, david@redhat.com, hughd@google.com,
- ryan.roberts@arm.com, akpm@linux-foundation.org, muchun.song@linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <be323425-2465-423a-a6f4-affbaa1efe09@bytedance.com>
- <20250212064002.55598-1-zhengqi.arch@bytedance.com>
- <CAM1KZSnWFivV-7nc55MBAEtdP1LXfW4eLKa-94HPZaTP0AOPrg@mail.gmail.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <CAM1KZSnWFivV-7nc55MBAEtdP1LXfW4eLKa-94HPZaTP0AOPrg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Ezra,
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-On 2025/2/12 15:27, Ezra Buehler wrote:
-> Hi Qi,
-> 
-> Thanks for the fix. I will test it as well as I can.
+Our current approach to select a channel for sending requests is this:
+1. iterate all channels to find the min and max queue depth
+2. if min and max are not the same, pick the channel with min depth
+3. if min and max are same, round robin, as all channels are equally loaded
 
-Thanks!
+The problem with this approach is that there's a lag between selecting
+a channel and sending the request (that increases the queue depth on the channel).
+While these numbers will eventually catch up, there could be a skew in the
+channel usage, depending on the application's I/O parallelism and the server's
+speed of handling requests.
 
-> 
-> On Wed, Feb 12, 2025 at 7:41 AM Qi Zheng <zhengqi.arch@bytedance.com> wrote:
->>
->> When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
->> parameter is NULL, which will cause a NULL pointer dereference issue in
->> adjust_pte():
->>
->> Unable to handle kernel NULL pointer dereference at virtual address 00000030 when read
->> Hardware name: Atmel AT91SAM9
->> PC is at update_mmu_cache_range+0x1e0/0x278
->> LR is at pte_offset_map_rw_nolock+0x18/0x2c
->> Call trace:
->>   update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
->>   remove_migration_pte from rmap_walk_file+0xcc/0x130
->>   rmap_walk_file from remove_migration_ptes+0x90/0xa4
->>   remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
->>   migrate_pages_batch from migrate_pages+0x188/0x488
->>   migrate_pages from compact_zone+0x56c/0x954
->>   compact_zone from compact_node+0x90/0xf0
->>   compact_node from kcompactd+0x1d4/0x204
->>   kcompactd from kthread+0x120/0x12c
->>   kthread from ret_from_fork+0x14/0x38
->> Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
->>
->> To fix it, do not rely on whether 'ptl' is equal to decide whether to hold
->> the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
->> enabled. In addition, if two vmas map to the same PTE page, there is no
->> need to hold the pte lock again, otherwise a deadlock will occur. Just add
->> the need_lock parameter to let adjust_pte() know this information.
->>
->> Reported-by: Ezra Buehler <ezra@easyb.ch>
-> 
-> Perhaps a detail but, maybe better use "Ezra Buehler
-> <ezra.buehler@husqvarnagroup.com>" here.
+With sufficient parallelism, this lag can artificially increase the queue depth,
+thereby impacting the performance negatively.
 
-Got it. Will wait for your test results first.
+This change will change the step 1 above to start the iteration from the last
+selected channel. This is to reduce the skew in channel usage even in the presence
+of this lag.
 
-Thanks,
-Qi
+Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+---
+ fs/smb/client/transport.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> 
-> Cheers,
-> Ezra.
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 0dc80959ce48..e2fbf8b18eb2 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1015,14 +1015,16 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ 	uint index = 0;
+ 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
+ 	struct TCP_Server_Info *server = NULL;
+-	int i;
++	int i, start, cur;
+ 
+ 	if (!ses)
+ 		return NULL;
+ 
+ 	spin_lock(&ses->chan_lock);
++	start = atomic_inc_return(&ses->chan_seq);
+ 	for (i = 0; i < ses->chan_count; i++) {
+-		server = ses->chans[i].server;
++		cur = (start + i) % ses->chan_count;
++		server = ses->chans[cur].server;
+ 		if (!server || server->terminate)
+ 			continue;
+ 
+@@ -1039,17 +1041,15 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ 		 */
+ 		if (server->in_flight < min_in_flight) {
+ 			min_in_flight = server->in_flight;
+-			index = i;
++			index = cur;
+ 		}
+ 		if (server->in_flight > max_in_flight)
+ 			max_in_flight = server->in_flight;
+ 	}
+ 
+ 	/* if all channels are equally loaded, fall back to round-robin */
+-	if (min_in_flight == max_in_flight) {
+-		index = (uint)atomic_inc_return(&ses->chan_seq);
+-		index %= ses->chan_count;
+-	}
++	if (min_in_flight == max_in_flight)
++		index = (uint)start % ses->chan_count;
+ 
+ 	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
+-- 
+2.43.0
+
 
