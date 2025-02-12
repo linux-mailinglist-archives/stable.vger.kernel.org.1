@@ -1,73 +1,107 @@
-Return-Path: <stable+bounces-115048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2972EA32643
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:51:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFAAA32651
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51D21691B9
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 12:51:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52FE13A6350
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 12:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8051A20DD48;
-	Wed, 12 Feb 2025 12:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECD820CCED;
+	Wed, 12 Feb 2025 12:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xa0wG5+M"
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="UFpZapta";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NkdljSwn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D51720DD4D
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 12:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A98271824;
+	Wed, 12 Feb 2025 12:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739364654; cv=none; b=bb4cXsQbeuukYjhSB837l8PP6rxOQTsGEhLEvfTGmB+BX67cVL7RVtAV+kiYzKEOcCaPR1BYzq/bPZaSWBob09C6qaTHoPoiPEQjJlGPnZujlCmtpgo6RMWvraUPH44HcMJ2/up1o7W5EGcJLyLrVQEXeL629g2UKdYMLJxAopA=
+	t=1739364871; cv=none; b=fuxAWhMlNA+79ReFLliHJcuYXRKN5GFq4O/U77LXy5wRle0IIJMlnCqxxrOGAIZ84A1u+QfdHBdW69SFOkLvVZybwnH2oQWl9pKc9a6NjHfX4Ggsv+86behb1CFO5JFmIRaDa7rKVBjgHWbRlibz+1T/nQ5NFTPrtcafRjpwjwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739364654; c=relaxed/simple;
-	bh=Pgk//nDMo7FMZG8BzPQaJt0b4UJPww+RrERA2MiMrsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=V+oFOWi+dFnCsrtUgNF5IMQdpG/mChoAAY0yAu7/FXsLLj7TE+q5rnBralNEi5m4DxthkYeLh+KaGLGar2XHmWZtOYgbSimUWNSAZgVoT3ELZHWFdeCFomP9OpB6ldZuXWiFqiQoQ7JxpMyA1p28Z9ZNtS+xruFxmZcAgCbF1ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xa0wG5+M; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739364652; x=1770900652;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Pgk//nDMo7FMZG8BzPQaJt0b4UJPww+RrERA2MiMrsM=;
-  b=Xa0wG5+MAzyFW9r062cFHIk6csTYsqYC5GVBmn3gpZB7bU81I9nyYFzh
-   JOyp3jAKY7o1EFbC2m6XfrRxOYLvVjP91H4OyqJePR4n9+t1zVeDF634I
-   nXNRYC1H2Gomn1VrZEeHxkRsK1PXNUiug7EXhTfvO8G6/FYYfyCz19mbb
-   RCVKZRO2z6F5/J7NTpmPejCsMUqlkVek9E1mj0tD5XX/BjQVqiwvigJmu
-   bf6GOeKQdm8llBIUm8K5gDNhKK/bhaqSX3r/ZhuP9sQrNO+67MGF2JK00
-   h9MKvkgya+mpMCsOH6352tBGjJO9MGrGJdqlvw44DMhTs2qrcnXIiXhgS
-   g==;
-X-CSE-ConnectionGUID: E7cJD5u0Tmun3dCwz8QZiw==
-X-CSE-MsgGUID: sKWb1i/bTX2NDoo9eF6PGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="65374368"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; 
-   d="scan'208";a="65374368"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 04:50:52 -0800
-X-CSE-ConnectionGUID: 4Lj7gAQgT12VxqUPUZ/EpA==
-X-CSE-MsgGUID: y7uq42PqSyq/v9SNFBu+6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="113720153"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 12 Feb 2025 04:50:51 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tiCCW-0015cF-1g;
-	Wed, 12 Feb 2025 12:50:48 +0000
-Date: Wed, 12 Feb 2025 20:49:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] drop_monitor: fix incorrect initialization order
-Message-ID: <Z6yY8LAeUa8s2H4G@daa8e4f1ba6f>
+	s=arc-20240116; t=1739364871; c=relaxed/simple;
+	bh=dUzLri7HLBnLUNXHtV56R2oFbTGzCCUoFmmjbezeFMA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kMQiumxD1mheP4k37IGqq/rFT4b6gzkYHM8bysOFaHdzC0Ng06OJkaeV+yUBnmc21Xf+WQRJG2KAoiFh5xiyU3Cn0X5ucGHsb1VTUmygPb0ya091/8NGwDKIKJuFLO4v3lWOnc3BZWR39VzdS30cjrvp4OV2AhgYkEoQPq1LySY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=UFpZapta; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NkdljSwn; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 467641380830;
+	Wed, 12 Feb 2025 07:54:27 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 12 Feb 2025 07:54:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1739364867; x=
+	1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC+Fiy/HAc=; b=U
+	FpZaptaQZTevoe0cySA3pPZRz7aLIwl0WmrLjfHqB5tQKE4T1hXWY1nfrPGtXVZd
+	nM5lLH9iiI11DEabnPWSkd5Vs9oa6zUx2CnOyRXkGwqWHZznsEgGnLlqI7V3eQK/
+	92eGQ5bolSmIVQ5OOSHkDhKnBQCQ/JYrBZ4eU9zxW/mRgdPCZB9a1aQhzP7lC/CF
+	1J8Y3qi2C4TpX12jOgMcISUeStbUwGVkwC/dLpabhdrBkwf3gGe6oNzQuXGXUMz9
+	ZavnZXt36Z7JT5aiokfllnBR42ou1+B9ioqH9gKPEVGrFxfa7w1i/SDGN4oFgvPG
+	I0dNq7tYlMzkKpiugcA6w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1739364867; x=1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC
+	+Fiy/HAc=; b=NkdljSwnPaOcgW0ruMTJgTYj+egMstPs93iS9lb/cdE0Zf++1zC
+	Q+2n1uxqsnfWOuSB41UoLA9cpjKHlEQ+NRU+10neTM1BL+MPlynKh4vQFdCAaMmY
+	aE8UGymw7SLeSOYBkYdO2E9Uf/PsFx+hSiS0ah9lcW2Uv6pZZkke2x0TZyNJ5Rn+
+	wYvRB2KT2FAC4+o6AY7kuJxQI4XBmhdv8sKLUX98W1jUkL/EcEeCYAUlHMl/zvKl
+	Wh9s2WjmjviEOujM17XdT+BAukcYMPnAYI8+tA04oqi9Fd3G/RW4cWjETkNQ+Q1l
+	EXQwDS1pNfG/DVi8YT6zisA6egalr6mPa1w==
+X-ME-Sender: <xms:A5qsZwFfftWnxLKO6VEGGYykTExInmqUGCVHfIm60tKHBomTukzBiQ>
+    <xme:A5qsZ5V1Cysan1OEF7T3q8C0u--XYOveiBFa9runYPz5BvJ2Htzjc3mJgMqRIsqq2
+    i6WOwIOup1XZzhpT9Q>
+X-ME-Received: <xmr:A5qsZ6JGQTKbTQppU40zBoPJBB60aFrO9Ht9NjM3pmtmEV_7A2P9bhECg0f-lTaizoXXmQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
+    ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepvhgrnhhnrghpuhhrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopeig
+    keeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpsghonhiiihhnihesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopegvrhguvghmrghkthgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggt
+    khgvrhhlvgihthhnghesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhigghgrohesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepshgrghhishesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:A5qsZyELfOkik5Aw0VjABfX6_-CkUI8hrvVUaWqAyH0abqxsoBUVqg>
+    <xmx:A5qsZ2UngPg7AvIvi-g81a65Nlso9hxbl5MDri9HYTV_rk8wgxKGOA>
+    <xmx:A5qsZ1Mg-FmwM8dJGVhQ9avw3ohaazEB9jZul-D0tirmGmPdLHKTpg>
+    <xmx:A5qsZ93m0XRzGOMaqXzjhdDAiyogMy9f1YhtwXpRA_DM3bmvILZcyA>
+    <xmx:A5qsZ0ayS2upXBHUmye1FPk7dK90iimRTe2aHt76QKeRyBesncV9rvoA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Feb 2025 07:54:21 -0500 (EST)
+Date: Wed, 12 Feb 2025 14:54:17 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH V4 2/4] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <ljdzupgyl2am4qgvirwpdonwuzwjaysemu43icrzxjt5olr3yx@dldbi5tqwhjh>
+References: <20250212000747.3403836-1-vannapurve@google.com>
+ <20250212000747.3403836-3-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,24 +110,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250212124653.297647-1-Ilia.Gavrilov@infotecs.ru>
+In-Reply-To: <20250212000747.3403836-3-vannapurve@google.com>
 
-Hi,
+On Wed, Feb 12, 2025 at 12:07:45AM +0000, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
+> so IRQs need to remain disabled until the TDCALL to ensure that pending
+> IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
+> be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
 
-Thanks for your patch.
+The last sentence is somewhat confusing.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Maybe drop it and add explanation that #VE handler doesn't have info about
+STI shadow, enables interrupts before TDCALL which can lead to missed
+wakeup events.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> @@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
+>  		WARN_ONCE(1, "HLT instruction emulation failed\n");
+>  }
+>  
+> +static void __cpuidle tdx_safe_halt(void)
+> +{
+> +	tdx_halt();
+> +	raw_local_irq_enable();
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net] drop_monitor: fix incorrect initialization order
-Link: https://lore.kernel.org/stable/20250212124653.297647-1-Ilia.Gavrilov%40infotecs.ru
+What is justification for raw_? Why local_irq_enable() is not enough?
+
+To very least, it has to be explained.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
