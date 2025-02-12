@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-114998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAE9A31E15
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 06:42:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EF9A31E28
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 06:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C22188BDAD
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 05:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60721640F2
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 05:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDAB1F8AC8;
-	Wed, 12 Feb 2025 05:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C21F4289;
+	Wed, 12 Feb 2025 05:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6dGSUBy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyYCbhO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81100271837;
-	Wed, 12 Feb 2025 05:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AE82BD10;
+	Wed, 12 Feb 2025 05:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739338968; cv=none; b=rLQsxCumcJP73ByNz9LGJR5QjUvMycck1ArcnLVPEvgS55UXGvvGapd8tVaqNoKdqASS1apddjg6ziVO5RVBlBI+LZHHoPtbfmZiYGlKyfkVgb7bGH4fQ0X83AGdJdBHZHhDMjyQXr66CPLhGzZNbctqURKANYKFuzoILfMtqkY=
+	t=1739339124; cv=none; b=mgGRKK9MIzrLTxdWSEnTddq4eTSwZM6RtI+BzL/QMd+tb5G5+0ikojrOxGNdqgKSzY9IjIHLwiDvB5eqYj1hnslWoIEmVlS4KeZ0qSIgAbWwFvWvSSYKDfRJucCiaf3VgVQt2hjNM552I+h2NPtDG5amcB075Typj1wtaXQsetw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739338968; c=relaxed/simple;
-	bh=xvcbtv9IFmooAu7P4df86saRb78Gr/1zViD2XIOy+Q8=;
+	s=arc-20240116; t=1739339124; c=relaxed/simple;
+	bh=h2k2i8LYf5htvNu8p78HQ44yb3Ii/qEig/aPYBzvTIQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tUKVWgsEMmkxPUZ+JlySq6vUsbABvPIQOz0743Gb3+w1egq8iZnrGJomXLnwt+hrWFlhxeQN5ervjAQDleCd10zSMPTFApXIzh2+ZG5yzogJPQowfumcRDScLuATNTmdFF0SQsHBvQAYfOEd215Ha7dtGoUuWJCo3QGcN3eXKJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6dGSUBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450C0C4CEDF;
-	Wed, 12 Feb 2025 05:42:44 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=KEB7b4RBt1GgtMhJU7IojQem7b4+pfBJJTMFDE+7XwylK5NZB50amA7SwxKnBQojbL0ycIg3+S1T0WnV0suPjkW5yMkbRe7ypjVPZorzB0rA+nv11PQBjoZ44d9Pa6S4bCy88mpMh7Ul0Xx3AYlqVFut7oz2/GlxOrCTvlDN6zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyYCbhO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DB4C4CEDF;
+	Wed, 12 Feb 2025 05:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739338967;
-	bh=xvcbtv9IFmooAu7P4df86saRb78Gr/1zViD2XIOy+Q8=;
+	s=k20201202; t=1739339123;
+	bh=h2k2i8LYf5htvNu8p78HQ44yb3Ii/qEig/aPYBzvTIQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u6dGSUByjWYrMTfYu1jX2AMuRGUkb+BEeox9ufmm/KWVQfBOEpOUqrMvRj413C01V
-	 rhI8U1kkt4TjIdp1N+PlFHIreru//WzSghO9t/OmEtDlIUJyto14+rtljr+D5k2slM
-	 /MZfjMXwrOHFycYrDP/oqDbgfSrx7qjUIKBTyOW9CIVyzhppUYeAAtZicBDHQHaVYR
-	 DIAJBdF7sIp50t7SezFYRHDpK6xNX4HYeLG48K+OXonTCuRtvRZbdlrXgFtOYLDjOj
-	 QibHGWkZBct6vtVwoDAxsZTclsYbhdDjB+BtzBPCnhVnT2d7Jy2M3iFfAIs8O3MyYY
-	 O3zXPcy2zO12w==
-Message-ID: <1def2434-9033-4c83-b7de-c6364b7d3003@kernel.org>
-Date: Wed, 12 Feb 2025 06:42:42 +0100
+	b=TyYCbhO80tUEHzbAP7SF5HwXb3pb3QiScpV/iQv3IMmXoIANLyeiqKk7HAMqoio78
+	 x19M9mn47bkZNA18tWycfZGmz57DE0eG+1RBLnGT1E7oMQg9mymooqr3nngQ9lRJ2l
+	 gd2kKxfW217jl8h1llclyRu1ZLg0NUNMcNKGoVsLmokACKP6C6LE4sGAKv8CPLE/Zf
+	 VZXjXFefyPRMrIHgz01GCzlUTjGVw+n7p5QRPUDR714Px01FgTneD92+hT2wSjVbEj
+	 XqlHJUb55cD+Ju4BjfE0LE7XEakiYreo46KqsHZK7BYgglR10pfMovTS5XsE0YFKJv
+	 fCLyPav1mbXyg==
+Message-ID: <9f8cf902-85a3-43db-bce9-4fc9b876c473@kernel.org>
+Date: Wed, 12 Feb 2025 06:45:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,15 +50,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] net: stmmac: dwmac-loongson: Add fix_soc_reset()
- callback
-To: Qunqin Zhao <zhaoqunqin@loongson.cn>, kuba@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com
-Cc: chenhuacai@kernel.org, si.yanteng@linux.dev, fancer.lancer@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
-References: <20250212023622.14512-1-zhaoqunqin@loongson.cn>
+Subject: Re: [PATCH] soc: qcom: pd-mapper: defer probing on sdm845
+To: Frank Oltmanns <frank@oltmanns.dev>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Chris Lew <quic_clew@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Stephan Gerhold <stephan.gerhold@linaro.org>,
+ Johan Hovold <johan+linaro@kernel.org>,
+ Caleb Connolly <caleb.connolly@linaro.org>,
+ Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+ Alexey Minnekhanov <alexeymin@postmarketos.org>, stable@vger.kernel.org
+References: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,17 +108,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250212023622.14512-1-zhaoqunqin@loongson.cn>
+In-Reply-To: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/02/2025 03:36, Qunqin Zhao wrote:
-> Loongson's DWMAC device may take nearly two seconds to complete DMA reset,
-> however, the default waiting time for reset is 200 milliseconds.
-> 
-> Fixes: 803fc61df261 ("net: stmmac: dwmac-loongson: Add Loongson Multi-channels GMAC support")
+On 05/02/2025 22:57, Frank Oltmanns wrote:
+> +static const struct of_device_id qcom_pdm_defer[] __maybe_unused = {
+> +	{ .compatible = "qcom,sdm845", .data = &first_dev_remoteproc3, },
+> +	{},
+> +};
+>  static void qcom_pdm_stop(struct qcom_pdm_data *data)
+>  {
+>  	qcom_pdm_free_domains(data);
+> @@ -637,6 +651,25 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
+>  	return ERR_PTR(ret);
+>  }
+>  
+> +static bool qcom_pdm_ready(struct auxiliary_device *auxdev)
+> +{
+> +	const struct of_device_id *match;
+> +	struct device_node *root;
+> +	struct qcom_pdm_probe_first_dev_quirk *first_dev;
+> +
+> +	root = of_find_node_by_path("/");
+> +	if (!root)
+> +		return true;
+> +
+> +	match = of_match_node(qcom_pdm_defer, root);
 
-You still miss cc-stable.
+Aren't you open-coding machine is compatible?
+
+
 
 Best regards,
 Krzysztof
