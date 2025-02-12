@@ -1,166 +1,117 @@
-Return-Path: <stable+bounces-114992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA6AA31C65
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 03:55:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583E6A31D35
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 05:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBDA63A54F4
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:55:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A94A165E97
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 04:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ACB1D63C4;
-	Wed, 12 Feb 2025 02:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569811DF751;
+	Wed, 12 Feb 2025 04:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="T2eey5y4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPIDA6ro"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f100.google.com (mail-io1-f100.google.com [209.85.166.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DCF1D47AD
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 02:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8E3271835;
+	Wed, 12 Feb 2025 04:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739328946; cv=none; b=sXApwMQwFxCLkQ2u2dtb0LLJpuAwLj/BUJ8o4x4Ns55La/CqPjeMNKH+iEW/X5paJPjgZG6DIqHWAJQMCOpV2uELe4m4yF8fL7+dg3mBfLAXFg6Ak8oO6CB02GonG6DIjjcQW7/dbDsMyfTAvw8Vp2OHy+TACj5ubtKBUYzx8pk=
+	t=1739333114; cv=none; b=MXVpASojqTRrP6WcSvSOW2NKpz4MVd+Ut6TS1kNko4hxEVg4H2ItT67o63wqpfpwiV0Xj/jlNrrv5+JAMNWXrKftja6RUVMVYNEtiPL1f1AJehZNGsjccwcEZuqam85TbX7MD0L7unyg6Mkbxifn4Pjwjt6zUseeIz9fCnhAK9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739328946; c=relaxed/simple;
-	bh=nJ1+6T/iMN1d715e44BYBA2wZzNUnnRSue2vC2ob++w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=LT0fkBW2AkTXPthebO+zkry2Q0yewhHUJYsOfv2Rp2WYAw8SpumPJPzUu9Uz17kGToI8JjpGPNbZQq4quWhfF7e3HIfmfPcnTQu4M1GGG6hy80ttkkgyUTRUpuaE/+4Ogziz7TMxlVIhmj3tmLU8yhEmcOpCwBsut173pyClLY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=T2eey5y4; arc=none smtp.client-ip=209.85.166.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-io1-f100.google.com with SMTP id ca18e2360f4ac-855353491d7so68908939f.3
-        for <stable@vger.kernel.org>; Tue, 11 Feb 2025 18:55:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739328941; x=1739933741;
-        h=content-transfer-encoding:references:in-reply-to:message-id:date
-         :subject:cc:to:from:dkim-signature:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ufOvK0ICjLwwv3AooMUi20OpvUxPTSR0kxfwqxAeEok=;
-        b=IDOop6RdMzBrIbMxh/+BWGGSiOQxvI63AIHy79A93cxw6LbuT0SutQqtVzNNHnYzCf
-         sKAqNwYH/EfuKGrJEvOz6xE/9PKovjDZ3YiDaVXokP/qzrBPjrEOOZ0CMwTMP44Gia7b
-         YEv0qdmahdOaC4pwFNbaPU8+LP79kxwqyHURoD5v/zNsp3eABSheK6oV0faHod2IA1eY
-         C8QY/lZr3N/GoVsPKVWRhEoEUz9MQjD4QNC1iFIlK/5rHuGmTXsU9gFp2d82CAR41X3w
-         d7olCHxzwtBlv/6rKbrNFGRlfjZzEWlzSQ+GlBcAyOPzQePDT0o+YoP4Wn4K0IDWkGwy
-         wAfA==
-X-Gm-Message-State: AOJu0Yzn6dpFbwhZBwlf+y8y3glv68DCPWNsGnB/9ZseWZRjgA3T6zXM
-	eguiwtk8R8KI1NwQRLlDNJKaVJRkCEv0uAkuop+EEesL9F2h7nHCBQdlR0VDVgvCcZso5LFbeEl
-	LebM3JsUZdic2tZCMoMa4a1IpXfSYRQ==
-X-Gm-Gg: ASbGncs06/pDgmMbnsNw197uyH0KCQIrUzWrf98Mo/ayp0pulinBq1sExomLtw8ti0m
-	OEULNOV4egMJgi2CQ+aj1P6qLa4wEJXcEhRz5+HlO2WJlu7YWtl4X9Hw9hNdVLpbcBkA4vi2EM0
-	qJ19T1e0F6PYU4vsffYVNg7C6zyNi2A+ThDXAMfDGRTQyyKScNjNSsnu+v1Rr1S7oipekMN0+Mz
-	bKbpxdT2ZPlnaQfhuzor62cAVLj8CUEpsVqb3lBlCxw13rZWzfoDDIvK+PIIEncyo9LsTjaMjn1
-	y8N6NxCxFEEtlWI=
-X-Google-Smtp-Source: AGHT+IH0z2RHXyHm7ttM3Xd4Eno5ENrqiK7RiVnEUUWVqZQFo2I23O8xrL5ehAuO1J6+LraFBku2rkgI/gRC
-X-Received: by 2002:a05:6602:2cd2:b0:844:e06e:53c6 with SMTP id ca18e2360f4ac-85555da813amr149217339f.11.1739328941579;
-        Tue, 11 Feb 2025 18:55:41 -0800 (PST)
-Received: from smtp.aristanetworks.com ([74.123.28.25])
-        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-4ecfb2b9f7asm297467173.62.2025.02.11.18.55.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 18:55:41 -0800 (PST)
-X-Relaying-Domain: arista.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arista.com;
-	s=Arista-A; t=1739328940;
-	bh=ufOvK0ICjLwwv3AooMUi20OpvUxPTSR0kxfwqxAeEok=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2eey5y4HHFYHrpfXLx8iHjkIXxqMhEMtQ58PPS6h+L0vSW60is/WGRo+BRoLAkQP
-	 IFHVGFY8iJXgB7RI+Xt+U931idH20sqmqUAgO29bEdJ9gaESAyBrzyVvpn4vLFY+19
-	 guuKAw6YSDhxqtMOSB56Qe0AVcxmHLAfJS0Hpo0Wb4RS8jwwJQKoshviwnDtQxtlfC
-	 tm2yDm+Q2uCPLrpjow0EhE6PbVCBfgEi6bK1M+L2v+DKaIvDL/533LSP1mNM6SzCY2
-	 1b18nRARciO+v9IuieeLAyFBDm28mVPfYEHowvrwVSKKR5vRV0Nicb6kFXInRIGMwx
-	 ePn1ceVh1Eq9A==
-Received: from visor.sjc.aristanetworks.com. (unknown [172.22.75.75])
-	by smtp.aristanetworks.com (Postfix) with ESMTP id 9258310023B;
-	Wed, 12 Feb 2025 02:55:40 +0000 (UTC)
-X-SMTP-Authentication: Allow-List-permitted
-X-SMTP-Authentication: Allow-List-permitted
-From: Ivan Delalande <colona@arista.com>
-To: stable@vger.kernel.org
-Cc: Olivier Matz <olivier.matz@6wind.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Shuang Li <shuali@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Ivan Delalande <colona@arista.com>
-Subject: [PATCH 5.4/5.10 2/2] vlan: move dev_put into vlan_dev_uninit
-Date: Tue, 11 Feb 2025 18:54:55 -0800
-Message-Id: <20250212025455.252772-3-colona@arista.com>
-In-Reply-To: <20250212025455.252772-1-colona@arista.com>
-References: <20250212025455.252772-1-colona@arista.com>
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1739333114; c=relaxed/simple;
+	bh=ybIygu13oOH3MI8QbIfsK7m4pRQxcHlQE2MUTFs9fjQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=m4ekgV5a1wuf7R7sz3Ssy50LIvyx2/gWOxwyEAAEuqInziP3zN2rkr76+4yFH4KmKnYiq5oTVC3NQYNFD1ZajckTWuABJrBX466SGnfZsrskMtHvVhVtOUUDZeS9dOglhnHX6MNdNSXCepiocDG8j/qy3KZH191Fxi9w8WaZMPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPIDA6ro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3850C4CEDF;
+	Wed, 12 Feb 2025 04:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739333113;
+	bh=ybIygu13oOH3MI8QbIfsK7m4pRQxcHlQE2MUTFs9fjQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EPIDA6roMboDSVK9Hu+DMva2D4DI1vs1cARp6GDK4B2UlsWiJOvf6Cmrd/HY1pxcM
+	 XChqNqjTc1JLVAsyOyv6wrJja4l6ggvaFtGZxp900mpKsLQJBGMvH10kSEf8TMYzUI
+	 b7Hqhamm9WhTNgyMFNff6AflhioI1v3WAj0L0cGKrb/Qqn/29w0t+2u8gKv68lVdhv
+	 90ST5Aoxlkp8Y1K1aDxeiI0xd8WkpgB0qVrg48B13y3qVRUY3ExcYPVBJU9waGugCy
+	 LaiXh9hSos/9iZlc8XxztDvszX94Nc/lcPZQ6Oei/ql1wGUjIgYh36Dukq8nbv7kSM
+	 mwc4KLZHdWDCQ==
+Date: Wed, 12 Feb 2025 13:05:09 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Andrii Nakryiko
+ <andrii.nakryiko@gmail.com>, Jiri Olsa <jolsa@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Andrii Nakryiko <andrii@kernel.org>, Kees
+ Cook <kees@kernel.org>, Eyal Birger <eyal.birger@gmail.com>, stable
+ <stable@vger.kernel.org>, Jann Horn <jannh@google.com>, LKML
+ <linux-kernel@vger.kernel.org>, linux-trace-kernel
+ <linux-trace-kernel@vger.kernel.org>, Linux API
+ <linux-api@vger.kernel.org>, X86 ML <x86@kernel.org>, bpf
+ <bpf@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>, Deepak Gupta
+ <debug@rivosinc.com>, Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCHv2 perf/core] uprobes: Harden uretprobe syscall
+ trampoline check
+Message-Id: <20250212130509.ce1987095c6b17b26d3ee40a@kernel.org>
+In-Reply-To: <20250211165940.GB9174@redhat.com>
+References: <20250211111559.2984778-1-jolsa@kernel.org>
+	<CAEf4BzYPmtUirnO3Bp+3F3d4++4ttL_MZAG+yGcTTKTRK2X2vw@mail.gmail.com>
+	<CAADnVQJ05xkXw+c_T1qB+ECUqO5sJxDVJ3bypjS3KSQCTJb-1g@mail.gmail.com>
+	<20250211165940.GB9174@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Xin Long <lucien.xin@gmail.com>
+On Tue, 11 Feb 2025 17:59:41 +0100
+Oleg Nesterov <oleg@redhat.com> wrote:
 
-commit d6ff94afd90b0ce8d1715f8ef77d4347d7a7f2c0 upstream.
+> On 02/11, Alexei Starovoitov wrote:
+> >
+> > > > +#define UPROBE_NO_TRAMPOLINE_VADDR ((unsigned long)-1)
+> >
+> > If you respin anyway maybe use ~0UL instead?
+> > In the above and in
+> > uprobe_get_trampoline_vaddr(),
+> > since
+> >
+> > unsigned long trampoline_vaddr = -1;
+> 
+> ... or -1ul in both cases.
+> 
+> I agree, UPROBE_NO_TRAMPOLINE_VADDR has a single user, looks
+> a bit strange...
 
-Shuang Li reported an QinQ issue by simply doing:
+I think both this function and uprobe_get_trampoline_vaddr()
+should use the same macro as a token.
+(and ~0UL is a bit more comfortable for me too :) )
 
-  # ip link add dummy0 type dummy
-  # ip link add link dummy0 name dummy0.1 type vlan id 1
-  # ip link add link dummy0.1 name dummy0.1.2 type vlan id 2
-  # rmmod 8021q
+----
+unsigned long uprobe_get_trampoline_vaddr(void)
+{
+	struct xol_area *area;
+	unsigned long trampoline_vaddr = -1;
+----
 
- unregister_netdevice: waiting for dummy0.1 to become free. Usage count = 1
+Thank you,
 
-When rmmods 8021q, all vlan devs are deleted from their real_dev's vlan grp
-and added into list_kill by unregister_vlan_dev(). dummy0.1 is unregistered
-before dummy0.1.2, as it's using for_each_netdev() in __rtnl_kill_links().
+> 
+> Oleg.
+> 
+> 
 
-When unregisters dummy0.1, dummy0.1.2 is not unregistered in the event of
-NETDEV_UNREGISTER, as it's been deleted from dummy0.1's vlan grp. However,
-due to dummy0.1.2 still holding dummy0.1, dummy0.1 will keep waiting in
-netdev_wait_allrefs(), while dummy0.1.2 will never get unregistered and
-release dummy0.1, as it delays dev_put until calling dev->priv_destructor,
-vlan_dev_free().
 
-This issue was introduced by Commit 563bcbae3ba2 ("net: vlan: fix a UAF in
-vlan_dev_real_dev()"), and this patch is to fix it by moving dev_put() into
-vlan_dev_uninit(), which is called after NETDEV_UNREGISTER event but before
-netdev_wait_allrefs().
-
-Fixes: 563bcbae3ba2 ("net: vlan: fix a UAF in vlan_dev_real_dev()")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
-Signed-off-by: Ivan Delalande <colona@arista.com>
----
- net/8021q/vlan_dev.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index fefc5ed6704d..b7cf430006e5 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -629,7 +629,12 @@ void vlan_dev_free_egress_priority(const struct net_device *dev)
- 
- static void vlan_dev_uninit(struct net_device *dev)
- {
-+	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-+
- 	vlan_dev_free_egress_priority(dev);
-+
-+	/* Get rid of the vlan's reference to real_dev */
-+	dev_put(vlan->real_dev);
- }
- 
- static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
-@@ -821,9 +826,6 @@ static void vlan_dev_free(struct net_device *dev)
- 
- 	free_percpu(vlan->vlan_pcpu_stats);
- 	vlan->vlan_pcpu_stats = NULL;
--
--	/* Get rid of the vlan's reference to real_dev */
--	dev_put(vlan->real_dev);
- }
- 
- void vlan_setup(struct net_device *dev)
 -- 
-2.34.1
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
