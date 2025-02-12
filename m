@@ -1,134 +1,186 @@
-Return-Path: <stable+bounces-115076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6330A32EFA
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 19:55:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D80A330E1
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 21:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4289E18891F0
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 18:55:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FE8167F0B
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 20:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B1260A33;
-	Wed, 12 Feb 2025 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A846200B95;
+	Wed, 12 Feb 2025 20:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mojI/bFq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agGalzwQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2C25EF81
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 18:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38797134A8;
+	Wed, 12 Feb 2025 20:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739386548; cv=none; b=kkg8L10vUMRPAGSfzL4vToJgcAgl+T2zYrsWTxqUuqe9vvaMmYfLDm7GKH9luu2QFRgTHAyUAixCM/QAMrljSVNh/sd8E6XjDVRufBgcR74mJkEa+XmeTFr3BgGKd0VADH6gdQKB/nsD4EHfEFdD3+3EgE1JAID6xCUbEL6Jh7Q=
+	t=1739392544; cv=none; b=H0EAlbEFrOA5tOSkgrm2gvpEOE1IHLj6eW4+LRn7FS4LH5pMaYR6VMtknxQyV3BDcI7JFTeXKRmfbHphS9KqgmfZEwAFNSZVMJIWFWsCBl8YTrazN3OoyiI616bzNM9std3LIcw8vmn4xncEJbpaZiM17KZwysZpstAXgIR6JS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739386548; c=relaxed/simple;
-	bh=CVMGdoYDL8T1fr+KrjJAoYlnGkxM8XNvTPZrejVoMJM=;
+	s=arc-20240116; t=1739392544; c=relaxed/simple;
+	bh=m3fSLrs8RwTeycQL/yS8zwR0LdKMfmutI4GsL4BAGbc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bJJ8g9RDveG2yujXvxalkW0v65ZzX0uPBf4fla0ew1D1SoKTsO5aRrVPaq3Zga/WHG9XkoYPeTbT5wsJthmcOu6wKlKCiQ0bqtojhF4WT9dTzCI0S8KD7avAO4Vyz2hb7JajGnlzGENF3GOFp9sr2cX6mojdXk3pw/EOr/++bE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mojI/bFq; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5de51a735acso14882a12.0
-        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 10:55:46 -0800 (PST)
+	 To:Cc:Content-Type; b=FeB62XxudMMx0Ljxf30mtin9jwZGy0Po6GODW57t6IUnfMc0O+rg+2LdvClgSMhoHZPh+FO90eA3qppulZvIEEKJYOFvyc8fbZ3DqS4Axfzu+qH7PoJriU7Sf7vdfA1Z93aKgvZ+CHwOh18kUjAcrPONWGGgpqGtw6vi+aRurDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agGalzwQ; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5450f38393aso73156e87.0;
+        Wed, 12 Feb 2025 12:35:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739386545; x=1739991345; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739392540; x=1739997340; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
-        b=mojI/bFq64VDLGVn4okoRdSh1uOirl93u3OgiJu2w/yPT9Sdo+70AwCom7n519LHPY
-         Z0P5if1rCC++SzpOWaKjswutjKgD+ZZ0a98JuyVLC6DWC/3bo5RS18kg1U4eVCnasrh7
-         R5faWFOj1U3gIzlVDMfAfOAnTy9piqC3MApX6ZfndQd8PuA71d/8i32ILePJ0R+Wnxzc
-         Pe21mE1TPgKnFm9UNehLL94eCpZEAM3shNPdDTrhPvI4wnQ2ig61EsWOTz2kBWo5MCBl
-         UtV8BT8DzIozU41MBcOv8hrklTQ2ooLuR3psH+d8oiFzAnsFhHXjU2Pew0GcolBViwEt
-         lKSA==
+        bh=KOlyctz2EGvuteVNgI+DOj0oV4+D7fwYRa1j2XIcfNc=;
+        b=agGalzwQFJkwsH3x3xMy2o9HC1gRRPDM3CNCZjbygSJ5LFfodKYwuhQ4+zidS6OVgu
+         LaBM9XjqTl3DAN1oXFVsg0Mav65a5dH95EaBZkWYJ7w8K7qB8PmmVEMhb+Kb3+pwsK1q
+         8ofbxmnlo2G8yiA4Df8QMXmr85yySeQ11Mnp9fWn+4PEtEEyv9ll++++WtAM6dQ5InOU
+         mpgHsssheVstEbwKh7exyLStw/RKtEJul5wL3ic9c3uqvaZIeLhaxqSvBhodfZAnUg6P
+         wg9g2tk100Co2xzxrq4KaAlaE/pa926T2AKilSsZthuSSOeYGFKoptzBXUEdCrT6/TD4
+         G9Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739386545; x=1739991345;
+        d=1e100.net; s=20230601; t=1739392540; x=1739997340;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
-        b=qwLldTsqzpTOrBOWJ/5pV75hPY8Wz+6/c5DzUWQucyhinJcVRcChErgGAadQlZ318r
-         vHC5Mka+lI0ur/b0vkwjsgyQjgrn6PyOwYnnssiE36zd4gqAFGU+lUBTacd6ubqnMVN2
-         039AxnRfRuhrlvVqkhAOqghMy1CuIhMOQ4McdDrerA8oeO/PKOU3WeXJRTqzZzXdFz2l
-         olGZCnjnWvUn+hxjhpMszq0I+WM/l6FLLMwg5+7A8rg/PPqknugu3K35tU4OpttkqjeC
-         giqyWMfzevOTi/jz4PBiuGWO2HREGTlVMRr28PDn/+ndhVW9PJNgYjHycM8E+/gZjYps
-         wXig==
-X-Forwarded-Encrypted: i=1; AJvYcCWrwHOYN5beqpH+YUti0mgP45jCIHaQ9Eljs6RmVFxIHK0QewOove7DTkel5+/MUxrSc/duecs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfg3KtpMEZIQCmuqSc6yqE+hLhy8eSnraLUE0NREr4wmBbblsI
-	yL85uIpfM+q/krY7u5Q7XEBWKOAgTrOzEPG3KkpvmsA4tE5+uSp0u628vaKnmOU+qp60U2ekWNy
-	YVklI2C4ia/cXH8+1rhEjQbZLAhXMvA9Drjnu
-X-Gm-Gg: ASbGncuVhaisKtNv4DR6EAtVZuXnEgtSYrIDXHJ4oCEFzB8LGC9ZGVm7DZJsnDhW4Y8
-	RTUC6+nHuwDHVzX6T+dPdYWa3zsrdOpKF3rMSUslIcALgrVt1JJ2vPGI0RhPEl9v05qomN8Psxw
+        bh=KOlyctz2EGvuteVNgI+DOj0oV4+D7fwYRa1j2XIcfNc=;
+        b=ds3TqeMdziT3q6CFhBmnMqmjVS3gjbVNHxY3vX6zJ/9cO+V5MzWKukSPZfvHw/MYuM
+         VSJmKwV2hzp169GXtEAG9nFWzVnEsU50WKaixS8zGy6+qh9u8vOibDclMeLOjTjOmFr3
+         QKvVBtOruIsJB2kR0B0RNl99iNxuX4NvjM6HtphZ9gY+l5JdQDcZuXPYYpW538LS/tsL
+         t+NP49TnfJYZDqCCi93Lhue5HxoEC3DdwawLYz59tKL63OEDGAdKIsT3U/CAn7cTGCpI
+         MV45l2BdN84pNkzNgldL63aOSPNUdoS05YAREaAD9b+gxtSLcZOkwF/dp1L8uFE2EC+e
+         8qtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUa9N8p5QXhbUcMp5+PgFfatQ8E7fHB8ucf4zxOxXjRBKGewSHHlTl9TBqDMPhVUgXpGRXxapc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWUiZr9jq2TE16LI2fLmyJOhNyqQKEzrIWIp5ZUaBu6mcFWrsk
+	7wic9N1IPNDDvk9fRg/HzjbM7k8wwhwn0qeQDKs+yzDSIpMOUw/Zi1kV3pliJGk14bi7bYn3eIm
+	9F1dQcCAyzYnCgrC47auk2rTApfk=
+X-Gm-Gg: ASbGncu05uMKQzdf34r4EDZAWN1b4Li+FzTRCLc7dwg5PHT+dMJ7qrd1ucMsJ5o7Ng/
+	Mm7GXSApHFXAY2IrVQJm36jfv0uWDyfjELgZ00ZgQgyK8Dd2DSL1hDIAKrKXb36L4G1lvFQEoBA
 	==
-X-Google-Smtp-Source: AGHT+IG55X34wS789mMJieuUREdopLjA3B44FyJjV3/cSlysBfK2oTbNjkWAOTqEn89wiamATCHt8vdoRDXvCYynFHo=
-X-Received: by 2002:a05:6402:913:b0:5db:d9ac:b302 with SMTP id
- 4fb4d7f45d1cf-5deca0122e2mr249031a12.32.1739386544998; Wed, 12 Feb 2025
- 10:55:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFZTsIUwQQj/o2a13UQOeNCyuQkKukbW3ljCaZATn9oPt0/nKLvJha06/abaaebuj29iscOoN5W1tgymjejgjU=
+X-Received: by 2002:ac2:4e05:0:b0:545:aaf:13f5 with SMTP id
+ 2adb3069b0e04-545184a3aa5mr1636607e87.37.1739392539951; Wed, 12 Feb 2025
+ 12:35:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
-In-Reply-To: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 12 Feb 2025 19:55:32 +0100
-X-Gm-Features: AWEUYZleq88KnF_kE4nPNRYzraS7tQ5dHAAtHxK4ii3MnHWveDWf1gwFIVTqsms
-Message-ID: <CANn89iKnqeDCrEsa4=vf1XV4N6+FUbfB8S6tXG6n8V+LKGfBEg@mail.gmail.com>
-Subject: Re: [PATCH net] netdevsim: disable local BH when scheduling NAPI
-To: Breno Leitao <leitao@debian.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
+References: <20250212073440.12538-1-sprasad@microsoft.com>
+In-Reply-To: <20250212073440.12538-1-sprasad@microsoft.com>
+From: Steve French <smfrench@gmail.com>
+Date: Wed, 12 Feb 2025 14:35:27 -0600
+X-Gm-Features: AWEUYZmbbLBi0xo7rSe-aBd_dDmdlPLbJKvrX_yDK96Q0OtS8SExk0NpP-MFV_U
+Message-ID: <CAH2r5mtOoCrMwo=O+9XxcSuis2GH_Qo2fXhmXd2EyWGKtoBcMA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] cifs: deal with the channel loading lag while picking channels
+To: nspmangalore@gmail.com
+Cc: linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com, 
+	Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 12, 2025 at 7:34=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
-ote:
+tentatively merged into cifs-2.6.git for-next pending more reviews and test=
+ing
+
+On Wed, Feb 12, 2025 at 1:35=E2=80=AFAM <nspmangalore@gmail.com> wrote:
 >
-> The netdevsim driver was getting NOHZ tick-stop errors during packet
-> transmission due to pending softirq work when calling napi_schedule().
+> From: Shyam Prasad N <sprasad@microsoft.com>
 >
-> This is showing the following message when running netconsole selftest.
+> Our current approach to select a channel for sending requests is this:
+> 1. iterate all channels to find the min and max queue depth
+> 2. if min and max are not the same, pick the channel with min depth
+> 3. if min and max are same, round robin, as all channels are equally load=
+ed
 >
->         NOHZ tick-stop error: local softirq work is pending, handler #08!=
-!!
+> The problem with this approach is that there's a lag between selecting
+> a channel and sending the request (that increases the queue depth on the =
+channel).
+> While these numbers will eventually catch up, there could be a skew in th=
+e
+> channel usage, depending on the application's I/O parallelism and the ser=
+ver's
+> speed of handling requests.
 >
-> Add local_bh_disable()/enable() around the napi_schedule() call to
-> prevent softirqs from being handled during this xmit.
+> With sufficient parallelism, this lag can artificially increase the queue=
+ depth,
+> thereby impacting the performance negatively.
 >
-> Cc: stable@vger.kernel.org
-> Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> This change will change the step 1 above to start the iteration from the =
+last
+> selected channel. This is to reduce the skew in channel usage even in the=
+ presence
+> of this lag.
+>
+> Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requ=
+ests")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 > ---
->  drivers/net/netdevsim/netdev.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  fs/smb/client/transport.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 >
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netde=
-v.c
-> index 42f247cbdceecbadf27f7090c030aa5bd240c18a..6aeb081b06da226ab91c49f53=
-d08f465570877ae 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -87,7 +87,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb,=
- struct net_device *dev)
->         if (unlikely(nsim_forward_skb(peer_dev, skb, rq) =3D=3D NET_RX_DR=
-OP))
->                 goto out_drop_cnt;
+> diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+> index 0dc80959ce48..e2fbf8b18eb2 100644
+> --- a/fs/smb/client/transport.c
+> +++ b/fs/smb/client/transport.c
+> @@ -1015,14 +1015,16 @@ struct TCP_Server_Info *cifs_pick_channel(struct =
+cifs_ses *ses)
+>         uint index =3D 0;
+>         unsigned int min_in_flight =3D UINT_MAX, max_in_flight =3D 0;
+>         struct TCP_Server_Info *server =3D NULL;
+> -       int i;
+> +       int i, start, cur;
 >
-> +       local_bh_disable();
->         napi_schedule(&rq->napi);
-> +       local_bh_enable();
+>         if (!ses)
+>                 return NULL;
+>
+>         spin_lock(&ses->chan_lock);
+> +       start =3D atomic_inc_return(&ses->chan_seq);
+>         for (i =3D 0; i < ses->chan_count; i++) {
+> -               server =3D ses->chans[i].server;
+> +               cur =3D (start + i) % ses->chan_count;
+> +               server =3D ses->chans[cur].server;
+>                 if (!server || server->terminate)
+>                         continue;
+>
+> @@ -1039,17 +1041,15 @@ struct TCP_Server_Info *cifs_pick_channel(struct =
+cifs_ses *ses)
+>                  */
+>                 if (server->in_flight < min_in_flight) {
+>                         min_in_flight =3D server->in_flight;
+> -                       index =3D i;
+> +                       index =3D cur;
+>                 }
+>                 if (server->in_flight > max_in_flight)
+>                         max_in_flight =3D server->in_flight;
+>         }
+>
+>         /* if all channels are equally loaded, fall back to round-robin *=
+/
+> -       if (min_in_flight =3D=3D max_in_flight) {
+> -               index =3D (uint)atomic_inc_return(&ses->chan_seq);
+> -               index %=3D ses->chan_count;
+> -       }
+> +       if (min_in_flight =3D=3D max_in_flight)
+> +               index =3D (uint)start % ses->chan_count;
+>
+>         server =3D ses->chans[index].server;
+>         spin_unlock(&ses->chan_lock);
+> --
+> 2.43.0
 >
 
-I thought all ndo_start_xmit() were done under local_bh_disable()
 
-Could you give more details ?
+--=20
+Thanks,
+
+Steve
 
