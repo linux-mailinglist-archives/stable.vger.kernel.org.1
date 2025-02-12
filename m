@@ -1,91 +1,51 @@
-Return-Path: <stable+bounces-114984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED58A31B4A
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:43:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E630A31BD8
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 03:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D2341670BA
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 01:43:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D2757A1F53
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 02:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8208F5474C;
-	Wed, 12 Feb 2025 01:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JEC+dUIa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A502B1552EB;
+	Wed, 12 Feb 2025 02:19:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB1279FD;
-	Wed, 12 Feb 2025 01:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1632A2AE69;
+	Wed, 12 Feb 2025 02:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739324603; cv=none; b=cNkwp8NUb3jTpUtsNjcnCO/RUwmgtar/XH1pEA+cyeHv7j3XPKYiUnAQzwNa26VsMEzMshCvQujRl4inks3zltMNvxbY7N/1l2pW2lj7kM6NGUDwlmy0O4nagyLzV7h5vGShbqwBkwQYB9T2wUCKq6heADCWO5AEr02Hl1+XA98=
+	t=1739326772; cv=none; b=QtzsOKGC6QCXdI4uRWW66fCwsXGfNJaSsmuZSor8tOzRoagapQiFkbxDH4PnZnusGjCJrglBm5sKprZziIPRUKWudNN6dDNhgWQewLJQSTvpITSVaT/d/Mpv6PY4kSlUELelqowTNpg9u2JXLWsqysEj3XYTtwVSqZFvK065Kp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739324603; c=relaxed/simple;
-	bh=E5GOAEhRD9j+u1CXK0RooAUO8b6h1E/vhZjKiq9wXqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L/AgUq86LHUoiXvzFHHTK0lW0DJBXQWJqitnya6LSWqGJdNKZwllg3k146yMJ51rjtuMUeeWu7LMxW0ZotE3LszQff+iMDhL1+J5q/Q1Ujb2uUI2xh4nRPYczGVU12MB55SHtA58OIuMeu8oi4Fi4YBtuRAvICOUrGkg8x1mmL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JEC+dUIa; arc=none smtp.client-ip=209.85.216.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-2fbf77b2b64so465229a91.2;
-        Tue, 11 Feb 2025 17:43:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739324601; x=1739929401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YanI8iRaFnbYDLIbwSAL7fPqo0KzjFa50XedZ+8YIHE=;
-        b=JEC+dUIanF2dK6PZ0Nz0nNY+2TcpJ6czC1Q+0aVAv8gXNxI6cHfdy03n9L1h/zO0af
-         XGVHawdJ/0K/5pPo/e8tBEZw1/f33I3SUpqdasxfu3nMI4WpSQkLruE1X25YMatx0Bj+
-         Y5NDNJSbV0pvZd+CHE7UWzPTmJfLXYsIkvRcYpvpydZawQaoXvt1M8+hsOvspz8e7o5w
-         zN/9RM/odJWcyyVEPYfaCwZDLcHAGL+TfYS0O5G9l1LxqqAFBJW7pUDcxaOkZaqziFC3
-         Re+18886Vi3QgHhGI9spNb0PnqKOgnvCZ6IREW9KEHpLjM2cL4HrMdyUWwD/EoJGKu+m
-         Fs6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739324601; x=1739929401;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YanI8iRaFnbYDLIbwSAL7fPqo0KzjFa50XedZ+8YIHE=;
-        b=gPstjFMs5TOJm68A+OQe17qIRomVUmfaCvqKr+h2AZSqj44hRuoqtcZX83cQNIfvON
-         CNnJVQoaQ+28lNmD5stmw5c8UVENU1ilWULZAs04S8H/i405rkQuF1ar919+wo44HjBX
-         JCJy7/+yMyCPij3PK0tv/5jLmUm0zcw3kdmdNvAC6wkn9y1700nUmRLhrhQDlqPYoUPZ
-         y2/I79rDGn0wFsf7ai0+EA7RlBGl87/3b2QBvDsO2xNmLUOs5MIztyUAi8MOv3TsbNzj
-         Jd8Y67tiC7DdrDMiOTWHF0U2Opt5OFfuko9RSBbc1iUPmgKw3nuZx1jvKlEICgzgXczp
-         G1Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtwMf4paRjdE29J1WVr0uYPjog/vkQW5/xTC1adxmhL/t01qvGQhA6EcsC+zZYTo90RHvmju711hKd6A4=@vger.kernel.org, AJvYcCV5H0NjLK4oCK8emGqd6Y79XMP8GKdqXBZrQ5KjAOFd+TcaHBqf/1ZGiz8Pm2tNPoa38ZcUB17q@vger.kernel.org, AJvYcCWqDDAZ0zCUCSIyL35aA3iJMiwcDtrjEprztDauWWm607yNv4OecGluUMJq3wlS/y/hVMwCTuAhT8+B3fI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEk1hYqQB0WnsZSjK6nEkfksnK8Mwd0CeBhMb9f++SVlRi2/dH
-	DPmCW+OeboJUtmqXxQkzsBmzbqkXzWxNkoxQKt0jUF8mxsGHkaAsG5y9ohY0
-X-Gm-Gg: ASbGncuwMsoarLORiyrbjHcqSffH1RUkDFh1fTd1F30zy53SLRTDD5UWC8EygyD3Brn
-	p8w/R6d/9yZGYGwd66s3I3OAMf1SqjSh5bOwhqZ/STi6miBcFV0jtp0HGz5pnkHqSj8CPBjV1kw
-	r55BZGkVSryOLSJhyVIis6YHLf+UaPj7DbyI9AUlJwFNe/yl27QdC8IwYK9LWUHDcM3xmC9++by
-	i2OQzGRhfUISB2Oe5mOZFB/KtEhX/X5LP7wdug6uzK4rsg2UirUgGXSeYZ79AIWqIVPiN3waicH
-	wDg6+loFyrdojyY9KBbNuDBSzGvkPwlhLw==
-X-Google-Smtp-Source: AGHT+IHnk+a/LVCawfVCfdGlssi3Ze/Dz7OTqlOispTxLSEB/9y18V5ncQW0N0315vtYhNg9VT6u9A==
-X-Received: by 2002:a05:6a00:1494:b0:728:e906:e446 with SMTP id d2e1a72fcca58-7322c4116c9mr2019902b3a.24.1739324601222;
-        Tue, 11 Feb 2025 17:43:21 -0800 (PST)
-Received: from localhost.localdomain ([124.127.236.130])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048ae7f6esm10038023b3a.74.2025.02.11.17.43.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 17:43:20 -0800 (PST)
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
-To: thierry.reding@gmail.com,
-	mperttunen@nvidia.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jonathanh@nvidia.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
+	s=arc-20240116; t=1739326772; c=relaxed/simple;
+	bh=8QGo7rX/XTnY33h1jfbbbpzLdlwYl7IJWM7cUDYjapE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L9nW4kq2Rfog8oszjCwtq2ZIn0+C17TohhwqY7VXdXMYzBNbEVPHsTaYW2rjBXKLLMIyd4LDSltfE4owec1n4izt8bn2xMob45u0j0uIW//ugM88eAx1GmpfR4xBPiZUXbUbzpVPLCKpRDMDhM/OCwXwyin0+5M7Pm23HfWJcfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowABHT9MaBaxnzuKRDA--.62447S2;
+	Wed, 12 Feb 2025 10:19:14 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] drm/tegra: fix a possible null pointer dereference
-Date: Wed, 12 Feb 2025 09:42:45 +0800
-Message-ID: <20250212014245.908-1-chenqiuji666@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
+Date: Wed, 12 Feb 2025 10:18:49 +0800
+Message-ID: <20250212021849.275-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,35 +53,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABHT9MaBaxnzuKRDA--.62447S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFy3tF17Aw4rCF4UWF48WFg_yoW8CFy5pF
+	Wqgr98CryDJa1rZryYyF4rZwnakay8KrW7C3srWrsagr1Fvr9rGFW8XFyaqFn8trWkWw47
+	AF1DtF95tF1kZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4UMxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbLFxUUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0LA2erwGWqbgAAsu
 
-In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
-no check is performed. Before calling __drm_atomic_helper_crtc_reset,
-state should be checked to prevent possible null pointer dereference.
+The stmpe_reg_read function can fail, but its return value is not checked
+in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
+incorrect behavior if the hardware access fails.
 
-Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+This patch adds checks for the return value of stmpe_reg_read. If the
+function fails, an error message is logged and the function returns
+early to avoid further issues.
+
+Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
+Cc: stable@vger.kernel.org # 4.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/gpu/drm/tegra/dc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-stmpe.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
-index be61c9d1a4f0..1ed30853bd9e 100644
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1388,7 +1388,10 @@ static void tegra_crtc_reset(struct drm_crtc *crtc)
- 	if (crtc->state)
- 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
+diff --git a/drivers/gpio/gpio-stmpe.c b/drivers/gpio/gpio-stmpe.c
+index 75a3633ceddb..222279a9d82b 100644
+--- a/drivers/gpio/gpio-stmpe.c
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(struct irq_data *d)
+ 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
+ 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
+ 	};
+-	int i, j;
++	int ret, i, j;
  
--	__drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	if (state)
-+		 __drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	else
-+		 __drm_atomic_helper_crtc_reset(crtc, NULL);
+ 	/*
+ 	 * STMPE1600: to be able to get IRQ from pins,
+@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(struct irq_data *d)
+ 	 * GPSR or GPCR registers
+ 	 */
+ 	if (stmpe->partnum == STMPE1600) {
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
++			goto err;
++		}
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
++			goto err;
++		}
+ 	}
+ 
+ 	for (i = 0; i < CACHE_NR_REGS; i++) {
+@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(struct irq_data *d)
+ 		}
+ 	}
+ 
++err:
+ 	mutex_unlock(&stmpe_gpio->irq_lock);
  }
  
- static struct drm_crtc_state *
 -- 
-2.34.1
+2.42.0.windows.2
 
 
