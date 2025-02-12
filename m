@@ -1,165 +1,227 @@
-Return-Path: <stable+bounces-114995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4829DA31D76
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 05:23:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139E8A31D87
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 05:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3601675B8
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 04:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68346188BA87
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 04:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130381DA612;
-	Wed, 12 Feb 2025 04:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165701E7C2D;
+	Wed, 12 Feb 2025 04:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Rs1BINtZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bynaYepH"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327F627182D
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D690027183B
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739334217; cv=none; b=iR1CZIZCifIx/khIsSK3Wk9tzKNOnsJGEKPPjukRhCjKT5wKGxVtt+iY3iKsnmgJbPlCS/LZllzBtXqaYrLTYwdSqNXoCOUgeEyb2Q+phtRa+h+oFj0TNH5juFIlBBgdMZzJr2hXXzgyhzWRLY8DYx/7grDZDZ5/6J1ykS1RrFs=
+	t=1739335476; cv=none; b=UlSUtkixIQS6PnIFWBArQz/GqRfbh7Be3i7lIXv2y6bPACIOIgdEZ0XRjQWtkI2vVQhgx3VmMD3CZqGVPh2VU9EkXkCG0YNCC7OmCrVtuwh1Y9KHT0UVVqoOyrMMCd+9FQx073JU3Vs5GD5YPzCHR4D7LeU/hzwAZJ5swlHQqJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739334217; c=relaxed/simple;
-	bh=u3zgKya5Arz65pUkiwW7z7EyCWEd6Qya9YSt+bhAQrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:In-Reply-To:
-	 Content-Type:References; b=EnF7Y52I7bfTXFbwMVVA8UOC+aBs9fkiQp61yZuGouLRFwXJO1pBgG3HDh0pDtb01HR0gW4pT3FHwmESlgG8KDF1eJsvLyPSxnRoR3YUsZTtKYEDrCDqbzKnSu5Z8L8XKxfzJGCfgcKvCHhdF9b4NMCBS4kHwDH14Io+EU5VCEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Rs1BINtZ; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250212042332epoutp0482e36fb30dd7ef6fc35446444727458d~jW0AyXupT0779207792epoutp04x
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:32 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250212042332epoutp0482e36fb30dd7ef6fc35446444727458d~jW0AyXupT0779207792epoutp04x
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739334212;
-	bh=CQwnRF7S/IMSu7D6EypZq4vpUbKhFraYaFkzFx2AFyQ=;
-	h=Date:Subject:To:From:In-Reply-To:References:From;
-	b=Rs1BINtZCX81q3R2pfwzylp6EW8aGoxCBxgWEUNiTSW33EuIvJGJzuoO/UZG36pyy
-	 SNoCYJusz0NtPSJgRDBw8lRDrFS25OT0NivcgL2FtFZB08stO+w0TnOzaBH8ueTluC
-	 7biwPCfRLnVPqXucLt20kxinN1msaYBChhrWRy8w=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20250212042332epcas5p431a509a65336d06d7b77cb808e07f3f2~jW0AoV_LL1159811598epcas5p4w
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:32 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.178]) by
-	epsnrtp3.localdomain (Postfix) with ESMTP id 4Yt4tp5QGXz4x9Pw for
-	<stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:30 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	89.03.29212.2422CA76; Wed, 12 Feb 2025 13:23:30 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250212042330epcas5p41d822741529c537759e311eb8179f79f~jWz_0V6r-1159811598epcas5p4m
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:30 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250212042330epsmtrp2072397db9f12ca5e04d2b51e75bddbfb~jWz_z1rT92828628286epsmtrp2M
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:30 +0000 (GMT)
-X-AuditID: b6c32a50-7ebff7000000721c-8e-67ac2242625e
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	2D.46.33707.2422CA76; Wed, 12 Feb 2025 13:23:30 +0900 (KST)
-Received: from [107.122.5.126] (unknown [107.122.5.126]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250212042329epsmtip13dd57c776d67c46baf77469d774bdfb1~jWz_as7FK0065300653epsmtip10
-	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 04:23:29 +0000 (GMT)
-Message-ID: <f2e93cd0-b3a0-47d9-8252-88423cf71898@samsung.com>
-Date: Wed, 12 Feb 2025 09:53:28 +0530
+	s=arc-20240116; t=1739335476; c=relaxed/simple;
+	bh=csc3BasZu+34zhBMEegsmSSqnIa1G3ZjwDUmLwuxv5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mAZ5mYHtxWnKei3AH/2gF/6kouSAJQ3zQPMKp278XZyGRfx3gtDAK0ekD4i3Mx7xMhr3egchkLVfMZW6VTLyFuDpFgiNJ2V+xXvPdg9nhJQWPe0cpBAhX8Zw3Gnl1XFEv78QvRN1ECnKEpR386eq2lIjEYz3ZZPHDcOlT9XbgpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bynaYepH; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739335475; x=1770871475;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=csc3BasZu+34zhBMEegsmSSqnIa1G3ZjwDUmLwuxv5U=;
+  b=bynaYepHcCtmkGM8Ckcxh7yK4oKJpPzIuZAXfxHT1klw59lvK7iaYApn
+   Lg4tL3PEr4Lo8Koarvb5XKZj+Whs8DHiIYdFvgFk3EQpCUTH63eQa2c+K
+   nRr+2jvew95mwxHJxMn/0+wKI0nRUcxpD7CnF76DDEhsBRxHfatu9wqSo
+   pGj0uqOfzX0dYc7+ZeqfkzfH2uvgamrSJbltujgVG9Ud7OkBPRS/ILBp5
+   491wLsx9xhn1oVxAdSCJZWYijEczgAsDt5jvoeQSiTph1xMyd6WMy6j6x
+   KRo1ZXSO3EoGSrM3YIdIVZSiBsB/23f3E3gdYl+qQpYsRzXuhwjKnZltN
+   w==;
+X-CSE-ConnectionGUID: jbexIDeZR1iRg6J6sTQJmg==
+X-CSE-MsgGUID: Yp8GIH83SHiTb2MOjErORA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39839749"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="39839749"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 20:44:34 -0800
+X-CSE-ConnectionGUID: w1UkAnMAT+i5ROxsDWz7Lg==
+X-CSE-MsgGUID: PJeqaM7ERvaxExumbzXN1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="112540116"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 20:44:33 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: stable@vger.kernel.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12.y] drm/xe: Fix and re-enable xe_print_blob_ascii85()
+Date: Tue, 11 Feb 2025 20:44:10 -0800
+Message-ID: <20250212044410.4114791-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025021018-attire-arrange-51d4@gregkh>
+References: <2025021018-attire-arrange-51d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] usb: xhci: Fix unassigned variable 'bcdUSB' in
- xhci_create_usb3x_bos_desc()
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Language: en-US
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-In-Reply-To: <20250211092400.734-3-selvarasu.g@samsung.com>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLKsWRmVeSWpSXmKPExsWy7bCmhq6T0pp0g7kn1SwWbHzE6MDo8XmT
-	XABjVLZNRmpiSmqRQmpecn5KZl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtBQ
-	JYWyxJxSoFBAYnGxkr6dTVF+aUmqQkZ+cYmtUmpBSk6BSYFecWJucWleul5eaomVoYGBkSlQ
-	YUJ2Rtufr0wFfZwVnbvWMjYw7mXvYuTkkBAwkdj/s5mpi5GLQ0hgD6PEt/+/2CGcfiaJR6/f
-	scE5s78sZ4Vpad87CcwWEtjJKLFjUh1EUReTxNsZxxlBErwCdhLPV9wHs1kEVCVuTVrIDhEX
-	lDg58wkLiC0qIC9x/9YMsLiwQJrErl2nwYaKCJhK3Ji+BcxmFhCXuPVkPtB9HBxsAoYSz07Y
-	gIQ5BawlpuxbwARRIi+x/e0cZpAbJATWsUtcePGPGeJQF4m++7dYIGxhiVfHt0D9LCXx+d1e
-	Ngg7WWLPpC9Q8QyJQ6sOQfXaS6xecIYVZC+zgKbE+l36ELv4JHp/PwE7R0KAV6KjTQiiWlXi
-	VONlqInSEveWXIMGlYfEp6NvWCHBs59R4v+F4+wTGOVnIYXELCRfzkLyziyEzQsYWVYxSqUW
-	FOempyabFhjq5qWWwyM5OT93EyM4nWkF7GBcveGv3iFGJg7GQ4wSHMxKIrwmC1ekC/GmJFZW
-	pRblxxeV5qQWH2I0BcbJRGYp0eR8YELNK4k3NLE0MDEzMzOxNDYzVBLnbd7Zki4kkJ5Ykpqd
-	mlqQWgTTx8TBKdXAVCPIJ+qWJ/xJJjxK9HDZljObtSJ5uOyiFKbbG5jOLr/cyqEa6932Ruzd
-	pI4Iy/p/+z13nFmx6JXMxzYdvtmxZotfXKgxCzwYtJb5U/Ky66f78y4sP3iCZdm0hD0HNwSK
-	Sut5TA3bX8fznL3gnJC9cF4u6wXXNyoF3nv8nRNO3+qs2PLGxnH/zCvxVtM2no21uscbt739
-	HOu3nVFsXwPFAvS/X8pQKovjtzgbk/F4R6X6+eK8r16xD91Offu2ldv39fZJIVvUWgwPMTsn
-	ZJQv75G/6r/K9pxP8BOJF3e5ot6sNfxuF5F4+2vgllX9abmCdmaqSQK5qzYLnGG7suJ3tQmf
-	G/9Ez2WFc1lmOZ1QYinOSDTUYi4qTgQAhJIEE/ADAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCLMWRmVeSWpSXmKPExsWy7bCSnK6T0pp0g+ZT3BYLNj5idGD0+LxJ
-	LoAxissmJTUnsyy1SN8ugSuj7c9XpoI+zorOXWsZGxj3sncxcnJICJhItO+dxApiCwlsZ5TY
-	MikMIi4t8XpWFyOELSyx8t9zoHouoJoOJomTDXfAErwCdhLPV9wHs1kEVCVuTVrIDhEXlDg5
-	8wkLiC0qIC9x/9YMsLiwQJrErl2nwZaJCJhK3Ji+hRVi6H5GiatTVoElmAXEJW49mc/UxcjB
-	wSZgKPHshA1ImFPAWmLKvgVMECVmEl1bIY5jBpq//e0c5gmMgrOQrJ6FZNIsJC2zkLQsYGRZ
-	xSiaWlCcm56bXGCoV5yYW1yal66XnJ+7iREcsFpBOxiXrf+rd4iRiYPxEKMEB7OSCK/JwhXp
-	QrwpiZVVqUX58UWlOanFhxilOViUxHmVczpThATSE0tSs1NTC1KLYLJMHJxSDUxSjqrOXizG
-	ulPLDrFds1+3pD/w261U1inmLL57JHgm5kf+P+DGcje7Vzfa21rSJGv9yrVv+m0+pMyaFScz
-	7dzax1+DROJ+LFBdH/lJ7kZsnsnC3fXxIjf/KPVvfJIm5+88W8Ez6ExiU/QK3rlXPc+cTH06
-	OejUnNiUl1vXnd7++roIe+PtM5z3Ftw78EQn8nSsD88/+Sf9Zx3vu9zMNNwRHaup3tfivttz
-	Q+E5ueOp97b2HD8zUceMO45b12HNp0nTeY11+JTmxmUJvz7L1GfQKvjA+cLi/xISsy7dPKF0
-	cyPzKsX9rhcmm9bd6dpddVlE4df9tW3tASrM/badrEs0hc4oRrcfeXDGkFHc5pcSS3FGoqEW
-	c1FxIgAqIYVBxwIAAA==
-X-CMS-MailID: 20250212042330epcas5p41d822741529c537759e311eb8179f79f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa
-References: <20250211092400.734-1-selvarasu.g@samsung.com>
-	<CGME20250211092458epcas5p1a00969c88bb6db8d885b3b11c37c9cfa@epcas5p1.samsung.com>
-	<20250211092400.734-3-selvarasu.g@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Commit 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa
+debug tool") partially reverted some changes to workaround breakage
+caused to mesa tools. However, in doing so it also broke fetching the
+GuC log via debugfs since xe_print_blob_ascii85() simply bails out.
 
-On 2/11/2025 2:53 PM, Selvarasu Ganesan wrote:
-> Fix the following smatch error:
-> drivers/usb/host/xhci-hub.c:71 xhci_create_usb3x_bos_desc() error: unassigned variable 'bcdUSB'
->
-> Fixes: eb02aaf21f29 ("usb: xhci: Rewrite xhci_create_usb3_bos_desc()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-> ---
->   drivers/usb/host/xhci-hub.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-> index 9693464c0520..5715a8bdda7f 100644
-> --- a/drivers/usb/host/xhci-hub.c
-> +++ b/drivers/usb/host/xhci-hub.c
-> @@ -39,7 +39,7 @@ static int xhci_create_usb3x_bos_desc(struct xhci_hcd *xhci, char *buf,
->   	struct usb_ss_cap_descriptor	*ss_cap;
->   	struct usb_ssp_cap_descriptor	*ssp_cap;
->   	struct xhci_port_cap		*port_cap = NULL;
-> -	u16				bcdUSB;
-> +	u16				bcdUSB = 0;
->   	u32				reg;
->   	u32				min_rate = 0;
->   	u8				min_ssid;
+The fix is to avoid the extra newlines: the devcoredump interface is
+line-oriented and adding random newlines in the middle breaks it. If a
+tool is able to parse it by looking at the data and checking for chars
+that are out of the ascii85 space, it can still do so. A format change
+that breaks the line-oriented output on devcoredump however needs better
+coordination with existing tools.
 
+v2: Add suffix description comment
+v3: Reword explanation of xe_print_blob_ascii85() calling drm_puts()
+    in a loop
 
-Hello Maintainers,
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa debug tool")
+Fixes: ec1455ce7e35 ("drm/xe/devcoredump: Add ASCII85 dump helper function")
+Link: https://patchwork.freedesktop.org/patch/msgid/20250123202307.95103-2-jose.souza@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 2c95bbf5002776117a69caed3b31c10bf7341bec)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit a9ab6591b45258b79af1cb66112fd9f83c8855da)
+[ Fix conflicts due to missing CTB handling and 2-phase GuC log dump ]
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ drivers/gpu/drm/xe/xe_devcoredump.c | 34 +++++++++++------------------
+ drivers/gpu/drm/xe/xe_devcoredump.h |  2 +-
+ drivers/gpu/drm/xe/xe_guc_log.c     |  2 +-
+ 3 files changed, 15 insertions(+), 23 deletions(-)
 
-Please ignore this changes as its duplicate of 
-https://lore.kernel.org/lkml/1931444790.41739322783086.JavaMail.epsvc@epcpadp2new/
-
-
-Thanks,
-
-Selva
+diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
+index 85aa3ab0da3b8..6fcb6ce769c1a 100644
+--- a/drivers/gpu/drm/xe/xe_devcoredump.c
++++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+@@ -337,42 +337,34 @@ int xe_devcoredump_init(struct xe_device *xe)
+ /**
+  * xe_print_blob_ascii85 - print a BLOB to some useful location in ASCII85
+  *
+- * The output is split to multiple lines because some print targets, e.g. dmesg
+- * cannot handle arbitrarily long lines. Note also that printing to dmesg in
+- * piece-meal fashion is not possible, each separate call to drm_puts() has a
+- * line-feed automatically added! Therefore, the entire output line must be
+- * constructed in a local buffer first, then printed in one atomic output call.
++ * The output is split into multiple calls to drm_puts() because some print
++ * targets, e.g. dmesg, cannot handle arbitrarily long lines. These targets may
++ * add newlines, as is the case with dmesg: each drm_puts() call creates a
++ * separate line.
+  *
+  * There is also a scheduler yield call to prevent the 'task has been stuck for
+  * 120s' kernel hang check feature from firing when printing to a slow target
+  * such as dmesg over a serial port.
+  *
+- * TODO: Add compression prior to the ASCII85 encoding to shrink huge buffers down.
+- *
+  * @p: the printer object to output to
+  * @prefix: optional prefix to add to output string
++ * @suffix: optional suffix to add at the end. 0 disables it and is
++ *          not added to the output, which is useful when using multiple calls
++ *          to dump data to @p
+  * @blob: the Binary Large OBject to dump out
+  * @offset: offset in bytes to skip from the front of the BLOB, must be a multiple of sizeof(u32)
+  * @size: the size in bytes of the BLOB, must be a multiple of sizeof(u32)
+  */
+-void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
++void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
+ 			   const void *blob, size_t offset, size_t size)
+ {
+ 	const u32 *blob32 = (const u32 *)blob;
+ 	char buff[ASCII85_BUFSZ], *line_buff;
+ 	size_t line_pos = 0;
+ 
+-	/*
+-	 * Splitting blobs across multiple lines is not compatible with the mesa
+-	 * debug decoder tool. Note that even dropping the explicit '\n' below
+-	 * doesn't help because the GuC log is so big some underlying implementation
+-	 * still splits the lines at 512K characters. So just bail completely for
+-	 * the moment.
+-	 */
+-	return;
+-
+ #define DMESG_MAX_LINE_LEN	800
+-#define MIN_SPACE		(ASCII85_BUFSZ + 2)		/* 85 + "\n\0" */
++	/* Always leave space for the suffix char and the \0 */
++#define MIN_SPACE		(ASCII85_BUFSZ + 2)	/* 85 + "<suffix>\0" */
+ 
+ 	if (size & 3)
+ 		drm_printf(p, "Size not word aligned: %zu", size);
+@@ -404,7 +396,6 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+ 		line_pos += strlen(line_buff + line_pos);
+ 
+ 		if ((line_pos + MIN_SPACE) >= DMESG_MAX_LINE_LEN) {
+-			line_buff[line_pos++] = '\n';
+ 			line_buff[line_pos++] = 0;
+ 
+ 			drm_puts(p, line_buff);
+@@ -416,10 +407,11 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+ 		}
+ 	}
+ 
++	if (suffix)
++		line_buff[line_pos++] = suffix;
++
+ 	if (line_pos) {
+-		line_buff[line_pos++] = '\n';
+ 		line_buff[line_pos++] = 0;
+-
+ 		drm_puts(p, line_buff);
+ 	}
+ 
+diff --git a/drivers/gpu/drm/xe/xe_devcoredump.h b/drivers/gpu/drm/xe/xe_devcoredump.h
+index a4eebc285fc83..b231c8ad799f6 100644
+--- a/drivers/gpu/drm/xe/xe_devcoredump.h
++++ b/drivers/gpu/drm/xe/xe_devcoredump.h
+@@ -26,7 +26,7 @@ static inline int xe_devcoredump_init(struct xe_device *xe)
+ }
+ #endif
+ 
+-void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
++void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
+ 			   const void *blob, size_t offset, size_t size);
+ 
+ #endif
+diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
+index be47780ec2a7e..50851638003b9 100644
+--- a/drivers/gpu/drm/xe/xe_guc_log.c
++++ b/drivers/gpu/drm/xe/xe_guc_log.c
+@@ -78,7 +78,7 @@ void xe_guc_log_print(struct xe_guc_log *log, struct drm_printer *p)
+ 
+ 	xe_map_memcpy_from(xe, copy, &log->bo->vmap, 0, size);
+ 
+-	xe_print_blob_ascii85(p, "Log data", copy, 0, size);
++	xe_print_blob_ascii85(p, "Log data", '\n', copy, 0, size);
+ 
+ 	vfree(copy);
+ }
+-- 
+2.48.1
 
 
