@@ -1,143 +1,112 @@
-Return-Path: <stable+bounces-115045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBC3A324A1
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 12:17:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC30A3257D
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 12:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28C057A37FE
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:16:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642A4188A8D8
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 11:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C869B20A5E9;
-	Wed, 12 Feb 2025 11:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372E520A5C8;
+	Wed, 12 Feb 2025 11:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdrPTOgU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WgRx75Ry"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774CA201260;
-	Wed, 12 Feb 2025 11:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B552063E5
+	for <stable@vger.kernel.org>; Wed, 12 Feb 2025 11:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739359012; cv=none; b=jLeYSr+4sedl8Q/W9wNE5F7VZrKhg7GCMslHDsCPk99E4wOx8RIQE2deEsoq6OI0ft/gWJ8+UBmuevtcm513tk8rnm2kwEzGXFUrsSqJIvx0ZxbpatCpfBQXJPDnUs67H7ct5hvK6df2WxWbLjxEMqSJBJulPfGv4lPUpbDjtdc=
+	t=1739361493; cv=none; b=cjasgyiR3FkORvVjjg/yW5njvguCXzcNpWXLIRMti/n90mIuxayzXenQ7vE4mrqGNsNVBj5XLDrzpilBznG3xHrXm+e6Bd/Q8//WIK44EYZduKUUYb4PsbAsnutHsq/KkBUpiZd/ch1EVTfJwbqwk3mTawwQ92FZ5jmk6+jXKRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739359012; c=relaxed/simple;
-	bh=JWsrM6Tcs+C9f+X8PVgHyMjnM9oD4EdsAg4asrUaRs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aN4qo0CsBcY6pgDlJV2tFPiU0juaP3UEjxsk7Mgeuu+xoEM6l7jhTZ7PtBqs38gL2VvK1F29zrY/BeXKpeCzbNpL3/bu3X3GxhdB9lgGdOyyQzVPLyM7yOGPy0uBYv6M1Z8Dmg+DwttYAn6eYRpCZfBB5JBAwVLOWMZtc9i7c3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdrPTOgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850B9C4CEDF;
-	Wed, 12 Feb 2025 11:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739359011;
-	bh=JWsrM6Tcs+C9f+X8PVgHyMjnM9oD4EdsAg4asrUaRs8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XdrPTOgUPTRYAb9XnRKvfjHMPiC89ZEiduHxoz0NJnI4GQVJiol0rv9oBOdpvoFJR
-	 p+VnuStLAkDMk7yhzb+ULDoK1ItVa7cTgbwxMQjzW2EAe2oT+WkhjuFa02DwQSFN47
-	 3uYA9g72SheD+ASXImFYR+guVxPx9r8fBwGJY97r6IsgOABfdXdDypW39nMTW8HkTW
-	 /Irzkqu31/F1cAmyAwdoT+HWRbcBWvnhstMmKve8fnxIOrGOXSO4YHgwwHzYv3YIht
-	 sbBJ4oD01v+2sEtm/BR052Ksbq9O8N7p67wamWwjxLSDnrByAKv1kLNkn/tlNVpHnl
-	 leISBHzu7+t8w==
-Date: Wed, 12 Feb 2025 12:16:44 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Zicheng Qu <quzicheng@huawei.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, axboe@kernel.dk, joel.granados@kernel.org, tglx@linutronix.de, 
-	viro@zeniv.linux.org.uk, hch@lst.de, len.brown@intel.com, pavel@ucw.cz, 
-	pengfei.xu@intel.com, rafael@kernel.org, tanghui20@huawei.com, zhangqiao22@huawei.com, 
-	judy.chenhui@huawei.com, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, linux-pm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] acct: don't allow access to internal filesystems
-Message-ID: <20250212-giert-spannend-8893f1eaba7d@brauner>
-References: <20250210-unordnung-petersilie-90e37411db18@brauner>
- <20250211-work-acct-v1-0-1c16aecab8b3@kernel.org>
- <c780964d17b908846f07d01f4020be7bc784ec8b.camel@kernel.org>
+	s=arc-20240116; t=1739361493; c=relaxed/simple;
+	bh=rc34wL6IEE/M9j5gwoShAyDv8iy+96G01+EJ0MKv0+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t5dB5j9MK9rf5o31wKDWhTePx/8Zr6m92n4ZAtRe5otobTHcPlz/ETfxEwFMYIkq9JthZZb6HbUdurpz1bhTSSaiizfz2c9g+Jdp44/96aMxh+mclSgMiug9fOew+pPBwsabt0CLcby24YE6cXef404hl6Nsp32WpiMNyS2Wp6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WgRx75Ry; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38dc73cc5acso511486f8f.0
+        for <stable@vger.kernel.org>; Wed, 12 Feb 2025 03:58:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739361489; x=1739966289; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aJyVBnUmJhsFxZYrQ4bvvLuz93aO/6H64OYPdLBe4l4=;
+        b=WgRx75RyqRYEEiAlCyAVMR9TydCnXQtQczq6x9x/nRm8iovsiPK3IU7MnkmouTyiqy
+         l9vfyqxTDtIMOZKop+v4kiq4EoQCGId9cAfiDlEybb7IJeAlfKi9iXjyvmBqFZt8p/gX
+         WC0g3KV2g9uRnzntOvX6tmQV48fP6F3Lhr0jyZ+23epqSoVDknlXE+8a9U+Y+0OQCmuM
+         rM8SROhAzVClW+Y+0sPqlN4ez9jLl+0+S9kkYtUOtX/9eHUdx6Mo7mv55C1hjk8tCYlB
+         QPf0ygC7CRUwDt3gNWu+bWaIJQkpCU2L1RWgE4WZgtYAXrWZxfGKj6owKynDQnLG7ISL
+         83iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739361489; x=1739966289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aJyVBnUmJhsFxZYrQ4bvvLuz93aO/6H64OYPdLBe4l4=;
+        b=JY+7z9PlGVHrjcufeyOLqBXHThDFfPolT3Rj4vsisOYRkk/tkFzkT6jURvoCn5XB3k
+         L1Z0g+PdjoQzbvvcuE1uTKQzT3GDjgzxrOjKZ3QzA6asZvzUGMVz+oxfDm0S1X0nEuoV
+         sJlSZx0xIFpsTiSDp9BxPQhM7XGFJnw3ep+piwd07WvP1bjLxl/0GzgkYKSlUzpqjul2
+         R0kFeZCJ0gZCezgEHLJZO+96e0KwJTzOPkjLJDNNxFRp6ZECkHNrcjE1hg1VofhVDoUN
+         eUQ+ksFIFLYWwsUk38AlpfpsiS27UT9zCCGKM3SFHC1wzdf7Fcs53sFS78NGJ9SmrTdE
+         C49Q==
+X-Gm-Message-State: AOJu0YyB0D9vzhrP84spVR9HxG9gWSV5ATTLMholvVflex5KcFLRnm5H
+	mhQz4m/4BgrDyFR9G1qv4Xf/CT26XUIblJ0QOxqH2J3pTvI8WPBm
+X-Gm-Gg: ASbGncuklW8yHhROPo3a9CCsb2X9zNGFMkd3T1ys0bIACdN5LvxUgmtu9MxrLwSVqjB
+	r0lMHU9xsW7JDfSz5f9Rl2kDw0g6cK6KNIbI68xCt3Li147rx15RqyUcXxbftmUAHGv/7ZcxJYB
+	pw2LeOz09qIxX576S6i96XU82WdiNpL60tN31D6xkWN5fFP3Ms77HUfKwJ3w0CdwtJ/hPq/j1Fd
+	ptx2otG/wj9mRmFKuqfgscpujSxnWgBabrhVwthO6PJazTihvF2f8P+CZf8PGVjGTMrSKon4PuG
+	zJubSam71p0kBdosAAsDbxGs
+X-Google-Smtp-Source: AGHT+IEQJD1at2vgKoD0SZAiKFCXWWdHdfRNp9Sy1NyjZpGiBc3LO8hFQb7P6JVAO2/auMd1p6QxgA==
+X-Received: by 2002:a5d:6d82:0:b0:38d:d773:2df1 with SMTP id ffacd0b85a97d-38de43e90f4mr5998048f8f.25.1739361489167;
+        Wed, 12 Feb 2025 03:58:09 -0800 (PST)
+Received: from [192.168.8.100] ([148.252.128.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a053e42sm17685325e9.15.2025.02.12.03.58.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 03:58:08 -0800 (PST)
+Message-ID: <adac9661-cc98-4c0e-8445-3a83a250bf51@gmail.com>
+Date: Wed, 12 Feb 2025 11:59:11 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c780964d17b908846f07d01f4020be7bc784ec8b.camel@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable-6.6 0/3] provided buffer recycling fixes
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Muhammad Ramdhan <ramdhan@starlabs.sg>,
+ Bing-Jhong Billy Jheng <billy@starlabs.sg>, Jacob Soo
+ <jacob.soo@starlabs.sg>, Jens Axboe <axboe@kernel.dk>
+References: <cover.1738772087.git.asml.silence@gmail.com>
+ <2025021100-demote-graph-fdeb@gregkh>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <2025021100-demote-graph-fdeb@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 11, 2025 at 01:56:41PM -0500, Jeff Layton wrote:
-> On Tue, 2025-02-11 at 18:15 +0100, Christian Brauner wrote:
-> > In [1] it was reported that the acct(2) system call can be used to
-> > trigger a NULL deref in cases where it is set to write to a file that
-> > triggers an internal lookup.
-> > 
-> > This can e.g., happen when pointing acct(2) to /sys/power/resume. At the
-> > point the where the write to this file happens the calling task has
-> > already exited and called exit_fs() but an internal lookup might be
-> > triggered through lookup_bdev(). This may trigger a NULL-deref
-> > when accessing current->fs.
-> > 
-> > This series does two things:
-> > 
-> > - Reorganize the code so that the the final write happens from the
-> >   workqueue but with the caller's credentials. This preserves the
-> >   (strange) permission model and has almost no regression risk.
-> > 
-> > - Block access to kernel internal filesystems as well as procfs and
-> >   sysfs in the first place.
-> > 
-> > This api should stop to exist imho.
-> > 
+On 2/11/25 10:18, Greg KH wrote:
+> On Mon, Feb 10, 2025 at 03:21:35PM +0000, Pavel Begunkov wrote:
+>> Fixes for the provided buffers for not allowing kbufs to cross a single
+>> execution section. Upstream had most of it already fixed by chance,
+>> which is why all 3 patches refer to a single upstream commit.
 > 
-> I wonder who uses it these days, and what would we suggest they replace
-> it with? Maybe syscall auditing?
-
-Someone pointed me to atop but that also works without it. Since this is
-a privileged api I think the natural candidate to replace all of this is
-bpf. I'm pretty sure that it's relatively straightforward to get a lot
-more information out of it than with acct(2) and it will probably be
-more performant too.
-
-Without any limitations as it is right now, acct(2) can easily lockup
-the system quite easily by pointing it to various things in sysfs and
-I'm sure it can be abused in other ways. So I wouldn't enable it.
-
+> Ah.  Ok, that makes more sense, nevermind, I should have read patch 0/X
+> first...
 > 
-> config BSD_PROCESS_ACCT
->         bool "BSD Process Accounting"
->         depends on MULTIUSER
->         help
->           If you say Y here, a user level program will be able to instruct the
->           kernel (via a special system call) to write process accounting
->           information to a file: whenever a process exits, information about
->           that process will be appended to the file by the kernel.  The
->           information includes things such as creation time, owning user,
->           command name, memory usage, controlling terminal etc. (the complete
->           list is in the struct acct in <file:include/linux/acct.h>).  It is
->           up to the user level program to do useful things with this
->           information.  This is generally a good idea, so say Y.
-> 
-> Maybe at least time to replace that last sentence and make this default
-> to 'n'?
+> I'll drop the upstream commit reference here as it's just confusing.
 
-I agree.
+Got it, thanks
 
-> 
-> > Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com [1]
-> > 
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> > Christian Brauner (2):
-> >       acct: perform last write from workqueue
-> >       acct: block access to kernel internal filesystems
-> > 
-> >  kernel/acct.c | 134 ++++++++++++++++++++++++++++++++++++----------------------
-> >  1 file changed, 84 insertions(+), 50 deletions(-)
-> > ---
-> > base-commit: af69e27b3c8240f7889b6c457d71084458984d8e
-> > change-id: 20250211-work-acct-a6d8e92a5fe0
-> > 
-> 
-> -- 
-> Jeff Layton <jlayton@kernel.org>
+-- 
+Pavel Begunkov
+
 
