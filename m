@@ -1,211 +1,113 @@
-Return-Path: <stable+bounces-115055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB18A3278D
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:51:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1A8A327FC
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 15:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75D6E188194C
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 13:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9629D3A4F15
+	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 14:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF9920E009;
-	Wed, 12 Feb 2025 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AED020F067;
+	Wed, 12 Feb 2025 14:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="er8PhO+V"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hjO6sgQv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A651DFDE;
-	Wed, 12 Feb 2025 13:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF31F20E714;
+	Wed, 12 Feb 2025 14:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739368295; cv=none; b=QAkDno5AvwPms2umjBRxm4VWZAlL7K6Usw6k0T5pOc3NjH6yABb3vrzJW5Ch0jL78NEFJpXV92Z5Kfbnt8pWyocZ4EXSRFU21mjo/XmrMa40Z23+XsPS/k2gSRcRqy8DkJSnidgjEdDLPTXrKvxxKxPdZGQKy3ueHK7H+HBcQkI=
+	t=1739369278; cv=none; b=drFPav8JGA7YSSnnpqI+tWZ4xZVpphojW6vjYLgys7DcDvbhybl/PoJUvFoR6lUMp6/MjrcYi0SAbIUxI3SbNgofTMsL813OXTbiTXQE/CzmGeX5Goj45eNilTpAdPj31Pod8w/CstONoDUA2HOXSdiF34aeF0QHIe0MT53qnr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739368295; c=relaxed/simple;
-	bh=9YjzMBkUgd4USe1LdFDokt2j7fxzypWig1WTfc8rg1s=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dLxII1Iv0W5XhZ63OPN++R/jeDWtM2wsWdTpYaYOSSfNEgVGWJpk+sRhazM1UHGVCBjz62I0q9Woc6a64hGQkv8VhseEJudEerkgOwfLhZfTIc9h9RhRedOmQlU5FXi0dQECT2rMp7T99hzWaCoJyxi4QhPNZiXCWIZCmYbcAZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=er8PhO+V; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab7fa1bc957so73308366b.2;
-        Wed, 12 Feb 2025 05:51:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739368292; x=1739973092; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWgaRORqR0FRFMsVrMYjxpMIPGLqqeGvJvZVUdyaQXc=;
-        b=er8PhO+V70RG0D6ktEM8M68OzOCGGlX8JWXUvqOEA/a4AldCBTe+WP8Ic3oVBr8Bsj
-         mjW5w/34rS0yeldeAprtjW/PXNB+dabiubzd4GXjN/JatPh2BzLuz3JE6JwvbXrwxedO
-         4MlZh5mBBhhUHB0ykpZ6aGY5QIvQyGs3aq7SBqS3hljy9nsX9d/0THUXmi9vLRfwpDKx
-         b03xnToJD5XGPAmQgJnjK6V1yqmgB0D0RMzWVJ9d0oUeT/JlFt0Ls0vt/ylZ6WG26VUM
-         Q05intpJNGTqOWzdjC6eewQxY7lOij8HCyQIvij+YUdokVpB74ri034UMpz3i+hVz6Iy
-         JoSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739368292; x=1739973092;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QWgaRORqR0FRFMsVrMYjxpMIPGLqqeGvJvZVUdyaQXc=;
-        b=FP204KvAwCA1rXRpzGgweBB0qxg3MgVnO93ZR4k/0oJvSyykcexvou+wuvIlgV0WZg
-         yni3RfSnbl4RmJ1JuY07lNNemcjcgHf4W/9Zh81W2bA1ulxtNYG8i3WD6JAPXwTtD+M8
-         e0TbREKsxxvIdREoawAdBa45vppKWggeVKN0uU7QEyb2cj/Bru/qecgvK0HHqLlH4r6n
-         bRGxGkZhumRLeyWNvkdceS86EXRs5IFarYoHZdf7oF0G42gRk+PoMbMnzAps6FsbXKb8
-         Ij74paT7OwsZ/ebmjbYZn52T4N8tQwAxMKwnSIZfxQq8XsO2Et14RHKzv0DO3zVUdjGH
-         S5dw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCSLnW3MyjV1GRAFhvhGopeuZTef4nNDtASFPmwL0NYh0RB5JJkkXfd4vI/Nbf+YkvxWFZIN+AYaLL7mqN@vger.kernel.org, AJvYcCWU46EZ3r57vSEME7OxzaTgNnWriCZ2UI/z+W7tOeJK5QHEQEME/RWKKnqZGj4CHDBYLqM=@vger.kernel.org, AJvYcCWWCMz0OIxFiPpubQsxJ8qXhIfn0a4QH7uvrKGAyuTDgsd0BBu4z2+Y6lNPiGkpm6DlZhARcVzKAeQ8@vger.kernel.org, AJvYcCWcwF3y2pJR3PK9FzLU4+PmFVXcxgZLPO87aDVybOCAvzAYADIvOG0zmCG/8cmXIuta8u+IfjdW/8vmfSEeDTOfbN/b@vger.kernel.org, AJvYcCWs5MkpRBFhRlgxw17QoCTnkgItpkl5uJfHeZ5xrPnNI6epb2q8vyB51JFXDbd3qDgHnD7rD9jD@vger.kernel.org
-X-Gm-Message-State: AOJu0YzinVksDhon430LWd6XhEWbeWslq/anZ91ACLkQfDhtC4li1MlS
-	ofZtSuyh3YbE0FIeNzokgSWOG5gb2I+yfIr92NTWldDHvYV1QDjF
-X-Gm-Gg: ASbGncvm3J172nAYIOOHp+YWcR9/C1v9lf0vX9AHGAjE6/JuQ9CCFj+gf8q20eVTe4A
-	apYBLLXDfXAy7uA35zdppOswh1eg/H/AcZoDtNU6ODkDKivHWyPStitlkRa3DEEPU5ByJ8YoeHx
-	f2tfWYERlyyMjgSrFAT5zTE4hPP6kxu/jFjN1/0VIa03JnRwebFBipjPJ9ZPqU3fPRWdp8RrmvT
-	evpwjpyXz1MH1oNT25DV9L0VOblixLUPDUNSkwNP25dJuMLps1y1/sH28hMa+xbQ5ix534xX9P1
-	nCkVyEI=
-X-Google-Smtp-Source: AGHT+IFX9i/vrDhYBpxdXVYrHiw2AvtaHV+PAHbqipVnrLTRgL04qKCaZmY29JuXIGDQq2EMjSNTaA==
-X-Received: by 2002:a17:907:1909:b0:ab7:f24d:4874 with SMTP id a640c23a62f3a-ab7f33444abmr306419466b.1.1739368291818;
-        Wed, 12 Feb 2025 05:51:31 -0800 (PST)
-Received: from krava ([2a00:102a:5024:e483:e531:7f9e:99e:ba32])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7aa374d92sm850029366b.153.2025.02.12.05.51.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 05:51:31 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Wed, 12 Feb 2025 14:51:28 +0100
-To: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	stable <stable@vger.kernel.org>, Jann Horn <jannh@google.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
-	Linux API <linux-api@vger.kernel.org>, X86 ML <x86@kernel.org>,
-	bpf <bpf@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCHv2 perf/core] uprobes: Harden uretprobe syscall trampoline
- check
-Message-ID: <Z6ynYCT-xS7DQ5iq@krava>
-References: <20250211111559.2984778-1-jolsa@kernel.org>
- <CAEf4BzYPmtUirnO3Bp+3F3d4++4ttL_MZAG+yGcTTKTRK2X2vw@mail.gmail.com>
- <CAADnVQJ05xkXw+c_T1qB+ECUqO5sJxDVJ3bypjS3KSQCTJb-1g@mail.gmail.com>
- <20250211165940.GB9174@redhat.com>
- <20250212130509.ce1987095c6b17b26d3ee40a@kernel.org>
+	s=arc-20240116; t=1739369278; c=relaxed/simple;
+	bh=KW6EoMcTxAn8bpbomq95y0xiTqFHJk2QJNNPeo6PjAg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=njl9hT29lj5qOh9wVSRF/EJGa1paaQZtjXXowywcl+UBf6K8RTjPERdT4zCj++IsjgBRpx9O1rcieTlXN3nLDSkpAHEu/Cngr3VPBqJ7VrCX6rOvlfSW3ZYhWDLu/PtVTP2+Ape5rMtzm5KFACmyXjbB3gVqt03KJZeavXCO0MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hjO6sgQv; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1739369246; x=1739974046; i=markus.elfring@web.de;
+	bh=KW6EoMcTxAn8bpbomq95y0xiTqFHJk2QJNNPeo6PjAg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=hjO6sgQvHT1s1mwxQ5wRc9loVCtkqy46bKfiNbAZ/X26rZwY51HqZ6mGFqqGpojt
+	 nXVfnvslqemdkoE07RjwKVaj0Jnjb/zjh5Zg8R54q13N23MPcLspIC8br8kA5nBji
+	 5va4Eu008iZZee+FZ4z0KDa7fG2EvavXJn6hPqvOrDGKsHKwViDJT11wrNHESp8Eg
+	 4Ko3AA/tx7k9/xHUbFnezfwedoz9Pmpu9UfLzb371NMezxD/JhwDW5K7MSzSdC0Ae
+	 D/YFKCxWe6UW0AIP3e/ZTqGEKKIJnq43GuMnfiENJnbvbLR58ociewBRaY9yMNSGU
+	 Alxds+7cAb4Z/617yA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.11]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MidHP-1tD1VR2yqV-00ZeSO; Wed, 12
+ Feb 2025 15:07:26 +0100
+Message-ID: <a5e45ae1-2c87-46c6-8a30-3186e304aea3@web.de>
+Date: Wed, 12 Feb 2025 15:07:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250212130509.ce1987095c6b17b26d3ee40a@kernel.org>
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Boris Pismenny <borisp@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+References: <20250212025351.380-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] tls: Check return value of get_cipher_desc in fill_sg_out
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250212025351.380-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OyRS4JtDglS3wh7qHezxVJJ8DeVA4HoAipLGoKUHTjBsfCNJ38A
+ FLJpAwgYgb2v8mWJUOdNdFg/pCOtNKcCa/kY4iwHVKihiDY7/C/K+r8g5egLF9PD+M55Cby
+ +N/VOd9sWjxDWvAorvdfjlblGGAhYNJFFwrwoNMCv0QQNPdOBt0CD9BM+GnJ1kF7ca+KxUw
+ mAtuiJ5A+jXowkVFf7wLg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Rp2tZqP2nWg=;juVcFpIADULyBfYC+BrOBDJknvW
+ fpqwVziY02Bzrj9bvxoL0rpXy0rnXFT+S3AK82PHyUvhYpYPbShxIKYtSrVYrrNbBBQ/mOufw
+ YdB3yIlwsIV1MAMA45iSFX3Clm7zlxur8mdWrjsq2pnScLsNiv/ZZjtfOnzw7S2Rvyp4g3g/s
+ V4MWP/J0XHYWWbxpnI1DlE4xqUlL53t+dpGxdMW1rSzGZ/qibucWrLTQGKU3G/a9PEX4ImzDT
+ pJ8TFzYHWHVM1okX05K48iUGymBz8Tb1aCrzfbSrvoQL/anRLH17b2wy5AyJXnjawDPmvgdpx
+ 95IxYPb7MjMdVNRQIi78ZA2A9VABk7FAafHbxnMM+HR5A75/uvIdUf+YOS09WHJMGkVRmM+wX
+ N5PTURcgCDsZ1lAgczhdEolun+4SWx9Dnu717dcH+ruBrUK5cY8EroPkosSLq8Pd9FHoHti4b
+ 1ismg+R2ytzPC6Z9ke2PpxYkHTTZryY4Rm594+qGIcgik/3g0SMEfUBaiQWYBGDsKfnz9BVKK
+ vT5YYvwkQ4kZ6uOtPC4Ky1ZTHvwCIOg1OCrSvw5I1TdjlcHoiT4rW007eOkty7xUTGj/S0TAt
+ 2KPHbJVpclAtpigQHJ2zTFzvFP6HqUqLpMpBFz+pix63xYTr65l5HxsYa6fhJoNjDM3fP6ogF
+ 8RuS/rWMbUiSOPTxgjdI6h5GsIo9xrUeLiXEKdjDG4q6QrNHCbFTPW6osYVPbiyVrft4A8w6V
+ QYZlqi3LM+52sMnBhL0s6UNfNeqm8lPVEudhOtDEFnuR4CjTHRstS7On41NQdLZLlhokZeBxv
+ 5ear/sQyMe105MlOCWuS8T+CoUTEPAcIIdrd9T+O5lv0IEfFMujmLQXnx0CgKq8pYD7RV7GaY
+ m5DRN4R4NcBaADUm3yE3+37/gD4hMQDILA1d1M8H1pMA+cZ8TG0TH2x7IlHmfGUoKdawXEzGA
+ 2AOh0oLoQsfzK6c5wOvC6RsDozh8eTN3kprSifUB2qn/nAnqKXPJc2GXgkjDk+7OunQxyftEE
+ RU/BHAaDzd7RflCyOlpxl47NEo7hLLDSjTj7HLy1Rv8AMa/vKcqzuwhEPJSmS+npFHzwHM4y5
+ /0CM8AYX7J+KPy/40f2lpR3XHwcscgB+g62ar9lyI7Ce/Lcrweopk6mvA//HLHp93sQhdg5A1
+ /4StARMEnUU8p9Kxh2oL6oOT8CZFpBmUC5LrfSskyRHHNrzC8Lr8zkcMHcXVfuPgm1FHDlqm4
+ G0er7/SqPbcY0qsbb5nh6JaPeypUFh5l8nmpxLq1TX2TUOmTotc3ol3Bd/TQcuiz4yJIIwq9w
+ +/ynyeTjTTRkIeU/UrOLifTanfvQ7njX262kYfbPtrpi6ZCxwmr8PSWTsa7+hSshP2O+y2G/2
+ VsFjSv1WCWrhySbZ6zfX9fxbvjgqeIP6H1anmxsNuraIF4SK5HJe5wSxOw3xU6BsTRJ5IgLj1
+ JmspxBP1UrOL66pd///eiziO4v9c=
 
-On Wed, Feb 12, 2025 at 01:05:09PM +0900, Masami Hiramatsu wrote:
-> On Tue, 11 Feb 2025 17:59:41 +0100
-> Oleg Nesterov <oleg@redhat.com> wrote:
-> 
-> > On 02/11, Alexei Starovoitov wrote:
-> > >
-> > > > > +#define UPROBE_NO_TRAMPOLINE_VADDR ((unsigned long)-1)
-> > >
-> > > If you respin anyway maybe use ~0UL instead?
-> > > In the above and in
-> > > uprobe_get_trampoline_vaddr(),
-> > > since
-> > >
-> > > unsigned long trampoline_vaddr = -1;
-> > 
-> > ... or -1ul in both cases.
-> > 
-> > I agree, UPROBE_NO_TRAMPOLINE_VADDR has a single user, looks
-> > a bit strange...
-> 
-> I think both this function and uprobe_get_trampoline_vaddr()
-> should use the same macro as a token.
-> (and ~0UL is a bit more comfortable for me too :) )
-> 
-> ----
-> unsigned long uprobe_get_trampoline_vaddr(void)
-> {
-> 	struct xol_area *area;
-> 	unsigned long trampoline_vaddr = -1;
-> ----
+=E2=80=A6
+> This patch adds a DEBUG_NET_WARN_ON_ONCE check =E2=80=A6
+
+See also:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.14-rc2#n94
 
 
-sounds good, I'll send new version with change below if there
-are no objections
+Would you like to append parentheses to any function names?
 
-thanks,
-jirka
-
-
----
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 5a952c5ea66b..015b2a6bac11 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
- 	return &insn;
- }
- 
--static unsigned long trampoline_check_ip(void)
-+static unsigned long trampoline_check_ip(unsigned long tramp)
- {
--	unsigned long tramp = uprobe_get_trampoline_vaddr();
--
- 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
- }
- 
- SYSCALL_DEFINE0(uretprobe)
- {
- 	struct pt_regs *regs = task_pt_regs(current);
--	unsigned long err, ip, sp, r11_cx_ax[3];
-+	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
-+
-+	/* If there's no trampoline, we are called from wrong place. */
-+	tramp = uprobe_get_trampoline_vaddr();
-+	if (tramp == UPROBE_NO_TRAMPOLINE_VADDR)
-+		goto sigill;
- 
--	if (regs->ip != trampoline_check_ip())
-+	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
-+	if (regs->ip != trampoline_check_ip(tramp))
- 		goto sigill;
- 
- 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index b1df7d792fa1..a6bec560bdbc 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -39,6 +39,8 @@ struct page;
- 
- #define MAX_URETPROBE_DEPTH		64
- 
-+#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
-+
- struct uprobe_consumer {
- 	/*
- 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 2ca797cbe465..e8af2f75b094 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2160,8 +2160,8 @@ void uprobe_copy_process(struct task_struct *t, unsigned long flags)
-  */
- unsigned long uprobe_get_trampoline_vaddr(void)
- {
-+	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
- 	struct xol_area *area;
--	unsigned long trampoline_vaddr = -1;
- 
- 	/* Pairs with xol_add_vma() smp_store_release() */
- 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+Regards,
+Markus
 
