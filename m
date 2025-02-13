@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-116302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96BCA34850
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:46:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974EFA34786
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 605BB16A205
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A88ED7A1947
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CB918F2FC;
-	Thu, 13 Feb 2025 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5089200130;
+	Thu, 13 Feb 2025 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbQe45tf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLz7aKv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA6615A856;
-	Thu, 13 Feb 2025 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F001FFC69;
+	Thu, 13 Feb 2025 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461019; cv=none; b=qEbsIdlQLt/jsbSPOMSPUom532r5/RkF0OvNwULnpQx9KE8NDxrJHLjGYUVCFro94/+mzudICMD1H4kXTxgqzhJoX3ash6RTm3yAI3kc37n/XeQDBHd+MMxeAGVl1qyHiPQ9iZIuKdP3LBXV5vjcn6Q4ur84+mROoyiLPuujydo=
+	t=1739460909; cv=none; b=ZBy8qy2evtHu8Vi+0oiJdO9y3UZqJKrBFk3v3qUUIP4jVwZ77hpCXqgnitDQ1Bd1KAZFjTNGn9uRgSCgyUngHC4T1MoIIIjYD3xVo2mxVQHnM8Vejkr/DvYFl3laHWlrNOMw4aEDJZayKxyr9urUwahPG/fXMpooBMOO0qFZ+FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461019; c=relaxed/simple;
-	bh=YjmRhpOpN1Th8fe/4DXRLkjvN0+ozNUvEbfLRbpBe+E=;
+	s=arc-20240116; t=1739460909; c=relaxed/simple;
+	bh=wo1pTweRFNPB3DsLoy0P4smY2TkVMU+RrSK32QJ9CCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoYT5xiELKiaNhuJpS+LuSk/rqIHG7aOc8DX3wOUI1PNQiMDLhiRKHcr86kCoXOjeQVtoBH00T9+P5f3ykfgBHOw1xvOs2v5KmToKZ4bzVp0ppfa0EgW35IskGzc4BkljJwnt/gUFphW87fthOnnXf0Z2M24X2t+gUG9NOpXK4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbQe45tf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6799C4CED1;
-	Thu, 13 Feb 2025 15:36:58 +0000 (UTC)
+	 MIME-Version; b=CM69sYg9JOp6cSiZMhFlZtE/Fo1Tf384aP7gjVf03h+9GQ7mJ1YYm8YNW/a/puy7TSoDgd9TYBg06SxHoQYr7csRgq3LVWYvoDyO4sdGdjKBA2iv2xwL5HRSOtdMrldcae6qGFlCjVt6n3jU/pWL2q4FOHQnMy724UYk+AfxF5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLz7aKv6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058A0C4CEE9;
+	Thu, 13 Feb 2025 15:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739461019;
-	bh=YjmRhpOpN1Th8fe/4DXRLkjvN0+ozNUvEbfLRbpBe+E=;
+	s=korg; t=1739460909;
+	bh=wo1pTweRFNPB3DsLoy0P4smY2TkVMU+RrSK32QJ9CCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbQe45tfhEXMO4Ksvy8bJ8BMluDzpkbJfkL0v3MHadee2ug8GR0os9ljrEXXiJofF
-	 NZv2asQzsyM3H8Bg0lbIBYlCp4YDHke8MTN+JIQqb3uwiWb5zGqE7noqAzRjDB84oT
-	 WC3/8u4eLWsFv9mA3XejhPtx35K5/HDHE+qh1/N4=
+	b=SLz7aKv6zTRDsCWLlJokNCsTWoNEbzSdyTHLeUSpkvesSkMhBYRtmNZeueKb//jla
+	 4oa+nx5Ue41uvVoqUrg9+AUWr6hT4hJhly0M6Omz3jIq1JiPS8mYFbJ78F8enKeDI+
+	 c1H0aXO6mmDGIe/8+5Dj3bm+MsbZ0hE+bIgB+Fto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Barry Song <baohua@kernel.org>,
+	Kieran Bingham <kbingham@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 247/273] maple_tree: simplify split calculation
-Date: Thu, 13 Feb 2025 15:30:19 +0100
-Message-ID: <20250213142417.194040594@linuxfoundation.org>
+Subject: [PATCH 6.6 248/273] scripts/gdb: fix aarch64 userspace detection in get_current_task
+Date: Thu, 13 Feb 2025 15:30:20 +0100
+Message-ID: <20250213142417.232638341@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -68,113 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-commit 4f6a6bed0bfef4b966f076f33eb4f5547226056a upstream.
+commit 4ebc417ef9cb34010a71270421fe320ec5d88aa2 upstream.
 
-Patch series "simplify split calculation", v3.
+At least recent gdb releases (seen with 14.2) return SP_EL0 as signed long
+which lets the right-shift always return 0.
 
-
-This patch (of 3):
-
-The current calculation for splitting nodes tries to enforce a minimum
-span on the leaf nodes.  This code is complex and never worked correctly
-to begin with, due to the min value being passed as 0 for all leaves.
-
-The calculation should just split the data as equally as possible
-between the new nodes.  Note that b_end will be one more than the data,
-so the left side is still favoured in the calculation.
-
-The current code may also lead to a deficient node by not leaving enough
-data for the right side of the split. This issue is also addressed with
-the split calculation change.
-
-[Liam.Howlett@Oracle.com: rephrase the change log]
-Link: https://lkml.kernel.org/r/20241113031616.10530-1-richard.weiyang@gmail.com
-Link: https://lkml.kernel.org/r/20241113031616.10530-2-richard.weiyang@gmail.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Link: https://lkml.kernel.org/r/dcd2fabc-9131-4b48-8419-6444e2d67454@siemens.com
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kieran Bingham <kbingham@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |   23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ scripts/gdb/linux/cpus.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1870,11 +1870,11 @@ static inline int mab_no_null_split(stru
-  * Return: The first split location.  The middle split is set in @mid_split.
-  */
- static inline int mab_calc_split(struct ma_state *mas,
--	 struct maple_big_node *bn, unsigned char *mid_split, unsigned long min)
-+	 struct maple_big_node *bn, unsigned char *mid_split)
- {
- 	unsigned char b_end = bn->b_end;
- 	int split = b_end / 2; /* Assume equal split. */
--	unsigned char slot_min, slot_count = mt_slots[bn->type];
-+	unsigned char slot_count = mt_slots[bn->type];
- 
- 	/*
- 	 * To support gap tracking, all NULL entries are kept together and a node cannot
-@@ -1907,18 +1907,7 @@ static inline int mab_calc_split(struct
- 		split = b_end / 3;
- 		*mid_split = split * 2;
- 	} else {
--		slot_min = mt_min_slots[bn->type];
--
- 		*mid_split = 0;
--		/*
--		 * Avoid having a range less than the slot count unless it
--		 * causes one node to be deficient.
--		 * NOTE: mt_min_slots is 1 based, b_end and split are zero.
--		 */
--		while ((split < slot_count - 1) &&
--		       ((bn->pivot[split] - min) < slot_count - 1) &&
--		       (b_end - split > slot_min))
--			split++;
- 	}
- 
- 	/* Avoid ending a node on a NULL entry */
-@@ -2402,7 +2391,7 @@ static inline struct maple_enode
- static inline unsigned char mas_mab_to_node(struct ma_state *mas,
- 	struct maple_big_node *b_node, struct maple_enode **left,
- 	struct maple_enode **right, struct maple_enode **middle,
--	unsigned char *mid_split, unsigned long min)
-+	unsigned char *mid_split)
- {
- 	unsigned char split = 0;
- 	unsigned char slot_count = mt_slots[b_node->type];
-@@ -2415,7 +2404,7 @@ static inline unsigned char mas_mab_to_n
- 	if (b_node->b_end < slot_count) {
- 		split = b_node->b_end;
- 	} else {
--		split = mab_calc_split(mas, b_node, mid_split, min);
-+		split = mab_calc_split(mas, b_node, mid_split);
- 		*right = mas_new_ma_node(mas, b_node);
- 	}
- 
-@@ -2905,7 +2894,7 @@ static int mas_spanning_rebalance(struct
- 		mast->bn->b_end--;
- 		mast->bn->type = mte_node_type(mast->orig_l->node);
- 		split = mas_mab_to_node(mas, mast->bn, &left, &right, &middle,
--					&mid_split, mast->orig_l->min);
-+					&mid_split);
- 		mast_set_split_parents(mast, left, middle, right, split,
- 				       mid_split);
- 		mast_cp_to_nodes(mast, left, middle, right, split, mid_split);
-@@ -3413,7 +3402,7 @@ static int mas_split(struct ma_state *ma
- 		if (mas_push_data(mas, height, &mast, false))
- 			break;
- 
--		split = mab_calc_split(mas, b_node, &mid_split, prev_l_mas.min);
-+		split = mab_calc_split(mas, b_node, &mid_split);
- 		mast_split_data(&mast, mas, split);
- 		/*
- 		 * Usually correct, mab_mas_cp in the above call overwrites
+--- a/scripts/gdb/linux/cpus.py
++++ b/scripts/gdb/linux/cpus.py
+@@ -172,7 +172,7 @@ def get_current_task(cpu):
+             var_ptr = gdb.parse_and_eval("&pcpu_hot.current_task")
+             return per_cpu(var_ptr, cpu).dereference()
+     elif utils.is_target_arch("aarch64"):
+-        current_task_addr = gdb.parse_and_eval("$SP_EL0")
++        current_task_addr = gdb.parse_and_eval("(unsigned long)$SP_EL0")
+         if (current_task_addr >> 63) != 0:
+             current_task = current_task_addr.cast(task_ptr_type)
+             return current_task.dereference()
 
 
 
