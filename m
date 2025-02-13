@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-115951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F361A34666
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E743FA3468B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6430618806AD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3874E3B02CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54E26B0BC;
-	Thu, 13 Feb 2025 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6120335BA;
+	Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeIRo9VM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2qLgLee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E52C26B0A5;
-	Thu, 13 Feb 2025 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DD926B0BE;
+	Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459824; cv=none; b=NFFqoqoc9GkQKEE21SFxK1baIWij0WsZJXM6RjDhBRxaIZ5rhC/Z/Op6UpGdI+YQSo92wfodyTASi0YIqvrE5D2hFj1lOgYDWqXUOsbMZ/+NCjkR1lnbAlGl49RZxJZhXfl6xepWR8prDUwZ2SxluMAApB06O/HRIZjkJ3W3ZBY=
+	t=1739459828; cv=none; b=U30UjUhFYu8ws4RhrJMT/yk4x+a7T7BPfelAjUXjl5anM0n2X6L5G4U1VIOpKa3Xmq20aeZjHoBvbXOmhXuwOuxVrFsdHdc65Kux4my1+xkMUxqbNrPqiQm1ifJCuxYJI1Z08fKc+ZBUEWK7WT05/qJrqe2NeMmc9DtbLnvlezM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459824; c=relaxed/simple;
-	bh=/UXg1gWm2T2plhsLXob0Er6L1R5ijhoDnZPbsV0mt3k=;
+	s=arc-20240116; t=1739459828; c=relaxed/simple;
+	bh=kUpuK3rubwTYO1BmVVSzmFnqAAD+JagAOhiAwgrMGXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wni1tniTN70o/X/VNky91AW4ZxWdN6gT9c8QXwtGyvdcRrMiSdR4iyT5rPa1+RNcezJ3EsaWa//q4NCLlhpixdBDGPf8myfAsMt7DGlZTeCihS5lpqVChNbVYgsdhHIaHN4odYduyvnZAYKJdO5+I/d17wY4EVhh0RBr8ruqeBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeIRo9VM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F072BC4CEE4;
-	Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
+	 MIME-Version; b=soN9atHXX/UsJ2S/fliA/95eYqqEtRe7pLRirVAsJaIu9hHVE3G3efotF0BxecGnr9k/hyjNX1V7mSCX5hcCmMsrGoJxIHVgusXY932OnGGSSUPqQEBBdktUdx8pVSYveB4j/H8HpjzLT8nQR/qm1NP+YeJZ1FCLvo4AxpaETjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2qLgLee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B37C4CEE4;
+	Thu, 13 Feb 2025 15:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459824;
-	bh=/UXg1gWm2T2plhsLXob0Er6L1R5ijhoDnZPbsV0mt3k=;
+	s=korg; t=1739459828;
+	bh=kUpuK3rubwTYO1BmVVSzmFnqAAD+JagAOhiAwgrMGXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NeIRo9VMfpZ7KbFI+/B4fAzONCi5AlTrS9YjCMxrzQaMZILZ0bbA0BibqcEUyMN0C
-	 M5oxPiA3iEmuJpJJBj0w32I09gdlo6WMA4dOeG12/po0pD3VuSqMtxWAbqi8AbAu4y
-	 JZbDTuy62HpGuy8JbIZBz0ZsaC/tzhzqqjQ2RG44=
+	b=d2qLgLeeRsILzk+0/g0zWMI3uzw41U3jY0nR62UerXqkzwcKLnTYujKrviCtIC61C
+	 ZiOpE9uPM0TybWC7KeqPkfbHPgRTXejXOJxe7MosUhwZAa22p3q91MHQhil8ODnEss
+	 jatXRpmyTLV+AXJzyf1rMCJI+/1557MjQO5r2Sw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 373/443] media: uvcvideo: Support partial control reads
-Date: Thu, 13 Feb 2025 15:28:58 +0100
-Message-ID: <20250213142455.002769714@linuxfoundation.org>
+Subject: [PATCH 6.13 374/443] media: uvcvideo: Only save async fh if success
+Date: Thu, 13 Feb 2025 15:28:59 +0100
+Message-ID: <20250213142455.041677229@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -69,59 +69,84 @@ Content-Transfer-Encoding: 8bit
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit f00ee2ca8da25ebccb8e19956d853c9055e2c8d0 upstream.
+commit d9fecd096f67a4469536e040a8a10bbfb665918b upstream.
 
-Some cameras, like the ELMO MX-P3, do not return all the bytes
-requested from a control if it can fit in less bytes.
-Eg: Returning 0xab instead of 0x00ab.
-usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
+Now we keep a reference to the active fh for any call to uvc_ctrl_set,
+regardless if it is an actual set or if it is a just a try or if the
+device refused the operation.
 
-Extend the returned value from the camera and return it.
+We should only keep the file handle if the device actually accepted
+applying the operation.
 
 Cc: stable@vger.kernel.org
-Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
 Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *de
- 	if (likely(ret == size))
- 		return 0;
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1811,7 +1811,10 @@ int uvc_ctrl_begin(struct uvc_video_chai
+ }
  
-+	/*
-+	 * Some devices return shorter USB control packets than expected if the
-+	 * returned value can fit in less bytes. Zero all the bytes that the
-+	 * device has not written.
-+	 *
-+	 * This quirk is applied to all controls, regardless of their data type.
-+	 * Most controls are little-endian integers, in which case the missing
-+	 * bytes become 0 MSBs. For other data types, a different heuristic
-+	 * could be implemented if a device is found needing it.
-+	 *
-+	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
-+	 * to be excluded because its size is always 1.
-+	 */
-+	if (ret > 0 && query != UVC_GET_INFO) {
-+		memset(data + ret, 0, size - ret);
-+		dev_warn_once(&dev->udev->dev,
-+			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
-+			      uvc_query_name(query), cs, unit, ret, size);
-+		return 0;
-+	}
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+-	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
++				  struct uvc_fh *handle,
++				  struct uvc_entity *entity,
++				  int rollback,
++				  struct uvc_control **err_ctrl)
+ {
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+@@ -1859,6 +1862,10 @@ static int uvc_ctrl_commit_entity(struct
+ 				*err_ctrl = ctrl;
+ 			return ret;
+ 		}
 +
- 	if (ret != -EPIPE) {
- 		dev_err(&dev->udev->dev,
- 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
++		if (!rollback && handle &&
++		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
++			ctrl->handle = handle;
+ 	}
+ 
+ 	return 0;
+@@ -1895,8 +1902,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+-		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
+-					     &err_ctrl);
++		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
++					     rollback, &err_ctrl);
+ 		if (ret < 0) {
+ 			if (ctrls)
+ 				ctrls->error_idx =
+@@ -2046,9 +2053,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+ 	mapping->set(mapping, value,
+ 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+ 
+-	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-		ctrl->handle = handle;
+-
+ 	ctrl->dirty = 1;
+ 	ctrl->modified = 1;
+ 	return 0;
+@@ -2377,7 +2381,7 @@ int uvc_ctrl_restore_values(struct uvc_d
+ 			ctrl->dirty = 1;
+ 		}
+ 
+-		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
++		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0, NULL);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
