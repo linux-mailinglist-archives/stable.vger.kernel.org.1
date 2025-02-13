@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8D4A34401
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BD4A3465F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 811D43AA194
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12DF3ADC0D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B2324167F;
-	Thu, 13 Feb 2025 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9D626B0AD;
+	Thu, 13 Feb 2025 15:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moe8xbTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRdm3PGg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85FA2661A3;
-	Thu, 13 Feb 2025 14:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB1426B098;
+	Thu, 13 Feb 2025 15:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458120; cv=none; b=mQuCivHHRjI1T1oJCAM+6LwTN6TMh+2weRSG+CWvPKbum+qDCh6I69/DvGyd5Q4gV7VIqL77Q/57CccVWurRK92mGDNvgQFq3/rFvuS9FuiVE0fUSJCl35sdfoStoW0vp2CmU8l1H1AR4OZEFz2OReWJFjJqRfOeEglK/ZWcG/s=
+	t=1739459531; cv=none; b=Ewe/Ks7hGlpbXtkHRSvZ95cMTCu4GcCVN0G9cskvq0M8b0I2s2CB+GMFa2mDZ72Zzi5QrbEgio3jbwhkMxzu4rKJpObCj6JinncHdH8qKPWZgqTO08IPOLO3ZkMD8bNrKpEN6YujbzR9zSe7M9YAHZrpjHEijoIzMQPlAWNHnE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458120; c=relaxed/simple;
-	bh=o69I6uWFAmJDBYwNfFwzSXS/wekiF6/3dbsvBnv3dcg=;
+	s=arc-20240116; t=1739459531; c=relaxed/simple;
+	bh=o8YmmOPSPa2gzI8QMmzIqxBGSPR1Dmuo7M67k0TTKNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vhtckcan5VzcDZM27pdMltWF1vmvaCKjlv32obNrOAx+se/XZZc6/7E5jtE2kM2g1PeeplV2ewVQABDKFE6ayiAVPaNVfytuxNDNkrIMHwb5yds1luB5a0c0L1K/uxJtVB63YkA5GwH/MQuPTXttLoEnHksbMoMRBx4ENjhqeTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moe8xbTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE6EC4CED1;
-	Thu, 13 Feb 2025 14:48:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VBHwZ5nQB91mGfJxz/CCEGRmD4fI4/3A1t81Iv3JHCHmU9LhwROxBiwGCxjb3KmwSwGo3QskaAbj+h8QZDy8XtOHWkw0oBM4SFusIZbEhoXnEM/KhQFWucw4jh19C5/igtIUrgvEdlRhVe/Rz4bjFx9TJHRPwNRf+zBirf9WIcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRdm3PGg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04FAC4CED1;
+	Thu, 13 Feb 2025 15:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458120;
-	bh=o69I6uWFAmJDBYwNfFwzSXS/wekiF6/3dbsvBnv3dcg=;
+	s=korg; t=1739459531;
+	bh=o8YmmOPSPa2gzI8QMmzIqxBGSPR1Dmuo7M67k0TTKNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moe8xbTS4rmb9n1gpiKwNBmac6RPPc3Ppyq2WgC05QhSJPiFaPkl5wQusBQWz5ZLR
-	 DiczXh9bqHw1WaeW9N3R3BLZub4ca/scLUJRX1bfNt2l9K4pvoXofIGj4gbb/ZCWSk
-	 Th6A3xnbGrwtJaus04dlHAm9OJnkx5uSVOs3Vodg=
+	b=yRdm3PGgCPh7eZGNyE/w1lKalssNR+u7DslqeoSAxyZ0JRYfpLDIpqdmnYy88ZWPV
+	 iTM3RXGlBVTJTjiHgEDL1Q9bWbfyp8PFjOjdhbK7lMvqjtOJOH/5IuESvdQyzmE3oR
+	 GpPazpH1k72PJ4FOlb2wlT+JQkDu66D+dBdL+e4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.12 308/422] iommufd: Fix struct iommu_hwpt_pgfault init and padding
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.13 292/443] x86/boot: Use -std=gnu11 to fix build with GCC 15
 Date: Thu, 13 Feb 2025 15:27:37 +0100
-Message-ID: <20250213142448.429166608@linuxfoundation.org>
+Message-ID: <20250213142451.882183299@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit e721f619e3ec9bae08bf419c3944cf1e6966c821 upstream.
+commit ee2ab467bddfb2d7f68d996dbab94d7b88f8eaf7 upstream.
 
-The iommu_hwpt_pgfault is used to report IO page fault data to userspace,
-but iommufd_fault_fops_read was never zeroing its padding. This leaks the
-content of the kernel stack memory to userspace.
+GCC 15 changed the default C standard version to C23, which should not
+have impacted the kernel because it requests the gnu11 standard via
+'-std=' in the main Makefile. However, the x86 compressed boot Makefile
+uses its own set of KBUILD_CFLAGS without a '-std=' value (i.e., using
+the default), resulting in errors from the kernel's definitions of bool,
+true, and false in stddef.h, which are reserved keywords under C23.
 
-Also, the iommufd uAPI requires explicit padding and use of __aligned_u64
-to ensure ABI compatibility's with 32 bit.
+  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
+     11 |         false   = 0,
+  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
+     35 | typedef _Bool                   bool;
 
-pahole result, before:
-struct iommu_hwpt_pgfault {
-        __u32     flags;                /*     0     4 */
-        __u32     dev_id;               /*     4     4 */
-        __u32     pasid;                /*     8     4 */
-        __u32     grpid;                /*    12     4 */
-        __u32     perm;                 /*    16     4 */
+Set '-std=gnu11' in the x86 compressed boot Makefile to resolve the
+error and consistently use the same C standard version for the entire
+kernel.
 
-        /* XXX 4 bytes hole, try to pack */
-
-        __u64     addr;                 /*    24     8 */
-        __u32     length;               /*    32     4 */
-        __u32     cookie;               /*    36     4 */
-
-        /* size: 40, cachelines: 1, members: 8 */
-        /* sum members: 36, holes: 1, sum holes: 4 */
-        /* last cacheline: 40 bytes */
-};
-
-pahole result, after:
-struct iommu_hwpt_pgfault {
-        __u32      flags;                /*     0     4 */
-        __u32      dev_id;               /*     4     4 */
-        __u32      pasid;                /*     8     4 */
-        __u32      grpid;                /*    12     4 */
-        __u32      perm;                 /*    16     4 */
-        __u32      __reserved;           /*    20     4 */
-        __u64      addr __attribute__((__aligned__(8))); /*    24     8 */
-        __u32      length;               /*    32     4 */
-        __u32      cookie;               /*    36     4 */
-
-        /* size: 40, cachelines: 1, members: 9 */
-        /* forced alignments: 1 */
-        /* last cacheline: 40 bytes */
-} __attribute__((__aligned__(8)));
-
-Fixes: c714f15860fc ("iommufd: Add fault and response message definitions")
-Link: https://patch.msgid.link/r/20250120195051.2450-1-nicolinc@nvidia.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
+Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
+Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
+Reported-by: Jakub Jelinek <jakub@redhat.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250121-x86-use-std-consistently-gcc-15-v1-1-8ab0acf645cb%40kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c |    2 +-
- include/uapi/linux/iommufd.h  |    4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -242,7 +242,7 @@ static ssize_t iommufd_fault_fops_read(s
- {
- 	size_t fault_size = sizeof(struct iommu_hwpt_pgfault);
- 	struct iommufd_fault *fault = filep->private_data;
--	struct iommu_hwpt_pgfault data;
-+	struct iommu_hwpt_pgfault data = {};
- 	struct iommufd_device *idev;
- 	struct iopf_group *group;
- 	struct iopf_fault *iopf;
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -737,6 +737,7 @@ enum iommu_hwpt_pgfault_perm {
-  * @pasid: Process Address Space ID
-  * @grpid: Page Request Group Index
-  * @perm: Combination of enum iommu_hwpt_pgfault_perm
-+ * @__reserved: Must be 0.
-  * @addr: Fault address
-  * @length: a hint of how much data the requestor is expecting to fetch. For
-  *          example, if the PRI initiator knows it is going to do a 10MB
-@@ -752,7 +753,8 @@ struct iommu_hwpt_pgfault {
- 	__u32 pasid;
- 	__u32 grpid;
- 	__u32 perm;
--	__u64 addr;
-+	__u32 __reserved;
-+	__aligned_u64 addr;
- 	__u32 length;
- 	__u32 cookie;
- };
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -25,6 +25,7 @@ targets := vmlinux vmlinux.bin vmlinux.b
+ # avoid errors with '-march=i386', and future flags may depend on the target to
+ # be valid.
+ KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
++KBUILD_CFLAGS += -std=gnu11
+ KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
+ KBUILD_CFLAGS += -Wundef
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
 
 
 
