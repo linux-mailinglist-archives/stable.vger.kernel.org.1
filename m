@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E66EA344D6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC619A3421E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E823B30C7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2282168FD6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013C52222B3;
-	Thu, 13 Feb 2025 14:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81746221554;
+	Thu, 13 Feb 2025 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+I+8p2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQq+1cmo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EE8221710;
-	Thu, 13 Feb 2025 14:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1BA21D3F9;
+	Thu, 13 Feb 2025 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458581; cv=none; b=joX/gtkK3Pz9cdU5QKmkeE+HmRGyGd6YBgVYQWwzgMZ5D6TCaWRScf4N40RNXXlqhP4/yxDM1xTo7v4mZGAW0jetQgEL0ex4oae/ATsco7EUaIMxqFVuLMIVyHN+kBsTyGXfdvBGDuf7akXrhpnDdpDNPLgDftjJf+3oLeEdNso=
+	t=1739457138; cv=none; b=s7RlKE0x8I9I2Ru0DQarTr33cSUFLC+K0RuUoTMkWt8ZsHCWLL+S0s/EVPF1BJwvkbZRlQENCwI5OCYcEsgiofCO3XXPCQtQmez8z4B9ZJSNfLI0ZhqaRaNbIiTQPak5d0td9gwlFi36kc5pz/U8MN6GFNs82gZCD1QQ/3WvUGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458581; c=relaxed/simple;
-	bh=LbpoieTo3mutMh+HCknOaB/yszvxiFDBi0LXGsbi/SQ=;
+	s=arc-20240116; t=1739457138; c=relaxed/simple;
+	bh=ZVMx7cnmrZRtKQzXJLKmtKRmNVYwAnPH8vwRlt5XnZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oClzzk8C4Eg1i2QoUE8CtT8QOXEM4wYFM1OEsSw0UopensRY8kKakA7PjY+R8p89Mba52dcrdBB2m6SpJueoPW0sKig8y0/brM23AjZjy/I5NiowsiHmoRUFjhPA2baSGdJM/DblfRumzIZA3QY7VazseKrvM9JbY05d/PMTA68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+I+8p2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2193FC4CED1;
-	Thu, 13 Feb 2025 14:56:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r+2Tyiu3Hn/sSUdmv1tX364nWdG/WCvFuSfY1uPcqOpHmegvYrdR0F8pgMPwvdjjKHqmgWjDcQoatg3x7JZXgGjM/vyV7X6RbWctYeMI16TLW8w3WGs+RFxUHWBm1lqlGKnwZFaa1sSebWnIFnGuErCrG1IJqw0hgC34UfWWiiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQq+1cmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E300C4CED1;
+	Thu, 13 Feb 2025 14:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458581;
-	bh=LbpoieTo3mutMh+HCknOaB/yszvxiFDBi0LXGsbi/SQ=;
+	s=korg; t=1739457138;
+	bh=ZVMx7cnmrZRtKQzXJLKmtKRmNVYwAnPH8vwRlt5XnZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+I+8p2MHR06hCc1YqrLjFUe9Kxpa0lf65dCWwLb7TiQ+EyMpCvvFCEtWsNIL6wUW
-	 WHv5xxYmP/4wZp9ILtt50QxkbmeCyQQOaiTrFDNZFC8l59yL0AtMBGn4tocSEGtVlz
-	 ra74HFtuYhQp5m78jPipAdpbjYzjLp4uG1lnPe5E=
+	b=eQq+1cmo6RdnTKDhz1a4VbsWiDAuJX0jeox6WWQtaH4eJX+F56ge34r/UxpZSQnXi
+	 LjI5/xwy31gw53aqUImZQVkloJY/VrdpQ7tUlaDSLxYXd8JSNnO3VnqkmiPETPTtZM
+	 8iYL+gZGuJkT82HvHwucgQlJnKi3kSvXDDCbxL0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+63913e558c084f7f8fdc@syzkaller.appspotmail.com,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Dustin L. Howett" <dustin@howett.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 002/443] btrfs: fix lockdep splat while merging a relocation root
-Date: Thu, 13 Feb 2025 15:22:47 +0100
-Message-ID: <20250213142440.710103164@linuxfoundation.org>
+Subject: [PATCH 6.12 019/422] drm: panel-backlight-quirks: Add Framework 13 matte panel
+Date: Thu, 13 Feb 2025 15:22:48 +0100
+Message-ID: <20250213142437.294735852@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,226 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit a216542027b892e6651c1b4e076012140d04afaf ]
+[ Upstream commit 916ecc0db336768d80e14ef28a8c64a775274f95 ]
 
-When COWing a relocation tree path, at relocation.c:replace_path(), we
-can trigger a lockdep splat while we are in the btrfs_search_slot() call
-against the relocation root. This happens in that callchain at
-ctree.c:read_block_for_search() when we happen to find a child extent
-buffer already loaded through the fs tree with a lockdep class set to
-the fs tree. So when we attempt to lock that extent buffer through a
-relocation tree we have to reset the lockdep class to the class for a
-relocation tree, since a relocation tree has extent buffers that used
-to belong to a fs tree and may currently be already loaded (we swap
-extent buffers between the two trees at the end of replace_path()).
+The value of "min_input_signal" returned from ATIF on a Framework AMD 13
+is "12". This leads to a fairly bright minimum display backlight.
 
-However we are missing calls to btrfs_maybe_reset_lockdep_class() to reset
-the lockdep class at ctree.c:read_block_for_search() before we read lock
-an extent buffer, just like we did for btrfs_search_slot() in commit
-b40130b23ca4 ("btrfs: fix lockdep splat with reloc root extent buffers").
+Add a quirk to override that the minimum backlight PWM to "0" which
+leads to a much lower minimum brightness, which is still visible.
 
-So add the missing btrfs_maybe_reset_lockdep_class() calls before the
-attempts to read lock an extent buffer at ctree.c:read_block_for_search().
+Tested on a Framework AMD 13 BIOS 3.05 with the matte panel.
 
-The lockdep splat was reported by syzbot and it looks like this:
-
-   ======================================================
-   WARNING: possible circular locking dependency detected
-   6.13.0-rc5-syzkaller-00163-gab75170520d4 #0 Not tainted
-   ------------------------------------------------------
-   syz.0.0/5335 is trying to acquire lock:
-   ffff8880545dbc38 (btrfs-tree-01){++++}-{4:4}, at: btrfs_tree_read_lock_nested+0x2f/0x250 fs/btrfs/locking.c:146
-
-   but task is already holding lock:
-   ffff8880545dba58 (btrfs-treloc-02/1){+.+.}-{4:4}, at: btrfs_tree_lock_nested+0x2f/0x250 fs/btrfs/locking.c:189
-
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-
-   -> #2 (btrfs-treloc-02/1){+.+.}-{4:4}:
-          reacquire_held_locks+0x3eb/0x690 kernel/locking/lockdep.c:5374
-          __lock_release kernel/locking/lockdep.c:5563 [inline]
-          lock_release+0x396/0xa30 kernel/locking/lockdep.c:5870
-          up_write+0x79/0x590 kernel/locking/rwsem.c:1629
-          btrfs_force_cow_block+0x14b3/0x1fd0 fs/btrfs/ctree.c:660
-          btrfs_cow_block+0x371/0x830 fs/btrfs/ctree.c:755
-          btrfs_search_slot+0xc01/0x3180 fs/btrfs/ctree.c:2153
-          replace_path+0x1243/0x2740 fs/btrfs/relocation.c:1224
-          merge_reloc_root+0xc46/0x1ad0 fs/btrfs/relocation.c:1692
-          merge_reloc_roots+0x3b3/0x980 fs/btrfs/relocation.c:1942
-          relocate_block_group+0xb0a/0xd40 fs/btrfs/relocation.c:3754
-          btrfs_relocate_block_group+0x77d/0xd90 fs/btrfs/relocation.c:4087
-          btrfs_relocate_chunk+0x12c/0x3b0 fs/btrfs/volumes.c:3494
-          __btrfs_balance+0x1b0f/0x26b0 fs/btrfs/volumes.c:4278
-          btrfs_balance+0xbdc/0x10c0 fs/btrfs/volumes.c:4655
-          btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3670
-          vfs_ioctl fs/ioctl.c:51 [inline]
-          __do_sys_ioctl fs/ioctl.c:906 [inline]
-          __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
-          do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-          do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-          entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-   -> #1 (btrfs-tree-01/1){+.+.}-{4:4}:
-          lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
-          down_write_nested+0xa2/0x220 kernel/locking/rwsem.c:1693
-          btrfs_tree_lock_nested+0x2f/0x250 fs/btrfs/locking.c:189
-          btrfs_init_new_buffer fs/btrfs/extent-tree.c:5052 [inline]
-          btrfs_alloc_tree_block+0x41c/0x1440 fs/btrfs/extent-tree.c:5132
-          btrfs_force_cow_block+0x526/0x1fd0 fs/btrfs/ctree.c:573
-          btrfs_cow_block+0x371/0x830 fs/btrfs/ctree.c:755
-          btrfs_search_slot+0xc01/0x3180 fs/btrfs/ctree.c:2153
-          btrfs_insert_empty_items+0x9c/0x1a0 fs/btrfs/ctree.c:4351
-          btrfs_insert_empty_item fs/btrfs/ctree.h:688 [inline]
-          btrfs_insert_inode_ref+0x2bb/0xf80 fs/btrfs/inode-item.c:330
-          btrfs_rename_exchange fs/btrfs/inode.c:7990 [inline]
-          btrfs_rename2+0xcb7/0x2b90 fs/btrfs/inode.c:8374
-          vfs_rename+0xbdb/0xf00 fs/namei.c:5067
-          do_renameat2+0xd94/0x13f0 fs/namei.c:5224
-          __do_sys_renameat2 fs/namei.c:5258 [inline]
-          __se_sys_renameat2 fs/namei.c:5255 [inline]
-          __x64_sys_renameat2+0xce/0xe0 fs/namei.c:5255
-          do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-          do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-          entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-   -> #0 (btrfs-tree-01){++++}-{4:4}:
-          check_prev_add kernel/locking/lockdep.c:3161 [inline]
-          check_prevs_add kernel/locking/lockdep.c:3280 [inline]
-          validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
-          __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
-          lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
-          down_read_nested+0xb5/0xa50 kernel/locking/rwsem.c:1649
-          btrfs_tree_read_lock_nested+0x2f/0x250 fs/btrfs/locking.c:146
-          btrfs_tree_read_lock fs/btrfs/locking.h:188 [inline]
-          read_block_for_search+0x718/0xbb0 fs/btrfs/ctree.c:1610
-          btrfs_search_slot+0x1274/0x3180 fs/btrfs/ctree.c:2237
-          replace_path+0x1243/0x2740 fs/btrfs/relocation.c:1224
-          merge_reloc_root+0xc46/0x1ad0 fs/btrfs/relocation.c:1692
-          merge_reloc_roots+0x3b3/0x980 fs/btrfs/relocation.c:1942
-          relocate_block_group+0xb0a/0xd40 fs/btrfs/relocation.c:3754
-          btrfs_relocate_block_group+0x77d/0xd90 fs/btrfs/relocation.c:4087
-          btrfs_relocate_chunk+0x12c/0x3b0 fs/btrfs/volumes.c:3494
-          __btrfs_balance+0x1b0f/0x26b0 fs/btrfs/volumes.c:4278
-          btrfs_balance+0xbdc/0x10c0 fs/btrfs/volumes.c:4655
-          btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3670
-          vfs_ioctl fs/ioctl.c:51 [inline]
-          __do_sys_ioctl fs/ioctl.c:906 [inline]
-          __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
-          do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-          do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-          entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-   other info that might help us debug this:
-
-   Chain exists of:
-     btrfs-tree-01 --> btrfs-tree-01/1 --> btrfs-treloc-02/1
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(btrfs-treloc-02/1);
-                                  lock(btrfs-tree-01/1);
-                                  lock(btrfs-treloc-02/1);
-     rlock(btrfs-tree-01);
-
-    *** DEADLOCK ***
-
-   8 locks held by syz.0.0/5335:
-    #0: ffff88801e3ae420 (sb_writers#13){.+.+}-{0:0}, at: mnt_want_write_file+0x5e/0x200 fs/namespace.c:559
-    #1: ffff888052c760d0 (&fs_info->reclaim_bgs_lock){+.+.}-{4:4}, at: __btrfs_balance+0x4c2/0x26b0 fs/btrfs/volumes.c:4183
-    #2: ffff888052c74850 (&fs_info->cleaner_mutex){+.+.}-{4:4}, at: btrfs_relocate_block_group+0x775/0xd90 fs/btrfs/relocation.c:4086
-    #3: ffff88801e3ae610 (sb_internal#2){.+.+}-{0:0}, at: merge_reloc_root+0xf11/0x1ad0 fs/btrfs/relocation.c:1659
-    #4: ffff888052c76470 (btrfs_trans_num_writers){++++}-{0:0}, at: join_transaction+0x405/0xda0 fs/btrfs/transaction.c:288
-    #5: ffff888052c76498 (btrfs_trans_num_extwriters){++++}-{0:0}, at: join_transaction+0x405/0xda0 fs/btrfs/transaction.c:288
-    #6: ffff8880545db878 (btrfs-tree-01/1){+.+.}-{4:4}, at: btrfs_tree_lock_nested+0x2f/0x250 fs/btrfs/locking.c:189
-    #7: ffff8880545dba58 (btrfs-treloc-02/1){+.+.}-{4:4}, at: btrfs_tree_lock_nested+0x2f/0x250 fs/btrfs/locking.c:189
-
-   stack backtrace:
-   CPU: 0 UID: 0 PID: 5335 Comm: syz.0.0 Not tainted 6.13.0-rc5-syzkaller-00163-gab75170520d4 #0
-   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-   Call Trace:
-    <TASK>
-    __dump_stack lib/dump_stack.c:94 [inline]
-    dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-    print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
-    check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2206
-    check_prev_add kernel/locking/lockdep.c:3161 [inline]
-    check_prevs_add kernel/locking/lockdep.c:3280 [inline]
-    validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
-    __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
-    lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
-    down_read_nested+0xb5/0xa50 kernel/locking/rwsem.c:1649
-    btrfs_tree_read_lock_nested+0x2f/0x250 fs/btrfs/locking.c:146
-    btrfs_tree_read_lock fs/btrfs/locking.h:188 [inline]
-    read_block_for_search+0x718/0xbb0 fs/btrfs/ctree.c:1610
-    btrfs_search_slot+0x1274/0x3180 fs/btrfs/ctree.c:2237
-    replace_path+0x1243/0x2740 fs/btrfs/relocation.c:1224
-    merge_reloc_root+0xc46/0x1ad0 fs/btrfs/relocation.c:1692
-    merge_reloc_roots+0x3b3/0x980 fs/btrfs/relocation.c:1942
-    relocate_block_group+0xb0a/0xd40 fs/btrfs/relocation.c:3754
-    btrfs_relocate_block_group+0x77d/0xd90 fs/btrfs/relocation.c:4087
-    btrfs_relocate_chunk+0x12c/0x3b0 fs/btrfs/volumes.c:3494
-    __btrfs_balance+0x1b0f/0x26b0 fs/btrfs/volumes.c:4278
-    btrfs_balance+0xbdc/0x10c0 fs/btrfs/volumes.c:4655
-    btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3670
-    vfs_ioctl fs/ioctl.c:51 [inline]
-    __do_sys_ioctl fs/ioctl.c:906 [inline]
-    __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
-    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   RIP: 0033:0x7f1ac6985d29
-   Code: ff ff c3 (...)
-   RSP: 002b:00007f1ac63fe038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-   RAX: ffffffffffffffda RBX: 00007f1ac6b76160 RCX: 00007f1ac6985d29
-   RDX: 0000000020000180 RSI: 00000000c4009420 RDI: 0000000000000007
-   RBP: 00007f1ac6a01b08 R08: 0000000000000000 R09: 0000000000000000
-   R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-   R13: 0000000000000001 R14: 00007f1ac6b76160 R15: 00007fffda145a88
-    </TASK>
-
-Reported-by: syzbot+63913e558c084f7f8fdc@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/677b3014.050a0220.3b53b0.0064.GAE@google.com/
-Fixes: 99785998ed1c ("btrfs: reduce lock contention when eb cache miss for btree search")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://community.frame.work/t/25711/9
+Link: https://community.frame.work/t/47036
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-3-f662851fda69@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_panel_backlight_quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 185985a337b30..5d2613b16cd24 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -1563,6 +1563,7 @@ read_block_for_search(struct btrfs_root *root, struct btrfs_path *p,
+diff --git a/drivers/gpu/drm/drm_panel_backlight_quirks.c b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+index 6b8bbed77c7f1..f2aefff618ddb 100644
+--- a/drivers/gpu/drm/drm_panel_backlight_quirks.c
++++ b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+@@ -17,6 +17,14 @@ struct drm_panel_min_backlight_quirk {
+ };
  
- 		if (!p->skip_locking) {
- 			btrfs_unlock_up_safe(p, parent_level + 1);
-+			btrfs_maybe_reset_lockdep_class(root, tmp);
- 			tmp_locked = true;
- 			btrfs_tree_read_lock(tmp);
- 			btrfs_release_path(p);
-@@ -1606,6 +1607,7 @@ read_block_for_search(struct btrfs_root *root, struct btrfs_path *p,
+ static const struct drm_panel_min_backlight_quirk drm_panel_min_backlight_quirks[] = {
++	/* 13 inch matte panel */
++	{
++		.dmi_match.field = DMI_BOARD_VENDOR,
++		.dmi_match.value = "Framework",
++		.ident.panel_id = drm_edid_encode_panel_id('B', 'O', 'E', 0x0bca),
++		.ident.name = "NE135FBM-N41",
++		.min_brightness = 0,
++	},
+ };
  
- 	if (!p->skip_locking) {
- 		ASSERT(ret == -EAGAIN);
-+		btrfs_maybe_reset_lockdep_class(root, tmp);
- 		tmp_locked = true;
- 		btrfs_tree_read_lock(tmp);
- 		btrfs_release_path(p);
+ static bool drm_panel_min_backlight_quirk_matches(const struct drm_panel_min_backlight_quirk *quirk,
 -- 
 2.39.5
 
