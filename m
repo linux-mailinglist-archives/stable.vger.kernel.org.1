@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DF8A345F2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A31A346F1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF0018981A4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535F31899506
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C677405A;
-	Thu, 13 Feb 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BF214A605;
+	Thu, 13 Feb 2025 15:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIRH6bbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9R0FUnb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9148F26B082;
-	Thu, 13 Feb 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF85145A03;
+	Thu, 13 Feb 2025 15:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459300; cv=none; b=gmvOfs0p0KJTmHzHBgU2K/NTM7qkZZ+VqUJEpjfWb+N1/R/GvFROJNYCVsUotZf9jnijrWBlAgG+vV5C/PjZtv3kHi00+n2cODkTCoRcKcz2EiC/SE99O6Lyx8qe0K2JgNEihaqczEcXE0dYbCINyzt6yDnSgMO7vb29hmoqp2M=
+	t=1739460109; cv=none; b=Y56O2gKNS2c09CaLGPBfuevqmGGqqrFdSHsh/XdIt8+DaRtLouRihMAB6khkz88e4PvZ5eK7dZ8Z3ERa6olYSogKEQWmA1gXKiUiFXOISCYrdUJlebhJmCl7UkxrL27WmTdxdU8enhsFJ/TI6cPK28KLvTN9QrEvDd8YA+eRt2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459300; c=relaxed/simple;
-	bh=R+hZUWBEvnAZ9gFBDQHtVNvDDqmWl6772tdmb7T5vwY=;
+	s=arc-20240116; t=1739460109; c=relaxed/simple;
+	bh=Wol0u8ZIWi510SVpHkhHM3fjU4o34muiAc01cJh8dFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snCXYT6rULM64boVEA6SBqCQr41G57VLrgnSQmZAsp/RWpYX4U2cWX2wTZEYZezp8zHoLx2kVxT3yOADmVSmCTUrkOvSZySEAuZaET6MtK91bq3U+z7/miJBgLvauNGQMeXs3JNa0ML0jdtUVZ2KSLWZ82y4gDVW6X9uJN5zdbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIRH6bbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29E0C4CED1;
-	Thu, 13 Feb 2025 15:08:19 +0000 (UTC)
+	 MIME-Version; b=eoOtIZQg8wWD5+gHuvMYitnsoRDshurn4gnaP+oguCNtFOP9Uu+hLg/bEFCzQ0JCgofZ150j4WVYXOLgm9Zjfma5nCw2W/G5wksfCiuKXFZC91PrIi+WLxireBUY41puxONmC1JMzByx5FOc6LrDc4l8QfEeXV/t3ctQQI6eeWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9R0FUnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11636C4CED1;
+	Thu, 13 Feb 2025 15:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459300;
-	bh=R+hZUWBEvnAZ9gFBDQHtVNvDDqmWl6772tdmb7T5vwY=;
+	s=korg; t=1739460109;
+	bh=Wol0u8ZIWi510SVpHkhHM3fjU4o34muiAc01cJh8dFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIRH6bbFhRZLkHYKVbTCLkX+rEYdNicp2o7WWJb5LAXLvRPQqesL8S7HFsP5ig1HD
-	 e8VeXjVVXpGfxWZ9n12O6XUoy9NnOM5YhXy63oqPiAaYdkzibWsvFunxYDsPySVh2X
-	 umd6sXGVmSITW1k5KwNo7cK93bUgyY8erRjSaO1c=
+	b=a9R0FUnbO7KIbP+1y8EQgrpndrAS8Y2GgdfMnIHS7puHVx54HgMmlf1UGKp5S9NSH
+	 ab5sjPDKKKUl4BL6pX0NG2aMKw5luMW740XZLuAbqoK1C1GybYeEr+NJuGrVbyqQya
+	 w75X1jXR35WiApsl4oVgNRAjlMB45Nf8SroYsyMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.13 224/443] wifi: rtlwifi: rtl8821ae: Fix media status report
-Date: Thu, 13 Feb 2025 15:26:29 +0100
-Message-ID: <20250213142449.256429565@linuxfoundation.org>
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 018/273] drm/radeon: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:26:30 +0100
+Message-ID: <20250213142408.083839814@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 66ef0289ac99e155d206ddaa0fdfad09ae3cd007 upstream.
+[ Upstream commit b54c14f82428c8a602392d4cae1958a71a578132 ]
 
-RTL8821AE is stuck transmitting at the lowest rate allowed by the rate
-mask. This is because the firmware doesn't know the device is connected
-to a network.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Fix the macros SET_H2CCMD_MSRRPT_PARM_OPMODE and
-SET_H2CCMD_MSRRPT_PARM_MACID_IND to work on the first byte of __cmd,
-not the second. Now the firmware is correctly notified when the device
-is connected to a network and it activates the rate control.
-
-Before (MCS3):
-
-[  5]   0.00-1.00   sec  12.5 MBytes   105 Mbits/sec    0    339 KBytes
-[  5]   1.00-2.00   sec  10.6 MBytes  89.1 Mbits/sec    0    339 KBytes
-[  5]   2.00-3.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   3.00-4.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   4.00-5.00   sec  10.2 MBytes  86.0 Mbits/sec    0    427 KBytes
-
-After (MCS9):
-
-[  5]   0.00-1.00   sec  33.9 MBytes   284 Mbits/sec    0    771 KBytes
-[  5]   1.00-2.00   sec  31.6 MBytes   265 Mbits/sec    0    865 KBytes
-[  5]   2.00-3.00   sec  29.9 MBytes   251 Mbits/sec    0    963 KBytes
-[  5]   3.00-4.00   sec  28.2 MBytes   237 Mbits/sec    0    963 KBytes
-[  5]   4.00-5.00   sec  26.8 MBytes   224 Mbits/sec    0    963 KBytes
-
-Fixes: 39f40710d0b5 ("rtlwifi: rtl88821ae: Remove usage of private bit manipulation macros")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/754785b3-8a78-4554-b80d-de5f603b410b@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-8-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/radeon/radeon_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-@@ -197,9 +197,9 @@ enum rtl8821a_h2c_cmd {
+diff --git a/drivers/gpu/drm/radeon/radeon_audio.c b/drivers/gpu/drm/radeon/radeon_audio.c
+index fc22fe709b9c1..da37a827337bc 100644
+--- a/drivers/gpu/drm/radeon/radeon_audio.c
++++ b/drivers/gpu/drm/radeon/radeon_audio.c
+@@ -773,8 +773,10 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
+ 		if (!dig->pin || dig->pin->id != port)
+ 			continue;
+ 		*enabled = true;
++		mutex_lock(&connector->eld_mutex);
+ 		ret = drm_eld_size(connector->eld);
+ 		memcpy(buf, connector->eld, min(max_bytes, ret));
++		mutex_unlock(&connector->eld_mutex);
+ 		break;
+ 	}
  
- /* _MEDIA_STATUS_RPT_PARM_CMD1 */
- #define SET_H2CCMD_MSRRPT_PARM_OPMODE(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(0))
-+	u8p_replace_bits(__cmd, __value, BIT(0))
- #define SET_H2CCMD_MSRRPT_PARM_MACID_IND(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(1))
-+	u8p_replace_bits(__cmd, __value, BIT(1))
- 
- /* AP_OFFLOAD */
- #define SET_H2CCMD_AP_OFFLOAD_ON(__cmd, __value)	\
+-- 
+2.39.5
+
 
 
 
