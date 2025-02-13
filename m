@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFD1A343DC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E5A345B1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE8C3B11C4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D353ACBC7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFA23A9B3;
-	Thu, 13 Feb 2025 14:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E02F26B0A5;
+	Thu, 13 Feb 2025 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYRQ2rmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/DRXtmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AB313D8A4;
-	Thu, 13 Feb 2025 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53826B099;
+	Thu, 13 Feb 2025 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458032; cv=none; b=ABKIn0BJuZYw4iRDldOU0qRAXOQjA74qNefjOR9BBO1t6khqqre4/1j/XtXDmSm+51byOBygJ5rWWDZTcRc5uqqrKOPtaBA3OkW2Xymwbz3Y9mItfM85aKPyA8Q5nCPbkGUnt00/m2j3Xi+HqpmXWRfIQSDui54n8YTlSt57hF8=
+	t=1739459444; cv=none; b=VvA8k2qbuvr4mhq86xAJNxKGrhUjCdbdHS7Y5tElewniCSfxklcMTCrHvg8nUajSLhY5WDpkPbqIG0sS6jrh+CfXT43Cm73icKn5O587q+S6JAn+r4NPl9L1p1UAQ2glXDHi1Xq6h6Na0WttRb0a42Nt6cMnKpCmy0SNyeZCVBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458032; c=relaxed/simple;
-	bh=qoj9OuinzLo2yp3fZXyUEbwtCRCeGVHjrJzkJs0CAK0=;
+	s=arc-20240116; t=1739459444; c=relaxed/simple;
+	bh=7XW2O377xc1AvbXH60iUNCbjcyvB3pg+4jE00J5ameI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVbd+hC3kLrV+ha/WK4au0e9AHVqXuiP2kuJwO1udqih5K1HrqrTGK4vzsF2uJgaiQ/efwysE+4ITgWtTdb/jum6f7jbhTcyaSI1amBPSDwehG3xuy9MxFwrlNyFfPgS5IJqgrlD7KOw/Lwk3B1mbORHgxK7mUY22d9VB1uyIRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYRQ2rmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F5C4CED1;
-	Thu, 13 Feb 2025 14:47:10 +0000 (UTC)
+	 MIME-Version; b=SQFTrmsNWVcyzh603vWupEJiBB+YepJ8bvcAMLhpZVhcsvGJWXf/UNYSf3iQnMPuQ7XOl5IE1HoBnW6lOh2aJG5E1VLZWqCkf7oyyNVmpC56B8rRsAtGK/g3aseyORnPXYHUq6NxB8SiyHsdubC8N548O+vdp7yKOJBAb0vQTNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/DRXtmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD94C4CEE4;
+	Thu, 13 Feb 2025 15:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458031;
-	bh=qoj9OuinzLo2yp3fZXyUEbwtCRCeGVHjrJzkJs0CAK0=;
+	s=korg; t=1739459444;
+	bh=7XW2O377xc1AvbXH60iUNCbjcyvB3pg+4jE00J5ameI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYRQ2rmJK90upTB8KrxKOlmvbhBnlM9W8olngL/PrvZsTHLli7ywcpPrdc95AudmX
-	 RERHgpcwuLojtiCOeH7sIvdW2XMWCJNmVc9BCxrAdpXpl0c+k6580v6vivn1ZuaP5p
-	 M5x4PEO+RxhsZtkkmecLgr4wDJquJm47sJxcn/PA=
+	b=C/DRXtmLArHlO8FL7ymiLIpH/oIofBjMLHFoMEbi4PX1Fur/F4kQXFK0kNJlB02rB
+	 y/w8ej1gbXXebhJC2ojzUFPuA1r+4rbbWI5FxYODrb/611HVe2gWOWJ1n7tspSryE1
+	 qDTRvmA1Al5vjmL+BzX5aQIWSIBfVsxi3P/bDXUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 282/422] arm64: dts: qcom: sm8350: Fix CDSP memory base and length
+Subject: [PATCH 6.13 266/443] firmware: qcom: scm: Fix missing read barrier in qcom_scm_get_tzmem_pool()
 Date: Thu, 13 Feb 2025 15:27:11 +0100
-Message-ID: <20250213142447.426079418@linuxfoundation.org>
+Message-ID: <20250213142450.880117954@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,277 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit f4afd8ba453b6e82245b9068868c72c831aec84e upstream.
+commit b628510397b5cafa1f5d3e848a28affd1c635302 upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0a30_0000 with length of 0x10000.  0x9890_0000,
-value used so far, was copied from downstream DTS, is in the middle of
-RAM/DDR space and downstream DTS describes the PIL loader, which is a
-bit different interface.  Datasheet says that one of the main CDSP
-address spaces is 0x0980_0000, which is oddly similar to 0x9890_0000,
-but quite different.
+Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
+completion variable initialization") introduced a write barrier in probe
+function to store global '__scm' variable.  We all known barriers are
+paired (see memory-barriers.txt: "Note that write barriers should
+normally be paired with read or address-dependency barriers"), therefore
+accessing it from concurrent contexts requires read barrier.  Previous
+commit added such barrier in qcom_scm_is_available(), so let's use that
+directly.
 
-Assume existing value (thus downstream DTS) is not really describing the
-intended CDSP PAS region.
+Lack of this read barrier can result in fetching stale '__scm' variable
+value, NULL, and dereferencing it.
 
-Correct the base address and length, which also moves the node to
-different place to keep things sorted by unit address.  The diff looks
-big, but only the unit address and "reg" property were changed.  This
-should have no functional impact on Linux users, because PAS loader does
-not use this address space at all.
+Note that barrier in qcom_scm_is_available() satisfies here the control
+dependency.
 
-Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
+Fixes: ca61d6836e6f ("firmware: qcom: scm: fix a NULL-pointer dereference")
+Fixes: 449d0d84bcd8 ("firmware: qcom: scm: smc: switch to using the SCM allocator")
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-2-2e0036fccd8d@linaro.org
+Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-2-9061013c8d92@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |  218 +++++++++++++++++------------------
- 1 file changed, 109 insertions(+), 109 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2496,6 +2496,115 @@
- 			qcom,bcm-voters = <&apps_bcm_voter>;
- 		};
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -217,7 +217,10 @@ static DEFINE_SPINLOCK(scm_query_lock);
  
-+		cdsp: remoteproc@a300000 {
-+			compatible = "qcom,sm8350-cdsp-pas";
-+			reg = <0x0 0x0a300000 0x0 0x10000>;
+ struct qcom_tzmem_pool *qcom_scm_get_tzmem_pool(void)
+ {
+-	return __scm ? __scm->mempool : NULL;
++	if (!qcom_scm_is_available())
++		return NULL;
 +
-+			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready",
-+					  "handover", "stop-ack";
-+
-+			clocks = <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "xo";
-+
-+			power-domains = <&rpmhpd RPMHPD_CX>,
-+					<&rpmhpd RPMHPD_MXC>;
-+			power-domain-names = "cx", "mxc";
-+
-+			interconnects = <&compute_noc MASTER_CDSP_PROC 0 &mc_virt SLAVE_EBI1 0>;
-+
-+			memory-region = <&pil_cdsp_mem>;
-+
-+			qcom,qmp = <&aoss_qmp>;
-+
-+			qcom,smem-states = <&smp2p_cdsp_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			status = "disabled";
-+
-+			glink-edge {
-+				interrupts-extended = <&ipcc IPCC_CLIENT_CDSP
-+							     IPCC_MPROC_SIGNAL_GLINK_QMP
-+							     IRQ_TYPE_EDGE_RISING>;
-+				mboxes = <&ipcc IPCC_CLIENT_CDSP
-+						IPCC_MPROC_SIGNAL_GLINK_QMP>;
-+
-+				label = "cdsp";
-+				qcom,remote-pid = <5>;
-+
-+				fastrpc {
-+					compatible = "qcom,fastrpc";
-+					qcom,glink-channels = "fastrpcglink-apps-dsp";
-+					label = "cdsp";
-+					qcom,non-secure-domain;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compute-cb@1 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <1>;
-+						iommus = <&apps_smmu 0x2161 0x0400>,
-+							 <&apps_smmu 0x1181 0x0420>;
-+					};
-+
-+					compute-cb@2 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <2>;
-+						iommus = <&apps_smmu 0x2162 0x0400>,
-+							 <&apps_smmu 0x1182 0x0420>;
-+					};
-+
-+					compute-cb@3 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <3>;
-+						iommus = <&apps_smmu 0x2163 0x0400>,
-+							 <&apps_smmu 0x1183 0x0420>;
-+					};
-+
-+					compute-cb@4 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <4>;
-+						iommus = <&apps_smmu 0x2164 0x0400>,
-+							 <&apps_smmu 0x1184 0x0420>;
-+					};
-+
-+					compute-cb@5 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <5>;
-+						iommus = <&apps_smmu 0x2165 0x0400>,
-+							 <&apps_smmu 0x1185 0x0420>;
-+					};
-+
-+					compute-cb@6 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <6>;
-+						iommus = <&apps_smmu 0x2166 0x0400>,
-+							 <&apps_smmu 0x1186 0x0420>;
-+					};
-+
-+					compute-cb@7 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <7>;
-+						iommus = <&apps_smmu 0x2167 0x0400>,
-+							 <&apps_smmu 0x1187 0x0420>;
-+					};
-+
-+					compute-cb@8 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <8>;
-+						iommus = <&apps_smmu 0x2168 0x0400>,
-+							 <&apps_smmu 0x1188 0x0420>;
-+					};
-+
-+					/* note: secure cb9 in downstream */
-+				};
-+			};
-+		};
-+
- 		usb_1: usb@a6f8800 {
- 			compatible = "qcom,sm8350-dwc3", "qcom,dwc3";
- 			reg = <0 0x0a6f8800 0 0x400>;
-@@ -3588,115 +3697,6 @@
- 			#freq-domain-cells = <1>;
- 			#clock-cells = <1>;
- 		};
--
--		cdsp: remoteproc@98900000 {
--			compatible = "qcom,sm8350-cdsp-pas";
--			reg = <0 0x98900000 0 0x1400000>;
--
--			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp_in 3 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "wdog", "fatal", "ready",
--					  "handover", "stop-ack";
--
--			clocks = <&rpmhcc RPMH_CXO_CLK>;
--			clock-names = "xo";
--
--			power-domains = <&rpmhpd RPMHPD_CX>,
--					<&rpmhpd RPMHPD_MXC>;
--			power-domain-names = "cx", "mxc";
--
--			interconnects = <&compute_noc MASTER_CDSP_PROC 0 &mc_virt SLAVE_EBI1 0>;
--
--			memory-region = <&pil_cdsp_mem>;
--
--			qcom,qmp = <&aoss_qmp>;
--
--			qcom,smem-states = <&smp2p_cdsp_out 0>;
--			qcom,smem-state-names = "stop";
--
--			status = "disabled";
--
--			glink-edge {
--				interrupts-extended = <&ipcc IPCC_CLIENT_CDSP
--							     IPCC_MPROC_SIGNAL_GLINK_QMP
--							     IRQ_TYPE_EDGE_RISING>;
--				mboxes = <&ipcc IPCC_CLIENT_CDSP
--						IPCC_MPROC_SIGNAL_GLINK_QMP>;
--
--				label = "cdsp";
--				qcom,remote-pid = <5>;
--
--				fastrpc {
--					compatible = "qcom,fastrpc";
--					qcom,glink-channels = "fastrpcglink-apps-dsp";
--					label = "cdsp";
--					qcom,non-secure-domain;
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					compute-cb@1 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <1>;
--						iommus = <&apps_smmu 0x2161 0x0400>,
--							 <&apps_smmu 0x1181 0x0420>;
--					};
--
--					compute-cb@2 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <2>;
--						iommus = <&apps_smmu 0x2162 0x0400>,
--							 <&apps_smmu 0x1182 0x0420>;
--					};
--
--					compute-cb@3 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <3>;
--						iommus = <&apps_smmu 0x2163 0x0400>,
--							 <&apps_smmu 0x1183 0x0420>;
--					};
--
--					compute-cb@4 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <4>;
--						iommus = <&apps_smmu 0x2164 0x0400>,
--							 <&apps_smmu 0x1184 0x0420>;
--					};
--
--					compute-cb@5 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <5>;
--						iommus = <&apps_smmu 0x2165 0x0400>,
--							 <&apps_smmu 0x1185 0x0420>;
--					};
--
--					compute-cb@6 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <6>;
--						iommus = <&apps_smmu 0x2166 0x0400>,
--							 <&apps_smmu 0x1186 0x0420>;
--					};
--
--					compute-cb@7 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <7>;
--						iommus = <&apps_smmu 0x2167 0x0400>,
--							 <&apps_smmu 0x1187 0x0420>;
--					};
--
--					compute-cb@8 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <8>;
--						iommus = <&apps_smmu 0x2168 0x0400>,
--							 <&apps_smmu 0x1188 0x0420>;
--					};
--
--					/* note: secure cb9 in downstream */
--				};
--			};
--		};
- 	};
++	return __scm->mempool;
+ }
  
- 	thermal_zones: thermal-zones {
+ static enum qcom_scm_convention __get_convention(void)
 
 
 
