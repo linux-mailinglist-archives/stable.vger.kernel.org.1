@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-116139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A77A3474C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6712FA34407
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF95F16F0DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD9F1896C08
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4566918A6A7;
-	Thu, 13 Feb 2025 15:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B569226B08E;
+	Thu, 13 Feb 2025 14:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvcK518J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaJdv3DT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FD01865EE;
-	Thu, 13 Feb 2025 15:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E426B0BC;
+	Thu, 13 Feb 2025 14:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460461; cv=none; b=ButfcALjMW9Ppk8n3/39ebs2lAi9EUedu1tPsWP/7wSjLnXUhvXQFU0FwHS2tW/LBPX5bjCHYTWY5Zwll3izW2URniC/4YOX9Bgp4lBOyyLZM6hwE47RM2wlo8hP2LRgyQflceeDpaGsnKupnhryinU3WAiPZRC/96EAWtlNYo8=
+	t=1739458173; cv=none; b=tefqCUWdTEh7zs8CRDxwTXw1oTjIOzdvwWtLBCW8doyIHnNtyGgQ4N75ov9PDnldRJgCw+NZlwXjGJaOB5rvkJdhZtQn/gJlD+rIuet2k58HSqdoSz+JMwZhGWo5H3CLseJx5uFlRUPu2Xh4zb7cETIkCp2VM0yYN0YHlJ3aNfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460461; c=relaxed/simple;
-	bh=jHP7Vn6r4r0ynvHYOsUhf5wDYmEL6qbTcCDr003JfOc=;
+	s=arc-20240116; t=1739458173; c=relaxed/simple;
+	bh=uvSUdEixzj/WgaQrw9ECsVhd0POQIP9wsxGET9NQX+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsRQQtfyjkL4ex5yVFbLV1o+OD2HLY6kgUP1IkrqyqHKMlGWbZZO50Gmmm/ghQNf7iC6oGgeueIgQqbTeyzU1C3Fwo2WVgAISN5G6xOfU8fdWwB3dg5qXYjZNzkZpn2Nup6cyF1LO26MCUWVQqgt9/fIhSrh1qzNzwPmIBhH6hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvcK518J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C084FC4CEE7;
-	Thu, 13 Feb 2025 15:27:39 +0000 (UTC)
+	 MIME-Version; b=Y+1XSNmkgn5PaIMHyV41N5VEdxYtS1uSHwpMKPS1DYh/EclQcXJvS47gM46Bpqp5XhMgp/ZVOuHF3uYtAnlxV5Urx4MjeEAcAgWbk/rQLH9C/CHdeNgubSxsZ1scWWcprcA8moeOhBNnnhk6iuAE1vbDTN6y1VGMFsJX/18Nhts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaJdv3DT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FC5C4CED1;
+	Thu, 13 Feb 2025 14:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460460;
-	bh=jHP7Vn6r4r0ynvHYOsUhf5wDYmEL6qbTcCDr003JfOc=;
+	s=korg; t=1739458173;
+	bh=uvSUdEixzj/WgaQrw9ECsVhd0POQIP9wsxGET9NQX+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvcK518JQgUmVIaqkQs78Z9fKoVSjX6fixr15l0Z1usitlrmVrtlTgUAy7rAggma8
-	 yy4hP8J+GMxB0wfiYFNWEj6sgXahQmXbSluCsqvUIw9YQA1lT7Q8N7Bbnemfe/x9rG
-	 /54zkntKrPaUIwqhswtVpc+7cwWZ6nyyn0ToaVbQ=
+	b=CaJdv3DT/lvaBZyXbZ7+QXHkxrb7hX30I6awTnC+TLCrLl877loe2ElyOQLUwAH++
+	 DA3msQc1axeJkT/ix8vC9LhnALUtiuuv1GrFhy9lCgTihJDuEiHT/+1X20JUB8WAyr
+	 bd0KhmnqIgUSgiIcnxMJY6B2pkVyhp7dml64QsSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 100/273] drm/i915/guc: Debug print LRC state entries only if the context is pinned
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 323/422] media: nuvoton: Fix an error check in npcm_video_ece_init()
 Date: Thu, 13 Feb 2025 15:27:52 +0100
-Message-ID: <20250213142411.294368912@linuxfoundation.org>
+Message-ID: <20250213142449.016128180@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit 57965269896313e1629a518d3971ad55f599b792 upstream.
+commit c4b7779abc6633677e6edb79e2809f4f61fde157 upstream.
 
-After the context is unpinned the backing memory can also be unpinned,
-so any accesses via the lrc_reg_state pointer can end up in unmapped
-memory. To avoid that, make sure to only access that memory if the
-context is pinned when printing its info.
+When function of_find_device_by_node() fails, it returns NULL instead of
+an error code. So the corresponding error check logic should be modified
+to check whether the return value is NULL and set the error code to be
+returned as -ENODEV.
 
-v2: fix newline alignment
-
-Fixes: 28ff6520a34d ("drm/i915/guc: Update GuC debugfs to support new GuC")
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v5.15+
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250115001334.3875347-1-daniele.ceraolospurio@intel.com
-(cherry picked from commit 5bea40687c5cf2a33bf04e9110eb2e2b80222ef5)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241015014053.669-1-thunder.leizhen@huawei.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/media/platform/nuvoton/npcm-video.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -5154,12 +5154,20 @@ static inline void guc_log_context(struc
- {
- 	drm_printf(p, "GuC lrc descriptor %u:\n", ce->guc_id.id);
- 	drm_printf(p, "\tHW Context Desc: 0x%08x\n", ce->lrc.lrca);
--	drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
--		   ce->ring->head,
--		   ce->lrc_reg_state[CTX_RING_HEAD]);
--	drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
--		   ce->ring->tail,
--		   ce->lrc_reg_state[CTX_RING_TAIL]);
-+	if (intel_context_pin_if_active(ce)) {
-+		drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
-+			   ce->ring->head,
-+			   ce->lrc_reg_state[CTX_RING_HEAD]);
-+		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
-+			   ce->ring->tail,
-+			   ce->lrc_reg_state[CTX_RING_TAIL]);
-+		intel_context_unpin(ce);
-+	} else {
-+		drm_printf(p, "\t\tLRC Head: Internal %u, Memory not pinned\n",
-+			   ce->ring->head);
-+		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory not pinned\n",
-+			   ce->ring->tail);
-+	}
- 	drm_printf(p, "\t\tContext Pin Count: %u\n",
- 		   atomic_read(&ce->pin_count));
- 	drm_printf(p, "\t\tGuC ID Ref Count: %u\n",
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1667,9 +1667,9 @@ static int npcm_video_ece_init(struct np
+ 		dev_info(dev, "Support HEXTILE pixel format\n");
+ 
+ 		ece_pdev = of_find_device_by_node(ece_node);
+-		if (IS_ERR(ece_pdev)) {
++		if (!ece_pdev) {
+ 			dev_err(dev, "Failed to find ECE device\n");
+-			return PTR_ERR(ece_pdev);
++			return -ENODEV;
+ 		}
+ 		of_node_put(ece_node);
+ 
 
 
 
