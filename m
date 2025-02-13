@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216A0A343F5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE4EA347F5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10BD16DDDD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775B43B0110
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A471D158558;
-	Thu, 13 Feb 2025 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCF5145A03;
+	Thu, 13 Feb 2025 15:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYBhNSvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gE4iLe8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613FC15689A;
-	Thu, 13 Feb 2025 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA626B0BD;
+	Thu, 13 Feb 2025 15:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458218; cv=none; b=JV01kkSrO+6e7PfPcTZe6/OlGEUbC5O0HcjEWPVhXy2DjUGAf+CkDny9IFyPsxAcFxZPs1uLtg/qwQC+hVjqKQAPg741/q5y0hHA6EKLsmclDV3kLM8GNfBOoTnmrL4oKCAfvL6Hrj8qgaOh8Ips6NASoIbfkiZb2y3e78HrpoM=
+	t=1739460332; cv=none; b=qlFqYa/WWS9mcKJZej1KELjbqlIoJLzyEcf6PrXxEJhAEIgZgphzTsisloGm1zihMNSU3LQCFKJ24pc87vmATCF/uNb1SYHbJHBR6NYlWkgd+/DvBsAuvMlNdHCgo5mcw3x3HJZFE/3HEcEJ6s29VbTYdaeJ+sc9ygi3tDK+LM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458218; c=relaxed/simple;
-	bh=BJqM2pNQNZ/N8DCSDwRPZrBO+x1okUE5cH9OjShfmYc=;
+	s=arc-20240116; t=1739460332; c=relaxed/simple;
+	bh=Y78dQW6eFRwL2zumhkjeQ92MifihATYO/T784aY785M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9vQMSxhZ99DCOWS7kcUtmJJSBHDxPp8mSl+UvoxEI4joUahZh0BOLFX3+2uE8g8S90megy4Jkvml0pJfYzcijIY28C8Fo9MKZ2gG9axJdx1LY5ct+3Wd9gdBhLmnYaWDVbsjo8ieUC3LIQYSX/ahIDJhK2RXsgRzaz7X/f3gb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYBhNSvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5769C4CED1;
-	Thu, 13 Feb 2025 14:50:17 +0000 (UTC)
+	 MIME-Version; b=HJ1JRMgso3oMqunMqPDo11XHtCGmXbyq8xmf8wVrv1lSOP0dosFxfl13N5ILjrhDG3h2M1PidehMmF3JbXqwsZt/DHh6XLo5O5Y9VcGu/LqcW8KBpr1OVrAMdP1mUWthcfQmEYdR9ZW71lqLkz6v6enM7jHQM2GNnprTwIosDtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gE4iLe8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3797AC4CED1;
+	Thu, 13 Feb 2025 15:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458218;
-	bh=BJqM2pNQNZ/N8DCSDwRPZrBO+x1okUE5cH9OjShfmYc=;
+	s=korg; t=1739460332;
+	bh=Y78dQW6eFRwL2zumhkjeQ92MifihATYO/T784aY785M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYBhNSvDHU/UkToz0G+OL17d9CtswlTi40BhGt61FMmitS4SL55RzU3DZaEyNcS2I
-	 zUNmYpMV/9KB5QaGTlUhEq/Pj0QmrgXfMl/aafMZcUR7oXhEx/iC3RxQtm3U7wZzt+
-	 R8AhN5reYCJPhUcmGdZeJWEAZXfyKTMUyPB1RFkU=
+	b=gE4iLe8xnuHce8o8mVVR4h4JP4dnzPRXqcdIC6y7iQEi6WArsrhbvk2TLtmWsy5Kb
+	 Q7+Ru7yIPy3ysGYD6z5KISBjYqS+ZRfqs/enmkCQOIIu2v6t7OUJla+mhLMTQg2CRh
+	 EjxqKbT2o6LQb1E2HxuM9JlyXZViUgTFeTy/QlqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aubrey Li <aubrey.li@linux.intel.com>,
-	Koba Ko <kobak@nvidia.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shi Liu <aurelianliu@tencent.com>
-Subject: [PATCH 6.12 304/422] ACPI: PRM: Remove unnecessary strict handler address checks
+	kernel test robot <lkp@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 081/273] cpufreq: s3c64xx: Fix compilation warning
 Date: Thu, 13 Feb 2025 15:27:33 +0100
-Message-ID: <20250213142448.274691691@linuxfoundation.org>
+Message-ID: <20250213142410.544076956@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aubrey Li <aubrey.li@linux.intel.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit 7f5704b6a143b8eca640cba820968e798d065e91 upstream.
+commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") added unnecessary strict handler address checks,
-causing the PRM module to fail in translating memory error addresses.
+The driver generates following warning when regulator support isn't
+enabled in the kernel. Fix it.
 
-Both static data buffer address and ACPI parameter buffer address may
-be NULL if they are not needed, as described in section 4.1.2 PRM Handler
-Information Structure of Platform Runtime Mechanism specification [1].
+   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
+>> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
+      55 |         unsigned int old_freq, new_freq;
+         |                      ^~~~~~~~
+>> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
+      54 |         struct s3c64xx_dvfs *dvfs;
+         |                              ^~~~
 
-Here are two examples from real hardware:
-
-----PRMT.dsl----
-
-- staic data address is not used
-[10Ch 0268   2]                     Revision : 0000
-[10Eh 0270   2]                       Length : 002C
-[110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-2A50D4AA109B
-[120h 0288   8]              Handler address : 0000000065CE51F4
-[128h 0296   8]           Satic Data Address : 0000000000000000
-[130h 0304   8]       ACPI Parameter Address : 000000006522A718
-
-- ACPI parameter address is not used
-[1B0h 0432   2]                     Revision : 0000
-[1B2h 0434   2]                       Length : 002C
-[1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-42E7DE1899A5
-[1C4h 0452   8]              Handler address : 0000000065C567C8
-[1CCh 0460   8]           Satic Data Address : 000000006113FB98
-[1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
-
-Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
-Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Reviewed-by: Koba Ko <kobak@nvidia.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/20250126022250.3014210-1-aubrey.li@linux.intel.com
-[ rjw: Minor changelog edits ]
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
+Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -287,9 +287,7 @@ static acpi_status acpi_platformrt_space
- 		if (!handler || !module)
- 			goto invalid_guid;
+--- a/drivers/cpufreq/s3c64xx-cpufreq.c
++++ b/drivers/cpufreq/s3c64xx-cpufreq.c
+@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
+ 	unsigned int vddarm_max;
+ };
  
--		if (!handler->handler_addr ||
--		    !handler->static_data_buffer_addr ||
--		    !handler->acpi_param_buffer_addr) {
-+		if (!handler->handler_addr) {
- 			buffer->prm_status = PRM_HANDLER_ERROR;
- 			return AE_OK;
- 		}
++#ifdef CONFIG_REGULATOR
+ static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
+ 	[0] = { 1000000, 1150000 },
+ 	[1] = { 1050000, 1150000 },
+@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
+ 	[3] = { 1200000, 1350000 },
+ 	[4] = { 1300000, 1350000 },
+ };
++#endif
+ 
+ static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
+ 	{ 0, 0,  66000 },
+@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3
+ static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
+ 				      unsigned int index)
+ {
+-	struct s3c64xx_dvfs *dvfs;
+-	unsigned int old_freq, new_freq;
++	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
+ 	int ret;
+ 
++#ifdef CONFIG_REGULATOR
++	struct s3c64xx_dvfs *dvfs;
++	unsigned int old_freq;
++
+ 	old_freq = clk_get_rate(policy->clk) / 1000;
+-	new_freq = s3c64xx_freq_table[index].frequency;
+ 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
+ 
+-#ifdef CONFIG_REGULATOR
+ 	if (vddarm && new_freq > old_freq) {
+ 		ret = regulator_set_voltage(vddarm,
+ 					    dvfs->vddarm_min,
 
 
 
