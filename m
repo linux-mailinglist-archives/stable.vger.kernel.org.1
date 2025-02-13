@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88144A346BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20379A3483B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191161898C03
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361013B03C3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9989145A03;
-	Thu, 13 Feb 2025 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F7714A605;
+	Thu, 13 Feb 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFe5j/1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVf+r4rK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E6D26B0BC;
-	Thu, 13 Feb 2025 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A004F26B087;
+	Thu, 13 Feb 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460008; cv=none; b=O0wHWcpy4U4zapcV84di6BHZM4k76t+iiyM+8vKaKzBWvRWQHha1O8J5tuOIoNABxFfITZPm5ZWPSzw6kEEjqFrixDtn2RDa2O0Bh7Uw/JC/LbN2ueAWGn1tv1hLvH36TzsU8n6AdPRnvXcyGfpJaTvQf41CyRgo+Dw7cXKXulY=
+	t=1739460825; cv=none; b=JGYMIKxDi0ah/eWuZtzmySJSwod+tYcSXHTalRYgOGMerOBmLlBnY9kvTRSP1p5XuEwRNVnvNrskYbhfoHYxFE5YRVPypkkczh3AHKc9/l2LGHvrDPmboRtwKhpzhxF25HvHgDUEKF3zKUAHOhOFO4mbgwyfG/q4GbsvHD9W9qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460008; c=relaxed/simple;
-	bh=jfNJOlQKD8FmAcKjzDAVsJvxZ+hzgFdOMfrIC5qj1BY=;
+	s=arc-20240116; t=1739460825; c=relaxed/simple;
+	bh=0s3EA4xrqhazVu1FFPlD8bXB3egO6iUdNFdb01kPbtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gpkeecqgg/5M3cln7FlgusJl+FN5FYecwdxY6xdjr4A3sHZW5IASPMvfjRIahXKxeb3COBcdV/YNO+fNuTTyjDMTrPR2zEihRQtIZqafj4wMbtxF1djINwFlGNIbnPrkbgdNzCWUIBB4lJHIF4rPG7TKqcarov8PsccoZn4X6AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFe5j/1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A3EC4CED1;
-	Thu, 13 Feb 2025 15:20:07 +0000 (UTC)
+	 MIME-Version; b=V+8WVWro/hMeqbcJVBDo/Ijspj61f0ru2frlawyUYXn8QYk4w2a/MFylhaRNEkIdrEySC4mH2388acSFUYGyioydDjzYy8nmOrj4LEgVsXdoQqHAxVhzJDhea2jFqyMxOwLo8zHqhYxQgxg/PlQ23HCl7319qTFk7Man0byXAyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVf+r4rK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3ACC4CED1;
+	Thu, 13 Feb 2025 15:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460008;
-	bh=jfNJOlQKD8FmAcKjzDAVsJvxZ+hzgFdOMfrIC5qj1BY=;
+	s=korg; t=1739460825;
+	bh=0s3EA4xrqhazVu1FFPlD8bXB3egO6iUdNFdb01kPbtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QFe5j/1f6PYEmXmgmwLf0Q/kQcCt5h3ZGXOWuOG8LjtCXr0D2BSJVCEJwGTgCdbH3
-	 4WiHGCcjjJ9o1blWw+oEC4qgSLCh4JKifYWTTTYeAFkuPIBwilIQjMOtLyrpIGyvNu
-	 S8lvCC2V0w7n65tPIBOU380Ke/o2GkMkfNXjreEA=
+	b=QVf+r4rKjQnaZmLJFgsG3IJzVrWiOqBAh24v9HedDkhVBkql3Hvx1pMVJhyTAnx9W
+	 TxHXXwGM92kUYri21Jk/q0Z+s4srnY/ygmUmsCavK8hXkG2G2HCKoqbi4RkaxuF5wt
+	 tUAfpXgtZvcx5pMzVa89rPzAqKL/5XGRBxkjmiXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	stable@kernel.org,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.13 430/443] rtc: zynqmp: Fix optional clock name property
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 223/273] nvmem: imx-ocotp-ele: simplify read beyond device check
 Date: Thu, 13 Feb 2025 15:29:55 +0100
-Message-ID: <20250213142457.213647190@linuxfoundation.org>
+Message-ID: <20250213142416.126604695@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 2a388ff22d2cbfc5cbd628ef085bdcd3b7dc64f5 upstream.
+commit 343aa1e289e8e3dba5e3d054c4eb27da7b4e1ecc upstream.
 
-Clock description in DT binding introduced by commit f69060c14431
-("dt-bindings: rtc: zynqmp: Add clock information") is talking about "rtc"
-clock name but driver is checking "rtc_clk" name instead.
-Because clock is optional property likely in was never handled properly by
-the driver.
+Do the read beyond device check on function entry in bytes instead of
+32bit words which is easier to follow.
 
-Fixes: 07dcc6f9c762 ("rtc: zynqmp: Add calibration set and get support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Cc: stable@kernel.org
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/cd5f0c9d01ec1f5a240e37a7e0d85b8dacb3a869.1732723280.git.michal.simek@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-zynqmp.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvmem/imx-ocotp-ele.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/rtc/rtc-zynqmp.c
-+++ b/drivers/rtc/rtc-zynqmp.c
-@@ -318,8 +318,8 @@ static int xlnx_rtc_probe(struct platfor
- 		return ret;
- 	}
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -71,13 +71,13 @@ static int imx_ocotp_reg_read(void *cont
+ 	void *p;
+ 	int i;
  
--	/* Getting the rtc_clk info */
--	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc_clk");
-+	/* Getting the rtc info */
-+	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc");
- 	if (IS_ERR(xrtcdev->rtc_clk)) {
- 		if (PTR_ERR(xrtcdev->rtc_clk) != -EPROBE_DEFER)
- 			dev_warn(&pdev->dev, "Device clock not found.\n");
++	if (offset + bytes > priv->data->size)
++		bytes = priv->data->size - offset;
++
+ 	index = offset;
+ 	num_bytes = round_up(bytes, 4);
+ 	count = num_bytes >> 2;
+ 
+-	if (count > ((priv->data->size >> 2) - index))
+-		count = (priv->data->size >> 2) - index;
+-
+ 	p = kzalloc(num_bytes, GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
 
 
 
