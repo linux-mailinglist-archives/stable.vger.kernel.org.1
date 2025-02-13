@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-115386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F282BA3437B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:50:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB8BA345C0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7F8318820F4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:46:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B1B3AFFB0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8608826980F;
-	Thu, 13 Feb 2025 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFB126B0BB;
+	Thu, 13 Feb 2025 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqXkV+G9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvaEVb5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB026980B;
-	Thu, 13 Feb 2025 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C044B26B082;
+	Thu, 13 Feb 2025 15:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457873; cv=none; b=J5+ogab+qY/PedlsOC3YPKsySrBjCXvnWy+DBuxLiNqGMwDchUPTGCwWne3Wa6ls9T+d3vbeDl2o8Mj0FYw26BLQfpnGJ46X7InBwXyjHNNF+SU7j9/tt1kytCWLNiQf90KiQ7VrAnfvfwimW3HoVtlOyidEExCW9HuEId/aoy4=
+	t=1739459290; cv=none; b=di5QmFehfzhhFPyTQOu3ca2KnTgGIUUeyKDs8PkfLrp+NAMmpSbURgWGca0vGfVohGJioGWGcRadDoIVStT7DAmZ9O+bV4gRt9kNermSHBVAXzqq60o+1rclHj+iGGKjl2+ruVWIboUeBcj4xzWtS0+Q1eGZL10+rd35OYKM+uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457873; c=relaxed/simple;
-	bh=pZ5+DSbT6PV8lht7LqwRDkyhvQ/xyR8V6MY5ANYWEfw=;
+	s=arc-20240116; t=1739459290; c=relaxed/simple;
+	bh=dJltKLW/QOJ0gvwDR0Ic4FHYYOdyvTEyvI1fnWabKeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmQPgDwZ4utzs0/Lqjk+iknVMr4Mhi++0NEW98Bjy+Hlfq/fVCxBWgLnaqBpTBRNxdsL62BHppjz2nNITw3OxEiZmYEFWYf6/FqJc4qd1y/7I39b09bPT8Vf0VyZm0U/loskYcyS9yS/TLB2zO5D2OJn3U9b2Cgem1vNgd9fNIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqXkV+G9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE68C4CED1;
-	Thu, 13 Feb 2025 14:44:32 +0000 (UTC)
+	 MIME-Version; b=ARfzkXpxBjnI55XUwt0JwOtVJgQkO/5RITIHrNdaR307apHhhmePDA6brgbnpCngqI1eQiWY+ckZHp7Fx26vFeco8FaQgomgpFALkrUrpKaMxUZquX436ZqM22nJJecPnlGEZLNVG2mHOb7iVlUkaEYTDgRqwns4aqIlY6E8mB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvaEVb5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882BFC4CED1;
+	Thu, 13 Feb 2025 15:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457873;
-	bh=pZ5+DSbT6PV8lht7LqwRDkyhvQ/xyR8V6MY5ANYWEfw=;
+	s=korg; t=1739459290;
+	bh=dJltKLW/QOJ0gvwDR0Ic4FHYYOdyvTEyvI1fnWabKeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqXkV+G9+WP5yCERP06LYRK9oXjTxYUbNF4FncUtGk/739R93KRiD8BtqVO59Yr7y
-	 hdH8tm4NAnxtQnRIWepMzkP1gq586Y+R7xyx+mIr8mvUD2qQq2QOaoQnfT5MNicsPj
-	 06pkatEc5cTIoITwEIGwcgD/Q0rT20C+z0uzPc0k=
+	b=TvaEVb5vj5kh4QrZSzGCcg5CoCd3jHr1xURcEbVQ9iYnKr2ytlVrLIk6MAZVPIxQ+
+	 vCVYmldZjDRhz317LHdSBOZ0ANFv6jLLeNy+6FCIoR+EGPWowBUkJ1WVHXRvTs+M4J
+	 jTLsZhF/z69LdafVdu+iDZHgq041NP+rdOjK7U8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 238/422] block: dont revert iter for -EIOCBQUEUED
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Ludwig Rydberg <ludwig.rydberg@gaisler.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 222/443] ring-buffer: Do not allow events in NMI with generic atomic64 cmpxchg()
 Date: Thu, 13 Feb 2025 15:26:27 +0100
-Message-ID: <20250213142445.721139632@linuxfoundation.org>
+Message-ID: <20250213142449.178681656@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +69,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit b13ee668e8280ca5b07f8ce2846b9957a8a10853 upstream.
+commit cd2375a3567fd3d93aa6c68e0027a5756213bda0 upstream.
 
-blkdev_read_iter() has a few odd checks, like gating the position and
-count adjustment on whether or not the result is bigger-than-or-equal to
-zero (where bigger than makes more sense), and not checking the return
-value of blkdev_direct_IO() before doing an iov_iter_revert(). The
-latter can lead to attempting to revert with a negative value, which
-when passed to iov_iter_revert() as an unsigned value will lead to
-throwing a WARN_ON() because unroll is bigger than MAX_RW_COUNT.
-
-Be sane and don't revert for -EIOCBQUEUED, like what is done in other
-spots.
+Some architectures can not safely do atomic64 operations in NMI context.
+Since the ring buffer relies on atomic64 operations to do its time
+keeping, if an event is requested in NMI context, reject it for these
+architectures.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/20250120235721.407068250@goodmis.org
+Fixes: c84897c0ff592 ("ring-buffer: Remove 32bit timestamp logic")
+Closes: https://lore.kernel.org/all/86fb4f86-a0e4-45a2-a2df-3154acc4f086@gaisler.com/
+Reported-by: Ludwig Rydberg <ludwig.rydberg@gaisler.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/fops.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -758,11 +758,12 @@ static ssize_t blkdev_read_iter(struct k
- 		file_accessed(iocb->ki_filp);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4398,8 +4398,13 @@ rb_reserve_next_event(struct trace_buffe
+ 	int nr_loops = 0;
+ 	int add_ts_default;
  
- 		ret = blkdev_direct_IO(iocb, to);
--		if (ret >= 0) {
-+		if (ret > 0) {
- 			iocb->ki_pos += ret;
- 			count -= ret;
- 		}
--		iov_iter_revert(to, count - iov_iter_count(to));
-+		if (ret != -EIOCBQUEUED)
-+			iov_iter_revert(to, count - iov_iter_count(to));
- 		if (ret < 0 || !count)
- 			goto reexpand;
+-	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
+-	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
++	/*
++	 * ring buffer does cmpxchg as well as atomic64 operations
++	 * (which some archs use locking for atomic64), make sure this
++	 * is safe in NMI context
++	 */
++	if ((!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) ||
++	     IS_ENABLED(CONFIG_GENERIC_ATOMIC64)) &&
+ 	    (unlikely(in_nmi()))) {
+ 		return NULL;
  	}
 
 
