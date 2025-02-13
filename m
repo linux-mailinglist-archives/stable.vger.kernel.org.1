@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBCDA346C2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01140A34742
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0703A3AE651
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48762171465
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809B626B098;
-	Thu, 13 Feb 2025 15:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A6A18991E;
+	Thu, 13 Feb 2025 15:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7ihbE69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHw06tzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59F26B096;
-	Thu, 13 Feb 2025 15:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624011422D8;
+	Thu, 13 Feb 2025 15:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459622; cv=none; b=IYFsL7HSaHRYWlXrkb3JYpYqcBqxOiMqaVWizRN/+x+6QSPDoIin3tq0VuuaickF8/c6sNM3AgKrvUfL4YZzIbMPU2Fuw7yBX890/rDhIT3E3InPeO/2sGapFXTpKNsbZ6ljhIvKS2+kVxsP4P6DEZ7eB0Y1WrsVqC7cMg7AKhg=
+	t=1739460431; cv=none; b=JTHe9y5JBnYYE9lAbDp2/R1ne6TOwmVL1xbYyESVYULB8rt1ugo7oIKopoQiZV9AzZBYZs1Nouj3HsRIPuYC0t+XCIyfweqagqsgDBbr6Q9sePaRxAtdQXKZciJpQgqcFxmdTL0GuCxctDch6dtCnIoS8/zRmr20hEaOdjXax1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459622; c=relaxed/simple;
-	bh=k9nXBxW37mrqp1+tfrdXVpxK2EzkREknTFCxJk857SY=;
+	s=arc-20240116; t=1739460431; c=relaxed/simple;
+	bh=JWeyU3RAbGp96yvAg6o0qYZCTyznupDatScm6nBMgiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4jSosVVQqMjqACh1IAVWg8axbh+hilv+q11FGXRDgC9P4qS9NZ0zw2Be+vWOeQvR+F1XGul2S/PpDgg6WZk0pi27/Vw/Sg0UezjniHN5YHdz6qxkZ/dQ9/9GJJi6kTbl9ven82DdjCTOdw6VOzjuXL/Ap6HwFANMedBm9LYTJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7ihbE69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABA9C4CED1;
-	Thu, 13 Feb 2025 15:13:41 +0000 (UTC)
+	 MIME-Version; b=Ny3dnlRAz7bvo9jPGhRk4+zWg6JnT6bKc1pv9DlavmLbkrjNx2lMJeck9HrScsERZgBdUVwGbFLVM8NoMO5hK1fbZcEFRRbhEPhWqM+BtZbj5963LA+YrZEyG9AZJ4Aqke/SylpD5WZ2Hcg0q4ny71b7gvv7kAgJIPl0HQO0RFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHw06tzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C551FC4CED1;
+	Thu, 13 Feb 2025 15:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459622;
-	bh=k9nXBxW37mrqp1+tfrdXVpxK2EzkREknTFCxJk857SY=;
+	s=korg; t=1739460431;
+	bh=JWeyU3RAbGp96yvAg6o0qYZCTyznupDatScm6nBMgiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7ihbE699Ay7ix+1EgFqOtbbVxWYVMyut6OP1dFe7/mip/gR5xVIdD8XO2+7ob5Bf
-	 VGEM4WibqY5DlAONoyRWA7UNdNzW3H0bX5wvKAkbV/ylDcKT7U9KobYksvw7vMHahv
-	 3neGcXB7IZXg/DYHJULbEkSfHOM0x7uAX6OMwxGQ=
+	b=OHw06tztPXhv/S6gEsaZq366FSNqR99mGFtfHoW0x6fYt/gM7UPr2g0SNXDb4Y9o/
+	 LSDJbptZj/CEm8PivUoTrwo6QDLM3ZSoe+AO1fnjIsCInC9KmQyUUScXGb1UsZARDX
+	 7NkF4p0ur29hpCz3qs3CvBo+XUMZVksZN+mZeTNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 318/443] arm64: dts: qcom: sm8550: Fix MPSS memory length
+Subject: [PATCH 6.6 111/273] clk: qcom: dispcc-sm6350: Add missing parent_map for a clock
 Date: Thu, 13 Feb 2025 15:28:03 +0100
-Message-ID: <20250213142452.888049301@linuxfoundation.org>
+Message-ID: <20250213142411.732309554@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 8ef227e93a513d431f9345f23cd4d2d65607b985 upstream.
+commit d4cdb196f182d2fbe336c968228be00d8c3fed05 upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+If a clk_rcg2 has a parent, it should also have parent_map defined,
+otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+like the following:
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+  [    3.388105] Call trace:
+  [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
+  [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
+  [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
+  [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
+  [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
+  [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
+  [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
+  [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
+  [    3.455886]  clk_set_rate+0x38/0x14c
 
-Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
+Add the parent_map property for the clock where it's missing and also
+un-inline the parent_data as well to keep the matching parent_map and
+parent_data together.
+
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
 Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-9-2e0036fccd8d@linaro.org
+Link: https://lore.kernel.org/r/20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm6350.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2314,7 +2314,7 @@
- 
- 		remoteproc_mpss: remoteproc@4080000 {
- 			compatible = "qcom,sm8550-mpss-pas";
--			reg = <0x0 0x04080000 0x0 0x4040>;
-+			reg = <0x0 0x04080000 0x0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -187,13 +187,12 @@ static struct clk_rcg2 disp_cc_mdss_dp_a
+ 	.cmd_rcgr = 0x1144,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
++	.parent_map = disp_cc_parent_map_6,
+ 	.freq_tbl = ftbl_disp_cc_mdss_dp_aux_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "disp_cc_mdss_dp_aux_clk_src",
+-		.parent_data = &(const struct clk_parent_data){
+-			.fw_name = "bi_tcxo",
+-		},
+-		.num_parents = 1,
++		.parent_data = disp_cc_parent_data_6,
++		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
 
 
 
