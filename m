@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77007A34802
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E54BA344D2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFAF13B4E10
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFF3718918CE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D231632DD;
-	Thu, 13 Feb 2025 15:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D11119E96A;
+	Thu, 13 Feb 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUdxJLmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1W8BfOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43314F121;
-	Thu, 13 Feb 2025 15:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F6919D084;
+	Thu, 13 Feb 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460704; cv=none; b=Ns158mCxI20V32a1b8JPoNuyx4pf1bN3803lL7mYreRn8Qn+Ph1BaSQWMkq6HUOFQeYw1Ul2y0ecUmHAB9MgJI2BxcLXXhYm1KlnRdn0gzrmWExh8eBmCUqDQu65+Z6yu6MNueVdZjhKvb1dX97o+cV/S6iTH56x+PDMJzq24/c=
+	t=1739458475; cv=none; b=StT1n5lbKNuKQsrXDOkZ5AAHrt8y92vzEgCABPcUWj4Tr2tCsZq+bvshvrQk56MAuK7aZxsbkXjJdcCbTAoTbJ6gbxRhkXqePBL+0pX9RnxXXjHB4SJBK9QDo4b+BlpcxJ8AnURlYOiGCrxWx4ggDfiUkNeh7fdc52yQSVIZRxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460704; c=relaxed/simple;
-	bh=P4fAWQf9X/EA+IGAjNp9HcFuLI3jL/AC33x7dQrDt9c=;
+	s=arc-20240116; t=1739458475; c=relaxed/simple;
+	bh=AOMqjk/NLBa11KzIUu1O9lKZmN51HY9nxEqw5rzTqJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbQv5nKlWinJCW8mku+C9KJz8fnEp59NptdjtidQR/E7OPZEI5Wj/cFRPZfSVEIyb/iq0ZPumug+mhMVV2VjswBMG0WrCZNT2E/43rCTko4gsGTShQCY6vmBdvKPIuhL6kYwJdawVZxIpn4xXry79J8jQ4/zv41xn7Us7zxjQpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUdxJLmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA49AC4CED1;
-	Thu, 13 Feb 2025 15:31:43 +0000 (UTC)
+	 MIME-Version; b=ddnT/FTEDQqEvtoQ176gYU1m4wIIxqwjLWjgBXcI8+8KMJNu5SkD6j8/FFkv0jEx2q0ZOMBF+lF+2DPIlLV5DsBus6v6+oZghiFA2/uOzOpigWqwa2QUCW08tmOLBP5VldySuhGH5SJvZaZZPdSKJUgmj39V0H1LLoXHisd9CX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1W8BfOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C42AC4CED1;
+	Thu, 13 Feb 2025 14:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460704;
-	bh=P4fAWQf9X/EA+IGAjNp9HcFuLI3jL/AC33x7dQrDt9c=;
+	s=korg; t=1739458475;
+	bh=AOMqjk/NLBa11KzIUu1O9lKZmN51HY9nxEqw5rzTqJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUdxJLmxULR+kiJ+CCRr2AW9jgwkCC8p3J86/c88CHpZ7ooY2QrWVJhN1TzcfZ5Rl
-	 D9W79sLxbDhaqoiv5z+c+ojwCRRcTWkTt7pbMUtGqzzGcKRzkVy6fCD7u4cHSIPHCk
-	 82ftqjwP1O6KvzWJW+IpUWEiZzTRwzO945Xk5048=
+	b=O1W8BfOxB9WXkRtDWJypbIDiY9tE0zei/cbUV/hXINf+++r6Yk945tPlsB7/V34RA
+	 pEd55BtW8qGuciIB/y8SgKiu0K+w5v82AKoqX2B0/53orb+YRPShO9xh8XYvSs5+sd
+	 ZP70NwxgijpSzakSusqdFIFku+cAAKnvDc8bFMGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 188/273] arm64: dts: qcom: sm8550: correct MDSS interconnects
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 411/422] mptcp: prevent excessive coalescing on receive
 Date: Thu, 13 Feb 2025 15:29:20 +0100
-Message-ID: <20250213142414.752409178@linuxfoundation.org>
+Message-ID: <20250213142452.423535898@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit b8591df49cde459e3b84cdc0517d7bf92053d244 upstream.
+commit 56b824eb49d6258aa0bad09a406ceac3f643cdae upstream.
 
-SM8550 lists two interconnects for the display subsystem, mdp0-mem
-(between MDP and LLCC) and mdp1-mem (between LLCC and EBI, memory).
-The second interconnect is a misuse. mdpN-mem paths should be used for
-several outboud MDP interconnects rather than the path between LLCC and
-memory. This kind of misuse can result in bandwidth underflows, possibly
-degrading picture quality as the required memory bandwidth is divided
-between all mdpN-mem paths (and LLCC-EBI should not be a part of such
-division).
+Currently the skb size after coalescing is only limited by the skb
+layout (the skb must not carry frag_list). A single coalesced skb
+covering several MSS can potentially fill completely the receive
+buffer. In such a case, the snd win will zero until the receive buffer
+will be empty again, affecting tput badly.
 
-Drop the second path and use direct MDP-EBI path for mdp0-mem until we
-support separate MDP-LLCC and LLCC-EBI paths.
-
-Fixes: d7da51db5b81 ("arm64: dts: qcom: sm8550: add display hardware devices")
-Cc: stable@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241026-fix-sm8x50-mdp-icc-v2-1-fd8ddf755acc@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
+Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2448,9 +2448,8 @@
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -136,6 +136,7 @@ static bool mptcp_try_coalesce(struct so
+ 	int delta;
  
- 			power-domains = <&dispcc MDSS_GDSC>;
- 
--			interconnects = <&mmss_noc MASTER_MDP 0 &gem_noc SLAVE_LLCC 0>,
--					<&mc_virt MASTER_LLCC 0 &mc_virt SLAVE_EBI1 0>;
--			interconnect-names = "mdp0-mem", "mdp1-mem";
-+			interconnects = <&mmss_noc MASTER_MDP 0 &mc_virt SLAVE_EBI1 0>;
-+			interconnect-names = "mdp0-mem";
- 
- 			iommus = <&apps_smmu 0x1c00 0x2>;
+ 	if (MPTCP_SKB_CB(from)->offset ||
++	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
+ 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
+ 		return false;
  
 
 
