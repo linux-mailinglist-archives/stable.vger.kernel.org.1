@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444ECA3442F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE7CA3475B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948303ADF1C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DFE1898A4E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664FB2036FE;
-	Thu, 13 Feb 2025 14:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB7F15539A;
+	Thu, 13 Feb 2025 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skja+jIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I92jdWd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231972036FA;
-	Thu, 13 Feb 2025 14:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584F31411DE;
+	Thu, 13 Feb 2025 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458254; cv=none; b=GZMoFYafp/cbfjVvd7tZReOC1eyJoNOU5+49wjVIQHig2AfiX00oaO2xNDvlgjUM254iAKDz1iV+YOKmrM+wb+fHLfbhWNv0RclDIzMqrS/Be9CGsVOQ4rWoofrIRmbMdXemqqq9d7RuEKt9K4E0d7E6gWPpSgb4jQymY66Np0Y=
+	t=1739460481; cv=none; b=mUolP4El0TnhqPpJmNgT1S4ok/ypjAMqMy+q4uP3qsroB85iW93G9z2PNLbW3QIsCpX2diPMOm3JmWmPuZEJkF8a3s7WqVAr5yMwDrLZaNO3L7FNgrGKntmxRLFcj0Zb3sK7A/7R8pyKuRAtp0Li4vrKSENUL5828dEg7BWwSr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458254; c=relaxed/simple;
-	bh=GRS8R3NfA2evJQ0wXmSRa6rrhGyUY4Juzm62zP61pWM=;
+	s=arc-20240116; t=1739460481; c=relaxed/simple;
+	bh=lfbeVohbFfwfBSAQ482iPtxtXS2CPbhE+VBqavaXm+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqnFXeJvq7i9EZvGnvqATtove0vp5kc0g2FGbasqPt3j0NrPjOyewkof4yCTv0RWb/Yykxx2KGmmaqCQGY2cPwNOci2HLLytJnu3tsQ0jtns8vSr3e/tfJLyn3AZG9tGEzCbSDy5yxI4ub8iP6bYf8D2lf1QVprnTwWgpJnFA5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skja+jIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8759EC4CED1;
-	Thu, 13 Feb 2025 14:50:53 +0000 (UTC)
+	 MIME-Version; b=gSRYIalomI48MyGL5ZTkS1EpqOsg7FM6amOcCHfvWrW5PtlDRqPSh22PYts44YYLYum7XqhQNDv1lQmv4e0B8ViT0Jef/ZRLnwAZXZ9OX/AX/VxfxNJoyln7B7wfgjXEx7S9HczCFfO5PdCrdZwn6NAiBjUM2SlT/6YOCgcY66g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I92jdWd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD2AC4CED1;
+	Thu, 13 Feb 2025 15:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458254;
-	bh=GRS8R3NfA2evJQ0wXmSRa6rrhGyUY4Juzm62zP61pWM=;
+	s=korg; t=1739460481;
+	bh=lfbeVohbFfwfBSAQ482iPtxtXS2CPbhE+VBqavaXm+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skja+jIKFBT0TXc3pDZ7IVRJasduBf8nkdlrL3M2DkB5/S83YRqsOMvPU75gWoXVc
-	 AFzIpPW71D9Ji0z8VVyU30BDcQMCwakRRcqUrbuq8VjqhMQ1aiCWZI5U9bcNlhf6Gy
-	 a/av7oB9we4tJmw5iJxGlO7IJEJWGx8zySHez/iM=
+	b=I92jdWd/OKIrGIavLUr2Ir0wmfBT4H1JktVKrHKLdvaci2ErKise3pW/2VN+xpnKm
+	 KMI7TPgpoClxFf4PSWsBOk5gqeiYv7C/aoPaePlkue9LaODRJhXYr5tVPUormIheVo
+	 Mf/yWUBKUMVyLrpMapNEDSV3UEbV5aLO3s77FeNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	reveliofuzzing <reveliofuzzing@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 346/422] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.6 123/273] of: Correct child specifier used as input of the 2nd nexus node
 Date: Thu, 13 Feb 2025 15:28:15 +0100
-Message-ID: <20250213142449.905912933@linuxfoundation.org>
+Message-ID: <20250213142412.203082140@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
+commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
 
-reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
-set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
-ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
-write outside the allocated buffer, overwriting random memory.
+API of_parse_phandle_with_args_map() will use wrong input for nexus node
+Nexus_2 as shown below:
 
-While a ATA device is supposed to abort a ATA_NOP command, there does seem
-to be a bug either in libata-sff or QEMU, where either this status is not
-set, or the status is cleared before read by ata_sff_hsm_move().
-Anyway, that is most likely a separate bug.
+    Node_1		Nexus_1                              Nexus_2
+&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
+		  map-pass-thru=<...>
 
-Looking at __atapi_pio_bytes(), it already has a safety check to ensure
-that __atapi_pio_bytes() cannot write outside the allocated buffer.
+Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
+wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
 
-Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
-cannot write outside the allocated buffer.
+Fix by always making @match_array point to @initial_match_array into
+which to store nexus output.
 
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
 Cc: stable@vger.kernel.org
-Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
-Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
-Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-sff.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/of/base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -601,7 +601,7 @@ static void ata_pio_sector(struct ata_qu
- {
- 	struct ata_port *ap = qc->ap;
- 	struct page *page;
--	unsigned int offset;
-+	unsigned int offset, count;
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1453,7 +1453,6 @@ int of_parse_phandle_with_args_map(const
+ 		 * specifier into the out_args structure, keeping the
+ 		 * bits specified in <list>-map-pass-thru.
+ 		 */
+-		match_array = map - new_size;
+ 		for (i = 0; i < new_size; i++) {
+ 			__be32 val = *(map - new_size + i);
  
- 	if (!qc->cursg) {
- 		qc->curbytes = qc->nbytes;
-@@ -617,25 +617,27 @@ static void ata_pio_sector(struct ata_qu
- 	page = nth_page(page, (offset >> PAGE_SHIFT));
- 	offset %= PAGE_SIZE;
+@@ -1462,6 +1461,7 @@ int of_parse_phandle_with_args_map(const
+ 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
+ 			}
  
--	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
-+	/* don't overrun current sg */
-+	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
-+
-+	trace_ata_sff_pio_transfer_data(qc, offset, count);
- 
- 	/*
- 	 * Split the transfer when it splits a page boundary.  Note that the
- 	 * split still has to be dword aligned like all ATA data transfers.
- 	 */
- 	WARN_ON_ONCE(offset % 4);
--	if (offset + qc->sect_size > PAGE_SIZE) {
-+	if (offset + count > PAGE_SIZE) {
- 		unsigned int split_len = PAGE_SIZE - offset;
- 
- 		ata_pio_xfer(qc, page, offset, split_len);
--		ata_pio_xfer(qc, nth_page(page, 1), 0,
--			     qc->sect_size - split_len);
-+		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
- 	} else {
--		ata_pio_xfer(qc, page, offset, qc->sect_size);
-+		ata_pio_xfer(qc, page, offset, count);
- 	}
- 
--	qc->curbytes += qc->sect_size;
--	qc->cursg_ofs += qc->sect_size;
-+	qc->curbytes += count;
-+	qc->cursg_ofs += count;
- 
- 	if (qc->cursg_ofs == qc->cursg->length) {
- 		qc->cursg = sg_next(qc->cursg);
++			initial_match_array[i] = val;
+ 			out_args->args[i] = be32_to_cpu(val);
+ 		}
+ 		out_args->args_count = list_size = new_size;
 
 
 
