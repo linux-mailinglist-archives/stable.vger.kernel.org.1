@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDE6A342C1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2301A3452D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61CB916CF00
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC25D16E205
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C6D242909;
-	Thu, 13 Feb 2025 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4611FFC4A;
+	Thu, 13 Feb 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZMt3+ps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRSbg6v/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855A02222B1;
-	Thu, 13 Feb 2025 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0601615853B;
+	Thu, 13 Feb 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457482; cv=none; b=OgwK8utuV2BBRjsQrP/hr475hPIEHXeNsDpUGKVDgwPLfvdF7CtWps/O4zlB0MQ+wuZGoPDnMHwqBnzfMPIucQtIXAiOqQUSW44N4XwNcC18SnMoBJhUbXP7NwbkEezhyxs2tNfs7ETpCgpaCVGH8Gg4ywDopGsEcq5BNVpeCKs=
+	t=1739459003; cv=none; b=szewAJBy+9iYTXIDxUCnuKzNcVZtrulEXQVN/xU/lCBJOR1e7LmhYle/WuJkwu8CHC0DwBPrJwij7J+EeAksW+n3rmibiZbPdBLDw953HQ43J0A7Obi23CYsn/SVTNjFxvPlW8T+nZIdiLw+NtLuyscmoFiFo3AlMfzX8zArPqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457482; c=relaxed/simple;
-	bh=QKVQgHYWSIEDDMJoePgxTBntpDHyEQ58tNvQ+I8Mul0=;
+	s=arc-20240116; t=1739459003; c=relaxed/simple;
+	bh=00QYngDnONxZR45AeBBo4GfJG8/Op53g3Y/YV7CLw0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCjs0Lwgye2JlPf4lXOnfLj/Cwr4nGwTL5SvV5FUq1rKrF8YFeTf/EtnM1E9xCfMYF8tDJu8PyOAG5O3TWsWrLXhmWAPIVj5KdGmaP/nqjg47pO3Hmi1E+pAGRWUsi0tu6l/lodLVX6I/ufJcCvpUYmOq8VRQLB4ba5bL48wr7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZMt3+ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B6FC4CEE4;
-	Thu, 13 Feb 2025 14:38:01 +0000 (UTC)
+	 MIME-Version; b=W1SaMcrRs03BzLmco6KB4xyAV7kowqBezyvcj5yPDeUVEsZwqUvrszhIHRx54t5hl/3HcW541SThS0TwhDufYBpITqlS3dVmLaJnqZ0dKUGP+oAicFK1EgV6Y3e/n9yQwTdvKlncVhhm9cKxoRDevRzn+tj8xZXQDmPxcVphc3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRSbg6v/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01294C4CED1;
+	Thu, 13 Feb 2025 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457482;
-	bh=QKVQgHYWSIEDDMJoePgxTBntpDHyEQ58tNvQ+I8Mul0=;
+	s=korg; t=1739459002;
+	bh=00QYngDnONxZR45AeBBo4GfJG8/Op53g3Y/YV7CLw0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZMt3+psCVjUEXaAUQUnyLIi7lCzQO3txi2xtruNIeTu9juDBliCitSMmvQJyZXC4
-	 jurXOCf7FEfymQRjE14WudZWHLmyoupOixW2HV6aPm8m8cljyWkLVOHTBmGYLNWzyf
-	 qd712LWWqml8789SqTtAj1mHoaotFv3l0XD19zBQ=
+	b=wRSbg6v/DjgN57igG4JTL71nzdHv6mE3v9lnvv/wU+8dm+Da5v3XH9ymaxTjyH0Fr
+	 9DXkOAaWZr5H6yqZqZES9UBW+Kz7os7Fv2Zlfq6VxkjMNifYKgP68fAji0vxHvt8bJ
+	 JCW5sbaFWAYBFpUmbeMYTNvolxG7aHUp0WtJxhhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/422] ACPI: property: Fix return value for nval == 0 in acpi_data_prop_read()
-Date: Thu, 13 Feb 2025 15:24:31 +0100
-Message-ID: <20250213142441.257883023@linuxfoundation.org>
+Subject: [PATCH 6.13 107/443] nvmet: fix a memory leak in controller identify
+Date: Thu, 13 Feb 2025 15:24:32 +0100
+Message-ID: <20250213142444.739656706@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit ab930483eca9f3e816c35824b5868599af0c61d7 ]
+[ Upstream commit 58f5c8d5ca07a2f9fa93fb073f5b1646ec482ff2 ]
 
-While analysing code for software and OF node for the corner case when
-caller asks to read zero items in the supposed to be an array of values
-I found that ACPI behaves differently to what OF does, i.e.
+Simply free an allocated buffer once we copied its content
+to the request sgl.
 
- 1. It returns -EINVAL when caller asks to read zero items from integer
-    array, while OF returns 0, if no other errors happened.
+kmemleak complaint:
+unreferenced object 0xffff8cd40c388000 (size 4096):
+  comm "kworker/2:2H", pid 14739, jiffies 4401313113
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<ffffffff9e01087a>] kmemleak_alloc+0x4a/0x90
+    [<ffffffff9d30324a>] __kmalloc_cache_noprof+0x35a/0x420
+    [<ffffffffc180b0e2>] nvmet_execute_identify+0x912/0x9f0 [nvmet]
+    [<ffffffffc181a72c>] nvmet_tcp_try_recv_pdu+0x84c/0xc90 [nvmet_tcp]
+    [<ffffffffc181ac02>] nvmet_tcp_io_work+0x82/0x8b0 [nvmet_tcp]
+    [<ffffffff9cfa7158>] process_one_work+0x178/0x3e0
+    [<ffffffff9cfa8e9c>] worker_thread+0x2ec/0x420
+    [<ffffffff9cfb2140>] kthread+0xf0/0x120
+    [<ffffffff9cee36a4>] ret_from_fork+0x44/0x70
+    [<ffffffff9ce7fdda>] ret_from_fork_asm+0x1a/0x30
 
- 2. It returns -EINVAL when caller asks to read zero items from string
-    array, while OF returns -ENODATA, if no other errors happened.
-
-Amend ACPI implementation to follow what OF does.
-
-Fixes: b31384fa5de3 ("Driver core: Unified device properties interface for platform firmware")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250203194629.3731895-1-andriy.shevchenko@linux.intel.com
-[ rjw: Added empty line after a conditional ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 84909f7decbd ("nvmet: use kzalloc instead of ZERO_PAGE in nvme_execute_identify_ns_nvm()")
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/nvme/target/admin-cmd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 80a52a4e66dd1..e9186339f6e6b 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1187,8 +1187,6 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
- 		}
- 		break;
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index fa89b0549c36c..7b70635373fd8 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -915,6 +915,7 @@ static void nvme_execute_identify_ns_nvm(struct nvmet_req *req)
+ 		goto out;
  	}
--	if (nval == 0)
--		return -EINVAL;
- 
- 	if (obj->type == ACPI_TYPE_BUFFER) {
- 		if (proptype != DEV_PROP_U8)
-@@ -1212,9 +1210,11 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
- 		ret = acpi_copy_property_array_uint(items, (u64 *)val, nval);
- 		break;
- 	case DEV_PROP_STRING:
--		ret = acpi_copy_property_array_string(
--			items, (char **)val,
--			min_t(u32, nval, obj->package.count));
-+		nval = min_t(u32, nval, obj->package.count);
-+		if (nval == 0)
-+			return -ENODATA;
-+
-+		ret = acpi_copy_property_array_string(items, (char **)val, nval);
- 		break;
- 	default:
- 		ret = -EINVAL;
+ 	status = nvmet_copy_to_sgl(req, 0, id, sizeof(*id));
++	kfree(id);
+ out:
+ 	nvmet_req_complete(req, status);
+ }
 -- 
 2.39.5
 
