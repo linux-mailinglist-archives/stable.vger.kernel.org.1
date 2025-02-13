@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A0CA3446B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08695A3483E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D76F83B25FF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D903B4292
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA824221571;
-	Thu, 13 Feb 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D33D183CD9;
+	Thu, 13 Feb 2025 15:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsIpAY+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxG6dqVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953632222DC;
-	Thu, 13 Feb 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C70199934;
+	Thu, 13 Feb 2025 15:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458301; cv=none; b=iL+IpNpEwsKIbpsGMjfXJXiuh2bG4XjeyA5ilWXUXz6PRYd2a3KJu+aBlUL8LzWy6lkoaEKyWmGzmTMWM2PoolG9sjy02ti2JdDqhUhhruQ1X0oQB5i5KJ7J3fglKgOfeWBvk5tuBuiQu1kBHq0am4VmleuSTr63vskTyDainqE=
+	t=1739460616; cv=none; b=NUpQDGotoPrZJclzxVOjVvk27j/lpC1ZdOhMPdJRzb2tNOOMIdFqx8YMX79LWd5ppmjK/scsqRYmGTiOS3kygfjHo1DwKdOUWoY5Dc+uT3Jsr0G5mq2cAqoKPxOqn2zswmoAjXUKWDbFHckr2e8jmou064ufg1JUG0vv5NRzGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458301; c=relaxed/simple;
-	bh=nkjkTUJdN+rbzhVLOaNH4/izYAa8xhWROw6taGsHiG4=;
+	s=arc-20240116; t=1739460616; c=relaxed/simple;
+	bh=cjhox9k6a0zJveRRwx8KXkxfCnpvgUzB+aRb6Y0pL2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S2VMX2FP0aA9jOnyJAaDRCoFo1MGCR476WtcZA9qCnE40HzKdGqgKUvLwRPI0NZdfYr0xen9S6dftpbfwlLArDshOfY92k2fOFzHwigu3R8/OwlhKjnYPrBv4HIPu4AMXX53qN6JPCPqM1PH6FupqjFbdagYWfNTFMP674IAqvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsIpAY+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B45CC4CED1;
-	Thu, 13 Feb 2025 14:51:40 +0000 (UTC)
+	 MIME-Version; b=U6esGiK3et2mltLTn2LlY5nOS0EQnWkEcK2AnQlvcvKq5LRqCQQrfXPp/71FmcKDLkhBF4nUaZUPNbkFRBcOLqd+fxjxTm+tTxyQkY6+zUWUu1g+t1kPEfiPhDwwWy54U9V8lOTLOoZqe6kpT7xOy6eQI/nfIXiMD/C9L08TvXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxG6dqVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C00CC4CEE9;
+	Thu, 13 Feb 2025 15:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458301;
-	bh=nkjkTUJdN+rbzhVLOaNH4/izYAa8xhWROw6taGsHiG4=;
+	s=korg; t=1739460615;
+	bh=cjhox9k6a0zJveRRwx8KXkxfCnpvgUzB+aRb6Y0pL2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsIpAY+0tozBbeHyjMF2tAklL8ugE2X0E8uiZpFMD1kEC1Q2XTS9oLZrbwdgxjp5Q
-	 95uTLqHOS4HnFZH/wDjSF3cIBExRApNfVQ7za0W5uLnKcZChRQge7eQAGXbbY60/Iu
-	 GKGzAhW4iS9obNo+BFaq61brg2J7EDI2V/GhUm+s=
+	b=QxG6dqVuv9cGY4lOT0NxO5mRNIrJMhuTsux7j4vS5wozHR4gbDK8vKOEZTtgAscH7
+	 niT5r7bJ4IUSldIfDUinWxH4tjmPMzxVmJfBOaAOsd+fZlhVxfjEDP+fAQwN6c8V2m
+	 Q0saFU8RfkrGhTcYnHLO+huk9nkh3hVN/Cu6OVh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.12 359/422] vfio/platform: check the bounds of read/write syscalls
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 136/273] usbnet: ipheth: fix possible overflow in DPE length check
 Date: Thu, 13 Feb 2025 15:28:28 +0100
-Message-ID: <20250213142450.405091188@linuxfoundation.org>
+Message-ID: <20250213142412.711471938@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
+commit c219427ed296f94bb4b91d08626776dc7719ee27 upstream.
 
-count and offset are passed from user space and not checked, only
-offset is capped to 40 bits, which can be used to read/write out of
-bounds of the device.
+Originally, it was possible for the DPE length check to overflow if
+wDatagramIndex + wDatagramLength > U16_MAX. This could lead to an OoB
+read.
 
-Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Move the wDatagramIndex term to the other side of the inequality.
+
+An existing condition ensures that wDatagramIndex < urb->actual_length.
+
+Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
 Cc: stable@vger.kernel.org
-Reported-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/usb/ipheth.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -393,6 +393,11 @@ static ssize_t vfio_platform_read_mmio(s
- 
- 	count = min_t(size_t, count, reg->size - off);
- 
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -474,6 +479,11 @@ static ssize_t vfio_platform_write_mmio(
- 
- 	if (off >= reg->size)
- 		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
-+	if (off >= reg->size)
-+		return -EINVAL;
- 
- 	count = min_t(size_t, count, reg->size - off);
- 
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 46afb95ffabe..45daae234cb8 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -243,8 +243,8 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ 	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
+ 	       le16_to_cpu(dpe->wDatagramLength) != 0) {
+ 		if (le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
+-		    le16_to_cpu(dpe->wDatagramIndex) +
+-		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length) {
++		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
++		    le16_to_cpu(dpe->wDatagramIndex)) {
+ 			dev->net->stats.rx_length_errors++;
+ 			return retval;
+ 		}
+-- 
+2.48.1
+
 
 
 
