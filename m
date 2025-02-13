@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-116175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE3DA347B7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2902CA34467
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B40213AE130
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06A63B27EE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206BD14F121;
-	Thu, 13 Feb 2025 15:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C575145A11;
+	Thu, 13 Feb 2025 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XE3S2bIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bskXH1rS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F7514A605;
-	Thu, 13 Feb 2025 15:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C602135AA;
+	Thu, 13 Feb 2025 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460582; cv=none; b=Haed0OmdFYbr5D4FkcgaftJsk8o7HeUGUEMEIp/4aeMdROkvINC7l4juYJludIUnCs3MMNrz70b79mEO5seKBmmRaOxQ9YsTpquKBBC71+DKkaE7+0fgln/GWYNw4v/L32GsPRu6AGmRBpLzXSIraMXjfSw+rzcsV3abvCUxLJE=
+	t=1739458355; cv=none; b=bhJCunYjuYUIOqY+EA0J+SjlIOvy1SiLKVUXOUAcpFV5KHRx3fPpZgH6PCX9Hb1AcLon+2W045Mji9Gli/3yygedal9iaJyWknh4NVGyD15nZUSs7lt24zLhNm+MesXKSBf31KTzfMGOYV7D0gedNdZR8O97FZlrTxDwSgcNjjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460582; c=relaxed/simple;
-	bh=A8TwQ8rCjc+WS4aOGH40voXoYx2EpNF8wSiqyk2uRGU=;
+	s=arc-20240116; t=1739458355; c=relaxed/simple;
+	bh=28FHwC4ei880fN3tWRVxyZJf35yunwLhMiLB7VgZkak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgdGUad8WaYsheMAlNC9Kfj4C6Bmi8lHidxZ3LkoX2MZh9JCIJjcLHK460u8ZT5UtHTAXgDXidFI15drPj8yEkbkGRqtpzW88wy5mkrcaE/DSGUHJm1AVRXT7UUH43IhRWDxKEuROUkWe7EVEhjb5VOl5v50cE36NMfdyNuBC1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XE3S2bIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B6FC4CED1;
-	Thu, 13 Feb 2025 15:29:42 +0000 (UTC)
+	 MIME-Version; b=kczZxWrOGwOKPcq99Gu4nvtZ4wPg2bgqIF8bfpmW/UQF+ardJGl3nCJD2j+SKPkMpPNz2w0nImJ+PR3ap/AU4tmHyjsg4aDaHcP540U7ctOqAwYgPRnbjnSXz8dsprGhjftqCKauCOB8usEx/eIXx+NmtVFaw5TMnmDpVVMWAZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bskXH1rS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4A7C4CEE5;
+	Thu, 13 Feb 2025 14:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460582;
-	bh=A8TwQ8rCjc+WS4aOGH40voXoYx2EpNF8wSiqyk2uRGU=;
+	s=korg; t=1739458355;
+	bh=28FHwC4ei880fN3tWRVxyZJf35yunwLhMiLB7VgZkak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XE3S2bIvpMmznf4e6ru8Dy+nH97nQg1vvay52h5VZULMyG+bPRfsM7r2DxGGcfLLn
-	 zCnx9gKvJGyWb6yemRrPgtNh9QO6de2K4DhNMdyoMQqJZpK3J5885kCMgAvNhGdsX4
-	 xAparUCvjE6wI9sqg1o31t6Kys0MDlSWT2VAkgnw=
+	b=bskXH1rSwECrOVtftMfqjKVcfAjGhROQHafIfMiEThUvTBE078ypFghXBlIiM+F3g
+	 Cnp16hTwuFzgpBuwlOjDQXVz3yJg6ysY30igvuHHodC7J60RFs/sw6EoELSUAzN3lk
+	 xhl9jOzPfX3HNm+GwVZo1wavN3UoVvTTtupJBsDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 153/273] block: dont revert iter for -EIOCBQUEUED
+	stable@kernel.org,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.12 376/422] misc: fastrpc: Fix registered buffer page address
 Date: Thu, 13 Feb 2025 15:28:45 +0100
-Message-ID: <20250213142413.386309560@linuxfoundation.org>
+Message-ID: <20250213142451.056882039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit b13ee668e8280ca5b07f8ce2846b9957a8a10853 upstream.
+commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
 
-blkdev_read_iter() has a few odd checks, like gating the position and
-count adjustment on whether or not the result is bigger-than-or-equal to
-zero (where bigger than makes more sense), and not checking the return
-value of blkdev_direct_IO() before doing an iov_iter_revert(). The
-latter can lead to attempting to revert with a negative value, which
-when passed to iov_iter_revert() as an unsigned value will lead to
-throwing a WARN_ON() because unroll is bigger than MAX_RW_COUNT.
+For registered  buffers, fastrpc driver sends the buffer information
+to remote subsystem. There is a problem with current implementation
+where the page address is being sent with an offset leading to
+improper buffer address on DSP. This is leads to functional failures
+as DSP expects base address in page information and extracts offset
+information from remote arguments. Mask the offset and pass the base
+page address to DSP.
 
-Be sane and don't revert for -EIOCBQUEUED, like what is done in other
-spots.
+This issue is observed is a corner case when some buffer which is registered
+with fastrpc framework is passed with some offset by user and then the DSP
+implementation tried to read the data. As DSP expects base address and takes
+care of offsetting with remote arguments, passing an offsetted address will
+result in some unexpected data read in DSP.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+All generic usecases usually pass the buffer as it is hence is problem is
+not usually observed. If someone tries to pass offsetted buffer and then
+tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
+
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Cc: stable@kernel.org
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/fops.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -718,11 +718,12 @@ static ssize_t blkdev_read_iter(struct k
- 		file_accessed(iocb->ki_filp);
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -992,7 +992,7 @@ static int fastrpc_get_args(u32 kernel,
+ 			mmap_read_lock(current->mm);
+ 			vma = find_vma(current->mm, ctx->args[i].ptr);
+ 			if (vma)
+-				pages[i].addr += ctx->args[i].ptr -
++				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
+ 			mmap_read_unlock(current->mm);
  
- 		ret = blkdev_direct_IO(iocb, to);
--		if (ret >= 0) {
-+		if (ret > 0) {
- 			iocb->ki_pos += ret;
- 			count -= ret;
- 		}
--		iov_iter_revert(to, count - iov_iter_count(to));
-+		if (ret != -EIOCBQUEUED)
-+			iov_iter_revert(to, count - iov_iter_count(to));
- 		if (ret < 0 || !count)
- 			goto reexpand;
- 	}
 
 
 
