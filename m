@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-115344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B66A34345
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A85CA34529
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943761894683
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F1F16E57C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F34221562;
-	Thu, 13 Feb 2025 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF6B200115;
+	Thu, 13 Feb 2025 15:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvhV2Lkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtpO5pbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7BE13D8A4;
-	Thu, 13 Feb 2025 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE7426B096;
+	Thu, 13 Feb 2025 15:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457724; cv=none; b=i1SoeQxBmOnDv1C8KgP2htoruisqNbbpM1NnrvQH/1zGoXZ3wKjzwZIqdXDvbLes6tYyWJ22Uw/dLNuBGjAFpR1VBWtTgAj0vp6BeeDCdl9Hof+FUF3y9jLb/qIzgCDhe4gFz6vZD0Hh0A2d0kXrzUgawCMqg9nTKtJz/jBlveU=
+	t=1739459027; cv=none; b=bWvsK7FBJOjHsPBx0MDPLlQaLtoko7Z1L5wY4+bLb2AMpTZGT9j4H3wd8TLzTmC/8hSNB2gQ2M5ztWTeoJu4+/iX14P0/pXNv9Obg/y0fJHzPrIqopI2zJXYL9ga03mB+Nr5psnt/X2sn7kHM27kMdYhLlFQH5jeDR9Vk5RzAcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457724; c=relaxed/simple;
-	bh=Np7teSEyhjwSN9Im41U03ugF3EGycp0eoKggnHO/6vM=;
+	s=arc-20240116; t=1739459027; c=relaxed/simple;
+	bh=mcpXKa/PnI9r2OWy0tJKdQy1eE1o4J6l+sr8lQ1ZGio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vr8pi5XpmXYicxTU5g+m61U4UH7WA/QouB71Dp6UIBvxtDJyJtDePe2Exe1KdXsWVF9xIc2YoEZXmBtV1NEm16uHdGnuvcpH/fwdcFj/di2awzI7ao2ekL04CByVU2RDQ4DyDaz/7AnCM4sDo88Q7ZJY1bep9TT38Llh8kW5XgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvhV2Lkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B88C4CED1;
-	Thu, 13 Feb 2025 14:42:03 +0000 (UTC)
+	 MIME-Version; b=QUkvOWtjmvvGa+s4+Rvd0w56UKXqdL1uiVxjrvrhOr0tONDI72u5DQQG2h1AocRuezQKStCNweVCMf8Mj4u8D66PCOEKuSmuWHoJQGAQkSS2cqdvHpUzYV2TxDyI0KIlN80KANiNz2l6eJ6GNiZz9Gzqhi5INQ/wuZI9BPpk66o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtpO5pbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4365EC4CEE4;
+	Thu, 13 Feb 2025 15:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457724;
-	bh=Np7teSEyhjwSN9Im41U03ugF3EGycp0eoKggnHO/6vM=;
+	s=korg; t=1739459026;
+	bh=mcpXKa/PnI9r2OWy0tJKdQy1eE1o4J6l+sr8lQ1ZGio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvhV2Lkp7irObCWHYuvpIU7+8rLsDarivPkkIbpvU0I42VkTo/ObPxX2g8wgmEHFD
-	 6EwCbcRt8mOf8c4aPfFpIqGpyYwck2jsLAJg4JqKRhFAp5y8yTr/8Pnpco47HSGmOZ
-	 HT3jrMH9yczXhIRgH0N/UsxcKaharAKbX4BMOMCY=
+	b=YtpO5pbBGvCg9keAcMrsJ2swL2XbXtcN6OuRNL3gIq8unPEzH0UAIIF8ZJm6lof12
+	 Qymy2BJ69lkeLbHlcEqvPOrUKrx3pT26k2+zrE0/JNhUIKOd5ARDr6Mhy2+rRRXoKg
+	 Z3CQ9R11SN4jV3f9zqTEJ8eu1J3vwcp9BAtKtmHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Vidya Srinivas <vidya.srinivas@intel.com>,
-	Brian Geffon <bgeffon@google.com>,
-	Tomasz Figa <tfiga@google.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 163/422] drm/i915: Fix page cleanup on DMA remap failure
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maarten Lankhorst <dev@lankhorst.se>
+Subject: [PATCH 6.13 147/443] drm/modeset: Handle tiled displays in pan_display_atomic.
 Date: Thu, 13 Feb 2025 15:25:12 +0100
-Message-ID: <20250213142442.836126299@linuxfoundation.org>
+Message-ID: <20250213142446.271292776@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-commit fa6182c8b13ebfdc70ebdc09161a70dd8131f3b1 upstream.
+commit f4a9dd57e549a17a7dac1c1defec26abd7e5c2d4 upstream.
 
-When converting to folios the cleanup path of shmem_get_pages() was
-missed. When a DMA remap fails and the max segment size is greater than
-PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
-size. The cleanup code isn't properly using the folio apis and as a
-result isn't handling compound pages correctly.
+Tiled displays have a different x/y offset to begin with. Instead of
+attempting to remember this, just apply a delta instead.
 
-v2 -> v3:
-(Ville) Just use shmem_sg_free_table() as-is in the failure path of
-shmem_get_pages(). shmem_sg_free_table() will clear mapping unevictable
-but it will be reset when it retries in shmem_sg_alloc_table().
+This fixes the first tile being duplicated on other tiles when vt
+switching.
 
-v1 -> v2:
-(Ville) Fixed locations where we were not clearing mapping unevictable.
-
-Cc: stable@vger.kernel.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
-Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
-Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Suggested-by: Tomasz Figa <tfiga@google.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250127204332.336665-1-bgeffon@google.com
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-(cherry picked from commit 9e304a18630875352636ad52a3d2af47c3bde824)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250116142825.3933-1-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/drm_fb_helper.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -209,8 +209,6 @@ static int shmem_get_pages(struct drm_i9
- 	struct address_space *mapping = obj->base.filp->f_mapping;
- 	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
- 	struct sg_table *st;
--	struct sgt_iter sgt_iter;
--	struct page *page;
- 	int ret;
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -1354,14 +1354,14 @@ int drm_fb_helper_set_par(struct fb_info
+ }
+ EXPORT_SYMBOL(drm_fb_helper_set_par);
  
- 	/*
-@@ -239,9 +237,7 @@ rebuild_st:
- 		 * for PAGE_SIZE chunks instead may be helpful.
- 		 */
- 		if (max_segment > PAGE_SIZE) {
--			for_each_sgt_page(page, sgt_iter, st)
--				put_page(page);
--			sg_free_table(st);
-+			shmem_sg_free_table(st, mapping, false, false);
- 			kfree(st);
+-static void pan_set(struct drm_fb_helper *fb_helper, int x, int y)
++static void pan_set(struct drm_fb_helper *fb_helper, int dx, int dy)
+ {
+ 	struct drm_mode_set *mode_set;
  
- 			max_segment = PAGE_SIZE;
+ 	mutex_lock(&fb_helper->client.modeset_mutex);
+ 	drm_client_for_each_modeset(mode_set, &fb_helper->client) {
+-		mode_set->x = x;
+-		mode_set->y = y;
++		mode_set->x += dx;
++		mode_set->y += dy;
+ 	}
+ 	mutex_unlock(&fb_helper->client.modeset_mutex);
+ }
+@@ -1370,16 +1370,18 @@ static int pan_display_atomic(struct fb_
+ 			      struct fb_info *info)
+ {
+ 	struct drm_fb_helper *fb_helper = info->par;
+-	int ret;
++	int ret, dx, dy;
+ 
+-	pan_set(fb_helper, var->xoffset, var->yoffset);
++	dx = var->xoffset - info->var.xoffset;
++	dy = var->yoffset - info->var.yoffset;
++	pan_set(fb_helper, dx, dy);
+ 
+ 	ret = drm_client_modeset_commit_locked(&fb_helper->client);
+ 	if (!ret) {
+ 		info->var.xoffset = var->xoffset;
+ 		info->var.yoffset = var->yoffset;
+ 	} else
+-		pan_set(fb_helper, info->var.xoffset, info->var.yoffset);
++		pan_set(fb_helper, -dx, -dy);
+ 
+ 	return ret;
+ }
 
 
 
