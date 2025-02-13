@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064AEA34405
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE56EA3474A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8741896878
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 618741898304
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C42026B098;
-	Thu, 13 Feb 2025 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18FE15B0EF;
+	Thu, 13 Feb 2025 15:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nkd9Lifa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+nizPMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB1226B080;
-	Thu, 13 Feb 2025 14:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED8D156F3F;
+	Thu, 13 Feb 2025 15:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458156; cv=none; b=CLipA51Ex4VU5jOqTOfnFIhoTzdhBbe7+csnUvVoIID9jHB8UNI8OPGPAzvmMQsIDFJ0u3AdyPLg3lS+wqeUCirxPOgGWTuR1Dbp/ujGmwLanomKaGeL9uO+1bIhDQQBCbR9+Fu+7kDaG2sAd0Nap492sxgazOUVFH0Mw3dSosg=
+	t=1739460388; cv=none; b=AQjtnX6/Zt3bo6lCTRtxXtQ9UxeeP6p3tWadTuVDRr5njvWmWB3w7zWH/uUBYBdyTx4T/k+/pPBwjv5Yjd4i1Q3IGx0HPe4+7f4aDe5cUDYZyDRjJQU4aUC497JnsRClpIuKz+V7/eUvhEOY4dJNmXToP48ltxNIrH5X5ZL6WIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458156; c=relaxed/simple;
-	bh=SnJW2/OoWLPXFlWY5uTI1ttnetqQH4pGGMXhnHi8d4Y=;
+	s=arc-20240116; t=1739460388; c=relaxed/simple;
+	bh=gETDcpGR63cA1IKSbNs4HXlPgqNM7NyCS4ibmLdioII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tloYiT8RFj1yZHYSv9ARNmPg431zJA8SPqVeqL8gMUaKfxvZoQd3LrGJB2dCLZGoMdljXZV1nqTn4ceO67CE/m3IgBg+Ry65TvnbKy76Wme+XJLpD/cnOMHqOfFBcYLr5Ux7I+0U+2SLoB5W8dmGMUJtzbTvd7aP4/I4aJeb7Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nkd9Lifa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7551C4CED1;
-	Thu, 13 Feb 2025 14:49:15 +0000 (UTC)
+	 MIME-Version; b=VJFDrkN8PZHAVP4Eun51jvAX/m2qPN2KBuEzST7AbSHSIkLQkCBnuzTlbUrneA2fpQxGKEN6A60rcLU8t0GoMNGeFnTHmLDdHdC0z88xoEI09FVoDh3m4ofrvMkLdF6xY3WPwgIjp/Wq+ClZD8ecLU4A2VAUJXg47Y28z1F/X+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+nizPMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DC7C4CEE5;
+	Thu, 13 Feb 2025 15:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458156;
-	bh=SnJW2/OoWLPXFlWY5uTI1ttnetqQH4pGGMXhnHi8d4Y=;
+	s=korg; t=1739460388;
+	bh=gETDcpGR63cA1IKSbNs4HXlPgqNM7NyCS4ibmLdioII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nkd9Lifa8pf+1GZV6IWma3AZCH3lRj1flEzXT5zmSWo6Q5HBh+Y+LwrXL1REArXw6
-	 h+sglEp5Giuh/GlFIM2tDfmaw9Id94Aqu4OAhUUzfY3/z0ydzj0G90VKfvq2UK4bWd
-	 goCcQLi3iX1Kx9bnxivvVYeHtgP9id3njgx9G6/k=
+	b=l+nizPMAio57v+34lYeu+E0LtIDZ9tO+X1AbVXxdqrYb8PZHnyXykdKTKtDqUHoPI
+	 q8+WKpE8NvNImNUJVD9tsavs4Jq5r89kmQzXBXYyFOcNGVcCIfQflOZQaHdldszlBv
+	 dJs2jYtHtL5kgdzG7fpp13k6Z2dsszyN/EHyfX9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.12 318/422] soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove
-Date: Thu, 13 Feb 2025 15:27:47 +0100
-Message-ID: <20250213142448.821121689@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 096/273] ksmbd: fix integer overflows on 32 bit systems
+Date: Thu, 13 Feb 2025 15:27:48 +0100
+Message-ID: <20250213142411.135335023@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit c9c0036c1990da8d2dd33563e327e05a775fcf10 upstream.
+commit aab98e2dbd648510f8f51b83fbf4721206ccae45 upstream.
 
-Driver removal should fully clean up - unmap the memory.
+On 32bit systems the addition operations in ipc_msg_alloc() can
+potentially overflow leading to memory corruption.
+Add bounds checking using KSMBD_IPC_MAX_PAYLOAD to avoid overflow.
 
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/transport_ipc.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -305,6 +305,7 @@ static void mtk_devapc_remove(struct pla
- 	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -570,6 +570,9 @@ ksmbd_ipc_spnego_authen_request(const ch
+ 	struct ksmbd_spnego_authen_request *req;
+ 	struct ksmbd_spnego_authen_response *resp;
  
- 	stop_devapc(ctx);
-+	iounmap(ctx->infra_base);
- }
++	if (blob_len > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_spnego_authen_request) +
+ 			blob_len + 1);
+ 	if (!msg)
+@@ -749,6 +752,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
+ 	struct ksmbd_rpc_command *req;
+ 	struct ksmbd_rpc_command *resp;
  
- static struct platform_driver mtk_devapc_driver = {
++	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
+ 	if (!msg)
+ 		return NULL;
+@@ -797,6 +803,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
+ 	struct ksmbd_rpc_command *req;
+ 	struct ksmbd_rpc_command *resp;
+ 
++	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
+ 	if (!msg)
+ 		return NULL;
 
 
 
