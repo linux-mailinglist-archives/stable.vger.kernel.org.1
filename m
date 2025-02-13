@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8CDA3458A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F585A342F5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0ED73B26F6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B5C16E08D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0C615689A;
-	Thu, 13 Feb 2025 15:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986E12222C7;
+	Thu, 13 Feb 2025 14:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WZr2qaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMeizPOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF626B087;
-	Thu, 13 Feb 2025 15:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CF5139566;
+	Thu, 13 Feb 2025 14:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459102; cv=none; b=reY9+Azu3RwqzdkHbR5nUH8FUivrhCFgKCVINI4ylOicuTnItaK+GZGzzdnnPzRWvYY0Kpi2atTgAgVFpJM+1cgB6VQ82BSe2bRj3KCkAErszWXrK05BiArszfww+Vw8MdswjoyTFGt5gkaMfv9C7bk6553O72x7PxMuTy1/Mpo=
+	t=1739457684; cv=none; b=p+4wVfBsIypdF2+JQ+NNRH9EuIrQgfgeMDuDprUexR2nbUNZGWUuZ0KTpBXXhvWmn5z53UZuRgzC0vbm+hqvpmkPHDSjG+q5QwycR+U/Qw99sqpfYuuzyK56ZwsJeq89MXWjkQb40qCpm+EWFe92O9aHTMOFnBVfc+OpylqQO2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459102; c=relaxed/simple;
-	bh=MierPASdfVZ9g/kzjhQCPgU/9ipYo2OmmCzWqMJg89o=;
+	s=arc-20240116; t=1739457684; c=relaxed/simple;
+	bh=QSPFqRnoXFCjypEKaVmAYk3eexkiJ54mXszmePG1bco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVZlpm9fqovNSCUcptV7K2xlPiVt8xAFk/WG7rxnbVOwc1w3Hh94vf5ili1e1MZXowpkryEMroDtmmINqXCgt8+d8ck7SObT/Q/zVFF3phNU+fNH8b+zTkbj3oIlWeOdqRUWBFzX/L/rUVwRb0tCHhfCx4KbgiLfxEFSvfjQpzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WZr2qaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7170C4CED1;
-	Thu, 13 Feb 2025 15:05:01 +0000 (UTC)
+	 MIME-Version; b=TPAkcEAEljRRv97iqdtWgkEwg5OAKld4ws/qjjOksJBO3hrmDoflQvoG4FZqPCjGtfZhf5qKfxQzDpoykot5E66oUovIyCnBCWr865ypecHNRs3n4KyzuVz+hncj3I42xdFgSOk1NCvqPKZfWS6Epf1254/QJWtuCnbZJcict+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMeizPOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DBAC4CED1;
+	Thu, 13 Feb 2025 14:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459102;
-	bh=MierPASdfVZ9g/kzjhQCPgU/9ipYo2OmmCzWqMJg89o=;
+	s=korg; t=1739457684;
+	bh=QSPFqRnoXFCjypEKaVmAYk3eexkiJ54mXszmePG1bco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WZr2qaFHwjFgNk6x4cqpDqBzxKOjbRh3wn4S7zPSbcrkXsWcHFijEU3eO75/ll16
-	 Hf6a6wVGkE7M1bDN+L8Wj35nsdDrzl3N2A3agn++ayFq6+ONFApFvEtlXQ0qsQXaFi
-	 TKNH47FrN0K/UAsVLW7PemfS2FFXPufC1d8q8/+0=
+	b=EMeizPOY7vJHtN1zlMTkv0vNLgCLiN5dLU9MUPvGGLPw5bR77IKxMORit4I7bK5/x
+	 egBQITmMCShJVvkFvfV9mgM7Cy5eYqigBqzADgTJ3qEOEUanDPEd7Ak201+PRCJoSn
+	 4whiHAMhKm4kEIRElO0D0mMLHZwzcLgEO7ZTCqy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.13 167/443] remoteproc: omap: Handle ARM dma_iommu_mapping
+	Anastasia Belova <abelova@astralinux.ru>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 183/422] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
 Date: Thu, 13 Feb 2025 15:25:32 +0100
-Message-ID: <20250213142447.044817641@linuxfoundation.org>
+Message-ID: <20250213142443.608671682@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-commit 1dc7c8ed7cb378dd3974387692dfa833aee718d4 upstream.
+commit 89aa5925d201b90a48416784831916ca203658f9 upstream.
 
-It's no longer practical for the OMAP IOMMU driver to trick
-arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
-same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
-the arch code's dma_iommu_mapping out of the way to avoid problems.
+aggr_state and unit fields are u32. The result of their
+multiplication may not fit in this type.
 
-Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Beleswar Padhi <b-padhi@ti.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/6186e311cb6f64a787f87fd41e49a73f409b789c.1730136799.git.robin.murphy@arm.com
-[Fixed changelog title]
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Add explicit casting to prevent overflow.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Link: https://lore.kernel.org/r/20241203084231.6001-1-abelova@astralinux.ru
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/omap_remoteproc.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/clk/qcom/clk-rpmh.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/remoteproc/omap_remoteproc.c
-+++ b/drivers/remoteproc/omap_remoteproc.c
-@@ -37,6 +37,10 @@
+--- a/drivers/clk/qcom/clk-rpmh.c
++++ b/drivers/clk/qcom/clk-rpmh.c
+@@ -329,7 +329,7 @@ static unsigned long clk_rpmh_bcm_recalc
+ {
+ 	struct clk_rpmh *c = to_clk_rpmh(hw);
  
- #include <linux/platform_data/dmtimer-omap.h>
+-	return c->aggr_state * c->unit;
++	return (unsigned long)c->aggr_state * c->unit;
+ }
  
-+#ifdef CONFIG_ARM_DMA_USE_IOMMU
-+#include <asm/dma-iommu.h>
-+#endif
-+
- #include "omap_remoteproc.h"
- #include "remoteproc_internal.h"
- 
-@@ -1323,6 +1327,19 @@ static int omap_rproc_probe(struct platf
- 	/* All existing OMAP IPU and DSP processors have an MMU */
- 	rproc->has_iommu = true;
- 
-+#ifdef CONFIG_ARM_DMA_USE_IOMMU
-+	/*
-+	 * Throw away the ARM DMA mapping that we'll never use, so it doesn't
-+	 * interfere with the core rproc->domain and we get the right DMA ops.
-+	 */
-+	if (pdev->dev.archdata.mapping) {
-+		struct dma_iommu_mapping *mapping = to_dma_iommu_mapping(&pdev->dev);
-+
-+		arm_iommu_detach_device(&pdev->dev);
-+		arm_iommu_release_mapping(mapping);
-+	}
-+#endif
-+
- 	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
- 	if (ret)
- 		return ret;
+ static const struct clk_ops clk_rpmh_bcm_ops = {
 
 
 
