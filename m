@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E0AA3434C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C435A344B8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 754C0169BC4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB4197A369B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF89C13D8A4;
-	Thu, 13 Feb 2025 14:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF87215666B;
+	Thu, 13 Feb 2025 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1G0wGRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2u6u16u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3E5281349;
-	Thu, 13 Feb 2025 14:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0615665C;
+	Thu, 13 Feb 2025 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457798; cv=none; b=ACS91Zl7tpXI/xUO8AqCmaeaR3mwnmew/juyEvbZEC8zjjPOEJSCwK2qJo5WQJHS/5DY91HJV7mDu0mU8mrurkzwk4Ya+yZtn8KIJcX3zMLLWo43C8zGaLS+bQkHAlh+7/yhlaGxRXVObmH4omfob65oFpxtp4EmSU90ERCZnQE=
+	t=1739459218; cv=none; b=enzfPuk8sMLejUb0aM2G084P3Tg7cM8K6nktHKgFq0T2kOJr/dImlL2/gZ6NtrI58krjTAvPGHcpAY6UmY/kUs9dJDxuQUUPLZADx6bXjMYwkLJWL1XcmxvgxDipsmZf7beWKhYlS3RbUFdtPtyTmi7l9I2YrAF4sysm1xGkJOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457798; c=relaxed/simple;
-	bh=p+I1C2iNXu8oUXaO+GGzIS/TyJWYdVMBxR6fIsCJ7Q4=;
+	s=arc-20240116; t=1739459218; c=relaxed/simple;
+	bh=VjsUspuTwcMcXXkV03I7xS4jW9zxtmE82DV8xFc5U80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzLe1A328FnYJbPl6dGiTvTOwvYVcRJkW1XQg3kfxRTtlsJVJEYOQMN11tvWfrv0DN8JOnfjINVKRcx0RmTG1NZwUplK/u4Fo+YDCwdujcOksZKuXq0choNy48qC9n0AHDEkQHcQLO1rRdK+dYHAxl+JCwLx4hrC9tKQ6hwcVS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1G0wGRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE81C4CED1;
-	Thu, 13 Feb 2025 14:43:17 +0000 (UTC)
+	 MIME-Version; b=j1CMDyNF8KPSDIHxV5alqEvVvct7Q5AjJ2AXq53y2jogmXt+KgUOtU0ND8peieTHftnUD0hG9kVLvz4Zx3RIgyJz37BTCvrvOTjzj/MlPt2H2MyBZurKnhAkyy2cBg+O565wJJ0gYXUGtye/89FjOMMRBQ5vTwJ+vtAkstggfvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2u6u16u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0495C4CED1;
+	Thu, 13 Feb 2025 15:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457798;
-	bh=p+I1C2iNXu8oUXaO+GGzIS/TyJWYdVMBxR6fIsCJ7Q4=;
+	s=korg; t=1739459218;
+	bh=VjsUspuTwcMcXXkV03I7xS4jW9zxtmE82DV8xFc5U80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1G0wGRXkrL6MYaJ00Ts0TfIOVU8Cjc+FVaqQaaBS0+x+/EK+62+cMAUb4r+5fqy4
-	 Vo2IlyQ3M1q5HbrOklxHWyvNGQtJuw/ctqjRTRz2RowsUQ0UxgDwEurbYe94FiJIdp
-	 dfIHRGwVILzpWt1KM+cWb3mvtjB1MqsKG3pe7vhQ=
+	b=k2u6u16uhNjZIkqTPT+Xi4fLQJp1LoEEPhJtja/OpbnsCDljk0AL+b4jDX44qbdXS
+	 rDQZA2HrPVuqlkD+sO8pK5mHsZtBxnK/e9av1fwELpWIw0hMLhz69PRFKrdePUNN34
+	 e8Xi0SJ5lWzBVQAG2gefdMuVXj81BGjds7nO0b7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 215/422] usbnet: ipheth: refactor NCM datagram loop
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 199/443] clk: qcom: gcc-sm8650: Do not turn off PCIe GDSCs during gdsc_disable()
 Date: Thu, 13 Feb 2025 15:26:04 +0100
-Message-ID: <20250213142444.833085887@linuxfoundation.org>
+Message-ID: <20250213142448.291851983@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 2a9a196429e98fcc64078366c2679bc40aba5466 upstream.
+commit a57465766a91c6e173876f9cbb424340e214313f upstream.
 
-Introduce an rx_error label to reduce repetitions in the header
-signature checks.
+With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+can happen during scenarios such as system suspend and breaks the resume
+of PCIe controllers from suspend.
 
-Store wDatagramIndex and wDatagramLength after endianness conversion to
-avoid repeated le16_to_cpu() calls.
+So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+during gdsc_disable() and allow the hardware to transition the GDSCs to
+retention when the parent domain enters low power state during system
+suspend.
 
-Rewrite the loop to return on a null trailing DPE, which is required
-by the CDC NCM spec. In case it is missing, fall through to rx_error.
-
-This change does not fix any particular issue. Its purpose is to
-simplify a subsequent commit that fixes a potential OoB read by limiting
-the maximum amount of processed DPEs.
-
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org # 6.8
+Fixes: c58225b7e3d7 ("clk: qcom: add the SM8650 Global Clock Controller driver, part 1")
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on QRD8650
+Link: https://lore.kernel.org/r/20241219170011.70140-2-manivannan.sadhasivam@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c |   42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ drivers/clk/qcom/gcc-sm8650.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -213,9 +213,9 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	struct usb_cdc_ncm_ndp16 *ncm0;
- 	struct usb_cdc_ncm_dpe16 *dpe;
- 	struct ipheth_device *dev;
-+	u16 dg_idx, dg_len;
- 	int retval = -EINVAL;
- 	char *buf;
--	int len;
+--- a/drivers/clk/qcom/gcc-sm8650.c
++++ b/drivers/clk/qcom/gcc-sm8650.c
+@@ -3437,7 +3437,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- 	dev = urb->context;
+@@ -3448,7 +3448,7 @@ static struct gdsc pcie_0_phy_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_phy_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
-@@ -227,39 +227,43 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	ncmh = urb->transfer_buffer;
- 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
- 	    /* On iOS, NDP16 directly follows NTH16 */
--	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16)))
-+		goto rx_error;
+@@ -3459,7 +3459,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- 	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
--	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN))
-+		goto rx_error;
+@@ -3470,7 +3470,7 @@ static struct gdsc pcie_1_phy_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_phy_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- 	dpe = ncm0->dpe16;
--	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
--	       le16_to_cpu(dpe->wDatagramLength) != 0) {
--		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
--		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
--		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
--		    le16_to_cpu(dpe->wDatagramIndex)) {
-+	while (true) {
-+		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
-+		dg_len = le16_to_cpu(dpe->wDatagramLength);
-+
-+		/* Null DPE must be present after last datagram pointer entry
-+		 * (3.3.1 USB CDC NCM spec v1.0)
-+		 */
-+		if (dg_idx == 0 && dg_len == 0)
-+			return 0;
-+
-+		if (dg_idx < IPHETH_NCM_HEADER_SIZE ||
-+		    dg_idx >= urb->actual_length ||
-+		    dg_len > urb->actual_length - dg_idx) {
- 			dev->net->stats.rx_length_errors++;
- 			return retval;
- 		}
- 
--		buf = urb->transfer_buffer + le16_to_cpu(dpe->wDatagramIndex);
--		len = le16_to_cpu(dpe->wDatagramLength);
-+		buf = urb->transfer_buffer + dg_idx;
- 
--		retval = ipheth_consume_skb(buf, len, dev);
-+		retval = ipheth_consume_skb(buf, dg_len, dev);
- 		if (retval != 0)
- 			return retval;
- 
- 		dpe++;
- 	}
- 
--	return 0;
-+rx_error:
-+	dev->net->stats.rx_errors++;
-+	return retval;
- }
- 
- static void ipheth_rcvbulk_callback(struct urb *urb)
 
 
 
