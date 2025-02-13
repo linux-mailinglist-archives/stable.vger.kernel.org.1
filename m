@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDA1A34315
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028FBA34528
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB2C1893D7E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F4583B2749
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B62241683;
-	Thu, 13 Feb 2025 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761CE156F41;
+	Thu, 13 Feb 2025 15:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLpifsKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NM5MaVh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7007124167F;
-	Thu, 13 Feb 2025 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F2C1547C5;
+	Thu, 13 Feb 2025 15:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457625; cv=none; b=A/e18LEUkMe0t890t5GOhta3xyjKOeNiZc9ISzmtLLgZebvGT3N7sl5VYvA/NCwjmGNipCrbTAkwk6Xq6H+eO0SjbeSOkT6gmWv05HZXX9sELDFLxAjAmM8WJ34FkElDDgc1Q8nNPJX34LaV8hjHIsZbO9d9Qz05yY+RVwWNwGI=
+	t=1739458892; cv=none; b=GvXVs/wQr3m6CPLoSuDtdP80sBQ7BnyeG+las5H9dCta8Z8q+BscHOgHlrUxpSjhAyVcdLjaDBjvhUHhEdBYBKTTCVvizr+bN37NYaQuT8LsJfFZCqqOApXKFPuQNtUGGL+C5zUqZGTZOh/zu8bDbdvpwXS0cLWlMnjSnG/HBNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457625; c=relaxed/simple;
-	bh=aleAURu2BmRsW9krMxaH9GeYw5FMKaJIK7yRqEh+FRk=;
+	s=arc-20240116; t=1739458892; c=relaxed/simple;
+	bh=MBFTxJJN0eOg2xq1Kd+wPmoAQ955W+DXB2R+TNBCdt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcmXjgIaR/KtvvPmkQRspyODC/tZvP3XlGflonXs7mFwZrF2Mg3ypgXXUn8LEtYKuyiC5wC2OFWhMKzRJJ4pmAivLs6vk38oDF1wHZPdPUZczbqxABzwiWlF3paByE8Q6Q9iULSHqd1BLKkuun1v4kCES40G3Ps9ismFnDMi0Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLpifsKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6236FC4CEEB;
-	Thu, 13 Feb 2025 14:40:24 +0000 (UTC)
+	 MIME-Version; b=hk827iH/GfUqQikLWWjAgNiBA7ChpaJk0d6xSwpo7KuD2xHON7CwtwmuGqCC5DetWca0fT2SrXfjCKMr6FM+cb56fiLcVyxRcF/+hqNUEjEr/PtZu/rF2gX/Bw2924qQQnoXun2jJeqe85Klzey3ohdIfpDiQXnoIG4zTMw8dTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NM5MaVh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDE9C4CED1;
+	Thu, 13 Feb 2025 15:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457625;
-	bh=aleAURu2BmRsW9krMxaH9GeYw5FMKaJIK7yRqEh+FRk=;
+	s=korg; t=1739458892;
+	bh=MBFTxJJN0eOg2xq1Kd+wPmoAQ955W+DXB2R+TNBCdt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLpifsKvstuvBsMKKbDXBDmgYhsoUfNVY7/33YY5Ma0f55f6CLydKzEHMWz76/yGS
-	 JKaKXvH1xGj3nMgS2pM4e+jKI3xNx4y8WdJQOwMU00S6N7MHkjKNAsHu48lo4kZj9D
-	 4B0rhKggvQmrdtp7eeXoCGq36fZdHhCAwxvMzy3A=
+	b=NM5MaVh8GUluu+2kSaFwl86c8xR6szJYKlgrgdQ59Y1Cw5SYK0ZsRu4qDumXCEh5g
+	 gJvkiyErQ+0fz1XSPh2W7Re1OaUO/cyol31LADBj2Wf18KhZM0mP+pDh5Oob/XfkES
+	 1u42YeLS0Jmd5vPtq2xin4GoCLsEZ00irabVXRZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quang Le <quanglex97@gmail.com>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Prasad Pandit <pjp@fedoraproject.org>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/422] pfifo_tail_enqueue: Drop new packet when sch->limit == 0
-Date: Thu, 13 Feb 2025 15:24:32 +0100
-Message-ID: <20250213142441.295819504@linuxfoundation.org>
+Subject: [PATCH 6.13 108/443] firmware: iscsi_ibft: fix ISCSI_IBFT Kconfig entry
+Date: Thu, 13 Feb 2025 15:24:33 +0100
+Message-ID: <20250213142444.778748810@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quang Le <quanglex97@gmail.com>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-[ Upstream commit 647cef20e649c576dff271e018d5d15d998b629d ]
+[ Upstream commit e1e17a1715982201034024863efbf238bee2bdf9 ]
 
-Expected behaviour:
-In case we reach scheduler's limit, pfifo_tail_enqueue() will drop a
-packet in scheduler's queue and decrease scheduler's qlen by one.
-Then, pfifo_tail_enqueue() enqueue new packet and increase
-scheduler's qlen by one. Finally, pfifo_tail_enqueue() return
-`NET_XMIT_CN` status code.
+Fix ISCSI_IBFT Kconfig entry, replace tab with a space character.
 
-Weird behaviour:
-In case we set `sch->limit == 0` and trigger pfifo_tail_enqueue() on a
-scheduler that has no packet, the 'drop a packet' step will do nothing.
-This means the scheduler's qlen still has value equal 0.
-Then, we continue to enqueue new packet and increase scheduler's qlen by
-one. In summary, we can leverage pfifo_tail_enqueue() to increase qlen by
-one and return `NET_XMIT_CN` status code.
-
-The problem is:
-Let's say we have two qdiscs: Qdisc_A and Qdisc_B.
- - Qdisc_A's type must have '->graft()' function to create parent/child relationship.
-   Let's say Qdisc_A's type is `hfsc`. Enqueue packet to this qdisc will trigger `hfsc_enqueue`.
- - Qdisc_B's type is pfifo_head_drop. Enqueue packet to this qdisc will trigger `pfifo_tail_enqueue`.
- - Qdisc_B is configured to have `sch->limit == 0`.
- - Qdisc_A is configured to route the enqueued's packet to Qdisc_B.
-
-Enqueue packet through Qdisc_A will lead to:
- - hfsc_enqueue(Qdisc_A) -> pfifo_tail_enqueue(Qdisc_B)
- - Qdisc_B->q.qlen += 1
- - pfifo_tail_enqueue() return `NET_XMIT_CN`
- - hfsc_enqueue() check for `NET_XMIT_SUCCESS` and see `NET_XMIT_CN` => hfsc_enqueue() don't increase qlen of Qdisc_A.
-
-The whole process lead to a situation where Qdisc_A->q.qlen == 0 and Qdisc_B->q.qlen == 1.
-Replace 'hfsc' with other type (for example: 'drr') still lead to the same problem.
-This violate the design where parent's qlen should equal to the sum of its childrens'qlen.
-
-Bug impact: This issue can be used for user->kernel privilege escalation when it is reachable.
-
-Fixes: 57dbb2d83d10 ("sched: add head drop fifo queue")
-Reported-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Link: https://patch.msgid.link/20250204005841.223511-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 138fe4e0697 ("Firmware: add iSCSI iBFT Support")
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fifo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_fifo.c b/net/sched/sch_fifo.c
-index b50b2c2cc09bc..e6bfd39ff3396 100644
---- a/net/sched/sch_fifo.c
-+++ b/net/sched/sch_fifo.c
-@@ -40,6 +40,9 @@ static int pfifo_tail_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- {
- 	unsigned int prev_backlog;
- 
-+	if (unlikely(READ_ONCE(sch->limit) == 0))
-+		return qdisc_drop(skb, sch, to_free);
-+
- 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
- 		return qdisc_enqueue_tail(skb, sch);
- 
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 71d8b26c4103b..9f35f69e0f9e2 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -106,7 +106,7 @@ config ISCSI_IBFT
+ 	select ISCSI_BOOT_SYSFS
+ 	select ISCSI_IBFT_FIND if X86
+ 	depends on ACPI && SCSI && SCSI_LOWLEVEL
+-	default	n
++	default n
+ 	help
+ 	  This option enables support for detection and exposing of iSCSI
+ 	  Boot Firmware Table (iBFT) via sysfs to userspace. If you wish to
 -- 
 2.39.5
 
