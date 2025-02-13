@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55625A347B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E46A344A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5058118934E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12E23B2FCB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CAC1865EE;
-	Thu, 13 Feb 2025 15:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463B7202F72;
+	Thu, 13 Feb 2025 14:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OydzJirE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dl6u9azm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D52926B098;
-	Thu, 13 Feb 2025 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008C6221723;
+	Thu, 13 Feb 2025 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460663; cv=none; b=kQIu4r4pezi/IEboG1bSCuPLyX4biz4bpyAYZKGoUqrwQbDn3f8C9HrMCXggQnpwdaBbnAhHdZg9nGgPDhgOKWOsfjBLYdbgGqRee/ttXOrEgvzfoO0urVGiIUMqTDstZY57Ot6VriqQMkhvvvo57OWtSd0WXEBXSJNx+GxLDgQ=
+	t=1739458543; cv=none; b=dkoewL7CBINy9z2OCob0w7g87tT44CJakt3VxMEMgXNqc8hfmCpwz93H2oct8oRqr2MWBZvjIbAg2j6PC299ptv6hzUWxIV6HnVIWW8IdbXpFbOmo6eGbJTf+kWZcKjhNIhaW0WcclFcTQRaSRqYyEf24/O1JeDbCc02iWhrdTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460663; c=relaxed/simple;
-	bh=onnV6hLqXxWbKEr7fq4B20z13SKgZ7HpK03a+qJBobU=;
+	s=arc-20240116; t=1739458543; c=relaxed/simple;
+	bh=0ojGQl+pSpCD/V2aYjG9IiJdvebcAP060xpKegYHbTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6Evo8hV/xP9zifHW7nXG9XHN20tOR0f39slZUZ+cgL3CvTJNY+SHy6ktwV33R1qGFpL0tzNMQ2zmLIPXpksAonhknVRFmNHbM8swpgKRkSevHgBNIdZiSg5adDGY8Q7flOUASY1boNRXhheMiIc3IEchz8ZltaTxNK2RxaQ5cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OydzJirE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219ECC4CED1;
-	Thu, 13 Feb 2025 15:31:01 +0000 (UTC)
+	 MIME-Version; b=kws+Ptt5dzCnPd0zLUrL316c67JPCeV8Rw0TdIHijc7QkTVj3WmKdBLcOBGkQWuzfE0d032RHhxHdU/bIqfxkkAj/KiR/3OVYKPQcvp1BSZPJzG38Z/slEEUw1/RFfOOt7GBlKP+STFf0wbDUfuk4RaP5Nky9lQ0Gv2k9mOADeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dl6u9azm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E036C4CED1;
+	Thu, 13 Feb 2025 14:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460662;
-	bh=onnV6hLqXxWbKEr7fq4B20z13SKgZ7HpK03a+qJBobU=;
+	s=korg; t=1739458542;
+	bh=0ojGQl+pSpCD/V2aYjG9IiJdvebcAP060xpKegYHbTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OydzJirE3tJbx2rvfgX/zH0Q/ja4R8365FLl37d+jb6ENTDcRWDUIsnDmxX5cSlSw
-	 KPUIM/Dq46pn/nweQbfc/qpZEoA728IoGowk7aVVIIdB1Fh9fyTOtJlIsrUIJEG7xQ
-	 bsPDZWuIaFT5zMJn8Z1/3k9oAOQKDjaIlh77d6kI=
+	b=dl6u9azm2WVwnIVeWiCvR6gyQsL+TdB61awWR9lk5j7s5MRpb5YMeYbAsHCF+0tYK
+	 4rFild5PcJRvr7rMzpecvWOhrcwv71eclcS0Etcd6Cegq1TCa0mrVIW4IDlm69LWLf
+	 quC806mJ3rltxw2YT0u7YvpEaBIzZg8DsH0JHSKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 178/273] arm64: dts: qcom: sm6375: Fix ADSP memory length
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 401/422] xfs: clean up log item accesses in xfs_qm_dqflush{,_done}
 Date: Thu, 13 Feb 2025 15:29:10 +0100
-Message-ID: <20250213142414.365090737@linuxfoundation.org>
+Message-ID: <20250213142452.023491209@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit bf4dda83da27b7efc49326ebb82cbd8b3e637c38 upstream.
+commit ec88b41b932d5731291dcc0d0d63ea13ab8e07d5 upstream
 
-The address space in ADSP (Peripheral Authentication Service) remoteproc
-node should point to the QDSP PUB address space (QDSP6...SS_PUB) which
-has a length of 0x10000.
+Clean up these functions a little bit before we move on to the real
+modifications, and make the variable naming consistent for dquot log items.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
-
-Fixes: fe6fd26aeddf ("arm64: dts: qcom: sm6375: Add ADSP&CDSP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-17-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6375.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_dquot.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
-@@ -1514,7 +1514,7 @@
+
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -1136,8 +1136,9 @@ static void
+ xfs_qm_dqflush_done(
+ 	struct xfs_log_item	*lip)
+ {
+-	struct xfs_dq_logitem	*qip = (struct xfs_dq_logitem *)lip;
+-	struct xfs_dquot	*dqp = qip->qli_dquot;
++	struct xfs_dq_logitem	*qlip =
++			container_of(lip, struct xfs_dq_logitem, qli_item);
++	struct xfs_dquot	*dqp = qlip->qli_dquot;
+ 	struct xfs_ail		*ailp = lip->li_ailp;
+ 	xfs_lsn_t		tail_lsn;
  
- 		remoteproc_adsp: remoteproc@a400000 {
- 			compatible = "qcom,sm6375-adsp-pas";
--			reg = <0 0x0a400000 0 0x100>;
-+			reg = <0 0x0a400000 0 0x10000>;
+@@ -1150,12 +1151,12 @@ xfs_qm_dqflush_done(
+ 	 * holding the lock before removing the dquot from the AIL.
+ 	 */
+ 	if (test_bit(XFS_LI_IN_AIL, &lip->li_flags) &&
+-	    ((lip->li_lsn == qip->qli_flush_lsn) ||
++	    ((lip->li_lsn == qlip->qli_flush_lsn) ||
+ 	     test_bit(XFS_LI_FAILED, &lip->li_flags))) {
  
- 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 		spin_lock(&ailp->ail_lock);
+ 		xfs_clear_li_failed(lip);
+-		if (lip->li_lsn == qip->qli_flush_lsn) {
++		if (lip->li_lsn == qlip->qli_flush_lsn) {
+ 			/* xfs_ail_update_finish() drops the AIL lock */
+ 			tail_lsn = xfs_ail_delete_one(ailp, lip);
+ 			xfs_ail_update_finish(ailp, tail_lsn);
+@@ -1313,7 +1314,7 @@ xfs_qm_dqflush(
+ 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
+ 
+ 	xfs_trans_ail_copy_lsn(mp->m_ail, &dqp->q_logitem.qli_flush_lsn,
+-					&dqp->q_logitem.qli_item.li_lsn);
++			&lip->li_lsn);
+ 
+ 	/*
+ 	 * copy the lsn into the on-disk dquot now while we have the in memory
+@@ -1325,7 +1326,7 @@ xfs_qm_dqflush(
+ 	 * of a dquot without an up-to-date CRC getting to disk.
+ 	 */
+ 	if (xfs_has_crc(mp)) {
+-		dqblk->dd_lsn = cpu_to_be64(dqp->q_logitem.qli_item.li_lsn);
++		dqblk->dd_lsn = cpu_to_be64(lip->li_lsn);
+ 		xfs_update_cksum((char *)dqblk, sizeof(struct xfs_dqblk),
+ 				 XFS_DQUOT_CRC_OFF);
+ 	}
+@@ -1335,7 +1336,7 @@ xfs_qm_dqflush(
+ 	 * the AIL and release the flush lock once the dquot is synced to disk.
+ 	 */
+ 	bp->b_flags |= _XBF_DQUOTS;
+-	list_add_tail(&dqp->q_logitem.qli_item.li_bio_list, &bp->b_li_list);
++	list_add_tail(&lip->li_bio_list, &bp->b_li_list);
+ 
+ 	/*
+ 	 * If the buffer is pinned then push on the log so we won't
 
 
 
