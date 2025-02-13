@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD11A344E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A8AA3423B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDC5171409
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CF2F7A39A1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC11166F32;
-	Thu, 13 Feb 2025 14:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE0528137F;
+	Thu, 13 Feb 2025 14:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHIx2WMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7klFvE1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7714AD2B;
-	Thu, 13 Feb 2025 14:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D30281353;
+	Thu, 13 Feb 2025 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458675; cv=none; b=RKmZKs5s5Fx7L9W9khASUELnOXgtqRZ2/92V68dacMuIukOdf4w9yQZeZpjXLWre45zmeXg3r8v83J1d5hSvBs3jafzWVmCArngk5E/0rsMryY7J4Zd4nOcsZraoi3mc7PNegG22JK3OhzMQJf8mbzBKAiK/Hsxnube1CoHOsBo=
+	t=1739457265; cv=none; b=jflbmDrzJg2G7SlFtnm9c40HMH0Nr76bynFOiH4t+eH1wCnePxVFMSTyf8efy7gKjpunWuDQK+ztVzuxD5SH5IUBiKju7qmapEEonkPYvJB8MgNoCUYRxDa3x+Nc9zRcl9X7gTbSE22SJGxSJwSVJQ1DkdvkRs2YPxfmQ5WEm7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458675; c=relaxed/simple;
-	bh=7JOgrjcNW/iC6CkEchZJESHaj7twsOmvKXWhOkKjgg8=;
+	s=arc-20240116; t=1739457265; c=relaxed/simple;
+	bh=7KDmnERmc7PPOX7NXwb63Tp+E3GZjrDQoF/bD0odZuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZkFHMaoiAo7TjpkFo1uJK19+k+qj808lfo4ZRhBkbz4ZgMEAvnDHTrvbjDayjQAkcRNPhNO+5SJXv9m08qTK1lL6Lzt9jb1TYlj/t8tPu6Ovu8h47fBIHdtsW14KYFXvjz5BRDPvM20AbDAouG3V9Dx3nyiXBs3vaLREGpxx5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHIx2WMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB71BC4CED1;
-	Thu, 13 Feb 2025 14:57:53 +0000 (UTC)
+	 MIME-Version; b=DPAlTfgeQip3tGfVcxNb/hGuEKwvbO6Qa5Aqiain9G4pRrd2jCpFGGT0qxxYvrynpayF94aVC+OlxsPe+prGsl3cVFvpE4oEKu28LU+H+6p9236IWtX5psKxVy9I8SgKJc32Y1kUW6khpXSFJjOrotHF1IUTqHyukNZXJjrVem4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7klFvE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF3C4CEE4;
+	Thu, 13 Feb 2025 14:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458674;
-	bh=7JOgrjcNW/iC6CkEchZJESHaj7twsOmvKXWhOkKjgg8=;
+	s=korg; t=1739457264;
+	bh=7KDmnERmc7PPOX7NXwb63Tp+E3GZjrDQoF/bD0odZuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHIx2WMA9M5LCfcfV09STLgH3SH8sTiUGU1kbW95k4uiLg1VigJPg1dAhnBAn3bRf
-	 IhnU9ntBLUrYEoxvPCmIyQnTwJkQyeFk6tA2wqqRBnSpNaaNfUxEuvP1H9VYaIKenC
-	 76cAyI1pWC/C0az8bNZv9X8YluqEHVIT49ir1QO8=
+	b=R7klFvE1TBikuYP4Vh+ZipcH/2bHEFC+24ZmgEyQYs88cRiXiJnSNZ3/uiUWU04km
+	 /MCDIsAwBTdgveR4HImyzgenciYQme2KZqBA0+8Ub09LGWnBtZHW3zbEGnXNwYh1Bk
+	 mfKBtiPlRSpqNOgZCqIzCEYAaRyMa+B3qeLn57BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Randolph Ha <rha051117@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 047/443] drm/bridge: it6505: fix HDCP CTS compare V matching
+Subject: [PATCH 6.12 063/422] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
 Date: Thu, 13 Feb 2025 15:23:32 +0100
-Message-ID: <20250213142442.439110280@linuxfoundation.org>
+Message-ID: <20250213142438.993613728@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Randolph Ha <rha051117@gmail.com>
 
-[ Upstream commit 0989c02c7a5c887c70afeae80c64d0291624e1a7 ]
+[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
 
-When HDCP negotiation with a repeater device.
-Checking SHA V' matching must retry 3 times before restarting HDCP.
+When a 400KHz freq is used on this model of ELAN touchpad in Linux,
+excessive smoothing (similar to when the touchpad's firmware detects
+a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
+V15 G4) ACPI tables specify a 400KHz frequency for this device and
+some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
+force the speed to 100KHz as a workaround.
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-8-e0fdd4844703@ite.corp-partner.google.com
+For future investigation: This problem may be related to the default
+HCNT/LCNT values given by some busses' drivers, because they are not
+specified in the aforementioned devices' ACPI tables, and because
+the device works without issues on Windows at what is expected to be
+a 400KHz frequency. The root cause of the issue is not known.
+
+Signed-off-by: Randolph Ha <rha051117@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 32 +++++++++++++++++------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 15873e7f07626..029755ee21e23 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2023,7 +2023,7 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 14ae0cfc325ef..d2499f302b508 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -355,6 +355,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
+ 	{}
+ };
+ 
++static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
++	/*
++	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
++	 * excessive smoothing (similar to when the touchpad's firmware detects
++	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
++	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
++	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
++	 * force the speed to 100KHz as a workaround.
++	 *
++	 * For future investigation: This problem may be related to the default
++	 * HCNT/LCNT values given by some busses' drivers, because they are not
++	 * specified in the aforementioned devices' ACPI tables, and because
++	 * the device works without issues on Windows at what is expected to be
++	 * a 400KHz frequency. The root cause of the issue is not known.
++	 */
++	{ "ELAN06FA", 0 },
++	{}
++};
++
+ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 					   void *data, void **return_value)
  {
- 	struct device *dev = it6505->dev;
- 	u8 av[5][4], bv[5][4];
--	int i, err;
-+	int i, err, retry;
+@@ -373,6 +392,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
+ 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
  
- 	i = it6505_setup_sha1_input(it6505, it6505->sha1_input);
- 	if (i <= 0) {
-@@ -2032,22 +2032,28 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- 	}
- 
- 	it6505_sha1_digest(it6505, it6505->sha1_input, i, (u8 *)av);
-+	/*1B-05 V' must retry 3 times */
-+	for (retry = 0; retry < 3; retry++) {
-+		err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
-+				      sizeof(bv));
- 
--	err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
--			      sizeof(bv));
-+		if (err < 0) {
-+			dev_err(dev, "Read V' value Fail %d", retry);
-+			continue;
-+		}
- 
--	if (err < 0) {
--		dev_err(dev, "Read V' value Fail");
--		return false;
--	}
-+		for (i = 0; i < 5; i++) {
-+			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
-+			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
-+				break;
- 
--	for (i = 0; i < 5; i++)
--		if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
--		    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
--			return false;
-+			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
-+			return true;
-+		}
-+	}
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "V' all match!!");
--	return true;
-+	DRM_DEV_DEBUG_DRIVER(dev, "V' NOT match!! %d", retry);
-+	return false;
++	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
++		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
++
+ 	return AE_OK;
  }
  
- static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
 -- 
 2.39.5
 
