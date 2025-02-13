@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA77CA34617
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94664A3472A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A537E3A48AC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5781117045A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC3426B0A4;
-	Thu, 13 Feb 2025 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F5A16FF44;
+	Thu, 13 Feb 2025 15:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VueNc80r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbuBlFjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B38426B098;
-	Thu, 13 Feb 2025 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77CD1422D8;
+	Thu, 13 Feb 2025 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459545; cv=none; b=X9Q+e4paz0Au0TNoUkqQ2zZUNDqlydrWukbTZCv2uHeu45xTeC85bHHCrut6p2+E+qFdRGPXeN1WHYGX8OV/lK9N3WrN06fEn/DYIWQosIAe5cwSSGm6ybnUBteHUw5ld00fUZ8T+Cev3Rwo+B3Uud9bBXNyE197nAnOTAVF0WQ=
+	t=1739460361; cv=none; b=sIEcZRRTYjH0dXzGR6OAvrEk8binuKvLtLh4RBPw25fPHo+yvcWAvnO6bTKpAK2Rc7EiIThXyriQQ8T1c5fW6Kogxb9LKTeMOlvM8ifKaopYWt4cPO3VdQvc2MZf23348moyHou8zMGlAxp4lzWjeNX2cC624r4wXAToah9AxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459545; c=relaxed/simple;
-	bh=GcW8Za9VZlLTjecky1SXN8JwNgmsaPoyrQ3hqn2dd58=;
+	s=arc-20240116; t=1739460361; c=relaxed/simple;
+	bh=8igJH2/HUM+BRLyD3hWwjSr1tUPEaQlKeMUZWoyWOhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDdc3nMCE+WIddG4y2Pr854VNs6RiYUYeRPZo/7JCYIlsiAGlhC8lue+kPLAa5Gqa1F79OfKdaurA9mVCuCXkQ0I04AButCVHasQxoCTHds2t+gWPLpSzLZi7rqnLS2KNlAppVIYuW0WTaI5ZxJJ7VfcEnMntOp1C2qQBjTMp14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VueNc80r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808C4C4CED1;
-	Thu, 13 Feb 2025 15:12:24 +0000 (UTC)
+	 MIME-Version; b=re1eHYuj0th4FT72+DhlJzmwbeyczPJyx6AN43crV5kmL1nptMPUjgSquSWGUsTNXdzqDjYIRgqdAm5AufW1hNll/trD5lFikiBH6w9dgyVLrc2PS0mW7shdehQqe07G/RUCc650G6gspk2RhIKZt2DS6xY0qm52RBn/fLeixQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbuBlFjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C12BC4CED1;
+	Thu, 13 Feb 2025 15:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459545;
-	bh=GcW8Za9VZlLTjecky1SXN8JwNgmsaPoyrQ3hqn2dd58=;
+	s=korg; t=1739460361;
+	bh=8igJH2/HUM+BRLyD3hWwjSr1tUPEaQlKeMUZWoyWOhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VueNc80r0mNIZIOqxdcykZJbe6eHbYGWpz7sDSRZGlCBoGaxPiPkkDkpH9hH5UndL
-	 LwqnU1uupLo44T+GZQoNfel4aTUqe0CaJzDOafO4JOOZEhANOcsHQEfXR9zZ4zDzi2
-	 og96+cXiwA4YWyeAIYr+YbcnDOSvGxUu0el0VDPk=
+	b=NbuBlFjSBTs2gP/979FjAShQXNIX0PcRnd4huT8apVBJ1sfNjZ7Sk68sKJh0jB7u2
+	 UTadqX6k0oAiRzREmtA6WCvlyF3b/t9nYZiOFAmcgnNFcUEmgAnT5gYdcV4yOa3rus
+	 7l4x6bDmacaJ+mSPti/RpUwkUfXpv9Nuriy79sgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Fei Shao <fshao@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.13 296/443] arm64: dts: mediatek: mt8183: Disable DPI display output by default
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 089/273] fs/proc: do_task_stat: Fix ESP not readable during coredump
 Date: Thu, 13 Feb 2025 15:27:41 +0100
-Message-ID: <20250213142452.037518550@linuxfoundation.org>
+Message-ID: <20250213142410.860044496@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 93a680af46436780fd64f4e856a4cfa8b393be6e upstream.
+commit ab251dacfbae28772c897f068a4184f478189ff2 upstream.
 
-This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
+The field "eip" (instruction pointer) and "esp" (stack pointer) of a task
+can be read from /proc/PID/stat. These fields can be interesting for
+coredump.
 
-Most SoC dtsi files have the display output interfaces disabled by
-default, and only enabled on boards that utilize them. The MT8183
-has it backwards: the display outputs are left enabled by default,
-and only disabled at the board level.
+However, these fields were disabled by commit 0a1eb2d474ed ("fs/proc: Stop
+reporting eip and esp in /proc/PID/stat"), because it is generally unsafe
+to do so. But it is safe for a coredumping process, and therefore
+exceptions were made:
 
-Reverse the situation for the DPI output so that it follows the
-normal scheme. For ease of backporting the DSI output is handled
-in a separate patch.
+  - for a coredumping thread by commit fd7d56270b52 ("fs/proc: Report
+    eip/esp in /prod/PID/stat for coredumping").
 
-Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
-Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI display interface")
+  - for all other threads in a coredumping process by commit cb8f381f1613
+    ("fs/proc/array.c: allow reporting eip/esp for all coredumping
+    threads").
+
+The above two commits check the PF_DUMPCORE flag to determine a coredump thread
+and the PF_EXITING flag for the other threads.
+
+Unfortunately, commit 92307383082d ("coredump:  Don't perform any cleanups
+before dumping core") moved coredump to happen earlier and before PF_EXITING is
+set. Thus, checking PF_EXITING is no longer the correct way to determine
+threads in a coredumping process.
+
+Instead of PF_EXITING, use PF_POSTCOREDUMP to determine the other threads.
+
+Checking of PF_EXITING was added for coredumping, so it probably can now be
+removed. But it doesn't hurt to keep.
+
+Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20241025075630.3917458-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/d89af63d478d6c64cc46a01420b46fd6eb147d6f.1735805772.git.namcao@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    5 -----
- arch/arm64/boot/dts/mediatek/mt8183.dtsi       |    1 +
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ fs/proc/array.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -269,11 +269,6 @@
- 	};
- };
- 
--&dpi0 {
--	/* TODO Re-enable after DP to Type-C port muxing can be described */
--	status = "disabled";
--};
--
- &gic {
- 	mediatek,broken-save-restore-fw;
- };
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1846,6 +1846,7 @@
- 				 <&mmsys CLK_MM_DPI_MM>,
- 				 <&apmixedsys CLK_APMIXED_TVDPLL>;
- 			clock-names = "pixel", "engine", "pll";
-+			status = "disabled";
- 
- 			port {
- 				dpi_out: endpoint { };
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -500,7 +500,7 @@ static int do_task_stat(struct seq_file
+ 		 * a program is not able to use ptrace(2) in that case. It is
+ 		 * safe because the task has stopped executing permanently.
+ 		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
++		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP))) {
+ 			if (try_get_task_stack(task)) {
+ 				eip = KSTK_EIP(task);
+ 				esp = KSTK_ESP(task);
 
 
 
