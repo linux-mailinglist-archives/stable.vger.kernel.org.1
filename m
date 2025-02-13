@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-115464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AE3A34403
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12492A34696
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09AB018860F5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 800517A3281
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8526B0A5;
-	Thu, 13 Feb 2025 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AE219CD07;
+	Thu, 13 Feb 2025 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9DzazDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+8aK0F6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D19326B088;
-	Thu, 13 Feb 2025 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7CA176AA1;
+	Thu, 13 Feb 2025 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458143; cv=none; b=iZ4z2Jb3/G0225703mWXYpIJFt0qVcEtGkgF2xfZor4udiylnwUPjFHKQtzcTLMwoZPblKgK4wfZMpC2OCML98h8MHx9wM56fERNSgr5XNahEvdlgC/fWEsj03drOT2okMDE/rV5hNvn2IKuX5rFmsQJjIXR+PhCyDJD7iBfIoo=
+	t=1739460372; cv=none; b=T4Dx61b9vWe4e1c7HigNPWIjmBdJz4HTn9j3Qs+t97o71B6DrTaAxcjI0ypAs3wCrZ4Xt2eFm7gVrNDUsIjNR4GZPEMq8mv/avr57fxgdgGZWn5bxBSKavON7uG/PkhRJu74jbtEzeqv4DYZ7MAm4c2PTEDNsAsEyDGqbHrKZKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458143; c=relaxed/simple;
-	bh=U17NJwy+Fde4gYuBIXamr/FQgA332ptexqYu78/n3+E=;
+	s=arc-20240116; t=1739460372; c=relaxed/simple;
+	bh=uSCLKXuUFkv8xNfCz6j+uSy/iCvKrKUs3L7ibwEF+fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2oKL6GGPM+BQNN0rq98ZrDvTJSMTtMSnHsUwI+aoj8oK3oGe3H1XSrZ61UlgCWwYyBba4FNDdxs0iVdVszw9KMLLFDmrshScMofvFOlZoY8ha0H0dEPaCJVjxn0kvq1TrIIwOANWLYFNN4wdrs3ErpO9M7kjMmUFszojoLfYpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9DzazDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA95EC4CED1;
-	Thu, 13 Feb 2025 14:49:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q0W5MMaO9dy41iRYe4EkfuYe+quOnGNjfhUv+AGeZDEMn3/EXIvb20n+qmywvrFK3XG8AEsCbhJb1n2bten/PC1hVl/ZMcfiUIEFyyC8ILqLBwduKfwY8Kz08Gl6y4DAjTk21bFV8vMnwYrNFWyoo+D1pnyeqk3ybeaitESbrC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+8aK0F6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDB7C4CEE4;
+	Thu, 13 Feb 2025 15:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458143;
-	bh=U17NJwy+Fde4gYuBIXamr/FQgA332ptexqYu78/n3+E=;
+	s=korg; t=1739460372;
+	bh=uSCLKXuUFkv8xNfCz6j+uSy/iCvKrKUs3L7ibwEF+fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9DzazDriXL77jxH0MUoVZH26V0by0GO7aoxRQ2TfAKWmQmzi2QqFr5GLwZsikX3N
-	 +XVfpnkwNa+eYdPARv9HCRSr9dFiEArXoVHavp4hl0kdOsFUFDHb9MxmCOtAyUmpxm
-	 maFhqvpju9TJac+Sc7CdO92z31t+yw8Mxh9ZnYpk=
+	b=c+8aK0F6DeUXphO+tciKBjQMtXvWPyiYnPZ2a+qpsV/LPQ3qFGLBC0ui6S0Mn9PaS
+	 eGHhcRQXDzbu0aRY4AMaVZJ2SPI+HvBk8ocVI8m6G9bLjrs/oXkgKYOdCEA9CPSco9
+	 PfrM0KEhknlo/DNC0kVbhONz7YyfJOctACqILkTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH 6.12 315/422] iommufd/fault: Use a separate spinlock to protect fault->deliver list
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Chris Zhong <zyw@rock-chips.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH 6.6 092/273] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
 Date: Thu, 13 Feb 2025 15:27:44 +0100
-Message-ID: <20250213142448.706924899@linuxfoundation.org>
+Message-ID: <20250213142410.977858295@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,200 +66,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 3d49020a327cd7d069059317c11df24e407ccfa3 upstream.
+commit 666e1960464140cc4bc9203c203097e70b54c95a upstream.
 
-The fault->mutex serializes the fault read()/write() fops and the
-iommufd_fault_auto_response_faults(), mainly for fault->response. Also, it
-was conveniently used to fence the fault->deliver in poll() fop and
-iommufd_fault_iopf_handler().
+The code for detecting and updating the connector status in
+cdn_dp_pd_event_work() has a number of problems.
 
-However, copy_from/to_user() may sleep if pagefaults are enabled. Thus,
-they could take a long time to wait for user pages to swap in, blocking
-iommufd_fault_iopf_handler() and its caller that is typically a shared IRQ
-handler of an IOMMU driver, resulting in a potential global DOS.
+- It does not aquire the locks to call the detect helper and update
+the connector status. These are struct drm_mode_config.connection_mutex
+and struct drm_mode_config.mutex.
 
-Instead of reusing the mutex to protect the fault->deliver list, add a
-separate spinlock, nested under the mutex, to do the job.
-iommufd_fault_iopf_handler() would no longer be blocked by
-copy_from/to_user().
+- It does not use drm_helper_probe_detect(), which helps with the
+details of locking and detection.
 
-Add a free_list in iommufd_auto_response_faults(), so the spinlock can
-simply fence a fast list_for_each_entry_safe routine.
+- It uses the connector's status field to determine a change to
+the connector status. The epoch_counter field is the correct one. The
+field signals a change even if the connector status' value did not
+change.
 
-Provide two deliver list helpers for iommufd_fault_fops_read() to use:
- - Fetch the first iopf_group out of the fault->deliver list
- - Restore an iopf_group back to the head of the fault->deliver list
+Replace the code with a call to drm_connector_helper_hpd_irq_event(),
+which fixes all these problems.
 
-Lastly, move the mutex closer to the response in the fault structure,
-and update its kdoc accordingly.
-
-Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
-Link: https://patch.msgid.link/r/20250117192901.79491-1-nicolinc@nvidia.com
-Cc: stable@vger.kernel.org
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
+Cc: Chris Zhong <zyw@rock-chips.com>
+Cc: Guenter Roeck <groeck@chromium.org>
+Cc: Sandy Huang <hjc@rock-chips.com>
+Cc: "Heiko Stübner" <heiko@sntech.de>
+Cc: Andy Yan <andy.yan@rock-chips.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v4.11+
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c           |   34 ++++++++++++++++++++------------
- drivers/iommu/iommufd/iommufd_private.h |   29 +++++++++++++++++++++++++--
- 2 files changed, 49 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -98,15 +98,23 @@ static void iommufd_auto_response_faults
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -946,9 +946,6 @@ static void cdn_dp_pd_event_work(struct
  {
- 	struct iommufd_fault *fault = hwpt->fault;
- 	struct iopf_group *group, *next;
-+	struct list_head free_list;
- 	unsigned long index;
- 
- 	if (!fault)
- 		return;
-+	INIT_LIST_HEAD(&free_list);
- 
- 	mutex_lock(&fault->mutex);
-+	spin_lock(&fault->lock);
- 	list_for_each_entry_safe(group, next, &fault->deliver, node) {
- 		if (group->attach_handle != &handle->handle)
- 			continue;
-+		list_move(&group->node, &free_list);
-+	}
-+	spin_unlock(&fault->lock);
-+
-+	list_for_each_entry_safe(group, next, &free_list, node) {
- 		list_del(&group->node);
- 		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
- 		iopf_free_group(group);
-@@ -261,17 +269,19 @@ static ssize_t iommufd_fault_fops_read(s
- 		return -ESPIPE;
- 
- 	mutex_lock(&fault->mutex);
--	while (!list_empty(&fault->deliver) && count > done) {
--		group = list_first_entry(&fault->deliver,
--					 struct iopf_group, node);
+ 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
+ 						event_work);
+-	struct drm_connector *connector = &dp->connector;
+-	enum drm_connector_status old_status;
 -
--		if (group->fault_count * fault_size > count - done)
-+	while ((group = iommufd_fault_deliver_fetch(fault))) {
-+		if (done >= count ||
-+		    group->fault_count * fault_size > count - done) {
-+			iommufd_fault_deliver_restore(fault, group);
- 			break;
-+		}
+ 	int ret;
  
- 		rc = xa_alloc(&fault->response, &group->cookie, group,
- 			      xa_limit_32b, GFP_KERNEL);
--		if (rc)
-+		if (rc) {
-+			iommufd_fault_deliver_restore(fault, group);
- 			break;
-+		}
+ 	mutex_lock(&dp->lock);
+@@ -1010,11 +1007,7 @@ static void cdn_dp_pd_event_work(struct
  
- 		idev = to_iommufd_handle(group->attach_handle)->idev;
- 		list_for_each_entry(iopf, &group->faults, list) {
-@@ -280,13 +290,12 @@ static ssize_t iommufd_fault_fops_read(s
- 						      group->cookie);
- 			if (copy_to_user(buf + done, &data, fault_size)) {
- 				xa_erase(&fault->response, group->cookie);
-+				iommufd_fault_deliver_restore(fault, group);
- 				rc = -EFAULT;
- 				break;
- 			}
- 			done += fault_size;
- 		}
+ out:
+ 	mutex_unlock(&dp->lock);
 -
--		list_del(&group->node);
- 	}
- 	mutex_unlock(&fault->mutex);
- 
-@@ -344,10 +353,10 @@ static __poll_t iommufd_fault_fops_poll(
- 	__poll_t pollflags = EPOLLOUT;
- 
- 	poll_wait(filep, &fault->wait_queue, wait);
--	mutex_lock(&fault->mutex);
-+	spin_lock(&fault->lock);
- 	if (!list_empty(&fault->deliver))
- 		pollflags |= EPOLLIN | EPOLLRDNORM;
--	mutex_unlock(&fault->mutex);
-+	spin_unlock(&fault->lock);
- 
- 	return pollflags;
+-	old_status = connector->status;
+-	connector->status = connector->funcs->detect(connector, false);
+-	if (old_status != connector->status)
+-		drm_kms_helper_hotplug_event(dp->drm_dev);
++	drm_connector_helper_hpd_irq_event(&dp->connector);
  }
-@@ -389,6 +398,7 @@ int iommufd_fault_alloc(struct iommufd_u
- 	INIT_LIST_HEAD(&fault->deliver);
- 	xa_init_flags(&fault->response, XA_FLAGS_ALLOC1);
- 	mutex_init(&fault->mutex);
-+	spin_lock_init(&fault->lock);
- 	init_waitqueue_head(&fault->wait_queue);
  
- 	filep = anon_inode_getfile("[iommufd-pgfault]", &iommufd_fault_fops,
-@@ -437,9 +447,9 @@ int iommufd_fault_iopf_handler(struct io
- 	hwpt = group->attach_handle->domain->fault_data;
- 	fault = hwpt->fault;
- 
--	mutex_lock(&fault->mutex);
-+	spin_lock(&fault->lock);
- 	list_add_tail(&group->node, &fault->deliver);
--	mutex_unlock(&fault->mutex);
-+	spin_unlock(&fault->lock);
- 
- 	wake_up_interruptible(&fault->wait_queue);
- 
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -462,14 +462,39 @@ struct iommufd_fault {
- 	struct iommufd_ctx *ictx;
- 	struct file *filep;
- 
--	/* The lists of outstanding faults protected by below mutex. */
--	struct mutex mutex;
-+	spinlock_t lock; /* protects the deliver list */
- 	struct list_head deliver;
-+	struct mutex mutex; /* serializes response flows */
- 	struct xarray response;
- 
- 	struct wait_queue_head wait_queue;
- };
- 
-+/* Fetch the first node out of the fault->deliver list */
-+static inline struct iopf_group *
-+iommufd_fault_deliver_fetch(struct iommufd_fault *fault)
-+{
-+	struct list_head *list = &fault->deliver;
-+	struct iopf_group *group = NULL;
-+
-+	spin_lock(&fault->lock);
-+	if (!list_empty(list)) {
-+		group = list_first_entry(list, struct iopf_group, node);
-+		list_del(&group->node);
-+	}
-+	spin_unlock(&fault->lock);
-+	return group;
-+}
-+
-+/* Restore a node back to the head of the fault->deliver list */
-+static inline void iommufd_fault_deliver_restore(struct iommufd_fault *fault,
-+						 struct iopf_group *group)
-+{
-+	spin_lock(&fault->lock);
-+	list_add(&group->node, &fault->deliver);
-+	spin_unlock(&fault->lock);
-+}
-+
- struct iommufd_attach_handle {
- 	struct iommu_attach_handle handle;
- 	struct iommufd_device *idev;
+ static int cdn_dp_pd_event(struct notifier_block *nb,
 
 
 
