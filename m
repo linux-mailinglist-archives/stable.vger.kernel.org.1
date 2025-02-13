@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-115665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3726BA3445A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD7DA342AA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF30F7A3322
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CA716BE12
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA68221710;
-	Thu, 13 Feb 2025 15:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0418A24BC0B;
+	Thu, 13 Feb 2025 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Njs8DB0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1Aik4Tc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9E51552FA;
-	Thu, 13 Feb 2025 15:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53B124BBF8;
+	Thu, 13 Feb 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458827; cv=none; b=t0QmvkFGvOGummraeZ9/e1u+RKJFRKuxG9mxGDhGtLdC7vPrqXFiVGFso83PeOJix2ZlVkh/YsSfLJcX8+sIItki2iHrZnBWDfSldMxearsu/ZimVl5pe0ATeo1UKYj3d7s6qkLz/uDOITrFiFDH10yTWlcLQkVRyRoY6KyiZX4=
+	t=1739457417; cv=none; b=n/W9kQrCHcxhuF9CgSfhAFx6nwCul5ArSw8+7eofa4S5nxqbwYMKME5ojE6BVR1bBAWZoVPipV6vPIG2rigH5c3SmdBDv58qDKLlvFg936jmUt143HQKnbzM7CPb+ANgNOUFCgej7DarE+dxLPEjg1iR+m4/dt9NtqUYC480wMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458827; c=relaxed/simple;
-	bh=LBi7P3KR2BZfpqZf2qcBJKNX4mwOWX3wLaGk0F3dEX8=;
+	s=arc-20240116; t=1739457417; c=relaxed/simple;
+	bh=12XxvQID9hQ8HHYXVkbi8D/rR4khcuOrZ22vjoIqugU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssrlhyDJkwQoaoMzgu6yFtrLufEqlLgvZPI3wuQh6g3pZFhyHNvWwKU+TMFmthf9g7FnaANlp4WWVea9UK77gUisMxVZ9grv9jByXlZEjj2GJaqS28mFpVW74AZPPq9W6WUsbHmt6r9+YN3hwP1VI6VMOaHvRge11ury1U3Z+fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Njs8DB0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641A8C4CED1;
-	Thu, 13 Feb 2025 15:00:26 +0000 (UTC)
+	 MIME-Version; b=YerBqfTYCqzQnwOamH/HhV3x0XPtH3nRC7hkaX/LajPZUAtHrGING3qWRL1woqVZKo1niNuxJAh9g9UBV4rpypQ9RN6YpBxH+KU9hXLbN5pCFk9Ol3+zn2fy/SS3tZXxqKseAOzujrrqhG/GlitgZfIstEEfXLiTEADpix/Q9gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1Aik4Tc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BF9C4CEE4;
+	Thu, 13 Feb 2025 14:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458826;
-	bh=LBi7P3KR2BZfpqZf2qcBJKNX4mwOWX3wLaGk0F3dEX8=;
+	s=korg; t=1739457417;
+	bh=12XxvQID9hQ8HHYXVkbi8D/rR4khcuOrZ22vjoIqugU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Njs8DB0QjrwHbunMoCwUOK4dEJqlvLlTZbTlVdFmEKLbK3EJcl0SiUh9vGMFxFioV
-	 4+GBqRpTuZpCfwzhseWeT1+bVvL/VdY+LKs3M7eoFeRLs1cT07WGU7k2YL/F0Lfw7a
-	 EESBP9vdgwNMcBUfDEYr1LN+U/4grKjHO+6Eg220=
+	b=m1Aik4Tcc4BNVkc7xhjLVKRR3fvJo+270iOH1SenRYdtHtTHvOcE1zPjil1XMk7ir
+	 sc7Mec6huxSsHh6fCet+BTdihqNMeA3Sa54UrxH+cX9C8vgpHYmmAzEA8DmhW55syF
+	 zbH+OK1Yr0eOuWXUvW+6ViNRRJM1PMv7zaaE0LOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 088/443] bpf: Improve verifier log for resource leak on exit
-Date: Thu, 13 Feb 2025 15:24:13 +0100
-Message-ID: <20250213142444.006358017@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.12 105/422] ice: stop storing XDP verdict within ice_rx_buf
+Date: Thu, 13 Feb 2025 15:24:14 +0100
+Message-ID: <20250213142440.608998261@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +65,275 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit cbd8730aea8d79cda6b0f3c18b406dfdef0c1b80 ]
+[ Upstream commit 468a1952df78f65c5991b7ac885c8b5b7dd87bab ]
 
-The verifier log when leaking resources on BPF_EXIT may be a bit
-confusing, as it's a problem only when finally existing from the main
-prog, not from any of the subprogs. Hence, update the verifier error
-string and the corresponding selftests matching on it.
+Idea behind having ice_rx_buf::act was to simplify and speed up the Rx
+data path by walking through buffers that were representing cleaned HW
+Rx descriptors. Since it caused us a major headache recently and we
+rolled back to old approach that 'puts' Rx buffers right after running
+XDP prog/creating skb, this is useless now and should be removed.
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241204030400.208005-6-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Get rid of ice_rx_buf::act and related logic. We still need to take care
+of a corner case where XDP program releases a particular fragment.
+
+Make ice_run_xdp() to return its result and use it within
+ice_put_rx_mbuf().
+
+Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                              |  2 +-
- .../testing/selftests/bpf/progs/exceptions_fail.c  |  4 ++--
- tools/testing/selftests/bpf/progs/preempt_lock.c   | 14 +++++++-------
- .../selftests/bpf/progs/verifier_spin_lock.c       |  2 +-
- 4 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c     | 62 +++++++++++--------
+ drivers/net/ethernet/intel/ice/ice_txrx.h     |  1 -
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 43 -------------
+ 3 files changed, 36 insertions(+), 70 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 77f56674aaa99..4f02345b764fd 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -18803,7 +18803,7 @@ static int do_check(struct bpf_verifier_env *env)
- 				 * match caller reference state when it exits.
- 				 */
- 				err = check_resource_leak(env, exception_exit, !env->cur_state->curframe,
--							  "BPF_EXIT instruction");
-+							  "BPF_EXIT instruction in main prog");
- 				if (err)
- 					return err;
- 
-diff --git a/tools/testing/selftests/bpf/progs/exceptions_fail.c b/tools/testing/selftests/bpf/progs/exceptions_fail.c
-index fe0f3fa5aab68..8a0fdff899271 100644
---- a/tools/testing/selftests/bpf/progs/exceptions_fail.c
-+++ b/tools/testing/selftests/bpf/progs/exceptions_fail.c
-@@ -131,7 +131,7 @@ int reject_subprog_with_lock(void *ctx)
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index e2150d2c093bf..f12fb3a2b6ad9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -527,15 +527,14 @@ int ice_setup_rx_ring(struct ice_rx_ring *rx_ring)
+  * @xdp: xdp_buff used as input to the XDP program
+  * @xdp_prog: XDP program to run
+  * @xdp_ring: ring to be used for XDP_TX action
+- * @rx_buf: Rx buffer to store the XDP action
+  * @eop_desc: Last descriptor in packet to read metadata from
+  *
+  * Returns any of ICE_XDP_{PASS, CONSUMED, TX, REDIR}
+  */
+-static void
++static u32
+ ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 	    struct bpf_prog *xdp_prog, struct ice_tx_ring *xdp_ring,
+-	    struct ice_rx_buf *rx_buf, union ice_32b_rx_flex_desc *eop_desc)
++	    union ice_32b_rx_flex_desc *eop_desc)
+ {
+ 	unsigned int ret = ICE_XDP_PASS;
+ 	u32 act;
+@@ -574,7 +573,7 @@ ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 		ret = ICE_XDP_CONSUMED;
+ 	}
+ exit:
+-	ice_set_rx_bufs_act(xdp, rx_ring, ret);
++	return ret;
  }
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_rcu_read_lock-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_rcu_read_lock-ed region")
- int reject_with_rcu_read_lock(void *ctx)
- {
- 	bpf_rcu_read_lock();
-@@ -147,7 +147,7 @@ __noinline static int throwing_subprog(struct __sk_buff *ctx)
- }
+ /**
+@@ -860,10 +859,8 @@ ice_add_xdp_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 		xdp_buff_set_frags_flag(xdp);
+ 	}
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_rcu_read_lock-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_rcu_read_lock-ed region")
- int reject_subprog_with_rcu_read_lock(void *ctx)
- {
- 	bpf_rcu_read_lock();
-diff --git a/tools/testing/selftests/bpf/progs/preempt_lock.c b/tools/testing/selftests/bpf/progs/preempt_lock.c
-index 885377e836077..5269571cf7b57 100644
---- a/tools/testing/selftests/bpf/progs/preempt_lock.c
-+++ b/tools/testing/selftests/bpf/progs/preempt_lock.c
-@@ -6,7 +6,7 @@
- #include "bpf_experimental.h"
+-	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS)) {
+-		ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
++	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS))
+ 		return -ENOMEM;
+-	}
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_1(struct __sk_buff *ctx)
- {
- 	bpf_preempt_disable();
-@@ -14,7 +14,7 @@ int preempt_lock_missing_1(struct __sk_buff *ctx)
- }
+ 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++, rx_buf->page,
+ 				   rx_buf->page_offset, size);
+@@ -1075,12 +1072,12 @@ ice_construct_skb(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp)
+ 				rx_buf->page_offset + headlen, size,
+ 				xdp->frame_sz);
+ 	} else {
+-		/* buffer is unused, change the act that should be taken later
+-		 * on; data was copied onto skb's linear part so there's no
++		/* buffer is unused, restore biased page count in Rx buffer;
++		 * data was copied onto skb's linear part so there's no
+ 		 * need for adjusting page offset and we can reuse this buffer
+ 		 * as-is
+ 		 */
+-		rx_buf->act = ICE_SKB_CONSUMED;
++		rx_buf->pagecnt_bias++;
+ 	}
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_2(struct __sk_buff *ctx)
+ 	if (unlikely(xdp_buff_has_frags(xdp))) {
+@@ -1133,29 +1130,34 @@ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
+  * @xdp: XDP buffer carrying linear + frags part
+  * @xdp_xmit: XDP_TX/XDP_REDIRECT verdict storage
+  * @ntc: a current next_to_clean value to be stored at rx_ring
++ * @verdict: return code from XDP program execution
+  *
+  * Walk through gathered fragments and satisfy internal page
+  * recycle mechanism; we take here an action related to verdict
+  * returned by XDP program;
+  */
+ static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+-			    u32 *xdp_xmit, u32 ntc)
++			    u32 *xdp_xmit, u32 ntc, u32 verdict)
  {
- 	bpf_preempt_disable();
-@@ -23,7 +23,7 @@ int preempt_lock_missing_2(struct __sk_buff *ctx)
- }
+ 	u32 nr_frags = rx_ring->nr_frags + 1;
+ 	u32 idx = rx_ring->first_desc;
+ 	u32 cnt = rx_ring->count;
++	u32 post_xdp_frags = 1;
+ 	struct ice_rx_buf *buf;
+ 	int i;
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_3(struct __sk_buff *ctx)
- {
- 	bpf_preempt_disable();
-@@ -33,7 +33,7 @@ int preempt_lock_missing_3(struct __sk_buff *ctx)
- }
+-	for (i = 0; i < nr_frags; i++) {
++	if (unlikely(xdp_buff_has_frags(xdp)))
++		post_xdp_frags += xdp_get_shared_info_from_buff(xdp)->nr_frags;
++
++	for (i = 0; i < post_xdp_frags; i++) {
+ 		buf = &rx_ring->rx_buf[idx];
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_3_minus_2(struct __sk_buff *ctx)
- {
- 	bpf_preempt_disable();
-@@ -55,7 +55,7 @@ static __noinline void preempt_enable(void)
- }
+-		if (buf->act & (ICE_XDP_TX | ICE_XDP_REDIR)) {
++		if (verdict & (ICE_XDP_TX | ICE_XDP_REDIR)) {
+ 			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
+-			*xdp_xmit |= buf->act;
+-		} else if (buf->act & ICE_XDP_CONSUMED) {
++			*xdp_xmit |= verdict;
++		} else if (verdict & ICE_XDP_CONSUMED) {
+ 			buf->pagecnt_bias++;
+-		} else if (buf->act == ICE_XDP_PASS) {
++		} else if (verdict == ICE_XDP_PASS) {
+ 			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
+ 		}
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_1_subprog(struct __sk_buff *ctx)
- {
- 	preempt_disable();
-@@ -63,7 +63,7 @@ int preempt_lock_missing_1_subprog(struct __sk_buff *ctx)
- }
+@@ -1164,6 +1166,17 @@ static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 		if (++idx == cnt)
+ 			idx = 0;
+ 	}
++	/* handle buffers that represented frags released by XDP prog;
++	 * for these we keep pagecnt_bias as-is; refcount from struct page
++	 * has been decremented within XDP prog and we do not have to increase
++	 * the biased refcnt
++	 */
++	for (; i < nr_frags; i++) {
++		buf = &rx_ring->rx_buf[idx];
++		ice_put_rx_buf(rx_ring, buf);
++		if (++idx == cnt)
++			idx = 0;
++	}
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_2_subprog(struct __sk_buff *ctx)
- {
- 	preempt_disable();
-@@ -72,7 +72,7 @@ int preempt_lock_missing_2_subprog(struct __sk_buff *ctx)
- }
+ 	xdp->data = NULL;
+ 	rx_ring->first_desc = ntc;
+@@ -1190,9 +1203,9 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 	struct ice_tx_ring *xdp_ring = NULL;
+ 	struct bpf_prog *xdp_prog = NULL;
+ 	u32 ntc = rx_ring->next_to_clean;
++	u32 cached_ntu, xdp_verdict;
+ 	u32 cnt = rx_ring->count;
+ 	u32 xdp_xmit = 0;
+-	u32 cached_ntu;
+ 	bool failure;
  
- SEC("?tc")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_preempt_disable-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_preempt_disable-ed region")
- int preempt_lock_missing_2_minus_1_subprog(struct __sk_buff *ctx)
- {
- 	preempt_disable();
-diff --git a/tools/testing/selftests/bpf/progs/verifier_spin_lock.c b/tools/testing/selftests/bpf/progs/verifier_spin_lock.c
-index 3f679de73229f..25599eac9a702 100644
---- a/tools/testing/selftests/bpf/progs/verifier_spin_lock.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_spin_lock.c
-@@ -187,7 +187,7 @@ l0_%=:	r6 = r0;					\
+ 	xdp_prog = READ_ONCE(rx_ring->xdp_prog);
+@@ -1255,7 +1268,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			xdp_prepare_buff(xdp, hard_start, offset, size, !!offset);
+ 			xdp_buff_clear_frags_flag(xdp);
+ 		} else if (ice_add_xdp_frag(rx_ring, xdp, rx_buf, size)) {
+-			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc);
++			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc, ICE_XDP_CONSUMED);
+ 			break;
+ 		}
+ 		if (++ntc == cnt)
+@@ -1266,13 +1279,13 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			continue;
  
- SEC("cgroup/skb")
- __description("spin_lock: test6 missing unlock")
--__failure __msg("BPF_EXIT instruction cannot be used inside bpf_spin_lock-ed region")
-+__failure __msg("BPF_EXIT instruction in main prog cannot be used inside bpf_spin_lock-ed region")
- __failure_unpriv __msg_unpriv("")
- __naked void spin_lock_test6_missing_unlock(void)
- {
+ 		ice_get_pgcnts(rx_ring);
+-		ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_buf, rx_desc);
+-		if (rx_buf->act == ICE_XDP_PASS)
++		xdp_verdict = ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_desc);
++		if (xdp_verdict == ICE_XDP_PASS)
+ 			goto construct_skb;
+ 		total_rx_bytes += xdp_get_buff_len(xdp);
+ 		total_rx_pkts++;
+ 
+-		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
++		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
+ 
+ 		continue;
+ construct_skb:
+@@ -1283,12 +1296,9 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		/* exit if we failed to retrieve a buffer */
+ 		if (!skb) {
+ 			rx_ring->ring_stats->rx_stats.alloc_page_failed++;
+-			rx_buf->act = ICE_XDP_CONSUMED;
+-			if (unlikely(xdp_buff_has_frags(xdp)))
+-				ice_set_rx_bufs_act(xdp, rx_ring,
+-						    ICE_XDP_CONSUMED);
++			xdp_verdict = ICE_XDP_CONSUMED;
+ 		}
+-		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
++		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
+ 
+ 		if (!skb)
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
+index feba314a3fe44..7130992d41779 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
+@@ -201,7 +201,6 @@ struct ice_rx_buf {
+ 	struct page *page;
+ 	unsigned int page_offset;
+ 	unsigned int pgcnt;
+-	unsigned int act;
+ 	unsigned int pagecnt_bias;
+ };
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+index afcead4baef4b..f6c2b16ab4567 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+@@ -5,49 +5,6 @@
+ #define _ICE_TXRX_LIB_H_
+ #include "ice.h"
+ 
+-/**
+- * ice_set_rx_bufs_act - propagate Rx buffer action to frags
+- * @xdp: XDP buffer representing frame (linear and frags part)
+- * @rx_ring: Rx ring struct
+- * act: action to store onto Rx buffers related to XDP buffer parts
+- *
+- * Set action that should be taken before putting Rx buffer from first frag
+- * to the last.
+- */
+-static inline void
+-ice_set_rx_bufs_act(struct xdp_buff *xdp, const struct ice_rx_ring *rx_ring,
+-		    const unsigned int act)
+-{
+-	u32 sinfo_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
+-	u32 nr_frags = rx_ring->nr_frags + 1;
+-	u32 idx = rx_ring->first_desc;
+-	u32 cnt = rx_ring->count;
+-	struct ice_rx_buf *buf;
+-
+-	for (int i = 0; i < nr_frags; i++) {
+-		buf = &rx_ring->rx_buf[idx];
+-		buf->act = act;
+-
+-		if (++idx == cnt)
+-			idx = 0;
+-	}
+-
+-	/* adjust pagecnt_bias on frags freed by XDP prog */
+-	if (sinfo_frags < rx_ring->nr_frags && act == ICE_XDP_CONSUMED) {
+-		u32 delta = rx_ring->nr_frags - sinfo_frags;
+-
+-		while (delta) {
+-			if (idx == 0)
+-				idx = cnt - 1;
+-			else
+-				idx--;
+-			buf = &rx_ring->rx_buf[idx];
+-			buf->pagecnt_bias--;
+-			delta--;
+-		}
+-	}
+-}
+-
+ /**
+  * ice_test_staterr - tests bits in Rx descriptor status and error fields
+  * @status_err_n: Rx descriptor status_error0 or status_error1 bits
 -- 
 2.39.5
 
