@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-115973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7501A34658
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CAEA34731
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050F216B696
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79BB77A3D8C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6ADC26B0BC;
-	Thu, 13 Feb 2025 15:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6791547E3;
+	Thu, 13 Feb 2025 15:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dgn8AyFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvNuymGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F6A26B091;
-	Thu, 13 Feb 2025 15:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9819426B087;
+	Thu, 13 Feb 2025 15:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459898; cv=none; b=QssH8SqU5WEF8xkPVh7FJPxI6i9tFsqOQyALBsfqvwW419PH36yMuNg6KtF64KS2PMt3Ql6c8K3Nigoms2sbpZ6OKiheq+cuzbSrAHtDyepTRGjG7AY+X2n6UdcrAjlYqFxhUcE63pI1cm/6WvImFCCD5GoZLO8ug+Eh4c4zFjo=
+	t=1739460707; cv=none; b=SGIomYnjZKtQvS0MvFuVIttssu4lkDILI4Ug7FkKkwfRetvy2v8sOXKRes0GcTh6xxuAoKRGykLX1+xsqoZZstIUOUbMKIZ2UJptus5RGg/ZlnFcRTOV6xUwQiJof37fr9XhsipbZOmmBcCu2GtkwRtoDkJhs4dhQ3P3I86Qgfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459898; c=relaxed/simple;
-	bh=pbHZs5NjwmTNgtR2N3l2+EFEU2yYFUx558DNoKkurPk=;
+	s=arc-20240116; t=1739460707; c=relaxed/simple;
+	bh=GsQAt0TfJSzTBqKztUFK5W/fSR9NzWsxlPs58YbmBsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A0ViHMRMI3OGmPanq0EHTd92vRbFV46ORRwft1s0IGGZt1mnWBAtFB2yEVo0GwmGASKTu38kjvlnjPJBFFGygRtjajaWN/zFs5jeqpkMMxU1g3LoGsiS+1VeGzONDnPLhwqfRGxVOxWPVYCXY8hs5kpWH/B914uZMuale7t3eGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dgn8AyFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A772C4CEE4;
-	Thu, 13 Feb 2025 15:18:17 +0000 (UTC)
+	 MIME-Version; b=De6qt3tvesB52HPt/dB+gY0/BhDZ9zABMRu3mv0Bwj+E7I2cMvNz+m6arULD7AC7wZNLeyGmgboWsUTofiq20vdvhacSwCa6EUFbRdCrfvvuVM+Z3zQpYsfBDoA3khQNT+KrL8fKZZJ082NeqOda1IbxaRJBO4Whmna2XDPIb0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvNuymGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2100C4CED1;
+	Thu, 13 Feb 2025 15:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459898;
-	bh=pbHZs5NjwmTNgtR2N3l2+EFEU2yYFUx558DNoKkurPk=;
+	s=korg; t=1739460707;
+	bh=GsQAt0TfJSzTBqKztUFK5W/fSR9NzWsxlPs58YbmBsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dgn8AyFwLctePorCMkJ97/Fghs9MOB2j8/L3v/oW020HNgJCOlrzYT1Eg2rtIRPqo
-	 QM/yZx0A0iPhKjLcz9luZUB0slnUibl2rQT49go/2qkhMIZTBPgBABUdH37MO+bewC
-	 E0mtfa6TtP9e+MKLbVC/gj0PhGIPwkpPSt1PZxBc=
+	b=zvNuymGTSrF/kaFzWjwB/F/UlgHB528CQZstmHTgs3oHvHGcbUFVpg3TAjZS+dxed
+	 5Kj06zd/jFHkF+0Ne7JQRigyUTNLTuW4h1TgTvzEmMwK0U2o9hhIfJxr8h1Xumovf9
+	 GZ9Z57lD1CGV3AqqEg1kh4OMlrM4CcNvnj5Zsw9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.13 396/443] vfio/platform: check the bounds of read/write syscalls
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 189/273] crypto: qce - fix priority to be less than ARMv8 CE
 Date: Thu, 13 Feb 2025 15:29:21 +0100
-Message-ID: <20250213142455.888812310@linuxfoundation.org>
+Message-ID: <20250213142414.794039326@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +64,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
+commit 49b9258b05b97c6464e1964b6a2fddb3ddb65d17 upstream.
 
-count and offset are passed from user space and not checked, only
-offset is capped to 40 bits, which can be used to read/write out of
-bounds of the device.
+As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
+on the CPU, and is also less well tested, give it a lower priority.
+Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
+equivalents, and the ciphers such as AES-XTS had the same priority which
+meant the QCE versions were chosen if they happened to be loaded later.
 
-Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
 Cc: stable@vger.kernel.org
-Reported-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/crypto/qce/aead.c     |    2 +-
+ drivers/crypto/qce/sha.c      |    2 +-
+ drivers/crypto/qce/skcipher.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -393,6 +393,11 @@ static ssize_t vfio_platform_read_mmio(s
+--- a/drivers/crypto/qce/aead.c
++++ b/drivers/crypto/qce/aead.c
+@@ -786,7 +786,7 @@ static int qce_aead_register_one(const s
+ 	alg->init			= qce_aead_init;
+ 	alg->exit			= qce_aead_exit;
  
- 	count = min_t(size_t, count, reg->size - off);
+-	alg->base.cra_priority		= 300;
++	alg->base.cra_priority		= 275;
+ 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
+ 					  CRYPTO_ALG_ALLOCATES_MEMORY |
+ 					  CRYPTO_ALG_KERN_DRIVER_ONLY |
+--- a/drivers/crypto/qce/sha.c
++++ b/drivers/crypto/qce/sha.c
+@@ -482,7 +482,7 @@ static int qce_ahash_register_one(const
  
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -474,6 +479,11 @@ static ssize_t vfio_platform_write_mmio(
+ 	base = &alg->halg.base;
+ 	base->cra_blocksize = def->blocksize;
+-	base->cra_priority = 300;
++	base->cra_priority = 175;
+ 	base->cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONLY;
+ 	base->cra_ctxsize = sizeof(struct qce_sha_ctx);
+ 	base->cra_alignmask = 0;
+--- a/drivers/crypto/qce/skcipher.c
++++ b/drivers/crypto/qce/skcipher.c
+@@ -461,7 +461,7 @@ static int qce_skcipher_register_one(con
+ 	alg->encrypt			= qce_skcipher_encrypt;
+ 	alg->decrypt			= qce_skcipher_decrypt;
  
- 	if (off >= reg->size)
- 		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
-+	if (off >= reg->size)
-+		return -EINVAL;
- 
- 	count = min_t(size_t, count, reg->size - off);
- 
+-	alg->base.cra_priority		= 300;
++	alg->base.cra_priority		= 275;
+ 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
+ 					  CRYPTO_ALG_ALLOCATES_MEMORY |
+ 					  CRYPTO_ALG_KERN_DRIVER_ONLY;
 
 
 
