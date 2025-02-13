@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B84BA346D3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E73EA343BD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7397A171FEF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534EB1893E3B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5408D14AD2D;
-	Thu, 13 Feb 2025 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FE5221571;
+	Thu, 13 Feb 2025 14:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4WQ2cPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="041vWTY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135B335BA;
-	Thu, 13 Feb 2025 15:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7D523A9B5;
+	Thu, 13 Feb 2025 14:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460165; cv=none; b=LumcAiHgYCxp9/ASVsnW1/FiCVi6vLF2vnqzfa8iLpnFWVcejRq3iqM13mtffjvcpKSe4NXmr7AM7MVBhTqhIpNKq89YDasRpWZMAyySyq3JhBZR76PQ9tT8BM5QQmYozKPH4vczK1NBy754+cauLIEcjt6hPiX+IkRwFPRXpc0=
+	t=1739457944; cv=none; b=hs6PDiycFGBekjo+cvPH4tqND7vWXsI4iBFyFJ1Ned4cPR/ZmKaxopBJiwBj+NKuVn1QdN0FPuWdggsr7b0uydeOlOwPEPkfSsVKll6eM+Luvxc9eZ/R3xbaIDJtzEwWDkfxliaBbrzmm+0qgY+H+ZJYfvLOBlQoonLQOn/V6Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460165; c=relaxed/simple;
-	bh=AFaTEMAcz7ZjT86a33SZmjXmc15Lj9BArGJHVK/Z3+c=;
+	s=arc-20240116; t=1739457944; c=relaxed/simple;
+	bh=Do6HvGs0wJEOwnw4Lv2GCr0wkdVSzUEujPJioJdGKTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/Xhy2zWoUH12roj5fDqXba4LSTwzKdZiSAwBKSD1VCO11BK903RIVfEZsxTBxbPXobz+VECya1m0NmWlguRUjOXtPbH+JlBTNtwhVrN9JSaJ4gCkvK6Lb7JrWrjXIQS5AR+5YwrT/T85WY7oUhO6qPyDXabyvJM8UGLqy4dvpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4WQ2cPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E10FC4CED1;
-	Thu, 13 Feb 2025 15:22:43 +0000 (UTC)
+	 MIME-Version; b=nLllZ55ZLtPCcrOYdpeJW7EdGCgONLuULloVkpYrvJVz9+y2nI16nZwbc2cmTZ5NAjhT+BsXGXwYBiEQ5nU/Xf1yZvGdLISreyImuMDY9MnQRPBLK8VY8tptkpqPZWzlIYjLwrWDjy9HqXPx9dVPRJxVABz4bVUv3ER0I42irD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=041vWTY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75102C4CED1;
+	Thu, 13 Feb 2025 14:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460164;
-	bh=AFaTEMAcz7ZjT86a33SZmjXmc15Lj9BArGJHVK/Z3+c=;
+	s=korg; t=1739457944;
+	bh=Do6HvGs0wJEOwnw4Lv2GCr0wkdVSzUEujPJioJdGKTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4WQ2cPvOX7i2YLojs1+pfNiu0Ov8U7p+KdaNClpMRMJ0oe0QRRbow4T20VI2NShs
-	 /5dMReShEEbVxiajJpPjNWwPmKh0JzlU/xh9GLqQM+BlzCfeCt8JpAMYjY2HpUU676
-	 2q1MRO6JZWG/yZ0AXT0PE4jKlV9Sf0J5/q6zB56I=
+	b=041vWTY5moR7eOXtR0xskZA5GaRE7P4mrvYc5pGQ4r5KMaiIQoTFVOzJRhYgjmnCJ
+	 AJFCNYveqtBpRlFo0yIc9nHHXftxur44AKLzqx/FAnl8ACMM9KttTSV9LybFvfmgbT
+	 B6BQo+ZbZNAjI6T1V3aesACv/jnGuioT0CiC6LC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/273] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
-Date: Thu, 13 Feb 2025 15:26:19 +0100
-Message-ID: <20250213142407.650522963@linuxfoundation.org>
+	WANG Xuerui <git@xen0n.name>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 231/422] LoongArch: Extend the maximum number of watchpoints
+Date: Thu, 13 Feb 2025 15:26:20 +0100
+Message-ID: <20250213142445.451149342@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
+commit 531936dee53e471a3ec668de3c94ca357f54b7e8 upstream.
 
-This BUG_ON is meant to catch backref cache problems, but these can
-arise from either bugs in the backref cache or corruption in the extent
-tree.  Fix it to be a proper error.
+The maximum number of load/store watchpoints and fetch instruction
+watchpoints is 14 each according to LoongArch Reference Manual, so
+extend the maximum number of watchpoints from 8 to 14 for ptrace.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By the way, just simply change 8 to 14 for the definition in struct
+user_watch_state at the beginning, but it may corrupt uapi, then add
+a new struct user_watch_state_v2 directly.
+
+As far as I can tell, the only users for this struct in the userspace
+are GDB and LLDB, there are no any problems of software compatibility
+between the application and kernel according to the analysis.
+
+The compatibility problem has been considered while developing and
+testing. When the applications in the userspace get watchpoint state,
+the length will be specified which is no bigger than the sizeof struct
+user_watch_state or user_watch_state_v2, the actual length is assigned
+as the minimal value of the application and kernel in the generic code
+of ptrace:
+
+kernel/ptrace.c: ptrace_regset():
+
+	kiov->iov_len = min(kiov->iov_len,
+			   (__kernel_size_t) (regset->n * regset->size));
+
+	if (req == PTRACE_GETREGSET)
+		return copy_regset_to_user(task, view, regset_no, 0,
+					  kiov->iov_len, kiov->iov_base);
+	else
+		return copy_regset_from_user(task, view, regset_no, 0,
+					  kiov->iov_len, kiov->iov_base);
+
+For example, there are four kind of combinations, all of them work well.
+
+(1) "older kernel + older gdb", the actual length is 8+(8+8+4+4)*8=200;
+(2) "newer kernel + newer gdb", the actual length is 8+(8+8+4+4)*14=344;
+(3) "older kernel + newer gdb", the actual length is 8+(8+8+4+4)*8=200;
+(4) "newer kernel + older gdb", the actual length is 8+(8+8+4+4)*8=200.
+
+Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#control-and-status-registers-related-to-watchpoints
+Cc: stable@vger.kernel.org
+Fixes: 1a69f7a161a7 ("LoongArch: ptrace: Expose hardware breakpoints to debuggers")
+Reviewed-by: WANG Xuerui <git@xen0n.name>
+Reviewed-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/loongarch/include/uapi/asm/ptrace.h |   10 ++++++++++
+ arch/loongarch/kernel/ptrace.c           |    6 +++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 299eac696eb42..537e184b4b1df 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4378,8 +4378,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
- 		WARN_ON(!first_cow && level == 0);
+--- a/arch/loongarch/include/uapi/asm/ptrace.h
++++ b/arch/loongarch/include/uapi/asm/ptrace.h
+@@ -72,6 +72,16 @@ struct user_watch_state {
+ 	} dbg_regs[8];
+ };
  
- 		node = rc->backref_cache.path[level];
--		BUG_ON(node->bytenr != buf->start &&
--		       node->new_bytenr != buf->start);
++struct user_watch_state_v2 {
++	uint64_t dbg_info;
++	struct {
++		uint64_t    addr;
++		uint64_t    mask;
++		uint32_t    ctrl;
++		uint32_t    pad;
++	} dbg_regs[14];
++};
 +
-+		/*
-+		 * If node->bytenr != buf->start and node->new_bytenr !=
-+		 * buf->start then we've got the wrong backref node for what we
-+		 * expected to see here and the cache is incorrect.
-+		 */
-+		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
-+			btrfs_err(fs_info,
-+"bytenr %llu was found but our backref cache was expecting %llu or %llu",
-+				  buf->start, node->bytenr, node->new_bytenr);
-+			return -EUCLEAN;
-+		}
+ #define PTRACE_SYSEMU			0x1f
+ #define PTRACE_SYSEMU_SINGLESTEP	0x20
  
- 		btrfs_backref_drop_node_buffer(node);
- 		atomic_inc(&cow->refs);
--- 
-2.39.5
-
+--- a/arch/loongarch/kernel/ptrace.c
++++ b/arch/loongarch/kernel/ptrace.c
+@@ -720,7 +720,7 @@ static int hw_break_set(struct task_stru
+ 	unsigned int note_type = regset->core_note_type;
+ 
+ 	/* Resource info */
+-	offset = offsetof(struct user_watch_state, dbg_regs);
++	offset = offsetof(struct user_watch_state_v2, dbg_regs);
+ 	user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf, 0, offset);
+ 
+ 	/* (address, mask, ctrl) registers */
+@@ -920,7 +920,7 @@ static const struct user_regset loongarc
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ 	[REGSET_HW_BREAK] = {
+ 		.core_note_type = NT_LOONGARCH_HW_BREAK,
+-		.n = sizeof(struct user_watch_state) / sizeof(u32),
++		.n = sizeof(struct user_watch_state_v2) / sizeof(u32),
+ 		.size = sizeof(u32),
+ 		.align = sizeof(u32),
+ 		.regset_get = hw_break_get,
+@@ -928,7 +928,7 @@ static const struct user_regset loongarc
+ 	},
+ 	[REGSET_HW_WATCH] = {
+ 		.core_note_type = NT_LOONGARCH_HW_WATCH,
+-		.n = sizeof(struct user_watch_state) / sizeof(u32),
++		.n = sizeof(struct user_watch_state_v2) / sizeof(u32),
+ 		.size = sizeof(u32),
+ 		.align = sizeof(u32),
+ 		.regset_get = hw_break_get,
 
 
 
