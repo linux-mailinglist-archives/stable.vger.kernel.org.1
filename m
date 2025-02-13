@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F59BA345FF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7635EA343D7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 156933B295F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC83D3A491A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FC7155759;
-	Thu, 13 Feb 2025 15:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B22C24500B;
+	Thu, 13 Feb 2025 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5XeNlcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VsoHubL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F8426B099;
-	Thu, 13 Feb 2025 15:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25B211468;
+	Thu, 13 Feb 2025 14:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459269; cv=none; b=LcoiTYmP5WGBxkJkCaVSPCCn05g9riAfm/oItsW8rWGYRzz+tKZyeaIlwDBQJ/4UPTfgvs6DwlydTt6uY+rbx77vz/tfTwa/KMhf8DCIGTF0ccWNyHu7qpA0IDgKHhcz5piRIvaW2WrLhMLztLc6nWeZ0Z3YUBg6Tc44xPSL1L0=
+	t=1739457969; cv=none; b=JBmoaX59qJN7MzK23wSPS6Z3LHjoPC+GWHgHxou9+HL8oaFB0xe5FOSVP1Jv9o0Pd1TqAQeaQwwaz9ATCrGTR1Zp8zcn12nJbZjUAhitZtmi3C/SZxmxfC2J1kKVRzUuGnC1/yg/OqVKMJOhRU8F1ra/0SoujKatZPX9Cl9rJEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459269; c=relaxed/simple;
-	bh=dIoNV8H9p//v/GIvyLFyGREIPEedeNbiSlNRZoR9yWc=;
+	s=arc-20240116; t=1739457969; c=relaxed/simple;
+	bh=UPNdboZj/N+JFP8DWY46Hj/LAHK7QHaalhINdJ/0jh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tcaibx8azU5VgsyiMSSpJzZregTHFJDk3c8ImE6yLD0e7cLS+Jw/ZovNZaksn/GF/fHyuMv55tYFPLP3USFIWNZdl3/7wAKk4ypVcSQ7yRvDIeOfjMuZuWBmr6M2TylsjvHiFfnICyz/OvT/nzr6BRxdN6A+6LZzMVZJITgwCJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5XeNlcp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4218DC4CED1;
-	Thu, 13 Feb 2025 15:07:49 +0000 (UTC)
+	 MIME-Version; b=FJgVzBbuFwAZWjzLc45o6ezNIcjm2rpGZ68JILq7MB9Db7G1nnhXLyB7EMI7VaNHWvbLrfMW7SnGtdtpf71PCZxPOdXPjfCnBuALhNFX4Tmoz+N/C9HGGOkrxslAv/ydMAJo5nC0JlsEEAmXAj+r7+VgIWmnqaN2v+aukA7Fndo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VsoHubL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAE5C4CED1;
+	Thu, 13 Feb 2025 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459269;
-	bh=dIoNV8H9p//v/GIvyLFyGREIPEedeNbiSlNRZoR9yWc=;
+	s=korg; t=1739457968;
+	bh=UPNdboZj/N+JFP8DWY46Hj/LAHK7QHaalhINdJ/0jh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5XeNlcpdkCNydovkByZ7xpngAhbZubyX5/ZrV4ofs0hfMvAzcCUwJc30oqG9X3vc
-	 PmjogMLXyUcL+6+DbubS1+0FR6Zya9RjTk14h01Nq9RG3ME2SG4gY8XJTEZx5iK8Si
-	 Dde5hKnQHGJjCENd6tDO/KSGOZLKBFEYJeRaxhRY=
+	b=2VsoHubLzEGSIC7xlohsDtBZBzTfBSLfyIfVaBhWxiVkj1lcuCNoN27yp+W6S+Pqq
+	 UBfXsd6nyxmP42Zm4Ei+hcqirBBHOOesTg5uiqwPD9vUv0D6/nWFV5oE7eWQXJgPle
+	 eJdQZVyVOCOzlKBVsuuJrEpvcvBozJnmm6bQ+aHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Basharath Hussain Khaja <basharath@couthit.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.13 216/443] of: address: Fix empty resource handling in __of_address_resource_bounds()
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.12 232/422] powerpc/pseries/eeh: Fix get PE state translation
 Date: Thu, 13 Feb 2025 15:26:21 +0100
-Message-ID: <20250213142448.950447753@linuxfoundation.org>
+Message-ID: <20250213142445.489551211@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-commit 15e2f65f2ecfeb8e39315522e2b5cfdc5651fc10 upstream.
+commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
 
-"resource->end" needs to always be equal to "resource->start + size - 1".
-The previous version of the function did not perform the "- 1" in case
-of an empty resource.
+The PE Reset State "0" returned by RTAS calls
+"ibm_read_slot_reset_[state|state2]" indicates that the reset is
+deactivated and the PE is in a state where MMIO and DMA are allowed.
+However, the current implementation of "pseries_eeh_get_state()" does
+not reflect this, causing drivers to incorrectly assume that MMIO and
+DMA operations cannot be resumed.
 
-Also make sure to allow an empty resource at address 0.
+The userspace drivers as a part of EEH recovery using VFIO ioctls fail
+to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
+ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
+userspace drivers from functioning properly on pseries systems.
 
-Reported-by: Basharath Hussain Khaja <basharath@couthit.com>
-Closes: https://lore.kernel.org/lkml/20250108140414.13530-1-basharath@couthit.com/
-Fixes: 1a52a094c2f0 ("of: address: Unify resource bounds overflow checking")
+The patch addresses this issue by updating 'pseries_eeh_get_state()'
+to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
+the result mask for PE Reset State "0". This ensures correct state
+reporting to the callers, aligning the behavior with the PAPR specification
+and fixing the bug in EEH recovery for VFIO user workflows.
+
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250120-of-address-overflow-v1-1-dd68dbf47bce@linutronix.de
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/address.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -200,17 +200,15 @@ static u64 of_bus_pci_map(__be32 *addr,
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct
  
- static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
- {
--	u64 end = start;
--
- 	if (overflows_type(start, r->start))
- 		return -EOVERFLOW;
--	if (size && check_add_overflow(end, size - 1, &end))
--		return -EOVERFLOW;
--	if (overflows_type(end, r->end))
--		return -EOVERFLOW;
- 
- 	r->start = start;
--	r->end = end;
-+
-+	if (!size)
-+		r->end = wrapping_sub(typeof(r->end), r->start, 1);
-+	else if (size && check_add_overflow(r->start, size - 1, &r->end))
-+		return -EOVERFLOW;
- 
- 	return 0;
- }
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
 
 
 
