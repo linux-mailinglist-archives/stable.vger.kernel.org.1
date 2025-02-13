@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B377A34723
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F527A345F5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA9170122
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136473B0136
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10861CDA3F;
-	Thu, 13 Feb 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E9B26B0AD;
+	Thu, 13 Feb 2025 15:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik5tisX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doZRhIEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D54C1CAA7B;
-	Thu, 13 Feb 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B67645;
+	Thu, 13 Feb 2025 15:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460342; cv=none; b=A/ARBwI8DXGRQ/ftSTCsYu+ZAU/Zzw5IfWi/svcCTZPmeIHgIucIspbAyy3qvPqfE4vN8A0xjmkl/mVJKb1UqDWYm43pUtjlkxrfc8PG982n0WKdKn2djhIQ7NuwpDCXLudH79KB6j1KlYiwi4GH8jfzIHBpv81PuDJQvuaWzKk=
+	t=1739459490; cv=none; b=CsEYVLFwUJxD963dV9yufE3gR8j0fjg2weYNHkajtUtwqM7xPcn8DbPftj3+Pu3adtnTisNUhesuvLOcFPxlCdJMIQ6L7dK2GFZ+kBYChKAB4VFB++zSKWrmmUAa01IysTPcerwOJJbRXbo9+H/EAkQlcvQnJTztomvUlOvBMkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460342; c=relaxed/simple;
-	bh=3aU55NzPKnS4mE+Jfk2jd/EhaslA8Gdor+XR67vZzL0=;
+	s=arc-20240116; t=1739459490; c=relaxed/simple;
+	bh=4aU66a+aFBBisyiD6IJY2NeJMWcjsqWSbliXKe9zHTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbMW0zRnDfnvxX/kEeDo1M/Jsv8ZA+tq3OtShvMpQTztntfksW0YPM0gjOA1DV/aZU4HQO6YvdTE4m/RvykrRsps7kPkR3RVjTJTMqa9eZPmeISax0JbB2BILPc6MKdC0CMDGNxrymbS1eaCulkNKVzJETyCsUA0Zc+Pp7q+sMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik5tisX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F26C4CED1;
-	Thu, 13 Feb 2025 15:25:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q4mAaLSbxq0yL2knLaAn45eyKo92UYxIxKdU9/qarjl84q/P5JvSUvloWy2UlpQt21w8j9d41/IKJten8KLRHfSR95CEz0g7at67bNedgDK26ph+GS9jwFRxnDpJKW7YiU5mLszm6YePFQd6gkwhoseUag9QkwYFm3t3/uO+hBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doZRhIEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1217C4CEE7;
+	Thu, 13 Feb 2025 15:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460342;
-	bh=3aU55NzPKnS4mE+Jfk2jd/EhaslA8Gdor+XR67vZzL0=;
+	s=korg; t=1739459490;
+	bh=4aU66a+aFBBisyiD6IJY2NeJMWcjsqWSbliXKe9zHTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ik5tisX9qDpCH2T2TT6pVrCiI/KW7ruSRG2VeE9pTbCbrNnEsFSpIBkUrb8MKFssg
-	 XVIwJ4ZwlEv8xQFIfx2w8fhMRBc8sQhu4SMLPBYKDNeptKJUTWSkjc9ZDwU6xNU8g0
-	 aG2uftd3zoEnmAm14j0cl+UGfAyXMNpzXTWw0QoI=
+	b=doZRhIEzGhqbT0zCpPp+BN3+6B7H4f1CpZq8BiEfw2WsEvH1yu1qszHmglUokdQfJ
+	 5YZyRKqINu2X/shlkmZPTeyPZkeHICSfDp77OwoAXgpXz0/s5Avpz5A1MBn6oCLOjA
+	 vf7cP7HoC23C3q7fhZmInH6GEcpQEE7hESZDH/Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/273] ice: Add check for devm_kzalloc()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Georg Gottleuber <ggo@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.13 273/443] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius Gen1
 Date: Thu, 13 Feb 2025 15:27:18 +0100
-Message-ID: <20250213142409.964268476@linuxfoundation.org>
+Message-ID: <20250213142451.143985111@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit a8aa6a6ddce9b5585f2b74f27f3feea1427fb4e7 ]
+commit b1049f2d68693c80a576c4578d96774a68df2bad upstream.
 
-Add check for the return value of devm_kzalloc() to guarantee the success
-of allocation.
+commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend") sets the
+policy that all PCIe ports are allowed to use D3.  When the system is
+suspended if the port is not power manageable by the platform and won't be
+used for wakeup via a PME this sets up the policy for these ports to go
+into D3hot.
 
-Fixes: 42c2eb6b1f43 ("ice: Implement devlink-rate API")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250131013832.24805-1-jiashengjiangcool@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This policy generally makes sense from an OSPM perspective but it leads to
+problems with wakeup from suspend on the TUXEDO Sirius 16 Gen 1 with a
+specific old BIOS. This manifests as a system hang.
+
+On the affected Device + BIOS combination, add a quirk for the root port of
+the problematic controller to ensure that these root ports are not put into
+D3hot at suspend.
+
+This patch is based on
+
+  https://lore.kernel.org/linux-pci/20230708214457.1229-2-mario.limonciello@amd.com
+
+but with the added condition both in the documentation and in the code to
+apply only to the TUXEDO Sirius 16 Gen 1 with a specific old BIOS and only
+the affected root ports.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250114222436.1075456-1-wse@tuxedocomputers.com
+Co-developed-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_devlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/pci/fixup.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_devlink.c b/drivers/net/ethernet/intel/ice/ice_devlink.c
-index 80dc5445b50d4..030ca0ef71d87 100644
---- a/drivers/net/ethernet/intel/ice/ice_devlink.c
-+++ b/drivers/net/ethernet/intel/ice/ice_devlink.c
-@@ -999,6 +999,9 @@ static int ice_devlink_rate_node_new(struct devlink_rate *rate_node, void **priv
- 
- 	/* preallocate memory for ice_sched_node */
- 	node = devm_kzalloc(ice_hw_to_dev(pi->hw), sizeof(*node), GFP_KERNEL);
-+	if (!node)
-+		return -ENOMEM;
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -1010,4 +1010,34 @@ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
+ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
 +
- 	*priv = node;
- 
- 	return 0;
--- 
-2.39.5
-
++/*
++ * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
++ * may cause problems when the system attempts wake up from s2idle.
++ *
++ * On the TUXEDO Sirius 16 Gen 1 with a specific old BIOS this manifests as
++ * a system hang.
++ */
++static const struct dmi_system_id quirk_tuxeo_rp_d3_dmi_table[] = {
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "APX958"),
++			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "V1.00A00_20240108"),
++		},
++	},
++	{}
++};
++
++static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
++{
++	struct pci_dev *root_pdev;
++
++	if (dmi_check_system(quirk_tuxeo_rp_d3_dmi_table)) {
++		root_pdev = pcie_find_root_port(pdev);
++		if (root_pdev)
++			root_pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
++	}
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
+ #endif /* CONFIG_SUSPEND */
 
 
 
