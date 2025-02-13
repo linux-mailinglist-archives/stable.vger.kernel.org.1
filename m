@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8429A343B8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3020A345E9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884DD1705B8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17041655DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E521723A9B4;
-	Thu, 13 Feb 2025 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32F26B097;
+	Thu, 13 Feb 2025 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRY6pkkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPwN/zPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F952222C0;
-	Thu, 13 Feb 2025 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1EC26B080;
+	Thu, 13 Feb 2025 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458024; cv=none; b=qNvqBlyXA/fOcj2AXRoQVTSADVb7Wn4MjBIXJ/SN+/gUj0QrSSWfJmSWCBy4SHXG0CpqeXOnq7WkSveWh/JHCqotvAHDgi5qRfI3ern3vaBZpVZzmxxAhICNhRKwOury5A9KTh/cbAxLFhfWCmPpBxF49sBhjSh5p74wq78vo+s=
+	t=1739459437; cv=none; b=Uygsk1EZ9Gv4zw/XCg/rStOq/4Ep1b2iAqPipdk+c7d7VCuBnjXbuqpxiHi1Xg0Q118kowmeTZmYp/AOe9ANQfKQ9bd4x+0yUTl6Dr7ocWKoPwhjgaS+REGjCUvRJfGbSC+deX8U9FJ87o0xr6SqbhISSZYNpoynHogLcIkF2Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458024; c=relaxed/simple;
-	bh=2HVcXVhgOW3OWBLuvusGzWKoSjWCoT2erLd9zA5D+hg=;
+	s=arc-20240116; t=1739459437; c=relaxed/simple;
+	bh=m4YvAwPnZ7MJPJNxpzrHn7/Ckw9BGfYlsMB1ZJ8IKE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYKmOifGXQhXJKw1qD5m4Fjbm7+4vRU4fq63qfQ/kZP8TPu2caDYPWcKkLWhh3ibgwP2FXp9RPYWewKg1vrrmDdSVZXWOsCqfCptU/2oFtJ7MrP6PE2JXMxWDEmX9Bw4phF3XVlGTbsz87TQ6dYjLsux+dfE7YKtbfaoFXzg+os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRY6pkkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B7BC4CED1;
-	Thu, 13 Feb 2025 14:47:03 +0000 (UTC)
+	 MIME-Version; b=R7JSZUQ5pMvHp6weW5tsR/muQ4xSklKYz8ynXRXADyjnTYjj6G5r3CL1slkKZdq0Y/+6jck8VK5eVDR8s3X2JLZ46HeUO6TLeJQU/xrkdWu//INCq9yaHdJcYyGRIjro2HGGdSKbKpVEFj4j3aH0d4481V9dnwZlp2TKw9BnXG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPwN/zPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA46C4CED1;
+	Thu, 13 Feb 2025 15:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458024;
-	bh=2HVcXVhgOW3OWBLuvusGzWKoSjWCoT2erLd9zA5D+hg=;
+	s=korg; t=1739459437;
+	bh=m4YvAwPnZ7MJPJNxpzrHn7/Ckw9BGfYlsMB1ZJ8IKE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRY6pkkhb5Yv7EUVGnJFbu+aVkhp1zS9YOkN2/jUYf09n487rS3V2BQA92CuCU3sl
-	 Tpjr75VsGKVSrjartrUY11K5ArWte7g5oeeW91hllDnxAd2+c6A3xwuV85hzCsNHlr
-	 0luv3D35H4mSkKH4eqJV1wd3h7Y6bXCfCNFLKOYI=
+	b=wPwN/zPqMf8fvlKwT7BFVDpT7qWR8YH6Ia81ldKgsaOYNY+NVSSPUoS26fB0bwTva
+	 9pyWgOYNAY0CLpZjg39+ryNOlfOrIlwhArkh+TQn9zCJybQzBWLoA3CBcojlsMi5Zv
+	 8GuWc2Fiad15JZKSwkvuSZW57SYQHpiZflakvkJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 280/422] arm64: dts: qcom: sm6375: Fix MPSS memory base and length
+	Tomasz Sikora <sikora.tomus@gmail.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 264/443] Revert "media: uvcvideo: Require entities to have a non-zero unique ID"
 Date: Thu, 13 Feb 2025 15:27:09 +0100
-Message-ID: <20250213142447.349534391@linuxfoundation.org>
+Message-ID: <20250213142450.803776704@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 918e71ba0c08c3d609ad69067854b0f675c4a253 upstream.
+commit 8004d635f27bbccaa5c083c50d4d5302a6ffa00e upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0608_0000 with length of 0x10000.
+This reverts commit 3dd075fe8ebbc6fcbf998f81a75b8c4b159a6195.
 
-0x0600_0000, value used so far, is the main region of Modem.
+Tomasz has reported that his device, Generalplus Technology Inc. 808 Camera,
+with ID 1b3f:2002, stopped being detected:
 
-Correct the base address and length, which should have no functional
-impact on Linux users, because PAS loader does not use this address
-space at all.
+$ ls -l /dev/video*
+zsh: no matches found: /dev/video*
+[    7.230599] usb 3-2: Found multiple Units with ID 5
 
-Fixes: 31cc61104f68 ("arm64: dts: qcom: sm6375: Add modem nodes")
+This particular device is non-compliant, having both the Output Terminal
+and Processing Unit with ID 5. uvc_scan_fallback, though, is able to build
+a chain. However, when media elements are added and uvc_mc_create_links
+call uvc_entity_by_id, it will get the incorrect entity,
+media_create_pad_link will WARN, and it will fail to register the entities.
+
+In order to reinstate support for such devices in a timely fashion,
+reverting the fix for these warnings is appropriate. A proper fix that
+considers the existence of such non-compliant devices will be submitted in
+a later development cycle.
+
+Reported-by: Tomasz Sikora <sikora.tomus@gmail.com>
+Fixes: 3dd075fe8ebb ("media: uvcvideo: Require entities to have a non-zero unique ID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-19-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250114200045.1401644-1-cascardo@igalia.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6375.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   70 ++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 43 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
-@@ -1516,9 +1516,9 @@
- 			#power-domain-cells = <1>;
- 		};
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -775,27 +775,14 @@ static const u8 uvc_media_transport_inpu
+ 	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
+ static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
  
--		remoteproc_mss: remoteproc@6000000 {
-+		remoteproc_mss: remoteproc@6080000 {
- 			compatible = "qcom,sm6375-mpss-pas";
--			reg = <0 0x06000000 0 0x4040>;
-+			reg = <0x0 0x06080000 0x0 0x10000>;
+-static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
+-					       u16 id, unsigned int num_pads,
+-					       unsigned int extra_size)
++static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
++		unsigned int num_pads, unsigned int extra_size)
+ {
+ 	struct uvc_entity *entity;
+ 	unsigned int num_inputs;
+ 	unsigned int size;
+ 	unsigned int i;
  
- 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+-	/* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
+-	if (id == 0) {
+-		dev_err(&dev->udev->dev, "Found Unit with invalid ID 0.\n");
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+-	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
+-	if (uvc_entity_by_id(dev, id)) {
+-		dev_err(&dev->udev->dev, "Found multiple Units with ID %u\n", id);
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+ 	extra_size = roundup(extra_size, sizeof(*entity->pads));
+ 	if (num_pads)
+ 		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
+@@ -805,7 +792,7 @@ static struct uvc_entity *uvc_alloc_new_
+ 	     + num_inputs;
+ 	entity = kzalloc(size, GFP_KERNEL);
+ 	if (entity == NULL)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	entity->id = id;
+ 	entity->type = type;
+@@ -917,10 +904,10 @@ static int uvc_parse_vendor_control(stru
+ 			break;
+ 		}
+ 
+-		unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
+-					    buffer[3], p + 1, 2 * n);
+-		if (IS_ERR(unit))
+-			return PTR_ERR(unit);
++		unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
++					p + 1, 2*n);
++		if (unit == NULL)
++			return -ENOMEM;
+ 
+ 		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+@@ -1029,10 +1016,10 @@ static int uvc_parse_standard_control(st
+ 			return -EINVAL;
+ 		}
+ 
+-		term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
+-					    buffer[3], 1, n + p);
+-		if (IS_ERR(term))
+-			return PTR_ERR(term);
++		term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
++					1, n + p);
++		if (term == NULL)
++			return -ENOMEM;
+ 
+ 		if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
+ 			term->camera.bControlSize = n;
+@@ -1088,10 +1075,10 @@ static int uvc_parse_standard_control(st
+ 			return 0;
+ 		}
+ 
+-		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
+-					    buffer[3], 1, 0);
+-		if (IS_ERR(term))
+-			return PTR_ERR(term);
++		term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
++					1, 0);
++		if (term == NULL)
++			return -ENOMEM;
+ 
+ 		memcpy(term->baSourceID, &buffer[7], 1);
+ 
+@@ -1110,10 +1097,9 @@ static int uvc_parse_standard_control(st
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
+-					    p + 1, 0);
+-		if (IS_ERR(unit))
+-			return PTR_ERR(unit);
++		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
++		if (unit == NULL)
++			return -ENOMEM;
+ 
+ 		memcpy(unit->baSourceID, &buffer[5], p);
+ 
+@@ -1133,9 +1119,9 @@ static int uvc_parse_standard_control(st
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
+-		if (IS_ERR(unit))
+-			return PTR_ERR(unit);
++		unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
++		if (unit == NULL)
++			return -ENOMEM;
+ 
+ 		memcpy(unit->baSourceID, &buffer[4], 1);
+ 		unit->processing.wMaxMultiplier =
+@@ -1162,10 +1148,9 @@ static int uvc_parse_standard_control(st
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
+-					    p + 1, n);
+-		if (IS_ERR(unit))
+-			return PTR_ERR(unit);
++		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
++		if (unit == NULL)
++			return -ENOMEM;
+ 
+ 		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+@@ -1305,10 +1290,9 @@ static int uvc_gpio_parse(struct uvc_dev
+ 		return dev_err_probe(&dev->udev->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
+ 
+-	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+-				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
+-	if (IS_ERR(unit))
+-		return PTR_ERR(unit);
++	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
++	if (!unit)
++		return -ENOMEM;
+ 
+ 	unit->gpio.gpio_privacy = gpio_privacy;
+ 	unit->gpio.irq = irq;
 
 
 
