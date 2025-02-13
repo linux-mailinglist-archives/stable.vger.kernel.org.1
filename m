@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-116044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15194A346F7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568FCA3438F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB4918995E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B3918953A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BFE14F121;
-	Thu, 13 Feb 2025 15:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E812E2661A2;
+	Thu, 13 Feb 2025 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VET9ldzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krjq6Uh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59E145A03;
-	Thu, 13 Feb 2025 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CE226619A;
+	Thu, 13 Feb 2025 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460127; cv=none; b=K6Zhv84XLWGgaQtVl7HevFXRW/jssJLuqpbzs3uKlfllfWiqdlGtg6qQEOmbeMBkpwHQ0ho88sy+d6sqLipRCdZJy3eeXkOyZwRRSaqB/c8GO3IfkVF3Uw1t+s09wRP7vSxnnUYGdSXJBSOr2yJB+gzxl9BH8SiIrINf+6WdHIc=
+	t=1739457896; cv=none; b=cZ2lyhak1z5ech43Zzz8mT+o8sM1drcGbSo7X+tqwdPW2W77yu0/vpxL6AIk69eOJ8deU4cHUpFCpzgRR6yc2QEVmAq3qoJ1Ttx+do4YEbDy7cECcIc+0L9hKVI04yOtMIzoBNagg85BGMHXV688AODTWlGOJfg7WtpZtMwEFGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460127; c=relaxed/simple;
-	bh=/Pgg7L9CGHk/+MYkX55y/TEs/xcSNk4WTkxohRo9ISw=;
+	s=arc-20240116; t=1739457896; c=relaxed/simple;
+	bh=xnYucc3aD7QkW4Jc/L70zGQMM6D1KjhNXdhGNrmozWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLW1V8jwA4KAT2CgsHAHiBzd/Ype3iiN9xqbzEyxHAkTWXzvyNAfjJ8Du8JTEnLNvCAIjkN7ksW9FBlbk0yjroxCB6dDUqApj9TWqO1TtscM6TuSp4kmztUYUsT59CvTHvaFFSIJqB7x3Y56fMaFyCLqZPo82glrLCZb7fZCqns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VET9ldzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FA2C4CED1;
-	Thu, 13 Feb 2025 15:22:06 +0000 (UTC)
+	 MIME-Version; b=kFXl1B57IQNn0Gl90Of8SZN2N1zGhwQY0ieOmfGh5eNIks8ZwhKfYNnJoUlGIDBWX77CtF40BLhWHv1PxtKUda/v62Nw5erY4aUmYMdfDp6bCdKlaf6SrzTZFc+I2lswHptnNS1bM/F974OClSWcrIWe6IZ/iCFlVOEHRV+r0n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krjq6Uh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10851C4CEE7;
+	Thu, 13 Feb 2025 14:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460126;
-	bh=/Pgg7L9CGHk/+MYkX55y/TEs/xcSNk4WTkxohRo9ISw=;
+	s=korg; t=1739457896;
+	bh=xnYucc3aD7QkW4Jc/L70zGQMM6D1KjhNXdhGNrmozWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VET9ldzQawJMbeXHxufp0NBqzpsokDb9qxhkYq6rxfPuLXaZovnomjP5wTfcRtg0R
-	 TEzdy19KAS2PfTvbqVwLSGkGYtFk9TD9jTxGpkerL8C2eE/1PnHkIeIjpWWbGTl4ts
-	 bgptf47NL5pi5rszKvG3GYt+29V08JFQP+4i3s3I=
+	b=krjq6Uh0JcaBTkHClEk3fgT7vbGyoW1uIjSUil0DVOyxhSvCcv+6vv2cK0BEh7CSn
+	 rBNSk8elMD8UHOF94zHc1ashCa7nMYWoRzSXMijTyLWLYNblIaTLh/sN+YBCeFfoS7
+	 qkfcqIuj4EY+UR4EsLGtQezAXZ29dOztxlyqdmqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/273] drm/bridge: it6505: Change definition MAX_HDCP_DOWN_STREAM_COUNT
+	Brad Griffis <bgriffis@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.12 245/422] arm64: tegra: Fix Tegra234 PCIe interrupt-map
 Date: Thu, 13 Feb 2025 15:26:34 +0100
-Message-ID: <20250213142408.238855269@linuxfoundation.org>
+Message-ID: <20250213142445.991675377@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Brad Griffis <bgriffis@nvidia.com>
 
-[ Upstream commit 85597bc0d70c287ba41f17d14d3d857a38a3d727 ]
+commit b615fbd70fce8582d92b3bdbbf3c9b80cadcfb55 upstream.
 
-A HDCP source device shall support max downstream to 127 devices.
-Change definition MAX_HDCP_DOWN_STREAM_COUNT to 127
+For interrupt-map entries, the DTS specification requires
+that #address-cells is defined for both the child node and the
+interrupt parent.  For the PCIe interrupt-map entries, the parent
+node ("gic") has not specified #address-cells. The existing layout
+of the PCIe interrupt-map entries indicates that it assumes
+that #address-cells is zero for this node.
 
-KSVs shall save for DRM blocked devices check.
-This results in struct it6505 growth by ~0.5 KiB.
+Explicitly set #address-cells to zero for "gic" so that it complies
+with the device tree specification.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-4-e0fdd4844703@ite.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+NVIDIA EDK2 works around this issue by assuming #address-cells
+is zero in this scenario, but that workaround is being removed and so
+this update is needed or else NVIDIA EDK2 cannot successfully parse the
+device tree and the board cannot boot.
+
+Fixes: ec142c44b026 ("arm64: tegra: Add P2U and PCIe controller nodes to Tegra234 DT")
+Signed-off-by: Brad Griffis <bgriffis@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241213235602.452303-1-bgriffis@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 24c5a926af8d1..bd4c8f5d55a64 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -295,7 +295,7 @@
- #define MAX_LANE_COUNT 4
- #define MAX_LINK_RATE HBR
- #define AUTO_TRAIN_RETRY 3
--#define MAX_HDCP_DOWN_STREAM_COUNT 10
-+#define MAX_HDCP_DOWN_STREAM_COUNT 127
- #define MAX_CR_LEVEL 0x03
- #define MAX_EQ_LEVEL 0x03
- #define AUX_WAIT_TIMEOUT_MS 15
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -4018,6 +4018,8 @@
+ 			#redistributor-regions = <1>;
+ 			#interrupt-cells = <3>;
+ 			interrupt-controller;
++
++			#address-cells = <0>;
+ 		};
+ 
+ 		smmu_iso: iommu@10000000 {
 
 
 
