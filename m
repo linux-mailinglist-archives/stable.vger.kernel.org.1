@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF9EA34486
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2876BA34227
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9D216E8A3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0D7162C50
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1561FFC69;
-	Thu, 13 Feb 2025 14:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF0D1448E3;
+	Thu, 13 Feb 2025 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAqhPoXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDUQipnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD122222A9;
-	Thu, 13 Feb 2025 14:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA69281343;
+	Thu, 13 Feb 2025 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458569; cv=none; b=HHGfgx0YInEBAXVyx6kKmY7t9TM9bxcc2NHPbPN6JEEDwnlYRJSVa8ZgFjPpmKvFSyUK9bGmuvzEI7VRp+Dk8pmenAFjwVS0YvaUBvxNPhghVtJME8WsiS8jJksz/70dFI+cefBJs6uobfkFcgr3Rvo7yMAm7v2/GWCtEZx2QR8=
+	t=1739457158; cv=none; b=KcZ+wn+DXb+ZPNmHz83ejR7iIZUc+1+Tl8n6FYZKdyG2n640otD4bLaYsFkplpAA5ZDBWZQZsU2f59gYAywUVjqnXNeomHNoBr41GkErPX8TjZ8wXr2NpWjDCJdZpoXYmogppEdDNpBcl205eFztNzXksLsQabVs/m5T3vdq5rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458569; c=relaxed/simple;
-	bh=k1M2SdBNwhjwRnXH1xpilcwcG+Zfd6XhOYuTZOkhhps=;
+	s=arc-20240116; t=1739457158; c=relaxed/simple;
+	bh=zqBwQfg14n7niuNa3RVuy+mp14SqaiEgHyudJh0pYi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASpnmnsBbm50J+DoTsvsZHpgQQrP5qMCkSKIxDss/2LjL4pvF3UdfBVLV/JqFZd0mfPr5xVN0pFqSj2ZivqyWyEHQH2KW88+rR2BtHyE9mEjnawGgqxWkv6iOcyc1httu820amMcx0O1kitm1hyr5vesOL2G8fRoUGeF1VZnLIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAqhPoXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0687EC4CED1;
-	Thu, 13 Feb 2025 14:56:07 +0000 (UTC)
+	 MIME-Version; b=tYg7RJCU3QY8QUyBa5+hib4XfVnt34Dc2VWDLpwfr3uTMCZnk8L473PlO1/43Nm+xmMeLQF65YatkSnS30X9XUKh/c0Lm95XjDB19r746lPVLgNEudsyDeSevXoL9lv9hfoG/5VqfV2pJ2YU+b43mwMMIugjvTLXtTo21KlBZbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDUQipnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28861C4CED1;
+	Thu, 13 Feb 2025 14:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458568;
-	bh=k1M2SdBNwhjwRnXH1xpilcwcG+Zfd6XhOYuTZOkhhps=;
+	s=korg; t=1739457158;
+	bh=zqBwQfg14n7niuNa3RVuy+mp14SqaiEgHyudJh0pYi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAqhPoXSZFgAG02Gp06DvPbGJ0q/ifNx5GZnUFp3EHprY994PaC5yx22wikWangTo
-	 666y7Dl0HJKIB0dVf78nE6y4irzeuiuRkcziD/28+BLndQu6X4K6X7c7XXNADDCC5l
-	 Ta9gHS1h2l4LHLg1br3pKNRduKsz1941CXIh1l3k=
+	b=NDUQipndOvTog2fRVLtVUhsMxb3tMhoR4wGzO4y2YY49Jq2MIjkwfsO1ltMMZHUA7
+	 JMSo6iEvzD7SY48tzSlS421YPWy52qI+FD1LzBQOaf1StRgs3++jFdSopO1px+qHCZ
+	 ghmdAdmsSO7MKdFhgjlmXhM2zRuusKHVpcz+ea9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Waiman Long <longman@redhat.com>,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 016/443] locking/ww_mutex/test: Use swap() macro
-Date: Thu, 13 Feb 2025 15:23:01 +0100
-Message-ID: <20250213142441.248890929@linuxfoundation.org>
+Subject: [PATCH 6.12 033/422] drm/radeon: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:23:02 +0100
+Message-ID: <20250213142437.833419828@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0d3547df6934b8f9600630322799a2a76b4567d8 ]
+[ Upstream commit b54c14f82428c8a602392d4cae1958a71a578132 ]
 
-Fixes the following Coccinelle/coccicheck warning reported by
-swap.cocci:
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-  WARNING opportunity for swap()
-
-Compile-tested only.
-
-[Boqun: Add the report tags from Jiapeng and Abaci Robot [1].]
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Reported-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11531
-Link: https://lore.kernel.org/r/20241025081455.55089-1-jiapeng.chong@linux.alibaba.com [1]
-Acked-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20240731135850.81018-2-thorsten.blum@toblux.com
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-8-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/test-ww_mutex.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/radeon/radeon_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 5d58b2c0ef98b..bcb1b9fea5880 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -404,7 +404,7 @@ static inline u32 prandom_u32_below(u32 ceil)
- static int *get_random_order(int count)
- {
- 	int *order;
--	int n, r, tmp;
-+	int n, r;
- 
- 	order = kmalloc_array(count, sizeof(*order), GFP_KERNEL);
- 	if (!order)
-@@ -415,11 +415,8 @@ static int *get_random_order(int count)
- 
- 	for (n = count - 1; n > 1; n--) {
- 		r = prandom_u32_below(n + 1);
--		if (r != n) {
--			tmp = order[n];
--			order[n] = order[r];
--			order[r] = tmp;
--		}
-+		if (r != n)
-+			swap(order[n], order[r]);
+diff --git a/drivers/gpu/drm/radeon/radeon_audio.c b/drivers/gpu/drm/radeon/radeon_audio.c
+index 5b69cc8011b42..8d64ba18572ec 100644
+--- a/drivers/gpu/drm/radeon/radeon_audio.c
++++ b/drivers/gpu/drm/radeon/radeon_audio.c
+@@ -775,8 +775,10 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
+ 		if (!dig->pin || dig->pin->id != port)
+ 			continue;
+ 		*enabled = true;
++		mutex_lock(&connector->eld_mutex);
+ 		ret = drm_eld_size(connector->eld);
+ 		memcpy(buf, connector->eld, min(max_bytes, ret));
++		mutex_unlock(&connector->eld_mutex);
+ 		break;
  	}
  
- 	return order;
 -- 
 2.39.5
 
