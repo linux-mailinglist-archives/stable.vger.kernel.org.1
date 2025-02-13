@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7865A3457E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB487A34375
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72DE616F79B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4B131882274
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E05626B09D;
-	Thu, 13 Feb 2025 15:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B8B24BBEA;
+	Thu, 13 Feb 2025 14:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML50MDZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6H3nSRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499FF166F32;
-	Thu, 13 Feb 2025 15:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3E24BBE3;
+	Thu, 13 Feb 2025 14:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459249; cv=none; b=YgcgK0xUnx/0GLJuExUQvJJjcODqd1QgaPFPSmodnsMudWC+1hYwbVxun5t0DBK8/SOCLoKbI0NyhOMqP5i/Ffa9jug4h81lg+vgJ60dSdBF68/RKmnk5ZT15vTF5zLXSbG1ua+fuc2znwibva7ItnKpcPX2S1GZZDfKsSCYaM0=
+	t=1739457866; cv=none; b=TLIa7l29/z0pyH4yoPcI8ms0uDl2YzlCBRZAWvjDoHjZNfqULVyBWsvNxRokAdYebC/3g5up48zWsQudAWLmMbxnoo1D4GQJTITkVPkJn1NKQEVqw+W9F/UqwlyUoZaTC0mp9F6isoDIHlsc+8p3lpjDbbCt/cN+KtMmD+eeZf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459249; c=relaxed/simple;
-	bh=ZgsJ1NU1PwCQtN+o87p92RZg+EbSjyG6byS945PbQbM=;
+	s=arc-20240116; t=1739457866; c=relaxed/simple;
+	bh=3MTesvRcC+4Dqjc7Ac4QaiPGlcuDIlFGQ5PluFV/Kvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBQfRJGh7TVuDPjdKrT4UZ1CRWyfnKQPSlcOTti1YEhCML1zX0507TDiiDsQQJPQdpprpIRvXhStpTJY9iaOQpZHCUB40cd0SVUUirM7220oqwTugpN6pWjDykufXQCu54RhFf1BhskkmZqtsG3QxM/TE2q9HOA07FHXfXiQuAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML50MDZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8927C4CEE4;
-	Thu, 13 Feb 2025 15:07:28 +0000 (UTC)
+	 MIME-Version; b=L1Eum5IEgU69ozcl6zrdrXpUuFH4RyuNJuJEUwlWlcrDGSzq03TqTnKraToEYIYp0SEYARL6Y6ZvSx5r4AkGdmdFYjSjSGXN4F2spjPZdJuOG9uozgrkBdJrbsFXdccRrJkEfm6fkfP7edhFVbyUQ1qwDKocmvsNHyxzmC6GB4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6H3nSRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9017C4CED1;
+	Thu, 13 Feb 2025 14:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459249;
-	bh=ZgsJ1NU1PwCQtN+o87p92RZg+EbSjyG6byS945PbQbM=;
+	s=korg; t=1739457866;
+	bh=3MTesvRcC+4Dqjc7Ac4QaiPGlcuDIlFGQ5PluFV/Kvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ML50MDZ48tqqvCNWCbkSRrufuhtUtI+1mr4o9GzpAGjRRCetsrmYhijGJHhee9IMd
-	 SXyjiT8iWyTaUUDKXTbsKqYudCsI7phomCNUspWJ0qP0yoHmvyWhkb4oNc8l8r4NZR
-	 36J4Hkx78uPgzQA1eoDOLmLMG7riGRQqqbeU10AQ=
+	b=q6H3nSRAJ4uAhTWM6Ej3o+FBmPjb3My7SwbKwlDx947Odw7hx1JBoaiBCfWY5qv3N
+	 +7hDYFyfrtUZ2QbkCMAOff8wgIEAjO1UPR3JiCxvNMBwJKb2FDdteyTPRcN0lyla40
+	 46o32ukKERAsm9ljf1bXIfD0JA0W55+iHWEk43co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Jonathan Kim <Jonathan.Kim@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 177/443] drm/amdkfd: Block per-queue reset when halt_if_hws_hang=1
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Avri Altman <Avri.Altman@wdc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 193/422] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
 Date: Thu, 13 Feb 2025 15:25:42 +0100
-Message-ID: <20250213142447.434413697@linuxfoundation.org>
+Message-ID: <20250213142443.992635612@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Cornwall <jay.cornwall@amd.com>
+From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
 
-commit f214b7beb00621b983e67ce97477afc3ab4b38f4 upstream.
+commit 1b3e2d4ec0c5848776cc56d2624998aa5b2f0d27 upstream.
 
-The purpose of halt_if_hws_hang is to preserve GPU state for driver
-debugging when queue preemption fails. Issuing per-queue reset may
-kill wavefronts which caused the preemption failure.
+According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
+defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
+TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
+the UFS device specification definition.
 
-Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
-Reviewed-by: Jonathan Kim <Jonathan.Kim@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.12.x
+Cc: stable@vger.kernel.org
+Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
+Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Link: https://lore.kernel.org/r/69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com
+Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    4 ++--
+ include/ufs/ufs.h |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2325,9 +2325,9 @@ static int unmap_queues_cpsch(struct dev
- 	 */
- 	mqd_mgr = dqm->mqd_mgrs[KFD_MQD_TYPE_HIQ];
- 	if (mqd_mgr->check_preemption_failed(mqd_mgr, dqm->packet_mgr.priv_queue->queue->mqd)) {
-+		while (halt_if_hws_hang)
-+			schedule();
- 		if (reset_queues_on_hws_hang(dqm)) {
--			while (halt_if_hws_hang)
--				schedule();
- 			dqm->is_hws_hang = true;
- 			kfd_hws_hang(dqm);
- 			retval = -ETIME;
+--- a/include/ufs/ufs.h
++++ b/include/ufs/ufs.h
+@@ -386,8 +386,8 @@ enum {
+ 
+ /* Possible values for dExtendedUFSFeaturesSupport */
+ enum {
+-	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
+-	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
++	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
++	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
+ 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
+ 	UFS_DEV_HPB_SUPPORT		= BIT(7),
+ 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
 
 
 
