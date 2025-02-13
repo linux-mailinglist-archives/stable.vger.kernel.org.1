@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94C7A34348
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC22CA34540
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 206833A310C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6568189B68D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054842222D1;
-	Thu, 13 Feb 2025 14:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCD11ACEA7;
+	Thu, 13 Feb 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C2u89lX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLOoZAp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53C7214A69;
-	Thu, 13 Feb 2025 14:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3919C54B;
+	Thu, 13 Feb 2025 15:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457690; cv=none; b=fsUfPDFI14R0GPb0RvnY5RopSOt1nBCK14UqM98HgxQSYnbM4eVG5Wcq0VEhKljmVHSMPn7LQz5lzZRffVGsdeFk+ko/UwxAalZxurtnXlX44gqX0sqhvTMTDfxig4dQCjxjy16LO7jckFGEc4H0Pd2oVmus5XFbwVVadrlPkrk=
+	t=1739459130; cv=none; b=b+l3l+DSA/wGDFK8ro3tlZXERFAG/f5T6D1iRUBw5uAXkgA8vaLWFptS4sOcDWEZUuWyk18idLmN6VvqRzM+/bwQMC+GKLPTO9yByCNJj8L3152SvX7RLh77jEgErj/7Z767lnH/kFpNm+HYyTeZi5fdZtkfJfDnORzcGbECK2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457690; c=relaxed/simple;
-	bh=UbsZMMcxCrnSEEJnxpLR8RKGa1F/z98jM3XgParXh7w=;
+	s=arc-20240116; t=1739459130; c=relaxed/simple;
+	bh=hCCfmW7D7AhzFnzTOP8M17VoeDJkfx5m9ILcNwAwA1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6Sr5dghRwn0WOeiyTl4YWmQVkCK4CPF9i6jdRZopL0XXADBMgJPZSMip72s1iOhYsNNfP6QqcmeH8sgb/p6Z8t0pgWRXnGQtocPhtsLPh9b499S0OBJXtfLrrOsne0NwT54adJ29DG23u74Csq+DULeU8W28b6wmw0rhFGgjpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2C2u89lX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221F1C4CED1;
-	Thu, 13 Feb 2025 14:41:29 +0000 (UTC)
+	 MIME-Version; b=GScIkVqy7aaubqH7uXdVRbmp9E88n3VriJfgx+MjrCOYvheZ+/o8YSrGC42/VjxMkMcPKqMdrKmgrY833mGMNzbzp+QEbCMG7h5LGVoEtgOJ5AelHMRZAaCymbIIuj43+AQZGJHMvDZ57EjNSU+AdzEpa2M3YjiDHT3bTMVcDm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLOoZAp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A5FC4CED1;
+	Thu, 13 Feb 2025 15:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457690;
-	bh=UbsZMMcxCrnSEEJnxpLR8RKGa1F/z98jM3XgParXh7w=;
+	s=korg; t=1739459129;
+	bh=hCCfmW7D7AhzFnzTOP8M17VoeDJkfx5m9ILcNwAwA1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2C2u89lXTI7BDT7/5XgTLT5u4jqyqxcKRE/A9R+u6oTweCy6efSVkkaTQ8oWDUiYe
-	 kRlKpJ3VabeaDd2n1Q1Vy0ASdN4oeZ8DudhH++5XIRMQj5CEBANUq/8VfeAuvFFmIi
-	 jvV9HIe+sgdUVDJww/0m8t19NS+iCyQHbnoQQ3cM=
+	b=iLOoZAp2ZFhf6Tm0chbl7T/PITJuEyGgO8Bo2eAtTpm0IVdlpLkuWJX+4ez1U18RB
+	 pnQYUw8Ykb/9SjJpre9xYGy/LLiNfjXBNTwTv2AvG2nHilDQP4cTD6WiHoCxs3n4U2
+	 UfPNkiBL+y7lM9oiuTL1h4FG/00soRmQKCRJQW+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.12 185/422] clk: mediatek: mt2701-aud: fix conversion to mtk_clk_simple_probe
+	Will Deacon <will@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.13 169/443] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
 Date: Thu, 13 Feb 2025 15:25:34 +0100
-Message-ID: <20250213142443.686179173@linuxfoundation.org>
+Message-ID: <20250213142447.124485000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 5fba40be5fbad563914e3ce9d5129a6baaea1ff5 upstream.
+commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
 
-Some of the audio subsystem clocks defined in clk-mt2701.h aren't
-actually used by the driver. This broke conversion to
-mtk_clk_simple_probe which expects that the highest possible clk id is
-defined by the ARRAY_SIZE.
+Explicitly verify the target vCPU is fully online _prior_ to clamping the
+index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
+generate '0', i.e. KVM will return vCPU0 instead of NULL.
 
-Add additional dummy clocks to fill the gaps and remain compatible with
-the existing DT bindings.
+In practice, the bug is unlikely to cause problems, as it will only come
+into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
+send interrupts to vCPU0 instead of dropping them on the floor.
 
-Fixes: 0f69a423c458 ("clk: mediatek: Switch to mtk_clk_simple_probe() where possible")
+However, returning vCPU0 when it shouldn't exist per online_vcpus is
+problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
+to insert into the xarray before publishing the vCPU to userspace (see
+commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
+i.e. before vCPU creation is guaranteed to succeed.
+
+As a result, incorrectly providing access to vCPU0 will trigger a
+use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
+bails out of vCPU creation due to an error and frees vCPU0.  Commit
+afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
+in doing so introduced an unsolvable teardown conundrum.  Preventing
+accesses to vCPU0 before it's fully online will allow reverting commit
+afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
+
+Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/a07584d803af57b9ce4b5df5e122c09bf5a56ac9.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-aud.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/linux/kvm_host.h |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/clk/mediatek/clk-mt2701-aud.c
-+++ b/drivers/clk/mediatek/clk-mt2701-aud.c
-@@ -55,10 +55,16 @@ static const struct mtk_gate audio_clks[
- 	GATE_DUMMY(CLK_DUMMY, "aud_dummy"),
- 	/* AUDIO0 */
- 	GATE_AUDIO0(CLK_AUD_AFE, "audio_afe", "aud_intbus_sel", 2),
-+	GATE_DUMMY(CLK_AUD_LRCK_DETECT, "audio_lrck_detect_dummy"),
-+	GATE_DUMMY(CLK_AUD_I2S, "audio_i2c_dummy"),
-+	GATE_DUMMY(CLK_AUD_APLL_TUNER, "audio_apll_tuner_dummy"),
- 	GATE_AUDIO0(CLK_AUD_HDMI, "audio_hdmi", "audpll_sel", 20),
- 	GATE_AUDIO0(CLK_AUD_SPDF, "audio_spdf", "audpll_sel", 21),
- 	GATE_AUDIO0(CLK_AUD_SPDF2, "audio_spdf2", "audpll_sel", 22),
- 	GATE_AUDIO0(CLK_AUD_APLL, "audio_apll", "audpll_sel", 23),
-+	GATE_DUMMY(CLK_AUD_TML, "audio_tml_dummy"),
-+	GATE_DUMMY(CLK_AUD_AHB_IDLE_EXT, "audio_ahb_idle_ext_dummy"),
-+	GATE_DUMMY(CLK_AUD_AHB_IDLE_INT, "audio_ahb_idle_int_dummy"),
- 	/* AUDIO1 */
- 	GATE_AUDIO1(CLK_AUD_I2SIN1, "audio_i2sin1", "aud_mux1_sel", 0),
- 	GATE_AUDIO1(CLK_AUD_I2SIN2, "audio_i2sin2", "aud_mux1_sel", 1),
-@@ -76,10 +82,12 @@ static const struct mtk_gate audio_clks[
- 	GATE_AUDIO1(CLK_AUD_ASRCI2, "audio_asrci2", "asm_h_sel", 13),
- 	GATE_AUDIO1(CLK_AUD_ASRCO1, "audio_asrco1", "asm_h_sel", 14),
- 	GATE_AUDIO1(CLK_AUD_ASRCO2, "audio_asrco2", "asm_h_sel", 15),
-+	GATE_DUMMY(CLK_AUD_HDMIRX, "audio_hdmirx_dummy"),
- 	GATE_AUDIO1(CLK_AUD_INTDIR, "audio_intdir", "intdir_sel", 20),
- 	GATE_AUDIO1(CLK_AUD_A1SYS, "audio_a1sys", "aud_mux1_sel", 21),
- 	GATE_AUDIO1(CLK_AUD_A2SYS, "audio_a2sys", "aud_mux2_sel", 22),
- 	GATE_AUDIO1(CLK_AUD_AFE_CONN, "audio_afe_conn", "aud_mux1_sel", 23),
-+	GATE_DUMMY(CLK_AUD_AFE_PCMIF, "audio_afe_pcmif_dummy"),
- 	GATE_AUDIO1(CLK_AUD_AFE_MRGIF, "audio_afe_mrgif", "aud_mux1_sel", 25),
- 	/* AUDIO2 */
- 	GATE_AUDIO2(CLK_AUD_MMIF_UL1, "audio_ul1", "aud_mux1_sel", 0),
-@@ -100,6 +108,8 @@ static const struct mtk_gate audio_clks[
- 	GATE_AUDIO2(CLK_AUD_MMIF_AWB2, "audio_awb2", "aud_mux1_sel", 15),
- 	GATE_AUDIO2(CLK_AUD_MMIF_DAI, "audio_dai", "aud_mux1_sel", 16),
- 	/* AUDIO3 */
-+	GATE_DUMMY(CLK_AUD_DMIC1, "audio_dmic1_dummy"),
-+	GATE_DUMMY(CLK_AUD_DMIC2, "audio_dmic2_dummy"),
- 	GATE_AUDIO3(CLK_AUD_ASRCI3, "audio_asrci3", "asm_h_sel", 2),
- 	GATE_AUDIO3(CLK_AUD_ASRCI4, "audio_asrci4", "asm_h_sel", 3),
- 	GATE_AUDIO3(CLK_AUD_ASRCI5, "audio_asrci5", "asm_h_sel", 4),
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -963,6 +963,15 @@ static inline struct kvm_io_bus *kvm_get
+ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+ {
+ 	int num_vcpus = atomic_read(&kvm->online_vcpus);
++
++	/*
++	 * Explicitly verify the target vCPU is online, as the anti-speculation
++	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
++	 * index, clamping the index to 0 would return vCPU0, not NULL.
++	 */
++	if (i >= num_vcpus)
++		return NULL;
++
+ 	i = array_index_nospec(i, num_vcpus);
+ 
+ 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
 
 
 
