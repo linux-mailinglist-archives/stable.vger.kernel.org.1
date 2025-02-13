@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099BEA344F8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:11:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC30A3429B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F743ADE49
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 159B87A57FE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3F42222B4;
-	Thu, 13 Feb 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C8123A983;
+	Thu, 13 Feb 2025 14:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOrQhE9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9RHAVOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09292222AC;
-	Thu, 13 Feb 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E39C24BC19;
+	Thu, 13 Feb 2025 14:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458835; cv=none; b=Qc13tQ+RGchs4TkWtUhq8GOO9asGVVBxeJNy/DDrizFVTKK0ygZkZfvC8sj+I0iMRRs6C8jvyCyQYImEj+pEMioSt5EKG6Ap3XwIgrBnsuty3yT1LO4PXEZUyYC8OW2Py9lLadjXZlYcuppxsfHYZ4RYOhSiSH1REwBpNNhOTRI=
+	t=1739457421; cv=none; b=Cr3i7Xt9wJLbS3YdL2Hnzn+jDeHSRnde7mtyn2bke+rVG4amImC2ZWiRBxMAonhNIMbsbsw/fZAqg64V2YDpmu7vp54PE66obYhL2S/PdLPkPELw5QCuVyK6lSzGg7oNsImkjuoz7OzG/HAkJKujoWhDVeB+qHKrq3LRvRB6Lgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458835; c=relaxed/simple;
-	bh=0HoLF9Ls2xc1juR+7KnbZhCMXAOYBJusIq0q5CHCDz0=;
+	s=arc-20240116; t=1739457421; c=relaxed/simple;
+	bh=W/Gz/WoRelX8KI3S6deyO9xWTRCgkohMOESW+YtUBss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFqoKGGdiwj2nbBPHFiZz8iBAnP+QmoawMIB//f6XEhsD3tqX6JqYO0vYmYxAHzzU3ynavRrlDYSKkYlt78zdp1uehCmH1rMM0yysZk7cW+t0HltecdeP6j77Cz8FubV1vcNOPjSrOR5nlN8wPDM4+b/P6F1vsLpvIs/tnGOZRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOrQhE9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58E4C4CED1;
-	Thu, 13 Feb 2025 15:00:34 +0000 (UTC)
+	 MIME-Version; b=Mc6X3/KsYG5sUzoZNjiN0ffubJf+A+7RzmpH9sEH+D6ByiFrmK5LELWsV6e7jzaruBQJUI6vYGejh6Czdhy2gE24WPvjbAIloZKUr+bFm+Vx5SUV0NkRk+pPBPi9iWJ/IIM09snLepBecobBa1JhRqO8+iTwFfZ/rAoOlXutHX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9RHAVOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E361C4CED1;
+	Thu, 13 Feb 2025 14:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458835;
-	bh=0HoLF9Ls2xc1juR+7KnbZhCMXAOYBJusIq0q5CHCDz0=;
+	s=korg; t=1739457421;
+	bh=W/Gz/WoRelX8KI3S6deyO9xWTRCgkohMOESW+YtUBss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOrQhE9lcZtQoHbUaSfi3+jj3WEhL8oHNzN3vu9p/uJYoFV3tcN2FnqMm0Rw20FB5
-	 0wKfKEqNBOh+MySxDMCdAy5doo0zNFodU56OE2vt5+7Tme6+lCV0j/2+mggdrtzTC4
-	 3ZGJYZh272+KfYG2b2PLu36XLZrUicwPUeyY2liE=
+	b=g9RHAVOufhViQkc//H6IkGhvWZ7yeK4H3fWT+WEhV2dyzyz8MIyvuZoCdH+56H0nF
+	 q10uDlDVS43Q9AhtLClXD+EsTWxB4jXQ05UCxKYKpKNL1c2Q+VnepjSmAuizRfN09n
+	 L0Q9wqR/E8F0BfCYYr63vcBF+stuLwVcyL1mR/ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 090/443] ASoC: Intel: sof_sdw: Correct quirk for Lenovo Yoga Slim 7
+Subject: [PATCH 6.12 106/422] nvme: make nvme_tls_attrs_group static
 Date: Thu, 13 Feb 2025 15:24:15 +0100
-Message-ID: <20250213142444.083796388@linuxfoundation.org>
+Message-ID: <20250213142440.648267454@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 7662f0e5d55728a009229112ec820e963ed0e21c ]
+[ Upstream commit 2d1a2dab95cdc6f2e0c6af3c0514b0bea94af482 ]
 
-In addition to changing the DMI match to examine the product name rather
-than the SKU, this adds the quirk to inform the machine driver to not
-bind in the cs42l43 microphone DAI link.
+To suppress the compiler "warning: symbol 'nvme_tls_attrs_group' was not
+declared. Should it be static?"
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241206075903.195730-5-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1e48b34c9bc79a ("nvme: split off TLS sysfs attributes into a separate group")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/nvme/host/sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 5554ad4e7c787..65e55c46fb064 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -641,9 +641,10 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "380E")
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83HM")
- 		},
--		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS |
-+					SOC_SDW_CODEC_MIC),
- 	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/drivers/nvme/host/sysfs.c b/drivers/nvme/host/sysfs.c
+index b68a9e5f1ea39..3a41b9ab0f13c 100644
+--- a/drivers/nvme/host/sysfs.c
++++ b/drivers/nvme/host/sysfs.c
+@@ -792,7 +792,7 @@ static umode_t nvme_tls_attrs_are_visible(struct kobject *kobj,
+ 	return a->mode;
+ }
+ 
+-const struct attribute_group nvme_tls_attrs_group = {
++static const struct attribute_group nvme_tls_attrs_group = {
+ 	.attrs		= nvme_tls_attrs,
+ 	.is_visible	= nvme_tls_attrs_are_visible,
+ };
 -- 
 2.39.5
 
