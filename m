@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD80A33B85
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:47:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 705CDA33B8D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5893A5F60
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:47:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6107A3A6743
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1044420DD5C;
-	Thu, 13 Feb 2025 09:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4796211299;
+	Thu, 13 Feb 2025 09:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHhuORDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwBF2vEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93A4202C31;
-	Thu, 13 Feb 2025 09:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C61C210F5B;
+	Thu, 13 Feb 2025 09:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739440039; cv=none; b=aF5nw/0BUClrAfkqq6++DNKFhMCV/y+zfGqYgseSQDHvzSvCHzYEhrQD5N5GdxVeHJ35r+hWnNcz8kpQA7HlEbZF0FyIY7rpDBOCM0OjYx0XqwaSSGcgh1lmMTvJNPGWNjtc9Dqy27vWxN9tpV1U9QfQ0KdIJnEH2SDA6CxKt48=
+	t=1739440060; cv=none; b=eAzoB+QqVmZWeL9Crq2MQ1ChFKx0yKYT8y3AdrqcM1M/F7WY5GBMUpYH/fSUIsdjLjHOYoOqXJoYKtJQWgkrirDzRQOfK9eYOWiISeAqTJVjnTNxrcR4RBslRM0Bj7EF2zbZS63mPsE/buZM8iGgnBSajK2SGERoarfk4Z8eWTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739440039; c=relaxed/simple;
-	bh=ZxDr6AwnXUdrFTM7NUHu4gVEND5MJ7HwI8ht+KxlXR8=;
+	s=arc-20240116; t=1739440060; c=relaxed/simple;
+	bh=IdTti4DK2JAgX7yyitUoJaoRdhgKEdmEW6WOnrGZpi8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aRkIN5pgVGFmwpAJy1v74RLLE24mmfP2PsC/MT9mjWY0gTMuk7++e1kQD5j+SeebezNAvuYhxPte+kfVgixZcsJQELR0EFU8VaP+mk5TKtAJAwiDcbuTndP5JYYU5d1W90vFLX0QgexRg8MZcbHaLKJ69RdMcMROfmgEZW+Qz7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHhuORDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C063DC4CED1;
-	Thu, 13 Feb 2025 09:47:16 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aj7osk8TYJqE1U7wdJKi6M7duJoCWHozc7uq+2Pi97rG2/cH+XmuBo16GiPPjPXgML3kcUKAIQsrXuw/lSfZgt3DLGJ5YWJxIH081iTWQiarfC1TX5MSQf2piFXEpgikG9MFam8GBmnCIx+4stGNcev8pX01eW1omno3faSC2J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwBF2vEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AD3C4CEE6;
+	Thu, 13 Feb 2025 09:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739440037;
-	bh=ZxDr6AwnXUdrFTM7NUHu4gVEND5MJ7HwI8ht+KxlXR8=;
+	s=korg; t=1739440059;
+	bh=IdTti4DK2JAgX7yyitUoJaoRdhgKEdmEW6WOnrGZpi8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QHhuORDrzKwj5nBcVvdvE5Y948j1UgMJfjFp8pw/e97yQK/EVb8EgOuHGtLW+/Sm0
-	 VSpcvBWnl1O9uwpg/75Ztx0bcfcaNXjfr5rPM2mOG/Y5QLBX9ASpAVfNssreu592VR
-	 x0B1SbLlHxlMZ5cFeevkHgHIgNXX4NPCsOnCxarE=
-Date: Thu, 13 Feb 2025 10:47:14 +0100
+	b=wwBF2vEO3L0pfnOJVHbGXrV1gssyl5Iucvja0uqDMmb5uLq2kqxTkmm6Gds1SYu+u
+	 0wQiLIY79BaNfBPvdNa+VsmjjVZYeyHSMxyqfozgkJWW3jJpQ5WXq6A0adMl6R9xPX
+	 SJ76wo/kvr5axwtAJAJ8fGQY7WlkmwkWw+kBqBLk=
+Date: Thu, 13 Feb 2025 10:47:36 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: Jos Wang <joswang1221@gmail.com>, Amit Sunil Dhamne <amitsd@google.com>,
-	heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] usb: typec: tcpm: PSSourceOffTimer timeout in
- PR_Swap enters ERROR_RECOVERY
-Message-ID: <2025021323-surviving-straddle-1f68@gregkh>
-References: <20250209071752.69530-1-joswang1221@gmail.com>
- <5d504702-270f-4227-afd6-a41814c905e3@google.com>
- <CAPTae5+Z3UcDcdFcn=Ref5aQSUEEyz-yVbRqoPJ1LogP4MzJdg@mail.gmail.com>
- <CAMtoTm0bchocN6XrQBRdYuye7=4CoFbU-6wMpRAXR4OU77XkwQ@mail.gmail.com>
- <CAPTae5J5WCD6JmEE2tsgfJDzW9FRusiTXreTdY79MBs4AL6ZHg@mail.gmail.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: vulab@iscas.ac.cn, linux-sound@vger.kernel.org, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Julia Lawall <Julia.Lawall@inria.fr>, Takashi Iwai <tiwai@suse.com>
+Subject: Re: [PATCH] ALSA: hda: Add error check for snd_ctl_rename_id() in
+ snd_hda_create_dig_out_ctls()
+Message-ID: <2025021323-paparazzi-ahead-22ec@gregkh>
+References: <20250213070546.1572-1-vulab@iscas.ac.cn>
+ <491e74f2-b503-4486-a8e0-b4eddc16b2be@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,44 +60,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPTae5J5WCD6JmEE2tsgfJDzW9FRusiTXreTdY79MBs4AL6ZHg@mail.gmail.com>
+In-Reply-To: <491e74f2-b503-4486-a8e0-b4eddc16b2be@web.de>
 
-On Wed, Feb 12, 2025 at 11:16:35PM -0800, Badhri Jagan Sridharan wrote:
-> On Tue, Feb 11, 2025 at 5:50 AM Jos Wang <joswang1221@gmail.com> wrote:
-> >
-> > On Tue, Feb 11, 2025 at 7:51 AM Badhri Jagan Sridharan
-> > <badhri@google.com> wrote:
-> > >
-> > > On Mon, Feb 10, 2025 at 3:02 PM Amit Sunil Dhamne <amitsd@google.com> wrote:
-> > > >
-> > > >
-> > > > On 2/8/25 11:17 PM, joswang wrote:
-> > > > > From: Jos Wang <joswang@lenovo.com>
-> > > nit: From https://elixir.bootlin.com/linux/v6.13.1/source/Documentation/process/submitting-patches.rst#L619
-> > >
-> > >   - A ``from`` line specifying the patch author, followed by an empty
-> > >     line (only needed if the person sending the patch is not the author).
-> > >
-> > > Given that you are the author, wondering why do you have an explicit "From:" ?
-> > >
-> > Hello, thank you for your help in reviewing the code.
-> > My company email address is joswang@lenovo.com, and my personal gmail
-> > email address is joswang1221@gmail.com, which is used to send patches.
-> > Do you suggest deleting the "From:" line?
-> > I am considering deleting the "From:" line, whether the author and
-> > Signed-off-by in the patch need to be changed to
-> > "joswang1221@gmail.com".
+On Thu, Feb 13, 2025 at 08:26:09AM +0100, Markus Elfring wrote:
+> > Check the return value of snd_ctl_rename_id() in
+> > snd_hda_create_dig_out_ctls(). Ensure that potential
+> > failures are properly handled.
 > 
-> Yes, changing signed-off to joswang1221@gmail.com will remove the need
-> for "From:".
-> Go ahead with it if it makes sense on your side.
+> I would prefer a change description variant without the word “potential”
+> for this issue.
+> https://cwe.mitre.org/data/definitions/252.html
+> 
+> Regards,
+> Markus
+> 
 
-No, what was done here originally is correct, please do not ask people
-to not actually follow the correct procedure.
+Hi,
 
-Jos, thank you, there is nothing wrong with the way you sent this.
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
+
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
 
 thanks,
 
-greg k-h
+greg k-h's patch email bot
 
