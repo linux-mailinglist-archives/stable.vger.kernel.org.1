@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3608A34245
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6846A34434
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73A5A168E2A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E8057A155E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC4813D8A4;
-	Thu, 13 Feb 2025 14:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A311CBEAA;
+	Thu, 13 Feb 2025 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk8liOxk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zngXa1YW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFDA70830;
-	Thu, 13 Feb 2025 14:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5462A1D1;
+	Thu, 13 Feb 2025 14:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457230; cv=none; b=IwZpsrGwZVrzy7qyesB4omDUlBPz9pyKPeB7sjqrVyGLEDgYipEd0NGLitv1zN4JW8T/8psKAck6Ki3WF0io9raxhKzTaS8dvTJsE4FPK8mZ8iyHwM+jhQCDt8oLXbYM/cMqd4TkPV94R668ej23VeUDTr8dENg4rhwxiIHM9uY=
+	t=1739458750; cv=none; b=u5p5R2kd6MfwGM33gEDueDxnTPFOeQ0zRBeMQU1gf4ui4N3GwQwPFirHVfp/CU5WcILb8440T7ZouE78oKez+C5l7Je9D6MQoEnH77YvUZS029c47aejs3FqoXm+rr2Z6CwvK3QWD92C7F/NGyePyp9QLVj6lUMUl8wsbYWRJKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457230; c=relaxed/simple;
-	bh=Tg+PcGOpSerrPzRvNgb9XcYOklqFrb/xpAL9hCoOCjc=;
+	s=arc-20240116; t=1739458750; c=relaxed/simple;
+	bh=U55Wti9Pm16jHrYxIk3ourT0vERZhM2wSlHR5Qx+UIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PW4QatGCNpGsY+nUAY4WwMuS4ZpD7GYFNcBjpYbVFYP7HlHkYb5tIQxmgBsKE8r7KjxoAawkcXy9lXYKZ63CA37dfb8QJsmj+UEmv8ZssSmgt7C+3r0hq5xQmxRCvLvhx3LMZxRWTzBEuzJk1sM6mp0i/BAezz5YF5siu6AVIto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dk8liOxk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54082C4CEEB;
-	Thu, 13 Feb 2025 14:33:49 +0000 (UTC)
+	 MIME-Version; b=jfmjM0X5HVziVft8xlL+IfIys5Ju5MHSArxhkPNAvnlrB8KINTzsLnC3AePsXe6eEvpsii9MsOyr1dOBS2gAeMiFJLA+h+cosCCvxSpb7BDJc/xXQFsUAdnrxTlIbuyK5IqEVWCM/RERMvS7Q1SGwqBV1V+uqxSdo57BPGVh07U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zngXa1YW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B795C4CED1;
+	Thu, 13 Feb 2025 14:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457229;
-	bh=Tg+PcGOpSerrPzRvNgb9XcYOklqFrb/xpAL9hCoOCjc=;
+	s=korg; t=1739458749;
+	bh=U55Wti9Pm16jHrYxIk3ourT0vERZhM2wSlHR5Qx+UIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk8liOxkhNVj+POzoSM+tyV4WG1kdl6HmSCou5i4Gg5nLTHQCd/hzA0vFOPYVNWLl
-	 7xQkJUnKL82eUGZ3HpkLLXkS5sDYnRPgxQGPcGLSDDc+2A75HyzwP5dA4xYOtrYtW6
-	 Q5zWzMeBVhFdcV8yOaQYhfc+iFRgGkZAfZrD2/44=
+	b=zngXa1YW45gt9XQZQDwuRFO1ccLAmnmSotztxitaW65FHsarT/K2En30/903Ec69X
+	 UHiZPrdh3pPqweNliTC/Q9bmA1S1s58Zh8u/tAAxz+OdWrWBWPMmiInEXc8qcqtFP0
+	 rRc737crX6d5LAKp6B1utRSnWGjFHInd0Uu+SIaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/422] mmc: sdhci-esdhc-imx: enable SDHCI_QUIRK_NO_LED quirk for S32G
+Subject: [PATCH 6.13 035/443] drm/amd/display: use eld_mutex to protect access to connector->eld
 Date: Thu, 13 Feb 2025 15:23:20 +0100
-Message-ID: <20250213142438.532228995@linuxfoundation.org>
+Message-ID: <20250213142441.980169462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0202dfbdc5dea70e213205aa42ab49a1a08aad3a ]
+[ Upstream commit 819bee01eea06282d7bda17d46caf29cae4f6d84 ]
 
-Enable SDHCI_QUIRK_NO_LED quirk for S32G2/S32G3 variants as the controller
-does not have a LED signal line.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Message-ID: <20241125083357.1041949-1-ciprianmarian.costea@oss.nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-4-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index ef3a44f2dff16..d84aa20f03589 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -303,6 +303,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_SKIP_ERR004536 | ESDHC_FLAG_SKIP_CD_WAKE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 92e1d59921f49..cff07681e0f4c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1037,8 +1037,10 @@ static int amdgpu_dm_audio_component_get_eld(struct device *kdev, int port,
+ 			continue;
  
- static struct esdhc_soc_data usdhc_imx7ulp_data = {
+ 		*enabled = true;
++		mutex_lock(&connector->eld_mutex);
+ 		ret = drm_eld_size(connector->eld);
+ 		memcpy(buf, connector->eld, min(max_bytes, ret));
++		mutex_unlock(&connector->eld_mutex);
+ 
+ 		break;
+ 	}
 -- 
 2.39.5
 
