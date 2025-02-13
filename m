@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3296CA34531
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B319A3432E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B355F16EA91
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B22983A40B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CF226B0BC;
-	Thu, 13 Feb 2025 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762802222D8;
+	Thu, 13 Feb 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0egEo0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4RTKN5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6753426B083;
-	Thu, 13 Feb 2025 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32664281349;
+	Thu, 13 Feb 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459054; cv=none; b=PpF7Lixi4+J0nedbYSXOp6qiNf2CutX8dkTb3GomrQt8Db/azlzypD2j3O4e4NWjCcGtPPeRHgh4J6KCc8jT5fUqTGAK/BjtHKBHAQHJb/XTFa9MRaB+1FNg6gfNn2Gfe1BQ4r3FdoKggWJrIDxJkEqqGyXh1BzAqVh9dsUl0iY=
+	t=1739457638; cv=none; b=RsBm3e5r9Mn2NX7uTfRN3fi+DXMdUqniHBsQmve9Sj5SBzpcUmZon1ZJ9eIm/TVL6RzZ4MnlVXdiv/4c/V82B8HeNVK/4XqeHOu6pgvEysRJ8Yrtq63/0Tr3H9CIGm/IMuIFPzXlYBujzzbe+hU9fRdLsDiiXar0jcc+rOpQ6zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459054; c=relaxed/simple;
-	bh=DtMz6W33X9WUVWNCV3071HieI0ykPZkbSQM1NRNvx98=;
+	s=arc-20240116; t=1739457638; c=relaxed/simple;
+	bh=lbBu58Yt9/ylhylbkwUrccUF1bWAS9BbUln15PlF9aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJTcCDqA3/2HehoXquGOU4xzvQyBx4f6AtcLHMabVXgjqwxjulazhXLb8G1+bDmiIMkLi5gea+CUAGFtWkhYxC9D53q2ahrUONJ8vGQ5UFff4mlKrYtQUQS/DcGbaC1PQJnKQDvGtvVK2hmViQzhdH1rH6qO9tedjbv3mlqFK/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0egEo0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65124C4CED1;
-	Thu, 13 Feb 2025 15:04:13 +0000 (UTC)
+	 MIME-Version; b=HinVEllh+AhQyxqzfh913+a1+BzaQigBbz6vLcAyhrLPgWkpstZn6oPX2qtW8ZV7YXLHmWlzn+Vda3PJXpIsUqKg+IHQpH6rgSFXlzxw17Ovvvcgpvv2/iMxxj5gx8xVb6Ybc3KSziHG/k4scOZB+/q0GI7VxpevZdRVdNMR6+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4RTKN5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CF5C4CEE4;
+	Thu, 13 Feb 2025 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459053;
-	bh=DtMz6W33X9WUVWNCV3071HieI0ykPZkbSQM1NRNvx98=;
+	s=korg; t=1739457638;
+	bh=lbBu58Yt9/ylhylbkwUrccUF1bWAS9BbUln15PlF9aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0egEo0PhLlSMTCMTmBYBQfRy6ajOfw/le+OwWti5lL3fhb1tDqL3rbdSolM6IjUn
-	 kKqv0RXh1wrKue713HLDV5QG2QYK3QvlM4VDRXJW+yEVXbvUXJlHlPGpSzYSus9i9m
-	 /Pf1Coij2mC+m0KraRuq2sX+rqAtMGhxn9EJvbfc=
+	b=T4RTKN5q7yRC7VqEsvTcHDjSAZYxLDauKSJL5z3NAvfamRnHGC1hcvoZ7p3ptfo0d
+	 8gawd+M0O/KOjPOHz1ci+sJCIp87wl92G49EXqAsgFej9hpn/staORrnSTkO1k7xKO
+	 hfnfU03VJTOq8xJ4oIsDoz8ldi/6yf/kAMRnJZEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.13 154/443] m68k: vga: Fix I/O defines
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 170/422] Bluetooth: L2CAP: handle NULL sock pointer in l2cap_sock_alloc
 Date: Thu, 13 Feb 2025 15:25:19 +0100
-Message-ID: <20250213142446.540207561@linuxfoundation.org>
+Message-ID: <20250213142443.104750688@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
+commit 5f397409f8ee5bc82901eeaf799e1cbc4f8edcf1 upstream.
 
-Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
-in conflicting defines with io_no.h for various I/O macros from the
-__raw_read and __raw_write families. An example error is
+A NULL sock pointer is passed into l2cap_sock_alloc() when it is called
+from l2cap_sock_new_connection_cb() and the error handling paths should
+also be aware of it.
 
-   In file included from arch/m68k/include/asm/vga.h:12,
-                 from include/video/vga.h:22,
-                 from include/linux/vgaarb.h:34,
-		 from drivers/video/aperture.c:12:
->> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
-      39 | #define __raw_readb in_8
-	 |
-   In file included from arch/m68k/include/asm/io.h:6,
-		    from include/linux/io.h:13,
-		    from include/linux/irq.h:20,
-		    from include/asm-generic/hardirq.h:17,
-		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
-		    from include/linux/hardirq.h:11,
-		    from include/linux/interrupt.h:11,
-                    from include/linux/trace_recursion.h:5,
-		    from include/linux/ftrace.h:10,
-		    from include/linux/kprobes.h:28,
-		    from include/linux/kgdb.h:19,
-		    from include/linux/fb.h:6,
-		    from drivers/video/aperture.c:5:
-   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
-      16 | #define __raw_readb(addr) \
-	 |
+Seemingly a more elegant solution would be to swap bt_sock_alloc() and
+l2cap_chan_create() calls since they are not interdependent to that moment
+but then l2cap_chan_create() adds the soon to be deallocated and still
+dummy-initialized channel to the global list accessible by many L2CAP
+paths. The channel would be removed from the list in short period of time
+but be a bit more straight-forward here and just check for NULL instead of
+changing the order of function calls.
 
-Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
-Also change the defined values of some of the read/write symbols in
-vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
-generally available.
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
-Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v3.5+
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 7c4f78cdb8e7 ("Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/include/asm/vga.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/l2cap_sock.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/m68k/include/asm/vga.h
-+++ b/arch/m68k/include/asm/vga.h
-@@ -9,7 +9,7 @@
-  */
- #ifndef CONFIG_PCI
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1888,7 +1888,8 @@ static struct sock *l2cap_sock_alloc(str
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
+-		sock->sk = NULL;
++		if (sock)
++			sock->sk = NULL;
+ 		return NULL;
+ 	}
  
--#include <asm/raw_io.h>
-+#include <asm/io.h>
- #include <asm/kmap.h>
- 
- /*
-@@ -29,9 +29,9 @@
- #define inw_p(port)		0
- #define outb_p(port, val)	do { } while (0)
- #define outw(port, val)		do { } while (0)
--#define readb			raw_inb
--#define writeb			raw_outb
--#define writew			raw_outw
-+#define readb			__raw_readb
-+#define writeb			__raw_writeb
-+#define writew			__raw_writew
- 
- #endif /* CONFIG_PCI */
- #endif /* _ASM_M68K_VGA_H */
 
 
 
