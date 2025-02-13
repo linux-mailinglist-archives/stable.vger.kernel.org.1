@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415E8A34330
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F5FA3458C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09703A41D9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BB83B4F39
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EAE23A994;
-	Thu, 13 Feb 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3222A14F9FB;
+	Thu, 13 Feb 2025 15:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppJTsdSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPgSMkqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E5F23A98F;
-	Thu, 13 Feb 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC4626B0B1;
+	Thu, 13 Feb 2025 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457641; cv=none; b=EuDNdZrC5+WxhbHAK1M21/XTZzfDjkvpMfoffzjvkk+LVW0Bf473NeIqg1ssPIBe1+0l0mZBa+4KnnYy+bVSJlvJtx4IhskVNQAJ4qiZi2zx5nc24dDadqJr1GlQnJPN6ANg1uJDpcLa8sFqxaaKrQFdZbBmv++KIhBsFxBJ0NQ=
+	t=1739459058; cv=none; b=T0mAwaY09iPRCwyKUuGAlmi6ttZKkNu8k+gKxUCUnUDkuTmolhRy7VYOQOi+2m5v53nasREYMWCzH3VRsx+I8kWUQo/amp22K62d5D1O8C1lAlI6qdYFyYJBs/q4nkWndk/L5+V4eiKkvyJDOJFTXgD1XMr/EiGf2EvoxkCO9wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457641; c=relaxed/simple;
-	bh=88WlV3RmsAkcPRyAbQXw4hgGIop02J4x6ervj47BB74=;
+	s=arc-20240116; t=1739459058; c=relaxed/simple;
+	bh=xZenHWf2LrOHwhcbYR8GLHQUs170jVbqsRX/Dk+CBkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5gv/pE0cECFd+WssSqm7TGAuA9QNe7N7nzfPxAFd171VQINpFKIjBkti+0GXPIHyHFbZyxUniP6twjzoM/d9DIJot0UM+VMUxXq0NmRvoT4PN1DF2WwfgM7hgUC9gjLPLz6tAyfKuxTK9WJF6pzUSH1rZY3bSULCMynQVh9AOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppJTsdSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5659C4CEE4;
-	Thu, 13 Feb 2025 14:40:40 +0000 (UTC)
+	 MIME-Version; b=LdOCU/1Yr4CBtyHLkn/qXuMLbi5iK5olBnAB91URj06JfEEQ2UcQ1ysnqj18N4uWYZlpcpHaK56mTx3H2+hvhEnOL3COzCjDrGWpUhe+5wXzDbH95lBBlGgEVwaxBWvEJTxWLpRDLLOQ4BhFgv+lEcTq11h5O/7m4m162eMZtM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPgSMkqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5487C4CED1;
+	Thu, 13 Feb 2025 15:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457641;
-	bh=88WlV3RmsAkcPRyAbQXw4hgGIop02J4x6ervj47BB74=;
+	s=korg; t=1739459057;
+	bh=xZenHWf2LrOHwhcbYR8GLHQUs170jVbqsRX/Dk+CBkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppJTsdSm797IU79igd1IdKCtXEnbgNAlX16vl2PG82pZWTQNRg9wQ5TtFSqMcmBnV
-	 5bDMAXHDoY230UPSyzZ962hBrNnz7F7ktEklfeE5BfTDRbMMqnhPsNrsnS9ZCJwNEn
-	 KAKMGdNwK7HhHHw/SvE3gJZNFsuB4fU8zqvtNsHM=
+	b=HPgSMkqDZjR5ioagM8GhxcLqArQ3K2nEqxzTj3/SY06Xa2FNRyP03r2/5bxqU0o9v
+	 cTDqQuDQcAIMWzRs0Rh6MHdUJIjzFwuVssETKkyiNj3pwpbDgHkKsuJkCwErb+Srz1
+	 14el4iHnbf9CP2BC/49Y2swKngSqhnFx27cSeU9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 171/422] Bluetooth: L2CAP: accept zero as a special value for MTU auto-selection
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 155/443] fs/proc: do_task_stat: Fix ESP not readable during coredump
 Date: Thu, 13 Feb 2025 15:25:20 +0100
-Message-ID: <20250213142443.142925396@linuxfoundation.org>
+Message-ID: <20250213142446.579102006@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 5c61419e02033eaf01733d66e2fcd4044808f482 upstream.
+commit ab251dacfbae28772c897f068a4184f478189ff2 upstream.
 
-One of the possible ways to enable the input MTU auto-selection for L2CAP
-connections is supposed to be through passing a special "0" value for it
-as a socket option. Commit [1] added one of those into avdtp. However, it
-simply wouldn't work because the kernel still treats the specified value
-as invalid and denies the setting attempt. Recorded BlueZ logs include the
-following:
+The field "eip" (instruction pointer) and "esp" (stack pointer) of a task
+can be read from /proc/PID/stat. These fields can be interesting for
+coredump.
 
-  bluetoothd[496]: profiles/audio/avdtp.c:l2cap_connect() setsockopt(L2CAP_OPTIONS): Invalid argument (22)
+However, these fields were disabled by commit 0a1eb2d474ed ("fs/proc: Stop
+reporting eip and esp in /proc/PID/stat"), because it is generally unsafe
+to do so. But it is safe for a coredumping process, and therefore
+exceptions were made:
 
-[1]: https://github.com/bluez/bluez/commit/ae5be371a9f53fed33d2b34748a95a5498fd4b77
+  - for a coredumping thread by commit fd7d56270b52 ("fs/proc: Report
+    eip/esp in /prod/PID/stat for coredumping").
 
-Found by Linux Verification Center (linuxtesting.org).
+  - for all other threads in a coredumping process by commit cb8f381f1613
+    ("fs/proc/array.c: allow reporting eip/esp for all coredumping
+    threads").
 
-Fixes: 4b6e228e297b ("Bluetooth: Auto tune if input MTU is set to 0")
+The above two commits check the PF_DUMPCORE flag to determine a coredump thread
+and the PF_EXITING flag for the other threads.
+
+Unfortunately, commit 92307383082d ("coredump:  Don't perform any cleanups
+before dumping core") moved coredump to happen earlier and before PF_EXITING is
+set. Thus, checking PF_EXITING is no longer the correct way to determine
+threads in a coredumping process.
+
+Instead of PF_EXITING, use PF_POSTCOREDUMP to determine the other threads.
+
+Checking of PF_EXITING was added for coredumping, so it probably can now be
+removed. But it doesn't hurt to keep.
+
+Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/d89af63d478d6c64cc46a01420b46fd6eb147d6f.1735805772.git.namcao@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/proc/array.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -710,12 +710,12 @@ static bool l2cap_valid_mtu(struct l2cap
- {
- 	switch (chan->scid) {
- 	case L2CAP_CID_ATT:
--		if (mtu < L2CAP_LE_MIN_MTU)
-+		if (mtu && mtu < L2CAP_LE_MIN_MTU)
- 			return false;
- 		break;
- 
- 	default:
--		if (mtu < L2CAP_DEFAULT_MIN_MTU)
-+		if (mtu && mtu < L2CAP_DEFAULT_MIN_MTU)
- 			return false;
- 	}
- 
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -500,7 +500,7 @@ static int do_task_stat(struct seq_file
+ 		 * a program is not able to use ptrace(2) in that case. It is
+ 		 * safe because the task has stopped executing permanently.
+ 		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
++		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP))) {
+ 			if (try_get_task_stack(task)) {
+ 				eip = KSTK_EIP(task);
+ 				esp = KSTK_ESP(task);
 
 
 
