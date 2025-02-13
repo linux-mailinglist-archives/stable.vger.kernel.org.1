@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E004A34485
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4ABA347CB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E0D1886A52
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D572518833E3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CF8146585;
-	Thu, 13 Feb 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8616626B098;
+	Thu, 13 Feb 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DSa17fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXHxDkgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B9126B083;
-	Thu, 13 Feb 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4307013C816;
+	Thu, 13 Feb 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458440; cv=none; b=IrxVhEHRxOQB0lOh51YWHqQIBS0olUBgxDjr2+TAhcCEoz0QANw3nN90Dz10nUPCWizURt1ZFGkdMiuWXP3hyGgDW97THm1uyVorpCKCJUW0DM3D3HzbCZSAMU243akb1Vi1N17I2EnGBW0YplnUbSaxw2toVlDxKyxqs/Sl7v8=
+	t=1739460776; cv=none; b=V8tqW5U3a7ZAzNUcBF2M0KykH7VSwOMaGxZPzZn4FOI6Tcdo+YpAU+GR9QKjVskQlrlLnAkfHn48wgG0NxVfskY2k71TJiFOAZVzg4MQgR7PfcD88bF/H60cn57O81LKFzmWaEyKih4eTHlepHBJZtcq2nYQlz/JV/OxSWZoGBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458440; c=relaxed/simple;
-	bh=O4+ckBoQqynndkODYIREcvQ/aXchbJQwTfffnArQ+/w=;
+	s=arc-20240116; t=1739460776; c=relaxed/simple;
+	bh=hcc3jaUC21Uf7TakrEnmR/nixjBRbR4luqrAmB5Yt5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xm2V8ulljTYOqjLLYqn6bRwkQV6shtXIpl4xGhj17PpEzTOfASWYGWPAlmE6eYDJrgJLcEHiK88ywYRpmyS9bAu/Zjiq6hRANcVbE7KsFcJpRFkH3zbqZwzHFVsuctbD3/7m45JnH0m7JItbMOo8ZM0Cvx90fGvGbrjWc94XPWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DSa17fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085C4C4CED1;
-	Thu, 13 Feb 2025 14:53:59 +0000 (UTC)
+	 MIME-Version; b=Gdxq19s9DTKLvw5noYz36802VexCYweDa2fx/vHeVVeOkrHvh5bax6IyyaWF0Tlg/AKSn4u/tTEBUhCfBC2gaPzsXR9XLcNLMul9MDTpCEz5zFIqbMntgRyzZnz2OPbO2upMfBhGx47HSIGWASW5cP62FIqSC9MHzJjkpEtTpPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXHxDkgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C81C4CED1;
+	Thu, 13 Feb 2025 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458440;
-	bh=O4+ckBoQqynndkODYIREcvQ/aXchbJQwTfffnArQ+/w=;
+	s=korg; t=1739460776;
+	bh=hcc3jaUC21Uf7TakrEnmR/nixjBRbR4luqrAmB5Yt5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DSa17flUu0y3mDly7cEyrV8REDYU35z+24TVdEAoLKFTxzM7RaD61znfY7vQEO+Q
-	 3J+cGoOgCcL0C6IUi5WdqsIQEkSk3ejsyzi8pxvpbJ6trWjkyQNrpxJOWKDRxMUl8Q
-	 ygdY1XzGCsJ6D9TPjzB9M7EO5l4uC6rFj5g1pkv8=
+	b=vXHxDkgX+nvanIe/PlZnjcGaNKDL9dT2/sDClMhs2HlSlc0BFFdcrT6C5o3sjSm9w
+	 isGopDBgfN59eWqOgOLgiEoz+dguN9hw+ceplp1Q1rGs/D6On7fwmaLAiiamRMjNhN
+	 1+c/kxFuwmDM4e+Nnpxkm7LVg3VBtZ3egkHcIw8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 399/422] xfs: dont lose solo dquot update transactions
-Date: Thu, 13 Feb 2025 15:29:08 +0100
-Message-ID: <20250213142451.944857174@linuxfoundation.org>
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 177/273] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
+Date: Thu, 13 Feb 2025 15:29:09 +0100
+Message-ID: <20250213142414.324937480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,167 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit d00ffba4adacd0d4d905f6e64bd8cd87011f5711 upstream
+commit be2f81eaa2c8e81d3de5b73dca5e133f63384cb3 upstream.
 
-Quota counter updates are tracked via incore objects which hang off the
-xfs_trans object.  These changes are then turned into dirty log items in
-xfs_trans_apply_dquot_deltas just prior to commiting the log items to
-the CIL.
+The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+bindings, just replace that path with the correct path for qup-config.
 
-However, updating the incore deltas do not cause XFS_TRANS_DIRTY to be
-set on the transaction.  In other words, a pure quota counter update
-will be silently discarded if there are no other dirty log items
-attached to the transaction.
-
-This is currently not the case anywhere in the filesystem because quota
-updates always dirty at least one other metadata item, but a subsequent
-bug fix will add dquot log item precommits, so we actually need a dirty
-dquot log item prior to xfs_trans_run_precommits.  Also let's not leave
-a logic bomb.
-
-Cc: <stable@vger.kernel.org> # v2.6.35
-Fixes: 0924378a689ccb ("xfs: split out iclog writing from xfs_trans_commit()")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_quota.h       |    7 ++++---
- fs/xfs/xfs_trans.c       |   10 +++-------
- fs/xfs/xfs_trans_dquot.c |   31 ++++++++++++++++++++++++++-----
- 3 files changed, 33 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
---- a/fs/xfs/xfs_quota.h
-+++ b/fs/xfs/xfs_quota.h
-@@ -96,7 +96,8 @@ extern void xfs_trans_free_dqinfo(struct
- extern void xfs_trans_mod_dquot_byino(struct xfs_trans *, struct xfs_inode *,
- 		uint, int64_t);
- extern void xfs_trans_apply_dquot_deltas(struct xfs_trans *);
--extern void xfs_trans_unreserve_and_mod_dquots(struct xfs_trans *);
-+void xfs_trans_unreserve_and_mod_dquots(struct xfs_trans *tp,
-+		bool already_locked);
- int xfs_trans_reserve_quota_nblks(struct xfs_trans *tp, struct xfs_inode *ip,
- 		int64_t dblocks, int64_t rblocks, bool force);
- extern int xfs_trans_reserve_quota_bydquots(struct xfs_trans *,
-@@ -165,8 +166,8 @@ static inline void xfs_trans_mod_dquot_b
- 		struct xfs_inode *ip, uint field, int64_t delta)
- {
- }
--#define xfs_trans_apply_dquot_deltas(tp)
--#define xfs_trans_unreserve_and_mod_dquots(tp)
-+#define xfs_trans_apply_dquot_deltas(tp, a)
-+#define xfs_trans_unreserve_and_mod_dquots(tp, a)
- static inline int xfs_trans_reserve_quota_nblks(struct xfs_trans *tp,
- 		struct xfs_inode *ip, int64_t dblocks, int64_t rblocks,
- 		bool force)
---- a/fs/xfs/xfs_trans.c
-+++ b/fs/xfs/xfs_trans.c
-@@ -840,6 +840,7 @@ __xfs_trans_commit(
- 	 */
- 	if (tp->t_flags & XFS_TRANS_SB_DIRTY)
- 		xfs_trans_apply_sb_deltas(tp);
-+	xfs_trans_apply_dquot_deltas(tp);
- 
- 	error = xfs_trans_run_precommits(tp);
- 	if (error)
-@@ -868,11 +869,6 @@ __xfs_trans_commit(
- 
- 	ASSERT(tp->t_ticket != NULL);
- 
--	/*
--	 * If we need to update the superblock, then do it now.
--	 */
--	xfs_trans_apply_dquot_deltas(tp);
--
- 	xlog_cil_commit(log, tp, &commit_seq, regrant);
- 
- 	xfs_trans_free(tp);
-@@ -898,7 +894,7 @@ out_unreserve:
- 	 * the dqinfo portion to be.  All that means is that we have some
- 	 * (non-persistent) quota reservations that need to be unreserved.
- 	 */
--	xfs_trans_unreserve_and_mod_dquots(tp);
-+	xfs_trans_unreserve_and_mod_dquots(tp, true);
- 	if (tp->t_ticket) {
- 		if (regrant && !xlog_is_shutdown(log))
- 			xfs_log_ticket_regrant(log, tp->t_ticket);
-@@ -992,7 +988,7 @@ xfs_trans_cancel(
- 	}
- #endif
- 	xfs_trans_unreserve_and_mod_sb(tp);
--	xfs_trans_unreserve_and_mod_dquots(tp);
-+	xfs_trans_unreserve_and_mod_dquots(tp, false);
- 
- 	if (tp->t_ticket) {
- 		xfs_log_ticket_ungrant(log, tp->t_ticket);
---- a/fs/xfs/xfs_trans_dquot.c
-+++ b/fs/xfs/xfs_trans_dquot.c
-@@ -602,6 +602,24 @@ xfs_trans_apply_dquot_deltas(
- 			ASSERT(dqp->q_blk.reserved >= dqp->q_blk.count);
- 			ASSERT(dqp->q_ino.reserved >= dqp->q_ino.count);
- 			ASSERT(dqp->q_rtb.reserved >= dqp->q_rtb.count);
-+
-+			/*
-+			 * We've applied the count changes and given back
-+			 * whatever reservation we didn't use.  Zero out the
-+			 * dqtrx fields.
-+			 */
-+			qtrx->qt_blk_res = 0;
-+			qtrx->qt_bcount_delta = 0;
-+			qtrx->qt_delbcnt_delta = 0;
-+
-+			qtrx->qt_rtblk_res = 0;
-+			qtrx->qt_rtblk_res_used = 0;
-+			qtrx->qt_rtbcount_delta = 0;
-+			qtrx->qt_delrtb_delta = 0;
-+
-+			qtrx->qt_ino_res = 0;
-+			qtrx->qt_ino_res_used = 0;
-+			qtrx->qt_icount_delta = 0;
- 		}
- 	}
- }
-@@ -638,7 +656,8 @@ xfs_trans_unreserve_and_mod_dquots_hook(
-  */
- void
- xfs_trans_unreserve_and_mod_dquots(
--	struct xfs_trans	*tp)
-+	struct xfs_trans	*tp,
-+	bool			already_locked)
- {
- 	int			i, j;
- 	struct xfs_dquot	*dqp;
-@@ -667,10 +686,12 @@ xfs_trans_unreserve_and_mod_dquots(
- 			 * about the number of blocks used field, or deltas.
- 			 * Also we don't bother to zero the fields.
- 			 */
--			locked = false;
-+			locked = already_locked;
- 			if (qtrx->qt_blk_res) {
--				xfs_dqlock(dqp);
--				locked = true;
-+				if (!locked) {
-+					xfs_dqlock(dqp);
-+					locked = true;
-+				}
- 				dqp->q_blk.reserved -=
- 					(xfs_qcnt_t)qtrx->qt_blk_res;
- 			}
-@@ -691,7 +712,7 @@ xfs_trans_unreserve_and_mod_dquots(
- 				dqp->q_rtb.reserved -=
- 					(xfs_qcnt_t)qtrx->qt_rtblk_res;
- 			}
--			if (locked)
-+			if (locked && !already_locked)
- 				xfs_dqunlock(dqp);
- 
- 		}
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -935,7 +935,7 @@
+ 				power-domains = <&rpmhpd SM6350_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+-						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
++						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
+ 				interconnect-names = "qup-core", "qup-config";
+ 				status = "disabled";
+ 			};
 
 
 
