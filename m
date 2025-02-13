@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82992A346C3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BC5A3449A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A4D73B49B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177911897C4B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19334F218;
-	Thu, 13 Feb 2025 15:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC80C26B096;
+	Thu, 13 Feb 2025 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICFL8efG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6sDtwhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9068826B0A5;
-	Thu, 13 Feb 2025 15:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C92226B081;
+	Thu, 13 Feb 2025 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459855; cv=none; b=jobbvOnGyr6X6H41ku5RfX464Kzba8M54GKetpwmz5BSckseAFP7a2fgwwWYQFeGhcqF+HBe5TmhANc4MK/SkJxGbeijYWXjceZ2YkrhjHI4ggPXcVM/03cIvNRL1DemrzLbVbRsERWFMdSiW7fJpkpaywm5zvj7z/F+iPpe3xo=
+	t=1739458413; cv=none; b=as05CLFtrcDR51ucnPbWZxobdn3kMfzkJEQxqTYkJobPQitrGfZm5t93UheyIOWNV1R8Aqu1hLBeb4GCZAjep5TZlVbb8y2NI+ZOns5gWmtCYdVHjHdze43kej1s4T1IKXmxYkuQSnBqYRtiRvyvEO3sQ32pkYofh3wK44sZLuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459855; c=relaxed/simple;
-	bh=Fd27/cj9/wK1ddreQu4ZsRVUmWPUYVPo/pBv4uFUZNE=;
+	s=arc-20240116; t=1739458413; c=relaxed/simple;
+	bh=HwE1Z/6z7fTyqeAArn99YTiyMwU6Pz+FvHzxRDTc1oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdkDFAhTA3EjlZkPtxhytTFoybjHTqjKZrMVsO5jrcXku3tVN1MPkQSffNQsU6OuWTmbQaUt1TpOO5JYDhrW3NoEIUjjBJd3I4i+THIurWRsCc0PY+KKpH4+b9iJwQwIl9VlstHKkwP7AzXOqbjJ1NvBccuE1empfHr8+9/bzdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICFL8efG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AEAC4CED1;
-	Thu, 13 Feb 2025 15:17:34 +0000 (UTC)
+	 MIME-Version; b=dqV2URz1OSoS8daL9Ta3IzPj9IH55gC/ioGS5qrZ/blqDtZFGRgm6pKYg786jUgrpvkI3+MbB8XthUuhLiZqke9tuRp2UHUJK2WygHRQKmqUD/SLAdKICPAi4GrDvpTqwT24aXZKbC/4Tf+SlFHjqiv94fsmtfHXIxnXYvLPBMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6sDtwhb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0015C4CED1;
+	Thu, 13 Feb 2025 14:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459855;
-	bh=Fd27/cj9/wK1ddreQu4ZsRVUmWPUYVPo/pBv4uFUZNE=;
+	s=korg; t=1739458413;
+	bh=HwE1Z/6z7fTyqeAArn99YTiyMwU6Pz+FvHzxRDTc1oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICFL8efGRWJqlCKWR/dbHS3AJ0bgn4I/Dqb7nAd+kY6Ch1Vo0s7efpqokQKRhQ+10
-	 atKA6BWeOwt2EUI4RP/kHmQnDhpxWdodHopM3UQwbo06q/Gdl/IJCQJWfW2EsLBe0F
-	 nMWQpI15sh1pkLG2CMB0KPDTv13lOys4/jKF37VI=
+	b=z6sDtwhbhzjdrbBRGhoiQwqBLzVSQBDyW8atfoKz8eTxe0HY2XbBWGltHMxMBdi1e
+	 RSz/Py+mpHjJWyV2c/Sm4QwhfqkZci/gvKXfDnRB4dfVUOLreweEZduwmE6TmVEnwd
+	 SorFpcInq08JcCVonqqgETWYuh62NQO9/9nvOT3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 376/443] media: uvcvideo: Remove dangling pointers
+	Yishai Hadas <yishaih@nvidia.com>,
+	Artemy Kovalyov <artemyko@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.12 392/422] RDMA/mlx5: Fix a race for an ODP MR which leads to CQE with error
 Date: Thu, 13 Feb 2025 15:29:01 +0100
-Message-ID: <20250213142455.116578296@linuxfoundation.org>
+Message-ID: <20250213142451.675020964@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-commit 221cd51efe4565501a3dbf04cc011b537dcce7fb upstream.
+commit abb604a1a9c87255c7a6f3b784410a9707baf467 upstream.
 
-When an async control is written, we copy a pointer to the file handle
-that started the operation. That pointer will be used when the device is
-done. Which could be anytime in the future.
+This patch addresses a race condition for an ODP MR that can result in a
+CQE with an error on the UMR QP.
 
-If the user closes that file descriptor, its structure will be freed,
-and there will be one dangling pointer per pending async control, that
-the driver will try to use.
+During the __mlx5_ib_dereg_mr() flow, the following sequence of calls
+occurs:
 
-Clean all the dangling pointers during release().
+mlx5_revoke_mr()
+ mlx5r_umr_revoke_mr()
+ mlx5r_umr_post_send_wait()
 
-To avoid adding a performance penalty in the most common case (no async
-operation), a counter has been introduced with some logic to make sure
-that it is properly handled.
+At this point, the lkey is freed from the hardware's perspective.
 
+However, concurrently, mlx5_ib_invalidate_range() might be triggered by
+another task attempting to invalidate a range for the same freed lkey.
+
+This task will:
+ - Acquire the umem_odp->umem_mutex lock.
+ - Call mlx5r_umr_update_xlt() on the UMR QP.
+ - Since the lkey has already been freed, this can lead to a CQE error,
+   causing the UMR QP to enter an error state [1].
+
+To resolve this race condition, the umem_odp->umem_mutex lock is now also
+acquired as part of the mlx5_revoke_mr() scope.  Upon successful revoke,
+we set umem_odp->private which points to that MR to NULL, preventing any
+further invalidation attempts on its lkey.
+
+[1] From dmesg:
+
+   infiniband rocep8s0f0: dump_cqe:277:(pid 0): WC error: 6, Message: memory bind operation error
+   cqe_dump: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+   cqe_dump: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+   cqe_dump: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+   cqe_dump: 00000030: 00 00 00 00 08 00 78 06 25 00 11 b9 00 0e dd d2
+
+   WARNING: CPU: 15 PID: 1506 at drivers/infiniband/hw/mlx5/umr.c:394 mlx5r_umr_post_send_wait+0x15a/0x2b0 [mlx5_ib]
+   Modules linked in: ip6table_mangle ip6table_natip6table_filter ip6_tables iptable_mangle xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_umad ib_ipoib ib_cm mlx5_ib ib_uverbs ib_core fuse mlx5_core
+   CPU: 15 UID: 0 PID: 1506 Comm: ibv_rc_pingpong Not tainted 6.12.0-rc7+ #1626
+   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+   RIP: 0010:mlx5r_umr_post_send_wait+0x15a/0x2b0 [mlx5_ib]
+   [..]
+   Call Trace:
+   <TASK>
+   mlx5r_umr_update_xlt+0x23c/0x3e0 [mlx5_ib]
+   mlx5_ib_invalidate_range+0x2e1/0x330 [mlx5_ib]
+   __mmu_notifier_invalidate_range_start+0x1e1/0x240
+   zap_page_range_single+0xf1/0x1a0
+   madvise_vma_behavior+0x677/0x6e0
+   do_madvise+0x1a2/0x4b0
+   __x64_sys_madvise+0x25/0x30
+   do_syscall_64+0x6b/0x140
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: e6fb246ccafb ("RDMA/mlx5: Consolidate MR destruction to mlx5_ib_dereg_mr()")
 Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-3-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://patch.msgid.link/r/68a1e007c25b2b8fe5d625f238cc3b63e5341f77.1737290229.git.leon@kernel.org
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   59 +++++++++++++++++++++++++++++++++++++--
- drivers/media/usb/uvc/uvc_v4l2.c |    2 +
- drivers/media/usb/uvc/uvcvideo.h |    9 +++++
- 3 files changed, 67 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c  |   17 +++++++++++++++--
+ drivers/infiniband/hw/mlx5/odp.c |    2 ++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1579,6 +1579,40 @@ static void uvc_ctrl_send_slave_event(st
- 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
- }
- 
-+static void uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
-+				struct uvc_fh *new_handle)
-+{
-+	lockdep_assert_held(&handle->chain->ctrl_mutex);
-+
-+	if (new_handle) {
-+		if (ctrl->handle)
-+			dev_warn_ratelimited(&handle->stream->dev->udev->dev,
-+					     "UVC non compliance: Setting an async control with a pending operation.");
-+
-+		if (new_handle == ctrl->handle)
-+			return;
-+
-+		if (ctrl->handle) {
-+			WARN_ON(!ctrl->handle->pending_async_ctrls);
-+			if (ctrl->handle->pending_async_ctrls)
-+				ctrl->handle->pending_async_ctrls--;
-+		}
-+
-+		ctrl->handle = new_handle;
-+		handle->pending_async_ctrls++;
-+		return;
-+	}
-+
-+	/* Cannot clear the handle for a control not owned by us.*/
-+	if (WARN_ON(ctrl->handle != handle))
-+		return;
-+
-+	ctrl->handle = NULL;
-+	if (WARN_ON(!handle->pending_async_ctrls))
-+		return;
-+	handle->pending_async_ctrls--;
-+}
-+
- void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 			   struct uvc_control *ctrl, const u8 *data)
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -2021,6 +2021,11 @@ static int mlx5_revoke_mr(struct mlx5_ib
  {
-@@ -1589,7 +1623,8 @@ void uvc_ctrl_status_event(struct uvc_vi
- 	mutex_lock(&chain->ctrl_mutex);
+ 	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
+ 	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
++	bool is_odp = is_odp_mr(mr);
++	int ret = 0;
++
++	if (is_odp)
++		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
  
- 	handle = ctrl->handle;
--	ctrl->handle = NULL;
-+	if (handle)
-+		uvc_ctrl_set_handle(handle, ctrl, NULL);
- 
- 	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
- 		s32 value = __uvc_ctrl_get_value(mapping, data);
-@@ -1863,7 +1898,7 @@ static int uvc_ctrl_commit_entity(struct
- 
- 		if (!rollback && handle &&
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			ctrl->handle = handle;
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr)) {
+ 		ent = mr->mmkey.cache_ent;
+@@ -2032,7 +2037,7 @@ static int mlx5_revoke_mr(struct mlx5_ib
+ 			ent->tmp_cleanup_scheduled = true;
+ 		}
+ 		spin_unlock_irq(&ent->mkeys_queue.lock);
+-		return 0;
++		goto out;
  	}
  
- 	return 0;
-@@ -2772,6 +2807,26 @@ int uvc_ctrl_init_device(struct uvc_devi
- 	return 0;
- }
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
-+{
-+	struct uvc_entity *entity;
-+
-+	guard(mutex)(&handle->chain->ctrl_mutex);
-+
-+	if (!handle->pending_async_ctrls)
-+		return;
-+
-+	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
-+		for (unsigned int i = 0; i < entity->ncontrols; ++i) {
-+			if (entity->controls[i].handle != handle)
-+				continue;
-+			uvc_ctrl_set_handle(handle, &entity->controls[i], NULL);
-+		}
+ 	if (ent) {
+@@ -2041,7 +2046,15 @@ static int mlx5_revoke_mr(struct mlx5_ib
+ 		mr->mmkey.cache_ent = NULL;
+ 		spin_unlock_irq(&ent->mkeys_queue.lock);
+ 	}
+-	return destroy_mkey(dev, mr);
++	ret = destroy_mkey(dev, mr);
++out:
++	if (is_odp) {
++		if (!ret)
++			to_ib_umem_odp(mr->umem)->private = NULL;
++		mutex_unlock(&to_ib_umem_odp(mr->umem)->umem_mutex);
 +	}
 +
-+	WARN_ON(handle->pending_async_ctrls);
-+}
-+
- /*
-  * Cleanup device controls.
-  */
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -652,6 +652,8 @@ static int uvc_v4l2_release(struct file
++	return ret;
+ }
  
- 	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
+ static int __mlx5_ib_dereg_mr(struct ib_mr *ibmr)
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -282,6 +282,8 @@ static bool mlx5_ib_invalidate_range(str
+ 	if (!umem_odp->npages)
+ 		goto out;
+ 	mr = umem_odp->private;
++	if (!mr)
++		goto out;
  
-+	uvc_ctrl_cleanup_fh(handle);
-+
- 	/* Only free resources if this is a privileged handle. */
- 	if (uvc_has_privileges(handle))
- 		uvc_queue_release(&stream->queue);
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -338,7 +338,11 @@ struct uvc_video_chain {
- 	struct uvc_entity *processing;		/* Processing unit */
- 	struct uvc_entity *selector;		/* Selector unit */
- 
--	struct mutex ctrl_mutex;		/* Protects ctrl.info */
-+	struct mutex ctrl_mutex;		/*
-+						 * Protects ctrl.info,
-+						 * ctrl.handle and
-+						 * uvc_fh.pending_async_ctrls
-+						 */
- 
- 	struct v4l2_prio_state prio;		/* V4L2 priority state */
- 	u32 caps;				/* V4L2 chain-wide caps */
-@@ -613,6 +617,7 @@ struct uvc_fh {
- 	struct uvc_video_chain *chain;
- 	struct uvc_streaming *stream;
- 	enum uvc_handle_state state;
-+	unsigned int pending_async_ctrls;
- };
- 
- struct uvc_driver {
-@@ -798,6 +803,8 @@ int uvc_ctrl_is_accessible(struct uvc_vi
- int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 		      struct uvc_xu_control_query *xqry);
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
-+
- /* Utility functions */
- struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
- 					    u8 epaddr);
+ 	start = max_t(u64, ib_umem_start(umem_odp), range->start);
+ 	end = min_t(u64, ib_umem_end(umem_odp), range->end);
 
 
 
