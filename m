@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1234A34346
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CEEA34523
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751871881F8B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19BCB172014
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257D8281375;
-	Thu, 13 Feb 2025 14:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC56026B08A;
+	Thu, 13 Feb 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbCAPzbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11RaZ/j/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D660D281349;
-	Thu, 13 Feb 2025 14:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7843C26B082;
+	Thu, 13 Feb 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457734; cv=none; b=cfmlht/y3IKewnt6rcY2beKbjY5fbdZM/cOX1YlNLNzYaXiF0OmGoK6jhxKaMsGehSX4ZTQIFr5cwiIxoR6f2dProRLxYrc0CObConANz74Y3pi6KVD2D8NDBWe8qkbMFVExD/HkrDCrBzYPRY7Xe2VDjz9zzYzhI/MVldfZhEY=
+	t=1739459037; cv=none; b=DzMirqkErU0ytDRYsyGC646MDrcT72NTwilf2hvI+dSbGnWlO6dcWlNfgW/+LXeYfeNA4CNkHIee5N9Pgooj63CY2ywBWLv544498VZkyj7XF0ZmyYWOPvOXk9W7ERhonUUmwVXHHwUtVxFy231YBaXtBarfp78uof6i5jOScWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457734; c=relaxed/simple;
-	bh=u99RCkfBcaYhHWoFSxgeT1FzRgn3YFgfkCdOJqhzM4w=;
+	s=arc-20240116; t=1739459037; c=relaxed/simple;
+	bh=8kJaK35/WMwQSG2O7XI3PJpfv3hKVwgp9q80xEamD2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFKlOjTe3sQu+X1YqLJymUhNygArDak0tvkP6kQ1nF79i0eFClMT+ojz9gnHSof3h3LzUtwi53VHA8v9t1QScjvZwDe5rSTcUfN0JstNNBsU9Z27YVYSuI5hba0U4PnhEZlGsr3u0pY9rDBT1CG1pCztKokCNYFG+9aWS/2oTQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbCAPzbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4322BC4CED1;
-	Thu, 13 Feb 2025 14:42:14 +0000 (UTC)
+	 MIME-Version; b=rQNfuiYPlj9WKP7/K8q1CNquU5ZVogvpSoKNhvUagAtf1hcfdup8vu2vMoGd3hP79+U1U0tJQ5Hw9N4NfYzhBgTyiEWpD+DP2pcJVUHwKiQQYFwi19COxp7KOfl3e07PwmCBXO30SwciPgabglp8GClMhiw6PLSx9kv8jxpDMeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11RaZ/j/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D689C4CED1;
+	Thu, 13 Feb 2025 15:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457734;
-	bh=u99RCkfBcaYhHWoFSxgeT1FzRgn3YFgfkCdOJqhzM4w=;
+	s=korg; t=1739459037;
+	bh=8kJaK35/WMwQSG2O7XI3PJpfv3hKVwgp9q80xEamD2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbCAPzblqHKwTiHRpbRlaoUsnajcQdjgE8eTX/SRKEVQatySGq3StdSRZlcmW6oIP
-	 AyxuOY1vnV/CdM5q685NBEysDbHZjDmBFiaZIyzZbUYLfhy3JWYhKXUUK/daWmFum6
-	 IM9rNQI3eK93PQ2+2KP6JGcbJ1Gd4v3D7tmmu5jU=
+	b=11RaZ/j/Nayp6PtxDuWU53Pjzw1P6gtPw5qz5jhoJ72/cZQ6wxHQ7jQuQ3oW1Z9/8
+	 INhisN+FPwJ7V0nirCo8WltzzB0/qLxrNwVDuAQA+k9L292PVQuJkPSP23Y0jnFCL0
+	 vuxFPNlb8oZ0kbtoVB9auRU3PCNugDiNxpwvgTBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 166/422] drm/i915/dp: Iterate DSC BPP from high to low on all platforms
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 150/443] smb: client: change lease epoch type from unsigned int to __u16
 Date: Thu, 13 Feb 2025 15:25:15 +0100
-Message-ID: <20250213142442.949162438@linuxfoundation.org>
+Message-ID: <20250213142446.386178681@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-commit 230b19bc2bcc5897d0e20b4ce7e9790a469a2db0 upstream.
+commit 57e4a9bd61c308f607bc3e55e8fa02257b06b552 upstream.
 
-Commit 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
-compressed bpp") tries to find the best compressed bpp for the
-link. However, it iterates from max to min bpp on display 13+, and from
-min to max on other platforms. This presumably leads to minimum
-compressed bpp always being chosen on display 11-12.
+MS-SMB2 section 2.2.13.2.10 specifies that 'epoch' should be a 16-bit
+unsigned integer used to track lease state changes. Change the data
+type of all instances of 'epoch' from unsigned int to __u16. This
+simplifies the epoch change comparisons and makes the code more
+compliant with the protocol spec.
 
-Iterate from high to low on all platforms to actually use the best
-possible compressed bpp.
-
-Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/3bba67923cbcd13a59d26ef5fa4bb042b13c8a9b.1738327620.git.jani.nikula@intel.com
-(cherry picked from commit 56b0337d429356c3b9ecc36a03023c8cc856b196)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/smb/client/cifsglob.h  |   14 +++++++-------
+ fs/smb/client/smb1ops.c   |    2 +-
+ fs/smb/client/smb2ops.c   |   18 +++++++++---------
+ fs/smb/client/smb2pdu.c   |    2 +-
+ fs/smb/client/smb2proto.h |    2 +-
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2022,11 +2022,10 @@ icl_dsc_compute_link_config(struct intel
- 	/* Compressed BPP should be less than the Input DSC bpp */
- 	dsc_max_bpp = min(dsc_max_bpp, pipe_bpp - 1);
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -326,7 +326,7 @@ struct smb_version_operations {
+ 	int (*handle_cancelled_mid)(struct mid_q_entry *, struct TCP_Server_Info *);
+ 	void (*downgrade_oplock)(struct TCP_Server_Info *server,
+ 				 struct cifsInodeInfo *cinode, __u32 oplock,
+-				 unsigned int epoch, bool *purge_cache);
++				 __u16 epoch, bool *purge_cache);
+ 	/* process transaction2 response */
+ 	bool (*check_trans2)(struct mid_q_entry *, struct TCP_Server_Info *,
+ 			     char *, int);
+@@ -521,12 +521,12 @@ struct smb_version_operations {
+ 	/* if we can do cache read operations */
+ 	bool (*is_read_op)(__u32);
+ 	/* set oplock level for the inode */
+-	void (*set_oplock_level)(struct cifsInodeInfo *, __u32, unsigned int,
+-				 bool *);
++	void (*set_oplock_level)(struct cifsInodeInfo *cinode, __u32 oplock, __u16 epoch,
++				 bool *purge_cache);
+ 	/* create lease context buffer for CREATE request */
+ 	char * (*create_lease_buf)(u8 *lease_key, u8 oplock);
+ 	/* parse lease context buffer and return oplock/epoch info */
+-	__u8 (*parse_lease_buf)(void *buf, unsigned int *epoch, char *lkey);
++	__u8 (*parse_lease_buf)(void *buf, __u16 *epoch, char *lkey);
+ 	ssize_t (*copychunk_range)(const unsigned int,
+ 			struct cifsFileInfo *src_file,
+ 			struct cifsFileInfo *target_file,
+@@ -1422,7 +1422,7 @@ struct cifs_fid {
+ 	__u8 create_guid[16];
+ 	__u32 access;
+ 	struct cifs_pending_open *pending_open;
+-	unsigned int epoch;
++	__u16 epoch;
+ #ifdef CONFIG_CIFS_DEBUG2
+ 	__u64 mid;
+ #endif /* CIFS_DEBUG2 */
+@@ -1455,7 +1455,7 @@ struct cifsFileInfo {
+ 	bool oplock_break_cancelled:1;
+ 	bool status_file_deleted:1; /* file has been deleted */
+ 	bool offload:1; /* offload final part of _put to a wq */
+-	unsigned int oplock_epoch; /* epoch from the lease break */
++	__u16 oplock_epoch; /* epoch from the lease break */
+ 	__u32 oplock_level; /* oplock/lease level from the lease break */
+ 	int count;
+ 	spinlock_t file_info_lock; /* protects four flag/count fields above */
+@@ -1552,7 +1552,7 @@ struct cifsInodeInfo {
+ 	spinlock_t	open_file_lock;	/* protects openFileList */
+ 	__u32 cifsAttrs; /* e.g. DOS archive bit, sparse, compressed, system */
+ 	unsigned int oplock;		/* oplock/lease level we have */
+-	unsigned int epoch;		/* used to track lease state changes */
++	__u16 epoch;		/* used to track lease state changes */
+ #define CIFS_INODE_PENDING_OPLOCK_BREAK   (0) /* oplock break in progress */
+ #define CIFS_INODE_PENDING_WRITERS	  (1) /* Writes in progress */
+ #define CIFS_INODE_FLAG_UNUSED		  (2) /* Unused flag */
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -377,7 +377,7 @@ coalesce_t2(char *second_buf, struct smb
+ static void
+ cifs_downgrade_oplock(struct TCP_Server_Info *server,
+ 		      struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	cifs_set_oplock_level(cinode, oplock);
+ }
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3904,22 +3904,22 @@ static long smb3_fallocate(struct file *
+ static void
+ smb2_downgrade_oplock(struct TCP_Server_Info *server,
+ 		      struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	server->ops->set_oplock_level(cinode, oplock, 0, NULL);
+ }
  
--	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
--		if (valid_dsc_bpp[i] < dsc_min_bpp)
-+	for (i = ARRAY_SIZE(valid_dsc_bpp) - 1; i >= 0; i--) {
-+		if (valid_dsc_bpp[i] < dsc_min_bpp ||
-+		    valid_dsc_bpp[i] > dsc_max_bpp)
- 			continue;
--		if (valid_dsc_bpp[i] > dsc_max_bpp)
--			break;
+ static void
+ smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache);
++		       __u16 epoch, bool *purge_cache);
  
- 		ret = dsc_compute_link_config(intel_dp,
- 					      pipe_config,
+ static void
+ smb3_downgrade_oplock(struct TCP_Server_Info *server,
+ 		       struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache)
++		       __u16 epoch, bool *purge_cache)
+ {
+ 	unsigned int old_state = cinode->oplock;
+-	unsigned int old_epoch = cinode->epoch;
++	__u16 old_epoch = cinode->epoch;
+ 	unsigned int new_state;
+ 
+ 	if (epoch > old_epoch) {
+@@ -3939,7 +3939,7 @@ smb3_downgrade_oplock(struct TCP_Server_
+ 
+ static void
+ smb2_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	oplock &= 0xFF;
+ 	cinode->lease_granted = false;
+@@ -3963,7 +3963,7 @@ smb2_set_oplock_level(struct cifsInodeIn
+ 
+ static void
+ smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache)
++		       __u16 epoch, bool *purge_cache)
+ {
+ 	char message[5] = {0};
+ 	unsigned int new_oplock = 0;
+@@ -4000,7 +4000,7 @@ smb21_set_oplock_level(struct cifsInodeI
+ 
+ static void
+ smb3_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	unsigned int old_oplock = cinode->oplock;
+ 
+@@ -4114,7 +4114,7 @@ smb3_create_lease_buf(u8 *lease_key, u8
+ }
+ 
+ static __u8
+-smb2_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
++smb2_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
+ {
+ 	struct create_lease *lc = (struct create_lease *)buf;
+ 
+@@ -4125,7 +4125,7 @@ smb2_parse_lease_buf(void *buf, unsigned
+ }
+ 
+ static __u8
+-smb3_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
++smb3_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
+ {
+ 	struct create_lease_v2 *lc = (struct create_lease_v2 *)buf;
+ 
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2329,7 +2329,7 @@ parse_posix_ctxt(struct create_context *
+ 
+ int smb2_parse_contexts(struct TCP_Server_Info *server,
+ 			struct kvec *rsp_iov,
+-			unsigned int *epoch,
++			__u16 *epoch,
+ 			char *lease_key, __u8 *oplock,
+ 			struct smb2_file_all_info *buf,
+ 			struct create_posix_rsp *posix)
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -282,7 +282,7 @@ extern enum securityEnum smb2_select_sec
+ 					enum securityEnum);
+ int smb2_parse_contexts(struct TCP_Server_Info *server,
+ 			struct kvec *rsp_iov,
+-			unsigned int *epoch,
++			__u16 *epoch,
+ 			char *lease_key, __u8 *oplock,
+ 			struct smb2_file_all_info *buf,
+ 			struct create_posix_rsp *posix);
 
 
 
