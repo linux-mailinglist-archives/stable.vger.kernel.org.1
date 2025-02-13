@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-116126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E58A3473D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D3DA34634
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50505163561
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B23E61895781
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC0015A868;
-	Thu, 13 Feb 2025 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F3A335BA;
+	Thu, 13 Feb 2025 15:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szK2JBNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alR9xIQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C72A143736;
-	Thu, 13 Feb 2025 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A272F26B0A5;
+	Thu, 13 Feb 2025 15:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460411; cv=none; b=LVKVMquHKO7urXDTVAQUUeFdJxDdcDTf7IgMgGV/ECjhWb26VQKq0OhbObUptHbMUh29Q8NJLZdOutgPn+7HfdEHLsnz4amWVtVCwQwq2hTp3DVeNuj83PiKiMmwWul3LDk7Jcl/S3RtaCpSrA228pWdHJDwi6uXRCTjrOdWHMk=
+	t=1739459601; cv=none; b=g/6C6uXecgWgXXkCuCCxG/meo54SFQkFI42azEzBJgxyyon4wP266/lo6nO+k7e2WXBAN4EmOZ+5eRDi5aCiEQCYxaTxTIlQyTXaIkyzKjYoViEgJakKdDDvWbXJvgnt28UItJdSFqeuP8h1eAiBr6uka1Fqgos4wCrGqTbUp6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460411; c=relaxed/simple;
-	bh=26AXXzcCX74Q/TkTZvRc46QmXNiPQEj2kSIPmrDgHj4=;
+	s=arc-20240116; t=1739459601; c=relaxed/simple;
+	bh=rNLptWm48h+b9NfvnWye+7PmzJGtRjX3Cl6xID/chTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzMTHGSwvtsGCJ+5hsaEfmQuNnoAtWBJiEArlC/JQpMzkRLYJ0q/GHvDjldJ4PtwMUGyP5MBPk7YZf4WI0GDi27NrW6uGYiuOoPCHoTq6SQPc6UBMHzNmDUk2Y9b7OIESd776SRmhyE2pRX3bjNdpALm3DUCJL+Y1zOlXMqE3Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szK2JBNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872AC4CED1;
-	Thu, 13 Feb 2025 15:26:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pjYbqzQRJZJtE/oXMds/XZLgmZcq4jPy7cqIp+9FyhW6k6LGaCEWthLuI3eEHv2LeUtwGdPoLziNzJPgry68/QqWs1dRoj+zVVvdrYPXTq7cbHHb+2TgP3YiBWbLAPh4jFrgBJ1albayr/JsQoaTozkKPFoASX9t87ztfmV0Mx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alR9xIQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8060C4CEE4;
+	Thu, 13 Feb 2025 15:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460410;
-	bh=26AXXzcCX74Q/TkTZvRc46QmXNiPQEj2kSIPmrDgHj4=;
+	s=korg; t=1739459601;
+	bh=rNLptWm48h+b9NfvnWye+7PmzJGtRjX3Cl6xID/chTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szK2JBNsgjdwYSf3uz5Zq8ZB5yEgY9nNo22W1m33FAVLTv3M+2IeOQHBb4d7a/0gL
-	 xrvTqnhFrWL4RXSI+qyaIG1PGchatcxGqYer5QXJdGDpfUmWZGqE5dw8PL2Wq9MKyP
-	 KV3PPhpTR0IZr1mL4ncR5d/UZyVkd64Hp/eKkJNA=
+	b=alR9xIQUSbs3HOZf5ngYCR90OEIDiJpQFMYfamjj/YmkmtcMEne+x3JVJatOr0QiI
+	 pFt149B0Ko5cT1S/GeVkzkBVf0uiyERu9mQnuDD/NtNnjqMYmWqsWrSqGP24BUbbRl
+	 cyHAvJGw7bRKwC+y9sy8hEri4UacxpqTzv2XUnZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/273] net: rose: lock the socket in rose_bind()
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.13 280/443] scsi: st: Dont set pos_unknown just after device recognition
 Date: Thu, 13 Feb 2025 15:27:25 +0100
-Message-ID: <20250213142410.234507514@linuxfoundation.org>
+Message-ID: <20250213142451.414569996@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit a1300691aed9ee852b0a9192e29e2bdc2411a7e6 ]
+commit 98b37881b7492ae9048ad48260cc8a6ee9eb39fd upstream.
 
-syzbot reported a soft lockup in rose_loopback_timer(),
-with a repro calling bind() from multiple threads.
+Commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling") in
+v6.6 added new code to handle the Power On/Reset Unit Attention (POR UA)
+sense data. This was in addition to the existing method. When this Unit
+Attention is received, the driver blocks attempts to read, write and some
+other operations because the reset may have rewinded the tape. Because of
+the added code, also the initial POR UA resulted in blocking operations,
+including those that are used to set the driver options after the device is
+recognized. Also, reading and writing are refused, whereas they succeeded
+before this commit.
 
-rose_bind() must lock the socket to avoid this issue.
+Add code to not set pos_unknown to block operations if the POR UA is
+received from the first test_ready() call after the st device has been
+created. This restores the behavior before v6.6.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67a0f78d.050a0220.d7c5a.00a0.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250203170838.3521361-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20241216113755.30415-1-Kai.Makisara@kolumbus.fi
+Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+CC: stable@vger.kernel.org
+Closes: https://lore.kernel.org/linux-scsi/2201CF73-4795-4D3B-9A79-6EE5215CF58D@kolumbus.fi/
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/scsi/st.c |    6 ++++++
+ drivers/scsi/st.h |    1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 342823b918e7c..66e9ceaaa43a1 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -701,11 +701,9 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- 	struct net_device *dev;
- 	ax25_address *source;
- 	ax25_uid_assoc *user;
-+	int err = -EINVAL;
- 	int n;
- 
--	if (!sock_flag(sk, SOCK_ZAPPED))
--		return -EINVAL;
--
- 	if (addr_len != sizeof(struct sockaddr_rose) && addr_len != sizeof(struct full_sockaddr_rose))
- 		return -EINVAL;
- 
-@@ -718,8 +716,15 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- 	if ((unsigned int) addr->srose_ndigis > ROSE_MAX_DIGIS)
- 		return -EINVAL;
- 
--	if ((dev = rose_dev_get(&addr->srose_addr)) == NULL)
--		return -EADDRNOTAVAIL;
-+	lock_sock(sk);
-+
-+	if (!sock_flag(sk, SOCK_ZAPPED))
-+		goto out_release;
-+
-+	err = -EADDRNOTAVAIL;
-+	dev = rose_dev_get(&addr->srose_addr);
-+	if (!dev)
-+		goto out_release;
- 
- 	source = &addr->srose_call;
- 
-@@ -730,7 +735,8 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- 	} else {
- 		if (ax25_uid_policy && !capable(CAP_NET_BIND_SERVICE)) {
- 			dev_put(dev);
--			return -EACCES;
-+			err = -EACCES;
-+			goto out_release;
- 		}
- 		rose->source_call   = *source;
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -1030,6 +1030,11 @@ static int test_ready(struct scsi_tape *
+ 			retval = new_session ? CHKRES_NEW_SESSION : CHKRES_READY;
+ 		break;
  	}
-@@ -753,8 +759,10 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- 	rose_insert_socket(sk);
++	if (STp->first_tur) {
++		/* Don't set pos_unknown right after device recognition */
++		STp->pos_unknown = 0;
++		STp->first_tur = 0;
++	}
  
- 	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	return 0;
-+	err = 0;
-+out_release:
-+	release_sock(sk);
-+	return err;
- }
+ 	if (SRpnt != NULL)
+ 		st_release_request(SRpnt);
+@@ -4328,6 +4333,7 @@ static int st_probe(struct device *dev)
+ 	blk_queue_rq_timeout(tpnt->device->request_queue, ST_TIMEOUT);
+ 	tpnt->long_timeout = ST_LONG_TIMEOUT;
+ 	tpnt->try_dio = try_direct_io;
++	tpnt->first_tur = 1;
  
- static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_len, int flags)
--- 
-2.39.5
-
+ 	for (i = 0; i < ST_NBR_MODES; i++) {
+ 		STm = &(tpnt->modes[i]);
+--- a/drivers/scsi/st.h
++++ b/drivers/scsi/st.h
+@@ -170,6 +170,7 @@ struct scsi_tape {
+ 	unsigned char rew_at_close;  /* rewind necessary at close */
+ 	unsigned char inited;
+ 	unsigned char cleaning_req;  /* cleaning requested? */
++	unsigned char first_tur;     /* first TEST UNIT READY */
+ 	int block_size;
+ 	int min_block;
+ 	int max_block;
 
 
 
