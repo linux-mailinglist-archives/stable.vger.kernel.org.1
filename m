@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C73A34578
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE945A342CC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CDA13A2DA3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3C6188DD46
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5949B1FFC58;
-	Thu, 13 Feb 2025 15:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEA2241674;
+	Thu, 13 Feb 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvywgE1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fixlo5kQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD713D8A4;
-	Thu, 13 Feb 2025 15:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57670281375;
+	Thu, 13 Feb 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459006; cv=none; b=sAKNaY4bCwpfKh5ndDy8xyHdu1t1c8ZRava1awJ0Eq20S+hqKUvyRoLwq6TzA9pLgAV4zidYOS9HIkkFqTk+7mwYbIGwMf+bea6eGbtXHhycY6vjMlol2OgzjH3qmdGNNuWsnefmFfR+Hs7uoVz1bIygeu24CO60mtox4gwBod8=
+	t=1739457451; cv=none; b=Wz63fk5k00KghZ8tjXqBtY7LeG9gXMyVWyU3QrLw9GJcj1oVKBFClFVOJxWmFKDg0yEzR3LgQegcPbMfcumSQwUHSuEy8UE/5JRQfxglOb/eJEtGinK91dF00+ocgQCSzaqH7qJN2rFYbtG/7h0zihzJo7SzVMopTgGQ4NK/DBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459006; c=relaxed/simple;
-	bh=GkZ405AnMDooZPBc/cZ6ELurNxkISiXNgVMutKeLfkY=;
+	s=arc-20240116; t=1739457451; c=relaxed/simple;
+	bh=uTYEoTI8H+DUBTxo553Kx87k4O0htUud75eOYpvTPng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/Ai0gJBXdORc2pt0mjNe9hzQsMpAqN3IR9snFYgat2atLRX3WJwRKyP7FCHRolfYY0ZdLuEI61I90uJFpSwBPR+3vsEZTlmaCHAs4GrBXZZkm16PcEJiuhIc1SVgG3LeMlUi6kvNQjdB0rYYY9MeQDnFZOQlmxck1ZFbYuz56Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvywgE1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A87C4CED1;
-	Thu, 13 Feb 2025 15:03:25 +0000 (UTC)
+	 MIME-Version; b=n1WhiaZP/j4Bz0aNNz1b/F41QVr5xITOtX2QK/xmdZqd6YoKOkF2Zcnxd3KrIVTEySjKXvo4DYizgYbJdXEjgAkJTfD9j5rNwsk/Etn2xexnzTI5bNXeBsgVpdpiJXwbSyiguhJy2IS9Q4OGmZSpepg3dFz8WwYKZa4A38RfBEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fixlo5kQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A2DC4CED1;
+	Thu, 13 Feb 2025 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459005;
-	bh=GkZ405AnMDooZPBc/cZ6ELurNxkISiXNgVMutKeLfkY=;
+	s=korg; t=1739457451;
+	bh=uTYEoTI8H+DUBTxo553Kx87k4O0htUud75eOYpvTPng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvywgE1llO5vdZA6DHhjPZVL/MI0ZpMUC9bZ/+8FHD2H/1MPXNVMUstQZ774cfs9j
-	 crgoV6QYJSlfy1bRnqYjWgggoH+oVaS0uY1027aOteROL+40BaOdsqroJorUdobkVK
-	 r21K79wHOBvSO61xIKk0I9PZipWtx79TIzqXHTqg=
+	b=Fixlo5kQVQ/kTYqJXhY9kquyLzrhLXyBOHsgJhDHwz4lewcd1qZR2YanJEnGWWnBI
+	 dYzJld/FxnEKuqQ4NkDuzhOo10ExWAYuvQKXOj+fErxuQOL8j3Iztgi9/16Jf6yhSd
+	 E01u5iICpjQ/VC8tFXcC3n/dhZGhrAVvAvcQoslc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 098/443] ASoC: amd: Add ACPI dependency to fix build error
+Subject: [PATCH 6.12 114/422] ethtool: rss: fix hiding unsupported fields in dumps
 Date: Thu, 13 Feb 2025 15:24:23 +0100
-Message-ID: <20250213142444.392117395@linuxfoundation.org>
+Message-ID: <20250213142440.951777541@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 7e24ec93aecd12e33d31e38e5af4625553bbc727 ]
+[ Upstream commit 244f8aa46fa9e2f4ea5fe0e04988b395d5e30fc7 ]
 
-As reported by the kernel test robot, the following error occurs:
+Commit ec6e57beaf8b ("ethtool: rss: don't report key if device
+doesn't support it") intended to stop reporting key fields for
+additional rss contexts if device has a global hashing key.
 
-   sound/soc/amd/yc/acp6x-mach.c: In function 'acp6x_probe':
->> sound/soc/amd/yc/acp6x-mach.c:573:15: error: implicit declaration of function 'acpi_evaluate_integer'; did you mean 'acpi_evaluate_object'? [-Werror=implicit-function-declaration]
-     573 |         ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-         |               ^~~~~~~~~~~~~~~~~~~~~
-         |               acpi_evaluate_object
-   cc1: some warnings being treated as errors
+Later we added dump support and the filtering wasn't properly
+added there. So we end up reporting the key fields in dumps
+but not in dos:
 
-The function 'acpi_evaluate_integer' and its prototype in 'acpi_bus.h'
-are only available when 'CONFIG_ACPI' is enabled. Add a 'depends on ACPI'
-directive in Kconfig to ensure proper compilation.
+  # ./pyynl/cli.py --spec netlink/specs/ethtool.yaml --do rss-get \
+		--json '{"header": {"dev-index":2}, "context": 1 }'
+  {
+     "header": { ... },
+     "context": 1,
+     "indir": [0, 1, 2, 3, ...]]
+  }
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501090345.pBIDRTym-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250109171547.362412-1-eleanor15x@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  # ./pyynl/cli.py --spec netlink/specs/ethtool.yaml --dump rss-get
+  [
+     ... snip context 0 ...
+     { "header": { ... },
+       "context": 1,
+       "indir": [0, 1, 2, 3, ...],
+ ->    "input_xfrm": 255,
+ ->    "hfunc": 1,
+ ->    "hkey": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+     }
+  ]
+
+Hide these fields correctly.
+
+The drivers/net/hw/rss_ctx.py selftest catches this when run on
+a device with single key, already:
+
+  # Check| At /root/./ksft-net-drv/drivers/net/hw/rss_ctx.py, line 381, in test_rss_context_dump:
+  # Check|     ksft_ne(set(data.get('hkey', [1])), {0}, "key is all zero")
+  # Check failed {0} == {0} key is all zero
+  not ok 8 rss_ctx.test_rss_context_dump
+
+Fixes: f6122900f4e2 ("ethtool: rss: support dumping RSS contexts")
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250201013040.725123-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/rss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/Kconfig b/sound/soc/amd/Kconfig
-index c7590d4989bba..8035211782791 100644
---- a/sound/soc/amd/Kconfig
-+++ b/sound/soc/amd/Kconfig
-@@ -105,7 +105,7 @@ config SND_SOC_AMD_ACP6x
- config SND_SOC_AMD_YC_MACH
- 	tristate "AMD YC support for DMIC"
- 	select SND_SOC_DMIC
--	depends on SND_SOC_AMD_ACP6x
-+	depends on SND_SOC_AMD_ACP6x && ACPI
- 	help
- 	  This option enables machine driver for Yellow Carp platform
- 	  using dmic. ACP IP has PDM Decoder block with DMA controller.
+diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
+index e07386275e142..8aa45f3fdfdf0 100644
+--- a/net/ethtool/rss.c
++++ b/net/ethtool/rss.c
+@@ -107,6 +107,8 @@ rss_prepare_ctx(const struct rss_req_info *request, struct net_device *dev,
+ 	u32 total_size, indir_bytes;
+ 	u8 *rss_config;
+ 
++	data->no_key_fields = !dev->ethtool_ops->rxfh_per_ctx_key;
++
+ 	ctx = xa_load(&dev->ethtool->rss_ctx, request->rss_context);
+ 	if (!ctx)
+ 		return -ENOENT;
+@@ -153,7 +155,6 @@ rss_prepare_data(const struct ethnl_req_info *req_base,
+ 		if (!ops->cap_rss_ctx_supported && !ops->create_rxfh_context)
+ 			return -EOPNOTSUPP;
+ 
+-		data->no_key_fields = !ops->rxfh_per_ctx_key;
+ 		return rss_prepare_ctx(request, dev, data, info);
+ 	}
+ 
 -- 
 2.39.5
 
