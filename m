@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BD0A34469
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BD3A34804
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918F63AF69B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 337053A1AE9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723D824292D;
-	Thu, 13 Feb 2025 14:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6792F15DBBA;
+	Thu, 13 Feb 2025 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nkac+qIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0HZQw5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB7526B08D;
-	Thu, 13 Feb 2025 14:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2432515A856;
+	Thu, 13 Feb 2025 15:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458365; cv=none; b=fTKunV8z3h7TYLq48ntFNKyqFTN/CogtKeJ12bJONVu/CAn8vmqzpebrr5cA/SiAjyTOBxeycF512rLqrOdVqL8jw05yfHD23sEmSzjdrGuyyY/8YWN6k4NszDjGbwJcYc8AprX6BAvwc9BkXryTo0sEk1lF1on9EPRSichtad8=
+	t=1739460593; cv=none; b=gZwyl9z0ITWKjqMuNpEr3q7QELNfe9JYjtadIqCl+bd4M+8ffzf6kjX6hp73l029x7Vg5/GQ/B+bKFryb3MXCpADdYSUB3NwLIPRgoCrCQRLHpPs/5/+psNzSHAJ6wkTI9pZtAnGMHKO1pE4sI+ZpugRNEtlipF1h7XnXJK23WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458365; c=relaxed/simple;
-	bh=F+Tft9Ur2PPOXwN125gsJPzPaePlWOAS2Va6g2jTigo=;
+	s=arc-20240116; t=1739460593; c=relaxed/simple;
+	bh=rZLtmml2XKlHRiG2mFJXovCGyfgZoQ2IWXFqVwdhHvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5LRgca53Uv3TucSe6FSdr7wMKYIq52Aw/cyw3lL9yrEczd9YPXhPopT7aVksAA0ofUj/WHwNOuKgFniJIyayvcYUUnnkS1nm2p7kg7QzwIFq0yEtCUdgIK3JB/LZWzKuJyXgOVujF5ydASq70CVy7EZHyNlfBBn0cS1/IhI588=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nkac+qIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876A0C4CED1;
-	Thu, 13 Feb 2025 14:52:44 +0000 (UTC)
+	 MIME-Version; b=ZvLnWaqtrJ3W7kf/znllU0iGxqi8VGPnzrrRp1k4d4o5RuqBw8mJdxa59wMy0y3SJAYeUmj7rrTvkrtcCmc1TjLOZ8NFjlBRgNxPZ7w54aXRJFIOI7TGqhEsexwbw5P5d0C2SjwqTf55u0Ckqeu4B2iGMiGbekrlRaE0bQ40qIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0HZQw5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E656C4CEE5;
+	Thu, 13 Feb 2025 15:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458365;
-	bh=F+Tft9Ur2PPOXwN125gsJPzPaePlWOAS2Va6g2jTigo=;
+	s=korg; t=1739460592;
+	bh=rZLtmml2XKlHRiG2mFJXovCGyfgZoQ2IWXFqVwdhHvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nkac+qIHSMEKt4jXFFB+1mN7mGW1wZBpeQPYHpaMDNVwwPEXQDdXdZrpvm9JT5dYX
-	 M3jbvpGBIXcHo71sR3NRK+/sxp7YvN6DEQWK/qIDb0zWSKezxN9Jis6Ac2BEAa0xX5
-	 pKiy8wreLPPZ5gJiyqFvsXgHIO+otFhMhG5ptmwY=
+	b=R0HZQw5GN6/IvycFEbh78dZdOz3z6txZN6h/rczKiwYobjUvnIYU37ygy0qFl01xP
+	 ti3opHL7nytckIpWhJUNK9oGyHTcVWtCHOaZpVI6h72Mu01gmKnQyZLXkvudDCOKJM
+	 HFs4iMTJKyNfbdi3ZafhjQDXAPXbMWqKwt62vLmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milos Reljin <milos_reljin@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 379/422] net: phy: c45-tjaxx: add delay between MDIO write and read in soft_reset
+	Austrum <austrum.lab@gmail.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 156/273] ALSA: hda: Fix headset detection failure due to unstable sort
 Date: Thu, 13 Feb 2025 15:28:48 +0100
-Message-ID: <20250213142451.173082388@linuxfoundation.org>
+Message-ID: <20250213142413.501139426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milos Reljin <milos_reljin@outlook.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit bd1bbab717608757cccbbe08b0d46e6c3ed0ced5 upstream.
+commit 3b4309546b48fc167aa615a2d881a09c0a97971f upstream.
 
-In application note (AN13663) for TJA1120, on page 30, there's a figure
-with average PHY startup timing values following software reset.
-The time it takes for SMI to become operational after software reset
-ranges roughly from 500 us to 1500 us.
+The auto_parser assumed sort() was stable, but the kernel's sort() uses
+heapsort, which has never been stable. After commit 0e02ca29a563
+("lib/sort: optimize heapsort with double-pop variation"), the order of
+equal elements changed, causing the headset to fail to work.
 
-This commit adds 2000 us delay after MDIO write which triggers software
-reset. Without this delay, soft_reset function returns an error and
-prevents successful PHY init.
+Fix the issue by recording the original order of elements before
+sorting and using it as a tiebreaker for equal elements in the
+comparison function.
 
+Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
+Reported-by: Austrum <austrum.lab@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
+Tested-by: Austrum <austrum.lab@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: b050f2f15e04 ("phy: nxp-c45: add driver for tja1103")
-Signed-off-by: Milos Reljin <milos_reljin@outlook.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/AM8P250MB0124D258E5A71041AF2CC322E1E32@AM8P250MB0124.EURP250.PROD.OUTLOOK.COM
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://patch.msgid.link/20250128165415.643223-1-visitorckw@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/nxp-c45-tja11xx.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/hda_auto_parser.c |    8 +++++++-
+ sound/pci/hda/hda_auto_parser.h |    1 +
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/phy/nxp-c45-tja11xx.c
-+++ b/drivers/net/phy/nxp-c45-tja11xx.c
-@@ -1296,6 +1296,8 @@ static int nxp_c45_soft_reset(struct phy
- 	if (ret)
- 		return ret;
+--- a/sound/pci/hda/hda_auto_parser.c
++++ b/sound/pci/hda/hda_auto_parser.c
+@@ -80,7 +80,11 @@ static int compare_input_type(const void
  
-+	usleep_range(2000, 2050);
+ 	/* In case one has boost and the other one has not,
+ 	   pick the one with boost first. */
+-	return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
++	if (a->has_boost_on_pin != b->has_boost_on_pin)
++		return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
 +
- 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
- 					 VEND1_DEVICE_CONTROL, ret,
- 					 !(ret & DEVICE_CONTROL_RESET), 20000,
++	/* Keep the original order */
++	return a->order - b->order;
+ }
+ 
+ /* Reorder the surround channels
+@@ -400,6 +404,8 @@ int snd_hda_parse_pin_defcfg(struct hda_
+ 	reorder_outputs(cfg->speaker_outs, cfg->speaker_pins);
+ 
+ 	/* sort inputs in the order of AUTO_PIN_* type */
++	for (i = 0; i < cfg->num_inputs; i++)
++		cfg->inputs[i].order = i;
+ 	sort(cfg->inputs, cfg->num_inputs, sizeof(cfg->inputs[0]),
+ 	     compare_input_type, NULL);
+ 
+--- a/sound/pci/hda/hda_auto_parser.h
++++ b/sound/pci/hda/hda_auto_parser.h
+@@ -37,6 +37,7 @@ struct auto_pin_cfg_item {
+ 	unsigned int is_headset_mic:1;
+ 	unsigned int is_headphone_mic:1; /* Mic-only in headphone jack */
+ 	unsigned int has_boost_on_pin:1;
++	int order;
+ };
+ 
+ struct auto_pin_cfg;
 
 
 
