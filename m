@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F35A34796
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC92A344DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA203B5FA6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EC7A3083
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908EE15539A;
-	Thu, 13 Feb 2025 15:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3EE26B096;
+	Thu, 13 Feb 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaqS1lee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ck24qMI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C45613D8A4;
-	Thu, 13 Feb 2025 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163DD26B089;
+	Thu, 13 Feb 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460198; cv=none; b=eKUvfrze9jsdkSIlEqyAxQLq0TzSIuReZDAl6od//XYckH46Ic4aU2gZ9D81xv4Y5mQjOq16Y2nYuv/LvXm6TMW7Z8bwoftDzdY1VttaA9Q7Ue6+m0PYt9gEMDHTjna+a6wAsVFN3QaEvS3C3zCwFbG473C0LKEluYpl4ALRKGw=
+	t=1739459394; cv=none; b=g2RoQTO5KI+jbUwZZbTixkIo1hBovDkmpzJnEm7bqHAMKRBYrWRUxNGEQqfOqgeMHbO2mPI5kwb7DTB2vc4NYWMETtIjmeEvfBmPMXdvpWb55Lm6GuLLGzS4dfDBXfwQzQ9bDkh6f7u8jWkjal32k9auqBwCgT9h7cLYrpMpeYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460198; c=relaxed/simple;
-	bh=gSy35Ex6mGhP32KJy+E8TZMXR7gNBFiZyGIGfY4w33s=;
+	s=arc-20240116; t=1739459394; c=relaxed/simple;
+	bh=zJO8bd3Ah8T3/24FOhcPnTPIhk7dkBxGMs0XggATT3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOltR4gYMG+S66XZ3dIGgeTOI/4ygwp+mTOYfWEGFyR4HYK+P4GvvAsVRu1z3BawE2jLUF3MDME8Xy/quGowbhrqjQBNsy3lSoV8qwIgbGyuExJDz/epELRnSrxnOf5JA/pLpaRzM2fIJtpgbFf2b6A9g2jLAC5GgV6SCfTzpRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaqS1lee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51483C4CED1;
-	Thu, 13 Feb 2025 15:23:17 +0000 (UTC)
+	 MIME-Version; b=EhBP1n9kcZinUK9H/uNv6tB8z/Gc+K+AqFu0nQoUBe2ozfFog7Lor3hfQTyygzh/D+RBIxDEVMwM2o0lmwzWh1gMXOZ0ZklaMQsTbZj17VXxiGoC6P72jkhgnrF8VdMdK0XAIfIHbhToe3ByhWkNeHC+EJ4zg3gCOlgjfACERxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ck24qMI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D2FC4CED1;
+	Thu, 13 Feb 2025 15:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460197;
-	bh=gSy35Ex6mGhP32KJy+E8TZMXR7gNBFiZyGIGfY4w33s=;
+	s=korg; t=1739459393;
+	bh=zJO8bd3Ah8T3/24FOhcPnTPIhk7dkBxGMs0XggATT3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaqS1lee3ileARjbpFLkMy970MoRtTxlcNvl50O4cQAF2dxPQLOBuV0NEMm9rCwyV
-	 s7kJE3ZP5a7gRnwsf28oV6YeX/zgrTdwC6FzICuPIeL0fNB2DsvRLl+CXDwFngr+i1
-	 TLeXFlet1LVPSekxMzzbnAB6vmuk9RnTiBvwXOEc=
+	b=Ck24qMI/ByYmZx16qR+BBr/vJvEF5X1//VXJHuDakMAN99ap/C31UNIVW78wJd+Hb
+	 oVJQP2dOgtX+kXh7YvSjO6GxgldmilPmYt5oTw6UjVIHVIK6Tcc0JdTfSA2Wv0DETn
+	 Ipr4wGB4zGDYv07mtkCa5GXC2rNqIAd/yNmhBNCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/273] tipc: re-order conditions in tipc_crypto_key_rcv()
-Date: Thu, 13 Feb 2025 15:26:56 +0100
-Message-ID: <20250213142409.094832330@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 252/443] soc: qcom: socinfo: Avoid out of bounds read of serial number
+Date: Thu, 13 Feb 2025 15:26:57 +0100
+Message-ID: <20250213142450.340578893@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 5fe71fda89745fc3cd95f70d06e9162b595c3702 ]
+commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
 
-On a 32bit system the "keylen + sizeof(struct tipc_aead_key)" math could
-have an integer wrapping issue.  It doesn't matter because the "keylen"
-is checked on the next line, but just to make life easier for static
-analysis tools, let's re-order these conditions and avoid the integer
-overflow.
+On MSM8916 devices, the serial number exposed in sysfs is constant and does
+not change across individual devices. It's always:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  db410c:/sys/devices/soc0$ cat serial_number
+  2644893864
+
+The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
+have support for the serial_num field in the socinfo struct. There is an
+existing check to avoid exposing the serial number in that case, but it's
+not correct: When checking the item_size returned by SMEM, we need to make
+sure the *end* of the serial_num is within bounds, instead of comparing
+with the *start* offset. The serial_number currently exposed on MSM8916
+devices is just an out of bounds read of whatever comes after the socinfo
+struct in SMEM.
+
+Fix this by changing offsetof() to offsetofend(), so that the size of the
+field is also taken into account.
+
+Cc: stable@vger.kernel.org
+Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/socinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 43c3f1c971b8f..c524421ec6525 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -2293,8 +2293,8 @@ static bool tipc_crypto_key_rcv(struct tipc_crypto *rx, struct tipc_msg *hdr)
- 	keylen = ntohl(*((__be32 *)(data + TIPC_AEAD_ALG_NAME)));
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -796,7 +796,7 @@ static int qcom_socinfo_probe(struct pla
+ 	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
  
- 	/* Verify the supplied size values */
--	if (unlikely(size != keylen + sizeof(struct tipc_aead_key) ||
--		     keylen > TIPC_AEAD_KEY_SIZE_MAX)) {
-+	if (unlikely(keylen > TIPC_AEAD_KEY_SIZE_MAX ||
-+		     size != keylen + sizeof(struct tipc_aead_key))) {
- 		pr_debug("%s: invalid MSG_CRYPTO key size\n", rx->name);
- 		goto exit;
- 	}
--- 
-2.39.5
-
+-	if (offsetof(struct socinfo, serial_num) <= item_size) {
++	if (offsetofend(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
 
 
 
