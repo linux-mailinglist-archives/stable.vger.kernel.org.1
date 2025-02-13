@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB47A34637
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DC4A347AA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556B01885411
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2FA516F201
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3246B26B0BE;
-	Thu, 13 Feb 2025 15:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05DB1632DD;
+	Thu, 13 Feb 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vu/skTaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbUglNnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E372B26B091;
-	Thu, 13 Feb 2025 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4EA26B098;
+	Thu, 13 Feb 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459873; cv=none; b=EIW+h/exCBqqC+JdsDrlEntRF3y9Na+RCYfQU2oOHN44PvKDw+aPDOoyorB54FQu0KPtQzK+1Oj+xDD7PeEeP0fEm5walgHp6fmTA4+E+qR0w3ksTQZx9Kc3GuYxxNhge7wpAffgSBltO80XgzaprhN5LiT3pp8fPtmQoLVR/ew=
+	t=1739460684; cv=none; b=CqCcR46b5ZoTMsUePJIBpUBMaZ7Vu8WMzKKIPIWkAqRlhrgfkkheaiXZ0EGf9mLB72vvZFlsTnBo0cZVop1iBdLgh5GmhF0uRCpAp87c9UeHAmDKtqMsvznywo6VkD0aQ+5h8aBMXkYFRA+sCh1I6N9Y8MhqOd9mD0TglI+F6C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459873; c=relaxed/simple;
-	bh=bH2AOWBQEAicl357caICKCziehF7LwNqlqWTHtsd7EY=;
+	s=arc-20240116; t=1739460684; c=relaxed/simple;
+	bh=PiO0uEZHXHD6a4Jrz0D3qxMd2yR52Fj3OIqMHLcoMxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/iVGbGaVEEnmCVY+JMvTqdsZA2F8YoGDnsFnP6oDJAQVLDqeX+3dGCpPABPpY1Unxdgtx9Vg/Z4pbEmcX86m5yRXkdK9IvmvPYqXz0YlUw1T77xb9iKoeeGIdlvhEP4D6shSrvgPBJao1MGX+CPG2Tw7OTuzbVQWQWqncgUiWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vu/skTaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B978C4CED1;
-	Thu, 13 Feb 2025 15:17:52 +0000 (UTC)
+	 MIME-Version; b=taofAU09ICJRH6v6bqxQH4m0+m3ja7qoPwueGfxz6SQahm/Duyztv03FK3iu5xNWRp+vSZS8yZTR5hJiVU7JF1E3OcTAsbLruJv4LDYi6+Mg2uy8kPm+EuMazVv61fiefzGczXHzlCbPOtavALox1M0FMHWgt7gZ2F+6ZIcg1Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbUglNnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A397EC4CED1;
+	Thu, 13 Feb 2025 15:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459872;
-	bh=bH2AOWBQEAicl357caICKCziehF7LwNqlqWTHtsd7EY=;
+	s=korg; t=1739460684;
+	bh=PiO0uEZHXHD6a4Jrz0D3qxMd2yR52Fj3OIqMHLcoMxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vu/skTaBjuHY52UQteQXYEmP9rszaNYQKQwxCIWO0m+tsn1hkBrxRLguvMApfdA7o
-	 Ftaw5qIKs/xWRldY0zYxdv3F1htmNnSw/8Gg4bpfTkBCd+rYSVC5LiNgW6LMldPceS
-	 TnBkVFY7NugRiqs83RrHCMoBjZ8IKYz97PqwvOeg=
+	b=RbUglNnf6RWstHh4d2Wem9l1utwNwxM42rViHUYrQpCqgDsLQondF/JeL1BmKvcHw
+	 KkHbcat8cEOBLd3S1qzKXUpdoVO0QlS+YUAEFdk0/uuA7bLQt2uzGzKOojc0JMBGVF
+	 8zBvThdG+JStRwWkNS9WPgGn0m+0Z2XnHZBHN8IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jennifer Berringer <jberring@redhat.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.13 389/443] nvmem: core: improve range check for nvmem_cell_write()
-Date: Thu, 13 Feb 2025 15:29:14 +0100
-Message-ID: <20250213142455.620693090@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 183/273] arm64: dts: qcom: sm8350: Fix MPSS memory length
+Date: Thu, 13 Feb 2025 15:29:15 +0100
+Message-ID: <20250213142414.558849098@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jennifer Berringer <jberring@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 31507fc2ad36e0071751a710449db19c85d82a7f upstream.
+commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
 
-When __nvmem_cell_entry_write() is called for an nvmem cell that does
-not need bit shifting, it requires that the len parameter exactly
-matches the nvmem cell size. However, when the nvmem cell has a nonzero
-bit_offset, it was skipping this check.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-Accepting values of len larger than the cell size results in
-nvmem_cell_prepare_write_buffer() trying to write past the end of a heap
-buffer that it allocates. Add a check to avoid that problem and instead
-return -EINVAL when len doesn't match the number of bits expected by the
-nvmem cell when bit_offset is nonzero.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-This check uses cell->nbits in order to allow providing the smaller size
-to cells that are shifted into another byte by bit_offset. For example,
-a cell with nbits=8 and nonzero bit_offset would have bytes=2 but should
-accept a 1-byte write here, although no current callers depend on this.
-
-Fixes: 69aba7948cbe ("nvmem: Add a simple NVMEM framework for consumers")
+Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jennifer Berringer <jberring@redhat.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-7-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -1790,6 +1790,8 @@ static int __nvmem_cell_entry_write(stru
- 		return -EINVAL;
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2156,7 +2156,7 @@
  
- 	if (cell->bit_offset || cell->nbits) {
-+		if (len != BITS_TO_BYTES(cell->nbits) && len != cell->bytes)
-+			return -EINVAL;
- 		buf = nvmem_cell_prepare_write_buffer(cell, buf, len);
- 		if (IS_ERR(buf))
- 			return PTR_ERR(buf);
+ 		mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8350-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
