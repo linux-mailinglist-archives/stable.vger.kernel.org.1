@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E743FA3468B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A93A343BF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3874E3B02CD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 904DE7A10A5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6120335BA;
-	Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB76C26B08F;
+	Thu, 13 Feb 2025 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2qLgLee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHE1LK5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DD926B0BE;
-	Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F1926B089;
+	Thu, 13 Feb 2025 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459828; cv=none; b=U30UjUhFYu8ws4RhrJMT/yk4x+a7T7BPfelAjUXjl5anM0n2X6L5G4U1VIOpKa3Xmq20aeZjHoBvbXOmhXuwOuxVrFsdHdc65Kux4my1+xkMUxqbNrPqiQm1ifJCuxYJI1Z08fKc+ZBUEWK7WT05/qJrqe2NeMmc9DtbLnvlezM=
+	t=1739458406; cv=none; b=fpAOxZYomBtiE3O+C3n2JHEMkx1s3tmhAt121qUaibFR6XuWI0ki14J4uhIyDyHmWQm2zKguyWgLgreaq7hSiZfwA9SBHz9BHM/88j0SlxSFUfI+/xrS7NH+F32GjHgvBjjsgEHXtgu+qFMzSX0svtna+vJWlFwIfDQyreAWA4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459828; c=relaxed/simple;
-	bh=kUpuK3rubwTYO1BmVVSzmFnqAAD+JagAOhiAwgrMGXc=;
+	s=arc-20240116; t=1739458406; c=relaxed/simple;
+	bh=VMmB4nEuJCWKLnrikrozvy3YuQAaLFC4WVnz5XLQl8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soN9atHXX/UsJ2S/fliA/95eYqqEtRe7pLRirVAsJaIu9hHVE3G3efotF0BxecGnr9k/hyjNX1V7mSCX5hcCmMsrGoJxIHVgusXY932OnGGSSUPqQEBBdktUdx8pVSYveB4j/H8HpjzLT8nQR/qm1NP+YeJZ1FCLvo4AxpaETjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2qLgLee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B37C4CEE4;
-	Thu, 13 Feb 2025 15:17:07 +0000 (UTC)
+	 MIME-Version; b=DoFK3EYHGa99gDZNaFhFbLAVBjzZ3IbSGkwqPv3sHcGSRjnvhb7gcQ6mpNbhxoGQG/AFu7XLBXrUtHUAWnbezz6PgTdTsf4lYrX3nai84Ode9l4TYCGqF1DoxVOAvuiHgMLBIc1PG/8Vm4BjsG0X2M0O3GZcHMpbhcfgyHpEFoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHE1LK5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C868AC4CEE5;
+	Thu, 13 Feb 2025 14:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459828;
-	bh=kUpuK3rubwTYO1BmVVSzmFnqAAD+JagAOhiAwgrMGXc=;
+	s=korg; t=1739458406;
+	bh=VMmB4nEuJCWKLnrikrozvy3YuQAaLFC4WVnz5XLQl8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2qLgLeeRsILzk+0/g0zWMI3uzw41U3jY0nR62UerXqkzwcKLnTYujKrviCtIC61C
-	 ZiOpE9uPM0TybWC7KeqPkfbHPgRTXejXOJxe7MosUhwZAa22p3q91MHQhil8ODnEss
-	 jatXRpmyTLV+AXJzyf1rMCJI+/1557MjQO5r2Sw0=
+	b=rHE1LK5+SjSk0ObIYoHZVGsHAH7TAfWRL61KEiWXzIODU+kLSftagqeGKqdvs3DcB
+	 RXVcBMsdFKwNO6IfKzZ19rNPlkne8+Lm6sDvahYES6uxbBBR54mIUMysQi4se5vM5L
+	 15imYi9iqKAZJvoA6QUNNMiVCkCyC5MBYu2YT4PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 374/443] media: uvcvideo: Only save async fh if success
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.12 390/422] pinctrl: renesas: rzg2l: Fix PFC_MASK for RZ/V2H and RZ/G3E
 Date: Thu, 13 Feb 2025 15:28:59 +0100
-Message-ID: <20250213142455.041677229@linuxfoundation.org>
+Message-ID: <20250213142451.598759816@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit d9fecd096f67a4469536e040a8a10bbfb665918b upstream.
+commit accabfaae0940f9427c782bfee7340ce4c15151c upstream.
 
-Now we keep a reference to the active fh for any call to uvc_ctrl_set,
-regardless if it is an actual set or if it is a just a try or if the
-device refused the operation.
+The PFC_MASK value for the PFC_mx registers is currently hardcoded to
+0x07, which is correct for SoCs in the RZ/G2L family, but insufficient
+for RZ/V2H and RZ/G3E, where the mask value should be 0x0f.  This
+discrepancy causes incorrect PFC register configuration on RZ/V2H and
+RZ/G3E SoCs.
 
-We should only keep the file handle if the device actually accepted
-applying the operation.
+On RZ/G2L, the PFC_mx bitfields are also 4 bits wide, with bit 4 marked
+as reserved.  The reserved bits are documented to read as zero and be
+ignored when written.  Updating the PFC_MASK definition from 0x07 to
+0x0f ensures compatibility with both SoC families while maintaining
+correct behavior on RZ/G2L.
 
+Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC")
 Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1811,7 +1811,10 @@ int uvc_ctrl_begin(struct uvc_video_chai
- }
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -155,7 +155,7 @@
+ #define PWPR_REGWE_B		BIT(5)	/* OEN Register Write Enable, known only in RZ/V2H(P) */
  
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
--	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
-+				  struct uvc_fh *handle,
-+				  struct uvc_entity *entity,
-+				  int rollback,
-+				  struct uvc_control **err_ctrl)
- {
- 	struct uvc_control *ctrl;
- 	unsigned int i;
-@@ -1859,6 +1862,10 @@ static int uvc_ctrl_commit_entity(struct
- 				*err_ctrl = ctrl;
- 			return ret;
- 		}
-+
-+		if (!rollback && handle &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			ctrl->handle = handle;
- 	}
- 
- 	return 0;
-@@ -1895,8 +1902,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
--		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
--					     &err_ctrl);
-+		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
-+					     rollback, &err_ctrl);
- 		if (ret < 0) {
- 			if (ctrls)
- 				ctrls->error_idx =
-@@ -2046,9 +2053,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
- 	mapping->set(mapping, value,
- 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
- 
--	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--		ctrl->handle = handle;
--
- 	ctrl->dirty = 1;
- 	ctrl->modified = 1;
- 	return 0;
-@@ -2377,7 +2381,7 @@ int uvc_ctrl_restore_values(struct uvc_d
- 			ctrl->dirty = 1;
- 		}
- 
--		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
-+		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0, NULL);
- 		if (ret < 0)
- 			return ret;
- 	}
+ #define PM_MASK			0x03
+-#define PFC_MASK		0x07
++#define PFC_MASK		0x0f
+ #define IEN_MASK		0x01
+ #define IOLH_MASK		0x03
+ #define SR_MASK			0x01
 
 
 
