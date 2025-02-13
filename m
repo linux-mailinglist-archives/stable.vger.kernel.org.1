@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B881A343A7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE570A34576
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29DD916FF79
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5641171554
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1521FFC7A;
-	Thu, 13 Feb 2025 14:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045F226B0BC;
+	Thu, 13 Feb 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTJP5Qjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuqzcjdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1311FFC58;
-	Thu, 13 Feb 2025 14:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B683026B0B7;
+	Thu, 13 Feb 2025 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457924; cv=none; b=Crelbm7UkuU9bq7gDmrNfLTBCoiRsJlkF/FTrB8Mujm36XpE+cBe1Z5ynSuzmEC73ZrkfD2AtOtduw+NvoOCFnu/aP0/FJE7G2Gca3J5CRKaKJp/zBp+m5sMsJYut638fnQpWjUW1mioujpZ+PWxxZAC0lh0CrMFgl1xtUJXjKc=
+	t=1739459345; cv=none; b=iBhGZKl4EOlsC0HfejlDP0W/SzTo/NyUQKIfeHzZt56f5utBplFgniwP3xS6cJQ5EosaYyE3VySEnXNXRCjPTgunHUoJmcpVZ2WAoKkD7/UJjAXNZa47HgeV3WYfJApHxOmoyykGnJLr9QLBKEYLlvQzf3ln4be/GZCvq4KKwjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457924; c=relaxed/simple;
-	bh=pIBDqT+m+U5QodWo4xO5VtZrGOFAzD/pSYqaPg5gHl0=;
+	s=arc-20240116; t=1739459345; c=relaxed/simple;
+	bh=os4yGAltGiX7Jj9ihF2/eY8M+ZUS2+7KLy1RRPuM1nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVnqGw3m1irACtCmDrDseeVPsWmKYiTmFRYyzPkJEXdjE+gwUdiIv3aurJ2H89GD+/KeuSgmMRWLt7oe8Ux5iVZVBkD1QLy4A0mwxZDZijbmmSh9+WQpre1s5Z0rzc7z8DoLeoDKjJX/G2XDokUoB+w2hXncJhw1a40jHK6o22s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTJP5Qjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ADFC4CEE7;
-	Thu, 13 Feb 2025 14:45:23 +0000 (UTC)
+	 MIME-Version; b=Zy/sD5vyks3GGtDLaVbZLrUYwybNygiQy6p/teLh5bITYu2f9oQCUwwIwmeZ3caRE9Th1NnocFNifpfwKbHDUm1tXEiSxcGeJXeBghGd95uHQT2/qFM8aWveCufQYhg9WKmPvF6HGGGfPGHi9QT+EzDwon4qMpNy6i9YmGYhcnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuqzcjdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C11C4CED1;
+	Thu, 13 Feb 2025 15:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457924;
-	bh=pIBDqT+m+U5QodWo4xO5VtZrGOFAzD/pSYqaPg5gHl0=;
+	s=korg; t=1739459345;
+	bh=os4yGAltGiX7Jj9ihF2/eY8M+ZUS2+7KLy1RRPuM1nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTJP5QjlqNXJejibD0Kr9ZQqqhSmr8Pc04HcsYqyg3zRbjTsw8Qi1DVnNW4wJpmWg
-	 ObAv7i74NXgV1AJtMfwVr9Jw5WKNAwz0UpckrrL27znVZ7iGh/RB+zIiVUNot+5cPn
-	 u1rwVfThAs6bxBEI/O3ohhC1lvI3VzI1w8AeC3q4=
+	b=RuqzcjdHvc/Wjn3nweCghD9j6nedmd0+aqgUfEzkTanQvDXfDYbndOJ/UTu8HIyj7
+	 mK0EeJ7FSFfAzOTIYZyN3hSFji5O7QmxkAwK+cDqP6XR+pNaF51xTW9RwLHXpuN3Ph
+	 TCY1y5tAppZQK+3QTZRnEjAjpQeWoC8H2MEXUgwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 252/422] nvme-pci: Add TUXEDO IBP Gen9 to Samsung sleep quirk
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.13 236/443] usbnet: ipheth: check that DPE points past NCM header
 Date: Thu, 13 Feb 2025 15:26:41 +0100
-Message-ID: <20250213142446.265982789@linuxfoundation.org>
+Message-ID: <20250213142449.723369992@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 11cb3529d18514f7d28ad2190533192aedefd761 upstream.
+commit 429fa68b58cefb9aa9de27e4089637298b46b757 upstream.
 
-On the TUXEDO InfinityBook Pro Gen9 Intel, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (4 watts).
+By definition, a DPE points at the start of a network frame/datagram.
+Thus it makes no sense for it to point at anything that's part of the
+NCM header. It is not a security issue, but merely an indication of
+a malformed DPE.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1.2 watts.
+Enforce that all DPEs point at the data portion of the URB, past the
+NCM header.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/ipheth.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2989,6 +2989,7 @@ static unsigned long check_vendor_combin
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
-+		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -241,7 +241,8 @@ static int ipheth_rcvbulk_callback_ncm(s
+ 	dpe = ncm0->dpe16;
+ 	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
+ 	       le16_to_cpu(dpe->wDatagramLength) != 0) {
+-		if (le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
++		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
++		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
+ 		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
+ 		    le16_to_cpu(dpe->wDatagramIndex)) {
+ 			dev->net->stats.rx_length_errors++;
 
 
 
