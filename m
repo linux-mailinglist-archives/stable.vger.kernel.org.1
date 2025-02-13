@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5D2A34478
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179DFA34778
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC683AB627
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03C8F16E373
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3876714F9FB;
-	Thu, 13 Feb 2025 14:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F8915539A;
+	Thu, 13 Feb 2025 15:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTumWvuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aix9yi0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A07153598;
-	Thu, 13 Feb 2025 14:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527A61411DE;
+	Thu, 13 Feb 2025 15:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458458; cv=none; b=IE9QRbKKWdaSnodfNjs1cpShl1Cao2sZQg1pJ+FsWa8WCMCRb0jilALIrFB1Nf9PH75Kng/HbHRF4lntwe+VCmLOcc5ZyfeOB2nlZBUfu2ilwrZbEpOk9YOyyFd3YeO3QElPQ6B9aS0XZd8fYwQfGX8mwgqn3ab2Frsq/6fqhhM=
+	t=1739460569; cv=none; b=WNKi1Ni43cFfwUoIpNprfcnCqailMCXJU91ll+oUuvTOzfCp/J7nl1ArQP59VKm10Mxcl/ReOYgTymB/ZTWTp9RxtqetsImvxA2mauic6W5DAGI6q08f1jv51kaaj/sDbj8icEnuMIPAXizu+M05WP31PSGtbrFj5aOn9QGeG/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458458; c=relaxed/simple;
-	bh=pHRwzJrTh9nlBXYlDUmsJMEfMdlYLXkv/5q7DyWfR1g=;
+	s=arc-20240116; t=1739460569; c=relaxed/simple;
+	bh=2TaKF1qckxmrYBWU4QgtVpCkhWixs/2tMIEOtJVVgNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb03EiK6pSU+NnVgt+UMyS3SZCDUtaXOl5hP0v0/IxjK81bCJqTpZ6eo3ZkWgkhQ7GS2BwIWbM88rR+3+raqxGstcFu7YcInjkA8XclEozAgbqSS2Oi0O0xTO+HcFFdfW10xMN3M416NIRMv94onUbxZQ8ZElG08LmQ5L5J+tVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTumWvuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392A4C4CEE5;
-	Thu, 13 Feb 2025 14:54:16 +0000 (UTC)
+	 MIME-Version; b=h6IgPJekUMkU1DTRBreGY8B5idGRCgB2gSJAgNga6iJLcrcLYc8aSL0uXUQg7nKzBHAVfq5L+U9oerbRUbpN4FHGElilXbDEePDdZmgzNtha2DyZul75vHctjGDVe77qsE3dclAiIkeN2o/xJAhYucpE/CSX7MvX02pl9mOsdh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aix9yi0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EAFC4CED1;
+	Thu, 13 Feb 2025 15:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458457;
-	bh=pHRwzJrTh9nlBXYlDUmsJMEfMdlYLXkv/5q7DyWfR1g=;
+	s=korg; t=1739460569;
+	bh=2TaKF1qckxmrYBWU4QgtVpCkhWixs/2tMIEOtJVVgNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTumWvuSYa+dDGdcLXRfeY1v+vFjECS8FWhCgpwgfvXqzue8myDynjS+KOByJuPq6
-	 538irr3q7BLLgDceZtTyuhqceslXVKOkmn+An4dt/H1ZHC96rKjlYuxn0CW9kiGRAd
-	 1YND89a4uUpWscpxre7xe7BARZQfPlh5Qy/o7LB4=
+	b=aix9yi0CQX1sVWaDCxKfdccM58k5GKFh6+/8vNrG0SGTopYh3t8TbXYxUg/GOjmrS
+	 rLvHF05FTnqG3Qw8aXlCbSOK4o06RoASeoZLofDpH2YQHzC5Lqt8RVgOM4T3SifCGl
+	 uIEeoFJRGXD5OUVAiuJ5N2WHq8Pgz+TIxd6CaItI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 373/422] mtd: onenand: Fix uninitialized retlen in do_otp_read()
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 150/273] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
 Date: Thu, 13 Feb 2025 15:28:42 +0100
-Message-ID: <20250213142450.942233262@linuxfoundation.org>
+Message-ID: <20250213142413.263738922@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
+commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
 
-The function do_otp_read() does not set the output parameter *retlen,
-which is expected to contain the number of bytes actually read.
-As a result, in onenand_otp_walk(), the tmp_retlen variable remains
-uninitialized after calling do_otp_walk() and used to change
-the values of the buf, len and retlen variables.
+The updates of io->sector are the leftovers when dm-crypt allocated
+pages for partial write request. However, since commit cf2f1abfbd0db
+("dm crypt: don't allocate pages for a partial request"), there is no
+partial request anymore.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+After the introduction of write request rb-tree, the updates of
+io->sectors may interfere the insertion procedure, because ->sectors of
+these write requests which have already been added in the rb-tree may be
+changed during the insertion of new write request.
 
-Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
+Fix it by removing these buggy updates of io->sectors. Considering these
+updates only effect the write request rb-tree, the commit which
+introduces the write request rb-tree is used as the fix tag.
+
+Fixes: b3c5fd305249 ("dm crypt: sort writes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/onenand/onenand_base.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-crypt.c |   14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -2923,6 +2923,7 @@ static int do_otp_read(struct mtd_info *
- 	ret = ONENAND_IS_4KB_PAGE(this) ?
- 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
- 		onenand_read_ops_nolock(mtd, from, &ops);
-+	*retlen = ops.retlen;
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2068,7 +2068,6 @@ static void kcryptd_crypt_write_continue
+ 	struct crypt_config *cc = io->cc;
+ 	struct convert_context *ctx = &io->ctx;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
  
- 	/* Exit OTP access mode */
- 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
+ 	wait_for_completion(&ctx->restart);
+@@ -2085,10 +2084,8 @@ static void kcryptd_crypt_write_continue
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ 	crypt_dec_pending(io);
+ }
+@@ -2099,14 +2096,13 @@ static void kcryptd_crypt_write_convert(
+ 	struct convert_context *ctx = &io->ctx;
+ 	struct bio *clone;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
+ 
+ 	/*
+ 	 * Prevent io from disappearing until this function completes.
+ 	 */
+ 	crypt_inc_pending(io);
+-	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
++	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
+ 
+ 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
+ 	if (unlikely(!clone)) {
+@@ -2123,8 +2119,6 @@ static void kcryptd_crypt_write_convert(
+ 		io->ctx.iter_in = clone->bi_iter;
+ 	}
+ 
+-	sector += bio_sectors(clone);
+-
+ 	crypt_inc_pending(io);
+ 	r = crypt_convert(cc, ctx,
+ 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
+@@ -2148,10 +2142,8 @@ static void kcryptd_crypt_write_convert(
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ dec:
+ 	crypt_dec_pending(io);
 
 
 
