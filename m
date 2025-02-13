@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8DAA347DE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920C4A3469F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 995E716C7D8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A19188E908
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0454518D620;
-	Thu, 13 Feb 2025 15:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17ED26B0BF;
+	Thu, 13 Feb 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7RUnSVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WevyfKHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16EA15E5D4;
-	Thu, 13 Feb 2025 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEE2A1CF;
+	Thu, 13 Feb 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460811; cv=none; b=EvmFIyQiPSE1UGOkr9zBwMbyGdmeKfaVFj1jB8MnMHtUuXIw7/uDVLMPfynADAQUxJcmf5Pm1W3YRnhSlGvzr2euSjpQtR0wcUGhNOGrwyi1SLTJsLbCrSowrlAsPM1YRYmumKuQX1tGINTBoLbOWs6OMQq8gszis4d6aWFfuxw=
+	t=1739459995; cv=none; b=ZeAbhn2c4QCwgv62Wkwp+3pkETcivdeqi5M40t7z7FU0ul8DwTr51haSBYAmNN2LQdIIzFJC0V5m8NLZNxCxZAi0tS6iOO5ayOARdCKiPGn9Ip9HBYVv2MUu7ajuSy6I7iEakjzux/ge05QkOtFqNhMYniENVFh3Sw1RxgVPRIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460811; c=relaxed/simple;
-	bh=/0Bohcv8/ryTZyxL5BMA1918G9urMYo87KcsTFOWWUM=;
+	s=arc-20240116; t=1739459995; c=relaxed/simple;
+	bh=O8fUV/m9N01bB4/ZIXc+i1DfRLL30tPZ9H1LUXIOSxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHKMtQOg58d/PtpN0YlT54UCEBkYYNYICqwaqAyFt6rsaQEKYnvowNQavIRRTduFFBXDB/8DeZ933YZgFTbIFK6/az+Nqpm7lVjQrdZV3eu60Zoo+PqQ5MFHF8H80eO8YYmPD98IWw9FBFZicrvewmqoAyL5g8PrZKIJpRI0P2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7RUnSVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE69C4CED1;
-	Thu, 13 Feb 2025 15:33:30 +0000 (UTC)
+	 MIME-Version; b=O+01STraJzkHjLCLfcxvetacL7xJcK3pF3YhfH4sYInJoK6p/oxHmUdUQq0MTtxPNZAcwCkE9nGHnyU1PasY0XhyvP2YIKBfxkJvxL23bOp0ixUvX9FZp4HPGQWwXPvly3LRD9Ibl+DL2sy20mXZ9zXBYV2jftaHjZ9bHnyzTeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WevyfKHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF118C4CED1;
+	Thu, 13 Feb 2025 15:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460811;
-	bh=/0Bohcv8/ryTZyxL5BMA1918G9urMYo87KcsTFOWWUM=;
+	s=korg; t=1739459995;
+	bh=O8fUV/m9N01bB4/ZIXc+i1DfRLL30tPZ9H1LUXIOSxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7RUnSVMkBV/5FZV7ZQPgPOHvEdcja4/A5TGz4TWf5achktD6cXjbcyZTPrvIH2ZK
-	 j86zh0XkiL3PQCfjd2iqGnEl4ZdpHptpH4Mejh07C3wJ16A4q8D2oftnygNN63+nNk
-	 DYH4u719HbBwj6lTw3R2uaBIfs8Wd71NhEXEp2Fc=
+	b=WevyfKHAY25t+zamr4U7RBXgwImNrC9V6mV85CvtbbL3n2SnNsRcAfdqAOcl8xfJj
+	 uoyRjJ4yHaIleu8eNiwG+A/gHTVfJjQim9c2aYscUjmWOuS7EBMr6hj7N4heNvag92
+	 M4rUvJNkvHI8L8scgtJKLKps2p5uOvqcXy/2pAG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 220/273] crypto: qce - unregister previously registered algos in error path
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.13 427/443] pinctrl: renesas: rzg2l: Fix PFC_MASK for RZ/V2H and RZ/G3E
 Date: Thu, 13 Feb 2025 15:29:52 +0100
-Message-ID: <20250213142416.007296946@linuxfoundation.org>
+Message-ID: <20250213142457.097341162@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
+commit accabfaae0940f9427c782bfee7340ce4c15151c upstream.
 
-If we encounter an error when registering alorithms with the crypto
-framework, we just bail out and don't unregister the ones we
-successfully registered in prior iterations of the loop.
+The PFC_MASK value for the PFC_mx registers is currently hardcoded to
+0x07, which is correct for SoCs in the RZ/G2L family, but insufficient
+for RZ/V2H and RZ/G3E, where the mask value should be 0x0f.  This
+discrepancy causes incorrect PFC register configuration on RZ/V2H and
+RZ/G3E SoCs.
 
-Add code that goes back over the algos and unregisters them before
-returning an error from qce_register_algs().
+On RZ/G2L, the PFC_mx bitfields are also 4 bits wide, with bit 4 marked
+as reserved.  The reserved bits are documented to read as zero and be
+ignored when written.  Updating the PFC_MASK definition from 0x07 to
+0x0f ensures compatibility with both SoC families while maintaining
+correct behavior on RZ/G2L.
 
+Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC")
 Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qce/core.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -51,16 +51,19 @@ static void qce_unregister_algs(struct q
- static int qce_register_algs(struct qce_device *qce)
- {
- 	const struct qce_algo_ops *ops;
--	int i, ret = -ENODEV;
-+	int i, j, ret = -ENODEV;
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -157,7 +157,7 @@
+ #define PWPR_REGWE_B		BIT(5)	/* OEN Register Write Enable, known only in RZ/V2H(P) */
  
- 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
- 		ops = qce_ops[i];
- 		ret = ops->register_algs(qce);
--		if (ret)
--			break;
-+		if (ret) {
-+			for (j = i - 1; j >= 0; j--)
-+				ops->unregister_algs(qce);
-+			return ret;
-+		}
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static int qce_handle_request(struct crypto_async_request *async_req)
+ #define PM_MASK			0x03
+-#define PFC_MASK		0x07
++#define PFC_MASK		0x0f
+ #define IEN_MASK		0x01
+ #define IOLH_MASK		0x03
+ #define SR_MASK			0x01
 
 
 
