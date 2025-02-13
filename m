@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E620A34858
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4E5A346D5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01593AE3A1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48E263ADD1B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA0315E5D4;
-	Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201D138389;
+	Thu, 13 Feb 2025 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny6F37Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm/E4pge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1A214A605;
-	Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30F32A1CF;
+	Thu, 13 Feb 2025 15:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460815; cv=none; b=MjDQEYBKpVosbcXrYhU49hq25bULbFuqlG92OIJywFQMHKyyKg3eRKf+9de9jR0Ui8PG/GLKl8frPXSRVxSGtLdOj72ce88VSxD6zVShgHxW/KrWus6FZOri2etzBAzMhwiWoETNs72NnnbIZceCU5UwVzVA+H0B0UzoqAQD3NA=
+	t=1739459998; cv=none; b=RT/OGlC8r5W/cBMR1dSeXGccTaxNKDqoub5DIktLGlF30LhmusqMpRVZevhmrkmmTsiqKI0hpASP2OtqVI3QpuCk6CKIVsEQq2iYBWDwLdDqZlNiPAgzaxV93oG03KKfEo39kNcvgTidYBSX6NlIiefpZeuN1tIQcHxHEsoqN5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460815; c=relaxed/simple;
-	bh=OvkX8KFeO4ijvF/eNHkMNXh4TAEl9QkLQT/NsLqssD0=;
+	s=arc-20240116; t=1739459998; c=relaxed/simple;
+	bh=hy8imgnZ+aTANJazUT7CNRdhuaN3wYOMGE7jz/I8u10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOQjX0vc0hwt8fZu9MNwm7qEimLwF/2ELdF0EoIPq0tNSlr3MVDq7QGPhXDXsD0nnVjCpr7gTxWkD+xpU4umO7/XEbaP2W5i9DCb0aqCo+GOdYsv3GjSjEKR7KtqgzNfVeWsQzxDQiDYPXJieudr4LoQQ2g5/KM9oosmpgUU1es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny6F37Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9477FC4CED1;
-	Thu, 13 Feb 2025 15:33:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JDZH5qa8QROhgBL5Nrm1qGxuwr2r/npxqONvyFW7PgamszyiAmj0s2NoqD9QEKxe4VLSD9aKLPZkerZmD0lKeM48i0+YOcnYEoR5uhyNKavIcTg2EpX6AOaCi9/CRA6nujNFC02FgwITpuzio3EwMcftES+t4F10rTQSUcSlZDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm/E4pge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF4CC4CED1;
+	Thu, 13 Feb 2025 15:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460815;
-	bh=OvkX8KFeO4ijvF/eNHkMNXh4TAEl9QkLQT/NsLqssD0=;
+	s=korg; t=1739459998;
+	bh=hy8imgnZ+aTANJazUT7CNRdhuaN3wYOMGE7jz/I8u10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny6F37GukB5wvmOgSLVkM4qvEYY+2/782Nr7L4mO8sR7BDlFjjvwt8/YoUdx8TvTP
-	 Zut/gidivMn6rCjZtPriFZdyEZ1wK7n886JJ6WVSKWCJH+3vp8wDouWWAD2HeBdx6+
-	 pAo976oRYOIo1eMX+HIT9z9jnTXEecW+kNUQqw6M=
+	b=gm/E4pgeJmmbAdL+kV3g7xcmZbFB310+MYZtdWE8QLz2QYPpdkB+cwbcMM3ZDNb8+
+	 ouqjAJghRbVJzkWMIkdyj0SaVWmG1LESUTV3D8oGStZT5N837Q4fhjUEcnsF/qypen
+	 foiRquqrV6BrbLiBVRwVHThpUV9a9F75uI2la/5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 221/273] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 428/443] ptp: Ensure info->enable callback is always set
 Date: Thu, 13 Feb 2025 15:29:53 +0100
-Message-ID: <20250213142416.045747804@linuxfoundation.org>
+Message-ID: <20250213142457.134141881@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
+commit fd53aa40e65f518453115b6f56183b0c201db26b upstream.
 
-Let the nvmem core know what size the SDAM is, most notably this fixes
-the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
-user space work with that file.
+The ioctl and sysfs handlers unconditionally call the ->enable callback.
+Not all drivers implement that callback, leading to NULL dereferences.
+Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
 
-  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
-  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
-  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-  *
-  00000080
+Instead use a dummy callback if no better was specified by the driver.
 
-Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/qcom-spmi-sdam.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ptp/ptp_clock.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/nvmem/qcom-spmi-sdam.c
-+++ b/drivers/nvmem/qcom-spmi-sdam.c
-@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_de
- 	sdam->sdam_config.owner = THIS_MODULE;
- 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
- 	sdam->sdam_config.stride = 1;
-+	sdam->sdam_config.size = sdam->size;
- 	sdam->sdam_config.word_size = 1;
- 	sdam->sdam_config.reg_read = sdam_read;
- 	sdam->sdam_config.reg_write = sdam_write;
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_cl
+ 		return info->gettime64(info, ts);
+ }
+ 
++static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
++{
++	return -EOPNOTSUPP;
++}
++
+ static void ptp_aux_kworker(struct kthread_work *work)
+ {
+ 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
+@@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(str
+ 			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
+ 	}
+ 
++	if (!ptp->info->enable)
++		ptp->info->enable = ptp_enable;
++
+ 	if (ptp->info->do_aux_work) {
+ 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
+ 		ptp->kworker = kthread_create_worker(0, "ptp%d", ptp->index);
 
 
 
