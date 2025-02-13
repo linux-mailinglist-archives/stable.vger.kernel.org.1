@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-116199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CCCA347B4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAE9A34650
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 192FA1885DE2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E2E16F787
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6984183CD9;
-	Thu, 13 Feb 2025 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827E526B0BE;
+	Thu, 13 Feb 2025 15:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zG8UzY/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxlob1Ui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A565F26B098;
-	Thu, 13 Feb 2025 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7A426B0A5;
+	Thu, 13 Feb 2025 15:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460658; cv=none; b=AnvzFmzUmz9q5WoF4Jwj8qGOJcSwm4V/DPnseBZPf8ByWpzyBTfqwvXObH8UACq5H75AoRJ50DFqvfpQa3BYJPBkwGzf9B9zoeyRw36sMy9sszd5Ndjs8lKqSjq0auGW6l2VHzibU8VqKMk4ie0Zrgq/xmt7oRRR8vsbovLCDoE=
+	t=1739459892; cv=none; b=DAHKFJIGBH17XJf708M2wuzONVR8Dhwk+F6bMC29GShj4KoEbFknVqcHWqqiiPL5qaDRoLmHXBOocZ7YteFEIZ1nZO5dDSCV14UMJR/ZgXVNqTsvdMvmEpNcDzs6PU69hw2UqU6X/HXcrtvjkOYFGvW++VtHQmI77dHszvt/3fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460658; c=relaxed/simple;
-	bh=GaCxtvSH+w9xO2IJ5wzmYaB96R6D9wMvjQ0cttltbYs=;
+	s=arc-20240116; t=1739459892; c=relaxed/simple;
+	bh=0SaydzfisfsU6qMsLEVQ8QOs/CeKtooli9uHJ9PudkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1kMn+UgQu/UaIBeJDiaSRDW66Er9mUDGIv2QiOEoKX+Xg3lq8WTQDTJKlCMQlg+9ncyol2I1mORzw85s3mVtnCfPTCX0m/iGhjSn5vAb6YhDWkwivDuzrP6ofh5FVtm2+tFAAnBIUnFGC4EwdyP6x0P2sV7ISLOnf4P26GerJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zG8UzY/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0A1C4CEE4;
-	Thu, 13 Feb 2025 15:30:58 +0000 (UTC)
+	 MIME-Version; b=MbT7z5WA51Hi3YB7AWlznvLLyVu/Rr0AIrM75lnHkyWWLzVvLWOLQUjDADtPbt5VPtJvHEjtuYu23b7wEPXWQ09X/s6qCGkfPhPVIx2uN02n7cIuTNeNfppphc1asctYloScFhTqdVS4Pzzf2M0YPG4xGGZWe2/qESd0NCsMy5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxlob1Ui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0F7C4CED1;
+	Thu, 13 Feb 2025 15:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460658;
-	bh=GaCxtvSH+w9xO2IJ5wzmYaB96R6D9wMvjQ0cttltbYs=;
+	s=korg; t=1739459892;
+	bh=0SaydzfisfsU6qMsLEVQ8QOs/CeKtooli9uHJ9PudkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zG8UzY/ZPp9aTtzEKv/cj6d0ga+WVk0hq5ZEoP/I48rHn3XH6UsI5r6/7nNnYfwFX
-	 OheDsSE2FtNQBZjvqgCLvPHXi89hE1oCY50L0TAYjBMHdtSl8SAd/xx/pIVAPHeddA
-	 rrQJw7anKooKjp93lz8HyKB1+vvjMaWRzam48q14=
+	b=Gxlob1Uia8lPNfkK5UxPTTyCrjFTteXa6b5QWMMo27Cy7EFd56fdV6z0l6dpOKAf8
+	 wKi1CrKfNXaSsTTxn5zNjToVwjU62G2Phh5YCwLvG2BsRYI/rvFT5+vOk95e8GWG2R
+	 cXX5YVZqkLAvSkWd3PrhWoRzlZN5M8jmwhyAzP5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.6 169/273] ubi: Add a check for ubi_num
-Date: Thu, 13 Feb 2025 15:29:01 +0100
-Message-ID: <20250213142414.008660061@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Patrick Wang <patrick.wang.shcn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 377/443] mm: kmemleak: fix upper boundary check for physical address objects
+Date: Thu, 13 Feb 2025 15:29:02 +0100
+Message-ID: <20250213142455.153822442@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 97bbf9e312c3fbaf0baa56120238825d2eb23b8a upstream.
+commit 488b5b9eca68497b533ced059be5eff19578bbca upstream.
 
-Added a check for ubi_num for negative numbers
-If the variable ubi_num takes negative values then we get:
+Memblock allocations are registered by kmemleak separately, based on their
+physical address.  During the scanning stage, it checks whether an object
+is within the min_low_pfn and max_low_pfn boundaries and ignores it
+otherwise.
 
-qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
-[    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
-[    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
-[    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
-[    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
-[    0.745600]  kernel_init from ret_from_fork+0x14/0x28
-[    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
+With the recent addition of __percpu pointer leak detection (commit
+6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
+started reporting leaks in setup_zone_pageset() and
+setup_per_cpu_pageset().  These were caused by the node_data[0] object
+(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
+boundary.  The non-strict upper boundary check introduced by commit
+84c326299191 ("mm: kmemleak: check physical address when scan") causes the
+pg_data_t object to be ignored (not scanned) and the __percpu pointers it
+contains to be reported as leaks.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Make the max_low_pfn upper boundary check strict when deciding whether to
+ignore a physical address object and not scan it.
 
-Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
+Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
+Cc: <stable@vger.kernel.org>	[6.0.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/build.c |    2 +-
+ mm/kmemleak.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -1462,7 +1462,7 @@ static int ubi_mtd_param_parse(const cha
- 	if (token) {
- 		int err = kstrtoint(token, 10, &p->ubi_num);
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1689,7 +1689,7 @@ static void kmemleak_scan(void)
+ 			unsigned long phys = object->pointer;
  
--		if (err) {
-+		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
- 			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
- 			       token);
- 			return -EINVAL;
+ 			if (PHYS_PFN(phys) < min_low_pfn ||
+-			    PHYS_PFN(phys + object->size) >= max_low_pfn)
++			    PHYS_PFN(phys + object->size) > max_low_pfn)
+ 				__paint_it(object, KMEMLEAK_BLACK);
+ 		}
+ 
 
 
 
