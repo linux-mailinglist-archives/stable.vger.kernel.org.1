@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988F0A346A8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932BAA344C0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722421704CB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C01E7A3EF1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A1C1547F0;
-	Thu, 13 Feb 2025 15:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24DE26B09E;
+	Thu, 13 Feb 2025 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThBKil9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbRhm10R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5D35961;
-	Thu, 13 Feb 2025 15:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517CE26B099;
+	Thu, 13 Feb 2025 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460083; cv=none; b=WoxGK5sO0HR8oMEEMecfmb41rR3b5BhZcHfIp2YvtUgeoN2f2lS0QyKChxUGvxekEGDeCS1/9fK9AhYXR0g/3s9zZO9YvcGYkUHfrUwI6O5aqst6+PSc8dX0SScb1X6Lgwt6MG3ZBhYNB3ycZOCFvTsVAlh6U/RC9/0B39HatKk=
+	t=1739459273; cv=none; b=G0IwMr4cvYVVmkmoENbVG4u1DdyCN9KQSa066vp6AROOlnET2msi8ZXRpPvp05mfcG1WXbDXliollablZ6EEX4avZZw/XbKd/SXZyoKMJ7KvEreBXBfWtPNAAzLzUw6RC2LUZazi6ETu0Q1dfF9W44qjWz8OVsaQ025z3pV6ko8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460083; c=relaxed/simple;
-	bh=+ZP7PxDRDfo9gDhvGDJTOQDmEePGhmbAMVHfa6Ndhtw=;
+	s=arc-20240116; t=1739459273; c=relaxed/simple;
+	bh=A6jDHvhjFz8GQmdZBNQZYrprlXGr9FIhxq8J2MYavvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULUEZEO7HZx89/9zMeglyR3exKp1Y6qnq74V728QZWd9yTMfYoWCwhsTj966w/Dd6i/1cwKWvMJw6b3+hEeGlaHHfNflxq1vRIM8Q0eMZk/EcUO6bLcWcjB4MD8eIThn7pZDmYn6sjuhQy9mm+8142VfDa3e2aGrBqan6gQ1+bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThBKil9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FFDC4CED1;
-	Thu, 13 Feb 2025 15:21:22 +0000 (UTC)
+	 MIME-Version; b=E+e0psltl9vDTkZA6arMC31vk31+K8mnNFs/uWF6onpna86v4DfLRroX2M/+59SdMR8O4Zq1weTG8uBBjp1DNWUw5Xogz7th4OEEJQlWTtjyh119ezu2wIPuMEgdTfAB1++0mL+OS5rbKGtie+k8/FqesZgLMlRryZIJ1O/TEfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbRhm10R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75B8C4CEE5;
+	Thu, 13 Feb 2025 15:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460083;
-	bh=+ZP7PxDRDfo9gDhvGDJTOQDmEePGhmbAMVHfa6Ndhtw=;
+	s=korg; t=1739459273;
+	bh=A6jDHvhjFz8GQmdZBNQZYrprlXGr9FIhxq8J2MYavvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThBKil9nh16GKQBYZoRIWHl8Y199wP660GfFoLdAyUBmB+uSFYr645/eukiVFKE/l
-	 EQKfBs00F9VkqkY70GHyDoaglnlRINEtGJZQfXYAw/w6FWA1rk1cTZUZ5Z38SNkDaB
-	 8pMIon0FPfsebCpaUgWGKF7izLnOHP40KxGTIHCs=
+	b=zbRhm10Rq+gPJDELjnXJSuaBqGw+t69oP/wCMAwRnIhZFNnGQOwvkz08QjCF54582
+	 J79U9MHTCBB//C2jTv0tuCsXNhLM8cBIwZQo5WWdt2L/XLzGGFi1LavwMa31lYNzRZ
+	 lXKqqoOormsQjBU3gECkQSfGHHmVZ/4ClZ4vjUSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/273] x86/amd_nb: Restrict init function to AMD-based systems
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.13 217/443] of: Fix of_find_node_opts_by_path() handling of alias+path+options
 Date: Thu, 13 Feb 2025 15:26:22 +0100
-Message-ID: <20250213142407.770247099@linuxfoundation.org>
+Message-ID: <20250213142448.988998930@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
+commit b9e58c934c56aa35b0fb436d9afd86ef326bae0e upstream.
 
-The code implicitly operates on AMD-based systems by matching on PCI
-IDs. However, the use of these IDs is going away.
+of_find_node_opts_by_path() fails to find OF device node when its
+@path parameter have pattern below:
 
-Add an explicit CPU vendor check instead of relying on PCI IDs.
+"alias-name/node-name-1/.../node-name-N:options".
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason is that alias name length calculated by the API is wrong, as
+explained by example below:
+
+"testcase-alias/phandle-tests/consumer-a:testaliasoption".
+ ^             ^                        ^
+ 0             14                       39
+
+The right length of alias 'testcase-alias' is 14, but the result worked
+out by the API is 39 which is obvious wrong.
+
+Fix by using index of either '/' or ':' as the length who comes earlier.
+
+Fixes: 75c28c09af99 ("of: add optional options parameter to of_find_node_by_path()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241216-of_core_fix-v2-1-e69b8f60da63@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/amd_nb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/of/base.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 6dabb53f58a44..b6d5fc396f88c 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -537,6 +537,10 @@ static __init void fix_erratum_688(void)
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -894,10 +894,10 @@ struct device_node *of_find_node_opts_by
+ 	/* The path could begin with an alias */
+ 	if (*path != '/') {
+ 		int len;
+-		const char *p = separator;
++		const char *p = strchrnul(path, '/');
  
- static __init int init_amd_nbs(void)
- {
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-+	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-+		return 0;
-+
- 	amd_cache_northbridges();
- 	amd_cache_gart();
+-		if (!p)
+-			p = strchrnul(path, '/');
++		if (separator && separator < p)
++			p = separator;
+ 		len = p - path;
  
--- 
-2.39.5
-
+ 		/* of_aliases must not be NULL */
 
 
 
