@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B40A345A3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDE6A342C1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B383A13EB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61CB916CF00
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4993D1FFC41;
-	Thu, 13 Feb 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C6D242909;
+	Thu, 13 Feb 2025 14:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRuC94Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZMt3+ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E7915853B;
-	Thu, 13 Feb 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855A02222B1;
+	Thu, 13 Feb 2025 14:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458999; cv=none; b=rPlORjomKUTKMVFn2erYQ6lK6Ei3ovWB39H9YJ1UYightPUB5x38B1R3ooM6BttTd6zYMJDedaDQdCFY38SI5TtKmep7U8jCIfA21oncUH2z6XA62v/4q1Nij4FGNcnmSqYyLghELWk0G59EfTElYK5UkfqlTSp3L4Rs/SRhXkc=
+	t=1739457482; cv=none; b=OgwK8utuV2BBRjsQrP/hr475hPIEHXeNsDpUGKVDgwPLfvdF7CtWps/O4zlB0MQ+wuZGoPDnMHwqBnzfMPIucQtIXAiOqQUSW44N4XwNcC18SnMoBJhUbXP7NwbkEezhyxs2tNfs7ETpCgpaCVGH8Gg4ywDopGsEcq5BNVpeCKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458999; c=relaxed/simple;
-	bh=QMQPUTaOYHw5ruSkqrjpMpt18M2bFQNh1Bdzirgmwtk=;
+	s=arc-20240116; t=1739457482; c=relaxed/simple;
+	bh=QKVQgHYWSIEDDMJoePgxTBntpDHyEQ58tNvQ+I8Mul0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STtaftyPWpL0PkaPvHpHYVHqSrmS0JgkI3wY3rOJ6vwcDyBeOkdgTruJrzjrgZYA6gZCUF3bEFBIOTUELhgjvhaFDrRUZEV9+SveFPMaVdgPsQ9Z/W8ohHn8WggTeLrc87jinHW6HMyAkSOO2V2n1qebYOC+KMYg9OZWZImBEA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRuC94Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EDEC4CED1;
-	Thu, 13 Feb 2025 15:03:18 +0000 (UTC)
+	 MIME-Version; b=nCjs0Lwgye2JlPf4lXOnfLj/Cwr4nGwTL5SvV5FUq1rKrF8YFeTf/EtnM1E9xCfMYF8tDJu8PyOAG5O3TWsWrLXhmWAPIVj5KdGmaP/nqjg47pO3Hmi1E+pAGRWUsi0tu6l/lodLVX6I/ufJcCvpUYmOq8VRQLB4ba5bL48wr7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZMt3+ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B6FC4CEE4;
+	Thu, 13 Feb 2025 14:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458998;
-	bh=QMQPUTaOYHw5ruSkqrjpMpt18M2bFQNh1Bdzirgmwtk=;
+	s=korg; t=1739457482;
+	bh=QKVQgHYWSIEDDMJoePgxTBntpDHyEQ58tNvQ+I8Mul0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRuC94ZaPM+X7rmPr3GE3YMvEWkmMVbidXHNzVZUMZbXdpMdJWD7eby+ZbUh5y2zq
-	 GRJyBlKWytZLyO0K9DUiuHbH9yOLCivTtDVjtuHLKkv/RQMYFQP+R9N2QXRbz9Yb9C
-	 XYdDzzRO99KG4cTEqY2ObbtiCMn8b4CzonCZKMhs=
+	b=NZMt3+psCVjUEXaAUQUnyLIi7lCzQO3txi2xtruNIeTu9juDBliCitSMmvQJyZXC4
+	 jurXOCf7FEfymQRjE14WudZWHLmyoupOixW2HV6aPm8m8cljyWkLVOHTBmGYLNWzyf
+	 qd712LWWqml8789SqTtAj1mHoaotFv3l0XD19zBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 106/443] nvme: handle connectivity loss in nvme_set_queue_count
+Subject: [PATCH 6.12 122/422] ACPI: property: Fix return value for nval == 0 in acpi_data_prop_read()
 Date: Thu, 13 Feb 2025 15:24:31 +0100
-Message-ID: <20250213142444.699892437@linuxfoundation.org>
+Message-ID: <20250213142441.257883023@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 294b2b7516fd06a8dd82e4a6118f318ec521e706 ]
+[ Upstream commit ab930483eca9f3e816c35824b5868599af0c61d7 ]
 
-When the set feature attempts fails with any NVME status code set in
-nvme_set_queue_count, the function still report success. Though the
-numbers of queues set to 0. This is done to support controllers in
-degraded state (the admin queue is still up and running but no IO
-queues).
+While analysing code for software and OF node for the corner case when
+caller asks to read zero items in the supposed to be an array of values
+I found that ACPI behaves differently to what OF does, i.e.
 
-Though there is an exception. When nvme_set_features reports an host
-path error, nvme_set_queue_count should propagate this error as the
-connectivity is lost, which means also the admin queue is not working
-anymore.
+ 1. It returns -EINVAL when caller asks to read zero items from integer
+    array, while OF returns 0, if no other errors happened.
 
-Fixes: 9a0be7abb62f ("nvme: refactor set_queue_count")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+ 2. It returns -EINVAL when caller asks to read zero items from string
+    array, while OF returns -ENODATA, if no other errors happened.
+
+Amend ACPI implementation to follow what OF does.
+
+Fixes: b31384fa5de3 ("Driver core: Unified device properties interface for platform firmware")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250203194629.3731895-1-andriy.shevchenko@linux.intel.com
+[ rjw: Added empty line after a conditional ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/acpi/property.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 12e7ae1f99e20..46e04b30f6425 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1695,7 +1695,13 @@ int nvme_set_queue_count(struct nvme_ctrl *ctrl, int *count)
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 80a52a4e66dd1..e9186339f6e6b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1187,8 +1187,6 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
+ 		}
+ 		break;
+ 	}
+-	if (nval == 0)
+-		return -EINVAL;
  
- 	status = nvme_set_features(ctrl, NVME_FEAT_NUM_QUEUES, q_count, NULL, 0,
- 			&result);
--	if (status < 0)
+ 	if (obj->type == ACPI_TYPE_BUFFER) {
+ 		if (proptype != DEV_PROP_U8)
+@@ -1212,9 +1210,11 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
+ 		ret = acpi_copy_property_array_uint(items, (u64 *)val, nval);
+ 		break;
+ 	case DEV_PROP_STRING:
+-		ret = acpi_copy_property_array_string(
+-			items, (char **)val,
+-			min_t(u32, nval, obj->package.count));
++		nval = min_t(u32, nval, obj->package.count);
++		if (nval == 0)
++			return -ENODATA;
 +
-+	/*
-+	 * It's either a kernel error or the host observed a connection
-+	 * lost. In either case it's not possible communicate with the
-+	 * controller and thus enter the error code path.
-+	 */
-+	if (status < 0 || status == NVME_SC_HOST_PATH_ERROR)
- 		return status;
- 
- 	/*
++		ret = acpi_copy_property_array_string(items, (char **)val, nval);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
 -- 
 2.39.5
 
