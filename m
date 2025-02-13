@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-116141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E75A34759
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE9DA3461F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8B4718949A0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E44D416BD77
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9201547F0;
-	Thu, 13 Feb 2025 15:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BC526B0B1;
+	Thu, 13 Feb 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYugKXAS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJoZzS8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA47126B0BD;
-	Thu, 13 Feb 2025 15:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD2426B0A5;
+	Thu, 13 Feb 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460467; cv=none; b=Qy1Xc1ZWUN06vulqUgEzK5uFvlj6j0J1bY5fKk/3uC+t9XlHQGUY8wl2i/eo9vobzs8RZxp3mwKCV2Ly9ewsyai1+ntFshzay1SqQi3ItaR1TsGyfOYepZWn9R13+3B4qLtYAPc2iP3xJFhU1PzPgT8hwMwUm9Pc1Lhq0g8zUFw=
+	t=1739459658; cv=none; b=e6hMoL/Yrt1WqYBCb8S9t3wIMihPg0i9iXhRpwnRYTI/+j/arR++PSSofxThu6PqD9vOOiyCZOSKOCvoASI0EKx5cZjgdBd7I/1BLy9OdtkminAbS0vjscnIzBWRNdZchK/Q7/8dDrmZ/Vng3ht8G1x8VVUNKMCf30YSLzOxc7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460467; c=relaxed/simple;
-	bh=zm040RkMbMnejHO/F4p6IBXJ1UMoGaW3pvu/5CJ0rz0=;
+	s=arc-20240116; t=1739459658; c=relaxed/simple;
+	bh=6fhyCImgHLaI32uB2pHYaIomRQpzG4gt8Sy0OM6PExU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YkONsYwaUyFVx1PCUoNjdUjlGu4DPtdXeybH4FEekytyGmYh5CYwvEScKnpFretM4uTzTZoFjXC0OpISnr8Ct9kUIeJ0KA9kv5Figzz2kTglu7hC4V3GfFAZ9fM6xnFzVtkGYGyZ2zCpdyAe4yHUBRIHsd6yLrRVm6NeWh7WcaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYugKXAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F00C4CED1;
-	Thu, 13 Feb 2025 15:27:46 +0000 (UTC)
+	 MIME-Version; b=tie0XxlTBYR8NiVeTQ+ZPlzESIvhOJkE+XXsqEaQDYvGEkI5DJVodl3+FPenASoECiuFIyaEJDH3mDpRE0kg7FaW0vLmKpIVdgDh2GopMolTRsAniBO+5kJ1P7Q5mYOgCjSeWZIh9+DlHcl2U9Xa8Wb1l3LPftoOZ6mFeArz5Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJoZzS8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C245EC4CED1;
+	Thu, 13 Feb 2025 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460467;
-	bh=zm040RkMbMnejHO/F4p6IBXJ1UMoGaW3pvu/5CJ0rz0=;
+	s=korg; t=1739459658;
+	bh=6fhyCImgHLaI32uB2pHYaIomRQpzG4gt8Sy0OM6PExU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYugKXASE6g0aKtnyOpIWhM9je2htqkJlfCO0PwSRPd/sJgtbXCL1LRVpSEEl4W5I
-	 bHkb5eAUVcJ5E20e363JH68CTQ0si5/UiTjR3Er+4JUB1ryBCXpFknSIPeNZY0uXX1
-	 8r5DH21LFOfhc4m6C56vPLct1c1MNrnBS1zrCZCY=
+	b=yJoZzS8+nFtrQYYxLj3IGu81i9HaSbfXKOvXEV8a7EpYznTbM69YFFv3yu40dwT37
+	 pEYjKjsWxFhokAuL/gP3Tj0QSYEr5yHSZcKosmqyWcGlgJbMvosnoObOviFcj7tCD2
+	 qEgWW0woG4MDazXn1ppdKEBQevMrYQvYZFxlsL24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 6.6 119/273] blk-cgroup: Fix class @block_classs subsystem refcount leakage
+	Sumit Gupta <sumitg@nvidia.com>,
+	Ivy Huang <yijuh@nvidia.com>,
+	Brad Griffis <bgriffis@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.13 326/443] arm64: tegra: Disable Tegra234 sce-fabric node
 Date: Thu, 13 Feb 2025 15:28:11 +0100
-Message-ID: <20250213142412.046934943@linuxfoundation.org>
+Message-ID: <20250213142453.198534073@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-commit d1248436cbef1f924c04255367ff4845ccd9025e upstream.
+commit a5e6fc0a10fe280989f1367a3b4f8047c7d00ea6 upstream.
 
-blkcg_fill_root_iostats() iterates over @block_class's devices by
-class_dev_iter_(init|next)(), but does not end iterating with
-class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
+Access to safety cluster engine (SCE) fabric registers was blocked
+by firewall after the introduction of Functional Safety Island in
+Tegra234. After that, any access by software to SCE registers is
+correctly resulting in the internal bus error. However, when CPUs
+try accessing the SCE-fabric registers to print error info,
+another firewall error occurs as the fabric registers are also
+firewall protected. This results in a second error to be printed.
+Disable the SCE fabric node to avoid printing the misleading error.
+The first error info will be printed by the interrupt from the
+fabric causing the actual access.
 
-Fix by ending the iterating with class_dev_iter_exit().
-
-Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250105-class_fix-v6-2-3a2f1768d4d4@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 302e154000ec ("arm64: tegra: Add node for CBB 2.0 on Tegra234")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Ivy Huang <yijuh@nvidia.com>
+Reviewed-by: Brad Griffis <bgriffis@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20241218000737.1789569-3-yijuh@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1139,6 +1139,7 @@ static void blkcg_fill_root_iostats(void
- 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
- 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
- 	}
-+	class_dev_iter_exit(&iter);
- }
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -3815,7 +3815,7 @@
+ 			compatible = "nvidia,tegra234-sce-fabric";
+ 			reg = <0x0 0xb600000 0x0 0x40000>;
+ 			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
+-			status = "okay";
++			status = "disabled";
+ 		};
  
- static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
+ 		rce-fabric@be00000 {
 
 
 
