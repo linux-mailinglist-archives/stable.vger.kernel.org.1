@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-116215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D71CA347BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F3EA34653
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AFE8188E89F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4278B16CA73
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1655152532;
-	Thu, 13 Feb 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6126B0BF;
+	Thu, 13 Feb 2025 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzxcsLM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bisHq5z3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD17913C816;
-	Thu, 13 Feb 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842626B0B8;
+	Thu, 13 Feb 2025 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460717; cv=none; b=QP43kQwiVcsJu3CcwLTVUV/pxhsYMiYk8xT1cbA7sJyWWZv+NJslpfjKBq6ks/+yt8+0VmnqeH+Oh6T4GpoilSmNvHntOyvX0vKQgsQhpyRrG6wibGrAoc5oBBEPzYyRyMghLm9yui3gmnYXalAE56v05+tV5N02nte6LiolvCo=
+	t=1739459907; cv=none; b=ndL9/v70iYIIOVBaWPHgMsZPIlEw+VzNeG+HaYfotfxi8GmcYXZp7CaRpxkIsoo+D66I5aTGCmymgPhTHNqDdf7YujzUCR97PRk/1Zl0uMFWwG8C4T9FYm9jbs0U5cnBHnC0Kua4/Z4JRtDlEoRz6bM6qhPIQo240WcOzOjs3rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460717; c=relaxed/simple;
-	bh=k1UOOXVni+Uw2uP8nJN+jW3nrd2vDYA7Xz8yxRAXxnI=;
+	s=arc-20240116; t=1739459907; c=relaxed/simple;
+	bh=+JQS2rlTNaqP1TS7nJtVUFdJ1swx6BGtWd6VcS+nfAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jjH0w19op48wmxC18EcGylDybrrQNFljQAq0VB1vx7V/ylcT+wseXCb9JT7hsmC2uRd6imftFgcZlFAkdkU7aYKkpUyxBS3ftOOCaZMLzR9+ymvYM/7RaSinIlBHjnpTXc4Eq1HRFlnGIaRTLUhln2LGLFuyKDCheKbjLePH2wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzxcsLM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96FC4CED1;
-	Thu, 13 Feb 2025 15:31:56 +0000 (UTC)
+	 MIME-Version; b=Kjx2vNb67jRiPlo6O1EokxR+jbO9d4IC3D7K3Y/GYBVne16Xf+R7Tv7AvkDkaQ8Pq9rHvflj83knLSrHGRI+kZ1OiBcXppGgmfJpcz1laz1aOv3Pf07mjDIKTw/s2DsvF4ldpjGOVJAP3ogERijrWQ1n2lfeoPgfhRYiEBkOS5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bisHq5z3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE73C4CED1;
+	Thu, 13 Feb 2025 15:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460717;
-	bh=k1UOOXVni+Uw2uP8nJN+jW3nrd2vDYA7Xz8yxRAXxnI=;
+	s=korg; t=1739459907;
+	bh=+JQS2rlTNaqP1TS7nJtVUFdJ1swx6BGtWd6VcS+nfAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzxcsLM9H/D18K2rg7ulttHT5qugMErke23FHVdA2Q/MLM6QGcQZh8dEpFHDrVhdx
-	 7Ju/tPUlSkr/gw272fva20xljuczYZULvPVeC8X0VA4y+oX3J9GlV/pVBkbMwkR0d4
-	 Bv3Ij1G40nJZgjHO6BMzi7L5fbjYUCapdm7QDIOQ=
+	b=bisHq5z3SEKrlMfJqbGv1PsE8rMDS53buXQCm6lCWzXuxV7/MedR9OUq5xRHMvQvw
+	 MSleWUgQE333zjnBcQNXFRfJnf8M/3I3CQSanMt3GFnX+C65bI1/6yPFpsMznO1X+d
+	 71uL/qC9BRxzYjEZqjyGdHBEzFA9/0TACdt7t9hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.6 192/273] pwm: microchip-core: fix incorrect comparison with max period
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 399/443] ocfs2: fix incorrect CPU endianness conversion causing mount failure
 Date: Thu, 13 Feb 2025 15:29:24 +0100
-Message-ID: <20250213142414.912446551@linuxfoundation.org>
+Message-ID: <20250213142456.005721093@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +65,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-commit 752b6e3af374460a2de18f0c10bfa06bf844dbe8 upstream.
+commit f921da2c34692dfec5f72b5ae347b1bea22bb369 upstream.
 
-In mchp_core_pwm_apply_locked(), if hw_period_steps is equal to its max,
-an error is reported and .apply fails. The max value is actually a
-permitted value however, and so this check can fail where multiple
-channels are enabled.
+Commit 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
+introduced a regression bug.  The blksz_bits value is already converted to
+CPU endian in the previous code; therefore, the code shouldn't use
+le32_to_cpu() anymore.
 
-For example, the first channel to be configured requests a period that
-sets hw_period_steps to the maximum value, and when a second channel
-is enabled the driver reads hw_period_steps back from the hardware and
-finds it to be the maximum possible value, triggering the warning on a
-permitted value. The value to be avoided is 255 (PERIOD_STEPS_MAX + 1),
-as that will produce undesired behaviour, so test for greater than,
-rather than equal to.
-
-Fixes: 2bf7ecf7b4ff ("pwm: add microchip soft ip corePWM driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250122-pastor-fancied-0b993da2d2d2@spud
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Link: https://lkml.kernel.org/r/20250121112204.12834-1-heming.zhao@suse.com
+Fixes: 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-microchip-core.c |    2 +-
+ fs/ocfs2/super.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-microchip-core.c
-+++ b/drivers/pwm/pwm-microchip-core.c
-@@ -328,7 +328,7 @@ static int mchp_core_pwm_apply_locked(st
- 		 * mchp_core_pwm_calc_period().
- 		 * The period is locked and we cannot change this, so we abort.
- 		 */
--		if (hw_period_steps == MCHPCOREPWM_PERIOD_STEPS_MAX)
-+		if (hw_period_steps > MCHPCOREPWM_PERIOD_STEPS_MAX)
- 			return -EINVAL;
- 
- 		prescale = hw_prescale;
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -2340,7 +2340,7 @@ static int ocfs2_verify_volume(struct oc
+ 			mlog(ML_ERROR, "found superblock with incorrect block "
+ 			     "size bits: found %u, should be 9, 10, 11, or 12\n",
+ 			     blksz_bits);
+-		} else if ((1 << le32_to_cpu(blksz_bits)) != blksz) {
++		} else if ((1 << blksz_bits) != blksz) {
+ 			mlog(ML_ERROR, "found superblock with incorrect block "
+ 			     "size: found %u, should be %u\n", 1 << blksz_bits, blksz);
+ 		} else if (le16_to_cpu(di->id2.i_super.s_major_rev_level) !=
 
 
 
