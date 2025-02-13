@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F76A344DE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA42A3421F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E373D3B13DB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF571694A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E1D24166D;
-	Thu, 13 Feb 2025 14:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C062222A6;
+	Thu, 13 Feb 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmlOxA/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxypGMv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4481227EA7;
-	Thu, 13 Feb 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA4F22154E;
+	Thu, 13 Feb 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458555; cv=none; b=f/kg+c8C+bOyTB9JshImM+O5kVz9if8PS6kEveL0pAvLXmcHzXGwtzQ+fSVosgS9PaPGrkTtoBsWjb/StsRwTTqZ/N5nCSkJYiTnmurb8yA0GDqLm+ENaVcDAdbh6sdhvRbdql6pfp7X5XWqArGUJlYJaWn8ieFK1ziBBzk+prU=
+	t=1739457141; cv=none; b=Za7F5r2/OK6DoyaqEC98WqoIMl2mfTl7g15VGoD6dbETtqO1671sdvwinbJLDnsoORLExpSVXLX/wAJdfWCaVwe90ZJ4CkF8FjpUooNzlbKzlgrBmMkNXjxESmmpQRnFuwV4bLBz+V4tVhxasDmrB9EKpJRT7nd2q4qzTJDQPNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458555; c=relaxed/simple;
-	bh=cvaUbfCIQsddvLRdiXNwd2Q/G0o4L4U35HctwY/O2uM=;
+	s=arc-20240116; t=1739457141; c=relaxed/simple;
+	bh=bUw0u6OWwZXXsWo9vXd1uGktb/6BkCgtmkbgpw4Jwew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNnFqoNmX/1FFQ6SoQ5tDyuVPdj5BKomCAFaaOy4jZ6/nVOAPqggs0zsRhvft31NQbaUXgR5SOim/PLawR1HxCODeVRj1BmD1xcwuj5+m8+pbs8ASsaTA2qT47bLFtUf66OT1j8+VtGbSRNq+dJvr58RI6OscXFc8OIFKZy52Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmlOxA/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D927C4CED1;
-	Thu, 13 Feb 2025 14:55:54 +0000 (UTC)
+	 MIME-Version; b=tTiRaEq5PNmfspMwoTN2CG+QJn5eJ2QiL3kHXlsKt4E14J0DcFaencQbTvr5xfkpdz+d4eoyV5Jq+Kq2hzvrVTYlGyZcYudb/1aK+6ZcMXfV1whBWK84wIzi/GuRwgl9JShVyO5nMAs8YN8MgFVfkkmh6zKa4qeXxW+vHxWO63A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxypGMv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A5C4CED1;
+	Thu, 13 Feb 2025 14:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458555;
-	bh=cvaUbfCIQsddvLRdiXNwd2Q/G0o4L4U35HctwY/O2uM=;
+	s=korg; t=1739457141;
+	bh=bUw0u6OWwZXXsWo9vXd1uGktb/6BkCgtmkbgpw4Jwew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmlOxA/ReTWLSECE7b2oblJrsK/GSHoKnxrrv7mHnvx6XYobyNY918OYY3/8VXaxk
-	 mHlazHmy0926HUQR9BZcd/S0rkOVO/cEzY5t4Qbgo3MKfEpCDzCDnYUrBpr0R3zMuX
-	 csGSuHcT4kbVo/4BOXPN6wo9VoOZEc3evkF0Orr4=
+	b=JxypGMv2vdXJOMaZOw8jiNIf7EBBTeliSEUmGdcfXvmcckRd+bsDPchO11FiF0ggE
+	 E4SLmNDDjmTwOyHTX/xSlKqa/XlyfwTTLCzZMMpewzVmuWkvMo3YRVLCHIBqJcAitq
+	 kRWHM/SC44FlH0E3DKAnSzgrsAQw0UWsQfzB9NFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suleiman Souhlal <suleiman@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 012/443] sched: Dont try to catch up excess steal time.
+Subject: [PATCH 6.12 028/422] drm/connector: add mutex to protect ELD from concurrent access
 Date: Thu, 13 Feb 2025 15:22:57 +0100
-Message-ID: <20250213142441.096235301@linuxfoundation.org>
+Message-ID: <20250213142437.639719638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suleiman Souhlal <suleiman@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
+[ Upstream commit df7c8e3dde37a9d81c0613285b43600f3cc70f34 ]
 
-When steal time exceeds the measured delta when updating clock_task, we
-currently try to catch up the excess in future updates.
-However, this results in inaccurate run times for the future things using
-clock_task, in some situations, as they end up getting additional steal
-time that did not actually happen.
-This is because there is a window between reading the elapsed time in
-update_rq_clock() and sampling the steal time in update_rq_clock_task().
-If the VCPU gets preempted between those two points, any additional
-steal time is accounted to the outgoing task even though the calculated
-delta did not actually contain any of that "stolen" time.
-When this race happens, we can end up with steal time that exceeds the
-calculated delta, and the previous code would try to catch up that excess
-steal time in future clock updates, which is given to the next,
-incoming task, even though it did not actually have any time stolen.
+The connector->eld is accessed by the .get_eld() callback. This access
+can collide with the drm_edid_to_eld() updating the data at the same
+time. Add drm_connector.eld_mutex to protect the data from concurrenct
+access. Individual drivers are not updated (to reduce possible issues
+while applying the patch), maintainers are to find a best suitable way
+to lock that mutex while accessing the ELD data.
 
-This behavior is particularly bad when steal time can be very long,
-which we've seen when trying to extend steal time to contain the duration
-that the host was suspended [0]. When this happens, clock_task stays
-frozen, during which the running task stays running for the whole
-duration, since its run time doesn't increase.
-However the race can happen even under normal operation.
-
-Ideally we would read the elapsed cpu time and the steal time atomically,
-to prevent this race from happening in the first place, but doing so
-is non-trivial.
-
-Since the time between those two points isn't otherwise accounted anywhere,
-neither to the outgoing task nor the incoming task (because the "end of
-outgoing task" and "start of incoming task" timestamps are the same),
-I would argue that the right thing to do is to simply drop any excess steal
-time, in order to prevent these issues.
-
-[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
-
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-1-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_connector.c | 1 +
+ drivers/gpu/drm/drm_edid.c      | 6 ++++++
+ include/drm/drm_connector.h     | 5 ++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index e0fd8069c60e6..ffceb5ff4c5c3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -766,13 +766,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
- #endif
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
- 	if (static_key_false((&paravirt_steal_rq_enabled))) {
--		steal = paravirt_steal_clock(cpu_of(rq));
-+		u64 prev_steal;
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index ca7f43c8d6f1b..0e6021235a930 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -277,6 +277,7 @@ static int __drm_connector_init(struct drm_device *dev,
+ 	INIT_LIST_HEAD(&connector->probed_modes);
+ 	INIT_LIST_HEAD(&connector->modes);
+ 	mutex_init(&connector->mutex);
++	mutex_init(&connector->eld_mutex);
+ 	mutex_init(&connector->edid_override_mutex);
+ 	mutex_init(&connector->hdmi.infoframes.lock);
+ 	connector->edid_blob_ptr = NULL;
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index 855beafb76ffb..13bc4c290b17d 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -5605,7 +5605,9 @@ EXPORT_SYMBOL(drm_edid_get_monitor_name);
+ 
+ static void clear_eld(struct drm_connector *connector)
+ {
++	mutex_lock(&connector->eld_mutex);
+ 	memset(connector->eld, 0, sizeof(connector->eld));
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	connector->latency_present[0] = false;
+ 	connector->latency_present[1] = false;
+@@ -5657,6 +5659,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
+ 	if (!drm_edid)
+ 		return;
+ 
++	mutex_lock(&connector->eld_mutex);
 +
-+		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
- 		steal -= rq->prev_steal_time_rq;
+ 	mnl = get_monitor_name(drm_edid, &eld[DRM_ELD_MONITOR_NAME_STRING]);
+ 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD monitor %s\n",
+ 		    connector->base.id, connector->name,
+@@ -5717,6 +5721,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
+ 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD size %d, SAD count %d\n",
+ 		    connector->base.id, connector->name,
+ 		    drm_eld_size(eld), total_sad_count);
++
++	mutex_unlock(&connector->eld_mutex);
+ }
  
- 		if (unlikely(steal > delta))
- 			steal = delta;
+ static int _drm_edid_to_sad(const struct drm_edid *drm_edid,
+diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
+index e3fa43291f449..1e2b25e204cb5 100644
+--- a/include/drm/drm_connector.h
++++ b/include/drm/drm_connector.h
+@@ -2001,8 +2001,11 @@ struct drm_connector {
+ 	struct drm_encoder *encoder;
  
--		rq->prev_steal_time_rq += steal;
-+		rq->prev_steal_time_rq = prev_steal;
- 		delta -= steal;
- 	}
- #endif
+ #define MAX_ELD_BYTES	128
+-	/** @eld: EDID-like data, if present */
++	/** @eld: EDID-like data, if present, protected by @eld_mutex */
+ 	uint8_t eld[MAX_ELD_BYTES];
++	/** @eld_mutex: protection for concurrenct access to @eld */
++	struct mutex eld_mutex;
++
+ 	/** @latency_present: AV delay info from ELD, if found */
+ 	bool latency_present[2];
+ 	/**
 -- 
 2.39.5
 
