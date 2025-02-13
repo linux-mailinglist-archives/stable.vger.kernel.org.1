@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-115904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F95A34675
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE35A34452
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9C03B01DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC3918819B0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7482726B0B1;
-	Thu, 13 Feb 2025 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65C8202F72;
+	Thu, 13 Feb 2025 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMbBfkhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBt/tEZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C2326B09E;
-	Thu, 13 Feb 2025 15:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DEC2661BB;
+	Thu, 13 Feb 2025 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459662; cv=none; b=etuZG7FLabHcy4XbFg/2cfvuQTPUE55/xcxlOYA1HTARvRz3Ovj9EXRCaQ90/AunTEAx0pCVRdA5HIIWn2Vwkrm75x5JfcW61x6gyz/LmT+ywmwvdGn8GR8zSFxV3wXUN7SMt2NIa+BzIEoTRKYeKDC6v2Hce4UejRBs6wFPUQI=
+	t=1739458243; cv=none; b=V61pPT6Rae6BBhjMKRWEa5czv3JV1Xa4tvzmqBys00KMhHIAAkDaBTbrwj2GVDSwI6elW8ztCnwjeJ+TFzIaKE/WAuIEEv+iMs6du4ahBnV/jZtsJzR+FKeHystLj9+0g+o03bkJxOQCXqmu5wvXEIpOVlso1NwI9LkT5yb97GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459662; c=relaxed/simple;
-	bh=A1vCJsOIJd3EJS2aoLX3LMYAz0vv03RPUB/7QgsimOA=;
+	s=arc-20240116; t=1739458243; c=relaxed/simple;
+	bh=+HOwHktwKwhTvArsRax6TFD86aXAETHWT1p1Ap5D8dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Usfqz77ac2lUFd5ekeVVTDhAmqAnfRUcznTn5KFa3B5xdrejBdsCUX482l2IkVglHPkcR6Fw6prN4J8nlra3x7VxdPMvnsQA7acrvuT4/FZ7omF0f5RSTVRjxwe6oE3tKtv+icYGxUPu7ksCPgz4rMs8sceKekIHB4Vid9rsO8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMbBfkhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40553C4CED1;
-	Thu, 13 Feb 2025 15:14:21 +0000 (UTC)
+	 MIME-Version; b=csJSnQRAsCkJ/vevV331SuIVtDx8DA8FkUsYWEeXFs2v+jEzPkc3cMuPVGzodLMe3HbctAd4zvzZh35qHZA/ruqhgWPchtXhaP77o8XL71YUrEGDJ5QJ80eBohJ+OUfUHA6vdYycdHDajHGaS+mGvXQW9OhfcWgicMbQ1PJK31M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBt/tEZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A989C4CED1;
+	Thu, 13 Feb 2025 14:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459661;
-	bh=A1vCJsOIJd3EJS2aoLX3LMYAz0vv03RPUB/7QgsimOA=;
+	s=korg; t=1739458243;
+	bh=+HOwHktwKwhTvArsRax6TFD86aXAETHWT1p1Ap5D8dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMbBfkhvlbOkxKzFcaSxZ3BaaChoyz76K0fDV1v62LN/3brJA2PuectdLIopgq+mY
-	 hwbcW7ze/tawxx0pgervWBhZIpPsAdt4OLyvJVQNPPDWOq0iLIocQowJ8KiG2lPChY
-	 2hqZQEhMUvKn5dbwumGc5PKY81Ff+tfplQKHSux8=
+	b=nBt/tEZi7byAp/inYzDX1US7GgVvdEmdRjPqB34nTZBZBzmj14PilncNU0coyhjRC
+	 /XlLV896QCMQRVDFn9tcUqRgUxOcU2JcCbR/aHUSkf5bCHQj8D8qgXl49EJ/5aoAb5
+	 TxoH9PapqYKsQ5fjjBfltEaP+5NTbRzcR9VdmY+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.13 327/443] parisc: Temporarily disable jump label support
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Pavithra Prakash <pavrampu@linux.ibm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	David Rientjes <rientjes@google.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Gang Li <gang.li@linux.dev>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 343/422] mm/hugetlb: fix hugepage allocation for interleaved memory nodes
 Date: Thu, 13 Feb 2025 15:28:12 +0100
-Message-ID: <20250213142453.236237516@linuxfoundation.org>
+Message-ID: <20250213142449.790731599@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +69,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit 3599bae489d86fbabe039f9a2ab5472ffb04f7f1 upstream.
+commit 76e961157e078bc5d3cd2df08317e00b00a829eb upstream.
 
-The 32-bit Debian kernel 6.12 fails to boot and crashes like this:
+gather_bootmem_prealloc() assumes the start nid as 0 and size as
+num_node_state(N_MEMORY).  That means in case if memory attached numa
+nodes are interleaved, then gather_bootmem_prealloc_parallel() will fail
+to scan few of these nodes.
 
- init (pid 65): Protection id trap (code 7)
- CPU: 0 UID: 0 PID: 65 Comm: init Not tainted 6.12.9 #2
- Hardware name: 9000/778/B160L
+Since memory attached numa nodes can be interleaved in any fashion, hence
+ensure that the current code checks for all numa node ids
+(.size = nr_node_ids). Let's still keep max_threads as N_MEMORY, so that
+it can distributes all nr_node_ids among the these many no. threads.
 
-      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
- PSW: 00000000000001000000000000001111 Not tainted
- r00-03  0004000f 110d39d0 109a6558 12974400
- r04-07  12a810e0 12a810e0 00000000 12a81144
- r08-11  12a81174 00000007 00000000 00000002
- r12-15  f8c55c08 0000006c 00000001 f8c55c08
- r16-19  00000002 f8c58620 002da3a8 0000004e
- r20-23  00001a46 0000000f 10754f84 00000000
- r24-27  00000000 00000003 12ae6980 1127b9d0
- r28-31  00000000 00000000 12974440 109a6558
- sr00-03  00000000 00000000 00000000 00000010
- sr04-07  00000000 00000000 00000000 00000000
+e.g. qemu cmdline
+========================
+numa_cmd="-numa node,nodeid=1,memdev=mem1,cpus=2-3 -numa node,nodeid=0,cpus=0-1 -numa dist,src=0,dst=1,val=20"
+mem_cmd="-object memory-backend-ram,id=mem1,size=16G"
 
- IASQ: 00000000 00000000 IAOQ: 110d39d0 110d39d4
-  IIR: baadf00d    ISR: 00000000  IOR: 110d39d0
-  CPU:        0   CR30: 128740c0 CR31: 00000000
-  ORIG_R28: 000003f3
-  IAOQ[0]: 0x110d39d0
-  IAOQ[1]: 0x110d39d4
-  RP(r2): security_sk_free+0x70/0x1a4
- Backtrace:
-  [<10d8c844>] __sk_destruct+0x2bc/0x378
-  [<10d8e33c>] sk_destruct+0x68/0x8c
-  [<10d8e3dc>] __sk_free+0x7c/0x148
-  [<10d8e560>] sk_free+0xb8/0xf0
-  [<10f6420c>] unix_release_sock+0x3ac/0x50c
-  [<10f643b8>] unix_release+0x4c/0x7c
-  [<10d832f8>] __sock_release+0x5c/0xf8
-  [<10d833b4>] sock_close+0x20/0x44
-  [<107ba52c>] __fput+0xf8/0x468
-  [<107baa08>] __fput_sync+0xb4/0xd4
-  [<107b471c>] sys_close+0x44/0x94
-  [<10405334>] syscall_exit+0x0/0x10
+w/o this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
+==========================
+~ # cat /proc/meminfo  |grep -i huge
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+FileHugePages:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:    1048576 kB
+Hugetlb:               0 kB
 
-Bisecting points to this commit which triggers the issue:
-	commit  417c5643cd67a55f424b203b492082035d0236c3
-	Author: KP Singh <kpsingh@kernel.org>
-	Date:   Fri Aug 16 17:43:07 2024 +0200
-	        lsm: replace indirect LSM hook calls with static calls
+with this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
+===========================
+~ # cat /proc/meminfo |grep -i huge
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+FileHugePages:         0 kB
+HugePages_Total:       2
+HugePages_Free:        2
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:    1048576 kB
+Hugetlb:         2097152 kB
 
-After more analysis it seems that we don't fully implement the static calls
-and jump tables yet. Additionally the functions which mark kernel memory
-read-only or read-write-executable needs to be further enhanced to be able to
-fully support static calls.
-
-Enabling CONFIG_SECURITY_YAMA=y was one possibility to trigger the issue,
-although YAMA isn't the reason for the fault.
-
-As a temporary solution disable JUMP_LABEL functionality to
-avoid the crashes.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Cc: <stable@vger.kernel.org> # v6.12+
+Link: https://lkml.kernel.org/r/f8d8dad3a5471d284f54185f65d575a6aaab692b.1736592534.git.ritesh.list@gmail.com
+Fixes: b78b27d02930 ("hugetlb: parallelize 1G hugetlb initialization")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reported-by: Pavithra Prakash <pavrampu@linux.ibm.com>
+Suggested-by: Muchun Song <muchun.song@linux.dev>
+Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Gang Li <gang.li@linux.dev>
+Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -60,8 +60,8 @@ config PARISC
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HASH
--	select HAVE_ARCH_JUMP_LABEL
--	select HAVE_ARCH_JUMP_LABEL_RELATIVE
-+	# select HAVE_ARCH_JUMP_LABEL
-+	# select HAVE_ARCH_JUMP_LABEL_RELATIVE
- 	select HAVE_ARCH_KFENCE
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3271,7 +3271,7 @@ static void __init gather_bootmem_preall
+ 		.thread_fn	= gather_bootmem_prealloc_parallel,
+ 		.fn_arg		= NULL,
+ 		.start		= 0,
+-		.size		= num_node_state(N_MEMORY),
++		.size		= nr_node_ids,
+ 		.align		= 1,
+ 		.min_chunk	= 1,
+ 		.max_threads	= num_node_state(N_MEMORY),
 
 
 
