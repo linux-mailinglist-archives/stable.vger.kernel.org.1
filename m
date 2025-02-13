@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-116114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12492A34696
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A97A345D7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 800517A3281
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D6A1887F51
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AE219CD07;
-	Thu, 13 Feb 2025 15:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8596026B0AD;
+	Thu, 13 Feb 2025 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+8aK0F6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSA65roE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7CA176AA1;
-	Thu, 13 Feb 2025 15:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D6B26B097;
+	Thu, 13 Feb 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460372; cv=none; b=T4Dx61b9vWe4e1c7HigNPWIjmBdJz4HTn9j3Qs+t97o71B6DrTaAxcjI0ypAs3wCrZ4Xt2eFm7gVrNDUsIjNR4GZPEMq8mv/avr57fxgdgGZWn5bxBSKavON7uG/PkhRJu74jbtEzeqv4DYZ7MAm4c2PTEDNsAsEyDGqbHrKZKA=
+	t=1739459559; cv=none; b=hx4bVW0pHGOGxaKShZmvhv/4B9Neq2KJouxDDgry2QmHUndvXbbRTZEF/6ChCK5h/unR41UsxQqu4nOJUv2jjZcn8q9VybTKgz3PPnW6L3oimbQHq1jlsyDkw4kGlApEUnogpC+IZr8ElK2TD0+QfwW4sptRIcXiELTp5iFREXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460372; c=relaxed/simple;
-	bh=uSCLKXuUFkv8xNfCz6j+uSy/iCvKrKUs3L7ibwEF+fI=;
+	s=arc-20240116; t=1739459559; c=relaxed/simple;
+	bh=o+uqwRWg+HmAvCaJwoFYPe00myuehWHbflAtNN3nGdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q0W5MMaO9dy41iRYe4EkfuYe+quOnGNjfhUv+AGeZDEMn3/EXIvb20n+qmywvrFK3XG8AEsCbhJb1n2bten/PC1hVl/ZMcfiUIEFyyC8ILqLBwduKfwY8Kz08Gl6y4DAjTk21bFV8vMnwYrNFWyoo+D1pnyeqk3ybeaitESbrC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+8aK0F6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDB7C4CEE4;
-	Thu, 13 Feb 2025 15:26:11 +0000 (UTC)
+	 MIME-Version; b=RE8FzMmIxD3T1RsVKbP7WfrTiosRuV14LfV0AHzx6JJXAU9tEP6j6VYX17yzqGd06wYKkmWmdE9yPRTzeBt8KxBFgwJbvqTsdA3F+e8u5ayB5W2wFZCmmq3GG7N46SNwxsnjvQ/oJxwJVm+X11/o2tw8TahCiXWYkTB1iT8aSmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSA65roE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D77C4CED1;
+	Thu, 13 Feb 2025 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460372;
-	bh=uSCLKXuUFkv8xNfCz6j+uSy/iCvKrKUs3L7ibwEF+fI=;
+	s=korg; t=1739459558;
+	bh=o+uqwRWg+HmAvCaJwoFYPe00myuehWHbflAtNN3nGdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+8aK0F6DeUXphO+tciKBjQMtXvWPyiYnPZ2a+qpsV/LPQ3qFGLBC0ui6S0Mn9PaS
-	 eGHhcRQXDzbu0aRY4AMaVZJ2SPI+HvBk8ocVI8m6G9bLjrs/oXkgKYOdCEA9CPSco9
-	 PfrM0KEhknlo/DNC0kVbhONz7YyfJOctACqILkTE=
+	b=BSA65roEyrHnqjbCnyCpBtZCbixLM81BJ16SehudLhqdZ3POZRjAymkpZ3qqDgiBO
+	 QOID9zs+iZC529dc2lVA3CT5mCKhlFm0EWgvZSGSywTFrdHQrh5YNlX7vkhmS+trX0
+	 TpFW92FtPHCgxmeFB8LhEV/XtNMWxJjAD1SmDRws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Chris Zhong <zyw@rock-chips.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	Sandy Huang <hjc@rock-chips.com>,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH 6.6 092/273] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
-Date: Thu, 13 Feb 2025 15:27:44 +0100
-Message-ID: <20250213142410.977858295@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 300/443] arm64: dts: qcom: x1e80100: Fix CDSP memory length
+Date: Thu, 13 Feb 2025 15:27:45 +0100
+Message-ID: <20250213142452.190633845@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 666e1960464140cc4bc9203c203097e70b54c95a upstream.
+commit 3de1bf12c6bfb9a92f0803941ecae39b08470446 upstream.
 
-The code for detecting and updating the connector status in
-cdn_dp_pd_event_work() has a number of problems.
+The address space in CDSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
+copied from older DTS, but it does not look accurate at all.
 
-- It does not aquire the locks to call the detect helper and update
-the connector status. These are struct drm_mode_config.connection_mutex
-and struct drm_mode_config.mutex.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-- It does not use drm_helper_probe_detect(), which helps with the
-details of locking and detection.
-
-- It uses the connector's status field to determine a change to
-the connector status. The epoch_counter field is the correct one. The
-field signals a change even if the connector status' value did not
-change.
-
-Replace the code with a call to drm_connector_helper_hpd_irq_event(),
-which fixes all these problems.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
-Cc: Chris Zhong <zyw@rock-chips.com>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Sandy Huang <hjc@rock-chips.com>
-Cc: "Heiko Stübner" <heiko@sntech.de>
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v4.11+
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
+Fixes: 5f2a9cd4b104 ("arm64: dts: qcom: x1e80100: Add ADSP/CDSP remoteproc nodes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-14-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -946,9 +946,6 @@ static void cdn_dp_pd_event_work(struct
- {
- 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
- 						event_work);
--	struct drm_connector *connector = &dp->connector;
--	enum drm_connector_status old_status;
--
- 	int ret;
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -6250,7 +6250,7 @@
  
- 	mutex_lock(&dp->lock);
-@@ -1010,11 +1007,7 @@ static void cdn_dp_pd_event_work(struct
+ 		remoteproc_cdsp: remoteproc@32300000 {
+ 			compatible = "qcom,x1e80100-cdsp-pas";
+-			reg = <0 0x32300000 0 0x1400000>;
++			reg = <0x0 0x32300000 0x0 0x10000>;
  
- out:
- 	mutex_unlock(&dp->lock);
--
--	old_status = connector->status;
--	connector->status = connector->funcs->detect(connector, false);
--	if (old_status != connector->status)
--		drm_kms_helper_hotplug_event(dp->drm_dev);
-+	drm_connector_helper_hpd_irq_event(&dp->connector);
- }
- 
- static int cdn_dp_pd_event(struct notifier_block *nb,
+ 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
