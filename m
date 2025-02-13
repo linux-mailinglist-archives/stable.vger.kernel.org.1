@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-116222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83082A347C0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF0DA344A2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616C9188E792
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9B0B188A396
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8574F14F121;
-	Thu, 13 Feb 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7FF1FF605;
+	Thu, 13 Feb 2025 14:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzmrDWik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpWyrPXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432A326B087;
-	Thu, 13 Feb 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDB116D4E6;
+	Thu, 13 Feb 2025 14:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460742; cv=none; b=iPuk+TCjxA7njrN1BxfNuEIqAwJBhYXSFHdtCQ6fBaYVMa1As3GBm+m+A/8DCbooZjyLTXOUEOJlgVPzPuo9M4zqT50IMNtYcJn8ipO7NLyXgyTIuoMtIfzbllc+LjwF1hpp/rXQ1VOpUL7DRPkSFQBGT9g8epgWMM4RVmr2878=
+	t=1739458512; cv=none; b=utC0Vcr8Owk81sajwcrKKf9HdHPzy0IbO3w4w7eYjD6E1IgW/BkZMDhMSDX2R7u692PT1y7dU5s+9gLOTDzEyXoF7xlE8942VsKVa/TjWBjscqLbWYMwdbG8wQbIyrkbECXzMwmXW2eTuRmceo1d0MraijDPx9i6oKvV/JnQu7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460742; c=relaxed/simple;
-	bh=N5fEfiTDJZg4vsHH7l0Omb76T1b5D+3ZlsOpGbp/i/A=;
+	s=arc-20240116; t=1739458512; c=relaxed/simple;
+	bh=NTnmCWSCdE7g/kT92VqmPlrUePiQYVlY8zaSJcEW5MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJF/QibvQfaeXeiLfcXuYLCtbvDNqsKRAO6RVPQAh/TZTGi/EmqCuCj8umW4leigwydRuV+MOkIa0jR4OPajx+M7jiHLGpAof06vvA/B2dxrMomTr+f9jtigzzjgKmMsrnku1B1RVkduapFczMoEpjOYNNtWXnqLCF94MkJTDd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzmrDWik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA454C4CED1;
-	Thu, 13 Feb 2025 15:32:21 +0000 (UTC)
+	 MIME-Version; b=lrdjqQ8LdYf+0vCZIMZAPvf3gLsKZj0VGS24f/HWYbn9lVqsl9XXeOSCJrx8N9HVpiK7LZBHyqrOCEPoxgc2iWrKgkcKzDUujL6XcJki3lyme3zweDEL4ICPO3Vqj52PSlasMDNcBFUsebTFH+DwZ7UUP5oZn9Bnjznk/55sRXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpWyrPXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEC2C4CED1;
+	Thu, 13 Feb 2025 14:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460742;
-	bh=N5fEfiTDJZg4vsHH7l0Omb76T1b5D+3ZlsOpGbp/i/A=;
+	s=korg; t=1739458512;
+	bh=NTnmCWSCdE7g/kT92VqmPlrUePiQYVlY8zaSJcEW5MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzmrDWikvCohAT6+8BoQAU6XCqG78ruAkhcIDpc/tupEp2KzJx75SpZuNk1zRihjs
-	 IUET2JTRL+dkipMJQVJDAWh220WXeLWrrmkGyh7wLL+O+ICrrZ1rsMxhvJ/c//TmkY
-	 jeRo9v+hF7euLb/lONK5iPgIyxhGGA5fOFwKYddE=
+	b=wpWyrPXNM54ZGRJDPbju5Gz6nqBFyVxcRs4/+fpF9awAUkzWvLGncA6kYqSbKSJoF
+	 qftx3dfpXU8maXj+ZOpKq6JGzs/3jGm/Lq2qLoU6kf+OyRchPOdgI1te3xk9SUhHJg
+	 Az7tzzdKARaZQOhOkz0DGu3Eknja/akLHU3XRgYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christoph Lameter <cl@linux.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 198/273] kfence: skip __GFP_THISNODE allocations on NUMA systems
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Aurelien Jarno <aurelien@aurel32.net>
+Subject: [PATCH 6.12 421/422] arm64: dts: rockchip: add reset-names for combphy on rk3568
 Date: Thu, 13 Feb 2025 15:29:30 +0100
-Message-ID: <20250213142415.150523391@linuxfoundation.org>
+Message-ID: <20250213142452.812955663@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-commit e64f81946adf68cd75e2207dd9a51668348a4af8 upstream.
+commit 8b9c12757f919157752646faf3821abf2b7d2a64 upstream.
 
-On NUMA systems, __GFP_THISNODE indicates that an allocation _must_ be on
-a particular node, and failure to allocate on the desired node will result
-in a failed allocation.
+The reset-names of combphy are missing, add it.
 
-Skip __GFP_THISNODE allocations if we are running on a NUMA system, since
-KFENCE can't guarantee which node its pool pages are allocated on.
-
-Link: https://lkml.kernel.org/r/20250124120145.410066-1-elver@google.com
-Fixes: 236e9f153852 ("kfence: skip all GFP_ZONEMASK allocations")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Chistoph Lameter <cl@linux.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Fixes: fd3ac6e80497 ("dt-bindings: phy: rockchip: rk3588 has two reset lines")
+Link: https://lore.kernel.org/r/20241122073006.99309-1-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi |    1 +
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -21,6 +21,7 @@
- #include <linux/log2.h>
- #include <linux/memblock.h>
- #include <linux/moduleparam.h>
-+#include <linux/nodemask.h>
- #include <linux/notifier.h>
- #include <linux/panic_notifier.h>
- #include <linux/random.h>
-@@ -1065,6 +1066,7 @@ void *__kfence_alloc(struct kmem_cache *
- 	 * properties (e.g. reside in DMAable memory).
- 	 */
- 	if ((flags & GFP_ZONEMASK) ||
-+	    ((flags & __GFP_THISNODE) && num_online_nodes() > 1) ||
- 	    (s->flags & (SLAB_CACHE_DMA | SLAB_CACHE_DMA32))) {
- 		atomic_long_inc(&counters[KFENCE_COUNTER_SKIP_INCOMPAT]);
- 		return NULL;
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -262,6 +262,7 @@
+ 		assigned-clocks = <&pmucru CLK_PCIEPHY0_REF>;
+ 		assigned-clock-rates = <100000000>;
+ 		resets = <&cru SRST_PIPEPHY0>;
++		reset-names = "phy";
+ 		rockchip,pipe-grf = <&pipegrf>;
+ 		rockchip,pipe-phy-grf = <&pipe_phy_grf0>;
+ 		#phy-cells = <1>;
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -1762,6 +1762,7 @@
+ 		assigned-clocks = <&pmucru CLK_PCIEPHY1_REF>;
+ 		assigned-clock-rates = <100000000>;
+ 		resets = <&cru SRST_PIPEPHY1>;
++		reset-names = "phy";
+ 		rockchip,pipe-grf = <&pipegrf>;
+ 		rockchip,pipe-phy-grf = <&pipe_phy_grf1>;
+ 		#phy-cells = <1>;
+@@ -1778,6 +1779,7 @@
+ 		assigned-clocks = <&pmucru CLK_PCIEPHY2_REF>;
+ 		assigned-clock-rates = <100000000>;
+ 		resets = <&cru SRST_PIPEPHY2>;
++		reset-names = "phy";
+ 		rockchip,pipe-grf = <&pipegrf>;
+ 		rockchip,pipe-phy-grf = <&pipe_phy_grf2>;
+ 		#phy-cells = <1>;
 
 
 
