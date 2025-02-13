@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4F3A3428B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543A2A3456E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75C501883A37
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 239563B1D85
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51729281379;
-	Thu, 13 Feb 2025 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A1714831C;
+	Thu, 13 Feb 2025 14:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/WclMJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkRa9yen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3BE281375;
-	Thu, 13 Feb 2025 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB2326B083;
+	Thu, 13 Feb 2025 14:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457342; cv=none; b=PZzR7dihdXkkC3LVQGtc5++Er2gVHy0ZHlWNxGIDjvHnkqrfl1PeQ3RyuIz/RE1W2cixoRKfcIqdo/wr3QGw+oUo2Q8tXbMgtwqKhazNlfYkYuOQk7wFOgq1XVRFBs0i5GH6K237n+l4c2/Cp1EJ+LoXr/EtF1MTG/XzX7d/fK4=
+	t=1739458651; cv=none; b=Z6F6YoSupS61x9HQdJgmA9wux21vzBNqD3rrHgwad6hXyqtp304KTS/F+9DuEQi1k9iCostsFJO3ZLS1IgKVjgDv0l8/jr/AuFixv5EDXbSxla2CrcazYPS/XIJlk02MLJmcfJK3amSFQQfpjA2aWcnpoQpQ/b0jRPR+Su0A9BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457342; c=relaxed/simple;
-	bh=ksk3X8k6gmmOhfJWbaSXtRoedjr4x+1RUzd+QRw2OEA=;
+	s=arc-20240116; t=1739458651; c=relaxed/simple;
+	bh=+sVJ3gv0aCWc37QVNQuXOiaFFt4xZHJw12jXeUeC7cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W39WiMDUCQkA89rh1KY2aEN8K+ToXKaXhJM/yQb1oWae+nyHa+qv8r5cLDSkukmVnDs6++mkBoLevXKsD3IoHE8Nwkexz95qY5tt1A6Jpb9D3QWYGODuvRmb/+Y0evW4/ZAxynbkhVb9zPASAiCcO4RxLAleuy9rkYfChMC4Ci4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/WclMJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727C9C4CED1;
-	Thu, 13 Feb 2025 14:35:41 +0000 (UTC)
+	 MIME-Version; b=fQy+JsRw59BHhXpswuymec57nIA5XCEPVzKjKrYevqZC7P+Uc87lKmuoFvOaClUSESegqo8GCGtFuHHK2+KI2NWnOA3n2TI3vV4m0Cv/frzNteUfDW9VX3Ef99RixesAKixg7qtE9XShs/W1EEPhF74LmXshjvM7NFPDwuSiwh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkRa9yen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C51C4CED1;
+	Thu, 13 Feb 2025 14:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457341;
-	bh=ksk3X8k6gmmOhfJWbaSXtRoedjr4x+1RUzd+QRw2OEA=;
+	s=korg; t=1739458650;
+	bh=+sVJ3gv0aCWc37QVNQuXOiaFFt4xZHJw12jXeUeC7cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/WclMJMPyUMoMNEjUNowrprorGqLTX7qQLm+h09xbcMgrhe3NWlZ6Nvk3Rh9yYD8
-	 vNu2JM0RAJ+loF1xDCWYSRXjaGXfttVRQHlOKYsqLxs1KDejvTzzNedYyOSMFXtjSi
-	 sS2k1ggfEB4TMWySrvPgxnGW025YZ9LhnW+fFeu4=
+	b=lkRa9yeny/8tPHqXIBwJjFxjq6aBSqxEO5ZXlw5a+D3cnbs/hVlgxNL6lzpbCnMjv
+	 RBlj42xsAhUbtFN+hkc8YzkI69LA3hh68CfnQPiQZNnW6U5TMnAV/00gVs6tIj0JIN
+	 jkAtt1Nt+mtfcy39HebqusOWpxVHh9Ag4WWO2Dmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/422] clk: qcom: Make GCC_8150 depend on QCOM_GDSC
+Subject: [PATCH 6.13 040/443] drm/vc4: hdmi: use eld_mutex to protect access to connector->eld
 Date: Thu, 13 Feb 2025 15:23:25 +0100
-Message-ID: <20250213142438.723605790@linuxfoundation.org>
+Message-ID: <20250213142442.172606920@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1474149c4209943b37a2c01b82f07ba39465e5fe ]
+[ Upstream commit 81a9a93b169a273ccc4a9a1ee56f17e9981d3f98 ]
 
-Like all other non-ancient Qualcomm clock drivers, QCOM_GDSC is
-required, as the GCC driver defines and instantiates a bunch of GDSCs.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Add the missing dependency.
-
-Reported-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Closes: https://lore.kernel.org/linux-arm-msm/ab85f2ae-6c97-4fbb-a15b-31cc9e1f77fc@linaro.org/
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20241026-topic-8150gcc_kconfig-v1-1-3772013d8804@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-10-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 9ba675f229b14..16145f74bbc85 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -1022,6 +1022,7 @@ config SM_GCC_7150
- config SM_GCC_8150
- 	tristate "SM8150 Global Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
-+	select QCOM_GDSC
- 	help
- 	  Support for the global clock controller on SM8150 devices.
- 	  Say Y if you want to use peripheral devices such as UART,
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index e3818c48c9b8c..e86123009c905 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2193,9 +2193,9 @@ static int vc4_hdmi_audio_get_eld(struct device *dev, void *data,
+ 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
+ 	struct drm_connector *connector = &vc4_hdmi->connector;
+ 
+-	mutex_lock(&vc4_hdmi->mutex);
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
+-	mutex_unlock(&vc4_hdmi->mutex);
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
