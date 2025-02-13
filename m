@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-115408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E73EA343BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB6AA345E1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534EB1893E3B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C53189345F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FE5221571;
-	Thu, 13 Feb 2025 14:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A961515853B;
+	Thu, 13 Feb 2025 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="041vWTY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFpraBG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7D523A9B5;
-	Thu, 13 Feb 2025 14:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668CB26B099;
+	Thu, 13 Feb 2025 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457944; cv=none; b=hs6PDiycFGBekjo+cvPH4tqND7vWXsI4iBFyFJ1Ned4cPR/ZmKaxopBJiwBj+NKuVn1QdN0FPuWdggsr7b0uydeOlOwPEPkfSsVKll6eM+Luvxc9eZ/R3xbaIDJtzEwWDkfxliaBbrzmm+0qgY+H+ZJYfvLOBlQoonLQOn/V6Hk=
+	t=1739459266; cv=none; b=BtaiqnI/PZ1RQACwtD9fEtR8jqVWsatuST1M7vxQXDQT5cO9xA5KZTfdJBD4l6NIWYquLwCe3tzregpK13Ukvrh67YIjtTI+oCnok46eOcL4I5/75+t+dRPDwfFmUA2/9uwQq1OGvHQWM+36rGz3yESqYFwt9L9/dDiVe96ZVEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457944; c=relaxed/simple;
-	bh=Do6HvGs0wJEOwnw4Lv2GCr0wkdVSzUEujPJioJdGKTY=;
+	s=arc-20240116; t=1739459266; c=relaxed/simple;
+	bh=LFxiQfRWPBUzW1Y0F5wYjw+hniRuE4b8rD8ZfDzrJeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLllZ55ZLtPCcrOYdpeJW7EdGCgONLuULloVkpYrvJVz9+y2nI16nZwbc2cmTZ5NAjhT+BsXGXwYBiEQ5nU/Xf1yZvGdLISreyImuMDY9MnQRPBLK8VY8tptkpqPZWzlIYjLwrWDjy9HqXPx9dVPRJxVABz4bVUv3ER0I42irD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=041vWTY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75102C4CED1;
-	Thu, 13 Feb 2025 14:45:43 +0000 (UTC)
+	 MIME-Version; b=iWLLHvPVSzfrI95wkzGFVAzoGiyLNJN3Qg5AHafwLhJVD0zUnqAaEaPD8i2L8eQEk6X/gFNKhyM/EzMB+T3iNhRGnAT5MX+VPOM/QRN+6sPwj8o6a+VmCXEAgBlwoCwN4wyfHv3IqT1lXhHw8ocaw5/fGZcXnOUF66rEzE3iNIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFpraBG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C47C4CED1;
+	Thu, 13 Feb 2025 15:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457944;
-	bh=Do6HvGs0wJEOwnw4Lv2GCr0wkdVSzUEujPJioJdGKTY=;
+	s=korg; t=1739459266;
+	bh=LFxiQfRWPBUzW1Y0F5wYjw+hniRuE4b8rD8ZfDzrJeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=041vWTY5moR7eOXtR0xskZA5GaRE7P4mrvYc5pGQ4r5KMaiIQoTFVOzJRhYgjmnCJ
-	 AJFCNYveqtBpRlFo0yIc9nHHXftxur44AKLzqx/FAnl8ACMM9KttTSV9LybFvfmgbT
-	 B6BQo+ZbZNAjI6T1V3aesACv/jnGuioT0CiC6LC8=
+	b=CFpraBG3twL//3CCGtnlz18M7IZInLYO35UkSZu/sidwU81XoUvF9fTfRsNk2cCQP
+	 ZvPl89QnUl2EuB0Am6tYsXOLHQtIugvI5XwdL4yaRACHMorZ8ITUO3e+MdmomBHNRM
+	 QRJygdmjd3E/fykBCio/fSMO3M/VSZq/YQBKcULs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Xuerui <git@xen0n.name>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 231/422] LoongArch: Extend the maximum number of watchpoints
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.13 215/443] of: Correct child specifier used as input of the 2nd nexus node
 Date: Thu, 13 Feb 2025 15:26:20 +0100
-Message-ID: <20250213142445.451149342@linuxfoundation.org>
+Message-ID: <20250213142448.911377910@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 531936dee53e471a3ec668de3c94ca357f54b7e8 upstream.
+commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
 
-The maximum number of load/store watchpoints and fetch instruction
-watchpoints is 14 each according to LoongArch Reference Manual, so
-extend the maximum number of watchpoints from 8 to 14 for ptrace.
+API of_parse_phandle_with_args_map() will use wrong input for nexus node
+Nexus_2 as shown below:
 
-By the way, just simply change 8 to 14 for the definition in struct
-user_watch_state at the beginning, but it may corrupt uapi, then add
-a new struct user_watch_state_v2 directly.
+    Node_1		Nexus_1                              Nexus_2
+&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
+		  map-pass-thru=<...>
 
-As far as I can tell, the only users for this struct in the userspace
-are GDB and LLDB, there are no any problems of software compatibility
-between the application and kernel according to the analysis.
+Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
+wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
 
-The compatibility problem has been considered while developing and
-testing. When the applications in the userspace get watchpoint state,
-the length will be specified which is no bigger than the sizeof struct
-user_watch_state or user_watch_state_v2, the actual length is assigned
-as the minimal value of the application and kernel in the generic code
-of ptrace:
+Fix by always making @match_array point to @initial_match_array into
+which to store nexus output.
 
-kernel/ptrace.c: ptrace_regset():
-
-	kiov->iov_len = min(kiov->iov_len,
-			   (__kernel_size_t) (regset->n * regset->size));
-
-	if (req == PTRACE_GETREGSET)
-		return copy_regset_to_user(task, view, regset_no, 0,
-					  kiov->iov_len, kiov->iov_base);
-	else
-		return copy_regset_from_user(task, view, regset_no, 0,
-					  kiov->iov_len, kiov->iov_base);
-
-For example, there are four kind of combinations, all of them work well.
-
-(1) "older kernel + older gdb", the actual length is 8+(8+8+4+4)*8=200;
-(2) "newer kernel + newer gdb", the actual length is 8+(8+8+4+4)*14=344;
-(3) "older kernel + newer gdb", the actual length is 8+(8+8+4+4)*8=200;
-(4) "newer kernel + older gdb", the actual length is 8+(8+8+4+4)*8=200.
-
-Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#control-and-status-registers-related-to-watchpoints
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
 Cc: stable@vger.kernel.org
-Fixes: 1a69f7a161a7 ("LoongArch: ptrace: Expose hardware breakpoints to debuggers")
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Reviewed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/uapi/asm/ptrace.h |   10 ++++++++++
- arch/loongarch/kernel/ptrace.c           |    6 +++---
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/of/base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/uapi/asm/ptrace.h
-+++ b/arch/loongarch/include/uapi/asm/ptrace.h
-@@ -72,6 +72,16 @@ struct user_watch_state {
- 	} dbg_regs[8];
- };
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1546,7 +1546,6 @@ int of_parse_phandle_with_args_map(const
+ 		 * specifier into the out_args structure, keeping the
+ 		 * bits specified in <list>-map-pass-thru.
+ 		 */
+-		match_array = map - new_size;
+ 		for (i = 0; i < new_size; i++) {
+ 			__be32 val = *(map - new_size + i);
  
-+struct user_watch_state_v2 {
-+	uint64_t dbg_info;
-+	struct {
-+		uint64_t    addr;
-+		uint64_t    mask;
-+		uint32_t    ctrl;
-+		uint32_t    pad;
-+	} dbg_regs[14];
-+};
-+
- #define PTRACE_SYSEMU			0x1f
- #define PTRACE_SYSEMU_SINGLESTEP	0x20
+@@ -1555,6 +1554,7 @@ int of_parse_phandle_with_args_map(const
+ 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
+ 			}
  
---- a/arch/loongarch/kernel/ptrace.c
-+++ b/arch/loongarch/kernel/ptrace.c
-@@ -720,7 +720,7 @@ static int hw_break_set(struct task_stru
- 	unsigned int note_type = regset->core_note_type;
- 
- 	/* Resource info */
--	offset = offsetof(struct user_watch_state, dbg_regs);
-+	offset = offsetof(struct user_watch_state_v2, dbg_regs);
- 	user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf, 0, offset);
- 
- 	/* (address, mask, ctrl) registers */
-@@ -920,7 +920,7 @@ static const struct user_regset loongarc
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- 	[REGSET_HW_BREAK] = {
- 		.core_note_type = NT_LOONGARCH_HW_BREAK,
--		.n = sizeof(struct user_watch_state) / sizeof(u32),
-+		.n = sizeof(struct user_watch_state_v2) / sizeof(u32),
- 		.size = sizeof(u32),
- 		.align = sizeof(u32),
- 		.regset_get = hw_break_get,
-@@ -928,7 +928,7 @@ static const struct user_regset loongarc
- 	},
- 	[REGSET_HW_WATCH] = {
- 		.core_note_type = NT_LOONGARCH_HW_WATCH,
--		.n = sizeof(struct user_watch_state) / sizeof(u32),
-+		.n = sizeof(struct user_watch_state_v2) / sizeof(u32),
- 		.size = sizeof(u32),
- 		.align = sizeof(u32),
- 		.regset_get = hw_break_get,
++			initial_match_array[i] = val;
+ 			out_args->args[i] = be32_to_cpu(val);
+ 		}
+ 		out_args->args_count = list_size = new_size;
 
 
 
