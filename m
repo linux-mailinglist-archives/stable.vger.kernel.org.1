@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EBFA346D2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E1FA347D4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1457D3B02A6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432D11891E24
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01373FB3B;
-	Thu, 13 Feb 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D5016B3A1;
+	Thu, 13 Feb 2025 15:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lsd0DYFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhDJDZfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFB3335BA;
-	Thu, 13 Feb 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289570805;
+	Thu, 13 Feb 2025 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459978; cv=none; b=cTtgSm1r2n7n8S/S6RsNMwhT/n1xWdK8WCBdFaabBOO2u6rH6IEVECjP60K0/2Mthv4aa5vf5RaTXDMWOW7lqODy8A3nrRbp7DP7ryMmKKkUSUJXGhZzPw4V56lRoYDeQH9VaLwzwkajT8tDJuioiYmIZPZ/1CnGscy5lqRIGy4=
+	t=1739460794; cv=none; b=pPnbZfCikY968jmJWd0twhdBj7v0d54Ne0rTwikxi7y+onaNxUOtbQ9JEt7tNWV/LOoblcOvujz00kc+nsEqCsukOP3uFAD+QndXeP8sBTGpxNhFZ99nMmgnbgKqJs4minjQBzKkoe+qZG2guSn2a6r6StjRmqMlOVyVvDDNx38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459978; c=relaxed/simple;
-	bh=Omdqc6wAyWzd4PhoYzKpc4dEKfeHgEDd9G74cYi8ofc=;
+	s=arc-20240116; t=1739460794; c=relaxed/simple;
+	bh=+l2eoyW5ajj3XqZ0YJSBEEJ4opVEAyyyGhP7Gu+oLh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihU4ckvNafPCphnfRX3eyh9qQxz0xEdCu7n8e+2u4fGN0nMvrVehQN9SNsLEfiaKXTaEZBBAhcL3mJLcOM/Z5bmj4Dn4dtnhjby5l6o+CuirBzH99uKjDaFgh3MmIMay9A6TDdxdXkjktOPnVuJesGaf9WBmspbKhBevz1Er5jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lsd0DYFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C85C4CED1;
-	Thu, 13 Feb 2025 15:19:37 +0000 (UTC)
+	 MIME-Version; b=dbl3pZF1lbM8wwG3YsQKJ3OKsIXMOnmkvzcOAM14G71z6Zcy4bh93tVWF5olcFUYBZ00oHGnDxEnJM0YodNhG1cL4G+5CxRiv8/xLuOuV7KdL5uD115TxN2fD0uMpjTAhJ23BDhzyjT/aWCwScgxj/BmvjqGg11g5Ge/8r8cKSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhDJDZfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0122CC4CED1;
+	Thu, 13 Feb 2025 15:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459978;
-	bh=Omdqc6wAyWzd4PhoYzKpc4dEKfeHgEDd9G74cYi8ofc=;
+	s=korg; t=1739460793;
+	bh=+l2eoyW5ajj3XqZ0YJSBEEJ4opVEAyyyGhP7Gu+oLh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lsd0DYFN/tSorze/c9osVONDXbNo8QUPgJ72/6zcNoYCZCbgpPugQSCekmWlxlPvj
-	 P0k8FHiphQvbDbP6UiXiRaP7XCSH7XyizGglmUaqYUfZv08yYpNUS50/JwpIHYDWdB
-	 Tvbr7CRh9F7CN9RSGx6IgX7ds1NarCVgoGS6WoeA=
+	b=IhDJDZfeWt4HiQaejSeOfQ4G04pxoz5sw2eUzmTJwrMuiYV+WQb9to92sI4BxlD55
+	 UzFNHoc7iPQfyDWHuBhWbKlnRoeRvFaE7+H1pmXrZrg+peG4134+bYuZ//lYOXA0vI
+	 RdXTmBDhUxvRSQIcXvJXYSFTsyLT80f4g/K5wyOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 422/443] rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 215/273] media: uvcvideo: Support partial control reads
 Date: Thu, 13 Feb 2025 15:29:47 +0100
-Message-ID: <20250213142456.900998671@linuxfoundation.org>
+Message-ID: <20250213142415.808763717@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 217f0b1e990e30a1f06f6d531fdb4530f4788d48 upstream.
+commit f00ee2ca8da25ebccb8e19956d853c9055e2c8d0 upstream.
 
-When using rtla timerlat with userspace threads (-u or -U), rtla
-disables the OSNOISE_WORKLOAD option in
-/sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
-subsequent run with kernel-space threads, leading to rtla collecting no
-results if the previous run exited abnormally:
+Some cameras, like the ELMO MX-P3, do not return all the bytes
+requested from a control if it can fit in less bytes.
+Eg: Returning 0xab instead of 0x00ab.
+usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
 
-$ rtla timerlat top -u
-^\Quit (core dumped)
-$ rtla timerlat top -k -d 1s
-                                     Timer Latency
-  0 00:00:01   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
-CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
-
-The issue persists until OSNOISE_WORKLOAD is set manually by running:
-$ echo OSNOISE_WORKLOAD > /sys/kernel/tracing/osnoise/options
-
-Set OSNOISE_WORKLOAD when running rtla with kernel-space threads if
-available to fix the issue.
+Extend the returned value from the camera and return it.
 
 Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/20250107144823.239782-4-tglozar@redhat.com
-Fixes: cdca4f4e5e8e ("rtla/timerlat_top: Add timerlat user-space support")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -851,12 +851,15 @@ timerlat_top_apply_config(struct osnoise
- 		}
- 	}
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *de
+ 	if (likely(ret == size))
+ 		return 0;
  
--	if (params->user_top) {
--		retval = osnoise_set_workload(top->context, 0);
--		if (retval) {
--			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
--			goto out_err;
--		}
 +	/*
-+	* Set workload according to type of thread if the kernel supports it.
-+	* On kernels without support, user threads will have already failed
-+	* on missing timerlat_fd, and kernel threads do not need it.
-+	*/
-+	retval = osnoise_set_workload(top->context, params->kernel_workload);
-+	if (retval < -1) {
-+		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
-+		goto out_err;
- 	}
- 
- 	if (isatty(STDOUT_FILENO) && !params->quiet)
++	 * Some devices return shorter USB control packets than expected if the
++	 * returned value can fit in less bytes. Zero all the bytes that the
++	 * device has not written.
++	 *
++	 * This quirk is applied to all controls, regardless of their data type.
++	 * Most controls are little-endian integers, in which case the missing
++	 * bytes become 0 MSBs. For other data types, a different heuristic
++	 * could be implemented if a device is found needing it.
++	 *
++	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
++	 * to be excluded because its size is always 1.
++	 */
++	if (ret > 0 && query != UVC_GET_INFO) {
++		memset(data + ret, 0, size - ret);
++		dev_warn_once(&dev->udev->dev,
++			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
++			      uvc_query_name(query), cs, unit, ret, size);
++		return 0;
++	}
++
+ 	if (ret != -EPIPE) {
+ 		dev_err(&dev->udev->dev,
+ 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
 
 
