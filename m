@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E41A343F0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0A0A345A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C58A1895B8E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663E516FB8F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5103266190;
-	Thu, 13 Feb 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D366226B096;
+	Thu, 13 Feb 2025 15:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFwAS3yE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2vfAGd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819BA266196;
-	Thu, 13 Feb 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BC326B089;
+	Thu, 13 Feb 2025 15:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458103; cv=none; b=fLxl7RlyZo2j7rdBxiPPi+gtrWZwZDhUCDQ10erRnj6PYA6Bl6HHGo9Z0JY4KTCuyG1gDC1GC9r5QOex6z4wv1jyek8FeIzg+w656Pu0QGd/o1pFZIMzTXwCc+q5YSqlgRZKq+LIRkklH+bGzCHikC+N+yrhWlhRACHgSOY4PAQ=
+	t=1739459404; cv=none; b=rFWPPkA7UG6mKWoRUodg3XH+PiTMsuFsWLXwqGeSf1dLNBmahSocK/24a8XrhInqcgiVwfaIdBhe8nou2zE2YvTIFfbVDXWUA3S2hcsiSh1b20CfbzFxqyCCTgTIfdVfmxdzm+LHRIzTMCXmvwbKX1eTooXHSnW1rcruyACsP0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458103; c=relaxed/simple;
-	bh=Fl5UaUcKp5Bg2QV3CY7Ofqohte77pHgrBwZob6Xhf7g=;
+	s=arc-20240116; t=1739459404; c=relaxed/simple;
+	bh=byacqGYzn8R6YJbQwrr6Cd+xXSpALtwqZvuFf7M+foc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bazl89tp4pnge8ZVakHgqPBEv61KNoz8U4wyKX4bv/pRKOPjcLTZocQfdO+JiDVhhadVlLT8P/hK+F36+ynRG2N/s4hwEZ12KTZidi/JuBldl3uyLb2wKXAW4MohJW1f8B/sqeaCQ9NPYfTlD6z04uK5BmrcQ0YwFixOg4qPx/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFwAS3yE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ED3C4CED1;
-	Thu, 13 Feb 2025 14:48:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J7yYZFHA9KABLxSVctsVRtVaH3PV2bkmmcQxd4+xPbCLR6jFhqDQWZiM4nlfBjFhhYduZ/SZY47MG8K/3dIcivs5+hjsvRw5tpC8mPHS85zpR/8DqLYGd8P6Udl3PRZ4dOi7Ko0UTUJ8G/g236Ugo3m6OzKYo5b3c2WTXc6MT5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2vfAGd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9782BC4CED1;
+	Thu, 13 Feb 2025 15:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458103;
-	bh=Fl5UaUcKp5Bg2QV3CY7Ofqohte77pHgrBwZob6Xhf7g=;
+	s=korg; t=1739459404;
+	bh=byacqGYzn8R6YJbQwrr6Cd+xXSpALtwqZvuFf7M+foc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFwAS3yE2SsI1vxQkGpwlQt3M1GN/QJZqArD3k5IW9dBfHQm9b3r1In0phaW3c1mH
-	 u4R8RGL6YIdAUgihNbhAU+GP6xFMuNUYJi2yZ6RhDnA8D0/9n6J9P/06FCzdXyk4w4
-	 EDObnllcc+wf1HIDU2h3+DhODQvBAiVyCahi3DZU=
+	b=w2vfAGd8y7s9iY/kmaxI6Z2kjw9OTfdsZPCnFTEPIFZIS9AO7Uhtkppg7tNP2nhDo
+	 tBzBJqGndRFK847mEMVS0h74uCQMjK58k2DPTb/H19UCS96mSpoKgcmNMZOkBsaBcC
+	 nkOv5r4ylX/rXxeR+u4job7/zZazIJfsqrCN/qYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 271/422] arm64: dts: qcom: x1e80100: Fix CDSP memory length
+	Mingcong Bai <jeffbai@aosc.io>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.13 255/443] MIPS: Loongson64: remove ROM Size unit in boardinfo
 Date: Thu, 13 Feb 2025 15:27:00 +0100
-Message-ID: <20250213142447.001737093@linuxfoundation.org>
+Message-ID: <20250213142450.456236675@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Kexy Biscuit <kexybiscuit@aosc.io>
 
-commit 3de1bf12c6bfb9a92f0803941ecae39b08470446 upstream.
+commit bd2212d658d7659b9d83c7e2f3a06789d4db1e90 upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+Per Appendix A.7 in Q/LS 0013-2014 (龙芯CPU开发系统固件与内核接口规范 V2.2,
+lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
+interface_info.size is size of this interface, not size of the LEFI BIOS
+ROM.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+In any case, the BIOS ROM Size just cannot be several kilobytes (KB) on
+Loongson64 LEFI platforms.
 
-Fixes: 5f2a9cd4b104 ("arm64: dts: qcom: x1e80100: Add ADSP/CDSP remoteproc nodes")
+Reported-by: Mingcong Bai <jeffbai@aosc.io>
+Suggested-by: Icenowy Zheng <uwu@icenowy.me>
+Fixes: 6c1bfbd9df8c ("MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo")
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-14-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/loongson64/boardinfo.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -6247,7 +6247,7 @@
- 
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,x1e80100-cdsp-pas";
--			reg = <0 0x32300000 0 0x1400000>;
-+			reg = <0x0 0x32300000 0x0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+--- a/arch/mips/loongson64/boardinfo.c
++++ b/arch/mips/loongson64/boardinfo.c
+@@ -21,13 +21,11 @@ static ssize_t boardinfo_show(struct kob
+ 		       "BIOS Info\n"
+ 		       "Vendor\t\t\t: %s\n"
+ 		       "Version\t\t\t: %s\n"
+-		       "ROM Size\t\t: %d KB\n"
+ 		       "Release Date\t\t: %s\n",
+ 		       strsep(&tmp_board_manufacturer, "-"),
+ 		       eboard->name,
+ 		       strsep(&tmp_bios_vendor, "-"),
+ 		       einter->description,
+-		       einter->size,
+ 		       especial->special_name);
+ }
+ static struct kobj_attribute boardinfo_attr = __ATTR(boardinfo, 0444,
 
 
 
