@@ -1,70 +1,71 @@
-Return-Path: <stable+bounces-115127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AB0A33E77
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 12:53:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E414EA33E6A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 12:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F42E3A4FE7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 11:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51224188E5C4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 11:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6391521422A;
-	Thu, 13 Feb 2025 11:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6340A213E63;
+	Thu, 13 Feb 2025 11:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Q5vCMla1"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="TU0yA+FX"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF72211A06
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 11:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D1D20AF82
+	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 11:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739447582; cv=none; b=URcbc8X8ivsxdy3XckRwcEh1yn1/oWbI4noT6qty0KK9QqKOG5kKBF3NnBBcg0nXn5xFgnrn/3H1uYGPVBB2sR9e0aAh1od/4dwauiSOzzrWXs6GxugLOLFCvFmlWb3kNg4SWvYJaZcxPzgsdxB8w3EjwibB79dcr+rVthwyf3A=
+	t=1739447230; cv=none; b=c+dYVRcOVL6bRTh2yJ68e7wMxm0bEDmzApBvjHZRAhrZDPkry661U6sOk/wM2qNzfCQkodXdNp5czAbBzqyJCURJezXVtckZcRlQ0HYDx9o6SCBJwebRQ31t+R8AW8UOK3NRT19+Lk+fRGnVF3ei79VM+EBD/UOZiBQ8fASCB24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739447582; c=relaxed/simple;
+	s=arc-20240116; t=1739447230; c=relaxed/simple;
 	bh=PEDU2V9jLhsUydX0kyeJE2iCM3McVCgnwVv6RbI1tUA=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Ze3ks+ZxZtFG61aQshNmLAdt9uNW7yhplYZAj+OTrfddyhNCRGBftN522z6hwNNoP2TSCPPNPHst1uIcSfe9njBwtHnv9+9OjtSfLVWf5lgsAQT+CEq5xTDzaYaSVz7b6eb6Y+PltG2DIIpeT4R5yehEUAwqdFCzAf9zqvFFlyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Q5vCMla1; arc=none smtp.client-ip=203.205.221.190
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gL7uxde4wz9JT0c8PDRtbar5apb+yx7xh5v9KTVRan0KQ1FDUQTffIRryLCrXaN4sNvo+WUqpWGu8KtJx8z55VzIs0iWLNe776M6rmCiyMloFgIloHtFqIKb0BJoxe/Kt/nOgfXUfjNzaoLvOXpt8j3aF7Plx0Z+MZInZHGcwqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=TU0yA+FX; arc=none smtp.client-ip=203.205.221.164
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1739447569; bh=fQrCX2rcjv2N90oR6MccQf1RJl9VjINjASLx5Wvu878=;
+	t=1739447224; bh=fQrCX2rcjv2N90oR6MccQf1RJl9VjINjASLx5Wvu878=;
 	h=From:To:Cc:Subject:Date;
-	b=Q5vCMla1Fn/VatmJ11clt2tufPqIm901ffzYkAEFSBg4IXUBziRudaEJq1vlSjaL3
-	 D8fc0p5l1hpEc1OcFqPlQKj8tQ/Dc26mnbQ7HkFxd8PuMk9iwSTpsKHxmos2GKwFMO
-	 iOzWZ/RYd6Pk0zwJ7pZc2+sRGffg1WbRpzjCP9OE=
+	b=TU0yA+FXeFYrF+XVsJKMl44E8p9QQHEeFq2k92+2s0W2/bHYhpvGwkJp/RPojaUqa
+	 ya9gmqpj8SkQgYFxp7J2GAOkji/KTbkSpLPCrBFR0ghwKfGJ6mNTAvBrtLroBdQYoA
+	 Jd/oU28krAg1yfd4B1zFSq1m6QnKtSRXNyWBZmCY=
 Received: from public ([120.244.194.25])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id B952C65E; Thu, 13 Feb 2025 19:46:21 +0800
-X-QQ-mid: xmsmtpt1739447181tymsl9h9d
-Message-ID: <tencent_950F86B5018E36B766EA4357D2C8BA1AC705@qq.com>
-X-QQ-XMAILINFO: NsBBv6AnqV8OfrY2UWn/+pXbnzEl0wdVXfbmqmOv6N1H2B6FI4OMhVa4WIaZYN
-	 qVqm812Hga3NkJGPdKbd22SCNXlvaBV42W2CESdF0YMDuwE3InswJ/RL1KTTsCUrkoH6+bofPBtZ
-	 YC74zWo2c8xL3XiYQvLDpkMh4Dk/uZYNlkn4XmIhlwrW8tp3/2RbGgmxEq+FpOcEdh9HQOQ+9jtQ
-	 uiPQJVXkPo6QtnB3SMbPLbtLfwv9NH5nHoocLag1JEaWWRQxBD558bvWwJuuv435HG0k6LUGAVpQ
-	 XIE/TFNq07E7U+2+taVNwcJgCv04Q9Rr6ZEOgCSNQODTSik6DsNo+To54Us1QQBZMWGAaM08SeXm
-	 TXkSmIVdg/sKpGSvELOnio0YHbwB7A7x0f1dF5f6L+a8QhT+G8CxLlSUOS681C/Ek9V+Gk2T0fcj
-	 ngpJWVOJ8bJj47SgkgUid/plLy5M3FOAKQw3QLhcfHeur02CGB8NM/PxCRlUGGida5Y97IruZRw9
-	 QiWXMug5aqnMs870BMV4yddFexGI8dcZkdI6PWG62EmK8MddmhfeFdn+eDb4Lr59LYuURnUJsyM4
-	 mhO+QQ5f3hBpq7at7BChKTSm4kQcUW9vy7Y7M4XD2zd9hcNOBKaoKUTngaRdEjusImXZ9eRwGeDs
-	 k7NaKC+lYRNvGuslwuiKBlcdlvGtOvTfs122stApRpACL3abVMc8X0HYCK7kAbYRy56mH/c7hPAN
-	 fOjbTN2feM54kQoAepDQcJeDgevlM2oa3D6jmu8KE9BMHU6JiwdWvGV3NQK/pfh/PIbBT9ZKanUG
-	 825C1U97Z7aVxcJ1FDPKEH3OlHuhq5KSM5NP115B5K8u39wO0k4hIKrErkFEMCJW41zN7UR63KBN
-	 g7vcXrcGSfhO9K/17y7pXYgxJFQFXOVExj9piMiVTHNlWfaZf2xKv0lQVCfJ/99iTOeiaNQUs0M2
-	 RVAbDBgErq1BeAtlOhI6YANXnZ2/q9Eihiy6LxgUVPXr8uoaZvcBaFqBO0CdAQV19+pilf5Hc=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id BB8A60FE; Thu, 13 Feb 2025 19:46:56 +0800
+X-QQ-mid: xmsmtpt1739447216tbn7fjvg7
+Message-ID: <tencent_4D4DC3879124B5B5140E1D0C64031B6D5706@qq.com>
+X-QQ-XMAILINFO: N8i9SvusUD3b8ImJqxuHmsZzgwS8OwQsxpl13YauU8FuveK/cqb4cD667lU+qu
+	 OsxkaNitJ/3gomRcZ9rRQjHrBVSkVQfz47f5sYIlMIyRv+0AXbPN9tg88CmXQKLmi9l/isczqciP
+	 C8PjzYxT+f9viJ8VOy+KMj56FtY4VQcJUYOLBmAsew87TT3i14BLca9Omr8bTX0qsOlGK4Hxu8to
+	 m0WmP7XZCMTBTgrsSjOmflhW2665CKZKMGXfDMa9aovkyk5snGUYOAWzdMLY3JdDYcVe0eD/5lT0
+	 5TQZycMH9ox5mj3ztwiNgG4HznKhYnx8c6RXpMDaG83STkuMxbczuZlj7/dwTACxsyyaJBQLIZST
+	 5H3u8Ro6q1eiDD6eZ3PJAAAdl1KoDjCL1c05wmzrFbTB7aZVuLPsvf33gDZmnyXE0Sh08NPIrKnD
+	 g5a10H02P4mJInMBQ7bCmBOOKuM2cgrFoVxIvUapKTEDPA/ttyX9GH9X3LfghGja8tdUw1BkQxBJ
+	 D0rxg/RiDkiW271XiNNfEx1KycnaAIUd75/1JSwPNZtpYEgah+0ORu+FcowOBgwp86AFdn22CgaY
+	 WUF0g4nGdk8T4pDQrxAf/apmJUbC4/Quew73V/ECZzUvFoHLFRTvlZ7tM2g52RQvP3IJ6oaU29sk
+	 RtONKsB3llgIqvC/8013JwUcJZYNCVU37K4UOZ1Dh5zP7zwCqH+469kJ2ZccLw83NEKxUdod4YYn
+	 k5ud8gfEVpdyn9uSXvF//GOUTYBVN4g1/vO2MvCOdCxEdWHZXd0QngD1UHH+EsEdo5ylcxctRrpL
+	 4FXTAfdmzM8LtVD/73YmHNqCjauBzQax7YwmHEJMaV6N8g4x0hlCMRLtYXrpG5c+8LoHoCUnqNRy
+	 oc3UcNrW2DzVjLVqzXYUzWsYfuevidVvZs6AgkFt6uMnq6LT/H0qrIVkauXkQyArKX1Dk4PafAvH
+	 C67/yYPHdWQfTPxRyCUQ+Bt7MaRdlhQbFLOHDGAq9F2XoL9Rgi2UvaXuE05JoP4I2t4+y39icD5J
+	 fdapWMfChuvd1yVIGAZALJ4TIb4NElyu3VN/FBUohmGrdP7M15
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 From: lanbincn@qq.com
 To: stable@vger.kernel.org
 Cc: Yang Erkun <yangerkun@huawei.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.1.y] nfsd: release svc_expkey/svc_export with rcu_work
-Date: Thu, 13 Feb 2025 19:46:22 +0800
-X-OQ-MSGID: <20250213114622.1091-1-lanbincn@qq.com>
+Subject: [PATCH 5.15.y] nfsd: release svc_expkey/svc_export with rcu_work
+Date: Thu, 13 Feb 2025 19:46:56 +0800
+X-OQ-MSGID: <20250213114656.1242-1-lanbincn@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
