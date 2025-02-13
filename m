@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD9AA342B8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F59A3459B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C46216C514
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAD813B45C0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE7C23A9B6;
-	Thu, 13 Feb 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFC226B098;
+	Thu, 13 Feb 2025 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1iGuX9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdLgRExi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8D613D8A4;
-	Thu, 13 Feb 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077EC26B08E;
+	Thu, 13 Feb 2025 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457444; cv=none; b=od5XrlEFNTLIgQ0E+FO2dPvNwRf8ffGXVlEmajcwNnRs2w5yWAknwPfsmCxQpawj6eRjg2vVwoPsbKZolJGtxjMs21GKVArWiUeCOLh1f5Gjzmwk8TGh1aAp6dsNNG3P0FvHEcCZT2xqx+2eRw8J98Us1N5X0ZwTKzx/rTQvFP4=
+	t=1739458859; cv=none; b=HuWFgk6CtlI1stiwobsxKeK9p42fzQz/vq29VLCd2sWSlQV7CuxsTJD55f6FM8QLY6ZcKN0c2HJmswkaXFBecGWme/zw7Sa/nKMsb/JgyxMp77gU8bnmhuIaOXSsybt5DBB4Wh8PehFaM47hzJJM+35cf52PACkyVF7P1rBl1fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457444; c=relaxed/simple;
-	bh=eTjF6cSc0jK518XpcVgotaQQuvenqP0wVTuxtarvLYA=;
+	s=arc-20240116; t=1739458859; c=relaxed/simple;
+	bh=24PGGdkytZRchtFZeGNQ1QQ836Z5Q2iHmWNWUsdMn5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlXjPVKqyOhLJu3jZfaAM5u57b41WE5yBGh373GgEOMBFpKlDfUQl6zBP32LThtlxDD5NBHXWEtpDGF16yIkVEuG4qnBAxFfVGf+KDch9LqCK5pmX7TDJ4w0+yWQ3SAauTiiI/XkiaFqwdM27esWmrJcB5r3nQyvcSDyemleiJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1iGuX9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8EFC4CED1;
-	Thu, 13 Feb 2025 14:37:23 +0000 (UTC)
+	 MIME-Version; b=a+v1WODjHqTfsRLKq+EZ/5ReeYrd71KPCM2OiLYwavtkYB1E/uilmAuehiNtzXLHXY5v7P/2pu0zA0ooG7DjBBX2vphgwbZfdoIhSv1DpG0SVB9459QobwNp9CSt6kgLajITsOvMRPRT9xBSlyHTlajLkWs/bUAzgo30pdeUdJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdLgRExi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80579C4CED1;
+	Thu, 13 Feb 2025 15:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457444;
-	bh=eTjF6cSc0jK518XpcVgotaQQuvenqP0wVTuxtarvLYA=;
+	s=korg; t=1739458858;
+	bh=24PGGdkytZRchtFZeGNQ1QQ836Z5Q2iHmWNWUsdMn5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1iGuX9rc+CNaw1bbHVwxD6OetLFWhCCu68HXPotdy/ZaJ4R9IDRToLSIxh0St7w/
-	 FIGRudrAbdqnFfkFP8VE1NdlQvhPN80s1sNwMUNlGiLfrMD9h2/dN91tyfYYMOxBvv
-	 DKNy5XzH6Mymrd+aO2Vsnzsp9qG7e+ETfMXTJ3do=
+	b=mdLgRExiF/NC1jDlPJvi/7W0EiiI4itvp+Q0fFiPhU2QvusO71YykR3AYQ+cfbUVp
+	 JKfgmyFsEosG/aWluyjM5i4eIkXy69fOc2Sz7qHvzvNzfz5cA/QZzpnXh4ihd3mCbe
+	 fP7FjI/3UGABmSWX0o8dsiYw3rGwqdcRfMOEmGGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yan Zhai <yan@cloudflare.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kees Bakker <kees@ijzerbout.nl>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/422] udp: gso: do not drop small packets when PMTU reduces
+Subject: [PATCH 6.13 096/443] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
 Date: Thu, 13 Feb 2025 15:24:21 +0100
-Message-ID: <20250213142440.876343537@linuxfoundation.org>
+Message-ID: <20250213142444.312579607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Kees Bakker <kees@ijzerbout.nl>
 
-[ Upstream commit 235174b2bed88501fda689c113c55737f99332d8 ]
+[ Upstream commit 60f030f7418d3f1d94f2fb207fe3080e1844630b ]
 
-Commit 4094871db1d6 ("udp: only do GSO if # of segs > 1") avoided GSO
-for small packets. But the kernel currently dismisses GSO requests only
-after checking MTU/PMTU on gso_size. This means any packets, regardless
-of their payload sizes, could be dropped when PMTU becomes smaller than
-requested gso_size. We encountered this issue in production and it
-caused a reliability problem that new QUIC connection cannot be
-established before PMTU cache expired, while non GSO sockets still
-worked fine at the same time.
+There is a WARN_ON_ONCE to catch an unlikely situation when
+domain_remove_dev_pasid can't find the `pasid`. In case it nevertheless
+happens we must avoid using a NULL pointer.
 
-Ideally, do not check any GSO related constraints when payload size is
-smaller than requested gso_size, and return EMSGSIZE instead of EINVAL
-on MTU/PMTU check failure to be more specific on the error cause.
-
-Fixes: 4094871db1d6 ("udp: only do GSO if # of segs > 1")
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
+Link: https://lore.kernel.org/r/20241218201048.E544818E57E@bout3.ijzerbout.nl
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c                       |  4 ++--
- net/ipv6/udp.c                       |  4 ++--
- tools/testing/selftests/net/udpgso.c | 26 ++++++++++++++++++++++++++
- 3 files changed, 30 insertions(+), 4 deletions(-)
+ drivers/iommu/intel/iommu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index d2eeb6fc49b38..8da74dc63061c 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -985,9 +985,9 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
- 		const int hlen = skb_network_header_len(skb) +
- 				 sizeof(struct udphdr);
- 
--		if (hlen + cork->gso_size > cork->fragsize) {
-+		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
- 			kfree_skb(skb);
--			return -EINVAL;
-+			return -EMSGSIZE;
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 79e0da9eb626c..8f75c11a3ec48 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4090,13 +4090,14 @@ void domain_remove_dev_pasid(struct iommu_domain *domain,
+ 			break;
  		}
- 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
- 			kfree_skb(skb);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 896c9c827a288..197d0ac47592a 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1294,9 +1294,9 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
- 		const int hlen = skb_network_header_len(skb) +
- 				 sizeof(struct udphdr);
+ 	}
+-	WARN_ON_ONCE(!dev_pasid);
+ 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
  
--		if (hlen + cork->gso_size > cork->fragsize) {
-+		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
- 			kfree_skb(skb);
--			return -EINVAL;
-+			return -EMSGSIZE;
- 		}
- 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
- 			kfree_skb(skb);
-diff --git a/tools/testing/selftests/net/udpgso.c b/tools/testing/selftests/net/udpgso.c
-index 3f2fca02fec53..36ff28af4b190 100644
---- a/tools/testing/selftests/net/udpgso.c
-+++ b/tools/testing/selftests/net/udpgso.c
-@@ -102,6 +102,19 @@ struct testcase testcases_v4[] = {
- 		.gso_len = CONST_MSS_V4,
- 		.r_num_mss = 1,
- 	},
-+	{
-+		/* datalen <= MSS < gso_len: will fall back to no GSO */
-+		.tlen = CONST_MSS_V4,
-+		.gso_len = CONST_MSS_V4 + 1,
-+		.r_num_mss = 0,
-+		.r_len_last = CONST_MSS_V4,
-+	},
-+	{
-+		/* MSS < datalen < gso_len: fail */
-+		.tlen = CONST_MSS_V4 + 1,
-+		.gso_len = CONST_MSS_V4 + 2,
-+		.tfail = true,
-+	},
- 	{
- 		/* send a single MSS + 1B */
- 		.tlen = CONST_MSS_V4 + 1,
-@@ -205,6 +218,19 @@ struct testcase testcases_v6[] = {
- 		.gso_len = CONST_MSS_V6,
- 		.r_num_mss = 1,
- 	},
-+	{
-+		/* datalen <= MSS < gso_len: will fall back to no GSO */
-+		.tlen = CONST_MSS_V6,
-+		.gso_len = CONST_MSS_V6 + 1,
-+		.r_num_mss = 0,
-+		.r_len_last = CONST_MSS_V6,
-+	},
-+	{
-+		/* MSS < datalen < gso_len: fail */
-+		.tlen = CONST_MSS_V6 + 1,
-+		.gso_len = CONST_MSS_V6 + 2,
-+		.tfail = true
-+	},
- 	{
- 		/* send a single MSS + 1B */
- 		.tlen = CONST_MSS_V6 + 1,
+ 	cache_tag_unassign_domain(dmar_domain, dev, pasid);
+ 	domain_detach_iommu(dmar_domain, iommu);
+-	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
+-	kfree(dev_pasid);
++	if (!WARN_ON_ONCE(!dev_pasid)) {
++		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
++		kfree(dev_pasid);
++	}
+ }
+ 
+ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
 -- 
 2.39.5
 
