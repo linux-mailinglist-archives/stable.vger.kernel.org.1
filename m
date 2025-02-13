@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-115266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2743BA342BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F24A3453A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4858E162C57
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F343B4BDE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB1721D3F9;
-	Thu, 13 Feb 2025 14:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CB1DDC23;
+	Thu, 13 Feb 2025 15:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ut7/RAZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcBj2v+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12BE2222AC;
-	Thu, 13 Feb 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA9C1D516A;
+	Thu, 13 Feb 2025 15:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457461; cv=none; b=LZmfsHxE4vuzyotCp4+9jBL7svEi1TdG/2nMW3SyCAgN4d27+JM1a7Oct9dhelkrfwptWieLtcTUc3+LoasUUWkStRUpLVXW3re+KFbSH8NveNbvyRXreIN9WCq0miKW7XqJk6sO5y/65GivhwwY7GSR/zzO52GH1xnwr1LV+Hw=
+	t=1739458985; cv=none; b=iHo6atgvQsZQzEJ+hrOZsf53CEGmWeREJZRDkczPpXd9sKQaSWVTttk4yg4MlfB6Wmmtbj+UKNqAtxUaBayjOhMrddTK9cYxY8FOYYfsC5tQmSSfT6vuJ1xL5ON251vrK8jGEMldQJvy2HrJ81Q/D6OvP2W452+ryCFH9P03QWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457461; c=relaxed/simple;
-	bh=R57jNFaQn5D+OF9oxSSxcnxnCMF1Ig5CZkLFoCUkwvk=;
+	s=arc-20240116; t=1739458985; c=relaxed/simple;
+	bh=pwl7/PnoJxAVH0AfQKgegkjUpG+VylTfbpm4Hd64Fy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISBbRjPnyCvrCFR1eZScNSA1TgzeviQU3/uHFNV2a3grvu35Ku/VZ9sNqoduktBSHkHAGpYBdF0wEokICEJN9t+Pxc5gYd/iQ9rMVx4vTpkVW9OkW7QRcYANZHVNfI9H+YaEd0G3pbuN7ahrZmZHsHGSxNkUaGGHt9jQgVBT0+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ut7/RAZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EE1C4CED1;
-	Thu, 13 Feb 2025 14:37:40 +0000 (UTC)
+	 MIME-Version; b=UfxxnnczlpitbUlO5POMEQ+iMQx+7zBtsd/95+GgawvVIeM5IXozD38hPjiHhmnbeYjwR0H4aLYAuvYE4s1hjrrNy/R9hSTcoEkCDTWZYt79y2CaiqN0de8VNxCin/lM/hlcZYYXsi2EUgB/Yvmxvf26J+1lSg/DCsDqZsl14xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcBj2v+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F8C4CED1;
+	Thu, 13 Feb 2025 15:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457461;
-	bh=R57jNFaQn5D+OF9oxSSxcnxnCMF1Ig5CZkLFoCUkwvk=;
+	s=korg; t=1739458985;
+	bh=pwl7/PnoJxAVH0AfQKgegkjUpG+VylTfbpm4Hd64Fy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ut7/RAZSCSVyuHZqtxxV+WM187P0wIn/X+61UKNGAsFI1Ph+uj0YXAinNuCG1mQnG
-	 GWe3nE6gWJiO86LU/H2gSjxPQx8y0z2dEDz9qMNoiDi96lmKCwXzRieO6j7/OAKxXL
-	 wVi/ra7V7Ii8eJQ3EextC+lz17tF3YlFqdmQch1g=
+	b=HcBj2v+oY66qK0NXGEfMZTw0dsamnlr7Stm+1zIezBKmDTPCx5yJ6JVjIP2Hljurd
+	 j0CsK4qb3z9BgCnHCVPIKNtcNtKyu6QFy4lh9cQynludIVrPnpkB/UfM7oK5QbHe+d
+	 i2/tQb2DVsLEc9sqmpnd9qdCVdC2OkW4LeiaLLTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <mail@jakemoroni.com>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/422] net: atlantic: fix warning during hot unplug
-Date: Thu, 13 Feb 2025 15:24:26 +0100
-Message-ID: <20250213142441.067241195@linuxfoundation.org>
+	Sean Anderson <sean.anderson@linux.dev>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: [PATCH 6.13 102/443] tty: xilinx_uartps: split sysrq handling
+Date: Thu, 13 Feb 2025 15:24:27 +0100
+Message-ID: <20250213142444.546865250@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <mail@jakemoroni.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 028676bb189ed6d1b550a0fc570a9d695b6acfd3 ]
+commit b06f388994500297bb91be60ffaf6825ecfd2afe upstream.
 
-Firmware deinitialization performs MMIO accesses which are not
-necessary if the device has already been removed. In some cases,
-these accesses happen via readx_poll_timeout_atomic which ends up
-timing out, resulting in a warning at hw_atl2_utils_fw.c:112:
+lockdep detects the following circular locking dependency:
 
-[  104.595913] Call Trace:
-[  104.595915]  <TASK>
-[  104.595918]  ? show_regs+0x6c/0x80
-[  104.595923]  ? __warn+0x8d/0x150
-[  104.595925]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595934]  ? report_bug+0x182/0x1b0
-[  104.595938]  ? handle_bug+0x6e/0xb0
-[  104.595940]  ? exc_invalid_op+0x18/0x80
-[  104.595942]  ? asm_exc_invalid_op+0x1b/0x20
-[  104.595944]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595952]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
-[  104.595959]  aq_nic_deinit.part.0+0xbd/0xf0 [atlantic]
-[  104.595964]  aq_nic_deinit+0x17/0x30 [atlantic]
-[  104.595970]  aq_ndev_close+0x2b/0x40 [atlantic]
-[  104.595975]  __dev_close_many+0xad/0x160
-[  104.595978]  dev_close_many+0x99/0x170
-[  104.595979]  unregister_netdevice_many_notify+0x18b/0xb20
-[  104.595981]  ? __call_rcu_common+0xcd/0x700
-[  104.595984]  unregister_netdevice_queue+0xc6/0x110
-[  104.595986]  unregister_netdev+0x1c/0x30
-[  104.595988]  aq_pci_remove+0xb1/0xc0 [atlantic]
+CPU 0                      CPU 1
+========================== ============================
+cdns_uart_isr()            printk()
+  uart_port_lock(port)       console_lock()
+			     cdns_uart_console_write()
+                               if (!port->sysrq)
+                                 uart_port_lock(port)
+  uart_handle_break()
+    port->sysrq = ...
+  uart_handle_sysrq_char()
+    printk()
+      console_lock()
 
-Fix this by skipping firmware deinitialization altogether if the
-PCI device is no longer present.
+The fixed commit attempts to avoid this situation by only taking the
+port lock in cdns_uart_console_write if port->sysrq unset. However, if
+(as shown above) cdns_uart_console_write runs before port->sysrq is set,
+then it will try to take the port lock anyway. This may result in a
+deadlock.
 
-Tested with an AQC113 attached via Thunderbolt by performing
-repeated unplug cycles while traffic was running via iperf.
+Fix this by splitting sysrq handling into two parts. We use the prepare
+helper under the port lock and defer handling until we release the lock.
 
-Fixes: 97bde5c4f909 ("net: ethernet: aquantia: Support for NIC-specific code")
-Signed-off-by: Jacob Moroni <mail@jakemoroni.com>
-Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250203143604.24930-3-mail@jakemoroni.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
+Acked-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_nic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/xilinx_uartps.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-index fe0e3e2a81171..71e50fc65c147 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-@@ -1441,7 +1441,9 @@ void aq_nic_deinit(struct aq_nic_s *self, bool link_down)
- 	aq_ptp_ring_free(self);
- 	aq_ptp_free(self);
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -287,7 +287,7 @@ static void cdns_uart_handle_rx(void *de
+ 				continue;
+ 		}
  
--	if (likely(self->aq_fw_ops->deinit) && link_down) {
-+	/* May be invoked during hot unplug. */
-+	if (pci_device_is_present(self->pdev) &&
-+	    likely(self->aq_fw_ops->deinit) && link_down) {
- 		mutex_lock(&self->fwreq_mutex);
- 		self->aq_fw_ops->deinit(self->aq_hw);
- 		mutex_unlock(&self->fwreq_mutex);
--- 
-2.39.5
-
+-		if (uart_handle_sysrq_char(port, data))
++		if (uart_prepare_sysrq_char(port, data))
+ 			continue;
+ 
+ 		if (is_rxbs_support) {
+@@ -495,7 +495,7 @@ static irqreturn_t cdns_uart_isr(int irq
+ 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
+ 		cdns_uart_handle_rx(dev_id, isrstatus);
+ 
+-	uart_port_unlock(port);
++	uart_unlock_and_check_sysrq(port);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1380,9 +1380,7 @@ static void cdns_uart_console_write(stru
+ 	unsigned int imr, ctrl;
+ 	int locked = 1;
+ 
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
++	if (oops_in_progress)
+ 		locked = uart_port_trylock_irqsave(port, &flags);
+ 	else
+ 		uart_port_lock_irqsave(port, &flags);
 
 
 
