@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AD3A34756
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F9FA345CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF2D3AB74B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A6A172397
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B59514831C;
-	Thu, 13 Feb 2025 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA36A26B097;
+	Thu, 13 Feb 2025 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqxJRSTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxtvnMxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167C9335BA;
-	Thu, 13 Feb 2025 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6902726B080;
+	Thu, 13 Feb 2025 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460158; cv=none; b=rRqz0SLp0ltv6PXaFo1RL8UI1QjfrC2sJkgGDA1MLK3scr7fIV02bzDLriy7iT5/IBOXGb5+sqIg+sDVwxIapbWlHturd6lT7J4v3xO2MOCoUh5PXc+3TvvwvPk1vbj0EiLxiMLtSnCf3stfofi1QJ+WTIex0/XxQ7OFvhQtLu8=
+	t=1739459366; cv=none; b=o0Fp0EVdJCA071eH8V9vM7VyngUJvBZ6hSMF9dQeP1sxXgaenCEfPVcNVvWBbSDdInbOBYrfPoSvhSuWXN+o82Fn9bM/56CCATcc7R5LsUsNRUGQc3daim+pEqGWsQHbGSEpniWWkygVFsASB+NXkq90i1jiS/rVyR95/bz+Pus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460158; c=relaxed/simple;
-	bh=ucucFfSD1EwT17bLwMDVCTRxCtXsVkC3X35dgl09nxk=;
+	s=arc-20240116; t=1739459366; c=relaxed/simple;
+	bh=2Qz6DPh1Lk+luCAbCYxcEqwVTvZedn+9OiVVWpRrvcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RImf6WRIr5s+5UzZx95BGuXWYEionYRlJfZPgb9fRBSqnP2O2S4QnkjuI2e2iH7xNg8VXN+Dyxs0FDN6yNiwaA1GNWXaMgM0XNNJVj+/jXtNUIen0YliLdJ2ULVCmFR69ZxjLdRCDuz1ghfECF6WmUXzZenddA5CEez4Z9uqq/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqxJRSTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5B4C4CED1;
-	Thu, 13 Feb 2025 15:22:37 +0000 (UTC)
+	 MIME-Version; b=GryNUY90M80NqG94+jtkqADweFE1wZGuBLSaW+B4tJpTuSq38W7fSxjXEh54ieqtvL7yfpwIYUhqhV/+al7jdqvOeajnoz/Mv4ruqrellf134erL+y6SyHmAY94LFFeQPdGGO/zbkDPP3/cEUCuPir7mJ8DNLGaNeASd5Ap+tpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxtvnMxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2929C4CED1;
+	Thu, 13 Feb 2025 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460158;
-	bh=ucucFfSD1EwT17bLwMDVCTRxCtXsVkC3X35dgl09nxk=;
+	s=korg; t=1739459366;
+	bh=2Qz6DPh1Lk+luCAbCYxcEqwVTvZedn+9OiVVWpRrvcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqxJRSTZQyP0TPPi1SA1SQvBsMI9Rs6Y0CYsq5IeXy/JK9WaT1GVX20bARdDGAxjI
-	 8jOHpyQnNfMhmJ4mpcBoxrNfqTJzIVbfbliYsXApyL1VvijIjiGnlrlBRDTCeK1loG
-	 CXkLYYXN+MFWHCJ8guXzqtxX84RYpqS+lSZlJjAA=
+	b=mxtvnMxQW1JCIqlC+jyveilXQk8T3anGb1GQ9awybYbdhMxWbUx7/4hCXFx6wvg7P
+	 le+YN2vA8K2CtOdVRdD+MGVy+44gzN/21UP8JZlaAGQ7Zpgyd60GuNNFiGcYFfYS8B
+	 QuLAC1waVHcjMLCvW9p/0bYDnJ1q9qTlaGLktqiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/273] s390/stackleak: Use exrl instead of ex in __stackleak_poison()
+	Breno Leitao <leitao@debian.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dave Young <dyoung@redhat.com>,
+	Usama Arif <usamaarif642@gmail.com>
+Subject: [PATCH 6.13 212/443] x86/efi: skip memattr table on kexec boot
 Date: Thu, 13 Feb 2025 15:26:17 +0100
-Message-ID: <20250213142407.569845380@linuxfoundation.org>
+Message-ID: <20250213142448.797679896@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Dave Young <dyoung@redhat.com>
 
-[ Upstream commit a88c26bb8e04ee5f2678225c0130a5fbc08eef85 ]
+commit 64b45dd46e154ee7641d7e0457f3fa266e57179f upstream.
 
-exrl is present in all machines currently supported, therefore prefer
-it over ex. This saves one instruction and doesn't need an additional
-register to hold the address of the target instruction.
+efi_memattr_init() added a sanity check to avoid firmware caused corruption.
+The check is based on efi memmap entry numbers, but kexec only takes the
+runtime related memmap entries thus this caused many false warnings, see
+below thread for details:
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+https://lore.kernel.org/all/20250108215957.3437660-2-usamaarif642@gmail.com/
+
+Ard suggests to skip the efi memattr table in kexec, this makes sense because
+those memattr fixups are not critical.
+
+Fixes: 8fbe4c49c0cc ("efi/memattr: Ignore table if the size is clearly bogus")
+Cc: <stable@vger.kernel.org> # v6.13+
+Reported-by: Breno Leitao <leitao@debian.org>
+Reported-and-tested-by: Usama Arif <usamaarif642@gmail.com>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Dave Young <dyoung@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/processor.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/platform/efi/quirks.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index e7338ed540d8f..2f373e8cfed33 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -140,8 +140,7 @@ static __always_inline void __stackleak_poison(unsigned long erase_low,
- 		"	la	%[addr],256(%[addr])\n"
- 		"	brctg	%[tmp],0b\n"
- 		"1:	stg	%[poison],0(%[addr])\n"
--		"	larl	%[tmp],3f\n"
--		"	ex	%[count],0(%[tmp])\n"
-+		"	exrl	%[count],3f\n"
- 		"	j	4f\n"
- 		"2:	stg	%[poison],0(%[addr])\n"
- 		"	j	4f\n"
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 846bf49f2508..553f330198f2 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -561,6 +561,11 @@ int __init efi_reuse_config(u64 tables, int nr_tables)
+ 
+ 		if (!efi_guidcmp(guid, SMBIOS_TABLE_GUID))
+ 			((efi_config_table_64_t *)p)->table = data->smbios;
++
++		/* Do not bother to play with mem attr table across kexec */
++		if (!efi_guidcmp(guid, EFI_MEMORY_ATTRIBUTES_TABLE_GUID))
++			((efi_config_table_64_t *)p)->table = EFI_INVALID_TABLE_ADDR;
++
+ 		p += sz;
+ 	}
+ 	early_memunmap(tablep, nr_tables * sz);
 -- 
-2.39.5
+2.48.1
 
 
 
