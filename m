@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0502A34680
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DBEA346DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E3F3A690A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE64188C1BD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB8326B09E;
-	Thu, 13 Feb 2025 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35556187550;
+	Thu, 13 Feb 2025 15:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYsA4B09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu9Cpkf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5226B096;
-	Thu, 13 Feb 2025 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55EB156653;
+	Thu, 13 Feb 2025 15:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459487; cv=none; b=qi6FFQageeLl1HNsCTt359Lp1vdSG6mK8zGrFqcH+4ULpueF0gWaRGJQ7sivVs9mNwZutN8mz0RZFJ+22SNh/AE/6aXmOhVkp4XQ0BhuTlNl7qf+a6FMq1BLxKMXJ8m7Oodd4JubINXugT6lUPt9cqCt0Anq7fW9vAaFP3U9zOY=
+	t=1739460178; cv=none; b=AZsRFl3wWrn58iY3PHvDOuvOBQ3hShtSH39eTruvOwyiidEqJqK/h3F8EobOIsY+JZwYy3tZun7GPnyIMS9uwMF9A0HzLsz71XaHQpZT3AARZ4zodp1EcPA59xoKatUxgXsO/+pWJmWH8L7aMMu1/V72H9e0EAgmlh1aUOJiae8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459487; c=relaxed/simple;
-	bh=ugO4zsefLiEyVoHCaMb8PH+Tccbm9KrIvYKj/U/wRy4=;
+	s=arc-20240116; t=1739460178; c=relaxed/simple;
+	bh=gp7XctmyxTndjxiauppn6NXgjwqc+ej7PwHpSCOLfIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+dYKwTJlwMlOtbjlvSFLXcxTcbhx2Ks9RmIjTO0Ldhu3SC8PUSJeRfIyFbhLTn94FaX3KH1xmSK9rN6VZVeTDXNpQG2fKrdvmNxPZXqAg8TrjydQbzR3zTRe82vqBAGT0t29BskRnisAxL2l9KPpxztZ0uZS9O5rdGAolv3qKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYsA4B09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E45C4CED1;
-	Thu, 13 Feb 2025 15:11:26 +0000 (UTC)
+	 MIME-Version; b=YQK99CO63TCgODMgHhleDGHcQjhKRUYWUNVghbu/+lIH0Vdwlzt8kb5nUfPvY0IXLGoRaVkEvDzya7EbRDwwNSGdi9hax11nBDurS+xP4bp9PKX6IgmbJf13bMIeZupeRXQW7H/6E8Wg+McyeKGmRCH73+NhvCK4K65aYpiDhOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu9Cpkf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5922BC4CED1;
+	Thu, 13 Feb 2025 15:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459487;
-	bh=ugO4zsefLiEyVoHCaMb8PH+Tccbm9KrIvYKj/U/wRy4=;
+	s=korg; t=1739460177;
+	bh=gp7XctmyxTndjxiauppn6NXgjwqc+ej7PwHpSCOLfIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYsA4B092hSYLZ6wqkuLToIBD6TicugmTKy5/HmUBNjKwFFOWxC4whpMXkAD6qkwP
-	 MbHG1AGk8/OhkhrldxYGq0MbLakNAcaHlw2Ls1IpkF+tWDn9ZWEitpIu5Ujrl0H1CT
-	 EybT3EjL/kIIXMMH63DKOK0kGcoiTMk6Kcoj+ZS0=
+	b=fu9Cpkf4XM6+xJQwUP8RB7QaNalYIlpOTzQo3ZwQTlVFbAJRGz5Dbn+wsA7IcsPOv
+	 h5Mpz+JbVqnC6WBoUm7DfYMbBKmteolZqSE8CyO2B1VkCLm47vIYIkEHabzwPA7+WY
+	 8/O2Xj3wHvyv9dBhuVz/sA3Xxx7YHM6SNOZSxZ70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 237/443] usbnet: ipheth: refactor NCM datagram loop
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 030/273] mmc: core: Respect quirk_max_rate for non-UHS SDIO card
 Date: Thu, 13 Feb 2025 15:26:42 +0100
-Message-ID: <20250213142449.760924156@linuxfoundation.org>
+Message-ID: <20250213142408.546512712@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-commit 2a9a196429e98fcc64078366c2679bc40aba5466 upstream.
+[ Upstream commit a2a44f8da29352f76c99c6904ee652911b8dc7dd ]
 
-Introduce an rx_error label to reduce repetitions in the header
-signature checks.
+The card-quirk was added to limit the clock-rate for a card with UHS-mode
+support, although let's respect the quirk for non-UHS mode too, to make the
+behaviour consistent.
 
-Store wDatagramIndex and wDatagramLength after endianness conversion to
-avoid repeated le16_to_cpu() calls.
-
-Rewrite the loop to return on a null trailing DPE, which is required
-by the CDC NCM spec. In case it is missing, fall through to rx_error.
-
-This change does not fix any particular issue. Its purpose is to
-simplify a subsequent commit that fixes a potential OoB read by limiting
-the maximum amount of processed DPEs.
-
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ipheth.c |   42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ drivers/mmc/core/sdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -213,9 +213,9 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	struct usb_cdc_ncm_ndp16 *ncm0;
- 	struct usb_cdc_ncm_dpe16 *dpe;
- 	struct ipheth_device *dev;
-+	u16 dg_idx, dg_len;
- 	int retval = -EINVAL;
- 	char *buf;
--	int len;
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index 5914516df2f7f..cb87e82737793 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -458,6 +458,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
+ 	if (mmc_card_sd_combo(card))
+ 		max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
  
- 	dev = urb->context;
- 
-@@ -227,39 +227,43 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	ncmh = urb->transfer_buffer;
- 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
- 	    /* On iOS, NDP16 directly follows NTH16 */
--	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16)))
-+		goto rx_error;
- 
- 	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
--	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN))
-+		goto rx_error;
- 
- 	dpe = ncm0->dpe16;
--	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
--	       le16_to_cpu(dpe->wDatagramLength) != 0) {
--		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
--		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
--		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
--		    le16_to_cpu(dpe->wDatagramIndex)) {
-+	while (true) {
-+		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
-+		dg_len = le16_to_cpu(dpe->wDatagramLength);
++	max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
 +
-+		/* Null DPE must be present after last datagram pointer entry
-+		 * (3.3.1 USB CDC NCM spec v1.0)
-+		 */
-+		if (dg_idx == 0 && dg_len == 0)
-+			return 0;
-+
-+		if (dg_idx < IPHETH_NCM_HEADER_SIZE ||
-+		    dg_idx >= urb->actual_length ||
-+		    dg_len > urb->actual_length - dg_idx) {
- 			dev->net->stats.rx_length_errors++;
- 			return retval;
- 		}
- 
--		buf = urb->transfer_buffer + le16_to_cpu(dpe->wDatagramIndex);
--		len = le16_to_cpu(dpe->wDatagramLength);
-+		buf = urb->transfer_buffer + dg_idx;
- 
--		retval = ipheth_consume_skb(buf, len, dev);
-+		retval = ipheth_consume_skb(buf, dg_len, dev);
- 		if (retval != 0)
- 			return retval;
- 
- 		dpe++;
- 	}
- 
--	return 0;
-+rx_error:
-+	dev->net->stats.rx_errors++;
-+	return retval;
+ 	return max_dtr;
  }
  
- static void ipheth_rcvbulk_callback(struct urb *urb)
+-- 
+2.39.5
+
 
 
 
