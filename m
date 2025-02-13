@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-116231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BD1A34832
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9393DA34668
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498483B0CBA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4897117127F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015CF153828;
-	Thu, 13 Feb 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761AF1422D8;
+	Thu, 13 Feb 2025 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS6UYuRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYlv6C57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A4E13C816;
-	Thu, 13 Feb 2025 15:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A626B0A5;
+	Thu, 13 Feb 2025 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460772; cv=none; b=o1uKr4q9Xt7wXbQJIAjpKVd/8OsO9TqZrhoSmyfFXndaYTKUwZy+Q+c1N+oytlkrYfe5Nh3EtLoyQU2So60cIrewSeNJuTjiOtPG+eidn4mkmhgP+PlFX1wT4fNgQ0FLd7BGKfwHVsPoP3Ks8FDdF7ts6HxcJKQ02Bvigzfwdxw=
+	t=1739459958; cv=none; b=WlsDco8cPEsmteQqBdzt2bOyy2emIwdCid9A12yjxTgFZ0WSOyIkslnuXJgHe+tBi1dSLlzSLf/ZwQYu/snazmGGVuY2i6mKKJUe+ZNAYNXRhaaa7QRFkr3Nr+buFLWsS754oAWNOB8IvLvOzO6ZduZqwvq/WuvRWiUgRfjPY44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460772; c=relaxed/simple;
-	bh=ztm5AtpUMyOiWU2ASIP7Fbsc4zb385Grojicdl43mN8=;
+	s=arc-20240116; t=1739459958; c=relaxed/simple;
+	bh=wZBN3VDrKprTb0U6LjxEPiXJ4puq/kBU4JJRrN5m1CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGXx5P9ExoIbeFxrNLxhJw3k5CWm1RmnPlWB+C9xaVig+bD54fEj6VPvT/1qMVMiFh3X7f8hIS7tcVqkqQKzgPX4FTceD+JoLIKcF7xbumnsHzgEA5bA11kaE2PTwRmb8/8fQc7Ot/niAz9aJ/N3kkbigMI8zklH3oAAIqTmh/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS6UYuRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D668C4CED1;
-	Thu, 13 Feb 2025 15:32:51 +0000 (UTC)
+	 MIME-Version; b=fLG12qHIOg7iRzJrViTEbpiFuRQauEUYThGnEyQNvNaA835SYPYtkhkUhUsDZ65kFyXBn1CBGj/Jzh9MjyArnzfn7sa1XCZrMjnunyyeiB6TWRgnaU9EQAdFRqVXhIA1zzD9qCQSf47/kjsm/EHm2rlGRbrNWFa01c/rTiWDvLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYlv6C57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969ECC4CED1;
+	Thu, 13 Feb 2025 15:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460772;
-	bh=ztm5AtpUMyOiWU2ASIP7Fbsc4zb385Grojicdl43mN8=;
+	s=korg; t=1739459958;
+	bh=wZBN3VDrKprTb0U6LjxEPiXJ4puq/kBU4JJRrN5m1CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eS6UYuRB7tyYmyiWw9aHvl0JaEuvbjcFfSDZEfUTdcRZjQrW/5oJFz7pGVzmGnhs4
-	 5CxDrXwF86CMWc4qzwLct9+EyYco+Kuu+vm6e4m0lq8sTaNCrxjg8iBvhTDuIyGWEa
-	 SsHu9HWu8pQk91p4/foEHhApnm4C8FEcFq5g1QJw=
+	b=OYlv6C57EZQMF6K7wI5SUGNYlux7Gr9Svt1AtE6LW/08QCrmUOneSwhCw4LywK2G1
+	 yekzx+KH2lczMstKCZI9FVJcLrUFgDN4p2a6B4TdzhwWvlZBnMgDEBcQJ6HWDCBOqL
+	 EEMUHJvaV5JUMVwuqyZ9Trv/VQPvYZxTHA+6C7oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 176/273] arm64: dts: qcom: sm6350: Fix MPSS memory length
+	reveliofuzzing <reveliofuzzing@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.13 383/443] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
 Date: Thu, 13 Feb 2025 15:29:08 +0100
-Message-ID: <20250213142414.286721860@linuxfoundation.org>
+Message-ID: <20250213142455.390962367@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit cd8d83de9cc9ecfb1f9a12bc838041c4eb4d10bd upstream.
+commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
+set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
+ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
+write outside the allocated buffer, overwriting random memory.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+While a ATA device is supposed to abort a ATA_NOP command, there does seem
+to be a bug either in libata-sff or QEMU, where either this status is not
+set, or the status is cleared before read by ata_sff_hsm_move().
+Anyway, that is most likely a separate bug.
 
-Fixes: 489be59b635b ("arm64: dts: qcom: sm6350: Add MPSS nodes")
+Looking at __atapi_pio_bytes(), it already has a safety check to ensure
+that __atapi_pio_bytes() cannot write outside the allocated buffer.
+
+Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
+cannot write outside the allocated buffer.
+
 Cc: stable@vger.kernel.org
-Tested-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-16-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
+Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
+Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-sff.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1480,7 +1480,7 @@
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -601,7 +601,7 @@ static void ata_pio_sector(struct ata_qu
+ {
+ 	struct ata_port *ap = qc->ap;
+ 	struct page *page;
+-	unsigned int offset;
++	unsigned int offset, count;
  
- 		mpss: remoteproc@4080000 {
- 			compatible = "qcom,sm6350-mpss-pas";
--			reg = <0x0 0x04080000 0x0 0x4040>;
-+			reg = <0x0 0x04080000 0x0 0x10000>;
+ 	if (!qc->cursg) {
+ 		qc->curbytes = qc->nbytes;
+@@ -617,25 +617,27 @@ static void ata_pio_sector(struct ata_qu
+ 	page = nth_page(page, (offset >> PAGE_SHIFT));
+ 	offset %= PAGE_SIZE;
  
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_EDGE_RISING>,
- 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+-	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
++	/* don't overrun current sg */
++	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
++
++	trace_ata_sff_pio_transfer_data(qc, offset, count);
+ 
+ 	/*
+ 	 * Split the transfer when it splits a page boundary.  Note that the
+ 	 * split still has to be dword aligned like all ATA data transfers.
+ 	 */
+ 	WARN_ON_ONCE(offset % 4);
+-	if (offset + qc->sect_size > PAGE_SIZE) {
++	if (offset + count > PAGE_SIZE) {
+ 		unsigned int split_len = PAGE_SIZE - offset;
+ 
+ 		ata_pio_xfer(qc, page, offset, split_len);
+-		ata_pio_xfer(qc, nth_page(page, 1), 0,
+-			     qc->sect_size - split_len);
++		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
+ 	} else {
+-		ata_pio_xfer(qc, page, offset, qc->sect_size);
++		ata_pio_xfer(qc, page, offset, count);
+ 	}
+ 
+-	qc->curbytes += qc->sect_size;
+-	qc->cursg_ofs += qc->sect_size;
++	qc->curbytes += count;
++	qc->cursg_ofs += count;
+ 
+ 	if (qc->cursg_ofs == qc->cursg->length) {
+ 		qc->cursg = sg_next(qc->cursg);
 
 
 
