@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0B5A34749
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FBEA34414
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4944F1883149
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B03816990A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD6D18DF6D;
-	Thu, 13 Feb 2025 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2FD202C43;
+	Thu, 13 Feb 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UO6FJ8u3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCXOUAr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD4B18991E;
-	Thu, 13 Feb 2025 15:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5876924168A;
+	Thu, 13 Feb 2025 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460428; cv=none; b=MPN+C3rHKcwv348XglxrdkRcnr3FpClKbS3qVQyddH0P2SOQYEiKOCMIl8KP9ZXlhxiwjXwGExgoxTemTeUtLoa7cQy8DI95c+1kvIdyBlGXxnF7E2J+EYp9eLdd2maMt959Zva1AWLT6emmohLxR0ob99Otzit20GwEcqpBGWg=
+	t=1739458237; cv=none; b=UOSId654Deq2q/aOSEguMRAkn0Zhb9q03Ktg0BOl3vFGbgOs5JpJ+66fEnz90OhpW+swjy3KOwarKAVTwNuLpcMawv6Ur1k7sJz1pwNLJUxE0jA8X5GO3WnB/yjzoAhPW9LG4FuTezR7zpTcaJOn90qZ+sWELE4Ej2kbWrYxpIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460428; c=relaxed/simple;
-	bh=Lr5Ytiv3m1NOUm7+IOK5gvXwx8N8HTwvPMQS5mq4NuM=;
+	s=arc-20240116; t=1739458237; c=relaxed/simple;
+	bh=Btq3ZJOO4ppscKNfOIdcHboyLHI/NVgq9jlh4dGmDts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBfy0+m7zJj4bsYAXM+Zr07j14o7kTsfVGTdWzAs/Wwi294eHjnzwHJC10OhRAkjDPpcamlb+TAHIMTLh7deU0rlAICxt9WFhA6FsqPLa525NVAEBLzFTM8wtK7Ja4421Gyxp7zQVTUAhq+8/VWMrysk3vNWWz3p7kSzB0JEtt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UO6FJ8u3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB10C4CEE5;
-	Thu, 13 Feb 2025 15:27:07 +0000 (UTC)
+	 MIME-Version; b=m+KjbW6FvdzeVdjsfGH+cbnyaAewqFTLBxxUFxc9WOAt+Vyjz67wK8WUG23L39WPd1t0vVd5NKLrwukLE7GK5hiyoGLk4bXik8s8mQkf+CeAttZNGVrbkL4dkXUhsEROaz07o/cgGom6fnbhH9LtupMD19zbTe6KxIdqrP4CdIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCXOUAr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE41C4CEE4;
+	Thu, 13 Feb 2025 14:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460427;
-	bh=Lr5Ytiv3m1NOUm7+IOK5gvXwx8N8HTwvPMQS5mq4NuM=;
+	s=korg; t=1739458236;
+	bh=Btq3ZJOO4ppscKNfOIdcHboyLHI/NVgq9jlh4dGmDts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UO6FJ8u3QKZGhV7vbp1+Q5f1rV9W3dfBrYGtAJOPJMNJx/b/7eCtueG7OTA/UUxiw
-	 9igHCwd75jl/ivsfX5Hi3k99SnyVln+K7g7GmXk3l4KL1er94zB+yxUvUnx7ShCXDg
-	 0rQsnvQMDUxWo6Zojf/61s665nTV9ESyXze2HRjI=
+	b=WCXOUAr2otimNzzzEltAMmAqrHVJgy0+yq8Wz+LLwA/Xg3hxPajQ87cMviyzk4V2O
+	 zx5fLo/uaw1hxEUgUTtHr3sBoI7XC4TP4Xv/0lTOKVN2QlQsIBf4l/7iiV/yW/LHYb
+	 ZLINC76ZDXNCYOfdBxrU6eTqBPXQLBkgU0B0c6Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 110/273] clk: qcom: gcc-sm6350: Add missing parent_map for two clocks
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 333/422] media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
 Date: Thu, 13 Feb 2025 15:28:02 +0100
-Message-ID: <20250213142411.693436139@linuxfoundation.org>
+Message-ID: <20250213142449.404712211@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 96fe1a7ee477d701cfc98ab9d3c730c35d966861 upstream.
+commit 42d0ec194aa12e9b97f09a94fe565ba2e5f631a2 upstream.
 
-If a clk_rcg2 has a parent, it should also have parent_map defined,
-otherwise we'll get a NULL pointer dereference when calling clk_set_rate
-like the following:
+UB9702 does not have SP and EQ registers, but the driver uses them in
+log_status(). Fix this by separating the SP and EQ related log_status()
+work into a separate function (for clarity) and calling that function
+only for UB960.
 
-  [    3.388105] Call trace:
-  [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
-  [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
-  [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
-  [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
-  [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
-  [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
-  [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
-  [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
-  [    3.455886]  clk_set_rate+0x38/0x14c
-
-Add the parent_map property for two clocks where it's missing and also
-un-inline the parent_data as well to keep the matching parent_map and
-parent_data together.
-
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241220-sm6350-parent_map-v1-1-64f3d04cb2eb@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm6350.c |   22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/media/i2c/ds90ub960.c |   90 +++++++++++++++++++++++-------------------
+ 1 file changed, 50 insertions(+), 40 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -182,6 +182,14 @@ static const struct clk_parent_data gcc_
- 	{ .hw = &gpll0_out_odd.clkr.hw },
+--- a/drivers/media/i2c/ds90ub960.c
++++ b/drivers/media/i2c/ds90ub960.c
+@@ -2950,6 +2950,54 @@ static const struct v4l2_subdev_pad_ops
+ 	.set_fmt = ub960_set_fmt,
  };
  
-+static const struct parent_map gcc_parent_map_3[] = {
-+	{ P_BI_TCXO, 0 },
-+};
++static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
++					 unsigned int nport)
++{
++	struct device *dev = &priv->client->dev;
++	u8 eq_level;
++	s8 strobe_pos;
++	u8 v = 0;
 +
-+static const struct clk_parent_data gcc_parent_data_3[] = {
-+	{ .fw_name = "bi_tcxo" },
-+};
++	/* Strobe */
 +
- static const struct parent_map gcc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
-@@ -701,13 +709,12 @@ static struct clk_rcg2 gcc_ufs_phy_phy_a
- 	.cmd_rcgr = 0x3a0b0,
- 	.mnd_width = 0,
- 	.hid_width = 5,
-+	.parent_map = gcc_parent_map_3,
- 	.freq_tbl = ftbl_gcc_ufs_phy_phy_aux_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_phy_aux_clk_src",
--		.parent_data = &(const struct clk_parent_data){
--			.fw_name = "bi_tcxo",
--		},
--		.num_parents = 1,
-+		.parent_data = gcc_parent_data_3,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -764,13 +771,12 @@ static struct clk_rcg2 gcc_usb30_prim_mo
- 	.cmd_rcgr = 0x1a034,
- 	.mnd_width = 0,
- 	.hid_width = 5,
-+	.parent_map = gcc_parent_map_3,
- 	.freq_tbl = ftbl_gcc_usb30_prim_mock_utmi_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_usb30_prim_mock_utmi_clk_src",
--		.parent_data = &(const struct clk_parent_data){
--			.fw_name = "bi_tcxo",
--		},
--		.num_parents = 1,
-+		.parent_data = gcc_parent_data_3,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
++	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
++
++	dev_info(dev, "\t%s strobe\n",
++		 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
++							  "Manual");
++
++	if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
++		ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
++
++		dev_info(dev, "\tStrobe range [%d, %d]\n",
++			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
++			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
++	}
++
++	ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
++
++	dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
++
++	/* EQ */
++
++	ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
++
++	dev_info(dev, "\t%s EQ\n",
++		 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
++						    "Adaptive");
++
++	if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
++		ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
++
++		dev_info(dev, "\tEQ range [%u, %u]\n",
++			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
++			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
++	}
++
++	if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
++		dev_info(dev, "\tEQ level %u\n", eq_level);
++}
++
+ static int ub960_log_status(struct v4l2_subdev *sd)
+ {
+ 	struct ub960_data *priv = sd_to_ub960(sd);
+@@ -2997,8 +3045,6 @@ static int ub960_log_status(struct v4l2_
+ 
+ 	for (nport = 0; nport < priv->hw_data->num_rxports; nport++) {
+ 		struct ub960_rxport *rxport = priv->rxports[nport];
+-		u8 eq_level;
+-		s8 strobe_pos;
+ 		unsigned int i;
+ 
+ 		dev_info(dev, "RX %u\n", nport);
+@@ -3034,44 +3080,8 @@ static int ub960_log_status(struct v4l2_
+ 		ub960_rxport_read(priv, nport, UB960_RR_CSI_ERR_COUNTER, &v);
+ 		dev_info(dev, "\tcsi_err_counter %u\n", v);
+ 
+-		/* Strobe */
+-
+-		ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
+-
+-		dev_info(dev, "\t%s strobe\n",
+-			 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
+-								  "Manual");
+-
+-		if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
+-			ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
+-
+-			dev_info(dev, "\tStrobe range [%d, %d]\n",
+-				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
+-				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
+-		}
+-
+-		ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
+-
+-		dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
+-
+-		/* EQ */
+-
+-		ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
+-
+-		dev_info(dev, "\t%s EQ\n",
+-			 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
+-							    "Adaptive");
+-
+-		if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
+-			ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
+-
+-			dev_info(dev, "\tEQ range [%u, %u]\n",
+-				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
+-				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
+-		}
+-
+-		if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
+-			dev_info(dev, "\tEQ level %u\n", eq_level);
++		if (!priv->hw_data->is_ub9702)
++			ub960_log_status_ub960_sp_eq(priv, nport);
+ 
+ 		/* GPIOs */
+ 		for (i = 0; i < UB960_NUM_BC_GPIOS; i++) {
 
 
 
