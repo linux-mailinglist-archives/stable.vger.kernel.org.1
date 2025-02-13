@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631AEA346EC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C749BA344EB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2378188CD99
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C62C7A3CF2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEFA156F5E;
-	Thu, 13 Feb 2025 15:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B33426B0B1;
+	Thu, 13 Feb 2025 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzrsjvkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/t/3mCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738F114AD2D;
-	Thu, 13 Feb 2025 15:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B943E26B080;
+	Thu, 13 Feb 2025 15:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460221; cv=none; b=iCo03QGqgwJVlt+EdyJfTTLIevq8OeZtu9yy8KkyzvnWFKIZqPmtDJ0okBb98xQfoM/eRhWl/DFvpG2q46XnjtcAiNzU4YH8kh3+gEKGF+Ng+BQYrWkQ8GHMwfrRin6ahHKOfySSqynTM2AlFfcAP3Ss6B08dF4AsenhHTFjo2I=
+	t=1739459414; cv=none; b=OXd6b/MPJU7I3+sg1NImgoIlSlZkjz0CY0c3mKjSA8EPiE/oX9FEp/WbW3lSIScDqPlb5VJ3c9xGJNLj/Tn84yV7szKqzU/TbfoWyxqycA7OgB7DGsmCD6k0ijQBDfbAXzDWY7bwpNvaL4ooEdbf6CyJ7fTmVl3rRU3DC3ius+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460221; c=relaxed/simple;
-	bh=fR4t/vEEUYTBhNagWZ3BR/3fUko4AYC+/5Gvw7FV3CU=;
+	s=arc-20240116; t=1739459414; c=relaxed/simple;
+	bh=d8ENjeMgbIjm7E3RcoAYlXlcPw1yndYnkkUTQuJe28A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feoOhjis5X565ozlxfNCgddQBr1nAUQjEob0W/CAlz4QkcfcnLFuHDwUSd2kTfq9i31NpVjkdFJKYoiYhekgCVYtjYUHZ0Cu7fTzZTK1cQVV5sFpGGOq0XyhNN8YdOxhYMY/uduIPPrAAVNu0XI6hSvFTmf34aK9TNlasvLIwN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzrsjvkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85C8C4CED1;
-	Thu, 13 Feb 2025 15:23:40 +0000 (UTC)
+	 MIME-Version; b=TEywrLxzlH6pF2wuyFlk1jmt5RNE4AdBJluy9kByxBPxmOakczy+j5BeaLCZvj1V9LdagIGEjSKJeFQE6NngmNjRICjBe8d1btxdMsu60FLbMX5//jBqa7WgLXd3+iSsGotdpFuPKA7UlL7EkqlZKYZgrFf+TbSw7Yk8mqlQYJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/t/3mCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AB9C4CED1;
+	Thu, 13 Feb 2025 15:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460221;
-	bh=fR4t/vEEUYTBhNagWZ3BR/3fUko4AYC+/5Gvw7FV3CU=;
+	s=korg; t=1739459414;
+	bh=d8ENjeMgbIjm7E3RcoAYlXlcPw1yndYnkkUTQuJe28A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzrsjvkhNN+GpFMv9mW8bBq85+k5KGpRTBJYEboJaS5h5ZROmjJlff6NDb10zrNS+
-	 mMsiaaQetvNtcHgVG5YsvQAQG7eDylh6zESsBcHOEtSZZJifJ/yv4ZEeMV49qUdMs3
-	 xeVFiM+qKGfhsb+StCX9UC/SiAnoI+KLaxD94Kzw=
+	b=P/t/3mCawmXdgu6HA99Bt5VZ09fWtria1UTVA4zkvZiTehh61Z0q8YebVIsr8uYKE
+	 NlgX4q5cpShlL6idpT6Yw66YkisUkEqfw/iKqSc+0+Bu+SjpAUfC6+oE3ptxs+CTWH
+	 FmGcH5nAkp/O1EbppefJ2BDURIVgVLQgEHd5sHiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/273] ASoC: soc-pcm: dont use soc_pcm_ret() on .prepare callback
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.13 257/443] powerpc/pseries/eeh: Fix get PE state translation
 Date: Thu, 13 Feb 2025 15:27:02 +0100
-Message-ID: <20250213142409.328388909@linuxfoundation.org>
+Message-ID: <20250213142450.532267676@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-[ Upstream commit 301c26a018acb94dd537a4418cefa0f654500c6f ]
+commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
 
-commit 1f5664351410 ("ASoC: lower "no backend DAIs enabled for ... Port"
-log severity") ignores -EINVAL error message on common soc_pcm_ret().
-It is used from many functions, ignoring -EINVAL is over-kill.
+The PE Reset State "0" returned by RTAS calls
+"ibm_read_slot_reset_[state|state2]" indicates that the reset is
+deactivated and the PE is in a state where MMIO and DMA are allowed.
+However, the current implementation of "pseries_eeh_get_state()" does
+not reflect this, causing drivers to incorrectly assume that MMIO and
+DMA operations cannot be resumed.
 
-The reason why -EINVAL was ignored was it really should only be used
-upon invalid parameters coming from userspace and in that case we don't
-want to log an error since we do not want to give userspace a way to do
-a denial-of-service attack on the syslog / diskspace.
+The userspace drivers as a part of EEH recovery using VFIO ioctls fail
+to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
+ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
+userspace drivers from functioning properly on pseries systems.
 
-So don't use soc_pcm_ret() on .prepare callback is better idea.
+The patch addresses this issue by updating 'pseries_eeh_get_state()'
+to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
+the result mask for PE Reset State "0". This ensures correct state
+reporting to the callers, aligning the behavior with the PAPR specification
+and fixing the bug in EEH recovery for VFIO user workflows.
 
-Link: https://lore.kernel.org/r/87v7vptzap.wl-kuninori.morimoto.gx@renesas.com
-Cc: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87bjxg8jju.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-pcm.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 511446a30c057..60248a6820aac 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -38,7 +38,6 @@ static inline int _soc_pcm_ret(struct snd_soc_pcm_runtime *rtd,
- 	switch (ret) {
- 	case -EPROBE_DEFER:
- 	case -ENOTSUPP:
--	case -EINVAL:
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct
+ 
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
  		break;
- 	default:
- 		dev_err(rtd->dev,
-@@ -902,7 +901,13 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
- 	}
- 
- out:
--	return soc_pcm_ret(rtd, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- /* PCM prepare ops for non-DPCM streams */
-@@ -914,6 +919,13 @@ static int soc_pcm_prepare(struct snd_pcm_substream *substream)
- 	snd_soc_dpcm_mutex_lock(rtd);
- 	ret = __soc_pcm_prepare(rtd, substream);
- 	snd_soc_dpcm_mutex_unlock(rtd);
-+
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
- 	return ret;
- }
- 
-@@ -2461,7 +2473,13 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
- 		be->dpcm[stream].state = SND_SOC_DPCM_STATE_PREPARE;
- 	}
- 
--	return soc_pcm_ret(fe, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
-@@ -2501,7 +2519,13 @@ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
- 	dpcm_set_fe_update_state(fe, stream, SND_SOC_DPCM_UPDATE_NO);
- 	snd_soc_dpcm_mutex_unlock(fe);
- 
--	return soc_pcm_ret(fe, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- static int dpcm_run_update_shutdown(struct snd_soc_pcm_runtime *fe, int stream)
--- 
-2.39.5
-
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
 
 
 
