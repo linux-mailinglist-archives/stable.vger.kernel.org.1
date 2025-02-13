@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7170A34767
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3D8A346AB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD791898585
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692CF3B0A26
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D8714F121;
-	Thu, 13 Feb 2025 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5784826B0BF;
+	Thu, 13 Feb 2025 15:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghOMr0nC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTe37eTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56BD26B0B4;
-	Thu, 13 Feb 2025 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1486826B0A5;
+	Thu, 13 Feb 2025 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460417; cv=none; b=neZoyGjdJ1KZP6ZN6dKyYpsnasihKZeX2EvBmW3y8bYCB8NpLQeBHnllPjPAgcOmwp1it0dVzZ88V4b8uMyo2F1nw5SmB/Si3WrinaAqPnPzgPHtHhGmqi7UmyKZllc6Js+qOC8NnzHMHdR2o88/B7nz/u1u/sKC9gYKD+d/SgU=
+	t=1739459734; cv=none; b=TOUbB1z1tJQN8h/TIsGjI98rAejP0INzx5lZ9RNK8DZDmYZS4wr8Gv1W2Mm4NnKygXPSv/lLrO8jbWNCM+Bxb0V0EVMQ2IcSzSuQnOdQ3KVM2twZ9bOmijSWlFBcJ1TheTpT0a5ikDuwrAbsj/dVSAkJO8yLZoC1yhkmXCL7Eyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460417; c=relaxed/simple;
-	bh=KIJAZW/XHmYAMgfC0yTlxW+RzlJLP+38jb8dC6N/4CQ=;
+	s=arc-20240116; t=1739459734; c=relaxed/simple;
+	bh=Gaalpc2T0jCItNSk5U85AaSI5rX2mgk64yue10rQdoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hk02sADDye2Dh9SJBWc4Bdg4+UFwLW2Ox4qmGZ7vMvs0H2d9jbJ0FR2aBjxUp96bDzqtTddf7FGlW4+vGDr6jqo71+0ZBy4jJ72sGMAENrCKS6Mcvc6h+NSPpKVAIGTJfZqew5N8VTuRhgvFX1peS+icRdzMQFkusymfw0wwt24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghOMr0nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145D4C4CED1;
-	Thu, 13 Feb 2025 15:26:56 +0000 (UTC)
+	 MIME-Version; b=pxi0+lr9HU+QCWhd12RySWa2WDw5zAAcAO8K7EhQxK2iSZlX5j0P+ljW8R2Hlb5ok9zdlUA96LSdRYKWiiorOSXQLndR23Ht4vd65Rce5s7kNN0KYamdaWHdqINZlpd/Djk4XLspDO4ZTHlQz/RKg2YPwVgY389z8zFuAIWhFQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTe37eTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC2EC4CED1;
+	Thu, 13 Feb 2025 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460417;
-	bh=KIJAZW/XHmYAMgfC0yTlxW+RzlJLP+38jb8dC6N/4CQ=;
+	s=korg; t=1739459733;
+	bh=Gaalpc2T0jCItNSk5U85AaSI5rX2mgk64yue10rQdoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghOMr0nCbIX080M/b3nBUJ9u912I34ZFi695irSjNwWA2yTHZLloWv3gi81Rx2yVJ
-	 Me4eTThvxGOCNbBDAJs5MKc/jqGv4e0znxTxI7Yk8Lb4Z39sq0Lo+iNQZVUue7Y3hm
-	 3NG6VqBxbKhTOPCnoyl5ru9ZzaEExZqZ4VvWTK+g=
+	b=eTe37eTc+Pz3csBG4hW1/B4gHJqyyah2hovt3cR50M/gxJdB8GD/2z+7hTGphBSJD
+	 1o/J4wPqXRHIgLLe2DazsQpCrY6+hwJRuWk3AuWtNtgFdqJE59HKJiv/Ok50zL9QZa
+	 Hsrn7Znx3UJ9SVBcBf9ymAodg32Ewvgz+F27qZM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 099/273] Revert "drm/amd/display: Use HW lock mgr for PSR1"
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 306/443] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
 Date: Thu, 13 Feb 2025 15:27:51 +0100
-Message-ID: <20250213142411.256390501@linuxfoundation.org>
+Message-ID: <20250213142452.423736877@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit f245b400a223a71d6d5f4c72a2cb9b573a7fc2b6 upstream.
+commit be2f81eaa2c8e81d3de5b73dca5e133f63384cb3 upstream.
 
-This reverts commit
-a2b5a9956269 ("drm/amd/display: Use HW lock mgr for PSR1")
+The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+bindings, just replace that path with the correct path for qup-config.
 
-Because it may cause system hang while connect with two edp panel.
-
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -63,8 +63,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct
- 
- bool should_use_dmub_lock(struct dc_link *link)
- {
--	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
--	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
- 		return true;
- 	return false;
- }
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -936,7 +936,7 @@
+ 				power-domains = <&rpmhpd SM6350_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+-						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
++						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
+ 				interconnect-names = "qup-core", "qup-config";
+ 				status = "disabled";
+ 			};
 
 
 
