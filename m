@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-115608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08847A344E9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A53A3426F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830813AA72D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34A3188917D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D657423A9BF;
-	Thu, 13 Feb 2025 14:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4F0221571;
+	Thu, 13 Feb 2025 14:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foTNv7Xc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvivoh4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932BA221720;
-	Thu, 13 Feb 2025 14:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF8321D3FC;
+	Thu, 13 Feb 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458622; cv=none; b=UVh7Ktm4j1w6tSChT2GV+ec6X2Z807oLXaP/BiBzFTaborLAI2M+Ze6Ge/4tlD6sIO7QU3p/IiBaDqzuegBlvEMVdo0+Bqya9BOdcJWyRV30HJJAQy3miBIRj5tG1osGXhKQLv3uS1RqibPVNDktqxad6en9LGJSs9qd7WWUjgw=
+	t=1739457216; cv=none; b=AbkiwVvQD0z3j1iZ1HZTjndaEUBAgB+FLd7JDfywmFygnXMPCE4Us2Do9mZAnjjStpKrF9wMNfboBkvsVA5/CJOhv41sSIhnny7F5Y9lxOBZTvCsSMXzaPjA3D2uJxAAKw1gc83KhLysThQao/ff1r7o4+IbwzFGMSiP5PSyBZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458622; c=relaxed/simple;
-	bh=C0fW4X6Tao4G8lI2ypu1C74jbnETQ8uqYFx06JwxXaE=;
+	s=arc-20240116; t=1739457216; c=relaxed/simple;
+	bh=wCoIKSr10ov6RTyrz2enivUtb/p18e2wvPJJBQRmO3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e10yEv3D5ruC4VAVyCKjnp5qugt+TPsJuoiZCKZJEBmrwaT/3C0b58JZ3FwvQBi6Sd8SAENsqQp3zv52ujS62VfwV6d2152rYydJzv/zwslXsajXnMcjUjXA/L4tuvP+14hvjOaCoePpSiNVvDMjWGCN5D5pAUPoGUm/pK+f/5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foTNv7Xc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB062C4CEE4;
-	Thu, 13 Feb 2025 14:57:01 +0000 (UTC)
+	 MIME-Version; b=gYunBVnFuf4BIVe402OuQWhlxvD+9NX0pIQIa+D+3Bu4LtoIwsq37qNXge2amDKs/uxaq7li9+0BsSfNfiOsK1EfFP9vFhRZVxgF00Oom9WUtq2wlw4B+GJP44mlrmm4UIQJ6lCN4w+P25H6XpV3xaO4aTblALsuJn487Hz28qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvivoh4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A60FC4CED1;
+	Thu, 13 Feb 2025 14:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458622;
-	bh=C0fW4X6Tao4G8lI2ypu1C74jbnETQ8uqYFx06JwxXaE=;
+	s=korg; t=1739457215;
+	bh=wCoIKSr10ov6RTyrz2enivUtb/p18e2wvPJJBQRmO3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foTNv7Xc++yAIWIcFeTha40M9x47bd6fMgZzVLmND4D9AEmr+5ylwOiZ1ahPLucuj
-	 fcLLBh3HoV38F4jAA/11e7SrBG/lCqPRvBprOcJ6aWtxKTFQu6Mymxw0TPMXSYqqKn
-	 wOibyYaNsc0WIhPi3pcuovuwjvvV+k5zeS7c/5oU=
+	b=Kvivoh4fdfVCiZ8NTGFUoXFqnbZFuAOyb8Kbhoxl68Qf/DSJX+mCUf8GEhO2otdoU
+	 jshX5RRIu9f+usSHPdSgN7z6EQS4jJGUoD5btzrhhn8bTqmRs7vv1Y05MujtCbgses
+	 557VqcbQIkkeWVpGn4lp46I9PVbKBnrF5jPKXxR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45212e9d87a98c3f5b42@syzkaller.appspotmail.com,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 005/443] btrfs: fix use-after-free when attempting to join an aborted transaction
+Subject: [PATCH 6.12 021/422] nvkm/gsp: correctly advance the read pointer of GSP message queue
 Date: Thu, 13 Feb 2025 15:22:50 +0100
-Message-ID: <20250213142440.825207420@linuxfoundation.org>
+Message-ID: <20250213142437.372902068@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,216 +60,210 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zhi Wang <zhiw@nvidia.com>
 
-[ Upstream commit e2f0943cf37305dbdeaf9846e3c941451bcdef63 ]
+[ Upstream commit 8d9beb4aebc02c4bd09e1d39c9c5f1c68c786dbc ]
 
-When we are trying to join the current transaction and if it's aborted,
-we read its 'aborted' field after unlocking fs_info->trans_lock and
-without holding any extra reference count on it. This means that a
-concurrent task that is aborting the transaction may free the transaction
-before we read its 'aborted' field, leading to a use-after-free.
+A GSP event message consists three parts: message header, RPC header,
+message body. GSP calculates the number of pages to write from the
+total size of a GSP message. This behavior can be observed from the
+movement of the write pointer.
 
-Fix this by reading the 'aborted' field while holding fs_info->trans_lock
-since any freeing task must first acquire that lock and set
-fs_info->running_transaction to NULL before freeing the transaction.
+However, nvkm takes only the size of RPC header and message body as
+the message size when advancing the read pointer. When handling a
+two-page GSP message in the non rollback case, It wrongly takes the
+message body of the previous message as the message header of the next
+message. As the "message length" tends to be zero, in the calculation of
+size needs to be copied (0 - size of (message header)), the size needs to
+be copied will be "0xffffffxx". It also triggers a kernel panic due to a
+NULL pointer error.
 
-This was reported by syzbot and Dmitry with the following stack traces
-from KASAN:
+[  547.614102] msg: 00000f90: ff ff ff ff ff ff ff ff 40 d7 18 fb 8b 00 00 =
+00  ........@.......
+[  547.622533] msg: 00000fa0: 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 =
+00  ................
+[  547.630965] msg: 00000fb0: ff ff ff ff ff ff ff ff 00 00 00 00 ff ff ff =
+ff  ................
+[  547.639397] msg: 00000fc0: ff ff ff ff 00 00 00 00 ff ff ff ff ff ff ff =
+ff  ................
+[  547.647832] nvkm 0000:c1:00.0: gsp: peek msg rpc fn:0 len:0x0/0xffffffff=
+ffffffe0
+[  547.655225] nvkm 0000:c1:00.0: gsp: get msg rpc fn:0 len:0x0/0xfffffffff=
+fffffe0
+[  547.662532] BUG: kernel NULL pointer dereference, address: 0000000000000=
+020
+[  547.669485] #PF: supervisor read access in kernel mode
+[  547.674624] #PF: error_code(0x0000) - not-present page
+[  547.679755] PGD 0 P4D 0
+[  547.682294] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  547.686643] CPU: 22 PID: 322 Comm: kworker/22:1 Tainted: G            E =
+     6.9.0-rc6+ #1
+[  547.694893] Hardware name: ASRockRack 1U1G-MILAN/N/ROMED8-NL, BIOS L3.12=
+E 09/06/2022
+[  547.702626] Workqueue: events r535_gsp_msgq_work [nvkm]
+[  547.707921] RIP: 0010:r535_gsp_msg_recv+0x87/0x230 [nvkm]
+[  547.713375] Code: 00 8b 70 08 48 89 e1 31 d2 4c 89 f7 e8 12 f5 ff ff 48 =
+89 c5 48 85 c0 0f 84 cf 00 00 00 48 81 fd 00 f0 ff ff 0f 87 c4 00 00 00 <8b=
+> 55 10 41 8b 46 30 85 d2 0f 85 f6 00 00 00 83 f8 04 76 10 ba 05
+[  547.732119] RSP: 0018:ffffabe440f87e10 EFLAGS: 00010203
+[  547.737335] RAX: 0000000000000010 RBX: 0000000000000008 RCX: 00000000000=
+0003f
+[  547.744461] RDX: 0000000000000000 RSI: ffffabe4480a8030 RDI: 00000000000=
+00010
+[  547.751585] RBP: 0000000000000010 R08: 0000000000000000 R09: ffffabe440f=
+87bb0
+[  547.758707] R10: ffffabe440f87dc8 R11: 0000000000000010 R12: 00000000000=
+00000
+[  547.765834] R13: 0000000000000000 R14: ffff9351df1e5000 R15: 00000000000=
+00000
+[  547.772958] FS:  0000000000000000(0000) GS:ffff93708eb00000(0000) knlGS:=
+0000000000000000
+[  547.781035] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  547.786771] CR2: 0000000000000020 CR3: 00000003cc220002 CR4: 00000000007=
+70ef0
+[  547.793896] PKRU: 55555554
+[  547.796600] Call Trace:
+[  547.799046]  <TASK>
+[  547.801152]  ? __die+0x20/0x70
+[  547.804211]  ? page_fault_oops+0x75/0x170
+[  547.808221]  ? print_hex_dump+0x100/0x160
+[  547.812226]  ? exc_page_fault+0x64/0x150
+[  547.816152]  ? asm_exc_page_fault+0x22/0x30
+[  547.820341]  ? r535_gsp_msg_recv+0x87/0x230 [nvkm]
+[  547.825184]  r535_gsp_msgq_work+0x42/0x50 [nvkm]
+[  547.829845]  process_one_work+0x196/0x3d0
+[  547.833861]  worker_thread+0x2fc/0x410
+[  547.837613]  ? __pfx_worker_thread+0x10/0x10
+[  547.841885]  kthread+0xdf/0x110
+[  547.845031]  ? __pfx_kthread+0x10/0x10
+[  547.848775]  ret_from_fork+0x30/0x50
+[  547.852354]  ? __pfx_kthread+0x10/0x10
+[  547.856097]  ret_from_fork_asm+0x1a/0x30
+[  547.860019]  </TASK>
+[  547.862208] Modules linked in: nvkm(E) gsp_log(E) snd_seq_dummy(E) snd_h=
+rtimer(E) snd_seq(E) snd_timer(E) snd_seq_device(E) snd(E) soundcore(E) rfk=
+ill(E) qrtr(E) vfat(E) fat(E) ipmi_ssif(E) amd_atl(E) intel_rapl_msr(E) int=
+el_rapl_common(E) amd64_edac(E) mlx5_ib(E) edac_mce_amd(E) kvm_amd(E) ib_uv=
+erbs(E) kvm(E) ib_core(E) acpi_ipmi(E) ipmi_si(E) ipmi_devintf(E) mxm_wmi(E=
+) joydev(E) rapl(E) ptdma(E) i2c_piix4(E) acpi_cpufreq(E) wmi_bmof(E) pcspk=
+r(E) k10temp(E) ipmi_msghandler(E) xfs(E) libcrc32c(E) ast(E) i2c_algo_bit(=
+E) drm_shmem_helper(E) crct10dif_pclmul(E) drm_kms_helper(E) ahci(E) crc32_=
+pclmul(E) nvme_tcp(E) libahci(E) nvme(E) crc32c_intel(E) nvme_fabrics(E) cd=
+c_ether(E) nvme_core(E) usbnet(E) mlx5_core(E) ghash_clmulni_intel(E) drm(E=
+) libata(E) ccp(E) mii(E) t10_pi(E) mlxfw(E) sp5100_tco(E) psample(E) pci_h=
+yperv_intf(E) wmi(E) dm_multipath(E) sunrpc(E) dm_mirror(E) dm_region_hash(=
+E) dm_log(E) dm_mod(E) be2iscsi(E) bnx2i(E) cnic(E) uio(E) cxgb4i(E) cxgb4(=
+E) tls(E) libcxgbi(E) libcxgb(E) qla4xxx(E)
+[  547.862283]  iscsi_boot_sysfs(E) iscsi_tcp(E) libiscsi_tcp(E) libiscsi(E=
+) scsi_transport_iscsi(E) fuse(E) [last unloaded: gsp_log(E)]
+[  547.962691] CR2: 0000000000000020
+[  547.966003] ---[ end trace 0000000000000000 ]---
+[  549.012012] clocksource: Long readout interval, skipping watchdog check:=
+ cs_nsec: 1370499158 wd_nsec: 1370498904
+[  549.043676] pstore: backend (erst) writing error (-28)
+[  549.050924] RIP: 0010:r535_gsp_msg_recv+0x87/0x230 [nvkm]
+[  549.056389] Code: 00 8b 70 08 48 89 e1 31 d2 4c 89 f7 e8 12 f5 ff ff 48 =
+89 c5 48 85 c0 0f 84 cf 00 00 00 48 81 fd 00 f0 ff ff 0f 87 c4 00 00 00 <8b=
+> 55 10 41 8b 46 30 85 d2 0f 85 f6 00 00 00 83 f8 04 76 10 ba 05
+[  549.075138] RSP: 0018:ffffabe440f87e10 EFLAGS: 00010203
+[  549.080361] RAX: 0000000000000010 RBX: 0000000000000008 RCX: 00000000000=
+0003f
+[  549.087484] RDX: 0000000000000000 RSI: ffffabe4480a8030 RDI: 00000000000=
+00010
+[  549.094609] RBP: 0000000000000010 R08: 0000000000000000 R09: ffffabe440f=
+87bb0
+[  549.101733] R10: ffffabe440f87dc8 R11: 0000000000000010 R12: 00000000000=
+00000
+[  549.108857] R13: 0000000000000000 R14: ffff9351df1e5000 R15: 00000000000=
+00000
+[  549.115982] FS:  0000000000000000(0000) GS:ffff93708eb00000(0000) knlGS:=
+0000000000000000
+[  549.124061] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  549.129807] CR2: 0000000000000020 CR3: 00000003cc220002 CR4: 00000000007=
+70ef0
+[  549.136940] PKRU: 55555554
+[  549.139653] Kernel panic - not syncing: Fatal exception
+[  549.145054] Kernel Offset: 0x18c00000 from 0xffffffff81000000 (relocatio=
+n range: 0xffffffff80000000-0xffffffffbfffffff)
+[  549.165074] ---[ end Kernel panic - not syncing: Fatal exception ]---
 
-   ==================================================================
-   BUG: KASAN: slab-use-after-free in join_transaction+0xd9b/0xda0 fs/btrfs/transaction.c:278
-   Read of size 4 at addr ffff888011839024 by task kworker/u4:9/1128
+Also, nvkm wrongly advances the read pointer when handling a two-page GSP
+message in the rollback case. In the rollback case, the GSP message will
+be copied in two rounds. When handling a two-page GSP message, nvkm first
+copies amount of (GSP_PAGE_SIZE - header) data into the buffer, then
+advances the read pointer by the result of DIV_ROUND_UP(size,
+GSP_PAGE_SIZE). Thus, the read pointer is advanced by 1.
 
-   CPU: 0 UID: 0 PID: 1128 Comm: kworker/u4:9 Not tainted 6.13.0-rc7-syzkaller-00019-gc45323b7560e #0
-   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-   Workqueue: events_unbound btrfs_async_reclaim_data_space
-   Call Trace:
-    <TASK>
-    __dump_stack lib/dump_stack.c:94 [inline]
-    dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-    print_address_description mm/kasan/report.c:378 [inline]
-    print_report+0x169/0x550 mm/kasan/report.c:489
-    kasan_report+0x143/0x180 mm/kasan/report.c:602
-    join_transaction+0xd9b/0xda0 fs/btrfs/transaction.c:278
-    start_transaction+0xaf8/0x1670 fs/btrfs/transaction.c:697
-    flush_space+0x448/0xcf0 fs/btrfs/space-info.c:803
-    btrfs_async_reclaim_data_space+0x159/0x510 fs/btrfs/space-info.c:1321
-    process_one_work kernel/workqueue.c:3236 [inline]
-    process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3317
-    worker_thread+0x870/0xd30 kernel/workqueue.c:3398
-    kthread+0x2f0/0x390 kernel/kthread.c:389
-    ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-    </TASK>
+Next, nvkm copies the amount of (total size - (GSP_PAGE_SIZE -
+header)) data into the buffer. The left amount of the data will be always
+larger than one page since the message header is not taken into account
+in the first copy. Thus, the read pointer is advanced by DIV_ROUND_UP(
+size(larger than one page), GSP_PAGE_SIZE) =3D 2.
 
-   Allocated by task 5315:
-    kasan_save_stack mm/kasan/common.c:47 [inline]
-    kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-    poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-    __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
-    kasan_kmalloc include/linux/kasan.h:260 [inline]
-    __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4329
-    kmalloc_noprof include/linux/slab.h:901 [inline]
-    join_transaction+0x144/0xda0 fs/btrfs/transaction.c:308
-    start_transaction+0xaf8/0x1670 fs/btrfs/transaction.c:697
-    btrfs_create_common+0x1b2/0x2e0 fs/btrfs/inode.c:6572
-    lookup_open fs/namei.c:3649 [inline]
-    open_last_lookups fs/namei.c:3748 [inline]
-    path_openat+0x1c03/0x3590 fs/namei.c:3984
-    do_filp_open+0x27f/0x4e0 fs/namei.c:4014
-    do_sys_openat2+0x13e/0x1d0 fs/open.c:1402
-    do_sys_open fs/open.c:1417 [inline]
-    __do_sys_creat fs/open.c:1495 [inline]
-    __se_sys_creat fs/open.c:1489 [inline]
-    __x64_sys_creat+0x123/0x170 fs/open.c:1489
-    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+In the end, the read pointer is wrongly advanced by 3 when handling a
+two-page GSP message in the rollback case.
 
-   Freed by task 5336:
-    kasan_save_stack mm/kasan/common.c:47 [inline]
-    kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-    kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
-    poison_slab_object mm/kasan/common.c:247 [inline]
-    __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
-    kasan_slab_free include/linux/kasan.h:233 [inline]
-    slab_free_hook mm/slub.c:2353 [inline]
-    slab_free mm/slub.c:4613 [inline]
-    kfree+0x196/0x430 mm/slub.c:4761
-    cleanup_transaction fs/btrfs/transaction.c:2063 [inline]
-    btrfs_commit_transaction+0x2c97/0x3720 fs/btrfs/transaction.c:2598
-    insert_balance_item+0x1284/0x20b0 fs/btrfs/volumes.c:3757
-    btrfs_balance+0x992/0x10c0 fs/btrfs/volumes.c:4633
-    btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3670
-    vfs_ioctl fs/ioctl.c:51 [inline]
-    __do_sys_ioctl fs/ioctl.c:906 [inline]
-    __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
-    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix the problems by taking the total size of the message into account
+when advancing the read pointer and calculate the read pointer in the end
+of the all copies for the rollback case.
 
-   The buggy address belongs to the object at ffff888011839000
-    which belongs to the cache kmalloc-2k of size 2048
-   The buggy address is located 36 bytes inside of
-    freed 2048-byte region [ffff888011839000, ffff888011839800)
+BTW: the two-page GSP message can be observed in the msgq when vGPU is
+enabled.
 
-   The buggy address belongs to the physical page:
-   page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11838
-   head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-   flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-   page_type: f5(slab)
-   raw: 00fff00000000040 ffff88801ac42000 ffffea0000493400 dead000000000002
-   raw: 0000000000000000 0000000000080008 00000001f5000000 0000000000000000
-   head: 00fff00000000040 ffff88801ac42000 ffffea0000493400 dead000000000002
-   head: 0000000000000000 0000000000080008 00000001f5000000 0000000000000000
-   head: 00fff00000000003 ffffea0000460e01 ffffffffffffffff 0000000000000000
-   head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-   page dumped because: kasan: bad access detected
-   page_owner tracks the page as allocated
-   page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 57, tgid 57 (kworker/0:2), ts 67248182943, free_ts 67229742023
-    set_page_owner include/linux/page_owner.h:32 [inline]
-    post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1558
-    prep_new_page mm/page_alloc.c:1566 [inline]
-    get_page_from_freelist+0x365c/0x37a0 mm/page_alloc.c:3476
-    __alloc_pages_noprof+0x292/0x710 mm/page_alloc.c:4753
-    alloc_pages_mpol_noprof+0x3e1/0x780 mm/mempolicy.c:2269
-    alloc_slab_page+0x6a/0x110 mm/slub.c:2423
-    allocate_slab+0x5a/0x2b0 mm/slub.c:2589
-    new_slab mm/slub.c:2642 [inline]
-    ___slab_alloc+0xc27/0x14a0 mm/slub.c:3830
-    __slab_alloc+0x58/0xa0 mm/slub.c:3920
-    __slab_alloc_node mm/slub.c:3995 [inline]
-    slab_alloc_node mm/slub.c:4156 [inline]
-    __do_kmalloc_node mm/slub.c:4297 [inline]
-    __kmalloc_node_track_caller_noprof+0x2e9/0x4c0 mm/slub.c:4317
-    kmalloc_reserve+0x111/0x2a0 net/core/skbuff.c:609
-    __alloc_skb+0x1f3/0x440 net/core/skbuff.c:678
-    alloc_skb include/linux/skbuff.h:1323 [inline]
-    alloc_skb_with_frags+0xc3/0x820 net/core/skbuff.c:6612
-    sock_alloc_send_pskb+0x91a/0xa60 net/core/sock.c:2884
-    sock_alloc_send_skb include/net/sock.h:1803 [inline]
-    mld_newpack+0x1c3/0xaf0 net/ipv6/mcast.c:1747
-    add_grhead net/ipv6/mcast.c:1850 [inline]
-    add_grec+0x1492/0x19a0 net/ipv6/mcast.c:1988
-    mld_send_cr net/ipv6/mcast.c:2114 [inline]
-    mld_ifc_work+0x691/0xd90 net/ipv6/mcast.c:2651
-   page last free pid 5300 tgid 5300 stack trace:
-    reset_page_owner include/linux/page_owner.h:25 [inline]
-    free_pages_prepare mm/page_alloc.c:1127 [inline]
-    free_unref_page+0xd3f/0x1010 mm/page_alloc.c:2659
-    __slab_free+0x2c2/0x380 mm/slub.c:4524
-    qlink_free mm/kasan/quarantine.c:163 [inline]
-    qlist_free_all+0x9a/0x140 mm/kasan/quarantine.c:179
-    kasan_quarantine_reduce+0x14f/0x170 mm/kasan/quarantine.c:286
-    __kasan_slab_alloc+0x23/0x80 mm/kasan/common.c:329
-    kasan_slab_alloc include/linux/kasan.h:250 [inline]
-    slab_post_alloc_hook mm/slub.c:4119 [inline]
-    slab_alloc_node mm/slub.c:4168 [inline]
-    __do_kmalloc_node mm/slub.c:4297 [inline]
-    __kmalloc_noprof+0x236/0x4c0 mm/slub.c:4310
-    kmalloc_noprof include/linux/slab.h:905 [inline]
-    kzalloc_noprof include/linux/slab.h:1037 [inline]
-    fib_create_info+0xc14/0x25b0 net/ipv4/fib_semantics.c:1435
-    fib_table_insert+0x1f6/0x1f20 net/ipv4/fib_trie.c:1231
-    fib_magic+0x3d8/0x620 net/ipv4/fib_frontend.c:1112
-    fib_add_ifaddr+0x40c/0x5e0 net/ipv4/fib_frontend.c:1156
-    fib_netdev_event+0x375/0x490 net/ipv4/fib_frontend.c:1494
-    notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
-    __dev_notify_flags+0x207/0x400
-    dev_change_flags+0xf0/0x1a0 net/core/dev.c:9045
-    do_setlink+0xc90/0x4210 net/core/rtnetlink.c:3109
-    rtnl_changelink net/core/rtnetlink.c:3723 [inline]
-    __rtnl_newlink net/core/rtnetlink.c:3875 [inline]
-    rtnl_newlink+0x1bb6/0x2210 net/core/rtnetlink.c:4012
-
-   Memory state around the buggy address:
-    ffff888011838f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-    ffff888011838f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   >ffff888011839000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                  ^
-    ffff888011839080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-    ffff888011839100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-   ==================================================================
-
-Reported-by: syzbot+45212e9d87a98c3f5b42@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/678e7da5.050a0220.303755.007c.GAE@google.com/
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://lore.kernel.org/linux-btrfs/CACT4Y+ZFBdo7pT8L2AzM=vegZwjp-wNkVJZQf0Ta3vZqtExaSw@mail.gmail.com/
-Fixes: 871383be592b ("btrfs: add missing unlocks to transaction abort paths")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241017071922.2518724-=
+2-zhiw@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index dc0b837efd5df..914a22cc950b5 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -274,8 +274,10 @@ static noinline int join_transaction(struct btrfs_fs_info *fs_info,
- 	cur_trans = fs_info->running_transaction;
- 	if (cur_trans) {
- 		if (TRANS_ABORTED(cur_trans)) {
-+			const int abort_error = cur_trans->aborted;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/d=
+rm/nouveau/nvkm/subdev/gsp/r535.c
+index d586aea308984..bd4b5d6a7bd36 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -121,6 +121,8 @@ r535_gsp_msgq_wait(struct nvkm_gsp *gsp, u32 repc, u32 =
+*prepc, int *ptime)
+ 		return mqe->data;
+ 	}
+=20
++	size =3D ALIGN(repc + GSP_MSG_HDR_SIZE, GSP_PAGE_SIZE);
 +
- 			spin_unlock(&fs_info->trans_lock);
--			return cur_trans->aborted;
-+			return abort_error;
- 		}
- 		if (btrfs_blocked_trans_types[cur_trans->state] & type) {
- 			spin_unlock(&fs_info->trans_lock);
--- 
+ 	msg =3D kvmalloc(repc, GFP_KERNEL);
+ 	if (!msg)
+ 		return ERR_PTR(-ENOMEM);
+@@ -129,19 +131,15 @@ r535_gsp_msgq_wait(struct nvkm_gsp *gsp, u32 repc, u3=
+2 *prepc, int *ptime)
+ 	len =3D min_t(u32, repc, len);
+ 	memcpy(msg, mqe->data, len);
+=20
+-	rptr +=3D DIV_ROUND_UP(len, GSP_PAGE_SIZE);
+-	if (rptr =3D=3D gsp->msgq.cnt)
+-		rptr =3D 0;
+-
+ 	repc -=3D len;
+=20
+ 	if (repc) {
+ 		mqe =3D (void *)((u8 *)gsp->shm.msgq.ptr + 0x1000 + 0 * 0x1000);
+ 		memcpy(msg + len, mqe, repc);
+-
+-		rptr +=3D DIV_ROUND_UP(repc, GSP_PAGE_SIZE);
+ 	}
+=20
++	rptr =3D (rptr + DIV_ROUND_UP(size, GSP_PAGE_SIZE)) % gsp->msgq.cnt;
++
+ 	mb();
+ 	(*gsp->msgq.rptr) =3D rptr;
+ 	return msg;
+--=20
 2.39.5
 
 
