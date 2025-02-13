@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7884EA345C4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E2AA346F3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32E4B16FE01
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F6D1897113
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FA426B0AD;
-	Thu, 13 Feb 2025 15:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC5F1917E4;
+	Thu, 13 Feb 2025 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoz+Zfmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKLaucpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D582226B098;
-	Thu, 13 Feb 2025 15:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3AA1714A1;
+	Thu, 13 Feb 2025 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459376; cv=none; b=uzeM0bu7TQDQoGiDUAZ40wuoyxT+qYT7H22AQG/HcyszoEMftdQkuM9W/YYEXLXUadMbZOsF6MGPA4iQ3SRo62dxLCeFP9R7Loh1wEGhcF2eoBKZUZmB+NC24cqh2UEryVmBLCqWUjuTJEA0yKSiHGW0T8lcyFMIVaOuASHqF0s=
+	t=1739460184; cv=none; b=kv2cE/tEI2vSuZ/h4pM+ktqk/cOTb/PLbyWu1547i/JpbZhe7mmKPJkSjosvj097yn0A/JYOUnVe1I4cvtymzAEM2AEbOfjBYdzGs+MtQqAmDDyHLppvTlXbrwKbimW4axh8efxt3NcHcK2t+Lu0JPdu/m46KtjrJL/AGO3VLXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459376; c=relaxed/simple;
-	bh=IrBKqIF3B1TYKGqEMmCii+EwEP1UTjs6hsCuVPiWATs=;
+	s=arc-20240116; t=1739460184; c=relaxed/simple;
+	bh=HWvH00BydlX2PoF9VHdZDJedGu/htDtx0Aoo+9fay/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJlTHqSTon6oovb485j+Js7CyBRa8R28iv/x8/QfjPWhIGPKGF9W9gLlxkP3hgZz77TRZPbbcpz65G64q6AuErALlzaYj6vMXIKr3OFdJJz7iNr84sJPJpVqp7kQvscKHPTpBrcdIubAFPOkmlCi0JbUYWMVP3HjjyMGH1y/7bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoz+Zfmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4375DC4CEE5;
-	Thu, 13 Feb 2025 15:09:36 +0000 (UTC)
+	 MIME-Version; b=cLUlwPJ/DO8vg7YabErNeg2EssxnQLq/jL9oizIo8e9K+TPMmsUaKoP+RsSKsg/NTDcOoUk0gjMpUwiSnysYT2Qq7K1l3r253QGRWGITrzS8rMz6zkHnMIpofjHZBFDbfIdClt2DipnABnusZ8q1QEhkrSAmvnB8qQMDx1z/Xis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKLaucpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE95C4CED1;
+	Thu, 13 Feb 2025 15:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459376;
-	bh=IrBKqIF3B1TYKGqEMmCii+EwEP1UTjs6hsCuVPiWATs=;
+	s=korg; t=1739460184;
+	bh=HWvH00BydlX2PoF9VHdZDJedGu/htDtx0Aoo+9fay/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hoz+ZfmvIZvaFXp3Q09/vRYihtiNGkY1ey5uHU2L9Xy6Rlb8ztQmSRcvvpdWWA/QO
-	 bl7WyVsfZx4tYovUzVcemAsSuOcNODIu0AkgFeJHvlw/yS0n/deAJlxlT1lWBH/SDS
-	 D2I2zxcPb++7aKcrTF1F05bd9sVDjDU0hHKUIDrY=
+	b=zKLaucpThXqFVy6YAN8hVmIbaJokLFfnrbBmBSAGLhW3hj9Vf7RIE523u7n8XJHnB
+	 Yi6x3xYDkx2SZHoX1llS7Q9FIeKinHNmSy+h4639cUHauauOTd3oDgGXCdzfw4ch0s
+	 zuV0dJVFP3f20jAPWlyVQekxXSOZNn/wbiEvCGfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 247/443] arm64: dts: qcom: x1e80100-microsoft-romulus: Fix USB QMP PHY supplies
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/273] APEI: GHES: Have GHES honor the panic= setting
 Date: Thu, 13 Feb 2025 15:26:52 +0100
-Message-ID: <20250213142450.146904905@linuxfoundation.org>
+Message-ID: <20250213142408.937365531@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Borislav Petkov <bp@alien8.de>
 
-commit c0562f51b177d49829a378b5aeda73f78c60d0fc upstream.
+[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
 
-On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
-(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
-are actually powered by &vreg_l2j_1p2.
+The GHES driver overrides the panic= setting by force-rebooting the
+system after a fatal hw error has been reported. The intent being that
+such an error would be reported earlier.
 
-Since x1e80100-microsoft-romulus mostly just mirrors the power supplies
-from the x1e80100-crd device tree, assume that the fix also applies here.
+However, this is not optimal when a hard-to-debug issue requires long
+time to reproduce and when that happens, the box will get rebooted after
+30 seconds and thus destroy the whole hw context of when the error
+happened.
 
-Cc: stable@vger.kernel.org
-Fixes: 09d77be56093 ("arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-7-0adda5d30bbd@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So rip out the default GHES panic timeout and honor the global one.
+
+In the panic disabled (panic=0) case, the error will still be logged to
+dmesg for later inspection and if panic after a hw error is really
+required, then that can be controlled the usual way - use panic= on the
+cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+
+Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/ghes.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
-@@ -823,7 +823,7 @@
- };
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index ab2a82cb1b0b4..3aadc632d7dd5 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -170,8 +170,6 @@ static struct gen_pool *ghes_estatus_pool;
+ static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+ static atomic_t ghes_estatus_cache_alloced;
  
- &usb_1_ss0_qmpphy {
--	vdda-phy-supply = <&vreg_l3e>;
-+	vdda-phy-supply = <&vreg_l2j>;
- 	vdda-pll-supply = <&vreg_l1j>;
+-static int ghes_panic_timeout __read_mostly = 30;
+-
+ static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+ {
+ 	phys_addr_t paddr;
+@@ -899,14 +897,16 @@ static void __ghes_panic(struct ghes *ghes,
+ 			 struct acpi_hest_generic_status *estatus,
+ 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+ {
++	const char *msg = GHES_PFX "Fatal hardware error";
++
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
- 	status = "okay";
-@@ -855,7 +855,7 @@
- };
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
  
- &usb_1_ss1_qmpphy {
--	vdda-phy-supply = <&vreg_l3e>;
-+	vdda-phy-supply = <&vreg_l2j>;
- 	vdda-pll-supply = <&vreg_l2d>;
+-	/* reboot to log the error! */
+ 	if (!panic_timeout)
+-		panic_timeout = ghes_panic_timeout;
+-	panic("Fatal hardware error!");
++		pr_emerg("%s but panic disabled\n", msg);
++
++	panic(msg);
+ }
  
- 	status = "okay";
+ static int ghes_proc(struct ghes *ghes)
+-- 
+2.39.5
+
 
 
 
