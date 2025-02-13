@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-115234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD21A34265
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E073CA3451E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66EA5163422
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0FB1169988
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D602828137F;
-	Thu, 13 Feb 2025 14:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A1514037F;
+	Thu, 13 Feb 2025 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGdni0dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGhjTeJC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939AB28382;
-	Thu, 13 Feb 2025 14:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0646526B080;
+	Thu, 13 Feb 2025 15:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457356; cv=none; b=BsSP44MALOujozDAyphfy+n5qU6pxMmtC4C7UGmlAG7gtztC0d1F0M0pPrD/GLPrwKJ9XP4I0+LBA355BZwqZWMvdCMwJeWHbVd9HiYEnvJnle6lRtAAAbhP8J08+wQBc7DOPD0WqQ+M2tE+/X9sf2Z1J/rOFUOelDHAIhslmNU=
+	t=1739458870; cv=none; b=jWquGfwmblMjb1aeef5LmZ02L3ECiYP5qi3IhmrbhYBsVRSuo1rTa3Dpi2hxA+flYYuemQVYzkSJUdwrhZfdGDEGb6DvN/Ef7izTU51h1rvmjD/82bnH9IHgBae7HKFvR5LlljhhtodqnpsXK9jC1Zstyq8kSSJVw1NRMDESmFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457356; c=relaxed/simple;
-	bh=n0Um2Ul87qVUeTPDLbjEwfdH/2EW6Ksn7W4a9VoTlNI=;
+	s=arc-20240116; t=1739458870; c=relaxed/simple;
+	bh=0ul/nY5OYe/K8yyMvuI0wHmOqlDvdwCsv9+4y9J0vJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjqzVzgHbjdg1UNUKnbWDArcOSHkVXvAZQ9bxOwup1cfX45a9rLBQceUwKigVhid0OUr9QFeLLC8Q6kk14uCeNulTsN0xa+B5tRKrP4mYXeWc5Pymq40VQNf9pgt94vP7MoYvo6G706EjFrxUawi+g9iWpJGFh5Kf+9GtUAoRgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGdni0dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DBC4CED1;
-	Thu, 13 Feb 2025 14:35:55 +0000 (UTC)
+	 MIME-Version; b=LadRdSgQ6XzfOpPWXGgkxe4f9Q6gXgkhCd4x8laHVAsg9e2KSy0Cs9iU5VIxRXixyI9S/XSoMRjFHizA04BbEHzyMIK7hSJziO5Z2J9VGHDAmpJcsuFb7LgwqyOYTJIyFZlAgqdAkh4rNsS0xXaD/oXvxHU4ZJL4A6hNMGxOaPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGhjTeJC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D6DC4CEE4;
+	Thu, 13 Feb 2025 15:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457356;
-	bh=n0Um2Ul87qVUeTPDLbjEwfdH/2EW6Ksn7W4a9VoTlNI=;
+	s=korg; t=1739458869;
+	bh=0ul/nY5OYe/K8yyMvuI0wHmOqlDvdwCsv9+4y9J0vJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGdni0dlkVEObIk42Rhm/OKEHYD7zrvYSYYWzfrKNgAkE1V8X+cUfqENhcuVXntGp
-	 YneNA/aDCk02SB1RDQ6QoHF7VBAlt9ldkUsDGg3wVeqi1fN7ZJnKVd2T/I03Pr57dp
-	 eP5hPth2/EqJuHNSFl/euogIye8JO6MPp4QCPIGw=
+	b=UGhjTeJCWgH3l028cM5tSIUkk4iMO6p0lj1Qvr29nquHujoKrwWjAIQKUJQ+7fKRb
+	 k48d/uPBbACga5EElnE+QTiOnKotXHIFsxm/9Z/gu5A+IOUZ2LJ1hHDNurLscEW6zS
+	 kjAFNhw3KjsmO3h0Jc+8FWSJVXihtwL2xG8xybXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chris Morgan <macroalpha82@gmail.com>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/422] ASoC: amd: Add ACPI dependency to fix build error
+Subject: [PATCH 6.13 069/443] Revert "mfd: axp20x: Allow multiple regulators"
 Date: Thu, 13 Feb 2025 15:23:54 +0100
-Message-ID: <20250213142439.834897399@linuxfoundation.org>
+Message-ID: <20250213142443.280351390@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 7e24ec93aecd12e33d31e38e5af4625553bbc727 ]
+[ Upstream commit b246bd32a34c1b0d80670e60e4e4102be6366191 ]
 
-As reported by the kernel test robot, the following error occurs:
+As Chris and Vasily reported, the attempt to support multiple AXP PMICs
+in one system [1] breaks some of the battery and charging functionality
+on devices with AXP PMICs. The reason is that the drivers now fail to get
+the correct IIO channel for the ADC component, as the current code seems
+to rely on the zero-based enumeration of the regulator devices.
+A fix is possible, but not trivial, as it requires some rework in the AXP
+MFD driver, which cannot be fully reviewed or tested in time for the
+6.13 release.
 
-   sound/soc/amd/yc/acp6x-mach.c: In function 'acp6x_probe':
->> sound/soc/amd/yc/acp6x-mach.c:573:15: error: implicit declaration of function 'acpi_evaluate_integer'; did you mean 'acpi_evaluate_object'? [-Werror=implicit-function-declaration]
-     573 |         ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-         |               ^~~~~~~~~~~~~~~~~~~~~
-         |               acpi_evaluate_object
-   cc1: some warnings being treated as errors
+So revert this patch for now, to avoid regressions on battery powered
+devices. This patch was really only necessary for devices with two
+PMICs, support for which is not mainline yet anyway, so we don't lose
+any functionality.
 
-The function 'acpi_evaluate_integer' and its prototype in 'acpi_bus.h'
-are only available when 'CONFIG_ACPI' is enabled. Add a 'depends on ACPI'
-directive in Kconfig to ensure proper compilation.
+This reverts commit e37ec32188701efa01455b9be42a392adab06ce4.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501090345.pBIDRTym-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250109171547.362412-1-eleanor15x@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1] https://lore.kernel.org/linux-sunxi/20241007001408.27249-4-andre.przywara@arm.com/
+
+Reported-by: Chris Morgan <macroalpha82@gmail.com>
+Closes: https://lore.kernel.org/linux-sunxi/675489c1.050a0220.8d73f.6e90@mx.google.com/
+Reported-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Closes: https://lore.kernel.org/linux-sunxi/CA+E=qVf8_9gn0y=mcdKXvj2PFoHT2eF+JN=CmtTNdRGaSnpgKg@mail.gmail.com/
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Acked-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250108164359.2609078-1-andre.przywara@arm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/Kconfig | 2 +-
+ drivers/mfd/axp20x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/Kconfig b/sound/soc/amd/Kconfig
-index 6dec44f516c13..c2a5671ba96b0 100644
---- a/sound/soc/amd/Kconfig
-+++ b/sound/soc/amd/Kconfig
-@@ -105,7 +105,7 @@ config SND_SOC_AMD_ACP6x
- config SND_SOC_AMD_YC_MACH
- 	tristate "AMD YC support for DMIC"
- 	select SND_SOC_DMIC
--	depends on SND_SOC_AMD_ACP6x
-+	depends on SND_SOC_AMD_ACP6x && ACPI
- 	help
- 	  This option enables machine driver for Yellow Carp platform
- 	  using dmic. ACP IP has PDM Decoder block with DMA controller.
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 251465a656d09..bce85a58944ac 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -1445,7 +1445,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+ 		}
+ 	}
+ 
+-	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
++	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_NONE, axp20x->cells,
+ 			      axp20x->nr_cells, NULL, 0, NULL);
+ 
+ 	if (ret) {
 -- 
 2.39.5
 
