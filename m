@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF8DA34275
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDCBA3452F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A588B3AA8A3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B2D3AB7CE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1216870830;
-	Thu, 13 Feb 2025 14:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFD918A6A7;
+	Thu, 13 Feb 2025 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+qlFdz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEbcAOLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AA3281353;
-	Thu, 13 Feb 2025 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65DD13B58A;
+	Thu, 13 Feb 2025 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457285; cv=none; b=nBC5j/U1at4isqkaxZB6VlBRXouvST3jnVs+YAv5ky6GduMJ+PQf5DqQjgSLKX8zYlTcHw8Xy2dAAUhOFPbAvD5SErU+BcGVr1tY7+FZ5nDhx3jxY10uy+nJHGQP0m+EXv7iCEB1lcK3jj0rMYIXfO5I5DRda0K/8EHxwr8YdPw=
+	t=1739458701; cv=none; b=srw5hqEkORAM1HLJBrStW3V1v7HC2HHGVh8VfzObWOC4ZcIi4xr4+WlDlRVa4hsZljWup3z5z4HSbyvaRyk+EWqXaWII9vcG+39Rzp8QATHSLJ0/0Yzs/j+GabR/lPUULkrSMcBSjYKAOScylKdH44r6BiYLEoI/b8hXTHBbRlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457285; c=relaxed/simple;
-	bh=yKkpstYxnTE6WVaV5oQGbKj/Alv4wTJxVuAiXSCy5ZA=;
+	s=arc-20240116; t=1739458701; c=relaxed/simple;
+	bh=uORuIQvjeNNuo8eZnjGQdCXIiMCxHz2NMwrn+mJ+P3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5ZLDn7xQSZTCt36mxVSlsJolM0u+Xa9EPvUZBz/hD3NDuXmUmeAcgcC1GGkmcrkL2BeSdHWAlivNbu8C2HFAxWfAsqT+Y2MTPo/EsuclVFH6KwvqYcYzRktMM/yGN76Doik+LQv22eiUmjPu9WW1Tc0AzbCaRYsP7dOR4xtpZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+qlFdz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230FBC4CEE4;
-	Thu, 13 Feb 2025 14:34:44 +0000 (UTC)
+	 MIME-Version; b=BoO9vrkZlyPJoCJsIWpdHUTgFN65vT0rKwTnSDWRbgwyITCF7o+cfAjdgkk1Hg6ePq8LDBI46XdPtN0AyO62l9Qm/dzUDO2Ie3Yo8glITei9pbPFu7jtRphLRiOokML46yCSJVrQotKNjy01n8ESiYDDAyRiKD+n6MnSLviqyp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEbcAOLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2541FC4CEE5;
+	Thu, 13 Feb 2025 14:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457285;
-	bh=yKkpstYxnTE6WVaV5oQGbKj/Alv4wTJxVuAiXSCy5ZA=;
+	s=korg; t=1739458701;
+	bh=uORuIQvjeNNuo8eZnjGQdCXIiMCxHz2NMwrn+mJ+P3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+qlFdz1lmCCFlYE+Eb8N7uu1BrYa/GJ+5UTWI5zd3WX1bpHyXBwt8bnMwq1n2+ot
-	 cmxOUHx0AhazR3tU0khX1HjHBBPqnP8AsXGDGmH/AmVr6/bKakuzTuhqEQ8k7LcLEL
-	 OFFoie7e2NkcYUw4+8DnG1q8WGJOExmJX00sgs/c=
+	b=uEbcAOLxCWEhjxPYYLo3RwxOp3Bqp5roju2m1cWVjjZhEbD2c1w4MtzOkVxGxGLvF
+	 De/iQToIRCloctnQCCa6jMhh34PTgouLwoINP/JRlDA30q6gsk23hNPQtIfBw7c4uI
+	 +8dPxluDQMJElJeCPx/KDfJTLo3JCslyIafSszYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Connor Belli <connorbelli2003@gmail.com>,
-	Jan Schmidt <jan@centricular.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Karol Przybylski <karprzy7@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/422] HID: hid-asus: Disable OOBE mode on the ProArt P16
+Subject: [PATCH 6.13 053/443] wifi: ath12k: Fix for out-of bound access error
 Date: Thu, 13 Feb 2025 15:23:38 +0100
-Message-ID: <20250213142439.222255548@linuxfoundation.org>
+Message-ID: <20250213142442.667988629@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Karol Przybylski <karprzy7@gmail.com>
 
-[ Upstream commit 53078a736fbc60e5d3a1e14f4cd4214003815026 ]
+[ Upstream commit eb8c0534713865d190856f10bfc97cf0b88475b1 ]
 
-The new ASUS ProArt 16" laptop series come with their keyboards stuck in
-an Out-Of-Box-Experience mode. While in this mode most functions will
-not work such as LED control or Fn key combos. The correct init sequence
-is now done to disable this OOBE.
+Selfgen stats are placed in a buffer using print_array_to_buf_index() function.
+Array length parameter passed to the function is too big, resulting in possible
+out-of bound memory error.
+Decreasing buffer size by one fixes faulty upper bound of passed array.
 
-This patch addresses only the ProArt series so far and it is unknown if
-there may be others, in which case a new quirk may be required.
+Discovered in coverity scan, CID 1600742 and CID 1600758
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Co-developed-by: Connor Belli <connorbelli2003@gmail.com>
-Signed-off-by: Connor Belli <connorbelli2003@gmail.com>
-Tested-by: Jan Schmidt <jan@centricular.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241105101132.374372-1-karprzy7@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c                     | 26 ++++++++++++++++++++++
- include/linux/platform_data/x86/asus-wmi.h |  5 +++++
- 2 files changed, 31 insertions(+)
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index a4b47319ad8ea..bcdd168cdc6d7 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -432,6 +432,26 @@ static int asus_kbd_get_functions(struct hid_device *hdev,
- 	return ret;
- }
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index c9980c0193d1d..43ea87e981f42 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -1562,7 +1562,8 @@ ath12k_htt_print_tx_selfgen_ac_stats_tlv(const void *tag_buf, u16 tag_len,
+ 			 le32_to_cpu(htt_stats_buf->ac_mu_mimo_ndp));
+ 	len += print_array_to_buf_index(buf, len, "ac_mu_mimo_brpollX_tried = ", 1,
+ 					htt_stats_buf->ac_mu_mimo_brpoll,
+-					ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS, "\n\n");
++					ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS - 1,
++					"\n\n");
  
-+static int asus_kbd_disable_oobe(struct hid_device *hdev)
-+{
-+	const u8 init[][6] = {
-+		{ FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 },
-+		{ FEATURE_KBD_REPORT_ID, 0xBA, 0xC5, 0xC4 },
-+		{ FEATURE_KBD_REPORT_ID, 0xD0, 0x8F, 0x01 },
-+		{ FEATURE_KBD_REPORT_ID, 0xD0, 0x85, 0xFF }
-+	};
-+	int ret;
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(init); i++) {
-+		ret = asus_kbd_set_report(hdev, init[i], sizeof(init[i]));
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	hid_info(hdev, "Disabled OOBE for keyboard\n");
-+	return 0;
-+}
-+
- static void asus_schedule_work(struct asus_kbd_leds *led)
- {
- 	unsigned long flags;
-@@ -534,6 +554,12 @@ static int asus_kbd_register_leds(struct hid_device *hdev)
- 		ret = asus_kbd_init(hdev, FEATURE_KBD_LED_REPORT_ID2);
- 		if (ret < 0)
- 			return ret;
-+
-+		if (dmi_match(DMI_PRODUCT_FAMILY, "ProArt P16")) {
-+			ret = asus_kbd_disable_oobe(hdev);
-+			if (ret < 0)
-+				return ret;
-+		}
- 	} else {
- 		/* Initialize keyboard */
- 		ret = asus_kbd_init(hdev, FEATURE_KBD_REPORT_ID);
-diff --git a/include/linux/platform_data/x86/asus-wmi.h b/include/linux/platform_data/x86/asus-wmi.h
-index 365e119bebaa2..783e2a336861b 100644
---- a/include/linux/platform_data/x86/asus-wmi.h
-+++ b/include/linux/platform_data/x86/asus-wmi.h
-@@ -184,6 +184,11 @@ static const struct dmi_system_id asus_use_hid_led_dmi_ids[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ROG Flow"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt P16"),
-+		},
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GA403U"),
+ 	stats_req->buf_len = len;
+ }
+@@ -1590,7 +1591,7 @@ ath12k_htt_print_tx_selfgen_ax_stats_tlv(const void *tag_buf, u16 tag_len,
+ 			 le32_to_cpu(htt_stats_buf->ax_mu_mimo_ndp));
+ 	len += print_array_to_buf_index(buf, len, "ax_mu_mimo_brpollX_tried = ", 1,
+ 					htt_stats_buf->ax_mu_mimo_brpoll,
+-					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS, "\n");
++					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS - 1, "\n");
+ 	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger = %u\n",
+ 			 le32_to_cpu(htt_stats_buf->ax_basic_trigger));
+ 	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_total_trigger = %u\n",
 -- 
 2.39.5
 
