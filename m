@@ -1,102 +1,160 @@
-Return-Path: <stable+bounces-115108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2941A33921
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 08:46:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854C1A33927
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 08:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B33188A117
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:46:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73703A5A54
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F4320B209;
-	Thu, 13 Feb 2025 07:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0A120B1E0;
+	Thu, 13 Feb 2025 07:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Lw3o8Wtt"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9310B13CF9C;
-	Thu, 13 Feb 2025 07:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B520AF96;
+	Thu, 13 Feb 2025 07:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739432778; cv=none; b=HvspYv14SvmMl06ec8uKAx0dV59afsXmYjluHAxWETTC5NozDboG5P5cbqwYJqOuNrQEcLx5AZjTCFzaUwfO9XI828FhyxN++wxKQ5xfZ6Ha2FdH7K86XCxO309He+lVSWcxLnNwpQhlTMBXGnwemA40Cs97LyaXGYWBM4l1ul4=
+	t=1739432791; cv=none; b=UnJI1l0ui1zvWBLtmETpXhakdh7QVBqhbDbAw+dMqor9oY7O2WJHCbAUgCfTm9wmJJAf8a/FhMsZaqhk74UPudDzfbUoE+ni3HcPq11n+a9XLZlcBp7swwwgUSOE81/+CeRow8T0E9vjCyZqTaawk4s8wzDwLWM/fZeB+9tuTcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739432778; c=relaxed/simple;
-	bh=ZEB+/Qwgtx3GsqdRg27UH3TiVHs76hawzz/h1eaSTp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZYxQ0UOJqOMKaliflRocvMcT9XWqeC8wQoT5fhUOH6wibNJXN/uVW+RAfI51rqFSGvf2281G1QZSGbE/6M674HWlPXIK/G8pHXuSz2KlqbG0sNkcFwfnlI5pu3PXs4lc6C4kNRdCpkQy3dfR9loKSldFVKvEVsu6SWU2uOcHe6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowACnr287o61n96ziDA--.2695S2;
-	Thu, 13 Feb 2025 15:46:05 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: perex@perex.cz,
-	tiwai@suse.com
-Cc: vulab@iscas.ac.cn,
-	cezary.rojewski@intel.com,
-	Julia.Lawall@inria.fr,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ALSA: hda: Add error check for snd_ctl_rename_id() in snd_hda_create_dig_out_ctls()
-Date: Thu, 13 Feb 2025 15:45:43 +0800
-Message-ID: <20250213074543.1620-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1739432791; c=relaxed/simple;
+	bh=LTlk+Q+OqAOJUrN6UgQEpR0w+zfSfFCR6/DNGGUlgc0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Qo8jqA3VvlxU/TKHms1pP1nvJzADOLdu3I2/RJKX8Mv9YMuwr99KpU4Rt70yDDthrSuT1Sqij4Nmw4icdQu/ngTe189CWkjTrArUze4xSqdYfMYXQ48UnmI6PsVxH24iHYJ2wG05dBQgA/8CzhKig5WfY/5QKKgIruoe74x8KH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Lw3o8Wtt; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CIlBdn001335;
+	Thu, 13 Feb 2025 07:46:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Nbm7pMR3sppbaW6MivVssSNUZKFF+Yg1bC2W6Ym5u8c=; b=Lw3o8WtttHYwMIEc
+	eR0749HKN1mOosx+2n65ajRX7+SP0M0JS2mS/1SJwCP+new4pXVbgyw0nTJTBUYO
+	84VvFZJlwnCUvLu3G5Q8WMto3pqD7i+H3d3i/Uf3uHO/rSzH2jf2DsOtx60aBD0s
+	HgccnCr17KQfSNC7KhXrDYwTUgwjbcYflXram8et1Y0WQDztJMRMdejbP5yVnDMz
+	OCA/AoOTJxjR03WIwARwKvZIOWJGez63NoEF9+rUrgoWRvAAoq3aLs3UpPXV4L6P
+	qgXa0g8/dNE8mY/ROf8AiKMFkuGq8gW7/cww/4EL5ZXC7U9is2qFdwAYc+OR2udu
+	NdbUgw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44rrnfu322-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 07:46:02 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51D7k1nO029626
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 07:46:01 GMT
+Received: from [10.239.132.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Feb
+ 2025 23:45:57 -0800
+Message-ID: <dc69cc0e-c3ca-4e2a-8d0e-998643f31ccf@quicinc.com>
+Date: Thu, 13 Feb 2025 15:45:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACnr287o61n96ziDA--.2695S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gr4xCw1xCryfAFy8ZrWfGrg_yoWfZFb_Wr
-	4kZw4xWa4UAwn7Kr43JrnYvFnag34xZFy0grs2qF48J393Gr4Yqr45Kw1qkFWkWa48GF13
-	CrnrW3yq9ryxKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1lc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUjBWlPUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAMA2etn6wN2QAAs7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] arm64: mm: Populate vmemmap/linear at the page level
+ for hotplugged sections
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: <anshuman.khandual@arm.com>, <will@kernel.org>, <ardb@kernel.org>,
+        <ryan.roberts@arm.com>, <mark.rutland@arm.com>, <joey.gouly@arm.com>,
+        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
+        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
+        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
+ <Z6zoWMejCDlN2YF9@arm.com>
+Content-Language: en-US
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+In-Reply-To: <Z6zoWMejCDlN2YF9@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: oD5n2ERUG7vEUbsd4pslOiDQ1za_FgFG
+X-Proofpoint-ORIG-GUID: oD5n2ERUG7vEUbsd4pslOiDQ1za_FgFG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-13_02,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=859 lowpriorityscore=0
+ suspectscore=0 adultscore=0 mlxscore=0 spamscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502130058
 
-Check the return value of snd_ctl_rename_id() in
-snd_hda_create_dig_out_ctls(). Ensure that failures
-are properly handled.
 
-Fixes: 5c219a340850 ("ALSA: hda: Fix kctl->id initialization")
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- sound/pci/hda/hda_codec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
-index 14763c0f31ad..46a220404999 100644
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -2470,7 +2470,9 @@ int snd_hda_create_dig_out_ctls(struct hda_codec *codec,
- 				break;
- 			id = kctl->id;
- 			id.index = spdif_index;
--			snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			err = snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			if (err < 0)
-+				return err;
- 		}
- 		bus->primary_dig_out_type = HDA_PCM_TYPE_HDMI;
- 	}
--- 
-2.42.0.windows.2
+On 2025/2/13 2:28, Catalin Marinas wrote:
+>> @@ -1339,9 +1349,27 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>>   		    struct mhp_params *params)
+>>   {
+>>   	int ret, flags = NO_EXEC_MAPPINGS;
+>> +	unsigned long start_pfn = PFN_DOWN(start);
+>> +	struct mem_section *ms = __pfn_to_section(start_pfn);
+>>   
+>>   	VM_BUG_ON(!mhp_range_allowed(start, size, true));
+>>   
+>> +	/* should not be invoked by early section */
+>> +	WARN_ON(early_section(ms));
+> I don't remember the discussion, do we still need this warning here if
+> the sections are not marked as early? I guess we can keep it if one does
+> an arch_add_memory() on an early section.
+> 
+> I think I suggested to use a WARN_ON_ONCE(!present_section()) but I
+> completely forgot the memory hotplug code paths.
 
+Dear Catalin,
+
+The previous discussion can be found at 
+https://lore.kernel.org/lkml/aedbbc4f-8f6c-46d8-a8d7-53103675a816@quicinc.com/, 
+I highlighted the key points from conversation between me and Anshuman 
+for your reference:
+"
+ >>
+ >> BTW, shall we remove the check for !early_section since 
+arch_add_memory is only called during hotplugging case? Correct me 
+please if I'm mistaken :)
+ >
+ > While this is true, still might be a good idea to keep the 
+early_section()
+ > check in place just to be extra careful here. Otherwise an WARN_ON() 
+might
+ > be needed.
+
+Make sense. I would like to add some comments and WARN_ON() if
+early_section().
+"
+Regarding your suggestion, I believed it was intended for the 
+vmemmap_populate() function ?(Discussion: 
+https://lore.kernel.org/linux-mm/Z3_d59kp4CuHQp97@arm.com/), but as 
+workflow below indicates:
+Hot plug:
+1. section_activate -> vmemmap_populate
+2. mark PRESENT
+
+In contrast, the early flow:
+1. memblocks_present -> mark PRESENT
+2. __populate_section_memmap -> vmemmap_populate
+
+Could this result in a false warning during hotplugging? I replied with 
+the doubt in above link before but seems you missed :) Could you please 
+share your thoughts if you have a different idea ?
+
+I will include your tags, correct capitalization nit and post one new 
+version.
 
