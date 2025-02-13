@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EFBA34475
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A32EA345F1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F2581897B2B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433D0188CFC8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FA923A9BE;
-	Thu, 13 Feb 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED63926B0A4;
+	Thu, 13 Feb 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4Fndobb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5cjjRW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4A82222C5;
-	Thu, 13 Feb 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C426B096;
+	Thu, 13 Feb 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458330; cv=none; b=NQvQRPD5G2cHH/v1KEWV1vtCynEgoKJnSXZPP0fw84o+6/HcvKnAry4cQbkzzZZ9A9W0ZJ9aAORmMg05PCvJcxsifBORnchDH2NqKDdrqzi5rY46oJ2NHgFuCLmV9TWRIgbbTp+tkcQ3ydI1KGSc0WAWBLm+8pQ7NlEpyoIHr0o=
+	t=1739459632; cv=none; b=h8f4dNbYq2DHp9XYJZk9N2N9lT5DeVWNUQxegokH1bJEChnZaQeSdYE7bJRhBChzdaXNK4nVrpk6mhPiAJAtKIsV0arigjORcXL8PG5OIMAKnnni69yrKH77hGhgtESZN7NKGBLknw79nDYwFIWYmT/FJQonxfoK49T87KzWJso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458330; c=relaxed/simple;
-	bh=jlmNduH9eTXjUAt7zxvekzh+0golS1JEmfqtHvRjnXw=;
+	s=arc-20240116; t=1739459632; c=relaxed/simple;
+	bh=lgLVUxiHwXJKvPX7pVLpRPQX7chfc9IOSCrZ7DzN+WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvjPj1V3RqQ+SIwMvXbHPxY531Se76m9WwHTQlE9kgOS0EVTqX0zH7CLUjpr1WLKtyGDsD9P7O30IzOPheWhWUl3YyEKGgLs14bsrRA+AOywh0GM0ha59Wcz0oQ1dRJZSzLhE1x3Y7VafHm/RmztCL3I7AJPB1Hx/1BZcawyjh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4Fndobb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEA3C4CED1;
-	Thu, 13 Feb 2025 14:52:09 +0000 (UTC)
+	 MIME-Version; b=N8F1tgzhyQ2KEpoUpX5Pyu/8zAI4SP5i2T7V5wZQlG2jk5Tnan6Db7h5ZO60dIcQedRWBIwv4I4wDyRA1DxfztB/j1ImiRPLaBzU+2rnlaxI5GpxEsculFeUTT5EvP2IRiKQTIhdVCL2nn0WAX1fe2VBHDkZcg0oN5VI764snW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5cjjRW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129AEC4CED1;
+	Thu, 13 Feb 2025 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458330;
-	bh=jlmNduH9eTXjUAt7zxvekzh+0golS1JEmfqtHvRjnXw=;
+	s=korg; t=1739459632;
+	bh=lgLVUxiHwXJKvPX7pVLpRPQX7chfc9IOSCrZ7DzN+WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4FndobbNFRzxcBvMYBwsxRY9gdEdeC0qA5yCs/i3YUbDyW9BrdF8t593nfyiYQky
-	 2hkmWW/DOeZHkHbmSjiMJFI64sOjJlFqkGkP0PgpbzUiereDcNs5QRByXbdic17/C5
-	 +haSnpBXhd+Wep83DNxIgHGvKvXpFEWHHlvyDUhs=
+	b=n5cjjRW0GEZbVtzBthzCgjoJ5dv66zMEmbdBzN+cL7e43rB5mStE5Q5k43bTFGGQC
+	 gxZvcwlSebbvos7ivrQI9zD0qrFFTFq1p2X62B7GAgxY3WnqFbl7pLobLWUinw0ly2
+	 1ZrmkZ3c+NqC0IfylI3ADab14mrjgql1I8m5QfmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 337/422] media: uvcvideo: Only save async fh if success
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 321/443] arm64: dts: qcom: sm8650: Fix MPSS memory length
 Date: Thu, 13 Feb 2025 15:28:06 +0100
-Message-ID: <20250213142449.559916133@linuxfoundation.org>
+Message-ID: <20250213142453.007204450@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d9fecd096f67a4469536e040a8a10bbfb665918b upstream.
+commit d4fa87daf3dd39d6bd4b69613e22bfb43c737831 upstream.
 
-Now we keep a reference to the active fh for any call to uvc_ctrl_set,
-regardless if it is an actual set or if it is a just a try or if the
-device refused the operation.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-We should only keep the file handle if the device actually accepted
-applying the operation.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
 Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-12-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1811,7 +1811,10 @@ int uvc_ctrl_begin(struct uvc_video_chai
- }
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -2853,7 +2853,7 @@
  
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
--	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
-+				  struct uvc_fh *handle,
-+				  struct uvc_entity *entity,
-+				  int rollback,
-+				  struct uvc_control **err_ctrl)
- {
- 	struct uvc_control *ctrl;
- 	unsigned int i;
-@@ -1859,6 +1862,10 @@ static int uvc_ctrl_commit_entity(struct
- 				*err_ctrl = ctrl;
- 			return ret;
- 		}
-+
-+		if (!rollback && handle &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			ctrl->handle = handle;
- 	}
+ 		remoteproc_mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8650-mpss-pas";
+-			reg = <0 0x04080000 0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
  
- 	return 0;
-@@ -1895,8 +1902,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
--		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
--					     &err_ctrl);
-+		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
-+					     rollback, &err_ctrl);
- 		if (ret < 0) {
- 			if (ctrls)
- 				ctrls->error_idx =
-@@ -2046,9 +2053,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
- 	mapping->set(mapping, value,
- 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
- 
--	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--		ctrl->handle = handle;
--
- 	ctrl->dirty = 1;
- 	ctrl->modified = 1;
- 	return 0;
-@@ -2377,7 +2381,7 @@ int uvc_ctrl_restore_values(struct uvc_d
- 			ctrl->dirty = 1;
- 		}
- 
--		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
-+		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0, NULL);
- 		if (ret < 0)
- 			return ret;
- 	}
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
