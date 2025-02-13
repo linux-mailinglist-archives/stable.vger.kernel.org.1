@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D29A345D9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCAAA343EA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2814516C59F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C337118956B2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0311826B094;
-	Thu, 13 Feb 2025 15:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5268C266180;
+	Thu, 13 Feb 2025 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbG39cfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUMWJ9vY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5226B089;
-	Thu, 13 Feb 2025 15:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0172E23A9BA;
+	Thu, 13 Feb 2025 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459390; cv=none; b=BWZgXEgETtXHZpor25K5XzuQ/kF83zi6JtI4FosR2PEfARz+1lXJmlh130m49WqfCcJqXFDXcxf52nawXhzGn2SmeUvK179gzclQdra4fLkbUua7ymLlzszdG7TZ2cKtKEAB2wCyLKNb08Bjd5calzULvSgYZRpf8I5BDM0pE6g=
+	t=1739458090; cv=none; b=WW+ysSDSUZFlU7gzAzAujv76CJJct0m+B2Sp7WovOnfMZaB2eIXBoB5mVYhm7TwbI589EBG0B6H/1g3bI2i+c2heuWWbq8Qa8z9Xxfx5QjoJnFcdUE/lVIK107jbIND5G4CxpmYJVB24T4+SrmTVLy8X+2eHkHxkQp7rgVKGJeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459390; c=relaxed/simple;
-	bh=4mzHCnJdHmmJ7J6/P5qXous0LyoRZh18rT5PqVyLwj8=;
+	s=arc-20240116; t=1739458090; c=relaxed/simple;
+	bh=aqmOs7v2FKTF+F7L6AsKOiKLFmYf7YoLwR+DsQ78yx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3F2El1vKkPse7QQVLHEpHK1l0+lVHcSavIM5vlaBbL9gPyAoG7cZKg6jER3yKFf5GcT1uPtziJd37vARtCGjF+jAJJeYACtrBuhyvrEfxEZB7XrJlcFbPIrbqtigupmsYU8RpKY9xEmqbju/nQN65/CoTe2pHzL/tr9eBZmwnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbG39cfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE97C4CED1;
-	Thu, 13 Feb 2025 15:09:50 +0000 (UTC)
+	 MIME-Version; b=eDaB+yHz5nEP/VPj3NYo/DdKuekAsU8CGgoZeCRUSEFiMjT+h8RAWgSAbCveEytmL7K2iF+hnD+Yp+lwKMQIwCiVGuIhQHoxIDmRBx9KQ9m6G9YHpSWVmaTflPE2hqu3waSVchcnwF2SUSM1JUsiu3tsX8lO7KOyTxMDp2Zk0cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUMWJ9vY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62014C4CEE4;
+	Thu, 13 Feb 2025 14:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459390;
-	bh=4mzHCnJdHmmJ7J6/P5qXous0LyoRZh18rT5PqVyLwj8=;
+	s=korg; t=1739458089;
+	bh=aqmOs7v2FKTF+F7L6AsKOiKLFmYf7YoLwR+DsQ78yx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbG39cfhvR/pDiyF+rbEvpcKQrwqfJXJ6MSwnpOL4Z0a4u6dNeUc5jDc/PwCIMDNu
-	 av6ATrXfkGdHfE5z+C23fRoVQKC7CYCpy/G9i5VhMh7MNZjp4IUXwQqxbHTGM1dHZG
-	 zdC5Z4hwYQyubRoEEicsaQlE4k1F5lk9YT9HHRKc=
+	b=mUMWJ9vYCySJgKQh8c/RQgWggx+U4eC0Us4AUf9VPIDZo5Y+xKiJEYzb4ORV4yJLJ
+	 7VrPcK7TwTyJakP94siksxPEeNfaneI/dLzpiG57UGz4jTdpjH6AbO1lSNyWcBHzqy
+	 y+RIHEkIEc/EjYYg0CJNprOQBMiRxY1HyJK5uxIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	nijs1@lenovo.com,
-	pgriffais@valvesoftware.com,
-	mpearson-lenovo@squebb.ca,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 251/443] ASoC: acp: Support microphone from Lenovo Go S
+	Andreas Kemnade <andreas@kemnade.info>,
+	Roger Quadros <rogerq@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.12 267/422] ARM: dts: ti/omap: gta04: fix pm issues caused by spi module
 Date: Thu, 13 Feb 2025 15:26:56 +0100
-Message-ID: <20250213142450.302953641@linuxfoundation.org>
+Message-ID: <20250213142446.846175083@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit b9a8ea185f3f8024619b2e74b74375493c87df8c upstream.
+commit 0cfbd7805fe13406500e6a6f2aa08f198d5db4bd upstream.
 
-On Lenovo Go S there is a DMIC connected to the ACP but the firmware
-has no `AcpDmicConnected` ACPI _DSD.
+Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
+disabling SPI leads to messages like when suspending:
+Powerdomain (core_pwrdm) didn't enter target state 0
+and according to /sys/kernel/debug/pm_debug/count off state is not
+entered. That was not connected to SPI during the discussion
+of disabling SPI. See:
+https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
 
-Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
+The reason is that SPI is per default in slave mode. Linux driver
+will turn it to master per default. It slave mode, the powerdomain seems to
+be kept active if active chip select input is sensed.
 
-Cc: nijs1@lenovo.com
-Cc: pgriffais@valvesoftware.com
-Cc: mpearson-lenovo@squebb.ca
-Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250123024915.2457115-1-superm1@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix that by explicitly disabling the SPI3 pins which used to be muxed by
+the bootloader since they are available on an optionally fitted header
+which would require dtb overlays anyways.
+
+Fixes: a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage")
+CC: stable@vger.kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20241204174152.2360431-1-andreas@kemnade.info
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -307,6 +307,34 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
- 		}
+--- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+@@ -446,6 +446,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <
+ 			&hsusb2_2_pins
++			&mcspi3hog_pins
+ 	>;
+ 
+ 	hsusb2_2_pins: hsusb2-2-pins {
+@@ -459,6 +460,15 @@
+ 		>;
+ 	};
+ 
++	mcspi3hog_pins: mcspi3hog-pins {
++		pinctrl-single,pins = <
++			OMAP3630_CORE2_IOPAD(0x25dc, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d0 */
++			OMAP3630_CORE2_IOPAD(0x25de, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d1 */
++			OMAP3630_CORE2_IOPAD(0x25e0, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d2 */
++			OMAP3630_CORE2_IOPAD(0x25e2, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d3 */
++		>;
++	};
++
+ 	spi_gpio_pins: spi-gpio-pinmux-pins {
+ 		pinctrl-single,pins = <
+ 			OMAP3630_CORE2_IOPAD(0x25d8, PIN_OUTPUT | MUX_MODE4) /* clk */
 
 
 
