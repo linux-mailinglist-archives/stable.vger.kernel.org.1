@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5E7A343A4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:54:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE794A34735
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFD216EED6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D550188DE52
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177291F866A;
-	Thu, 13 Feb 2025 14:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BBF145A03;
+	Thu, 13 Feb 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ99rZCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9uVJwfr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B621EEA36;
-	Thu, 13 Feb 2025 14:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F771422D8;
+	Thu, 13 Feb 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457920; cv=none; b=IclEJgtGdNMYOOTijozFC9XXCHhW0rpC54f6JecpbwTn/C2xAv/S/t2EVmenIcVxPxMff0xbhGgI0W4Z2hWgSQcgiM/8J910fMj7ew/s/FRwVPFXeX32su8NfDjYNsEaP3tGVcaSXTkfuCDsHAiGZfb5J+XTqNanjYm8kr8f+bw=
+	t=1739460297; cv=none; b=WiIn1HakBmtq1/pWpx/9qWGub3e7UFT4TEMDxmIf1bplTgIlV2GhWp16x4oyoNvwtzCpSUxoyFkjW74Q+NoIjt5ojgHQ6y/XLffRgVB5o1X+29T98czuZEKRPpjOvT/GJ4dovBzTg1pNOgD7GQEjWu9w+k0MQpgKNvpi7Af6xtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457920; c=relaxed/simple;
-	bh=LA/opa+4N4nUXk1wKQjBeOx2aenOmH3H8LYHeLZvAeM=;
+	s=arc-20240116; t=1739460297; c=relaxed/simple;
+	bh=YNPqjI7UFxUIGe8yQAjxiopsMYcjU5GW/Dak9HxTJns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTz5PHTJa2/48JIuTsLSk1C0z1Do0u/Cii9iBqIboFp/MGIR2LSC+VR00YE7qCWOjPij1c7n5IKx4Zko99FiproS9aWjvhSyrdd/DEFao7Nm9S167v6kx/VsV1yazqnqo5xYfGSvEWmXZom2DX3yCBMWuBqYVbFVZpIIxkrUBuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ99rZCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B221C4CEEA;
-	Thu, 13 Feb 2025 14:45:20 +0000 (UTC)
+	 MIME-Version; b=dsMJkdv6egQeTKiH2igmiVg/uCxUiirCPUgmqu0ghk8WmAcSj2n+RPJq5QMVWkpcYW7A4XRkDAeH2BmtTWIn3HVMCIMrWt4N9l/nam14saOu+QhAsGTT1pObVy5S6ryOFnJ7atHNfJqHLxVyo2PFV2uEebasOVSD6LpzDxBva6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9uVJwfr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBA4C4CED1;
+	Thu, 13 Feb 2025 15:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457920;
-	bh=LA/opa+4N4nUXk1wKQjBeOx2aenOmH3H8LYHeLZvAeM=;
+	s=korg; t=1739460297;
+	bh=YNPqjI7UFxUIGe8yQAjxiopsMYcjU5GW/Dak9HxTJns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJ99rZCE+Smjzb+yRTzSa1i8KHdk/vWJWcRwIPWZ1YfJmsl6yHj9k/tOYzv2nG7fG
-	 LSfJEKHOWxuKxw95H2s3nNWJJBkXrG/DxDwPNgZvQZWG02Fua4G4FCoYH/GVjV9kW4
-	 nKFVgW1ZwuotHnZUJyO5qIby9l+1taMWc817qpRE=
+	b=d9uVJwfrJO6gQEL0kqArt2X1ff2DIaDIlDTdXWe0xb4yO9/kMglrnaEemY1gKuLs6
+	 dRLmZrmtBgZHY678wQljrywlA/pFKDSB9hxw8TlTxyoescDPxvKKwDPVALIVO+kukY
+	 H9GMplOENO8fOlluRBU2MOPXauLm1AC6nvKD85/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 251/422] nvme-pci: Add TUXEDO InfinityFlex to Samsung sleep quirk
-Date: Thu, 13 Feb 2025 15:26:40 +0100
-Message-ID: <20250213142446.227453812@linuxfoundation.org>
+	Stas Sergeev <stsp2@yandex.ru>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/273] tun: fix group permission check
+Date: Thu, 13 Feb 2025 15:26:41 +0100
+Message-ID: <20250213142408.508433501@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Stas Sergeev <stsp2@yandex.ru>
 
-commit dbf2bb1a1319b7c7d8828905378a6696cca6b0f2 upstream.
+[ Upstream commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3 ]
 
-On the TUXEDO InfinityFlex, a Samsung 990 Evo NVMe leads to a high power
-consumption in s2idle sleep (4 watts).
+Currently tun checks the group permission even if the user have matched.
+Besides going against the usual permission semantic, this has a
+very interesting implication: if the tun group is not among the
+supplementary groups of the tun user, then effectively no one can
+access the tun device. CAP_SYS_ADMIN still can, but its the same as
+not setting the tun ownership.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1.4 watts.
+This patch relaxes the group checking so that either the user match
+or the group match is enough. This avoids the situation when no one
+can access the device even though the ownership is properly set.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also I simplified the logic by removing the redundant inversions:
+tun_not_capable() --> !tun_capable()
+
+Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20241205073614.294773-1-stsp2@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/tun.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2987,7 +2987,8 @@ static unsigned long check_vendor_combin
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
- 		 */
--		if (dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
-+		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
-+		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index cbb2f78ffde03..c84a749c52d12 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -574,14 +574,18 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static inline bool tun_not_capable(struct tun_struct *tun)
++static inline bool tun_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
+ 
+-	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
+-		  (gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
+-		!ns_capable(net->user_ns, CAP_NET_ADMIN);
++	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return 1;
++	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
++		return 1;
++	if (gid_valid(tun->group) && in_egroup_p(tun->group))
++		return 1;
++	return 0;
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2778,7 +2782,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (tun_not_capable(tun))
++		if (!tun_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
+-- 
+2.39.5
+
 
 
 
