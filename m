@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4F4A34327
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C3FA34549
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EFD01883CDC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97F6189B24A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA464F218;
-	Thu, 13 Feb 2025 14:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D060202F60;
+	Thu, 13 Feb 2025 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN7gs8Kl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUWiUNXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE39281369;
-	Thu, 13 Feb 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC30F26B087;
+	Thu, 13 Feb 2025 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457658; cv=none; b=RxcPpcm6297+LxF2Z65nfKfc5qVkbZJY8zu78paJUPzZBTO3SVcWCDjrmqA2+2xlBDEXXyM/nMhn3nip4p4pDLGmmvD12eJAkC2UUFLQfO0+aakA1Mz0LDejZ+TExkMHwfIEvgF5Ta7UHyLlEuRx3Ixl0rRfjPPSStLIoUDfPy4=
+	t=1739459075; cv=none; b=CSoOzWzLIHDTEaDgUvAFa1wTD/63U/0GAnUOYN5Bs2n9o3EhukyKy1H3dGOjSFsiaCFeaL40vJ4+deH/aq/sPv5yw7Yr3kJBluoVdlPW+AU/7Ehju8zMoEOzhrDHoBU7QnuySwGT3HFy4BS2DirIyTGkcSwUAUHXkTjXcLbyrbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457658; c=relaxed/simple;
-	bh=LvcFbHxjOvAkOm+JB/U76g/WL4t9mVoD2A08vYd/oZg=;
+	s=arc-20240116; t=1739459075; c=relaxed/simple;
+	bh=0AjSwO7fw+u8qlLzLvRWFfGpVOuHKG/MfuxN5SdxV+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCt8A0wqQJN7ebkYN5nblEvZ2jw1khvxshDiDZ8n4J5fFzjnRy9spHwp+5l7gxbu0GMdUBEyGXUWoIxR5HAyzStYSiNdutLOZkbZc2I8PQirI4mQ1GPD3f+KqiKMFK8t1GBugnahrdhjJS3C3mdHYLYWBM9MDhO7g0eaQMFkBcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN7gs8Kl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDF6C4CED1;
-	Thu, 13 Feb 2025 14:40:57 +0000 (UTC)
+	 MIME-Version; b=RppWjjzGy3krD4v798FQKUEJBCDtx+ONDmkFpr1ughG5nz7YpECLw3zGn1wArFUBCHrHeWvtqSi/faNhyJNFl8iLGrvoav3wNeLuCvHODzfGe9R+g1BFOWQTuE06Nhkf9XvJkRTOvChHk0XjrpjkTv3aMNbJR4jiVdz0pdT1QLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUWiUNXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49672C4CED1;
+	Thu, 13 Feb 2025 15:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457657;
-	bh=LvcFbHxjOvAkOm+JB/U76g/WL4t9mVoD2A08vYd/oZg=;
+	s=korg; t=1739459074;
+	bh=0AjSwO7fw+u8qlLzLvRWFfGpVOuHKG/MfuxN5SdxV+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fN7gs8KlYhsDBpOJ4+NE+SiYZwFDUsb9fL859qgD5EjMcbiiTGbdG7IaLtvViUbIO
-	 TVj8QIwN1fMIVTdu097a3/UDwsEP8Nj/xODjYrrCU59ZleJWEuZ9BJDG4gQvGmuaHM
-	 RlBz/Z5H/fjcdhMeyiN1JXicJX6GhILEGiA7ubZ8=
+	b=ZUWiUNXBk1KnULMOtEE8YfITZu3HmmMN5QBFJkvhHojEQPdC4JVtnjPEWcE9Nnl/b
+	 W5ZvhDjiVnmtu+hfmdOgFZf0Qv20bUlDXC0emQDn7w1OWFUaV8ThoZZmCyYha6Yk/u
+	 Bqcpscj/FE47pemtzGg2Q1KEh9JQB49Ti/EfeW6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.12 176/422] clk: clk-loongson2: Fix the number count of clk provider
+	Ard Biesheuvel <ardb@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.13 160/443] arm64/kvm: Configure HYP TCR.PS/DS based on host stage1
 Date: Thu, 13 Feb 2025 15:25:25 +0100
-Message-ID: <20250213142443.336124499@linuxfoundation.org>
+Message-ID: <20250213142446.771789922@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 5fb33b6797633ce60908d13dc06c54a101621845 upstream.
+commit f0da16992aef7e246b2f3bba1492e3a52c38ca0e upstream.
 
-Since commit 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer
-overflow in flexible-array member access"), the clk provider register is
-failed.
+When the host stage1 is configured for LPA2, the value currently being
+programmed into TCR_EL2.T0SZ may be invalid unless LPA2 is configured
+at HYP as well.  This means kvm_lpa2_is_enabled() is not the right
+condition to test when setting TCR_EL2.DS, as it will return false if
+LPA2 is only available for stage 1 but not for stage 2.
 
-The count of `clks_num` is shown below:
+Similary, programming TCR_EL2.PS based on a limited IPA range due to
+lack of stage2 LPA2 support could potentially result in problems.
 
-	for (p = data; p->name; p++)
-		clks_num++;
-
-In fact, `clks_num` represents the number of SoC clocks and should be
-expressed as the maximum value of the clock binding id in use (p->id + 1).
-
-Now we fix it to avoid the following error when trying to register a clk
-provider:
-
-[ 13.409595] of_clk_hw_onecell_get: invalid index 17
+So use lpa2_is_enabled() instead, and set the PS field according to the
+host's IPS, which is capped at 48 bits if LPA2 support is absent or
+disabled. Whether or not we can make meaningful use of such a
+configuration is a different question.
 
 Cc: stable@vger.kernel.org
-Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
-Fixes: 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer overflow in flexible-array member access")
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Link: https://lore.kernel.org/r/82e43d89a9a6791129cf8ea14f4eeb666cd87be4.1736856470.git.zhoubinbin@loongson.cn
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241212081841.2168124-11-ardb+git@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-loongson2.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/arm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/clk-loongson2.c b/drivers/clk/clk-loongson2.c
-index 7082b4309c6f..0d9485e83938 100644
---- a/drivers/clk/clk-loongson2.c
-+++ b/drivers/clk/clk-loongson2.c
-@@ -294,7 +294,7 @@ static int loongson2_clk_probe(struct platform_device *pdev)
- 		return -EINVAL;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1990,8 +1990,7 @@ static int kvm_init_vector_slots(void)
+ static void __init cpu_prepare_hyp_mode(int cpu, u32 hyp_va_bits)
+ {
+ 	struct kvm_nvhe_init_params *params = per_cpu_ptr_nvhe_sym(kvm_init_params, cpu);
+-	u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+-	unsigned long tcr;
++	unsigned long tcr, ips;
  
- 	for (p = data; p->name; p++)
--		clks_num++;
-+		clks_num = max(clks_num, p->id + 1);
+ 	/*
+ 	 * Calculate the raw per-cpu offset without a translation from the
+@@ -2005,6 +2004,7 @@ static void __init cpu_prepare_hyp_mode(
+ 	params->mair_el2 = read_sysreg(mair_el1);
  
- 	clp = devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num),
- 			   GFP_KERNEL);
-@@ -309,6 +309,9 @@ static int loongson2_clk_probe(struct platform_device *pdev)
- 	clp->clk_data.num = clks_num;
- 	clp->dev = dev;
+ 	tcr = read_sysreg(tcr_el1);
++	ips = FIELD_GET(TCR_IPS_MASK, tcr);
+ 	if (cpus_have_final_cap(ARM64_KVM_HVHE)) {
+ 		tcr |= TCR_EPD1_MASK;
+ 	} else {
+@@ -2014,8 +2014,8 @@ static void __init cpu_prepare_hyp_mode(
+ 	tcr &= ~TCR_T0SZ_MASK;
+ 	tcr |= TCR_T0SZ(hyp_va_bits);
+ 	tcr &= ~TCR_EL2_PS_MASK;
+-	tcr |= FIELD_PREP(TCR_EL2_PS_MASK, kvm_get_parange(mmfr0));
+-	if (kvm_lpa2_is_enabled())
++	tcr |= FIELD_PREP(TCR_EL2_PS_MASK, ips);
++	if (lpa2_is_enabled())
+ 		tcr |= TCR_EL2_DS;
+ 	params->tcr_el2 = tcr;
  
-+	/* Avoid returning NULL for unused id */
-+	memset_p((void **)clp->clk_data.hws, ERR_PTR(-ENOENT), clks_num);
-+
- 	for (i = 0; i < clks_num; i++) {
- 		p = &data[i];
- 		switch (p->type) {
--- 
-2.48.1
-
 
 
 
