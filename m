@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C8BA34291
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C895A344BF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24A641889A2C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B74B01723A8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8738F70830;
-	Thu, 13 Feb 2025 14:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC1815DBBA;
+	Thu, 13 Feb 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ap0RtNsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUqSfa39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44043281353;
-	Thu, 13 Feb 2025 14:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4669D1514F6;
+	Thu, 13 Feb 2025 14:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457380; cv=none; b=nyzNo2fFSzLPpgnFjZt/SKIDtVDxTZywwjjn0Yptu5bJMzRaBXcv0z1+TzyZzB1ZCQDBMhW4Ksl9OT/B9dBMbNNYu6Pwxfv4yggFG443kpPY99v186vgfSes4gYBFVBVEEb6RhxNtToIIPEoRj+9CP8NVmeOe3T56FuyjMfaO9c=
+	t=1739458668; cv=none; b=CPdsSTbwlLqdPg3EzWQwuKjIUc18ptCPntruZ8/JjxRZI+38IWmOcRdajbjdrziEzcqKxT2jyKES4XMXosCyqXh82EOaa+1p84udW/bj4KIp19QLbI/NnOryfesFYtaxGLAWQBddkgUhnRdKYE7ZroLieI2by4qiaAlmKzNj530=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457380; c=relaxed/simple;
-	bh=PX6w9ZbwvWTZjHhWn8RcVKxfCxU9wgDeiJFoF397Wus=;
+	s=arc-20240116; t=1739458668; c=relaxed/simple;
+	bh=kL8Ol9E+SQMXkCOZLXTXxw3EJQlK/+H9cON34g9q8hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pw9E1cvM/vyhRVujaa9Kk4ka9ObAHqm5vPWtpDHafjQf1bguJqDvl1dhbtxMFsX7u0R8SZp60o8M81DHqMJRXpuH2MCUCRjDNmef+JAd51CTAj1Cr0ZirNFL+rEJawX94W8HBum9tMfuMrVqqRwIJA8XKYP4ojhnipZVWln8Bys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ap0RtNsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7DBC4CEE2;
-	Thu, 13 Feb 2025 14:36:19 +0000 (UTC)
+	 MIME-Version; b=CDuwvtZpem3M6kkWkKLUR0JP3iRVcxfbsLTQjUUniZOeqEdZpWXtkqXgTbrH4klGxQzzPnQRcwXUbYcvCgYG3oG+wotV0LpKhe6bTJa+8KkeyzHMnGyV0uMJpVJq9HZRyy+dCWEyHKoyHcbOJriaDiL3kWoFAfJdr5up1TYDYMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUqSfa39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFA9C4CED1;
+	Thu, 13 Feb 2025 14:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457379;
-	bh=PX6w9ZbwvWTZjHhWn8RcVKxfCxU9wgDeiJFoF397Wus=;
+	s=korg; t=1739458667;
+	bh=kL8Ol9E+SQMXkCOZLXTXxw3EJQlK/+H9cON34g9q8hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ap0RtNsKGQp1PuxhjzC9FKs29s0OMwjeTPO4VmxdS0/JNzA4Q0h4tP4JagxTzLjRi
-	 QP2f/FTHhHC+L/iMsbmrNUKZcmmoBWnKHWfWf6nHAgvBbiqh8SVf2zdm24EQTcslMB
-	 PuTRFYbmDu74dncK1ZAO7uggPcSl+c9MsCcpNlnI=
+	b=PUqSfa39Fst/u5RtiT3XcNvG9Z2WmranPEFr3oNkWNwXhIxhOp2DLqduGjuZksLDJ
+	 fkns9V6dQzKuVkoDwT/pdUexTT+CFMoDjFjV9LfzKlutR/6ASE0spJ/SRj5Zt+YbUq
+	 Omx6ukKsqeVRKTg3GOI3evdgu9gIqi249Fvg3PnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Somashekhar(Som)" <somashekhar.puttagangaiah@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/422] wifi: iwlwifi: pcie: Add support for new device ids
+Subject: [PATCH 6.13 045/443] drm/bridge: it6505: fix HDCP Bstatus check
 Date: Thu, 13 Feb 2025 15:23:30 +0100
-Message-ID: <20250213142438.916237436@linuxfoundation.org>
+Message-ID: <20250213142442.363174730@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,305 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Somashekhar(Som) <somashekhar.puttagangaiah@intel.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit 9b45ba3976945e8d53f2dd40541a66c690f12286 ]
+[ Upstream commit 0fd2ff47d8c207fa3173661de04bb9e8201c0ad2 ]
 
-Add support for new device-ids 0x2730 and 0x272F.
+When HDCP is activated,
+a DisplayPort source receiving CP_IRQ from the sink
+shall check Bstatus from DPCD and process the corresponding value
 
-Signed-off-by: Somashekhar(Som) <somashekhar.puttagangaiah@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20241226174257.6a0db60436e7.I50a66544dde6c88acd9abe4b31badab96ef04cfc@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-5-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/Makefile   |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   | 167 ++++++++++++++++++
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  10 ++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  16 ++
- 4 files changed, 194 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+ drivers/gpu/drm/bridge/ite-it6505.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
-index 64c1233142451..a3052684b341f 100644
---- a/drivers/net/wireless/intel/iwlwifi/Makefile
-+++ b/drivers/net/wireless/intel/iwlwifi/Makefile
-@@ -11,7 +11,7 @@ iwlwifi-objs		+= pcie/ctxt-info.o pcie/ctxt-info-gen3.o
- iwlwifi-objs		+= pcie/trans-gen2.o pcie/tx-gen2.o
- iwlwifi-$(CONFIG_IWLDVM) += cfg/1000.o cfg/2000.o cfg/5000.o cfg/6000.o
- iwlwifi-$(CONFIG_IWLMVM) += cfg/7000.o cfg/8000.o cfg/9000.o cfg/22000.o
--iwlwifi-$(CONFIG_IWLMVM) += cfg/ax210.o cfg/bz.o cfg/sc.o
-+iwlwifi-$(CONFIG_IWLMVM) += cfg/ax210.o cfg/bz.o cfg/sc.o cfg/dr.o
- iwlwifi-objs		+= iwl-dbg-tlv.o
- iwlwifi-objs		+= iwl-trans.o
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index d55d7dad9545f..0f7d50da56835 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2312,14 +2312,20 @@ static int it6505_process_hpd_irq(struct it6505 *it6505)
+ 	DRM_DEV_DEBUG_DRIVER(dev, "dp_irq_vector = 0x%02x", dp_irq_vector);
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-new file mode 100644
-index 0000000000000..ab7c0f8d54f42
---- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * Copyright (C) 2024 Intel Corporation
-+ */
-+#include <linux/module.h>
-+#include <linux/stringify.h>
-+#include "iwl-config.h"
-+#include "iwl-prph.h"
-+#include "fw/api/txq.h"
-+
-+/* Highest firmware API version supported */
-+#define IWL_DR_UCODE_API_MAX	96
-+
-+/* Lowest firmware API version supported */
-+#define IWL_DR_UCODE_API_MIN	96
-+
-+/* NVM versions */
-+#define IWL_DR_NVM_VERSION		0x0a1d
-+
-+/* Memory offsets and lengths */
-+#define IWL_DR_DCCM_OFFSET		0x800000 /* LMAC1 */
-+#define IWL_DR_DCCM_LEN			0x10000 /* LMAC1 */
-+#define IWL_DR_DCCM2_OFFSET		0x880000
-+#define IWL_DR_DCCM2_LEN		0x8000
-+#define IWL_DR_SMEM_OFFSET		0x400000
-+#define IWL_DR_SMEM_LEN			0xD0000
-+
-+#define IWL_DR_A_PE_A_FW_PRE		"iwlwifi-dr-a0-pe-a0"
-+#define IWL_BR_A_PET_A_FW_PRE		"iwlwifi-br-a0-petc-a0"
-+#define IWL_BR_A_PE_A_FW_PRE		"iwlwifi-br-a0-pe-a0"
-+
-+#define IWL_DR_A_PE_A_FW_MODULE_FIRMWARE(api) \
-+	IWL_DR_A_PE_A_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_BR_A_PET_A_FW_MODULE_FIRMWARE(api) \
-+	IWL_BR_A_PET_A_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_BR_A_PE_A_FW_MODULE_FIRMWARE(api) \
-+	IWL_BR_A_PE_A_FW_PRE "-" __stringify(api) ".ucode"
-+
-+static const struct iwl_base_params iwl_dr_base_params = {
-+	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
-+	.num_of_queues = 512,
-+	.max_tfd_queue_size = 65536,
-+	.shadow_ram_support = true,
-+	.led_compensation = 57,
-+	.wd_timeout = IWL_LONG_WD_TIMEOUT,
-+	.max_event_log_size = 512,
-+	.shadow_reg_enable = true,
-+	.pcie_l1_allowed = true,
-+};
-+
-+#define IWL_DEVICE_DR_COMMON						\
-+	.ucode_api_max = IWL_DR_UCODE_API_MAX,			\
-+	.ucode_api_min = IWL_DR_UCODE_API_MIN,			\
-+	.led_mode = IWL_LED_RF_STATE,					\
-+	.nvm_hw_section_num = 10,					\
-+	.non_shared_ant = ANT_B,					\
-+	.dccm_offset = IWL_DR_DCCM_OFFSET,				\
-+	.dccm_len = IWL_DR_DCCM_LEN,					\
-+	.dccm2_offset = IWL_DR_DCCM2_OFFSET,				\
-+	.dccm2_len = IWL_DR_DCCM2_LEN,				\
-+	.smem_offset = IWL_DR_SMEM_OFFSET,				\
-+	.smem_len = IWL_DR_SMEM_LEN,					\
-+	.apmg_not_supported = true,					\
-+	.trans.mq_rx_supported = true,					\
-+	.vht_mu_mimo_supported = true,					\
-+	.mac_addr_from_csr = 0x30,					\
-+	.nvm_ver = IWL_DR_NVM_VERSION,				\
-+	.trans.rf_id = true,						\
-+	.trans.gen2 = true,						\
-+	.nvm_type = IWL_NVM_EXT,					\
-+	.dbgc_supported = true,						\
-+	.min_umac_error_event_table = 0xD0000,				\
-+	.d3_debug_data_base_addr = 0x401000,				\
-+	.d3_debug_data_length = 60 * 1024,				\
-+	.mon_smem_regs = {						\
-+		.write_ptr = {						\
-+			.addr = LDBG_M2S_BUF_WPTR,			\
-+			.mask = LDBG_M2S_BUF_WPTR_VAL_MSK,		\
-+	},								\
-+		.cycle_cnt = {						\
-+			.addr = LDBG_M2S_BUF_WRAP_CNT,			\
-+			.mask = LDBG_M2S_BUF_WRAP_CNT_VAL_MSK,		\
-+		},							\
-+	},								\
-+	.trans.umac_prph_offset = 0x300000,				\
-+	.trans.device_family = IWL_DEVICE_FAMILY_DR,			\
-+	.trans.base_params = &iwl_dr_base_params,			\
-+	.min_txq_size = 128,						\
-+	.gp2_reg_addr = 0xd02c68,					\
-+	.min_ba_txq_size = IWL_DEFAULT_QUEUE_SIZE_EHT,			\
-+	.mon_dram_regs = {						\
-+		.write_ptr = {						\
-+			.addr = DBGC_CUR_DBGBUF_STATUS,			\
-+			.mask = DBGC_CUR_DBGBUF_STATUS_OFFSET_MSK,	\
-+		},							\
-+		.cycle_cnt = {						\
-+			.addr = DBGC_DBGBUF_WRAP_AROUND,		\
-+			.mask = 0xffffffff,				\
-+		},							\
-+		.cur_frag = {						\
-+			.addr = DBGC_CUR_DBGBUF_STATUS,			\
-+			.mask = DBGC_CUR_DBGBUF_STATUS_IDX_MSK,		\
-+		},							\
-+	},								\
-+	.mon_dbgi_regs = {						\
-+		.write_ptr = {						\
-+			.addr = DBGI_SRAM_FIFO_POINTERS,		\
-+			.mask = DBGI_SRAM_FIFO_POINTERS_WR_PTR_MSK,	\
-+		},							\
-+	}
-+
-+#define IWL_DEVICE_DR							\
-+	IWL_DEVICE_DR_COMMON,						\
-+	.uhb_supported = true,						\
-+	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,		\
-+	.num_rbds = IWL_NUM_RBDS_DR_EHT,				\
-+	.ht_params = &iwl_22000_ht_params
-+
-+/*
-+ * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
-+ * A-MPDU, with additional overhead to account for processing time.
-+ */
-+#define IWL_NUM_RBDS_DR_EHT		(512 * 16)
-+
-+const struct iwl_cfg_trans_params iwl_dr_trans_cfg = {
-+	.device_family = IWL_DEVICE_FAMILY_DR,
-+	.base_params = &iwl_dr_base_params,
-+	.mq_rx_supported = true,
-+	.rf_id = true,
-+	.gen2 = true,
-+	.integrated = true,
-+	.umac_prph_offset = 0x300000,
-+	.xtal_latency = 12000,
-+	.low_latency_xtal = true,
-+	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
-+};
-+
-+const char iwl_dr_name[] = "Intel(R) TBD Dr device";
-+
-+const struct iwl_cfg iwl_cfg_dr = {
-+	.fw_name_mac = "dr",
-+	IWL_DEVICE_DR,
-+};
-+
-+const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
-+	.device_family = IWL_DEVICE_FAMILY_DR,
-+	.base_params = &iwl_dr_base_params,
-+	.mq_rx_supported = true,
-+	.rf_id = true,
-+	.gen2 = true,
-+	.integrated = true,
-+	.umac_prph_offset = 0x300000,
-+	.xtal_latency = 12000,
-+	.low_latency_xtal = true,
-+	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
-+};
-+
-+const char iwl_br_name[] = "Intel(R) TBD Br device";
-+
-+const struct iwl_cfg iwl_cfg_br = {
-+	.fw_name_mac = "br",
-+	IWL_DEVICE_DR,
-+};
-+
-+MODULE_FIRMWARE(IWL_DR_A_PE_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_BR_A_PET_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_BR_A_PE_A_FW_MODULE_FIRMWARE(IWL_DR_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 17721bb47e251..89744dbedb4a5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -38,6 +38,7 @@ enum iwl_device_family {
- 	IWL_DEVICE_FAMILY_AX210,
- 	IWL_DEVICE_FAMILY_BZ,
- 	IWL_DEVICE_FAMILY_SC,
-+	IWL_DEVICE_FAMILY_DR,
- };
+ 	if (dp_irq_vector & DP_CP_IRQ) {
+-		it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
+-				HDCP_TRIGGER_CPIRQ);
+-
+ 		bstatus = it6505_dpcd_read(it6505, DP_AUX_HDCP_BSTATUS);
+ 		if (bstatus < 0)
+ 			return bstatus;
  
- /*
-@@ -424,6 +425,8 @@ struct iwl_cfg {
- #define IWL_CFG_MAC_TYPE_SC2		0x49
- #define IWL_CFG_MAC_TYPE_SC2F		0x4A
- #define IWL_CFG_MAC_TYPE_BZ_W		0x4B
-+#define IWL_CFG_MAC_TYPE_BR		0x4C
-+#define IWL_CFG_MAC_TYPE_DR		0x4D
- 
- #define IWL_CFG_RF_TYPE_TH		0x105
- #define IWL_CFG_RF_TYPE_TH1		0x108
-@@ -434,6 +437,7 @@ struct iwl_cfg {
- #define IWL_CFG_RF_TYPE_GF		0x10D
- #define IWL_CFG_RF_TYPE_FM		0x112
- #define IWL_CFG_RF_TYPE_WH		0x113
-+#define IWL_CFG_RF_TYPE_PE		0x114
- 
- #define IWL_CFG_RF_ID_TH		0x1
- #define IWL_CFG_RF_ID_TH1		0x1
-@@ -506,6 +510,8 @@ extern const struct iwl_cfg_trans_params iwl_ma_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_bz_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_gl_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_sc_trans_cfg;
-+extern const struct iwl_cfg_trans_params iwl_dr_trans_cfg;
-+extern const struct iwl_cfg_trans_params iwl_br_trans_cfg;
- extern const char iwl9162_name[];
- extern const char iwl9260_name[];
- extern const char iwl9260_1_name[];
-@@ -551,6 +557,8 @@ extern const char iwl_mtp_name[];
- extern const char iwl_sc_name[];
- extern const char iwl_sc2_name[];
- extern const char iwl_sc2f_name[];
-+extern const char iwl_dr_name[];
-+extern const char iwl_br_name[];
- #if IS_ENABLED(CONFIG_IWLDVM)
- extern const struct iwl_cfg iwl5300_agn_cfg;
- extern const struct iwl_cfg iwl5100_agn_cfg;
-@@ -658,6 +666,8 @@ extern const struct iwl_cfg iwl_cfg_gl;
- extern const struct iwl_cfg iwl_cfg_sc;
- extern const struct iwl_cfg iwl_cfg_sc2;
- extern const struct iwl_cfg iwl_cfg_sc2f;
-+extern const struct iwl_cfg iwl_cfg_dr;
-+extern const struct iwl_cfg iwl_cfg_br;
- #endif /* CONFIG_IWLMVM */
- 
- #endif /* __IWL_CONFIG_H__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 8fb2aa2822421..9dd0e0a51ce5c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -540,6 +540,9 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0xE340, PCI_ANY_ID, iwl_sc_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xD340, PCI_ANY_ID, iwl_sc_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x6E70, PCI_ANY_ID, iwl_sc_trans_cfg)},
+ 		DRM_DEV_DEBUG_DRIVER(dev, "Bstatus = 0x%02x", bstatus);
 +
-+/* Dr devices */
-+	{IWL_PCI_DEVICE(0x272F, PCI_ANY_ID, iwl_dr_trans_cfg)},
- #endif /* CONFIG_IWLMVM */
++		/*Check BSTATUS when recive CP_IRQ */
++		if (bstatus & DP_BSTATUS_R0_PRIME_READY &&
++		    it6505->hdcp_status == HDCP_AUTH_GOING)
++			it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
++					HDCP_TRIGGER_CPIRQ);
++		else if (bstatus & (DP_BSTATUS_REAUTH_REQ | DP_BSTATUS_LINK_FAILURE) &&
++			 it6505->hdcp_status == HDCP_AUTH_DONE)
++			it6505_start_hdcp(it6505);
+ 	}
  
- 	{0}
-@@ -1182,6 +1185,19 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_sc2f, iwl_sc2f_name),
-+/* Dr */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_DR, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      iwl_cfg_dr, iwl_dr_name),
-+
-+/* Br */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_BR, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_ANY,
-+		      iwl_cfg_br, iwl_br_name),
- #endif /* CONFIG_IWLMVM */
- };
- EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_dev_info_table);
+ 	ret = drm_dp_dpcd_read_link_status(&it6505->aux, link_status);
 -- 
 2.39.5
 
