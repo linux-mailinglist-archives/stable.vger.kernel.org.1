@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-116246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0326DA347F4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77678A347E0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85ACE3B4A4F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF46F1886EE5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA557153828;
-	Thu, 13 Feb 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8B214F121;
+	Thu, 13 Feb 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZqDtkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svubSovI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D4313C816;
-	Thu, 13 Feb 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2793E26B087;
+	Thu, 13 Feb 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460822; cv=none; b=iK7aWuQqLQbm13IQd3HenUEnhzHG74JsWNJZ7G8Z6oYeMBgrQbsfIX3WWkpUrSEBqAZY6+DH4wm4tKPFYkQTxXzOvUwItpvhIt2MiBpIHK7vq5qWsT/Uk4v4WQ/eOh8xkoMAdz2EyarBqKMuQYWafI5dV4LmC3XytDDweEC1aUE=
+	t=1739460860; cv=none; b=GHMDrShU8G8dvSW+p2iN2D6xG1XE2HxLj8JjYANmgQylBsdizOPy/LBMf5jvkssCZ8MCVyddR4Eh2ft81EBe9xT2O4M+snZTGrs+F1mnea4+SHl2dZmeiJ3JUuUxFjcmUgca8nZ8DEebXRNAaz4f++7QftKkZQd1hTr9TzqGwbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460822; c=relaxed/simple;
-	bh=rzd3XT2mdd9fTve0SrmB3kTfnJKZ3xGe4Qlg7A6DbY4=;
+	s=arc-20240116; t=1739460860; c=relaxed/simple;
+	bh=YxvYPvyya/oy1JBBqEVflm6C+NzgwSC9LpkrbNWZHAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAxsIiNT5PkOAQg5G4xB6WxOYCTDPD0H8wOW6yTlPFpJsPenkJB24/D16IY0X5XdhiuCKdjwLDdUn0a14DOlJYmA0/HAli6IeHcZmdJ718ZcnclzlVrms6/l8ybOW2hW/R4D+CzQzvZr498r0cYitkzIhi/KY+bFb0yEl9/KdEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/ZqDtkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A03BC4CED1;
-	Thu, 13 Feb 2025 15:33:41 +0000 (UTC)
+	 MIME-Version; b=Z2W3KV1N6vQf8F5sQeiImShqB7TYPw3PR8uTzcLM0eUZ2Ehi8WRh/XtqIV0brRdnb834h+gwWGM2lvgGnu1FH+Y38Ava4O7CebgA2sRdF7kXhMln+mz2N27NVYfhU4/Fk6iGvo4Bjw93xUsHoHswjm6E6t2ymIDlFTDCMCrE0Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svubSovI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89268C4CEE4;
+	Thu, 13 Feb 2025 15:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460822;
-	bh=rzd3XT2mdd9fTve0SrmB3kTfnJKZ3xGe4Qlg7A6DbY4=;
+	s=korg; t=1739460860;
+	bh=YxvYPvyya/oy1JBBqEVflm6C+NzgwSC9LpkrbNWZHAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/ZqDtkLA1wQxmXm9CyEfLYjJU0uoYDEH6aWkInN8zQsrnPQty+UCs7gWfkEkUBJ2
-	 WY1m8XR96bJU1vHifzTMkRyrOBDvNVZLwXOIWNCZ2nqpUVrZTkaTw5slFVoXw9BpuU
-	 Qai6mOp93ZJvVGEJakQU0YGUxJSeGTJFmlNH+kPI=
+	b=svubSovI6lX4ebkMY6SsH+eGdhVaAWHltiL/7HSyLEPOXHgspH+k4WkfufsFne/jM
+	 5MjWCPe7VhCBmGNrt1uxBp9Pcd+u/1EdzJ7u+/XrHel5SLgpUDmOXY57qXNimsKQxI
+	 L5tllHeoB1bMHf4G4T5TBgEqqL+04Uf2/kqdxeHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Ardelean <aardelean@baylibre.com>,
-	Naushir Patuck <naush@raspberrypi.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sam Bobrowicz <sam@elite-embedded.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 205/273] media: imx296: Add standby delay during probe
-Date: Thu, 13 Feb 2025 15:29:37 +0100
-Message-ID: <20250213142415.422100331@linuxfoundation.org>
+Subject: [PATCH 6.6 206/273] media: ov5640: fix get_light_freq on auto
+Date: Thu, 13 Feb 2025 15:29:38 +0100
+Message-ID: <20250213142415.464216876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -69,41 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Naushir Patuck <naush@raspberrypi.com>
+From: Sam Bobrowicz <sam@elite-embedded.com>
 
-commit 57d10bcac67707caaa542e09dee86e13ea85defc upstream.
+commit 001d3753538d26ddcbef011f5643cfff58a7f672 upstream.
 
-Add a 2-5ms delay when coming out of standby and before reading the
-sensor info register durning probe, as instructed by the datasheet. This
-standby delay is already present when the sensor starts streaming.
+Light frequency was not properly returned when in auto
+mode and the detected frequency was 60Hz.
 
-During a cold-boot, reading the IMX296_SENSOR_INFO register would often
-return a value of 0x0000, if this delay is not present before.
-
-Fixes: cb33db2b6ccf ("media: i2c: IMX296 camera sensor driver")
+Fixes: 19a81c1426c1 ("[media] add Omnivision OV5640 sensor driver")
 Cc: stable@vger.kernel.org
-Tested-by: Alexandru Ardelean <aardelean@baylibre.com>
-Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sam Bobrowicz <sam@elite-embedded.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx296.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/ov5640.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/imx296.c
-+++ b/drivers/media/i2c/imx296.c
-@@ -960,6 +960,8 @@ static int imx296_identify_model(struct
- 		return ret;
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -1982,6 +1982,7 @@ static int ov5640_get_light_freq(struct
+ 			light_freq = 50;
+ 		} else {
+ 			/* 60Hz */
++			light_freq = 60;
+ 		}
  	}
  
-+	usleep_range(2000, 5000);
-+
- 	ret = imx296_read(sensor, IMX296_SENSOR_INFO);
- 	if (ret < 0) {
- 		dev_err(sensor->dev, "failed to read sensor information (%d)\n",
 
 
 
