@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0062A34700
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DDEA343B4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03A1118956D6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C9516C850
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6176918C900;
-	Thu, 13 Feb 2025 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC07245009;
+	Thu, 13 Feb 2025 14:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw+lcZYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAW09YTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F052189913;
-	Thu, 13 Feb 2025 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8CB211468;
+	Thu, 13 Feb 2025 14:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460181; cv=none; b=BL2aY2daAseCc46Yez/j1DhEHOXwqsMNLsBmzVRk1xa1vwabWP6Dq8oOnd/jzlWLrk4GrgG5Myyh+hYQPTBYsTbgXjryzO6hoPAZZmkDKjjpLXmgzIOijJagQHPJn3Clyy+T5hgRcML0HTgSLpng8kxhxnZyRfq0dsbHmLQMSiY=
+	t=1739457965; cv=none; b=AIcmg4u5CsiwwFn4w0nQgu3Otefd5DHmVAglsTWvFbkqTLTHcORwa3vo7kC7gdTSGpupISM52tMlIb0ammkCOGwn+HKmhCWPEu6Jo7ywFk8DhGCVs0fH5ktVn/TildJCaRymNsDVV8cgIU5H5ozRLX2AQZGuEQVdJfgWk1yqu8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460181; c=relaxed/simple;
-	bh=fZ5ebqF3IWYrDwgO/PijLXgmaX0L/GzhwmI/87vWlio=;
+	s=arc-20240116; t=1739457965; c=relaxed/simple;
+	bh=sWHOy66jahNeCWYhw9839gM1HICvkUM5kw4vYrCjee4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEDWt5VW2G/TH+CjIU/cQaCfDGq15VvBObUvimmMJcX6nDuayr6S6OYjS0sJXbuvD7/WNTk4Wu+XOf6srRLqtK8cm2uWzhPbihTRD/9F4heUtMCGoDrcv8fL7s25j3JBwpFJTnUIcq3ElDILcHHHEHDxyZ8bGWKlDXQCKap1yJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw+lcZYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829E4C4CED1;
-	Thu, 13 Feb 2025 15:23:00 +0000 (UTC)
+	 MIME-Version; b=gjVrT0Q/8ZVhZ+twtvDP85II3kv4v60CvFrYmfynNctFYo1sFYKDZ16FCNlY5JanXYObQhDKeQV1ULxJrGmY1MVEDcJiEBBRlQuJicwbFoy3zBY9USgzhHifolEPFzNWqvyQYrxcE1GJdBTXBKzgYaUjUK7raNwJFlxpcnI4gQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAW09YTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FDBC4CED1;
+	Thu, 13 Feb 2025 14:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460181;
-	bh=fZ5ebqF3IWYrDwgO/PijLXgmaX0L/GzhwmI/87vWlio=;
+	s=korg; t=1739457965;
+	bh=sWHOy66jahNeCWYhw9839gM1HICvkUM5kw4vYrCjee4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mw+lcZYdX0rh/eTOnPQd6H+Omv2c6fUxzF/xW5ayod/bQD1OSNhAenI8kT6uHqkUH
-	 G3hqdhR4m0lQrOAydbBXJvNrCrmQpxWAnzZh8bynNAXLk5KKOwUnCZcgmOsmjZ80xn
-	 1rrncejfYKBr+MvQNON/Aa4VTTeI8qIlqvWPqxn8=
+	b=cAW09YThaUuhI4LqI1qpGOveB3UEqDTTqqGpc8xjkQSF0me8/4s5PhZrVzN2gxgPL
+	 usT/61dnW+qT6kNYZXluivnH9Ff82IZ54RV5+BkPRD/vpSovfeYxQ207WCI0RFDg3h
+	 9Cg0IM7lTKj1lukx5a5mNpcwn9BNbJYXUkerpPIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randolph Ha <rha051117@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/273] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.12 262/422] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
 Date: Thu, 13 Feb 2025 15:26:51 +0100
-Message-ID: <20250213142408.899266751@linuxfoundation.org>
+Message-ID: <20250213142446.651887297@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randolph Ha <rha051117@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
+commit 6273a058383e05465083b535ed9469f2c8a48321 upstream.
 
-When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-excessive smoothing (similar to when the touchpad's firmware detects
-a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-V15 G4) ACPI tables specify a 400KHz frequency for this device and
-some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-force the speed to 100KHz as a workaround.
+When using Rust on the x86 architecture, we are currently using the
+unstable target.json feature to specify the compilation target. Rustc is
+going to change how softfloat is specified in the target.json file on
+x86, thus update generate_rust_target.rs to specify softfloat using the
+new option.
 
-For future investigation: This problem may be related to the default
-HCNT/LCNT values given by some busses' drivers, because they are not
-specified in the aforementioned devices' ACPI tables, and because
-the device works without issues on Windows at what is expected to be
-a 400KHz frequency. The root cause of the issue is not known.
+Note that if you enable this parameter with a compiler that does not
+recognize it, then that triggers a warning but it does not break the
+build.
 
-Signed-off-by: Randolph Ha <rha051117@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ For future reference, this solves the following error:
+
+        RUSTC L rust/core.o
+      error: Error loading target specification: target feature
+      `soft-float` is incompatible with the ABI but gets enabled in
+      target spec. Run `rustc --print target-list` for a list of
+      built-in targets
+
+  - Miguel ]
+
+Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/136146
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
+Link: https://lore.kernel.org/r/20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com
+[ Added 6.13.y too to Cc: stable tag and added reasoning to avoid
+  over-backporting. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ scripts/generate_rust_target.rs | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 14ae0cfc325ef..d2499f302b508 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -355,6 +355,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
- 	{}
- };
- 
-+static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
-+	/*
-+	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-+	 * excessive smoothing (similar to when the touchpad's firmware detects
-+	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-+	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
-+	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-+	 * force the speed to 100KHz as a workaround.
-+	 *
-+	 * For future investigation: This problem may be related to the default
-+	 * HCNT/LCNT values given by some busses' drivers, because they are not
-+	 * specified in the aforementioned devices' ACPI tables, and because
-+	 * the device works without issues on Windows at what is expected to be
-+	 * a 400KHz frequency. The root cause of the issue is not known.
-+	 */
-+	{ "ELAN06FA", 0 },
-+	{}
-+};
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 0d00ac3723b5..4fd6b6ab3e32 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -165,6 +165,18 @@ fn has(&self, option: &str) -> bool {
+         let option = "CONFIG_".to_owned() + option;
+         self.0.contains_key(&option)
+     }
 +
- static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 					   void *data, void **return_value)
- {
-@@ -373,6 +392,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
- 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
- 
-+	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
-+		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
-+
- 	return AE_OK;
++    /// Is the rustc version at least `major.minor.patch`?
++    fn rustc_version_atleast(&self, major: u32, minor: u32, patch: u32) -> bool {
++        let check_version = 100000 * major + 100 * minor + patch;
++        let actual_version = self
++            .0
++            .get("CONFIG_RUSTC_VERSION")
++            .unwrap()
++            .parse::<u32>()
++            .unwrap();
++        check_version <= actual_version
++    }
  }
  
+ fn main() {
+@@ -182,6 +194,9 @@ fn main() {
+         }
+     } else if cfg.has("X86_64") {
+         ts.push("arch", "x86_64");
++        if cfg.rustc_version_atleast(1, 86, 0) {
++            ts.push("rustc-abi", "x86-softfloat");
++        }
+         ts.push(
+             "data-layout",
+             "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
+@@ -215,6 +230,9 @@ fn main() {
+             panic!("32-bit x86 only works under UML");
+         }
+         ts.push("arch", "x86");
++        if cfg.rustc_version_atleast(1, 86, 0) {
++            ts.push("rustc-abi", "x86-softfloat");
++        }
+         ts.push(
+             "data-layout",
+             "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
 -- 
-2.39.5
+2.48.1
 
 
 
