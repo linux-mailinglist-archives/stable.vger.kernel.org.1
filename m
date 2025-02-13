@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A896FA345BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7079CA34368
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2343B5BA0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCEE3AA366
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3129026B0A4;
-	Thu, 13 Feb 2025 15:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F35281349;
+	Thu, 13 Feb 2025 14:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANJqGw0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxYCgPWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E036726B089;
-	Thu, 13 Feb 2025 15:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561E6281369;
+	Thu, 13 Feb 2025 14:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459370; cv=none; b=p6WrWDn7VVZzpSSaQ9mG0pjQJ2RaDJ9fHVxxVOmLMf1N463m22mbUCa0Ue3q62OCJQNXHdbEEN9mTiLRUs977YVLjHfPeKys890YdJQpP0cm+nxw6QehTtgG+pWUkIPy/gdc6DfxoYkfDd+26GE50GVGTmB14lZ0y+/PaPAT4iE=
+	t=1739457815; cv=none; b=ndW6fIcum+PfXLIeT7QNU9isstuUDg5lr7K0RK1TPqwH5DIj/UR5lerLKLHJrNEfosYCH5dyxsoj4s66pr+gWhnO1AfEehSeFxaj1ggbfWeCG2VDCNaA3b07NhZqkLPqqg+kyUZvI3iiHJ/lh7pU4tZMHX2vsOcokDS+XP2Qu7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459370; c=relaxed/simple;
-	bh=9bWCdEFVR0qzKSUSBK3au+nmaPghvsEXKmLTz1MLiNE=;
+	s=arc-20240116; t=1739457815; c=relaxed/simple;
+	bh=+p+9+YmIn+Af8nGnbfIOP3+Pa9UtwXnTEtBvxvpln4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXgw7ch7ZuO5wQPOlgQqreuSKVEe2yOWo06spqYjJFAmUAiPPd2Vt8RZ1g3vYGUcZh1MtXfLMoTS3DjBSR0kEP0adSA/FlWsh3mSvmM1knm+IqrbzITXeokjhPRZTsSj3Csmfpq1p9/aWjnhS1bcS9PJdIk54E1NsVoi3OrA8eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANJqGw0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4B9C4CED1;
-	Thu, 13 Feb 2025 15:09:29 +0000 (UTC)
+	 MIME-Version; b=jcKPsDifMXoQGXeFy5PXQ4/QypAQOoyxttGNTXMUAaPe2vUGcYTewx2dydYw2bU0XUqrUS4oDwhP7+xDBXaaZixen9ppMLu7Wra/s2RbsEI9jiuSB4WgWP6Fm9KnpAuuCnVCEGSIyDFbIbKWfeT5ZhRueyfIUs2dN92J2GQgfE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxYCgPWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96E9C4CED1;
+	Thu, 13 Feb 2025 14:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459369;
-	bh=9bWCdEFVR0qzKSUSBK3au+nmaPghvsEXKmLTz1MLiNE=;
+	s=korg; t=1739457815;
+	bh=+p+9+YmIn+Af8nGnbfIOP3+Pa9UtwXnTEtBvxvpln4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANJqGw0GvjCIPl4X3CCE4gqGjir5Hahx7MeVpH9BTfUxOiZ7IjvGumw46FCHwBeyW
-	 AZbpGI6kpYqG+98ST6wWW2/cd3DwTKRSem4ktinc5RbKEIw4SArt0dkHaJLt2UY94x
-	 h8beMFbBWU1fYWHK+A4wr/V4+PlaSI0S6RcEmJ90=
+	b=pxYCgPWYHZoMKKoEhk9QOGsKehE4C58W+rcz+lY9/2D/527P+IaAGtPVQ2M6kBJcs
+	 bx1IMmuu9X0Vk4Mk9hoy7tCZ0AMMmjkm8FAnbbQlnwPOzgV6/xZGxV6uzZq0M49Lih
+	 5dlPSebpshwHL51ITo9vKWW7YxuPPz3eF6eLVx0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 203/443] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
-Date: Thu, 13 Feb 2025 15:26:08 +0100
-Message-ID: <20250213142448.445308416@linuxfoundation.org>
+Subject: [PATCH 6.12 220/422] arm64: dts: qcom: x1e80100-qcp: Fix USB QMP PHY supplies
+Date: Thu, 13 Feb 2025 15:26:09 +0100
+Message-ID: <20250213142445.026911466@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 89aa5925d201b90a48416784831916ca203658f9 upstream.
+commit 4861ba7cf5a49969dee258dda2bf8d4e819135d1 upstream.
 
-aggr_state and unit fields are u32. The result of their
-multiplication may not fit in this type.
+On the X1E80100 QCP, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
+(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
+are actually powered by &vreg_l2j_1p2.
 
-Add explicit casting to prevent overflow.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Link: https://lore.kernel.org/r/20241203084231.6001-1-abelova@astralinux.ru
+Cc: stable@vger.kernel.org
+Fixes: 20676f7819d7 ("arm64: dts: qcom: x1e80100-qcp: Fix USB PHYs regulators")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-8-0adda5d30bbd@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -329,7 +329,7 @@ static unsigned long clk_rpmh_bcm_recalc
- {
- 	struct clk_rpmh *c = to_clk_rpmh(hw);
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -896,7 +896,7 @@
+ };
  
--	return c->aggr_state * c->unit;
-+	return (unsigned long)c->aggr_state * c->unit;
- }
+ &usb_1_ss0_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l1j_0p8>;
  
- static const struct clk_ops clk_rpmh_bcm_ops = {
+ 	status = "okay";
+@@ -928,7 +928,7 @@
+ };
+ 
+ &usb_1_ss1_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
+@@ -960,7 +960,7 @@
+ };
+ 
+ &usb_1_ss2_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
 
 
 
