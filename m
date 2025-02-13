@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A58DA34364
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 166BDA345AB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A2016D01F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF9616A365
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA6D23A9BE;
-	Thu, 13 Feb 2025 14:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482251DE4C1;
+	Thu, 13 Feb 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjUq7JWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwDwu+zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6A623A9BC;
-	Thu, 13 Feb 2025 14:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B7A1DDA1B;
+	Thu, 13 Feb 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457849; cv=none; b=RkayC0b8csfjfMQ7u6eLsG66yTZO1FcMVx0E2xD0Te3w0FS65pAFMzNS9IpTbXuTX0M8qTJol3A0W2QEGvCWbjEggu+DqyTKnh/yCBSklVdx/BiAmCxCTAuoGFZIkiCUSC5oK3ISFXdRxjaQI4M/sc5DGuOQv9FgbNl7X3DwL7c=
+	t=1739459149; cv=none; b=udsYTKvWMFd88IyJn4mNOB2KnLKygEw2dlQveQILy/WfEhORo7au/Cm4ZW27S9x7EiX7CemrgJlbGguu6xL7AbFw9VZbxPwjT3As5jt5ierWGzVx1o+qC6L///PeGd7lrOMOLXN3JBJAUxyiIgBKCKaKJZFgF0YCHgU1pvCRnqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457849; c=relaxed/simple;
-	bh=8NkTaN1zO9ve5FmYzsDov8hGovTjxnaN5lIcDE7Wpgs=;
+	s=arc-20240116; t=1739459149; c=relaxed/simple;
+	bh=QLAmDpvnhav+0WlDR+wsf3FbUCKh8Q12OFzc5PSYSIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocTY7J/Uy+EJpoeO5omEloSxJxkZJjTKKdHFmdsEsEbai0nwJcgmXmhQW8A60SCaEpjMnj+sIEtZYm1zO8r8n/71F8fleo6qKXu0Xuox1ADYhWlTrNmfExeQAXAbInmzJte1GYMYHOrTZOlRHvUIJsmc6wkkiVLt0W2plmz1qHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjUq7JWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CACC4CEE2;
-	Thu, 13 Feb 2025 14:44:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gT+BMC/I1EhuDox3Pt5DlvIbClZaZpnzjtY2BRq9Qicj7sKzvCPmFdMT+bVFsThcH5hnvRNmrHvjowJmBcJ/jeIdmU7mmmlh/mVfweCIgQqLIgukbYw1J5oKR7qCjHImNUa+ugxI9NAZgyIb3KQYuQ+I108EIc2HJyAziZaoJSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwDwu+zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2FAC4CED1;
+	Thu, 13 Feb 2025 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457849;
-	bh=8NkTaN1zO9ve5FmYzsDov8hGovTjxnaN5lIcDE7Wpgs=;
+	s=korg; t=1739459148;
+	bh=QLAmDpvnhav+0WlDR+wsf3FbUCKh8Q12OFzc5PSYSIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjUq7JWVcXSNMp/V4iLmIvlSG9vB2PgmbUUV04UzVFkXSjhBfTDdpEKsFMXf4hDyE
-	 Ht3g7cY+n1tNlPFtXkQchLo/UXrFPgsDX2B0eqB3yaR1ltARArYg/GhC5SXoP3Uwek
-	 L19ZtCk6Lyo1HdP76s0qxnjN1icHULLp2v+8L6W8=
+	b=vwDwu+zfjvHE0jkjkOCr3l9/Kx6BXh5lWOFqCvAERJiKq0rERwWgwk5z+Rybh31fH
+	 VuRY0P4EjSW0Jl7p1rQab8zNRmV+KjFac+FGh7LzzM4EEXtZSdWz9pZEYi7rd5n5CR
+	 blMQ//blnZcrct83yGiZwUoyCLvy8hD6ANwUXDGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 198/422] Input: bbnsm_pwrkey - add remove hook
-Date: Thu, 13 Feb 2025 15:25:47 +0100
-Message-ID: <20250213142444.185244479@linuxfoundation.org>
+	John Harrison <John.C.Harrison@Intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 183/443] drm/xe/devcoredump: Move exec queue snapshot to Contexts section
+Date: Thu, 13 Feb 2025 15:25:48 +0100
+Message-ID: <20250213142447.677056087@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 55b75306c3edf369285ce22ba1ced45e335094c2 upstream.
+commit 042c48b73699c47d84b6ace73036e5a31a0d4cfc upstream.
 
-Without remove hook to clear wake irq, there will be kernel dump when
-doing module test.
-"bbnsm_pwrkey 44440000.bbnsm:pwrkey: wake irq already initialized"
+Having the exec queue snapshot inside a "GuC CT" section was always
+wrong.  Commit c28fd6c358db ("drm/xe/devcoredump: Improve section
+headings and add tile info") tried to fix that bug, but with that also
+broke the mesa tool that parses the devcoredump, hence it was reverted
+in commit a53da2fb25a3 ("drm/xe: Revert some changes that break a mesa
+debug tool").
 
-Add remove hook to clear wake irq and set wakeup to false.
+With the mesa tool also fixed, this can propagate as a fix on both
+kernel and userspace side to avoid unnecessary headache for a debug
+feature.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Fixes: 40e40fdfec3f ("Input: bbnsm_pwrkey - add bbnsm power key support")
-Link: https://lore.kernel.org/r/20241212030322.3110017-1-peng.fan@oss.nxp.com
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: a53da2fb25a3 ("drm/xe: Revert some changes that break a mesa debug tool")
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250123051112.1938193-2-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit a37934ea75d331fafa7fe80b6180642ba5193422)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/nxp-bbnsm-pwrkey.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/xe/xe_devcoredump.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/input/misc/nxp-bbnsm-pwrkey.c
-+++ b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-@@ -187,6 +187,12 @@ static int bbnsm_pwrkey_probe(struct pla
- 	return 0;
- }
+--- a/drivers/gpu/drm/xe/xe_devcoredump.c
++++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+@@ -109,11 +109,7 @@ static ssize_t __xe_devcoredump_read(cha
+ 	drm_puts(&p, "\n**** GuC CT ****\n");
+ 	xe_guc_ct_snapshot_print(ss->guc.ct, &p);
  
-+static void bbnsm_pwrkey_remove(struct platform_device *pdev)
-+{
-+	dev_pm_clear_wake_irq(&pdev->dev);
-+	device_init_wakeup(&pdev->dev, false);
-+}
-+
- static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
-@@ -223,6 +229,8 @@ static struct platform_driver bbnsm_pwrk
- 		.of_match_table = bbnsm_pwrkey_ids,
- 	},
- 	.probe = bbnsm_pwrkey_probe,
-+	.remove = bbnsm_pwrkey_remove,
-+
- };
- module_platform_driver(bbnsm_pwrkey_driver);
+-	/*
+-	 * Don't add a new section header here because the mesa debug decoder
+-	 * tool expects the context information to be in the 'GuC CT' section.
+-	 */
+-	/* drm_puts(&p, "\n**** Contexts ****\n"); */
++	drm_puts(&p, "\n**** Contexts ****\n");
+ 	xe_guc_exec_queue_snapshot_print(ss->ge, &p);
  
+ 	drm_puts(&p, "\n**** Job ****\n");
 
 
 
