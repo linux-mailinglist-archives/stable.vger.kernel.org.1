@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45EFA347CC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D171AA3444C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE503A5C5D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60A87188D9B0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FB81422D8;
-	Thu, 13 Feb 2025 15:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE648221713;
+	Thu, 13 Feb 2025 14:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbmqFMch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZDR3x+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CDF26B087;
-	Thu, 13 Feb 2025 15:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABF145348;
+	Thu, 13 Feb 2025 14:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460501; cv=none; b=rZXYxaO0Dck4aOca87AYXBCfhEKOAMCpU4xT33VBHehPKBZfmGranTc4JTTDLDiEvEy9v5PS4OefhJKMd5AftkInTEB13BeUTphi2tz4pe79LHNxIbF4IGGWe8tOqu8HKisqH8bbc3/U58ZPwFTZM7RPx7sjBPpWgylxExUXvrs=
+	t=1739458270; cv=none; b=p4QZ7f9DwnLcEDZc/W5B6Z8nnHEnIzTjuig/odIQPcE+dxl9Gl64NukYK7HxPUeRhsC9QDTjKgIGZjsi/x9z3I3iwquh5KBIlM34lmGamWtl8GKA7Es9fFS8sTGkGJExZLAvEKUS0kzpVsL1seqf37t7eHT6TdbFRhsVIOzcWGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460501; c=relaxed/simple;
-	bh=NOBKCLRc0GKR2qhHP3rb36Zja+G2YMX0DSYf5PCxfl4=;
+	s=arc-20240116; t=1739458270; c=relaxed/simple;
+	bh=Vt3c8GzlsxbZCQgea6+7PLnxOOMTIzSgpPlqTdkpwzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pf3XdUbp781/3tSm6Xw6Uqx2U9blpA0IFcDFBxipMa1OhDYRFleK0YeY6YK5PJUwjNyR9IeXYDhbBiLiia2FscSmFyxbOrSfXcmNSUzPm6022My3j+oKoot7Xy2880VvpzPgYWGMbsFSuxZlBEdnfqR8xQ+AOpigWyCNUmvwB4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbmqFMch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E90C4CEE5;
-	Thu, 13 Feb 2025 15:28:20 +0000 (UTC)
+	 MIME-Version; b=tt1MefBFAHHPbWgP5zKLfSTnwiFvJ1zsbcBaSUR4dz108WYcJZJTNhU4kOFs/HjcNS07AIQFgKG3coaMlY6wodiKYlXVLaqAwWQwW4ueCsp66wcOk9ZiO636m2WQoWEa6zgCMwNMo66qbpZXKVV852zxy0MhUJen7AMz7ViHtqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZDR3x+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A0FC4CED1;
+	Thu, 13 Feb 2025 14:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460501;
-	bh=NOBKCLRc0GKR2qhHP3rb36Zja+G2YMX0DSYf5PCxfl4=;
+	s=korg; t=1739458270;
+	bh=Vt3c8GzlsxbZCQgea6+7PLnxOOMTIzSgpPlqTdkpwzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbmqFMchlIxr8kFNvFOf1yWwpOv4SyhxAJiDnzCIxDymgf2OCz4GcmOvLPYsD6bZz
-	 dFP7ZGa4xEn3goN45oWZB0ntGPrypeoYGjStnlIrLyvcKt92anQ8fY6SrqFf93nNkM
-	 BjOVResQG4MU3OpaiEF0U4Kdg8pKlOTB0r1SOb0g=
+	b=WZDR3x+ncVtM0koVJdgo+fN2uhj7YNuCZdIdU6B9YE0MozQAheT6f27uidiXmhF14
+	 I4sZq+/wrNQohZgQ8BH964CAJC7H8cyWSQTJxF+EWuug+UfYUq+9XZx4uaz5XHsTRs
+	 V8RyeBwBX9oJx+2Oe/gDjjRaVgupp2TdVnnweMoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 128/273] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.12 351/422] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
 Date: Thu, 13 Feb 2025 15:28:20 +0100
-Message-ID: <20250213142412.398060822@linuxfoundation.org>
+Message-ID: <20250213142450.097875824@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 68abd0c4ebf24cd499841a488b97a6873d5efabb upstream.
+commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
 
-On removal of the device or unloading of the kernel module a potential NULL
-pointer dereference occurs.
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-The following sequence deletes the interface:
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
-  brcmf_detach()
-    brcmf_remove_interface()
-      brcmf_del_if()
-
-Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-
-After brcmf_remove_interface() call the brcmf_proto_detach() function is
-called providing the following sequence:
-
-  brcmf_detach()
-    brcmf_proto_detach()
-      brcmf_proto_msgbuf_detach()
-        brcmf_flowring_detach()
-          brcmf_msgbuf_delete_flowring()
-            brcmf_msgbuf_remove_flowring()
-              brcmf_flowring_delete()
-                brcmf_get_ifp()
-                brcmf_txfinalize()
-
-Since brcmf_get_ip() can and actually will return NULL in this case the
-call to brcmf_txfinalize() will result in a NULL pointer dereference inside
-brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
-
-This will only happen if a flowring still has an skb.
-
-Although the NULL pointer dereference has only been seen when trying to
-update the tx statistic, all other uses of the ifp pointer have been
-guarded as well with an early return if ifp is NULL.
-
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250116132240.731039-1-marcel.hamer@windriver.com
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvmem/qcom-spmi-sdam.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -540,6 +540,11 @@ void brcmf_txfinalize(struct brcmf_if *i
- 	struct ethhdr *eh;
- 	u16 type;
- 
-+	if (!ifp) {
-+		brcmu_pkt_buf_free_skb(txp);
-+		return;
-+	}
-+
- 	eh = (struct ethhdr *)(txp->data);
- 	type = ntohs(eh->h_proto);
- 
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_de
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
 
 
 
