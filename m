@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0A2A3463A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9489EA34440
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E9A188DD1B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEBE716B032
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF41156653;
-	Thu, 13 Feb 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F16323F42D;
+	Thu, 13 Feb 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c09MQFC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnxHrFVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D223B26B091;
-	Thu, 13 Feb 2025 15:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD1626B08D;
+	Thu, 13 Feb 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459794; cv=none; b=i5Q+tNpfuoSr3Z1HvEQ64dGtqmcu74EHLThpNd6fLQQxdhLRiARfCksxLCoBOmrTql6p4KktXdaJyIM+4tkDbO3reBux1Gc8G8fBrEq2EiMoN0fZhObK2TaJBRM+rWQnEtpkBclx5GIpkmkj778hbAL5PaVdaskusZgp2oI0dr8=
+	t=1739458372; cv=none; b=jT15ZY/zotznc5uQvh0bbokAQ1Co+EAJab3auWjnLTLc3qKPnPTkVlZnGE+OX0FuI3qlvBpWcZTY1DdUrOnYv7sDObmabt9muogiCWqMYYaHVfiIENbOzm9RARHzXjRkbMg5s13iOWREczSMHDcZ1xf16tGXv3JpXseMTkgC3L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459794; c=relaxed/simple;
-	bh=U9z96FrHdQFKB+qXp4t7lCrYhC4/ttDg4bVDsPwx+9E=;
+	s=arc-20240116; t=1739458372; c=relaxed/simple;
+	bh=RYKlpUzax2uDLhNruf0xJi+sgFWddeEI8moAnvBI3Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geBgUDL4+FzkynGIJjYfxcZjHJOLiQG0DFEc3bsQlXn3HYMY/Zu2BhK7DP8pmKosusP5ZV21zGkJiK26V9qQhBM/ltSa2F7TRDIBsI+zEMZUQch+NVx2mw70pj1v33VyU/5+RlZoaQmjscWWSXxBZhPgCAdQPPHCHT6REcKHK90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c09MQFC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD805C4CEE4;
-	Thu, 13 Feb 2025 15:16:33 +0000 (UTC)
+	 MIME-Version; b=T38wE2VDII/X2iromBzE9x66tA4OUVyonwakVKA2AZoCbII0LMtq8+lKLVXqMtRdrMQeWRJ0gl1UCfZOfWSJ/Ju9sl5u0jLqRne2Mn1Rossv7DCuwVrG9nAuL7JsRMrUk82G204X8RgSj0SVu1ZFnkXGvWtlh51ZcoInng2TN2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnxHrFVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E66C4CED1;
+	Thu, 13 Feb 2025 14:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459794;
-	bh=U9z96FrHdQFKB+qXp4t7lCrYhC4/ttDg4bVDsPwx+9E=;
+	s=korg; t=1739458372;
+	bh=RYKlpUzax2uDLhNruf0xJi+sgFWddeEI8moAnvBI3Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c09MQFC5C3Jc8gneqnszuxNvZ1hkTi3YhWBrDDE4uymIoYVaL3HLvUGir4QGBcxQR
-	 IrtmOphmCFFT4qg+8knpN6V4VOvDNgMioIkeXNPXi+hEo9U1Kb6NFK4VmPf/KYhcUc
-	 XKXT0wJhmRHGMbfZIZuuPCKBiGRr5se84yjcQ3To=
+	b=bnxHrFVv8mPEj9Q60VeXSk/p7+3ThMCn1ObyzeHdRhhwNXVB5E4F+wuXMKjU2qWNH
+	 ftXdIbDeu1UmZELZKlu593NHtC+Wlcsef0vGk8idLt+Bk9U5Um5m0yB6HOZoLS0bf3
+	 mlonZeVpQQ0oEC68Xd0YU5rcX2iGFECAVMQdHvTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 365/443] media: ccs: Fix CCS static data parsing for large block sizes
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Barry Song <baohua@kernel.org>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 381/422] scripts/gdb: fix aarch64 userspace detection in get_current_task
 Date: Thu, 13 Feb 2025 15:28:50 +0100
-Message-ID: <20250213142454.695613589@linuxfoundation.org>
+Message-ID: <20250213142451.249900514@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-commit 82b696750f0b60e7513082a10ad42786854f59f8 upstream.
+commit 4ebc417ef9cb34010a71270421fe320ec5d88aa2 upstream.
 
-The length field of the CCS static data blocks was mishandled, leading to
-wrong interpretation of the length header for blocks that are 16 kiB in
-size. Such large blocks are very, very rare and so this wasn't found
-earlier.
+At least recent gdb releases (seen with 14.2) return SP_EL0 as signed long
+which lets the right-shift always return 0.
 
-As the length is used as part of input validation, the issue has no
-security implications.
-
-Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://lkml.kernel.org/r/dcd2fabc-9131-4b48-8419-6444e2d67454@siemens.com
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-data.c |    2 +-
+ scripts/gdb/linux/cpus.py |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ccs/ccs-data.c
-+++ b/drivers/media/i2c/ccs/ccs-data.c
-@@ -98,7 +98,7 @@ ccs_data_parse_length_specifier(const st
- 		plen = ((size_t)
- 			(__len3->length[0] &
- 			 ((1 << CCS_DATA_LENGTH_SPECIFIER_SIZE_SHIFT) - 1))
--			<< 16) + (__len3->length[0] << 8) + __len3->length[1];
-+			<< 16) + (__len3->length[1] << 8) + __len3->length[2];
- 		break;
- 	}
- 	default:
+--- a/scripts/gdb/linux/cpus.py
++++ b/scripts/gdb/linux/cpus.py
+@@ -167,7 +167,7 @@ def get_current_task(cpu):
+             var_ptr = gdb.parse_and_eval("&pcpu_hot.current_task")
+             return per_cpu(var_ptr, cpu).dereference()
+     elif utils.is_target_arch("aarch64"):
+-        current_task_addr = gdb.parse_and_eval("$SP_EL0")
++        current_task_addr = gdb.parse_and_eval("(unsigned long)$SP_EL0")
+         if (current_task_addr >> 63) != 0:
+             current_task = current_task_addr.cast(task_ptr_type)
+             return current_task.dereference()
 
 
 
