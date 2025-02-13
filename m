@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3048A34385
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:51:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534EDA347A7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF49E16C5B1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:47:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE843B1F55
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE472272933;
-	Thu, 13 Feb 2025 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED701547F0;
+	Thu, 13 Feb 2025 15:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdXgy/lu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XS7Z1MhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8D2271289;
-	Thu, 13 Feb 2025 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E135961;
+	Thu, 13 Feb 2025 15:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457886; cv=none; b=E5J6ln2jQl4V+UlmHk3gDQPfT48UQcSmkdj2babJwp56Fj/D5Cvala/KEMum8JzGu0hV6HL50dhvQ27gDgDd+rDMbOoqDF+hxG3Ch81b+X39dctK9gKsUgqrzU1erLLMjnSpe96s7UqRDeUBOYRsP1mnnmIsvwVUjtYnoMz9rMw=
+	t=1739460113; cv=none; b=XLtYkzqzU4+hL0kwJupk9+OiFYGgYNkDTP6jdSMcdp4zb+rj3RTU8qHwq920pz3LehwsFmwO4bSyXLzzs/nZUnzhsb+YA60pLcVBwsCOBonhcPJiCA7uE29kmKBV7YEJhyfvDe3t/30/OZ0jvuKBoIJXxorS74sGSoyHUs94Oik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457886; c=relaxed/simple;
-	bh=MBLnhjEvXitEzD5lG+ZyrqzvhxnZ3ljgt9VHhlSHdlQ=;
+	s=arc-20240116; t=1739460113; c=relaxed/simple;
+	bh=f742AibO2003wIftzx51aVflfWMFdlMrSAcDuL7efUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kk63l6DMzPMEihQ+C0MhX+afFSt/has32ViCSaKhn4JAjfYM4IGOvLvBydR96IitUt4cLVa41rIijhTVlTJv2SsPqGENZLlDxJGrrW0sWDluDAhMuwyOGIofIwLCriVrSTe9BF+nrFvyL1wLvgoTVnVcK4Wbf/aNkl4YBorhSKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdXgy/lu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08004C4CED1;
-	Thu, 13 Feb 2025 14:44:45 +0000 (UTC)
+	 MIME-Version; b=CXnCilckgt/JuFv2aEyxxlOeHxGj3fJjjAA9GRsCRWlIbWxTC0QrpVYsrqN08HUZVn66sYwsKK4ksZ2IAf1DTmc7UqKZI52MKSEnoCRTP98z+py+79/vHhxQSTH+3+tL3kMBR0ojuQCDF5AohZfL0ragVOZS9TPMMmpZD93VlDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XS7Z1MhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85489C4CED1;
+	Thu, 13 Feb 2025 15:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457886;
-	bh=MBLnhjEvXitEzD5lG+ZyrqzvhxnZ3ljgt9VHhlSHdlQ=;
+	s=korg; t=1739460113;
+	bh=f742AibO2003wIftzx51aVflfWMFdlMrSAcDuL7efUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdXgy/luUGGUqAb23dFsnC+8z5MmFGuSX5MPSqYDL7TcWEH5d5dzDoWlvT7wBXKrn
-	 YmMRuRayXttmB0fPHVYx2EPJhcBlhqA0ob0Z6GVoif3BugTN8LHdsTSUJPTuSJYTzX
-	 bEYTCqnxcFJ3rxhitSvXVJFJ5nCSzfx+yfFuuCaw=
+	b=XS7Z1MhOFIoZ5vrAKgLFAHrc4go5pGyit6d7YBiInyloRjaBmPhN9+dyYYZsuQIge
+	 6vFjDRQ6szaWB1YMtoVFJNEEX3dv/cM074Xo214dHtJijHj+yKB2esjGy/DwPxZuLs
+	 Ii2FBKXvU8KQrBDPXUVIbQaELWKSnk2Gdcg3gOEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 242/422] ALSA: hda/realtek: Enable headset mic on Positivo C6400
+	Maxime Ripard <mripard@kernel.org>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 019/273] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
 Date: Thu, 13 Feb 2025 15:26:31 +0100
-Message-ID: <20250213142445.875753808@linuxfoundation.org>
+Message-ID: <20250213142408.121700936@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 1aec3ed2e3e1512aba15e7e790196a44efd5f0a7 upstream.
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
-Positivo C6400 is equipped with ALC269VB, and it needs
-ALC269VB_FIXUP_ASUS_ZENBOOK quirk to make its headset mic work.
-Also must to limits the microphone boost.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250114170619.11510-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10949,6 +10949,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x17aa, 0x511f, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x9e54, "LENOVO NB", ALC269_FIXUP_LENOVO_EAPD),
- 	SND_PCI_QUIRK(0x17aa, 0x9e56, "Lenovo ZhaoYang CF4620Z", ALC286_FIXUP_SONY_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1849, 0x0269, "Positivo Master C6400", ALC269VB_FIXUP_ASUS_ZENBOOK),
- 	SND_PCI_QUIRK(0x1849, 0x1233, "ASRock NUC Box 1100", ALC233_FIXUP_NO_AUDIO_JACK),
- 	SND_PCI_QUIRK(0x1849, 0xa233, "Positivo Master C6300", ALC269_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 500936d5743c5..90c68e0f493fb 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1221,7 +1221,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
+ 
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
