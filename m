@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-116165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984DDA346E3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CD0A3464C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E2F17A40C9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD37A18849D0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2302C1422D8;
-	Thu, 13 Feb 2025 15:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4D02A1CF;
+	Thu, 13 Feb 2025 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfokDJEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loXELZd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35AC26B0BD;
-	Thu, 13 Feb 2025 15:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D8926B0A5;
+	Thu, 13 Feb 2025 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460548; cv=none; b=rl1O2vXEOKBIhB5/aYQnO1sdIpYUpBuWQMtxAXbuwIn7TDLI3+m4w8OejSnzMIs/6sm4d9e4JqBnODfbGwMU888ENMwIH0v539omF9f13m3COawiG/Lrm8eElwmWMhby7OoqQCwETaIKDa1fyPmvUVTzW8oKAB+0TOkVmDuTikc=
+	t=1739459740; cv=none; b=jaeP09UqhDbL/Ow84S0aFY7cjkdvTU5wtaNYnvLue+XsB53Qn8zSS4LhTxcgGoDOn72gQ9h7YB5DTPa5HSKaYxVagTe+wtvuVqxYBYFLKcSg0k9umvftFPzV7N1qN4Mm5wbLObG7po8XTsTTA1sRfbMjumiflG0YSF8e+lXnsBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460548; c=relaxed/simple;
-	bh=dtzscxvl76ywyYNRn6xVr1W/kxd5kCKUV8gGnkZh1nU=;
+	s=arc-20240116; t=1739459740; c=relaxed/simple;
+	bh=vhTcRMs7pwupKKG0qiWww/rAoCcTilkGJ7yj6uNX0q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpN+SEhDgFQNiqxQMih2JgZkRy1734MXMABD/pE9RlBeMpfSkrr5bA3IPFZj/OZy4mCLuIm5tYOUX10aBc9gLRaLZ3i2bkHN8R4QDJxh8qKfKEoWChyMWtxbMyJeK2PUnY3cZDhWEe5yir8z3eoK6q79i4ebf4PDWYJQfcWAg1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfokDJEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAF3C4CED1;
-	Thu, 13 Feb 2025 15:29:08 +0000 (UTC)
+	 MIME-Version; b=ENl/rNRTNlbLv0TTWKpwrXQTyupChuJuIxl83Y3QTUNnFHwxKFb6Do1obcVbAAVook8pN+DKYEoyg6wY8GKFYxPFpLKDdflPoQ5fnfxsDs3diBtk6zlLJWfKq/5NnrIx5UOSTQzhebgRFETk4XxvVK/sGXmpK0qwIBhK9cyO2MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loXELZd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CEAC4CED1;
+	Thu, 13 Feb 2025 15:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460548;
-	bh=dtzscxvl76ywyYNRn6xVr1W/kxd5kCKUV8gGnkZh1nU=;
+	s=korg; t=1739459740;
+	bh=vhTcRMs7pwupKKG0qiWww/rAoCcTilkGJ7yj6uNX0q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WfokDJEgFASLsQ0owVw0MvU/KG7FECSGnSIS0EdteVOzqZymg5OSeKbiynBRn4CLm
-	 ChKxP1nlkBe1a5kEYeuh5CmXDQyH13ifIw12S0NVlNKxD2asM4ZMqm6TaStY+EZyLa
-	 +yZKJdpRmUm9VhGuF2c73AzubjTEeyToZpRLdezA=
+	b=loXELZd90w+LhpY4oBp88L+ihfBjDWmRNEfDwdAQ0/qasX+Jk+QrtY1+lWJsEIBeu
+	 1qy320BNqD6lNSY2JmrIqy/UPL5yuqxlBWju0n5ICdMx7mMzExn/OHfLrOIJ1tiOyK
+	 Zt+oglUvdt9h2q5lJMsw55bXz+RPVI1fdO3bxTmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 144/273] soc: qcom: socinfo: Avoid out of bounds read of serial number
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.13 351/443] soc: samsung: exynos-pmu: Fix uninitialized ret in tensor_set_bits_atomic()
 Date: Thu, 13 Feb 2025 15:28:36 +0100
-Message-ID: <20250213142413.026040439@linuxfoundation.org>
+Message-ID: <20250213142454.163072165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+commit eca836dfd8386b32f1aae60f8e323218ac6a0b75 upstream.
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+If tensor_set_bits_atomic() is called with a mask of 0 the function will
+just iterate over its bit, not perform any updates and return stack
+value of 'ret'.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
+Also reported by smatch:
 
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
+  drivers/soc/samsung/exynos-pmu.c:129 tensor_set_bits_atomic() error: uninitialized symbol 'ret'.
 
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
-
+Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
 Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20250104135605.109209-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
+ drivers/soc/samsung/exynos-pmu.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -760,7 +760,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+--- a/drivers/soc/samsung/exynos-pmu.c
++++ b/drivers/soc/samsung/exynos-pmu.c
+@@ -126,7 +126,7 @@ static int tensor_set_bits_atomic(void *
+ 		if (ret)
+ 			return ret;
+ 	}
+-	return ret;
++	return 0;
+ }
  
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
+ static bool tensor_is_atomic(unsigned int reg)
 
 
 
