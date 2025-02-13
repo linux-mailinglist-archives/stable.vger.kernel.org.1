@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3598A3433F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 956DEA345C3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0385D161E47
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10AE63B2B88
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43AB28137F;
-	Thu, 13 Feb 2025 14:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492D226B0BE;
+	Thu, 13 Feb 2025 15:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7/TBiIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejuA4Je1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE8C281369;
-	Thu, 13 Feb 2025 14:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053AC26B080;
+	Thu, 13 Feb 2025 15:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457779; cv=none; b=iJD+Z4ezThMl/dG4g85KOos89pdbQzdkPxsgkuDD0qCN1zEEp3ihzTk/aefjy+4ak3KtXjNgBYo1z6Z3Q0rsQ49mAmCyHmzRUsZqOtVI9Y01kEyhy2p7wTetZjUDcjCS9QNCFZHDP/N2AEEed7PXnoraiX3pkZVRLAbVWzF76w8=
+	t=1739459200; cv=none; b=I5zvkUPh9Jq1n3eXy0beDvjLaofThnWiJbe+KG1DW0NFeqMlkc5DhFNTJwsLcn1GeIorK5S2qUe5hw9tb3j0KibBjC1lgZhr24o+pH49UA0lxhjYLn0LiQDWby8vt3tVe+k/VITb5Lvblwc/5HF8lHxSyLfOIms8cjkJrosnUe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457779; c=relaxed/simple;
-	bh=4fV+t5EXtYj72sYx8pCijUgmt4lqnFqKesrXBpo+8gw=;
+	s=arc-20240116; t=1739459200; c=relaxed/simple;
+	bh=FAYzh9I45ENeoML7Ac1Y5T1gHBA3J3AF2qQ/5b2byYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYpzLs/kxWID5j+AOPtUErxnNMNw+jRWL0lLakOIcefDuSjaOcVq7dCP5MatybIiBTBqL/KsPA4ojkRkywHXHRMMsZDp8VK1AUtbDeu7Dj1msYFuNibyqFRyayfW9nzyUZbTv6qmnILXZ94nM5vS/Npce/Co/BuuLnyMa7DzGyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7/TBiIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B9C4CED1;
-	Thu, 13 Feb 2025 14:42:58 +0000 (UTC)
+	 MIME-Version; b=baA2A+wEdt/XCQe2LyEHf6r4NasJauTTjlegWSXueRm8XxUSA/YRCy8mFm6OyptOGcmm31ExzYoUpjtflDS2cjvtxPvn/8HQL2JVZZNYNBssOW/crzexi8WkmubspEU6O0v2HQB03PgZt9wuuEPuXDpvF1vWka6Ik/S8Cfa9jv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejuA4Je1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B41C4CED1;
+	Thu, 13 Feb 2025 15:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457779;
-	bh=4fV+t5EXtYj72sYx8pCijUgmt4lqnFqKesrXBpo+8gw=;
+	s=korg; t=1739459199;
+	bh=FAYzh9I45ENeoML7Ac1Y5T1gHBA3J3AF2qQ/5b2byYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7/TBiIK5Cl8ne895rhmlgBzJWsv02WF/M4TNk8btq7JVNtZm5md4gku2TIK6j7uw
-	 08pnfUyWcw044CbND4+YIPhx30x/YWjx7e3q/uGGztD/g+Bl2ohimly22rZkreYjmo
-	 qdPzXW2738odYYBlbGILhfZtYR25DvgschbZjoW0=
+	b=ejuA4Je1RQ5wiMFrwpVqzWtvZJR8wdDUE9UzoDB3o+Sm2XGbii+ooDxh+YUJi+fBS
+	 IUEyoYNqOppESilZ/ugcysnZb6sOtU9HV1fCyXluSs69VlI2VwJFU7ijYP0Y9q4nmo
+	 XBsYcSZOUSYDjtRrk1ju9I4/ouxO+xTIIlE+TNwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 212/422] usbnet: ipheth: fix possible overflow in DPE length check
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.13 196/443] clk: clk-loongson2: Fix the number count of clk provider
 Date: Thu, 13 Feb 2025 15:26:01 +0100
-Message-ID: <20250213142444.719074546@linuxfoundation.org>
+Message-ID: <20250213142448.174570772@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-commit c219427ed296f94bb4b91d08626776dc7719ee27 upstream.
+commit 5fb33b6797633ce60908d13dc06c54a101621845 upstream.
 
-Originally, it was possible for the DPE length check to overflow if
-wDatagramIndex + wDatagramLength > U16_MAX. This could lead to an OoB
-read.
+Since commit 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer
+overflow in flexible-array member access"), the clk provider register is
+failed.
 
-Move the wDatagramIndex term to the other side of the inequality.
+The count of `clks_num` is shown below:
 
-An existing condition ensures that wDatagramIndex < urb->actual_length.
+	for (p = data; p->name; p++)
+		clks_num++;
 
-Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
+In fact, `clks_num` represents the number of SoC clocks and should be
+expressed as the maximum value of the clock binding id in use (p->id + 1).
+
+Now we fix it to avoid the following error when trying to register a clk
+provider:
+
+[ 13.409595] of_clk_hw_onecell_get: invalid index 17
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+Fixes: 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer overflow in flexible-array member access")
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Link: https://lore.kernel.org/r/82e43d89a9a6791129cf8ea14f4eeb666cd87be4.1736856470.git.zhoubinbin@loongson.cn
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/clk-loongson2.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -243,8 +243,8 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
- 	       le16_to_cpu(dpe->wDatagramLength) != 0) {
- 		if (le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
--		    le16_to_cpu(dpe->wDatagramIndex) +
--		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length) {
-+		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
-+		    le16_to_cpu(dpe->wDatagramIndex)) {
- 			dev->net->stats.rx_length_errors++;
- 			return retval;
- 		}
+--- a/drivers/clk/clk-loongson2.c
++++ b/drivers/clk/clk-loongson2.c
+@@ -294,7 +294,7 @@ static int loongson2_clk_probe(struct pl
+ 		return -EINVAL;
+ 
+ 	for (p = data; p->name; p++)
+-		clks_num++;
++		clks_num = max(clks_num, p->id + 1);
+ 
+ 	clp = devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num),
+ 			   GFP_KERNEL);
+@@ -309,6 +309,9 @@ static int loongson2_clk_probe(struct pl
+ 	clp->clk_data.num = clks_num;
+ 	clp->dev = dev;
+ 
++	/* Avoid returning NULL for unused id */
++	memset_p((void **)clp->clk_data.hws, ERR_PTR(-ENOENT), clks_num);
++
+ 	for (i = 0; i < clks_num; i++) {
+ 		p = &data[i];
+ 		switch (p->type) {
 
 
 
