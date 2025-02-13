@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-116145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE7CA3475B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD8EA34560
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DFE1898A4E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21DB57A1163
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB7F15539A;
-	Thu, 13 Feb 2025 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFC226B0B5;
+	Thu, 13 Feb 2025 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I92jdWd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP7l6BtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584F31411DE;
-	Thu, 13 Feb 2025 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF626B096;
+	Thu, 13 Feb 2025 15:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460481; cv=none; b=mUolP4El0TnhqPpJmNgT1S4ok/ypjAMqMy+q4uP3qsroB85iW93G9z2PNLbW3QIsCpX2diPMOm3JmWmPuZEJkF8a3s7WqVAr5yMwDrLZaNO3L7FNgrGKntmxRLFcj0Zb3sK7A/7R8pyKuRAtp0Li4vrKSENUL5828dEg7BWwSr4=
+	t=1739459675; cv=none; b=IwSD9pQdsYQA1xq93B7aUi2CYp2dtx4Qdeldo0tEEYUmc9wJyBSaf1lU3/Y8KL9mcy5lfONESsXfU5szwHe8colfNk5C2bGZI7O67xN8plQvwtfWctdC4k7IREvTPQXNaE+pZwybQFerSzCP7AxvOLZuFxkklxmJ0Fppu1TMn5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460481; c=relaxed/simple;
-	bh=lfbeVohbFfwfBSAQ482iPtxtXS2CPbhE+VBqavaXm+M=;
+	s=arc-20240116; t=1739459675; c=relaxed/simple;
+	bh=w6mJBbT5e+x8oE+ZfQbg+/UIE1A7gl34cHRN1r0WUoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSRYIalomI48MyGL5ZTkS1EpqOsg7FM6amOcCHfvWrW5PtlDRqPSh22PYts44YYLYum7XqhQNDv1lQmv4e0B8ViT0Jef/ZRLnwAZXZ9OX/AX/VxfxNJoyln7B7wfgjXEx7S9HczCFfO5PdCrdZwn6NAiBjUM2SlT/6YOCgcY66g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I92jdWd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD2AC4CED1;
-	Thu, 13 Feb 2025 15:28:00 +0000 (UTC)
+	 MIME-Version; b=VUMuos8HLJmsmMBngLNQZSOAyAh1Ct0HnfRdkZgz+uCR6ybJ3Tma8A1F81liFMAijtRAuUhGFGeVUBbzC5D+Io/WKRNy7y5+FW63qm6JK1i1HiMbLlYlCwIZrLsB6spVo+XH0UsZqNmHuGL7OHL1fOw8nsKpBjVLJObY7SVvNeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP7l6BtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E047C4CED1;
+	Thu, 13 Feb 2025 15:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460481;
-	bh=lfbeVohbFfwfBSAQ482iPtxtXS2CPbhE+VBqavaXm+M=;
+	s=korg; t=1739459675;
+	bh=w6mJBbT5e+x8oE+ZfQbg+/UIE1A7gl34cHRN1r0WUoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I92jdWd/OKIrGIavLUr2Ir0wmfBT4H1JktVKrHKLdvaci2ErKise3pW/2VN+xpnKm
-	 KMI7TPgpoClxFf4PSWsBOk5gqeiYv7C/aoPaePlkue9LaODRJhXYr5tVPUormIheVo
-	 Mf/yWUBKUMVyLrpMapNEDSV3UEbV5aLO3s77FeNs=
+	b=BP7l6BtB4K+owrqd3XBEFP5qd6dqlefpbdpR2I3bf5RapEr8GfwjJHdeWDEmWL+LY
+	 x3m6bXGTxLiG00X9QhbFpbIEjWAZUviMWABaBlo5nP/96dJmrW3gskAWH94zwgo0FP
+	 3xqiaid9k1fcoMsVz8J0dNDKBRyk3gk2n49lMDBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 123/273] of: Correct child specifier used as input of the 2nd nexus node
-Date: Thu, 13 Feb 2025 15:28:15 +0100
-Message-ID: <20250213142412.203082140@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.13 331/443] xfs: Add error handling for xfs_reflink_cancel_cow_range
+Date: Thu, 13 Feb 2025 15:28:16 +0100
+Message-ID: <20250213142453.395978939@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
+commit 26b63bee2f6e711c5a169997fd126fddcfb90848 upstream.
 
-API of_parse_phandle_with_args_map() will use wrong input for nexus node
-Nexus_2 as shown below:
+In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
+without error handling, risking unnoticed failures and
+inconsistent behavior compared to other parts of the code.
 
-    Node_1		Nexus_1                              Nexus_2
-&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
-		  map-pass-thru=<...>
+Fix this issue by adding an error handling for the
+xfs_reflink_cancel_cow_range(), improving code robustness.
 
-Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
-wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
-
-Fix by always making @match_array point to @initial_match_array into
-which to store nexus output.
-
-Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
+Cc: stable@vger.kernel.org # v4.17
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_inode.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1453,7 +1453,6 @@ int of_parse_phandle_with_args_map(const
- 		 * specifier into the out_args structure, keeping the
- 		 * bits specified in <list>-map-pass-thru.
- 		 */
--		match_array = map - new_size;
- 		for (i = 0; i < new_size; i++) {
- 			__be32 val = *(map - new_size + i);
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1404,8 +1404,11 @@ xfs_inactive(
+ 		goto out;
  
-@@ -1462,6 +1461,7 @@ int of_parse_phandle_with_args_map(const
- 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
- 			}
+ 	/* Try to clean out the cow blocks if there are any. */
+-	if (xfs_inode_has_cow_data(ip))
+-		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++	if (xfs_inode_has_cow_data(ip)) {
++		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++		if (error)
++			goto out;
++	}
  
-+			initial_match_array[i] = val;
- 			out_args->args[i] = be32_to_cpu(val);
- 		}
- 		out_args->args_count = list_size = new_size;
+ 	if (VFS_I(ip)->i_nlink != 0) {
+ 		/*
 
 
 
