@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F09CA34604
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A0CA3446B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9115616976E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D76F83B25FF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BB726B0BE;
-	Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA824221571;
+	Thu, 13 Feb 2025 14:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hd04eqOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsIpAY+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDE26B092;
-	Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953632222DC;
+	Thu, 13 Feb 2025 14:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459737; cv=none; b=JUiwgWXP+W3psLn71HUuANe2OJ/lBSxd7wVG2Z0eSlsS1DDhXfknVqkShaZhq1TydmwW0PZX/V04+hmEwNxjzxD22585oOI2RkgNSyGEVoUt5pL7W19g6mhYyKkoHP04Sq6cFS3QuMvOP2mBC66PPpQkYpCYpYMkrlV2itRK/XA=
+	t=1739458301; cv=none; b=iL+IpNpEwsKIbpsGMjfXJXiuh2bG4XjeyA5ilWXUXz6PRYd2a3KJu+aBlUL8LzWy6lkoaEKyWmGzmTMWM2PoolG9sjy02ti2JdDqhUhhruQ1X0oQB5i5KJ7J3fglKgOfeWBvk5tuBuiQu1kBHq0am4VmleuSTr63vskTyDainqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459737; c=relaxed/simple;
-	bh=gdPs3hpdmB0ZOWDc4hyoe1wGWbtYXeSAVUvAQPWsGYo=;
+	s=arc-20240116; t=1739458301; c=relaxed/simple;
+	bh=nkjkTUJdN+rbzhVLOaNH4/izYAa8xhWROw6taGsHiG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kr7hdNvqBTNlhAGPAyTeYHOE0j4V0Jv9/SC3q1j6qgt4TDOB3ThlAas5BxSdf568es+lBMIjB69sd0xLPgTnCCn5YGXatr7YeZ7R+lAPZfxMUQwk1n5xS1aXKd7yBy1BPnLvGXqDRLYsftSn4KUdTc0YdXUeMxYcxvJkSruvDIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hd04eqOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95882C4CEE4;
-	Thu, 13 Feb 2025 15:15:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S2VMX2FP0aA9jOnyJAaDRCoFo1MGCR476WtcZA9qCnE40HzKdGqgKUvLwRPI0NZdfYr0xen9S6dftpbfwlLArDshOfY92k2fOFzHwigu3R8/OwlhKjnYPrBv4HIPu4AMXX53qN6JPCPqM1PH6FupqjFbdagYWfNTFMP674IAqvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsIpAY+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B45CC4CED1;
+	Thu, 13 Feb 2025 14:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459737;
-	bh=gdPs3hpdmB0ZOWDc4hyoe1wGWbtYXeSAVUvAQPWsGYo=;
+	s=korg; t=1739458301;
+	bh=nkjkTUJdN+rbzhVLOaNH4/izYAa8xhWROw6taGsHiG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hd04eqOjMcOH9G3RKV5ld0r0167rvDFRg92p065jZecidFRunPX+FZw0QNEnuatTX
-	 wfLGEE6L9yOW4Hy4Y94Jrx9wCzLznJTWRnjYW/zk5U5kbu7slVT9ZrAElAw/TogoQG
-	 l58TsmLrmNJZM4fesio6XzW1HbKNujbg5uIHmils=
+	b=JsIpAY+0tozBbeHyjMF2tAklL8ugE2X0E8uiZpFMD1kEC1Q2XTS9oLZrbwdgxjp5Q
+	 95uTLqHOS4HnFZH/wDjSF3cIBExRApNfVQ7za0W5uLnKcZChRQge7eQAGXbbY60/Iu
+	 GKGzAhW4iS9obNo+BFaq61brg2J7EDI2V/GhUm+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 342/443] media: ccs: Clean up parsed CCS static data on parse failure
-Date: Thu, 13 Feb 2025 15:28:27 +0100
-Message-ID: <20250213142453.819350631@linuxfoundation.org>
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.12 359/422] vfio/platform: check the bounds of read/write syscalls
+Date: Thu, 13 Feb 2025 15:28:28 +0100
+Message-ID: <20250213142450.405091188@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit da73efa8e675a2b58f1c7ae61201acfe57714bf7 upstream.
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-ccs_data_parse() releases the allocated in-memory data structure when the
-parser fails, but it does not clean up parsed metadata that is there to
-help access the actual data. Do that, in order to return the data
-structure in a sane state.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-data.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/media/i2c/ccs/ccs-data.c
-+++ b/drivers/media/i2c/ccs/ccs-data.c
-@@ -10,6 +10,7 @@
- #include <linux/limits.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
-+#include <linux/string.h>
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -393,6 +393,11 @@ static ssize_t vfio_platform_read_mmio(s
  
- #include "ccs-data-defs.h"
+ 	count = min_t(size_t, count, reg->size - off);
  
-@@ -948,15 +949,15 @@ int ccs_data_parse(struct ccs_data_conta
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -474,6 +479,11 @@ static ssize_t vfio_platform_write_mmio(
  
- 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, verbose);
- 	if (rval)
--		return rval;
-+		goto out_cleanup;
+ 	if (off >= reg->size)
+ 		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
++	if (off >= reg->size)
++		return -EINVAL;
  
- 	rval = bin_backing_alloc(&bin);
- 	if (rval)
--		return rval;
-+		goto out_cleanup;
+ 	count = min_t(size_t, count, reg->size - off);
  
- 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, false);
- 	if (rval)
--		goto out_free;
-+		goto out_cleanup;
- 
- 	if (verbose && ccsdata->version)
- 		print_ccs_data_version(dev, ccsdata->version);
-@@ -965,15 +966,16 @@ int ccs_data_parse(struct ccs_data_conta
- 		rval = -EPROTO;
- 		dev_dbg(dev, "parsing mismatch; base %p; now %p; end %p\n",
- 			bin.base, bin.now, bin.end);
--		goto out_free;
-+		goto out_cleanup;
- 	}
- 
- 	ccsdata->backing = bin.base;
- 
- 	return 0;
- 
--out_free:
-+out_cleanup:
- 	kvfree(bin.base);
-+	memset(ccsdata, 0, sizeof(*ccsdata));
- 
- 	return rval;
- }
 
 
 
