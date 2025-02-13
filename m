@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75A2A347A4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DADB3A34689
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8622E1892BBB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D943AFE76
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFD815A868;
-	Thu, 13 Feb 2025 15:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17CA26B091;
+	Thu, 13 Feb 2025 15:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIqLnoU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrevXGRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EFE70805;
-	Thu, 13 Feb 2025 15:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D76A26B0A5;
+	Thu, 13 Feb 2025 15:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460646; cv=none; b=pXWfGoFG5eS1NkDeKJQb2nxNC/TylGnN3KX1MSAQAbsxIqyJoWFklMdoYTHJwwhUi2IR+XKTOAubmUgNcFsu3UgGsY/Hn0ZYAI0OXd91fmc0n8jz4+jYEUGVjnbQyHXh21P3DLMQSsxS2xR0bkfa1ANRj1a9ZHf/9mXTeCznVc8=
+	t=1739459838; cv=none; b=GoSPUt6jmh0R3wrWkcriKY9UyEotZZczdk9vVYuqyKOMz9yc3V6J0iACU0xVVPxoEGaqD+ja83lpU3Z3f7NRwr2DeJfJw9AKCvlGpRBVz5ZWiki9Xy9KfLsIVdAY5n5Jlonsjg9ynbXE3kfTIMxYgzZigg22oHBM+paw9NlCyHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460646; c=relaxed/simple;
-	bh=ne7bMfh14Svh2DHsb6eL5ppGexxFV8PgKKm9Y3cxhso=;
+	s=arc-20240116; t=1739459838; c=relaxed/simple;
+	bh=TzcDbJW3oHd9Qzhz9mTq5zc3zDYyCxPcaw9aW0SmjkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJM/lkqoU4eOlgaUwwwrtBce4AiRT/3oqOqunqsvCtQc08F0MBNnv16TgdFbBshInhC0ikiIOsqecapuQRSGG2I7xMyFHmaApq1slIBc7Fdp8higiSxhHKWBevA7UOs1Figj+iUcuR7mWNJFBRwsZYhxiVpN7dF86mPsqchvPk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIqLnoU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CED4C4CED1;
-	Thu, 13 Feb 2025 15:30:45 +0000 (UTC)
+	 MIME-Version; b=eHRGuVgAnxPNThWQ6uYehzlqnwEVqb+YxzuUR9Rt7tVHsFNPs2RJHxmbpADvsDu4xGcU2lzz5y7Sk1HbpNqXK9DaL1zWHZ7mje1bigxBRcPmJGGDr/86RBGLOgMy+FtJOnAjWgenc13XPvNM1dvCJfDbLnhwJi3/lcUD1F2R23g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrevXGRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCD4C4CED1;
+	Thu, 13 Feb 2025 15:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460646;
-	bh=ne7bMfh14Svh2DHsb6eL5ppGexxFV8PgKKm9Y3cxhso=;
+	s=korg; t=1739459838;
+	bh=TzcDbJW3oHd9Qzhz9mTq5zc3zDYyCxPcaw9aW0SmjkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIqLnoU3h633QxC+AAB55HUlcwnTorg2uf1Nzo4DQLgHwi69vdGEJnH0rZb5ydP6+
-	 MK87x4JqFxuDeVWCY5rP90csrC2XXSYi4PM3lGqIQbvJX1wLvQl/IfAcdCYNpvVXMK
-	 0aWbsCve1a/Jox8yN6VEGollgFnwDR9ivaKdYbAA=
+	b=OrevXGRA1AxODtYoBcQxXqjzg5jakU6X75Bei5SvzCknlucZRtBs4tEcVHwhfogh2
+	 AHN9eW6YPMm6K72NSUvEowDoLFGRp74Blv2P1VRDOyTxb4BGgWKjnVUf0FXCnkyRSm
+	 +fpY5N9jvUm6gQuE0CS+nZ3hf7xwn+SRGYGmBpOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 140/273] usbnet: ipheth: break up NCM header size computation
+	Christian Eggers <ceggers@arri.de>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.13 347/443] iio: light: as73211: fix channel handling in only-color triggered buffer
 Date: Thu, 13 Feb 2025 15:28:32 +0100
-Message-ID: <20250213142412.870064410@linuxfoundation.org>
+Message-ID: <20250213142454.010343878@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit efcbc678a14be268040ffc1fa33c98faf2d55141 upstream.
+commit ab09c6cfe01b317f515bcd944668697241a54b9d upstream.
 
-Originally, the total NCM header size was computed as the sum of two
-vaguely labelled constants. While accurate, it wasn't particularly clear
-where they were coming from.
+The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+set (optimized path for color channel readings), and it must be shifted
+instead of leaving an empty channel for the temperature when it is off.
 
-Use sizes of existing NCM structs where available. Define the total
-NDP16 size based on the maximum amount of DPEs that can fit into the
-iOS-specific fixed-size header.
+Once the channel index is fixed, the uninitialized channel must be set
+to zero to avoid pushing uninitialized data.
 
-This change does not fix any particular issue. Rather, it introduces
-intermediate constants that will simplify subsequent commits.
-It should also make it clearer for the reader where the constant values
-come from.
+Add available_scan_masks for all channels and only-color channels to let
+the IIO core demux and repack the enabled channels.
 
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+Tested-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/iio/light/as73211.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 069979e2bb6e..03249208612e 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -61,7 +61,18 @@
- #define IPHETH_USBINTF_PROTO    1
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -177,6 +177,12 @@ struct as73211_data {
+ 	BIT(AS73211_SCAN_INDEX_TEMP) | \
+ 	AS73211_SCAN_MASK_COLOR)
  
- #define IPHETH_IP_ALIGN		2	/* padding at front of URB */
--#define IPHETH_NCM_HEADER_SIZE  (12 + 96) /* NCMH + NCM0 */
-+/* On iOS devices, NCM headers in RX have a fixed size regardless of DPE count:
-+ * - NTH16 (NCMH): 12 bytes, as per CDC NCM 1.0 spec
-+ * - NDP16 (NCM0): 96 bytes, of which
-+ *    - NDP16 fixed header: 8 bytes
-+ *    - maximum of 22 DPEs (21 datagrams + trailer), 4 bytes each
-+ */
-+#define IPHETH_NDP16_MAX_DPE	22
-+#define IPHETH_NDP16_HEADER_SIZE (sizeof(struct usb_cdc_ncm_ndp16) + \
-+				  IPHETH_NDP16_MAX_DPE * \
-+				  sizeof(struct usb_cdc_ncm_dpe16))
-+#define IPHETH_NCM_HEADER_SIZE	(sizeof(struct usb_cdc_ncm_nth16) + \
-+				 IPHETH_NDP16_HEADER_SIZE)
- #define IPHETH_TX_BUF_SIZE      ETH_FRAME_LEN
- #define IPHETH_RX_BUF_SIZE_LEGACY (IPHETH_IP_ALIGN + ETH_FRAME_LEN)
- #define IPHETH_RX_BUF_SIZE_NCM	65536
--- 
-2.48.1
-
++static const unsigned long as73211_scan_masks[] = {
++	AS73211_SCAN_MASK_COLOR,
++	AS73211_SCAN_MASK_ALL,
++	0
++};
++
+ static const struct iio_chan_spec as73211_channels[] = {
+ 	{
+ 		.type = IIO_TEMP,
+@@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handl
+ 
+ 		/* AS73211 starts reading at address 2 */
+ 		ret = i2c_master_recv(data->client,
+-				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
++				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+ 		if (ret < 0)
+ 			goto done;
++
++		/* Avoid pushing uninitialized data */
++		scan.chan[3] = 0;
+ 	}
+ 
+ 	if (data_result) {
+@@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handl
+ 		 * Saturate all channels (in case of overflows). Temperature channel
+ 		 * is not affected by overflows.
+ 		 */
+-		scan.chan[1] = cpu_to_le16(U16_MAX);
+-		scan.chan[2] = cpu_to_le16(U16_MAX);
+-		scan.chan[3] = cpu_to_le16(U16_MAX);
++		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
++			scan.chan[1] = cpu_to_le16(U16_MAX);
++			scan.chan[2] = cpu_to_le16(U16_MAX);
++			scan.chan[3] = cpu_to_le16(U16_MAX);
++		} else {
++			scan.chan[0] = cpu_to_le16(U16_MAX);
++			scan.chan[1] = cpu_to_le16(U16_MAX);
++			scan.chan[2] = cpu_to_le16(U16_MAX);
++		}
+ 	}
+ 
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+@@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_clie
+ 	indio_dev->channels = data->spec_dev->channels;
+ 	indio_dev->num_channels = data->spec_dev->num_channels;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->available_scan_masks = as73211_scan_masks;
+ 
+ 	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
+ 	if (ret < 0)
 
 
 
