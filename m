@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-116061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E2AA346F3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0C1A34410
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F6D1897113
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982F83B1573
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC5F1917E4;
-	Thu, 13 Feb 2025 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB44926619D;
+	Thu, 13 Feb 2025 14:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKLaucpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAx+g6EX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3AA1714A1;
-	Thu, 13 Feb 2025 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7513A266196;
+	Thu, 13 Feb 2025 14:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460184; cv=none; b=kv2cE/tEI2vSuZ/h4pM+ktqk/cOTb/PLbyWu1547i/JpbZhe7mmKPJkSjosvj097yn0A/JYOUnVe1I4cvtymzAEM2AEbOfjBYdzGs+MtQqAmDDyHLppvTlXbrwKbimW4axh8efxt3NcHcK2t+Lu0JPdu/m46KtjrJL/AGO3VLXo=
+	t=1739458110; cv=none; b=N0MXB0a3vkXCm1WQhvmw/twzgHimlUNHwfSmHplYIrjE2nWhaVz8kkICR34vv9/8+XfhQSjgu7ju/s0MIcsnvOuizGv3vG3SzjmIu3g83/07pnHap7chD8sJPaS79EDm4c92j/T1hvQL6OpMikcc+60o9BOCADDszkxvLDyJwnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460184; c=relaxed/simple;
-	bh=HWvH00BydlX2PoF9VHdZDJedGu/htDtx0Aoo+9fay/Q=;
+	s=arc-20240116; t=1739458110; c=relaxed/simple;
+	bh=5XUJCw6mjZ/j8uQ/pBvpgsGF01ATZb5cmzWM21/3XgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLUlwPJ/DO8vg7YabErNeg2EssxnQLq/jL9oizIo8e9K+TPMmsUaKoP+RsSKsg/NTDcOoUk0gjMpUwiSnysYT2Qq7K1l3r253QGRWGITrzS8rMz6zkHnMIpofjHZBFDbfIdClt2DipnABnusZ8q1QEhkrSAmvnB8qQMDx1z/Xis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKLaucpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE95C4CED1;
-	Thu, 13 Feb 2025 15:23:03 +0000 (UTC)
+	 MIME-Version; b=s2qZIHbO2ont/vvAonp6L8lZbXkhV5P7Q3nbllqwCwE2roOVl7/RmR85qW5sWms6Y+jrFc5jWgWV/YD0/52mzzACkG/+qlr9uF70EDcSX+wq6CM4b507M2KRqxjmpMbow/AoqNTuByAtMC7aP16A78NJKRjvxi3Ko2mDr72jfIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAx+g6EX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8167C4CED1;
+	Thu, 13 Feb 2025 14:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460184;
-	bh=HWvH00BydlX2PoF9VHdZDJedGu/htDtx0Aoo+9fay/Q=;
+	s=korg; t=1739458110;
+	bh=5XUJCw6mjZ/j8uQ/pBvpgsGF01ATZb5cmzWM21/3XgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKLaucpThXqFVy6YAN8hVmIbaJokLFfnrbBmBSAGLhW3hj9Vf7RIE523u7n8XJHnB
-	 Yi6x3xYDkx2SZHoX1llS7Q9FIeKinHNmSy+h4639cUHauauOTd3oDgGXCdzfw4ch0s
-	 zuV0dJVFP3f20jAPWlyVQekxXSOZNn/wbiEvCGfk=
+	b=jAx+g6EXS6Tqht8UdC2bOJDVy4/nNu9nyxyI1wTDuqgkWAC12Xux5hMA6GDfWR7Yk
+	 BFZWCe8QRzJBE+KIkSTlBYGvHPAbMB3yMKsi3ng5kZVibw5pyaPI4fiy0tC2qjDkAr
+	 JCX+OXhQrr1yGwCKdgw/5Odxbvn/OwwnGaAqPpSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/273] APEI: GHES: Have GHES honor the panic= setting
+	Jim Mattson <jmattson@google.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 263/422] x86/acpi: Fix LAPIC/x2APIC parsing order
 Date: Thu, 13 Feb 2025 15:26:52 +0100
-Message-ID: <20250213142408.937365531@linuxfoundation.org>
+Message-ID: <20250213142446.691701026@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov <bp@alien8.de>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
+commit 0141978ae75bd48bac13fca6de131a5071c32011 upstream.
 
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
+On some systems, the same CPU (with the same APIC ID) is assigned a
+different logical CPU id after commit ec9aedb2aa1a ("x86/acpi: Ignore
+invalid x2APIC entries").
 
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
+This means that Linux enumerates the CPUs in a different order, which
+violates ACPI specification[1] that states:
 
-So rip out the default GHES panic timeout and honor the global one.
+  "OSPM should initialize processors in the order that they appear in
+   the MADT"
 
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+The problematic commit parses all LAPIC entries before any x2APIC
+entries, aiming to ignore x2APIC entries with APIC ID < 255 when valid
+LAPIC entries exist. However, it disrupts the CPU enumeration order on
+systems where x2APIC entries precede LAPIC entries in the MADT.
 
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
+Fix this problem by:
+
+ 1) Parsing LAPIC entries first without registering them in the
+    topology to evaluate whether valid LAPIC entries exist.
+
+ 2) Restoring the MADT in order parser which invokes either the LAPIC
+    or the X2APIC parser function depending on the entry type.
+
+The X2APIC parser still ignores entries < 0xff in case that #1 found
+valid LAPIC entries independent of their position in the MADT table.
+
+Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#madt-processor-local-apic-sapic-structure-entry-order
+Cc: All applicable <stable@vger.kernel.org>
+Reported-by: Jim Mattson <jmattson@google.com>
+Closes: https://lore.kernel.org/all/20241010213136.668672-1-jmattson@google.com/
+Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Tested-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20250117081420.4046737-1-rui.zhang@intel.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/acpi/boot.c |   50 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ab2a82cb1b0b4..3aadc632d7dd5 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -170,8 +170,6 @@ static struct gen_pool *ghes_estatus_pool;
- static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
- 
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
- {
- 	phys_addr_t paddr;
-@@ -899,14 +897,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
- {
-+	const char *msg = GHES_PFX "Fatal hardware error";
-+
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
-+
-+	panic(msg);
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -227,6 +227,28 @@ acpi_parse_x2apic(union acpi_subtable_he
  }
  
- static int ghes_proc(struct ghes *ghes)
--- 
-2.39.5
-
+ static int __init
++acpi_check_lapic(union acpi_subtable_headers *header, const unsigned long end)
++{
++	struct acpi_madt_local_apic *processor = NULL;
++
++	processor = (struct acpi_madt_local_apic *)header;
++
++	if (BAD_MADT_ENTRY(processor, end))
++		return -EINVAL;
++
++	/* Ignore invalid ID */
++	if (processor->id == 0xff)
++		return 0;
++
++	/* Ignore processors that can not be onlined */
++	if (!acpi_is_processor_usable(processor->lapic_flags))
++		return 0;
++
++	has_lapic_cpus = true;
++	return 0;
++}
++
++static int __init
+ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ {
+ 	struct acpi_madt_local_apic *processor = NULL;
+@@ -257,7 +279,6 @@ acpi_parse_lapic(union acpi_subtable_hea
+ 			       processor->processor_id, /* ACPI ID */
+ 			       processor->lapic_flags & ACPI_MADT_ENABLED);
+ 
+-	has_lapic_cpus = true;
+ 	return 0;
+ }
+ 
+@@ -1029,6 +1050,8 @@ static int __init early_acpi_parse_madt_
+ static int __init acpi_parse_madt_lapic_entries(void)
+ {
+ 	int count, x2count = 0;
++	struct acpi_subtable_proc madt_proc[2];
++	int ret;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_APIC))
+ 		return -ENODEV;
+@@ -1037,10 +1060,27 @@ static int __init acpi_parse_madt_lapic_
+ 				      acpi_parse_sapic, MAX_LOCAL_APIC);
+ 
+ 	if (!count) {
+-		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
+-					acpi_parse_lapic, MAX_LOCAL_APIC);
+-		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
+-					acpi_parse_x2apic, MAX_LOCAL_APIC);
++		/* Check if there are valid LAPIC entries */
++		acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC, acpi_check_lapic, MAX_LOCAL_APIC);
++
++		/*
++		 * Enumerate the APIC IDs in the order that they appear in the
++		 * MADT, no matter LAPIC entry or x2APIC entry is used.
++		 */
++		memset(madt_proc, 0, sizeof(madt_proc));
++		madt_proc[0].id = ACPI_MADT_TYPE_LOCAL_APIC;
++		madt_proc[0].handler = acpi_parse_lapic;
++		madt_proc[1].id = ACPI_MADT_TYPE_LOCAL_X2APIC;
++		madt_proc[1].handler = acpi_parse_x2apic;
++		ret = acpi_table_parse_entries_array(ACPI_SIG_MADT,
++				sizeof(struct acpi_table_madt),
++				madt_proc, ARRAY_SIZE(madt_proc), MAX_LOCAL_APIC);
++		if (ret < 0) {
++			pr_err("Error parsing LAPIC/X2APIC entries\n");
++			return ret;
++		}
++		count = madt_proc[0].count;
++		x2count = madt_proc[1].count;
+ 	}
+ 	if (!count && !x2count) {
+ 		pr_err("No LAPIC entries present\n");
 
 
 
