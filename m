@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8169A34758
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F5EA34389
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12ECA3B1F84
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D1E016CA9F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7963335BA;
-	Thu, 13 Feb 2025 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4329427425A;
+	Thu, 13 Feb 2025 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9oZLiaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZrrmOvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0413D8A4;
-	Thu, 13 Feb 2025 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A1241667;
+	Thu, 13 Feb 2025 14:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460120; cv=none; b=a4GLpmt9sJNLkPiyf+vGtNrEvnxIoZTGqgZyQvMSRSicIzFHRMrNUmkAKr4lAkkkt/+hjo0rcYdaXE5S0IhCiNywLdUsdjt8WELuo+sTgXrE0S8csd7KB267OHmdmImHs3vJpQnc/h1Q8HyH9upO4PykpBmTMAPEVdQI6Hn7dFE=
+	t=1739457890; cv=none; b=LjWmVvpvI+TF5KnEndZ/nWcVmMS+C6yN5bNp8w7ZAvOlAhAeDJfclQ3NvkuMbrR+L8QVBreYWwBg7QsOq2xYsszLCxi196wMdqc44IIwIoV9dSnK88t5gPHICykkqKd+eB/Y1wuQsStZ8Dd9/xmC6emFFAf446XfyVFrT4fulww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460120; c=relaxed/simple;
-	bh=dF8L7tuSvu+aEzrwUkk2dHWpCzm1vcesyeDOPlRoCaI=;
+	s=arc-20240116; t=1739457890; c=relaxed/simple;
+	bh=ys8uDUSiy3H30+/9xEJc/T80c3ZTw3JUkGnQQJbPWNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAugNKdc81/0MHeZtZn+uTDnZSIFZQp0FsAw3uAMF5qKLxTW522rKW6cNDAzIDPHqBFeLUtrPKhwfWF3maewxa8d5nKcmTMD3dj878O39zM8y7kdFyyjHa0SOrG/Vsp8Ggg/0kvty9UluFHqpK/0AsGuYSlFWsgI6ibRqlHAP3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9oZLiaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D12EC4CEE4;
-	Thu, 13 Feb 2025 15:21:59 +0000 (UTC)
+	 MIME-Version; b=M1Pu2l3CxcpzlGOnmdrSop6sWUt/eIEzzvClSUlBMcFSuBIhN0t9xn7jwTtH4EnhUKnKe8iH2uzrOpZa3lt74DJ8zO3oeq8NzhFPUk1GCs2FVaSDISFJYM8MysY26Ctg68+j0z96jo+9Ph5FYJRnnqtvJU3h+oek7LZV+Z+/WLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZrrmOvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AD1C4CED1;
+	Thu, 13 Feb 2025 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460120;
-	bh=dF8L7tuSvu+aEzrwUkk2dHWpCzm1vcesyeDOPlRoCaI=;
+	s=korg; t=1739457889;
+	bh=ys8uDUSiy3H30+/9xEJc/T80c3ZTw3JUkGnQQJbPWNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9oZLiaJovSOT4gAK6fOWNeQdrtzUnX0ii6TLj+ePLwYu/TpU7/6FXyEoaHEt/yQ/
-	 /n9epUOH3Zx5mZxdlqxngAdjT6lqkkK5KtFluzQPL6fCYPn/dQGjuPRwL6o8A6YgGo
-	 XVwyLRVv5h5O9dRDNP+O+mIFnpUHbloEEa+TYoOQ=
+	b=FZrrmOvDV9Iv/LFRYTGJjaa2a0G2pK9Y7GKZJ3LqxVSvg2SY/Ez85qHCsrIk7iuEB
+	 4R7619HxEY1Djq1v2zV/EzvppDkT0PM50LRvc6lbvy98m9xK1o192Fwd2BEMuVHG6c
+	 h8g6awGr3zqPUwzGLPuSzILPQ38Y3RnBATBML5hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/273] drm/vc4: hdmi: use eld_mutex to protect access to connector->eld
+	Takashi Iwai <tiwai@suse.de>,
+	Samantha Glocker <iam@anislandsomewhere.com>
+Subject: [PATCH 6.12 243/422] ALSA: hda/realtek: Fix quirk matching for Legion Pro 7
 Date: Thu, 13 Feb 2025 15:26:32 +0100
-Message-ID: <20250213142408.160581441@linuxfoundation.org>
+Message-ID: <20250213142445.913830988@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 81a9a93b169a273ccc4a9a1ee56f17e9981d3f98 ]
+commit 0f3a822ae2254a1e7ce3a130a1efd94e2cab73ee upstream.
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+The recent cleanup of the quirk table entries with the codec ID
+matching caused a regression on some Lenovo Legion 7 models with PCI
+SSID 17aa:386f: it assumed wrongly as if the codec SSID on the machine
+were also 17aa:386f, but in this case, it was 17aa:38a8.  This made
+the binding with a wrong sub-codec, instead of TAS2781, the Cirrus
+codec was bound.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-10-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For addressing the regression, correct the quirk entry to the right
+value 17aa:38a8.
+
+Note that this makes the entry appearing in an unsorted position.
+This exception is needed because the entry must match before the PCI
+SSID 17aa:386f.
+
+Also there is another entry for 17aa:38a8, but the latter is for PCI
+SSID matching while the new entry is for the codec SSID matching.
+
+Fixes: 504f052aa343 ("ALSA: hda/realtek: Use codec SSID matching for Lenovo devices")
+Reported-and-tested-by: Samantha Glocker <iam@anislandsomewhere.com>
+Closes: https://lore.kernel.org/CAGPQRHYd48U__UKYj2jJnT4+dnNNoWRBi+wj6zPRn=JpNMBUrg@mail.gmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250125120519.16420-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 1727d447786f1..541aba80c1449 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2655,9 +2655,9 @@ static int vc4_hdmi_audio_get_eld(struct device *dev, void *data,
- 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
- 	struct drm_connector *connector = &vc4_hdmi->connector;
- 
--	mutex_lock(&vc4_hdmi->mutex);
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
--	mutex_unlock(&vc4_hdmi->mutex);
-+	mutex_unlock(&connector->eld_mutex);
- 
- 	return 0;
- }
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10874,7 +10874,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	HDA_CODEC_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x386e, "Yoga Pro 7 14ARP8", ALC285_FIXUP_SPEAKER2_TO_DAC1),
+-	HDA_CODEC_QUIRK(0x17aa, 0x386f, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C),
++	HDA_CODEC_QUIRK(0x17aa, 0x38a8, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C), /* this must match before PCI SSID 17aa:386f below */
+ 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion Pro 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
