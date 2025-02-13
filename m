@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB0DA345D1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9CCA34740
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683A93AFFAB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762DC188A56B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076F626B098;
-	Thu, 13 Feb 2025 15:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256981422D8;
+	Thu, 13 Feb 2025 15:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STjau+3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR3Ae2kg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A4226B080;
-	Thu, 13 Feb 2025 15:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E2D26B0B4;
+	Thu, 13 Feb 2025 15:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459507; cv=none; b=Thb6pt3tz4pGU1vLl1V3vQfmmL1jSJHIGXD/bW2zDOqqqKxEbhULDFviGrNJQd0D8WrkVxM5wacZEfatEzw777KYv8HLDmwuWi4hOmKut4/uC0nsL7jKmF26c4yzLMRMu0ayEp8QKkY/XTirbE1o0SRqmZh0wvtbmJ3kG1TBtSY=
+	t=1739460325; cv=none; b=eiWK+cyv1UiqR7ycVbPqDHXrE/FZNYZe/J1sp8HByqieCwHHXa1tKHlLCWOqk+Az2+aygSc4VOy/KFs3JfINDlWCIFK80THmPNOEjfRhPVaHEHBa8Gl4+b3Y6TGJG/XkdbFAWTrkmbfk1eX5ZMIHwRMWY9m5SvSsuFAFo61vMus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459507; c=relaxed/simple;
-	bh=AuxTdjiR63C4qKam2flALtCV/JM2l1JNtX5t3xsG4u0=;
+	s=arc-20240116; t=1739460325; c=relaxed/simple;
+	bh=3RyDq+JerK7ZncAsAzRNjI/EIM/9rLuEVKkid3hFNTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhVWqFYjtCUK9lFmq3o7DVgSZN3Ozw1H5F06Q3D3w82UG3x+2vW55wqYs7grKJeLAEO1MC1VmWFs8i0UgQY6Gx3UnNuuu0l1oVQNS9C1i/q7RShzljx2Nmr9Eg5SgFep8rMl+6Xga+2BopWJLdagV8gs1LfkyXuxw/QO6T2ct0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STjau+3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45C0C4CEE4;
-	Thu, 13 Feb 2025 15:11:46 +0000 (UTC)
+	 MIME-Version; b=A2gHgadLdpv2P09jJSbzhKHFPWD/vKy23P8D8OpU31PmSQQcrSnyUoJ/uVN9edZkun99njxCb5VfxruyMVdUTquQbmior5wtN8U53PWRD1YJyt13Tgm5qPJcO1kD8ucV6n/T/2sBwRcI6pfskuKhGbTbj2+u6ElcplkzDVA0ETo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IR3Ae2kg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EB0C4CED1;
+	Thu, 13 Feb 2025 15:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459507;
-	bh=AuxTdjiR63C4qKam2flALtCV/JM2l1JNtX5t3xsG4u0=;
+	s=korg; t=1739460325;
+	bh=3RyDq+JerK7ZncAsAzRNjI/EIM/9rLuEVKkid3hFNTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STjau+3nrPgt/Hgq3+y6PmwKGunxJTTPFS28jqyEZkOFy6Wk40ywBd+ixevrR2WQm
-	 7lX6jbuE7yoqOMCb2sbT5O4wGG4xx0vgEN2Lf9GdD/UfKf8D8RoS6FCXCmngM8Obva
-	 a6e39uEeYUBSgy57uvBTG4JAlPslwTuD9Auy5SMg=
+	b=IR3Ae2kgYayDbuIrADBkhra5JSlWYmqnYz1zHz2VS+XljWo7k6T31kOVm1CV1zz+w
+	 QgfLuv8rYcqvXWVKT8rGZ581W2QMRG0dj1ez/ektBtA5AXdoC4uiYGIo9LJriK+6o+
+	 FLQ0RY9PbmdTS1aeB/ilYlNCFpU/r9+I45kdJLnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.13 286/443] kbuild: Move -Wenum-enum-conversion to W=2
+	Joe Botha <joe@atomic.ac>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 079/273] net: sched: Fix truncation of offloaded action statistics
 Date: Thu, 13 Feb 2025 15:27:31 +0100
-Message-ID: <20250213142451.649026129@linuxfoundation.org>
+Message-ID: <20250213142410.465760529@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+[ Upstream commit 811b8f534fd85e17077bd2ac0413bcd16cc8fb9b ]
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+In case of tc offload, when user space queries the kernel for tc action
+statistics, tc will query the offloaded statistics from device drivers.
+Among other statistics, drivers are expected to pass the number of
+packets that hit the action since the last query as a 64-bit number.
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+Unfortunately, tc treats the number of packets as a 32-bit number,
+leading to truncation and incorrect statistics when the number of
+packets since the last query exceeds 0xffffffff:
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+$ tc -s filter show dev swp2 ingress
+filter protocol all pref 1 flower chain 0
+filter protocol all pref 1 flower chain 0 handle 0x1
+  skip_sw
+  in_hw in_hw_count 1
+        action order 1: mirred (Egress Redirect to device swp1) stolen
+        index 1 ref 1 bind 1 installed 58 sec used 0 sec
+        Action statistics:
+        Sent 1133877034176 bytes 536959475 pkt (dropped 0, overlimits 0 requeues 0)
+[...]
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+According to the above, 2111-byte packets were redirected which is
+impossible as only 64-byte packets were transmitted and the MTU was
+1500.
+
+Fix by treating packets as a 64-bit number:
+
+$ tc -s filter show dev swp2 ingress
+filter protocol all pref 1 flower chain 0
+filter protocol all pref 1 flower chain 0 handle 0x1
+  skip_sw
+  in_hw in_hw_count 1
+        action order 1: mirred (Egress Redirect to device swp1) stolen
+        index 1 ref 1 bind 1 installed 61 sec used 0 sec
+        Action statistics:
+        Sent 1370624380864 bytes 21416005951 pkt (dropped 0, overlimits 0 requeues 0)
+[...]
+
+Which shows that only 64-byte packets were redirected (1370624380864 /
+21416005951 = 64).
+
+Fixes: 380407023526 ("net/sched: Enable netdev drivers to update statistics of offloaded actions")
+Reported-by: Joe Botha <joe@atomic.ac>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250204123839.1151804-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/sch_generic.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -130,7 +130,6 @@ KBUILD_CFLAGS += $(call cc-disable-warni
- KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 326d3a322c109..4ec2a948ae3db 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -849,7 +849,7 @@ static inline int qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ }
  
- endif
-@@ -154,6 +153,10 @@ KBUILD_CFLAGS += -Wno-missing-field-init
- KBUILD_CFLAGS += -Wno-type-limits
- KBUILD_CFLAGS += -Wno-shift-negative-value
- 
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
-+
- ifdef CONFIG_CC_IS_GCC
- KBUILD_CFLAGS += -Wno-maybe-uninitialized
- endif
+ static inline void _bstats_update(struct gnet_stats_basic_sync *bstats,
+-				  __u64 bytes, __u32 packets)
++				  __u64 bytes, __u64 packets)
+ {
+ 	u64_stats_update_begin(&bstats->syncp);
+ 	u64_stats_add(&bstats->bytes, bytes);
+-- 
+2.39.5
+
 
 
 
