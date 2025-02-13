@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F24A3453A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40857A342D9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F343B4BDE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E8A3A6C42
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CB1DDC23;
-	Thu, 13 Feb 2025 15:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA8E241667;
+	Thu, 13 Feb 2025 14:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcBj2v+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1m4BQf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA9C1D516A;
-	Thu, 13 Feb 2025 15:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD702222B1;
+	Thu, 13 Feb 2025 14:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458985; cv=none; b=iHo6atgvQsZQzEJ+hrOZsf53CEGmWeREJZRDkczPpXd9sKQaSWVTttk4yg4MlfB6Wmmtbj+UKNqAtxUaBayjOhMrddTK9cYxY8FOYYfsC5tQmSSfT6vuJ1xL5ON251vrK8jGEMldQJvy2HrJ81Q/D6OvP2W452+ryCFH9P03QWU=
+	t=1739457468; cv=none; b=pByf/oh+k4WfHpra/WPYcZvGfSABVyN3AHcqK/PnQ8zfg2lTck7SxqFGzAVWcxzZYIX1tU7WYH4Fzsk7yqhlqgaV1FuQcMY96kGDNL1bPb0u4UNDK0po6WhNyAZTLgbWMNuM55EQRJQ1CxW5nUZGkBRwdrBcfpxV/QvZ3kOhVE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458985; c=relaxed/simple;
-	bh=pwl7/PnoJxAVH0AfQKgegkjUpG+VylTfbpm4Hd64Fy8=;
+	s=arc-20240116; t=1739457468; c=relaxed/simple;
+	bh=UnEtdNLib8EXQl6bqOYfB2pDHNKOrbGAEli6eUXESdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfxxnnczlpitbUlO5POMEQ+iMQx+7zBtsd/95+GgawvVIeM5IXozD38hPjiHhmnbeYjwR0H4aLYAuvYE4s1hjrrNy/R9hSTcoEkCDTWZYt79y2CaiqN0de8VNxCin/lM/hlcZYYXsi2EUgB/Yvmxvf26J+1lSg/DCsDqZsl14xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcBj2v+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F8C4CED1;
-	Thu, 13 Feb 2025 15:03:04 +0000 (UTC)
+	 MIME-Version; b=OIDqyJ4NjbBpcrd7eiLE0gx0vVqXJMvSbW3f+epf3fWHqPrXhgbmUCN4nJIf3GUPeU/CAbkkbkfV7jt5c+iLLzd10MZcvIEzXg8sHCEN7qyhhZQc9fEEEha1zcDCDk3onnOGMvgPtiipDWAlGUsRdvJDLMBJm0Nw0AWgeNTFg04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1m4BQf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C940BC4CEE4;
+	Thu, 13 Feb 2025 14:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458985;
-	bh=pwl7/PnoJxAVH0AfQKgegkjUpG+VylTfbpm4Hd64Fy8=;
+	s=korg; t=1739457468;
+	bh=UnEtdNLib8EXQl6bqOYfB2pDHNKOrbGAEli6eUXESdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcBj2v+oY66qK0NXGEfMZTw0dsamnlr7Stm+1zIezBKmDTPCx5yJ6JVjIP2Hljurd
-	 j0CsK4qb3z9BgCnHCVPIKNtcNtKyu6QFy4lh9cQynludIVrPnpkB/UfM7oK5QbHe+d
-	 i2/tQb2DVsLEc9sqmpnd9qdCVdC2OkW4LeiaLLTQ=
+	b=P1m4BQf3tLDqhaAdok5nedHB7oIBrQObr5n/zihiIHVTcnraWEaicmZKcBdOAxGbL
+	 sv+pk9Y7DYXCsQl4akq54G4Yg9CHeyGH3IZxEo9tHpkANXQEHgoBl/lxh153oFi4Gm
+	 GlkCEVFITuIMCNLxxYbh0K5sTzWGHEhNnmiVw9fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 6.13 102/443] tty: xilinx_uartps: split sysrq handling
+	syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 118/422] net: rose: lock the socket in rose_bind()
 Date: Thu, 13 Feb 2025 15:24:27 +0100
-Message-ID: <20250213142444.546865250@linuxfoundation.org>
+Message-ID: <20250213142441.104288540@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b06f388994500297bb91be60ffaf6825ecfd2afe upstream.
+[ Upstream commit a1300691aed9ee852b0a9192e29e2bdc2411a7e6 ]
 
-lockdep detects the following circular locking dependency:
+syzbot reported a soft lockup in rose_loopback_timer(),
+with a repro calling bind() from multiple threads.
 
-CPU 0                      CPU 1
-========================== ============================
-cdns_uart_isr()            printk()
-  uart_port_lock(port)       console_lock()
-			     cdns_uart_console_write()
-                               if (!port->sysrq)
-                                 uart_port_lock(port)
-  uart_handle_break()
-    port->sysrq = ...
-  uart_handle_sysrq_char()
-    printk()
-      console_lock()
+rose_bind() must lock the socket to avoid this issue.
 
-The fixed commit attempts to avoid this situation by only taking the
-port lock in cdns_uart_console_write if port->sysrq unset. However, if
-(as shown above) cdns_uart_console_write runs before port->sysrq is set,
-then it will try to take the port lock anyway. This may result in a
-deadlock.
-
-Fix this by splitting sysrq handling into two parts. We use the prepare
-helper under the port lock and defer handling until we release the lock.
-
-Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
-Acked-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67a0f78d.050a0220.d7c5a.00a0.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250203170838.3521361-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/xilinx_uartps.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/rose/af_rose.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -287,7 +287,7 @@ static void cdns_uart_handle_rx(void *de
- 				continue;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 72c65d938a150..a4a668b88a8f2 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -701,11 +701,9 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	struct net_device *dev;
+ 	ax25_address *source;
+ 	ax25_uid_assoc *user;
++	int err = -EINVAL;
+ 	int n;
+ 
+-	if (!sock_flag(sk, SOCK_ZAPPED))
+-		return -EINVAL;
+-
+ 	if (addr_len != sizeof(struct sockaddr_rose) && addr_len != sizeof(struct full_sockaddr_rose))
+ 		return -EINVAL;
+ 
+@@ -718,8 +716,15 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	if ((unsigned int) addr->srose_ndigis > ROSE_MAX_DIGIS)
+ 		return -EINVAL;
+ 
+-	if ((dev = rose_dev_get(&addr->srose_addr)) == NULL)
+-		return -EADDRNOTAVAIL;
++	lock_sock(sk);
++
++	if (!sock_flag(sk, SOCK_ZAPPED))
++		goto out_release;
++
++	err = -EADDRNOTAVAIL;
++	dev = rose_dev_get(&addr->srose_addr);
++	if (!dev)
++		goto out_release;
+ 
+ 	source = &addr->srose_call;
+ 
+@@ -730,7 +735,8 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	} else {
+ 		if (ax25_uid_policy && !capable(CAP_NET_BIND_SERVICE)) {
+ 			dev_put(dev);
+-			return -EACCES;
++			err = -EACCES;
++			goto out_release;
  		}
+ 		rose->source_call   = *source;
+ 	}
+@@ -753,8 +759,10 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	rose_insert_socket(sk);
  
--		if (uart_handle_sysrq_char(port, data))
-+		if (uart_prepare_sysrq_char(port, data))
- 			continue;
- 
- 		if (is_rxbs_support) {
-@@ -495,7 +495,7 @@ static irqreturn_t cdns_uart_isr(int irq
- 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
- 		cdns_uart_handle_rx(dev_id, isrstatus);
- 
--	uart_port_unlock(port);
-+	uart_unlock_and_check_sysrq(port);
- 	return IRQ_HANDLED;
+ 	sock_reset_flag(sk, SOCK_ZAPPED);
+-
+-	return 0;
++	err = 0;
++out_release:
++	release_sock(sk);
++	return err;
  }
  
-@@ -1380,9 +1380,7 @@ static void cdns_uart_console_write(stru
- 	unsigned int imr, ctrl;
- 	int locked = 1;
- 
--	if (port->sysrq)
--		locked = 0;
--	else if (oops_in_progress)
-+	if (oops_in_progress)
- 		locked = uart_port_trylock_irqsave(port, &flags);
- 	else
- 		uart_port_lock_irqsave(port, &flags);
+ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_len, int flags)
+-- 
+2.39.5
+
 
 
 
