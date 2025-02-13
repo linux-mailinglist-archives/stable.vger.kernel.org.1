@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA58A343E6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F74BA34602
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C481189537F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA03ADECA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80B5221720;
-	Thu, 13 Feb 2025 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0FC26B0B5;
+	Thu, 13 Feb 2025 15:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyzFsK5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc1bstYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841B72222CD;
-	Thu, 13 Feb 2025 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB8826B0A4;
+	Thu, 13 Feb 2025 15:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458066; cv=none; b=DAyWrp44mCz13BcEnuQ/nelov/BrMOy/WZe8wEd83yomqVAJ/Ua11PVuTVXL7KZi99lEATohZGYWsx17dE9F/rdTSREUpNymtJw8deTuoW1i9j2F/yCm6cjZuP3ydR8pUSi8GlshdrEI057ATXT4pO0Dkk2P8WePiag8A+e+GXA=
+	t=1739459566; cv=none; b=HTCnP4UDCipgKOwRVaK076K0Z6IQdf2WHktCg8xu+2avPH+baOROIuHZ/DX0uL6ulthYqsPVIpl7vGIyVk9Ltm6yhmeNkpWDn/dkpbTjSFfHTj/Meqcz4g88Fzj5+zoaymHvdQMPc9blQ+xSxb/jMiArelecH3EEklyWwkoEcXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458066; c=relaxed/simple;
-	bh=vtrQwQHWExkI4Ovin7Ig09pZw4rThpajzhM9bTf/Ics=;
+	s=arc-20240116; t=1739459566; c=relaxed/simple;
+	bh=8udpk5oCl4tGLclQRG1wjrX+Q0Wgnp6Rd/Xe0ZWdDbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IR3u6OXnskOQ25iFKQQ3FWAbUlsb6CvGKJ8bXX/YbWutuTR2x4U8CEu+xeooUOrZxNnkSpACOWL1H/6JV2uHF7VKPa/Cf7sDja39AM/HePxN0JB03luRP3OJ4mXBRuiUml3CxiPow12BPh4KkfNXcJb8HD17wBrTCYXqmBz0rzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyzFsK5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854FAC4CED1;
-	Thu, 13 Feb 2025 14:47:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=boOd8qZBPrddWPjYbd8NiQ4Yw7DPiVspS4DG0QeQJvZk38xJ67QbK1zHPAaFPQxpSl0tGBHilrcQhpznRnlKYHiKmSwzhb03fFEmGYp140oUghC6YrGU2/9hJNqg8J0uzFGS6hK9cZjg3sLbcE00JaR0S/ThESeBpTEDaC2SUlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc1bstYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039E4C4CED1;
+	Thu, 13 Feb 2025 15:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458066;
-	bh=vtrQwQHWExkI4Ovin7Ig09pZw4rThpajzhM9bTf/Ics=;
+	s=korg; t=1739459565;
+	bh=8udpk5oCl4tGLclQRG1wjrX+Q0Wgnp6Rd/Xe0ZWdDbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyzFsK5SdsKVPe5yXcu1zQtW12DPBhL31BUII538c2Z7FQV6jTUaiPrUzt8rFUxU/
-	 avZ/S5lMWi3rWEGWqVHPLCC85on/JI86PXglfciGUpBkaLjckLXIcWVauYBsmaF8SK
-	 mc7HjCBKK/gVZtZeiAU7uSgWc/UKnYUut31VyiO4=
+	b=vc1bstYFYG7v5U8pxokCyYtFPQ+MEckNlA7Yj5vG7b9vJELlXJL1lnooV4g8BZ7Jh
+	 Vh7QHI2RxdBpo7vnXo0fs8ZIs1yayRzORgUZgqaiasLQbogS+zy/JOZD/HwnYYYWLX
+	 lrEhFu/SWUwixk1owdDG6mah3XvQ6CjZNdGNfun8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 291/422] arm64: dts: qcom: sm8650: Fix CDSP memory length
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.13 275/443] PCI: dwc: ep: Write BAR_MASK before iATU registers in pci_epc_set_bar()
 Date: Thu, 13 Feb 2025 15:27:20 +0100
-Message-ID: <20250213142447.774633452@linuxfoundation.org>
+Message-ID: <20250213142451.221250743@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit aca0053f051625a224c2e802a0e88755770819e4 upstream.
+commit 33a6938e0c3373f2d11f92d098f337668cd64fdd upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+The "DesignWare Cores PCI Express Controller Register Descriptions,
+Version 4.60a", section "1.21.70 IATU_LWR_TARGET_ADDR_OFF_INBOUND_i",
+fields LWR_TARGET_RW and LWR_TARGET_HW both state that:
+"Field size depends on log2(BAR_MASK+1) in BAR match mode."
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+I.e. only the upper bits are writable, and the number of writable bits is
+dependent on the configured BAR_MASK.
 
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+If we do not write the BAR_MASK before writing the iATU registers, we are
+relying the reset value of the BAR_MASK being larger than the requested
+BAR size (which is supplied in the struct pci_epf_bar which is passed to
+pci_epc_set_bar()). The reset value of the BAR_MASK is SoC dependent.
+
+Thus, if the struct pci_epf_bar requests a BAR size that is larger than the
+reset value of the BAR_MASK, the iATU will try to write to read-only bits,
+which will cause the iATU to end up redirecting to a physical address that
+is different from the address that was intended.
+
+Thus, we should always write the iATU registers after writing the BAR_MASK.
+
+Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
+Link: https://lore.kernel.org/r/20241213143301.4158431-9-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-11-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |   28 ++++++++++++------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -5483,7 +5483,7 @@
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci
+ 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
+ 		return -EINVAL;
  
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,sm8650-cdsp-pas";
--			reg = <0 0x32300000 0 0x1400000>;
-+			reg = <0x0 0x32300000 0x0 0x10000>;
+-	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+-
+-	if (!(flags & PCI_BASE_ADDRESS_SPACE))
+-		type = PCIE_ATU_TYPE_MEM;
+-	else
+-		type = PCIE_ATU_TYPE_IO;
+-
+-	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
+-	if (ret)
+-		return ret;
+-
+ 	if (ep->epf_bar[bar])
+-		return 0;
++		goto config_atu;
++
++	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
  
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
+@@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci
+ 		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
+ 	}
+ 
+-	ep->epf_bar[bar] = epf_bar;
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+ 
++config_atu:
++	if (!(flags & PCI_BASE_ADDRESS_SPACE))
++		type = PCIE_ATU_TYPE_MEM;
++	else
++		type = PCIE_ATU_TYPE_IO;
++
++	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
++	if (ret)
++		return ret;
++
++	ep->epf_bar[bar] = epf_bar;
++
+ 	return 0;
+ }
+ 
 
 
 
