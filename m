@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A21FA34705
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65B4A34546
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5B216C33A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 380017A4441
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF46B1422D8;
-	Thu, 13 Feb 2025 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7626626B0BB;
+	Thu, 13 Feb 2025 15:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4S4qxUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQZGB1jl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBEF14AD2D;
-	Thu, 13 Feb 2025 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31576645;
+	Thu, 13 Feb 2025 15:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460300; cv=none; b=swqsuNLrotTjZHRK2AdgIWNbeWQpFE1V52OqqvnOpXyakELQ1WVBmX4y02eY/qeQC4RuQ8TKbThzZ05Nnqc3HhapKgf43FyhvV9PDAyyGoblepz7PAJc8N+BNCnl8VdorOTi7FbgqeLpciDc8u/CZNEK2TBuC5nPthLzbZ08O48=
+	t=1739459609; cv=none; b=sYv6ROx+g8Gj5PpvF4L65jWO9/SWsqLPxcEHlz1PD+M06T4uWd/RpaP2CFJcBDLLIqo5UOgiH7pPYUL3uWSij3qlPQMOXYGuL8J3+wi830LMHyLFwHRImi4wTvOyPGnEoMgA/Av6x2yvQS5CplnMT1wORwXI8bcNGqcHLwfW3vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460300; c=relaxed/simple;
-	bh=T7xJOrfMyHp4AJHydJ8IkznvgbyD1JUFDJZr9LUU8Rg=;
+	s=arc-20240116; t=1739459609; c=relaxed/simple;
+	bh=BHu2OfgfBAqqlt3a2WRSOa+VV7BbmWeNZ9VpNvPMN28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLhMiLCIxV3Gx/7Ipqbi0KgXBUS7vlQP12zE6E0rhJ9V9tv3/XZwr4RDswsYL6ykK+ZV0rmWawlvHQSPwK9iyaKn4EyH6HozuugKujITNNtwzq3rikRjR2D3ZGV2oOcuPClbPfIrcMurd9QRUP7WnoHoDNSU0A/iDBs7J7XN8Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4S4qxUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C4BC4CED1;
-	Thu, 13 Feb 2025 15:24:59 +0000 (UTC)
+	 MIME-Version; b=Xv99z6ZzCGvN/U/eFSdf8Fi3jJBFAkFIsToSvJuGXFbZn4BP376AH2h1H+qLmYOTWRWoZR5VoOMdW2mJHgmttfkmYjrTLHgYtjculZRTsk02r4UPpdjGfqQA5eUKewSu/zQ3iTLAyfX2E457Enw5PIzc/6AFr6KaxZJ217kwZg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQZGB1jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F00C4CED1;
+	Thu, 13 Feb 2025 15:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460300;
-	bh=T7xJOrfMyHp4AJHydJ8IkznvgbyD1JUFDJZr9LUU8Rg=;
+	s=korg; t=1739459608;
+	bh=BHu2OfgfBAqqlt3a2WRSOa+VV7BbmWeNZ9VpNvPMN28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4S4qxUJJcDOWAZvoyVaki1UV2igJaReoAfmYi2CO/GcwE77LHv6zGOz9Lcd9jBi8
-	 dxODFNq8607CfJOQZLBOiWIvOGuiuEkWKcXZ5b/EVvTCDNMu6HsoY6oNpzi5hDJK1c
-	 txMzDIrwhUUAaKKAbQoknQhzRbiG8AVWbkj5hgt8=
+	b=OQZGB1jlRrS5Qe/tRTqTtKlSSaUE2OijrWTYwNd8XSwiUgJhNjdye7YIaUrsrNge7
+	 YOcyq8gX4hvQ5TTXjNLvGv/xQ3K8IH50HJMpJc6FkfaadiVd6Tz1EEZ1luzLfJ/jus
+	 1OrwjlvfXdb8HAluq2fCmdewlAGtgAg/s8MUumqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/273] net: bcmgenet: Correct overlaying of PHY and MAC Wake-on-LAN
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.13 272/443] s390/pci: Fix SR-IOV for PFs initially in standby
 Date: Thu, 13 Feb 2025 15:27:17 +0100
-Message-ID: <20250213142409.924459996@linuxfoundation.org>
+Message-ID: <20250213142451.105605373@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 46ded709232344b5750a852747a8881763c721ab ]
+commit dc287e4c9149ab54a5003b4d4da007818b5fda3d upstream.
 
-Some Wake-on-LAN modes such as WAKE_FILTER may only be supported by the MAC,
-while others might be only supported by the PHY. Make sure that the .get_wol()
-returns the union of both rather than only that of the PHY if the PHY supports
-Wake-on-LAN.
+Since commit 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs") PFs
+which are not initially configured but in standby are considered
+isolated. That is they create only a single function PCI domain. Due to
+the PCI domains being created on discovery, this means that even if they
+are configured later on, sibling PFs and their child VFs will not be
+added to their PCI domain breaking SR-IOV expectations.
 
-When disabling Wake-on-LAN, make sure that this is done at both the PHY
-and MAC level, rather than doing an early return from the PHY driver.
+The reason the referenced commit ignored standby PFs for the creation of
+multi-function PCI subhierarchies, was to work around a PCI domain
+renumbering scenario on reboot. The renumbering would occur after
+removing a previously in standby PF, whose domain number is used for its
+configured sibling PFs and their child VFs, but which itself remained in
+standby. When this is followed by a reboot, the sibling PF is used
+instead to determine the PCI domain number of it and its child VFs.
 
-Fixes: 7e400ff35cbe ("net: bcmgenet: Add support for PHY-based Wake-on-LAN")
-Fixes: 9ee09edc05f2 ("net: bcmgenet: Properly overlay PHY and MAC Wake-on-LAN capabilities")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250129231342.35013-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In principle it is not possible to know which standby PFs will be
+configured later and which may be removed. The PCI domain and root bus
+are pre-requisites for hotplug slots so the decision of which functions
+belong to which domain can not be postponed. With the renumbering
+occurring only in rare circumstances and being generally benign, accept
+it as an oddity and fix SR-IOV for initially standby PFs simply by
+allowing them to create PCI domains.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Fixes: 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet_wol.c   | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/s390/pci/pci_bus.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 0715ea5bf13ed..3b082114f2e53 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -41,9 +41,12 @@ void bcmgenet_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+--- a/arch/s390/pci/pci_bus.c
++++ b/arch/s390/pci/pci_bus.c
+@@ -171,7 +171,6 @@ void zpci_bus_scan_busses(void)
+ static bool zpci_bus_is_multifunction_root(struct zpci_dev *zdev)
  {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	struct device *kdev = &priv->pdev->dev;
-+	u32 phy_wolopts = 0;
- 
--	if (dev->phydev)
-+	if (dev->phydev) {
- 		phy_ethtool_get_wol(dev->phydev, wol);
-+		phy_wolopts = wol->wolopts;
-+	}
- 
- 	/* MAC is not wake-up capable, return what the PHY does */
- 	if (!device_can_wakeup(kdev))
-@@ -51,9 +54,14 @@ void bcmgenet_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- 
- 	/* Overlay MAC capabilities with that of the PHY queried before */
- 	wol->supported |= WAKE_MAGIC | WAKE_MAGICSECURE | WAKE_FILTER;
--	wol->wolopts = priv->wolopts;
--	memset(wol->sopass, 0, sizeof(wol->sopass));
-+	wol->wolopts |= priv->wolopts;
- 
-+	/* Return the PHY configured magic password */
-+	if (phy_wolopts & WAKE_MAGICSECURE)
-+		return;
-+
-+	/* Otherwise the MAC one */
-+	memset(wol->sopass, 0, sizeof(wol->sopass));
- 	if (wol->wolopts & WAKE_MAGICSECURE)
- 		memcpy(wol->sopass, priv->sopass, sizeof(priv->sopass));
+ 	return !s390_pci_no_rid && zdev->rid_available &&
+-		zpci_is_device_configured(zdev) &&
+ 		!zdev->vfn;
  }
-@@ -70,7 +78,7 @@ int bcmgenet_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- 	/* Try Wake-on-LAN from the PHY first */
- 	if (dev->phydev) {
- 		ret = phy_ethtool_set_wol(dev->phydev, wol);
--		if (ret != -EOPNOTSUPP)
-+		if (ret != -EOPNOTSUPP && wol->wolopts)
- 			return ret;
- 	}
  
--- 
-2.39.5
-
 
 
 
