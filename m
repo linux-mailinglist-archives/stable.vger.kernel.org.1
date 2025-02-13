@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB6A34745
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51D2A3454B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6689169293
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E5D97A15C7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AD214AD2D;
-	Thu, 13 Feb 2025 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBBD26B098;
+	Thu, 13 Feb 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VW/r7qgm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bvix5wic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5FE26B0B4;
-	Thu, 13 Feb 2025 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AED15684;
+	Thu, 13 Feb 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460441; cv=none; b=jcHzXwTfGUWDDpX3m4kGbGgCFDUMPyjn65PqA5aoZD8Am3XqXdMA5HQXvaR6fywwKkvMZgRK3ZszQaGWI8d9O9EbcRom2MXNboKgypJnlJUfWzgWjk2H8dIIiE0zUKS6TtDd2cdFsi9ve/F0bALiwJhZwUOkxoIVpQA/ZMorVCY=
+	t=1739459641; cv=none; b=dPF+VSkTXcgcTz2uyCmq7aYJoycY1m3uFOGLzluVeBrUpaGFemgcymy52ynb2BdKlmjSHQEWohpgmsda55Vzc/SZLu6asMQ3qIdFbVYJqz1l8n7CyGtGBSBTE+9CIoYJ5DNxWT54lhDM0Mcp3nIaeM8uzFDfWo/4gnjs7Yyt55o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460441; c=relaxed/simple;
-	bh=CXG2Z6WQhkYcndUwLHfuNvNUu4+CxTNv8GSHSmXplZ8=;
+	s=arc-20240116; t=1739459641; c=relaxed/simple;
+	bh=sy40xPdaBNsSlsY45CJ4djc/VYDM5rqfj5c/GD7h2+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7C3HkpWzUZiAvVBg1/TQl6Vqn/JH3V2RtQeqn1UQNyNOpvAEgGu1KD0+MqkMTCyU8JS6TqLiG3nSikl+hYN2S4BR4k9DxiE9zvi8iJ6WqRipNgSr/t1qtxk0OixD3gtbdWuyjLNqFSzuySkWFzSEY3y/N473yjGxQ0meQQRndI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VW/r7qgm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B33DC4CED1;
-	Thu, 13 Feb 2025 15:27:20 +0000 (UTC)
+	 MIME-Version; b=eBQmTUi6G3ncjlTzsLDJRHLMq1SdtSohoTBXBWhVoACQjIMfiXzHUUmZcLSNJC5FhrrciNcu6JHH3+jHKHABve22G782VsDd7eB4zJQLp+2IODH1djEzilpe/tUQXlCfk790BCCKhWuoAiP757is8gp7ID/wEtpuX4n/G0gK1F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bvix5wic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9D6C4CED1;
+	Thu, 13 Feb 2025 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460441;
-	bh=CXG2Z6WQhkYcndUwLHfuNvNUu4+CxTNv8GSHSmXplZ8=;
+	s=korg; t=1739459641;
+	bh=sy40xPdaBNsSlsY45CJ4djc/VYDM5rqfj5c/GD7h2+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VW/r7qgmUrR2wk+7JESGqRcydSE6423Y3WxlRmNwL86KWtlVPl5UmUwtfznBOlfOQ
-	 z0IYRQzDyv+2PWQaCFkO2DADGkMfAqSZy3zhUzgXMUiQUALljMibsKXU2zXKVHB7lH
-	 ykiWdxgS0/gQ4s+IEb6f/GAM9SX1GJ/Bu/eDlTVg=
+	b=Bvix5wicrMVmhsD0VJwHDt7oh5Q7PeA+lHgEhKbcWYRLVdpkWqY5yfXSz+6qE5Aba
+	 aJ7kD1SViSrDoBESEoJcn9wFtBQNDvsxs69+eKQQ+Pl3JQLURETgKxY2NoiAQz0HtC
+	 VEPjIpp0oVd50yD10IDb45jfp6K/o6/DQFvl6szE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 114/273] clk: mediatek: mt2701-vdec: fix conversion to mtk_clk_simple_probe
-Date: Thu, 13 Feb 2025 15:28:06 +0100
-Message-ID: <20250213142411.849259198@linuxfoundation.org>
+	stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 322/443] arm64: dts: qcom: sm8550: correct MDSS interconnects
+Date: Thu, 13 Feb 2025 15:28:07 +0100
+Message-ID: <20250213142453.046029165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 7c8746126a4e256fcf1af9174ee7d92cc3f3bc31 upstream.
+commit b8591df49cde459e3b84cdc0517d7bf92053d244 upstream.
 
-Commit 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to
-simplify driver") broke DT bindings as the highest index was reduced by
-1 because the id count starts from 1 and not from 0.
+SM8550 lists two interconnects for the display subsystem, mdp0-mem
+(between MDP and LLCC) and mdp1-mem (between LLCC and EBI, memory).
+The second interconnect is a misuse. mdpN-mem paths should be used for
+several outboud MDP interconnects rather than the path between LLCC and
+memory. This kind of misuse can result in bandwidth underflows, possibly
+degrading picture quality as the required memory bandwidth is divided
+between all mdpN-mem paths (and LLCC-EBI should not be a part of such
+division).
 
-Fix this, like for other drivers which had the same issue, by adding a
-dummy clk at index 0.
+Drop the second path and use direct MDP-EBI path for mdp0-mem until we
+support separate MDP-LLCC and LLCC-EBI paths.
 
-Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/b126a5577f3667ef19b1b5feea5e70174084fb03.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: d7da51db5b81 ("arm64: dts: qcom: sm8550: add display hardware devices")
+Cc: stable@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241026-fix-sm8x50-mdp-icc-v2-1-fd8ddf755acc@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-vdec.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/mediatek/clk-mt2701-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt2701-vdec.c
-@@ -31,6 +31,7 @@ static const struct mtk_gate_regs vdec1_
- 	GATE_MTK(_id, _name, _parent, &vdec1_cg_regs, _shift, &mtk_clk_gate_ops_setclr_inv)
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3003,9 +3003,8 @@
  
- static const struct mtk_gate vdec_clks[] = {
-+	GATE_DUMMY(CLK_DUMMY, "vdec_dummy"),
- 	GATE_VDEC0(CLK_VDEC_CKGEN, "vdec_cken", "vdec_sel", 0),
- 	GATE_VDEC1(CLK_VDEC_LARB, "vdec_larb_cken", "mm_sel", 0),
- };
+ 			power-domains = <&dispcc MDSS_GDSC>;
+ 
+-			interconnects = <&mmss_noc MASTER_MDP 0 &gem_noc SLAVE_LLCC 0>,
+-					<&mc_virt MASTER_LLCC 0 &mc_virt SLAVE_EBI1 0>;
+-			interconnect-names = "mdp0-mem", "mdp1-mem";
++			interconnects = <&mmss_noc MASTER_MDP 0 &mc_virt SLAVE_EBI1 0>;
++			interconnect-names = "mdp0-mem";
+ 
+ 			iommus = <&apps_smmu 0x1c00 0x2>;
+ 
 
 
 
