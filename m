@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA94A345D6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DBAA34352
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EBCB3B04CE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180AE16990A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE1818858A;
-	Thu, 13 Feb 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E847D211468;
+	Thu, 13 Feb 2025 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHJDaoXd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtUouAuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3834416BE17;
-	Thu, 13 Feb 2025 15:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39D938389;
+	Thu, 13 Feb 2025 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459256; cv=none; b=PeifXJUz2r3vJHqrOdeRntKHOyvXxuMsm9ztKX6z3ZOFM7n2NX+W9pNnm1PGlEu58SRaJvjx56dojVEwh3Qe/yApWmBiE54+gk+pPLYEJoqqeQwRan/mZhwgFWJfiBa3+sVwl+w7L27FLTBIKssF+babTxUFDt/VEPYPMgeRV/o=
+	t=1739457818; cv=none; b=t59yjfnqaH1MU5BqaMZsnjzP0KSTuJ4IpadsJs3z1DYqPkso5Rosiq1SdxuCV2YIml6Ic6Hfrr3CtuwsG+1Y/SikDzSMNnx/MHwLCXgaY7UucWp6NXFAPtKnAcw0+0gxRn2swq02YEzUeBKgB+VKMPi9kvTgRRK3D6rQvYOfZRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459256; c=relaxed/simple;
-	bh=dQ9xL16ToerwSm2K6mAahXYESX0VCnnRI0pYG7wFv1s=;
+	s=arc-20240116; t=1739457818; c=relaxed/simple;
+	bh=fOFD35LvDtf0NLUdNe9p+0NBa9xOMhJ5VcXzFAwVXoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7ZvnpMmchkIKUkFOpMJ/xi8P9wj0Opg+EUylgIvm5owFilVx+TDqhA5gJ9N5veU+hX5y8L6wZsFXvUYwk19bxqiDyryC5vOEROwZ9q2uh10k+dlFfolIO6jykVxV/RHjexc9vlDB/wc0MyRyo7y3bXPJfr0JJ5Avx14Wc7TxD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHJDaoXd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2FCC4CED1;
-	Thu, 13 Feb 2025 15:07:35 +0000 (UTC)
+	 MIME-Version; b=GRBaX8UzQ/iRNcBmz1PoROf7dvpX6NAI7l6PWeKByvF5F/v6WGskFJeydwwobRkxfbXUn2Y913mOEoXZIczKe8oGJ0a6QyKIHxGTXewtyI9nMXFJ4FoFr3uX1LNKMdvVLPsd9r6ykyoqHp5GJ8NezYOqbG2NdPMb8DM7UitBPG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtUouAuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BE1C4CED1;
+	Thu, 13 Feb 2025 14:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459255;
-	bh=dQ9xL16ToerwSm2K6mAahXYESX0VCnnRI0pYG7wFv1s=;
+	s=korg; t=1739457818;
+	bh=fOFD35LvDtf0NLUdNe9p+0NBa9xOMhJ5VcXzFAwVXoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHJDaoXdJ7mLfPOTH+CysisPEEIC4P4oZ+g+aFK3N/8Q2kA5hX0VDEjnVypu8Ttb3
-	 kN22aT8pL9WnRuw3yOwBQvPPbI0w33qDCreRAe/a73YpmfPF+kkh/tgfqUqh0DBeo/
-	 fFT4vms+FwYLaoBGVV5sMHCku/5yTa6G+JeiKp04=
+	b=qtUouAuQzTgXBYHaBtS6+rwDlm7SovWJg1qR6aiDcIHBPlVZ9Hbn2cGdj3LlLmy3M
+	 pEGqxYoT0gIi7waV9zvSczK5f6hCmHEPCaRoJW+157wm5/kw8cDjaeK7hgEwJ1Ztgf
+	 2wxjq2AcPkcl1wMVTPoiKQXlWvJ+fRRueeo4LDfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.13 204/443] clk: mediatek: mt2701-vdec: fix conversion to mtk_clk_simple_probe
-Date: Thu, 13 Feb 2025 15:26:09 +0100
-Message-ID: <20250213142448.484078972@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 221/422] arm64: dts: qcom: x1e78100-lenovo-thinkpad-t14s: Fix USB QMP PHY supplies
+Date: Thu, 13 Feb 2025 15:26:10 +0100
+Message-ID: <20250213142445.065575473@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 7c8746126a4e256fcf1af9174ee7d92cc3f3bc31 upstream.
+commit 6efc01b75f819a2988aa9392f93a4d6501871525 upstream.
 
-Commit 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to
-simplify driver") broke DT bindings as the highest index was reduced by
-1 because the id count starts from 1 and not from 0.
+On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
+(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
+are actually powered by &vreg_l2j_1p2.
 
-Fix this, like for other drivers which had the same issue, by adding a
-dummy clk at index 0.
+Since x1e78100-lenovo-thinkpad-t14s mostly just mirrors the power supplies
+from the x1e80100-crd device tree, assume that the fix also applies here.
 
-Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/b126a5577f3667ef19b1b5feea5e70174084fb03.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 7d1cbe2f4985 ("arm64: dts: qcom: Add X1E78100 ThinkPad T14s Gen 6")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-2-0adda5d30bbd@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-vdec.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/mediatek/clk-mt2701-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt2701-vdec.c
-@@ -31,6 +31,7 @@ static const struct mtk_gate_regs vdec1_
- 	GATE_MTK(_id, _name, _parent, &vdec1_cg_regs, _shift, &mtk_clk_gate_ops_setclr_inv)
- 
- static const struct mtk_gate vdec_clks[] = {
-+	GATE_DUMMY(CLK_DUMMY, "vdec_dummy"),
- 	GATE_VDEC0(CLK_VDEC_CKGEN, "vdec_cken", "vdec_sel", 0),
- 	GATE_VDEC1(CLK_VDEC_LARB, "vdec_larb_cken", "mm_sel", 0),
+--- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
++++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+@@ -754,7 +754,7 @@
  };
+ 
+ &usb_1_ss0_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l1j_0p8>;
+ 
+ 	status = "okay";
+@@ -786,7 +786,7 @@
+ };
+ 
+ &usb_1_ss1_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
 
 
 
