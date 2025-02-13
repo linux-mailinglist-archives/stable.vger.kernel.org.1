@@ -1,219 +1,211 @@
-Return-Path: <stable+bounces-115090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125B0A33605
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 04:20:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF51A3361A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 04:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D35D3A213E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 03:20:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0480D3A2AC2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 03:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52122204C2B;
-	Thu, 13 Feb 2025 03:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26ED12045B8;
+	Thu, 13 Feb 2025 03:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="de0A3Qf4"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="VNj1g6DR";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="K6aQ95jH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B46E2046BA;
-	Thu, 13 Feb 2025 03:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739416835; cv=none; b=hk42vtcuvpuY0rKzuzb70PhslWcwT1PYchUjzTDkOJgP3BTaNRKRJ9/TOO+2VUhnn6rh9Pl8d3hzgMYvTU2AJtKgpj29MigM9qIYT8WUmLMDnahYoCWbI0vdPntQyx3auOF7BsWFrmXt19yt/MkzOpHiprbL6c08OmjE0gA9Wc4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739416835; c=relaxed/simple;
-	bh=ZZtTGc97rYuezRwymIH2Hj30+2Ig+dElar5rFqwGxTY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=twpTK2Jk92cPiD9h2EljKG+lDNOFNK3vCoKBwF+Cv7mwjvOyn4YtbJvALFQN3keOuykqm6aUqNnwq0vGXt81P0NRbsykwmWeZ8LqB7KiF8HKqcKG4lNjTjttAII26LTUxOV7mcJA7Y9pIT/xS8zJ5nM5ipBURYUqcV37TN6jWW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=de0A3Qf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740E5C4CEE8;
-	Thu, 13 Feb 2025 03:20:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739416834;
-	bh=ZZtTGc97rYuezRwymIH2Hj30+2Ig+dElar5rFqwGxTY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=de0A3Qf4Xj1Q3wrFa/BONbIsxubNb1elroOVkQnysNxvvngC1gwLSAwNduq3fxEsO
-	 WJO3khkyOZmAG6oS6S6iBGQziE4y9RxfWaK7cKg0B0Rtno6Lbyvg2Zv1Y8zefVLoKV
-	 Rb+k4i+vdfKUA9nFFDp8yGJfMQMz6Ynjmj8tBUY+aIn0qRDAXAMsPi+7HsLkVP9GQf
-	 wtEiKMqv5JvNoy4wtx6KKXs4pHXagoHrUVLEbz7gth3Tr72Wa+2MfvRJS6rbBCSIY6
-	 0yT7r7RpM8ZpgnR5tXWZzcmuE9ZwFgblME5vUs4v+fdsZCEDppkdVNpjsB8L6O+lIG
-	 Z1Sn7COePJGVg==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab7c07e8b9bso78174766b.1;
-        Wed, 12 Feb 2025 19:20:34 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUhdXb6LRS8ARxReDfKHdoZ31JYDvQSqZsbgH9Do+SserfOkrOaayj3iarbc9ouS8eu5+okdk1c@vger.kernel.org, AJvYcCVltihLM+yYDAGIKQnYAbZ4mgCoU4c4tr7kdgCdq5XbW3heAsr5T8JRjARc7Dkh6bGznXCBG56sKw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfexoZN7Vvth7NseeTq86wC3Ebm5C6l4iegGlZS3dkKsT66tw2
-	ivTHEhJRCIdzguZ4D6lxz9xQLeInc+HN9aKGbpHDtcekdSnDd6wErp4sr4xQ8tlu2lhKXIrpQHS
-	F1OIRAXFPM9bFvtsPa3OVROIM0OE=
-X-Google-Smtp-Source: AGHT+IFmDko2YyfGXLm5N7dpgFRel/cJF8hEyY4/JBVR8gKi9tylitcgLg0rIQPxEOtT+fAIMByFWZ5LtW5BhSRGpSI=
-X-Received: by 2002:a05:6402:4024:b0:5d0:efaf:fb73 with SMTP id
- 4fb4d7f45d1cf-5deaddc10acmr5634218a12.15.1739416832930; Wed, 12 Feb 2025
- 19:20:32 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54779476;
+	Thu, 13 Feb 2025 03:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.61.82.184
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739417649; cv=fail; b=KZC9jRnQSlQ3IVDPNca024Vyv1+AQuY6/MS4xUr06hJvVZ7JZ1phAGELkKOOtIbIH4yav/secKl73sjIyO8SH/xQdMlsSURd6xwSjoauCPCLbfl7BG+vK1r1UH4n4yE6UqAPrGyhWtTBpV5TgNJ5T7Lg2V4baKrbC6sQSzG315I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739417649; c=relaxed/simple;
+	bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DdsO8yPyBLFzkDhjCzARx2I9HOe+ZAGWGQpaffmb6f2/vvnijPYfKkz+WCyIaMQeMLJ32HaKgNLoI2MXdINUWO8bwDzTqIxrqh6+IsiPz+wLtvHqYNp0/4aC4gPDG3rNxMllA+tYP2SaDjcewvw3eFQAlIgX6NYD9fxKQdfIc4U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=VNj1g6DR; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=K6aQ95jH; arc=fail smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 5bd25158e9bb11efbd192953cf12861f-20250213
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+	b=VNj1g6DRrd9yW8ny4k3HHO2I1rv9+FMrwOIldChb3e0kn+qV5zPPI2U+rGq9h7k8ctOmPZI/VStwoWcWoDFTDjOrKg5P2smsC/vw9ZUPduo8j+MPjFOBKbmEP0R226wsLoHuOQVpL5UKcS/ggttzAXxiO83TBz1+aC11rrxLtRY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:0a4890a2-252a-4900-b737-b0d6a1362e86,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:60aa074,CLOUDID:700c64a1-97df-4c26-9c83-d31de0c9db26,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102,TC:nil,Content:0|50,EDM
+	:-3,IP:nil,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 5bd25158e9bb11efbd192953cf12861f-20250213
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1998435185; Thu, 13 Feb 2025 11:33:58 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 13 Feb 2025 11:33:56 +0800
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Thu, 13 Feb 2025 11:33:56 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N9LwaNq18SSrOMHrmkyqjRPbF8yMnrXzHBrrUA+LXOMUD+/8K0JBOAVX0ztY0vwUH4PkwbiPsiaJfdcJkZObhwDf8n+fOv3UnS1D8xspfg/daWePLhF4C17vZQSvynlGZc+HMgETMJXF72/ZxkQWIidQJ992mNl1EpYO6xSpkQ7nSVlfnRxGG7DuEotQeF092EYVqCGVeYedxAatrtH2EVnL9mQsh0O8zfmKxd27elkKUiavzARwSAagAf6sWH6fsDBqSH9koPL9/Fp1s730fehcbGEpYLX14xoNB3ybDfLcxBONca5BdyfNTaLKJ7gEsG/Lcng5Hbzvn+mZNJCmIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+ b=d4eZT2TPJ8T/qgPUHJe4GE3Rh6lc7QqfY2qCo7dYL1Z8+q018/cHQVB3/w0lJiDOvkQmZXc+JKWSjuMatHTnK/rREiZNOHNRVY78gTW+ooznJTnm3Uncs23FSjkyIDERd6Zhsh6RX5h8VitnauIFnecxQ/553F3a5uv+A9ogZRp2FMHf01L2oHAeWO+YDgVAIptA48c3JM9ptF0ddOcyW6w7sH7Rgk8IHtk2IoUeK+9rj8/U/1aut2hB6DqVZi3/ZY1NY7358bD98GCPxLZbktaJml2gdqJby40Ep2/gVEPmGb+7/DtRFHK7SWFxIUQSIScNtVuArC+QOPxWyReqfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2vl5wyIa58jGDjhXuyEyy6FhQjgtJT+LSGu5J02zB3s=;
+ b=K6aQ95jHvvT6/I/q1OJ+ovndQq/nNW/VwTFt3aSNWXx/cyg98pGKbC09WgVk30YkgASw6sM071e8nLgLkUBw+7mnRTUKClWaxK4qZrv0uS3g4EOwYIepLt25Mt4dZ0syoccVYgKcGg6000lT6z8NZuN7zBYquNxkpXuO5rDElJM=
+Received: from SI2PR03MB5322.apcprd03.prod.outlook.com (2603:1096:4:ef::8) by
+ TYZPR03MB7667.apcprd03.prod.outlook.com (2603:1096:400:428::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Thu, 13 Feb
+ 2025 03:33:55 +0000
+Received: from SI2PR03MB5322.apcprd03.prod.outlook.com
+ ([fe80::4f8e:6e62:b8a5:5741]) by SI2PR03MB5322.apcprd03.prod.outlook.com
+ ([fe80::4f8e:6e62:b8a5:5741%3]) with mapi id 15.20.8422.015; Thu, 13 Feb 2025
+ 03:33:55 +0000
+From: =?utf-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
+	<Mingyen.Hsieh@mediatek.com>
+To: =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>,
+	"cjorden@gmail.com" <cjorden@gmail.com>, "lorenzo@kernel.org"
+	<lorenzo@kernel.org>, Ryder Lee <Ryder.Lee@mediatek.com>, "nbd@nbd.name"
+	<nbd@nbd.name>, "kvalo@kernel.org" <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Sean Wang
+	<Sean.Wang@mediatek.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: =?utf-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
+	=?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
+Subject: Re: [Stable Regression Bisected] Linux 6.13.2 breaks mt7925e
+Thread-Topic: [Stable Regression Bisected] Linux 6.13.2 breaks mt7925e
+Thread-Index: AQHbfcW5sdvJd6O7UEKgP0NQyp344rNElKoA
+Date: Thu, 13 Feb 2025 03:33:55 +0000
+Message-ID: <7280c6509a9c27b6d7813413b10683f1f6c6e6ca.camel@mediatek.com>
+References: <CABD8wQ=pU9Yc45WE07FGO40MUBf+BSZFGcoO1ff7NxC1cXzx-A@mail.gmail.com>
+In-Reply-To: <CABD8wQ=pU9Yc45WE07FGO40MUBf+BSZFGcoO1ff7NxC1cXzx-A@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR03MB5322:EE_|TYZPR03MB7667:EE_
+x-ms-office365-filtering-correlation-id: 04c80a4a-9e95-4f92-07da-08dd4bdf3e4d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?QTRGNHFlWU90dzZJak1nUlAwdWhiOXEzMHZzSGdaMkwxTWFOaHlnKzZzQ0NK?=
+ =?utf-8?B?USs3MXlXazBpYlp0bU1EYW9xUFB4L2h5am5KR3FSM1kzN2NxaHBNZjAvR2Jv?=
+ =?utf-8?B?UTIrZFlpQ0NCcWlyMXR4ZUt0K1JWcUlrWUJteTNQWjh4RW9Bam81QVprbVRl?=
+ =?utf-8?B?NFZ5UUo5cWF6SnhXUGdVWENzZzJIb0tUNVpJbzdKb1d6MXZpRm5tWjVYR1Rx?=
+ =?utf-8?B?SkFvSDE1THgxYU1Qb3hYSWs3Rm12dWxMb2w2U0VVemw2a3JLMXhxOWF6eEVs?=
+ =?utf-8?B?TnJsbzNLS0hQalpxVlV3WXhCd2NwQnkrUGVIM1lPTnJETVJldnFEOGR0UzRE?=
+ =?utf-8?B?QjQyUEVmYjRJZ0dSSTFLWHZhWUFxYWJJV0t0TjV3cnk4S2JqeXYwSTB6Skkx?=
+ =?utf-8?B?RE9mUEpNRFloWmI5M0llQ2pWelVKZHZnNForMS8rYWZ1RkVBUFdPbXpWRC9l?=
+ =?utf-8?B?ZjJmcCtRekFtNDl6VEVnS2w2cFJXK1MxTUkra2VSU0hDOEw4N2UzbEI0MEFH?=
+ =?utf-8?B?ZGphK05nWVc5cDVmMWFibC94WCt6SnFpTnhJL0xSUy9lYjYxeU1abUNrQS9n?=
+ =?utf-8?B?VlVZbkovbkhqV2N0VU9kYjB0OTFXODRDZ0UxbVREdGpTZHI2TlQxNVFBSFRa?=
+ =?utf-8?B?NVZrUzJSZjFTcXAvbGl0ZTdQaS9HaWJZUkJYelhHTTZxb2dOWnh6bmg2MW45?=
+ =?utf-8?B?RHVHM29XZzBMdXRLWmhMVEFld1VuUlMxdWYxZnBLUGtUb3JiNGpvSUVTN3p1?=
+ =?utf-8?B?R1ZhU0xlYksxRlNWYkdMYVJjQTdBSkRiYVhJZGJFVkNKZVlGUzV3bFhhOXFj?=
+ =?utf-8?B?WjRMZHlWWGVLZnJxVVluQzd6WHo3L2dSUU1vZnJKSUtYdDdwY1FKZW85VGVR?=
+ =?utf-8?B?dG1hUFJuUXMrTklxYUNuNEpJTjlOUlJYZEZ3SVhib09tWENJK0pndE9xZjFQ?=
+ =?utf-8?B?TFltQU8vOURRTXBrbVFtczdMMFlOUTd4UDlFTDJYYkdCV29teXl5VlA4bjF5?=
+ =?utf-8?B?NE1oZDdodmxzck40WnZPeU94dFY4cjJPV1BSOE9reENwM1d1a2hWOGxBOEdo?=
+ =?utf-8?B?aUtyS3NjWUNYbE9XV09MM1JKcGI4NVhKQSszSGJzMEo2a1ZFbTlJSzdqVHZH?=
+ =?utf-8?B?RFZPUTQrRXl3VDlQYnVmdW55ZkpCNkNVN1FkbGxmTkowU2Q1VHA0dlRpMzRl?=
+ =?utf-8?B?cXIyd1F6M3YzUUlUOHN3amVXQ3NwZEZRWnk5WGJjbWNLZVYwWDBoMGw1K2tz?=
+ =?utf-8?B?MHhQOUxXaCtkSVNaU2IxS3B5VytTbjlEYllSTlhvR3YrVEV1dXVFdko4UWlj?=
+ =?utf-8?B?Zm00TnYzVEVkdEUzT0ptSDBGMmQ5aTVIbnZmTjdQYnFCcmZvSzBTanhIdmVW?=
+ =?utf-8?B?b1R5UE9jTHpTc25WT0NqVkdMem1ZV2FkWVN3YWVod21JOWxPVEdrS1VEejM0?=
+ =?utf-8?B?T2l1MFpCajArT2NMZTRVUW1DbVYxVHAvYUMrd2hVZU5TL2JuaXhOeG5ZUk5U?=
+ =?utf-8?B?L0hCdkJSM3M2MXRpL1NyUHNoa2JmQ21HYmJSR3AwQUp6REtUVlR5UlZaVzBH?=
+ =?utf-8?B?WFNWeThpMG8rWVVwUitnZHFZQzVwVFdYdGNIUTV5bVlvaHcvT3JZNkNzdVVp?=
+ =?utf-8?B?RlhVVFdaRHllZHJkbFlmR2JLQk1vSHBCUExMOWx2NGxYOUpNMjNEK0V5YU93?=
+ =?utf-8?B?M1pQRldOdzBDdjNoSE9uai9kTzhqL3RJcDJ3Z2UyL0lYRjRoWWNDOXFWc0I3?=
+ =?utf-8?B?ZlhDWlVaQ1BIdWNHUnk3bWRGM1NyTUwxWlBZK2hzOG9KRVVVK2k1bmpnem1w?=
+ =?utf-8?B?b0JPV29XdGVEenJCSzJsdjliMVpCd1pSMTdQcGVkMVgycCtUMlE5VVFqYkJU?=
+ =?utf-8?B?Y0FncUlOS29yY0dkY3ptNSs5T1NlVmplMml1bCtFdzUrSHg0RUVZTXRPeUdC?=
+ =?utf-8?Q?HTppCcY9lbVkDqHGaKt1s1O816JozrlI?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR03MB5322.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MUVySm5pRnY1Z1FZSVlWR1VLTG1JNEFRaDVkUkg3dHBxR3pMWDM2RVlkazcz?=
+ =?utf-8?B?N3BHMVo4b2NOd2hIZEdNNEI2TDI0eW9Ib0RwaHZnUzdISGpIOGhNNytjWitp?=
+ =?utf-8?B?SWRXM0lpZXo3bXRqZ0JCd3pPUnlrUFpJV2pNbmd3R2swTHZqNlJ3cUlyWHpZ?=
+ =?utf-8?B?RXFjcU81cWNIRlg5NUkyK2FyOStEQytVZTRrUndJeWs0UTlCdUtBRWVSOS90?=
+ =?utf-8?B?NnBmTnAwT2pDc1BxcWpKc0Z3NWRDbThQeHJ1MytDQXZLS001b3g5YkZaTDV1?=
+ =?utf-8?B?TDNnVld6cnZpTGlxSG5zRURKSTUzZXBES0NjNmF6a0gwZ0l0cnVlSWVwMkx6?=
+ =?utf-8?B?Mm5hS3FSdnVXbHQ0Tmx1MHJwMkxod3RuYk15eU5LK0tXU0wzWENscmdrK25n?=
+ =?utf-8?B?YVZzRi8xT1NwcWdhazlqRENNb0R3T2RNa3pobG5qWjZOV2ZHWVRSejhUcTgy?=
+ =?utf-8?B?MFVhcE4zS0JKRzFySHJBcTY0b0tDMENpQWpMOTl1Sllhb1p2L1czU2tOVi9B?=
+ =?utf-8?B?V1FJNkgyOWRPcE12NldUbFI5MFJkcFNLWXFRTkFPaDJERDhLcFhhQ2ZKQjht?=
+ =?utf-8?B?VUhQRG1WZnErakxNekM3SnAvaks3anJ3OFJRdjhRR1gxWklPQ3JFSkFkVE9D?=
+ =?utf-8?B?RHZVMTIyNllTSW91ekJ4ZWx0ZEgzdGFDcWY0QzErdXpHWi9hUjJuZkwzRnU1?=
+ =?utf-8?B?NE9uMnE3TnllME9BVC8rSWV5OHhnUndHOThIdytqQXhXTlFabDFKV1lJUmd3?=
+ =?utf-8?B?d3Q5UEhMNCtCb0t4SllyL2ZYU0E2a1lUY1ovbWZVby8vOVZ3dC9nMVlmeEdy?=
+ =?utf-8?B?eUNMZEZ2YW5UaEV4TzNZUGx0eHRPTmlVMVY5MEs5UnNZaC9VTUNITW9WVzF5?=
+ =?utf-8?B?SXFhUHpzSmNQKzA5NVRsK29mc3pSYVJMMkZwaS9wMU1XcU5nd0NaaG9jcnl6?=
+ =?utf-8?B?dzRHb1ZTYzdmR045ZEExeWJSTlNZQzV1VnJqYUgycHZRQ3NpM0R6ekV2dk1u?=
+ =?utf-8?B?alREVWY2QWRzUkZFdnNiOUM3bXlkZnpUTGFsc25pcE5WWFczS0tQRmZmazUw?=
+ =?utf-8?B?Rm9FUHRvTkg0blJoblVNMThibVJscW44dS85ek43L3hhaW9DSHJ6TXhwb29o?=
+ =?utf-8?B?Z2NVMHQ0N0JwZHQ4dHZzdFdpOVAxcWQ3ZEhrdWJaRVZkUFQ0bjBJVDU0NG4x?=
+ =?utf-8?B?OUFuWmdzSVRyVHNsVmVrcnVFR09xRHZTcjlkVUg3ZisyYit5d1drVERTVldV?=
+ =?utf-8?B?UkVVKzZxNjF5eUYrT2ROcDR5aDZhS2pEK1YycEgyQ1k0SnpoZkhSNUpBL3U2?=
+ =?utf-8?B?YWtINjVnbFJ6UDJSanp4QU1LRk0vZnZsZThLQjJ4QlNBQzdyMXN6MDJ4ZzBP?=
+ =?utf-8?B?QzdtM3pFaFppTHp5QkFFUmxlT28vMkhEY1N3WlM4V1BDUVBoTDBXWVJlNkxh?=
+ =?utf-8?B?c3UwMHZBWkVHc1F5d3VySWh3NkVLamwrRlhqRDRQUVVPSnFSaWNHcTFXWGRR?=
+ =?utf-8?B?ZTVaQldIeGNIdU5vVXdwYSt4UUlkamd5c3ZWNVhLZjRsRGtlbGNaUUpyWHdX?=
+ =?utf-8?B?VDViRWVBL2ZWSFNoMmhIMkd3YUtNcDJZakg4YUZJTXllYVBCSk5wWUZhSXM0?=
+ =?utf-8?B?cGloQnEzWHBVem5iT2wybnpYWjRCclJ6SWh5ckMwOU1DYTlGZUhLVEdTVWZS?=
+ =?utf-8?B?N2tSdjVrd3ZQWUpQdmxmWCtET0U3TlAvN2tOY2ZmQVBLL3lXbGZ3aGlKWFZH?=
+ =?utf-8?B?c1F6Qjd3TDVzQlhpN1o5U3BYOTgrM2ZESFl0dnBqMFFOM1FNa2RkSmF1OXZn?=
+ =?utf-8?B?dHBEVXhNRG9abVdhOE82WFJFWlUxQndwOWRlYmRDMVNmZDNyMTZ4OW5KTDUv?=
+ =?utf-8?B?VkpEMWJLZmZiT0ZTY2twbGxCMVg1c0htTnNOL2JIR2pTRWpTZVJycGtyZkhJ?=
+ =?utf-8?B?S0dVQTFGOW9QMkcwRUZpTDlTbUtPNlFBQlJXR1lENjJIT2xNMnYyMFA0c2gw?=
+ =?utf-8?B?TnlKZE5KQW00d0tUVC96U0RKRkQrLzlMU0tvUkhUY3IzbHJhSGJHZmxXeUln?=
+ =?utf-8?B?UEhHank3U0ltS2dTMnY0TEVmRkpPQ2ZUK0dTRSsvVDk3L0c0dFVjWXhNeE1X?=
+ =?utf-8?B?Qm1NSUdNRUhOUFBKZXhWbGFXVHJiTDFPdFZkUnZQR0dGNkN2dWFQZ0JIUUdu?=
+ =?utf-8?B?R2c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <59424A367D63FF4799F1F54F3EF8A9FC@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212141648.599661-1-chenhuacai@loongson.cn> <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
-In-Reply-To: <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 13 Feb 2025 11:20:22 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
-X-Gm-Features: AWEUYZkPCPR1x9EMHB3sgDzhdPaQ_MLs8QhmK6dDB4tI1CFXaY4nt5-W7kb1leg
-Message-ID: <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
-Subject: Re: [PATCH] mm/slab: Initialise random_kmalloc_seed after initcalls
-To: "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	linux-pm@vger.kernel.org, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
-	Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org, 
-	Yuli Wang <wangyuli@uniontech.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Pekka Enberg <penberg@kernel.org>, 
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR03MB5322.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04c80a4a-9e95-4f92-07da-08dd4bdf3e4d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2025 03:33:55.1353
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MF5qbKYHkct34PNWEF8RybaA7XLVXo3qDCF8zb8m5zYkCLGBi0KXJWZa5RwWttq36Bo2peZACxg0FwO8e3GbYrZX/4JfXVhpkuiLknAJ9Lg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB7667
 
-Hi, Harry,
-
-On Wed, Feb 12, 2025 at 11:39=E2=80=AFPM Harry (Hyeonggon) Yoo
-<42.hyeyoo@gmail.com> wrote:
->
-> On Wed, Feb 12, 2025 at 11:17=E2=80=AFPM Huacai Chen <chenhuacai@loongson=
-.cn> wrote:
-> >
-> > Hibernation assumes the memory layout after resume be the same as that
-> > before sleep, but CONFIG_RANDOM_KMALLOC_CACHES breaks this assumption.
->
-> [Let's also Cc SLAB ALLOCATOR folks in MAINTAINERS file]
->
-> Could you please elaborate what do you mean by
-> hibernation assumes 'the memory layout' after resume be the same as that
-> before sleep?
->
-> I don't understand how updating random_kmalloc_seed breaks resuming from
-> hibernation. Changing random_kmalloc_seed affects which kmalloc caches
-> newly allocated objects are from, but it should not affect the objects th=
-at are
-> already allocated (before hibernation).
-When resuming, the booting kernel should switch to the target kernel,
-if the address of switch code (from the booting kernel) is the
-effective data of the target kernel, then the switch code may be
-overwritten.
-
-For LoongArch there is an additional problem: the regular kernel
-function uses absolute address to call exception handlers, this means
-the code calls to exception handlers should at the same address for
-booting kernel and target kernel.
-
->
-> > At least on LoongArch and ARM64 we observed failures of resuming from
-> > hibernation (on LoongArch non-boot CPUs fail to bringup, on ARM64 some
-> > devices are unusable).
->
-> Did you have any chance to reproduce it on x86_64?
-I haven't reproduce on x86_64, but I have heard that x86_32 has problems.
-
->
-> > software_resume_initcall(), the function which resume the target kernel
-> > is a initcall function. So, move the random_kmalloc_seed initialisation
-> > after all initcalls.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 3c6152940584290668 ("Randomized slab caches for kmalloc()")
-> > Reported-by: Yuli Wang <wangyuli@uniontech.com>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> >
-> >  init/main.c      | 3 +++
-> >  mm/slab_common.c | 3 ---
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/init/main.c b/init/main.c
-> > index 2a1757826397..1362957bdbe4 100644
-> > --- a/init/main.c
-> > +++ b/init/main.c
-> > @@ -1458,6 +1458,9 @@ static int __ref kernel_init(void *unused)
-> >         /* need to finish all async __init code before freeing the memo=
-ry */
-> >         async_synchronize_full();
-> >
-> > +#ifdef CONFIG_RANDOM_KMALLOC_CACHES
-> > +       random_kmalloc_seed =3D get_random_u64();
-> > +#endif
->
-> It doesn=E2=80=99t seem appropriate to put slab code in kernel_init.
->
-> Additionally, it introduces a dependency that the code must be executed
-> after all late_initcalls, which sounds like introducing yet another
-> type of initcall.
-What about introducing a function to initialize kmalloc seed in
-slab_common.c, and then call it at kernel_init()? I don't have a
-better solution than this.
-
->
-> >         system_state =3D SYSTEM_FREEING_INITMEM;
-> >         kprobe_free_init_mem();
-> >         ftrace_free_init_mem();
-> > diff --git a/mm/slab_common.c b/mm/slab_common.c
-> > index 4030907b6b7d..23e324aee218 100644
-> > --- a/mm/slab_common.c
-> > +++ b/mm/slab_common.c
-> > @@ -971,9 +971,6 @@ void __init create_kmalloc_caches(void)
-> >                 for (i =3D KMALLOC_SHIFT_LOW; i <=3D KMALLOC_SHIFT_HIGH=
-; i++)
-> >                         new_kmalloc_cache(i, type);
-> >         }
-> > -#ifdef CONFIG_RANDOM_KMALLOC_CACHES
-> > -       random_kmalloc_seed =3D get_random_u64();
-> > -#endif
->
-> I have no idea how hibernation and resume work, but let me ask here:
-> Can we simply skip or defer updating random_kmalloc_seed when the system =
-is
-> resuming from hibernation? (probably system_state represents this?)
-Do you mean something like below? It does work (it is my original
-solution), but this patch is simpler.
-
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index b35e2db7eb0e..42fb91650b13 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -614,14 +614,20 @@ static __always_inline enum kmalloc_cache_type
-kmalloc_type(gfp_t flags, unsigne
-         * The most common case is KMALLOC_NORMAL, so test for it
-         * with a single branch for all the relevant flags.
-         */
--       if (likely((flags & KMALLOC_NOT_NORMAL_BITS) =3D=3D 0))
-+       if (likely((flags & KMALLOC_NOT_NORMAL_BITS) =3D=3D 0)) {
- #ifdef CONFIG_RANDOM_KMALLOC_CACHES
-+               unsigned long random_seed =3D 0;
-+
-+               if (system_state > SYSTEM_SCHEDULING)
-+                       random_seed =3D random_kmalloc_seed;
-+
-                /* RANDOM_KMALLOC_CACHES_NR (=3D15) copies + the KMALLOC_NO=
-RMAL */
--               return KMALLOC_RANDOM_START + hash_64(caller ^
-random_kmalloc_seed,
-+               return KMALLOC_RANDOM_START + hash_64(caller ^ random_seed,
-
-ilog2(RANDOM_KMALLOC_CACHES_NR + 1));
- #else
-                return KMALLOC_NORMAL;
- #endif
-+       }
-
-
-Huacai
-
->
-> >         /* Kmalloc array is now usable */
-> >         slab_state =3D UP;
->
-> --
-> Harry
+SGkgQ2FsZWIsDQoNCkhlcmUgYXJlIHNvbWUgcGF0Y2hlcyBhcmUgY3VycmVudGx5IG9uZ29pbmcu
+DQpDb3VsZCB5b3UgcGxlYXNlIGFwcGx5IHRoZXNlIHBhdGNoZXMgYW5kIHRyeSBhZ2Fpbj8NCg0K
+aHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xpbnV4LXdpcmVsZXNzL2xpc3Qv
+P3Nlcmllcz05MjUxMDYNCg0KVGhhbmtzfg0KDQpCZXN0IFJlZ2FyZHMsDQpZZW4uDQo=
 
