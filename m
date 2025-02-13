@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC90FA347FF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FCCA346B8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 968313A3551
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C203B4861
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251FF15DBBA;
-	Thu, 13 Feb 2025 15:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E3715E5D4;
+	Thu, 13 Feb 2025 15:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4c6Jysj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rM5kdPGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BC726B096;
-	Thu, 13 Feb 2025 15:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE0D26B0B8;
+	Thu, 13 Feb 2025 15:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460652; cv=none; b=qGaHsW7tG15f0Yt8hKsYOIRgwxRfAJ8a0kyVU9T9G0iNwIIssnP09lU0zwAyMI4zOO9IUC/6ITEWSD/uakPc2I7fNUPmXGH+ioINa8/ql09fC3bL5Sqelh+07Zw9IjUiwTJeDwpIBLBkSogUy0I19a62FAXoE363v03Uhr5HKuU=
+	t=1739459845; cv=none; b=CyMinilWgCwKJxi39YBznWsIlOZB84pggFa8wiPzQBJQllZeYz9iZBFbz6Hj91pm8NxQPB2VNMo78uK/9G/RxX8ukgTqyln5q69DnQgDc0Nzzyc4eFcceJChUdS/ToBPR2WUoAvm5BnGK8hXYc/LML5WW7KL29LeD6uoZaCXIZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460652; c=relaxed/simple;
-	bh=1Mo/ZpwpBR3bMQ8YqUZVvWQf1gQERpfgL4xvR8KivP0=;
+	s=arc-20240116; t=1739459845; c=relaxed/simple;
+	bh=ABmImm4YcdSNdmXBXtAdzqupiVaq0GEJ4G494f5hXGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrfSz/XNVzjqNQbQwpL/gLJ40Tw3lPCMZrKBYbnrroVKgh78MxaqpLh2+0BaBmDvDyk81Yyd6u4L71XosokyveMAVloaJGG6BU0OWM17N9lVK0VBR4b8/uqHMwCLw0f0OGV0nXHRSc15PaY1u2zQ8uh68FI34yn0gjEzMTjSrOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4c6Jysj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4303C4CEE4;
-	Thu, 13 Feb 2025 15:30:51 +0000 (UTC)
+	 MIME-Version; b=VyjcegD6MQI05DmBrTvzvXr8ceHeidvO1bMRUfYZpNeMWPNwsymY3MAuILPCP9y9CFjhSucfPyX9eJ4BEBZNNGb7mmrupBq4Y90LsnSdn58hDjFqkTWauF56n32es2q+cupiYBvJWwfbcoTxuWXkwbYX/rFllEebzGtd0hAnw2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rM5kdPGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4352C4CEE5;
+	Thu, 13 Feb 2025 15:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460652;
-	bh=1Mo/ZpwpBR3bMQ8YqUZVvWQf1gQERpfgL4xvR8KivP0=;
+	s=korg; t=1739459845;
+	bh=ABmImm4YcdSNdmXBXtAdzqupiVaq0GEJ4G494f5hXGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4c6Jysj2REuf0gwu/3UJfvTsiQwzbGhFvC8xQlyjJQew3+Q/zLLXz9JL66Zjw4Xo
-	 9dKrLPvooiZkMYGDOa5J1fiX5/6Gy4jV50fU9DMaXVvgqzJgrJePltKTPjpertA8WA
-	 1vQWa4YUpxjzapk5JfsaSp/RHlghkXcph+w3kvc8=
+	b=rM5kdPGTqqOAGkuY/bmThx9Ym0iGpf64nkl+F5dRroifWHyJ60+EFyKJ39dBY1jlP
+	 8fUJaxaL7kIYZZuf0XrOQxgz57t3m9XwJtteTH2Lb4wo4OdsBgxU0i9zPAn8B0Uabr
+	 otGtsrIA50o0JjaZngGoAdFfq0NDZuZxJXX4jrSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 142/273] usbnet: ipheth: document scope of NCM implementation
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.13 349/443] iommufd/fault: Destroy response and mutex in iommufd_fault_destroy()
 Date: Thu, 13 Feb 2025 15:28:34 +0100
-Message-ID: <20250213142412.947045636@linuxfoundation.org>
+Message-ID: <20250213142454.087183863@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit be154b598fa54136e2be17d6dd13c8a8bc0078ce upstream.
+commit 3f4818ec139030f425476bf8a10b616bab53a7b5 upstream.
 
-Clarify that the "NCM" implementation in `ipheth` is very limited, as
-iOS devices aren't compatible with the CDC NCM specification in regular
-tethering mode.
+Both were missing in the initial patch.
 
-For a standards-compliant implementation, one shall turn to
-the `cdc_ncm` module.
-
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
+Link: https://patch.msgid.link/r/bc8bb13e215af27e62ee51bdba3648dd4ed2dce3.1736923732.git.nicolinc@nvidia.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c | 8 ++++++++
+ drivers/iommu/iommufd/fault.c |    8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 5347cd7e295b..a19789b57190 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -218,6 +218,14 @@ static int ipheth_rcvbulk_callback_legacy(struct urb *urb)
- 	return ipheth_consume_skb(buf, len, dev);
+--- a/drivers/iommu/iommufd/fault.c
++++ b/drivers/iommu/iommufd/fault.c
+@@ -213,6 +213,7 @@ void iommufd_fault_destroy(struct iommuf
+ {
+ 	struct iommufd_fault *fault = container_of(obj, struct iommufd_fault, obj);
+ 	struct iopf_group *group, *next;
++	unsigned long index;
+ 
+ 	/*
+ 	 * The iommufd object's reference count is zero at this point.
+@@ -225,6 +226,13 @@ void iommufd_fault_destroy(struct iommuf
+ 		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
+ 		iopf_free_group(group);
+ 	}
++	xa_for_each(&fault->response, index, group) {
++		xa_erase(&fault->response, index);
++		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
++		iopf_free_group(group);
++	}
++	xa_destroy(&fault->response);
++	mutex_destroy(&fault->mutex);
  }
  
-+/* In "NCM mode", the iOS device encapsulates RX (phone->computer) traffic
-+ * in NCM Transfer Blocks (similarly to CDC NCM). However, unlike reverse
-+ * tethering (handled by the `cdc_ncm` driver), regular tethering is not
-+ * compliant with the CDC NCM spec, as the device is missing the necessary
-+ * descriptors, and TX (computer->phone) traffic is not encapsulated
-+ * at all. Thus `ipheth` implements a very limited subset of the spec with
-+ * the sole purpose of parsing RX URBs.
-+ */
- static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
- {
- 	struct usb_cdc_ncm_nth16 *ncmh;
--- 
-2.48.1
-
+ static void iommufd_compose_fault_message(struct iommu_fault *fault,
 
 
 
