@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EADA3439A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:53:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB98A344BE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9281916E137
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:49:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FA757A3E3A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2BD15697B;
-	Thu, 13 Feb 2025 14:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C52E18D620;
+	Thu, 13 Feb 2025 15:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJ6Nv536"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1Nv/Shs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A28C18F2FC;
-	Thu, 13 Feb 2025 14:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F5518A6A7;
+	Thu, 13 Feb 2025 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457907; cv=none; b=H1V6mCao7QnGL331TMtfmHcCEoLrIvFezL9xpR1vhzlRUqOw7PcJqnXtCRdQ6Q2Z1HCUSoBRrzFm5cm8seEst4hrnX7wbOGjbUrg1k9AD7XEZNJQwwnM2JLMbNKwzXDnz0x/FbX5I1KifRRc05CxMmdShsmN0ZTRpl09e5EVcmI=
+	t=1739459263; cv=none; b=CLyPeDHD9349ErlczNzPqAgCYUeBs0HzZSc514VgJIfDC8c5vsz+lSN5cE/EwcMdYRp3LrXw8X1qYIa7caG5dh3vFjLDd33e62YTXO7G5mnWgPH8PrrGU9I+1jnP+DIgpkdPS9Si6ZAuQCvL2MlXtCjc1EpihmYiAmLNIQWAhAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457907; c=relaxed/simple;
-	bh=9RpwosJ2bCgxCBpqqspN5+NK1zktal14N2U0WU1hWsA=;
+	s=arc-20240116; t=1739459263; c=relaxed/simple;
+	bh=NEqQkHa+6ddkS5XVxOJvB0+QBrUINR1tkpii9EagaCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W9FD/Y5+mBfJk7+GKH2fqRXvjUBW6omZnhmU0FwL3klvYXbJf1CP/NQHZ4UtgtCxs2w2Amb6xma5sdU+vYzhbgdvAmliYhbjX3TFRWMXMbHGV37GGR/nIHV14zrCe5Yfn0rO16ZHTxJGZCq4ZtEj6apx9FCQJtvZbcjK2+pquY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ6Nv536; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D507C4CEE2;
-	Thu, 13 Feb 2025 14:45:06 +0000 (UTC)
+	 MIME-Version; b=We3iUQanpcDTvyhkH6NBxN33XZQIJNMrjBGTMZlLAHCloKhxoj7wC8shBnU2QY95WHNCkBBJ8e5Krx2Dh6ICgwSbGmiBB3V+6l6Jewmlss6OBx3Vrjqx3CBxpbd5X4QKsePe5ipwE54P6Q+wf/rxxd1bNO/OKHWj7Gv4hvjsZbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1Nv/Shs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1333FC4CED1;
+	Thu, 13 Feb 2025 15:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457906;
-	bh=9RpwosJ2bCgxCBpqqspN5+NK1zktal14N2U0WU1hWsA=;
+	s=korg; t=1739459262;
+	bh=NEqQkHa+6ddkS5XVxOJvB0+QBrUINR1tkpii9EagaCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJ6Nv536K/v+S9j2Re2GHwyPnu95J5LxXnoKop48Z+mxdgZ9a7N9IwZGb9Qu2Xh6b
-	 ES+FIc7xTE/O27xhfW4KC+8qzcL91yPoLEeTaPvX5sgQgL1xyBJdKXDXyk1SVJZjeG
-	 8hn//bGOLiPY3mGkTFl9pbbSkHvDgPJbJX/eQuBk=
+	b=y1Nv/ShsfKWKwXcP9lGugnlOFmATlHwIwBAjLUtzN667xhsOU1VwKfMIY7IZeuRFe
+	 CTHqRVnLmB44wUZ812jcoO/2hoF9XMTtCa2y9LVj8q5ZB3VOgj7d1YRVK7PzesfNj6
+	 fo8fr/OdpyYSsN5qu4jUUsuBBSc5i3O55KOndqZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 230/422] MIPS: Loongson64: remove ROM Size unit in boardinfo
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Avri Altman <Avri.Altman@wdc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.13 214/443] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
 Date: Thu, 13 Feb 2025 15:26:19 +0100
-Message-ID: <20250213142445.411857961@linuxfoundation.org>
+Message-ID: <20250213142448.874096105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kexy Biscuit <kexybiscuit@aosc.io>
+From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
 
-commit bd2212d658d7659b9d83c7e2f3a06789d4db1e90 upstream.
+commit 1b3e2d4ec0c5848776cc56d2624998aa5b2f0d27 upstream.
 
-Per Appendix A.7 in Q/LS 0013-2014 (龙芯CPU开发系统固件与内核接口规范 V2.2,
-lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
-interface_info.size is size of this interface, not size of the LEFI BIOS
-ROM.
+According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
+defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
+TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
+the UFS device specification definition.
 
-In any case, the BIOS ROM Size just cannot be several kilobytes (KB) on
-Loongson64 LEFI platforms.
-
-Reported-by: Mingcong Bai <jeffbai@aosc.io>
-Suggested-by: Icenowy Zheng <uwu@icenowy.me>
-Fixes: 6c1bfbd9df8c ("MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
+Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Link: https://lore.kernel.org/r/69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com
+Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/loongson64/boardinfo.c |    2 --
- 1 file changed, 2 deletions(-)
+ include/ufs/ufs.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/loongson64/boardinfo.c
-+++ b/arch/mips/loongson64/boardinfo.c
-@@ -21,13 +21,11 @@ static ssize_t boardinfo_show(struct kob
- 		       "BIOS Info\n"
- 		       "Vendor\t\t\t: %s\n"
- 		       "Version\t\t\t: %s\n"
--		       "ROM Size\t\t: %d KB\n"
- 		       "Release Date\t\t: %s\n",
- 		       strsep(&tmp_board_manufacturer, "-"),
- 		       eboard->name,
- 		       strsep(&tmp_bios_vendor, "-"),
- 		       einter->description,
--		       einter->size,
- 		       especial->special_name);
- }
- static struct kobj_attribute boardinfo_attr = __ATTR(boardinfo, 0444,
+--- a/include/ufs/ufs.h
++++ b/include/ufs/ufs.h
+@@ -386,8 +386,8 @@ enum {
+ 
+ /* Possible values for dExtendedUFSFeaturesSupport */
+ enum {
+-	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
+-	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
++	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
++	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
+ 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
+ 	UFS_DEV_HPB_SUPPORT		= BIT(7),
+ 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
 
 
 
