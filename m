@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9EBA3479B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778BCA34382
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE1563A63B5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9314216F7A5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB37139566;
-	Thu, 13 Feb 2025 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2B827126B;
+	Thu, 13 Feb 2025 14:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjrAhdfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0U3uraY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2978A35961;
-	Thu, 13 Feb 2025 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF28271267;
+	Thu, 13 Feb 2025 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460106; cv=none; b=mKPKPY7i0KR+wvMCaeWCCNnkV1o6LtZJzxgWZMwQmrPF6zY0nIadr3+vyPJ+t457C1qXbTYSduOC5sQrve5NXoIrialbTswqGwbq0k3PnrszBVmvvz702hJQbl9O2VgmaZ0ybdBmKDV0JCmpUWNkjKeTvYxn4sW+Zh+6QfxmW7g=
+	t=1739457880; cv=none; b=LGsyfAUJ7KRPb7N41EZsJ8BmKNVDNOBZRh2Q54pPHKH3ysubir9w4wWaooCadlJAl6sHwmP5cbRGm3T4t+plc2hY2F71BrRbztij055zXnUQEVZp5mPbDMQaeX5AgG97MeuzO+l3avNUvkewwuj0z4qlegCvc/lG4EUlKu4d80I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460106; c=relaxed/simple;
-	bh=4K0s/0p4INK39I2K3YMd8sFMBL42+PPwUFlG/WKHaXY=;
+	s=arc-20240116; t=1739457880; c=relaxed/simple;
+	bh=IRE59FoIjQRzJz/isdbdwwSoEKPrYHIkm5hT6MqMB1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqhvWJqbAPrBKghvzltQdZ2Jv5Ebud1+1IA+68Gie6HRH0nvoYe+MzSRT8vjRvUnh8L7JS+lKqgWgtZe7JttTNdvXyItrFZmp9UUs9KXQ79/VutHXCOzMIVAL3Wowcyfg9X/K2Eqk4CZArg3rsZhNZbMhu+67Krqfg9cVYGycYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjrAhdfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD28C4CEE7;
-	Thu, 13 Feb 2025 15:21:45 +0000 (UTC)
+	 MIME-Version; b=LEYkaF5bnmsiNJV1jVqFIK9s1euxJ2/fFpTMEwO7SP0ag65dnLxCx4ARlaOCGbesEms6yY6FuBG6YIBlnYXNblnw8V1nO7c5FVT+Pp2WZCGi+yOTXbhAJUah44JVSKwjs08GqbwPeIQTTrZGmJR9UwQ5aaNDF3vuUG97VEIuz5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0U3uraY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43869C4CEE4;
+	Thu, 13 Feb 2025 14:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460106;
-	bh=4K0s/0p4INK39I2K3YMd8sFMBL42+PPwUFlG/WKHaXY=;
+	s=korg; t=1739457879;
+	bh=IRE59FoIjQRzJz/isdbdwwSoEKPrYHIkm5hT6MqMB1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjrAhdfyAUGh7dcd9VoWRYEJ3Qhf8mEiHmyfWjpHhvXEgXLVcvWB+SKvVI6YjOUNV
-	 XgrskFUULHVtiUP8tnGtUpkNJfXoeSp9yooag3K33lRTLlJPNWdfQC0lpIVj52SXTU
-	 nH2fATCKHlIbxDzlu9qxBNMDDb5LcJt+UaeKzc7o=
+	b=0U3uraY7Q51q6mDraclhhXrJ7C38ORMV9aj5yFrZy3ZLUzokPYXFQRwTMiP8npJr9
+	 CK9KsGJGdX9dkppeBnYP/BUNfGaSd9xYFsmQVpDv+vOWoIH7iVpsrbn8JkMupWGVm2
+	 yV7SzQpc8nq48G+Rj8Ic/nzqLl0IjqapVVRgfBZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/273] drm/exynos: hdmi: use eld_mutex to protect access to connector->eld
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 240/422] firmware: qcom: scm: Fix missing read barrier in qcom_scm_is_available()
 Date: Thu, 13 Feb 2025 15:26:29 +0100
-Message-ID: <20250213142408.041545671@linuxfoundation.org>
+Message-ID: <20250213142445.798116696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5e8436d334ed7f6785416447c50b42077c6503e0 ]
+commit 0a744cceebd0480cb39587b3b1339d66a9d14063 upstream.
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
+completion variable initialization") introduced a write barrier in probe
+function to store global '__scm' variable.  It also claimed that it
+added a read barrier, because as we all known barriers are paired (see
+memory-barriers.txt: "Note that write barriers should normally be paired
+with read or address-dependency barriers"), however it did not really
+add it.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-5-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The offending commit used READ_ONCE() to access '__scm' global which is
+not a barrier.
+
+The barrier is needed so the store to '__scm' will be properly visible.
+This is most likely not fatal in current driver design, because missing
+read barrier would mean qcom_scm_is_available() callers will access old
+value, NULL.  Driver does not support unbinding and does not correctly
+handle probe failures, thus there is no risk of stale or old pointer in
+'__scm' variable.
+
+However for code correctness, readability and to be sure that we did not
+mess up something in this tricky topic of SMP barriers, add a read
+barrier for accessing '__scm'.  Change also comment from useless/obvious
+what does barrier do, to what is expected: which other parts of the code
+are involved here.
+
+Fixes: 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq completion variable initialization")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-1-9061013c8d92@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/qcom/qcom_scm.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 906133331a442..c234f9245b144 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -1643,7 +1643,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf,
- 	struct hdmi_context *hdata = dev_get_drvdata(dev);
- 	struct drm_connector *connector = &hdata->connector;
- 
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
-+	mutex_unlock(&connector->eld_mutex);
- 
- 	return 0;
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1839,7 +1839,8 @@ static int qcom_scm_qseecom_init(struct
+  */
+ bool qcom_scm_is_available(void)
+ {
+-	return !!READ_ONCE(__scm);
++	/* Paired with smp_store_release() in qcom_scm_probe */
++	return !!smp_load_acquire(&__scm);
  }
--- 
-2.39.5
-
+ EXPORT_SYMBOL_GPL(qcom_scm_is_available);
+ 
+@@ -1996,7 +1997,7 @@ static int qcom_scm_probe(struct platfor
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Let all above stores be available after this */
++	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
+ 	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
 
 
 
