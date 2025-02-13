@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843ADA34722
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683D4A343B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E335B3B61BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58570168451
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03134143736;
-	Thu, 13 Feb 2025 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF9528382;
+	Thu, 13 Feb 2025 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfvVX7d/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h24g8FcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44053FB3B;
-	Thu, 13 Feb 2025 15:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFDF23A9AA;
+	Thu, 13 Feb 2025 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460240; cv=none; b=Enwi3JAx/+suoh/m+pCI/FF+IEotZP5iMDVLj1D+9daHaMqbdPiPewvlYTKhaPbnzw2X1ZjlkjbH5HEGgelaACeVsdZBkoLPKJPw3t788zoEXpj70FE2HtfBmco2n97qbs707G4YLOAagI2w832nhPlQjcwo0XcEV9laJepTHDU=
+	t=1739458017; cv=none; b=FAvGmrPAlGOBzU/c4dspA6ZHerUZrWchZy/7AfTisU6VeCP3a8PKO02jephogicWyo01UijcxQcdNG+qxnCzJDvW4R4RqXcQHGrh5nKbQ6R7P0amiLSIsx0KWDxlq81+IXYMlhK+EkAJ/k3JKvjiFFo/fdyqVCHA9Je0dvSTQK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460240; c=relaxed/simple;
-	bh=gyOohZ5c8pbIJi3KmmsugaiRekpYyh9Bc20VNY4triM=;
+	s=arc-20240116; t=1739458017; c=relaxed/simple;
+	bh=lUVAJfMnRFEeu42PfuLM9tpUfur4L7rwpYd+jSvdpIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6e7ov5wVjtbJLxl7n2NQqIbEywatPlfnMQMsb3QE4obD+/9ivYfwRDXSAbdYLg1HqxCWIR/ghi/PGDbEPxOL956RZZvtvVE2rY6wyzmQb3tEcU/f7Nflz7ow8Itu8hvoNMzfyxWO54mFTMQ4hCFHbFlZOr5cCORNceXeAt3Tl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfvVX7d/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCEEC4CED1;
-	Thu, 13 Feb 2025 15:23:59 +0000 (UTC)
+	 MIME-Version; b=aWeKFdeDmActOgjGd/KC9phHLGfpVQL54cosuGWQ9StGzgjFxEfwfRi7tZNJIGcFQ7upXHO+YvnSQUNgaZ+OGiDrb30gki8phsVxIFpn6reI5mMSuZ4R2OWqi5JE5ZedqOG9vlwBQMnYfYn+pGC3446Ms02Hg8JKBqLkH5/ZQJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h24g8FcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0A8C4CED1;
+	Thu, 13 Feb 2025 14:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460240;
-	bh=gyOohZ5c8pbIJi3KmmsugaiRekpYyh9Bc20VNY4triM=;
+	s=korg; t=1739458017;
+	bh=lUVAJfMnRFEeu42PfuLM9tpUfur4L7rwpYd+jSvdpIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfvVX7d/RDpID3cqFJl+igUy/cUl6m41BqrI6vqQQR31ZPGx0bxnvBa2RPpxrBvet
-	 Ur76P4m8mHuKFwn2e9trtVimOna50qVBqllUKs9b0JbgB6t2s5G5elEIovrebJ3Aei
-	 iq+DPIkJQet5tU83svLr58s2wHHKLzmTMufHcXeA=
+	b=h24g8FcLqZsKS++DWiniEtsUvflRGSqvK7LkkN+ceAanq5dYvjUUrUjSMf03tRXLQ
+	 NefyFiamIoeu3OZZ64KpaFmBv/dHXoYsiiChM347m9HtDnPmF2ynZ4fVKze+fOy+iX
+	 z+7q0lsayjdul/wbICrkHyi/Kqb51W2kLVtu7s9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/273] KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_lock
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 278/422] arm64: dts: qcom: sm6375: Fix ADSP memory length
 Date: Thu, 13 Feb 2025 15:27:07 +0100
-Message-ID: <20250213142409.526783170@linuxfoundation.org>
+Message-ID: <20250213142447.269418426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 84cf78dcd9d65c45ab73998d4ad50f433d53fb93 ]
+commit bf4dda83da27b7efc49326ebb82cbd8b3e637c38 upstream.
 
-Mark pages accessed before dropping mmu_lock when faulting in guest memory
-so that shadow_map() can convert to kvm_release_faultin_page() without
-tripping its lockdep assertion on mmu_lock being held.  Marking pages
-accessed outside of mmu_lock is ok (not great, but safe), but marking
-pages _dirty_ outside of mmu_lock can make filesystems unhappy.
+The address space in ADSP (Peripheral Authentication Service) remoteproc
+node should point to the QDSP PUB address space (QDSP6...SS_PUB) which
+has a length of 0x10000.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20241010182427.1434605-54-seanjc@google.com>
-Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
+
+Fixes: fe6fd26aeddf ("arm64: dts: qcom: sm6375: Add ADSP&CDSP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-17-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index 79c6359b18ae3..dc75f025dfe27 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -498,11 +498,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 	kvmppc_mmu_flush_icache(pfn);
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -1559,7 +1559,7 @@
  
- out:
--	spin_unlock(&kvm->mmu_lock);
--
- 	/* Drop refcount on page, so that mmu notifiers can clear it */
- 	kvm_release_pfn_clean(pfn);
--
-+	spin_unlock(&kvm->mmu_lock);
- 	return ret;
- }
+ 		remoteproc_adsp: remoteproc@a400000 {
+ 			compatible = "qcom,sm6375-adsp-pas";
+-			reg = <0 0x0a400000 0 0x100>;
++			reg = <0 0x0a400000 0 0x10000>;
  
--- 
-2.39.5
-
+ 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
