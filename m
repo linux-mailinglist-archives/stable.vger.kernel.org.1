@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640CFA345AE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AB3A3425F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6C03AE806
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC9F169DCE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C6B155330;
-	Thu, 13 Feb 2025 15:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C135281377;
+	Thu, 13 Feb 2025 14:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPmJKyEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq1BceQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FA426B080;
-	Thu, 13 Feb 2025 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090FE281353;
+	Thu, 13 Feb 2025 14:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458886; cv=none; b=qqdxsBqKwpNznvd4AtatZMxpduGbTyZZE/nup2g+srnuxnZLG4Ph7Zy5CsgUiMF1grFkU2Cgxh/B+Snzmgvzs9hIsFJFcXSJAKBg4a6CkgGy2dzY1KZgiFk7Z6kxqHZxDEeWvLwp9uor8hIfCJgRGCCkrhO6U7jwlswcy81gLe4=
+	t=1739457327; cv=none; b=pzlWF1hJr89PW/FsyfWWQh4Rp52/1h3hbZDgkC6vQ1EfZNWDBoOUMiCCASq77n5R1Tzc823MTtrNzkN5mo7NfZSimJG9a3ctYY2lJu2Lw9fw6WnzXYUq8VyCoGUwRJmzIi8bqJN/zwoveEet7gmXWzKLnmqZG/DgOdCtudKJt1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458886; c=relaxed/simple;
-	bh=7RmH3NhI4wj5DdZWFySUSHeQ+SANgsRIIJRO/b0TPwM=;
+	s=arc-20240116; t=1739457327; c=relaxed/simple;
+	bh=mQUzw0zJxTMC6IXV8/NFeXr76szkLg8VOsWKeWVCK9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aN19EnVquEZPqPHW1ArnTFfuVaDTkwJgDGZmx2zH+m6DqBcseOOFf1lEYbU8fH/LXYgbMrzdiaGOFb+dvSWpoMa4MUphE50hbPHr/z/MI/pkRtXhDVPBK3e0uUtPeY4niYyciYD/5EptCzcTee16lL4ivDGssQ1a6ru6XCcsgwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPmJKyEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F90DC4CED1;
-	Thu, 13 Feb 2025 15:01:24 +0000 (UTC)
+	 MIME-Version; b=DYqe9rVckDOzCtraufjWP5bGd7iKayKdNQ6NIR8osVtiRHlN73ofrzhixgbzZ9apqKhuF/YVuID7jXLx8GtgsrDfiSdF3UzRSmQ8USp7+2JJI3wuWICI9gNI/X4aPDDmPD8tLrVWv8vaEXKvLP0R6QxI6QX0aPmHrRh+0mH7V84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq1BceQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699EC4CED1;
+	Thu, 13 Feb 2025 14:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458885;
-	bh=7RmH3NhI4wj5DdZWFySUSHeQ+SANgsRIIJRO/b0TPwM=;
+	s=korg; t=1739457326;
+	bh=mQUzw0zJxTMC6IXV8/NFeXr76szkLg8VOsWKeWVCK9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPmJKyEUkYLwy/zANC46M0/ihVVodeC+tbwgvdaqJOtTHzHTlr6nYLmCgE1MkSy8u
-	 yk6JTLwC6RO2mlJvAGU+SzDaNHl+RllWs0pyBfyIEkPqVd/TD0wpbeHEf8MTyewA5o
-	 nGGMBelUZH7GnSzQHRkRYEgM9HDnGYODi4W2KOm4=
+	b=Kq1BceQgVP5wtz4d37alhgXWqulTSSMU7dicxaELc1bHbDxl+M+cBqZFN4Vqc3zjy
+	 VADwbPgsJOMq0hXsHLpvwAVXcWw3jyNLvWJSBIk6u84aIf21Y7DX+8r8KJURgKGdp/
+	 weVFQw7tMSUJ998pwEdMNYk7WPyTN6ZhJzm3PT50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Itamar Gozlan <igozlan@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 064/443] net/mlx5: HWS, change error flow on matcher disconnect
+Subject: [PATCH 6.12 080/422] iommu/arm-smmu-v3: Clean up more on probe failure
 Date: Thu, 13 Feb 2025 15:23:49 +0100
-Message-ID: <20250213142443.091083173@linuxfoundation.org>
+Message-ID: <20250213142439.641730876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 1ce840c7a659aa53a31ef49f0271b4fd0dc10296 ]
+[ Upstream commit fcbd621567420b3a2f21f49bbc056de8b273c625 ]
 
-Currently, when firmware failure occurs during matcher disconnect flow,
-the error flow of the function reconnects the matcher back and returns
-an error, which continues running the calling function and eventually
-frees the matcher that is being disconnected.
-This leads to a case where we have a freed matcher on the matchers list,
-which in turn leads to use-after-free and eventual crash.
+kmemleak noticed that the iopf queue allocated deep down within
+arm_smmu_init_structures() can be leaked by a subsequent error return
+from arm_smmu_device_probe(). Furthermore, after arm_smmu_device_reset()
+we will also leave the SMMU enabled with an empty Stream Table, silently
+blocking all DMA. This proves rather annoying for debugging said probe
+failure, so let's handle it a bit better by putting the SMMU back into
+(more or less) the same state as if it hadn't probed at all.
 
-This patch fixes that by not trying to reconnect the matcher back when
-some FW command fails during disconnect.
-
-Note that we're dealing here with FW error. We can't overcome this
-problem. This might lead to bad steering state (e.g. wrong connection
-between matchers), and will also lead to resource leakage, as it is
-the case with any other error handling during resource destruction.
-
-However, the goal here is to allow the driver to continue and not crash
-the machine with use-after-free error.
-
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Itamar Gozlan <igozlan@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250102181415.1477316-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/5137901958471cf67f2fad5c2229f8a8f1ae901a.1733406914.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/steering/hws/matcher.c | 24 +++++++------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-index 1bb3a6f8c3cda..e94f96c0c781f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-@@ -165,14 +165,14 @@ static int hws_matcher_disconnect(struct mlx5hws_matcher *matcher)
- 						    next->match_ste.rtc_0_id,
- 						    next->match_ste.rtc_1_id);
- 		if (ret) {
--			mlx5hws_err(tbl->ctx, "Failed to disconnect matcher\n");
--			goto matcher_reconnect;
-+			mlx5hws_err(tbl->ctx, "Fatal error, failed to disconnect matcher\n");
-+			return ret;
- 		}
- 	} else {
- 		ret = mlx5hws_table_connect_to_miss_table(tbl, tbl->default_miss.miss_tbl);
- 		if (ret) {
--			mlx5hws_err(tbl->ctx, "Failed to disconnect last matcher\n");
--			goto matcher_reconnect;
-+			mlx5hws_err(tbl->ctx, "Fatal error, failed to disconnect last matcher\n");
-+			return ret;
- 		}
- 	}
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index f1a8f8c75cb0e..6bf8ecbbe0c26 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -4616,7 +4616,7 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
+ 	/* Initialise in-memory data structures */
+ 	ret = arm_smmu_init_structures(smmu);
+ 	if (ret)
+-		return ret;
++		goto err_free_iopf;
  
-@@ -180,27 +180,19 @@ static int hws_matcher_disconnect(struct mlx5hws_matcher *matcher)
- 	if (prev_ft_id == tbl->ft_id) {
- 		ret = mlx5hws_table_update_connected_miss_tables(tbl);
- 		if (ret) {
--			mlx5hws_err(tbl->ctx, "Fatal error, failed to update connected miss table\n");
--			goto matcher_reconnect;
-+			mlx5hws_err(tbl->ctx,
-+				    "Fatal error, failed to update connected miss table\n");
-+			return ret;
- 		}
- 	}
+ 	/* Record our private device structure */
+ 	platform_set_drvdata(pdev, smmu);
+@@ -4627,22 +4627,29 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
+ 	/* Reset the device */
+ 	ret = arm_smmu_device_reset(smmu);
+ 	if (ret)
+-		return ret;
++		goto err_disable;
  
- 	ret = mlx5hws_table_ft_set_default_next_ft(tbl, prev_ft_id);
+ 	/* And we're up. Go go go! */
+ 	ret = iommu_device_sysfs_add(&smmu->iommu, dev, NULL,
+ 				     "smmu3.%pa", &ioaddr);
+ 	if (ret)
+-		return ret;
++		goto err_disable;
+ 
+ 	ret = iommu_device_register(&smmu->iommu, &arm_smmu_ops, dev);
  	if (ret) {
- 		mlx5hws_err(tbl->ctx, "Fatal error, failed to restore matcher ft default miss\n");
--		goto matcher_reconnect;
-+		return ret;
+ 		dev_err(dev, "Failed to register iommu\n");
+-		iommu_device_sysfs_remove(&smmu->iommu);
+-		return ret;
++		goto err_free_sysfs;
  	}
  
  	return 0;
--
--matcher_reconnect:
--	if (list_empty(&tbl->matchers_list) || !prev)
--		list_add(&matcher->list_node, &tbl->matchers_list);
--	else
--		/* insert after prev matcher */
--		list_add(&matcher->list_node, &prev->list_node);
--
--	return ret;
++
++err_free_sysfs:
++	iommu_device_sysfs_remove(&smmu->iommu);
++err_disable:
++	arm_smmu_device_disable(smmu);
++err_free_iopf:
++	iopf_queue_free(smmu->evtq.iopf);
++	return ret;
  }
  
- static void hws_matcher_set_rtc_attr_sz(struct mlx5hws_matcher *matcher,
+ static void arm_smmu_device_remove(struct platform_device *pdev)
 -- 
 2.39.5
 
