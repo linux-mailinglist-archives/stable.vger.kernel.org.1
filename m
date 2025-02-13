@@ -1,125 +1,282 @@
-Return-Path: <stable+bounces-115138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69E0A34059
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:27:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC1CA3409C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3D1A3A5A5D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 13:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58DFD16706F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 13:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B1E227EAE;
-	Thu, 13 Feb 2025 13:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B294023A98F;
+	Thu, 13 Feb 2025 13:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/UUx3at"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="etjmyCXo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2157723F417;
-	Thu, 13 Feb 2025 13:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ACA2222CE;
+	Thu, 13 Feb 2025 13:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739453210; cv=none; b=TnDF5/oLOacfu9RBMLeqVRSdghRMysBws0V0h6zJolZr8ulAstmUTX8LJImOOPv1wwLbOLT3HfyBM+EpV6cg/Ty41Kn9QkyH7qq/n16/uKrDv5ZNC7lx3LejunfpG8B003tmDNCzabbVOp4hINNc5rKweZMPugVTxFQYGpgqQss=
+	t=1739454209; cv=none; b=h/GtjK9Ip4QzXQQXlqjYagrzkiPJD5VuX4XTAizoS4qUkRKAwa8GCQe6cBhU9NLb4IbiWW4NjMY/THT2an8K4EnlvYDzRvpsYPvWw2e/w4bNIDHSRO7YQAKCUu4UIhNPfDUe5szwLlUZb13REo9Q46BgkX8yafF+kbpC/waquBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739453210; c=relaxed/simple;
-	bh=ZKIHzO3MmoYTOlkYq7wpIbMxe+b5FuF0Cg59iiDAdz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gc7EGcZTBkLkgI1wY1Kos8pg/OYWDS+Q7Oj6/yv+mmdaAMkYP2VVx3vWc5EdWP2zx/oJkq2uTRft1I9STVxMMGXN/opRtAAYCFXzrsxtDZ3Oc9q2mQwL1/GmMxhSBYkCB7yw6wrrsgCLbjDcuEwT1wfrdUz7Kr6/0Xml9PYSTSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/UUx3at; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B13C4CED1;
-	Thu, 13 Feb 2025 13:26:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739453209;
-	bh=ZKIHzO3MmoYTOlkYq7wpIbMxe+b5FuF0Cg59iiDAdz8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G/UUx3atwiIbNuSprBKdrXNY1FKJK5o5lggdnt3LGge622e7qvDIu1pSc39IXnrzV
-	 actNRAiam3iyq1AsBhMNPjoLzNqZgcmGjRlDP165L/mcRjp2oaNnf54Aaa6XZSQ+Tq
-	 SkAWSpXsvCmJglX5TyMFIrbhz55AEzAVV6KW1M1s9DUfH+HQ6OFJDqs++cVJV7+Tkp
-	 e+RHGPUnz/Dl5WrJsL9Lj32WvUadCxWtZ7ApzVmwpWKVScm58519VnXmllJEVBBW25
-	 3yAVfaHnnjVksYUOfJTbpOV90IHbiUWEDRNfxTFA4kAplTnd5TwOxtKh7ibxHUxG02
-	 XuRZwdBNX84xA==
-Date: Thu, 13 Feb 2025 14:26:44 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof Wilczynski <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] misc: pci_endpoint_test: Fix irq_type to convey
- the correct type
-Message-ID: <Z63zFBn6jDZG4s9d@ryzen>
-References: <20250210075812.3900646-1-hayashi.kunihiko@socionext.com>
- <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
- <Z6oi7lH7hhA3uN46@ryzen>
- <9c465e4c-ed43-4fd1-b7a7-b4c49a996fe4@socionext.com>
+	s=arc-20240116; t=1739454209; c=relaxed/simple;
+	bh=1THMgtBUVWtS8iZzrqo/yymnGZZkmDBdqurvA1tE8k4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G3zECh3pqRKV+1sAvxRqNpljoU8QE+JlwmKAjT5sZ/grTJuEe0bVKcE0Toxgtcs9b6GJsXVmF3sSGYQqbcyttZAU5lSe0tglDRxXXk4m0qhMH/FBuuQvggoYmwz5PZ/I9E3pc0D0RZpj5e70MDFr4cJhxzt2SfGLluCKGYG+oWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=etjmyCXo; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4361e89b6daso6286755e9.3;
+        Thu, 13 Feb 2025 05:43:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739454205; x=1740059005; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XMPABjjogfdKDCcQgCBVWi5+k2BUL7XWDxcvghN5g/4=;
+        b=etjmyCXol/6m1PYRRYCdy6WjxtRTSheSJ60RCZXrJ84dufGk5KRhUucWS34hfJ8Poi
+         Q51mG0TvetlZmIXuLJ5FECs3pFltUDqJDurufvq+PvdeTEE2mGmpzCa7CHXbHyeQ7ZC5
+         EsM+6AyzBUTChbsL70iCf+keMS31mad/eNn9bJD7q/lmioY2b5Zm375WzWT0erOl/wSM
+         BsWr5SKgRaP44ePL8DNk3CeoaA82eLJdUVSg/yEQtRCORuv+E9Vrb4COkjlZH/Xt72lG
+         P+sQuNq1o2GYFiCToJF2YUZl9qpd06zEwJVcskRi34yGPqCUbU1F48qaLN8bhxnB1Vtg
+         UtNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739454205; x=1740059005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XMPABjjogfdKDCcQgCBVWi5+k2BUL7XWDxcvghN5g/4=;
+        b=JWXzzMNGyu/kE9t4FBaxOI1Ci7kGHWEbqKLuv7TkUvKwyKtxq1ZadVyplbIuC/oyT4
+         UuHsv1LCjXylKBhQc48U/EXbZbt9oh+jOp3A570A9pWKf939w6cwWeQrtmj66KophN0R
+         Pl4yvVg1LWJDL+V6N4OPZnsnlnqBeCseYZNdMrRonTMwupMumFmaG2/c2oZsScTzf2I6
+         OgS+DdVerORFyNfTqW/Dl2tHMjxs+oxZdFFnamRpF5EBOVZhLGsOfc050+2Xnw37RpSD
+         y+83ImOWEVJOsq2nJko0pm6sgWW3iq7i0GeOJg3LkwP/eFcR2UFcXGFm/7pgPBNSdGT5
+         217g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVw9pp9J3eDLgl32DV01m8SKc6J/OOTH5yKojqGyT2xGD4bj1W83YgzjfNdFFdA6btYJn8tR0v/+7JAxw=@vger.kernel.org, AJvYcCWwVwTBx/GqqAVMvWTQTpFccxXg4YtRHRhC86jEHUyGuwyWdJvWLtWy6nBnilH9/Dgm1jmpMZ0J@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVV+PDvo/3I2D3ZGvJOBHqLwF/MLs4TjBanUF6HM0q8Fu8Fndr
+	Dutvz4wp6p0DwT+fqUvqBq05ly0GIy9OYo/bgoHmgtriJYQqAPc1oVbah0iL
+X-Gm-Gg: ASbGncuNAdexQN2HEOWR0dp5RQo4m0JaNp6RytYpFJn3CgDTlxJfRcETpPKbymBBLbM
+	EeCHQgjDIBLMfS0cKDJu+i0vbD8LVEESiT5J0Rr05DW1dnsbjEZst4Z50g1BgltPnrZrVsVMcZr
+	FriHatWsFwl7VW+Vkg97N+D8Xn+M9qH0/DD+15Pk5bC+q7eB+K172huos9U4sAfabVGczkaqpKw
+	MwOr/IMc8LxuMsLwmPMW0d8rQp5PJiZ4CIhArJm1TIJH+5ryz8ts1OwJ2H7NdWhqTASgJbwOcjl
+	UXr6MZ539XSHMcRrvmzx6nmvPQZ5m09Dokme938=
+X-Google-Smtp-Source: AGHT+IHGh5hxeTTEn/ULQbgxjZRpnBSlL1VvOrm01LozDLNI/OQRJLTs0nLgEadHJzEMLliDtiQkEA==
+X-Received: by 2002:a5d:47c3:0:b0:38d:de92:adab with SMTP id ffacd0b85a97d-38dea28c762mr6807008f8f.29.1739454205306;
+        Thu, 13 Feb 2025 05:43:25 -0800 (PST)
+Received: from localhost.localdomain ([109.175.243.77])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258ccef7sm1982547f8f.31.2025.02.13.05.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 05:43:24 -0800 (PST)
+From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+To: linux-input@vger.kernel.org
+Cc: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] HID: corsair-void: Update power supply values with a unified work handler
+Date: Thu, 13 Feb 2025 13:38:49 +0000
+Message-ID: <20250213133854.100866-3-stuart.a.hayhurst@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c465e4c-ed43-4fd1-b7a7-b4c49a996fe4@socionext.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 13, 2025 at 07:21:45PM +0900, Kunihiko Hayashi wrote:
-> Hi Niklas,
-> 
-> On 2025/02/11 1:01, Niklas Cassel wrote:
-> > On Mon, Feb 10, 2025 at 04:58:10PM +0900, Kunihiko Hayashi wrote:
-> > > There are two variables that indicate the interrupt type to be used
-> > > in the next test execution, "irq_type" as global and test->irq_type.
-> > > 
-> > > The global is referenced from pci_endpoint_test_get_irq() to preserve
-> > > the current type for ioctl(PCITEST_GET_IRQTYPE).
-> > > 
-> > > The type set in this function isn't reflected in the global "irq_type",
-> > > so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
-> > > As a result, the wrong type will be displayed in "pcitest" as follows:
-> > > 
-> > >      # pcitest -i 0
-> > >      SET IRQ TYPE TO LEGACY:         OKAY
-> > >      # pcitest -I
-> > >      GET IRQ TYPE:           MSI
-> > > 
-> > > Fix this issue by propagating the current type to the global "irq_type".
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module
-> > parameter to determine irqtype")
-> > > Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> > > ---
-> > >   drivers/misc/pci_endpoint_test.c | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/drivers/misc/pci_endpoint_test.c
-> > b/drivers/misc/pci_endpoint_test.c
-> > > index f13fa32ef91a..6a0972e7674f 100644
-> > > --- a/drivers/misc/pci_endpoint_test.c
-> > > +++ b/drivers/misc/pci_endpoint_test.c
-> > > @@ -829,6 +829,7 @@ static int pci_endpoint_test_set_irq(struct
-> > pci_endpoint_test *test,
-> > >   		return ret;
-> > >   	}
-> > > +	irq_type = test->irq_type;
-> > 
-> > It feels a bit silly to add this line, when you remove this exact line in
-> > the next patch. Perhaps just drop this patch?
-> 
-> This fix will be removed in patch 4/5, so it seems no means.
-> However, there is an issue in the stable version, as mentioned in the
-> commit message, so I fix it here.
+corsair_void_process_receiver can be called from an interrupt context,
+locking battery_mutex in it was causing a kernel panic.
+Fix it by moving the critical section into its own work, sharing this
+work with battery_add_work and battery_remove_work to remove the need
+for any locking
 
-Ok. Having a small fix first that can be backported, which is then followed
-by a bigger cleanup, makes sense in this case.
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1236843
+Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+---
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+v2 -> v3:
+ - Use an enum instead of a define for battery flag values
+ - Use an integer instead of BIT() for the bit index
+ - Drop unhelpful comments
+ - Simplify corsair_void_battery_work_handler logic
+ - Remove extra newline in commit message
+v1 -> v2:
+ - Actually remove the mutex
+
+---
+ drivers/hid/hid-corsair-void.c | 83 ++++++++++++++++++----------------
+ 1 file changed, 43 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/hid/hid-corsair-void.c b/drivers/hid/hid-corsair-void.c
+index 56e858066c3c..afbd67aa9719 100644
+--- a/drivers/hid/hid-corsair-void.c
++++ b/drivers/hid/hid-corsair-void.c
+@@ -71,11 +71,9 @@
+ 
+ #include <linux/bitfield.h>
+ #include <linux/bitops.h>
+-#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/hid.h>
+ #include <linux/module.h>
+-#include <linux/mutex.h>
+ #include <linux/power_supply.h>
+ #include <linux/usb.h>
+ #include <linux/workqueue.h>
+@@ -120,6 +118,12 @@ enum {
+ 	CORSAIR_VOID_BATTERY_CHARGING	= 5,
+ };
+ 
++enum {
++	CORSAIR_VOID_ADD_BATTERY	= 0,
++	CORSAIR_VOID_REMOVE_BATTERY	= 1,
++	CORSAIR_VOID_UPDATE_BATTERY	= 2,
++};
++
+ static enum power_supply_property corsair_void_battery_props[] = {
+ 	POWER_SUPPLY_PROP_STATUS,
+ 	POWER_SUPPLY_PROP_PRESENT,
+@@ -155,12 +159,12 @@ struct corsair_void_drvdata {
+ 
+ 	struct power_supply *battery;
+ 	struct power_supply_desc battery_desc;
+-	struct mutex battery_mutex;
+ 
+ 	struct delayed_work delayed_status_work;
+ 	struct delayed_work delayed_firmware_work;
+-	struct work_struct battery_remove_work;
+-	struct work_struct battery_add_work;
++
++	unsigned long battery_work_flags;
++	struct work_struct battery_work;
+ };
+ 
+ /*
+@@ -260,11 +264,9 @@ static void corsair_void_process_receiver(struct corsair_void_drvdata *drvdata,
+ 
+ 	/* Inform power supply if battery values changed */
+ 	if (memcmp(&orig_battery_data, battery_data, sizeof(*battery_data))) {
+-		scoped_guard(mutex, &drvdata->battery_mutex) {
+-			if (drvdata->battery) {
+-				power_supply_changed(drvdata->battery);
+-			}
+-		}
++		set_bit(CORSAIR_VOID_UPDATE_BATTERY,
++			&drvdata->battery_work_flags);
++		schedule_work(&drvdata->battery_work);
+ 	}
+ }
+ 
+@@ -536,29 +538,11 @@ static void corsair_void_firmware_work_handler(struct work_struct *work)
+ 
+ }
+ 
+-static void corsair_void_battery_remove_work_handler(struct work_struct *work)
+-{
+-	struct corsair_void_drvdata *drvdata;
+-
+-	drvdata = container_of(work, struct corsair_void_drvdata,
+-			       battery_remove_work);
+-	scoped_guard(mutex, &drvdata->battery_mutex) {
+-		if (drvdata->battery) {
+-			power_supply_unregister(drvdata->battery);
+-			drvdata->battery = NULL;
+-		}
+-	}
+-}
+-
+-static void corsair_void_battery_add_work_handler(struct work_struct *work)
++static void corsair_void_add_battery(struct corsair_void_drvdata *drvdata)
+ {
+-	struct corsair_void_drvdata *drvdata;
+ 	struct power_supply_config psy_cfg = {};
+ 	struct power_supply *new_supply;
+ 
+-	drvdata = container_of(work, struct corsair_void_drvdata,
+-			       battery_add_work);
+-	guard(mutex)(&drvdata->battery_mutex);
+ 	if (drvdata->battery)
+ 		return;
+ 
+@@ -583,16 +567,42 @@ static void corsair_void_battery_add_work_handler(struct work_struct *work)
+ 	drvdata->battery = new_supply;
+ }
+ 
++static void corsair_void_battery_work_handler(struct work_struct *work)
++{
++	struct corsair_void_drvdata *drvdata = container_of(work,
++		struct corsair_void_drvdata, battery_work);
++
++	bool add_battery = test_and_clear_bit(CORSAIR_VOID_ADD_BATTERY,
++					      &drvdata->battery_work_flags);
++	bool remove_battery = test_and_clear_bit(CORSAIR_VOID_REMOVE_BATTERY,
++						 &drvdata->battery_work_flags);
++	bool update_battery = test_and_clear_bit(CORSAIR_VOID_UPDATE_BATTERY,
++						 &drvdata->battery_work_flags);
++
++	if (add_battery && !remove_battery) {
++		corsair_void_add_battery(drvdata);
++	} else if (remove_battery && !add_battery && drvdata->battery) {
++		power_supply_unregister(drvdata->battery);
++		drvdata->battery = NULL;
++	}
++
++	if (update_battery && drvdata->battery)
++		power_supply_changed(drvdata->battery);
++
++}
++
+ static void corsair_void_headset_connected(struct corsair_void_drvdata *drvdata)
+ {
+-	schedule_work(&drvdata->battery_add_work);
++	set_bit(CORSAIR_VOID_ADD_BATTERY, &drvdata->battery_work_flags);
++	schedule_work(&drvdata->battery_work);
+ 	schedule_delayed_work(&drvdata->delayed_firmware_work,
+ 			      msecs_to_jiffies(100));
+ }
+ 
+ static void corsair_void_headset_disconnected(struct corsair_void_drvdata *drvdata)
+ {
+-	schedule_work(&drvdata->battery_remove_work);
++	set_bit(CORSAIR_VOID_REMOVE_BATTERY, &drvdata->battery_work_flags);
++	schedule_work(&drvdata->battery_work);
+ 
+ 	corsair_void_set_unknown_wireless_data(drvdata);
+ 	corsair_void_set_unknown_batt(drvdata);
+@@ -678,13 +688,7 @@ static int corsair_void_probe(struct hid_device *hid_dev,
+ 	drvdata->battery_desc.get_property = corsair_void_battery_get_property;
+ 
+ 	drvdata->battery = NULL;
+-	INIT_WORK(&drvdata->battery_remove_work,
+-		  corsair_void_battery_remove_work_handler);
+-	INIT_WORK(&drvdata->battery_add_work,
+-		  corsair_void_battery_add_work_handler);
+-	ret = devm_mutex_init(drvdata->dev, &drvdata->battery_mutex);
+-	if (ret)
+-		return ret;
++	INIT_WORK(&drvdata->battery_work, corsair_void_battery_work_handler);
+ 
+ 	ret = sysfs_create_group(&hid_dev->dev.kobj, &corsair_void_attr_group);
+ 	if (ret)
+@@ -721,8 +725,7 @@ static void corsair_void_remove(struct hid_device *hid_dev)
+ 	struct corsair_void_drvdata *drvdata = hid_get_drvdata(hid_dev);
+ 
+ 	hid_hw_stop(hid_dev);
+-	cancel_work_sync(&drvdata->battery_remove_work);
+-	cancel_work_sync(&drvdata->battery_add_work);
++	cancel_work_sync(&drvdata->battery_work);
+ 	if (drvdata->battery)
+ 		power_supply_unregister(drvdata->battery);
+ 
+-- 
+2.47.2
+
 
