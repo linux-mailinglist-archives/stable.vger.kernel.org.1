@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-115989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB56A3468F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38EFA344BB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B2081894CFA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178C33AD5C0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E99913D8A4;
-	Thu, 13 Feb 2025 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DD9139579;
+	Thu, 13 Feb 2025 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyKvtas9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="roEHrrEv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A72D335BA;
-	Thu, 13 Feb 2025 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D11626B0BB;
+	Thu, 13 Feb 2025 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459948; cv=none; b=Ocd23x4brd7lUPGEeS6B2Qow9v/Bpt7EpGxTU75yGkV5fvE7tto0U0mvrAJtAW2jTCIWeO1B3Zl8ZwaLyp2CGYkQYM7JDZ3tleycJms39Ac4RMre8NxalE2uWD5sZ1eFENAqxtEpUMo3Ty2XUqEBXZiANPWUGBFQbqXCr/jbvFc=
+	t=1739458430; cv=none; b=hPvLGnr3U8VpYCMTcxVeF5Rq9fiEfhI9jtf0qm+G+zTPA/FkyKPCjBnFZTGzzrIXam4WJMVTsJzHhCWwyc/3T3bYooZxhS9uIQ89/jqrbg/lwt/2TSjNjdu2uXxeIr16DX7zqLZKQSjNRqshigG0QpKQUd+V7Oq7WCl+8G4mv74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459948; c=relaxed/simple;
-	bh=mMfjpQjTp2em1HYmrMcJuSn993YnpNFWhZrHYE/Qxg8=;
+	s=arc-20240116; t=1739458430; c=relaxed/simple;
+	bh=WAYKlkApqHgzHS/3NhYeVhSpbgKhWh0Drg+HNAmabN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaVmQBI6C6Aih5QkCg5nxCt4Dz/jweiSUNjl0vu9hru6XtIamOgBDYIEJpHd1CN1W3ecsjtgPCsxH/XhQvfW5tljJHbsVZZs2dZ9OWbhl46+vIuwKn2ykdMT3JkdH3P4h4TWpLpqCuVZzRPtM8ukbO9MgRTC0cwJ2VjdeaAiPog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyKvtas9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EC2C4CED1;
-	Thu, 13 Feb 2025 15:19:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qJawmFcAXSbChrUy/hiI7nLt0fJdg/K9gvIK3zP7s1y/jO/p9SSDXuYXL1Tzs0RxGgwl+ybiwILVqF0vsMzy+/Ivpjz+J9YMu81J/te+x057/DL13eSUHPdGuSTng6kGawJc0g0FN+eHWCP79b0Cz6ZKJ4Pom8LIJDbiEfkUFDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=roEHrrEv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0255C4CED1;
+	Thu, 13 Feb 2025 14:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459948;
-	bh=mMfjpQjTp2em1HYmrMcJuSn993YnpNFWhZrHYE/Qxg8=;
+	s=korg; t=1739458430;
+	bh=WAYKlkApqHgzHS/3NhYeVhSpbgKhWh0Drg+HNAmabN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyKvtas9f7Su2ImjmCjqADsNviZ9i0FZTeyus9ijmgu6mNavzLkvlHCCr4wNXqEit
-	 bPWzOmzvx5oZBQsFis3R/x855a8ytUApRvLm7Nq+KsOGIuJUSPqKEsBwEhA57/B9qw
-	 N2ptkGAuJ5cUQdSmdzh3lRIbqm8gHBm5FMzdf6aM=
+	b=roEHrrEvlZEVKpRjEGqXJjgyjxA1iu8SyhnU+MsSdCScHrx7hgSXdX4yXA9XfM8+T
+	 bbJSkAAaFj8aO1h9VZnCby3iQi4lldpr3NbD+ohpJeU5RLJ/EcR3KtVpbG1NxJrzbA
+	 ciRpM769WrMllPK8J/o50Y7IxmEI/iUnMJCHO9Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Pavithra Prakash <pavrampu@linux.ibm.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Luiz Capitulino <luizcap@redhat.com>,
-	David Rientjes <rientjes@google.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Gang Li <gang.li@linux.dev>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 380/443] mm/hugetlb: fix hugepage allocation for interleaved memory nodes
+	WangYuli <wangyuli@uniontech.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 396/422] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
 Date: Thu, 13 Feb 2025 15:29:05 +0100
-Message-ID: <20250213142455.269363213@linuxfoundation.org>
+Message-ID: <20250213142451.827710692@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 76e961157e078bc5d3cd2df08317e00b00a829eb upstream.
+commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
 
-gather_bootmem_prealloc() assumes the start nid as 0 and size as
-num_node_state(N_MEMORY).  That means in case if memory attached numa
-nodes are interleaved, then gather_bootmem_prealloc_parallel() will fail
-to scan few of these nodes.
+Declare ftrace_get_parent_ra_addr() as static to suppress clang
+compiler warning that 'no previous prototype'. This function is
+not intended to be called from other parts.
 
-Since memory attached numa nodes can be interleaved in any fashion, hence
-ensure that the current code checks for all numa node ids
-(.size = nr_node_ids). Let's still keep max_threads as N_MEMORY, so that
-it can distributes all nr_node_ids among the these many no. threads.
+Fix follow error with clang-19:
 
-e.g. qemu cmdline
-========================
-numa_cmd="-numa node,nodeid=1,memdev=mem1,cpus=2-3 -numa node,nodeid=0,cpus=0-1 -numa dist,src=0,dst=1,val=20"
-mem_cmd="-object memory-backend-ram,id=mem1,size=16G"
+arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      |               ^
+arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      | ^
+      | static
+1 error generated.
 
-w/o this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
-==========================
-~ # cat /proc/meminfo  |grep -i huge
-AnonHugePages:         0 kB
-ShmemHugePages:        0 kB
-FileHugePages:         0 kB
-HugePages_Total:       0
-HugePages_Free:        0
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-Hugepagesize:    1048576 kB
-Hugetlb:               0 kB
-
-with this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
-===========================
-~ # cat /proc/meminfo |grep -i huge
-AnonHugePages:         0 kB
-ShmemHugePages:        0 kB
-FileHugePages:         0 kB
-HugePages_Total:       2
-HugePages_Free:        2
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-Hugepagesize:    1048576 kB
-Hugetlb:         2097152 kB
-
-Link: https://lkml.kernel.org/r/f8d8dad3a5471d284f54185f65d575a6aaab692b.1736592534.git.ritesh.list@gmail.com
-Fixes: b78b27d02930 ("hugetlb: parallelize 1G hugetlb initialization")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reported-by: Pavithra Prakash <pavrampu@linux.ibm.com>
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Gang Li <gang.li@linux.dev>
-Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |    2 +-
+ arch/mips/kernel/ftrace.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3273,7 +3273,7 @@ static void __init gather_bootmem_preall
- 		.thread_fn	= gather_bootmem_prealloc_parallel,
- 		.fn_arg		= NULL,
- 		.start		= 0,
--		.size		= num_node_state(N_MEMORY),
-+		.size		= nr_node_ids,
- 		.align		= 1,
- 		.min_chunk	= 1,
- 		.max_threads	= num_node_state(N_MEMORY),
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(v
+ #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
+ #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
+ 
+-unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
++static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+ 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
+ {
+ 	unsigned long sp, ip, tmp;
 
 
 
