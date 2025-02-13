@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-116116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7C0A34730
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633EBA34651
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C29C162B7D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 584E23B244C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31E415A868;
-	Thu, 13 Feb 2025 15:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7826B097;
+	Thu, 13 Feb 2025 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g64ZMYzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlqgmV2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88014143736;
-	Thu, 13 Feb 2025 15:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FBE26B09E;
+	Thu, 13 Feb 2025 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460378; cv=none; b=IBvTAkwOm5lDZSBnHZTuKbjUpGKmK6JKPB56JYcL1vPM40jx19TDV8cCgbMg/r7ag7ztDSC/t3FrD/aTYiPXpUJmHBQ0j17lNako21IYYErF6PrvxONaJnyxh4lZnHu31Ay1/Vpta2aoxySdEDY8Ki948UYo21ByMBoxclKpAWA=
+	t=1739459528; cv=none; b=Lo+6VGRkH5nDvJkE/M3NshQiCA3lzuEvfuzUugoDmZL94ds8b34dXabtdyymoFLijupZq/rNP6H5JCJr3CVxxGpc3j2olJ6j1J7RzAeoG4KaUELtq7BuyOoh6jg2kTn5fdlZs68ZIvGSHzi+emVh7LDCE/ZAEa7xKhY4e0acI5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460378; c=relaxed/simple;
-	bh=EGKLViv7PAWKlOlfef+wIS4g0OE5WMycD5thbNFnwwo=;
+	s=arc-20240116; t=1739459528; c=relaxed/simple;
+	bh=voZPzpVgyv0NspStBAwUYW6ET7UbFHFEcwww57M3CGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sN+2/KUc7++rmjgekJrMgAU0QN2chm+ySP2Jqv3S7dFJhhea1all5zM1qMRmLB31c3jDNBhxbF3iMy98L3LjLBoYCZIoh6KNxM76sFbCNdGsYGJPuMwDpzMFPWOilzWl3t6r5i7PJTSQA/7j9EvLItKQulxyN4jys3yzqKP8OjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g64ZMYzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D39C4CED1;
-	Thu, 13 Feb 2025 15:26:17 +0000 (UTC)
+	 MIME-Version; b=gPvwYK1R9jI9FqNZRJRRpHFHapSxtr8SizCUR7/UlXuFelFpd8eBdTSH1B4JLxYRifCk7abwI1n9SKUT/CK9mjvpI9Ykvx25xFsMrAV2XMajkAxbFusI4Yme4xyAMke1wGOHOR24CRqYEgi/vMV+Y3Z5hN/8V5cGW5jqK4Plxuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlqgmV2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0B2C4CED1;
+	Thu, 13 Feb 2025 15:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460378;
-	bh=EGKLViv7PAWKlOlfef+wIS4g0OE5WMycD5thbNFnwwo=;
+	s=korg; t=1739459528;
+	bh=voZPzpVgyv0NspStBAwUYW6ET7UbFHFEcwww57M3CGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g64ZMYzbbL4aRJgikv+m3zaRCMMAIOz3z/dNJrgzrRL3QzzbaLy33MIab6xRvL8nS
-	 Ewrs1kjxsQ0TcXp96ThwhzXh/X1icmd5F02RbsD65hfu5otcjCJaGbhMIrKb3MoH5S
-	 u/LV9qijhXVyuccpBFL+leX50IciMIJPoGCDCC6k=
+	b=jlqgmV2MCuh6lI1k30ZdeaIg53eD8CqWR3JynwdJjD1dP/t45YFjwCwS/7c19Q6G0
+	 PLmOyntQ2NekruTQ3rE8aLX/+k+v+f+38g7rHz6GjWrFrXRVO5TBNna7CCcQ89Eje2
+	 S9LU9ZMgp1vXJuLXcF4P3obMmtXo6GVnOge0Wbqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/273] vmxnet3: Fix tx queue race condition with XDP
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.13 274/443] PCI: endpoint: Finish virtual EP removal in pci_epf_remove_vepf()
 Date: Thu, 13 Feb 2025 15:27:19 +0100
-Message-ID: <20250213142410.003070152@linuxfoundation.org>
+Message-ID: <20250213142451.183042635@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 3f1baa91a1fdf3de9dbad4bd615b35fab347874b ]
+commit 3b9f942eb21c92041905e3943a8d5177c9a9d89d upstream.
 
-If XDP traffic runs on a CPU which is greater than or equal to
-the number of the Tx queues of the NIC, then vmxnet3_xdp_get_tq()
-always picks up queue 0 for transmission as it uses reciprocal scale
-instead of simple modulo operation.
+When removing a virtual Endpoint, pci_epf_remove_vepf() failed to clear
+epf_vf->epf_pf, which caused a subsequent pci_epf_add_vepf() to incorrectly
+return -EBUSY:
 
-vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() use the above
-returned queue without any locking which can lead to race conditions
-when multiple XDP xmits run in parallel on different CPU's.
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add
+  pci_epf_remove_vepf(epf_pf, epf_vf)   // remove
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add again, -EBUSY error
 
-This patch uses a simple module scheme when the current CPU equals or
-exceeds the number of Tx queues on the NIC. It also adds locking in
-vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() functions.
+Fix by clearing epf_vf->epf_pf in pci_epf_remove_vepf().
 
-Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
-Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250131042340.156547-1-sankararaman.jayaraman@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com
+Fixes: 1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vmxnet3/vmxnet3_xdp.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
-index 1341374a4588a..616ecc38d1726 100644
---- a/drivers/net/vmxnet3/vmxnet3_xdp.c
-+++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
-@@ -28,7 +28,7 @@ vmxnet3_xdp_get_tq(struct vmxnet3_adapter *adapter)
- 	if (likely(cpu < tq_number))
- 		tq = &adapter->tx_queue[cpu];
- 	else
--		tq = &adapter->tx_queue[reciprocal_scale(cpu, tq_number)];
-+		tq = &adapter->tx_queue[cpu % tq_number];
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -202,6 +202,7 @@ void pci_epf_remove_vepf(struct pci_epf
  
- 	return tq;
+ 	mutex_lock(&epf_pf->lock);
+ 	clear_bit(epf_vf->vfunc_no, &epf_pf->vfunction_num_map);
++	epf_vf->epf_pf = NULL;
+ 	list_del(&epf_vf->list);
+ 	mutex_unlock(&epf_pf->lock);
  }
-@@ -124,6 +124,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 	u32 buf_size;
- 	u32 dw2;
- 
-+	spin_lock_irq(&tq->tx_lock);
- 	dw2 = (tq->tx_ring.gen ^ 0x1) << VMXNET3_TXD_GEN_SHIFT;
- 	dw2 |= xdpf->len;
- 	ctx.sop_txd = tq->tx_ring.base + tq->tx_ring.next2fill;
-@@ -134,6 +135,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 
- 	if (vmxnet3_cmd_ring_desc_avail(&tq->tx_ring) == 0) {
- 		tq->stats.tx_ring_full++;
-+		spin_unlock_irq(&tq->tx_lock);
- 		return -ENOSPC;
- 	}
- 
-@@ -142,8 +144,10 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 		tbi->dma_addr = dma_map_single(&adapter->pdev->dev,
- 					       xdpf->data, buf_size,
- 					       DMA_TO_DEVICE);
--		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr))
-+		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr)) {
-+			spin_unlock_irq(&tq->tx_lock);
- 			return -EFAULT;
-+		}
- 		tbi->map_type |= VMXNET3_MAP_SINGLE;
- 	} else { /* XDP buffer from page pool */
- 		page = virt_to_page(xdpf->data);
-@@ -182,6 +186,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 	dma_wmb();
- 	gdesc->dword[2] = cpu_to_le32(le32_to_cpu(gdesc->dword[2]) ^
- 						  VMXNET3_TXD_GEN);
-+	spin_unlock_irq(&tq->tx_lock);
- 
- 	/* No need to handle the case when tx_num_deferred doesn't reach
- 	 * threshold. Backend driver at hypervisor side will poll and reset
-@@ -225,6 +230,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
- {
- 	struct vmxnet3_adapter *adapter = netdev_priv(dev);
- 	struct vmxnet3_tx_queue *tq;
-+	struct netdev_queue *nq;
- 	int i;
- 
- 	if (unlikely(test_bit(VMXNET3_STATE_BIT_QUIESCED, &adapter->state)))
-@@ -236,6 +242,9 @@ vmxnet3_xdp_xmit(struct net_device *dev,
- 	if (tq->stopped)
- 		return -ENETDOWN;
- 
-+	nq = netdev_get_tx_queue(adapter->netdev, tq->qid);
-+
-+	__netif_tx_lock(nq, smp_processor_id());
- 	for (i = 0; i < n; i++) {
- 		if (vmxnet3_xdp_xmit_frame(adapter, frames[i], tq, true)) {
- 			tq->stats.xdp_xmit_err++;
-@@ -243,6 +252,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
- 		}
- 	}
- 	tq->stats.xdp_xmit += i;
-+	__netif_tx_unlock(nq);
- 
- 	return i;
- }
--- 
-2.39.5
-
 
 
 
