@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1DBA343D3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631AEA346EC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A1F63B1015
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2378188CD99
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C000724501D;
-	Thu, 13 Feb 2025 14:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEFA156F5E;
+	Thu, 13 Feb 2025 15:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUksTvFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzrsjvkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5462222B3;
-	Thu, 13 Feb 2025 14:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738F114AD2D;
+	Thu, 13 Feb 2025 15:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458000; cv=none; b=gymq2KICsJRpKyOJjDCaO5FzqLmlh+80uFBeeI3yBcM3rcTuA8KWM7t0xtdmDt4ymqoDbTjgpQtbOpFxcqnYiEa9kOsJMLipCgdTexqTO4H5jjeb147Y1Vzxxky9sB5K3TnoxKAkvltMdBmkA3ZqywTudOvN0327JA+eqNob5VI=
+	t=1739460221; cv=none; b=iCo03QGqgwJVlt+EdyJfTTLIevq8OeZtu9yy8KkyzvnWFKIZqPmtDJ0okBb98xQfoM/eRhWl/DFvpG2q46XnjtcAiNzU4YH8kh3+gEKGF+Ng+BQYrWkQ8GHMwfrRin6ahHKOfySSqynTM2AlFfcAP3Ss6B08dF4AsenhHTFjo2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458000; c=relaxed/simple;
-	bh=6i9nRiFjR2n9dUu5KYlsui5V//HH08wb2LIaNzcja6g=;
+	s=arc-20240116; t=1739460221; c=relaxed/simple;
+	bh=fR4t/vEEUYTBhNagWZ3BR/3fUko4AYC+/5Gvw7FV3CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyijrqoIEa7G3vMsj0K7bVddjkS+aaPVzVqJXcHoCwpvr4FF/jENLBYBtjfGdFaZpma6d2vsh7IRpdL0x0YP9nKOyG0/SLmBZiIetVmSpil+lslTsHBBztGlD2iFCl522Pg65nsi4ESHVrMRFbvpWGXtbyalCFgUd5cvNAAe3g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUksTvFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020C6C4CED1;
-	Thu, 13 Feb 2025 14:46:39 +0000 (UTC)
+	 MIME-Version; b=feoOhjis5X565ozlxfNCgddQBr1nAUQjEob0W/CAlz4QkcfcnLFuHDwUSd2kTfq9i31NpVjkdFJKYoiYhekgCVYtjYUHZ0Cu7fTzZTK1cQVV5sFpGGOq0XyhNN8YdOxhYMY/uduIPPrAAVNu0XI6hSvFTmf34aK9TNlasvLIwN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzrsjvkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85C8C4CED1;
+	Thu, 13 Feb 2025 15:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458000;
-	bh=6i9nRiFjR2n9dUu5KYlsui5V//HH08wb2LIaNzcja6g=;
+	s=korg; t=1739460221;
+	bh=fR4t/vEEUYTBhNagWZ3BR/3fUko4AYC+/5Gvw7FV3CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUksTvFcDzdI/UCWPhWsdOt8DkCwsXioxsvwNXfyU+H4bW13SHI9HeG+DXqIR6aUd
-	 KivJ4S+5Np77oieH7PSLIF1vohn4I0cW7TdNF6EAuj8K2bRvDqUhxT5v8MrSIAyV+i
-	 zgqTBJsAgmTXEwMWoNzvXeeBg7PeZ82mtgLl2ALI=
+	b=LzrsjvkhNN+GpFMv9mW8bBq85+k5KGpRTBJYEboJaS5h5ZROmjJlff6NDb10zrNS+
+	 mMsiaaQetvNtcHgVG5YsvQAQG7eDylh6zESsBcHOEtSZZJifJ/yv4ZEeMV49qUdMs3
+	 xeVFiM+qKGfhsb+StCX9UC/SiAnoI+KLaxD94Kzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 273/422] arm64: dts: qcom: sm6115: Fix CDSP memory length
+	Hans de Goede <hdegoede@redhat.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/273] ASoC: soc-pcm: dont use soc_pcm_ret() on .prepare callback
 Date: Thu, 13 Feb 2025 15:27:02 +0100
-Message-ID: <20250213142447.078356181@linuxfoundation.org>
+Message-ID: <20250213142409.328388909@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 846f49c3f01680f4af3043bf5b7abc9cf71bb42d upstream.
+[ Upstream commit 301c26a018acb94dd537a4418cefa0f654500c6f ]
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x4040.  Value of 0x100000 covers
-entire Touring/CDSP memory block seems to big here.
+commit 1f5664351410 ("ASoC: lower "no backend DAIs enabled for ... Port"
+log severity") ignores -EINVAL error message on common soc_pcm_ret().
+It is used from many functions, ignoring -EINVAL is over-kill.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+The reason why -EINVAL was ignored was it really should only be used
+upon invalid parameters coming from userspace and in that case we don't
+want to log an error since we do not want to give userspace a way to do
+a denial-of-service attack on the syslog / diskspace.
 
-Cc: stable@vger.kernel.org
-Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-22-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So don't use soc_pcm_ret() on .prepare callback is better idea.
+
+Link: https://lore.kernel.org/r/87v7vptzap.wl-kuninori.morimoto.gx@renesas.com
+Cc: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87bjxg8jju.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-pcm.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2744,7 +2744,7 @@
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 511446a30c057..60248a6820aac 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -38,7 +38,6 @@ static inline int _soc_pcm_ret(struct snd_soc_pcm_runtime *rtd,
+ 	switch (ret) {
+ 	case -EPROBE_DEFER:
+ 	case -ENOTSUPP:
+-	case -EINVAL:
+ 		break;
+ 	default:
+ 		dev_err(rtd->dev,
+@@ -902,7 +901,13 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
+ 	}
  
- 		remoteproc_cdsp: remoteproc@b300000 {
- 			compatible = "qcom,sm6115-cdsp-pas";
--			reg = <0x0 0x0b300000 0x0 0x100000>;
-+			reg = <0x0 0x0b300000 0x0 0x4040>;
+ out:
+-	return soc_pcm_ret(rtd, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
  
- 			interrupts-extended = <&intc GIC_SPI 265 IRQ_TYPE_EDGE_RISING>,
- 					      <&cdsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+ /* PCM prepare ops for non-DPCM streams */
+@@ -914,6 +919,13 @@ static int soc_pcm_prepare(struct snd_pcm_substream *substream)
+ 	snd_soc_dpcm_mutex_lock(rtd);
+ 	ret = __soc_pcm_prepare(rtd, substream);
+ 	snd_soc_dpcm_mutex_unlock(rtd);
++
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
+ 	return ret;
+ }
+ 
+@@ -2461,7 +2473,13 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
+ 		be->dpcm[stream].state = SND_SOC_DPCM_STATE_PREPARE;
+ 	}
+ 
+-	return soc_pcm_ret(fe, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
+ 
+ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
+@@ -2501,7 +2519,13 @@ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
+ 	dpcm_set_fe_update_state(fe, stream, SND_SOC_DPCM_UPDATE_NO);
+ 	snd_soc_dpcm_mutex_unlock(fe);
+ 
+-	return soc_pcm_ret(fe, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
+ 
+ static int dpcm_run_update_shutdown(struct snd_soc_pcm_runtime *fe, int stream)
+-- 
+2.39.5
+
 
 
 
