@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601F3A346A7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10089A347DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3471897E52
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3EFF1885FD0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EEC139566;
-	Thu, 13 Feb 2025 15:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E1314F121;
+	Thu, 13 Feb 2025 15:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0xJL3wL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHp3cK0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943612A1CF;
-	Thu, 13 Feb 2025 15:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D687C70805;
+	Thu, 13 Feb 2025 15:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460022; cv=none; b=tw9LPMTvGti1l7vwqI8xGH21j+sj9a+4TfrxCsMTWd9L8Zb4lm+Rnhdf838KVmcpe+Rk9yYmE5sszhCJh7QVU2srO1vNtMA3gCAA8zpfzSK0zxHuspFKA2SQXeTfSN7yrMsGWmIsl+vqsNUAJCfBjPyBtF0l0fzONmzQI6bkEMU=
+	t=1739460842; cv=none; b=QeagFVbIyoAj2ZrNdexYdtevmy+0zF22R/+CKvcUTcTBYqrD8mc5e63a2mX2uBHBs8OpEVZa1BdFn9rOLFTteCNIjSUXVfoV7dnltQTIjvLntgDZfBkONQP5XGEDOTLN6jAQb+b1YOd3Fp754MjihY19lvoZtupXqK8YUF8LQwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460022; c=relaxed/simple;
-	bh=+9fUBj1pFnTmt1XKZJ+mfsNde2QQHvda7L/RSYuHBSI=;
+	s=arc-20240116; t=1739460842; c=relaxed/simple;
+	bh=oQvTLn5xl6+vuoTViIrr5+nvhZCArB2XC3V7cQOcXGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WzPdQr5smiBrA0cULEFyyRNj7FtScCOMRebSkEvzdxwf6b0GvH9IxBrbbKqk8QEm8DXMK+poSA8gGnLQhS9Me1v+J3rJEOZlm6wFiy3vE+yas1hg3jkux88AmTbMTqdm3/OZLfdCQTOxmIa554pEcVqItcuDM96zOqE/7cMaGjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0xJL3wL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A68C4CED1;
-	Thu, 13 Feb 2025 15:20:21 +0000 (UTC)
+	 MIME-Version; b=R9UJeAeCOCTXvFTHw/uFQ1eb8QvNPuDYGr/SekaTA1o6oRt7+sg+hVHAW4I3eapDjIYoB7Sq1BBGRI81S7e967sxVuzl5ztupPgkYUz8hPnLiF2v3OvHDmCgHArzGMstpj1hjBRie3EfyI/OBKSWq7h86ajbftmjwkSCzK9/OdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHp3cK0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BE2C4CED1;
+	Thu, 13 Feb 2025 15:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460022;
-	bh=+9fUBj1pFnTmt1XKZJ+mfsNde2QQHvda7L/RSYuHBSI=;
+	s=korg; t=1739460842;
+	bh=oQvTLn5xl6+vuoTViIrr5+nvhZCArB2XC3V7cQOcXGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0xJL3wLsoqapQ404h8KZyb7GMHOVV8gCfi9agWgDgF/P9Zx/xHLs78p8IQ4hKcEt
-	 hVq1wB5pLaq2P7z4TOJrLXsxJMgvCgyZRh7RqC2ptCKx+EKsCAL0s+Mwf237C7fD0j
-	 wkqQ3cBorGFHJ0oxmD3U9O2JExQe04dKk+atqrGI=
+	b=hHp3cK0hfkNzEiidcYK9msHkA9jFYmR4+ixaGqKPD4dDdNV09ClqUzxkoeZnE7o6F
+	 UQTTX+Ik14HHQnksujb6vL6uTcxA9jD50nBwaR3I5u8eX/3krovEGDWM/1JcEoOR/t
+	 r8HwYqUpW9CBD5giZ3Q444J5EBXg1jMIxthCObRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.13 434/443] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
-Date: Thu, 13 Feb 2025 15:29:59 +0100
-Message-ID: <20250213142457.365582332@linuxfoundation.org>
+	Muhammad Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Jacob Soo <jacob.soo@starlabs.sg>,
+	Pavel Begunkov <asml.silence@gmail.com>
+Subject: [PATCH 6.6 228/273] io_uring: fix io_req_prep_async with provided buffers
+Date: Thu, 13 Feb 2025 15:30:00 +0100
+Message-ID: <20250213142416.442489926@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
+io_req_prep_async() can import provided buffers, commit the ring state
+by giving up on that before, it'll be reimported later if needed.
 
-Declare ftrace_get_parent_ra_addr() as static to suppress clang
-compiler warning that 'no previous prototype'. This function is
-not intended to be called from other parts.
-
-Fix follow error with clang-19:
-
-arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      |               ^
-arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-      | ^
-      | static
-1 error generated.
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
+Fixes: c7fb19428d67d ("io_uring: add support for ring mapped supplied buffers")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/ftrace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(v
- #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
- #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
- 
--unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
-+static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
- 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1779,6 +1779,7 @@ int io_req_prep_async(struct io_kiocb *r
  {
- 	unsigned long sp, ip, tmp;
+ 	const struct io_cold_def *cdef = &io_cold_defs[req->opcode];
+ 	const struct io_issue_def *def = &io_issue_defs[req->opcode];
++	int ret;
+ 
+ 	/* assign early for deferred execution for non-fixed file */
+ 	if (def->needs_file && !(req->flags & REQ_F_FIXED_FILE) && !req->file)
+@@ -1791,7 +1792,9 @@ int io_req_prep_async(struct io_kiocb *r
+ 		if (io_alloc_async_data(req))
+ 			return -EAGAIN;
+ 	}
+-	return cdef->prep_async(req);
++	ret = cdef->prep_async(req);
++	io_kbuf_recycle(req, 0);
++	return ret;
+ }
+ 
+ static u32 io_get_sequence(struct io_kiocb *req)
 
 
 
