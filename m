@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F73A3457A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F59A3427A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A5F3A1217
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4B13A86E5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415726B0BB;
-	Thu, 13 Feb 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC50C28137F;
+	Thu, 13 Feb 2025 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSz+ldua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gopPob/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF99A1422DD;
-	Thu, 13 Feb 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88265281349;
+	Thu, 13 Feb 2025 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458647; cv=none; b=jh2n9tZETqQDNBh+zJdE8+hQIfy02hRyG6JqVkxz6YB5wzMXqvzqMLy4jNuaKIKyLRwHs0YLKHmdfYBe1jWW6xfAXPSUFpcdRrFUL0PQownSAUZL10cDq3L1P8I6A+gedRQjXt5hoByS6i+/BZLee+dVYd9hvoGScVyU9YswTM4=
+	t=1739457299; cv=none; b=bN7v3exDIGmqYJLAVmrO+f9MYREui9UWMX4R5LjviKjpox439GYvgEc/idyf+BKj1e2oOhoAiQ7R1nikBu888XzQds2pwEgZQhPpeDef7PCTbvhjWzvGYgxyyzZ4ySli8i2/Grkh+9FgYTOGqgKzuDEOvnuT6Tvr44RKS0KnUso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458647; c=relaxed/simple;
-	bh=STYhixLmwO27ci9w/e4ZRCHiufZy62V/Tfl8+BamFE8=;
+	s=arc-20240116; t=1739457299; c=relaxed/simple;
+	bh=KpKqJQrEWy/o0iT4dqPpthTAR7ssz0STOn76TWwat7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fuk20iN2HLpShSESNQTCIyHmyJFLbUiSWQejYRIktBiir807k800yCZ8Q8Kgns1lV83tCLM2H3qa9GeMrPk7mG8yWddhEJdAKqe+dbpd2lChdHm06iurAO120gLCqGH7ZXkbFa6wUlcOY/9E6AY9z0VROvFg4VdRpe5MLLQsNDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSz+ldua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A16C4CED1;
-	Thu, 13 Feb 2025 14:57:26 +0000 (UTC)
+	 MIME-Version; b=i3e7WdFU1S5q9krq48tHhzqBbMO4bANJw/kVtatGvY2t1VlNmo7D93aiRSLwlbfduKZBJ0GT6NkEYuSHBXbD2/dbyYFrfBWh4hwqUfrRW0NjWYZ8c1TUv4c0ZbIvmXOgRw398Zx2I6iSnz85IEUWNJrbRmCN8qF9L/0kpvjHxRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gopPob/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBBAC4CED1;
+	Thu, 13 Feb 2025 14:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458647;
-	bh=STYhixLmwO27ci9w/e4ZRCHiufZy62V/Tfl8+BamFE8=;
+	s=korg; t=1739457299;
+	bh=KpKqJQrEWy/o0iT4dqPpthTAR7ssz0STOn76TWwat7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSz+lduaDlswA6m/ExccxHKybMptdrCHDXLklBOMsLa4Y7qA9qXQVjUpnEQsjXHej
-	 52BqNcX8Lf9oP0vMBZSjwHQDIxgMtjUzz3Z+XGC14bUHBss5Nw0PxiCQw1pSeK9FIu
-	 3HhfG8Ei4XLw/pnvoUfgGiVHjLcd1i1seX98zCVE=
+	b=gopPob/v86PtelUskzohVLVsEoXh+Old9bObaVWra9HJmoll0ME27n536QKuH+mzA
+	 bbBp19GnRcJewYMHDyEEYw2dFA2CVJgpotWW/LuglGvYFhL+xaMv+QfPyaOWXtVxui
+	 C0YAk43HOHye+reXaOhUNfSo8Kx363fmnYGzG5mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 039/443] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
+Subject: [PATCH 6.12 055/422] wifi: rtw88: add __packed attribute to efuse layout struct
 Date: Thu, 13 Feb 2025 15:23:24 +0100
-Message-ID: <20250213142442.133768564@linuxfoundation.org>
+Message-ID: <20250213142438.685496069@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,215 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
+[ Upstream commit 0daa521a1c8c29ffbefe6530f0d276e74e2749d0 ]
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+The layout struct of efuse should not do address alignment by compiler.
+Otherwise it leads unexpected layout and size for certain arch suc as arm.
+In x86-64, the results are identical before and after this patch.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Also adjust bit-field to prevent over adjacent byte to avoid warning:
+  rtw88/rtw8822b.h:66:1: note: offset of packed bit-field `res2` has changed in GCC 4.4
+   66 | } __packed;
+      | ^
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412120131.qk0x6OhE-lkp@intel.com/
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241212054203.135046-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.h     | 4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h | 8 ++++----
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h | 9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h | 9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h | 9 +++++----
+ 5 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
-index 21b46a6465f08..f8bbae6393ef8 100644
---- a/drivers/gpu/drm/sti/sti_hdmi.c
-+++ b/drivers/gpu/drm/sti/sti_hdmi.c
-@@ -1225,7 +1225,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
- 	struct drm_connector *connector = hdmi->drm_connector;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 945117afe1438..c808bb271e9d0 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -508,12 +508,12 @@ struct rtw_5g_txpwr_idx {
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_2s_diff;
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_3s_diff;
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_4s_diff;
+-};
++} __packed;
  
- 	DRM_DEBUG_DRIVER("\n");
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
-+	mutex_unlock(&connector->eld_mutex);
+ struct rtw_txpwr_idx {
+ 	struct rtw_2g_txpwr_idx pwr_idx_2g;
+ 	struct rtw_5g_txpwr_idx pwr_idx_5g;
+-};
++} __packed;
  
- 	return 0;
- }
+ struct rtw_channel_params {
+ 	u8 center_chan;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+index e93bfce994bf8..a99af527c92cf 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+@@ -47,7 +47,7 @@ struct rtw8723xe_efuse {
+ 	u8 device_id[2];
+ 	u8 sub_vendor_id[2];
+ 	u8 sub_device_id[2];
+-};
++} __packed;
+ 
+ struct rtw8723xu_efuse {
+ 	u8 res4[48];                    /* 0xd0 */
+@@ -56,12 +56,12 @@ struct rtw8723xu_efuse {
+ 	u8 usb_option;                  /* 0x104 */
+ 	u8 res5[2];			/* 0x105 */
+ 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
+-};
++} __packed;
+ 
+ struct rtw8723xs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+ 	u8 mac_addr[ETH_ALEN];		/* 0x11a */
+-};
++} __packed;
+ 
+ struct rtw8723x_efuse {
+ 	__le16 rtl_id;
+@@ -96,7 +96,7 @@ struct rtw8723x_efuse {
+ 		struct rtw8723xu_efuse u;
+ 		struct rtw8723xs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ #define RTW8723X_IQK_ADDA_REG_NUM	16
+ #define RTW8723X_IQK_MAC8_REG_NUM	3
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+index 91ed921407bbe..10172f4d74bf2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+@@ -27,7 +27,7 @@ struct rtw8821cu_efuse {
+ 	u8 res11[0xcf];
+ 	u8 package_type;		/* 0x1fb */
+ 	u8 res12[0x4];
+-};
++} __packed;
+ 
+ struct rtw8821ce_efuse {
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
+@@ -47,7 +47,8 @@ struct rtw8821ce_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 res4[3];
+@@ -63,7 +64,7 @@ struct rtw8821ce_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8821cs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+@@ -101,7 +102,7 @@ struct rtw8821c_efuse {
+ 		struct rtw8821cu_efuse u;
+ 		struct rtw8821cs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+index cf85e63966a1c..e815bc97c218a 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+@@ -27,7 +27,7 @@ struct rtw8822bu_efuse {
+ 	u8 res11[0xcf];
+ 	u8 package_type;		/* 0x1fb */
+ 	u8 res12[0x4];
+-};
++} __packed;
+ 
+ struct rtw8822be_efuse {
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
+@@ -47,7 +47,8 @@ struct rtw8822be_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 res4[3];
+@@ -63,7 +64,7 @@ struct rtw8822be_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8822bs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+@@ -103,7 +104,7 @@ struct rtw8822b_efuse {
+ 		struct rtw8822bu_efuse u;
+ 		struct rtw8822bs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+index e2b383d633cd2..fc62b67a15f21 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+@@ -14,7 +14,7 @@ struct rtw8822cu_efuse {
+ 	u8 res1[3];
+ 	u8 mac_addr[ETH_ALEN];		/* 0x157 */
+ 	u8 res2[0x3d];
+-};
++} __packed;
+ 
+ struct rtw8822cs_efuse {
+ 	u8 res0[0x4a];			/* 0x120 */
+@@ -39,7 +39,8 @@ struct rtw8822ce_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 class_code[3];
+@@ -55,7 +56,7 @@ struct rtw8822ce_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8822c_efuse {
+ 	__le16 rtl_id;
+@@ -102,7 +103,7 @@ struct rtw8822c_efuse {
+ 		struct rtw8822cu_efuse u;
+ 		struct rtw8822cs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ enum rtw8822c_dpk_agc_phase {
+ 	RTW_DPK_GAIN_CHECK,
 -- 
 2.39.5
 
