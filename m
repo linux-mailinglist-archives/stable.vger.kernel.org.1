@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20247A345CB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB16A343C4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0869916C3A0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1EBA1893FF8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D159726B088;
-	Thu, 13 Feb 2025 15:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A9223A993;
+	Thu, 13 Feb 2025 14:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0XPggbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH8DZqew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECE526B082;
-	Thu, 13 Feb 2025 15:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5F22222BB;
+	Thu, 13 Feb 2025 14:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459283; cv=none; b=CBBFKiyxIRemMFkPmo8gmV7LMODTdLYK4f2CVEDoWk6lLrTc945AB5L941pMI02wx0R/iNstHkgI+aRLHRIImpymQRItUOCMfAzFN4wPK5uDU4SAmKvKxP8U8UzSBtmbdJFKeHDvyfQgoXIqyU7PTIbqLD1xoUqFixa4/jeh2q8=
+	t=1739457987; cv=none; b=riu/Zdx/mEk9DZ2eaDMCMy5+Lq4slu4H0zCXMHvMd74nRllHsTUY9/Onc7o3sfy5f7vJ18ZZ4sHVQxtCCJXsmRKeib/hbyebrE/1gwqetBEs+bR7VPziKrkYKuXcDaoKGWfvGUuwiDjwVu0EXsdqmRT1vx6eYixLwEHqJ73ASYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459283; c=relaxed/simple;
-	bh=Zy+9KjbU9AvxBXLPgzdgpwU9IMUKwFIzZFsZ/w7eFQs=;
+	s=arc-20240116; t=1739457987; c=relaxed/simple;
+	bh=EBHmPj3Fl7/8zl6787sDOfKhqbgVR6vcF+pae6e3f1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WiuJ2nIX6TM+CKWAPHpT7CbsnRTfSMIQ+j4knm8hBsRGC/VPrncesI8arF7502EwNGUQbWC93vsUOhomOjYS3qoWtxVz1+sjYZiAwPyPVNUmSfMcp5zJZYWpvlBJGqblqlDP8VNPpCL8QekxI6j0dhNiK+x3neV/oBbKFAeNPYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0XPggbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3855C4CED1;
-	Thu, 13 Feb 2025 15:08:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kxj/g3Ro8ccE6I+HxMUbDbUZ0873eP7aOFb1kWHAEi49mWDmaIniLOL2Hrl+u4rw9cIT3UeyaqFa/Z9IID9Drk7U3x8wN0aRPv4gT7e30XClINmhBETw29c0big3vvKd27n09MtnWVft9ZS/DOgXJKNxz6iKlrPWfH5hJ3Oxh2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH8DZqew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF6C4CED1;
+	Thu, 13 Feb 2025 14:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459283;
-	bh=Zy+9KjbU9AvxBXLPgzdgpwU9IMUKwFIzZFsZ/w7eFQs=;
+	s=korg; t=1739457987;
+	bh=EBHmPj3Fl7/8zl6787sDOfKhqbgVR6vcF+pae6e3f1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0XPggbKbtLk7R73zKof0EeSCSpjvdf3KYgq2iT80ZA84+ZMU8sDE1AVp63gT4cvS
-	 T/ndwAcs63PhY39kgCANk4MOI6m55BxYBehZWSsCIaKuUdVUgKDb9+59b+5anqHMrC
-	 EBBPjkNftoKQpTdR5F+wo5h3SBfU16vcCwEWKmXo=
+	b=OH8DZqewN4pdYV5/xnvE9CmTAIY6iOBAY2AMxm4GuFHdImWnCFTlxEYDiHMAkmMk/
+	 /lpfVxLghfY+Yup03ObAHzXhceREDx69sbx/O8tEsYh2Qj+G3/QRqlb0FgQ0iH8omN
+	 b5jf/OzWq7nMD5h/mXAvBoWxbj9w64gA4gQw9RVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 220/443] Input: bbnsm_pwrkey - add remove hook
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 236/422] MIPS: pci-legacy: Override pci_address_to_pio
 Date: Thu, 13 Feb 2025 15:26:25 +0100
-Message-ID: <20250213142449.102658024@linuxfoundation.org>
+Message-ID: <20250213142445.642310438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 55b75306c3edf369285ce22ba1ced45e335094c2 upstream.
+commit df1b8d6e89db0edd572a1e375f5d3dd5575b9a9b upstream.
 
-Without remove hook to clear wake irq, there will be kernel dump when
-doing module test.
-"bbnsm_pwrkey 44440000.bbnsm:pwrkey: wake irq already initialized"
+pci-legacy systems are not using logic_pio to managed PIO
+allocations, thus the generic pci_address_to_pio won't work
+when PCI_IOBASE is defined.
 
-Add remove hook to clear wake irq and set wakeup to false.
+Override the function to use architecture implementation to
+fix the problem.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Fixes: 40e40fdfec3f ("Input: bbnsm_pwrkey - add bbnsm power key support")
-Link: https://lore.kernel.org/r/20241212030322.3110017-1-peng.fan@oss.nxp.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 4bfb53e7d317 ("mips: add <asm-generic/io.h> including")
+Reported-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Closes: https://lore.kernel.org/r/99f75c66-4c2d-45dc-a808-b5ba440c7551@app.fastmail.com/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/nxp-bbnsm-pwrkey.c |    8 ++++++++
+ arch/mips/pci/pci-legacy.c |    8 ++++++++
  1 file changed, 8 insertions(+)
 
---- a/drivers/input/misc/nxp-bbnsm-pwrkey.c
-+++ b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-@@ -187,6 +187,12 @@ static int bbnsm_pwrkey_probe(struct pla
- 	return 0;
- }
+--- a/arch/mips/pci/pci-legacy.c
++++ b/arch/mips/pci/pci-legacy.c
+@@ -29,6 +29,14 @@ static LIST_HEAD(controllers);
  
-+static void bbnsm_pwrkey_remove(struct platform_device *pdev)
+ static int pci_initialized;
+ 
++unsigned long pci_address_to_pio(phys_addr_t address)
 +{
-+	dev_pm_clear_wake_irq(&pdev->dev);
-+	device_init_wakeup(&pdev->dev, false);
++	if (address > IO_SPACE_LIMIT)
++		return (unsigned long)-1;
++
++	return (unsigned long) address;
 +}
 +
- static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
-@@ -223,6 +229,8 @@ static struct platform_driver bbnsm_pwrk
- 		.of_match_table = bbnsm_pwrkey_ids,
- 	},
- 	.probe = bbnsm_pwrkey_probe,
-+	.remove = bbnsm_pwrkey_remove,
-+
- };
- module_platform_driver(bbnsm_pwrkey_driver);
- 
+ /*
+  * We need to avoid collisions with `mirrored' VGA ports
+  * and other strange ISA hardware, so we always want the
 
 
 
