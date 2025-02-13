@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D74A3464E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB5DA344DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A3F1188E79B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10D3F3B0ED8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C435B2A1CF;
-	Thu, 13 Feb 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBB31AA786;
+	Thu, 13 Feb 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0ZqRzOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Egc14aUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8321826B0A5;
-	Thu, 13 Feb 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C8718991E;
+	Thu, 13 Feb 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459901; cv=none; b=ui8/REcnQL0BE8pEfkdGehMRRil5IDxasRcnQyOZ99Uajn8rzVv5/CLzHG28gW4QhAvL3sGE3bR1yWMr0jKlLmIyGOkmrRLgHZc5EYkNFRtlkaf1t9u5vCZhPFD4GyO5HBMEKThivjenwl2FoaNwGMbpX3YrXPUsj7LK1+fngQA=
+	t=1739458482; cv=none; b=Rl8gucojPesbCVioS5+3dgi5wUhGnXZH5igaQpXC910hEtAINLp9n9aDfa5XZoSmv7vRLgafQfIr02NNNdqwHywWkOz06nnTCt3rv/i2fQVXWCH0z2DLE4y+R8SenuOCKxzTmLwR3+Jt/npx/Wf0mh/HJSf8VTHwoi9Kgs54vhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459901; c=relaxed/simple;
-	bh=6M5kfZ8U+gLJFteUYU61T7tmBEVAxmvTUXvsW8O4/V4=;
+	s=arc-20240116; t=1739458482; c=relaxed/simple;
+	bh=z8c+CITP+6rtbIjOHvjyy1XcLwiD7iJ42jP2HXg7x4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gu92+uA/PLh0M/0hKft8xNbWpxXpJ8/ZYNRZsPOc+yLlHJS6hY99eMcaXa8Q0Nm02LFBxpmdHwMMnGvA4RH5rSJtfApZjevfGaPJtBKEJYEib7UlhvgoLxbJPGn/VM9RkTQPdGHemw42InHrhOYpq/dUQG/p40PPRKOScMzFtug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0ZqRzOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0897EC4CEE4;
-	Thu, 13 Feb 2025 15:18:20 +0000 (UTC)
+	 MIME-Version; b=Vsea7Sv42v8a4Au+dw2x4Ero4NoQ9s3KhfgWBmo+H3/cRvDRCAT4OYxNnN2TwqTEoi4SAIPRWk/p8oF2zx8Ir2OVZBehwZtguTR/fdbIhDaGSCVa2yFGN7mzlfbdTeGs2VkpluTSJGv9o9uHm7Xqw2Gg75HD+0PKrUZtV+UlKRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Egc14aUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A6DC4CEE5;
+	Thu, 13 Feb 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459901;
-	bh=6M5kfZ8U+gLJFteUYU61T7tmBEVAxmvTUXvsW8O4/V4=;
+	s=korg; t=1739458481;
+	bh=z8c+CITP+6rtbIjOHvjyy1XcLwiD7iJ42jP2HXg7x4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0ZqRzOsLCMxZbwbAq27o+kFdDW77kst88nlfKUV9Rw9QB/ch30cUYk2NWMfenANz
-	 Wtj76wy+OVBRpY1oQ6UQ3wxC8+b/ZGQp1BetNAg4vUKNUwiczche0/qC3gVF6EoPNN
-	 HLSGJ6Ia6nOpruDfgZRp8S1KKRakNMMhCDAdzi5k=
+	b=Egc14aUmNS/STmH9Q2jw82cr6Xo2Ob/K+n8twBxR4LRqZv7zaqQp2pYYV/dOr5YFe
+	 82MHfoZrgZPVBN5EvNJgcfun93Mcmzq8zSYDRxwqT7VQinYVmoHarMcEtO0sDFKiMP
+	 rsWxNK+20CGdGi0EA+fZZa4wF6QDwMZVyl7IFhYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 397/443] selftests: mptcp: connect: -f: no reconnect
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.12 413/422] md/md-linear: Fix a NULL vs IS_ERR() bug in linear_add()
 Date: Thu, 13 Feb 2025 15:29:22 +0100
-Message-ID: <20250213142455.927764513@linuxfoundation.org>
+Message-ID: <20250213142452.501548436@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 5368a67307b3b2c347dc8965ac55b888be665934 upstream.
+commit 62c552070a980363d55a6082b432ebd1cade7a6e upstream.
 
-The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
-by closing the connection with unread bytes in the receive queue.
+The linear_conf() returns error pointers, it doesn't return NULL.  Update
+the error checking to match.
 
-The xdisconnect() helper was used to stop the connection, but it does
-more than that: it will shut it down, then wait before reconnecting to
-the same address. This causes the mptcp_join's "fastclose test" to fail
-all the time.
-
-This failure is due to a recent change, with commit 218cc166321f
-("selftests: mptcp: avoid spurious errors on disconnect"), but that went
-unnoticed because the test is currently ignored. The recent modification
-only shown an existing issue: xdisconnect() doesn't need to be used
-here, only the shutdown() part is needed.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 127186cfb184 ("md: reintroduce md-linear")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/add654be-759f-4b2d-93ba-a3726dae380c@stanley.mountain
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md-linear.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1302,7 +1302,7 @@ again:
- 		return ret;
+--- a/drivers/md/md-linear.c
++++ b/drivers/md/md-linear.c
+@@ -204,8 +204,8 @@ static int linear_add(struct mddev *mdde
+ 	rdev->saved_raid_disk = -1;
  
- 	if (cfg_truncate > 0) {
--		xdisconnect(fd);
-+		shutdown(fd, SHUT_WR);
- 	} else if (--cfg_repeat > 0) {
- 		xdisconnect(fd);
+ 	newconf = linear_conf(mddev, mddev->raid_disks + 1);
+-	if (!newconf)
+-		return -ENOMEM;
++	if (IS_ERR(newconf))
++		return PTR_ERR(newconf);
  
+ 	/* newconf->raid_disks already keeps a copy of * the increased
+ 	 * value of mddev->raid_disks, WARN_ONCE() is just used to make
 
 
 
