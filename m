@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-115264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342B6A342CD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:42:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A479AA3450A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F4048188DE54
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F26D63AE1FB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCFA241662;
-	Thu, 13 Feb 2025 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275B3155A4E;
+	Thu, 13 Feb 2025 15:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUxq5L5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7SOT9W9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7869A2222A9;
-	Thu, 13 Feb 2025 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AF21547E3;
+	Thu, 13 Feb 2025 15:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457454; cv=none; b=OpIBLuE8Y+LGADkDyFL0fzYY9YBhdW4CDO11EKDi7pv8MGcY9gW7BGrw6csDtpbgJOby0lzu2DrdTPIBG75ZWS+w14GAV3KAv1I+BoUDr/dcY1Moq/y/tO4WG+nNo3p1V15tts1gB2s12/2HBjpdF+JQ/ldUTmJhZJ+5occ+tJw=
+	t=1739458888; cv=none; b=ZQoyEPjmvhokB3SYfv1u/k6+1jPLVo1JwP6H4IqALIrpNi01QhcxpcWSxF24FK1dFEfExPfIvcecxX71Coe4eFs8sstMj1+0sZMKUBGcupcM3HjfwsddPKohY5n2jofmwpfyb9YlYHLQdL3mlqx2wthUPAJ2/rjtooB6FhqMS5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457454; c=relaxed/simple;
-	bh=LgY6LwObS4dwKuRSajIOO2lIueqwd/ZiS+v80vlL/LY=;
+	s=arc-20240116; t=1739458888; c=relaxed/simple;
+	bh=tZRC82aQ2LgctFSc8FGgJytUFqDLZco+PNkFOIbgn/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBzs0vRmUqplRXeoE8NGWXqtiOS7e466PCxwyP1TdwN9QRCHJodTy3RLcCusfyDLzAwo0Ws9w7THCi2mlY7dYDxwZnyLLqQQevEWLyRBQonPG0s0eyLtxtWExo2X6TKHMRh1sJ9PJZqMNltZSBIuGNLqXPdfBiMK2I3K7jQr0tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUxq5L5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2211C4CED1;
-	Thu, 13 Feb 2025 14:37:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p3g3HR02MIA+5cKvT7JaLaKV9+0G2ubD83stNiKCIdCWT2x1zLPkd5giDlowezZIFVi3rHUdkQro37uYU6nX3RsOO/GqBbKwI703izeFbRJv/4fAAqDvs+9tlYHbcq5uVDrJmNPO+ilS03r0bxcqpdEqvuinaUDfgIssA5AE2Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7SOT9W9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3A2C4CED1;
+	Thu, 13 Feb 2025 15:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457454;
-	bh=LgY6LwObS4dwKuRSajIOO2lIueqwd/ZiS+v80vlL/LY=;
+	s=korg; t=1739458888;
+	bh=tZRC82aQ2LgctFSc8FGgJytUFqDLZco+PNkFOIbgn/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUxq5L5ez7YbCMVZTBsi45OaB71SrC8IcPkxjK8eoF5qWsTgNBRNZjnAk6SXbPM8e
-	 Q0nG6hly/iNRaMGe4QSPVZzZDq2mXtAqDqSLukMIsDGWsJN1cmdv64PAehkCHvXQFK
-	 cbz4B9Nk9TUMJ2j3qOAehPMw3tsBFtPVD7yPqhhU=
+	b=X7SOT9W9uHqP0KhbK/FbuU5uhB11YjmU7kKVB/cDSAW7bGmHRudU4l+9FwsD0WX0h
+	 +O84FKAlts1eOwD86edpP3EGO3O+wRpDNW+e2/warm2eW0xPhDz0fSTQBL5wiexR09
+	 vQ8f9Pal8OJV4KHrSOwoZ8BWWx0Y0MhjKAEN6/aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Illia Ostapyshyn <illia@yshyn.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/422] rxrpc: Fix the rxrpc_connection attend queue handling
+Subject: [PATCH 6.13 099/443] Input: allocate keycode for phone linking
 Date: Thu, 13 Feb 2025 15:24:24 +0100
-Message-ID: <20250213142440.990396528@linuxfoundation.org>
+Message-ID: <20250213142444.432738510@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Illia Ostapyshyn <illia@yshyn.com>
 
-[ Upstream commit 4241a702e0d0c2ca9364cfac08dbf134264962de ]
+[ Upstream commit 1bebc7869c99d466f819dd2cffaef0edf7d7a035 ]
 
-The rxrpc_connection attend queue is never used because conn::attend_link
-is never initialised and so is always NULL'd out and thus always appears to
-be busy.  This requires the following fix:
+The F11 key on the new Lenovo Thinkpad T14 Gen 5, T16 Gen 3, and P14s
+Gen 5 laptops includes a symbol showing a smartphone and a laptop
+chained together.  According to the user manual, it starts the Microsoft
+Phone Link software used to connect to Android/iOS devices and relay
+messages/calls or sync data.
 
- (1) Fix this the attend queue problem by initialising conn::attend_link.
+As there are no suitable keycodes for this action, introduce a new one.
 
-And, consequently, two further fixes for things masked by the above bug:
-
- (2) Fix rxrpc_input_conn_event() to handle being invoked with a NULL
-     sk_buff pointer - something that can now happen with the above change.
-
- (3) Fix the RXRPC_SKB_MARK_SERVICE_CONN_SECURED message to carry a pointer
-     to the connection and a ref on it.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
-Link: https://patch.msgid.link/20250203110307.7265-3-dhowells@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20241114173930.44983-2-illia@yshyn.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/conn_event.c       | 17 ++++++++++-------
- net/rxrpc/conn_object.c      |  1 +
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 666fe1779ccc6..e1a37e9c2d42d 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -218,6 +218,7 @@
- 	EM(rxrpc_conn_get_conn_input,		"GET inp-conn") \
- 	EM(rxrpc_conn_get_idle,			"GET idle    ") \
- 	EM(rxrpc_conn_get_poke_abort,		"GET pk-abort") \
-+	EM(rxrpc_conn_get_poke_secured,		"GET secured ") \
- 	EM(rxrpc_conn_get_poke_timer,		"GET poke    ") \
- 	EM(rxrpc_conn_get_service_conn,		"GET svc-conn") \
- 	EM(rxrpc_conn_new_client,		"NEW client  ") \
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 2a1396cd892f3..ca5e694ab858b 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -266,6 +266,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 			 * we've already received the packet, put it on the
- 			 * front of the queue.
- 			 */
-+			sp->conn = rxrpc_get_connection(conn, rxrpc_conn_get_poke_secured);
- 			skb->mark = RXRPC_SKB_MARK_SERVICE_CONN_SECURED;
- 			rxrpc_get_skb(skb, rxrpc_skb_get_conn_secured);
- 			skb_queue_head(&conn->local->rx_queue, skb);
-@@ -431,14 +432,16 @@ void rxrpc_input_conn_event(struct rxrpc_connection *conn, struct sk_buff *skb)
- 	if (test_and_clear_bit(RXRPC_CONN_EV_ABORT_CALLS, &conn->events))
- 		rxrpc_abort_calls(conn);
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index a4206723f5033..5a199f3d4a26a 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -519,6 +519,7 @@
+ #define KEY_NOTIFICATION_CENTER	0x1bc	/* Show/hide the notification center */
+ #define KEY_PICKUP_PHONE	0x1bd	/* Answer incoming call */
+ #define KEY_HANGUP_PHONE	0x1be	/* Decline incoming call */
++#define KEY_LINK_PHONE		0x1bf   /* AL Phone Syncing */
  
--	switch (skb->mark) {
--	case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
--		if (conn->state != RXRPC_CONN_SERVICE)
--			break;
-+	if (skb) {
-+		switch (skb->mark) {
-+		case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
-+			if (conn->state != RXRPC_CONN_SERVICE)
-+				break;
- 
--		for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
--			rxrpc_call_is_secure(conn->channels[loop].call);
--		break;
-+			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
-+				rxrpc_call_is_secure(conn->channels[loop].call);
-+			break;
-+		}
- 	}
- 
- 	/* Process delayed ACKs whose time has come. */
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 1539d315afe74..7bc68135966e2 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -67,6 +67,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
- 		INIT_WORK(&conn->destructor, rxrpc_clean_up_connection);
- 		INIT_LIST_HEAD(&conn->proc_link);
- 		INIT_LIST_HEAD(&conn->link);
-+		INIT_LIST_HEAD(&conn->attend_link);
- 		mutex_init(&conn->security_lock);
- 		mutex_init(&conn->tx_data_alloc_lock);
- 		skb_queue_head_init(&conn->rx_queue);
+ #define KEY_DEL_EOL		0x1c0
+ #define KEY_DEL_EOS		0x1c1
 -- 
 2.39.5
 
