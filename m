@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598B3A346CF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA79A34372
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33A2189385B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E86797A3D1A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7351D1411DE;
-	Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC1314AD2D;
+	Thu, 13 Feb 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2F4oqOrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RiMC191"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C22335BA;
-	Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAE814831C;
+	Thu, 13 Feb 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460137; cv=none; b=aRmHzaC15tQzeScFVt4NIgiX3Qdgk5VWyBc/AqJ6G8foM5D7+SvsYacoyXitoV1iZPy0WjKLy7dyj7pgtILXQ6nd6jtUYK4WhUS5caIrfEH39fTZdzC2ZqThNY3SilyWg3NtLkOt17W1suCY6k8QFI1GmGfppz65hjplM3l2nhA=
+	t=1739457910; cv=none; b=qQBZLoudSDue5DclQ8gvio2pq9QNxHOdIu8AXbtL//NLmFdlaiQwYMLGSJH4YxS5nUsKXpgRiL2bv9OXHAZs5ihOBIBDtSJ3d/4oSVj4APKcAc3PCrIalYneUbdRuPhgl0WMoKyo5opvO5eYm/u5K+4QZpXo2bHxp/QSCmu42v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460137; c=relaxed/simple;
-	bh=Miu5JP1/fmvW4Mp4oQnGQtw0yCFgjDGjuadvPLIjRLI=;
+	s=arc-20240116; t=1739457910; c=relaxed/simple;
+	bh=5f+iTeDdR23wzDed7iUgPEeXitWXQwtui+R0yO4q/iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwcaO3+6TrDIbkeeY2mxvcVgkYoDqOoSDN7o9kPnkFiGVDH+b5aELNW3BSk0knRMaCPXffOzrk2qSzF/fJ+2zeti9PhM3xcjEyQen4xog4JEjhB4gMyC803PPTJSrzu7DNphTMImeUTYuxpbjFH31WJJ03VxoTATjplgearg66k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2F4oqOrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C5CC4CED1;
-	Thu, 13 Feb 2025 15:22:16 +0000 (UTC)
+	 MIME-Version; b=MD14m7OdJem0hMlwqTpl4f8BfakIgstQCnI4SCLFNnae49944fJEZpZ2ZMV4qVZIYiNYN2pZtLMW28DtdyslMCJLOIyqXDj4l4C3tthqVItu2fVpPdr6AgR+yCq5EMAMC1kZBPresZsxtdFYankUx2L3fz0xUqTTY+uIZqi6AVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RiMC191; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B75C4CEE9;
+	Thu, 13 Feb 2025 14:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460137;
-	bh=Miu5JP1/fmvW4Mp4oQnGQtw0yCFgjDGjuadvPLIjRLI=;
+	s=korg; t=1739457910;
+	bh=5f+iTeDdR23wzDed7iUgPEeXitWXQwtui+R0yO4q/iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2F4oqOrAXf2Sog5mK9MxcfTT+FPWfVgil0G0MICCGbYjgO6qE1ubMHycLBWnl3UIJ
-	 GHQXNQRxc+EfOH8vsYqfWg0R+DD8o0bYZR4zkakI2mdMHkWqbKdP8sHPBDHw/pkg7e
-	 cnDY05jZzjA6hvW+6GQaxKHkU3+9XFcAKMA8mF+w=
+	b=0RiMC191PBF2GyFXhgqvSL3tTo3S2Sd3WFnGcDRTjqPf52kgH4sWJXIN2jtFY6nuB
+	 Vr1/DZLFg7wYe0cGNhIV16qTXeTbV/Gy5cJfsjQ2afhltAOGas9Re3EQXZ7Ts0r/7F
+	 U5Lp9YdT5DgOzGRe+0V2Y5roQJoZo3clsCZ+z+ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/273] drm/bridge: it6505: fix HDCP CTS compare V matching
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.12 248/422] PCI: endpoint: Finish virtual EP removal in pci_epf_remove_vepf()
 Date: Thu, 13 Feb 2025 15:26:37 +0100
-Message-ID: <20250213142408.355609344@linuxfoundation.org>
+Message-ID: <20250213142446.109694514@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 0989c02c7a5c887c70afeae80c64d0291624e1a7 ]
+commit 3b9f942eb21c92041905e3943a8d5177c9a9d89d upstream.
 
-When HDCP negotiation with a repeater device.
-Checking SHA V' matching must retry 3 times before restarting HDCP.
+When removing a virtual Endpoint, pci_epf_remove_vepf() failed to clear
+epf_vf->epf_pf, which caused a subsequent pci_epf_add_vepf() to incorrectly
+return -EBUSY:
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-8-e0fdd4844703@ite.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add
+  pci_epf_remove_vepf(epf_pf, epf_vf)   // remove
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add again, -EBUSY error
+
+Fix by clearing epf_vf->epf_pf in pci_epf_remove_vepf().
+
+Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com
+Fixes: 1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 32 +++++++++++++++++------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index f9f67e172eeee..552d33c4325af 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2020,7 +2020,7 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- {
- 	struct device *dev = it6505->dev;
- 	u8 av[5][4], bv[5][4];
--	int i, err;
-+	int i, err, retry;
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -202,6 +202,7 @@ void pci_epf_remove_vepf(struct pci_epf
  
- 	i = it6505_setup_sha1_input(it6505, it6505->sha1_input);
- 	if (i <= 0) {
-@@ -2029,22 +2029,28 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- 	}
- 
- 	it6505_sha1_digest(it6505, it6505->sha1_input, i, (u8 *)av);
-+	/*1B-05 V' must retry 3 times */
-+	for (retry = 0; retry < 3; retry++) {
-+		err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
-+				      sizeof(bv));
- 
--	err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
--			      sizeof(bv));
-+		if (err < 0) {
-+			dev_err(dev, "Read V' value Fail %d", retry);
-+			continue;
-+		}
- 
--	if (err < 0) {
--		dev_err(dev, "Read V' value Fail");
--		return false;
--	}
-+		for (i = 0; i < 5; i++) {
-+			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
-+			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
-+				break;
- 
--	for (i = 0; i < 5; i++)
--		if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
--		    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
--			return false;
-+			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
-+			return true;
-+		}
-+	}
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "V' all match!!");
--	return true;
-+	DRM_DEV_DEBUG_DRIVER(dev, "V' NOT match!! %d", retry);
-+	return false;
+ 	mutex_lock(&epf_pf->lock);
+ 	clear_bit(epf_vf->vfunc_no, &epf_pf->vfunction_num_map);
++	epf_vf->epf_pf = NULL;
+ 	list_del(&epf_vf->list);
+ 	mutex_unlock(&epf_pf->lock);
  }
- 
- static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
--- 
-2.39.5
-
 
 
 
