@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37332A3424C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF9EA34486
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E226188CD13
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9D216E8A3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27462222C1;
-	Thu, 13 Feb 2025 14:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1561FFC69;
+	Thu, 13 Feb 2025 14:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G++bfCgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAqhPoXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9CB38389;
-	Thu, 13 Feb 2025 14:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD122222A9;
+	Thu, 13 Feb 2025 14:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457155; cv=none; b=FR4kWhXI0FDBmd7a2RYNPLKB73XEEcdVeVKL6on4+3pJIwULi09UYCGfX8KXbQlyIwSzBfmbcaPcW5EL2slJhUSpM1eebMNGGo6ko4HlYDphiD3P0/gMWUcCG5KAq5Ac4PkKYrcJ1mm/mio4nyZCOCcAJNgYz4IfcoZ/Gpl9c2A=
+	t=1739458569; cv=none; b=HHGfgx0YInEBAXVyx6kKmY7t9TM9bxcc2NHPbPN6JEEDwnlYRJSVa8ZgFjPpmKvFSyUK9bGmuvzEI7VRp+Dk8pmenAFjwVS0YvaUBvxNPhghVtJME8WsiS8jJksz/70dFI+cefBJs6uobfkFcgr3Rvo7yMAm7v2/GWCtEZx2QR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457155; c=relaxed/simple;
-	bh=Z8BVZ44xD3zTzSW5N6i3FJfNsACZjYQN9yRDKKxHUmE=;
+	s=arc-20240116; t=1739458569; c=relaxed/simple;
+	bh=k1M2SdBNwhjwRnXH1xpilcwcG+Zfd6XhOYuTZOkhhps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZ5VHipzbbdyA9sDmxlPv72Z8FZgSGupQ3+KBYXd0owicqM6PUbU2o4v2c/r1xpsrOHqIv7rKe4yo1J+a4bOyhybsGjlCR3rvx5qfZzqQ3evTUdO97rWFB2+ZvHtU64E9jFOGLEFECzFmp/vZzW1WBOUiovvKUHxJCQoWFhOl+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G++bfCgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA634C4CED1;
-	Thu, 13 Feb 2025 14:32:34 +0000 (UTC)
+	 MIME-Version; b=ASpnmnsBbm50J+DoTsvsZHpgQQrP5qMCkSKIxDss/2LjL4pvF3UdfBVLV/JqFZd0mfPr5xVN0pFqSj2ZivqyWyEHQH2KW88+rR2BtHyE9mEjnawGgqxWkv6iOcyc1httu820amMcx0O1kitm1hyr5vesOL2G8fRoUGeF1VZnLIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAqhPoXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0687EC4CED1;
+	Thu, 13 Feb 2025 14:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457155;
-	bh=Z8BVZ44xD3zTzSW5N6i3FJfNsACZjYQN9yRDKKxHUmE=;
+	s=korg; t=1739458568;
+	bh=k1M2SdBNwhjwRnXH1xpilcwcG+Zfd6XhOYuTZOkhhps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G++bfCgiQgpqeY52Q+Mtuc0sbiEmIrQ+RnlVJmgfnJ5Xeb/OQUcrgdp0hd3CETS8O
-	 rpmJZwGvRGrI/54HGCsfj1I+DcuCLdRDqmQ/o3/4myfJGrS0PYwmpA6VXLleZEBI1p
-	 32EpAB7e53A+WjxBNy9vIJurSA6ONzA3UP/8ZnYs=
+	b=uAqhPoXSZFgAG02Gp06DvPbGJ0q/ifNx5GZnUFp3EHprY994PaC5yx22wikWangTo
+	 666y7Dl0HJKIB0dVf78nE6y4irzeuiuRkcziD/28+BLndQu6X4K6X7c7XXNADDCC5l
+	 Ta9gHS1h2l4LHLg1br3pKNRduKsz1941CXIh1l3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Waiman Long <longman@redhat.com>,
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/422] drm/exynos: hdmi: use eld_mutex to protect access to connector->eld
+Subject: [PATCH 6.13 016/443] locking/ww_mutex/test: Use swap() macro
 Date: Thu, 13 Feb 2025 15:23:01 +0100
-Message-ID: <20250213142437.795521966@linuxfoundation.org>
+Message-ID: <20250213142441.248890929@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-[ Upstream commit 5e8436d334ed7f6785416447c50b42077c6503e0 ]
+[ Upstream commit 0d3547df6934b8f9600630322799a2a76b4567d8 ]
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+Fixes the following Coccinelle/coccicheck warning reported by
+swap.cocci:
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-5-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+  WARNING opportunity for swap()
+
+Compile-tested only.
+
+[Boqun: Add the report tags from Jiapeng and Abaci Robot [1].]
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Reported-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11531
+Link: https://lore.kernel.org/r/20241025081455.55089-1-jiapeng.chong@linux.alibaba.com [1]
+Acked-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20240731135850.81018-2-thorsten.blum@toblux.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/locking/test-ww_mutex.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 1e26cd4f83479..52059cfff4f0b 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -1643,7 +1643,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf,
- 	struct hdmi_context *hdata = dev_get_drvdata(dev);
- 	struct drm_connector *connector = &hdata->connector;
+diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
+index 5d58b2c0ef98b..bcb1b9fea5880 100644
+--- a/kernel/locking/test-ww_mutex.c
++++ b/kernel/locking/test-ww_mutex.c
+@@ -404,7 +404,7 @@ static inline u32 prandom_u32_below(u32 ceil)
+ static int *get_random_order(int count)
+ {
+ 	int *order;
+-	int n, r, tmp;
++	int n, r;
  
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
-+	mutex_unlock(&connector->eld_mutex);
+ 	order = kmalloc_array(count, sizeof(*order), GFP_KERNEL);
+ 	if (!order)
+@@ -415,11 +415,8 @@ static int *get_random_order(int count)
  
- 	return 0;
- }
+ 	for (n = count - 1; n > 1; n--) {
+ 		r = prandom_u32_below(n + 1);
+-		if (r != n) {
+-			tmp = order[n];
+-			order[n] = order[r];
+-			order[r] = tmp;
+-		}
++		if (r != n)
++			swap(order[n], order[r]);
+ 	}
+ 
+ 	return order;
 -- 
 2.39.5
 
