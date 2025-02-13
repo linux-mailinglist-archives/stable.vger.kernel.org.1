@@ -1,175 +1,97 @@
-Return-Path: <stable+bounces-116344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BACA35141
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 23:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F33A35164
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 23:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B60216E749
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 22:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364DC165B96
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 22:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7802026E156;
-	Thu, 13 Feb 2025 22:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5BA26E15D;
+	Thu, 13 Feb 2025 22:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iFwCM/rp"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF305266B59;
-	Thu, 13 Feb 2025 22:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33D32661B9;
+	Thu, 13 Feb 2025 22:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739485596; cv=none; b=ebFN8Fl2fEASy84LsZSY0pdX6OBTzQc2yUMfmjHMM8t4STcb9FyiPSywjVT7tugHxspcpt8mfwVHPwfvBxCyiH5POHreVm+4kzC60Qu6s9KHaEVISQfEC5LSNSLA+Tnvz1Z2UpR0kcRAcqT16+UNnLaeyhayzSP0XVeFeiPwhn0=
+	t=1739486431; cv=none; b=i1l00mE24vkRb6PJrrU/2eMWe2RlUY0eT4qzMqwso3knKYHvgukqo0wKK6s+d/JHuwdoziXL86w84Vi3AAjMCyecA9sSkFdB98sDCw3Cf1YPxQyVgHbeivXiKFIasJoMVfGVMtn4Mt2VZQzK8bhoagOzKxBlgUydk9xM5C8Jzqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739485596; c=relaxed/simple;
-	bh=QRaOrAVF+jzJuGJi5v7WyV3J+V1yrSG2LI/MY7gLhlo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a18dmWTtY9fnuuCcBqqQdx5/ry27lAI9ChXqrDtIFCP5wFspBzQo7mfaAFCWFopJ3nAA05lYd8Z4pP1ofKC3kigYCSmVQh1psjd/Qi02pWwvOx6FMUm51KPpLe10jYGsM/Vtyb0XohzIb39aEP689m899mP/V0k22lGWp1yRtH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id B9294233AC;
-	Fri, 14 Feb 2025 01:26:29 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	"James E . J . Bottomley" <jejb@linux.ibm.com>,
-	Damien Le Moal <damien.lemoal@wdc.com>,
-	linux-scsi@vger.kernel.org,
-	kovalev@altlinux.org
-Subject: [PATCH 5.10] scsi: core: Fix scsi_mode_sense() buffer length handling
-Date: Fri, 14 Feb 2025 01:26:29 +0300
-Message-Id: <20250213222629.726226-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1739486431; c=relaxed/simple;
+	bh=3wvWF5bWcW3wB/VHLlUfEjtZ2gvJyAfjBMJDu7tb44o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nqRbxU3I2E4t0StgS3E7HQYMcRN3aKLQMdrZQ5ZqD0vHqZkLbiWUMjiPE+AnDmWJY1qiJVrGgc83vOEruzmNb9FwlWHuDVL2fuo2u8eWom8UrPQh5XwIpn3DuceRQT7yG7zG7ccZuSZKq8fZbDLv344cocBhgTlYeo7/wLW5yXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iFwCM/rp; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739486430; x=1771022430;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3wvWF5bWcW3wB/VHLlUfEjtZ2gvJyAfjBMJDu7tb44o=;
+  b=iFwCM/rpWH1x+ue+srkxc69ZO1l7L/ShjWXYRsnMgaCR/DPIsQcE4gzl
+   6nNBBWuKe8uGlmUqKJAJmEFdG5QvtmxzBwNZonZ8jJMzwOq4GFp9JoFZw
+   Lr/Otdy3JkVPcSPE0WQYpBMY0qB33Cf6b6xCcBrVR4hOSSPoRHkAFg3Hl
+   kDb/yvYLEaE+33ksJ0psjMv0TGVvUITWKw5XqEmA6OWnIwNxstwvat5do
+   yVmB84/FlHkllJw1oLJ3XBArg6UPEZklfaCw/MsvBLl+o8F2sFnrvrOkv
+   R6Cb446IVnhpcxgWIA2oZnl1N8sW8kcswzpcogl2FmD7rGEdYrV8FLRv+
+   w==;
+X-CSE-ConnectionGUID: pgOW+XztQ7S+q/Yd/UGfMQ==
+X-CSE-MsgGUID: JDqYxjxZTuyG95J3vSrWFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="57755987"
+X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; 
+   d="scan'208";a="57755987"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 14:40:29 -0800
+X-CSE-ConnectionGUID: DVedKDbJROOUzwyO6jEiBw==
+X-CSE-MsgGUID: 6xFdQKMpRde2519ShzZkVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114161630"
+Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.222.70])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 14:40:29 -0800
+Date: Thu, 13 Feb 2025 14:40:27 -0800
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	linux-edac@vger.kernel.org, Smita.KoralahalliChannabasappa@amd.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 00/16] AMD MCA interrupts rework
+Message-ID: <Z6502yAjieRlPuoc@agluck-desk3>
+References: <20250213-wip-mca-updates-v2-0-3636547fe05f@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213-wip-mca-updates-v2-0-3636547fe05f@amd.com>
 
-From: Damien Le Moal <damien.lemoal@wdc.com>
+On Thu, Feb 13, 2025 at 04:45:49PM +0000, Yazen Ghannam wrote:
+> Hi all,
+> 
+> This set unifies the AMD MCA interrupt handlers with common MCA code.
+> The goal is to avoid duplicating functionality like reading and clearing
+> MCA banks.
+> 
+> Based on feedback, this revision also include changes to the MCA init
+> flow.
 
-commit 17b49bcbf8351d3dbe57204468ac34f033ed60bc upstream.
+Apart from the nits I posed againt parts 5 & 15. LGTM.
 
-Several problems exist with scsi_mode_sense() buffer length handling:
+Tested-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
 
- 1) The allocation length field of the MODE SENSE(10) command is 16-bits,
-    occupying bytes 7 and 8 of the CDB. With this command, access to mode
-    pages larger than 255 bytes is thus possible. However, the CDB
-    allocation length field is set by assigning len to byte 8 only, thus
-    truncating buffer length larger than 255.
-
- 2) If scsi_mode_sense() is called with len smaller than 8 with
-    sdev->use_10_for_ms set, or smaller than 4 otherwise, the buffer length
-    is increased to 8 and 4 respectively, and the buffer is zero filled
-    with these increased values, thus corrupting the memory following the
-    buffer.
-
-Fix these 2 problems by using put_unaligned_be16() to set the allocation
-length field of MODE SENSE(10) CDB and by returning an error when len is
-too small.
-
-Furthermore, if len is larger than 255B, always try MODE SENSE(10) first,
-even if the device driver did not set sdev->use_10_for_ms. In case of
-invalid opcode error for MODE SENSE(10), access to mode pages larger than
-255 bytes are not retried using MODE SENSE(6). To avoid buffer length
-overflows for the MODE_SENSE(10) case, check that len is smaller than 65535
-bytes.
-
-While at it, also fix the folowing:
-
- * Use get_unaligned_be16() to retrieve the mode data length and block
-   descriptor length fields of the mode sense reply header instead of using
-   an open coded calculation.
-
- * Fix the kdoc dbd argument explanation: the DBD bit stands for Disable
-   Block Descriptor, which is the opposite of what the dbd argument
-   description was.
-
-Link: https://lore.kernel.org/r/20210820070255.682775-2-damien.lemoal@wdc.com
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-Backport to fix CVE-2021-47182
-Link: https://www.cve.org/CVERecord/?id=CVE-2021-47182
----
- drivers/scsi/scsi_lib.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index fb48d47e9183e..06838cf5300d0 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -2073,7 +2073,7 @@ EXPORT_SYMBOL_GPL(scsi_mode_select);
- /**
-  *	scsi_mode_sense - issue a mode sense, falling back from 10 to six bytes if necessary.
-  *	@sdev:	SCSI device to be queried
-- *	@dbd:	set if mode sense will allow block descriptors to be returned
-+ *	@dbd:	set to prevent mode sense from returning block descriptors
-  *	@modepage: mode page being requested
-  *	@buffer: request buffer (may not be smaller than eight bytes)
-  *	@len:	length of request buffer.
-@@ -2108,18 +2108,18 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 		sshdr = &my_sshdr;
- 
-  retry:
--	use_10_for_ms = sdev->use_10_for_ms;
-+	use_10_for_ms = sdev->use_10_for_ms || len > 255;
- 
- 	if (use_10_for_ms) {
--		if (len < 8)
--			len = 8;
-+		if (len < 8 || len > 65535)
-+			return -EINVAL;
- 
- 		cmd[0] = MODE_SENSE_10;
--		cmd[8] = len;
-+		put_unaligned_be16(len, &cmd[7]);
- 		header_length = 8;
- 	} else {
- 		if (len < 4)
--			len = 4;
-+			return -EINVAL;
- 
- 		cmd[0] = MODE_SENSE;
- 		cmd[4] = len;
-@@ -2144,8 +2144,14 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 			if ((sshdr->sense_key == ILLEGAL_REQUEST) &&
- 			    (sshdr->asc == 0x20) && (sshdr->ascq == 0)) {
- 				/*
--				 * Invalid command operation code
-+				 * Invalid command operation code: retry using
-+				 * MODE SENSE(6) if this was a MODE SENSE(10)
-+				 * request, except if the request mode page is
-+				 * too large for MODE SENSE single byte
-+				 * allocation length field.
- 				 */
-+				if (len > 255)
-+					return -EIO;
- 				sdev->use_10_for_ms = 0;
- 				goto retry;
- 			}
-@@ -2163,12 +2169,11 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 			data->longlba = 0;
- 			data->block_descriptor_length = 0;
- 		} else if (use_10_for_ms) {
--			data->length = buffer[0]*256 + buffer[1] + 2;
-+			data->length = get_unaligned_be16(&buffer[0]) + 2;
- 			data->medium_type = buffer[2];
- 			data->device_specific = buffer[3];
- 			data->longlba = buffer[4] & 0x01;
--			data->block_descriptor_length = buffer[6]*256
--				+ buffer[7];
-+			data->block_descriptor_length = get_unaligned_be16(&buffer[6]);
- 		} else {
- 			data->length = buffer[0] + 1;
- 			data->medium_type = buffer[1];
--- 
-2.42.2
+-Tony
 
 
