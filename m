@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7127A34277
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204BFA344FF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00EA43AAA7F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64DE23AD84B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FFA70830;
-	Thu, 13 Feb 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E1715E5D4;
+	Thu, 13 Feb 2025 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yz47Bc5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPeuT55U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A79281349;
-	Thu, 13 Feb 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AF3156C71;
+	Thu, 13 Feb 2025 14:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457289; cv=none; b=bDUac2xJKTk/ygSqA12H6xr7A23yTiUBYljCK/t+U0/P5HBl3qfNT95ty9C2YTdWeA60VKZirQJkFsMkOtkDNV3qevX7AvZZ+OL1Lh3pw8J81u+OxCKAisRJMRiRlO/cEbfFu6o8hhKfrseL3o8GGCS/kKS68cogs+FGHTvQg9A=
+	t=1739458705; cv=none; b=NapTtfQ8p51GltfGkV+f3w0QUuKVgIHeZ8HJ/PBzmRHAbgr/LHY1uEkEPyBcFbylzX1GFxWkKT5+exlRoNm+Zg9z9NBQZtzov0WP9G0xYmY4W2bpw2rl0CPUapJ9/k5JRXyO9BjOEpsCcIc2XHBPYfMcFWaTxNP/g40BHP0+x/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457289; c=relaxed/simple;
-	bh=2kOMjX+ndj6GmPKkeX1coQ2/f7T3ixZj1Ks7sC9Jmw0=;
+	s=arc-20240116; t=1739458705; c=relaxed/simple;
+	bh=IXTwsyQUp84lizxnXK7HYEmuJgvm+prr3xawzyu4UwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEr0wkhOMAZoV5ayJLXVospN2RWjpP1gbiS44WRv5dCvhJsNycDjsZHTUs6itpEoSsttpY1OA/8hKoWL+BezupzS2Pf2TZsyCQWaqB8m0XYozuOiDfOdD7099jW8DMzCDnwiWuDbJa4mOb1+hUX9Ed2ZanC+0fyp+IlX9hdbj+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yz47Bc5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998A0C4CED1;
-	Thu, 13 Feb 2025 14:34:48 +0000 (UTC)
+	 MIME-Version; b=TXvB16mZwghVa0mu/2m4p7WafQ9gEIErIhVK+SezkXnPrBCLr47dxveun2UwrCVBOTyKOBNOz8sDQRZhE5EFrY/CtxN3VzvfSCVHiqBgYBelPlY08pgSzWBik1fOYpDZ1kTk3xRTJCmAh9MMOokDjlsRqkrYNCPtPAC5jCmkI5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPeuT55U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68294C4CED1;
+	Thu, 13 Feb 2025 14:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457289;
-	bh=2kOMjX+ndj6GmPKkeX1coQ2/f7T3ixZj1Ks7sC9Jmw0=;
+	s=korg; t=1739458704;
+	bh=IXTwsyQUp84lizxnXK7HYEmuJgvm+prr3xawzyu4UwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yz47Bc5zJvmZq73oC37Bqu1gymBmHaePg/xehhWknn9oofZlw6mduL/W8klhyRlvy
-	 wMKZ17qQjG92pUnCsnno1pSAl66XdSHP0hjKlVMSpGnymTrfDu8z3L6GvkNcfSZvWF
-	 n0tbVZoOFWyox6vhgm1kobu62ln+i176Ed3QgIrI=
+	b=iPeuT55UA7Jmz75nI50KHMoDkUHLzn4G9kDIIlTHOhqhyQAnVt51aq5mRcIPMQWXY
+	 IYcIZmbW2SKhSGgKr5wGrUllk8uiormO5SalToWpgKAQ4s9Wov+ObY/pcgGFmS//oO
+	 ZQ9AolNNOJ5iMk9fl224OYGBDUmTEc1TgA8mM/ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjie Yang <quic_yuanjiey@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/422] mmc: sdhci-msm: Correctly set the load for the regulator
+Subject: [PATCH 6.13 054/443] wifi: ath12k: ath12k_mac_op_set_key(): fix uninitialized symbol ret
 Date: Thu, 13 Feb 2025 15:23:39 +0100
-Message-ID: <20250213142439.260318898@linuxfoundation.org>
+Message-ID: <20250213142442.706792465@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-[ Upstream commit 20a0c37e44063997391430c4ae09973e9cbc3911 ]
+[ Upstream commit ad969bc9ee73fa9eda6223be2a7c0c6caf937d71 ]
 
-Qualcomm regulator supports two power supply modes: HPM and LPM.
-Currently, the sdhci-msm.c driver does not set the load to adjust
-the current for eMMC and SD. If the regulator dont't set correct
-load in LPM state, it will lead to the inability to properly
-initialize eMMC and SD.
+Dan reported that in some cases the ret variable could be uninitialized. Fix
+that by removing the out label entirely and returning zero explicitly on
+succesful cases.
 
-Set the correct regulator current for eMMC and SD to ensure that the
-device can work normally even when the regulator is in LPM.
+Also remove the unnecessary else branches to follow more the style used in
+ath12k and now it's easier to see the error handling.
 
-Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250114083514.258379-1-quic_yuanjiey@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+No functional changes.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/7e7afd00-ad84-4744-8d94-416bab7e7dd9@stanley.mountain/
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20241126171139.2350704-10-kvalo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 53 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 51 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 57 +++++++++++++++------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 8716004fcf6c9..945d08531de37 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -134,9 +134,18 @@
- /* Timeout value to avoid infinite waiting for pwr_irq */
- #define MSM_PWR_IRQ_TIMEOUT_MS 5000
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ef2736fb5f53f..e8639ad8761a2 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4378,6 +4378,7 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
  
-+/* Max load for eMMC Vdd supply */
-+#define MMC_VMMC_MAX_LOAD_UA	570000
+ 	if (sta) {
+ 		ahsta = ath12k_sta_to_ahsta(sta);
 +
- /* Max load for eMMC Vdd-io supply */
- #define MMC_VQMMC_MAX_LOAD_UA	325000
+ 		/* For an ML STA Pairwise key is same for all associated link Stations,
+ 		 * hence do set key for all link STAs which are active.
+ 		 */
+@@ -4400,41 +4401,47 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 				if (ret)
+ 					break;
+ 			}
+-		} else {
+-			arsta = &ahsta->deflink;
+-			arvif = arsta->arvif;
+-			if (WARN_ON(!arvif)) {
+-				ret = -EINVAL;
+-				goto out;
+-			}
  
-+/* Max load for SD Vdd supply */
-+#define SD_VMMC_MAX_LOAD_UA	800000
-+
-+/* Max load for SD Vdd-io supply */
-+#define SD_VQMMC_MAX_LOAD_UA	22000
-+
- #define msm_host_readl(msm_host, host, offset) \
- 	msm_host->var_ops->msm_readl_relaxed(host, offset)
+-			ret = ath12k_mac_set_key(arvif->ar, cmd, arvif, arsta, key);
+-		}
+-	} else {
+-		if (key->link_id >= 0 && key->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
+-			link_id = key->link_id;
+-			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+-		} else {
+-			link_id = 0;
+-			arvif = &ahvif->deflink;
++			return 0;
+ 		}
  
-@@ -1403,11 +1412,48 @@ static int sdhci_msm_set_pincfg(struct sdhci_msm_host *msm_host, bool level)
- 	return ret;
- }
+-		if (!arvif || !arvif->is_created) {
+-			cache = ath12k_ahvif_get_link_cache(ahvif, link_id);
+-			if (!cache)
+-				return -ENOSPC;
++		arsta = &ahsta->deflink;
++		arvif = arsta->arvif;
++		if (WARN_ON(!arvif))
++			return -EINVAL;
  
--static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
-+static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
-+{
-+	int load;
-+
-+	if (!hpm)
-+		load = 0;
-+	else if (!mmc->card)
-+		load = max(MMC_VMMC_MAX_LOAD_UA, SD_VMMC_MAX_LOAD_UA);
-+	else if (mmc_card_mmc(mmc->card))
-+		load = MMC_VMMC_MAX_LOAD_UA;
-+	else if (mmc_card_sd(mmc->card))
-+		load = SD_VMMC_MAX_LOAD_UA;
-+	else
-+		return;
-+
-+	regulator_set_load(mmc->supply.vmmc, load);
-+}
-+
-+static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
-+{
-+	int load;
-+
-+	if (!hpm)
-+		load = 0;
-+	else if (!mmc->card)
-+		load = max(MMC_VQMMC_MAX_LOAD_UA, SD_VQMMC_MAX_LOAD_UA);
-+	else if (mmc_card_sd(mmc->card))
-+		load = SD_VQMMC_MAX_LOAD_UA;
-+	else
-+		return;
-+
-+	regulator_set_load(mmc->supply.vqmmc, load);
-+}
-+
-+static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
-+			      struct mmc_host *mmc, bool hpm)
- {
- 	if (IS_ERR(mmc->supply.vmmc))
- 		return 0;
+-			ret = ath12k_mac_update_key_cache(cache, cmd, sta, key);
++		ret = ath12k_mac_set_key(arvif->ar, cmd, arvif, arsta, key);
++		if (ret)
++			return ret;
  
-+	msm_config_vmmc_regulator(mmc, hpm);
++		return 0;
++	}
 +
- 	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
- }
- 
-@@ -1420,6 +1466,8 @@ static int msm_toggle_vqmmc(struct sdhci_msm_host *msm_host,
- 	if (msm_host->vqmmc_enabled == level)
- 		return 0;
- 
-+	msm_config_vqmmc_regulator(mmc, level);
++	if (key->link_id >= 0 && key->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
++		link_id = key->link_id;
++		arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
++	} else {
++		link_id = 0;
++		arvif = &ahvif->deflink;
++	}
 +
- 	if (level) {
- 		/* Set the IO voltage regulator to default voltage level */
- 		if (msm_host->caps_0 & CORE_3_0V_SUPPORT)
-@@ -1642,7 +1690,8 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
++	if (!arvif || !arvif->is_created) {
++		cache = ath12k_ahvif_get_link_cache(ahvif, link_id);
++		if (!cache)
++			return -ENOSPC;
++
++		ret = ath12k_mac_update_key_cache(cache, cmd, sta, key);
++		if (ret)
+ 			return ret;
+-		}
+ 
+-		ret = ath12k_mac_set_key(arvif->ar, cmd, arvif, NULL, key);
++		return 0;
  	}
  
- 	if (pwr_state) {
--		ret = sdhci_msm_set_vmmc(mmc);
-+		ret = sdhci_msm_set_vmmc(msm_host, mmc,
-+					 pwr_state & REQ_BUS_ON);
- 		if (!ret)
- 			ret = sdhci_msm_set_vqmmc(msm_host, mmc,
- 					pwr_state & REQ_BUS_ON);
+-out:
++	ret = ath12k_mac_set_key(arvif->ar, cmd, arvif, NULL, key);
++	if (ret)
++		return ret;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int
 -- 
 2.39.5
 
