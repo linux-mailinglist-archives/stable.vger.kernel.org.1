@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A0EA345E3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFFAA343C8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D733816C4AE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2A0188FF8B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F21B26B097;
-	Thu, 13 Feb 2025 15:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4952222BE;
+	Thu, 13 Feb 2025 14:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOzPgLYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUwntbyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE1826B080;
-	Thu, 13 Feb 2025 15:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0FF21D3FC;
+	Thu, 13 Feb 2025 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459418; cv=none; b=h8bHy9ZCnMRYg12fZIBmgaKoLK9LhM7gAgvgCVqBzA0ydU0uXWD0PSfrRqNnVeU3x0rvspYZqXGda5TXRKGadGipLbWGj8A5ltZQQBI2vxoyY0S3ppC564SwzRrcWKMn3JMUlBKtjIUGF2qsnfXL3nMZkhyMpKPvrVpzh7ymN3M=
+	t=1739458003; cv=none; b=e4G5Ar6i7WP9BmvOGSa2qAxxZQ2DSZbYUZTfdavoSQ6ZQiLmCMW4xQHFQEfh3brpZZdCxGiUHLYSfhEPZDiBLPUBccnissLVlDFy31UbZuMix0teXw9/Kh1AlAqZYsqasDPeefirvjAIZW0hHVCJI2Oga67JFaFPOSJ+IUmJ04U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459418; c=relaxed/simple;
-	bh=3+p70e+Sa5DG6VyHz3MW2lvdyAAJvLS0bTg+0WGZ6Xs=;
+	s=arc-20240116; t=1739458003; c=relaxed/simple;
+	bh=9CIVWbTdu+YAFT75YroykI1oNLuj/bfR480jbdIAsmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYK5pYHnyhheX9QsbuFNjtXHxM5a/2jEWE5TSsVdENrjriBmaFkeAVCQRAzXqmcRrszz/Qr7Y3ZIzNK+8mm+EwUtu9KSKIbxOx87lzAKWccnjaAivHDIp6YZv2C954vmclSoYa86ILbaI+ed0rwHOncbHj9rVSjNpY4nlAKvBZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOzPgLYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB5C4CED1;
-	Thu, 13 Feb 2025 15:10:17 +0000 (UTC)
+	 MIME-Version; b=WwW1HJzda8FlQvJ25eOuSYQ23tsG8/S/R7Ey1wova6sYjXbSSiorULM38YUC+3XlZCgyeIfMF6cd22UVpX10XOR45OAahXk9qbb0r9uv8uHcm9ab6jdFU87tY2Id0FEVquqhY9ml3L9G6DlYBYbq4WyBHwGKgbfmYPjhAN3ZZI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUwntbyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4AFC4CED1;
+	Thu, 13 Feb 2025 14:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459417;
-	bh=3+p70e+Sa5DG6VyHz3MW2lvdyAAJvLS0bTg+0WGZ6Xs=;
+	s=korg; t=1739458003;
+	bh=9CIVWbTdu+YAFT75YroykI1oNLuj/bfR480jbdIAsmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOzPgLYO/GKEZj1GCzo6muzN8Otxgu+/JF/NSuF9WL4Q6tBvWewaESWg13MhbVwn2
-	 7XCrgINeipK3eR+oLdPQNuWRCRHSraNGCfNeguew2k2ZYC8lV+0dBdgsnoXgx0fwq6
-	 IIT9N1WhzWTAwl6wJj04RWkpJwyqPZoT1n8rUYBI=
+	b=YUwntbyyC9dUNu/2eZyPqAteW5EKFWVcr0bZf3MZ8dx/4tcGD91Pqbr9naBzSJMVR
+	 U99a+506kqQgpS2ABoyBmthELo2wWC4VzL9K/WMz3uW6zOw2a6rySWzq+XUl3xAZpU
+	 GmlHJe6v4wBpSJQHoO3G7yRFyvD96K+fAK61u5XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.13 258/443] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 274/422] arm64: dts: qcom: sm6115: Fix ADSP memory base and length
 Date: Thu, 13 Feb 2025 15:27:03 +0100
-Message-ID: <20250213142450.570629634@linuxfoundation.org>
+Message-ID: <20250213142447.115711154@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
+commit 47d178caac3ec13f5f472afda25fcfdfaa00d0da upstream.
 
-The updates of io->sector are the leftovers when dm-crypt allocated
-pages for partial write request. However, since commit cf2f1abfbd0db
-("dm crypt: don't allocate pages for a partial request"), there is no
-partial request anymore.
+The address space in ADSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0a40_0000 with length of 0x4040.
 
-After the introduction of write request rb-tree, the updates of
-io->sectors may interfere the insertion procedure, because ->sectors of
-these write requests which have already been added in the rb-tree may be
-changed during the insertion of new write request.
+0x0ab0_0000, value used so far, is the SSC_QUPV3 block, so entierly
+unrelated.
 
-Fix it by removing these buggy updates of io->sectors. Considering these
-updates only effect the write request rb-tree, the commit which
-introduces the write request rb-tree is used as the fix tag.
+Correct the base address and length, which should have no functional
+impact on Linux users, because PAS loader does not use this address
+space at all.
 
-Fixes: b3c5fd305249 ("dm crypt: sort writes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-23-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-crypt.c |   14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -2092,7 +2092,6 @@ static void kcryptd_crypt_write_continue
- 	struct crypt_config *cc = io->cc;
- 	struct convert_context *ctx = &io->ctx;
- 	int crypt_finished;
--	sector_t sector = io->sector;
- 	blk_status_t r;
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -2670,9 +2670,9 @@
+ 			};
+ 		};
  
- 	wait_for_completion(&ctx->restart);
-@@ -2109,10 +2108,8 @@ static void kcryptd_crypt_write_continue
- 	}
+-		remoteproc_adsp: remoteproc@ab00000 {
++		remoteproc_adsp: remoteproc@a400000 {
+ 			compatible = "qcom,sm6115-adsp-pas";
+-			reg = <0x0 0x0ab00000 0x0 0x100>;
++			reg = <0x0 0x0a400000 0x0 0x4040>;
  
- 	/* Encryption was already finished, submit io now */
--	if (crypt_finished) {
-+	if (crypt_finished)
- 		kcryptd_crypt_write_io_submit(io, 0);
--		io->sector = sector;
--	}
- 
- 	crypt_dec_pending(io);
- }
-@@ -2123,14 +2120,13 @@ static void kcryptd_crypt_write_convert(
- 	struct convert_context *ctx = &io->ctx;
- 	struct bio *clone;
- 	int crypt_finished;
--	sector_t sector = io->sector;
- 	blk_status_t r;
- 
- 	/*
- 	 * Prevent io from disappearing until this function completes.
- 	 */
- 	crypt_inc_pending(io);
--	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
-+	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
- 
- 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
- 	if (unlikely(!clone)) {
-@@ -2147,8 +2143,6 @@ static void kcryptd_crypt_write_convert(
- 		io->ctx.iter_in = clone->bi_iter;
- 	}
- 
--	sector += bio_sectors(clone);
--
- 	crypt_inc_pending(io);
- 	r = crypt_convert(cc, ctx,
- 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
-@@ -2172,10 +2166,8 @@ static void kcryptd_crypt_write_convert(
- 	}
- 
- 	/* Encryption was already finished, submit io now */
--	if (crypt_finished) {
-+	if (crypt_finished)
- 		kcryptd_crypt_write_io_submit(io, 0);
--		io->sector = sector;
--	}
- 
- dec:
- 	crypt_dec_pending(io);
+ 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_EDGE_RISING>,
+ 					      <&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
