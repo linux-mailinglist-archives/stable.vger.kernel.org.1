@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A6A342F4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F50AA34541
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FF21893786
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA753173648
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFAF1487FA;
-	Thu, 13 Feb 2025 14:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FE615855C;
+	Thu, 13 Feb 2025 15:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJeTFiMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck+Tnpzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E4223A9BE;
-	Thu, 13 Feb 2025 14:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800BB26B087;
+	Thu, 13 Feb 2025 15:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457576; cv=none; b=tvrnI30hPz6YO1PPAkJkVl2Lb09Q940/hIM1sQQjiKNciWWdIsuWqYB1VKI8+njsZM90zm3GeFgqzOwEWtfauVHiM7u0Q27sZBnRYkjWFr4OpyNxV1dnDk1FhQDXgZ/3apsV48BoGPGodMz0hMy3EPFWKI5GYpgBnJYlDjLjYrM=
+	t=1739459085; cv=none; b=JQiH/d+HBn/B/rNve8nt2V+pEXib2/u+z3dXZxLcp+ZK7LoX2K++xsJy0C96BVmXNS+lnJ87kBK401WeOIPCOMTprOaeQni9gGhF/WReyaizIsZjaQYFe7GcW5KcJSgeg1UVa0kc7QTomVT5zr9U+TMNYPK3mPXnQ/WhgsNJvmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457576; c=relaxed/simple;
-	bh=V+YbQQeumw9Au/HabFEKjpA+ZIg6F/9twb+ohHlTolU=;
+	s=arc-20240116; t=1739459085; c=relaxed/simple;
+	bh=xOi6w2th1Kr4vvj/BDcRtXl48PAw6+ybV6qbrjSyCOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3r/63pOJO5UF8OTJAjRnAjF8D5XpGquH2TZ5USOdISueuJ5nLctcq5gGTXNW3YFTAK72i3XYY9oEeY3W+qItPhtlc/fj0dKu/FXNXTrmnQOEKDBBAR8fFl+84SH4ygX74jGQTSqEVTOo2VH/3ESV0f3e5oPzSwdWywtw4Rqq48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJeTFiMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CACAC4CED1;
-	Thu, 13 Feb 2025 14:39:35 +0000 (UTC)
+	 MIME-Version; b=jxdO4YfenarJoPlZkEeh7Q7zFgc8v2Mp2LYnlL/Uvgi7H1wbBqS4B6FJNQgK2IoMovNr4Uy5EDQmH0cC8LF8k5PTNKONPvLutXFNdINtj/F+njkvDcF05q2zHnEHov8p37ayqgnIfWSdi3LdWgXJmcU9Ez8PRpAcJzXdUEf+ZjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck+Tnpzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B24C4CED1;
+	Thu, 13 Feb 2025 15:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457575;
-	bh=V+YbQQeumw9Au/HabFEKjpA+ZIg6F/9twb+ohHlTolU=;
+	s=korg; t=1739459085;
+	bh=xOi6w2th1Kr4vvj/BDcRtXl48PAw6+ybV6qbrjSyCOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJeTFiMg/W30TTfojkyBXvOSu3ymiWA5WqmLakmkXOrHxeSnJPk4A7CTWpJSrgW0G
-	 BGmvDU10nMqBftXIR1sPQODG8vreOvyVSO8th0WHf3tDFCwOJUxPcIftEj7U0timTy
-	 9aUVF1kRzXfmrE75hXN80INKWKSInpy1sfBzms5I=
+	b=ck+Tnpzx9eMwGPio7ADXacQbuEY0+2LMUoG2WcHsdqnpEoia3Zz1B9AoGkjpPj4FW
+	 N5ymtCuKdRJy3qhEet3cIXQamGRpgp/MEfcjX1zl07cFwhW9Dx/ercFXlVlax80bhP
+	 0bf2XXPkgJ2wZ1AniowUgbNn08kjgjJmgpDeyBXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.12 151/422] remoteproc: omap: Handle ARM dma_iommu_mapping
-Date: Thu, 13 Feb 2025 15:25:00 +0100
-Message-ID: <20250213142442.377956836@linuxfoundation.org>
+	Quang Le <quanglex97@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 136/443] pfifo_tail_enqueue: Drop new packet when sch->limit == 0
+Date: Thu, 13 Feb 2025 15:25:01 +0100
+Message-ID: <20250213142445.850773614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Quang Le <quanglex97@gmail.com>
 
-commit 1dc7c8ed7cb378dd3974387692dfa833aee718d4 upstream.
+[ Upstream commit 647cef20e649c576dff271e018d5d15d998b629d ]
 
-It's no longer practical for the OMAP IOMMU driver to trick
-arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
-same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
-the arch code's dma_iommu_mapping out of the way to avoid problems.
+Expected behaviour:
+In case we reach scheduler's limit, pfifo_tail_enqueue() will drop a
+packet in scheduler's queue and decrease scheduler's qlen by one.
+Then, pfifo_tail_enqueue() enqueue new packet and increase
+scheduler's qlen by one. Finally, pfifo_tail_enqueue() return
+`NET_XMIT_CN` status code.
 
-Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Beleswar Padhi <b-padhi@ti.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/6186e311cb6f64a787f87fd41e49a73f409b789c.1730136799.git.robin.murphy@arm.com
-[Fixed changelog title]
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Weird behaviour:
+In case we set `sch->limit == 0` and trigger pfifo_tail_enqueue() on a
+scheduler that has no packet, the 'drop a packet' step will do nothing.
+This means the scheduler's qlen still has value equal 0.
+Then, we continue to enqueue new packet and increase scheduler's qlen by
+one. In summary, we can leverage pfifo_tail_enqueue() to increase qlen by
+one and return `NET_XMIT_CN` status code.
+
+The problem is:
+Let's say we have two qdiscs: Qdisc_A and Qdisc_B.
+ - Qdisc_A's type must have '->graft()' function to create parent/child relationship.
+   Let's say Qdisc_A's type is `hfsc`. Enqueue packet to this qdisc will trigger `hfsc_enqueue`.
+ - Qdisc_B's type is pfifo_head_drop. Enqueue packet to this qdisc will trigger `pfifo_tail_enqueue`.
+ - Qdisc_B is configured to have `sch->limit == 0`.
+ - Qdisc_A is configured to route the enqueued's packet to Qdisc_B.
+
+Enqueue packet through Qdisc_A will lead to:
+ - hfsc_enqueue(Qdisc_A) -> pfifo_tail_enqueue(Qdisc_B)
+ - Qdisc_B->q.qlen += 1
+ - pfifo_tail_enqueue() return `NET_XMIT_CN`
+ - hfsc_enqueue() check for `NET_XMIT_SUCCESS` and see `NET_XMIT_CN` => hfsc_enqueue() don't increase qlen of Qdisc_A.
+
+The whole process lead to a situation where Qdisc_A->q.qlen == 0 and Qdisc_B->q.qlen == 1.
+Replace 'hfsc' with other type (for example: 'drr') still lead to the same problem.
+This violate the design where parent's qlen should equal to the sum of its childrens'qlen.
+
+Bug impact: This issue can be used for user->kernel privilege escalation when it is reachable.
+
+Fixes: 57dbb2d83d10 ("sched: add head drop fifo queue")
+Reported-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/omap_remoteproc.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/sched/sch_fifo.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/remoteproc/omap_remoteproc.c
-+++ b/drivers/remoteproc/omap_remoteproc.c
-@@ -37,6 +37,10 @@
+diff --git a/net/sched/sch_fifo.c b/net/sched/sch_fifo.c
+index b50b2c2cc09bc..e6bfd39ff3396 100644
+--- a/net/sched/sch_fifo.c
++++ b/net/sched/sch_fifo.c
+@@ -40,6 +40,9 @@ static int pfifo_tail_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ {
+ 	unsigned int prev_backlog;
  
- #include <linux/platform_data/dmtimer-omap.h>
- 
-+#ifdef CONFIG_ARM_DMA_USE_IOMMU
-+#include <asm/dma-iommu.h>
-+#endif
++	if (unlikely(READ_ONCE(sch->limit) == 0))
++		return qdisc_drop(skb, sch, to_free);
 +
- #include "omap_remoteproc.h"
- #include "remoteproc_internal.h"
+ 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
+ 		return qdisc_enqueue_tail(skb, sch);
  
-@@ -1323,6 +1327,19 @@ static int omap_rproc_probe(struct platf
- 	/* All existing OMAP IPU and DSP processors have an MMU */
- 	rproc->has_iommu = true;
- 
-+#ifdef CONFIG_ARM_DMA_USE_IOMMU
-+	/*
-+	 * Throw away the ARM DMA mapping that we'll never use, so it doesn't
-+	 * interfere with the core rproc->domain and we get the right DMA ops.
-+	 */
-+	if (pdev->dev.archdata.mapping) {
-+		struct dma_iommu_mapping *mapping = to_dma_iommu_mapping(&pdev->dev);
-+
-+		arm_iommu_detach_device(&pdev->dev);
-+		arm_iommu_release_mapping(mapping);
-+	}
-+#endif
-+
- 	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
- 	if (ret)
- 		return ret;
+-- 
+2.39.5
+
 
 
 
