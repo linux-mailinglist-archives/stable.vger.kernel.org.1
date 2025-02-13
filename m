@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C895A344BF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27476A34292
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B74B01723A8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2A0A188AD07
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC1815DBBA;
-	Thu, 13 Feb 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DED281375;
+	Thu, 13 Feb 2025 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUqSfa39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="157PA7CV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4669D1514F6;
-	Thu, 13 Feb 2025 14:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C298281349;
+	Thu, 13 Feb 2025 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458668; cv=none; b=CPdsSTbwlLqdPg3EzWQwuKjIUc18ptCPntruZ8/JjxRZI+38IWmOcRdajbjdrziEzcqKxT2jyKES4XMXosCyqXh82EOaa+1p84udW/bj4KIp19QLbI/NnOryfesFYtaxGLAWQBddkgUhnRdKYE7ZroLieI2by4qiaAlmKzNj530=
+	t=1739457383; cv=none; b=YOLXg9IWN+us/4FDEC9/3UbMB3ll2xwZ/rrp+ghRjvVWtTLHfge/gUZrxXzM6UGfslaFnEcxJXZxBoYiGc43ISF9IUbx4DRqV3fvrZXGUc815mrwmm0sTEFhc4BIbzhV4PBdA61imqpL/P/Rld+XzZFIk5LBufBVQYiaBkLnjBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458668; c=relaxed/simple;
-	bh=kL8Ol9E+SQMXkCOZLXTXxw3EJQlK/+H9cON34g9q8hw=;
+	s=arc-20240116; t=1739457383; c=relaxed/simple;
+	bh=pw61gJp9gnaTbqh19EEkDIdi0KWh7gDIUYrHnT6g5wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDuwvtZpem3M6kkWkKLUR0JP3iRVcxfbsLTQjUUniZOeqEdZpWXtkqXgTbrH4klGxQzzPnQRcwXUbYcvCgYG3oG+wotV0LpKhe6bTJa+8KkeyzHMnGyV0uMJpVJq9HZRyy+dCWEyHKoyHcbOJriaDiL3kWoFAfJdr5up1TYDYMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUqSfa39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFA9C4CED1;
-	Thu, 13 Feb 2025 14:57:47 +0000 (UTC)
+	 MIME-Version; b=qNd/eblIMthHesoE5EIZscXFa5RAw+cX0WgWkArmb1Rss1xSPTHVdaq85c6yMqVYxHNgJJTmKHu0p6icXaNhM5Cq7XItM9aLypk1hZXjmWEc+Mfm5t85IOZsyzI8sIdnIrFu3bgkjWhQc4mqpNRHT7FOyddTZQIko4L9Cc+ilWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=157PA7CV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80547C4CED1;
+	Thu, 13 Feb 2025 14:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458667;
-	bh=kL8Ol9E+SQMXkCOZLXTXxw3EJQlK/+H9cON34g9q8hw=;
+	s=korg; t=1739457383;
+	bh=pw61gJp9gnaTbqh19EEkDIdi0KWh7gDIUYrHnT6g5wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUqSfa39Fst/u5RtiT3XcNvG9Z2WmranPEFr3oNkWNwXhIxhOp2DLqduGjuZksLDJ
-	 fkns9V6dQzKuVkoDwT/pdUexTT+CFMoDjFjV9LfzKlutR/6ASE0spJ/SRj5Zt+YbUq
-	 Omx6ukKsqeVRKTg3GOI3evdgu9gIqi249Fvg3PnQ=
+	b=157PA7CVdZ16z6uGDgCxGWC2jhTyLD6+2b7QtRgyY/XsaXrPreOA6DmJVBYJEMAOr
+	 H7jeVjExh++zkwXOgdT6W08MMHbvsvkMs0avfg85IzHFQ7sFKoTLGG9uuE7dvoetsQ
+	 TG5I7RGmc+xhQCTRiDcCS72bXBeUAupwIndNrxdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 045/443] drm/bridge: it6505: fix HDCP Bstatus check
-Date: Thu, 13 Feb 2025 15:23:30 +0100
-Message-ID: <20250213142442.363174730@linuxfoundation.org>
+Subject: [PATCH 6.12 062/422] wifi: iwlwifi: avoid memory leak
+Date: Thu, 13 Feb 2025 15:23:31 +0100
+Message-ID: <20250213142438.955143621@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 0fd2ff47d8c207fa3173661de04bb9e8201c0ad2 ]
+[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
 
-When HDCP is activated,
-a DisplayPort source receiving CP_IRQ from the sink
-shall check Bstatus from DPCD and process the corresponding value
+A caller of iwl_acpi_get_dsm_object must free the returned object.
+iwl_acpi_get_dsm_integer returns immediately without freeing
+it if the expected size is more than 8 bytes. Fix that.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-5-e0fdd4844703@ite.corp-partner.google.com
+Note that with the current code this will never happen, since the caller
+of iwl_acpi_get_dsm_integer already checks that the expected size if
+either 1 or 4 bytes, so it can't exceed 8 bytes.
+
+While at it, print the DSM value instead of the return value, as this
+was the intention in the first place.
+
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index d55d7dad9545f..0f7d50da56835 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2312,14 +2312,20 @@ static int it6505_process_hpd_irq(struct it6505 *it6505)
- 	DRM_DEV_DEBUG_DRIVER(dev, "dp_irq_vector = 0x%02x", dp_irq_vector);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 0bc32291815e1..a26c5573d2091 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -108,7 +108,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
+ 				    size_t expected_size)
+ {
+ 	union acpi_object *obj;
+-	int ret = 0;
++	int ret;
  
- 	if (dp_irq_vector & DP_CP_IRQ) {
--		it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
--				HDCP_TRIGGER_CPIRQ);
--
- 		bstatus = it6505_dpcd_read(it6505, DP_AUX_HDCP_BSTATUS);
- 		if (bstatus < 0)
- 			return bstatus;
+ 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
+ 	if (IS_ERR(obj)) {
+@@ -123,8 +123,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
+ 	} else if (obj->type == ACPI_TYPE_BUFFER) {
+ 		__le64 le_value = 0;
  
- 		DRM_DEV_DEBUG_DRIVER(dev, "Bstatus = 0x%02x", bstatus);
-+
-+		/*Check BSTATUS when recive CP_IRQ */
-+		if (bstatus & DP_BSTATUS_R0_PRIME_READY &&
-+		    it6505->hdcp_status == HDCP_AUTH_GOING)
-+			it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
-+					HDCP_TRIGGER_CPIRQ);
-+		else if (bstatus & (DP_BSTATUS_REAUTH_REQ | DP_BSTATUS_LINK_FAILURE) &&
-+			 it6505->hdcp_status == HDCP_AUTH_DONE)
-+			it6505_start_hdcp(it6505);
+-		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+ 		/* if the buffer size doesn't match the expected size */
+ 		if (obj->buffer.length != expected_size)
+@@ -145,8 +147,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
  	}
  
- 	ret = drm_dp_dpcd_read_link_status(&it6505->aux, link_status);
+ 	IWL_DEBUG_DEV_RADIO(dev,
+-			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
+-			    func, ret);
++			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
++			    func, *value);
++	ret = 0;
+ out:
+ 	ACPI_FREE(obj);
+ 	return ret;
 -- 
 2.39.5
 
