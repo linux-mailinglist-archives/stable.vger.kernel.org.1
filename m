@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88306A344B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A414A3428F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A099316A6AA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CADED188526B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80AE14F9FB;
-	Thu, 13 Feb 2025 14:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9424313D8A4;
+	Thu, 13 Feb 2025 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOcM7MHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAoA+R1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8497E14A605;
-	Thu, 13 Feb 2025 14:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5155E28382;
+	Thu, 13 Feb 2025 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458654; cv=none; b=Ew5DCCux0afFeIX7F1yRn9XghfEBv9NA+LkEGsvx9dOleAK0eqdh0YKWX6dNH/wLS2nMXENGD3WmMAUiY34XSfVXiQDqZkyYHRrf7mMiWh/FfQvkszpcTIimYueqPOeYL16RDhORFSs7yCUuXii1NglitZmi0PdOfCKSfif/t2w=
+	t=1739457366; cv=none; b=ryF/HbhJIc6JpGxs2OUotd4W/AB9UWaFln6a7FGXw956jWZAH4dvPmmVdiqWIxKl74JF8QU8DRA7r+EBFLTF+hV7QZBIp6FRVIKXMOsxIqLiYiDZk/mztSvi5dV0h12NbRHXZU6nVFocXNhrTpqo0zta0L+/IeJ+zjaNObZS1Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458654; c=relaxed/simple;
-	bh=rGLk0h0UCTxPqT3Mgpoyo4q6Y06Q/qYVrTXbRLynSxk=;
+	s=arc-20240116; t=1739457366; c=relaxed/simple;
+	bh=ltzvDAwSjFH9LaJGUOi2KnmH4aFgsAVm2kIR2WzAh8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkMAxpgAx15Dz4pXWzZ5ehwHZV4tETDA78B1UaSoDv6M15UjhqmOcbv5X/MqVAQM42M33YJUOe2kx9zx+Nm5zZXhHdyFro5nJUpjSMtKd4Dg1C+JfOTU0xl+7YZ87mR30RFIiPbY4V/xY/iYXC4CW1m0zCoiVolqBB2sqKdKIio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOcM7MHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9C6C4CED1;
-	Thu, 13 Feb 2025 14:57:33 +0000 (UTC)
+	 MIME-Version; b=CHaw6fw8qBCJzt80PpqKbSe1DK3ah+3Wa8r3x4+djZ2j/qEKw+IfgXPm0kCnBQApxac9YXgnvyVBkH8ZIoiN8Qj7dVg1nVlZpyURfkGP8fq4FVrW19rdPO+5kfmQLV+uwe4iMq4nV6O5yynTrxLhoCL5BLagL2yYuwfaAOkHIj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAoA+R1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E03C4CED1;
+	Thu, 13 Feb 2025 14:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458654;
-	bh=rGLk0h0UCTxPqT3Mgpoyo4q6Y06Q/qYVrTXbRLynSxk=;
+	s=korg; t=1739457366;
+	bh=ltzvDAwSjFH9LaJGUOi2KnmH4aFgsAVm2kIR2WzAh8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOcM7MHe9h99jEyIMG+L/l/3lCdSfrZLfTjvvRZLxd+zK8/EjG5CjULRFlkgSYHcq
-	 0wH0tbnJXCzmyYnTwmmnl46N9T4Cyh34NE5ox66Dwvx37/uiii3ELN0TZoaVK4fI29
-	 /5Y134tjPajSNYtQCbIvaIOYx0IQGcZ5lzfFyrOw=
+	b=KAoA+R1X3QgO5PxNz6/5Jdx0bM1303s2Wt42fVYCzrmSXXz2myct8VsDZiifDWEbW
+	 I4xYaGoaWIiuoW8GQcrGGfbkzaHMZS3deeXPvS5nD8BSK1OSKXXVaew6Eevwf1WLWU
+	 LDptEit190MtL8fx1qQBGCmoWciXokDaj7hn/pZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Enze Xie <enze@nfschina.com>,
+	Youwan Wang <youwan@nfschina.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 041/443] drm/amd/display: Fix Mode Cutoff in DSC Passthrough to DP2.1 Monitor
+Subject: [PATCH 6.12 057/422] HID: multitouch: Add quirk for Hantick 5288 touchpad
 Date: Thu, 13 Feb 2025 15:23:26 +0100
-Message-ID: <20250213142442.210096194@linuxfoundation.org>
+Message-ID: <20250213142438.762760263@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Youwan Wang <youwan@nfschina.com>
 
-[ Upstream commit e56ad45e991128bf4db160b75a1d9f647a341d8f ]
+[ Upstream commit b5e65ae557da9fd17b08482ee44ee108ba636182 ]
 
-Source --> DP2.1 MST hub --> DP1.4/2.1 monitor
+This device sometimes doesn't send touch release signals when moving
+from >=2 fingers to <2 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-When change from DP1.4 to DP2.1 from monitor manual, modes higher than
-4k120 are all cutoff by mode validation. Switch back to DP1.4 gets all
-the modes up to 4k240 available to be enabled by dsc passthrough.
-
-[why]
-Compared to DP1.4 link from hub to monitor, DP2.1 link has larger
-full_pbn value that causes overflow in the process of doing conversion
-from pbn to kbps.
-
-[how]
-Change the data type accordingly to fit into the data limit during
-conversion calculation.
-
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Enze Xie <enze@nfschina.com>
+Signed-off-by: Youwan Wang <youwan@nfschina.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 1080075ccb17c..e096fb5621229 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1695,16 +1695,16 @@ int pre_validate_dsc(struct drm_atomic_state *state,
- 	return ret;
- }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e07d63db5e1f4..369414c92fccb 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2308,6 +2308,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, USB_VENDOR_ID_SIS_TOUCH,
+ 			HID_ANY_ID) },
  
--static unsigned int kbps_from_pbn(unsigned int pbn)
-+static uint32_t kbps_from_pbn(unsigned int pbn)
- {
--	unsigned int kbps = pbn;
-+	uint64_t kbps = (uint64_t)pbn;
++	/* Hantick */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			   I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288) },
++
+ 	/* Generic MT device */
+ 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_MULTITOUCH, HID_ANY_ID, HID_ANY_ID) },
  
- 	kbps *= (1000000 / PEAK_FACTOR_X1000);
- 	kbps *= 8;
- 	kbps *= 54;
- 	kbps /= 64;
- 
--	return kbps;
-+	return (uint32_t)kbps;
- }
- 
- static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
 -- 
 2.39.5
 
