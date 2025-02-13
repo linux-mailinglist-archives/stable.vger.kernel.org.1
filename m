@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-115759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166BDA345AB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF211A3436B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF9616A365
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49E901891D21
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482251DE4C1;
-	Thu, 13 Feb 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0505B24167C;
+	Thu, 13 Feb 2025 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwDwu+zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjsRPNlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B7A1DDA1B;
-	Thu, 13 Feb 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B466D241671;
+	Thu, 13 Feb 2025 14:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459149; cv=none; b=udsYTKvWMFd88IyJn4mNOB2KnLKygEw2dlQveQILy/WfEhORo7au/Cm4ZW27S9x7EiX7CemrgJlbGguu6xL7AbFw9VZbxPwjT3As5jt5ierWGzVx1o+qC6L///PeGd7lrOMOLXN3JBJAUxyiIgBKCKaKJZFgF0YCHgU1pvCRnqQ=
+	t=1739457852; cv=none; b=AniSmjruHJ3PMCuWojnKLBAmT/6zPQDt34cM2IGIbvJO/tAHGHZE1yOs2qwT89UwSTusnbjqRBBBjcjaRhOefo6nVyJbGH0kBOs8O3BCSVNLN+BMLIRW4gJ2DBvuTprxbYKxKPYNeeVfWEwEwSXMVV5fPFjQAlrrrbOKZhYrJzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459149; c=relaxed/simple;
-	bh=QLAmDpvnhav+0WlDR+wsf3FbUCKh8Q12OFzc5PSYSIM=;
+	s=arc-20240116; t=1739457852; c=relaxed/simple;
+	bh=f7EbB4YulEzmVBdzbpm0toImcX8aPNwai36k19uxC9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gT+BMC/I1EhuDox3Pt5DlvIbClZaZpnzjtY2BRq9Qicj7sKzvCPmFdMT+bVFsThcH5hnvRNmrHvjowJmBcJ/jeIdmU7mmmlh/mVfweCIgQqLIgukbYw1J5oKR7qCjHImNUa+ugxI9NAZgyIb3KQYuQ+I108EIc2HJyAziZaoJSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwDwu+zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2FAC4CED1;
-	Thu, 13 Feb 2025 15:05:48 +0000 (UTC)
+	 MIME-Version; b=EYIPttm8szbVNfsHG57OArJFJSqY91L5OChwQZrOCbyqgMXjT7odZ5Gb3J1NOs7V5RuVlDdX2pKmS5yZWRo/VrUKHtbph4Qce6NY4WwF8GkLfSicr0O6uGfJgvNuSyQico9RGTQvEd7eRkGuY9jRxAy6k5Z+uDwJhX71LhlAnLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjsRPNlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C25C4CED1;
+	Thu, 13 Feb 2025 14:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459148;
-	bh=QLAmDpvnhav+0WlDR+wsf3FbUCKh8Q12OFzc5PSYSIM=;
+	s=korg; t=1739457852;
+	bh=f7EbB4YulEzmVBdzbpm0toImcX8aPNwai36k19uxC9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwDwu+zfjvHE0jkjkOCr3l9/Kx6BXh5lWOFqCvAERJiKq0rERwWgwk5z+Rybh31fH
-	 VuRY0P4EjSW0Jl7p1rQab8zNRmV+KjFac+FGh7LzzM4EEXtZSdWz9pZEYi7rd5n5CR
-	 blMQ//blnZcrct83yGiZwUoyCLvy8hD6ANwUXDGA=
+	b=yjsRPNltJxi26bmnK+fzG47RR7PQL640ft6+jpBCKja0OgfgA158NmWp4zDThVSnJ
+	 Rpp5N7WvQURJp4ywyG8LXuPjkm8JNXCuQ95mb7aHPQCgWwMpj36uZ/VVGYI396+cna
+	 lh5mDFDWJ6FTea6VTT7u+mrBWMehTl5CDBY96ZaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Julia Filipchuk <julia.filipchuk@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 183/443] drm/xe/devcoredump: Move exec queue snapshot to Contexts section
+	Heiko Stuebner <heiko@sntech.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 199/422] HID: hid-sensor-hub: dont use stale platform-data on remove
 Date: Thu, 13 Feb 2025 15:25:48 +0100
-Message-ID: <20250213142447.677056087@linuxfoundation.org>
+Message-ID: <20250213142444.223375449@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-commit 042c48b73699c47d84b6ace73036e5a31a0d4cfc upstream.
+commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
 
-Having the exec queue snapshot inside a "GuC CT" section was always
-wrong.  Commit c28fd6c358db ("drm/xe/devcoredump: Improve section
-headings and add tile info") tried to fix that bug, but with that also
-broke the mesa tool that parses the devcoredump, hence it was reverted
-in commit a53da2fb25a3 ("drm/xe: Revert some changes that break a mesa
-debug tool").
+The hid-sensor-hub creates the individual device structs and transfers them
+to the created mfd platform-devices via the platform_data in the mfd_cell.
 
-With the mesa tool also fixed, this can propagate as a fix on both
-kernel and userspace side to avoid unnecessary headache for a debug
-feature.
+Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+the sensor-hub was managing access centrally, with one "completion" in the
+hub's data structure, which needed to be finished on removal at the latest.
 
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Julia Filipchuk <julia.filipchuk@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
+The mentioned commit then moved this central management to each hid sensor
+device, resulting on a completion in each struct hid_sensor_hub_device.
+The remove procedure was adapted to go through all sensor devices and
+finish any pending "completion".
+
+What this didn't take into account was, platform_device_add_data() that is
+used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+platform-data. So the data the platform-device gets is a copy of the
+original data, meaning that the device worked on a different completion
+than what sensor_hub_remove() currently wants to access.
+
+To fix that, use device_for_each_child() to go through each child-device
+similar to how mfd_remove_devices() unregisters the devices later and
+with that get the live platform_data to finalize the correct completion.
+
+Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
 Cc: stable@vger.kernel.org
-Fixes: a53da2fb25a3 ("drm/xe: Revert some changes that break a mesa debug tool")
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123051112.1938193-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit a37934ea75d331fafa7fe80b6180642ba5193422)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -109,11 +109,7 @@ static ssize_t __xe_devcoredump_read(cha
- 	drm_puts(&p, "\n**** GuC CT ****\n");
- 	xe_guc_ct_snapshot_print(ss->guc.ct, &p);
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -730,23 +730,30 @@ err_stop_hw:
+ 	return ret;
+ }
  
--	/*
--	 * Don't add a new section header here because the mesa debug decoder
--	 * tool expects the context information to be in the 'GuC CT' section.
--	 */
--	/* drm_puts(&p, "\n**** Contexts ****\n"); */
-+	drm_puts(&p, "\n**** Contexts ****\n");
- 	xe_guc_exec_queue_snapshot_print(ss->ge, &p);
++static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
++{
++	struct hid_sensor_hub_device *hsdev = dev->platform_data;
++
++	if (hsdev->pending.status)
++		complete(&hsdev->pending.ready);
++
++	return 0;
++}
++
+ static void sensor_hub_remove(struct hid_device *hdev)
+ {
+ 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
+ 	unsigned long flags;
+-	int i;
  
- 	drm_puts(&p, "\n**** Job ****\n");
+ 	hid_dbg(hdev, " hardware removed\n");
+ 	hid_hw_close(hdev);
+ 	hid_hw_stop(hdev);
++
+ 	spin_lock_irqsave(&data->lock, flags);
+-	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
+-		struct hid_sensor_hub_device *hsdev =
+-			data->hid_sensor_hub_client_devs[i].platform_data;
+-		if (hsdev->pending.status)
+-			complete(&hsdev->pending.ready);
+-	}
++	device_for_each_child(&hdev->dev, NULL,
++			      sensor_hub_finalize_pending_fn);
+ 	spin_unlock_irqrestore(&data->lock, flags);
++
+ 	mfd_remove_devices(&hdev->dev);
+ 	mutex_destroy(&data->mutex);
+ }
 
 
 
