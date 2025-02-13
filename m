@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2DBA346CE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B34A34487
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE773B4265
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:16:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371A83B031E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483D11422D8;
-	Thu, 13 Feb 2025 15:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9F324167D;
+	Thu, 13 Feb 2025 14:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmaTLDhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7/f84zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0495E26B091;
-	Thu, 13 Feb 2025 15:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C6B3FB3B;
+	Thu, 13 Feb 2025 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459811; cv=none; b=Cim8ZlZ/01XVan+uRT4bnP9gSgECly9Xg9pZGVYnqkiKh2kZ4PnR3wbZaihX0i2b2anxawg+1lD3p5Qo4dNy7B3F3bMWyw1lwP6TRAZJpA48R1rW8slNostwu3xAGInR+SJwQas9LFxPCKll5WSxg+NbCRJFtGbSQ7GNxQYV7PQ=
+	t=1739458396; cv=none; b=QXYUjmxF2X5rf8NPSPBRwsIiZByGjVsOObgIbadqxcxDtfddthk8GzbTtySUYLAGW8ur/ucofkU6JM1uly0ZRdhAWEsAM/nuaMZF1/Ehdj7o34kxuw64QRc9NiBVHAF8oQq3g+kMvg5p/m+jpnd7dsCIt/Y3PMhOf7EpghCiumw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459811; c=relaxed/simple;
-	bh=rJCw/VxKl2jfWKHWDhnRXsZ8BA82YNpgPzNxpZHpPCs=;
+	s=arc-20240116; t=1739458396; c=relaxed/simple;
+	bh=qAG0BfiU2ffb5D9b0lvg1YU8h21NG60FrWr54ZM6aeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDv7STEMNfVyCKsMd+0A5zTKFjvOoNUkss3k2oexeRJmFCV2zz5a5hdW1tAfwRROYY8qwEW2ut69BwZsGyoVq9xOuTNOKsFI0Z+ucxavAPRM9vJQmw9MgRiADtAJjmfA7CeMOXu+EuhJvRTbEU9Ia10f0rJC58pYEEXB9/JSyCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmaTLDhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDD2C4CEE7;
-	Thu, 13 Feb 2025 15:16:49 +0000 (UTC)
+	 MIME-Version; b=SlB64hYO4iIHT957nk5bG7ydPN7Y92Dji/OlbRYNRJXBGVKOwCWTTezFvIkSxXzEBQdoU0vTfbi4bswtoMx8D5smddQoj4h2gvo61DTJDFqOY4dv6didWzFbWluY2Y+WYFOh7t1vGESCvGLgKe1jK/NSBV/Z0MH5+yLnzs9f/98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7/f84zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4288EC4CED1;
+	Thu, 13 Feb 2025 14:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459810;
-	bh=rJCw/VxKl2jfWKHWDhnRXsZ8BA82YNpgPzNxpZHpPCs=;
+	s=korg; t=1739458395;
+	bh=qAG0BfiU2ffb5D9b0lvg1YU8h21NG60FrWr54ZM6aeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EmaTLDhNn4Eqw3lWu4JBsZ1psfaZixWS+lgEVepYSZvyvizUSXsAeOwaIkv4M9gcQ
-	 k6d0Hyk6u8DIDBOSpDMqkU95n6+VyvlFyfCNdCkxiECY2Tqgu2ktn47LtJxYTIriKo
-	 4qobcagLsiYhRmSGAJbkmr/fX0PFpwngPMy24jy4=
+	b=F7/f84zxOGMmjdQ/UJ0DPNnoiSO3FcL1RcVpVjhUIe49KOVORmYoqJZf4nzJ6ea5N
+	 AUkhabFpuQxnqXP1rEMbSQ8ILTIbnExoD73XVIsg+92WStLmIEMuYK8eaZhQ4R06+F
+	 OVoGPGJFR0sDmGrd3N2fg6N8wZ4apfVVjqIcyd3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 370/443] media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
-Date: Thu, 13 Feb 2025 15:28:55 +0100
-Message-ID: <20250213142454.887894558@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 387/422] rtla/timerlat_hist: Stop timerlat tracer on signal
+Date: Thu, 13 Feb 2025 15:28:56 +0100
+Message-ID: <20250213142451.481358584@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 42d0ec194aa12e9b97f09a94fe565ba2e5f631a2 upstream.
+commit c73cab9dbed04d8f65ca69177b4b21ed3e09dfa7 upstream.
 
-UB9702 does not have SP and EQ registers, but the driver uses them in
-log_status(). Fix this by separating the SP and EQ related log_status()
-work into a separate function (for clarity) and calling that function
-only for UB960.
+Currently, when either SIGINT from the user or SIGALRM from the duration
+timer is caught by rtla-timerlat, stop_tracing is set to break out of
+the main loop. This is not sufficient for cases where the timerlat
+tracer is producing more data than rtla can consume, since in that case,
+rtla is looping indefinitely inside tracefs_iterate_raw_events, never
+reaches the check of stop_tracing and hangs.
+
+In addition to setting stop_tracing, also stop the timerlat tracer on
+received signal (SIGINT or SIGALRM). This will stop new samples so that
+the existing samples may be processed and tracefs_iterate_raw_events
+eventually exits.
 
 Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-3-tglozar@redhat.com
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub960.c |   90 +++++++++++++++++++++++-------------------
- 1 file changed, 50 insertions(+), 40 deletions(-)
+ tools/tracing/rtla/src/timerlat_hist.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -2949,6 +2949,54 @@ static const struct v4l2_subdev_pad_ops
- 	.set_fmt = ub960_set_fmt,
- };
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -1140,9 +1140,12 @@ out_err:
+ }
  
-+static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
-+					 unsigned int nport)
-+{
-+	struct device *dev = &priv->client->dev;
-+	u8 eq_level;
-+	s8 strobe_pos;
-+	u8 v = 0;
-+
-+	/* Strobe */
-+
-+	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
-+
-+	dev_info(dev, "\t%s strobe\n",
-+		 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
-+							  "Manual");
-+
-+	if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
-+		ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
-+
-+		dev_info(dev, "\tStrobe range [%d, %d]\n",
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
-+	}
-+
-+	ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
-+
-+	dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
-+
-+	/* EQ */
-+
-+	ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
-+
-+	dev_info(dev, "\t%s EQ\n",
-+		 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
-+						    "Adaptive");
-+
-+	if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
-+		ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
-+
-+		dev_info(dev, "\tEQ range [%u, %u]\n",
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
-+	}
-+
-+	if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
-+		dev_info(dev, "\tEQ level %u\n", eq_level);
-+}
-+
- static int ub960_log_status(struct v4l2_subdev *sd)
+ static int stop_tracing;
++static struct trace_instance *hist_inst = NULL;
+ static void stop_hist(int sig)
  {
- 	struct ub960_data *priv = sd_to_ub960(sd);
-@@ -2996,8 +3044,6 @@ static int ub960_log_status(struct v4l2_
+ 	stop_tracing = 1;
++	if (hist_inst)
++		trace_instance_stop(hist_inst);
+ }
  
- 	for (nport = 0; nport < priv->hw_data->num_rxports; nport++) {
- 		struct ub960_rxport *rxport = priv->rxports[nport];
--		u8 eq_level;
--		s8 strobe_pos;
- 		unsigned int i;
+ /*
+@@ -1188,6 +1191,12 @@ int timerlat_hist_main(int argc, char *a
+ 	}
  
- 		dev_info(dev, "RX %u\n", nport);
-@@ -3033,44 +3079,8 @@ static int ub960_log_status(struct v4l2_
- 		ub960_rxport_read(priv, nport, UB960_RR_CSI_ERR_COUNTER, &v);
- 		dev_info(dev, "\tcsi_err_counter %u\n", v);
+ 	trace = &tool->trace;
++	/*
++	 * Save trace instance into global variable so that SIGINT can stop
++	 * the timerlat tracer.
++	 * Otherwise, rtla could loop indefinitely when overloaded.
++	 */
++	hist_inst = trace;
  
--		/* Strobe */
--
--		ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
--
--		dev_info(dev, "\t%s strobe\n",
--			 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
--								  "Manual");
--
--		if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
--			ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
--
--			dev_info(dev, "\tStrobe range [%d, %d]\n",
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
--		}
--
--		ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
--
--		dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
--
--		/* EQ */
--
--		ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
--
--		dev_info(dev, "\t%s EQ\n",
--			 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
--							    "Adaptive");
--
--		if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
--			ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
--
--			dev_info(dev, "\tEQ range [%u, %u]\n",
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
--		}
--
--		if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
--			dev_info(dev, "\tEQ level %u\n", eq_level);
-+		if (!priv->hw_data->is_ub9702)
-+			ub960_log_status_ub960_sp_eq(priv, nport);
+ 	retval = enable_timerlat(trace);
+ 	if (retval) {
+@@ -1334,7 +1343,7 @@ int timerlat_hist_main(int argc, char *a
  
- 		/* GPIOs */
- 		for (i = 0; i < UB960_NUM_BC_GPIOS; i++) {
+ 	return_value = 0;
+ 
+-	if (trace_is_off(&tool->trace, &record->trace)) {
++	if (trace_is_off(&tool->trace, &record->trace) && !stop_tracing) {
+ 		printf("rtla timerlat hit stop tracing\n");
+ 
+ 		if (!params->no_aa)
 
 
 
