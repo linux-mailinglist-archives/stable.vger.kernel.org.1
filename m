@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39CBA3424F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0D1A34495
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50211188D7DD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829CE16E786
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EF5213233;
-	Thu, 13 Feb 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDC52222DC;
+	Thu, 13 Feb 2025 14:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZuCIOMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XX1rP7TS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A12438389;
-	Thu, 13 Feb 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A38B22172F;
+	Thu, 13 Feb 2025 14:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457167; cv=none; b=OatBtuB0szkmN/SuisuuDA8pCxnQ4eMeSWBWYjqBIqEzext4iSXV5HAKC41THGMb8wkc1X1uJAQJvYvNxSbqgjIDAQ85cntORmakD0v7zWYHGOyct1B+2P5/faN919hKgJJeiu7Q+a5dTC5LRQv0eQZrkxdwZzizL60Ii3Ohkdg=
+	t=1739458585; cv=none; b=WYnrbuJKAwXGfb9YYShAufqHIF/rUa3Pr3jzRwI+kyR65gGBMT/Fokbt6cts9Bl5I/Ry0jGW8RCtwpSXuxVUNrmsSy6yjzXoCi1sC3S3IfvnqRzauANiozUZ8TDEPnjv2aDVXhZDzVkCtkWySJu630ab9LiDDjLF3yp7n5cB/XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457167; c=relaxed/simple;
-	bh=UPQfTFvHRfRDV5FaJoXGSKFyZRz+594m9diK+MhRsss=;
+	s=arc-20240116; t=1739458585; c=relaxed/simple;
+	bh=ZqwrBiKF7jB0Xy7ojHrRYewghNReR0rw4fG/Zm7oY84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+0Fm0NFBmO7mfXeJHbOfOwTLTQuQ9rJ6eMoC6EwKv0yhYJ4VkWdNHNvWHpPTROPSTaOel97fGOoP6wnLQAdkPdwIrBCngO202nSS0WhDVS8rHjatwUbsI1RA0d7k7vDnXPW0w7Rf0pq03f7NBTb/VRzPymSpm2BHGnwZLDd2BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZuCIOMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700B2C4CED1;
-	Thu, 13 Feb 2025 14:32:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AKFwJyEeB0x6Jv4wHV15u5pIRDAOJbq0IPmQLPJOqBUEbxHnUOMfbW1ARuClkHkMHDBNfcph2afMI/63aSLosbSuIV4gij/Ee8jLcASXL+s4FbyY/LXj1IMMiopjmHF/cIVASlTct6OtJVyLb5em6EaByS3u3GWZ+N2JY1qkFZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XX1rP7TS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC0BC4CEE4;
+	Thu, 13 Feb 2025 14:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457166;
-	bh=UPQfTFvHRfRDV5FaJoXGSKFyZRz+594m9diK+MhRsss=;
+	s=korg; t=1739458585;
+	bh=ZqwrBiKF7jB0Xy7ojHrRYewghNReR0rw4fG/Zm7oY84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZuCIOMG8NRzO4J9P1/UmpxBH3caaI47cNWpvIqU9wyeuPxZF3EBWHOTeVno2Yupa
-	 wVZ1Cs/bVacvBRzCdXocX/qzyaLaVuA35UCvNmBIq5AD4Gu9/pSHPEyRFZ4QpkZp3h
-	 oHv7poKTFSVZkWjUTnRz1cNrBdVNt21xixnI7tIM=
+	b=XX1rP7TSKeyyjQS78dwK9tCNp1m8UR3cRPGCUR4t5G6qLF25iHsjr/t2L8Sip/x+S
+	 c/ekh3UFd/M3IwkNG8o+n7ge5N9iWEs7MiNWp6sg7yFieU41s8HM+Rb9PPAKRbIZ2/
+	 4iNve599NR6LNYqAlKlv6R0JvxzskCq4iShkLZBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Dustin L. Howett" <dustin@howett.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/422] drm/vc4: hdmi: use eld_mutex to protect access to connector->eld
-Date: Thu, 13 Feb 2025 15:23:04 +0100
-Message-ID: <20250213142437.911086068@linuxfoundation.org>
+Subject: [PATCH 6.13 020/443] drm: Add panel backlight quirks
+Date: Thu, 13 Feb 2025 15:23:05 +0100
+Message-ID: <20250213142441.400916821@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 81a9a93b169a273ccc4a9a1ee56f17e9981d3f98 ]
+[ Upstream commit 22e5c7ae12145af13785e3ff138395d5b1a22116 ]
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+Panels using a PWM-controlled backlight source do not have a standard
+way to communicate their valid PWM ranges.
+On x86 the ranges are read from ACPI through driver-specific tables.
+The built-in ranges are not necessarily correct, or may grow stale if an
+older device can be retrofitted with newer panels.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-10-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Add a quirk infrastructure with which the minimum valid backlight value
+can be maintained as part of the kernel.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-1-f662851fda69@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/gpu/drm-kms-helpers.rst        |  3 +
+ drivers/gpu/drm/Kconfig                      |  4 ++
+ drivers/gpu/drm/Makefile                     |  1 +
+ drivers/gpu/drm/drm_panel_backlight_quirks.c | 70 ++++++++++++++++++++
+ include/drm/drm_utils.h                      |  4 ++
+ 5 files changed, 82 insertions(+)
+ create mode 100644 drivers/gpu/drm/drm_panel_backlight_quirks.c
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 7e0a5ea7ab859..6b83d02b5d62a 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2192,9 +2192,9 @@ static int vc4_hdmi_audio_get_eld(struct device *dev, void *data,
- 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
- 	struct drm_connector *connector = &vc4_hdmi->connector;
+diff --git a/Documentation/gpu/drm-kms-helpers.rst b/Documentation/gpu/drm-kms-helpers.rst
+index 8cf2f041af470..b4ee25af1702b 100644
+--- a/Documentation/gpu/drm-kms-helpers.rst
++++ b/Documentation/gpu/drm-kms-helpers.rst
+@@ -221,6 +221,9 @@ Panel Helper Reference
+ .. kernel-doc:: drivers/gpu/drm/drm_panel_orientation_quirks.c
+    :export:
  
--	mutex_lock(&vc4_hdmi->mutex);
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
--	mutex_unlock(&vc4_hdmi->mutex);
-+	mutex_unlock(&connector->eld_mutex);
++.. kernel-doc:: drivers/gpu/drm/drm_panel_backlight_quirks.c
++   :export:
++
+ Panel Self Refresh Helper Reference
+ ===================================
  
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 772fc7625639d..b55be8889e2ca 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -530,6 +530,10 @@ config DRM_HYPERV
+ config DRM_EXPORT_FOR_TESTS
+ 	bool
+ 
++# Separate option as not all DRM drivers use it
++config DRM_PANEL_BACKLIGHT_QUIRKS
++	tristate
++
+ config DRM_LIB_RANDOM
+ 	bool
+ 	default n
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index 463afad1b5ca6..06b73068d2483 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -95,6 +95,7 @@ drm-$(CONFIG_DRM_PANIC_SCREEN_QR_CODE) += drm_panic_qr.o
+ obj-$(CONFIG_DRM)	+= drm.o
+ 
+ obj-$(CONFIG_DRM_PANEL_ORIENTATION_QUIRKS) += drm_panel_orientation_quirks.o
++obj-$(CONFIG_DRM_PANEL_BACKLIGHT_QUIRKS) += drm_panel_backlight_quirks.o
+ 
+ #
+ # Memory-management helpers
+diff --git a/drivers/gpu/drm/drm_panel_backlight_quirks.c b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+new file mode 100644
+index 0000000000000..6b8bbed77c7f1
+--- /dev/null
++++ b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+@@ -0,0 +1,70 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/array_size.h>
++#include <linux/dmi.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <drm/drm_edid.h>
++#include <drm/drm_utils.h>
++
++struct drm_panel_min_backlight_quirk {
++	struct {
++		enum dmi_field field;
++		const char * const value;
++	} dmi_match;
++	struct drm_edid_ident ident;
++	u8 min_brightness;
++};
++
++static const struct drm_panel_min_backlight_quirk drm_panel_min_backlight_quirks[] = {
++};
++
++static bool drm_panel_min_backlight_quirk_matches(const struct drm_panel_min_backlight_quirk *quirk,
++						  const struct drm_edid *edid)
++{
++	if (!dmi_match(quirk->dmi_match.field, quirk->dmi_match.value))
++		return false;
++
++	if (!drm_edid_match(edid, &quirk->ident))
++		return false;
++
++	return true;
++}
++
++/**
++ * drm_get_panel_min_brightness_quirk - Get minimum supported brightness level for a panel.
++ * @edid: EDID of the panel to check
++ *
++ * This function checks for platform specific (e.g. DMI based) quirks
++ * providing info on the minimum backlight brightness for systems where this
++ * cannot be probed correctly from the hard-/firm-ware.
++ *
++ * Returns:
++ * A negative error value or
++ * an override value in the range [0, 255] representing 0-100% to be scaled to
++ * the drivers target range.
++ */
++int drm_get_panel_min_brightness_quirk(const struct drm_edid *edid)
++{
++	const struct drm_panel_min_backlight_quirk *quirk;
++	size_t i;
++
++	if (!IS_ENABLED(CONFIG_DMI))
++		return -ENODATA;
++
++	if (!edid)
++		return -EINVAL;
++
++	for (i = 0; i < ARRAY_SIZE(drm_panel_min_backlight_quirks); i++) {
++		quirk = &drm_panel_min_backlight_quirks[i];
++
++		if (drm_panel_min_backlight_quirk_matches(quirk, edid))
++			return quirk->min_brightness;
++	}
++
++	return -ENODATA;
++}
++EXPORT_SYMBOL(drm_get_panel_min_brightness_quirk);
++
++MODULE_DESCRIPTION("Quirks for panel backlight overrides");
++MODULE_LICENSE("GPL");
+diff --git a/include/drm/drm_utils.h b/include/drm/drm_utils.h
+index 70775748d243b..15fa9b6865f44 100644
+--- a/include/drm/drm_utils.h
++++ b/include/drm/drm_utils.h
+@@ -12,8 +12,12 @@
+ 
+ #include <linux/types.h>
+ 
++struct drm_edid;
++
+ int drm_get_panel_orientation_quirk(int width, int height);
+ 
++int drm_get_panel_min_brightness_quirk(const struct drm_edid *edid);
++
+ signed long drm_timeout_abs_to_jiffies(int64_t timeout_nsec);
+ 
+ #endif
 -- 
 2.39.5
 
