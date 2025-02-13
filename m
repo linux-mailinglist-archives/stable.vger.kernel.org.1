@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5C1A34572
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82117A3432A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1419E163720
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED3F3AE34C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1F41FF7B9;
-	Thu, 13 Feb 2025 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CE8227EB5;
+	Thu, 13 Feb 2025 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uykJN+lG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKRQljfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF9E26B097;
-	Thu, 13 Feb 2025 15:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22819227EB3;
+	Thu, 13 Feb 2025 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459013; cv=none; b=O/hZqIWvTi0JjMzDLKcPEpytDmlI/rhnfxRurIdZxzDQAeOFldYmOlTR0TcxL33fPaDnlSnfyc4z/J2rwM768WmdLaK9APM7IludqR5Gu3M0473+Z+jpJcnzxMVhzRzswhG4LtB60uKnGRPAA0JFoYndLp8DT+p5P87JXFfQ/RM=
+	t=1739457628; cv=none; b=bT8euSwlK/1ZYkmhJ7m0fJZYkTJlM2zM2naW4krKEO9d2xG3rv8rghyMeFTOcWpcepNtc+gixVpq9MhOOTYp6kSNDxDixkcOX04gSik3LIcUxEkVYtekm22JzMCKn2//H7ZIJgO+cHRAKkiGGgSNsu+p2RdPFzJlG60+NzwaC2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459013; c=relaxed/simple;
-	bh=ERYIdizUjdfTmwHsS+SEELFWWTjaXXJ81jLQvqZhh+4=;
+	s=arc-20240116; t=1739457628; c=relaxed/simple;
+	bh=4imPGuRDLxm0YOIv10Y49SUdO+IHzVx4QViHV1wupjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBTO4/dvdszjNHKfeoimOxH9gs2PdRrX67PcqRGo7X+7eeZo3pRanXTIwvC1lX7CBdKHYgO6viyp7Z8kvjw6Uuv2lSNa97YbDeHf2UugXpwKlXcolPY/F7C316qPYamursaeDHhCko/tfw4fl3hDjV0PdpXSnNxcKfZ1lFTDOAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uykJN+lG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EA8C4CED1;
-	Thu, 13 Feb 2025 15:03:32 +0000 (UTC)
+	 MIME-Version; b=fSpxdWLi9IXHigKfyJfyoznO0qqumtCEakF0c4LH1XpC3K4ojz2ieMByeEI/0no5xqwQmGOAZE/VWJJbQT9DyLXmCle61bhYkLSFgU/16VI2m2DFfI8PQXB4PsEmV8f9jMkAfOigGIAPDj5ezrRy6g9y5Psl56tF3bMXyMxDGgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKRQljfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5CBC4CED1;
+	Thu, 13 Feb 2025 14:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459012;
-	bh=ERYIdizUjdfTmwHsS+SEELFWWTjaXXJ81jLQvqZhh+4=;
+	s=korg; t=1739457628;
+	bh=4imPGuRDLxm0YOIv10Y49SUdO+IHzVx4QViHV1wupjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uykJN+lGPVr5N6amSPvHobmUG+BwTmps6Q7Qlxoj8eTyLQZE5yDByH8ZT7cC1TNl5
-	 55V/cDNuFZhA3cPJCMN2myGMXE/mqeq0HOrLwJx9Si2tRvqj1StZgpbtHwQdaPJ8YX
-	 Cs1/FxlDXi8QPfDbN/ymudl+fdUvNngPgm8rStDg=
+	b=WKRQljfVb7KlpgHKda0BT2yhEmSOZvoO7TLqgMWP0mspB/c7UEF2tBJ9V/R4bjmad
+	 v2aPosD4ijJeNW2csnFA3FQ9EGXBGjFnGv5znh5RNBlBg1Z6UZjwOSsggjm+ddIIqx
+	 hJlSqPQ2fGTyeQnLmH6N4J9fc696t/1ZQyAUG1+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.13 143/443] cpufreq: s3c64xx: Fix compilation warning
+	Prike Liang <Prike.Liang@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 159/422] drm/amdkfd: only flush the validate MES contex
 Date: Thu, 13 Feb 2025 15:25:08 +0100
-Message-ID: <20250213142446.117025148@linuxfoundation.org>
+Message-ID: <20250213142442.680871947@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
+commit 9078a5bfa21e78ae68b6d7c365d1b92f26720c55 upstream.
 
-The driver generates following warning when regulator support isn't
-enabled in the kernel. Fix it.
+The following page fault was observed duringthe KFD process release.
+In this particular error case, the HIP test (./MemcpyPerformance -h)
+does not require the queue. As a result, the process_context_addr was
+not assigned when the KFD process was released, ultimately leading to
+this page fault during the execution of the function
+kfd_process_dequeue_from_all_devices().
 
-   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
->> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-      55 |         unsigned int old_freq, new_freq;
-         |                      ^~~~~~~~
->> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-      54 |         struct s3c64xx_dvfs *dvfs;
-         |                              ^~~~
+[345962.294891] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:153 vmid:0 pasid:0)
+[345962.295333] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
+[345962.295775] amdgpu 0000:03:00.0: amdgpu: GCVM_L2_PROTECTION_FAULT_STATUS:0x00000B33
+[345962.296097] amdgpu 0000:03:00.0: amdgpu:     Faulty UTCL2 client ID: CPC (0x5)
+[345962.296394] amdgpu 0000:03:00.0: amdgpu:     MORE_FAULTS: 0x1
+[345962.296633] amdgpu 0000:03:00.0: amdgpu:     WALKER_ERROR: 0x1
+[345962.296876] amdgpu 0000:03:00.0: amdgpu:     PERMISSION_FAULTS: 0x3
+[345962.297135] amdgpu 0000:03:00.0: amdgpu:     MAPPING_ERROR: 0x1
+[345962.297377] amdgpu 0000:03:00.0: amdgpu:     RW: 0x0
+[345962.297682] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:169 vmid:0 pasid:0)
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/s3c64xx-cpufreq.c
-+++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
- 	unsigned int vddarm_max;
- };
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -86,9 +86,12 @@ void kfd_process_dequeue_from_device(str
  
-+#ifdef CONFIG_REGULATOR
- static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[0] = { 1000000, 1150000 },
- 	[1] = { 1050000, 1150000 },
-@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
- 	[3] = { 1200000, 1350000 },
- 	[4] = { 1300000, 1350000 },
- };
-+#endif
- 
- static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- 	{ 0, 0,  66000 },
-@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3
- static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
- 				      unsigned int index)
- {
--	struct s3c64xx_dvfs *dvfs;
--	unsigned int old_freq, new_freq;
-+	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
- 	int ret;
- 
-+#ifdef CONFIG_REGULATOR
-+	struct s3c64xx_dvfs *dvfs;
-+	unsigned int old_freq;
-+
- 	old_freq = clk_get_rate(policy->clk) / 1000;
--	new_freq = s3c64xx_freq_table[index].frequency;
- 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
- 
--#ifdef CONFIG_REGULATOR
- 	if (vddarm && new_freq > old_freq) {
- 		ret = regulator_set_voltage(vddarm,
- 					    dvfs->vddarm_min,
+ 	if (pdd->already_dequeued)
+ 		return;
+-
++	/* The MES context flush needs to filter out the case which the
++	 * KFD process is created without setting up the MES context and
++	 * queue for creating a compute queue.
++	 */
+ 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
+-	if (dev->kfd->shared_resources.enable_mes &&
++	if (dev->kfd->shared_resources.enable_mes && !!pdd->proc_ctx_gpu_addr &&
+ 	    down_read_trylock(&dev->adev->reset_domain->sem)) {
+ 		amdgpu_mes_flush_shader_debugger(dev->adev,
+ 						 pdd->proc_ctx_gpu_addr);
 
 
 
