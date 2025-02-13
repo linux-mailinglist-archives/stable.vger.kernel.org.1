@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94679A3476C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC3FA34441
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F1D3B359E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE921704D4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25B11993B9;
-	Thu, 13 Feb 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857AF24500E;
+	Thu, 13 Feb 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1fVCOju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRpVuKZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBBB185E4A;
-	Thu, 13 Feb 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4151D2135AA;
+	Thu, 13 Feb 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460424; cv=none; b=D7PLypjNvrNc3T8onAg6ZgBrCI1gTL1U2iMgekYzUKyavBkKvAUE+LDwZRb63gvuvaIWEDzDuTsLaKwSIxWEDJUEmPjxOj2C1eL6W11n/XQ3CFT2vbypNWEyFHuC4+CSpIh0S7WUr8DH0HFNNqegcJeBhfeODk82dEcH1HMgnb4=
+	t=1739458348; cv=none; b=A3b6JTS8x6SyJBgG5gHuaSm1kBTR+ot9CXsts1s+zZvTBO2mzO2eTKDwn5m8a/1NlNIccodlanUCLSliWNzkkG0UzaPHpvTd+XHQtLHQRh9P+Om5vkfMf+uTOgrLzqvyMq73iG1atrezfZ+dmURg/RS02GwrGz1tGWImuccQnvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460424; c=relaxed/simple;
-	bh=Pg3+qixgaWMx6jhranckqKh3jElYlkSIPRW3NJOguP8=;
+	s=arc-20240116; t=1739458348; c=relaxed/simple;
+	bh=RdH3b7assx0Z8rz3oCYzYeD0QRswrdFb5hhcbQ9NHBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V98GnvKtyz23idJ8CzNy6jBohDQR5YxfCRb7OnimXI5o9MruLGl/KH5PRDKncXnxkhC6K8D0VuIx1TF2JbBmlMR11BhUo1KCQOsZVtY0KhfmqZHdSKHYtqNlUZ2l5xmOmyZOOtjGNvcmf21I0zxmRHd1HCSckcdRlQ3zQqSWZnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1fVCOju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4F1C4CED1;
-	Thu, 13 Feb 2025 15:27:03 +0000 (UTC)
+	 MIME-Version; b=paDTPWIPZVOKk23+EygkTtogxbvTipqfkXgdXb85BeFnkOCRWrQ23no9YwIU/L9E28/cHmJanvY6cQ5f7PfUFkuLa/eb2EjETkXjvnBhW9lcRFjlrFEnfTms6xOaaK/+bD2tMPQvEu4VoBp8ozF4TS5wJV7FV1bigEriVKHvmkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRpVuKZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A101DC4CED1;
+	Thu, 13 Feb 2025 14:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460424;
-	bh=Pg3+qixgaWMx6jhranckqKh3jElYlkSIPRW3NJOguP8=;
+	s=korg; t=1739458348;
+	bh=RdH3b7assx0Z8rz3oCYzYeD0QRswrdFb5hhcbQ9NHBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1fVCOjuCz0gJYtrhHT2AmYZ3kUW+PkbmgtactzL54BlMKNMWSAdGJKqUif5G/8a1
-	 0DGOZUpb6xXvMEu6ZR+lKiYSDy4BjKuHwOy22HGcIKQZlmCboHVfS8qWN5QriHp+M6
-	 aI48xi/UX+8GnLghLiOEZMn00jBDExhdVDoTMM5M=
+	b=tRpVuKZxBKuiDzZTTWQpCiwv2EBGcP7MDmfAr9JQ3Lr6+WErex+ICxMfutEepir+Q
+	 yMX+WC2z7UxoQxgKdbP+CauGCK0NC4MivpeMTDlk1866St6h0D317/XegPeq2VXK6t
+	 tOtenvd+cIKFL8qD0R253HSxzgawGnrikdYcJLxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 109/273] clk: qcom: gcc-sm8550: Do not turn off PCIe GDSCs during gdsc_disable()
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 332/422] media: i2c: ds90ub960: Fix UB9702 VC map
 Date: Thu, 13 Feb 2025 15:28:01 +0100
-Message-ID: <20250213142411.653095113@linuxfoundation.org>
+Message-ID: <20250213142449.365787546@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 967e011013eda287dbec9e8bd3a19ebe730b8a08 upstream.
+commit 5dbbd0609b83f6eb72c005e2e5979d0cd25243c8 upstream.
 
-With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-can happen during scenarios such as system suspend and breaks the resume
-of PCIe controllers from suspend.
+The driver uses a static CSI-2 virtual channel mapping where all virtual
+channels from an RX port are mapped to a virtual channel number matching
+the RX port number.
 
-So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
-during gdsc_disable() and allow the hardware to transition the GDSCs to
-retention when the parent domain enters low power state during system
-suspend.
+The UB960 and UB9702 have different registers for the purpose, and the
+UB9702 version is not correct. Each of the VC_ID_MAP registers do not
+contain a single mapping, as the driver currently thinks, but two.
 
-Cc: stable@vger.kernel.org # 6.2
-Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on QRD8550
-Link: https://lore.kernel.org/r/20241219170011.70140-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This can cause received VCs other than 0 to be mapped in a wrong way.
+
+Fix this by writing both mappings to each register.
+
+Cc: stable@vger.kernel.org
+Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8550.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ds90ub960.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-sm8550.c
-+++ b/drivers/clk/qcom/gcc-sm8550.c
-@@ -3003,7 +3003,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
+--- a/drivers/media/i2c/ds90ub960.c
++++ b/drivers/media/i2c/ds90ub960.c
+@@ -2533,7 +2533,7 @@ static int ub960_configure_ports_for_str
+ 				for (i = 0; i < 8; i++)
+ 					ub960_rxport_write(priv, nport,
+ 							   UB960_RR_VC_ID_MAP(i),
+-							   nport);
++							   (nport << 4) | nport);
+ 			}
  
-@@ -3014,7 +3014,7 @@ static struct gdsc pcie_0_phy_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_phy_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -3025,7 +3025,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -3036,7 +3036,7 @@ static struct gdsc pcie_1_phy_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_phy_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
+ 			break;
 
 
 
