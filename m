@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-116280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025A6A34842
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50164A34862
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AAAC3B3EC4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D623B18B8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923121FC7DD;
-	Thu, 13 Feb 2025 15:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2AD19AD93;
+	Thu, 13 Feb 2025 15:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfd05a7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT1U+XSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D506198E76;
-	Thu, 13 Feb 2025 15:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1A970805;
+	Thu, 13 Feb 2025 15:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460939; cv=none; b=mPwmScAs7wldHmGSwRZqrb2tnx7uQlhI22oJSfFvddJpaQKpvi5qvEcUi7w2DwqUs2DcOVq9qz9PprtZVfk7OTQwgRJkMmbTY4Ae1lQ8rLmBE2J+BuzZ+OMhvnjsL9CdFDri2wG/7Pc6/Q64VIcc+qhndtfkA1y5iahkQ65hv0w=
+	t=1739460947; cv=none; b=d+Ko7vvHi+CJVJjO4ksxoPCvp/J9mR47z+YsFQQmaglpQThyXd5LX49JPrjuCnh7VN1FRXF7Sn3JINaCJVYyVrErQBat0k6XeBeaq9m0OeKweJtE3d7qOjBUoSY10WKrXQSBKQ6p8AAaDkz9MwEsZmCvYvuTvwt1ZdgCPh/+uxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460939; c=relaxed/simple;
-	bh=Qlk9OS2n7gtyn5SqIyO7q1b4H2/lm2JgIrigEhTURSg=;
+	s=arc-20240116; t=1739460947; c=relaxed/simple;
+	bh=9BAsNTUamD/Z1Vo9utiflDPlB4caiXJnrVS0beyeZdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LGmckF5BPezKlJkscuFPmCJAuE6snpJlkEtXqpC3wmLEV9TafsbYBOs+oSqG1FpR2m3cV16JWIlNA5/dV1/EZdVIRFulli69IwQazqgDGIJqjJ1RNxxtltKAAEKYazMpKLtuBGO3t7W1rtX/87zxQ2qpNc+pSDvGyMQ6XKohQIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfd05a7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D5FC4CED1;
-	Thu, 13 Feb 2025 15:35:38 +0000 (UTC)
+	 MIME-Version; b=IaAcdqhpRelOX/6nIlLOisPZR6ALU+ejlnZ2BV+uP4gUujUznKd6cpMKNCuHm+Ny0yjVUaW7f6H9kUTDWAn1dSCD14NBGwIg+3i8abzG3S9CI/tERrjzWKI0KsrqGxHVBDrkvMU88LEQuNj0obrCVMLCJ6PztcGWtlsQOWu8wrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT1U+XSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A562C4CED1;
+	Thu, 13 Feb 2025 15:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460939;
-	bh=Qlk9OS2n7gtyn5SqIyO7q1b4H2/lm2JgIrigEhTURSg=;
+	s=korg; t=1739460947;
+	bh=9BAsNTUamD/Z1Vo9utiflDPlB4caiXJnrVS0beyeZdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rfd05a7gXmo+aZE2PJxCC9DHEmsNJKijF4D8jeqjd1kTwC1sRA4kiZJ9k6H7sEyD5
-	 JnD4gRYPU9sfIJ4WmuI7gEY1lBUq7TcgP+4eyiDRSiC72eWBnYmraIa7csXkDDPFEK
-	 jxp4GgDFajc9vQXWMoJLJNwOoCJv90P3xWIlFz3g=
+	b=vT1U+XSHxXelk3J+yB0IGPumjTgcHpwhobqM/BC5BkERb+tFcV+jR/U/nBboFhB4+
+	 Z0uzS2pYdDJ8VoDsmkOmGwr4xLgIPcqw9qOhYbPgiDAj+snL60nWQhzzay/153/RA7
+	 yOkoaljjRhFoOKbOy8EozDkiHFgNcxQRabayIEgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 257/273] ptp: Ensure info->enable callback is always set
-Date: Thu, 13 Feb 2025 15:30:29 +0100
-Message-ID: <20250213142417.577084262@linuxfoundation.org>
+	Michal Simek <michal.simek@amd.com>,
+	stable@kernel.org,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 258/273] rtc: zynqmp: Fix optional clock name property
+Date: Thu, 13 Feb 2025 15:30:30 +0100
+Message-ID: <20250213142417.615085653@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -61,59 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Michal Simek <michal.simek@amd.com>
 
-commit fd53aa40e65f518453115b6f56183b0c201db26b upstream.
+commit 2a388ff22d2cbfc5cbd628ef085bdcd3b7dc64f5 upstream.
 
-The ioctl and sysfs handlers unconditionally call the ->enable callback.
-Not all drivers implement that callback, leading to NULL dereferences.
-Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
+Clock description in DT binding introduced by commit f69060c14431
+("dt-bindings: rtc: zynqmp: Add clock information") is talking about "rtc"
+clock name but driver is checking "rtc_clk" name instead.
+Because clock is optional property likely in was never handled properly by
+the driver.
 
-Instead use a dummy callback if no better was specified by the driver.
-
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 07dcc6f9c762 ("rtc: zynqmp: Add calibration set and get support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Cc: stable@kernel.org
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/cd5f0c9d01ec1f5a240e37a7e0d85b8dacb3a869.1732723280.git.michal.simek@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_clock.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/rtc/rtc-zynqmp.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -189,6 +189,11 @@ static int ptp_getcycles64(struct ptp_cl
- 		return info->gettime64(info, ts);
- }
- 
-+static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static void ptp_aux_kworker(struct kthread_work *work)
- {
- 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-@@ -251,6 +256,9 @@ struct ptp_clock *ptp_clock_register(str
- 			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
+--- a/drivers/rtc/rtc-zynqmp.c
++++ b/drivers/rtc/rtc-zynqmp.c
+@@ -318,8 +318,8 @@ static int xlnx_rtc_probe(struct platfor
+ 		return ret;
  	}
  
-+	if (!ptp->info->enable)
-+		ptp->info->enable = ptp_enable;
-+
- 	if (ptp->info->do_aux_work) {
- 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
- 		ptp->kworker = kthread_create_worker(0, "ptp%d", ptp->index);
+-	/* Getting the rtc_clk info */
+-	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc_clk");
++	/* Getting the rtc info */
++	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc");
+ 	if (IS_ERR(xrtcdev->rtc_clk)) {
+ 		if (PTR_ERR(xrtcdev->rtc_clk) != -EPROBE_DEFER)
+ 			dev_warn(&pdev->dev, "Device clock not found.\n");
 
 
 
