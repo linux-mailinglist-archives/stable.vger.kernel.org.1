@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-115504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EF2A3444A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20660A346DD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20692189335D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68337A311E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669EE241695;
-	Thu, 13 Feb 2025 14:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2871547F0;
+	Thu, 13 Feb 2025 15:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5Uqkb3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8GRajkI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246FB24168C;
-	Thu, 13 Feb 2025 14:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C45143736;
+	Thu, 13 Feb 2025 15:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458284; cv=none; b=k6iYq2wZ/WKNUCljH5NR+08MlTpq90VcT8VLYkZBGkbobxq8nbSyLqyuL35NKM/A754JNXwDfpKmvfbexZZy9sgzR9iXyo5Q60px67E+W/9ssfnl2g5a6pTrr3bxvWE+oefHmhHbdtyhWzELv/mdfGKNs1Wr5/hz4zOJOCo7pzc=
+	t=1739460515; cv=none; b=ICRe76DWekOOLVmU+uuj6n6Z+IQ9DF36nCRR/XeYLocvqHBZQZGoBFYqr5Xocy3gQ9Vop8GyA8scEYGu1ZBOjNgeSuoDhLQFxFcQGEgGIJJu28pFqfSOrFfP5HSiVQECyqnbwJX5wFrQBk6qT62PRHU3ASDJXit+KGRvgtagWVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458284; c=relaxed/simple;
-	bh=tvo/38T0pzA/27QJIe46Lb1GBghv8bqnpiLmWcck2Bw=;
+	s=arc-20240116; t=1739460515; c=relaxed/simple;
+	bh=RpQnUIzLnx+avYrGV7nvYmGlLz6I/HNyr9duQCj9QLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQf3lDGZYnSnDERpAZvB28XOo7veuFF5pCXbhdRVyQPQ+QaNCi4B72RwRAt311Y/aQr+kx2dh26iCprYuBQ/jNH2FbqvdzFaa9FG7eSnBb30JaMSbsQOxAhNRCcvk1iAA4KojkvCVPbQ9gd+EUhuyrpAUc58WvgjHNZ1sP7QmSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5Uqkb3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89333C4CED1;
-	Thu, 13 Feb 2025 14:51:23 +0000 (UTC)
+	 MIME-Version; b=iLazahG72GNXweKW87jVv6DdtyonfjqgwXk0Z23+HV0JlEhEhgp1wODPtG8SmAW2E3/MtyIcFxLtXbZdstI0l9gJahZK5GQu74kRjsRBcffQ2OV+Mjg50pqNy69gG30qQYq64u3i4MtASSQzMiR7rlwahmXSXV87jPuJXW4rUw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8GRajkI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725DEC4CED1;
+	Thu, 13 Feb 2025 15:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458284;
-	bh=tvo/38T0pzA/27QJIe46Lb1GBghv8bqnpiLmWcck2Bw=;
+	s=korg; t=1739460514;
+	bh=RpQnUIzLnx+avYrGV7nvYmGlLz6I/HNyr9duQCj9QLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5Uqkb3PAhiTG57hqaZd2YTdHS6Ipf2nT7HD+HbL8hMmL6bRiREVep/5M9nktaeeT
-	 PB1gDqtWnjNv3JUYdk0GJK2bnZgA6zi9ChzxWIaYlDU9FpEZMGxQRrJFxqlcq/U8hC
-	 mxL8SeMBCW/7yjTmv/c+34nrUccxklNxVU24XobI=
+	b=m8GRajkIQWneJImcIePK30qppGiq37l0P8mg9+dGXBDbDuqkba2b0xQhDVrmuMYPr
+	 E3+eCRQa6ay7S+TsqsQB6fs40psTvAZwNFV8TArrWEr0SqZwPOXg4dAWPJPLuqZCCA
+	 zXmtahlJg1T1YbZqxsu1Vwp+AIDRUUck3tohBRus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	stable <stable@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.12 354/422] nvmem: imx-ocotp-ele: fix MAC address byte order
-Date: Thu, 13 Feb 2025 15:28:23 +0100
-Message-ID: <20250213142450.214931566@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 132/273] usb: gadget: f_tcm: Translate error to sense
+Date: Thu, 13 Feb 2025 15:28:24 +0100
+Message-ID: <20250213142412.554539157@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 391b06ecb63e6eacd054582cb4eb738dfbf5eb77 upstream.
+commit 98fa00fd3ae43b857b4976984a135483d89d9281 upstream.
 
-According to the i.MX93 Fusemap the two MAC addresses are stored in
-words 315 to 317 like this:
+When respond with check_condition error status, clear from_transport
+input so the target layer can translate the sense reason reported by
+f_tcm.
 
-315	MAC1_ADDR_31_0[31:0]
-316	MAC1_ADDR_47_32[47:32]
-	MAC2_ADDR_15_0[15:0]
-317	MAC2_ADDR_47_16[31:0]
-
-This means the MAC addresses are stored in reverse byte order. We have
-to swap the bytes before passing them to the upper layers. The storage
-format is consistent to the one used on i.MX6 using imx-ocotp driver
-which does the same byte swapping as introduced here.
-
-With this patch the MAC address on my i.MX93 TQ board correctly reads as
-00:d0:93:6b:27:b8 instead of b8:27:6b:93:d0:00.
-
-Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-4-srinivas.kandagatla@linaro.org
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/b2a5577efe7abd0af0051229622cf7d3be5cdcd0.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp-ele.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/usb/gadget/function/f_tcm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -109,6 +109,26 @@ static int imx_ocotp_reg_read(void *cont
- 	return 0;
- };
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1065,7 +1065,7 @@ static void usbg_cmd_work(struct work_st
  
-+static int imx_ocotp_cell_pp(void *context, const char *id, int index,
-+			     unsigned int offset, void *data, size_t bytes)
-+{
-+	u8 *buf = data;
-+	int i;
-+
-+	/* Deal with some post processing of nvmem cell data */
-+	if (id && !strcmp(id, "mac-address"))
-+		for (i = 0; i < bytes / 2; i++)
-+			swap(buf[i], buf[bytes - i - 1]);
-+
-+	return 0;
-+}
-+
-+static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
-+					 struct nvmem_cell_info *cell)
-+{
-+	cell->read_post_process = imx_ocotp_cell_pp;
-+}
-+
- static int imx_ele_ocotp_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -135,6 +155,8 @@ static int imx_ele_ocotp_probe(struct pl
- 	priv->config.stride = 1;
- 	priv->config.priv = priv;
- 	priv->config.read_only = true;
-+	priv->config.add_legacy_fixed_of_cells = true;
-+	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
- 	mutex_init(&priv->lock);
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++			TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
  
- 	nvmem = devm_nvmem_register(dev, &priv->config);
+ static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
+@@ -1193,7 +1193,7 @@ static void bot_cmd_work(struct work_str
+ 
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++				TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
+ 
+ static int bot_submit_command(struct f_uas *fu,
 
 
 
