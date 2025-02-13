@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-115384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB487A34375
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D8DA34318
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4B131882274
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:46:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDAC16BE57
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B8B24BBEA;
-	Thu, 13 Feb 2025 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90333211468;
+	Thu, 13 Feb 2025 14:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6H3nSRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0ZFjKFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3E24BBE3;
-	Thu, 13 Feb 2025 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9FC38389;
+	Thu, 13 Feb 2025 14:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457866; cv=none; b=TLIa7l29/z0pyH4yoPcI8ms0uDl2YzlCBRZAWvjDoHjZNfqULVyBWsvNxRokAdYebC/3g5up48zWsQudAWLmMbxnoo1D4GQJTITkVPkJn1NKQEVqw+W9F/UqwlyUoZaTC0mp9F6isoDIHlsc+8p3lpjDbbCt/cN+KtMmD+eeZf4=
+	t=1739457745; cv=none; b=WQoawMPgusnxO4Ak9MfDulVjgTeQlVBInNLTAJNiiBQJNz3xchs1wYH8Crkvfce7ijex8WlW2P9XtuZT8nBZg6evobL44Dpb1b2aopWPT12fSQLayaNCUulacMAodDMc2OgBhM9pnNVKLdP2pEVxwfhbs2xreNcN7kTRXPwk86Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457866; c=relaxed/simple;
-	bh=3MTesvRcC+4Dqjc7Ac4QaiPGlcuDIlFGQ5PluFV/Kvo=;
+	s=arc-20240116; t=1739457745; c=relaxed/simple;
+	bh=lHf0oQpe6JHrsZ4Ig8v85M+ULhQDWsMfkJVYBe3dZfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1Eum5IEgU69ozcl6zrdrXpUuFH4RyuNJuJEUwlWlcrDGSzq03TqTnKraToEYIYp0SEYARL6Y6ZvSx5r4AkGdmdFYjSjSGXN4F2spjPZdJuOG9uozgrkBdJrbsFXdccRrJkEfm6fkfP7edhFVbyUQ1qwDKocmvsNHyxzmC6GB4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6H3nSRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9017C4CED1;
-	Thu, 13 Feb 2025 14:44:25 +0000 (UTC)
+	 MIME-Version; b=JcZeu96jciA6bi16jTk8JoI6YKykjN+W8q6mGNOpA3cLpiYPZUHDaas4ZR2/KQC04irD1DIEApsSKxJESe7N8TwqQZHNrTUKWFz5W3+dtVlat6HLEHQ74UCSO8mI5rCZ/9Ks3P1NKGKg6CxauIuIbbfFwU1vQa9zKDpxQwEmxQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0ZFjKFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1BCC4CEE2;
+	Thu, 13 Feb 2025 14:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457866;
-	bh=3MTesvRcC+4Dqjc7Ac4QaiPGlcuDIlFGQ5PluFV/Kvo=;
+	s=korg; t=1739457745;
+	bh=lHf0oQpe6JHrsZ4Ig8v85M+ULhQDWsMfkJVYBe3dZfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6H3nSRAJ4uAhTWM6Ej3o+FBmPjb3My7SwbKwlDx947Odw7hx1JBoaiBCfWY5qv3N
-	 +7hDYFyfrtUZ2QbkCMAOff8wgIEAjO1UPR3JiCxvNMBwJKb2FDdteyTPRcN0lyla40
-	 46o32ukKERAsm9ljf1bXIfD0JA0W55+iHWEk43co=
+	b=D0ZFjKFyP1wJZAHh4edRjBuSU0aqzK7zgPqwmZKWpgFFj5r0vidA7n1J67d1pYgkj
+	 Nw0oPdPK6sSxQrqKGc2iWJMOhXj4c2YEEP5JBiyRXw+fpRgnz4BYMp0peHOXN9AX/T
+	 bbYkowIdYQY1+ZCqwhHTkDuaT3nPs4yq7xxjqK8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Avri Altman <Avri.Altman@wdc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 193/422] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
-Date: Thu, 13 Feb 2025 15:25:42 +0100
-Message-ID: <20250213142443.992635612@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 194/422] of: Correct child specifier used as input of the 2nd nexus node
+Date: Thu, 13 Feb 2025 15:25:43 +0100
+Message-ID: <20250213142444.031210229@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
 References: <20250213142436.408121546@linuxfoundation.org>
@@ -67,40 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 1b3e2d4ec0c5848776cc56d2624998aa5b2f0d27 upstream.
+commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
 
-According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
-defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
-TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
-the UFS device specification definition.
+API of_parse_phandle_with_args_map() will use wrong input for nexus node
+Nexus_2 as shown below:
 
+    Node_1		Nexus_1                              Nexus_2
+&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
+		  map-pass-thru=<...>
+
+Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
+wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
+
+Fix by always making @match_array point to @initial_match_array into
+which to store nexus output.
+
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
 Cc: stable@vger.kernel.org
-Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
-Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Link: https://lore.kernel.org/r/69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com
-Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/ufs/ufs.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/of/base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/ufs/ufs.h
-+++ b/include/ufs/ufs.h
-@@ -386,8 +386,8 @@ enum {
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1493,7 +1493,6 @@ int of_parse_phandle_with_args_map(const
+ 		 * specifier into the out_args structure, keeping the
+ 		 * bits specified in <list>-map-pass-thru.
+ 		 */
+-		match_array = map - new_size;
+ 		for (i = 0; i < new_size; i++) {
+ 			__be32 val = *(map - new_size + i);
  
- /* Possible values for dExtendedUFSFeaturesSupport */
- enum {
--	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
--	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
-+	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
-+	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
- 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
- 	UFS_DEV_HPB_SUPPORT		= BIT(7),
- 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
+@@ -1502,6 +1501,7 @@ int of_parse_phandle_with_args_map(const
+ 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
+ 			}
+ 
++			initial_match_array[i] = val;
+ 			out_args->args[i] = be32_to_cpu(val);
+ 		}
+ 		out_args->args_count = list_size = new_size;
 
 
 
