@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-116174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6588FA3477A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F09CA34604
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986E716E6D6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9115616976E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92F626B0BD;
-	Thu, 13 Feb 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BB726B0BE;
+	Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUEqaOuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hd04eqOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756D526B087;
-	Thu, 13 Feb 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDE26B092;
+	Thu, 13 Feb 2025 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460579; cv=none; b=e479uKdkg1M+6SFMQ8PAolL+kaEkYORLyJDmuZnxYUa2+Hva8QuxpBlzfcf3Zo2Sqsbk8hRnij/kjR6o+ZmO+8NsV1XdJmlGK7HzdDLrG+S+iPOrvf0EHqzon8zayxJqc8k2YXSQrN6BKi/fkpEjnukJEPbIQYI4lCeiKdcfUAE=
+	t=1739459737; cv=none; b=JUiwgWXP+W3psLn71HUuANe2OJ/lBSxd7wVG2Z0eSlsS1DDhXfknVqkShaZhq1TydmwW0PZX/V04+hmEwNxjzxD22585oOI2RkgNSyGEVoUt5pL7W19g6mhYyKkoHP04Sq6cFS3QuMvOP2mBC66PPpQkYpCYpYMkrlV2itRK/XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460579; c=relaxed/simple;
-	bh=Bwy+9OZ8v3ErQmb7rQHxioH5U6KGxhBQVI5ieHJBZas=;
+	s=arc-20240116; t=1739459737; c=relaxed/simple;
+	bh=gdPs3hpdmB0ZOWDc4hyoe1wGWbtYXeSAVUvAQPWsGYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fH8C4tqdAsAm5gjccfrpxtWBedTcHwYX02n/5gutMJuQRsyA+/VyQA33eDf8hWGlTfmiYgfvVVv+kwJoXkCPTwLa8aUrytJGQVie4+rj0EbudU/4GDfdRg+hQgpi/rAYkhtBopvFXJ5T7I30GbCo1iYNEWtOHLvMX+dtv2MZmRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUEqaOuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D963DC4CED1;
-	Thu, 13 Feb 2025 15:29:38 +0000 (UTC)
+	 MIME-Version; b=Kr7hdNvqBTNlhAGPAyTeYHOE0j4V0Jv9/SC3q1j6qgt4TDOB3ThlAas5BxSdf568es+lBMIjB69sd0xLPgTnCCn5YGXatr7YeZ7R+lAPZfxMUQwk1n5xS1aXKd7yBy1BPnLvGXqDRLYsftSn4KUdTc0YdXUeMxYcxvJkSruvDIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hd04eqOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95882C4CEE4;
+	Thu, 13 Feb 2025 15:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460579;
-	bh=Bwy+9OZ8v3ErQmb7rQHxioH5U6KGxhBQVI5ieHJBZas=;
+	s=korg; t=1739459737;
+	bh=gdPs3hpdmB0ZOWDc4hyoe1wGWbtYXeSAVUvAQPWsGYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUEqaOuSeptcffyNLICC0TOxqq+q6a2fdLOk++SPL2ieTilsDPYYNsSksrjN7JRl/
-	 qLsp90OLAfhcHpQmDXkSk2xzHrHXQgoU08HWt3gErtzM7+EubPOUzHcbdjOG+DKxgP
-	 xeKLEkJ5rQtJHMj3WdPwN2O/TLOcShnlFky12zUU=
+	b=hd04eqOjMcOH9G3RKV5ld0r0167rvDFRg92p065jZecidFRunPX+FZw0QNEnuatTX
+	 wfLGEE6L9yOW4Hy4Y94Jrx9wCzLznJTWRnjYW/zk5U5kbu7slVT9ZrAElAw/TogoQG
+	 l58TsmLrmNJZM4fesio6XzW1HbKNujbg5uIHmils=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 135/273] usb: gadget: f_tcm: Dont prepare BOT write request twice
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 342/443] media: ccs: Clean up parsed CCS static data on parse failure
 Date: Thu, 13 Feb 2025 15:28:27 +0100
-Message-ID: <20250213142412.671597470@linuxfoundation.org>
+Message-ID: <20250213142453.819350631@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
+commit da73efa8e675a2b58f1c7ae61201acfe57714bf7 upstream.
 
-The duplicate kmalloc here is causing memory leak. The request
-preparation in bot_send_write_request is also done in
-usbg_prepare_w_request. Remove the duplicate work.
+ccs_data_parse() releases the allocated in-memory data structure when the
+parser fails, but it does not clean up parsed metadata that is there to
+help access the actual data. Do that, in order to return the data
+structure in a sane state.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   17 -----------------
- 1 file changed, 17 deletions(-)
+ drivers/media/i2c/ccs/ccs-data.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
- {
- 	struct f_uas *fu = cmd->fu;
- 	struct se_cmd *se_cmd = &cmd->se_cmd;
--	struct usb_gadget *gadget = fuas_to_gadget(fu);
- 	int ret;
+--- a/drivers/media/i2c/ccs/ccs-data.c
++++ b/drivers/media/i2c/ccs/ccs-data.c
+@@ -10,6 +10,7 @@
+ #include <linux/limits.h>
+ #include <linux/mm.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
  
- 	init_completion(&cmd->write_complete);
-@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
- 		return -EINVAL;
+ #include "ccs-data-defs.h"
+ 
+@@ -948,15 +949,15 @@ int ccs_data_parse(struct ccs_data_conta
+ 
+ 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, verbose);
+ 	if (rval)
+-		return rval;
++		goto out_cleanup;
+ 
+ 	rval = bin_backing_alloc(&bin);
+ 	if (rval)
+-		return rval;
++		goto out_cleanup;
+ 
+ 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, false);
+ 	if (rval)
+-		goto out_free;
++		goto out_cleanup;
+ 
+ 	if (verbose && ccsdata->version)
+ 		print_ccs_data_version(dev, ccsdata->version);
+@@ -965,15 +966,16 @@ int ccs_data_parse(struct ccs_data_conta
+ 		rval = -EPROTO;
+ 		dev_dbg(dev, "parsing mismatch; base %p; now %p; end %p\n",
+ 			bin.base, bin.now, bin.end);
+-		goto out_free;
++		goto out_cleanup;
  	}
  
--	if (!gadget->sg_supported) {
--		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
--		if (!cmd->data_buf)
--			return -ENOMEM;
--
--		fu->bot_req_out->buf = cmd->data_buf;
--	} else {
--		fu->bot_req_out->buf = NULL;
--		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
--		fu->bot_req_out->sg = se_cmd->t_data_sg;
--	}
--
--	fu->bot_req_out->complete = usbg_data_write_cmpl;
--	fu->bot_req_out->length = se_cmd->data_length;
--	fu->bot_req_out->context = cmd;
--
- 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
- 	if (ret)
- 		goto cleanup;
+ 	ccsdata->backing = bin.base;
+ 
+ 	return 0;
+ 
+-out_free:
++out_cleanup:
+ 	kvfree(bin.base);
++	memset(ccsdata, 0, sizeof(*ccsdata));
+ 
+ 	return rval;
+ }
 
 
 
