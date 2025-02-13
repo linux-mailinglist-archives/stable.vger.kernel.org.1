@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24EE0A346E9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1ED5A343EF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42D803AE550
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0CFD16E12D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E1F26B0BE;
-	Thu, 13 Feb 2025 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32470155330;
+	Thu, 13 Feb 2025 14:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsopTymu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp8ARO8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E580B26B091;
-	Thu, 13 Feb 2025 15:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B5C15539A;
+	Thu, 13 Feb 2025 14:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459721; cv=none; b=XJW32Dwv8/cc9npXZ3xtmCO/xiFiDxoiPmTSWRGHxUf0T/utv/OzGEHs2ai8GrMCQYVfLSmfUzOe9WmPDgZzDyPK+F6gNIAtvEBej4wUxF3qwR0kkOq3YZqLd6hKugeGNiTkE9FOAi4tnaq90S9K6BHL2oBEDWCOiC3co9wRx7c=
+	t=1739458194; cv=none; b=Y672H2x8SMmWh8+TGgswdfaORPAZXTRf7vl1+XgYef2cyn6qHsA/yhtbxYe//vw7MkPK4KzoLI1xNMVRQ8LC6LteTY1P/nqGbZoQBZZi6s1RXaFy07lHVXjffrikyB8/DXv1ztpbBlJtJ4ZJuLLL1yZTNj28C/4txrWOLhgJ2Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459721; c=relaxed/simple;
-	bh=VClj2eXSQcI2DaqrmZjJ+8GiPSY1gzKRCoptwoPd8pQ=;
+	s=arc-20240116; t=1739458194; c=relaxed/simple;
+	bh=i790yB9Z4m7UEMPNZCvVwRxCrwZPcd7qQ1HXNwauTmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NboqIKlya5SFYg8V0z+KUhkAbzK/E4bNK83IwqoYVStWrFtIwdl5O+D1jpwokNLUcSY8rP30tppkqd8njPg4wjsznen7lO1WSyQKVSNzaiOOXiQ81ag5TvN7mry7c38ib3N9BkDPfXhcuy/zZLRR/WlNRMrX/CrPzcIvbgOv+9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsopTymu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541E7C4CED1;
-	Thu, 13 Feb 2025 15:15:20 +0000 (UTC)
+	 MIME-Version; b=DORJulCUtIc2+/dOPijPG/r2zLoz9d1VdbRUQVAzAkIpJ4h35iBmwAIzXIWM1lgUoBsCmRy26luDDvv9UvulbdFE2X+z+EA58aXOxdHkGpfhaNKuGv/GMISkPUXaGfYk1HqF6jZST+v0yJCx1G0ImqB2Builu/XkUpPmCNH1w4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp8ARO8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CB5C4CED1;
+	Thu, 13 Feb 2025 14:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459720;
-	bh=VClj2eXSQcI2DaqrmZjJ+8GiPSY1gzKRCoptwoPd8pQ=;
+	s=korg; t=1739458193;
+	bh=i790yB9Z4m7UEMPNZCvVwRxCrwZPcd7qQ1HXNwauTmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsopTymuW2BfOOyLVp5x13Ztb2bQ0/Dt1I/S995eX95WQsmgkEvkBWMIOsW7ySLzz
-	 lkpDjiQIBKEqHrcywMqnhNr+n8leSACdzHHFKkqwQ/zcNT2wczM1rRI5hzW/a0G7NA
-	 /Wud3D8p99bEBMymNTNnyFPVLg/mDX/9slYYKqco=
+	b=Qp8ARO8SihQxQQ8wV7I7IgRzSWR6JNbGP4iTzkZMCbVLj2ien6prtkANdhoTCrKQ6
+	 odqCQUZ4/XXjopCn31JMvAsvBUE9S3BxigcQ1HGdwm71Gtj10XNHuoHiC1lu4gtne9
+	 Elx7ZbX6mbswDGQOc8vk6ZKmU+LkKQeK/K4pP+3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 312/443] arm64: dts: qcom: sm8350: Fix MPSS memory length
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 328/422] media: ccs: Fix CCS static data parsing for large block sizes
 Date: Thu, 13 Feb 2025 15:27:57 +0100
-Message-ID: <20250213142452.654856210@linuxfoundation.org>
+Message-ID: <20250213142449.213548595@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
+commit 82b696750f0b60e7513082a10ad42786854f59f8 upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+The length field of the CCS static data blocks was mishandled, leading to
+wrong interpretation of the length header for blocks that are 16 kiB in
+size. Such large blocks are very, very rare and so this wasn't found
+earlier.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+As the length is used as part of input validation, the issue has no
+security implications.
 
-Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
+Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ drivers/media/i2c/ccs/ccs-data.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2214,7 +2214,7 @@
- 
- 		mpss: remoteproc@4080000 {
- 			compatible = "qcom,sm8350-mpss-pas";
--			reg = <0x0 0x04080000 0x0 0x4040>;
-+			reg = <0x0 0x04080000 0x0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+--- a/drivers/media/i2c/ccs/ccs-data.c
++++ b/drivers/media/i2c/ccs/ccs-data.c
+@@ -98,7 +98,7 @@ ccs_data_parse_length_specifier(const st
+ 		plen = ((size_t)
+ 			(__len3->length[0] &
+ 			 ((1 << CCS_DATA_LENGTH_SPECIFIER_SIZE_SHIFT) - 1))
+-			<< 16) + (__len3->length[0] << 8) + __len3->length[1];
++			<< 16) + (__len3->length[1] << 8) + __len3->length[2];
+ 		break;
+ 	}
+ 	default:
 
 
 
