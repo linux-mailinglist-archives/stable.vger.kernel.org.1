@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F87A345AD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1503DA34715
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60355173EC7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D0E3AE2F7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE91139566;
-	Thu, 13 Feb 2025 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359AA14A605;
+	Thu, 13 Feb 2025 15:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjCw+Hz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pshxdthI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC41226B097;
-	Thu, 13 Feb 2025 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21F9145A03;
+	Thu, 13 Feb 2025 15:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459447; cv=none; b=BKjw7UctYovyK38QD+OwwR1Yz2m9gfbRR9GdGzZeZWSy/1jnSI7vWuahPBqNYEAC0fnyf0iGQ3al9plJPU8eY9G+eJU6+eXRYDMRwMdXXY42a71fXsfvbEkchFXjqVAILdErVT/91I8fGbNB2AKsAKIhqSAE2GNlBahzyRDrcN4=
+	t=1739460277; cv=none; b=TKF56XXxrWzo7TLbgCtX8Db0V0XfOSd8+glDOgPvy+GDtEfStfI8id7/SkNqdUEulAWy1hawthni3skgitiXAKEaazA/JhuuN+lzFEs5+srwJzSvY9BEEDG8PRu4oghFHMF8/eYIoXSwuVUbrUlTTkwQ68+ccQ8o9q3F3g/9bEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459447; c=relaxed/simple;
-	bh=6CLcnrxM+PEogAm5McKX8Hqeq0gyHlOj7SJD3dS8T5M=;
+	s=arc-20240116; t=1739460277; c=relaxed/simple;
+	bh=BnSphlUcBzaiolcEE9qq3sDoRHxYfGkk4PDqcSiYEYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPGlhiTsMNC260Dzi6YFD9bvp13xhI+//y4Dj8B/WQTnUGWej/0iXob8EZ4dp2uPJCXY9GMKN1eMXD0RK5UH6S/LOLcaD8M27JBN1n9YBUHfDI/lIYH1LIBvA1VNVOUViWuXyF36bDvYs3pDsuvO6Z52zlrxV8fMIM3XIPcPIgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjCw+Hz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2211FC4CEE5;
-	Thu, 13 Feb 2025 15:10:46 +0000 (UTC)
+	 MIME-Version; b=PrEimRPXv4DHarXXGmEDX+uclC4jqKJ/oIPIEiE6Bgd1GeD0GXs4xpmkwExhLChbK/Sb35lJ7f/iiYVoin84wbJ21vJnreNp8sPfmy30FqnARf45ae3uDJiK7oQTbl5haO1LJNgybrbnsuiDemgzTxaETRSpLXG6xUVDHVJOtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pshxdthI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45938C4CED1;
+	Thu, 13 Feb 2025 15:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459447;
-	bh=6CLcnrxM+PEogAm5McKX8Hqeq0gyHlOj7SJD3dS8T5M=;
+	s=korg; t=1739460276;
+	bh=BnSphlUcBzaiolcEE9qq3sDoRHxYfGkk4PDqcSiYEYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjCw+Hz9n8H8A6cy9Z27sh8j/k2PhGqZAuWs2BinM5kJYXg1Z1On9tNUrnaIgy14b
-	 /kA8dwUTaHxmZ7dSBZ/OA0scTuJ0YNL3oa0A5HI5aD3UdUy6NJ6CirbNVUunnYCw9v
-	 e9hQWjPIvneFQ+AyzlTgdyHYNwtMLaCmePktXuBY=
+	b=pshxdthIEMGlicauXXFXxEfuKtRlKR+kaOXaSZRh9QHzMbOiHp/mmZLHBc5BhyDZk
+	 GH2rNFAFMawktShTZ0sX1S2Yws8JCYwuF+SNLuVNseo6VlFT+7d9evpWACrPIRk7KL
+	 1DX6DklV8dg0qEpDchWeXrp6D4pn6x0Io/zYEZmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 240/443] usbnet: ipheth: document scope of NCM implementation
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/273] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
 Date: Thu, 13 Feb 2025 15:26:45 +0100
-Message-ID: <20250213142449.877325332@linuxfoundation.org>
+Message-ID: <20250213142408.664990506@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit be154b598fa54136e2be17d6dd13c8a8bc0078ce upstream.
+[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
 
-Clarify that the "NCM" implementation in `ipheth` is very limited, as
-iOS devices aren't compatible with the CDC NCM specification in regular
-tethering mode.
+On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
+rather the 3197 found on e.g. the N4000 / N4020.
 
-For a standards-compliant implementation, one shall turn to
-the `cdc_ncm` module.
+While at fix the existing GLK PCI-id table entry breaking the table
+being sorted by device-id.
 
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ipheth.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mfd/lpc_ich.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -218,6 +218,14 @@ static int ipheth_rcvbulk_callback_legac
- 	return ipheth_consume_skb(buf, len, dev);
- }
- 
-+/* In "NCM mode", the iOS device encapsulates RX (phone->computer) traffic
-+ * in NCM Transfer Blocks (similarly to CDC NCM). However, unlike reverse
-+ * tethering (handled by the `cdc_ncm` driver), regular tethering is not
-+ * compliant with the CDC NCM spec, as the device is missing the necessary
-+ * descriptors, and TX (computer->phone) traffic is not encapsulated
-+ * at all. Thus `ipheth` implements a very limited subset of the spec with
-+ * the sole purpose of parsing RX URBs.
-+ */
- static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
- {
- 	struct usb_cdc_ncm_nth16 *ncmh;
+diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
+index 7b1c597b6879f..03367fcac42a7 100644
+--- a/drivers/mfd/lpc_ich.c
++++ b/drivers/mfd/lpc_ich.c
+@@ -756,8 +756,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
+ 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
+ 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
+-	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
+ 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
++	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
++	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
+ 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
+ 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
+ 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
+-- 
+2.39.5
+
 
 
 
