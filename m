@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-115878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07831A3452E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D556EA34613
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 190C07A3315
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E08D3A2FA5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6109A26B099;
-	Thu, 13 Feb 2025 15:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0CA26B099;
+	Thu, 13 Feb 2025 15:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mONBxMOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odsM9+p3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0A326B097;
-	Thu, 13 Feb 2025 15:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF81F26B096;
+	Thu, 13 Feb 2025 15:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459562; cv=none; b=MI2oYWPVO4ENXxC77EMQV17BzySIXQ87AkF4MO4LZYoyXUjvRWVZoRIUwS28QCxynR3cHIa7vw82/T4eUuacOh6vL9A+8y9RuyRFe2vHglBjQw/bgRa7474s/3cSB1uWcn6hy/G61gYHNrYdAJOGSWrSxFc+mIuB6RUg7dzaZas=
+	t=1739459569; cv=none; b=F5o37NEMbk37E32vzDlcqa0NZX/6rmn1c0E3pgwayQlXCVjajTi5UPHtkmtzc0fW26vZKlu6U7XpzqzMMa1ATbAQAMHrUy23xSOKdH/WRh9gloC10liLD3N4KoQQO+6/NCfTWyvH9QGshM82uE3oFwlMQtYe/QS4maBBhwCns80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459562; c=relaxed/simple;
-	bh=Whzi7na7bHqbJz4TCRzJqAhRDxn4g1U3WukgD3fcR20=;
+	s=arc-20240116; t=1739459569; c=relaxed/simple;
+	bh=MWBeeHO9Am2pVKtJ4PUx9NXwSjJ15jxHhIHpP880iyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeq6QxNtMfOYSaepdB44iYFX+yY3QPeAJCJNDtUr99593nnNmxVRL7yuZxmNJAFl8TqG2pGFOFdIY8BYNyVMp+h0akz0Vyli4b78pcTRjXvWBtL19MRB5FuKTGaS8fcs/A6enEzksRkXAgd1rBmuDouMqNAQEKxKBa8K00GKFSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mONBxMOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE7BC4CED1;
-	Thu, 13 Feb 2025 15:12:41 +0000 (UTC)
+	 MIME-Version; b=PyxzvGylTBMxSJLloqjQ56ECyF7HTR/s9PwivHzMnSpjwDQaYzVRAoVnZ28zD2DquVLxaWpPwO/7OrXCKGFvw5QUPUiwN9jgO4IB1aWBGG7D3kxuUqUE+/PZ1Ap7Pgqo9MCKn9BLNj6WPs9KKDSkbfavlli8xVj19FsFpAYkHAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odsM9+p3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E08AC4CED1;
+	Thu, 13 Feb 2025 15:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459562;
-	bh=Whzi7na7bHqbJz4TCRzJqAhRDxn4g1U3WukgD3fcR20=;
+	s=korg; t=1739459568;
+	bh=MWBeeHO9Am2pVKtJ4PUx9NXwSjJ15jxHhIHpP880iyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mONBxMOn5WzPiG6yW76d43AunyJsUrwcQ8DefkXd3IYJr16yo+nz2kwnyakVYwecv
-	 Kd7Uo/OuWii/D7qPV6jHhEJNyNBHEpN6fsBCAIwTdzSo1mNob5ZkIWDW9BGk+TZyD9
-	 H3Buv9KqdiCDdVH078DfV9kqA7IOzofez7BkqKsA=
+	b=odsM9+p3uEomWrWK/Fie01n0jNKtG1TJJMAwc9BhrU7Kqc0o2wZgkWUQdYpRCCaQ2
+	 TlIqV6uVuw2ly3piyqXtpGtMYTGBtVOZF+8WP9eHKbnIjCZujBXt/0j5ioJCpof9/J
+	 Z3SCAf/T+j+OknFiN49Bhd+FITYLRgTCglRsOWto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 301/443] arm64: dts: qcom: sm6115: Fix MPSS memory length
-Date: Thu, 13 Feb 2025 15:27:46 +0100
-Message-ID: <20250213142452.228700646@linuxfoundation.org>
+Subject: [PATCH 6.13 302/443] arm64: dts: qcom: sm6115: Fix CDSP memory length
+Date: Thu, 13 Feb 2025 15:27:47 +0100
+Message-ID: <20250213142452.267276763@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -68,12 +68,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 472d65e7cb591c8379dd6f40561f96be73a46f0f upstream.
+commit 846f49c3f01680f4af3043bf5b7abc9cf71bb42d upstream.
 
 The address space in MPSS/Modem PAS (Peripheral Authentication Service)
 remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x100 was
-copied from older DTS, but it grew since then.
+(QDSP6...SS_PUB) which has a length of 0x4040.  Value of 0x100000 covers
+entire Touring/CDSP memory block seems to big here.
 
 This should have no functional impact on Linux users, because PAS loader
 does not use this address space at all.
@@ -82,7 +82,7 @@ Cc: stable@vger.kernel.org
 Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-21-2e0036fccd8d@linaro.org
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-22-2e0036fccd8d@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -91,15 +91,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2027,7 +2027,7 @@
+@@ -2744,7 +2744,7 @@
  
- 		remoteproc_mpss: remoteproc@6080000 {
- 			compatible = "qcom,sm6115-mpss-pas";
--			reg = <0x0 0x06080000 0x0 0x100>;
-+			reg = <0x0 0x06080000 0x0 0x10000>;
+ 		remoteproc_cdsp: remoteproc@b300000 {
+ 			compatible = "qcom,sm6115-cdsp-pas";
+-			reg = <0x0 0x0b300000 0x0 0x100000>;
++			reg = <0x0 0x0b300000 0x0 0x4040>;
  
- 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
- 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+ 			interrupts-extended = <&intc GIC_SPI 265 IRQ_TYPE_EDGE_RISING>,
+ 					      <&cdsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
