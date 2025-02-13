@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23136A343CC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E73CA3465A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50EA63B0BB1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230477A01B1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3879D227EBC;
-	Thu, 13 Feb 2025 14:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26509156F3C;
+	Thu, 13 Feb 2025 15:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZFhqWpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGLk97iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34E5221562;
-	Thu, 13 Feb 2025 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D2C146588;
+	Thu, 13 Feb 2025 15:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457951; cv=none; b=OZe5/7nM7T8pia3vDsqKuhUDy0EaCzkZ0p8kc5l9b/fmaJXNCR2yuyanz2vOFjJT4Ru20Jwgl74StD4itsdf2RihK33d8oeDgsjo6jNzoCDZwIFYyjQWxPGvHQyOp1he70oIT/gxdPOWfBiZWkt9/4eoZTN5WhjnGc1ZSywuF+g=
+	t=1739460286; cv=none; b=KmuX1rvD+NpXUKrWUnQd6d2NuPv1YrsFpo/0i3TQtkN+On3EurmixMG7lCvihy9ZRC+YvWyGXhqljOhUV3JkP2sBBmm7JuvGyq6PxN3xXssmWhkWztV8fUDFMlLMinh6pYmPzHrInkB2G1mMselqIZywGQhdYErmmCJ56kfSNn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457951; c=relaxed/simple;
-	bh=PsRT0QQL5WqgXrCh1YETQtvgx97eZ2NiBant6P7QukQ=;
+	s=arc-20240116; t=1739460286; c=relaxed/simple;
+	bh=jhsNI+N1Ht2S3gvjwRgjQ/KCe4T4JtCrSU3ssn0j8FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqHeSDocYI9jB1usykyxlQLftslsk8syzyJm2NGVo8eUpHaHrHTIoPyv128PY3HK+ERo6YKypQponGFUZF0mvLSa19l7wu5QlRgkv8BxrwKDTkzQmMOyIUBbZLid7JOf76MsakPyIp40Yqpqf05LJf3+k76dk7aptyw58gPVD2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZFhqWpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00474C4CED1;
-	Thu, 13 Feb 2025 14:45:49 +0000 (UTC)
+	 MIME-Version; b=P3By5W6TTFZcc5OTTr/sXJ/CcHHREW6Mx93kD6V1MSSieGsmjC3WSMsMbPHk1gmWs3wBEPuOoYUoNql8yfQ8VOB5rgkd+S/7HDpYQJFNRglgWDTo0A28i5/GWDae1eCBi4BzzfvYUb2h+4FC4a1EI77jofta9UY2rzRU1+KPxmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGLk97iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34545C4CEE4;
+	Thu, 13 Feb 2025 15:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457950;
-	bh=PsRT0QQL5WqgXrCh1YETQtvgx97eZ2NiBant6P7QukQ=;
+	s=korg; t=1739460286;
+	bh=jhsNI+N1Ht2S3gvjwRgjQ/KCe4T4JtCrSU3ssn0j8FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZFhqWpK+i21tOjMhbj0+Lgh4KC01vl1NYeLNGYCL5br48OrtZGgjI6ubAaJmacBs
-	 kq2i5stD9pUED8I9Sm5ariSIDHgxdf/t39S95BNKI/w9B2yFIgvJCJcUChHBFWopR9
-	 sb5cdHhpDACMN4rwEBZ4sd9b8xz3CTX/QaUw+KLg=
+	b=JGLk97iznxL2dVz39b5eBgKlNl2ptRsz4UltFPQRsFHydS/+WKHqDGlgJ6lFMhWh0
+	 2Eqv1KtEWt7FqmSCxNmUdJ3T6GWCH+WY7dVC4KPVIMswv2r4s2xCkVmYJ2w1VnA86M
+	 tBEwDKuuR2RrEfXngYpNrB51FoYdhCBwozC9NGhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 259/422] scsi: core: Do not retry I/Os during depopulation
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 036/273] net/mlx5: use do_aux_work for PHC overflow checks
 Date: Thu, 13 Feb 2025 15:26:48 +0100
-Message-ID: <20250213142446.534025980@linuxfoundation.org>
+Message-ID: <20250213142408.783211802@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-commit 9ff7c383b8ac0c482a1da7989f703406d78445c6 upstream.
+[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
 
-Fail I/Os instead of retry to prevent user space processes from being
-blocked on the I/O completion for several minutes.
+The overflow_work is using system wq to do overflow checks and updates
+for PHC device timecounter, which might be overhelmed by other tasks.
+But there is dedicated kthread in PTP subsystem designed for such
+things. This patch changes the work queue to proper align with PTP
+subsystem and to avoid overloading system work queue.
+The adjfine() function acts the same way as overflow check worker,
+we can postpone ptp aux worker till the next overflow period after
+adjfine() was called.
 
-Retrying I/Os during "depopulation in progress" or "depopulation restore in
-progress" results in a continuous retry loop until the depopulation
-completes or until the I/O retry loop is aborted due to a timeout by the
-scsi_cmd_runtime_exceeced().
-
-Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
-Most I/Os in the depopulation retry loop end up taking several minutes
-before returning the failure to user space.
-
-Cc: stable@vger.kernel.org # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
-Cc: stable@vger.kernel.org # 4.18.x
-Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20250131184408.859579-1-ipylypiv@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
+ include/linux/mlx5/driver.h                   |  1 -
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -865,13 +865,18 @@ static void scsi_io_completion_action(st
- 				case 0x1a: /* start stop unit in progress */
- 				case 0x1b: /* sanitize in progress */
- 				case 0x1d: /* configuration in progress */
--				case 0x24: /* depopulation in progress */
--				case 0x25: /* depopulation restore in progress */
- 					action = ACTION_DELAYED_RETRY;
- 					break;
- 				case 0x0a: /* ALUA state transition */
- 					action = ACTION_DELAYED_REPREP;
- 					break;
-+				/*
-+				 * Depopulation might take many hours,
-+				 * thus it is not worthwhile to retry.
-+				 */
-+				case 0x24: /* depopulation in progress */
-+				case 0x25: /* depopulation restore in progress */
-+					fallthrough;
- 				default:
- 					action = ACTION_FAIL;
- 					break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+index 0c83ef174275a..f00702bf781f1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+@@ -237,17 +237,16 @@ static void mlx5_pps_out(struct work_struct *work)
+ 	}
+ }
+ 
+-static void mlx5_timestamp_overflow(struct work_struct *work)
++static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
+ {
+-	struct delayed_work *dwork = to_delayed_work(work);
+ 	struct mlx5_core_dev *mdev;
+ 	struct mlx5_timer *timer;
+ 	struct mlx5_clock *clock;
+ 	unsigned long flags;
+ 
+-	timer = container_of(dwork, struct mlx5_timer, overflow_work);
+-	clock = container_of(timer, struct mlx5_clock, timer);
++	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
+ 	mdev = container_of(clock, struct mlx5_core_dev, clock);
++	timer = &clock->timer;
+ 
+ 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
+ 		goto out;
+@@ -258,7 +257,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
+ 	write_sequnlock_irqrestore(&clock->lock, flags);
+ 
+ out:
+-	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
++	return timer->overflow_period;
+ }
+ 
+ static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
+@@ -435,6 +434,7 @@ static int mlx5_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 	timer->cycles.mult = mult;
+ 	mlx5_update_clock_info_page(mdev);
+ 	write_sequnlock_irqrestore(&clock->lock, flags);
++	ptp_schedule_worker(clock->ptp, timer->overflow_period);
+ 
+ 	return 0;
+ }
+@@ -770,6 +770,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
+ 	.settime64	= mlx5_ptp_settime,
+ 	.enable		= NULL,
+ 	.verify		= NULL,
++	.do_aux_work	= mlx5_timestamp_overflow,
+ };
+ 
+ static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
+@@ -970,12 +971,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
+ 	do_div(ns, NSEC_PER_SEC / HZ);
+ 	timer->overflow_period = ns;
+ 
+-	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
+-	if (timer->overflow_period)
+-		schedule_delayed_work(&timer->overflow_work, 0);
+-	else
++	if (!timer->overflow_period) {
++		timer->overflow_period = HZ;
+ 		mlx5_core_warn(mdev,
+-			       "invalid overflow period, overflow_work is not scheduled\n");
++			       "invalid overflow period, overflow_work is scheduled once per second\n");
++	}
+ 
+ 	if (clock_info)
+ 		clock_info->overflow_period = timer->overflow_period;
+@@ -1061,6 +1061,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
+ 
+ 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
+ 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
++
++	if (clock->ptp)
++		ptp_schedule_worker(clock->ptp, 0);
+ }
+ 
+ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+@@ -1077,7 +1080,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+ 	}
+ 
+ 	cancel_work_sync(&clock->pps_info.out_work);
+-	cancel_delayed_work_sync(&clock->timer.overflow_work);
+ 
+ 	if (mdev->clock_info) {
+ 		free_page((unsigned long)mdev->clock_info);
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 38a8ff9c685cb..69d844b34da0d 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -709,7 +709,6 @@ struct mlx5_timer {
+ 	struct timecounter         tc;
+ 	u32                        nominal_c_mult;
+ 	unsigned long              overflow_period;
+-	struct delayed_work        overflow_work;
+ };
+ 
+ struct mlx5_clock {
+-- 
+2.39.5
+
 
 
 
