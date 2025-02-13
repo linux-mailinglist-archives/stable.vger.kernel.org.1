@@ -1,129 +1,123 @@
-Return-Path: <stable+bounces-116185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463ACA3478E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E629BA34747
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECCD816E6ED
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E707A3B3F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF92153828;
-	Thu, 13 Feb 2025 15:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD4C18DF6D;
+	Thu, 13 Feb 2025 15:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="PJwAxXxh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zu0rm2RY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33815DBBA
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 15:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D1E1865EE;
+	Thu, 13 Feb 2025 15:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460614; cv=none; b=HfKrzNpUFbfOLi5zCzJ7SH61ETmsL/ojmJKSJDcydkk0I3SOB6CUUI18HW/p7DVE0Ag0fJt7nHhIvk2z98h9f6BPjId3u/jPCeFtUnXGwrgn1vAmSepDVNptlgCeL3k6pdU7w9CDiKkByqIOeESAhEG8oArrxWI2zZJyecOxI/M=
+	t=1739460784; cv=none; b=ZmUQwT6La6N18cbEnKIHFMfolvOKQ0JEMkbgx1BCo0op1TFByod0MdvHVarnO11ZGE9FQ1OAqlj7rqyNioxmuWEV7hAKicsoueqxJ9jv6lSoXbxbUzY9joC0qrwHHyb1Alc0pXKBmKAgWbZbeDfLNQB+8znaaetWm3w01B5JSWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460614; c=relaxed/simple;
-	bh=CIC6QG19MUkOFnBkVOTHWWc79rnkVCbOB9b7kdnsa6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ex6UmCRwEt9Ryy7z++QF6RcvNRJBykRIkNGc/SelkJNIMbxQa/t0WnPM7SMPc2ZvLDN9OvbIpQU3Kmzot36iJxj9aJ0Z82S/SXpH4vSJMf5VJgO3Bf2MXcH5g1cwSjX2DD+jCwvhA5dEPkaQ5gFXU7BtT0xxINaz5VVFs8REiNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=PJwAxXxh; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7c0819d8ebcso7996385a.2
-        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 07:30:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1739460611; x=1740065411; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OyIrs9HvFfKVmUwHZOR1GwKDKzsItdw/GMVirRewx9o=;
-        b=PJwAxXxh4usPSlREw4QudQf5pFPmqnObjxOjpxl/KBVmxss1vyDixPqOdSIsftlBTn
-         ye/0RV4tYBwPKz8/cXw7pLokhRtBDSMpviZUfUaGecKJUurah4BcWxo7GIalUaPQs6s/
-         368uzE35qHQ1bcD6MFynK3LYiIrv9Fhc3orAhELMNd+5hyEtd4f6REiiulJXZaZpGL1X
-         qPI8Duqa8MXpthjmjr2+nzyOD1MqNNxGhKKE5BjuwJqgxHdbQs0iKhFAy0Im2rAfyoE0
-         KWZ5u1wnIdSxLlLUTyNu80LrY0Zol2Ze4yAA5r0jW8UJHl6RVQYVI++g4LgM4exBfVMv
-         v2gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739460611; x=1740065411;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OyIrs9HvFfKVmUwHZOR1GwKDKzsItdw/GMVirRewx9o=;
-        b=iSgVJ1UUuoMsulR3QGDr84k0Di+WKUNKsI+nfe6eMJ9cxMHgIRLc9FWG8xjky6C29G
-         4bY9VsCUNCR3K6jTsd3lmsa9a2nqdZ4mvKVW730eYIfzGz6u4XuHXHuKh/j3m1doziV/
-         ZIE/m3aH0/9SR4r2R5HJoaXyIEbmNseeQ47ksHMQjPlXiOcCArrlbRkU49vyjwaiqv3H
-         wI9n9dypNxhQUurbeEtCwKAlUh7hREVQjkteiSy72IaqB39ebDThwcQaPGbIdsicCxBv
-         qmOJ2qyzEmJzUp95+7YCPHYqxsow1P7w4dxaNnAcYA5gLdiYPnG8CTu+JyE85nhbsi0E
-         v5Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCVnW8eyOxqOxBO5k1GH0q4kDnxDRYnCglO13cnt8pM5+h61dlWjAJ092/FKfh1xl723hMVAARg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3juOHvtr9qtu7lZPxanv2LT3ChO1qUnHU53haTtSCfbIjDIog
-	gqFxnG/xVchAK7atrnSQboN4qGvY8pQp+JuRKNdFJF4YCmGBSKXcwVtraIz87g==
-X-Gm-Gg: ASbGncuAO4uVivUqXXJeJXPdc4sATNBIxQZDVGV0yJus2Hudz+eysp0+URJCSjwjiW6
-	QY4h7n8lVyuIu/l29Q/J24SAiRxVvstO4xSyk6ZZ3SQrFGTkYa+M7z3E+VJY6+eHzIe0h6FuxYH
-	qqkWHC4YoPHGNCvp4VsAFZuyp6LPxDXCI9RVggCwBORmeLNuIHUbbsFdrb74NjLKDxNIb5ATjFy
-	pTgPqnMHabqbtP59M4ZBRPeYFQWYOtIZuF+c1hJA6X+dMuduwZCUAuROtgdQ4FkaA+r97T9Imn3
-	lxkKKsCeJidkUZaw
-X-Google-Smtp-Source: AGHT+IHGzwP5ohgrW42L4Vps5APegav+rOlNPMCt8pEeXEljcFQRbBfg7Tzw7Nsn5o5w3hwG3O27Fw==
-X-Received: by 2002:a05:6214:2262:b0:6e4:3cf1:5624 with SMTP id 6a1803df08f44-6e46edb4aa4mr120418166d6.39.1739460611592;
-        Thu, 13 Feb 2025 07:30:11 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:681:fd10::9345])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65d9f36f5sm10395756d6.75.2025.02.13.07.30.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 07:30:11 -0800 (PST)
-Date: Thu, 13 Feb 2025 10:30:07 -0500
-From: "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-	"javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
-	"make_ruc2021@163.com" <make_ruc2021@163.com>,
-	"peter.chen@nxp.com" <peter.chen@nxp.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pawel Eichler <peichler@cadence.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: xhci: lack of clearing xHC resources
-Message-ID: <b39d468e-beb9-4a44-8fe6-83754ffbd367@rowland.harvard.edu>
-References: <20250213101158.8153-1-pawell@cadence.com>
- <PH7PR07MB95384002E4FBBC7FE971862FDDFF2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	s=arc-20240116; t=1739460784; c=relaxed/simple;
+	bh=t8QMv5hVTQ+R0IqU8p9CIOvH1ExAEP3a6Vf8v5IaDu0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nwBFaZkdW1J/PlPyP+BmZFLXz+yWNPvTB71Epa5iLXBk6vBM1m4/G36f5fvZitjFaIzBdzsZxHx0xXdUx2nN95Q3Hp7YGzmxgiPtCYqx0G3I+KGlObbBtUZIAW0+zDKBINKmXS6tKED+dkZbl59ndLde3g/isscwl7mXl/o0A5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zu0rm2RY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DC6C4CEF8;
+	Thu, 13 Feb 2025 15:33:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739460783;
+	bh=t8QMv5hVTQ+R0IqU8p9CIOvH1ExAEP3a6Vf8v5IaDu0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Zu0rm2RYHRQAFLzKn4r1HNUMm8YFtDy2MYYtFUpabmqvXs66874sy8GDK5fdm9ZHY
+	 w5QC+it44v0XhZy8u8SLZWzM+Uo8+2eibnrdhjONcomdz+gkA8LKnLBcvxYEa3awEK
+	 4waS3GORPbRaeRFxe5NCxvQ6EoBVx5VNLpueKTNBqvdUV4k8fp5uUc1dCq0vmuQ03H
+	 QuGWQedP5GwbmxOZI29HQuY93RVX6y37ArJWxIhnXpzsKFhWpzXmyLol1k+UYuNb0k
+	 Ggp6cSPIzMlGEwTKeAOmsHe+NmdczDjA7zD9K3RavX3gAEnscHDnItccaRUyQHOAJp
+	 yCkILzAzWDACg==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54506b54268so968742e87.3;
+        Thu, 13 Feb 2025 07:33:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUYWBBNQ5Ut66pjosYl8YRPKT8qAOfI9qCECcALv/0hv0kSpe+/hjmyKx19wWRJjS3r99NCLmq+@vger.kernel.org, AJvYcCV96RfVCZSCTZSmw4JAwYKdHaRIJhCHXEi7X7s3LFkQ/Ky7GHwyxb/bCwtuDOp2x+4saD9JwIMBOCcj9AI=@vger.kernel.org, AJvYcCVtdghud2YIuYvpDvbffBF2KUOvKZvtjwgnjHhMUgMvGhNs2h+UL9P4Upo2azWxPTHmbzX34HxnzS1kO9X/EiI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/0yRR0gi+aUHMUzJZuApMo0Pfn5wdxM29VfYyWZ+LETbBtvtl
+	yh5HZukYXT0YxSfqNUEz4yBuT7DZGy2ABXMmuWQvQnlRiQxRKO+vbvQHcDDkuAlOjiopAUSKXkr
+	G+oS3nsFgvmMnr+swMF3T2lOjyIc=
+X-Google-Smtp-Source: AGHT+IFn/vzxAa1gLojO/0597IUwEJuHjE+ZMbhdN6Wkn18KpSJ16vMq38P8PaQcagI5saZOuyRj6jrZinDRQOOBjFs=
+X-Received: by 2002:a05:6512:1111:b0:545:6cf:6f3e with SMTP id
+ 2adb3069b0e04-5451dde81aemr1356458e87.49.1739460781858; Thu, 13 Feb 2025
+ 07:33:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB95384002E4FBBC7FE971862FDDFF2@PH7PR07MB9538.namprd07.prod.outlook.com>
+References: <20250210163732.281786-1-ojeda@kernel.org>
+In-Reply-To: <20250210163732.281786-1-ojeda@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 13 Feb 2025 16:32:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHgjwHkLsJkM3H2pjEPXDvD80V+XhH_Gsjv8N4Cf6Bvkw@mail.gmail.com>
+X-Gm-Features: AWEUYZmhbBgIMQcrZGkDUPbbIKzS9-BDPJ0yLZaCMkeMRCLb0heF4J8bVRc0_r0
+Message-ID: <CAMj1kXHgjwHkLsJkM3H2pjEPXDvD80V+XhH_Gsjv8N4Cf6Bvkw@mail.gmail.com>
+Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, 
+	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>, Ralf Jung <post@ralfj.de>, 
+	Jubilee Young <workingjubilee@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 13, 2025 at 10:27:00AM +0000, Pawel Laszczak wrote:
-> The xHC resources allocated for USB devices are not released in correct order after resuming in case when while suspend device was reconnected.
-> 
-> This issue has been detected during the fallowing scenario:
-> - connect hub HS to root port
-> - connect LS/FS device to hub port
-> - wait for enumeration to finish
-> - force DUT to suspend
-> - reconnect hub attached to root port
-> - wake DUT
+On Mon, 10 Feb 2025 at 17:38, Miguel Ojeda <ojeda@kernel.org> wrote:
+>
+> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
+> [1] about disabling neon in the aarch64 hardfloat target:
+>
+>     warning: target feature `neon` cannot be toggled with
+>              `-Ctarget-feature`: unsound on hard-float targets
+>              because it changes float ABI
+>       |
+>       = note: this was previously accepted by the compiler but
+>               is being phased out; it will become a hard error
+>               in a future release!
+>       = note: for more information, see issue #116344
+>               <https://github.com/rust-lang/rust/issues/116344>
+>
+> Thus, instead, use the softfloat target instead.
+>
 
-DUT refers to the host, not the LS/FS device plugged into the hub, is 
-that right?
+We have to carefully make the distinction here between codegen and ABI.
 
-> For this scenario during enumeration of USB LS/FS device the Cadence xHC reports completion error code for xHCi commands because the devices was not property disconnected and in result the xHC resources has not been correct freed.
-> XHCI specification doesn't mention that device can be reset in any order so, we should not treat this issue as Cadence xHC controller bug.
-> Similar as during disconnecting in this case the device should be cleared starting form the last usb device in tree toward the root hub.
-> To fix this issue usbcore driver should disconnect all USB devices connected to hub which was reconnected while suspending.
+The arm64 C code in the kernel is built with -mgeneral-regs-only
+because FP/SIMD registers are not preserved/restored like GPRs, and so
+they must be used only in carefully controlled circumstances, i.e., in
+assembler code called under kernel_neon_begin()/kernel_neon_end()
+[modulo some exceptions related to NEON intrinsics]
 
-No, that's not right at all.  We do not want to disconnect these devices 
-if there's any way to avoid it.
+This does not impact the ABI, which remains hard-float [this was the
+only arm64 calling convention that existed until about a year ago].
+Any function that takes or returns floats or doubles (or NEON
+intrinsic types) is simply rejected by the compiler.
 
-There must be another way to tell the host controller to release the 
-devices' resources.  Doesn't the usb_reset_and_verify_device() call do 
-something like that anyway?  After all, the situation should be very 
-similar to what happens when a device is simply reset.
+Changing this to softfloat for Rust modifies this calling convention,
+i.e., it will result in floats and doubles being accepted as function
+parameters and return values, but there is no code in the kernel that
+actually supports/implements that. Also, it should be clarified
+whether using a softfloat ABI permits the compiler to use FP/SIMD
+registers in codegen. We might still need -Ctarget-feature="-neon"
+here afaict.
 
-Alan Stern
+Ideally, we'd have a target/target-feature combo that makes this more
+explicit: no FP/SIMD codegen at all, without affecting the ABI,
+therefore making float/double types in function prototypes illegal.
+AIUI, this change does something different.
 
