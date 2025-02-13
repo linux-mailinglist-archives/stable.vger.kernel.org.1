@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78017A344C9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F79EA347B5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB4213B2C39
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AECF162506
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415221EEA36;
-	Thu, 13 Feb 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C153C155330;
+	Thu, 13 Feb 2025 15:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFGmjWwM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FoffpYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E401E0087;
-	Thu, 13 Feb 2025 14:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B04A26B096;
+	Thu, 13 Feb 2025 15:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458492; cv=none; b=K8FRUaYtuhztCTXAyLdVaUBy4Af+Sr42PBGEzpurCvLL2RUYec/9F89lODB2AR+inMawFZKPaZno10Zln8E5chvHTreikxgldu7lRCNjJ5hruSSlXo4x527fey+IIw8T7ByTWcU2cutVtOZBBdyV24DZ/xXFpkA4a5O9cEDJvRk=
+	t=1739460725; cv=none; b=lx8y+9dX0yWu9rW88LPUen0yHqarr+oLf6cvHOE/lfSGPUdftdC/yIj0noH5mF1eTwOcQxo0pC1g187om8M7YBKSf1lLzWL3Og7RBjwPTiFA1YNg9rzeSEpxaIuckD2El6hZOoJoAFRjTzsWBKEXO2p3WMJbGCVBOdlWC2PWDdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458492; c=relaxed/simple;
-	bh=S6XnTS2W02mq1vmY8K5FRQSx8zPYASva58L9Jo4gfH4=;
+	s=arc-20240116; t=1739460725; c=relaxed/simple;
+	bh=s5ecC1YQmFXSTXrRAT/DUGg8Ec0+bvV6+kzD7NAHH68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuJD3nlv5b1/navy/OzEttM0VY1mfVFWpQZ221CnuCmLxoXFjZyjcM7sD6oDXIADYxFxS1PXvw+jTj9yoslp2a7lXF7nFeSjsk+paMe5/kO1gP9apzh38m5fEDAHftf0iI4CSJHvL2kKTxZnDebw+rrMe2Z4IsYarHyWTBQHDW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFGmjWwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C23C4CED1;
-	Thu, 13 Feb 2025 14:54:51 +0000 (UTC)
+	 MIME-Version; b=YkkmX31Nfe+jrsluVJ6jiAkHW08XQvvJyEfbSAbgp+hf+Oqi5IKgwp/ImidzTWJvDHa0B29ABkVluhqzjL40B9ia+6w3f+vMcGKrGCTxc7QDehJzH2dCmi7W5v/iys4gx9mxXO6Jov9sLylxFoTfeTC4SH+r5hYB+qSDbC4n0Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FoffpYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A181C4CED1;
+	Thu, 13 Feb 2025 15:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458491;
-	bh=S6XnTS2W02mq1vmY8K5FRQSx8zPYASva58L9Jo4gfH4=;
+	s=korg; t=1739460725;
+	bh=s5ecC1YQmFXSTXrRAT/DUGg8Ec0+bvV6+kzD7NAHH68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFGmjWwMCy0K+OQXfxTa1LRpsg+3CU3AV7qTnx/qsODfCeg5n4haq7twk8s0+95Nv
-	 ccCrgCRHDil34GP7cz5PhXHWr6++n6Zg+7abx6vvg/3hORgNDFhmtIjrzDgQXQl3OG
-	 Fj2d2Wq933oDatptDXhYYpZkjKr9ltCtynxRL8AA=
+	b=1FoffpYkoAnIxU/ll/qsWtF1+5KDfy56CFuSSoMEHFMNEccXqknqdtdYEfpw8Sanr
+	 /PJaQVOLMMDYX6hUms1nyYS6lHDDFSmIsvnOv7PJ/ytpgBA9fN2pzinWNWxHAgHQ3U
+	 yT4I7HHUGChB788k1bS0czjOAu0JqEZ1yn2Bc3xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 416/422] Revert "drm/amd/display: Fix green screen issue after suspend"
-Date: Thu, 13 Feb 2025 15:29:25 +0100
-Message-ID: <20250213142452.618117431@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.6 194/273] xfs: Add error handling for xfs_reflink_cancel_cow_range
+Date: Thu, 13 Feb 2025 15:29:26 +0100
+Message-ID: <20250213142414.991511182@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,194 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 04d6273faed083e619fc39a738ab0372b6a4db20 upstream.
+commit 26b63bee2f6e711c5a169997fd126fddcfb90848 upstream.
 
-This reverts commit 87b7ebc2e16c14d32a912f18206a4d6cc9abc3e8.
+In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
+without error handling, risking unnoticed failures and
+inconsistent behavior compared to other parts of the code.
 
-A long time ago, we had an issue with the Raven system when it was
-connected to two displays: one with DP and another with HDMI. After the
-system woke up from suspension, we saw a solid green screen caused by an
-underflow generated by bad DCC metadata. To workaround this issue, the
-'commit 87b7ebc2e16c ("drm/amd/display: Fix green screen issue after
-suspend")' was introduced to disable the DCC for a few frames after in
-the resume phase. However, in hindsight, this solution was probably a
-workaround at the kernel level for some issues from another part
-(probably other driver components or user space). After applying this
-patch and trying to reproduce the green issue in a similar hardware
-system but using the latest kernel and userspace, we cannot see the
-issue, which makes this workaround obsolete and creates extra
-unnecessary complexity to the code; for all of this reason, this commit
-reverts the original change.
+Fix this issue by adding an error handling for the
+xfs_reflink_cancel_cow_range(), improving code robustness.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
+Cc: stable@vger.kernel.org # v4.17
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c       |   12 ++------
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |   22 +++++-----------
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h |    3 --
- 3 files changed, 13 insertions(+), 24 deletions(-)
+ fs/xfs/xfs_inode.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5499,8 +5499,7 @@ fill_dc_plane_info_and_addr(struct amdgp
- 			    const u64 tiling_flags,
- 			    struct dc_plane_info *plane_info,
- 			    struct dc_plane_address *address,
--			    bool tmz_surface,
--			    bool force_disable_dcc)
-+			    bool tmz_surface)
- {
- 	const struct drm_framebuffer *fb = plane_state->fb;
- 	const struct amdgpu_framebuffer *afb =
-@@ -5599,7 +5598,7 @@ fill_dc_plane_info_and_addr(struct amdgp
- 					   &plane_info->tiling_info,
- 					   &plane_info->plane_size,
- 					   &plane_info->dcc, address,
--					   tmz_surface, force_disable_dcc);
-+					   tmz_surface);
- 	if (ret)
- 		return ret;
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1738,8 +1738,11 @@ xfs_inactive(
+ 		goto out;
  
-@@ -5620,7 +5619,6 @@ static int fill_dc_plane_attributes(stru
- 	struct dc_scaling_info scaling_info;
- 	struct dc_plane_info plane_info;
- 	int ret;
--	bool force_disable_dcc = false;
+ 	/* Try to clean out the cow blocks if there are any. */
+-	if (xfs_inode_has_cow_data(ip))
+-		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++	if (xfs_inode_has_cow_data(ip)) {
++		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++		if (error)
++			goto out;
++	}
  
- 	ret = amdgpu_dm_plane_fill_dc_scaling_info(adev, plane_state, &scaling_info);
- 	if (ret)
-@@ -5631,13 +5629,11 @@ static int fill_dc_plane_attributes(stru
- 	dc_plane_state->clip_rect = scaling_info.clip_rect;
- 	dc_plane_state->scaling_quality = scaling_info.scaling_quality;
- 
--	force_disable_dcc = adev->asic_type == CHIP_RAVEN && adev->in_suspend;
- 	ret = fill_dc_plane_info_and_addr(adev, plane_state,
- 					  afb->tiling_flags,
- 					  &plane_info,
- 					  &dc_plane_state->address,
--					  afb->tmz_surface,
--					  force_disable_dcc);
-+					  afb->tmz_surface);
- 	if (ret)
- 		return ret;
- 
-@@ -9063,7 +9059,7 @@ static void amdgpu_dm_commit_planes(stru
- 			afb->tiling_flags,
- 			&bundle->plane_infos[planes_count],
- 			&bundle->flip_addrs[planes_count].address,
--			afb->tmz_surface, false);
-+			afb->tmz_surface);
- 
- 		drm_dbg_state(state->dev, "plane: id=%d dcc_en=%d\n",
- 				 new_plane_state->plane->index,
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -309,8 +309,7 @@ static int amdgpu_dm_plane_fill_gfx9_pla
- 								     const struct plane_size *plane_size,
- 								     union dc_tiling_info *tiling_info,
- 								     struct dc_plane_dcc_param *dcc,
--								     struct dc_plane_address *address,
--								     const bool force_disable_dcc)
-+								     struct dc_plane_address *address)
- {
- 	const uint64_t modifier = afb->base.modifier;
- 	int ret = 0;
-@@ -318,7 +317,7 @@ static int amdgpu_dm_plane_fill_gfx9_pla
- 	amdgpu_dm_plane_fill_gfx9_tiling_info_from_modifier(adev, tiling_info, modifier);
- 	tiling_info->gfx9.swizzle = amdgpu_dm_plane_modifier_gfx9_swizzle_mode(modifier);
- 
--	if (amdgpu_dm_plane_modifier_has_dcc(modifier) && !force_disable_dcc) {
-+	if (amdgpu_dm_plane_modifier_has_dcc(modifier)) {
- 		uint64_t dcc_address = afb->address + afb->base.offsets[1];
- 		bool independent_64b_blks = AMD_FMT_MOD_GET(DCC_INDEPENDENT_64B, modifier);
- 		bool independent_128b_blks = AMD_FMT_MOD_GET(DCC_INDEPENDENT_128B, modifier);
-@@ -360,8 +359,7 @@ static int amdgpu_dm_plane_fill_gfx12_pl
- 								      const struct plane_size *plane_size,
- 								      union dc_tiling_info *tiling_info,
- 								      struct dc_plane_dcc_param *dcc,
--								      struct dc_plane_address *address,
--								      const bool force_disable_dcc)
-+								      struct dc_plane_address *address)
- {
- 	const uint64_t modifier = afb->base.modifier;
- 	int ret = 0;
-@@ -371,7 +369,7 @@ static int amdgpu_dm_plane_fill_gfx12_pl
- 
- 	tiling_info->gfx9.swizzle = amdgpu_dm_plane_modifier_gfx9_swizzle_mode(modifier);
- 
--	if (amdgpu_dm_plane_modifier_has_dcc(modifier) && !force_disable_dcc) {
-+	if (amdgpu_dm_plane_modifier_has_dcc(modifier)) {
- 		int max_compressed_block = AMD_FMT_MOD_GET(DCC_MAX_COMPRESSED_BLOCK, modifier);
- 
- 		dcc->enable = 1;
-@@ -839,8 +837,7 @@ int amdgpu_dm_plane_fill_plane_buffer_at
- 			     struct plane_size *plane_size,
- 			     struct dc_plane_dcc_param *dcc,
- 			     struct dc_plane_address *address,
--			     bool tmz_surface,
--			     bool force_disable_dcc)
-+			     bool tmz_surface)
- {
- 	const struct drm_framebuffer *fb = &afb->base;
- 	int ret;
-@@ -900,16 +897,14 @@ int amdgpu_dm_plane_fill_plane_buffer_at
- 		ret = amdgpu_dm_plane_fill_gfx12_plane_attributes_from_modifiers(adev, afb, format,
- 										 rotation, plane_size,
- 										 tiling_info, dcc,
--										 address,
--										 force_disable_dcc);
-+										 address);
- 		if (ret)
- 			return ret;
- 	} else if (adev->family >= AMDGPU_FAMILY_AI) {
- 		ret = amdgpu_dm_plane_fill_gfx9_plane_attributes_from_modifiers(adev, afb, format,
- 										rotation, plane_size,
- 										tiling_info, dcc,
--										address,
--										force_disable_dcc);
-+										address);
- 		if (ret)
- 			return ret;
- 	} else {
-@@ -1000,14 +995,13 @@ static int amdgpu_dm_plane_helper_prepar
- 	    dm_plane_state_old->dc_state != dm_plane_state_new->dc_state) {
- 		struct dc_plane_state *plane_state =
- 			dm_plane_state_new->dc_state;
--		bool force_disable_dcc = !plane_state->dcc.enable;
- 
- 		amdgpu_dm_plane_fill_plane_buffer_attributes(
- 			adev, afb, plane_state->format, plane_state->rotation,
- 			afb->tiling_flags,
- 			&plane_state->tiling_info, &plane_state->plane_size,
- 			&plane_state->dcc, &plane_state->address,
--			afb->tmz_surface, force_disable_dcc);
-+			afb->tmz_surface);
- 	}
- 
- 	return 0;
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.h
-@@ -51,8 +51,7 @@ int amdgpu_dm_plane_fill_plane_buffer_at
- 				 struct plane_size *plane_size,
- 				 struct dc_plane_dcc_param *dcc,
- 				 struct dc_plane_address *address,
--				 bool tmz_surface,
--				 bool force_disable_dcc);
-+				 bool tmz_surface);
- 
- int amdgpu_dm_plane_init(struct amdgpu_display_manager *dm,
- 			 struct drm_plane *plane,
+ 	if (VFS_I(ip)->i_nlink != 0) {
+ 		/*
 
 
 
