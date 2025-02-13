@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F74BA34602
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769E2A346A1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA03ADECA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A28CB7A33F8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0FC26B0B5;
-	Thu, 13 Feb 2025 15:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9220216D4E6;
+	Thu, 13 Feb 2025 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc1bstYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2oEQ8Dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB8826B0A4;
-	Thu, 13 Feb 2025 15:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3A826B0BD;
+	Thu, 13 Feb 2025 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459566; cv=none; b=HTCnP4UDCipgKOwRVaK076K0Z6IQdf2WHktCg8xu+2avPH+baOROIuHZ/DX0uL6ulthYqsPVIpl7vGIyVk9Ltm6yhmeNkpWDn/dkpbTjSFfHTj/Meqcz4g88Fzj5+zoaymHvdQMPc9blQ+xSxb/jMiArelecH3EEklyWwkoEcXQ=
+	t=1739460398; cv=none; b=qvyZ39U6r0cmRx7QX2GXXhxqRED1sLGgZKeZ2Wj8pdpD3tV1JoSth715nmzlI7BDKgFQcy+KBfk0kJGECy6fZF2m+g7BMpsWKOsOQXrv3PsLMJUWyOTOZT48eERpWim0KisOCBr11w3+WyQerU2CyL3mh3vA6/pT3mTBByyNaiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459566; c=relaxed/simple;
-	bh=8udpk5oCl4tGLclQRG1wjrX+Q0Wgnp6Rd/Xe0ZWdDbc=;
+	s=arc-20240116; t=1739460398; c=relaxed/simple;
+	bh=zfBy3N3xbu1StseUahS3Z0/Pjgc/Xmnn1ee1Rf3DMR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=boOd8qZBPrddWPjYbd8NiQ4Yw7DPiVspS4DG0QeQJvZk38xJ67QbK1zHPAaFPQxpSl0tGBHilrcQhpznRnlKYHiKmSwzhb03fFEmGYp140oUghC6YrGU2/9hJNqg8J0uzFGS6hK9cZjg3sLbcE00JaR0S/ThESeBpTEDaC2SUlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc1bstYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039E4C4CED1;
-	Thu, 13 Feb 2025 15:12:44 +0000 (UTC)
+	 MIME-Version; b=XOKRGpSudjGdv6TAUXvCPY8oqo8EqteIeqjDqwFUUu7YhGQI3RDNR9XtWkjlf9M8hMWz0svBm+h2OnCrIHwCH9qKOLVi/2TXx8ki4z0/vw1AqFZ8PhIVNBshyWSjrsYDK/WnJO5FyW0XpOM1QZL8ZJiQsg4JBW6ebkUzRmmB2xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2oEQ8Dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF99C4CED1;
+	Thu, 13 Feb 2025 15:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459565;
-	bh=8udpk5oCl4tGLclQRG1wjrX+Q0Wgnp6Rd/Xe0ZWdDbc=;
+	s=korg; t=1739460398;
+	bh=zfBy3N3xbu1StseUahS3Z0/Pjgc/Xmnn1ee1Rf3DMR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vc1bstYFYG7v5U8pxokCyYtFPQ+MEckNlA7Yj5vG7b9vJELlXJL1lnooV4g8BZ7Jh
-	 Vh7QHI2RxdBpo7vnXo0fs8ZIs1yayRzORgUZgqaiasLQbogS+zy/JOZD/HwnYYYWLX
-	 lrEhFu/SWUwixk1owdDG6mah3XvQ6CjZNdGNfun8=
+	b=h2oEQ8DnYvCKLHDhcT7rYe7Gu4s8mwEz2baY2w2glPTyHPmfDM4KBssOdeDQOUde1
+	 8vmfhslNadDmSkia/8UU3kRTgaN9CylN9UXLT68ZbFlEMSvjakHDOGjJ0F8pcFUVG0
+	 5x08nseo4MRTCanyuNfKAIhbpkxOSLo1kt+VAEWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.13 275/443] PCI: dwc: ep: Write BAR_MASK before iATU registers in pci_epc_set_bar()
-Date: Thu, 13 Feb 2025 15:27:20 +0100
-Message-ID: <20250213142451.221250743@linuxfoundation.org>
+	Yan Zhai <yan@cloudflare.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 069/273] udp: gso: do not drop small packets when PMTU reduces
+Date: Thu, 13 Feb 2025 15:27:21 +0100
+Message-ID: <20250213142410.080506894@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +62,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Yan Zhai <yan@cloudflare.com>
 
-commit 33a6938e0c3373f2d11f92d098f337668cd64fdd upstream.
+[ Upstream commit 235174b2bed88501fda689c113c55737f99332d8 ]
 
-The "DesignWare Cores PCI Express Controller Register Descriptions,
-Version 4.60a", section "1.21.70 IATU_LWR_TARGET_ADDR_OFF_INBOUND_i",
-fields LWR_TARGET_RW and LWR_TARGET_HW both state that:
-"Field size depends on log2(BAR_MASK+1) in BAR match mode."
+Commit 4094871db1d6 ("udp: only do GSO if # of segs > 1") avoided GSO
+for small packets. But the kernel currently dismisses GSO requests only
+after checking MTU/PMTU on gso_size. This means any packets, regardless
+of their payload sizes, could be dropped when PMTU becomes smaller than
+requested gso_size. We encountered this issue in production and it
+caused a reliability problem that new QUIC connection cannot be
+established before PMTU cache expired, while non GSO sockets still
+worked fine at the same time.
 
-I.e. only the upper bits are writable, and the number of writable bits is
-dependent on the configured BAR_MASK.
+Ideally, do not check any GSO related constraints when payload size is
+smaller than requested gso_size, and return EMSGSIZE instead of EINVAL
+on MTU/PMTU check failure to be more specific on the error cause.
 
-If we do not write the BAR_MASK before writing the iATU registers, we are
-relying the reset value of the BAR_MASK being larger than the requested
-BAR size (which is supplied in the struct pci_epf_bar which is passed to
-pci_epc_set_bar()). The reset value of the BAR_MASK is SoC dependent.
-
-Thus, if the struct pci_epf_bar requests a BAR size that is larger than the
-reset value of the BAR_MASK, the iATU will try to write to read-only bits,
-which will cause the iATU to end up redirecting to a physical address that
-is different from the address that was intended.
-
-Thus, we should always write the iATU registers after writing the BAR_MASK.
-
-Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
-Link: https://lore.kernel.org/r/20241213143301.4158431-9-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4094871db1d6 ("udp: only do GSO if # of segs > 1")
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |   28 ++++++++++++------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ net/ipv4/udp.c                       |  4 ++--
+ net/ipv6/udp.c                       |  4 ++--
+ tools/testing/selftests/net/udpgso.c | 26 ++++++++++++++++++++++++++
+ 3 files changed, 30 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci
- 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
- 		return -EINVAL;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 2e4e535603948..b84d18fcd9e2c 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -930,9 +930,9 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
+ 		const int hlen = skb_network_header_len(skb) +
+ 				 sizeof(struct udphdr);
  
--	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
--
--	if (!(flags & PCI_BASE_ADDRESS_SPACE))
--		type = PCIE_ATU_TYPE_MEM;
--	else
--		type = PCIE_ATU_TYPE_IO;
--
--	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
--	if (ret)
--		return ret;
--
- 	if (ep->epf_bar[bar])
--		return 0;
-+		goto config_atu;
-+
-+	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+-		if (hlen + cork->gso_size > cork->fragsize) {
++		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
+ 			kfree_skb(skb);
+-			return -EINVAL;
++			return -EMSGSIZE;
+ 		}
+ 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
+ 			kfree_skb(skb);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 954afe6ba883e..9ff8e723402ba 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1246,9 +1246,9 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+ 		const int hlen = skb_network_header_len(skb) +
+ 				 sizeof(struct udphdr);
  
- 	dw_pcie_dbi_ro_wr_en(pci);
- 
-@@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci
- 		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
- 	}
- 
--	ep->epf_bar[bar] = epf_bar;
- 	dw_pcie_dbi_ro_wr_dis(pci);
- 
-+config_atu:
-+	if (!(flags & PCI_BASE_ADDRESS_SPACE))
-+		type = PCIE_ATU_TYPE_MEM;
-+	else
-+		type = PCIE_ATU_TYPE_IO;
-+
-+	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
-+	if (ret)
-+		return ret;
-+
-+	ep->epf_bar[bar] = epf_bar;
-+
- 	return 0;
- }
- 
+-		if (hlen + cork->gso_size > cork->fragsize) {
++		if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
+ 			kfree_skb(skb);
+-			return -EINVAL;
++			return -EMSGSIZE;
+ 		}
+ 		if (datalen > cork->gso_size * UDP_MAX_SEGMENTS) {
+ 			kfree_skb(skb);
+diff --git a/tools/testing/selftests/net/udpgso.c b/tools/testing/selftests/net/udpgso.c
+index b02080d09fbc0..d0fba50bd6ef0 100644
+--- a/tools/testing/selftests/net/udpgso.c
++++ b/tools/testing/selftests/net/udpgso.c
+@@ -94,6 +94,19 @@ struct testcase testcases_v4[] = {
+ 		.gso_len = CONST_MSS_V4,
+ 		.r_num_mss = 1,
+ 	},
++	{
++		/* datalen <= MSS < gso_len: will fall back to no GSO */
++		.tlen = CONST_MSS_V4,
++		.gso_len = CONST_MSS_V4 + 1,
++		.r_num_mss = 0,
++		.r_len_last = CONST_MSS_V4,
++	},
++	{
++		/* MSS < datalen < gso_len: fail */
++		.tlen = CONST_MSS_V4 + 1,
++		.gso_len = CONST_MSS_V4 + 2,
++		.tfail = true,
++	},
+ 	{
+ 		/* send a single MSS + 1B */
+ 		.tlen = CONST_MSS_V4 + 1,
+@@ -197,6 +210,19 @@ struct testcase testcases_v6[] = {
+ 		.gso_len = CONST_MSS_V6,
+ 		.r_num_mss = 1,
+ 	},
++	{
++		/* datalen <= MSS < gso_len: will fall back to no GSO */
++		.tlen = CONST_MSS_V6,
++		.gso_len = CONST_MSS_V6 + 1,
++		.r_num_mss = 0,
++		.r_len_last = CONST_MSS_V6,
++	},
++	{
++		/* MSS < datalen < gso_len: fail */
++		.tlen = CONST_MSS_V6 + 1,
++		.gso_len = CONST_MSS_V6 + 2,
++		.tfail = true
++	},
+ 	{
+ 		/* send a single MSS + 1B */
+ 		.tlen = CONST_MSS_V6 + 1,
+-- 
+2.39.5
+
 
 
 
