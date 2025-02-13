@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0A8A34642
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E547A343ED
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07FB11894DBA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC6BD3A6050
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFCC26B099;
-	Thu, 13 Feb 2025 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7418241665;
+	Thu, 13 Feb 2025 14:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jfbx6Ls+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAZH66sX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEDC335BA;
-	Thu, 13 Feb 2025 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572B2222D3;
+	Thu, 13 Feb 2025 14:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459586; cv=none; b=O62mthaH5rbpr6mZMtpjEUQKZFFG+OBcDsUOi/p0xDvJOKGwx+EChNRvKiXNxwkrKDfWbeU7JvdWVwMccD3mbNylZgJEMQwIYX0j03O55P05MpTIEEA9SudtWVCpxeNw28S3HJYtyZ2EIYjG6vh2p81dQZDkjldM6glIOU2H680=
+	t=1739458076; cv=none; b=CD8U6PnAqGIK78SDzo2PA0YEnr/PXQO1Lvnn53G45csBjUXB+qABOZPkBFu4GHPZxMONPktqrBC85TSfy5dDnJiQKhQ7O7ZGpUf+jF1Nm/Q/k029Mgq38WesvovxYX07ZjIfheaOKv+8f+CPyeXABcO0vgo2FsGeIfNWSpt2zIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459586; c=relaxed/simple;
-	bh=AjJPRX6xvFlOundlhzv95QnpirEloMUL/EzciLdVfTI=;
+	s=arc-20240116; t=1739458076; c=relaxed/simple;
+	bh=nw6hJeE3oeGPcjsx2ePRkvkvFPhGlWeacUOWqJgEHMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojQU8k0JsK712N/67y5wrQxTmip/hIN6tPMMRLVkdHUhzP3pY8nnaJarJAtP7NOZAsJFyrTCBlNicl9V8whgFDuDa9T4zvNUHTk9LVLMu0uPJsB66nhDmQ29a1M0/7S/5JChAdr8+Ekh140jBLX2agGa8d9VcgxxgMV/i9Jt+Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jfbx6Ls+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BDEC4CEE4;
-	Thu, 13 Feb 2025 15:13:05 +0000 (UTC)
+	 MIME-Version; b=OMuuHT+1ffJ3bgHLvYYTj/sJH++6p+jT4zck+5nVuXYYShdzYMczjZMKYzfMAux/Mc6i4/n073yCWHVLTuJyEMaM+LnFjp1QvrekXAdKeRp/vNWPB0z4nNyk9xTJnGoC1GDbEKhBMoFX8Y1VRaX+oaI0BaGiU857plvCrfL6kk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAZH66sX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D840FC4CED1;
+	Thu, 13 Feb 2025 14:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459585;
-	bh=AjJPRX6xvFlOundlhzv95QnpirEloMUL/EzciLdVfTI=;
+	s=korg; t=1739458076;
+	bh=nw6hJeE3oeGPcjsx2ePRkvkvFPhGlWeacUOWqJgEHMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jfbx6Ls+e/JfAu+mT/3Ad4VVf0qwEuWKcHzlL0PNAQUyWpZSV7R9gaTRGF8E4F74B
-	 MZj67eUZLWXF7mt9pk2dbW5aJ6ArbS3mH0WvWsIbahqEcMeW7Hu2yPP2aQynZVPmWB
-	 56jIwebd3W9gWE02/HwwquknvVpBCtznu6DOQTlo=
+	b=bAZH66sXWMCZbbyMi2RAyJ1efo8nvlZiAY8nHs9ZsHD4QuoXAPSAOB2zjOdkZnntp
+	 A6HGViUrgE8euKFN/12Xcs2rAPPrr5UsQD97MUrYLVwJXUBZoEYPPgAmTdxM613iOM
+	 8IrMqhg4AuWHSaL5Fwlm4TBEO3sdWXWB1hFs5sUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.13 277/443] nvme-pci: Add TUXEDO InfinityFlex to Samsung sleep quirk
+	stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 293/422] arm64: dts: qcom: sm8550: correct MDSS interconnects
 Date: Thu, 13 Feb 2025 15:27:22 +0100
-Message-ID: <20250213142451.298764326@linuxfoundation.org>
+Message-ID: <20250213142447.850215557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit dbf2bb1a1319b7c7d8828905378a6696cca6b0f2 upstream.
+commit b8591df49cde459e3b84cdc0517d7bf92053d244 upstream.
 
-On the TUXEDO InfinityFlex, a Samsung 990 Evo NVMe leads to a high power
-consumption in s2idle sleep (4 watts).
+SM8550 lists two interconnects for the display subsystem, mdp0-mem
+(between MDP and LLCC) and mdp1-mem (between LLCC and EBI, memory).
+The second interconnect is a misuse. mdpN-mem paths should be used for
+several outboud MDP interconnects rather than the path between LLCC and
+memory. This kind of misuse can result in bandwidth underflows, possibly
+degrading picture quality as the required memory bandwidth is divided
+between all mdpN-mem paths (and LLCC-EBI should not be a part of such
+division).
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1.4 watts.
+Drop the second path and use direct MDP-EBI path for mdp0-mem until we
+support separate MDP-LLCC and LLCC-EBI paths.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: d7da51db5b81 ("arm64: dts: qcom: sm8550: add display hardware devices")
+Cc: stable@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241026-fix-sm8x50-mdp-icc-v2-1-fd8ddf755acc@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3148,7 +3148,8 @@ static unsigned long check_vendor_combin
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
- 		 */
--		if (dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
-+		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
-+		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3002,9 +3002,8 @@
+ 
+ 			power-domains = <&dispcc MDSS_GDSC>;
+ 
+-			interconnects = <&mmss_noc MASTER_MDP 0 &gem_noc SLAVE_LLCC 0>,
+-					<&mc_virt MASTER_LLCC 0 &mc_virt SLAVE_EBI1 0>;
+-			interconnect-names = "mdp0-mem", "mdp1-mem";
++			interconnects = <&mmss_noc MASTER_MDP 0 &mc_virt SLAVE_EBI1 0>;
++			interconnect-names = "mdp0-mem";
+ 
+ 			iommus = <&apps_smmu 0x1c00 0x2>;
+ 
 
 
 
