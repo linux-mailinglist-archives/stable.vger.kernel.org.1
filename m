@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53C8A3443E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBCDA346C2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748AE1897AF4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0703A3AE651
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9C92222C7;
-	Thu, 13 Feb 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809B626B098;
+	Thu, 13 Feb 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfuyxNp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7ihbE69"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD76203719;
-	Thu, 13 Feb 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59F26B096;
+	Thu, 13 Feb 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458274; cv=none; b=FsWxfNskow31OnQI7j72Zui/11wHmwhNccQmKNU7X0mEYuseH1Cz1VS6oqvUrUNOR9KkhDDwu22/gV5ge6Q8fGska91b/vdQUBTdgsNqPjo1/CE/evfX5qbaW0Wmyfpiu6pxScw2z2qmE1bdwzjo1MAys5YsUN4ZZ1ZvkdKjbQM=
+	t=1739459622; cv=none; b=IYFsL7HSaHRYWlXrkb3JYpYqcBqxOiMqaVWizRN/+x+6QSPDoIin3tq0VuuaickF8/c6sNM3AgKrvUfL4YZzIbMPU2Fuw7yBX890/rDhIT3E3InPeO/2sGapFXTpKNsbZ6ljhIvKS2+kVxsP4P6DEZ7eB0Y1WrsVqC7cMg7AKhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458274; c=relaxed/simple;
-	bh=oDxJRpOsQJjD76Dq/8K/R7Ul1d696PEGSeCFQL0sTF0=;
+	s=arc-20240116; t=1739459622; c=relaxed/simple;
+	bh=k9nXBxW37mrqp1+tfrdXVpxK2EzkREknTFCxJk857SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MirSey4XtQ2IjjO8Q+I8Z1UKM6EIbiilrklSGzUrqtAke1Kk4XE9helcpzba15Vh3wh1pFWg9cESj7+zMGI3h8OwHy+WS+pC5POgWqECi9RyI23JRUqVmMvZvk+2keYQ3NMAHEoQTs4LKDib8nfMDlDm3o7R5EupMyzstH69WgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfuyxNp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E64C4CED1;
-	Thu, 13 Feb 2025 14:51:13 +0000 (UTC)
+	 MIME-Version; b=F4jSosVVQqMjqACh1IAVWg8axbh+hilv+q11FGXRDgC9P4qS9NZ0zw2Be+vWOeQvR+F1XGul2S/PpDgg6WZk0pi27/Vw/Sg0UezjniHN5YHdz6qxkZ/dQ9/9GJJi6kTbl9ven82DdjCTOdw6VOzjuXL/Ap6HwFANMedBm9LYTJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7ihbE69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABA9C4CED1;
+	Thu, 13 Feb 2025 15:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458273;
-	bh=oDxJRpOsQJjD76Dq/8K/R7Ul1d696PEGSeCFQL0sTF0=;
+	s=korg; t=1739459622;
+	bh=k9nXBxW37mrqp1+tfrdXVpxK2EzkREknTFCxJk857SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfuyxNp6BfmXO+av2qoTelwrkixscUw//GdVUVALMoyMRYzd6/WZKrME7K6GvynA8
-	 qL63BuZSLIzUQqz/G+9uBklnXF2NZp/uuctD8O8E1N6RbDOZYfOP6Q9efR2FsZ79hK
-	 PaChh8Nj0bJ605WMeR+vpGv3PU+oLo+mbwDFnCBM=
+	b=g7ihbE699Ay7ix+1EgFqOtbbVxWYVMyut6OP1dFe7/mip/gR5xVIdD8XO2+7ob5Bf
+	 VGEM4WibqY5DlAONoyRWA7UNdNzW3H0bX5wvKAkbV/ylDcKT7U9KobYksvw7vMHahv
+	 3neGcXB7IZXg/DYHJULbEkSfHOM0x7uAX6OMwxGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 334/422] media: uvcvideo: Fix crash during unbind if gpio unit is in use
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 318/443] arm64: dts: qcom: sm8550: Fix MPSS memory length
 Date: Thu, 13 Feb 2025 15:28:03 +0100
-Message-ID: <20250213142449.442211185@linuxfoundation.org>
+Message-ID: <20250213142452.888049301@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5 upstream.
+commit 8ef227e93a513d431f9345f23cd4d2d65607b985 upstream.
 
-We used the wrong device for the device managed functions. We used the
-usb device, when we should be using the interface device.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-If we unbind the driver from the usb interface, the cleanup functions
-are never called. In our case, the IRQ is never disabled.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-If an IRQ is triggered, it will try to access memory sections that are
-already free, causing an OOPS.
-
-We cannot use the function devm_request_threaded_irq here. The devm_*
-clean functions may be called after the main structure is released by
-uvc_delete.
-
-Luckily this bug has small impact, as it is only affected by devices
-with gpio units and the user has to unbind the device, a disconnect will
-not trigger this error.
-
+Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
 Cc: stable@vger.kernel.org
-Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-9-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   28 +++++++++++++++++++++-------
- drivers/media/usb/uvc/uvcvideo.h   |    1 +
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1280,14 +1280,14 @@ static int uvc_gpio_parse(struct uvc_dev
- 	struct gpio_desc *gpio_privacy;
- 	int irq;
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2314,7 +2314,7 @@
  
--	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
-+	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
- 					       GPIOD_IN);
- 	if (IS_ERR_OR_NULL(gpio_privacy))
- 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 		remoteproc_mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8550-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
  
- 	irq = gpiod_to_irq(gpio_privacy);
- 	if (irq < 0)
--		return dev_err_probe(&dev->udev->dev, irq,
-+		return dev_err_probe(&dev->intf->dev, irq,
- 				     "No IRQ for privacy GPIO\n");
- 
- 	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
-@@ -1313,15 +1313,27 @@ static int uvc_gpio_parse(struct uvc_dev
- static int uvc_gpio_init_irq(struct uvc_device *dev)
- {
- 	struct uvc_entity *unit = dev->gpio_unit;
-+	int ret;
- 
- 	if (!unit || unit->gpio.irq < 0)
- 		return 0;
- 
--	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
--					 uvc_gpio_irq,
--					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
--					 IRQF_TRIGGER_RISING,
--					 "uvc_privacy_gpio", dev);
-+	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
-+				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
-+				   IRQF_TRIGGER_RISING,
-+				   "uvc_privacy_gpio", dev);
-+
-+	unit->gpio.initialized = !ret;
-+
-+	return ret;
-+}
-+
-+static void uvc_gpio_deinit(struct uvc_device *dev)
-+{
-+	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
-+		return;
-+
-+	free_irq(dev->gpio_unit->gpio.irq, dev);
- }
- 
- /* ------------------------------------------------------------------------
-@@ -1918,6 +1930,8 @@ static void uvc_unregister_video(struct
- {
- 	struct uvc_streaming *stream;
- 
-+	uvc_gpio_deinit(dev);
-+
- 	list_for_each_entry(stream, &dev->streams, list) {
- 		/* Nothing to do here, continue. */
- 		if (!video_is_registered(&stream->vdev))
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -234,6 +234,7 @@ struct uvc_entity {
- 			u8  *bmControls;
- 			struct gpio_desc *gpio_privacy;
- 			int irq;
-+			bool initialized;
- 		} gpio;
- 	};
- 
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
