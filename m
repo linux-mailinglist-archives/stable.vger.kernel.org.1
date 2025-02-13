@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE3FA3440C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADE3A346E2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B9551896AD1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C17037A3DC4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BAD14D428;
-	Thu, 13 Feb 2025 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913331422D8;
+	Thu, 13 Feb 2025 15:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOXwm+aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmPBkSNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A3A26B08A;
-	Thu, 13 Feb 2025 14:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE5926B087;
+	Thu, 13 Feb 2025 15:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458166; cv=none; b=guUtxKzumHMKYFTNPsUV0yDwAGEP2j/TsmaMTm6PXB2LYAFIDHJUqFYuN4ttEhoQgl6VNzGMQ0OzWYWjqnEHDwBmscyFPWK466t63ROWrUKVuFQKIFywxdhTR691aVD/LaPb94p7LgzBmzH4bGsJGPAPOidIroqgJ8SYXQ4wuVs=
+	t=1739460538; cv=none; b=W3qTqz1RyqvTLf9NPa7gggtFu+5wd1WxdQ3m46+ZhOe7FAO7mCUNQaun8ZvoCK3w0WCKJ8SXxN3aXEAhy3Jyz1TN5uskYlkxMtFQ3+D0pNhW7S0LO3Ra0WJvwBo6/DrGS45xdEKVsz7emNTIrvrX5eYDriw+IIjnYszInKp6eZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458166; c=relaxed/simple;
-	bh=zRm6JWhO1EpnFIBJNQ89nsuj+anRJCVa9oJBEKoEuNo=;
+	s=arc-20240116; t=1739460538; c=relaxed/simple;
+	bh=E9yBQrpaG7eZqL0D8ZLTTudCntzY1V5ZspNvj/Rc55o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDDSQYNKHeC0hOonqxQW7TdS3TFQIcB1MDmNyS0y+OzA0iD2zbBd6tUb406Y3lzqawU1e8t7Ezt7uSrfX/I8vI8sxuyEOMNnishigIgz/wUdvpp77BswUqHVn0nSc+Yo8d37rcpUukg2uunWKtNqTdFWMoBAnf2GFQX2AF23eRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOXwm+aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C34C4CED1;
-	Thu, 13 Feb 2025 14:49:25 +0000 (UTC)
+	 MIME-Version; b=ZA0aJy444a8T9i15ilvHFsHb0ByaJv+Xg54s+o3OfatW3h30q6VGzuLzk8+6ryhWRChsxD+hOUzwQoDc7FAEjisSNAzrLClU0iU6Lb4R04JTjhIWMNLk1qfdoca3OdjqDez6/k6Ku2eH+AfB+Vd3Kzac1eAWGJ6COkJe2A6ewB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmPBkSNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE646C4CEE4;
+	Thu, 13 Feb 2025 15:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458166;
-	bh=zRm6JWhO1EpnFIBJNQ89nsuj+anRJCVa9oJBEKoEuNo=;
+	s=korg; t=1739460538;
+	bh=E9yBQrpaG7eZqL0D8ZLTTudCntzY1V5ZspNvj/Rc55o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOXwm+aqEnrD2wmiaxv3bd5J6GGTGU9BviuDyCKxji8ToQpfiHKkoXRJdFfnORWWr
-	 8InmFvgyUmxKAwYgSp3U+atDM9RVO/fh8IBRkphsE0u8Sf++V7ldirsIs8aUtKcQDF
-	 6cVjSV6PHW9z/iS35j1iSWjwmxggnpKxdeGt67cQ=
+	b=cmPBkSNJh5jSdY0nnlKdUk0ZZZwCzxb7u/IHympIBWkszwMbLBCf0z/dmku5NIIIp
+	 MukYHgNZylCc8ZEQGqfwe0/7Jsqa9wKj6KextARDROfmqsNM+XnXCEffUjlr64tDpm
+	 n2RrDhyGVt+6NmZjCBHh/PVFqogcuKhJ6/3Br2XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 321/422] media: mmp: Bring back registration of the device
+	Prike Liang <Prike.Liang@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 098/273] drm/amdkfd: only flush the validate MES contex
 Date: Thu, 13 Feb 2025 15:27:50 +0100
-Message-ID: <20250213142448.935674137@linuxfoundation.org>
+Message-ID: <20250213142411.216876739@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lubomir Rintel <lkundrak@v3.sk>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit fbb5298bf1a7b71723cd2bb193642429ceb0fb84 upstream.
+commit 9078a5bfa21e78ae68b6d7c365d1b92f26720c55 upstream.
 
-In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
-earlier"), a call to v4l2_device_register() was moved away from
-mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
-This is not the only caller though -- there's also marvell/mmp.
+The following page fault was observed duringthe KFD process release.
+In this particular error case, the HIP test (./MemcpyPerformance -h)
+does not require the queue. As a result, the process_context_addr was
+not assigned when the KFD process was released, ultimately leading to
+this page fault during the execution of the function
+kfd_process_dequeue_from_all_devices().
 
-Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
-driver, in a fashion analogous to what's been done to the Cafe driver.
-Same for the teardown path.
+[345962.294891] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:153 vmid:0 pasid:0)
+[345962.295333] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
+[345962.295775] amdgpu 0000:03:00.0: amdgpu: GCVM_L2_PROTECTION_FAULT_STATUS:0x00000B33
+[345962.296097] amdgpu 0000:03:00.0: amdgpu:     Faulty UTCL2 client ID: CPC (0x5)
+[345962.296394] amdgpu 0000:03:00.0: amdgpu:     MORE_FAULTS: 0x1
+[345962.296633] amdgpu 0000:03:00.0: amdgpu:     WALKER_ERROR: 0x1
+[345962.296876] amdgpu 0000:03:00.0: amdgpu:     PERMISSION_FAULTS: 0x3
+[345962.297135] amdgpu 0000:03:00.0: amdgpu:     MAPPING_ERROR: 0x1
+[345962.297377] amdgpu 0000:03:00.0: amdgpu:     RW: 0x0
+[345962.297682] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:169 vmid:0 pasid:0)
 
-Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/marvell/mmp-driver.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/marvell/mmp-driver.c
-+++ b/drivers/media/platform/marvell/mmp-driver.c
-@@ -232,12 +232,22 @@ static int mmpcam_probe(struct platform_
- 	mcam_init_clk(mcam);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -86,9 +86,12 @@ void kfd_process_dequeue_from_device(str
  
- 	/*
-+	 * Register with V4L.
+ 	if (pdd->already_dequeued)
+ 		return;
+-
++	/* The MES context flush needs to filter out the case which the
++	 * KFD process is created without setting up the MES context and
++	 * queue for creating a compute queue.
 +	 */
-+
-+	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
-+	if (ret)
-+		return ret;
-+
-+	/*
- 	 * Create a match of the sensor against its OF node.
- 	 */
- 	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
- 					    NULL);
--	if (!ep)
--		return -ENODEV;
-+	if (!ep) {
-+		ret = -ENODEV;
-+		goto out_v4l2_device_unregister;
-+	}
- 
- 	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
- 
-@@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_
- 	fwnode_handle_put(ep);
- 	if (IS_ERR(asd)) {
- 		ret = PTR_ERR(asd);
--		goto out;
-+		goto out_v4l2_device_unregister;
- 	}
- 
- 	/*
-@@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_
- 	 */
- 	ret = mccic_register(mcam);
- 	if (ret)
--		goto out;
-+		goto out_v4l2_device_unregister;
- 
- 	/*
- 	 * Add OF clock provider.
-@@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_
- 	return 0;
- out:
- 	mccic_shutdown(mcam);
-+out_v4l2_device_unregister:
-+	v4l2_device_unregister(&mcam->v4l2_dev);
- 
- 	return ret;
- }
-@@ -293,6 +305,7 @@ static void mmpcam_remove(struct platfor
- 	struct mcam_camera *mcam = &cam->mcam;
- 
- 	mccic_shutdown(mcam);
-+	v4l2_device_unregister(&mcam->v4l2_dev);
- 	pm_runtime_force_suspend(mcam->dev);
- }
- 
+ 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
+-	if (dev->kfd->shared_resources.enable_mes &&
++	if (dev->kfd->shared_resources.enable_mes && !!pdd->proc_ctx_gpu_addr &&
+ 	    down_read_trylock(&dev->adev->reset_domain->sem)) {
+ 		amdgpu_mes_flush_shader_debugger(dev->adev,
+ 						 pdd->proc_ctx_gpu_addr);
 
 
 
