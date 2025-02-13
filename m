@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-115485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CB8A343F2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455C6A345F8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6446416E424
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9DFA3A8A84
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CCA15855C;
-	Thu, 13 Feb 2025 14:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CCB26B0AD;
+	Thu, 13 Feb 2025 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh48VOxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3/t1OPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4D715689A;
-	Thu, 13 Feb 2025 14:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AF126B097;
+	Thu, 13 Feb 2025 15:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458215; cv=none; b=oFqsr9e0+hBJnIMlQEbDAF5d7tLdnzbILFA9vX6JLWq2pYDmuJbEB1MgKNAM+V5V9J2qSqCFUr5szrfPXIR+8x4cxix/8XELMAxbnEO09BUQo0G7UFT8+IN7suiWjVJvHNv2dL8SbEo/xJQmrWQsGct8g2zIoYrsD0rmsOgBG1g=
+	t=1739459511; cv=none; b=OBabUcMdnF3LIBuIOi8zb4k0y/Njp5ehFHqDsdJV+edqPXuz+JvsNpMoOxKJ3JSh3iBxT9cGmKrKM7TQwokOcXhdPLtrpDExJ/tHf9YpH154zTSLaWdxlXhSPxV6aGOiMVIJFVyv7O+06D40oShPCbxUDFtWZ6edv/RV87GBM4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458215; c=relaxed/simple;
-	bh=9uSgCDgwzxtO/BQ9pdd2P/T/QiyvgVmQbHdXhL9mwZo=;
+	s=arc-20240116; t=1739459511; c=relaxed/simple;
+	bh=P2EelS6ySvEeMrmtSXjxugEo1OJPmZi6vDoNgLWAWdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtftTbWeNDEmC+UpYHx6Fd4mlkliGTTzyiZXTkBfrdgcoeFhCNlh8aa8rRRzIoGMshKa5LTB2lMi2xNxlbM5Xsi5yU6NLYvL8Gu+0COpu9jcxUrJkBXI51oKT36lqSw+ixIK+1QJEiOwaDhuC5Ib0QqCVpqxXYuOIdwAzLKF+AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh48VOxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A056C4CED1;
-	Thu, 13 Feb 2025 14:50:14 +0000 (UTC)
+	 MIME-Version; b=NRUFd1hnuod/wt/f2H7saqV+MbYcsWeREFCBTTuwDN3A5mXDKGX7hI4mstKT364tbbCNNPGUtkENEzF8z/CScN6pmmPOHBbJGcDKKmR0WaAoT8FusrE6T+Hw5aeJk9I8uig/0DNDouf11cWEV3oXk7Y7pAkTDktC2jef7bUIK3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3/t1OPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C180C4CED1;
+	Thu, 13 Feb 2025 15:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458214;
-	bh=9uSgCDgwzxtO/BQ9pdd2P/T/QiyvgVmQbHdXhL9mwZo=;
+	s=korg; t=1739459510;
+	bh=P2EelS6ySvEeMrmtSXjxugEo1OJPmZi6vDoNgLWAWdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oh48VOxJ+M9giKwqQb1HfcV2uWsFkzgGje48bPmackQKfT0BPLmAU7cUMnh7Qn4R6
-	 oQi5gJuUr+uR6aW9SXBTFKRRJUdwD5vOSOkWpLO0AaFK04EtDU7XVM2/iL1mU9yoo+
-	 VIQkdw4HA3ESLUtMOMfECxnhwdRSgbgz5X/LUVFs=
+	b=w3/t1OPtWOw6uavYI07rXuymv3x/nDd333AKlzszMBJ+W7jIosa4fG+gnpxXORniu
+	 oz6YUfcZ9j+S7AKICj1y2lvHusoFvtlv2uMXMWmmuFNONcbNOmrBVK2qum9GeY/zuk
+	 /cF9PYMDvBubldqyh80LfIPU78efd/fLhsJk3rHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 303/422] accel/ivpu: Clear runtime_error after pm_runtime_resume_and_get() fails
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 287/443] pidfs: check for valid ioctl commands
 Date: Thu, 13 Feb 2025 15:27:32 +0100
-Message-ID: <20250213142448.235191320@linuxfoundation.org>
+Message-ID: <20250213142451.686991438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit f2bc2afe34c107a02ce829a4039e85514feafe55 upstream.
+commit 8ce3528188207a2e1896cc3173fba6d99a59013a upstream.
 
-pm_runtime_resume_and_get() sets dev->power.runtime_error that causes
-all subsequent pm_runtime_get_sync() calls to fail.
-Clear the runtime_error using pm_runtime_set_suspended(), so the driver
-doesn't have to be reloaded to recover when the NPU fails to boot during
-runtime resume.
+Prior to doing any work, check whether the provided ioctl command is
+supported by pidfs.
 
-Fixes: 7d4b4c74432d ("accel/ivpu: Remove suspend_reschedule_counter")
-Cc: stable@vger.kernel.org # v6.11+
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129124009.1039982-3-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_pm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/pidfs.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -295,7 +295,10 @@ int ivpu_rpm_get(struct ivpu_device *vde
- 	int ret;
- 
- 	ret = pm_runtime_resume_and_get(vdev->drm.dev);
--	drm_WARN_ON(&vdev->drm, ret < 0);
-+	if (ret < 0) {
-+		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
-+		pm_runtime_set_suspended(vdev->drm.dev);
-+	}
- 
- 	return ret;
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -190,6 +190,27 @@ static long pidfd_info(struct task_struc
+ 	return 0;
  }
+ 
++static bool pidfs_ioctl_valid(unsigned int cmd)
++{
++	switch (cmd) {
++	case FS_IOC_GETVERSION:
++	case PIDFD_GET_CGROUP_NAMESPACE:
++	case PIDFD_GET_INFO:
++	case PIDFD_GET_IPC_NAMESPACE:
++	case PIDFD_GET_MNT_NAMESPACE:
++	case PIDFD_GET_NET_NAMESPACE:
++	case PIDFD_GET_PID_FOR_CHILDREN_NAMESPACE:
++	case PIDFD_GET_TIME_NAMESPACE:
++	case PIDFD_GET_TIME_FOR_CHILDREN_NAMESPACE:
++	case PIDFD_GET_UTS_NAMESPACE:
++	case PIDFD_GET_USER_NAMESPACE:
++	case PIDFD_GET_PID_NAMESPACE:
++		return true;
++	}
++
++	return false;
++}
++
+ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct task_struct *task __free(put_task) = NULL;
+@@ -198,6 +219,9 @@ static long pidfd_ioctl(struct file *fil
+ 	struct ns_common *ns_common = NULL;
+ 	struct pid_namespace *pid_ns;
+ 
++	if (!pidfs_ioctl_valid(cmd))
++		return -ENOIOCTLCMD;
++
+ 	task = get_pid_task(pid, PIDTYPE_PID);
+ 	if (!task)
+ 		return -ESRCH;
 
 
 
