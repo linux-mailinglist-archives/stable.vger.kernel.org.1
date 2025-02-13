@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-116152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F0CA347F0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB8DA3460C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BEDE3B0413
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B149716EFAD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0479B14F121;
-	Thu, 13 Feb 2025 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3F145A03;
+	Thu, 13 Feb 2025 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdj+SewQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lqsia+ys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B638E26B0B4;
-	Thu, 13 Feb 2025 15:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA47326B0AD;
+	Thu, 13 Feb 2025 15:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460504; cv=none; b=YY/gJpbXo0F4xAj3sKg0qPwJqVIR42ebsG+mTAD/O052TbXQJDIk8iffWuQsgmRwYGG83/fbx2xdQPY7a8Yxo+DtmX/N1uzUw2gmKR/B2aueVGcTP0aUN//39brN5h64bwhEmetyFJdF7mOp6rDgTN5hSYlIT2sfRCVi9VIvH4o=
+	t=1739459699; cv=none; b=ga+/q70v+SZo3as4+OIXnW1aNxk1EzbbicuXok/XgrtPh/O1eRUGfPoOtPUoyMhRfN0tOZQ+tsRvB5eGgc6WOoGoMvRSaYnKmre0cVfz4Cl1ZsVC/TQjwG00Om8obBQg4p+Yy9SP6hWvqnMLAWGKSWQWOTtMijAt66XSrK3ifDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460504; c=relaxed/simple;
-	bh=qQq4Irtv85LrPlTXDBmJhm2FVq4kfONdHJ1iSBmvBu0=;
+	s=arc-20240116; t=1739459699; c=relaxed/simple;
+	bh=CyZhLVZ/84QTLoZY0jMqdJ2wNglltHTl4IfOXUEGnnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NusVkaDJM39FImNpsKa1pKXgUg7oOFGyDO2A+wGr+fqYv2UL1h4y4tH7p5tZyWYgUWNIn6w7EMreXvQe81T6vpN0GIX/zKii40Lhcwbj+PuXFqiqeimuqlTuuLJzAYQATsd5bAVj11Q1mxg2lQ1mam3NeoShiFiXe/k6bB8mEiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdj+SewQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2F7C4CED1;
-	Thu, 13 Feb 2025 15:28:23 +0000 (UTC)
+	 MIME-Version; b=q5vEcrqcSvT/rbHI16FTYFVA83hC3GBzRjpMbyQyDaxeANqe07PjrqnbTfpNjHY+swpu/KtquTyZM+mYNFIQu0vhVXsG93V/xc1yIOj2l8sanaZZWTDzaa8KUBtIY+pj/oqXiDF9bxTyvJHuhGt9KJ8gJM3d2HhgKA5W+IUyZpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lqsia+ys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244CFC4CED1;
+	Thu, 13 Feb 2025 15:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460504;
-	bh=qQq4Irtv85LrPlTXDBmJhm2FVq4kfONdHJ1iSBmvBu0=;
+	s=korg; t=1739459699;
+	bh=CyZhLVZ/84QTLoZY0jMqdJ2wNglltHTl4IfOXUEGnnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdj+SewQLeSoEqybFLpbz+MTOTx6pV9wVRHWmGVbkUf2w4F4AhLWvA6qwe5rRW5af
-	 gdZRlal96L1R5pPnEKTFKmwgWSBNmxbRK8NlTvvEo+DAtEmgFwX4PaPV2HDPGeSbA1
-	 KPkMLJD9kHKinSWGgdX1tHZ0CW4Jwf8uwa0RQyrc=
+	b=Lqsia+ysBrVWxGpdt/xM3H9XrPLjfANabQU/meCDDGZpP8UemdttKAucBtLR+j79O
+	 upX4giOwUZeX5dCg8LN9g6ZxmBhLkj3ggkyxLBBnnpNoOztcLAcOg9vJdo6FQSqX0b
+	 IcpcNLgAaE+nZVW8vtIo+S+pUsWJf2VyGVs9Y1RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shang Chieh Tseng <shangchieh.tseng@tsengsy.com>,
-	Nick Morrow <usbwifi2024@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 129/273] wifi: mt76: mt7921u: Add VID/PID for TP-Link TXE50UH
-Date: Thu, 13 Feb 2025 15:28:21 +0100
-Message-ID: <20250213142412.439825349@linuxfoundation.org>
+	Juri Lelli <juri.lelli@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Kacur <jkacur@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 337/443] rv: Reset per-task monitors also for idle tasks
+Date: Thu, 13 Feb 2025 15:28:22 +0100
+Message-ID: <20250213142453.629997415@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Morrow <usbwifi2024@gmail.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-commit 47d9a8ba1d7f31c674b6936b3c34ee934aa9b420 upstream.
+commit 8259cb14a70680553d5e82d65d1302fe589e9b39 upstream.
 
-Add VID/PID 35bc/0107 for recently released TP-Link TXE50UH USB WiFi adapter.
+RV per-task monitors are implemented through a monitor structure
+available for each task_struct. This structure is reset every time the
+monitor is (re-)started, to avoid inconsistencies if the monitor was
+activated previously.
+To do so, we reset the monitor on all threads using the macro
+for_each_process_thread. However, this macro excludes the idle tasks on
+each CPU. Idle tasks could be considered tasks on their own right and it
+should be up to the model whether to ignore them or not.
 
-Tested-by: Shang Chieh Tseng <shangchieh.tseng@tsengsy.com>
-Signed-off-by: Nick Morrow <usbwifi2024@gmail.com>
+Reset monitors also on the idle tasks for each present CPU whenever we
+reset all per-task monitors.
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/e797f105-9ca8-41e9-96de-7d25dec09943@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: John Kacur <jkacur@redhat.com>
+Link: https://lore.kernel.org/20250115151547.605750-2-gmonaco@redhat.com
+Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/rv/da_monitor.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
- 	/* Netgear, Inc. [A8000,AXE3000] */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-+	/* TP-Link TXE50UH */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
-+		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ },
- };
+--- a/include/rv/da_monitor.h
++++ b/include/rv/da_monitor.h
+@@ -14,6 +14,7 @@
+ #include <rv/automata.h>
+ #include <linux/rv.h>
+ #include <linux/bug.h>
++#include <linux/sched.h>
  
+ #ifdef CONFIG_RV_REACTORS
+ 
+@@ -324,10 +325,13 @@ static inline struct da_monitor *da_get_
+ static void da_monitor_reset_all_##name(void)							\
+ {												\
+ 	struct task_struct *g, *p;								\
++	int cpu;										\
+ 												\
+ 	read_lock(&tasklist_lock);								\
+ 	for_each_process_thread(g, p)								\
+ 		da_monitor_reset_##name(da_get_monitor_##name(p));				\
++	for_each_present_cpu(cpu)								\
++		da_monitor_reset_##name(da_get_monitor_##name(idle_task(cpu)));			\
+ 	read_unlock(&tasklist_lock);								\
+ }												\
+ 												\
 
 
 
