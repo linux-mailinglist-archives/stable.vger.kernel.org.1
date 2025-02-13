@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED2FA344E8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D53AA34257
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B617F18974C6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74845188E5F1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A8E24290A;
-	Thu, 13 Feb 2025 14:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA4628137F;
+	Thu, 13 Feb 2025 14:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdAykxnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQVXMyCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A57723F403;
-	Thu, 13 Feb 2025 14:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620E7281360;
+	Thu, 13 Feb 2025 14:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458612; cv=none; b=oYUuxwaUk8/I+hWe0B/esD0xJDLoG43N2DI+wCqqWttNaQN+9IJdGf6hKXzQYqRJ+uujS24rCvnr47Vomuz9xMs4t5fctp+9MqZQ0GMKdV37aHVKExBDBbi2RWB5JD/neotxg4r1WW+XliZizwvt7OJW3uBG+tjLPYv3wnWHjig=
+	t=1739457201; cv=none; b=KDjkH5p/TX3/L9oaRV/+UeEcXNhPmmeCvW37J/FVuow2fMcstOf3Yt6N+iyPkFq0hBw1pFAJ22K4d/iRZPwwrTH4QlYw+XBWfdYrTxomV8SWqZTzQokiOCnMyo6oH+sJYyVWbLYi2q/wE8ASp41sp4pE3O15yIzrBiVmkc/QUw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458612; c=relaxed/simple;
-	bh=E3PPsp91GCFTi9dounqkKQtbAHrk2YZFBcVtFMPYijw=;
+	s=arc-20240116; t=1739457201; c=relaxed/simple;
+	bh=BDxwixegHYORrAfPvMDO5RAg5pOjv7FiaOJoTmHoImI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLrQJ6n20eIq2z6Tlbkr5V/1b2a1ZFeg/yBh6xLX/oMgid+JOzvQKiPMDyG2PAy04fOjNy0QXYKTOsEhbGpbGjy275w62oDVCyiXqkaJHl02QX95R3NeffRS6z0c21i00p0ZG+I1vrmLPo79FeaCz2aG+Hwe4KdV2jB83ICbJgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdAykxnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6A8C4CED1;
-	Thu, 13 Feb 2025 14:56:51 +0000 (UTC)
+	 MIME-Version; b=DqOXw/NE3MrOyokBRi7EvDugta/NsF4VNupiBLVjtZFaeUkW1JNMQcP+BMOSGIsCjMNu071r50eGlX2yw7z5kC/ABX2jQqy1+JJhgKRhdHpKXW+FOymEPnoVufnoYSU7usPxjqdqM40y8GsrGCT/Stwx9DXTDji4E8cPYY2th1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQVXMyCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC86FC4CED1;
+	Thu, 13 Feb 2025 14:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458612;
-	bh=E3PPsp91GCFTi9dounqkKQtbAHrk2YZFBcVtFMPYijw=;
+	s=korg; t=1739457201;
+	bh=BDxwixegHYORrAfPvMDO5RAg5pOjv7FiaOJoTmHoImI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdAykxnXo18nZreyUZhIIL70Gbbo9dtYT5V6NKsoIcgChVI7ZaVZZd+x7AfruJFH8
-	 bVENhMTOPrahsyvTnFTWnmnuL0Q71F5Vq8ll2934MLrVM7B1QfV60iPHfODMVu9qUi
-	 tQhCerBOMg+4Hm/P5UP5xi5cERQWX/DZyKsMo1ho=
+	b=uQVXMyCsot8mHA4ZMyQUuoTPn83Ac/phb+B9qSdEF+3uwZqqOKl1BBbtzanC0k1nV
+	 2hrSgJ1Y1I3+uJoVOxF6TVYeXyKvTmMYlwZ1/esy9TNiQe75gVwawhCM968bnkyLTC
+	 iNuKrvuFSnHKdi23WO+8K1o0X3Blgb29dQK2HxYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 028/443] drm/amd/display: Populate chroma prefetch parameters, DET buffer fix
+Subject: [PATCH 6.12 044/422] safesetid: check size of policy writes
 Date: Thu, 13 Feb 2025 15:23:13 +0100
-Message-ID: <20250213142441.711374746@linuxfoundation.org>
+Message-ID: <20250213142438.263502299@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit 70fec46519fca859aa209f5f02e7e0a0123aca4a ]
+[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
 
-[WHY]
-Soft hang/lag observed during 10bit playback + moving cursor, corruption
-observed in other tickets for same reason, also failing MPO.
+syzbot attempts to write a buffer with a large size to a sysfs entry
+with writes handled by handle_policy_update(), triggering a warning
+in kmalloc.
 
-1. Currently, we are always running
-   calculate_lowest_supported_state_for_temp_read which is only
-   necessary on dGPU
-2. Fast validate path does not apply DET buffer allocation policy
-3. Prefetch UrgBFactor chroma parameter not populated in prefetch
-   calculation
+Check the size specified for write buffers before allocating.
 
-[HOW]
-1. Add a check to see if we are on APU, if so, skip the code
-2. Add det buffer alloc policy checks to fast validate path
-3. Populate UrgentBurstChroma param in call to calculate
-   UrgBChroma prefetch values
-
--revision commits: small formatting/brackets/null check addition + remove test change + dGPU code
-
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+[PM: subject tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml2/display_mode_core.c   |  5 ++-
- .../drm/amd/display/dc/dml2/dml2_wrapper.c    | 35 +++++++++++++------
- 2 files changed, 29 insertions(+), 11 deletions(-)
+ security/safesetid/securityfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index 8dabb1ac0b684..be87dc0f07799 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6434,7 +6434,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 							/* Output */
- 							&mode_lib->ms.UrgentBurstFactorCursorPre[k],
- 							&mode_lib->ms.UrgentBurstFactorLumaPre[k],
--							&mode_lib->ms.UrgentBurstFactorChroma[k],
-+							&mode_lib->ms.UrgentBurstFactorChromaPre[k],
- 							&mode_lib->ms.NotUrgentLatencyHidingPre[k]);
+diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
+index 25310468bcddf..8e1ffd70b18ab 100644
+--- a/security/safesetid/securityfs.c
++++ b/security/safesetid/securityfs.c
+@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
+ 	char *buf, *p, *end;
+ 	int err;
  
- 					mode_lib->ms.cursor_bw_pre[k] = mode_lib->ms.cache_display_cfg.plane.NumberOfCursors[k] * mode_lib->ms.cache_display_cfg.plane.CursorWidth[k] *
-@@ -9190,6 +9190,8 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			&locals->FractionOfUrgentBandwidth,
- 			&s->dummy_boolean[0]); // dml_bool_t *PrefetchBandwidthSupport
- 
++	if (len >= KMALLOC_MAX_SIZE)
++		return -EINVAL;
 +
-+
- 		if (s->VRatioPrefetchMoreThanMax != false || s->DestinationLineTimesForPrefetchLessThan2 != false) {
- 			dml_print("DML::%s: VRatioPrefetchMoreThanMax                   = %u\n", __func__, s->VRatioPrefetchMoreThanMax);
- 			dml_print("DML::%s: DestinationLineTimesForPrefetchLessThan2    = %u\n", __func__, s->DestinationLineTimesForPrefetchLessThan2);
-@@ -9204,6 +9206,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			}
- 		}
- 
-+
- 		if (locals->PrefetchModeSupported == true && mode_lib->ms.support.ImmediateFlipSupport == true) {
- 			locals->BandwidthAvailableForImmediateFlip = CalculateBandwidthAvailableForImmediateFlip(
- 																	mode_lib->ms.num_active_planes,
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index 9190c1328d5b2..340791d40ecbf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -531,14 +531,21 @@ static bool optimize_pstate_with_svp_and_drr(struct dml2_context *dml2, struct d
- static bool call_dml_mode_support_and_programming(struct dc_state *context)
- {
- 	unsigned int result = 0;
--	unsigned int min_state;
-+	unsigned int min_state = 0;
- 	int min_state_for_g6_temp_read = 0;
-+
-+
-+	if (!context)
-+		return false;
-+
- 	struct dml2_context *dml2 = context->bw_ctx.dml2;
- 	struct dml2_wrapper_scratch *s = &dml2->v20.scratch;
- 
--	min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
-+	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+		min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
- 
--	ASSERT(min_state_for_g6_temp_read >= 0);
-+		ASSERT(min_state_for_g6_temp_read >= 0);
-+	}
- 
- 	if (!dml2->config.use_native_pstate_optimization) {
- 		result = optimize_pstate_with_svp_and_drr(dml2, context);
-@@ -549,14 +556,20 @@ static bool call_dml_mode_support_and_programming(struct dc_state *context)
- 	/* Upon trying to sett certain frequencies in FRL, min_state_for_g6_temp_read is reported as -1. This leads to an invalid value of min_state causing crashes later on.
- 	 * Use the default logic for min_state only when min_state_for_g6_temp_read is a valid value. In other cases, use the value calculated by the DML directly.
- 	 */
--	if (min_state_for_g6_temp_read >= 0)
--		min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
--	else
--		min_state = s->mode_support_params.out_lowest_state_idx;
--
--	if (result)
--		result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
-+	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+		if (min_state_for_g6_temp_read >= 0)
-+			min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
-+		else
-+			min_state = s->mode_support_params.out_lowest_state_idx;
-+	}
- 
-+	if (result) {
-+		if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+			result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
-+		} else {
-+			result = dml_mode_programming(&dml2->v20.dml_core_ctx, s->mode_support_params.out_lowest_state_idx, &s->cur_display_config, true);
-+		}
-+	}
- 	return result;
- }
- 
-@@ -685,6 +698,8 @@ static bool dml2_validate_only(struct dc_state *context)
- 	build_unoptimized_policy_settings(dml2->v20.dml_core_ctx.project, &dml2->v20.dml_core_ctx.policy);
- 
- 	map_dc_state_into_dml_display_cfg(dml2, context, &dml2->v20.scratch.cur_display_config);
-+	 if (!dml2->config.skip_hw_state_mapping)
-+		 dml2_apply_det_buffer_allocation_policy(dml2, &dml2->v20.scratch.cur_display_config);
- 
- 	result = pack_and_call_dml_mode_support_ex(dml2,
- 		&dml2->v20.scratch.cur_display_config,
+ 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
+ 	if (!pol)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
