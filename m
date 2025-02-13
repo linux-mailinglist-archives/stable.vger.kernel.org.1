@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F5DA3440F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D37FA34711
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D8188A51A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A38D716CF0C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFAF156F3C;
-	Thu, 13 Feb 2025 14:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2EB146588;
+	Thu, 13 Feb 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQGJsnC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7IuZlEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EBE15689A;
-	Thu, 13 Feb 2025 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA341411DE;
+	Thu, 13 Feb 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458208; cv=none; b=ecjoVe3u7itSj1e/LDi3gRmNNzLA78Jx3vEtFIKk/564KAUU+rg5t1mtdD9jyBnI8sWLgNwslr09UX4u4i9QSgN0sLkGSWzmOdbXfN9R+tQcdPLhUhIA/+GY+eRE5FEC8lPv8PLfqfytREEtL1szVYdMFWMQ+3z2CuxRxnXNCnU=
+	t=1739460322; cv=none; b=q7thNXzWOib/LXwxYmzG9icBXQeXN+AcKJozRbMdLDiR7pyhVRjIEAh2ke4IJWjFMI14BBjOZr3hSjkX95X4XVYUP4vTsqD13k3CfrIZCDrQ5+7ZzWBKors4TtyCYIeAZVobE73t/jz7pI3qrgiAbPP63HL14J2z64nI9KgAeX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458208; c=relaxed/simple;
-	bh=0vHwjksDqkW8om+fFFTLHntlNHbHzX93hz8incbdms8=;
+	s=arc-20240116; t=1739460322; c=relaxed/simple;
+	bh=vEN9DtRvhTxT9S/3uLqaZdklrffbfJ9lIWC1JwIsVFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y74FPi+DBgWs2jNXnNWIaVak3HJq7HlwcsOk5yQvaugt+K/WMLj+QlzHEUyJ7omRADGEyrxicn6OiuaJY14q6fRRraUSlFRnRwIDgYPpl83ljrXPyFoL8eJeaK1SoJ7mO3LfSBgVMTO3YQSwm9Em7FY3Z3GJUV9xymhcGd5ThN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQGJsnC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E8CC4CED1;
-	Thu, 13 Feb 2025 14:50:07 +0000 (UTC)
+	 MIME-Version; b=Y/VOktXHCg/6iJ0LSmKLZOM+XXplX56WJLiF+8CLZ43PRUIeRXWUG6fS2qfE0k6Ocr2MfZ7u8tISaJPZAMhkMzJkw3rO0DvvGQBBoOd7ZHCP3mdxlgM+IvFJbj25PMBMARrWXJTeSZ9pSsaM6pgmJgR5u0Kf700oiLtpVYZ1bcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7IuZlEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E13BC4CED1;
+	Thu, 13 Feb 2025 15:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458207;
-	bh=0vHwjksDqkW8om+fFFTLHntlNHbHzX93hz8incbdms8=;
+	s=korg; t=1739460322;
+	bh=vEN9DtRvhTxT9S/3uLqaZdklrffbfJ9lIWC1JwIsVFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQGJsnC20U2jh/QVJqJq9TF8hFZRtQ8isjAmP8JaWJB24YPePT3uY8JusE8rrLLXD
-	 E11APdWbFJlGo661ihsN305Tbhrq+/w2tOnUI+tnkgs2qxglxCQd/ba7GpoKAi97k6
-	 6ZM1iLbrOs1uhLRQe6XLj0zg2ewoN/hC/zyoU1ss=
+	b=o7IuZlExm2fCDfmbmQKXQMIzrd99EULwrTZmymBCuoVuftRah6LGDVU3JOrEPAgrw
+	 dUHejo3dMwGRGVPgv4ye5PwEjFEietq4OVS25Ek8fqU5SDvFrDJfr0T0/tl9NFZnYB
+	 F2cW/Qm6P+ADN+sM5AWEnk2eTDUVBV9FI+yNgkXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 301/422] xfs: Propagate errors from xfs_reflink_cancel_cow_range in xfs_dax_write_iomap_end
+	Willem de Bruijn <willemb@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Stas Sergeev <stsp2@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/273] tun: revert fix group permission check
 Date: Thu, 13 Feb 2025 15:27:30 +0100
-Message-ID: <20250213142448.156651676@linuxfoundation.org>
+Message-ID: <20250213142410.428650172@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Willem de Bruijn <willemb@google.com>
 
-commit fb95897b8c60653805aa09daec575ca30983f768 upstream.
+[ Upstream commit a70c7b3cbc0688016810bb2e0b9b8a0d6a530045 ]
 
-In xfs_dax_write_iomap_end(), directly return the result of
-xfs_reflink_cancel_cow_range() when !written, ensuring proper
-error propagation and improving code robustness.
+This reverts commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3.
 
-Fixes: ea6c49b784f0 ("xfs: support CoW in fsdax mode")
-Cc: stable@vger.kernel.org # v6.0
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The blamed commit caused a regression when neither tun->owner nor
+tun->group is set. This is intended to be allowed, but now requires
+CAP_NET_ADMIN.
+
+Discussion in the referenced thread pointed out that the original
+issue that prompted this patch can be resolved in userspace.
+
+The relaxed access control may also make a device accessible when it
+previously wasn't, while existing users may depend on it to not be.
+
+This is a clean pure git revert, except for fixing the indentation on
+the gid_valid line that checkpatch correctly flagged.
+
+Fixes: 3ca459eaba1b ("tun: fix group permission check")
+Link: https://lore.kernel.org/netdev/CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Stas Sergeev <stsp2@yandex.ru>
+Link: https://patch.msgid.link/20250204161015.739430-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iomap.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/tun.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -942,10 +942,8 @@ xfs_dax_write_iomap_end(
- 	if (!xfs_is_cow_inode(ip))
- 		return 0;
- 
--	if (!written) {
--		xfs_reflink_cancel_cow_range(ip, pos, length, true);
--		return 0;
--	}
-+	if (!written)
-+		return xfs_reflink_cancel_cow_range(ip, pos, length, true);
- 
- 	return xfs_reflink_end_cow(ip, pos, written);
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index c84a749c52d12..c1fdf8804d60b 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -574,18 +574,14 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
  }
+ 
+-static inline bool tun_capable(struct tun_struct *tun)
++static inline bool tun_not_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
+ 
+-	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
+-		return 1;
+-	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
+-		return 1;
+-	if (gid_valid(tun->group) && in_egroup_p(tun->group))
+-		return 1;
+-	return 0;
++	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
++		(gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
++		!ns_capable(net->user_ns, CAP_NET_ADMIN);
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2782,7 +2778,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (!tun_capable(tun))
++		if (tun_not_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
+-- 
+2.39.5
+
 
 
 
