@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9393DA34668
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E004A34485
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4897117127F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E0D1886A52
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761AF1422D8;
-	Thu, 13 Feb 2025 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CF8146585;
+	Thu, 13 Feb 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYlv6C57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DSa17fl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A626B0A5;
-	Thu, 13 Feb 2025 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B9126B083;
+	Thu, 13 Feb 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459958; cv=none; b=WlsDco8cPEsmteQqBdzt2bOyy2emIwdCid9A12yjxTgFZ0WSOyIkslnuXJgHe+tBi1dSLlzSLf/ZwQYu/snazmGGVuY2i6mKKJUe+ZNAYNXRhaaa7QRFkr3Nr+buFLWsS754oAWNOB8IvLvOzO6ZduZqwvq/WuvRWiUgRfjPY44=
+	t=1739458440; cv=none; b=IrxVhEHRxOQB0lOh51YWHqQIBS0olUBgxDjr2+TAhcCEoz0QANw3nN90Dz10nUPCWizURt1ZFGkdMiuWXP3hyGgDW97THm1uyVorpCKCJUW0DM3D3HzbCZSAMU243akb1Vi1N17I2EnGBW0YplnUbSaxw2toVlDxKyxqs/Sl7v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459958; c=relaxed/simple;
-	bh=wZBN3VDrKprTb0U6LjxEPiXJ4puq/kBU4JJRrN5m1CU=;
+	s=arc-20240116; t=1739458440; c=relaxed/simple;
+	bh=O4+ckBoQqynndkODYIREcvQ/aXchbJQwTfffnArQ+/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLG12qHIOg7iRzJrViTEbpiFuRQauEUYThGnEyQNvNaA835SYPYtkhkUhUsDZ65kFyXBn1CBGj/Jzh9MjyArnzfn7sa1XCZrMjnunyyeiB6TWRgnaU9EQAdFRqVXhIA1zzD9qCQSf47/kjsm/EHm2rlGRbrNWFa01c/rTiWDvLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYlv6C57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969ECC4CED1;
-	Thu, 13 Feb 2025 15:19:17 +0000 (UTC)
+	 MIME-Version; b=Xm2V8ulljTYOqjLLYqn6bRwkQV6shtXIpl4xGhj17PpEzTOfASWYGWPAlmE6eYDJrgJLcEHiK88ywYRpmyS9bAu/Zjiq6hRANcVbE7KsFcJpRFkH3zbqZwzHFVsuctbD3/7m45JnH0m7JItbMOo8ZM0Cvx90fGvGbrjWc94XPWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DSa17fl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085C4C4CED1;
+	Thu, 13 Feb 2025 14:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459958;
-	bh=wZBN3VDrKprTb0U6LjxEPiXJ4puq/kBU4JJRrN5m1CU=;
+	s=korg; t=1739458440;
+	bh=O4+ckBoQqynndkODYIREcvQ/aXchbJQwTfffnArQ+/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYlv6C57EZQMF6K7wI5SUGNYlux7Gr9Svt1AtE6LW/08QCrmUOneSwhCw4LywK2G1
-	 yekzx+KH2lczMstKCZI9FVJcLrUFgDN4p2a6B4TdzhwWvlZBnMgDEBcQJ6HWDCBOqL
-	 EEMUHJvaV5JUMVwuqyZ9Trv/VQPvYZxTHA+6C7oE=
+	b=1DSa17flUu0y3mDly7cEyrV8REDYU35z+24TVdEAoLKFTxzM7RaD61znfY7vQEO+Q
+	 3J+cGoOgCcL0C6IUi5WdqsIQEkSk3ejsyzi8pxvpbJ6trWjkyQNrpxJOWKDRxMUl8Q
+	 ygdY1XzGCsJ6D9TPjzB9M7EO5l4uC6rFj5g1pkv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	reveliofuzzing <reveliofuzzing@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.13 383/443] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 399/422] xfs: dont lose solo dquot update transactions
 Date: Thu, 13 Feb 2025 15:29:08 +0100
-Message-ID: <20250213142455.390962367@linuxfoundation.org>
+Message-ID: <20250213142451.944857174@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
+commit d00ffba4adacd0d4d905f6e64bd8cd87011f5711 upstream
 
-reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
-set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
-ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
-write outside the allocated buffer, overwriting random memory.
+Quota counter updates are tracked via incore objects which hang off the
+xfs_trans object.  These changes are then turned into dirty log items in
+xfs_trans_apply_dquot_deltas just prior to commiting the log items to
+the CIL.
 
-While a ATA device is supposed to abort a ATA_NOP command, there does seem
-to be a bug either in libata-sff or QEMU, where either this status is not
-set, or the status is cleared before read by ata_sff_hsm_move().
-Anyway, that is most likely a separate bug.
+However, updating the incore deltas do not cause XFS_TRANS_DIRTY to be
+set on the transaction.  In other words, a pure quota counter update
+will be silently discarded if there are no other dirty log items
+attached to the transaction.
 
-Looking at __atapi_pio_bytes(), it already has a safety check to ensure
-that __atapi_pio_bytes() cannot write outside the allocated buffer.
+This is currently not the case anywhere in the filesystem because quota
+updates always dirty at least one other metadata item, but a subsequent
+bug fix will add dquot log item precommits, so we actually need a dirty
+dquot log item prior to xfs_trans_run_precommits.  Also let's not leave
+a logic bomb.
 
-Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
-cannot write outside the allocated buffer.
-
-Cc: stable@vger.kernel.org
-Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
-Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
-Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Cc: <stable@vger.kernel.org> # v2.6.35
+Fixes: 0924378a689ccb ("xfs: split out iclog writing from xfs_trans_commit()")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-sff.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ fs/xfs/xfs_quota.h       |    7 ++++---
+ fs/xfs/xfs_trans.c       |   10 +++-------
+ fs/xfs/xfs_trans_dquot.c |   31 ++++++++++++++++++++++++++-----
+ 3 files changed, 33 insertions(+), 15 deletions(-)
 
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -601,7 +601,7 @@ static void ata_pio_sector(struct ata_qu
+
+--- a/fs/xfs/xfs_quota.h
++++ b/fs/xfs/xfs_quota.h
+@@ -96,7 +96,8 @@ extern void xfs_trans_free_dqinfo(struct
+ extern void xfs_trans_mod_dquot_byino(struct xfs_trans *, struct xfs_inode *,
+ 		uint, int64_t);
+ extern void xfs_trans_apply_dquot_deltas(struct xfs_trans *);
+-extern void xfs_trans_unreserve_and_mod_dquots(struct xfs_trans *);
++void xfs_trans_unreserve_and_mod_dquots(struct xfs_trans *tp,
++		bool already_locked);
+ int xfs_trans_reserve_quota_nblks(struct xfs_trans *tp, struct xfs_inode *ip,
+ 		int64_t dblocks, int64_t rblocks, bool force);
+ extern int xfs_trans_reserve_quota_bydquots(struct xfs_trans *,
+@@ -165,8 +166,8 @@ static inline void xfs_trans_mod_dquot_b
+ 		struct xfs_inode *ip, uint field, int64_t delta)
  {
- 	struct ata_port *ap = qc->ap;
- 	struct page *page;
--	unsigned int offset;
-+	unsigned int offset, count;
- 
- 	if (!qc->cursg) {
- 		qc->curbytes = qc->nbytes;
-@@ -617,25 +617,27 @@ static void ata_pio_sector(struct ata_qu
- 	page = nth_page(page, (offset >> PAGE_SHIFT));
- 	offset %= PAGE_SIZE;
- 
--	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
-+	/* don't overrun current sg */
-+	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
-+
-+	trace_ata_sff_pio_transfer_data(qc, offset, count);
- 
- 	/*
- 	 * Split the transfer when it splits a page boundary.  Note that the
- 	 * split still has to be dword aligned like all ATA data transfers.
+ }
+-#define xfs_trans_apply_dquot_deltas(tp)
+-#define xfs_trans_unreserve_and_mod_dquots(tp)
++#define xfs_trans_apply_dquot_deltas(tp, a)
++#define xfs_trans_unreserve_and_mod_dquots(tp, a)
+ static inline int xfs_trans_reserve_quota_nblks(struct xfs_trans *tp,
+ 		struct xfs_inode *ip, int64_t dblocks, int64_t rblocks,
+ 		bool force)
+--- a/fs/xfs/xfs_trans.c
++++ b/fs/xfs/xfs_trans.c
+@@ -840,6 +840,7 @@ __xfs_trans_commit(
  	 */
- 	WARN_ON_ONCE(offset % 4);
--	if (offset + qc->sect_size > PAGE_SIZE) {
-+	if (offset + count > PAGE_SIZE) {
- 		unsigned int split_len = PAGE_SIZE - offset;
+ 	if (tp->t_flags & XFS_TRANS_SB_DIRTY)
+ 		xfs_trans_apply_sb_deltas(tp);
++	xfs_trans_apply_dquot_deltas(tp);
  
- 		ata_pio_xfer(qc, page, offset, split_len);
--		ata_pio_xfer(qc, nth_page(page, 1), 0,
--			     qc->sect_size - split_len);
-+		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
- 	} else {
--		ata_pio_xfer(qc, page, offset, qc->sect_size);
-+		ata_pio_xfer(qc, page, offset, count);
+ 	error = xfs_trans_run_precommits(tp);
+ 	if (error)
+@@ -868,11 +869,6 @@ __xfs_trans_commit(
+ 
+ 	ASSERT(tp->t_ticket != NULL);
+ 
+-	/*
+-	 * If we need to update the superblock, then do it now.
+-	 */
+-	xfs_trans_apply_dquot_deltas(tp);
+-
+ 	xlog_cil_commit(log, tp, &commit_seq, regrant);
+ 
+ 	xfs_trans_free(tp);
+@@ -898,7 +894,7 @@ out_unreserve:
+ 	 * the dqinfo portion to be.  All that means is that we have some
+ 	 * (non-persistent) quota reservations that need to be unreserved.
+ 	 */
+-	xfs_trans_unreserve_and_mod_dquots(tp);
++	xfs_trans_unreserve_and_mod_dquots(tp, true);
+ 	if (tp->t_ticket) {
+ 		if (regrant && !xlog_is_shutdown(log))
+ 			xfs_log_ticket_regrant(log, tp->t_ticket);
+@@ -992,7 +988,7 @@ xfs_trans_cancel(
  	}
+ #endif
+ 	xfs_trans_unreserve_and_mod_sb(tp);
+-	xfs_trans_unreserve_and_mod_dquots(tp);
++	xfs_trans_unreserve_and_mod_dquots(tp, false);
  
--	qc->curbytes += qc->sect_size;
--	qc->cursg_ofs += qc->sect_size;
-+	qc->curbytes += count;
-+	qc->cursg_ofs += count;
+ 	if (tp->t_ticket) {
+ 		xfs_log_ticket_ungrant(log, tp->t_ticket);
+--- a/fs/xfs/xfs_trans_dquot.c
++++ b/fs/xfs/xfs_trans_dquot.c
+@@ -602,6 +602,24 @@ xfs_trans_apply_dquot_deltas(
+ 			ASSERT(dqp->q_blk.reserved >= dqp->q_blk.count);
+ 			ASSERT(dqp->q_ino.reserved >= dqp->q_ino.count);
+ 			ASSERT(dqp->q_rtb.reserved >= dqp->q_rtb.count);
++
++			/*
++			 * We've applied the count changes and given back
++			 * whatever reservation we didn't use.  Zero out the
++			 * dqtrx fields.
++			 */
++			qtrx->qt_blk_res = 0;
++			qtrx->qt_bcount_delta = 0;
++			qtrx->qt_delbcnt_delta = 0;
++
++			qtrx->qt_rtblk_res = 0;
++			qtrx->qt_rtblk_res_used = 0;
++			qtrx->qt_rtbcount_delta = 0;
++			qtrx->qt_delrtb_delta = 0;
++
++			qtrx->qt_ino_res = 0;
++			qtrx->qt_ino_res_used = 0;
++			qtrx->qt_icount_delta = 0;
+ 		}
+ 	}
+ }
+@@ -638,7 +656,8 @@ xfs_trans_unreserve_and_mod_dquots_hook(
+  */
+ void
+ xfs_trans_unreserve_and_mod_dquots(
+-	struct xfs_trans	*tp)
++	struct xfs_trans	*tp,
++	bool			already_locked)
+ {
+ 	int			i, j;
+ 	struct xfs_dquot	*dqp;
+@@ -667,10 +686,12 @@ xfs_trans_unreserve_and_mod_dquots(
+ 			 * about the number of blocks used field, or deltas.
+ 			 * Also we don't bother to zero the fields.
+ 			 */
+-			locked = false;
++			locked = already_locked;
+ 			if (qtrx->qt_blk_res) {
+-				xfs_dqlock(dqp);
+-				locked = true;
++				if (!locked) {
++					xfs_dqlock(dqp);
++					locked = true;
++				}
+ 				dqp->q_blk.reserved -=
+ 					(xfs_qcnt_t)qtrx->qt_blk_res;
+ 			}
+@@ -691,7 +712,7 @@ xfs_trans_unreserve_and_mod_dquots(
+ 				dqp->q_rtb.reserved -=
+ 					(xfs_qcnt_t)qtrx->qt_rtblk_res;
+ 			}
+-			if (locked)
++			if (locked && !already_locked)
+ 				xfs_dqunlock(dqp);
  
- 	if (qc->cursg_ofs == qc->cursg->length) {
- 		qc->cursg = sg_next(qc->cursg);
+ 		}
 
 
 
