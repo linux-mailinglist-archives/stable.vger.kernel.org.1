@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854A2A34593
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48CAA3434D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D62B189BD1D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0423A4920
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8DA1487FA;
-	Thu, 13 Feb 2025 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C588E22172F;
+	Thu, 13 Feb 2025 14:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTuCyspA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgE3cElu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C5C26B0B1;
-	Thu, 13 Feb 2025 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD8338389;
+	Thu, 13 Feb 2025 14:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459232; cv=none; b=r6wNB+KpYcDi79Cql8Cvd6s9csnYBnhJFbfO5saVByLxjWs+leeUMaFw6iN5a4wy26sNQVa/GzWvW/h71pC30WxBte6QavhjPbvoAv+qhcLMsjDVTvu48qHRwyHF6zwOIHbVpkCmpPephAR4AmccPqvB7h1Ze3amT3nyYvSPVAM=
+	t=1739457707; cv=none; b=DufXazwqgp4mcMmO/U9yyhVOn8KUWXnMV7NORMwBwvjjs04BPayiATrq82uY+jKCVrhgX+4+M0NZnKE+51SeV+7m0o98zJsN/z2Bffc10LQpYqq/UJ4/ud9bMQMrHjj4OALdRulhwInRu05a7c+CbuF5z1CEzB30uwNEEs1nP+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459232; c=relaxed/simple;
-	bh=yTcKQOyesQ2zWt46gDXyQo0yzLa/QffaKby7R/5+8zU=;
+	s=arc-20240116; t=1739457707; c=relaxed/simple;
+	bh=N4lKFpxBYlYcZhOz+PqE5lHhGLoqwI7hoBKWldB6Obw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9d5Ed0O9IMwCwa4cgeyxkAp29JDaRVpfcqBF0v9f5TvXWGhUWqyI2/bmldpaf6VmVInzrbBrv7PLpYYc3QRpSNjk+ojfgRp0yWAPx840/OimMnLl9LBSU3Ci7ULBdppD35Lx/hu2Lk5SEvDEyTwiEvzL1VPnMVUXiRQtt42zTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTuCyspA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA49DC4CED1;
-	Thu, 13 Feb 2025 15:07:11 +0000 (UTC)
+	 MIME-Version; b=ASSbYCZhIcOsV0N/2JPpE6Jq11z+sW0qtj/8E4sKfnDE2v5CnaV+PAWkbFkEBLlC+bkI8A/LOA6ZZUgPuEyzsP1MxcClZvURow5OLoPgpuMGTY2rhnfS2n2mKQQoSypUwr2GQjOfP7Np1Li4YxoQXhggQo/ZY+r6LmlSb5hqrS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgE3cElu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDEC4CED1;
+	Thu, 13 Feb 2025 14:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459232;
-	bh=yTcKQOyesQ2zWt46gDXyQo0yzLa/QffaKby7R/5+8zU=;
+	s=korg; t=1739457707;
+	bh=N4lKFpxBYlYcZhOz+PqE5lHhGLoqwI7hoBKWldB6Obw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTuCyspAFqoh/g8CzBsZ2pqsAqoddvg8RMQQSpoWyV8Delke1C1BU2wxTLItB5De0
-	 sHTyg9Z9tH5S/4XrM3U3DhxlBa4P1ySKoBHnpH6jZ/uqdWlhA9pSuzKdL7mmfLDUtG
-	 tcfOla41AqKGm1cDXvLfw0vqb8Jx+g1nWi3WfCNo=
+	b=ZgE3cElufKTXbQ0DVF10R4O7iao9pcExQyo30iEhU9jXBv9YEGqde8JXmCBDRigFW
+	 p7UTI2FGNR8w5owr3v3ExF0otKtabHB42+oW79LlohcTFOJ8v1ZBq/nGyn7pCcxlLO
+	 ccUVNl3u9hGdQKqBXMU8sSBToM2GApibEgilWf6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 172/443] ksmbd: fix integer overflows on 32 bit systems
-Date: Thu, 13 Feb 2025 15:25:37 +0100
-Message-ID: <20250213142447.239516105@linuxfoundation.org>
+	Rafael Buchbinder <rafi@rbk.io>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.12 189/422] seccomp: passthrough uretprobe systemcall without filtering
+Date: Thu, 13 Feb 2025 15:25:38 +0100
+Message-ID: <20250213142443.840424031@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-commit aab98e2dbd648510f8f51b83fbf4721206ccae45 upstream.
+commit cf6cb56ef24410fb5308f9655087f1eddf4452e6 upstream.
 
-On 32bit systems the addition operations in ipc_msg_alloc() can
-potentially overflow leading to memory corruption.
-Add bounds checking using KSMBD_IPC_MAX_PAYLOAD to avoid overflow.
+When attaching uretprobes to processes running inside docker, the attached
+process is segfaulted when encountering the retprobe.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+The reason is that now that uretprobe is a system call the default seccomp
+filters in docker block it as they only allow a specific set of known
+syscalls. This is true for other userspace applications which use seccomp
+to control their syscall surface.
+
+Since uretprobe is a "kernel implementation detail" system call which is
+not used by userspace application code directly, it is impractical and
+there's very little point in forcing all userspace applications to
+explicitly allow it in order to avoid crashing tracked processes.
+
+Pass this systemcall through seccomp without depending on configuration.
+
+Note: uretprobe is currently only x86_64 and isn't expected to ever be
+supported in i386.
+
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Reported-by: Rafael Buchbinder <rafi@rbk.io>
+Closes: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
+Link: https://lore.kernel.org/lkml/20250121182939.33d05470@gandalf.local.home/T/#me2676c378eff2d6a33f3054fed4a5f3afa64e65b
+Link: https://lore.kernel.org/lkml/20250128145806.1849977-1-eyal.birger@gmail.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Link: https://lore.kernel.org/r/20250202162921.335813-2-eyal.birger@gmail.com
+[kees: minimized changes for easier backporting, tweaked commit log]
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_ipc.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/seccomp.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -626,6 +626,9 @@ ksmbd_ipc_spnego_authen_request(const ch
- 	struct ksmbd_spnego_authen_request *req;
- 	struct ksmbd_spnego_authen_response *resp;
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -749,6 +749,15 @@ static bool seccomp_is_const_allow(struc
+ 	if (WARN_ON_ONCE(!fprog))
+ 		return false;
  
-+	if (blob_len > KSMBD_IPC_MAX_PAYLOAD)
-+		return NULL;
++	/* Our single exception to filtering. */
++#ifdef __NR_uretprobe
++#ifdef SECCOMP_ARCH_COMPAT
++	if (sd->arch == SECCOMP_ARCH_NATIVE)
++#endif
++		if (sd->nr == __NR_uretprobe)
++			return true;
++#endif
 +
- 	msg = ipc_msg_alloc(sizeof(struct ksmbd_spnego_authen_request) +
- 			blob_len + 1);
- 	if (!msg)
-@@ -805,6 +808,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
- 	struct ksmbd_rpc_command *req;
- 	struct ksmbd_rpc_command *resp;
+ 	for (pc = 0; pc < fprog->len; pc++) {
+ 		struct sock_filter *insn = &fprog->filter[pc];
+ 		u16 code = insn->code;
+@@ -1023,6 +1032,9 @@ static inline void seccomp_log(unsigned
+  */
+ static const int mode1_syscalls[] = {
+ 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
++#ifdef __NR_uretprobe
++	__NR_uretprobe,
++#endif
+ 	-1, /* negative terminated */
+ };
  
-+	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
-+		return NULL;
-+
- 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
- 	if (!msg)
- 		return NULL;
-@@ -853,6 +859,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
- 	struct ksmbd_rpc_command *req;
- 	struct ksmbd_rpc_command *resp;
- 
-+	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
-+		return NULL;
-+
- 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
- 	if (!msg)
- 		return NULL;
 
 
 
