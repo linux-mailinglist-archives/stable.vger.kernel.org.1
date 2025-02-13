@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1562EA3426B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F73A3457A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D8CC3A33BC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A5F3A1217
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676E828382;
-	Thu, 13 Feb 2025 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415726B0BB;
+	Thu, 13 Feb 2025 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dZyovGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSz+ldua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262C5281360;
-	Thu, 13 Feb 2025 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF99A1422DD;
+	Thu, 13 Feb 2025 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457261; cv=none; b=qupwFw/kkiHpPTKMCeG4hzCHzOn6vn1EVzLmy53TE78fbtDmv+qzYJQuDknVO95WQPGPxUTq+Zhbk3+t0gVBm676vrageHDAgbrx6D4n7OVWn6EoByc7i3vKiveOIbu/LfOEvIRlkWlJAvk2785/cjfCUDEuOvaRnW9nkEAtI4c=
+	t=1739458647; cv=none; b=jh2n9tZETqQDNBh+zJdE8+hQIfy02hRyG6JqVkxz6YB5wzMXqvzqMLy4jNuaKIKyLRwHs0YLKHmdfYBe1jWW6xfAXPSUFpcdRrFUL0PQownSAUZL10cDq3L1P8I6A+gedRQjXt5hoByS6i+/BZLee+dVYd9hvoGScVyU9YswTM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457261; c=relaxed/simple;
-	bh=BH6As4nIcnA27iZrmirLQikvmMCdv6RwMPXf9spZA20=;
+	s=arc-20240116; t=1739458647; c=relaxed/simple;
+	bh=STYhixLmwO27ci9w/e4ZRCHiufZy62V/Tfl8+BamFE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvtoyIim3k3lVY/rMYd7gbVE3TEdK0esrLxqGXp2rIy0qrAJOCKnZMCfgz8c5k6QFPr4yAGduOCV/H18xjq0jScfIobpjdzr7Pf4Byvm9YZSYjSzz9pxLBEKWGNwMyYuRlYI5O5oA0wAJNbHkNmqI7GRyqWspM3k48K2qX2xWs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dZyovGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADA6C4CED1;
-	Thu, 13 Feb 2025 14:34:20 +0000 (UTC)
+	 MIME-Version; b=Fuk20iN2HLpShSESNQTCIyHmyJFLbUiSWQejYRIktBiir807k800yCZ8Q8Kgns1lV83tCLM2H3qa9GeMrPk7mG8yWddhEJdAKqe+dbpd2lChdHm06iurAO120gLCqGH7ZXkbFa6wUlcOY/9E6AY9z0VROvFg4VdRpe5MLLQsNDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSz+ldua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A16C4CED1;
+	Thu, 13 Feb 2025 14:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457261;
-	bh=BH6As4nIcnA27iZrmirLQikvmMCdv6RwMPXf9spZA20=;
+	s=korg; t=1739458647;
+	bh=STYhixLmwO27ci9w/e4ZRCHiufZy62V/Tfl8+BamFE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dZyovGYT2cePj8CsAppSL+359pODbap2H8H8bc/ZRWsxj1j2GuH7LvM0ynMDz+Dv
-	 SC83WNQg0qHvk+wLyiCyhpPPBy25xw1cZcfFg/Q2nQ1rIW1yLLiYHHdd48bIDqFdD8
-	 Nti7aoSYLENxeXYvA1gSo9lmr9+84Az0IEYwfTUg=
+	b=gSz+lduaDlswA6m/ExccxHKybMptdrCHDXLklBOMsLa4Y7qA9qXQVjUpnEQsjXHej
+	 52BqNcX8Lf9oP0vMBZSjwHQDIxgMtjUzz3Z+XGC14bUHBss5Nw0PxiCQw1pSeK9FIu
+	 3HhfG8Ei4XLw/pnvoUfgGiVHjLcd1i1seX98zCVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/422] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
-Date: Thu, 13 Feb 2025 15:23:23 +0100
-Message-ID: <20250213142438.646975482@linuxfoundation.org>
+Subject: [PATCH 6.13 039/443] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:23:24 +0100
+Message-ID: <20250213142442.133768564@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
-On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
-rather the 3197 found on e.g. the N4000 / N4020.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-While at fix the existing GLK PCI-id table entry breaking the table
-being sorted by device-id.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/lpc_ich.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
-index f14901660147f..4b7d0cb9340f1 100644
---- a/drivers/mfd/lpc_ich.c
-+++ b/drivers/mfd/lpc_ich.c
-@@ -834,8 +834,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
- 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
- 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
--	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
-+	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
-+	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
- 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
- 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 21b46a6465f08..f8bbae6393ef8 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1225,7 +1225,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
+ 
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
