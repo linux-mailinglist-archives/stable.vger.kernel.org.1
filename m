@@ -1,108 +1,128 @@
-Return-Path: <stable+bounces-116321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80656A34C88
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 18:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0855FA34C8E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 18:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D51188D006
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 17:56:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 978EA188CC30
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 17:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F35A24167E;
-	Thu, 13 Feb 2025 17:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NByeFNW2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92F923A9BE;
+	Thu, 13 Feb 2025 17:56:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4586023A9AE;
-	Thu, 13 Feb 2025 17:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644A823A9BA;
+	Thu, 13 Feb 2025 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739469345; cv=none; b=ix8q3YxsjA3CQ3grRnmnK3OIu5JC5diQV0lIoKkXuw8CCPG4vpeeiH5XRQ88iM35AfnyNXWMEMgueiolSfumFXinr6bbKR3KlHZ5p7s3GqvDsC9n6cPw3qaDvB70qfMiL+sFSdiL3qKOmLDwy1i2UMVp6gZYeZlNZ7kE8rm79w8=
+	t=1739469419; cv=none; b=ORWWxP+Uh330omxq5KitABzOF/kQESzz/lrfwS9BuCvxFxykQ6/sdtkoZfkxGJDCmsOt4fr10V6mmi/bh6PfAXTqIvlB/FjunSqyHLE+ND5akkspmiahMcAgYfHXx7OTAZWL2QpbaUTFyrNBHH0LGzUNJ2/LdsYFs8cMnYISC8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739469345; c=relaxed/simple;
-	bh=/PNpSbgiLWG9bLBWpPA4uVPKXUWGs7jN8qVFPTrfZTk=;
+	s=arc-20240116; t=1739469419; c=relaxed/simple;
+	bh=0WV2CmcTZUiH+zQk/eImcSLFCn6EHvq25FoHekBJf6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ar1Hn/hqVCDEbZSfKs13fV2SKQ4UG4+dsj6k29Wksev8kpNmjWQuiUHSRvfCRZksaOpp1wVEsOjRClDr8T/7Zf+ddS64s7ykPlt9OhJTLUcEQNrbEx2S0hP1GHiL74izRfm/WDEc9r2M+qELZm23mgiScbia5ZfNVr3NN6gFxFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NByeFNW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B818C4CEE5;
-	Thu, 13 Feb 2025 17:55:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739469344;
-	bh=/PNpSbgiLWG9bLBWpPA4uVPKXUWGs7jN8qVFPTrfZTk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NByeFNW2HNKG+Or1s9nAySboW83Ggzz0b+NOyt3FmxlW23UICV1ytS5xRVjQzEeeg
-	 4iJNSm97SoPyNAqfp5g1tVZ65hAFPAlED3c3qWsS4JwMZVlZaZPWHQc9EGpClUrkbA
-	 m/KKbHaNX/khx5EIpDIOHfXYOVdk0Ge+R3ZgWuKN7qbe4To0dT57j+dLf/I7tdjfSx
-	 j1LTxDNehVvEnZ+G1qUDffvJuopixRbVWOwUFno1lKLsmEhdPclEUeJFauTXsJn46I
-	 ufcJp0CbcbIcVx3oN0eZhgAeXsoEHxgx5PuyBh+K7P//iB8HlrciSItjHlYy+yXj12
-	 FG5rYbSe8wVDg==
-Date: Thu, 13 Feb 2025 10:55:39 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Sam Ravnborg <sam@ravnborg.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] kbuild: userprogs: fix bitsize and target detection
- on clang
-Message-ID: <20250213175539.GB2756218@ax162>
-References: <20250213-kbuild-userprog-fixes-v1-0-f255fb477d98@linutronix.de>
- <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ha6eaXpPiA+MVWaYPHynquYne2hrTGsL2/5eb8ZxObU5uCfas3uwsuL4/JYn1oj1SLkUShR8dK1iVeHmtvI7xnCzyBfK8arDtTf+mpSZ+g7ELjXus6MsahgubF1pEwF3LeysjKrjaPOiSZSWjZVceFIIe7eyVnn3IhppqVbdWtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220B4C4CED1;
+	Thu, 13 Feb 2025 17:56:55 +0000 (UTC)
+Date: Thu, 13 Feb 2025 17:56:53 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, anshuman.khandual@arm.com,
+	will@kernel.org, ardb@kernel.org, ryan.roberts@arm.com,
+	mark.rutland@arm.com, joey.gouly@arm.com,
+	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
+	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	quic_tingweiz@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6] arm64: mm: Populate vmemmap/linear at the page level
+ for hotplugged sections
+Message-ID: <Z64yZRPpyR9A_BiR@arm.com>
+References: <20250213075703.1270713-1-quic_zhenhuah@quicinc.com>
+ <9bc91fe3-c590-48e2-b29f-736d0b056c34@redhat.com>
+ <Z64UcwSGQ53mFmWF@arm.com>
+ <b2964ea1-a22c-4b66-89ef-3082b6d00d21@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
+In-Reply-To: <b2964ea1-a22c-4b66-89ef-3082b6d00d21@redhat.com>
 
-On Thu, Feb 13, 2025 at 03:55:17PM +0100, Thomas Weiﬂschuh wrote:
-> scripts/Makefile.clang was changed in the linked commit to move --target from
-> KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-> However that variable is not inspected by the userprogs logic,
-> breaking cross compilation on clang.
+On Thu, Feb 13, 2025 at 05:16:37PM +0100, David Hildenbrand wrote:
+> On 13.02.25 16:49, Catalin Marinas wrote:
+> > On Thu, Feb 13, 2025 at 01:59:25PM +0100, David Hildenbrand wrote:
+> > > On 13.02.25 08:57, Zhenhua Huang wrote:
+> > > > On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+> > > > to 27, making one section 128M. The related page struct which vmemmap
+> > > > points to is 2M then.
+> > > > Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+> > > > vmemmap to populate at the PMD section level which was suitable
+> > > > initially since hot plug granule is always one section(128M). However,
+> > > > commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> > > > introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+> > > > existing arm64 assumptions.
+> > > > 
+> > > > Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
+> > > > pmd_sect() is true, the entire PMD section is cleared, even if there is
+> > > > other effective subsection. For example page_struct_map1 and
+> > > > page_strcut_map2 are part of a single PMD entry and they are hot-added
+> > > > sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
+> > > > the entire PMD entry freeing the struct page map for the whole section,
+> > > > even though page_struct_map2 is still active. Similar problem exists
+> > > > with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
+> > > > base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
+> > > > Tearing down the entire PMD mapping too will leave other subsections
+> > > > unmapped in the linear mapping.
+> > > > 
+> > > > To address the issue, we need to prevent PMD/PUD/CONT mappings for both
+> > > > linear and vmemmap for non-boot sections if corresponding size on the
+> > > > given base page exceeds SUBSECTION_SIZE(2MB now).
+> > > > 
+> > > > Cc: <stable@vger.kernel.org> # v5.4+
+> > > > Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> > > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > > Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> > > 
+> > > Just so I understand correctly: for ordinary memory-sections-size hotplug
+> > > (NVDIMM, virtio-mem), we still get a large mapping where possible?
+> > 
+> > Up to 2MB blocks only since that's the SUBSECTION_SIZE value. The
+> > vmemmap mapping is also limited to PAGE_SIZE mappings (we could use
+> > contiguous mappings for vmemmap but it's not wired up; I don't think
+> > it's worth the hassle).
 > 
-> Use both variables to detect bitsize and target arguments for userprogs.
+> But that's messed up, no?
 > 
-> Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> If someone hotplugs a memory section, they have to hotunplug a memory
+> section, not parts of it.
+> 
+> That's why x86 does in vmemmap_populate():
+> 
+> if (end - start < PAGES_PER_SECTION * sizeof(struct page))
+> 	err = vmemmap_populate_basepages(start, end, node, NULL);
+> else if (boot_cpu_has(X86_FEATURE_PSE))
+> 	err = vmemmap_populate_hugepages(start, end, node, altmap);
+> ...
+> 
+> Maybe I'm missing something. Most importantly, why the weird subsection
+> stuff is supposed to degrade ordinary hotplug of dimms/virtio-mem etc.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+I think that's based on the discussion for a previous version assuming
+that the hotplug/unplug sizes are not guaranteed to be symmetric:
 
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 9e0d63d9d94b90672f91929e5e148e5a0c346cb6..bb5737ce7f9e79f4023c9c1f578a49a951d1e239 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1120,8 +1120,8 @@ LDFLAGS_vmlinux += --orphan-handling=$(CONFIG_LD_ORPHAN_WARN_LEVEL)
->  endif
->  
->  # Align the bit size of userspace programs with the kernel
-> -KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-> -KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-> +KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-> +KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
->  
->  # make the checker run with the right architecture
->  CHECKFLAGS += --arch=$(ARCH)
-> 
-> -- 
-> 2.48.1
-> 
+https://lore.kernel.org/lkml/a720aaa5-a75e-481e-b396-a5f2b50ed362@quicinc.com/
+
+If that's not the case, we can indeed ignore the SUBSECTION_SIZE
+altogether and just rely on the start/end of the hotplugged region.
+
+-- 
+Catalin
 
