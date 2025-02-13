@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-115811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B57AA34587
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BCDA346FE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A431F16AA7B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521EF3AC4F8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D17726B094;
-	Thu, 13 Feb 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C2B1422D8;
+	Thu, 13 Feb 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2q5+Gyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jdxeoN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3895A26B080;
-	Thu, 13 Feb 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ECA3FB3B;
+	Thu, 13 Feb 2025 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459335; cv=none; b=ZEqe9ftRI8LBrTSkLCTSOClW49s39E2oAe/ZTHbQBW2HVaxGEIKB3RbdSS35uCG19IDqqlumJA0m3/9d/K2Gq8DXytTAfYbNH18tBilz3vpE3fbzAR565xCOAiwM0dNtnG2zYV7Z1uWwSPM4udsjxurWlYrN+Zny7ftOLiP9d2Y=
+	t=1739460142; cv=none; b=ijp4e7RvF+3YjS9bQ4OXNenbdl4LDgH4vOitBzD5ajldNmtSldfulahmhJYoJ6OE9X6IYOdW8JXIizO/AjK6H9ubafSxWouGAtrfhPB1uIBK82bJZoFmLmrxIaw+dzbBTa7ckxPY4ABjLG4lLN+lXQGOU3a2Jh6fHXPno0OHUqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459335; c=relaxed/simple;
-	bh=DAvRsbi5NWEt4+tqtXxPWV5Kr2FZBxYvCPWHtQKIShY=;
+	s=arc-20240116; t=1739460142; c=relaxed/simple;
+	bh=FkeMhyWFf3Ir4x5Y6R65htc8G23SAMXO/YVD/6bXc/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrJKpcnlat/VzVluArkdsLOthyuhwb7DQvcF8bE0mu2B1ldQawyV5EYIITB8++SnL/W5jtCjTkaeS/2r+XV+v1bR6JR90+vil4YWO71zifRkr0rNQHZ71Nn0mdnBF1JgfC5z2plgCIjqTAZOyVsnJ7BZ3p7BmtfkJvmFN/fSb98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2q5+Gyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3BEC4CED1;
-	Thu, 13 Feb 2025 15:08:54 +0000 (UTC)
+	 MIME-Version; b=b5o6xiEct46n1UCSagjBaipnAte+wu4aMdvbEEBOT6KmjDjW0RKbiemu6u44W8n5pYa/psMTGtTUtdN1hxyV1VGxtFbeUNG3uTC0Pm39IFcTk+B1v9vRvHQgrHnsfxe55oAGdioRC+fdFGZ0jG7+zYEjXhMPLIqptYt4GFZO9hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jdxeoN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15B5C4CED1;
+	Thu, 13 Feb 2025 15:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459334;
-	bh=DAvRsbi5NWEt4+tqtXxPWV5Kr2FZBxYvCPWHtQKIShY=;
+	s=korg; t=1739460140;
+	bh=FkeMhyWFf3Ir4x5Y6R65htc8G23SAMXO/YVD/6bXc/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2q5+Gyn/D63pIEnLcZQ4JdVQGTFu0opPEb70UtUuxL4J4tZocKzwOHYfJhBhbxTS
-	 KE/mAnGL8GCgqVMGoNvNh26ApHamsBedLd2H6ii0x3mVzY0hSvLtnAUZmqzYbkpu8p
-	 bN9YjyUPPOuqhBF3KDkRX/Bz7hJ/qTNfLcWgdmG4=
+	b=2jdxeoN2o9ZzK3qtssJb6mIIR7WQ/0upd3QCUwh8jNcET8CPQs2bXX4NreEIuB1da
+	 3m9lJlt4nxSHzr0pZEHHKHpXl43xmYOFvcYpcopSg4krwobCH9EbH91D/nFC44q75o
+	 SC321mZszuZ2xRP9zTyY5uIj3qTrIaWIOmBYPvX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.13 233/443] usb: gadget: f_tcm: Dont prepare BOT write request twice
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/273] drm/bridge: it6505: fix HDCP CTS KSV list wait timer
 Date: Thu, 13 Feb 2025 15:26:38 +0100
-Message-ID: <20250213142449.604918839@linuxfoundation.org>
+Message-ID: <20250213142408.394357970@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
+[ Upstream commit 9f9eef9ec1a2b57d95a86fe81df758e8253a7766 ]
 
-The duplicate kmalloc here is causing memory leak. The request
-preparation in bot_send_write_request is also done in
-usbg_prepare_w_request. Remove the duplicate work.
+HDCP must disabled encryption and restart authentication after
+waiting KSV for 5s.
+The original method uses a counter in a waitting loop that may
+wait much longer than it is supposed to.
+Use time_after() for KSV wait timeout.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-9-e0fdd4844703@ite.corp-partner.google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   17 -----------------
- 1 file changed, 17 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
- {
- 	struct f_uas *fu = cmd->fu;
- 	struct se_cmd *se_cmd = &cmd->se_cmd;
--	struct usb_gadget *gadget = fuas_to_gadget(fu);
- 	int ret;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 552d33c4325af..fe33b988d7523 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2058,12 +2058,13 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
+ 	struct it6505 *it6505 = container_of(work, struct it6505,
+ 					     hdcp_wait_ksv_list);
+ 	struct device *dev = it6505->dev;
+-	unsigned int timeout = 5000;
+-	u8 bstatus = 0;
++	u8 bstatus;
+ 	bool ksv_list_check;
++	/* 1B-04 wait ksv list for 5s */
++	unsigned long timeout = jiffies +
++				msecs_to_jiffies(5000) + 1;
  
- 	init_completion(&cmd->write_complete);
-@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
- 		return -EINVAL;
+-	timeout /= 20;
+-	while (timeout > 0) {
++	for (;;) {
+ 		if (!it6505_get_sink_hpd_status(it6505))
+ 			return;
+ 
+@@ -2072,13 +2073,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
+ 		if (bstatus & DP_BSTATUS_READY)
+ 			break;
+ 
+-		msleep(20);
+-		timeout--;
+-	}
++		if (time_after(jiffies, timeout)) {
++			DRM_DEV_DEBUG_DRIVER(dev, "KSV list wait timeout");
++			goto timeout;
++		}
+ 
+-	if (timeout == 0) {
+-		DRM_DEV_DEBUG_DRIVER(dev, "timeout and ksv list wait failed");
+-		goto timeout;
++		msleep(20);
  	}
  
--	if (!gadget->sg_supported) {
--		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
--		if (!cmd->data_buf)
--			return -ENOMEM;
--
--		fu->bot_req_out->buf = cmd->data_buf;
--	} else {
--		fu->bot_req_out->buf = NULL;
--		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
--		fu->bot_req_out->sg = se_cmd->t_data_sg;
--	}
--
--	fu->bot_req_out->complete = usbg_data_write_cmpl;
--	fu->bot_req_out->length = se_cmd->data_length;
--	fu->bot_req_out->context = cmd;
--
- 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
- 	if (ret)
- 		goto cleanup;
+ 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
+-- 
+2.39.5
+
 
 
 
