@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE24CA34408
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A38A3462C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CCC718969F2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A903B148D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785951422D8;
-	Thu, 13 Feb 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5B82A1D1;
+	Thu, 13 Feb 2025 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9r7ykap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yty6x5xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3551E26B088;
-	Thu, 13 Feb 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA77326B098;
+	Thu, 13 Feb 2025 15:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458163; cv=none; b=ZNLyG79fLncJmD417GXE18qXxQoVYAVukjoWvyii2sKoSaLOkdLtMpPZpmQ9WGZ80HigNVJxJsiWIgDp4lqehYp8MiWj7QRq/r/QtstP99TBOajc7fYJGSawFFFHQggcr46nfbjb80qGZ6TyQUr/Vlvcx25k9QNC+QE+wiPBU88=
+	t=1739459575; cv=none; b=mHuotObU3HZZncx4+WtGtxGgeAQU/w3LDrjLARwsUoXkv3+8mQV2Ayl9e6FqzLR9I6Wj+77xSVuL3AmyP/P9DVYcCnppzYz9wBe3GzGPKT7ayBjP7QLVYzj+FJF1UhbEQFLMZWCZiIptpe319tDBBFE2+dRyDuNkoACDgZKxSFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458163; c=relaxed/simple;
-	bh=UeH/PV/Ype/O/jQPpJ2QZabQY2W749p5N0FkX2ONqjs=;
+	s=arc-20240116; t=1739459575; c=relaxed/simple;
+	bh=etkk6bj7BY3K74O4KWQbD+kCX5MMpv27yVu0I7OSYlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WURBs3wyhJSuv6po1TnBJZDewRfujeBKNxszGEw/aCCeKBB/41DvaFlYZ3bmG6QQ2iyQkUz7xLvyV2/z3z8TrTVyGBerMSsrPn/T7XrZCDTWhdgxwS58eTKMSVKhdsqWyTpOoRA9wCCbpHr44rp85qMdKMfrjtPiEDctF1SaUN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9r7ykap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993AEC4CED1;
-	Thu, 13 Feb 2025 14:49:22 +0000 (UTC)
+	 MIME-Version; b=cZYhls6CpdzsgX3NPmeyOi7XczS0i1QB+PyLpgwFVcrf3GHpLMhjMp5kN+KHTzRcGcZ5q4GjhPyLtICp1MerVUHucvUt00rJ1TtddKe++A6k16EqcSdlc2efB9t/Hlruiu8H/f7GqVsMLqrNruC4DtGHH13Ls5EzyjnzwXdft/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yty6x5xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED2C4CEE4;
+	Thu, 13 Feb 2025 15:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458163;
-	bh=UeH/PV/Ype/O/jQPpJ2QZabQY2W749p5N0FkX2ONqjs=;
+	s=korg; t=1739459575;
+	bh=etkk6bj7BY3K74O4KWQbD+kCX5MMpv27yVu0I7OSYlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9r7ykap/61o+ekQQDnAhZNOujI9KLJeq4f6tWCdLW8HQ7ipf8piGiOC31HfN/qdG
-	 mEkQ27qROqyEYN2aI5rgOpG58Ra3v16YpWvvwRNuFSN3JEWg/HVtENtpbi8aPLA93E
-	 k7zhEjv7JMShuYKdnMCb5dofOP+Oa24pLlshFzjI=
+	b=yty6x5xzSkC+wmMkMcpqP3QIshChwwi8hJQrcGDjjfTmThUo0q6U7D80gQpBsqp0Z
+	 +PHrJ/BnIN9/nR9DuWm1M9TUlLIgtsk4L9no/j4DH0NFz1bn50YFEe8mT+rK4JTII3
+	 AnPTCmupjQs13HwNVyc5K/uggi16CkhCakb1TyTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 320/422] soc: qcom: smem_state: fix missing of_node_put in error path
+Subject: [PATCH 6.13 304/443] arm64: dts: qcom: sm6350: Fix ADSP memory length
 Date: Thu, 13 Feb 2025 15:27:49 +0100
-Message-ID: <20250213142448.897000870@linuxfoundation.org>
+Message-ID: <20250213142452.347230608@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 70096b4990848229d0784c5e51dc3c7c072f1111 upstream.
+commit b0805a864459a29831577d2a47165afebe338faf upstream.
 
-If of_parse_phandle_with_args() succeeds, the OF node reference should
-be dropped, regardless of number of phandle arguments.
+The address space in ADSP (Peripheral Authentication Service) remoteproc
+node should point to the QDSP PUB address space (QDSP6...SS_PUB) which
+has a length of 0x10000.
 
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
+
+Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
 Cc: stable@vger.kernel.org
-Fixes: 9460ae2ff308 ("soc: qcom: Introduce common SMEM state machine code")
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240822164853.231087-2-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-15-2e0036fccd8d@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/smem_state.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/smem_state.c
-+++ b/drivers/soc/qcom/smem_state.c
-@@ -116,7 +116,8 @@ struct qcom_smem_state *qcom_smem_state_
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1283,7 +1283,7 @@
  
- 	if (args.args_count != 1) {
- 		dev_err(dev, "invalid #qcom,smem-state-cells\n");
--		return ERR_PTR(-EINVAL);
-+		state = ERR_PTR(-EINVAL);
-+		goto put;
- 	}
+ 		adsp: remoteproc@3000000 {
+ 			compatible = "qcom,sm6350-adsp-pas";
+-			reg = <0 0x03000000 0 0x100>;
++			reg = <0x0 0x03000000 0x0 0x10000>;
  
- 	state = of_node_to_state(args.np);
+ 			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
