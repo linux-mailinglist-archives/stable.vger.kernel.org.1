@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8D6A343DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D46A34643
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4547216BF39
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C95D57A27DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421D426619E;
-	Thu, 13 Feb 2025 14:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913B714B95A;
+	Thu, 13 Feb 2025 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCcvbt97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttA0WZj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F115F266199;
-	Thu, 13 Feb 2025 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6E1146588;
+	Thu, 13 Feb 2025 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458107; cv=none; b=P2pe68RqJQwRUTIwXa6iaL0klI5VDhAYEdJwVtUPsj9J3qRYcYsvrusmUhFKUoqjZHAD1GCE5rbCR69P0vJXiIw432q8XTn7E+nOIngYXU+NwJUULitrQfZVF5DMhfWI1zKeMK3u42kc4w/vieAsO/mXa/s9MjxERmZKI96+1MY=
+	t=1739460218; cv=none; b=acLsm7lf50GplRBQGTx+9QlDmxo0z+kgjlqedcg59Z6cvdDB7WUKoYj+IFanmd7YgvCeedK9SBq9DGxi3ZyqW9W86QC0gU/8ZSa9se1Ngm2ERoW6aGUU+ZicD8Ahl5ExYpxDrM0lHOpGKXb+1v+stCN9nWuEw85iMRDwN5XD+b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458107; c=relaxed/simple;
-	bh=Rfr0otXoS2GTYLCjM8cDhMufMRPQQAzODEneofaOKaY=;
+	s=arc-20240116; t=1739460218; c=relaxed/simple;
+	bh=Lv3tkUTPZ3LH4IMmSX/R2LkI1xkwBYjeOkTdHLi+vc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVc54WRpRhnMzRghAEG0BNc7LHqHs3wy0sZ7+r14tWwqDA0Bhh6TKUnD7QMN+2bTXK32GI5Pd1Bev9bcNCAB2rgPmqptIGvo3ifKlzUw51wpjA23MKNyJzPIaNPCw7/UKBtXvEK8oNKcKxS4Vnl4Aa1ZcAoGxi05P90AuJicM9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCcvbt97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63890C4CED1;
-	Thu, 13 Feb 2025 14:48:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G8xruMCZ+PlF5T2IJT6qz+BFsf8S1BCT2xhRNQZ00/+fHkVQUAo2b4sVd2pa2N4nM80LyQXPSenwGwN1oHC4udcNm0XSGX6IhhrowfYE/ZB4deccOwArUT5i7WRQnBKyUJrppMQJ8uZ/uYFUh9E2BKtySFWR+U47JFPN2iF7TjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttA0WZj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D956C4CED1;
+	Thu, 13 Feb 2025 15:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458106;
-	bh=Rfr0otXoS2GTYLCjM8cDhMufMRPQQAzODEneofaOKaY=;
+	s=korg; t=1739460218;
+	bh=Lv3tkUTPZ3LH4IMmSX/R2LkI1xkwBYjeOkTdHLi+vc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCcvbt97Nbc1dTmhjutq3ctEwA5tL9Y81mtzcIySnytwxzQv5KV0eY5f5NJvk8wrD
-	 1TWoEngtOLZ2QROwYEXvP9j9+nvXXc2CA3Fmem4VwcKub6Ce153qcU/R4j3tMoZpxT
-	 c5o1Lpn0fqee+TwJmCdpHlZHhSddpThp842ugOoA=
+	b=ttA0WZj4RwhEn6JFLHO+y2BkWAFFQd7zinZJRC2EQ6A50GVCPHqfxfjY+vAqn3JZJ
+	 huWYwfpmj+9/HBiWUu7Si0O1OO9UCkjRvrLxap326zj1NEYpeNHzJWx9PZ/HNbrvY7
+	 s0ULc084kQ6xRe11Pziqjh0EMRj0sUk7Frpmed68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 272/422] arm64: dts: qcom: sm6115: Fix MPSS memory length
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 049/273] platform/x86: int3472: Check for adev == NULL
 Date: Thu, 13 Feb 2025 15:27:01 +0100
-Message-ID: <20250213142447.039916602@linuxfoundation.org>
+Message-ID: <20250213142409.290628048@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 472d65e7cb591c8379dd6f40561f96be73a46f0f upstream.
+[ Upstream commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c ]
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x100 was
-copied from older DTS, but it grew since then.
+Not all devices have an ACPI companion fwnode, so adev might be NULL. This
+can e.g. (theoretically) happen when a user manually binds one of
+the int3472 drivers to another i2c/platform device through sysfs.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
 
-Cc: stable@vger.kernel.org
-Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-21-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/int3472/discrete.c | 3 +++
+ drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2027,7 +2027,7 @@
+diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+index e33c2d75975cf..d56f79043f5e2 100644
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -284,6 +284,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
+ 	struct int3472_cldb cldb;
+ 	int ret;
  
- 		remoteproc_mpss: remoteproc@6080000 {
- 			compatible = "qcom,sm6115-mpss-pas";
--			reg = <0x0 0x06080000 0x0 0x100>;
-+			reg = <0x0 0x06080000 0x0 0x10000>;
++	if (!adev)
++		return -ENODEV;
++
+ 	ret = skl_int3472_fill_cldb(adev, &cldb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
+diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
+index 1e107fd49f828..81ac4c6919630 100644
+--- a/drivers/platform/x86/intel/int3472/tps68470.c
++++ b/drivers/platform/x86/intel/int3472/tps68470.c
+@@ -152,6 +152,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
+ 	int ret;
+ 	int i;
  
- 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
- 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
++	if (!adev)
++		return -ENODEV;
++
+ 	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
+ 	if (n_consumers < 0)
+ 		return n_consumers;
+-- 
+2.39.5
+
 
 
 
