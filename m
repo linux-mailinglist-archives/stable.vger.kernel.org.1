@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E791A3462E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BD0A34469
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F4216ECA5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918F63AF69B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B554035961;
-	Thu, 13 Feb 2025 15:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723D824292D;
+	Thu, 13 Feb 2025 14:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujablTpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nkac+qIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7134126B091;
-	Thu, 13 Feb 2025 15:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB7526B08D;
+	Thu, 13 Feb 2025 14:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459783; cv=none; b=VCGeSZmXSZ/md16J2Z20IPT+E2423Uc/sdR6FROyg36ENkzspIYgNBv7nlIHiE85HZ7fRtIQK3qBvA4BVjwKvnBIf4alt0dKGtwgLK7Sno4b+kqRO10MkMcU74ipnSzq91lNtGVEHtz4bux7zpRZUKkC+98sLZs2IUJ7qZ8ct2c=
+	t=1739458365; cv=none; b=fTKunV8z3h7TYLq48ntFNKyqFTN/CogtKeJ12bJONVu/CAn8vmqzpebrr5cA/SiAjyTOBxeycF512rLqrOdVqL8jw05yfHD23sEmSzjdrGuyyY/8YWN6k4NszDjGbwJcYc8AprX6BAvwc9BkXryTo0sEk1lF1on9EPRSichtad8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459783; c=relaxed/simple;
-	bh=t5WvL20Bb/dnT2bvoL2/IbUyVGrzzcoFxXaw2YsTVWE=;
+	s=arc-20240116; t=1739458365; c=relaxed/simple;
+	bh=F+Tft9Ur2PPOXwN125gsJPzPaePlWOAS2Va6g2jTigo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Evf5GbSa1rInLxpPFo5+Agw76s/n/8Trtra75NLUAduD5YyO/Jurf2w0EMx/Ut8uiVVHEUMhZZEzNeAVOo1XwAwZQQu3DzzZlHAoKrHJaDUXpf0h2wtEpJZskUllAWPBywGeiuQNJR5jrnItg5QDCY2cxWWRH1Z3vow/ZPIfWBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujablTpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62332C4CED1;
-	Thu, 13 Feb 2025 15:16:22 +0000 (UTC)
+	 MIME-Version; b=P5LRgca53Uv3TucSe6FSdr7wMKYIq52Aw/cyw3lL9yrEczd9YPXhPopT7aVksAA0ofUj/WHwNOuKgFniJIyayvcYUUnnkS1nm2p7kg7QzwIFq0yEtCUdgIK3JB/LZWzKuJyXgOVujF5ydASq70CVy7EZHyNlfBBn0cS1/IhI588=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nkac+qIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876A0C4CED1;
+	Thu, 13 Feb 2025 14:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459782;
-	bh=t5WvL20Bb/dnT2bvoL2/IbUyVGrzzcoFxXaw2YsTVWE=;
+	s=korg; t=1739458365;
+	bh=F+Tft9Ur2PPOXwN125gsJPzPaePlWOAS2Va6g2jTigo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujablTpT3C+lqNsQ4bopw5w90eBax0Mi5z1pZ/FbT66f2Ba0NkK9udNqSoVmJXHUm
-	 G6V3IRmfEkXuW5+Q4acpfmYtpzb+eOsZj/CLCxtxej0S9L3i/mk0dTIaO6sAEkXXhB
-	 wmtyHJ9DeRvxQ3a5NlzR++ZiYfTedpb8hOKmmEp0=
+	b=Nkac+qIHSMEKt4jXFFB+1mN7mGW1wZBpeQPYHpaMDNVwwPEXQDdXdZrpvm9JT5dYX
+	 M3jbvpGBIXcHo71sR3NRK+/sxp7YvN6DEQWK/qIDb0zWSKezxN9Jis6Ac2BEAa0xX5
+	 pKiy8wreLPPZ5gJiyqFvsXgHIO+otFhMhG5ptmwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 363/443] media: stm32: dcmipp: correct dma_set_mask_and_coherent mask value
+	Milos Reljin <milos_reljin@outlook.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 379/422] net: phy: c45-tjaxx: add delay between MDIO write and read in soft_reset
 Date: Thu, 13 Feb 2025 15:28:48 +0100
-Message-ID: <20250213142454.619278651@linuxfoundation.org>
+Message-ID: <20250213142451.173082388@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Milos Reljin <milos_reljin@outlook.com>
 
-commit b36077ba289b827b4e76e25e8d8e0cc90fa09186 upstream.
+commit bd1bbab717608757cccbbe08b0d46e6c3ed0ced5 upstream.
 
-Correct the call to dma_set_mask_and_coherent which should be set
-to DMA_BIT_MASK(32).
+In application note (AN13663) for TJA1120, on page 30, there's a figure
+with average PHY startup timing values following software reset.
+The time it takes for SMI to become operational after software reset
+ranges roughly from 500 us to 1500 us.
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
+This commit adds 2000 us delay after MDIO write which triggers software
+reset. Without this delay, soft_reset function returns an error and
+prevents successful PHY init.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: b050f2f15e04 ("phy: nxp-c45: add driver for tja1103")
+Signed-off-by: Milos Reljin <milos_reljin@outlook.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/AM8P250MB0124D258E5A71041AF2CC322E1E32@AM8P250MB0124.EURP250.PROD.OUTLOOK.COM
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/nxp-c45-tja11xx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-@@ -887,7 +887,7 @@ struct dcmipp_ent_device *dcmipp_bytecap
- 	q->dev = dev;
+--- a/drivers/net/phy/nxp-c45-tja11xx.c
++++ b/drivers/net/phy/nxp-c45-tja11xx.c
+@@ -1296,6 +1296,8 @@ static int nxp_c45_soft_reset(struct phy
+ 	if (ret)
+ 		return ret;
  
- 	/* DCMIPP requires 16 bytes aligned buffers */
--	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32) & ~0x0f);
-+	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
- 	if (ret) {
- 		dev_err(dev, "Failed to set DMA mask\n");
- 		goto err_mutex_destroy;
++	usleep_range(2000, 2050);
++
+ 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
+ 					 VEND1_DEVICE_CONTROL, ret,
+ 					 !(ret & DEVICE_CONTROL_RESET), 20000,
 
 
 
