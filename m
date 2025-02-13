@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-115446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F971A34413
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C8EA3473C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3863D3ABD82
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5D0189851E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9C7241666;
-	Thu, 13 Feb 2025 14:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E52199934;
+	Thu, 13 Feb 2025 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqOmRiu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIBqIbjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A164126981F;
-	Thu, 13 Feb 2025 14:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839361946C7;
+	Thu, 13 Feb 2025 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458083; cv=none; b=HLCfT6VjcIdTEygKnI01KAbm8Sb92W6VQ8+LEVKmKt9XDhDs7g7zbKmeasxxkSghs3eW4xrnwN+ttyiPxyuBpmijfTB1mbz3QPpd/5bze0WJT9Ew5ulXsFb5yd01Mv5FXsPDOeJpCZSoKVJZJk9Gt57Y8zHZ466L2dOnZrXEpjw=
+	t=1739460407; cv=none; b=Rq5971z1UVS+jbwjmJqs3177KuqnCRlzGpXfCt+WWK4u2ngl9riSvIUUCkpXaOR9uiAYbaAB3EMrnyi/+WB6ZJG4JeBziBYc1O9Pz7iVjler7mtjnZuriLVL2tMykR3V2c8mn/NDvx6aDs5O43dG/e2vxZaj6/YWhbrThkrDHpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458083; c=relaxed/simple;
-	bh=plO5H2H/tqw7mqlGSTRCuC1RIGW6en1pqeFdVfzy3KI=;
+	s=arc-20240116; t=1739460407; c=relaxed/simple;
+	bh=1ZeQak/eAiLDVtZ/kCix3cPh6gbju3t8v5DfFmP66eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5VGnekSDjkHoYqdd0Td5TdBIyGRupk1AidIuTqJze71OJBwJ/kdTGPe00P0nqsO5W9sWhkfxJGDTE13EzkX4AcNieHFTxOncfqRuehSbZxyHj7TjfCYn9U8nIGdovgysot9HtvrKJGoltwO2+bBHuKAi9RQ3qqcrJ7in0292UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqOmRiu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D881C4CEE5;
-	Thu, 13 Feb 2025 14:48:02 +0000 (UTC)
+	 MIME-Version; b=eNEIUfsEyGB/7tzQQKEHNhsNSsDLyn/HqeruL4/qPU+qDy/x7fIBRMJ8+/xaaraiHLK1dxLsD3GLPQC2hqjUx8hUiCzhMRZjXFFDLeu+HEfYhty3nQ+9X7z1ooC16Y1suO9QBZgO+bHFh8G17r29cS8tO+MKZnRkViOBr00EtWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIBqIbjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F8FC4CED1;
+	Thu, 13 Feb 2025 15:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458083;
-	bh=plO5H2H/tqw7mqlGSTRCuC1RIGW6en1pqeFdVfzy3KI=;
+	s=korg; t=1739460407;
+	bh=1ZeQak/eAiLDVtZ/kCix3cPh6gbju3t8v5DfFmP66eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqOmRiu3Z8WQ+B2t38WsbBdGRzqWejX23IcYPFD4H/vs1GfoBrX0QcK+JSSOyuTI1
-	 onaB2B4hrZ5Eh8C8PuI8cYJTHhVL/RLVBUvV1bHEn+7bt2kY60/dS7E/RzNG1ihiGS
-	 UC14p3iZrvjMjrmZoh8zNlfVCmuLGVMDMVJkpTgE=
+	b=bIBqIbjt5vEdISM6nHvFhEoS5bEB4VHKJQSraaQ8rzfKwDFSKmdP8qVyqAd3lbisA
+	 fQbwuZc8387sgebM2tUqgoimNpAv3qwyL796s0FGA+B+2YGr/nGY8ev1KzUiJ1drgN
+	 ygIR5M+/Y098BkGkqIcNcWXS0M8d9IoDt2l7rC5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Thara Gopinath <thara.gopinath@gmail.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 295/422] crypto: qce - fix priority to be less than ARMv8 CE
+	Jacob Moroni <mail@jakemoroni.com>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 072/273] net: atlantic: fix warning during hot unplug
 Date: Thu, 13 Feb 2025 15:27:24 +0100
-Message-ID: <20250213142447.926596305@linuxfoundation.org>
+Message-ID: <20250213142410.196423425@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Jacob Moroni <mail@jakemoroni.com>
 
-commit 49b9258b05b97c6464e1964b6a2fddb3ddb65d17 upstream.
+[ Upstream commit 028676bb189ed6d1b550a0fc570a9d695b6acfd3 ]
 
-As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
-on the CPU, and is also less well tested, give it a lower priority.
-Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
-equivalents, and the ciphers such as AES-XTS had the same priority which
-meant the QCE versions were chosen if they happened to be loaded later.
+Firmware deinitialization performs MMIO accesses which are not
+necessary if the device has already been removed. In some cases,
+these accesses happen via readx_poll_timeout_atomic which ends up
+timing out, resulting in a warning at hw_atl2_utils_fw.c:112:
 
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Cc: stable@vger.kernel.org
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Thara Gopinath <thara.gopinath@gmail.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[  104.595913] Call Trace:
+[  104.595915]  <TASK>
+[  104.595918]  ? show_regs+0x6c/0x80
+[  104.595923]  ? __warn+0x8d/0x150
+[  104.595925]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+[  104.595934]  ? report_bug+0x182/0x1b0
+[  104.595938]  ? handle_bug+0x6e/0xb0
+[  104.595940]  ? exc_invalid_op+0x18/0x80
+[  104.595942]  ? asm_exc_invalid_op+0x1b/0x20
+[  104.595944]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+[  104.595952]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+[  104.595959]  aq_nic_deinit.part.0+0xbd/0xf0 [atlantic]
+[  104.595964]  aq_nic_deinit+0x17/0x30 [atlantic]
+[  104.595970]  aq_ndev_close+0x2b/0x40 [atlantic]
+[  104.595975]  __dev_close_many+0xad/0x160
+[  104.595978]  dev_close_many+0x99/0x170
+[  104.595979]  unregister_netdevice_many_notify+0x18b/0xb20
+[  104.595981]  ? __call_rcu_common+0xcd/0x700
+[  104.595984]  unregister_netdevice_queue+0xc6/0x110
+[  104.595986]  unregister_netdev+0x1c/0x30
+[  104.595988]  aq_pci_remove+0xb1/0xc0 [atlantic]
+
+Fix this by skipping firmware deinitialization altogether if the
+PCI device is no longer present.
+
+Tested with an AQC113 attached via Thunderbolt by performing
+repeated unplug cycles while traffic was running via iperf.
+
+Fixes: 97bde5c4f909 ("net: ethernet: aquantia: Support for NIC-specific code")
+Signed-off-by: Jacob Moroni <mail@jakemoroni.com>
+Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250203143604.24930-3-mail@jakemoroni.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qce/aead.c     |    2 +-
- drivers/crypto/qce/sha.c      |    2 +-
- drivers/crypto/qce/skcipher.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/qce/aead.c
-+++ b/drivers/crypto/qce/aead.c
-@@ -786,7 +786,7 @@ static int qce_aead_register_one(const s
- 	alg->init			= qce_aead_init;
- 	alg->exit			= qce_aead_exit;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index d6d6d5d37ff3e..c9b0d57696a48 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -1441,7 +1441,9 @@ void aq_nic_deinit(struct aq_nic_s *self, bool link_down)
+ 	aq_ptp_ring_free(self);
+ 	aq_ptp_free(self);
  
--	alg->base.cra_priority		= 300;
-+	alg->base.cra_priority		= 275;
- 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
- 					  CRYPTO_ALG_ALLOCATES_MEMORY |
- 					  CRYPTO_ALG_KERN_DRIVER_ONLY |
---- a/drivers/crypto/qce/sha.c
-+++ b/drivers/crypto/qce/sha.c
-@@ -482,7 +482,7 @@ static int qce_ahash_register_one(const
- 
- 	base = &alg->halg.base;
- 	base->cra_blocksize = def->blocksize;
--	base->cra_priority = 300;
-+	base->cra_priority = 175;
- 	base->cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONLY;
- 	base->cra_ctxsize = sizeof(struct qce_sha_ctx);
- 	base->cra_alignmask = 0;
---- a/drivers/crypto/qce/skcipher.c
-+++ b/drivers/crypto/qce/skcipher.c
-@@ -461,7 +461,7 @@ static int qce_skcipher_register_one(con
- 	alg->encrypt			= qce_skcipher_encrypt;
- 	alg->decrypt			= qce_skcipher_decrypt;
- 
--	alg->base.cra_priority		= 300;
-+	alg->base.cra_priority		= 275;
- 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
- 					  CRYPTO_ALG_ALLOCATES_MEMORY |
- 					  CRYPTO_ALG_KERN_DRIVER_ONLY;
+-	if (likely(self->aq_fw_ops->deinit) && link_down) {
++	/* May be invoked during hot unplug. */
++	if (pci_device_is_present(self->pdev) &&
++	    likely(self->aq_fw_ops->deinit) && link_down) {
+ 		mutex_lock(&self->fwreq_mutex);
+ 		self->aq_fw_ops->deinit(self->aq_hw);
+ 		mutex_unlock(&self->fwreq_mutex);
+-- 
+2.39.5
+
 
 
 
