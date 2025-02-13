@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-116103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB46AA34719
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0109CA3451F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE9816C596
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEAEF7A4509
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898E416FF44;
-	Thu, 13 Feb 2025 15:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F64F2A1D1;
+	Thu, 13 Feb 2025 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8R8Bngk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS/V1vjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EB116B3A1;
-	Thu, 13 Feb 2025 15:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C187A26B0BB;
+	Thu, 13 Feb 2025 15:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460335; cv=none; b=fNVUrWF0EJQ1riDzcOPeZggFVh9i+ZSvaUHqs+lpmCYUgJnzzKnl+ZkOW1uRFshw1ZeufzWNqnKfdKZ2mpYDp1cdSkB6XmjA68h5zGb3SatD2Pc7zxPiBlmt0kypgGA6vSDhuGYBo7wYLOIvj83NzwX4JsQYj8VP65SsfDzmstw=
+	t=1739459517; cv=none; b=qrY4ue6Q1NyrMdeHircAWdRn/toVn8GXm4i9sAoJzVg0TwBSfz9wRwv+ZJeXp2wvN5CK54NGwd6CGVWOK9Rq/78pH+1q2zx/bNPy/KebZLdpJy820GsPGcYo1z1JWzJPqXzyez7kIbP+Y/LnB1ZpW9NlDLnxXOFoK1uVySDQJto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460335; c=relaxed/simple;
-	bh=QpGrt/tKq2QwHcq982sxfspEid7knGvgbKQ6VWTqYgA=;
+	s=arc-20240116; t=1739459517; c=relaxed/simple;
+	bh=RSEJxPJQAcjNIN9UKx9t00TgLObY0/Gwdn7HqoDVBQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGGEi8J1v+n2/xPqlCyrgHtVcjEt1FyTls9WKE1C4wo9JXcPxKTkSeStZBDTmygvcs0GLcLo1iJwo3XSBu6XU2CL2jgNahsF6UueyDQRp8rbs//87fG6P77c58c/w3XiXihPQRdcHIdrEp4pITpFmk1vrFWznvwi2noS4nNTByY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8R8Bngk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07AFC4CED1;
-	Thu, 13 Feb 2025 15:25:34 +0000 (UTC)
+	 MIME-Version; b=rNR17q/nRp1x08MqZoYknRYRmaYs18C1S6ktKJXdTFohDDPi286mAz4pureotQowsA8kpAab2dWlFHswlodtQPsQa7hYhydzVdj6mvjbaLMksJQn60q71nILXRbZV2jjqCnE2tjVHKnbu/apnD5737DwzAjjj6/LekCDUJ/+rL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS/V1vjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1690EC4CEE7;
+	Thu, 13 Feb 2025 15:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460335;
-	bh=QpGrt/tKq2QwHcq982sxfspEid7knGvgbKQ6VWTqYgA=;
+	s=korg; t=1739459517;
+	bh=RSEJxPJQAcjNIN9UKx9t00TgLObY0/Gwdn7HqoDVBQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8R8BngkkiewpyjMGgXUOS7OGB8ToyzkGnvMgrhBxln08ACCeHt4NOIH1E3WGbSM1
-	 uUqlxWGqruab/mGhnxeQJJeHBx3h5qPqVvkeCxvRPtQVS6CAYMX7kcFRrNKfIfrdeJ
-	 NajrGFxUt7OO+3bHh8ZnvnE1BS8mieoESrBj/alg=
+	b=eS/V1vjUodwYrzIse4Y8oR69wGaiVyUUhiNinclVmuUPkxS8JdCGNQ4choPvKCt2n
+	 80M96BL+AnFXn+H540QrqMSL4GOWPY13W49U5aNJl9SWiwKfckQDu+869Rv/OM5OK8
+	 tqEVnNwrA0OzeeFfBpJPQzosKjlzOFgBXZFGldDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 082/273] leds: lp8860: Write full EEPROM, not only half of it
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.13 289/443] rust: init: use explicit ABI to clean warning in future compilers
 Date: Thu, 13 Feb 2025 15:27:34 +0100
-Message-ID: <20250213142410.586428799@linuxfoundation.org>
+Message-ID: <20250213142451.764476351@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 0d2e820a86793595e2a776855d04701109e46663 upstream.
+commit c21bdb3d8a850afdfa4afe77eea39ae9533629b0 upstream.
 
-I struggle to explain dividing an ARRAY_SIZE() by the size of an element
-once again. As the latter equals to 2, only the half of EEPROM was ever
-written. Drop the unexplainable division and write full ARRAY_SIZE().
+Starting with Rust 1.86.0 (currently in nightly, to be released on
+2025-04-03), the `missing_abi` lint is warn-by-default [1]:
 
-Cc: stable@vger.kernel.org
-Fixes: 7a8685accb95 ("leds: lp8860: Introduce TI lp8860 4 channel LED driver")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20241114101402.2562878-1-alexander.sverdlin@siemens.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+    error: extern declarations without an explicit ABI are deprecated
+        --> rust/doctests_kernel_generated.rs:3158:1
+         |
+    3158 | extern {
+         | ^^^^^^ help: explicitly specify the C ABI: `extern "C"`
+         |
+         = note: `-D missing-abi` implied by `-D warnings`
+         = help: to override `-D warnings` add `#[allow(missing_abi)]`
+
+Thus clean it up.
+
+Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Fixes: 7f8977a7fe6d ("rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`")
+Link: https://github.com/rust-lang/rust/pull/132397 [1]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Link: https://lore.kernel.org/r/20250121200934.222075-1-ojeda@kernel.org
+[ Added 6.13.y to Cc: stable tag. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-lp8860.c |    2 +-
+ rust/kernel/init.rs |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/leds/leds-lp8860.c
-+++ b/drivers/leds/leds-lp8860.c
-@@ -265,7 +265,7 @@ static int lp8860_init(struct lp8860_led
- 		goto out;
- 	}
- 
--	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs) / sizeof(lp8860_eeprom_disp_regs[0]);
-+	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
- 	for (i = 0; i < reg_count; i++) {
- 		ret = regmap_write(led->eeprom_regmap,
- 				lp8860_eeprom_disp_regs[i].reg,
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -854,7 +854,7 @@ pub unsafe trait PinInit<T: ?Sized, E =
+     /// use kernel::{types::Opaque, init::pin_init_from_closure};
+     /// #[repr(C)]
+     /// struct RawFoo([u8; 16]);
+-    /// extern {
++    /// extern "C" {
+     ///     fn init_foo(_: *mut RawFoo);
+     /// }
+     ///
 
 
 
