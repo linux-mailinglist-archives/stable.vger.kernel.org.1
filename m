@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCB8A34300
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9715CA345A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A2D51893976
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE851736D1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA7121D3F9;
-	Thu, 13 Feb 2025 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65190156F3C;
+	Thu, 13 Feb 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac2hVrgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSqyWbSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0C62222A9;
-	Thu, 13 Feb 2025 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7E726B09D;
+	Thu, 13 Feb 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457585; cv=none; b=VcYZ0S716TfkfrV8/cIpsYeypCKkNpxTKsnBmiQHC8nySvMowBxwxz3CtOHGqw1MeV59YPUpAManiq2ekg24N6/yLd/Qm/UuOKJqwAL46o1wLkxqLcBOdrfr7K+YjRIMMrRJi76OpT4y40svCJdudWlEr20Svbf+W8SQ4at9Mgk=
+	t=1739459106; cv=none; b=lctaibXj4vGFs+4dpR1fWcziMiQS7B9eo6V35odH4XSHKIbpEjsjj/7HhpV2mDktt4ahRvT+fmVOMdvv4hR67r6MKaORscNVbDXdHfVwDKLJoPdqvK5wnryEhqvVssKJCxAgotSLs6xyASrqpsKs0/5vkqpM6Hm2Z/gNXMS9gRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457585; c=relaxed/simple;
-	bh=mv6e+RtaaXFrxwIB6+uzJ+h9QOQUIvxaPnN3hWGzhwU=;
+	s=arc-20240116; t=1739459106; c=relaxed/simple;
+	bh=UBfdoRDWGMFDr5Eyvsw8gTgTwtuJE7KLAwBPAszavNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDZZwrsE0A9ZrM+760VEIUqGVrv3No7sr0Do3rdrnzINzWbW92Ls+RqCU3qrH29PLahcUlBg30oRfC6Qt2KVfVZlGPBD7hKd0DgmoVGXa7YHbWEiET9a0dJ+vIZFr9aHymMTgZ7gKBU32a3DYU8qhNvh2dmQMY5y+0pJBG6Mc8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac2hVrgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DD3C4CED1;
-	Thu, 13 Feb 2025 14:39:44 +0000 (UTC)
+	 MIME-Version; b=sEbVAjepw9ON3AziMYqvTX1458PjmXBS/oSv1DAfejV+P9zh4PAFg9ytslNCKaNYKV8HhTIZuYJWhxfobLnafD98hvzBoqkMIPinvbgdhnnU5FIYnUBzViJK7mJfJeK0WOzx3LyLuQRpHlM6aR7bfiRPCFPmXBKLHvNnhTpVIhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSqyWbSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB7FC4CED1;
+	Thu, 13 Feb 2025 15:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457585;
-	bh=mv6e+RtaaXFrxwIB6+uzJ+h9QOQUIvxaPnN3hWGzhwU=;
+	s=korg; t=1739459106;
+	bh=UBfdoRDWGMFDr5Eyvsw8gTgTwtuJE7KLAwBPAszavNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ac2hVrgCBGKXIy/wGWfEmqVdlcbWUPJZ3agdH6PMCcSZRRcMs3cexB/Oh3e5vSx0B
-	 nhjRG/1cZvP836iWDqqXnmgjvgO/xlOP45/9WxFrcZhDRl4NEBQ2IBHfcs5KHIrybX
-	 lYHtP8u1Edvr/4Rm5oFdvb+8MaDDxDdFPkCiVkTI=
+	b=NSqyWbSxAuIbi3zKWVBx/uCJM3bROPCwXKE84Z09Sixi4jylpkY35zQ4B8ZyGbUKJ
+	 xoAtmboPlRNOBNL6O2omwA71D6GT1Qa76eTY0sFA7eR32DoCL8F9j15o1BRwSE43uu
+	 zvvVHnedjXDSPzrgBaD+y7JyZU0fOH3dQAu4Owuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alyssa Ross <hi@alyssa.is>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 153/422] kvm: defer huge page recovery vhost task to later
+	Martin Ottens <martin.ottens@fau.de>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 137/443] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
 Date: Thu, 13 Feb 2025 15:25:02 +0100
-Message-ID: <20250213142442.453212273@linuxfoundation.org>
+Message-ID: <20250213142445.887928511@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,168 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit 931656b9e2ff7029aee0b36e17780621948a6ac1 upstream.
+[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
 
-Some libraries want to ensure they are single threaded before forking,
-so making the kernel's kvm huge page recovery process a vhost task of
-the user process breaks those. The minijail library used by crosvm is
-one such affected application.
+qdisc_tree_reduce_backlog() notifies parent qdisc only if child
+qdisc becomes empty, therefore we need to reduce the backlog of the
+child qdisc before calling it. Otherwise it would miss the opportunity
+to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
+since DRR uses ->qlen_notify() to maintain its active list.
 
-Defer the task to after the first VM_RUN call, which occurs after the
-parent process has forked all its jailed processes. This needs to happen
-only once for the kvm instance, so introduce some general-purpose
-infrastructure for that, too.  It's similar in concept to pthread_once;
-except it is actually usable, because the callback takes a parameter.
-
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Message-ID: <20250123153543.2769928-1-kbusch@meta.com>
-[Move call_once API to include/linux. - Paolo]
-Cc: stable@vger.kernel.org
-Fixes: d96c77bd4eeb ("KVM: x86: switch hugepage recovery thread to vhost_task")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Cc: Martin Ottens <martin.ottens@fau.de>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |    2 +
- arch/x86/kvm/mmu/mmu.c          |   18 +++++++++++-----
- arch/x86/kvm/x86.c              |    7 +++++-
- include/linux/call_once.h       |   45 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 66 insertions(+), 6 deletions(-)
- create mode 100644 include/linux/call_once.h
+ net/sched/sch_netem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -27,6 +27,7 @@
- #include <linux/hyperv.h>
- #include <linux/kfifo.h>
- #include <linux/sched/vhost_task.h>
-+#include <linux/call_once.h>
- 
- #include <asm/apic.h>
- #include <asm/pvclock-abi.h>
-@@ -1446,6 +1447,7 @@ struct kvm_arch {
- 	struct kvm_x86_pmu_event_filter __rcu *pmu_event_filter;
- 	struct vhost_task *nx_huge_page_recovery_thread;
- 	u64 nx_huge_page_last;
-+	struct once nx_once;
- 
- #ifdef CONFIG_X86_64
- 	/* The number of TDP MMU pages across all roots. */
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7565,20 +7565,28 @@ static bool kvm_nx_huge_page_recovery_wo
- 	return true;
- }
- 
--int kvm_mmu_post_init_vm(struct kvm *kvm)
-+static void kvm_mmu_start_lpage_recovery(struct once *once)
- {
--	if (nx_hugepage_mitigation_hard_disabled)
--		return 0;
-+	struct kvm_arch *ka = container_of(once, struct kvm_arch, nx_once);
-+	struct kvm *kvm = container_of(ka, struct kvm, arch);
- 
- 	kvm->arch.nx_huge_page_last = get_jiffies_64();
- 	kvm->arch.nx_huge_page_recovery_thread = vhost_task_create(
- 		kvm_nx_huge_page_recovery_worker, kvm_nx_huge_page_recovery_worker_kill,
- 		kvm, "kvm-nx-lpage-recovery");
- 
-+	if (kvm->arch.nx_huge_page_recovery_thread)
-+		vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
-+}
-+
-+int kvm_mmu_post_init_vm(struct kvm *kvm)
-+{
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return 0;
-+
-+	call_once(&kvm->arch.nx_once, kvm_mmu_start_lpage_recovery);
- 	if (!kvm->arch.nx_huge_page_recovery_thread)
- 		return -ENOMEM;
--
--	vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
- 	return 0;
- }
- 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11478,6 +11478,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- 	struct kvm_run *kvm_run = vcpu->run;
- 	int r;
- 
-+	r = kvm_mmu_post_init_vm(vcpu->kvm);
-+	if (r)
-+		return r;
-+
- 	vcpu_load(vcpu);
- 	kvm_sigset_activate(vcpu);
- 	kvm_run->flags = 0;
-@@ -12751,7 +12755,8 @@ out:
- 
- int kvm_arch_post_init_vm(struct kvm *kvm)
- {
--	return kvm_mmu_post_init_vm(kvm);
-+	once_init(&kvm->arch.nx_once);
-+	return 0;
- }
- 
- static void kvm_unload_vcpu_mmu(struct kvm_vcpu *vcpu)
---- /dev/null
-+++ b/include/linux/call_once.h
-@@ -0,0 +1,45 @@
-+#ifndef _LINUX_CALL_ONCE_H
-+#define _LINUX_CALL_ONCE_H
-+
-+#include <linux/types.h>
-+#include <linux/mutex.h>
-+
-+#define ONCE_NOT_STARTED 0
-+#define ONCE_RUNNING     1
-+#define ONCE_COMPLETED   2
-+
-+struct once {
-+        atomic_t state;
-+        struct mutex lock;
-+};
-+
-+static inline void __once_init(struct once *once, const char *name,
-+			       struct lock_class_key *key)
-+{
-+        atomic_set(&once->state, ONCE_NOT_STARTED);
-+        __mutex_init(&once->lock, name, key);
-+}
-+
-+#define once_init(once)							\
-+do {									\
-+	static struct lock_class_key __key;				\
-+	__once_init((once), #once, &__key);				\
-+} while (0)
-+
-+static inline void call_once(struct once *once, void (*cb)(struct once *))
-+{
-+        /* Pairs with atomic_set_release() below.  */
-+        if (atomic_read_acquire(&once->state) == ONCE_COMPLETED)
-+                return;
-+
-+        guard(mutex)(&once->lock);
-+        WARN_ON(atomic_read(&once->state) == ONCE_RUNNING);
-+        if (atomic_read(&once->state) != ONCE_NOT_STARTED)
-+                return;
-+
-+        atomic_set(&once->state, ONCE_RUNNING);
-+        cb(once);
-+        atomic_set_release(&once->state, ONCE_COMPLETED);
-+}
-+
-+#endif /* _LINUX_CALL_ONCE_H */
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 71ec9986ed37f..fdd79d3ccd8ce 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -749,9 +749,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 				if (err != NET_XMIT_SUCCESS) {
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 					sch->qstats.backlog -= pkt_len;
+ 					sch->q.qlen--;
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
+-- 
+2.39.5
+
 
 
 
