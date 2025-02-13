@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E77A3429C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:39:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E577A34534
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D82D3A3673
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09931899A1B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349924166F;
-	Thu, 13 Feb 2025 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BB72135BC;
+	Thu, 13 Feb 2025 15:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVUm2oTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW8usZ2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD0224166E;
-	Thu, 13 Feb 2025 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2720A5FC;
+	Thu, 13 Feb 2025 15:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457397; cv=none; b=F4AlnX/++bdMiWunzjJMp2IYBrhvZWcFk+dDDMks/qX68bhpRJYBUkooMG192Espzl8FjxdjZJgP862Xkx4AURYIGfuDO5PdBX2n4bm0XW3ekj2kyuBv+YyAUGekCCsC86smLzDV9IZdec4T3U+EmjfZIBVvPPcd11vabzrL94I=
+	t=1739458802; cv=none; b=oGBH0FkTJBsk/9pxkpvuM59GnnUaay6mhggZc2dox6oc7OZ8LfmBrRi8KFLm0CRJGOnd+ibMKBteUzlJEkVE8QYksott3bGYA0a04S21oQmft/fmkefaXXGiRGxuIzK2q1TUsTWejtssNRtFOyusk6u8jXJ6VkCaqxVdqrVQ7Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457397; c=relaxed/simple;
-	bh=bsApMNlGnKNxXD8Y38WzWoP7yeV2prZ17E2Bp24u9YU=;
+	s=arc-20240116; t=1739458802; c=relaxed/simple;
+	bh=FO0umpsXk/u31aMVsPGU/j68tJrRhc0bnRbPyEP3xq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1y5AH+syo111nD9IguKNem1H4SFDm8JcwVLEuxY+rsAF9ikfEdSiivJypg3bxbdgM7vVyWqiNVPsl93zuPcgbJKz1k2PUwwYEWIIVH3jT5ABlZ9dV5pK463fCV7SJZ2xMEwL2/D//sMYFWbbq74EdomvTMHDpbIQDAVPMDMYe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVUm2oTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16C3C4CED1;
-	Thu, 13 Feb 2025 14:36:36 +0000 (UTC)
+	 MIME-Version; b=mK0c1nto8+qcZjsLkjKQh50rYCEltoKg25Bf8W5JfwaruIKsnUcwje7Nvrs89w36duG0/ieswU18wsfXVMsnwK5tkM8A9uNNfNPcFHd3U5af4ijUt7VzGi7a7wV+j3ICLvv9TYCb46kRzhFthkGoyuj/uc7b2UVIfpBtgvR9XG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW8usZ2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB5EC4CED1;
+	Thu, 13 Feb 2025 15:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457397;
-	bh=bsApMNlGnKNxXD8Y38WzWoP7yeV2prZ17E2Bp24u9YU=;
+	s=korg; t=1739458802;
+	bh=FO0umpsXk/u31aMVsPGU/j68tJrRhc0bnRbPyEP3xq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVUm2oTDam+039VLuF6nsf5NsaKMWp2WTxT7S6kaQtVlVMuyJxE/gEnLQruVAjKI7
-	 keeEUiNmT9e67ynczeJWfTRw1xbCbhBWu6shPT5ZEKvv+A9ZpedhPxAncDl5+CNjKj
-	 QKy14ODwMemDXnV3O1HEmpn2MChcK3tY5vL/OYQ0=
+	b=eW8usZ2bR3PYtEyd58NJRjwTdug5Pdj6AiBPFctct6Ldun46+1lQ+cueGc2R5vH2X
+	 28lAUxTIuK006T0mOrw+Zp9L9MzXO7hn3mPMU0ll1G0FkZO+GikQ3H2XCITD4OS1tN
+	 9Z00a+UCFriubSayCk55B9L6fjWmVW36EKMr3tCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/422] sched/fair: Fix inaccurate h_nr_runnable accounting with delayed dequeue
+Subject: [PATCH 6.13 083/443] octeon_ep_vf: update tx/rx stats locally for persistence
 Date: Thu, 13 Feb 2025 15:24:08 +0100
-Message-ID: <20250213142440.377054883@linuxfoundation.org>
+Message-ID: <20250213142443.814116298@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +62,239 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Shinas Rasheed <srasheed@marvell.com>
 
-[ Upstream commit 3429dd57f0deb1a602c2624a1dd7c4c11b6c4734 ]
+[ Upstream commit f84039939512e6d88b0f2f353695530f123be789 ]
 
-set_delayed() adjusts cfs_rq->h_nr_runnable for the hierarchy when an
-entity is delayed irrespective of whether the entity corresponds to a
-task or a cfs_rq.
+Update tx/rx stats locally, so that ndo_get_stats64()
+can use that and not rely on per queue resources to obtain statistics.
+The latter used to cause race conditions when the device stopped.
 
-Consider the following scenario:
-
-	root
-       /    \
-      A	     B (*) delayed since B is no longer eligible on root
-      |	     |
-    Task0  Task1 <--- dequeue_task_fair() - task blocks
-
-When Task1 blocks (dequeue_entity() for task's se returns true),
-dequeue_entities() will continue adjusting cfs_rq->h_nr_* for the
-hierarchy of Task1. However, when the sched_entity corresponding to
-cfs_rq B is delayed, set_delayed() will adjust the h_nr_runnable for the
-hierarchy too leading to both dequeue_entity() and set_delayed()
-decrementing h_nr_runnable for the dequeue of the same task.
-
-A SCHED_WARN_ON() to inspect h_nr_runnable post its update in
-dequeue_entities() like below:
-
-    cfs_rq->h_nr_runnable -= h_nr_runnable;
-    SCHED_WARN_ON(((int) cfs_rq->h_nr_runnable) < 0);
-
-is consistently tripped when running wakeup intensive workloads like
-hackbench in a cgroup.
-
-This error is self correcting since cfs_rq are per-cpu and cannot
-migrate. The entitiy is either picked for full dequeue or is requeued
-when a task wakes up below it. Both those paths call clear_delayed()
-which again increments h_nr_runnable of the hierarchy without
-considering if the entity corresponds to a task or not.
-
-h_nr_runnable will eventually reflect the correct value however in the
-interim, the incorrect values can still influence PELT calculation which
-uses se->runnable_weight or cfs_rq->h_nr_runnable.
-
-Since only delayed tasks take the early return path in
-dequeue_entities() and enqueue_task_fair(), adjust the
-h_nr_runnable in {set,clear}_delayed() only when a task is delayed as
-this path skips the h_nr_* update loops and returns early.
-
-For entities corresponding to cfs_rq, the h_nr_* update loop in the
-caller will do the right thing.
-
-Fixes: 76f2f783294d ("sched/eevdf: More PELT vs DELAYED_DEQUEUE")
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Tested-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-Link: https://lkml.kernel.org/r/20250117105852.23908-1-kprateek.nayak@amd.com
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Link: https://patch.msgid.link/20250117094653.2588578-5-srasheed@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ .../marvell/octeon_ep_vf/octep_vf_ethtool.c   | 29 +++++++------------
+ .../marvell/octeon_ep_vf/octep_vf_main.c      | 17 +++++------
+ .../marvell/octeon_ep_vf/octep_vf_main.h      |  6 ++++
+ .../marvell/octeon_ep_vf/octep_vf_rx.c        |  9 +++---
+ .../marvell/octeon_ep_vf/octep_vf_rx.h        |  2 +-
+ .../marvell/octeon_ep_vf/octep_vf_tx.c        |  7 +++--
+ .../marvell/octeon_ep_vf/octep_vf_tx.h        |  2 +-
+ 7 files changed, 35 insertions(+), 37 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 65e7be6448720..ddc096d6b0c20 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5481,6 +5481,15 @@ static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
- static void set_delayed(struct sched_entity *se)
- {
- 	se->sched_delayed = 1;
-+
-+	/*
-+	 * Delayed se of cfs_rq have no tasks queued on them.
-+	 * Do not adjust h_nr_runnable since dequeue_entities()
-+	 * will account it for blocked tasks.
-+	 */
-+	if (!entity_is_task(se))
-+		return;
-+
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *cfs_rq = cfs_rq_of(se);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_ethtool.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_ethtool.c
+index 7b21439a315f2..d60441928ba96 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_ethtool.c
+@@ -114,12 +114,9 @@ static void octep_vf_get_ethtool_stats(struct net_device *netdev,
+ 	iface_tx_stats = &oct->iface_tx_stats;
+ 	iface_rx_stats = &oct->iface_rx_stats;
  
-@@ -5493,6 +5502,16 @@ static void set_delayed(struct sched_entity *se)
- static void clear_delayed(struct sched_entity *se)
- {
- 	se->sched_delayed = 0;
-+
-+	/*
-+	 * Delayed se of cfs_rq have no tasks queued on them.
-+	 * Do not adjust h_nr_runnable since a dequeue has
-+	 * already accounted for it or an enqueue of a task
-+	 * below it will account for it in enqueue_task_fair().
-+	 */
-+	if (!entity_is_task(se))
-+		return;
-+
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *cfs_rq = cfs_rq_of(se);
+-	for (q = 0; q < oct->num_oqs; q++) {
+-		struct octep_vf_iq *iq = oct->iq[q];
+-		struct octep_vf_oq *oq = oct->oq[q];
+-
+-		tx_busy_errors += iq->stats.tx_busy;
+-		rx_alloc_errors += oq->stats.alloc_failures;
++	for (q = 0; q < OCTEP_VF_MAX_QUEUES; q++) {
++		tx_busy_errors += oct->stats_iq[q].tx_busy;
++		rx_alloc_errors += oct->stats_oq[q].alloc_failures;
+ 	}
+ 	i = 0;
+ 	data[i++] = rx_alloc_errors;
+@@ -134,22 +131,18 @@ static void octep_vf_get_ethtool_stats(struct net_device *netdev,
+ 	data[i++] = iface_rx_stats->dropped_octets_fifo_full;
  
+ 	/* Per Tx Queue stats */
+-	for (q = 0; q < oct->num_iqs; q++) {
+-		struct octep_vf_iq *iq = oct->iq[q];
+-
+-		data[i++] = iq->stats.instr_posted;
+-		data[i++] = iq->stats.instr_completed;
+-		data[i++] = iq->stats.bytes_sent;
+-		data[i++] = iq->stats.tx_busy;
++	for (q = 0; q < OCTEP_VF_MAX_QUEUES; q++) {
++		data[i++] = oct->stats_iq[q].instr_posted;
++		data[i++] = oct->stats_iq[q].instr_completed;
++		data[i++] = oct->stats_iq[q].bytes_sent;
++		data[i++] = oct->stats_iq[q].tx_busy;
+ 	}
+ 
+ 	/* Per Rx Queue stats */
+ 	for (q = 0; q < oct->num_oqs; q++) {
+-		struct octep_vf_oq *oq = oct->oq[q];
+-
+-		data[i++] = oq->stats.packets;
+-		data[i++] = oq->stats.bytes;
+-		data[i++] = oq->stats.alloc_failures;
++		data[i++] = oct->stats_oq[q].packets;
++		data[i++] = oct->stats_oq[q].bytes;
++		data[i++] = oct->stats_oq[q].alloc_failures;
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 4c699514fd57a..18c922dd5fc64 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -574,7 +574,7 @@ static int octep_vf_iq_full_check(struct octep_vf_iq *iq)
+ 		  * caused queues to get re-enabled after
+ 		  * being stopped
+ 		  */
+-		iq->stats.restart_cnt++;
++		iq->stats->restart_cnt++;
+ 		fallthrough;
+ 	case 1: /* Queue left enabled, since IQ is not yet full*/
+ 		return 0;
+@@ -731,7 +731,7 @@ static netdev_tx_t octep_vf_start_xmit(struct sk_buff *skb,
+ 	/* Flush the hw descriptors before writing to doorbell */
+ 	smp_wmb();
+ 	writel(iq->fill_cnt, iq->doorbell_reg);
+-	iq->stats.instr_posted += iq->fill_cnt;
++	iq->stats->instr_posted += iq->fill_cnt;
+ 	iq->fill_cnt = 0;
+ 	return NETDEV_TX_OK;
+ }
+@@ -786,14 +786,11 @@ static void octep_vf_get_stats64(struct net_device *netdev,
+ 	tx_bytes = 0;
+ 	rx_packets = 0;
+ 	rx_bytes = 0;
+-	for (q = 0; q < oct->num_oqs; q++) {
+-		struct octep_vf_iq *iq = oct->iq[q];
+-		struct octep_vf_oq *oq = oct->oq[q];
+-
+-		tx_packets += iq->stats.instr_completed;
+-		tx_bytes += iq->stats.bytes_sent;
+-		rx_packets += oq->stats.packets;
+-		rx_bytes += oq->stats.bytes;
++	for (q = 0; q < OCTEP_VF_MAX_QUEUES; q++) {
++		tx_packets += oct->stats_iq[q].instr_completed;
++		tx_bytes += oct->stats_iq[q].bytes_sent;
++		rx_packets += oct->stats_oq[q].packets;
++		rx_bytes += oct->stats_oq[q].bytes;
+ 	}
+ 	stats->tx_packets = tx_packets;
+ 	stats->tx_bytes = tx_bytes;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
+index 5769f62545cd4..1a352f41f823c 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
+@@ -246,11 +246,17 @@ struct octep_vf_device {
+ 	/* Pointers to Octeon Tx queues */
+ 	struct octep_vf_iq *iq[OCTEP_VF_MAX_IQ];
+ 
++	/* Per iq stats */
++	struct octep_vf_iq_stats stats_iq[OCTEP_VF_MAX_IQ];
++
+ 	/* Rx queues (OQ: Output Queue) */
+ 	u16 num_oqs;
+ 	/* Pointers to Octeon Rx queues */
+ 	struct octep_vf_oq *oq[OCTEP_VF_MAX_OQ];
+ 
++	/* Per oq stats */
++	struct octep_vf_oq_stats stats_oq[OCTEP_VF_MAX_OQ];
++
+ 	/* Hardware port number of the PCIe interface */
+ 	u16 pcie_port;
+ 
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+index 82821bc28634b..d70c8be3cfc40 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -87,7 +87,7 @@ static int octep_vf_oq_refill(struct octep_vf_device *oct, struct octep_vf_oq *o
+ 		page = dev_alloc_page();
+ 		if (unlikely(!page)) {
+ 			dev_err(oq->dev, "refill: rx buffer alloc failed\n");
+-			oq->stats.alloc_failures++;
++			oq->stats->alloc_failures++;
+ 			break;
+ 		}
+ 
+@@ -98,7 +98,7 @@ static int octep_vf_oq_refill(struct octep_vf_device *oct, struct octep_vf_oq *o
+ 				"OQ-%d buffer refill: DMA mapping error!\n",
+ 				oq->q_no);
+ 			put_page(page);
+-			oq->stats.alloc_failures++;
++			oq->stats->alloc_failures++;
+ 			break;
+ 		}
+ 		oq->buff_info[refill_idx].page = page;
+@@ -134,6 +134,7 @@ static int octep_vf_setup_oq(struct octep_vf_device *oct, int q_no)
+ 	oq->netdev = oct->netdev;
+ 	oq->dev = &oct->pdev->dev;
+ 	oq->q_no = q_no;
++	oq->stats = &oct->stats_oq[q_no];
+ 	oq->max_count = CFG_GET_OQ_NUM_DESC(oct->conf);
+ 	oq->ring_size_mask = oq->max_count - 1;
+ 	oq->buffer_size = CFG_GET_OQ_BUF_SIZE(oct->conf);
+@@ -458,8 +459,8 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+ 
+ 	oq->host_read_idx = read_idx;
+ 	oq->refill_count += desc_used;
+-	oq->stats.packets += pkt;
+-	oq->stats.bytes += rx_bytes;
++	oq->stats->packets += pkt;
++	oq->stats->bytes += rx_bytes;
+ 
+ 	return pkt;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.h b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.h
+index fe46838b5200f..9e296b7d7e349 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.h
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.h
+@@ -187,7 +187,7 @@ struct octep_vf_oq {
+ 	u8 __iomem *pkts_sent_reg;
+ 
+ 	/* Statistics for this OQ. */
+-	struct octep_vf_oq_stats stats;
++	struct octep_vf_oq_stats *stats;
+ 
+ 	/* Packets pending to be processed */
+ 	u32 pkts_pending;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.c
+index 47a5c054fdb63..8180e5ce3d7ef 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.c
+@@ -82,9 +82,9 @@ int octep_vf_iq_process_completions(struct octep_vf_iq *iq, u16 budget)
+ 	}
+ 
+ 	iq->pkts_processed += compl_pkts;
+-	iq->stats.instr_completed += compl_pkts;
+-	iq->stats.bytes_sent += compl_bytes;
+-	iq->stats.sgentry_sent += compl_sg;
++	iq->stats->instr_completed += compl_pkts;
++	iq->stats->bytes_sent += compl_bytes;
++	iq->stats->sgentry_sent += compl_sg;
+ 	iq->flush_index = fi;
+ 
+ 	netif_subqueue_completed_wake(iq->netdev, iq->q_no, compl_pkts,
+@@ -186,6 +186,7 @@ static int octep_vf_setup_iq(struct octep_vf_device *oct, int q_no)
+ 	iq->netdev = oct->netdev;
+ 	iq->dev = &oct->pdev->dev;
+ 	iq->q_no = q_no;
++	iq->stats = &oct->stats_iq[q_no];
+ 	iq->max_count = CFG_GET_IQ_NUM_DESC(oct->conf);
+ 	iq->ring_size_mask = iq->max_count - 1;
+ 	iq->fill_threshold = CFG_GET_IQ_DB_MIN(oct->conf);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.h b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.h
+index f338b975103c3..1cede90e3a5fa 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.h
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_tx.h
+@@ -129,7 +129,7 @@ struct octep_vf_iq {
+ 	u16 flush_index;
+ 
+ 	/* Statistics for this input queue. */
+-	struct octep_vf_iq_stats stats;
++	struct octep_vf_iq_stats *stats;
+ 
+ 	/* Pointer to the Virtual Base addr of the input ring. */
+ 	struct octep_vf_tx_desc_hw *desc_ring;
 -- 
 2.39.5
 
