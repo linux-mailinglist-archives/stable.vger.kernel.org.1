@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFFDA34480
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD2BA3466B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF8C3B297D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F20C1894A9B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB9626B0B6;
-	Thu, 13 Feb 2025 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBEF165F1F;
+	Thu, 13 Feb 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1B1Si1e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ0x/krV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B4A26B080;
-	Thu, 13 Feb 2025 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7463FB3B;
+	Thu, 13 Feb 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458423; cv=none; b=IBAGAap9hVYcM6PykvF/HfdrGlpKOm2fiNIM/AuAGpvSNvNIW1jtk/Ll63ZuqrzEsM57TRaPrq4a+7N+kK34reSYOgNdHVpXQC3K+irWKiS/4kksRvG4FZfdXej6Dsh31Zf15XJh/4LwPIzEXM/yPxaGwW1hJDcYlEZd6ot52tM=
+	t=1739459945; cv=none; b=fw30UaCRlay/lErfi0RzdiKCadtOhXdC8st6yO6EaRwR3d75Dl60Usw4qgqIDITpM/n36ig2IreBzDXEn+qjIi48Dio/4QIWAQ3w+YxwyO4Jzg2cZqay4zZIIbNRQVNOUsWl1VJ0OkIESJhBOl676qiz/OebNRtebnCMt/plkQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458423; c=relaxed/simple;
-	bh=WaCF7sT0AD8Ceh4GDiwZXA0dvFDt72y5WVvkGAk5xVY=;
+	s=arc-20240116; t=1739459945; c=relaxed/simple;
+	bh=t8j9CFioDK5fFFQQ6qX1kBskGDE5DTzxyxIHNVu8WcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1UcJSZj6FYiKXOf4QZAeNNuTXskf1v5MM5LQe7S8by8ck8wEsFsIB0TAD0JRERuOnIcjo04kroMaoCldcAvN5QULLho5g0dMiql8rmHIHZKRVTB1Emj0aNyfjDEj/tMyW08y8rTQyktRWIf3yln0Z1xC9Y3DDSkGiOmFJLzqDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1B1Si1e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C32C4CED1;
-	Thu, 13 Feb 2025 14:53:42 +0000 (UTC)
+	 MIME-Version; b=pc6peHH5D1opWVWI+QRspEpaJgKvOasS50ORHAC0xzJeNi49DkEHs4F/cymSKvWMk0KkKvaZ5i61iTqVwMYDGZUmRiHnrmDFBvUryT+KKh3LmFlDhhD0H39IKFyBWmIRXH++Cp3zN0JfbkPwlMAaINXa9jRtbwKiEDuGRwd3GN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ0x/krV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BB6C4CEE4;
+	Thu, 13 Feb 2025 15:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458423;
-	bh=WaCF7sT0AD8Ceh4GDiwZXA0dvFDt72y5WVvkGAk5xVY=;
+	s=korg; t=1739459945;
+	bh=t8j9CFioDK5fFFQQ6qX1kBskGDE5DTzxyxIHNVu8WcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1B1Si1eJ0/7wYCfsdsSZwhT7O0r/OevOSqw0uOkfG6fm7PwV/lCue+aqqS/iE3bk
-	 2IoV2Ds+VBMbEw4fqMy5eqQq068qS290Qc4PbrmrsBCEnrWumQ8e5nhEuswBMfWgJQ
-	 VGd1bHXu0l3whup6UGI5ackXA5l5veTQHuL6LhQU=
+	b=LJ0x/krVLNzXQuo3J7ElO0MJqXi9vH9WGi+g0d68fpMPFFYa7m3YGT8yq94o3kx82
+	 veEsD63rY0Ss6wXeq2sL0l6BF8JE7zvVKuwny44HEz4gOLGUYdX6hmhzKL7Qb+Kh/g
+	 tS8m8Yh6hEMsH1EBOXmhhEJ++7ysQLjz+GL0MWV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 395/422] s390/fpu: Add fpc exception handler / remove fixup section again
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 379/443] mm/vmscan: accumulate nr_demoted for accurate demotion statistics
 Date: Thu, 13 Feb 2025 15:29:04 +0100
-Message-ID: <20250213142451.789385923@linuxfoundation.org>
+Message-ID: <20250213142455.231935229@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-commit ae02615b7fcea9ce9a4ec40b3c5b5dafd322b179 upstream.
+commit a479b078fddb0ad7f9e3c6da22d9cf8f2b5c7799 upstream.
 
-The fixup section was added again by mistake when test_fp_ctl() was
-removed. The reason for the removal of the fixup section is described in
-commit 484a8ed8b7d1 ("s390/extable: add dedicated uaccess handler").
-Remove it again for the same reason.
+In shrink_folio_list(), demote_folio_list() can be called 2 times.
+Currently stat->nr_demoted will only store the last nr_demoted( the later
+nr_demoted is always zero, the former nr_demoted will get lost), as a
+result number of demoted pages is not accurate.
 
-Add an exception handler which handles exceptions when the floating point
-control register is attempted to be set to invalid values. The exception
-handler sets the floating point control register to zero and continues
-execution at the specified address.
+Accumulate the nr_demoted count across multiple calls to
+demote_folio_list(), ensuring accurate reporting of demotion statistics.
 
-The new sfpc inline assembly is open-coded to make back porting a bit
-easier.
-
-Fixes: 702644249d3e ("s390/fpu: get rid of test_fp_ctl()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+[lizhijian@fujitsu.com: introduce local nr_demoted to fix nr_reclaimed double counting]
+  Link: https://lkml.kernel.org/r/20250111015253.425693-1-lizhijian@fujitsu.com
+Link: https://lkml.kernel.org/r/20250110122133.423481-1-lizhijian@fujitsu.com
+Fixes: f77f0c751478 ("mm,memcg: provide per-cgroup counters for NUMA balancing operations")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Acked-by: Kaiyang Zhao <kaiyang2@cs.cmu.edu>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/asm-extable.h |    4 ++++
- arch/s390/include/asm/fpu-insn.h    |   17 +++++------------
- arch/s390/kernel/vmlinux.lds.S      |    1 -
- arch/s390/mm/extable.c              |    9 +++++++++
- 4 files changed, 18 insertions(+), 13 deletions(-)
+ mm/vmscan.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/s390/include/asm/asm-extable.h
-+++ b/arch/s390/include/asm/asm-extable.h
-@@ -14,6 +14,7 @@
- #define EX_TYPE_UA_LOAD_REG	5
- #define EX_TYPE_UA_LOAD_REGPAIR	6
- #define EX_TYPE_ZEROPAD		7
-+#define EX_TYPE_FPC		8
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1053,7 +1053,7 @@ static unsigned int shrink_folio_list(st
+ 	struct folio_batch free_folios;
+ 	LIST_HEAD(ret_folios);
+ 	LIST_HEAD(demote_folios);
+-	unsigned int nr_reclaimed = 0;
++	unsigned int nr_reclaimed = 0, nr_demoted = 0;
+ 	unsigned int pgactivate = 0;
+ 	bool do_demote_pass;
+ 	struct swap_iocb *plug = NULL;
+@@ -1522,8 +1522,9 @@ keep:
+ 	/* 'folio_list' is always empty here */
  
- #define EX_DATA_REG_ERR_SHIFT	0
- #define EX_DATA_REG_ERR		GENMASK(3, 0)
-@@ -84,4 +85,7 @@
- #define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
- 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
- 
-+#define EX_TABLE_FPC(_fault, _target)					\
-+	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
-+
- #endif /* __ASM_EXTABLE_H */
---- a/arch/s390/include/asm/fpu-insn.h
-+++ b/arch/s390/include/asm/fpu-insn.h
-@@ -100,19 +100,12 @@ static __always_inline void fpu_lfpc(uns
-  */
- static inline void fpu_lfpc_safe(unsigned int *fpc)
- {
--	u32 tmp;
--
- 	instrument_read(fpc, sizeof(*fpc));
--	asm volatile("\n"
--		"0:	lfpc	%[fpc]\n"
--		"1:	nopr	%%r7\n"
--		".pushsection .fixup, \"ax\"\n"
--		"2:	lghi	%[tmp],0\n"
--		"	sfpc	%[tmp]\n"
--		"	jg	1b\n"
--		".popsection\n"
--		EX_TABLE(1b, 2b)
--		: [tmp] "=d" (tmp)
-+	asm_inline volatile(
-+		"	lfpc	%[fpc]\n"
-+		"0:	nopr	%%r7\n"
-+		EX_TABLE_FPC(0b, 0b)
-+		:
- 		: [fpc] "Q" (*fpc)
- 		: "memory");
- }
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -52,7 +52,6 @@ SECTIONS
- 		SOFTIRQENTRY_TEXT
- 		FTRACE_HOTPATCH_TRAMPOLINES_TEXT
- 		*(.text.*_indirect_*)
--		*(.fixup)
- 		*(.gnu.warning)
- 		. = ALIGN(PAGE_SIZE);
- 		_etext = .;		/* End of text section */
---- a/arch/s390/mm/extable.c
-+++ b/arch/s390/mm/extable.c
-@@ -77,6 +77,13 @@ static bool ex_handler_zeropad(const str
- 	return true;
- }
- 
-+static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
-+{
-+	asm volatile("sfpc	%[val]\n" : : [val] "d" (0));
-+	regs->psw.addr = extable_fixup(ex);
-+	return true;
-+}
-+
- bool fixup_exception(struct pt_regs *regs)
- {
- 	const struct exception_table_entry *ex;
-@@ -99,6 +106,8 @@ bool fixup_exception(struct pt_regs *reg
- 		return ex_handler_ua_load_reg(ex, true, regs);
- 	case EX_TYPE_ZEROPAD:
- 		return ex_handler_zeropad(ex, regs);
-+	case EX_TYPE_FPC:
-+		return ex_handler_fpc(ex, regs);
- 	}
- 	panic("invalid exception table entry");
- }
+ 	/* Migrate folios selected for demotion */
+-	stat->nr_demoted = demote_folio_list(&demote_folios, pgdat);
+-	nr_reclaimed += stat->nr_demoted;
++	nr_demoted = demote_folio_list(&demote_folios, pgdat);
++	nr_reclaimed += nr_demoted;
++	stat->nr_demoted += nr_demoted;
+ 	/* Folios that could not be demoted are still in @demote_folios */
+ 	if (!list_empty(&demote_folios)) {
+ 		/* Folios which weren't demoted go back on @folio_list */
 
 
 
