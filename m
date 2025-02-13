@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB6AA345E1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FA5A346EA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C53189345F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7A8F1884E6A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A961515853B;
-	Thu, 13 Feb 2025 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7FF156F5E;
+	Thu, 13 Feb 2025 15:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFpraBG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBWP+ho2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668CB26B099;
-	Thu, 13 Feb 2025 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08553145A03;
+	Thu, 13 Feb 2025 15:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459266; cv=none; b=BtaiqnI/PZ1RQACwtD9fEtR8jqVWsatuST1M7vxQXDQT5cO9xA5KZTfdJBD4l6NIWYquLwCe3tzregpK13Ukvrh67YIjtTI+oCnok46eOcL4I5/75+t+dRPDwfFmUA2/9uwQq1OGvHQWM+36rGz3yESqYFwt9L9/dDiVe96ZVEI=
+	t=1739460168; cv=none; b=Fm/uJ4sjIFf02CxdoVz8Ucq9OweAH1dSFEgSaBbcZymrDAGx6jgxLW/S5XgPEJs8P2DEnXRKgEncIVlueGeIaV88Oig5UEEn3wo2RPxwP3DzBbfxwpZVhvN/G1SnhoTsr0gJ+yLsPq6jzFc0ktEgWaA/ZJ09M71OEj+LnPGovRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459266; c=relaxed/simple;
-	bh=LFxiQfRWPBUzW1Y0F5wYjw+hniRuE4b8rD8ZfDzrJeU=;
+	s=arc-20240116; t=1739460168; c=relaxed/simple;
+	bh=zQaoy4zAdYznbBInU2lGpuzv0yFOYpzhJsEQxvymN+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWLLHvPVSzfrI95wkzGFVAzoGiyLNJN3Qg5AHafwLhJVD0zUnqAaEaPD8i2L8eQEk6X/gFNKhyM/EzMB+T3iNhRGnAT5MX+VPOM/QRN+6sPwj8o6a+VmCXEAgBlwoCwN4wyfHv3IqT1lXhHw8ocaw5/fGZcXnOUF66rEzE3iNIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFpraBG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C47C4CED1;
-	Thu, 13 Feb 2025 15:07:45 +0000 (UTC)
+	 MIME-Version; b=LQJwxWdEjKYzCXZ/6aY2HQkZ7DX4NDiHhPBfEVLZoSWY8re6dIGd+3gRDeB4gCWXuWU9x2pa1ajBNmOV0GE9LKOYmxlNxzvQJGZYmca/NvTiVB8N/NX1zDL1ZX4qpX8YOvFP9rqgm8iVJ15o3xF7Z5wvxdi9RXDIUeYDpxQ7HZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBWP+ho2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AABCC4CED1;
+	Thu, 13 Feb 2025 15:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459266;
-	bh=LFxiQfRWPBUzW1Y0F5wYjw+hniRuE4b8rD8ZfDzrJeU=;
+	s=korg; t=1739460167;
+	bh=zQaoy4zAdYznbBInU2lGpuzv0yFOYpzhJsEQxvymN+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFpraBG3twL//3CCGtnlz18M7IZInLYO35UkSZu/sidwU81XoUvF9fTfRsNk2cCQP
-	 ZvPl89QnUl2EuB0Am6tYsXOLHQtIugvI5XwdL4yaRACHMorZ8ITUO3e+MdmomBHNRM
-	 QRJygdmjd3E/fykBCio/fSMO3M/VSZq/YQBKcULs=
+	b=tBWP+ho2F172hfMYP1GD0AoNBvc7woTNInLADVX61OeZg+YiU8yj3UJ3QmJs48VhF
+	 02DqtcZkxlyTqPCrCnCtHulxqbMbGNwjVTevpgLWMHea6VfrxdtPbnkdA6hwD99KrM
+	 /2YoDCTk41yIVtEKPpegrCZTgqqPXzUZlv4ogphY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.13 215/443] of: Correct child specifier used as input of the 2nd nexus node
+	Suleiman Souhlal <suleiman@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 008/273] sched: Dont try to catch up excess steal time.
 Date: Thu, 13 Feb 2025 15:26:20 +0100
-Message-ID: <20250213142448.911377910@linuxfoundation.org>
+Message-ID: <20250213142407.689601257@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Suleiman Souhlal <suleiman@google.com>
 
-commit e4c00c9b1f70cd11792ff5b825899a6ee0234a62 upstream.
+[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
 
-API of_parse_phandle_with_args_map() will use wrong input for nexus node
-Nexus_2 as shown below:
+When steal time exceeds the measured delta when updating clock_task, we
+currently try to catch up the excess in future updates.
+However, this results in inaccurate run times for the future things using
+clock_task, in some situations, as they end up getting additional steal
+time that did not actually happen.
+This is because there is a window between reading the elapsed time in
+update_rq_clock() and sampling the steal time in update_rq_clock_task().
+If the VCPU gets preempted between those two points, any additional
+steal time is accounted to the outgoing task even though the calculated
+delta did not actually contain any of that "stolen" time.
+When this race happens, we can end up with steal time that exceeds the
+calculated delta, and the previous code would try to catch up that excess
+steal time in future clock updates, which is given to the next,
+incoming task, even though it did not actually have any time stolen.
 
-    Node_1		Nexus_1                              Nexus_2
-&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
-		  map-pass-thru=<...>
+This behavior is particularly bad when steal time can be very long,
+which we've seen when trying to extend steal time to contain the duration
+that the host was suspended [0]. When this happens, clock_task stays
+frozen, during which the running task stays running for the whole
+duration, since its run time doesn't increase.
+However the race can happen even under normal operation.
 
-Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
-wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
+Ideally we would read the elapsed cpu time and the steal time atomically,
+to prevent this race from happening in the first place, but doing so
+is non-trivial.
 
-Fix by always making @match_array point to @initial_match_array into
-which to store nexus output.
+Since the time between those two points isn't otherwise accounted anywhere,
+neither to the outgoing task nor the incoming task (because the "end of
+outgoing task" and "start of incoming task" timestamps are the same),
+I would argue that the right thing to do is to simply drop any excess steal
+time, in order to prevent these issues.
 
-Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
+
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1546,7 +1546,6 @@ int of_parse_phandle_with_args_map(const
- 		 * specifier into the out_args structure, keeping the
- 		 * bits specified in <list>-map-pass-thru.
- 		 */
--		match_array = map - new_size;
- 		for (i = 0; i < new_size; i++) {
- 			__be32 val = *(map - new_size + i);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 86606fb9e6bc6..c686d826a91cf 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -726,13 +726,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+-		steal = paravirt_steal_clock(cpu_of(rq));
++		u64 prev_steal;
++
++		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
+ 		steal -= rq->prev_steal_time_rq;
  
-@@ -1555,6 +1554,7 @@ int of_parse_phandle_with_args_map(const
- 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
- 			}
+ 		if (unlikely(steal > delta))
+ 			steal = delta;
  
-+			initial_match_array[i] = val;
- 			out_args->args[i] = be32_to_cpu(val);
- 		}
- 		out_args->args_count = list_size = new_size;
+-		rq->prev_steal_time_rq += steal;
++		rq->prev_steal_time_rq = prev_steal;
+ 		delta -= steal;
+ 	}
+ #endif
+-- 
+2.39.5
+
 
 
 
