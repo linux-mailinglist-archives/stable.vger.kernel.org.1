@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA49FA34684
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9B8A34341
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBEB73B5720
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FE0E189460E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240AD15E5D4;
-	Thu, 13 Feb 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488C12222CC;
+	Thu, 13 Feb 2025 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6vcgvJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdya1WDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ECC26B09D;
-	Thu, 13 Feb 2025 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068B0281349;
+	Thu, 13 Feb 2025 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459235; cv=none; b=SU3H/7cPkolk7+pFGCeWncKNrBlpORxYzgGOhHQyg4Gc+cqJ1iHCG3K4xXLRI88IG4rQG5RkNu969JZzrtb5rawTguFEqhL1IiPIGtUt5uCrEhVK9R/EjywaIsDtM74N4ucB7tBSvv+m/XqlM7W13RmMwtwUYi1dLJRoVeTJN+M=
+	t=1739457711; cv=none; b=LSsVFWjdLTIu5lHZCno7TZmCk6YGVDGP962T4VUovLxyhW/WQSsfBIW6W8goOk/MrCqqTMBwjuQygJYZMYpmz/BrB0gtAbpMKaWiTx2ojP6wwG6J53Zebf0p3T3IRJXWIndudYAJ0pBGBOTcbrIcu8Qr3y6oYma+nZ77TiSi8ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459235; c=relaxed/simple;
-	bh=YuIcC6hXDKQ9Ho2GQ/YgQM5Q7oPiDlScE0IWQ1364IE=;
+	s=arc-20240116; t=1739457711; c=relaxed/simple;
+	bh=L3sSenT3ie9bNkl3pp+PjmaTN7XesDtdedfuw4Z9pGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MecYjvR7bl+oETiBjecx/DoXKf6n//MBoUKyKv+78Kktz0184qtsGAGiBHEZerdhx6CvXR/DJd9RBZ/vVemSfrDSb/5JS3tEqejTdltPS6CYV2BpwA5egULGNQavslET3okn5oe51wWU1HqC0B3od4t1uauixYjIUR+riC1/jBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6vcgvJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43544C4CED1;
-	Thu, 13 Feb 2025 15:07:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cJ8MoYA/j72a5oIgicoYOBU/K0hQC61vW1Z6XmFFtjs4wqqP/owBM+dyN474VSjXUsdCmxhMwl3ZdkAh0q0203YCPR8IZ57bgxYTmKyRcQW+Oy3j+G3eI740OR6do8KVBuT5j70MRzkxN/iALjCeWh0nsoKN7pZ/glhyFO2rsNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdya1WDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6679DC4CEE2;
+	Thu, 13 Feb 2025 14:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459235;
-	bh=YuIcC6hXDKQ9Ho2GQ/YgQM5Q7oPiDlScE0IWQ1364IE=;
+	s=korg; t=1739457710;
+	bh=L3sSenT3ie9bNkl3pp+PjmaTN7XesDtdedfuw4Z9pGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6vcgvJnHMESXvy3IXWE8gTw/YQFCuCu/OxOuPyQbvB/t/fXsbzhWR8oxv5wRirwA
-	 x1DoyYizi3UGP5FzaHmA4zAoSx8ZwDRGx6VeCMUOYjJY3L+y4VM/7ZF+ayTrgCi0G8
-	 SRQyl+gJ4sveBlICY68/+IWbemz3SBR7/o9FkKkA=
+	b=Vdya1WDBIbF62diUi4f0pk9GbsfZMViV5R6/goO1TMZSb+TvgYaO1d7Qoext1MLxZ
+	 tJ/1MXKjK4yaIOdTVqVBgS/1aQCfq2sXU6kN3Z+2QIIg2olxOlV9dPB8tyhi2d9Ddm
+	 qGTpTlPxGSDFUCHOeV4AP0AtNIJcAsp5V0eJXsqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sung Lee <sung.lee@amd.com>,
-	Aric Cyr <Aric.Cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.13 173/443] drm/amd/display: Optimize cursor position updates
-Date: Thu, 13 Feb 2025 15:25:38 +0100
-Message-ID: <20250213142447.279564203@linuxfoundation.org>
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.12 190/422] blk-cgroup: Fix class @block_classs subsystem refcount leakage
+Date: Thu, 13 Feb 2025 15:25:39 +0100
+Message-ID: <20250213142443.877884686@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <Aric.Cyr@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 024771f3fb75dc817e9429d5763f1a6eb84b6f21 upstream.
+commit d1248436cbef1f924c04255367ff4845ccd9025e upstream.
 
-[why]
-Updating the cursor enablement register can be a slow operation and accumulates
-when high polling rate cursors cause frequent updates asynchronously to the
-cursor position.
+blkcg_fill_root_iostats() iterates over @block_class's devices by
+class_dev_iter_(init|next)(), but does not end iterating with
+class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
 
-[how]
-Since the cursor enable bit is cached there is no need to update the
-enablement register if there is no change to it.  This removes the
-read-modify-write from the cursor position programming path in HUBP and
-DPP, leaving only the register writes.
+Fix by ending the iterating with class_dev_iter_exit().
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Sung Lee <sung.lee@amd.com>
-Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250105-class_fix-v6-2-3a2f1768d4d4@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c      |    7 ++++---
- drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c |    6 ++++--
- drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c    |    8 +++++---
- drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c  |   10 ++++++----
- 4 files changed, 19 insertions(+), 12 deletions(-)
+ block/blk-cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-@@ -483,10 +483,11 @@ void dpp1_set_cursor_position(
- 	if (src_y_offset + cursor_height <= 0)
- 		cur_en = 0;  /* not visible beyond top edge*/
- 
--	REG_UPDATE(CURSOR0_CONTROL,
--			CUR0_ENABLE, cur_en);
-+	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
-+		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
- 
--	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+	}
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1138,6 +1138,7 @@ static void blkcg_fill_root_iostats(void
+ 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
+ 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
+ 	}
++	class_dev_iter_exit(&iter);
  }
  
- void dpp1_cnv_set_optional_cursor_attributes(
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
-@@ -154,9 +154,11 @@ void dpp401_set_cursor_position(
- 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
- 	uint32_t cur_en = pos->enable ? 1 : 0;
- 
--	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
-+	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
-+		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
- 
--	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+	}
- }
- 
- void dpp401_set_optional_cursor_attributes(
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-@@ -1044,11 +1044,13 @@ void hubp2_cursor_set_position(
- 	if (src_y_offset + cursor_height <= 0)
- 		cur_en = 0;  /* not visible beyond top edge*/
- 
--	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
--		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
-+	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
-+		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
-+			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
- 
--	REG_UPDATE(CURSOR_CONTROL,
-+		REG_UPDATE(CURSOR_CONTROL,
- 			CURSOR_ENABLE, cur_en);
-+	}
- 
- 	REG_SET_2(CURSOR_POSITION, 0,
- 			CURSOR_X_POSITION, pos->x,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-@@ -718,11 +718,13 @@ void hubp401_cursor_set_position(
- 			dc_fixpt_from_int(dst_x_offset),
- 			param->h_scale_ratio));
- 
--	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
--		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
-+	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
-+		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
-+			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
- 
--	REG_UPDATE(CURSOR_CONTROL,
--		CURSOR_ENABLE, cur_en);
-+		REG_UPDATE(CURSOR_CONTROL,
-+			CURSOR_ENABLE, cur_en);
-+	}
- 
- 	REG_SET_2(CURSOR_POSITION, 0,
- 		CURSOR_X_POSITION, x_pos,
+ static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
 
 
 
