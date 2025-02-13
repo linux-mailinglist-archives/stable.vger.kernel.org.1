@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-115514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD47A34432
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1726A34718
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 916A716C83E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14F6F7A1697
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C336C23A9A3;
-	Thu, 13 Feb 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725FF153828;
+	Thu, 13 Feb 2025 15:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk77bPKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy1Sq46y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC89242935;
-	Thu, 13 Feb 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF52143736;
+	Thu, 13 Feb 2025 15:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458317; cv=none; b=ke3LzwYbgxxHUGTxuBX1DZF5x73QrdonvGXDs1ggGrmX7/EshYn0lfo0CX+lFeyF+shLX0egal9HJyA7I7xM/uNhrgX84oAkvhLhBlrk0nyHQhWapy/JU3D+KiakqUM0IoTzToM/l+VJPy1IyRFO+GsNUsjQuAYJLyfsoCNlm2Y=
+	t=1739460649; cv=none; b=A53dW2Dnvws80H4j5eXYPXEQUw7D8c/DiY91XQDZWFB1NvMpfW9AoghtKUBS/kn6JAlTUXj7DktdW5fJIGYU0uA7iHOLlep4YiCRI7dSxIvLf80ji0e2ffmTvHxRUatKF7mmcFx0qr03zNS/hZlwmHvdVtKDgv4JzqNxlcPL9eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458317; c=relaxed/simple;
-	bh=bcmFwRCVxgETNn7ipkPx8d+UZmFOkv34FP5fTpkEcCE=;
+	s=arc-20240116; t=1739460649; c=relaxed/simple;
+	bh=/SBr5Yv/4Jq4jT/DzBic1UYYJA6J6J5zyNV4QqP2BeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nll5WO6OqdyYUg/VaiMrtl4EPieWhIsQND0UOWQ9dE8tvHqadQpTz9eqjY2NowGcKp41JAOmIhmIbCrzlUrteBcVyiAON5ekKY9PItCJlmkoyJqDhoalgBXynbdidsxPX7qeojj+2pGya3TU0aOjNQ3qY1mu84T5eGyMzHjabUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk77bPKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DE2C4CED1;
-	Thu, 13 Feb 2025 14:51:56 +0000 (UTC)
+	 MIME-Version; b=iSJjJs8rnrkr3b/0NnMYNeT3WV2lasJ4jQmg5QO/qfbiucaF4E5GNcDrmdn8zj6SdhAMQgiw0CNtD3f7rKCBzuPx+VMS6ooDMwatz+7KExERR3PoTENcg4htg5eKnCGyfiihhOsL0lVUHPONPR8/d8hbq+ah38XQ8BW+pgHTAPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy1Sq46y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8764C4CED1;
+	Thu, 13 Feb 2025 15:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458317;
-	bh=bcmFwRCVxgETNn7ipkPx8d+UZmFOkv34FP5fTpkEcCE=;
+	s=korg; t=1739460649;
+	bh=/SBr5Yv/4Jq4jT/DzBic1UYYJA6J6J5zyNV4QqP2BeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lk77bPKNkhAtCsclQVwTZUo8t6WcfZjcJ65Vv8cJDh7xjinbaemhIK08FjYlQK5Zo
-	 fgdu3mlRV9uIPCkx8nuLZ29MQvImiGvJAFyr4UselEztuuCJQQDhdNzRlkXk0xSznU
-	 /9d7uodV+IJWYgNq02EEcYQMdFZdmE3s38WkbiOc=
+	b=yy1Sq46ynQ6w2C0oiVb5tJoW2G8RrhZbziyCSoeX7WYK1u6QcAk+svPruiwLrH9Eq
+	 tWW2LXQ8My6DvLA9Qn0yFpK+4wdhgBTY207nKi9diEDZ1560Z7eacsyIz+wqytPXD/
+	 mTrPppwdukvdh4aqlyg9pvy6ZvwHBs8usggLoSgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Mark Tinguely <mark.tinguely@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 363/422] ocfs2: handle a symlink read error correctly
-Date: Thu, 13 Feb 2025 15:28:32 +0100
-Message-ID: <20250213142450.557762026@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 141/273] usbnet: ipheth: fix DPE OoB read
+Date: Thu, 13 Feb 2025 15:28:33 +0100
+Message-ID: <20250213142412.908075381@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 2b4c2094da6d84e69b843dd3317902e977bf64bd upstream.
+commit ee591f2b281721171896117f9946fced31441418 upstream.
 
-Patch series "Convert ocfs2 to use folios".
+Fix an out-of-bounds DPE read, limit the number of processed DPEs to
+the amount that fits into the fixed-size NDP16 header.
 
-Mark did a conversion of ocfs2 to use folios and sent it to me as a
-giant patch for review ;-)
-
-So I've redone it as individual patches, and credited Mark for the patches
-where his code is substantially the same.  It's not a bad way to do it;
-his patch had some bugs and my patches had some bugs.  Hopefully all our
-bugs were different from each other.  And hopefully Mark likes all the
-changes I made to his code!
-
-
-This patch (of 23):
-
-If we can't read the buffer, be sure to unlock the page before returning.
-
-Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
-Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Mark Tinguely <mark.tinguely@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/symlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/ipheth.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ocfs2/symlink.c
-+++ b/fs/ocfs2/symlink.c
-@@ -65,7 +65,7 @@ static int ocfs2_fast_symlink_read_folio
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 03249208612e..5347cd7e295b 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -246,7 +246,7 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ 		goto rx_error;
  
- 	if (status < 0) {
- 		mlog_errno(status);
--		return status;
-+		goto out;
+ 	dpe = ncm0->dpe16;
+-	while (true) {
++	for (int dpe_i = 0; dpe_i < IPHETH_NDP16_MAX_DPE; ++dpe_i, ++dpe) {
+ 		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
+ 		dg_len = le16_to_cpu(dpe->wDatagramLength);
+ 
+@@ -268,8 +268,6 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ 		retval = ipheth_consume_skb(buf, dg_len, dev);
+ 		if (retval != 0)
+ 			return retval;
+-
+-		dpe++;
  	}
  
- 	fe = (struct ocfs2_dinode *) bh->b_data;
-@@ -76,9 +76,10 @@ static int ocfs2_fast_symlink_read_folio
- 	memcpy(kaddr, link, len + 1);
- 	kunmap_atomic(kaddr);
- 	SetPageUptodate(page);
-+out:
- 	unlock_page(page);
- 	brelse(bh);
--	return 0;
-+	return status;
- }
- 
- const struct address_space_operations ocfs2_fast_symlink_aops = {
+ rx_error:
+-- 
+2.48.1
+
 
 
 
