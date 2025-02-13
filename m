@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258C5A34443
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984DDA346E3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2746170575
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E2F17A40C9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6CB245017;
-	Thu, 13 Feb 2025 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2302C1422D8;
+	Thu, 13 Feb 2025 15:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGV4HfeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfokDJEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995FA26B08D;
-	Thu, 13 Feb 2025 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35AC26B0BD;
+	Thu, 13 Feb 2025 15:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458351; cv=none; b=sIbc776Aueicl7YFcQ99febSYwNZPlgVQTpS6BvJLnm/yooXdJCY5JrPNhRBt1bTvV0UyFsD4a9bG52kusu2B0tUKBOpi+IhXN7lHSXBNn20aUDBB1UoF2EqUmmeYBlAY260U8gWh2LhDrX4AbLykMMnvmM0Tyz/9qI93emPrqY=
+	t=1739460548; cv=none; b=rl1O2vXEOKBIhB5/aYQnO1sdIpYUpBuWQMtxAXbuwIn7TDLI3+m4w8OejSnzMIs/6sm4d9e4JqBnODfbGwMU888ENMwIH0v539omF9f13m3COawiG/Lrm8eElwmWMhby7OoqQCwETaIKDa1fyPmvUVTzW8oKAB+0TOkVmDuTikc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458351; c=relaxed/simple;
-	bh=4gdci7zZzO/Vi0sRXSO+uG6Ft/BTPuZ9vbiM+7nS2hY=;
+	s=arc-20240116; t=1739460548; c=relaxed/simple;
+	bh=dtzscxvl76ywyYNRn6xVr1W/kxd5kCKUV8gGnkZh1nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLuGFlTJT50hZTG1YDmZKZ8sd8lb4QOwNT502VeU5z5pGcGVy0zhBJtQqFiNRopdBr02Y1krLIuA8FEDktKGutk76qi0GO6pqEcW1DlW8/0clDMQpl7x6rq/9kDYM5fRpelrFq7RriVRkOIqahkiz3ngWCNlLpnAiNnv2N2ClEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGV4HfeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D66C4CEE4;
-	Thu, 13 Feb 2025 14:52:30 +0000 (UTC)
+	 MIME-Version; b=IpN+SEhDgFQNiqxQMih2JgZkRy1734MXMABD/pE9RlBeMpfSkrr5bA3IPFZj/OZy4mCLuIm5tYOUX10aBc9gLRaLZ3i2bkHN8R4QDJxh8qKfKEoWChyMWtxbMyJeK2PUnY3cZDhWEe5yir8z3eoK6q79i4ebf4PDWYJQfcWAg1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfokDJEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAF3C4CED1;
+	Thu, 13 Feb 2025 15:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458351;
-	bh=4gdci7zZzO/Vi0sRXSO+uG6Ft/BTPuZ9vbiM+7nS2hY=;
+	s=korg; t=1739460548;
+	bh=dtzscxvl76ywyYNRn6xVr1W/kxd5kCKUV8gGnkZh1nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGV4HfeZKtOIwJA9jdaWqzX7MmPnUKCyy2BuKXMP0KqyK2WSQw2zyTgoXxmjSMSls
-	 rgVuCSJrVe/xNLUI2WAn4Bp5OI1WmLFlVQaFjVSZRvKZTYaYN3xauEDbPGRDrtxpZ/
-	 iN9fBGQga07CwEdBmPEnXONP0Ld9RqH07Du0gJC4=
+	b=WfokDJEgFASLsQ0owVw0MvU/KG7FECSGnSIS0EdteVOzqZymg5OSeKbiynBRn4CLm
+	 ChKxP1nlkBe1a5kEYeuh5CmXDQyH13ifIw12S0NVlNKxD2asM4ZMqm6TaStY+EZyLa
+	 +yZKJdpRmUm9VhGuF2c73AzubjTEeyToZpRLdezA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Pessi <ppessi@nvidia.com>,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.12 367/422] mailbox: tegra-hsp: Clear mailbox before using message
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 144/273] soc: qcom: socinfo: Avoid out of bounds read of serial number
 Date: Thu, 13 Feb 2025 15:28:36 +0100
-Message-ID: <20250213142450.711412237@linuxfoundation.org>
+Message-ID: <20250213142413.026040439@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pekka Pessi <ppessi@nvidia.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 0b7f8328f988178b55ee11d772a6e1238c04d29d upstream.
+commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
 
-The Tegra RCE (Camera) driver expects the mailbox to be empty before
-processing the IVC messages. On RT kernel, the threads processing the
-IVC messages (which are invoked after `mbox_chan_received_data()` is
-called) may be on a different CPU or running with a higher priority
-than the HSP interrupt handler thread. This can cause it to act on the
-message before the mailbox gets cleared in the HSP interrupt handler
-resulting in a loss of IVC notification.
+On MSM8916 devices, the serial number exposed in sysfs is constant and does
+not change across individual devices. It's always:
 
-Fix this by clearing the mailbox data register before calling
-`mbox_chan_received_data()`.
+  db410c:/sys/devices/soc0$ cat serial_number
+  2644893864
 
-Fixes: 8f585d14030d ("mailbox: tegra-hsp: Add tegra_hsp_sm_ops")
-Fixes: 74c20dd0f892 ("mailbox: tegra-hsp: Add 128-bit shared mailbox support")
+The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
+have support for the serial_num field in the socinfo struct. There is an
+existing check to avoid exposing the serial number in that case, but it's
+not correct: When checking the item_size returned by SMEM, we need to make
+sure the *end* of the serial_num is within bounds, instead of comparing
+with the *start* offset. The serial_number currently exposed on MSM8916
+devices is just an out of bounds read of whatever comes after the socinfo
+struct in SMEM.
+
+Fix this by changing offsetof() to offsetofend(), so that the size of the
+field is also taken into account.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Pekka Pessi <ppessi@nvidia.com>
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/tegra-hsp.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/socinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -388,7 +388,6 @@ static void tegra_hsp_sm_recv32(struct t
- 	value = tegra_hsp_channel_readl(channel, HSP_SM_SHRD_MBOX);
- 	value &= ~HSP_SM_SHRD_MBOX_FULL;
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -760,7 +760,7 @@ static int qcom_socinfo_probe(struct pla
+ 	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
  
- 	/*
- 	 * Need to clear all bits here since some producers, such as TCU, depend
-@@ -398,6 +397,8 @@ static void tegra_hsp_sm_recv32(struct t
- 	 * explicitly, so we have to make sure we cover all possible cases.
- 	 */
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SM_SHRD_MBOX);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_32bit_ops = {
-@@ -433,7 +434,6 @@ static void tegra_hsp_sm_recv128(struct
- 	value[3] = tegra_hsp_channel_readl(channel, HSP_SHRD_MBOX_TYPE1_DATA3);
- 
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
- 
- 	/*
- 	 * Clear data registers and tag.
-@@ -443,6 +443,8 @@ static void tegra_hsp_sm_recv128(struct
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA2);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA3);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_TAG);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_128bit_ops = {
+-	if (offsetof(struct socinfo, serial_num) <= item_size) {
++	if (offsetofend(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
 
 
 
