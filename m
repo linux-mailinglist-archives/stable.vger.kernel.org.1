@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-116102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE4EA347F5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B5CA343F4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775B43B0110
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CDC816E30F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCF5145A03;
-	Thu, 13 Feb 2025 15:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719D315666B;
+	Thu, 13 Feb 2025 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gE4iLe8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGOsYnHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA626B0BD;
-	Thu, 13 Feb 2025 15:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFB5149C55;
+	Thu, 13 Feb 2025 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460332; cv=none; b=qlFqYa/WWS9mcKJZej1KELjbqlIoJLzyEcf6PrXxEJhAEIgZgphzTsisloGm1zihMNSU3LQCFKJ24pc87vmATCF/uNb1SYHbJHBR6NYlWkgd+/DvBsAuvMlNdHCgo5mcw3x3HJZFE/3HEcEJ6s29VbTYdaeJ+sc9ygi3tDK+LM8=
+	t=1739458222; cv=none; b=E59/eL5C+NUp/xdJvJtKv8Rlkr76gyMVIUUl12M8o/Xwc9Mc6kLd7tCYFX4/VelXORGE4P9V9msexxDUbkxYgaGFkAxZck+plN0x2QS8+xcqKnhO3QZb/pRNVuW8tj0bzB9zi4YbajhPDhZJxwgRQqXNpWO2zIQ+4SWwCAmscUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460332; c=relaxed/simple;
-	bh=Y78dQW6eFRwL2zumhkjeQ92MifihATYO/T784aY785M=;
+	s=arc-20240116; t=1739458222; c=relaxed/simple;
+	bh=Ih+ECOPd7cfC8/VeyEgedLDFo38OA4IbogwEsdaDMwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJ1JRMgso3oMqunMqPDo11XHtCGmXbyq8xmf8wVrv1lSOP0dosFxfl13N5ILjrhDG3h2M1PidehMmF3JbXqwsZt/DHh6XLo5O5Y9VcGu/LqcW8KBpr1OVrAMdP1mUWthcfQmEYdR9ZW71lqLkz6v6enM7jHQM2GNnprTwIosDtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gE4iLe8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3797AC4CED1;
-	Thu, 13 Feb 2025 15:25:31 +0000 (UTC)
+	 MIME-Version; b=PPooLTlKcs6BKjVHUCktXJK2elO0G3V1oXEcCDN00vaI/ON9ViGb1kprmh+OgyaQXPgESfh3Jq40J8KGPhZRkUoV1LVDfkywzIDJF3Tuo81oJTy8vRgf498r/d6+yInnrUSN49stJm1HEuOSgaH0qSUNHgeqoX8amlmims1ACd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGOsYnHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EED4C4CED1;
+	Thu, 13 Feb 2025 14:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460332;
-	bh=Y78dQW6eFRwL2zumhkjeQ92MifihATYO/T784aY785M=;
+	s=korg; t=1739458221;
+	bh=Ih+ECOPd7cfC8/VeyEgedLDFo38OA4IbogwEsdaDMwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gE4iLe8xnuHce8o8mVVR4h4JP4dnzPRXqcdIC6y7iQEi6WArsrhbvk2TLtmWsy5Kb
-	 Q7+Ru7yIPy3ysGYD6z5KISBjYqS+ZRfqs/enmkCQOIIu2v6t7OUJla+mhLMTQg2CRh
-	 EjxqKbT2o6LQb1E2HxuM9JlyXZViUgTFeTy/QlqU=
+	b=fGOsYnHmYERPpKUlLskNxx17kvXJoufa+4nOW/V0iuBCInxfmYzM0TjveHNxum3hB
+	 oIznS0O9zCZXuTMgXjX9wrV1RPTX3bKKMaNlSqI8s2teFHtVkGyOFk8AqiG0Zp3YGj
+	 GfA6NgQQxuEq/KRUb1Llf07sPiZXeABvef2+3f+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 081/273] cpufreq: s3c64xx: Fix compilation warning
-Date: Thu, 13 Feb 2025 15:27:33 +0100
-Message-ID: <20250213142410.544076956@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Andy Liang <andy.liang@hpe.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.12 305/422] tpm: Change to kvalloc() in eventlog/acpi.c
+Date: Thu, 13 Feb 2025 15:27:34 +0100
+Message-ID: <20250213142448.313167479@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
+commit a3a860bc0fd6c07332e4911cf9a238d20de90173 upstream.
 
-The driver generates following warning when regulator support isn't
-enabled in the kernel. Fix it.
+The following failure was reported on HPE ProLiant D320:
 
-   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
->> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-      55 |         unsigned int old_freq, new_freq;
-         |                      ^~~~~~~~
->> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-      54 |         struct s3c64xx_dvfs *dvfs;
-         |                              ^~~~
+[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
+[   10.848132][    T1] ------------[ cut here ]------------
+[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
+[   10.862827][    T1] Modules linked in:
+[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
+[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
+[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
+[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
+[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The above transcript shows that ACPI pointed a 16 MiB buffer for the log
+events because RSI maps to the 'order' parameter of __alloc_pages_noprof().
+Address the bug by moving from devm_kmalloc() to devm_add_action() and
+kvmalloc() and devm_add_action().
+
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.16+
+Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+Reported-by: Andy Liang <andy.liang@hpe.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Andy Liang <andy.liang@hpe.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/char/tpm/eventlog/acpi.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/s3c64xx-cpufreq.c
-+++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
- 	unsigned int vddarm_max;
- };
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_e
+ 	return n == 0;
+ }
  
-+#ifdef CONFIG_REGULATOR
- static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[0] = { 1000000, 1150000 },
- 	[1] = { 1050000, 1150000 },
-@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
- 	[3] = { 1200000, 1350000 },
- 	[4] = { 1300000, 1350000 },
- };
-+#endif
- 
- static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- 	{ 0, 0,  66000 },
-@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3
- static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
- 				      unsigned int index)
- {
--	struct s3c64xx_dvfs *dvfs;
--	unsigned int old_freq, new_freq;
-+	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
- 	int ret;
- 
-+#ifdef CONFIG_REGULATOR
-+	struct s3c64xx_dvfs *dvfs;
-+	unsigned int old_freq;
++static void tpm_bios_log_free(void *data)
++{
++	kvfree(data);
++}
 +
- 	old_freq = clk_get_rate(policy->clk) / 1000;
--	new_freq = s3c64xx_freq_table[index].frequency;
- 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
+ /* read binary bios log */
+ int tpm_read_log_acpi(struct tpm_chip *chip)
+ {
+@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *c
+ 	}
  
--#ifdef CONFIG_REGULATOR
- 	if (vddarm && new_freq > old_freq) {
- 		ret = regulator_set_voltage(vddarm,
- 					    dvfs->vddarm_min,
+ 	/* malloc EventLog space */
+-	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
++	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
+@@ -161,10 +166,16 @@ int tpm_read_log_acpi(struct tpm_chip *c
+ 		goto err;
+ 	}
+ 
++	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
++	if (ret) {
++		log->bios_event_log = NULL;
++		goto err;
++	}
++
+ 	return format;
+ 
+ err:
+-	devm_kfree(&chip->dev, log->bios_event_log);
++	tpm_bios_log_free(log->bios_event_log);
+ 	log->bios_event_log = NULL;
+ 	return ret;
+ }
 
 
 
