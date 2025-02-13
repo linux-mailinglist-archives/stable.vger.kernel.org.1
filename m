@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-116154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5FAA346DB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE36A3462B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC8A17A2D29
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274C416F3CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D814AD2D;
-	Thu, 13 Feb 2025 15:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2447335BA;
+	Thu, 13 Feb 2025 15:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYj3KsLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRw38Lqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEDF26B0BD;
-	Thu, 13 Feb 2025 15:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF3226B0B1;
+	Thu, 13 Feb 2025 15:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460511; cv=none; b=gC51WovW5y69h86w65WQUOI05WCCoIYD3DEI1pPKZCmZ7P9UrPDoWdF8mAXpIVCRP2S1AMXz+F51vgY2eStY4/xJdLCXmkvf6R0lhC4Dvgo+mbjj112yYwq2B2ZUh0FyxBBQpX5SsWbgpYG9rTgANLoSXUjEsIuncW0LxjL2Hz8=
+	t=1739459703; cv=none; b=gicFv8c12M7CkRHz6nj9ngVoT3CqR//8DhlN7Y2TwQFYLJKFI4Ov2PX8bw+oQ2YtdOU97m9Yh30fDSQiX4oMMseTQ7BkbbyDQVtVy3C4Ij366TwXUbm74I3q4ZggeKjuOYvxDNWxCFkRja4rZrTuXgkdqDc2jUXRvRQY3JsJ8qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460511; c=relaxed/simple;
-	bh=qlrMK1qOIKb90cyKbT+L16SUeImOJORkiCyNLnbOUFY=;
+	s=arc-20240116; t=1739459703; c=relaxed/simple;
+	bh=b68DPJ/pKBKNPYvAf1PAKKfQVpRxqQKShryoXP9qQFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnMK5P0lue6EW4EvZtj2ZD5QgRfvq4uRXp673GjD938Ig77dteq17gq86crIeYBXyvpFYm7pZzhYGLyq0jEOdd2CxEz94J2U8WM97a6czyi/Rf2rL/Rvxk1M70QTQ590XilPEnX/67MUDnNfHwOX9pdW+Q3Gyfr3ypDHwsb2boQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYj3KsLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23CEC4CED1;
-	Thu, 13 Feb 2025 15:28:30 +0000 (UTC)
+	 MIME-Version; b=Cz6TxAdjB+d/M2kLBZs1S7dv/F1Ow5p+ijqePEbdhruZdVuq5dA8FEKw0SLMxqBxQFOwihKlBRdPPPYJLjZhbEY+y9I+b3ip9ew7QfxUlASvLtEMLG5DEEPdUsCU8RbK4Ljh2GvINm7ie8fsOqGHzSVzh6k0di/PffCU1Bv3OI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRw38Lqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C921C4CED1;
+	Thu, 13 Feb 2025 15:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460511;
-	bh=qlrMK1qOIKb90cyKbT+L16SUeImOJORkiCyNLnbOUFY=;
+	s=korg; t=1739459703;
+	bh=b68DPJ/pKBKNPYvAf1PAKKfQVpRxqQKShryoXP9qQFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYj3KsLERVsVrTipchz7ShuhW7W6++185+NNcHACp32UgOXpSx8B+mV8Tc7Ikw+Mi
-	 RQ9gMsfXrxeDHMRGLo+tdQlQqylExg96iSxXHrITAUyPid8Dy6Yc6x2UMBcVhAhpmV
-	 8CCzb5/44o+HruYXg8HMcThybiimSN8eiT4Wzsp0=
+	b=LRw38LqxLaRO+ozvb8Q5nnmOqckBdo9oh5am0KTMlyFYS4hjmTatQJC5j1DvS8jaM
+	 ew/59+dL688XwVKS7CiIR2RnaMIrPpXMSyrqwxP9C2zhIRmVJJwPXCzmTwJ0lrv5Vm
+	 ZVh+tUIu3+d/kb+DZzbXYsHF1VpH51t93N7V5cbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 131/273] wifi: mt76: mt7915: add module param to select 5 GHz or 6 GHz on MT7916
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.13 338/443] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
 Date: Thu, 13 Feb 2025 15:28:23 +0100
-Message-ID: <20250213142412.516309668@linuxfoundation.org>
+Message-ID: <20250213142453.668512051@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +64,274 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 57af267d2b8f5d88485c6372761386d79c5e6a1a upstream.
+commit 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 upstream.
 
-Due to a limitation in available memory, the MT7916 firmware can only
-handle either 5 GHz or 6 GHz at a time. It does not support runtime
-switching without a full restart.
+hrtimers are migrated away from the dying CPU to any online target at
+the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
+handling tasks involved in the CPU hotplug forward progress.
 
-On older firmware, this accidentally worked to some degree due to missing
-checks, but couldn't be supported properly, because it left the 6 GHz
-channels uncalibrated.
-Newer firmware refuses to start on either band if the passed EEPROM
-data indicates support for both.
+However wakeups can still be performed by the outgoing CPU after
+CPUHP_AP_HRTIMERS_DYING. Those can result again in bandwidth timers being
+armed. Depending on several considerations (crystal ball power management
+based election, earliest timer already enqueued, timer migration enabled or
+not), the target may eventually be the current CPU even if offline. If that
+happens, the timer is eventually ignored.
 
-Deal with this limitation by using a module parameter to specify the
-preferred band in case both are supported.
+The most notable example is RCU which had to deal with each and every of
+those wake-ups by deferring them to an online CPU, along with related
+workarounds:
 
-Fixes: b4d093e321bd ("mt76: mt7915: add 6 GHz support")
+_ e787644caf76 (rcu: Defer RCU kthreads wakeup when CPU is dying)
+_ 9139f93209d1 (rcu/nocb: Fix RT throttling hrtimer armed from offline CPU)
+_ f7345ccc62a4 (rcu/nocb: Fix rcuog wake-up from offline softirq)
+
+The problem isn't confined to RCU though as the stop machine kthread
+(which runs CPUHP_AP_HRTIMERS_DYING) reports its completion at the end
+of its work through cpu_stop_signal_done() and performs a wake up that
+eventually arms the deadline server timer:
+
+   WARNING: CPU: 94 PID: 588 at kernel/time/hrtimer.c:1086 hrtimer_start_range_ns+0x289/0x2d0
+   CPU: 94 UID: 0 PID: 588 Comm: migration/94 Not tainted
+   Stopper: multi_cpu_stop+0x0/0x120 <- stop_machine_cpuslocked+0x66/0xc0
+   RIP: 0010:hrtimer_start_range_ns+0x289/0x2d0
+   Call Trace:
+   <TASK>
+     start_dl_timer
+     enqueue_dl_entity
+     dl_server_start
+     enqueue_task_fair
+     enqueue_task
+     ttwu_do_activate
+     try_to_wake_up
+     complete
+     cpu_stopper_thread
+
+Instead of providing yet another bandaid to work around the situation, fix
+it in the hrtimers infrastructure instead: always migrate away a timer to
+an online target whenever it is enqueued from an offline CPU.
+
+This will also allow to revert all the above RCU disgraceful hacks.
+
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Reported-by: Vlad Poenaru <vlad.wing@gmail.com>
+Reported-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20241010083816.51880-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
+Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c |   21 +++++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   |    4 ++--
- 2 files changed, 21 insertions(+), 4 deletions(-)
+ include/linux/hrtimer_defs.h |    1 
+ kernel/time/hrtimer.c        |  103 ++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 83 insertions(+), 21 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -2,9 +2,14 @@
- /* Copyright (C) 2020 MediaTek Inc. */
+--- a/include/linux/hrtimer_defs.h
++++ b/include/linux/hrtimer_defs.h
+@@ -125,6 +125,7 @@ struct hrtimer_cpu_base {
+ 	ktime_t				softirq_expires_next;
+ 	struct hrtimer			*softirq_next_timer;
+ 	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
++	call_single_data_t		csd;
+ } ____cacheline_aligned;
  
- #include <linux/firmware.h>
-+#include <linux/moduleparam.h>
- #include "mt7915.h"
- #include "eeprom.h"
  
-+static bool enable_6ghz;
-+module_param(enable_6ghz, bool, 0644);
-+MODULE_PARM_DESC(enable_6ghz, "Enable 6 GHz instead of 5 GHz on hardware that supports both");
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -58,6 +58,8 @@
+ #define HRTIMER_ACTIVE_SOFT	(HRTIMER_ACTIVE_HARD << MASK_SHIFT)
+ #define HRTIMER_ACTIVE_ALL	(HRTIMER_ACTIVE_SOFT | HRTIMER_ACTIVE_HARD)
+ 
++static void retrigger_next_event(void *arg);
 +
- static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ /*
+  * The timer bases:
+  *
+@@ -111,7 +113,8 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base,
+ 			.clockid = CLOCK_TAI,
+ 			.get_time = &ktime_get_clocktai,
+ 		},
+-	}
++	},
++	.csd = CSD_INIT(retrigger_next_event, NULL)
+ };
+ 
+ static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
+@@ -124,6 +127,14 @@ static const int hrtimer_clock_to_base_t
+ 	[CLOCK_TAI]		= HRTIMER_BASE_TAI,
+ };
+ 
++static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
++{
++	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
++		return true;
++	else
++		return likely(base->online);
++}
++
+ /*
+  * Functions and macros which are different for UP/SMP systems are kept in a
+  * single place
+@@ -183,27 +194,54 @@ struct hrtimer_clock_base *lock_hrtimer_
+ }
+ 
+ /*
+- * We do not migrate the timer when it is expiring before the next
+- * event on the target cpu. When high resolution is enabled, we cannot
+- * reprogram the target cpu hardware and we would cause it to fire
+- * late. To keep it simple, we handle the high resolution enabled and
+- * disabled case similar.
++ * Check if the elected target is suitable considering its next
++ * event and the hotplug state of the current CPU.
++ *
++ * If the elected target is remote and its next event is after the timer
++ * to queue, then a remote reprogram is necessary. However there is no
++ * guarantee the IPI handling the operation would arrive in time to meet
++ * the high resolution deadline. In this case the local CPU becomes a
++ * preferred target, unless it is offline.
++ *
++ * High and low resolution modes are handled the same way for simplicity.
+  *
+  * Called with cpu_base->lock of target cpu held.
+  */
+-static int
+-hrtimer_check_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base)
++static bool hrtimer_suitable_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base,
++				    struct hrtimer_cpu_base *new_cpu_base,
++				    struct hrtimer_cpu_base *this_cpu_base)
  {
- 	struct mt76_dev *mdev = &dev->mt76;
-@@ -159,8 +164,20 @@ static void mt7915_eeprom_parse_band_con
- 			phy->mt76->cap.has_6ghz = true;
- 			return;
- 		case MT_EE_V2_BAND_SEL_5GHZ_6GHZ:
--			phy->mt76->cap.has_5ghz = true;
--			phy->mt76->cap.has_6ghz = true;
-+			if (enable_6ghz) {
-+				phy->mt76->cap.has_6ghz = true;
-+				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
-+						 MT_EE_V2_BAND_SEL_6GHZ,
-+						 MT_EE_WIFI_CONF0_BAND_SEL);
-+			} else {
-+				phy->mt76->cap.has_5ghz = true;
-+				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
-+						 MT_EE_V2_BAND_SEL_5GHZ,
-+						 MT_EE_WIFI_CONF0_BAND_SEL);
-+			}
-+			/* force to buffer mode */
-+			dev->flash_mode = true;
-+
- 			return;
- 		default:
- 			phy->mt76->cap.has_2ghz = true;
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -1220,14 +1220,14 @@ int mt7915_register_device(struct mt7915
- 	if (ret)
- 		goto unreg_dev;
+ 	ktime_t expires;
  
--	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
++	/*
++	 * The local CPU clockevent can be reprogrammed. Also get_target_base()
++	 * guarantees it is online.
++	 */
++	if (new_cpu_base == this_cpu_base)
++		return true;
++
++	/*
++	 * The offline local CPU can't be the default target if the
++	 * next remote target event is after this timer. Keep the
++	 * elected new base. An IPI will we issued to reprogram
++	 * it as a last resort.
++	 */
++	if (!hrtimer_base_is_online(this_cpu_base))
++		return true;
++
+ 	expires = ktime_sub(hrtimer_get_expires(timer), new_base->offset);
+-	return expires < new_base->cpu_base->expires_next;
++
++	return expires >= new_base->cpu_base->expires_next;
+ }
+ 
+-static inline
+-struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base,
+-					 int pinned)
++static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base, int pinned)
+ {
++	if (!hrtimer_base_is_online(base)) {
++		int cpu = cpumask_any_and(cpu_online_mask, housekeeping_cpumask(HK_TYPE_TIMER));
++
++		return &per_cpu(hrtimer_bases, cpu);
++	}
++
+ #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
+ 	if (static_branch_likely(&timers_migration_enabled) && !pinned)
+ 		return &per_cpu(hrtimer_bases, get_nohz_timer_target());
+@@ -254,8 +292,8 @@ again:
+ 		raw_spin_unlock(&base->cpu_base->lock);
+ 		raw_spin_lock(&new_base->cpu_base->lock);
+ 
+-		if (new_cpu_base != this_cpu_base &&
+-		    hrtimer_check_target(timer, new_base)) {
++		if (!hrtimer_suitable_target(timer, new_base, new_cpu_base,
++					     this_cpu_base)) {
+ 			raw_spin_unlock(&new_base->cpu_base->lock);
+ 			raw_spin_lock(&base->cpu_base->lock);
+ 			new_cpu_base = this_cpu_base;
+@@ -264,8 +302,7 @@ again:
+ 		}
+ 		WRITE_ONCE(timer->base, new_base);
+ 	} else {
+-		if (new_cpu_base != this_cpu_base &&
+-		    hrtimer_check_target(timer, new_base)) {
++		if (!hrtimer_suitable_target(timer, new_base,  new_cpu_base, this_cpu_base)) {
+ 			new_cpu_base = this_cpu_base;
+ 			goto again;
+ 		}
+@@ -716,8 +753,6 @@ static inline int hrtimer_is_hres_enable
+ 	return hrtimer_hres_enabled;
+ }
+ 
+-static void retrigger_next_event(void *arg);
 -
- 	if (phy2) {
- 		ret = mt7915_register_ext_phy(dev, phy2);
- 		if (ret)
- 			goto unreg_thermal;
+ /*
+  * Switch to high resolution mode
+  */
+@@ -1206,6 +1241,7 @@ static int __hrtimer_start_range_ns(stru
+ 				    u64 delta_ns, const enum hrtimer_mode mode,
+ 				    struct hrtimer_clock_base *base)
+ {
++	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
+ 	struct hrtimer_clock_base *new_base;
+ 	bool force_local, first;
+ 
+@@ -1217,10 +1253,16 @@ static int __hrtimer_start_range_ns(stru
+ 	 * and enforce reprogramming after it is queued no matter whether
+ 	 * it is the new first expiring timer again or not.
+ 	 */
+-	force_local = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
++	force_local = base->cpu_base == this_cpu_base;
+ 	force_local &= base->cpu_base->next_timer == timer;
+ 
+ 	/*
++	 * Don't force local queuing if this enqueue happens on a unplugged
++	 * CPU after hrtimer_cpu_dying() has been invoked.
++	 */
++	force_local &= this_cpu_base->online;
++
++	/*
+ 	 * Remove an active timer from the queue. In case it is not queued
+ 	 * on the current CPU, make sure that remove_hrtimer() updates the
+ 	 * remote data correctly.
+@@ -1249,8 +1291,27 @@ static int __hrtimer_start_range_ns(stru
  	}
  
-+	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+ 	first = enqueue_hrtimer(timer, new_base, mode);
+-	if (!force_local)
+-		return first;
++	if (!force_local) {
++		/*
++		 * If the current CPU base is online, then the timer is
++		 * never queued on a remote CPU if it would be the first
++		 * expiring timer there.
++		 */
++		if (hrtimer_base_is_online(this_cpu_base))
++			return first;
 +
- 	dev->recovery.hw_init_done = true;
++		/*
++		 * Timer was enqueued remote because the current base is
++		 * already offline. If the timer is the first to expire,
++		 * kick the remote CPU to reprogram the clock event.
++		 */
++		if (first) {
++			struct hrtimer_cpu_base *new_cpu_base = new_base->cpu_base;
++
++			smp_call_function_single_async(new_cpu_base->cpu, &new_cpu_base->csd);
++		}
++		return 0;
++	}
  
- 	ret = mt7915_init_debugfs(&dev->phy);
+ 	/*
+ 	 * Timer was forced to stay on the current CPU to avoid
 
 
 
