@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED00AA3438B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDDCA346E5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 425141887421
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844AC1893272
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE26274272;
-	Thu, 13 Feb 2025 14:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24EA14658D;
+	Thu, 13 Feb 2025 15:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqYWbslM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+W+FnWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B37527425B;
-	Thu, 13 Feb 2025 14:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBB773176;
+	Thu, 13 Feb 2025 15:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457893; cv=none; b=dghELyYCxZVOHASU7ofZPbVS63ssdbuzMa/J43X+RZ848jQMZTE3S3YHkLNwt1Mf7N649ElPcbzIAV8ghXZv1gepNGKe4WJbA/0dsEp6ZNPfnFTLm8IuHx3tZVv9kzM6f/5/n7oO1twApmLv2NqTvSWXMSL1o7mhJqOVnzb4g2Y=
+	t=1739460123; cv=none; b=XDLX66VbQWUp23oQ++eI/47PsI+e38Wi1SViQkyCwTkoaajHU5503axvXfXdNbYdYDrbfvLuKKFIPbJwJKH5ZAik4lAVAg0pgfmrb/UnseQEbAdyEVcPGEW1UiYhR+8AVtY3HBoWKA5+c9pn2QWsXUoyw7NYzk3w88ItaI7Xmxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457893; c=relaxed/simple;
-	bh=YlBbr10/TQzKvytrZXrwOKgCdjbxvL4Xniit941emDo=;
+	s=arc-20240116; t=1739460123; c=relaxed/simple;
+	bh=uA0IQcpx3ARR2rd7E88yWVY70X9MADQ8wOBEAkXVoD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1tJtqHkd0mheh4UVLmn1JUNQnFLyDmRWEAwFYpGLz5/s/j6n4iGJS4rb3AS/WEaXx7KUiPYR46qZbtc1iz+7f5QP7/x4Sm5nOfP0sP5N/l9RmwHTvIadcr7YwMEkI40gLR35s9t7ouuV9OmbuO5wnpfkGSTPamAXkVBZkjCHO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqYWbslM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C028DC4CEE7;
-	Thu, 13 Feb 2025 14:44:52 +0000 (UTC)
+	 MIME-Version; b=a6leOfcXmhb52gBN11dY+bEVRwBseM+b9cq1EdOzd5RN1WYd434rB7WWG59t29kDaWSpAaW96ncNT1kLUjgb0HJCPifBg1NVG/nQGnSmhbbO/AOXk0RffVGpMw/kFaV37HgiOmvwUaeu+1gR3tHfvPABMCxHe5E1TVEHpbDuM/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+W+FnWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1278C4CED1;
+	Thu, 13 Feb 2025 15:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457893;
-	bh=YlBbr10/TQzKvytrZXrwOKgCdjbxvL4Xniit941emDo=;
+	s=korg; t=1739460123;
+	bh=uA0IQcpx3ARR2rd7E88yWVY70X9MADQ8wOBEAkXVoD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqYWbslMQk493d+yGPmVEjkHB5qbNNIoGk9SE3z7lRyzJwRzCICAUk4JWK/Wv/NsF
-	 aNxNmVBv89ieA+/V5uXg777+OFJvoOg2lQqC9hQlqDJ6ADGHt2J+k90lYR8Cn9RDuf
-	 ytRl7rkAygkJi0OlpquqFvOrdLe6+0Xp81sfOdT8=
+	b=B+W+FnWqq6m3n7aZokMXPRHD4S1smSErQeXvTCsyBSV+FfCUiHkZN487P99K4y8rp
+	 yxlHPRMZsv08XEKkJUcIM5ZwbFj90j1yQZbaYq5/2IkYRqU3s5kkVovM2f7vlv7iH6
+	 AMAD+8yPLjoGEC67gterQh65T5PTLtzTALe2PIrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Austrum <austrum.lab@gmail.com>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 244/422] ALSA: hda: Fix headset detection failure due to unstable sort
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/273] drm/amd/display: Fix Mode Cutoff in DSC Passthrough to DP2.1 Monitor
 Date: Thu, 13 Feb 2025 15:26:33 +0100
-Message-ID: <20250213142445.953521787@linuxfoundation.org>
+Message-ID: <20250213142408.199345888@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-commit 3b4309546b48fc167aa615a2d881a09c0a97971f upstream.
+[ Upstream commit e56ad45e991128bf4db160b75a1d9f647a341d8f ]
 
-The auto_parser assumed sort() was stable, but the kernel's sort() uses
-heapsort, which has never been stable. After commit 0e02ca29a563
-("lib/sort: optimize heapsort with double-pop variation"), the order of
-equal elements changed, causing the headset to fail to work.
+Source --> DP2.1 MST hub --> DP1.4/2.1 monitor
 
-Fix the issue by recording the original order of elements before
-sorting and using it as a tiebreaker for equal elements in the
-comparison function.
+When change from DP1.4 to DP2.1 from monitor manual, modes higher than
+4k120 are all cutoff by mode validation. Switch back to DP1.4 gets all
+the modes up to 4k240 available to be enabled by dsc passthrough.
 
-Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
-Reported-by: Austrum <austrum.lab@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
-Tested-by: Austrum <austrum.lab@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://patch.msgid.link/20250128165415.643223-1-visitorckw@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[why]
+Compared to DP1.4 link from hub to monitor, DP2.1 link has larger
+full_pbn value that causes overflow in the process of doing conversion
+from pbn to kbps.
+
+[how]
+Change the data type accordingly to fit into the data limit during
+conversion calculation.
+
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_auto_parser.c |    8 +++++++-
- sound/pci/hda/hda_auto_parser.h |    1 +
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/hda_auto_parser.c
-+++ b/sound/pci/hda/hda_auto_parser.c
-@@ -80,7 +80,11 @@ static int compare_input_type(const void
- 
- 	/* In case one has boost and the other one has not,
- 	   pick the one with boost first. */
--	return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
-+	if (a->has_boost_on_pin != b->has_boost_on_pin)
-+		return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
-+
-+	/* Keep the original order */
-+	return a->order - b->order;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 385a5a75fdf87..5858e288b3fd6 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1578,16 +1578,16 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 	return ret;
  }
  
- /* Reorder the surround channels
-@@ -400,6 +404,8 @@ int snd_hda_parse_pin_defcfg(struct hda_
- 	reorder_outputs(cfg->speaker_outs, cfg->speaker_pins);
+-static unsigned int kbps_from_pbn(unsigned int pbn)
++static uint32_t kbps_from_pbn(unsigned int pbn)
+ {
+-	unsigned int kbps = pbn;
++	uint64_t kbps = (uint64_t)pbn;
  
- 	/* sort inputs in the order of AUTO_PIN_* type */
-+	for (i = 0; i < cfg->num_inputs; i++)
-+		cfg->inputs[i].order = i;
- 	sort(cfg->inputs, cfg->num_inputs, sizeof(cfg->inputs[0]),
- 	     compare_input_type, NULL);
+ 	kbps *= (1000000 / PEAK_FACTOR_X1000);
+ 	kbps *= 8;
+ 	kbps *= 54;
+ 	kbps /= 64;
  
---- a/sound/pci/hda/hda_auto_parser.h
-+++ b/sound/pci/hda/hda_auto_parser.h
-@@ -37,6 +37,7 @@ struct auto_pin_cfg_item {
- 	unsigned int is_headset_mic:1;
- 	unsigned int is_headphone_mic:1; /* Mic-only in headphone jack */
- 	unsigned int has_boost_on_pin:1;
-+	int order;
- };
+-	return kbps;
++	return (uint32_t)kbps;
+ }
  
- struct auto_pin_cfg;
+ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
+-- 
+2.39.5
+
 
 
 
