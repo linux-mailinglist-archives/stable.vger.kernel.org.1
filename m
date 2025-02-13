@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BD9A34670
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E667AA344EC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC33018828B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C663B2CA9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F22926B0BF;
-	Thu, 13 Feb 2025 15:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C9B1DB154;
+	Thu, 13 Feb 2025 14:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGPzNpkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAh9XAs8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0E626B0A5;
-	Thu, 13 Feb 2025 15:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AF21E7C3A;
+	Thu, 13 Feb 2025 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459917; cv=none; b=XcMCqXIYlu4tke5c+YYZZrfqe9J45OJctwBCRtsNygrhzDJbNKieRlCf9L6/vaAYSrWUBKVDmURCYe45twi3S6rC0oacITx7knHhhIDYb2J7D3K3AshCNx8duv6oNvEQUjmJyEusb1rs74uPYY8kbibRxufc+7MU5HsjuZK9OhY=
+	t=1739458499; cv=none; b=aMFi/MbQcKSlDREfhoIP84O/s7mow6VQ3t0NgHzhxDasf+WIlxSsgY48yHKYOztvVoISD7EOpvggeHvhqPxZAdDLIbxoQkzlkok1LW4QeD601MwrQWJ1KsdI6Uk47oGmWsfTrPz2HwI0N5oddP99tz0N//ANKAONAEHwuRFYiWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459917; c=relaxed/simple;
-	bh=+sGkqxacSEr5Ohu9eaB0lZAyr3MBpdH7KU1CIGDrt74=;
+	s=arc-20240116; t=1739458499; c=relaxed/simple;
+	bh=NQrTozOOW5zPVGadbxc0ES6uJqPd0PB+cWZoa0csJoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1oJsIfLZoybAEMI3Xz0vtRMhqZQZAlam4zgIooIm6XgDqTjdhkpEKbAPmXc5D5SCwxYbBYFXYgjGIhSJ99qXVxmlViQETk2xVl9yvGIOA/RtjVXLES2L7zOV5haaa8EmIZ5zVHEEvfoDZqLYgfOiWsHtY+JdZYZ2HipIhWsVrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGPzNpkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E33C4CED1;
-	Thu, 13 Feb 2025 15:18:36 +0000 (UTC)
+	 MIME-Version; b=FYGmIkX/aFhWszYrZNRR6+Qdo+lbIEN/qmSFfFKwQILCogMqg0gpglWDpFxtjF8pI9tRneQ4xjFR9huNRCh15vIIEyGeb7FvKveniUQrh9nJwCtBSxN8HXxe0EPSjOVJdlwZeWc04xxcTkwO7xZUJm8guQNwbUzKsGdExelWdx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAh9XAs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE94C4CEE5;
+	Thu, 13 Feb 2025 14:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459917;
-	bh=+sGkqxacSEr5Ohu9eaB0lZAyr3MBpdH7KU1CIGDrt74=;
+	s=korg; t=1739458498;
+	bh=NQrTozOOW5zPVGadbxc0ES6uJqPd0PB+cWZoa0csJoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGPzNpkgJH5Fb4vgbRUDOxaUx+sqcTFRFyIDFhaZwg4jKy/s8rVAzEeF98kLaqirl
-	 ax1H06uOEjqLzJLa0DRHElgtX/Rp+8Dw7aRpbJFSeYpA8wUyDU8af5HzM3+k4XsGB6
-	 htXarILqlqaAUisr0xZYZrLtBSxR7ExfzDJHIo3M=
+	b=FAh9XAs8ESY49n0JfH/ZQqW8LF7p8ZZXZ+8CpMqEU3geNYItGfgcxqb9otxTbSOXm
+	 M3lt0AARInhs0dyRiiEHgc72Q1M9XjLBp/8b9eYfROxyJApYBnMTff9VGXQCI0+KPa
+	 gWJAdY6wa847cVgNdp74xBsK9o4qzHebm0Tr+5QA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.13 402/443] nfs: Make NFS_FSCACHE select NETFS_SUPPORT instead of depending on it
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 418/422] fs: prepend statmount.mnt_opts string with security_sb_mnt_opts()
 Date: Thu, 13 Feb 2025 15:29:27 +0100
-Message-ID: <20250213142456.119481916@linuxfoundation.org>
+Message-ID: <20250213142452.695896391@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 90190ba1c3b11687e2c251fda1f5d9893b4bab17 upstream.
+commit 056d33137bf9364456ee70aa265ccbb948daee49 upstream.
 
-Having the NFS_FSCACHE option depend on the NETFS_SUPPORT options makes
-selecting NFS_FSCACHE impossible unless another option that additionally
-selects NETFS_SUPPORT is already selected.
+Currently these mount options aren't accessible via statmount().
 
-As a result, for example, being able to reach and select the NFS_FSCACHE
-option requires the CEPH_FS or CIFS option to be selected beforehand, which
-obviously doesn't make much sense.
+The read handler for /proc/#/mountinfo calls security_sb_show_options()
+to emit the security options after emitting superblock flag options, but
+before calling sb->s_op->show_options.
 
-Let's correct this by making the NFS_FSCACHE option actually select the
-NETFS_SUPPORT option, instead of depending on it.
+Have statmount_mnt_opts() call security_sb_show_options() before
+calling ->show_options.
 
-Fixes: 915cd30cdea8 ("netfs, fscache: Combine fscache with netfs")
-Cc: stable@vger.kernel.org
-Reported-by: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20241115-statmount-v2-2-cd29aeff9cbb@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 5eb987105357 ("fs: fix adding security options to statmount.mnt_opt")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/Kconfig |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/namespace.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -170,7 +170,8 @@ config ROOT_NFS
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5025,6 +5025,10 @@ static int statmount_mnt_opts(struct kst
+ 	if (sb->s_op->show_options) {
+ 		size_t start = seq->count;
  
- config NFS_FSCACHE
- 	bool "Provide NFS client caching support"
--	depends on NFS_FS=m && NETFS_SUPPORT || NFS_FS=y && NETFS_SUPPORT=y
-+	depends on NFS_FS
-+	select NETFS_SUPPORT
- 	select FSCACHE
- 	help
- 	  Say Y here if you want NFS data to be cached locally on disc through
++		err = security_sb_show_options(seq, sb);
++		if (err)
++			return err;
++
+ 		err = sb->s_op->show_options(seq, mnt->mnt_root);
+ 		if (err)
+ 			return err;
 
 
 
