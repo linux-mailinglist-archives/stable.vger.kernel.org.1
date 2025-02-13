@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9715CA345A9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935B9A342D8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE851736D1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F4AB16DCA0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65190156F3C;
-	Thu, 13 Feb 2025 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BD3281375;
+	Thu, 13 Feb 2025 14:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSqyWbSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA0Bq6Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7E726B09D;
-	Thu, 13 Feb 2025 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60D8281360;
+	Thu, 13 Feb 2025 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459106; cv=none; b=lctaibXj4vGFs+4dpR1fWcziMiQS7B9eo6V35odH4XSHKIbpEjsjj/7HhpV2mDktt4ahRvT+fmVOMdvv4hR67r6MKaORscNVbDXdHfVwDKLJoPdqvK5wnryEhqvVssKJCxAgotSLs6xyASrqpsKs0/5vkqpM6Hm2Z/gNXMS9gRc=
+	t=1739457588; cv=none; b=VUSs9/vBOQYodaLILf/6W23adP38jqeAKUIGSeoUVY87hI58NeRMuR2+UP6MRQvZ7YVrK/M1SMNYqQy1J+E8IAPSHYOgW4gzn50W7ml4CladpxM9pUVGDMmJseTL9XFKAPIbHiVYPY6/FDwYhqUF5/TRqV6QKWW/jKSa2lp+Wx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459106; c=relaxed/simple;
-	bh=UBfdoRDWGMFDr5Eyvsw8gTgTwtuJE7KLAwBPAszavNA=;
+	s=arc-20240116; t=1739457588; c=relaxed/simple;
+	bh=/3DfFN4gHa7j1XY6zGjWD7LvxfvDxQZ43S23sYayhc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sEbVAjepw9ON3AziMYqvTX1458PjmXBS/oSv1DAfejV+P9zh4PAFg9ytslNCKaNYKV8HhTIZuYJWhxfobLnafD98hvzBoqkMIPinvbgdhnnU5FIYnUBzViJK7mJfJeK0WOzx3LyLuQRpHlM6aR7bfiRPCFPmXBKLHvNnhTpVIhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSqyWbSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB7FC4CED1;
-	Thu, 13 Feb 2025 15:05:05 +0000 (UTC)
+	 MIME-Version; b=snBGZLcpHlK4gzkPnmBqCOgiqsJcES8hg8Cmeqe7GkZSIeSVZGsbZLf4e9uRzjr9c7vbbK3K7VXT8WCJUsCGERlpAhltJcwYdvApd5e4v68iBZeq9QiXlHSkSvc4m9+vFqGLUyoRrMJLWAKjayjL+q752r7eK79QHzM7XWMMyys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA0Bq6Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248C7C4CED1;
+	Thu, 13 Feb 2025 14:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459106;
-	bh=UBfdoRDWGMFDr5Eyvsw8gTgTwtuJE7KLAwBPAszavNA=;
+	s=korg; t=1739457588;
+	bh=/3DfFN4gHa7j1XY6zGjWD7LvxfvDxQZ43S23sYayhc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSqyWbSxAuIbi3zKWVBx/uCJM3bROPCwXKE84Z09Sixi4jylpkY35zQ4B8ZyGbUKJ
-	 xoAtmboPlRNOBNL6O2omwA71D6GT1Qa76eTY0sFA7eR32DoCL8F9j15o1BRwSE43uu
-	 zvvVHnedjXDSPzrgBaD+y7JyZU0fOH3dQAu4Owuw=
+	b=CA0Bq6DvUT4gdQkiIFrrpCh5P4zTL1G9qLK92hXejIN2Ds/yreDRh0xV4BBWGKmfd
+	 pZ8S2/t5IDQwujzZ8+wo2ULhwh0EmiX/Z6TbNufgZGXhkeQDmMhfOAvYO7IdxZiLzj
+	 Zx/74gg6lmNnYznoMJpkke4rtbjwqm/sP8QHenbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 137/443] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
-Date: Thu, 13 Feb 2025 15:25:02 +0100
-Message-ID: <20250213142445.887928511@linuxfoundation.org>
+	David Hildenbrand <david@redhat.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [PATCH 6.12 154/422] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
+Date: Thu, 13 Feb 2025 15:25:03 +0100
+Message-ID: <20250213142442.490571876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
+commit 5f230f41fdd9e799f43a699348dc572bca7159aa upstream.
 
-qdisc_tree_reduce_backlog() notifies parent qdisc only if child
-qdisc becomes empty, therefore we need to reduce the backlog of the
-child qdisc before calling it. Otherwise it would miss the opportunity
-to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
-since DRR uses ->qlen_notify() to maintain its active list.
+We try to reuse the same vsie page when re-executing the vsie with a
+given SCB address. The result is that we use the same shadow SCB --
+residing in the vsie page -- and can avoid flushing the TLB when
+re-running the vsie on a CPU.
 
-Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
-Cc: Martin Ottens <martin.ottens@fau.de>
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, when we allocate a fresh vsie page, or when we reuse a vsie page for
+a different SCB address -- reusing the shadow SCB in different context --
+we set ihcpu=0xffff to trigger the flush.
+
+However, after we looked up the SCB address in the radix tree, but before
+we grabbed the vsie page by raising the refcount to 2, someone could reuse
+the vsie page for a different SCB address, adjusting page->index and the
+radix tree. In that case, we would be reusing the vsie page with a
+wrong page->index.
+
+Another corner case is that we might set the SCB address for a vsie
+page, but fail the insertion into the radix tree. Whoever would reuse
+that page would remove the corresponding radix tree entry -- which might
+now be a valid entry pointing at another page, resulting in the wrong
+vsie page getting removed from the radix tree.
+
+Let's handle such races better, by validating that the SCB address of a
+vsie page didn't change after we grabbed it (not reuse for a different
+SCB; the alternative would be performing another tree lookup), and by
+setting the SCB address to invalid until the insertion in the tree
+succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
+
+These scenarios are rare, the effects a bit unclear, and these issues were
+only found by code inspection. Let's CC stable to be safe.
+
+Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Tested-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Message-ID: <20250107154344.1003072-2-david@redhat.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/vsie.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 71ec9986ed37f..fdd79d3ccd8ce 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -749,9 +749,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 				if (err != NET_XMIT_SUCCESS) {
- 					if (net_xmit_drop_count(err))
- 						qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 					sch->qstats.backlog -= pkt_len;
- 					sch->q.qlen--;
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
--- 
-2.39.5
-
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1362,8 +1362,14 @@ static struct vsie_page *get_vsie_page(s
+ 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
+ 	rcu_read_unlock();
+ 	if (page) {
+-		if (page_ref_inc_return(page) == 2)
+-			return page_to_virt(page);
++		if (page_ref_inc_return(page) == 2) {
++			if (page->index == addr)
++				return page_to_virt(page);
++			/*
++			 * We raced with someone reusing + putting this vsie
++			 * page before we grabbed it.
++			 */
++		}
+ 		page_ref_dec(page);
+ 	}
+ 
+@@ -1393,15 +1399,20 @@ static struct vsie_page *get_vsie_page(s
+ 			kvm->arch.vsie.next++;
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 	}
+-	page->index = addr;
+-	/* double use of the same address */
++	/* Mark it as invalid until it resides in the tree. */
++	page->index = ULONG_MAX;
++
++	/* Double use of the same address or allocation failure. */
+ 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
+ 		page_ref_dec(page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+ 	}
++	page->index = addr;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
+ 
+ 	vsie_page = page_to_virt(page);
+@@ -1496,7 +1507,9 @@ void kvm_s390_vsie_destroy(struct kvm *k
+ 		vsie_page = page_to_virt(page);
+ 		release_gmap_shadow(vsie_page);
+ 		/* free the radix tree entry */
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 		__free_page(page);
+ 	}
+ 	kvm->arch.vsie.page_count = 0;
 
 
 
