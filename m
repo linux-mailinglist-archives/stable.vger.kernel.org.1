@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B87A343CD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52510A346F9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A381891347
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78DBF16F2CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9EB241692;
-	Thu, 13 Feb 2025 14:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC59143736;
+	Thu, 13 Feb 2025 15:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwDM8D4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bk2iq/oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C4213D8A4;
-	Thu, 13 Feb 2025 14:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7D26B098;
+	Thu, 13 Feb 2025 15:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458038; cv=none; b=S6VmkLp4u2qg3sre/IWIVKTGFaV2ZRoNCx68cb/podeaoakEHW03XVVJXqjAbfvig7WNnUoswnNwYDvCVlecrDopWeH2PgEHQzwRH4nlIOQw+7CRfGu8KZ4KAYSRW1o9LwrIciPm8ODg7y/362yNXfoxqaXwhjTd19+ZCLMBX3A=
+	t=1739460262; cv=none; b=DrqXYIsUCFvlRhDRxnO9IbPibqtF+iXzVuQ8G8PAsastGbG38eFwNl8vFiPVHoZscpG42/FVDFZTN96ao7mfky3pn8oW5PFT4W9sRY1jEIv//NohlMbwu3vOHxSgofHtfd8e6MZ0cYh4tsvojOuwe2PeTY4ULqZ5UO9YPMz/1Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458038; c=relaxed/simple;
-	bh=/HBa2XgjcE/JMEMvl2tW2dfqOOx92Ba6m0Lq0CrctfU=;
+	s=arc-20240116; t=1739460262; c=relaxed/simple;
+	bh=gWqCDWVroILgQOl/iBWabLyz9VzNKMHQ5RUbjediwqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAn+yGSCtToLfJWyev3kWGBskp8mhbczbo7V8xe+ruh79qwaLTULsGBFQ7Eq2S5dsRQqlZFHKjNm40RK2sN8v6r5gMf4DBKQ3znSGPz/ML/fAmq3IZpcBwaAZ+8YDhZctUDMZXyDXFMCAoYUxQW+prTRRqiOgUOeW3mNPaKBQT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwDM8D4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9DC4CED1;
-	Thu, 13 Feb 2025 14:47:17 +0000 (UTC)
+	 MIME-Version; b=unZeW+TmshYhYD4EwEk/+3MmQ/JCeJQxEBmX/24rbs/chmjjsOYCqpPGHbJDPgQxRDdxxVU4fdg+3AQSGorV9bCXw4MRoFFykObb0lSWIPaowxwbXPAanxY33gctvltwvJSvzWJcI5mMaOvLruAOy2le7C7Pw6V8WQmqdR7vD7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bk2iq/oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F592C4CEE4;
+	Thu, 13 Feb 2025 15:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458038;
-	bh=/HBa2XgjcE/JMEMvl2tW2dfqOOx92Ba6m0Lq0CrctfU=;
+	s=korg; t=1739460261;
+	bh=gWqCDWVroILgQOl/iBWabLyz9VzNKMHQ5RUbjediwqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwDM8D4MQpf9FpA5kyKxw66loj64U+jGcCPJNBdnu/Mj4YI4iYivmXI2BfyAcilMP
-	 gvJhN5b+DXin/szzltr5Ltbr6njkoWFQms/zmdKgTxUqVxuuf+P6OhFx3T1EPMmySS
-	 lzxwLFuL9EaP2VSqufkb2RqV28FsKYo1On7GGUjY=
+	b=bk2iq/oRd9thBcyKtExvIbZZ2YF1hxl6NZNe2ReTs2xPbM1tnK2mfeSLT+0ajwSpF
+	 pC566Mx2+eMGzgYSole3e57r1erEKOfZkUOzaR4j1q6O0t+HdnpszjBspW/2FTNiGn
+	 bRsy31c+nBmi69Q5sxSJtSrV/snSX/xVlFoauxc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 283/422] arm64: dts: qcom: sm8350: Fix MPSS memory length
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/273] nvme: handle connectivity loss in nvme_set_queue_count
 Date: Thu, 13 Feb 2025 15:27:12 +0100
-Message-ID: <20250213142447.464812765@linuxfoundation.org>
+Message-ID: <20250213142409.725811958@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Daniel Wagner <wagi@kernel.org>
 
-commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
+[ Upstream commit 294b2b7516fd06a8dd82e4a6118f318ec521e706 ]
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+When the set feature attempts fails with any NVME status code set in
+nvme_set_queue_count, the function still report success. Though the
+numbers of queues set to 0. This is done to support controllers in
+degraded state (the admin queue is still up and running but no IO
+queues).
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+Though there is an exception. When nvme_set_features reports an host
+path error, nvme_set_queue_count should propagate this error as the
+connectivity is lost, which means also the admin queue is not working
+anymore.
 
-Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a0be7abb62f ("nvme: refactor set_queue_count")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2214,7 +2214,7 @@
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 26e3f1896dc39..8a200931bc297 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1553,7 +1553,13 @@ int nvme_set_queue_count(struct nvme_ctrl *ctrl, int *count)
  
- 		mpss: remoteproc@4080000 {
- 			compatible = "qcom,sm8350-mpss-pas";
--			reg = <0x0 0x04080000 0x0 0x4040>;
-+			reg = <0x0 0x04080000 0x0 0x10000>;
+ 	status = nvme_set_features(ctrl, NVME_FEAT_NUM_QUEUES, q_count, NULL, 0,
+ 			&result);
+-	if (status < 0)
++
++	/*
++	 * It's either a kernel error or the host observed a connection
++	 * lost. In either case it's not possible communicate with the
++	 * controller and thus enter the error code path.
++	 */
++	if (status < 0 || status == NVME_SC_HOST_PATH_ERROR)
+ 		return status;
  
- 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+ 	/*
+-- 
+2.39.5
+
 
 
 
