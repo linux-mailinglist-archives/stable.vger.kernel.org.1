@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CFCA3430A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33072A3454A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D1D23A1644
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377B416E3A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C930423A9BB;
-	Thu, 13 Feb 2025 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE12A1D63D3;
+	Thu, 13 Feb 2025 15:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YU8xJEsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUWwrF5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B80221552;
-	Thu, 13 Feb 2025 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF041C5F37;
+	Thu, 13 Feb 2025 15:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457566; cv=none; b=uvjV+hM3jVtkkpuGrW4xGOKRXDAoLtdKOIMP0ZfIfhjEJOpNOFHEy35CUl9nIgwDMYuV3DDLk7/drq6Ftb53oLAvU8pqdwFTeL3xecU+0JK0py79aBLol3dcOziWV4m2uEO6be7cUunxprRISEyo4zuuwtKOrRXAjT1amxEVxVU=
+	t=1739458981; cv=none; b=KiB+KWszPfgwLOC4ZYRM31Nh/QrKzeG9END8Inr9iXk0rLvPaeKRVPk8QLedK7hTKeSlqZRZgA0iljGhoafhP2F8Wn3AAO79bwLblxwVdpaemtxP3XEpBjm1MZB4MwdD+EggYt89TJWY14uZn9G9TV01oDjFbL16llIFyKuAUys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457566; c=relaxed/simple;
-	bh=TOgaa+a3SryGPe/k1mpsvw4M28kbbs5mPinAyLS0e+g=;
+	s=arc-20240116; t=1739458981; c=relaxed/simple;
+	bh=zUaf2DeDuBOW53mF/yJcAZ/9q5MSiqIkGsRFislqT64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=er8R67l7XiPtNxy3qU4uamP4JlB7BBCzNGxLKyHJzuGoc8g9SpNJR5NT/C0bA907e2XSyVmOc4bhypGnnRmktNf3CcHEqpfBI8mv4mDNEPpbGHdnO/t8RQDrep3WnUETXpY3P3SujsEkemBdSXodnd5sEZYVn8UJl9TbLTSoi6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YU8xJEsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D50C4CED1;
-	Thu, 13 Feb 2025 14:39:25 +0000 (UTC)
+	 MIME-Version; b=uQTY5iDzckMKcUqpxRfyEYBjvJ1cDrlmzWxL3WCsZgbz6CYc7klR8Jfzdj+hrHwsUkyJpRWLVJ8N61eM3/hb7VQLL9YQZA+6Z4KQmPyHiQvuyYtDnAo1LPh28VsoPwbJLQFjoxHCJSlO1O78be3wMp0vtHWD7pCOYdxTBAZ+boA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUWwrF5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244CEC4CED1;
+	Thu, 13 Feb 2025 15:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457566;
-	bh=TOgaa+a3SryGPe/k1mpsvw4M28kbbs5mPinAyLS0e+g=;
+	s=korg; t=1739458981;
+	bh=zUaf2DeDuBOW53mF/yJcAZ/9q5MSiqIkGsRFislqT64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YU8xJEsUpIISasAtKdRh/p7TE//ClZsvgOWQ26YewLU77MK7u80eygACEjj9Npg0Y
-	 9s/jFOJ9h+WuOfVaGLyRx5eM5RNTOJ4fqqAf4Wad78zB7TDca+ZSTJ+6XFCOy8Gudy
-	 if5uucRZOhRDeNa81CbD2vXcx1zU8YUZOSxlSmZw=
+	b=vUWwrF5ATovXHAwrvBIcKn6Pp6KoLDtn9T9c8QmfEjBtYzudfCrCT0z6i9y8ihR3W
+	 l5LEnYLZvfb46HDNjnIzuIQyg7GbaJjJZ95pZTskchl72zGIZ1ms0JWra79kQuxrER
+	 N3x+gKK1MbyuzqJFg0q4u1BE4JuN2tHRZZ9oyFD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Terletskyi <dmytro_terletskyi@epam.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 148/422] KVM: arm64: timer: Always evaluate the need for a soft timer
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 132/443] gpio: GPIO_GRGPIO should depend on OF
 Date: Thu, 13 Feb 2025 15:24:57 +0100
-Message-ID: <20250213142442.259764221@linuxfoundation.org>
+Message-ID: <20250213142445.700635660@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit b450dcce93bc2cf6d2bfaf5a0de88a94ebad8f89 upstream.
+[ Upstream commit 5393f40a640b8c4f716bf87e7b0d4328bf1f22b2 ]
 
-When updating the interrupt state for an emulated timer, we return
-early and skip the setup of a soft timer that runs in parallel
-with the guest.
+While the Aeroflex Gaisler GRGPIO driver has no build-time dependency on
+gpiolib-of, it supports only DT-based configuration, and is used only on
+DT systems.  Hence add a dependency on OF, to prevent asking the user
+about this driver when configuring a kernel without DT support.
 
-While this is OK if we have set the interrupt pending, it is pretty
-wrong if the guest moved CVAL into the future.  In that case,
-no timer is armed and the guest can wait for a very long time
-(it will take a full put/load cycle for the situation to resolve).
-
-This is specially visible with EDK2 running at EL2, but still
-using the EL1 virtual timer, which in that case is fully emulated.
-Any key-press takes ages to be captured, as there is no UART
-interrupt and EDK2 relies on polling from a timer...
-
-The fix is simply to drop the early return. If the timer interrupt
-is pending, we will still return early, and otherwise arm the soft
-timer.
-
-Fixes: 4d74ecfa6458b ("KVM: arm64: Don't arm a hrtimer for an already pending timer")
-Cc: stable@vger.kernel.org
-Tested-by: Dmytro Terletskyi <dmytro_terletskyi@epam.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250204110050.150560-2-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bc40668def384256 ("gpio: grgpio: drop Kconfig dependency on OF_GPIO")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/db6da3d11bf850d89f199e5c740d8f133e38078d.1738760539.git.geert+renesas@glider.be
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/arch_timer.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpio/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -466,10 +466,8 @@ static void timer_emulate(struct arch_ti
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 93ee3aa092f81..1a66ca075aded 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -338,6 +338,7 @@ config GPIO_GRANITERAPIDS
  
- 	trace_kvm_timer_emulate(ctx, should_fire);
- 
--	if (should_fire != ctx->irq.level) {
-+	if (should_fire != ctx->irq.level)
- 		kvm_timer_update_irq(ctx->vcpu, should_fire, ctx);
--		return;
--	}
- 
- 	/*
- 	 * If the timer can fire now, we don't need to have a soft timer
+ config GPIO_GRGPIO
+ 	tristate "Aeroflex Gaisler GRGPIO support"
++	depends on OF || COMPILE_TEST
+ 	select GPIO_GENERIC
+ 	select IRQ_DOMAIN
+ 	help
+-- 
+2.39.5
+
 
 
 
