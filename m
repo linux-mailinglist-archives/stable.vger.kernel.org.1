@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EFFA34538
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F21A34243
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CB653AC981
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC14816B317
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE83156C71;
-	Thu, 13 Feb 2025 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DD5139566;
+	Thu, 13 Feb 2025 14:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9IlADON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHJNoq4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0815826B09D;
-	Thu, 13 Feb 2025 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F31281377;
+	Thu, 13 Feb 2025 14:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458722; cv=none; b=Qs3E6tebcrQm0W87LsEEhUF+TlZgvav1xEu0KMvfy85lTgKb3IGEyawJPopduergy9cXLYLKehgFpHOTcdhDQy2+JKLsYkKJ6F6AMNy4lTZzVf5f1m0bpt5IEvZ4ejQrGrteTlZ84CAbcBKjETpZnZI6jHRDfIgJWGkXGFDvj6I=
+	t=1739457219; cv=none; b=MHZuoYermp5hWQaBbsTawuojcCeJZzexTbM+krSURXhzc+VScZTtMdDuiqGVCZa6+hP1V+muhv3zDHMbbyKxZetuRDHHtOEpwFKSDY+ykm7KYkhe/ztLyAWwhMZAm0VTOA5ebvq5csCLRvm7ZuYyI7QGSf21nM+IDvG8p3aA6Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458722; c=relaxed/simple;
-	bh=QaPbgDjhox61vvFEhvfLPAPn1dH+6SCZjHe5IUXvmbE=;
+	s=arc-20240116; t=1739457219; c=relaxed/simple;
+	bh=rqV35hszPG0wQ8HtZBm7y5/n5bDIEWz91Oy38NvNbF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRGHReBhvnadoA9qd3ye+7qv1huxJrn9tML8ak0vP8MXAdHVWeHrCfd2cJqm3y28HUyqrnzIYzwoAakAtsWrfbPhTfbxeSfCFzrv4ffNLVyUtWG741ILCwff0FlLclwt204Hm2rGmiE6HO2ZebeCUu7v/q2BHrgV2Bxb3AazukM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9IlADON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A72C4CED1;
-	Thu, 13 Feb 2025 14:58:41 +0000 (UTC)
+	 MIME-Version; b=VbPvGjUbe19+eW9DkzrvAULsjvQDr4L7K5VZnGjmPj4qmCzoIFhOw7pAm5XQJtSEfD85bslnXZVK/eOT5LfX7UMm8REVJoCVlKFVNT9FHX1JCuHPTshoB+OfISO7zVnRmYxtqPMG/4mbY/qzH9lC3Tu2Qt1Xp70iYL0dXB3Hlew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHJNoq4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0612C4CEE4;
+	Thu, 13 Feb 2025 14:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458721;
-	bh=QaPbgDjhox61vvFEhvfLPAPn1dH+6SCZjHe5IUXvmbE=;
+	s=korg; t=1739457219;
+	bh=rqV35hszPG0wQ8HtZBm7y5/n5bDIEWz91Oy38NvNbF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9IlADONVu92Elib2A+x+gLQxq1QpRlByD27tYRIdbLJ710thL67cC2kRjBD55MNs
-	 /ZBT4t3ouQ7xa8b45JmD+NDC+VkL1kIxRtMHh0NUJiHurMrlPRRxmz6IJ9owY+MFXy
-	 uQzgZmUp7l2jW/9c2TC79n0/VrTSbqceQ7BgfGXs=
+	b=oHJNoq4caob4gmXGD/XwgZav7c7PTxsa8yzWxaQCN3Q20+uqQNSxJ3C+z30zeinyU
+	 8iracHn/OZnOpcI/x5bBFvb3b+sh2nFRTC0QkUrRUSKQotnkf6CTKxRBHOl0mNjdxq
+	 Qk6qyVe2CdvHFVomblY34wn/zOlt0Cyudf9OQJnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 032/443] drm/connector: add mutex to protect ELD from concurrent access
+Subject: [PATCH 6.12 048/422] wifi: rtw89: add crystal_cap check to avoid setting as overflow value
 Date: Thu, 13 Feb 2025 15:23:17 +0100
-Message-ID: <20250213142441.865474355@linuxfoundation.org>
+Message-ID: <20250213142438.417265160@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit df7c8e3dde37a9d81c0613285b43600f3cc70f34 ]
+[ Upstream commit 7b98caea39676561f22db58752551161bb36462b ]
 
-The connector->eld is accessed by the .get_eld() callback. This access
-can collide with the drm_edid_to_eld() updating the data at the same
-time. Add drm_connector.eld_mutex to protect the data from concurrenct
-access. Individual drivers are not updated (to reduce possible issues
-while applying the patch), maintainers are to find a best suitable way
-to lock that mutex while accessing the ELD data.
+In the original flow, the crystal_cap might be calculated as a negative
+value and set as an overflow value. Therefore, we added a check to limit
+the calculated crystal_cap value. Additionally, we shrank the crystal_cap
+adjustment according to specific CFO.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-1-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241128055433.11851-7-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_connector.c | 1 +
- drivers/gpu/drm/drm_edid.c      | 6 ++++++
- include/drm/drm_connector.h     | 5 ++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 11 ++++++-----
+ drivers/net/wireless/realtek/rtw89/phy.h |  2 +-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index ca7f43c8d6f1b..0e6021235a930 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -277,6 +277,7 @@ static int __drm_connector_init(struct drm_device *dev,
- 	INIT_LIST_HEAD(&connector->probed_modes);
- 	INIT_LIST_HEAD(&connector->modes);
- 	mutex_init(&connector->mutex);
-+	mutex_init(&connector->eld_mutex);
- 	mutex_init(&connector->edid_override_mutex);
- 	mutex_init(&connector->hdmi.infoframes.lock);
- 	connector->edid_blob_ptr = NULL;
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 855beafb76ffb..13bc4c290b17d 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -5605,7 +5605,9 @@ EXPORT_SYMBOL(drm_edid_get_monitor_name);
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 4b47b45f897cb..5c31639b4cade 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -3892,7 +3892,6 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
  
- static void clear_eld(struct drm_connector *connector)
- {
-+	mutex_lock(&connector->eld_mutex);
- 	memset(connector->eld, 0, sizeof(connector->eld));
-+	mutex_unlock(&connector->eld_mutex);
- 
- 	connector->latency_present[0] = false;
- 	connector->latency_present[1] = false;
-@@ -5657,6 +5659,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
- 	if (!drm_edid)
+ 	if (!force && cfo->crystal_cap == crystal_cap)
  		return;
+-	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
+ 	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8851B) {
+ 		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
+ 		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
+@@ -4015,7 +4014,7 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
+ 					     s32 curr_cfo)
+ {
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+-	s8 crystal_cap = cfo->crystal_cap;
++	int crystal_cap = cfo->crystal_cap;
+ 	s32 cfo_abs = abs(curr_cfo);
+ 	int sign;
  
-+	mutex_lock(&connector->eld_mutex);
+@@ -4036,15 +4035,17 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
+ 	}
+ 	sign = curr_cfo > 0 ? 1 : -1;
+ 	if (cfo_abs > CFO_TRK_STOP_TH_4)
+-		crystal_cap += 7 * sign;
++		crystal_cap += 3 * sign;
+ 	else if (cfo_abs > CFO_TRK_STOP_TH_3)
+-		crystal_cap += 5 * sign;
+-	else if (cfo_abs > CFO_TRK_STOP_TH_2)
+ 		crystal_cap += 3 * sign;
++	else if (cfo_abs > CFO_TRK_STOP_TH_2)
++		crystal_cap += 1 * sign;
+ 	else if (cfo_abs > CFO_TRK_STOP_TH_1)
+ 		crystal_cap += 1 * sign;
+ 	else
+ 		return;
 +
- 	mnl = get_monitor_name(drm_edid, &eld[DRM_ELD_MONITOR_NAME_STRING]);
- 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD monitor %s\n",
- 		    connector->base.id, connector->name,
-@@ -5717,6 +5721,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
- 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD size %d, SAD count %d\n",
- 		    connector->base.id, connector->name,
- 		    drm_eld_size(eld), total_sad_count);
-+
-+	mutex_unlock(&connector->eld_mutex);
- }
- 
- static int _drm_edid_to_sad(const struct drm_edid *drm_edid,
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index e3fa43291f449..1e2b25e204cb5 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -2001,8 +2001,11 @@ struct drm_connector {
- 	struct drm_encoder *encoder;
- 
- #define MAX_ELD_BYTES	128
--	/** @eld: EDID-like data, if present */
-+	/** @eld: EDID-like data, if present, protected by @eld_mutex */
- 	uint8_t eld[MAX_ELD_BYTES];
-+	/** @eld_mutex: protection for concurrenct access to @eld */
-+	struct mutex eld_mutex;
-+
- 	/** @latency_present: AV delay info from ELD, if found */
- 	bool latency_present[2];
- 	/**
++	crystal_cap = clamp(crystal_cap, 0, 127);
+ 	rtw89_phy_cfo_set_crystal_cap(rtwdev, (u8)crystal_cap, false);
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO,
+ 		    "X_cap{Curr,Default}={0x%x,0x%x}\n",
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 7e335c02ee6fb..9bb9c9c8e7a1b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -57,7 +57,7 @@
+ #define CFO_TRK_STOP_TH_4 (30 << 2)
+ #define CFO_TRK_STOP_TH_3 (20 << 2)
+ #define CFO_TRK_STOP_TH_2 (10 << 2)
+-#define CFO_TRK_STOP_TH_1 (00 << 2)
++#define CFO_TRK_STOP_TH_1 (03 << 2)
+ #define CFO_TRK_STOP_TH (2 << 2)
+ #define CFO_SW_COMP_FINE_TUNE (2 << 2)
+ #define CFO_PERIOD_CNT 15
 -- 
 2.39.5
 
