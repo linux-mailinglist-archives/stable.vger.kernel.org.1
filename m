@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4ABA347CB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78222A3466E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D572518833E3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A935A1712B9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8616626B098;
-	Thu, 13 Feb 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751DE146588;
+	Thu, 13 Feb 2025 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXHxDkgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FG//z6VS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4307013C816;
-	Thu, 13 Feb 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3135C26B0BC;
+	Thu, 13 Feb 2025 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460776; cv=none; b=V8tqW5U3a7ZAzNUcBF2M0KykH7VSwOMaGxZPzZn4FOI6Tcdo+YpAU+GR9QKjVskQlrlLnAkfHn48wgG0NxVfskY2k71TJiFOAZVzg4MQgR7PfcD88bF/H60cn57O81LKFzmWaEyKih4eTHlepHBJZtcq2nYQlz/JV/OxSWZoGBQ=
+	t=1739459961; cv=none; b=O+pqW55uTxsxWV4mIvvkf2hG+igS8sxxq4TBEyiaVnkFegcwYRM3cnmu2TxCrD1AjMKgp3qFTNCUO0tc1arGmc6f0v/VyLtkMA02DfNqR+xabv7ojuY5wgNDLcFcWkH5xPW+J2K+L0SVL6di51VTnW1CZUxNFjsd8uXX3ryMO+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460776; c=relaxed/simple;
-	bh=hcc3jaUC21Uf7TakrEnmR/nixjBRbR4luqrAmB5Yt5E=;
+	s=arc-20240116; t=1739459961; c=relaxed/simple;
+	bh=fcvtWx1fu2CabrPjmf4gc/9yDoylQzjDRxCmu0UNeAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gdxq19s9DTKLvw5noYz36802VexCYweDa2fx/vHeVVeOkrHvh5bax6IyyaWF0Tlg/AKSn4u/tTEBUhCfBC2gaPzsXR9XLcNLMul9MDTpCEz5zFIqbMntgRyzZnz2OPbO2upMfBhGx47HSIGWASW5cP62FIqSC9MHzJjkpEtTpPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXHxDkgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C81C4CED1;
-	Thu, 13 Feb 2025 15:32:55 +0000 (UTC)
+	 MIME-Version; b=flYFGI7ad7UbQd+6kN15+2fwg+avldKzSwpvwxXFuOlrj+I/tmoLwd8lhNHEuz4so7tVVTxv067waprPOHt1q06cJf3SQuFKeQQgXma0IMMKkvC5VFgvxTMkwynDMHMRSzVc2FaCF1vdaDROkrUEL20VTHSwi/Nunypo+VvG6ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FG//z6VS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0610C4CED1;
+	Thu, 13 Feb 2025 15:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460776;
-	bh=hcc3jaUC21Uf7TakrEnmR/nixjBRbR4luqrAmB5Yt5E=;
+	s=korg; t=1739459961;
+	bh=fcvtWx1fu2CabrPjmf4gc/9yDoylQzjDRxCmu0UNeAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXHxDkgX+nvanIe/PlZnjcGaNKDL9dT2/sDClMhs2HlSlc0BFFdcrT6C5o3sjSm9w
-	 isGopDBgfN59eWqOgOLgiEoz+dguN9hw+ceplp1Q1rGs/D6On7fwmaLAiiamRMjNhN
-	 1+c/kxFuwmDM4e+Nnpxkm7LVg3VBtZ3egkHcIw8c=
+	b=FG//z6VSnsQPHpMg6rt5K48qvE1md/6vLQiPgmrbRwl2wrPlQbqG4oApuZnpGaqEL
+	 HLWa8LPK7a3bFrmzxwHAKcEBpBjc/QxDc514fMIWq4aJA6p6rN9WXC1eyjPaHAV0cl
+	 RgPFVs4qScI9bo+gSpOQ24ZSHusDSLuf039n+zgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 177/273] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
+	Stefan Eichenberger <eichest@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.13 384/443] irqchip/irq-mvebu-icu: Fix access to msi_data from irq_domain::host_data
 Date: Thu, 13 Feb 2025 15:29:09 +0100
-Message-ID: <20250213142414.324937480@linuxfoundation.org>
+Message-ID: <20250213142455.428931678@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Stefan Eichenberger <eichest@gmail.com>
 
-commit be2f81eaa2c8e81d3de5b73dca5e133f63384cb3 upstream.
+commit 987f379b54091cc1b1db986bde71cee1081350b3 upstream.
 
-The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
-qup-config. Since the qup-memory path is not part of the qcom,geni-uart
-bindings, just replace that path with the correct path for qup-config.
+mvebu_icu_translate() incorrectly casts irq_domain::host_data directly to
+mvebu_icu_msi_data. However, host_data actually points to a structure of
+type msi_domain_info.
 
-Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+This incorrect cast causes issues such as the thermal sensors of the
+CP110 platform malfunctioning. Specifically, the translation of the SEI
+interrupt to IRQ_TYPE_EDGE_RISING fails, preventing proper interrupt
+handling. The following error was observed:
+
+  genirq: Setting trigger mode 4 for irq 85 failed (irq_chip_set_type_parent+0x0/0x34)
+  armada_thermal f2400000.system-controller:thermal-sensor@70: Cannot request threaded IRQ 85
+
+Resolve the issue by first casting host_data to msi_domain_info and then
+accessing mvebu_icu_msi_data through msi_domain_info::chip_data.
+
+Fixes: d929e4db22b6 ("irqchip/irq-mvebu-icu: Prepare for real per device MSI")
+Signed-off-by: Stefan Eichenberger <eichest@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/all/20250124085140.44792-1-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-mvebu-icu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -935,7 +935,7 @@
- 				power-domains = <&rpmhpd SM6350_CX>;
- 				operating-points-v2 = <&qup_opp_table>;
- 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
--						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
-+						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
- 				interconnect-names = "qup-core", "qup-config";
- 				status = "disabled";
- 			};
+--- a/drivers/irqchip/irq-mvebu-icu.c
++++ b/drivers/irqchip/irq-mvebu-icu.c
+@@ -68,7 +68,8 @@ static int mvebu_icu_translate(struct ir
+ 			       unsigned long *hwirq, unsigned int *type)
+ {
+ 	unsigned int param_count = static_branch_unlikely(&legacy_bindings) ? 3 : 2;
+-	struct mvebu_icu_msi_data *msi_data = d->host_data;
++	struct msi_domain_info *info = d->host_data;
++	struct mvebu_icu_msi_data *msi_data = info->chip_data;
+ 	struct mvebu_icu *icu = msi_data->icu;
+ 
+ 	/* Check the count of the parameters in dt */
 
 
 
