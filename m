@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992BBA34497
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41C9A34253
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 405B316ECB3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6A2188E018
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4AC2222B4;
-	Thu, 13 Feb 2025 14:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57279213233;
+	Thu, 13 Feb 2025 14:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhBMR7OW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYBfO1YR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C7E28382;
-	Thu, 13 Feb 2025 14:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6C270830;
+	Thu, 13 Feb 2025 14:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458592; cv=none; b=iPor7RpUUBkwWDYKfeIQG2nLHQB0ny27vsmJOaS+6iQ/pSpX/v41pzdOMzc/hhyQMaKxQlp5fGDFjm8FMgzcn9u8WnEqXNBF5PRso+I0V56TlK5gtnwk6XvdufKrIYP8WClb30zZcFkXarqsROMmQsTzbXg5i9KHHxLsLqwctE0=
+	t=1739457184; cv=none; b=aW7nA5IcqK9HGZnpHbRzF62IUwfGMpiV7+Y4rETPqs22C41eiIv+/J6uDFJs5E5FDUGdcOvlfKIEoW07b3PwuPbXUjvcRIvBiub+j1svnbeSiW1inSFGUBm011f3pPCFw9hxs2AmiPL3sQCWre9RA0jfNPAN23kR8Twaf6Rp66Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458592; c=relaxed/simple;
-	bh=64PAeAe5Td5at3R6lEsy/jQrZw06Q86GT1rcOPfliVk=;
+	s=arc-20240116; t=1739457184; c=relaxed/simple;
+	bh=+CClQ4LctIUgUeTd9fbFreKidxY9x5WwJTxTvN1v/LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0qlERmPvm/7xXxwEQfHz6hB7L1aOU6uhYqQR04AeInNFzJA4EG/eMMzXazGN9DNjEn2RNw/aXcS1qjuVU85oSU0QC/wXPtQ8GYlbiXN24sdeLSO718dk3+N8aejr3Zk81xRgoR/kWHi9KlyiXpYnD/Fv129c/hJ2lSZAThznoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhBMR7OW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E060C4CED1;
-	Thu, 13 Feb 2025 14:56:31 +0000 (UTC)
+	 MIME-Version; b=HgUYWtePG/vCr5+AhpbRhuNf2ejyeTgxqfylvB9HgPd/r77qbQdfHt3sD+jDbTDbTwD33Zg+7h8DtPG4aoGYZcrfLFzr+lIihIi/IW0gqALU139JbPgbk2oQy1ksBT9JPxd+acr303nHaZzcxqGsF0AuU7oYNFUHeC+tjp3QcgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYBfO1YR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFD2C4CED1;
+	Thu, 13 Feb 2025 14:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458592;
-	bh=64PAeAe5Td5at3R6lEsy/jQrZw06Q86GT1rcOPfliVk=;
+	s=korg; t=1739457183;
+	bh=+CClQ4LctIUgUeTd9fbFreKidxY9x5WwJTxTvN1v/LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhBMR7OWFcrn9PF5O9axihLKDd5jyPCaMS4LaYZQdic2DfL9KMWr4XzkZM9TUckQI
-	 auDIsz65HcIHJKYCueRzyD3qtGgciuIDVeRKX3lcXO8mx+5bxIjOvQKzFJ1fGwqKad
-	 7eUbeYfW+9NLgz5mZSqgeGMGvtA+d56JxbhSW+qw=
+	b=gYBfO1YRE6Osge+5EkKq52cmiViDopdKJnPEkUsC+dvyaH+e3/25htsebDfaS2ZwP
+	 DThCOp/zQd/SK/ZeVg4+tItq/LONZeHFgwzY4JB3Yb1pfY6lsaeNAGioYYOJYTlcTs
+	 8NHJxQx20PR6YXEK85FU6ntJLnPU+YGgqNHj06A8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 022/443] drm: panel-backlight-quirks: Add Framework 13 matte panel
-Date: Thu, 13 Feb 2025 15:23:07 +0100
-Message-ID: <20250213142441.477089522@linuxfoundation.org>
+Subject: [PATCH 6.12 039/422] drm/bridge: it6505: Change definition MAX_HDCP_DOWN_STREAM_COUNT
+Date: Thu, 13 Feb 2025 15:23:08 +0100
+Message-ID: <20250213142438.073710774@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit 916ecc0db336768d80e14ef28a8c64a775274f95 ]
+[ Upstream commit 85597bc0d70c287ba41f17d14d3d857a38a3d727 ]
 
-The value of "min_input_signal" returned from ATIF on a Framework AMD 13
-is "12". This leads to a fairly bright minimum display backlight.
+A HDCP source device shall support max downstream to 127 devices.
+Change definition MAX_HDCP_DOWN_STREAM_COUNT to 127
 
-Add a quirk to override that the minimum backlight PWM to "0" which
-leads to a much lower minimum brightness, which is still visible.
+KSVs shall save for DRM blocked devices check.
+This results in struct it6505 growth by ~0.5 KiB.
 
-Tested on a Framework AMD 13 BIOS 3.05 with the matte panel.
-
-Link: https://community.frame.work/t/25711/9
-Link: https://community.frame.work/t/47036
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-3-f662851fda69@weissschuh.net
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-4-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_backlight_quirks.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_backlight_quirks.c b/drivers/gpu/drm/drm_panel_backlight_quirks.c
-index 6b8bbed77c7f1..f2aefff618ddb 100644
---- a/drivers/gpu/drm/drm_panel_backlight_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_backlight_quirks.c
-@@ -17,6 +17,14 @@ struct drm_panel_min_backlight_quirk {
- };
- 
- static const struct drm_panel_min_backlight_quirk drm_panel_min_backlight_quirks[] = {
-+	/* 13 inch matte panel */
-+	{
-+		.dmi_match.field = DMI_BOARD_VENDOR,
-+		.dmi_match.value = "Framework",
-+		.ident.panel_id = drm_edid_encode_panel_id('B', 'O', 'E', 0x0bca),
-+		.ident.name = "NE135FBM-N41",
-+		.min_brightness = 0,
-+	},
- };
- 
- static bool drm_panel_min_backlight_quirk_matches(const struct drm_panel_min_backlight_quirk *quirk,
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index cf891e7677c0e..d55d7dad9545f 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -296,7 +296,7 @@
+ #define MAX_LANE_COUNT 4
+ #define MAX_LINK_RATE HBR
+ #define AUTO_TRAIN_RETRY 3
+-#define MAX_HDCP_DOWN_STREAM_COUNT 10
++#define MAX_HDCP_DOWN_STREAM_COUNT 127
+ #define MAX_CR_LEVEL 0x03
+ #define MAX_EQ_LEVEL 0x03
+ #define AUX_WAIT_TIMEOUT_MS 15
 -- 
 2.39.5
 
