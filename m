@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-116221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4EDA347BC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A8FA34697
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12651621EC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7783AA197
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6A270805;
-	Thu, 13 Feb 2025 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CA1335BA;
+	Thu, 13 Feb 2025 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeH9a+XS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGPRq8IV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAF826B087;
-	Thu, 13 Feb 2025 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3051626B0BE;
+	Thu, 13 Feb 2025 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460740; cv=none; b=SSAujkUitTJqtcxwOGjfaSPnxWYsS3qq2E0LqaHwjO2dpzNJJ9oxlMSqOpcZ3a+DoXbfGv1EwlL6npl+0w0oQqVHYBgI4WXeqOIx/BBV9fcWTFAQOFTPd+9ccdYD4wihXSJ8wHx7Te5OH2GFnsw1q113x3OhOBCm0xNQweJjzLo=
+	t=1739459926; cv=none; b=hkJb8KDbaUekLa63ourGcSFfAROaVLhLXvkm/Q2gOmmtrH6VQ30ySqFerd01Kqf6+6Jpq6EJ/+5DlgdD8XfmbH/8VUuZmLCpbyV9NbQ6A5GObQ0dcyDzS06aJ02yzmmVQBRPFwxxklTA13lRPGLSjej0F26IuCaMYGAAOHTwmkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460740; c=relaxed/simple;
-	bh=dVDHUWhDfgfiCV3wmAO5nKkg37DSfs+L5C4PWYs3oQ4=;
+	s=arc-20240116; t=1739459926; c=relaxed/simple;
+	bh=ZlX0G1SaTShCIV2ZIR6o0piePEGkGxC9Lt+kVeyY4jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJZ+Gh5hs4iKkZh/sLXe65krKBbdB076VpBix32YXiRw1wCPqd9yU791JoKXSFxLBl9LDJKg9gNdgsI+l9krr9GfVpPsZm/f1tqVKJEsqcRavc6M6hDaxf954b3a+jEXHSiP/HGFMrdXyEfzTeArhD8sGDcAaZOMoBJcDyGYjcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeH9a+XS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3429EC4CED1;
-	Thu, 13 Feb 2025 15:32:18 +0000 (UTC)
+	 MIME-Version; b=emRvKlKViVbGnAxdF+C9N7o66zTexCJNcMXgzlc7FP3OIsdCu/vW1B58Y1P8DFK9YKjdwSUL4GPxxjmm5kXtrY4h+R22doXhz2gTonsusUWivjAF6Dl9r4/HcAYsSgyObPvvPzB4Y+pq5+R4MYQyF22Ij107iLtKwOysNm34Frw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGPRq8IV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E182C4CED1;
+	Thu, 13 Feb 2025 15:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460738;
-	bh=dVDHUWhDfgfiCV3wmAO5nKkg37DSfs+L5C4PWYs3oQ4=;
+	s=korg; t=1739459926;
+	bh=ZlX0G1SaTShCIV2ZIR6o0piePEGkGxC9Lt+kVeyY4jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeH9a+XS4wJQ6dn4jjm7OcNRjVVAbQV9oFW9Lo1OJaULrIswm3T13tD7ZKC1n/VS4
-	 JTzisU/1iUm3xmSpY6QrBr4DDu3BnE3mSufxRUKBzLpKHQ407GaCJcgZT57jJdhYB3
-	 xwj7HFvU1aInJqEg1m8J5SFXypEAfjDSQeQZm7dc=
+	b=UGPRq8IVZl6aE7lqNHa+IDui2g+3F+LlSmuV0JWUnB2rJj1cWqUOBTm4KeGAbRuUT
+	 1EbLINb/1Kf6ebXaoZ8ueaOzozmvQAapsuDN/J6ZS3QZDYIJTTeD9VkOaPGqmb1QYJ
+	 SBo79L4mPaItmgOaFukSmbfUAPcW/p404qGEc4B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.6 171/273] ARM: dts: ti/omap: gta04: fix pm issues caused by spi module
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Aijun Sun <aijun.sun@unisoc.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 378/443] mm: gup: fix infinite loop within __get_longterm_locked
 Date: Thu, 13 Feb 2025 15:29:03 +0100
-Message-ID: <20250213142414.087805883@linuxfoundation.org>
+Message-ID: <20250213142455.194817113@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +65,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-commit 0cfbd7805fe13406500e6a6f2aa08f198d5db4bd upstream.
+commit 1aaf8c122918aa8897605a9aa1e8ed6600d6f930 upstream.
 
-Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
-disabling SPI leads to messages like when suspending:
-Powerdomain (core_pwrdm) didn't enter target state 0
-and according to /sys/kernel/debug/pm_debug/count off state is not
-entered. That was not connected to SPI during the discussion
-of disabling SPI. See:
-https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
+We can run into an infinite loop in __get_longterm_locked() when
+collect_longterm_unpinnable_folios() finds only folios that are isolated
+from the LRU or were never added to the LRU.  This can happen when all
+folios to be pinned are never added to the LRU, for example when
+vm_ops->fault allocated pages using cma_alloc() and never added them to
+the LRU.
 
-The reason is that SPI is per default in slave mode. Linux driver
-will turn it to master per default. It slave mode, the powerdomain seems to
-be kept active if active chip select input is sensed.
+Fix it by simply taking a look at the list in the single caller, to see if
+anything was added.
 
-Fix that by explicitly disabling the SPI3 pins which used to be muxed by
-the bootloader since they are available on an optionally fitted header
-which would require dtb overlays anyways.
-
-Fixes: a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage")
-CC: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20241204174152.2360431-1-andreas@kemnade.info
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+[zhaoyang.huang@unisoc.com: move definition of local]
+  Link: https://lkml.kernel.org/r/20250122012604.3654667-1-zhaoyang.huang@unisoc.com
+Link: https://lkml.kernel.org/r/20250121020159.3636477-1-zhaoyang.huang@unisoc.com
+Fixes: 67e139b02d99 ("mm/gup.c: refactor check_and_migrate_movable_pages()")
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aijun Sun <aijun.sun@unisoc.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ mm/gup.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
-@@ -446,6 +446,7 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <
- 			&hsusb2_2_pins
-+			&mcspi3hog_pins
- 	>;
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2323,13 +2323,13 @@ static void pofs_unpin(struct pages_or_f
+ /*
+  * Returns the number of collected folios. Return value is always >= 0.
+  */
+-static unsigned long collect_longterm_unpinnable_folios(
++static void collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
+-	unsigned long i, collected = 0;
+ 	struct folio *prev_folio = NULL;
+ 	bool drain_allow = true;
++	unsigned long i;
  
- 	hsusb2_2_pins: hsusb2-2-pins {
-@@ -459,6 +460,15 @@
- 		>;
- 	};
+ 	for (i = 0; i < pofs->nr_entries; i++) {
+ 		struct folio *folio = pofs_get_folio(pofs, i);
+@@ -2341,8 +2341,6 @@ static unsigned long collect_longterm_un
+ 		if (folio_is_longterm_pinnable(folio))
+ 			continue;
  
-+	mcspi3hog_pins: mcspi3hog-pins {
-+		pinctrl-single,pins = <
-+			OMAP3630_CORE2_IOPAD(0x25dc, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d0 */
-+			OMAP3630_CORE2_IOPAD(0x25de, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d1 */
-+			OMAP3630_CORE2_IOPAD(0x25e0, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d2 */
-+			OMAP3630_CORE2_IOPAD(0x25e2, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d3 */
-+		>;
-+	};
-+
- 	spi_gpio_pins: spi-gpio-pinmux-pins {
- 		pinctrl-single,pins = <
- 			OMAP3630_CORE2_IOPAD(0x25d8, PIN_OUTPUT | MUX_MODE4) /* clk */
+-		collected++;
+-
+ 		if (folio_is_device_coherent(folio))
+ 			continue;
+ 
+@@ -2364,8 +2362,6 @@ static unsigned long collect_longterm_un
+ 				    NR_ISOLATED_ANON + folio_is_file_lru(folio),
+ 				    folio_nr_pages(folio));
+ 	}
+-
+-	return collected;
+ }
+ 
+ /*
+@@ -2442,11 +2438,9 @@ static long
+ check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
+ {
+ 	LIST_HEAD(movable_folio_list);
+-	unsigned long collected;
+ 
+-	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
+-						       pofs);
+-	if (!collected)
++	collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
++	if (list_empty(&movable_folio_list))
+ 		return 0;
+ 
+ 	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
 
 
 
