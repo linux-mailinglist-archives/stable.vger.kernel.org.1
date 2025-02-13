@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-115743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6921A3449C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B2AA34343
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC02F7A1551
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA893A1F06
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF844F218;
-	Thu, 13 Feb 2025 15:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E762222BB;
+	Thu, 13 Feb 2025 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPPD3IEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQZzPouy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A878B1514F6;
-	Thu, 13 Feb 2025 15:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F27C38389;
+	Thu, 13 Feb 2025 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459095; cv=none; b=SPdovEVb4AN9fHQEEiKtSdlnn0bIS9U4V3gRVBeWPOcrTUKnMQeleDwUw6xw5AOQZ3qFQ36w8LVX9rLUZG/KJxiZ9RozlF9kM+1TkTmKETT9Ia0khAfJTQgeHqdPssATQyX/mDAShofsQSjV8h0XWiAry9N2CMCbAwEsqFm+O3w=
+	t=1739457677; cv=none; b=I9QPAhsUpFRmLUCH+qmRvD4rrVRi8XbTv6K5XE6boazcVV5CVilKiP3MzUCw1nCT+UlCc5gCy4MUTjPOJrXoeCSsOxKWLCTYoeeRPiz9yCkrjZnVoEjEjowOya1TvpLwYuLnQfQCc1KGxtAn/K0PgP0+x2N7/3sLXwBLCRb8rCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459095; c=relaxed/simple;
-	bh=vUCgNBMsbC3ySh6w1sjXOMBU9DIg09kZI1pfkQjhGP0=;
+	s=arc-20240116; t=1739457677; c=relaxed/simple;
+	bh=WTx70PfWS9mQgq+ULxAj88PMvr4swXNbYqqpCbaVf+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BT9DP6Z2nv7q99ynuU2sZcdkQhmG2Dwr29G2J8oPjofBaACDnNccqPY7tzBx0zICg9upS6sjAlCm9mrNhju04GBslhOwh9+jWhY6TeTGaayRFBpcG1G8AvnBY8Qcn72/uJCaPG8zXhxAj/ALpLaFAZpdsIXT13WL6wgscH6GpsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPPD3IEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8138C4CED1;
-	Thu, 13 Feb 2025 15:04:54 +0000 (UTC)
+	 MIME-Version; b=Lu0pwbcFMkz7ROp0IHhx9ya2kisVYxSad37cmyPzKrBFnyU4x8n/nof8yLga35dhNNhm8KNj5JLdKUSWfliTYZf34gjCgVW177lvPInUY2GLpNlfm88UL1C9ds+CdUwBMIJNrk0uBm0utMJkSPOgJSZQnqyJpxhkn8ztLJJHy90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQZzPouy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E4CC4CEE4;
+	Thu, 13 Feb 2025 14:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459095;
-	bh=vUCgNBMsbC3ySh6w1sjXOMBU9DIg09kZI1pfkQjhGP0=;
+	s=korg; t=1739457677;
+	bh=WTx70PfWS9mQgq+ULxAj88PMvr4swXNbYqqpCbaVf+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPPD3IEPxH2DzLMxYVl5PkZhtFGGNEzG7nKpwT/7awsfluSSYqf45HTOxlHK2IDoM
-	 IKjxQ/R9XGc3WXAzBmQo8RDZnwrgtoW3yU/88CGOZ8hInoV84mKuLdXF+8rmSz486g
-	 1v+x2/egbFF7gFyl0mUBaV+Pb20FdAbNDWAjcx3M=
+	b=iQZzPouyYV/cTW90wiu+Dn/gZoNFY2WxnfUi7dsBKJ7kl8Ki+6qBvBBsJMr4NFoKZ
+	 AiRYfRzl5oq75fYNy3DUM7yGgaEaHDTrkKwxS8cxGWMMSP0xkED7C5CweVu8CsHLyf
+	 5UgqOl+Ge32MpNhn3uZKGu92J5eY8aXNCVOicGdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Chris Zhong <zyw@rock-chips.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	Sandy Huang <hjc@rock-chips.com>,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH 6.13 165/443] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 181/422] clk: qcom: dispcc-sm6350: Add missing parent_map for a clock
 Date: Thu, 13 Feb 2025 15:25:30 +0100
-Message-ID: <20250213142446.965715389@linuxfoundation.org>
+Message-ID: <20250213142443.530030537@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 666e1960464140cc4bc9203c203097e70b54c95a upstream.
+commit d4cdb196f182d2fbe336c968228be00d8c3fed05 upstream.
 
-The code for detecting and updating the connector status in
-cdn_dp_pd_event_work() has a number of problems.
+If a clk_rcg2 has a parent, it should also have parent_map defined,
+otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+like the following:
 
-- It does not aquire the locks to call the detect helper and update
-the connector status. These are struct drm_mode_config.connection_mutex
-and struct drm_mode_config.mutex.
+  [    3.388105] Call trace:
+  [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
+  [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
+  [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
+  [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
+  [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
+  [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
+  [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
+  [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
+  [    3.455886]  clk_set_rate+0x38/0x14c
 
-- It does not use drm_helper_probe_detect(), which helps with the
-details of locking and detection.
+Add the parent_map property for the clock where it's missing and also
+un-inline the parent_data as well to keep the matching parent_map and
+parent_data together.
 
-- It uses the connector's status field to determine a change to
-the connector status. The epoch_counter field is the correct one. The
-field signals a change even if the connector status' value did not
-change.
-
-Replace the code with a call to drm_connector_helper_hpd_irq_event(),
-which fixes all these problems.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
-Cc: Chris Zhong <zyw@rock-chips.com>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Sandy Huang <hjc@rock-chips.com>
-Cc: "Heiko Stübner" <heiko@sntech.de>
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v4.11+
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/clk/qcom/dispcc-sm6350.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -947,9 +947,6 @@ static void cdn_dp_pd_event_work(struct
- {
- 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
- 						event_work);
--	struct drm_connector *connector = &dp->connector;
--	enum drm_connector_status old_status;
--
- 	int ret;
- 
- 	mutex_lock(&dp->lock);
-@@ -1009,11 +1006,7 @@ static void cdn_dp_pd_event_work(struct
- 
- out:
- 	mutex_unlock(&dp->lock);
--
--	old_status = connector->status;
--	connector->status = connector->funcs->detect(connector, false);
--	if (old_status != connector->status)
--		drm_kms_helper_hotplug_event(dp->drm_dev);
-+	drm_connector_helper_hpd_irq_event(&dp->connector);
- }
- 
- static int cdn_dp_pd_event(struct notifier_block *nb,
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -187,13 +187,12 @@ static struct clk_rcg2 disp_cc_mdss_dp_a
+ 	.cmd_rcgr = 0x1144,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
++	.parent_map = disp_cc_parent_map_6,
+ 	.freq_tbl = ftbl_disp_cc_mdss_dp_aux_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "disp_cc_mdss_dp_aux_clk_src",
+-		.parent_data = &(const struct clk_parent_data){
+-			.fw_name = "bi_tcxo",
+-		},
+-		.num_parents = 1,
++		.parent_data = disp_cc_parent_data_6,
++		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
 
 
 
