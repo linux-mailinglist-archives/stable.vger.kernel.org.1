@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028FBA34528
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58730A342DA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F4583B2749
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D1C188F323
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761CE156F41;
-	Thu, 13 Feb 2025 15:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87724242920;
+	Thu, 13 Feb 2025 14:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NM5MaVh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwKXx/u4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F2C1547C5;
-	Thu, 13 Feb 2025 15:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4288F2222CC;
+	Thu, 13 Feb 2025 14:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458892; cv=none; b=GvXVs/wQr3m6CPLoSuDtdP80sBQ7BnyeG+las5H9dCta8Z8q+BscHOgHlrUxpSjhAyVcdLjaDBjvhUHhEdBYBKTTCVvizr+bN37NYaQuT8LsJfFZCqqOApXKFPuQNtUGGL+C5zUqZGTZOh/zu8bDbdvpwXS0cLWlMnjSnG/HBNs=
+	t=1739457509; cv=none; b=LoX39eyjhQ32FSzu6NrJYAcQeUXqeMQLovNkF/MwKSkoIambomH3znbT3GmOkaCEhsDuoTKqYvQr8DJrtohtJxA2FSOsyTamuzFBB/aLmxa5QvpTpzycLVNQKYpowt9iR6pndt5JQlLkMWnCRlf7pmgZQ8/QhZA/aRMfzIhAksk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458892; c=relaxed/simple;
-	bh=MBFTxJJN0eOg2xq1Kd+wPmoAQ955W+DXB2R+TNBCdt8=;
+	s=arc-20240116; t=1739457509; c=relaxed/simple;
+	bh=iFPsRIiJAnj74zA51jq7fyzmDqwPvhIt44mwZ5iVFvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hk827iH/GfUqQikLWWjAgNiBA7ChpaJk0d6xSwpo7KuD2xHON7CwtwmuGqCC5DetWca0fT2SrXfjCKMr6FM+cb56fiLcVyxRcF/+hqNUEjEr/PtZu/rF2gX/Bw2924qQQnoXun2jJeqe85Klzey3ohdIfpDiQXnoIG4zTMw8dTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NM5MaVh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDE9C4CED1;
-	Thu, 13 Feb 2025 15:01:31 +0000 (UTC)
+	 MIME-Version; b=jIV192EzpmWpWtKWEJf5Pa0ehN1mpvZZhLKfZVkD8znnQ9PTHXTNBsyZfpV3ekZeWG5fwQvbVylx44Hk8BYtAS/FqCgtpMvyXX+Wzlx3y6+vbHdxN3Zwz5nqyzV0FyJT9cy5brmoGZG/xqkxt8lYZ2GHGZ5eNeFSHMoufnoTY4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwKXx/u4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A761CC4CED1;
+	Thu, 13 Feb 2025 14:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458892;
-	bh=MBFTxJJN0eOg2xq1Kd+wPmoAQ955W+DXB2R+TNBCdt8=;
+	s=korg; t=1739457509;
+	bh=iFPsRIiJAnj74zA51jq7fyzmDqwPvhIt44mwZ5iVFvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NM5MaVh8GUluu+2kSaFwl86c8xR6szJYKlgrgdQ59Y1Cw5SYK0ZsRu4qDumXCEh5g
-	 gJvkiyErQ+0fz1XSPh2W7Re1OaUO/cyol31LADBj2Wf18KhZM0mP+pDh5Oob/XfkES
-	 1u42YeLS0Jmd5vPtq2xin4GoCLsEZ00irabVXRZ4=
+	b=JwKXx/u4wx8dixGBuT94UsWe9VSHeQpX7+mfEZf94DA0Zq5xr6OJRDax472TF7PAn
+	 5n938hEHYqTa4/kemuAbngyKSslJ8QI9Y4zMa8qbCWn6tacYdbZL8u3yGYJwbgTn9/
+	 JzpJZ8XJcbjrAbbaHf7HEpgcJF9E2rcNcEmqhGtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasad Pandit <pjp@fedoraproject.org>,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	Martin Ottens <martin.ottens@fau.de>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 108/443] firmware: iscsi_ibft: fix ISCSI_IBFT Kconfig entry
+Subject: [PATCH 6.12 124/422] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
 Date: Thu, 13 Feb 2025 15:24:33 +0100
-Message-ID: <20250213142444.778748810@linuxfoundation.org>
+Message-ID: <20250213142441.334125463@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit e1e17a1715982201034024863efbf238bee2bdf9 ]
+[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
 
-Fix ISCSI_IBFT Kconfig entry, replace tab with a space character.
+qdisc_tree_reduce_backlog() notifies parent qdisc only if child
+qdisc becomes empty, therefore we need to reduce the backlog of the
+child qdisc before calling it. Otherwise it would miss the opportunity
+to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
+since DRR uses ->qlen_notify() to maintain its active list.
 
-Fixes: 138fe4e0697 ("Firmware: add iSCSI iBFT Support")
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Cc: Martin Ottens <martin.ottens@fau.de>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/Kconfig | 2 +-
+ net/sched/sch_netem.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 71d8b26c4103b..9f35f69e0f9e2 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -106,7 +106,7 @@ config ISCSI_IBFT
- 	select ISCSI_BOOT_SYSFS
- 	select ISCSI_IBFT_FIND if X86
- 	depends on ACPI && SCSI && SCSI_LOWLEVEL
--	default	n
-+	default n
- 	help
- 	  This option enables support for detection and exposing of iSCSI
- 	  Boot Firmware Table (iBFT) via sysfs to userspace. If you wish to
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 3b519adc01259..68a08f6d1fbce 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -748,9 +748,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 				if (err != NET_XMIT_SUCCESS) {
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 					sch->qstats.backlog -= pkt_len;
+ 					sch->q.qlen--;
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
 -- 
 2.39.5
 
