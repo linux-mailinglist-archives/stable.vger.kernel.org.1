@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-115253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD7DA342AA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:40:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971A4A34527
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CA716BE12
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC5BE16957C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0418A24BC0B;
-	Thu, 13 Feb 2025 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF85A2222A5;
+	Thu, 13 Feb 2025 15:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1Aik4Tc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWyxLYOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53B124BBF8;
-	Thu, 13 Feb 2025 14:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCFA2135AA;
+	Thu, 13 Feb 2025 15:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457417; cv=none; b=n/W9kQrCHcxhuF9CgSfhAFx6nwCul5ArSw8+7eofa4S5nxqbwYMKME5ojE6BVR1bBAWZoVPipV6vPIG2rigH5c3SmdBDv58qDKLlvFg936jmUt143HQKnbzM7CPb+ANgNOUFCgej7DarE+dxLPEjg1iR+m4/dt9NtqUYC480wMM=
+	t=1739458831; cv=none; b=cLrWtfJBk/IDep/E+Q6ceTYeTiKpbNNDY5H3DiGK0Bu63Hzo4iElxQNizAUxgyOwWeYcrQbgH71Zw5fq/MZDsyi/5o+UpW9UplAwwfEEpkrkSgP05vct4bwvSpGKb4VUuo8vxNarK2roy8pGiZs9FiDl7TR2X1E8zzjXbOaL/7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457417; c=relaxed/simple;
-	bh=12XxvQID9hQ8HHYXVkbi8D/rR4khcuOrZ22vjoIqugU=;
+	s=arc-20240116; t=1739458831; c=relaxed/simple;
+	bh=0C+tHuRCpoHHqoAA4nEDV0H6wLSjcaMPC3u1Ih+x0LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YerBqfTYCqzQnwOamH/HhV3x0XPtH3nRC7hkaX/LajPZUAtHrGING3qWRL1woqVZKo1niNuxJAh9g9UBV4rpypQ9RN6YpBxH+KU9hXLbN5pCFk9Ol3+zn2fy/SS3tZXxqKseAOzujrrqhG/GlitgZfIstEEfXLiTEADpix/Q9gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1Aik4Tc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BF9C4CEE4;
-	Thu, 13 Feb 2025 14:36:56 +0000 (UTC)
+	 MIME-Version; b=N/C0I+FqyAkQwixIHHGblGNhwTWDqt3vrEyNcLI3mZ3qmgzpX3Bv5qORq9mlS0JN+mw6Yw0o2DQxxPBIEHZ/iSVxEnyeziz46sf8eCUKAokUqyVU01TwCRQfkf14PCO4earkTV5QoQ1+qv4K+Hz/MDRAtPsqLRrUJq3A9eyiDko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWyxLYOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771CCC4CEE5;
+	Thu, 13 Feb 2025 15:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457417;
-	bh=12XxvQID9hQ8HHYXVkbi8D/rR4khcuOrZ22vjoIqugU=;
+	s=korg; t=1739458830;
+	bh=0C+tHuRCpoHHqoAA4nEDV0H6wLSjcaMPC3u1Ih+x0LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1Aik4Tcc4BNVkc7xhjLVKRR3fvJo+270iOH1SenRYdtHtTHvOcE1zPjil1XMk7ir
-	 sc7Mec6huxSsHh6fCet+BTdihqNMeA3Sa54UrxH+cX9C8vgpHYmmAzEA8DmhW55syF
-	 zbH+OK1Yr0eOuWXUvW+6ViNRRJM1PMv7zaaE0LOg=
+	b=QWyxLYOR2Zlv7/Cxiq4tJXynsJcPt9uBocas2ER7RFHZK3Qv43mLfMIurseymyyxH
+	 VWUDtzL2ok5w5HV4ikUROc5bCIWhYltBNfBNIfu0f1K9AeGO2fFr9xml76p5ttFxJe
+	 vxc0zjjaHEV3S9Sw62lxJIsAeKBRo+ow9v+21ucA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.12 105/422] ice: stop storing XDP verdict within ice_rx_buf
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Ingo Molnar <mingo@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 089/443] x86/kexec: Allocate PGD for x86_64 transition page tables separately
 Date: Thu, 13 Feb 2025 15:24:14 +0100
-Message-ID: <20250213142440.608998261@linuxfoundation.org>
+Message-ID: <20250213142444.044525855@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,275 +68,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 468a1952df78f65c5991b7ac885c8b5b7dd87bab ]
+[ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
 
-Idea behind having ice_rx_buf::act was to simplify and speed up the Rx
-data path by walking through buffers that were representing cleaned HW
-Rx descriptors. Since it caused us a major headache recently and we
-rolled back to old approach that 'puts' Rx buffers right after running
-XDP prog/creating skb, this is useless now and should be removed.
+Now that the following fix:
 
-Get rid of ice_rx_buf::act and related logic. We still need to take care
-of a corner case where XDP program releases a particular fragment.
+  d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
 
-Make ice_run_xdp() to return its result and use it within
-ice_put_rx_mbuf().
+stops kernel_ident_mapping_init() from scribbling over the end of a
+4KiB PGD by assuming the following 4KiB will be a userspace PGD,
+there's no good reason for the kexec PGD to be part of a single
+8KiB allocation with the control_code_page.
 
-Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+( It's not clear that that was the reason for x86_64 kexec doing it that
+  way in the first place either; there were no comments to that effect and
+  it seems to have been the case even before PTI came along. It looks like
+  it was just a happy accident which prevented memory corruption on kexec. )
+
+Either way, it definitely isn't needed now. Just allocate the PGD
+separately on x86_64, like i386 already does.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20241205153343.3275139-6-dwmw2@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c     | 62 +++++++++++--------
- drivers/net/ethernet/intel/ice/ice_txrx.h     |  1 -
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 43 -------------
- 3 files changed, 36 insertions(+), 70 deletions(-)
+ arch/x86/include/asm/kexec.h       | 18 +++++++++---
+ arch/x86/kernel/machine_kexec_64.c | 45 ++++++++++++++++--------------
+ 2 files changed, 38 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index e2150d2c093bf..f12fb3a2b6ad9 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -527,15 +527,14 @@ int ice_setup_rx_ring(struct ice_rx_ring *rx_ring)
-  * @xdp: xdp_buff used as input to the XDP program
-  * @xdp_prog: XDP program to run
-  * @xdp_ring: ring to be used for XDP_TX action
-- * @rx_buf: Rx buffer to store the XDP action
-  * @eop_desc: Last descriptor in packet to read metadata from
-  *
-  * Returns any of ICE_XDP_{PASS, CONSUMED, TX, REDIR}
-  */
--static void
-+static u32
- ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 	    struct bpf_prog *xdp_prog, struct ice_tx_ring *xdp_ring,
--	    struct ice_rx_buf *rx_buf, union ice_32b_rx_flex_desc *eop_desc)
-+	    union ice_32b_rx_flex_desc *eop_desc)
- {
- 	unsigned int ret = ICE_XDP_PASS;
- 	u32 act;
-@@ -574,7 +573,7 @@ ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		ret = ICE_XDP_CONSUMED;
- 	}
- exit:
--	ice_set_rx_bufs_act(xdp, rx_ring, ret);
-+	return ret;
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index ae5482a2f0ca0..ccb8ff37fa9d4 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -16,6 +16,7 @@
+ # define PAGES_NR		4
+ #endif
+ 
++# define KEXEC_CONTROL_PAGE_SIZE	4096
+ # define KEXEC_CONTROL_CODE_MAX_SIZE	2048
+ 
+ #ifndef __ASSEMBLY__
+@@ -43,7 +44,6 @@ struct kimage;
+ /* Maximum address we can use for the control code buffer */
+ # define KEXEC_CONTROL_MEMORY_LIMIT TASK_SIZE
+ 
+-# define KEXEC_CONTROL_PAGE_SIZE	4096
+ 
+ /* The native architecture */
+ # define KEXEC_ARCH KEXEC_ARCH_386
+@@ -58,9 +58,6 @@ struct kimage;
+ /* Maximum address we can use for the control pages */
+ # define KEXEC_CONTROL_MEMORY_LIMIT     (MAXMEM-1)
+ 
+-/* Allocate one page for the pdp and the second for the code */
+-# define KEXEC_CONTROL_PAGE_SIZE  (4096UL + 4096UL)
+-
+ /* The native architecture */
+ # define KEXEC_ARCH KEXEC_ARCH_X86_64
+ #endif
+@@ -145,6 +142,19 @@ struct kimage_arch {
+ };
+ #else
+ struct kimage_arch {
++	/*
++	 * This is a kimage control page, as it must not overlap with either
++	 * source or destination address ranges.
++	 */
++	pgd_t *pgd;
++	/*
++	 * The virtual mapping of the control code page itself is used only
++	 * during the transition, while the current kernel's pages are all
++	 * in place. Thus the intermediate page table pages used to map it
++	 * are not control pages, but instead just normal pages obtained
++	 * with get_zeroed_page(). And have to be tracked (below) so that
++	 * they can be freed.
++	 */
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 9c9ac606893e9..7223c38a8708f 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -146,7 +146,8 @@ static void free_transition_pgtable(struct kimage *image)
+ 	image->arch.pte = NULL;
  }
  
- /**
-@@ -860,10 +859,8 @@ ice_add_xdp_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		xdp_buff_set_frags_flag(xdp);
- 	}
- 
--	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS)) {
--		ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
-+	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS))
- 		return -ENOMEM;
--	}
- 
- 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++, rx_buf->page,
- 				   rx_buf->page_offset, size);
-@@ -1075,12 +1072,12 @@ ice_construct_skb(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp)
- 				rx_buf->page_offset + headlen, size,
- 				xdp->frame_sz);
- 	} else {
--		/* buffer is unused, change the act that should be taken later
--		 * on; data was copied onto skb's linear part so there's no
-+		/* buffer is unused, restore biased page count in Rx buffer;
-+		 * data was copied onto skb's linear part so there's no
- 		 * need for adjusting page offset and we can reuse this buffer
- 		 * as-is
- 		 */
--		rx_buf->act = ICE_SKB_CONSUMED;
-+		rx_buf->pagecnt_bias++;
- 	}
- 
- 	if (unlikely(xdp_buff_has_frags(xdp))) {
-@@ -1133,29 +1130,34 @@ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
-  * @xdp: XDP buffer carrying linear + frags part
-  * @xdp_xmit: XDP_TX/XDP_REDIRECT verdict storage
-  * @ntc: a current next_to_clean value to be stored at rx_ring
-+ * @verdict: return code from XDP program execution
-  *
-  * Walk through gathered fragments and satisfy internal page
-  * recycle mechanism; we take here an action related to verdict
-  * returned by XDP program;
-  */
- static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
--			    u32 *xdp_xmit, u32 ntc)
-+			    u32 *xdp_xmit, u32 ntc, u32 verdict)
+-static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
++static int init_transition_pgtable(struct kimage *image, pgd_t *pgd,
++				   unsigned long control_page)
  {
- 	u32 nr_frags = rx_ring->nr_frags + 1;
- 	u32 idx = rx_ring->first_desc;
- 	u32 cnt = rx_ring->count;
-+	u32 post_xdp_frags = 1;
- 	struct ice_rx_buf *buf;
+ 	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
+ 	unsigned long vaddr, paddr;
+@@ -157,7 +158,7 @@ static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
+ 	pte_t *pte;
+ 
+ 	vaddr = (unsigned long)relocate_kernel;
+-	paddr = __pa(page_address(image->control_code_page)+PAGE_SIZE);
++	paddr = control_page;
+ 	pgd += pgd_index(vaddr);
+ 	if (!pgd_present(*pgd)) {
+ 		p4d = (p4d_t *)get_zeroed_page(GFP_KERNEL);
+@@ -216,7 +217,7 @@ static void *alloc_pgt_page(void *data)
+ 	return p;
+ }
+ 
+-static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
++static int init_pgtable(struct kimage *image, unsigned long control_page)
+ {
+ 	struct x86_mapping_info info = {
+ 		.alloc_pgt_page	= alloc_pgt_page,
+@@ -225,12 +226,12 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		.kernpg_flag	= _KERNPG_TABLE_NOENC,
+ 	};
+ 	unsigned long mstart, mend;
+-	pgd_t *level4p;
+ 	int result;
  	int i;
  
--	for (i = 0; i < nr_frags; i++) {
-+	if (unlikely(xdp_buff_has_frags(xdp)))
-+		post_xdp_frags += xdp_get_shared_info_from_buff(xdp)->nr_frags;
-+
-+	for (i = 0; i < post_xdp_frags; i++) {
- 		buf = &rx_ring->rx_buf[idx];
+-	level4p = (pgd_t *)__va(start_pgtable);
+-	clear_page(level4p);
++	image->arch.pgd = alloc_pgt_page(image);
++	if (!image->arch.pgd)
++		return -ENOMEM;
  
--		if (buf->act & (ICE_XDP_TX | ICE_XDP_REDIR)) {
-+		if (verdict & (ICE_XDP_TX | ICE_XDP_REDIR)) {
- 			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
--			*xdp_xmit |= buf->act;
--		} else if (buf->act & ICE_XDP_CONSUMED) {
-+			*xdp_xmit |= verdict;
-+		} else if (verdict & ICE_XDP_CONSUMED) {
- 			buf->pagecnt_bias++;
--		} else if (buf->act == ICE_XDP_PASS) {
-+		} else if (verdict == ICE_XDP_PASS) {
- 			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
- 		}
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+ 		info.page_flag   |= _PAGE_ENC;
+@@ -244,8 +245,8 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		mstart = pfn_mapped[i].start << PAGE_SHIFT;
+ 		mend   = pfn_mapped[i].end << PAGE_SHIFT;
  
-@@ -1164,6 +1166,17 @@ static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		if (++idx == cnt)
- 			idx = 0;
+-		result = kernel_ident_mapping_init(&info,
+-						 level4p, mstart, mend);
++		result = kernel_ident_mapping_init(&info, image->arch.pgd,
++						   mstart, mend);
+ 		if (result)
+ 			return result;
  	}
-+	/* handle buffers that represented frags released by XDP prog;
-+	 * for these we keep pagecnt_bias as-is; refcount from struct page
-+	 * has been decremented within XDP prog and we do not have to increase
-+	 * the biased refcnt
+@@ -260,8 +261,8 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		mstart = image->segment[i].mem;
+ 		mend   = mstart + image->segment[i].memsz;
+ 
+-		result = kernel_ident_mapping_init(&info,
+-						 level4p, mstart, mend);
++		result = kernel_ident_mapping_init(&info, image->arch.pgd,
++						   mstart, mend);
+ 
+ 		if (result)
+ 			return result;
+@@ -271,15 +272,19 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 	 * Prepare EFI systab and ACPI tables for kexec kernel since they are
+ 	 * not covered by pfn_mapped.
+ 	 */
+-	result = map_efi_systab(&info, level4p);
++	result = map_efi_systab(&info, image->arch.pgd);
+ 	if (result)
+ 		return result;
+ 
+-	result = map_acpi_tables(&info, level4p);
++	result = map_acpi_tables(&info, image->arch.pgd);
+ 	if (result)
+ 		return result;
+ 
+-	return init_transition_pgtable(image, level4p);
++	/*
++	 * This must be last because the intermediate page table pages it
++	 * allocates will not be control pages and may overlap the image.
 +	 */
-+	for (; i < nr_frags; i++) {
-+		buf = &rx_ring->rx_buf[idx];
-+		ice_put_rx_buf(rx_ring, buf);
-+		if (++idx == cnt)
-+			idx = 0;
-+	}
++	return init_transition_pgtable(image, image->arch.pgd, control_page);
+ }
  
- 	xdp->data = NULL;
- 	rx_ring->first_desc = ntc;
-@@ -1190,9 +1203,9 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 	struct ice_tx_ring *xdp_ring = NULL;
- 	struct bpf_prog *xdp_prog = NULL;
- 	u32 ntc = rx_ring->next_to_clean;
-+	u32 cached_ntu, xdp_verdict;
- 	u32 cnt = rx_ring->count;
- 	u32 xdp_xmit = 0;
--	u32 cached_ntu;
- 	bool failure;
+ static void load_segments(void)
+@@ -296,14 +301,14 @@ static void load_segments(void)
  
- 	xdp_prog = READ_ONCE(rx_ring->xdp_prog);
-@@ -1255,7 +1268,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			xdp_prepare_buff(xdp, hard_start, offset, size, !!offset);
- 			xdp_buff_clear_frags_flag(xdp);
- 		} else if (ice_add_xdp_frag(rx_ring, xdp, rx_buf, size)) {
--			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc);
-+			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc, ICE_XDP_CONSUMED);
- 			break;
- 		}
- 		if (++ntc == cnt)
-@@ -1266,13 +1279,13 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			continue;
+ int machine_kexec_prepare(struct kimage *image)
+ {
+-	unsigned long start_pgtable;
++	unsigned long control_page;
+ 	int result;
  
- 		ice_get_pgcnts(rx_ring);
--		ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_buf, rx_desc);
--		if (rx_buf->act == ICE_XDP_PASS)
-+		xdp_verdict = ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_desc);
-+		if (xdp_verdict == ICE_XDP_PASS)
- 			goto construct_skb;
- 		total_rx_bytes += xdp_get_buff_len(xdp);
- 		total_rx_pkts++;
+ 	/* Calculate the offsets */
+-	start_pgtable = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
++	control_page = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
  
--		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
-+		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
+ 	/* Setup the identity mapped 64bit page table */
+-	result = init_pgtable(image, start_pgtable);
++	result = init_pgtable(image, control_page);
+ 	if (result)
+ 		return result;
  
- 		continue;
- construct_skb:
-@@ -1283,12 +1296,9 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		/* exit if we failed to retrieve a buffer */
- 		if (!skb) {
- 			rx_ring->ring_stats->rx_stats.alloc_page_failed++;
--			rx_buf->act = ICE_XDP_CONSUMED;
--			if (unlikely(xdp_buff_has_frags(xdp)))
--				ice_set_rx_bufs_act(xdp, rx_ring,
--						    ICE_XDP_CONSUMED);
-+			xdp_verdict = ICE_XDP_CONSUMED;
- 		}
--		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
-+		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
+@@ -357,13 +362,12 @@ void machine_kexec(struct kimage *image)
+ #endif
+ 	}
  
- 		if (!skb)
- 			break;
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index feba314a3fe44..7130992d41779 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -201,7 +201,6 @@ struct ice_rx_buf {
- 	struct page *page;
- 	unsigned int page_offset;
- 	unsigned int pgcnt;
--	unsigned int act;
- 	unsigned int pagecnt_bias;
- };
+-	control_page = page_address(image->control_code_page) + PAGE_SIZE;
++	control_page = page_address(image->control_code_page);
+ 	__memcpy(control_page, relocate_kernel, KEXEC_CONTROL_CODE_MAX_SIZE);
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-index afcead4baef4b..f6c2b16ab4567 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-@@ -5,49 +5,6 @@
- #define _ICE_TXRX_LIB_H_
- #include "ice.h"
+ 	page_list[PA_CONTROL_PAGE] = virt_to_phys(control_page);
+ 	page_list[VA_CONTROL_PAGE] = (unsigned long)control_page;
+-	page_list[PA_TABLE_PAGE] =
+-	  (unsigned long)__pa(page_address(image->control_code_page));
++	page_list[PA_TABLE_PAGE] = (unsigned long)__pa(image->arch.pgd);
  
--/**
-- * ice_set_rx_bufs_act - propagate Rx buffer action to frags
-- * @xdp: XDP buffer representing frame (linear and frags part)
-- * @rx_ring: Rx ring struct
-- * act: action to store onto Rx buffers related to XDP buffer parts
-- *
-- * Set action that should be taken before putting Rx buffer from first frag
-- * to the last.
-- */
--static inline void
--ice_set_rx_bufs_act(struct xdp_buff *xdp, const struct ice_rx_ring *rx_ring,
--		    const unsigned int act)
--{
--	u32 sinfo_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
--	u32 nr_frags = rx_ring->nr_frags + 1;
--	u32 idx = rx_ring->first_desc;
--	u32 cnt = rx_ring->count;
--	struct ice_rx_buf *buf;
--
--	for (int i = 0; i < nr_frags; i++) {
--		buf = &rx_ring->rx_buf[idx];
--		buf->act = act;
--
--		if (++idx == cnt)
--			idx = 0;
--	}
--
--	/* adjust pagecnt_bias on frags freed by XDP prog */
--	if (sinfo_frags < rx_ring->nr_frags && act == ICE_XDP_CONSUMED) {
--		u32 delta = rx_ring->nr_frags - sinfo_frags;
--
--		while (delta) {
--			if (idx == 0)
--				idx = cnt - 1;
--			else
--				idx--;
--			buf = &rx_ring->rx_buf[idx];
--			buf->pagecnt_bias--;
--			delta--;
--		}
--	}
--}
--
- /**
-  * ice_test_staterr - tests bits in Rx descriptor status and error fields
-  * @status_err_n: Rx descriptor status_error0 or status_error1 bits
+ 	if (image->type == KEXEC_TYPE_DEFAULT)
+ 		page_list[PA_SWAP_PAGE] = (page_to_pfn(image->swap_page)
+@@ -573,8 +577,7 @@ static void kexec_mark_crashkres(bool protect)
+ 
+ 	/* Don't touch the control code page used in crash_kexec().*/
+ 	control = PFN_PHYS(page_to_pfn(kexec_crash_image->control_code_page));
+-	/* Control code page is located in the 2nd page. */
+-	kexec_mark_range(crashk_res.start, control + PAGE_SIZE - 1, protect);
++	kexec_mark_range(crashk_res.start, control - 1, protect);
+ 	control += KEXEC_CONTROL_PAGE_SIZE;
+ 	kexec_mark_range(control, crashk_res.end, protect);
+ }
 -- 
 2.39.5
 
