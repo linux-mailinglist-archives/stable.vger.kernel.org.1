@@ -1,131 +1,100 @@
-Return-Path: <stable+bounces-116307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6466EA34886
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:52:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CC0A3488E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C30D3A7EF3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953EF164C06
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204ED1AAA29;
-	Thu, 13 Feb 2025 15:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="0kwRNqV6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A51719B5A9;
+	Thu, 13 Feb 2025 15:49:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EFC1AA786;
-	Thu, 13 Feb 2025 15:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAFB26B087;
+	Thu, 13 Feb 2025 15:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461593; cv=none; b=j0JSfnvGljvmB26vestNqT4FEzqzdAxPNHjN+UyXzQal73dlBM1reqn9fMV4D3b5MUPA33KxiLS5qbvyt+WZ+bcbh2MdREbvX0OdsY70FMbonUI45PCxyxwrnqbELrcnz5FEYZXMVpx9zjL4yzMLtY+oxCfFc+bjyI3+mqZolTQ=
+	t=1739461753; cv=none; b=pa0fAgF2uVUInjbHLBFB0cHlqFKOTb5lRo5wRHWXQqGGu1oV9xr2rB0nVjHHz/UmsCSAq7EPAaSgXjZ2MnOheitCk/XQF9+0NVm+CJ93kZaalfG7Y9uilpgNjSsy/EVtFqSwr9VMWWGaui93/NxF4m2ZE5GrRAHeNZPehjJ/8sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461593; c=relaxed/simple;
-	bh=eQ5hKL8Do7QTUquhfPYnl9WT+Oj8r0LEBJJf4Dgm8XE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gNitZnTZpGeULxzEzWVs6eB1kILpcibGJan1c15vWjn7dEqtobiD+MwlPkcctVpQficSc0k+pmdm2LWwqpEsRL/Gwv9Mi5cgUAQ6ERhgyMr1YuNoludkblEMKX5/9vwwciL2mM+ua/weDm1iO+vuYhmSQZbucFBxwj0+ZWP8dLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=0kwRNqV6; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1739461584; bh=eQ5hKL8Do7QTUquhfPYnl9WT+Oj8r0LEBJJf4Dgm8XE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=0kwRNqV6/VTFUT91g8IVWD+PE8xZ3DtpuOWqmBqqx6r467v1iZBtf1ABglQ7QUI0b
-	 NFTt9gWq/HEYAE83AvSePXmbph3ufFjUqooOv3/+jTDqa3wkBf86JWYHx4uVB+MKuQ
-	 uHsGyclvb41/uqXepDW74cr8FITn4VcIiEdFK9DY=
-Received: from [10.21.49.97] (unknown [195.176.44.46])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 013482052A91;
-	Thu, 13 Feb 2025 16:46:23 +0100 (CET)
-Message-ID: <9430b26a-8b2b-4ad8-b6b0-402871f2a977@ralfj.de>
-Date: Thu, 13 Feb 2025 16:46:22 +0100
+	s=arc-20240116; t=1739461753; c=relaxed/simple;
+	bh=zNqx96Lg650r5ji9Nv7sUbmpW/ojQ/Y0uItFOwHm02o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vi2eW0HOkF19S/TxPX3AQzACDYuibKGng5zTse68JtqtuMp1DRxCDo8CFGzgKet2b9nWTIQ9Ymz+39j6XWrr0Gg/Xp48Rdc6he8sK6vxXf2PP1S6fATm1BJtKEp8sVTAWMOdK29mgZJZGLfLIG1TEtXK4QJFaXWaMEy+scVM4NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BFCC4CED1;
+	Thu, 13 Feb 2025 15:49:09 +0000 (UTC)
+Date: Thu, 13 Feb 2025 15:49:07 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, anshuman.khandual@arm.com,
+	will@kernel.org, ardb@kernel.org, ryan.roberts@arm.com,
+	mark.rutland@arm.com, joey.gouly@arm.com,
+	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
+	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	quic_tingweiz@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6] arm64: mm: Populate vmemmap/linear at the page level
+ for hotplugged sections
+Message-ID: <Z64UcwSGQ53mFmWF@arm.com>
+References: <20250213075703.1270713-1-quic_zhenhuah@quicinc.com>
+ <9bc91fe3-c590-48e2-b29f-736d0b056c34@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat
- target
-To: Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev,
- stable@vger.kernel.org, Matthew Maurer <mmaurer@google.com>,
- Jubilee Young <workingjubilee@gmail.com>
-References: <20250210163732.281786-1-ojeda@kernel.org>
- <CAMj1kXHgjwHkLsJkM3H2pjEPXDvD80V+XhH_Gsjv8N4Cf6Bvkw@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAMj1kXHgjwHkLsJkM3H2pjEPXDvD80V+XhH_Gsjv8N4Cf6Bvkw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bc91fe3-c590-48e2-b29f-736d0b056c34@redhat.com>
 
-Hi all,
-
-> We have to carefully make the distinction here between codegen and ABI.
+On Thu, Feb 13, 2025 at 01:59:25PM +0100, David Hildenbrand wrote:
+> On 13.02.25 08:57, Zhenhua Huang wrote:
+> > On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+> > to 27, making one section 128M. The related page struct which vmemmap
+> > points to is 2M then.
+> > Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+> > vmemmap to populate at the PMD section level which was suitable
+> > initially since hot plug granule is always one section(128M). However,
+> > commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> > introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+> > existing arm64 assumptions.
+> > 
+> > Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
+> > pmd_sect() is true, the entire PMD section is cleared, even if there is
+> > other effective subsection. For example page_struct_map1 and
+> > page_strcut_map2 are part of a single PMD entry and they are hot-added
+> > sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
+> > the entire PMD entry freeing the struct page map for the whole section,
+> > even though page_struct_map2 is still active. Similar problem exists
+> > with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
+> > base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
+> > Tearing down the entire PMD mapping too will leave other subsections
+> > unmapped in the linear mapping.
+> > 
+> > To address the issue, we need to prevent PMD/PUD/CONT mappings for both
+> > linear and vmemmap for non-boot sections if corresponding size on the
+> > given base page exceeds SUBSECTION_SIZE(2MB now).
+> > 
+> > Cc: <stable@vger.kernel.org> # v5.4+
+> > Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 > 
-> The arm64 C code in the kernel is built with -mgeneral-regs-only
-> because FP/SIMD registers are not preserved/restored like GPRs, and so
-> they must be used only in carefully controlled circumstances, i.e., in
-> assembler code called under kernel_neon_begin()/kernel_neon_end()
-> [modulo some exceptions related to NEON intrinsics]
-> 
-> This does not impact the ABI, which remains hard-float [this was the
-> only arm64 calling convention that existed until about a year ago].
-> Any function that takes or returns floats or doubles (or NEON
-> intrinsic types) is simply rejected by the compiler.
+> Just so I understand correctly: for ordinary memory-sections-size hotplug
+> (NVDIMM, virtio-mem), we still get a large mapping where possible?
 
-That's how C works. It is not how Rust works. Rust does not reject using floats 
-ever. Instead, Rust offers softfloat targets where you can still use floats, but 
-it won't use float registers. Obviously, that needs to use a different ABI.
-As you said, aarch64 does not have an official softfloat ABI, but LLVM 
-implements a de-facto softfloat ABI if you ask it to generate functions that 
-take/return float types while disabling the relevant target features. (Maybe 
-LLVM should just refuse to generate such code, and then Rust may have ended up 
-with a different design. But now this would all be quite tricky to change.)
+Up to 2MB blocks only since that's the SUBSECTION_SIZE value. The
+vmemmap mapping is also limited to PAGE_SIZE mappings (we could use
+contiguous mappings for vmemmap but it's not wired up; I don't think
+it's worth the hassle).
 
-> Changing this to softfloat for Rust modifies this calling convention,
-> i.e., it will result in floats and doubles being accepted as function
-> parameters and return values, but there is no code in the kernel that
-> actually supports/implements that.
-
-As explained above, f32/f64 were already accepted as function parameters and 
-return values in Rust code before this change. So this patch does not change 
-anything here. (In fact, the ABI used for these functions should be exactly the 
-same before and after this patch.)
-
-> Also, it should be clarified
-> whether using a softfloat ABI permits the compiler to use FP/SIMD
-> registers in codegen. We might still need -Ctarget-feature="-neon"
-> here afaict.
-
-Rust's softfloat targets do not use FP/SIMD registers by default. Ideally these 
-targets allow selectively using FP/SIMD registers within certain functions; for 
-aarch64, this is not properly supported by LLVM and therefore Rust.
-
-> Ideally, we'd have a target/target-feature combo that makes this more
-> explicit: no FP/SIMD codegen at all, without affecting the ABI,
-> therefore making float/double types in function prototypes illegal.
-> AIUI, this change does something different.
-
-Having targets without float support would be a significant departure from past 
-language decisions in Rust -- that doesn't mean it's impossible, but it would 
-require a non-trivial effort (starting with an RFC to lay down the motivation 
-and design).
-
-Kind regards,
-Ralf
-
-
+-- 
+Catalin
 
