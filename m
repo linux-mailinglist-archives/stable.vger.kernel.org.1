@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC92A344DC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5903FA34409
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EC7A3083
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C78D3A5C49
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3EE26B096;
-	Thu, 13 Feb 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CAD266182;
+	Thu, 13 Feb 2025 14:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ck24qMI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5NrQYpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163DD26B089;
-	Thu, 13 Feb 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0152222D3;
+	Thu, 13 Feb 2025 14:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459394; cv=none; b=g2RoQTO5KI+jbUwZZbTixkIo1hBovDkmpzJnEm7bqHAMKRBYrWRUxNGEQqfOqgeMHbO2mPI5kwb7DTB2vc4NYWMETtIjmeEvfBmPMXdvpWb55Lm6GuLLGzS4dfDBXfwQzQ9bDkh6f7u8jWkjal32k9auqBwCgT9h7cLYrpMpeYU=
+	t=1739458093; cv=none; b=QkbVhgbTA1jHLaxnwTpk5Fop/1o5odUj8rXBmHIY4c+ccO8MBMJQ03whtth0umedK3envFLo3ghjuk8/ngY87tn9B+uitBSnPTKDX/ZTwFxSDmA4ByxH14fDWZNBIfdNtWco4XnrCWCKvyN0Wq/en/iBWTYkAitFihFlRKLBkyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459394; c=relaxed/simple;
-	bh=zJO8bd3Ah8T3/24FOhcPnTPIhk7dkBxGMs0XggATT3M=;
+	s=arc-20240116; t=1739458093; c=relaxed/simple;
+	bh=AvOvfylN4eYYSe0Brs/IGOAOnUnTvW8m+xuroBM1YRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhBP1n9kcZinUK9H/uNv6tB8z/Gc+K+AqFu0nQoUBe2ozfFog7Lor3hfQTyygzh/D+RBIxDEVMwM2o0lmwzWh1gMXOZ0ZklaMQsTbZj17VXxiGoC6P72jkhgnrF8VdMdK0XAIfIHbhToe3ByhWkNeHC+EJ4zg3gCOlgjfACERxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ck24qMI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D2FC4CED1;
-	Thu, 13 Feb 2025 15:09:53 +0000 (UTC)
+	 MIME-Version; b=YxOj/NaRqoizCzSYn1OkUAVxPqSPVEt2Mklr7lvhhCDxw9afAmlAtrn299oDBLfay/Wuv32wsv9sQKPGrK+yKzUG30nrgbJXyLSjCuKoPdqMxAVohjNJ79BxLtNSRqsVjCNPLcENNWt9+CB/+KMFtfvFbNM3XNrDmT/So6mL1yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5NrQYpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC941C4CEE4;
+	Thu, 13 Feb 2025 14:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459393;
-	bh=zJO8bd3Ah8T3/24FOhcPnTPIhk7dkBxGMs0XggATT3M=;
+	s=korg; t=1739458093;
+	bh=AvOvfylN4eYYSe0Brs/IGOAOnUnTvW8m+xuroBM1YRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ck24qMI/ByYmZx16qR+BBr/vJvEF5X1//VXJHuDakMAN99ap/C31UNIVW78wJd+Hb
-	 oVJQP2dOgtX+kXh7YvSjO6GxgldmilPmYt5oTw6UjVIHVIK6Tcc0JdTfSA2Wv0DETn
-	 Ipr4wGB4zGDYv07mtkCa5GXC2rNqIAd/yNmhBNCU=
+	b=o5NrQYpqmK4ik3w0mUgXnrmMCxtRzcHGlUFlf51kgdVK+DiqqdQgGvovLBNjCHNPG
+	 Dxq4BPjcRdYpinIKlSqGKN8E2v8b4Lr2mH5Cb5PE0uhHpD8TOaJ8Nel9LUlLhgDcNE
+	 clidsBGGH64clZal2iBrbUU/Y3C+IHBxNjpg/9Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 252/443] soc: qcom: socinfo: Avoid out of bounds read of serial number
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Fei Shao <fshao@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.12 268/422] arm64: dts: mediatek: mt8183: Disable DPI display output by default
 Date: Thu, 13 Feb 2025 15:26:57 +0100
-Message-ID: <20250213142450.340578893@linuxfoundation.org>
+Message-ID: <20250213142446.884562801@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+commit 93a680af46436780fd64f4e856a4cfa8b393be6e upstream.
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
+Most SoC dtsi files have the display output interfaces disabled by
+default, and only enabled on boards that utilize them. The MT8183
+has it backwards: the display outputs are left enabled by default,
+and only disabled at the board level.
 
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
+Reverse the situation for the DPI output so that it follows the
+normal scheme. For ease of backporting the DSI output is handled
+in a separate patch.
 
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
-
+Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
+Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI display interface")
 Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20241025075630.3917458-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    5 -----
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi       |    1 +
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -796,7 +796,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -290,11 +290,6 @@
+ 	};
+ };
  
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
+-&dpi0 {
+-	/* TODO Re-enable after DP to Type-C port muxing can be described */
+-	status = "disabled";
+-};
+-
+ &gic {
+ 	mediatek,broken-save-restore-fw;
+ };
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1846,6 +1846,7 @@
+ 				 <&mmsys CLK_MM_DPI_MM>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL>;
+ 			clock-names = "pixel", "engine", "pll";
++			status = "disabled";
+ 
+ 			port {
+ 				dpi_out: endpoint { };
 
 
 
