@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FA4A3466C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC2FA3449B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4CB18868F5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC7A3AF6DD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5621E2A1CF;
-	Thu, 13 Feb 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD15213B284;
+	Thu, 13 Feb 2025 14:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA7qmthA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D434cU3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E5426B091;
-	Thu, 13 Feb 2025 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBFC1552FA;
+	Thu, 13 Feb 2025 14:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459801; cv=none; b=CGGBb5djtbOdVUAu+IjqmIN2NuV0tF0T6fuCFNFgXWoYCOHxPjlX5YKvd9gTdy+9xuhuXUdL+HLPqIoMSrkh3iZATjwAD8Rd9lCMbXSwCqlXlctiUEcH0irt65vbf2Kgcop9KXx9oWkb05ckEO0vw00MCwXvFjCpes7ZWewpPU0=
+	t=1739458382; cv=none; b=cSpsHwdkV+KyD/TNllis+O9D/qXrI5W7+g9rS4xkA47A38g5nnmfOZKQtkSvJM4kaop8y0Bygvx2nLhI6TW0Q5VdhBvJCTQvL7x1KhKBaA0eOCZrOq6AlRA3bIdpsYpI5K5+Ks9Mrvpz+dAIS1kYiYtH/8WwNxTR2X5gGDW2l3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459801; c=relaxed/simple;
-	bh=iRQMeZJSIMYk3xq8h0a6EAG8F5Tt4LrvWKZm8k7+LPc=;
+	s=arc-20240116; t=1739458382; c=relaxed/simple;
+	bh=YhnzgHIEaBmiZ7aGfZnXwRNAgkDJQOoH0sGxydZyw9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URmNRwTwHThVMknz8w8scGaUPlr9JtIr2Yn1q3P6RZRntAXd9pUtRKXcr06kugU5LgGEFeVl8Xx1u2/yfXQ6QEmedLGp3sk2J2NVcnDgmvnwZwAgMtT/RelR3dfGCs5Q5QBadTGOucFBb2WwmZpRoQkvZ8kMb3m8dVwZILiUdI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA7qmthA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C82C4CED1;
-	Thu, 13 Feb 2025 15:16:39 +0000 (UTC)
+	 MIME-Version; b=qya8S8A351RjXdmg3QlxHo43um1IelUrBVMkZgcy1aIXslQUfRCm0zWYQYElwdvHydlK6JyFsf1c1CRnqR5pU9uuhyp6e7dWWk4QIqzeTvGdlMVXkr4EwquFiFvHCzrEfns608BpIRyGow6ITtEfE7AgxZLqjowjVF7DuvFGjYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D434cU3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815BC4CED1;
+	Thu, 13 Feb 2025 14:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459800;
-	bh=iRQMeZJSIMYk3xq8h0a6EAG8F5Tt4LrvWKZm8k7+LPc=;
+	s=korg; t=1739458382;
+	bh=YhnzgHIEaBmiZ7aGfZnXwRNAgkDJQOoH0sGxydZyw9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA7qmthAunELvCyoQiQ6u55A09xA81ByKhj2hJHis7V1s3nPHsRMMJm01goD6SmHY
-	 RSlOYZeVqWeNHl8goLRCuFhHImLlw8lnsqyTlI2vIA15Kd4QaXjDrnusPXM2PGpD4U
-	 NIl9QwiKtmJp1V+3/uL4Zs+ndF16glckwvzkdyok=
+	b=D434cU3liKgleC9ujLNseRSBFG83AYxoifA4m5lT6iBDMAZhCz74dXtWsTb0cH3f+
+	 sosTtIwndGWnoKJ2PuTEYMnXncbPhyejDiIYY2yKRo1mdleXsRfOkE1XV7Be93DsgG
+	 P5Esv1HI+fTAKYVEd6OgkS9zjlOKF8trX6xgsDyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 367/443] media: i2c: ds90ub9x3: Fix extra fwnode_handle_put()
-Date: Thu, 13 Feb 2025 15:28:52 +0100
-Message-ID: <20250213142454.771715319@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 384/422] rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
+Date: Thu, 13 Feb 2025 15:28:53 +0100
+Message-ID: <20250213142451.365406555@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 60b45ece41c5632a3a3274115a401cb244180646 upstream.
+commit d8d866171a414ed88bd0d720864095fd75461134 upstream.
 
-The ub913 and ub953 drivers call fwnode_handle_put(priv->sd.fwnode) as
-part of their remove process, and if the driver is removed multiple
-times, eventually leads to put "overflow", possibly causing memory
-corruption or crash.
+When using rtla timerlat with userspace threads (-u or -U), rtla
+disables the OSNOISE_WORKLOAD option in
+/sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
+subsequent run with kernel-space threads, leading to rtla collecting no
+results if the previous run exited abnormally:
 
-The fwnode_handle_put() is a leftover from commit 905f88ccebb1 ("media:
-i2c: ds90ub9x3: Fix sub-device matching"), which changed the code
-related to the sd.fwnode, but missed removing these fwnode_handle_put()
-calls.
+$ rtla timerlat hist -u
+^\Quit (core dumped)
+$ rtla timerlat hist -k -d 1s
+Index
+over:
+count:
+min:
+avg:
+max:
+ALL:        IRQ       Thr       Usr
+count:        0         0         0
+min:          -         -         -
+avg:          -         -         -
+max:          -         -         -
+
+The issue persists until OSNOISE_WORKLOAD is set manually by running:
+$ echo OSNOISE_WORKLOAD > /sys/kernel/tracing/osnoise/options
+
+Set OSNOISE_WORKLOAD when running rtla with kernel-space threads if
+available to fix the issue.
 
 Cc: stable@vger.kernel.org
-Fixes: 905f88ccebb1 ("media: i2c: ds90ub9x3: Fix sub-device matching")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Link: https://lore.kernel.org/20250107144823.239782-3-tglozar@redhat.com
+Fixes: ed774f7481fa ("rtla/timerlat_hist: Add timerlat user-space support")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub913.c |    1 -
- drivers/media/i2c/ds90ub953.c |    1 -
- 2 files changed, 2 deletions(-)
+ tools/tracing/rtla/src/timerlat_hist.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ds90ub913.c
-+++ b/drivers/media/i2c/ds90ub913.c
-@@ -793,7 +793,6 @@ static void ub913_subdev_uninit(struct u
- 	v4l2_async_unregister_subdev(&priv->sd);
- 	ub913_v4l2_nf_unregister(priv);
- 	v4l2_subdev_cleanup(&priv->sd);
--	fwnode_handle_put(priv->sd.fwnode);
- 	media_entity_cleanup(&priv->sd.entity);
- }
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -1091,12 +1091,15 @@ timerlat_hist_apply_config(struct osnois
+ 		}
+ 	}
  
---- a/drivers/media/i2c/ds90ub953.c
-+++ b/drivers/media/i2c/ds90ub953.c
-@@ -1288,7 +1288,6 @@ static void ub953_subdev_uninit(struct u
- 	v4l2_async_unregister_subdev(&priv->sd);
- 	ub953_v4l2_notifier_unregister(priv);
- 	v4l2_subdev_cleanup(&priv->sd);
--	fwnode_handle_put(priv->sd.fwnode);
- 	media_entity_cleanup(&priv->sd.entity);
- }
+-	if (params->user_hist) {
+-		retval = osnoise_set_workload(tool->context, 0);
+-		if (retval) {
+-			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
+-			goto out_err;
+-		}
++	/*
++	* Set workload according to type of thread if the kernel supports it.
++	* On kernels without support, user threads will have already failed
++	* on missing timerlat_fd, and kernel threads do not need it.
++	*/
++	retval = osnoise_set_workload(tool->context, params->kernel_workload);
++	if (retval < -1) {
++		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
++		goto out_err;
+ 	}
  
+ 	return 0;
 
 
 
