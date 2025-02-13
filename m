@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-115710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33072A3454A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC59A345B5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377B416E3A4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9598C1894D50
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE12A1D63D3;
-	Thu, 13 Feb 2025 15:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D7B19D092;
+	Thu, 13 Feb 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUWwrF5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGSeccau"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF041C5F37;
-	Thu, 13 Feb 2025 15:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860F02A1D1;
+	Thu, 13 Feb 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458981; cv=none; b=KiB+KWszPfgwLOC4ZYRM31Nh/QrKzeG9END8Inr9iXk0rLvPaeKRVPk8QLedK7hTKeSlqZRZgA0iljGhoafhP2F8Wn3AAO79bwLblxwVdpaemtxP3XEpBjm1MZB4MwdD+EggYt89TJWY14uZn9G9TV01oDjFbL16llIFyKuAUys=
+	t=1739459126; cv=none; b=SmveMtJE8ox0OC/IWCLEMHebwrUHXeyii2TkJCtgXkRmeDE5XQWcCSDocatdL1cId4nq7ej9PPSu5dleWmF4whICW+u1TVUhK/oVbOCMLK9oCnHcggQnIUYfu1mtMiSyKUK0PEna34IuGv0YWjsLZnfX5xaTOMk3kOVf2DBtAlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458981; c=relaxed/simple;
-	bh=zUaf2DeDuBOW53mF/yJcAZ/9q5MSiqIkGsRFislqT64=;
+	s=arc-20240116; t=1739459126; c=relaxed/simple;
+	bh=ionIXGVWu3FVammF9dFoQ0lDLa2QHsjRYG40XQwOMGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQTY5iDzckMKcUqpxRfyEYBjvJ1cDrlmzWxL3WCsZgbz6CYc7klR8Jfzdj+hrHwsUkyJpRWLVJ8N61eM3/hb7VQLL9YQZA+6Z4KQmPyHiQvuyYtDnAo1LPh28VsoPwbJLQFjoxHCJSlO1O78be3wMp0vtHWD7pCOYdxTBAZ+boA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUWwrF5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244CEC4CED1;
-	Thu, 13 Feb 2025 15:03:00 +0000 (UTC)
+	 MIME-Version; b=UWA3jDWXK/cwLgTPKmOIGC2PgCItze4RgDTarb88ATYXPRJsyMfuBbTUK6vvNXo50iSxS5B3kyCScJSkceETk9A3r8+1Z2MDv7f+lm7ihhah/wMORJcXzXkall4Q1mgxP2F6c2hcsdqcub2oxvxuDv7ZjU6hpDjmVtyTFn96mAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGSeccau; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DA5C4CED1;
+	Thu, 13 Feb 2025 15:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458981;
-	bh=zUaf2DeDuBOW53mF/yJcAZ/9q5MSiqIkGsRFislqT64=;
+	s=korg; t=1739459126;
+	bh=ionIXGVWu3FVammF9dFoQ0lDLa2QHsjRYG40XQwOMGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUWwrF5ATovXHAwrvBIcKn6Pp6KoLDtn9T9c8QmfEjBtYzudfCrCT0z6i9y8ihR3W
-	 l5LEnYLZvfb46HDNjnIzuIQyg7GbaJjJZ95pZTskchl72zGIZ1ms0JWra79kQuxrER
-	 N3x+gKK1MbyuzqJFg0q4u1BE4JuN2tHRZZ9oyFD4=
+	b=fGSeccauuVE0Z3QCv2CMYXhm1hsUojssvTOLQRPjtoMwrteyy9SBlhe7/0Xvx3pTE
+	 LsBvwOPVpGxbgcBik2cc0RI0+I4XnXF2J8/8DsnXoeoVkEn7Lp/k6e7y7OO/XTjPA1
+	 eHCpriIr3ae8bUNsw4s42dQtoA76aErtaiofDR6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 132/443] gpio: GPIO_GRGPIO should depend on OF
-Date: Thu, 13 Feb 2025 15:24:57 +0100
-Message-ID: <20250213142445.700635660@linuxfoundation.org>
+Subject: [PATCH 6.13 133/443] x86/xen: fix xen_hypercall_hvm() to not clobber %rbx
+Date: Thu, 13 Feb 2025 15:24:58 +0100
+Message-ID: <20250213142445.738692761@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -67,37 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 5393f40a640b8c4f716bf87e7b0d4328bf1f22b2 ]
+[ Upstream commit 98a5cfd2320966f40fe049a9855f8787f0126825 ]
 
-While the Aeroflex Gaisler GRGPIO driver has no build-time dependency on
-gpiolib-of, it supports only DT-based configuration, and is used only on
-DT systems.  Hence add a dependency on OF, to prevent asking the user
-about this driver when configuring a kernel without DT support.
+xen_hypercall_hvm(), which is used when running as a Xen PVH guest at
+most only once during early boot, is clobbering %rbx. Depending on
+whether the caller relies on %rbx to be preserved across the call or
+not, this clobbering might result in an early crash of the system.
 
-Fixes: bc40668def384256 ("gpio: grgpio: drop Kconfig dependency on OF_GPIO")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/db6da3d11bf850d89f199e5c740d8f133e38078d.1738760539.git.geert+renesas@glider.be
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This can be avoided by using an already saved register instead of %rbx.
+
+Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/xen/xen-head.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 93ee3aa092f81..1a66ca075aded 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -338,6 +338,7 @@ config GPIO_GRANITERAPIDS
- 
- config GPIO_GRGPIO
- 	tristate "Aeroflex Gaisler GRGPIO support"
-+	depends on OF || COMPILE_TEST
- 	select GPIO_GENERIC
- 	select IRQ_DOMAIN
- 	help
+diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
+index 9252652afe596..72f28d66e0e52 100644
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -117,8 +117,8 @@ SYM_FUNC_START(xen_hypercall_hvm)
+ 	pop %ebx
+ 	pop %eax
+ #else
+-	lea xen_hypercall_amd(%rip), %rbx
+-	cmp %rax, %rbx
++	lea xen_hypercall_amd(%rip), %rcx
++	cmp %rax, %rcx
+ #ifdef CONFIG_FRAME_POINTER
+ 	pop %rax	/* Dummy pop. */
+ #endif
 -- 
 2.39.5
 
