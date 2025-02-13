@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFF1A342E4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E35A3451B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319DE189294C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCA9516E1F3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F423A98F;
-	Thu, 13 Feb 2025 14:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171B81AAE17;
+	Thu, 13 Feb 2025 15:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqr7Ilmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkaiWU2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E1227EBC;
-	Thu, 13 Feb 2025 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB3326B0B5;
+	Thu, 13 Feb 2025 15:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457553; cv=none; b=djZDign7hnoMEdlufMTqZLdseZUUxOL1q8x2ThtXxMePZn+2ooIvp6iSFIF3P63WvRF6+38lXBJUftzQ2S6j9Y8wh77xHjk08/I39IT+aUkEb7ceZmcF2U3xndvvpU+rEDKQgBrN0fIXdePnt6OqCic7l2BH6vURJz5RVZb3NuU=
+	t=1739458967; cv=none; b=RvGNoxzs3xlHlD3wAFs4y/BcShBZNfDEzCHCWG0pbIkSZ0UGsFh7SnFrZVA9ZnGT2vwtQSd4cqexU8cwEuevVj4Wiyj4ZS5lyTPwTlAYfo3ODZQcQk2J/yJG+tiO0zHoVaJfsKQ3hR8j0uglNaZL51srpuCtj3GvSf4zUQM5oa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457553; c=relaxed/simple;
-	bh=kZCH8sUHK1BXZXNgvIeDSUAoRCDQAG2Em4KmpV0PmY4=;
+	s=arc-20240116; t=1739458967; c=relaxed/simple;
+	bh=cg4QoOPNY5GkD6iebHvaw5izqAzkbzGwngdnPNG1WTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYr7rA9uRNZRp/RIwVjBLfBpWjHQ66WzHoAN18TVwA9GGZsaqrO2w/U2LpQ1fAmTEyOqu9LVB1Mc3IEFZHH+BbS3ukEoTDTbqSlUIVoZGOEBzR7Ku7kyOELd0vt1reXDfJhBWWbOtNZ6k2WZAG1x6Ku3mLJmFlAtcukQNYZOlx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqr7Ilmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4DAC4CED1;
-	Thu, 13 Feb 2025 14:39:11 +0000 (UTC)
+	 MIME-Version; b=RlQsGR1z7SkBRwMTVHA8WHaCGvuFwIIS9gXoXmZsdjFwsJ4hZmgEXAsnxnllB1rA4/fgzry8p9P6itzp8rk3UtnomkdxXauPtQh+Pl480yOGnQl+NqN4JDf01hSdSiiY2O7ONw4no3dfOfTMeRTyKzun0DybW6xjZWMkUKBz16s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkaiWU2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAD8C4CEE4;
+	Thu, 13 Feb 2025 15:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457552;
-	bh=kZCH8sUHK1BXZXNgvIeDSUAoRCDQAG2Em4KmpV0PmY4=;
+	s=korg; t=1739458967;
+	bh=cg4QoOPNY5GkD6iebHvaw5izqAzkbzGwngdnPNG1WTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqr7Ilmt8OByBranKCFEOIvDp1bfqtRs3ZivXWqdCO0Df8DUP/YFsOL9/Z30xWSVA
-	 eTmU26/nj9E38oAri31adzc48OijkN6TacR581C6P1+e0PvU6aTVP293G1etwfwtdO
-	 /AUgMXYI0+yPZd1UCLwG4nPboqGJ6FGUvvAx2H3w=
+	b=VkaiWU2W1CoUU5twRM4coUEBskpI+dAyKVxhsEE6SoDoJNFc3PwvsRJ1tJt1cnP/G
+	 y9oWpUpRv9X5b4NJp4AsZvrZOH5UpcIFRdjfsd/o5mAxDUejNir930ZpGA5crX3Jp6
+	 9buwq7yzh351/UyLmWahOfa9qVd/YxZj0o2f477U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 144/422] arm64/kvm: Configure HYP TCR.PS/DS based on host stage1
+	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 128/443] gpio: pca953x: Improve interrupt support
 Date: Thu, 13 Feb 2025 15:24:53 +0100
-Message-ID: <20250213142442.104452250@linuxfoundation.org>
+Message-ID: <20250213142445.548577849@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 
-commit f0da16992aef7e246b2f3bba1492e3a52c38ca0e upstream.
+[ Upstream commit d6179f6c6204f9932aed3a7a2100b4a295dfed9d ]
 
-When the host stage1 is configured for LPA2, the value currently being
-programmed into TCR_EL2.T0SZ may be invalid unless LPA2 is configured
-at HYP as well.  This means kvm_lpa2_is_enabled() is not the right
-condition to test when setting TCR_EL2.DS, as it will return false if
-LPA2 is only available for stage 1 but not for stage 2.
+The GPIO drivers with latch interrupt support (typically types starting
+with PCAL) have interrupt status registers to determine which particular
+inputs have caused an interrupt. Unfortunately there is no atomic
+operation to read these registers and clear the interrupt. Clearing the
+interrupt is done by reading the input registers.
 
-Similary, programming TCR_EL2.PS based on a limited IPA range due to
-lack of stage2 LPA2 support could potentially result in problems.
+The code was reading the interrupt status registers, and then reading
+the input registers. If an input changed between these two events it was
+lost.
 
-So use lpa2_is_enabled() instead, and set the PS field according to the
-host's IPS, which is capped at 48 bits if LPA2 support is absent or
-disabled. Whether or not we can make meaningful use of such a
-configuration is a different question.
+The solution in this patch is to revert to the non-latch version of
+code, i.e. remembering the previous input status, and looking for the
+changes. This system results in no more I2C transfers, so is no slower.
+The latch property of the device still means interrupts will still be
+noticed if the input changes back to its initial state.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20241212081841.2168124-11-ardb+git@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44896beae605 ("gpio: pca953x: add PCAL9535 interrupt support for Galileo Gen2")
+Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606033102.2271916-1-mark.tomlinson@alliedtelesis.co.nz
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/arm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1998,8 +1998,7 @@ static int kvm_init_vector_slots(void)
- static void __init cpu_prepare_hyp_mode(int cpu, u32 hyp_va_bits)
- {
- 	struct kvm_nvhe_init_params *params = per_cpu_ptr_nvhe_sym(kvm_init_params, cpu);
--	u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
--	unsigned long tcr;
-+	unsigned long tcr, ips;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index be4c9981ebc40..d63c1030e6ac0 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -841,25 +841,6 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 	DECLARE_BITMAP(trigger, MAX_LINE);
+ 	int ret;
  
- 	/*
- 	 * Calculate the raw per-cpu offset without a translation from the
-@@ -2013,6 +2012,7 @@ static void __init cpu_prepare_hyp_mode(
- 	params->mair_el2 = read_sysreg(mair_el1);
- 
- 	tcr = read_sysreg(tcr_el1);
-+	ips = FIELD_GET(TCR_IPS_MASK, tcr);
- 	if (cpus_have_final_cap(ARM64_KVM_HVHE)) {
- 		tcr |= TCR_EPD1_MASK;
- 	} else {
-@@ -2022,8 +2022,8 @@ static void __init cpu_prepare_hyp_mode(
- 	tcr &= ~TCR_T0SZ_MASK;
- 	tcr |= TCR_T0SZ(hyp_va_bits);
- 	tcr &= ~TCR_EL2_PS_MASK;
--	tcr |= FIELD_PREP(TCR_EL2_PS_MASK, kvm_get_parange(mmfr0));
--	if (kvm_lpa2_is_enabled())
-+	tcr |= FIELD_PREP(TCR_EL2_PS_MASK, ips);
-+	if (lpa2_is_enabled())
- 		tcr |= TCR_EL2_DS;
- 	params->tcr_el2 = tcr;
- 
+-	if (chip->driver_data & PCA_PCAL) {
+-		/* Read the current interrupt status from the device */
+-		ret = pca953x_read_regs(chip, PCAL953X_INT_STAT, trigger);
+-		if (ret)
+-			return false;
+-
+-		/* Check latched inputs and clear interrupt status */
+-		ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+-		if (ret)
+-			return false;
+-
+-		/* Apply filter for rising/falling edge selection */
+-		bitmap_replace(new_stat, chip->irq_trig_fall, chip->irq_trig_raise, cur_stat, gc->ngpio);
+-
+-		bitmap_and(pending, new_stat, trigger, gc->ngpio);
+-
+-		return !bitmap_empty(pending, gc->ngpio);
+-	}
+-
+ 	ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+ 	if (ret)
+ 		return false;
+-- 
+2.39.5
+
 
 
 
