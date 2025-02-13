@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D34A34337
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B39A34568
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24063AE5C0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05E73B12FF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4EF23A98E;
-	Thu, 13 Feb 2025 14:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECC32036FA;
+	Thu, 13 Feb 2025 15:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLIFPSD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2p5+6U9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0FF221552;
-	Thu, 13 Feb 2025 14:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2FB202C25;
+	Thu, 13 Feb 2025 15:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457661; cv=none; b=iNjqIIRdaE0ynRVSRs9hcwFFKezM6skGlFJth78jz1hVyM773TdDeaVdd50+ShuQZF3O6RKQgbL1bwLx9GNM91GciTq/0sTMnf0MGL1FTO1kGeAPxcG2VJv8THwfALA1yMRGl5+W76HEMv1xr/PJ427qEtiPvsDa83Ks2Bh6eos=
+	t=1739459078; cv=none; b=Z0d+TgLXTcDlvbvCSRky9223r1k/LixEQEmNDLKjBwlkH12n0JfRgl1ynev0ODDxntDCw2LdtA4Wvi6Zi8+41upHtv1KbhJf5ZKQap9GWCMXQoJBQvJeSW+LKnDEw4tHkLM1Rka/VZfSlP+xZ4ZtCuUux7cZu6HjaaUqPJH+OeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457661; c=relaxed/simple;
-	bh=b2fUPKAuBgOxKGKDnzfCdBJgf8RDY/Y9AlESK5VNUoQ=;
+	s=arc-20240116; t=1739459078; c=relaxed/simple;
+	bh=rxLr+1hRhAJrdj3npQRJa8hKZu/9ooM+CyrUjUwsRcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNQnAK2CXFdSLhG5tmGVrQWlrXDPdQkSKl+IGpAf4l+6O8POdzRQeW+1wgEFHDmQHYx0pa7i4JglPHJu5pYR8MZ82ZT9bxZvN10Wavdy1PvX3qwsfPMpAe1mzXRKOBLoDyH9aeF8pZ2Uw7/tS4MMjMPxo5PKDVN82+iSu0WQXNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLIFPSD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A55C4CED1;
-	Thu, 13 Feb 2025 14:41:00 +0000 (UTC)
+	 MIME-Version; b=PzHSB27skDPLszv5uoEzUn46NHbIMhikcZ1ETibRTmCkGnfePYsyzVI0qHA0k75Hgj8OOJDbGH1oyqdQHNqIz1z7CnmbFX/uPyD6z8O89F3DuMAFLxwnXSbHTLRZYxL7IKmfB7qDlW1cSIMHLQuN7SpJ8BfscTPNTQ+DyQPa01o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2p5+6U9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A8BC4CED1;
+	Thu, 13 Feb 2025 15:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457661;
-	bh=b2fUPKAuBgOxKGKDnzfCdBJgf8RDY/Y9AlESK5VNUoQ=;
+	s=korg; t=1739459078;
+	bh=rxLr+1hRhAJrdj3npQRJa8hKZu/9ooM+CyrUjUwsRcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLIFPSD5qqstdNQqJl0UUd7M4+PTTHvbF8BHJJz9U6Zimo2YrowXM3+4SHMDTGIYn
-	 h9LtOcpxvbCA+q22Y3u7Nng2kuEOMNpJoRcZLoHEBRhOOzJ7i3Vf5bbSC2GdkzTHs9
-	 xWbuldHRNinPT59AzfqXvc2GxeDNmZSSqZ2wQA/w=
+	b=g2p5+6U9UeFhkQspjlqMusjY/SzjhqKrRTg5C1F0Ncb47aZ2w0Vv0cg6utdjG3jfk
+	 2rOtAXpITj2JiOkxBS/vcVewbadChy9WqxpLDCocEK3R+PGs/hdhGvZBoVYqRukPyV
+	 xq9bbasSQzATATyXNGoJNzDTn8FVuZtHDrtthzn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 177/422] clk: qcom: clk-alpha-pll: fix alpha mode configuration
+	Ard Biesheuvel <ardb@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.13 161/443] arm64/mm: Override PARange for !LPA2 and use it consistently
 Date: Thu, 13 Feb 2025 15:25:26 +0100
-Message-ID: <20250213142443.374375368@linuxfoundation.org>
+Message-ID: <20250213142446.809469664@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 33f1722eb86e45320a3dd7b3d42f6593a1d595c2 upstream.
+commit 62cffa496aac0c2c4eeca00d080058affd7a0172 upstream.
 
-Commit c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
-added support for configuring alpha mode, but it seems that the feature
-was never working in practice.
+When FEAT_LPA{,2} are not implemented, the ID_AA64MMFR0_EL1.PARange and
+TCR.IPS values corresponding with 52-bit physical addressing are
+reserved.
 
-The value of the alpha_{en,mode}_mask members of the configuration gets
-added to the value parameter passed to the regmap_update_bits() function,
-however the same values are not getting applied to the bitmask. As the
-result, the respective bits in the USER_CTL register are never modifed
-which leads to improper configuration of several PLLs.
+Setting the TCR.IPS field to 0b110 (52-bit physical addressing) has side
+effects, such as how the TTBRn_ELx.BADDR fields are interpreted, and so
+it is important that disabling FEAT_LPA2 (by overriding the
+ID_AA64MMFR0.TGran fields) also presents a PARange field consistent with
+that.
 
-The following table shows the PLL configurations where the 'alpha_en_mask'
-member is set and which are passed as a parameter for the
-clk_alpha_pll_configure() function. In the table the 'expected rate' column
-shows the rate the PLL should run at with the given configuration, and
-the 'real rate' column shows the rate the PLL runs at actually. The real
-rates has been verified on hardwareOn IPQ* platforms, on other platforms,
-those are computed values only.
+So limit the field to 48 bits unless LPA2 is enabled, and update
+existing references to use the override consistently.
 
-      file                 pll         expected rate   real rate
-  dispcc-qcm2290.c     disp_cc_pll0      768.0 MHz     768.0 MHz
-  dispcc-sm6115.c      disp_cc_pll0      768.0 MHz     768.0 MHz
-  gcc-ipq5018.c        ubi32_pll        1000.0 MHz !=  984.0 MHz
-  gcc-ipq6018.c        nss_crypto_pll   1200.0 MHz    1200.0 MHz
-  gcc-ipq6018.c        ubi32_pll        1497.6 MHz != 1488.0 MHz
-  gcc-ipq8074.c        nss_crypto_pll   1200.0 MHz != 1190.4 MHz
-  gcc-qcm2290.c        gpll11            532.0 MHz !=  518.4 MHz
-  gcc-qcm2290.c        gpll8             533.2 MHz !=  518.4 MHz
-  gcc-qcs404.c         gpll3             921.6 MHz     921.6 MHz
-  gcc-sm6115.c         gpll11            600.0 MHz !=  595.2 MHz
-  gcc-sm6115.c         gpll8             800.0 MHz !=  787.2 MHz
-  gpucc-sdm660.c       gpu_cc_pll0       800.0 MHz !=  787.2 MHz
-  gpucc-sdm660.c       gpu_cc_pll1       740.0 MHz !=  729.6 MHz
-  gpucc-sm6115.c       gpu_cc_pll0      1200.0 MHz != 1190.4 MHz
-  gpucc-sm6115.c       gpu_cc_pll1       640.0 MHz !=  633.6 MHz
-  gpucc-sm6125.c       gpu_pll0         1020.0 MHz != 1017.6 MHz
-  gpucc-sm6125.c       gpu_pll1          930.0 MHz !=  921.6 MHz
-  mmcc-sdm660.c        mmpll8            930.0 MHz !=  921.6 MHz
-  mmcc-sdm660.c        mmpll5            825.0 MHz !=  806.4 MHz
-
-As it can be seen from the above, there are several PLLs which are
-configured incorrectly.
-
-Change the code to apply both 'alpha_en_mask' and 'alpha_mode_mask'
-values to the bitmask in order to configure the alpha mode correctly.
-
-Applying the 'alpha_en_mask' fixes the initial rate of the PLLs showed
-in the table above. Since the 'alpha_mode_mask' is not used by any driver
-currently, that part of the change causes no functional changes.
-
+Fixes: 352b0395b505 ("arm64: Enable 52-bit virtual addressing for 4k and 16k granule configs")
 Cc: stable@vger.kernel.org
-Fixes: c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241212081841.2168124-10-ardb+git@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/assembler.h    |    5 +++++
+ arch/arm64/kernel/cpufeature.c        |    2 +-
+ arch/arm64/kernel/pi/idreg-override.c |    9 +++++++++
+ arch/arm64/kernel/pi/map_kernel.c     |    6 ++++++
+ arch/arm64/mm/init.c                  |    7 ++++++-
+ 5 files changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -432,6 +432,8 @@ void clk_alpha_pll_configure(struct clk_
- 	mask |= config->pre_div_mask;
- 	mask |= config->post_div_mask;
- 	mask |= config->vco_mask;
-+	mask |= config->alpha_en_mask;
-+	mask |= config->alpha_mode_mask;
+--- a/arch/arm64/include/asm/assembler.h
++++ b/arch/arm64/include/asm/assembler.h
+@@ -343,6 +343,11 @@ alternative_cb_end
+ 	// Narrow PARange to fit the PS field in TCR_ELx
+ 	ubfx	\tmp0, \tmp0, #ID_AA64MMFR0_EL1_PARANGE_SHIFT, #3
+ 	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_MAX
++#ifdef CONFIG_ARM64_LPA2
++alternative_if_not ARM64_HAS_VA52
++	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_48
++alternative_else_nop_endif
++#endif
+ 	cmp	\tmp0, \tmp1
+ 	csel	\tmp0, \tmp1, \tmp0, hi
+ 	bfi	\tcr, \tmp0, \pos, #3
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3492,7 +3492,7 @@ static void verify_hyp_capabilities(void
+ 		return;
  
- 	regmap_update_bits(regmap, PLL_USER_CTL(pll), mask, val);
+ 	safe_mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
+-	mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
++	mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+ 	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
  
+ 	/* Verify VMID bits */
+--- a/arch/arm64/kernel/pi/idreg-override.c
++++ b/arch/arm64/kernel/pi/idreg-override.c
+@@ -83,6 +83,15 @@ static bool __init mmfr2_varange_filter(
+ 		id_aa64mmfr0_override.val |=
+ 			(ID_AA64MMFR0_EL1_TGRAN_LPA2 - 1) << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
+ 		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
++
++		/*
++		 * Override PARange to 48 bits - the override will just be
++		 * ignored if the actual PARange is smaller, but this is
++		 * unlikely to be the case for LPA2 capable silicon.
++		 */
++		id_aa64mmfr0_override.val |=
++			ID_AA64MMFR0_EL1_PARANGE_48 << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
++		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
+ 	}
+ #endif
+ 	return true;
+--- a/arch/arm64/kernel/pi/map_kernel.c
++++ b/arch/arm64/kernel/pi/map_kernel.c
+@@ -136,6 +136,12 @@ static void noinline __section(".idmap.t
+ {
+ 	u64 sctlr = read_sysreg(sctlr_el1);
+ 	u64 tcr = read_sysreg(tcr_el1) | TCR_DS;
++	u64 mmfr0 = read_sysreg(id_aa64mmfr0_el1);
++	u64 parange = cpuid_feature_extract_unsigned_field(mmfr0,
++							   ID_AA64MMFR0_EL1_PARANGE_SHIFT);
++
++	tcr &= ~TCR_IPS_MASK;
++	tcr |= parange << TCR_IPS_SHIFT;
+ 
+ 	asm("	msr	sctlr_el1, %0		;"
+ 	    "	isb				;"
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -279,7 +279,12 @@ void __init arm64_memblock_init(void)
+ 
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+ 		extern u16 memstart_offset_seed;
+-		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
++
++		/*
++		 * Use the sanitised version of id_aa64mmfr0_el1 so that linear
++		 * map randomization can be enabled by shrinking the IPA space.
++		 */
++		u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+ 		int parange = cpuid_feature_extract_unsigned_field(
+ 					mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
+ 		s64 range = linear_region_size -
 
 
 
