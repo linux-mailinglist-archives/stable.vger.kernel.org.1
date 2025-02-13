@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A403A346A9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AC9A343DA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA014168CD3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9D33B0EF6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E40153598;
-	Thu, 13 Feb 2025 15:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F40245019;
+	Thu, 13 Feb 2025 14:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaDCnIqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Onieczi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631414AD2D;
-	Thu, 13 Feb 2025 15:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35A323A9A3;
+	Thu, 13 Feb 2025 14:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460096; cv=none; b=OVjfcxtt3VAbvoeUkBuwNdI/rlysbiYOrjjn+Lg6Bit4h+6H6CfDamMBMmQeolcuu/P5zWF4cbgWC/8KWLhcjXLjF8FDYLKQesIrsZrZ3gn5gAP61yvm4VOADzj19KL46V3TmJpBZInxq6gK5kRtrvyhPk8emjDFOIukovjjH4E=
+	t=1739457990; cv=none; b=PgjBOHb7MX/m54vmLzTXnlsdlhJ3ICnkPPbKRJIweanW4Oa19pwIOIQbB0yj+buWbiKGaHOjrlMf4AFvGAqJBIkass/3SSqnD7W3F6OiNGZYV4HihSwKbnVToIGsGBm3ehjstO6l0xaoSkVgqopz9pnXyGg2BKG5b7SZyQjfSkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460096; c=relaxed/simple;
-	bh=wepWsbj4VwyY1ik1IDI08+UBH4/IBFY0Ag1AemuLn5I=;
+	s=arc-20240116; t=1739457990; c=relaxed/simple;
+	bh=K5b2rxhribNtDDhI5W2gVQ+4UKHQVdNxTYjawL1zDDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/g2yOE9BPrc5Su3/c2HGw+7XUDjaLnBerktuI755tMquPJdfATSYJvCzZtrN5bO8QABbO/16ERu3hGrPhjHmKr6kUPF3hINyJnimb6Z98TsE1aKwyowoLLrlPmGpF9YSDNodKixpIqfJ0JQQs029w6cXL2wFmdti6Q5tob9Y1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaDCnIqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF846C4CED1;
-	Thu, 13 Feb 2025 15:21:35 +0000 (UTC)
+	 MIME-Version; b=JmaWjYI5s0N2zwImWXqavjuI9zNQbInchSdOHd3Ga1WgyAgPToukcoISovpVd+81zIULYo/8N2ILFODE+JmHmiBYgzp0KUaKZKjMwuwebuy6754lfITp7+FMksZoI/C/hIE8xTEWIRr3xF4Ius+20ZKDGEC63XVrdS6atA09Zuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Onieczi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CED3C4CED1;
+	Thu, 13 Feb 2025 14:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460096;
-	bh=wepWsbj4VwyY1ik1IDI08+UBH4/IBFY0Ag1AemuLn5I=;
+	s=korg; t=1739457990;
+	bh=K5b2rxhribNtDDhI5W2gVQ+4UKHQVdNxTYjawL1zDDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaDCnIqN/WbNGBoeV6XvfhcJFJ+SnMocCouBOFTjv4H9rCzf7vBXrOlZv3e+5Y6BM
-	 uwLIrOqkhPMTkGs+xfLyTkKaIfmvhl1T83bG3aBclEhcu+KSDE2/+ST95wfo4CR+ye
-	 qnC/jaB0ApfXi/o8zwZe9gTzHo54BaTGVXxKOtQE=
+	b=Onieczi6S4rjPkcHsMoRqYSg5MIdnmYrs0o9/lpR3gHpj1UuM1mMFp0eMM7MyvCJK
+	 OT6d/eGxgfPZIy1zBd0eIYjQXg/6+i0E1ufZrHKo07zI0HrljNJZLzzdP5W4W89gOB
+	 QEzGkPcHdj0kMqn2hvwXyWy+KBTyw8qeiMHeRLKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/273] drm/bridge: anx7625: use eld_mutex to protect access to connector->eld
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Icenowy Zheng <icenowy@aosc.io>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 237/422] Revert "MIPS: csrc-r4k: Select HAVE_UNSTABLE_SCHED_CLOCK if SMP && 64BIT"
 Date: Thu, 13 Feb 2025 15:26:26 +0100
-Message-ID: <20250213142407.926144108@linuxfoundation.org>
+Message-ID: <20250213142445.680864156@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit e72bf423a60afd744d13e40ab2194044a3af5217 ]
+commit 078b831638e1aa06dd7ffa9f244c8ac6b2995561 upstream.
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+This reverts commit 426fa8e4fe7bb914b5977cbce453a9926bf5b2e6.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-2-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The commit has caused two issues on Loongson 3A4000:
+
+1. The timestamp in dmesg become erratic, like:
+
+    [3.736957] amdgpu 0000:04:00.0: ... ...
+    [3.748895] [drm] Initialized amdgpu ... ...
+    [18446744073.381141] amdgpu 0000:04:00:0: ... ...
+    [1.613326] igb 0000:03:00.0 enp3s0: ... ...
+
+2. More seriously, some workloads (for example, the test
+   stdlib/test-cxa_atexit2 in the Glibc test suite) triggers an RCU
+   stall and hang the system with a high probably (4 hangs out of 5
+   tests).
+
+Revert this commit to use jiffie on Loongson MIPS systems and fix these
+issues for now.  The root cause may need more investigation.
+
+Cc: stable@vger.kernel.org # 6.11+
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Icenowy Zheng <icenowy@aosc.io>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 412c6575e87b7..ddf944651c55a 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -2014,8 +2014,10 @@ static int anx7625_audio_get_eld(struct device *dev, void *data,
- 		memset(buf, 0, len);
- 	} else {
- 		dev_dbg(dev, "audio copy eld\n");
-+		mutex_lock(&ctx->connector->eld_mutex);
- 		memcpy(buf, ctx->connector->eld,
- 		       min(sizeof(ctx->connector->eld), len));
-+		mutex_unlock(&ctx->connector->eld_mutex);
- 	}
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 467b10f4361a..5078ebf071ec 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1084,7 +1084,6 @@ config CSRC_IOASIC
  
- 	return 0;
+ config CSRC_R4K
+ 	select CLOCKSOURCE_WATCHDOG if CPU_FREQ
+-	select HAVE_UNSTABLE_SCHED_CLOCK if SMP && 64BIT
+ 	bool
+ 
+ config CSRC_SB1250
 -- 
-2.39.5
+2.48.1
 
 
 
