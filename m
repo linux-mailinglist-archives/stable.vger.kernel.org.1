@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-115918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614D0A346D8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B19A347F8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5E13AC03A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 886743A4E50
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D600B14F121;
-	Thu, 13 Feb 2025 15:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5A01C5F37;
+	Thu, 13 Feb 2025 15:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKqGOMJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUqK2QFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9122F14A605;
-	Thu, 13 Feb 2025 15:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CC419E975;
+	Thu, 13 Feb 2025 15:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459710; cv=none; b=b3x9cNZUWlUd7pBEiAuXK0PE+FiiBUhFETRtsxipGhYJ5hxswedq87mL0k9UDXw/g1dTKVcAaiuzgml7N2lRMUsRp6tf7S8gGuN6bRZAz8qaHrNYkea+WERZZxdITAErwGYuAjwfQKvpbbnCLGYHhEnXhkdd4epVvmh53fPJe6Y=
+	t=1739460656; cv=none; b=AYkHo7ZOm1zBp4Hp12xVBql33WoPwAWxZrBTuEA8CyRzu+x/92eJQYgMLHmf+xUNgkHZpXeXyhxQUmHWW3HBjacrqERbl5jUhcLVhMGrkk/Lftl9eUWWK02fwe+WCh9PNbLoR7nur3NVh0R+15cxDioxyQJnLo5wbvm4pTC5Ot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459710; c=relaxed/simple;
-	bh=MtpgyGppXRL3aC0RYWxIc14A3cTfy/KIYyM7LntrWTU=;
+	s=arc-20240116; t=1739460656; c=relaxed/simple;
+	bh=XvuTOaWTYzcdGA0/7g9SxwkIxEuYkzr57kyL1SdZpS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjQJte2VKdGpue5nTFULLwbweEm9GtpQD8JPFGaZtNdTyBxSVmnk+OMkRbXznTGM/S9DKzKK02GsQnrB415TRclH0JCfxdGFln4U09ClaOY7Bz9rt8Nw/Zhm1VXF9JPhoDLKQ6nu9mImYotBjGVc5AoZrVLESqCqrXe4tUUHkoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKqGOMJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023BCC4CEE4;
-	Thu, 13 Feb 2025 15:15:09 +0000 (UTC)
+	 MIME-Version; b=QB444K+SvT1gNJvVGOUC33Eg3N68cxubwMNh2CtLQ3r2w/Ewz/ZKPNqUnqKleYfnLC6QgaPj1SXysxk3+uWGRLVRcjxoJeyAXPEqrnZKhjikKbN6u1BcrI37LGuD6tcsUH0sJbna35WJQhF8AZSCso7wugWu9DuJnrZP0CnePt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUqK2QFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056DEC4AF0B;
+	Thu, 13 Feb 2025 15:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459710;
-	bh=MtpgyGppXRL3aC0RYWxIc14A3cTfy/KIYyM7LntrWTU=;
+	s=korg; t=1739460655;
+	bh=XvuTOaWTYzcdGA0/7g9SxwkIxEuYkzr57kyL1SdZpS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKqGOMJMtG0tdg31rt1wNSbQcvF7edIKEWJqDc7ikC6+Cdw5DLgf7NPkfxdZ1W8+v
-	 ycCNI+BEj6YmkiO5THVy/Gwiavfq2bUpeyC7sKD8JPR1KGdeMucDljnT+mywsaixIu
-	 rHvhCdIRDrPvm8KJnF0lnB3AZi5UdhBaT79pKuT8=
+	b=PUqK2QFNA+WX5VIPfpRMJUzsgffe10jITQuxsCKCK84ifQPnFNCS4jp6AYQ2GTsja
+	 Jc29cb3UmiBBxOY0HsCZp0V0iO/+iZEnyYOYFriD9SG15A+wt6afEO72yoFzgMHe1L
+	 rvQiDgV9NFOsWPI325cqqce3Vi6MJl6uc/nvWnBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.13 340/443] iommufd: Fix struct iommu_hwpt_pgfault init and padding
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 133/273] usb: gadget: f_tcm: Decrement command ref count on cleanup
 Date: Thu, 13 Feb 2025 15:28:25 +0100
-Message-ID: <20250213142453.743345320@linuxfoundation.org>
+Message-ID: <20250213142412.593114345@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit e721f619e3ec9bae08bf419c3944cf1e6966c821 upstream.
+commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
 
-The iommu_hwpt_pgfault is used to report IO page fault data to userspace,
-but iommufd_fault_fops_read was never zeroing its padding. This leaks the
-content of the kernel stack memory to userspace.
+We submitted the command with TARGET_SCF_ACK_KREF, which requires
+acknowledgment of command completion. If the command fails, make sure to
+decrement the ref count.
 
-Also, the iommufd uAPI requires explicit padding and use of __aligned_u64
-to ensure ABI compatibility's with 32 bit.
-
-pahole result, before:
-struct iommu_hwpt_pgfault {
-        __u32     flags;                /*     0     4 */
-        __u32     dev_id;               /*     4     4 */
-        __u32     pasid;                /*     8     4 */
-        __u32     grpid;                /*    12     4 */
-        __u32     perm;                 /*    16     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        __u64     addr;                 /*    24     8 */
-        __u32     length;               /*    32     4 */
-        __u32     cookie;               /*    36     4 */
-
-        /* size: 40, cachelines: 1, members: 8 */
-        /* sum members: 36, holes: 1, sum holes: 4 */
-        /* last cacheline: 40 bytes */
-};
-
-pahole result, after:
-struct iommu_hwpt_pgfault {
-        __u32      flags;                /*     0     4 */
-        __u32      dev_id;               /*     4     4 */
-        __u32      pasid;                /*     8     4 */
-        __u32      grpid;                /*    12     4 */
-        __u32      perm;                 /*    16     4 */
-        __u32      __reserved;           /*    20     4 */
-        __u64      addr __attribute__((__aligned__(8))); /*    24     8 */
-        __u32      length;               /*    32     4 */
-        __u32      cookie;               /*    36     4 */
-
-        /* size: 40, cachelines: 1, members: 9 */
-        /* forced alignments: 1 */
-        /* last cacheline: 40 bytes */
-} __attribute__((__aligned__(8)));
-
-Fixes: c714f15860fc ("iommufd: Add fault and response message definitions")
-Link: https://patch.msgid.link/r/20250120195051.2450-1-nicolinc@nvidia.com
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c |    2 +-
- include/uapi/linux/iommufd.h  |    4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -247,7 +247,7 @@ static ssize_t iommufd_fault_fops_read(s
- {
- 	size_t fault_size = sizeof(struct iommu_hwpt_pgfault);
- 	struct iommufd_fault *fault = filep->private_data;
--	struct iommu_hwpt_pgfault data;
-+	struct iommu_hwpt_pgfault data = {};
- 	struct iommufd_device *idev;
- 	struct iopf_group *group;
- 	struct iopf_fault *iopf;
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -868,6 +868,7 @@ enum iommu_hwpt_pgfault_perm {
-  * @pasid: Process Address Space ID
-  * @grpid: Page Request Group Index
-  * @perm: Combination of enum iommu_hwpt_pgfault_perm
-+ * @__reserved: Must be 0.
-  * @addr: Fault address
-  * @length: a hint of how much data the requestor is expecting to fetch. For
-  *          example, if the PRI initiator knows it is going to do a 10MB
-@@ -883,7 +884,8 @@ struct iommu_hwpt_pgfault {
- 	__u32 pasid;
- 	__u32 grpid;
- 	__u32 perm;
--	__u64 addr;
-+	__u32 __reserved;
-+	__aligned_u64 addr;
- 	__u32 length;
- 	__u32 cookie;
- };
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -973,6 +973,7 @@ static void usbg_data_write_cmpl(struct
+ 	return;
+ 
+ cleanup:
++	target_put_sess_cmd(se_cmd);
+ 	transport_generic_free_cmd(&cmd->se_cmd, 0);
+ }
+ 
 
 
 
