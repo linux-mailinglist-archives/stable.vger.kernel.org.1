@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-115980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5591BA346B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF19EA344DD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC313AFC90
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B66083B1106
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBFF26B0A5;
-	Thu, 13 Feb 2025 15:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824CE1FECCA;
+	Thu, 13 Feb 2025 14:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syDMMwiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unl9suud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CFD26B0B8;
-	Thu, 13 Feb 2025 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5901662F1;
+	Thu, 13 Feb 2025 14:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459920; cv=none; b=gU0g/xcAH7V5RSh9qyH/TNV42VFkHiK6IaNiS7jheBFATIdMJXtpMoQp9PGTJWSzb+G30vpMx/slhHtw+/MnC1obAGumPTvPF/4c6n42KPs5VW9qLqR0v75ZCKF7IQjAMbrtoMBRKLo6dR3fhlPjhMmBRnUXadZKgogBKvdc0so=
+	t=1739458502; cv=none; b=hIQtL29jYXro+4XTm/aHIhGERjJP/9w4ieVmI+9aAokIi2DdSNY086NvBw3kxql0rS/zNL7ChvxSoKCc59Toyzh0Q69t/19lJ7imzFJVL3h99s2TelvKUeMIIiY0tX4MDyFlMnlVnRN2/r736eTQsESKi6p/74Ud0qyGszGNuXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459920; c=relaxed/simple;
-	bh=mlZc8Vgg1hprTzOCW2Bh2L09SVG4BdyT+3xbpSKLSKI=;
+	s=arc-20240116; t=1739458502; c=relaxed/simple;
+	bh=ld/5jicoHd2gxfrAGjp0Z/ZHLeDyANWsi7n4IbIH4M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCRie2SnGW80ZUpi45kzwynKKv2uMYP0lswrV7P8mU1bB3FT5cTxso+H5xLVfLwx+On2MWd4HiPW5ZoR+yRMUoIKycCjY7Qhr47TABbvzcL1y4wol1o9A1ZK3kjtJCSNECfynUnD+/+NeB0xINPRm0RSpgPOoeEWTTYBT1EEJYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syDMMwiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C60C4CED1;
-	Thu, 13 Feb 2025 15:18:39 +0000 (UTC)
+	 MIME-Version; b=dfNI0b0eCSiIkwLb56wULl9AcFZtL9Nh8svi9vd3hiKBDAIFrXF+8Wjp6nPCp9jEReTQQbi+aO1vYcYt4QZZk8v5z61AIJOye3Qo7QssobGteHBDw/cPW021Nidkkkn0mx1UDo0ayGL3M+3K7simBLWM+ubp3uDvqeXi9SgdQMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unl9suud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A33C4CED1;
+	Thu, 13 Feb 2025 14:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459919;
-	bh=mlZc8Vgg1hprTzOCW2Bh2L09SVG4BdyT+3xbpSKLSKI=;
+	s=korg; t=1739458502;
+	bh=ld/5jicoHd2gxfrAGjp0Z/ZHLeDyANWsi7n4IbIH4M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=syDMMwiII9kJ8Hys9FI0ti2aHglzdpgdWFgFL6RB1V9sSZ12DUgJ+fmuyV5Xjn5XL
-	 xGr5tXiDPWzzwosbzD+umMtgxPLTuPC64x/LCliKSVwVr13T9h/FaYsNiRhRBlBcPr
-	 QxkfqS/Y0ZFid2P1ALAJu/pTHNTZdUyJI/K/Zfi8=
+	b=unl9suudHn77Ev8DHXgl3YAe+fG5d9c+TuG/E2EyGZPIA11MaHaoE9cPJyhHsPDOF
+	 N7M902QaFATjIG4FEljYGKetSPxIgrvJHj3PibFyfTw29i9e/TcBY+kzccmHBVIPXt
+	 EPblf9fdF9gSaKPEC/IgFSAtFxlt6WyRuRuo1a80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	J David <j.david.lists@gmail.com>,
-	Rick Macklem <rmacklem@uoguelph.ca>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 403/443] NFSD: Encode COMPOUND operation status on page boundaries
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 419/422] fs: fix adding security options to statmount.mnt_opt
 Date: Thu, 13 Feb 2025 15:29:28 +0100
-Message-ID: <20250213142456.159403674@linuxfoundation.org>
+Message-ID: <20250213142452.734338880@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit ef3675b45bcb6c17cabbbde620c6cea52ffb21ac upstream.
+commit 5eb987105357cb7cfa7cf3b1e2f66d5c0977e412 upstream.
 
-J. David reports an odd corruption of a READDIR reply sent to a
-FreeBSD client.
+Prepending security options was made conditional on sb->s_op->show_options,
+but security options are independent of sb options.
 
-xdr_reserve_space() has to do a special trick when the @nbytes value
-requests more space than there is in the current page of the XDR
-buffer.
-
-In that case, xdr_reserve_space() returns a pointer to the start of
-the next page, and then the next call to xdr_reserve_space() invokes
-__xdr_commit_encode() to copy enough of the data item back into the
-previous page to make that data item contiguous across the page
-boundary.
-
-But we need to be careful in the case where buffer space is reserved
-early for a data item whose value will be inserted into the buffer
-later.
-
-One such caller, nfsd4_encode_operation(), reserves 8 bytes in the
-encoding buffer for each COMPOUND operation. However, a READDIR
-result can sometimes encode file names so that there are only 4
-bytes left at the end of the current XDR buffer page (though plenty
-of pages are left to handle the remaining encoding tasks).
-
-If a COMPOUND operation follows the READDIR result (say, a GETATTR),
-then nfsd4_encode_operation() will reserve 8 bytes for the op number
-(9) and the op status (usually NFS4_OK). In this weird case,
-xdr_reserve_space() returns a pointer to byte zero of the next buffer
-page, as it assumes the data item will be copied back into place (in
-the previous page) on the next call to xdr_reserve_space().
-
-nfsd4_encode_operation() writes the op num into the buffer, then
-saves the next 4-byte location for the op's status code. The next
-xdr_reserve_space() call is part of GETATTR encoding, so the op num
-gets copied back into the previous page, but the saved location for
-the op status continues to point to the wrong spot in the current
-XDR buffer page because __xdr_commit_encode() moved that data item.
-
-After GETATTR encoding is complete, nfsd4_encode_operation() writes
-the op status over the first XDR data item in the GETATTR result.
-The NFS4_OK status code (0) makes it look like there are zero items
-in the GETATTR's attribute bitmask.
-
-The patch description of commit 2825a7f90753 ("nfsd4: allow encoding
-across page boundaries") [2014] remarks that NFSD "can't handle a
-new operation starting close to the end of a page." This bug appears
-to be one reason for that remark.
-
-Reported-by: J David <j.david.lists@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/3998d739-c042-46b4-8166-dbd6c5f0e804@oracle.com/T/#t
-Tested-by: Rick Macklem <rmacklem@uoguelph.ca>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 056d33137bf9 ("fs: prepend statmount.mnt_opts string with security_sb_mnt_opts()")
+Fixes: f9af549d1fd3 ("fs: export mount options via statmount()")
+Cc: stable@vger.kernel.org # v6.11
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/r/20250129151253.33241-1-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/namespace.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5760,15 +5760,14 @@ nfsd4_encode_operation(struct nfsd4_comp
- 	struct nfs4_stateowner *so = resp->cstate.replay_owner;
- 	struct svc_rqst *rqstp = resp->rqstp;
- 	const struct nfsd4_operation *opdesc = op->opdesc;
--	int post_err_offset;
-+	unsigned int op_status_offset;
- 	nfsd4_enc encoder;
--	__be32 *p;
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5020,30 +5020,29 @@ static int statmount_mnt_opts(struct kst
+ {
+ 	struct vfsmount *mnt = s->mnt;
+ 	struct super_block *sb = mnt->mnt_sb;
++	size_t start = seq->count;
+ 	int err;
  
--	p = xdr_reserve_space(xdr, 8);
--	if (!p)
-+	if (xdr_stream_encode_u32(xdr, op->opnum) != XDR_UNIT)
-+		goto release;
-+	op_status_offset = xdr->buf->len;
-+	if (!xdr_reserve_space(xdr, XDR_UNIT))
- 		goto release;
--	*p++ = cpu_to_be32(op->opnum);
--	post_err_offset = xdr->buf->len;
+-	if (sb->s_op->show_options) {
+-		size_t start = seq->count;
+-
+-		err = security_sb_show_options(seq, sb);
+-		if (err)
+-			return err;
++	err = security_sb_show_options(seq, sb);
++	if (err)
++		return err;
  
- 	if (op->opnum == OP_ILLEGAL)
- 		goto status;
-@@ -5809,20 +5808,21 @@ nfsd4_encode_operation(struct nfsd4_comp
- 		 * bug if we had to do this on a non-idempotent op:
- 		 */
- 		warn_on_nonidempotent_op(op);
--		xdr_truncate_encode(xdr, post_err_offset);
-+		xdr_truncate_encode(xdr, op_status_offset + XDR_UNIT);
- 	}
- 	if (so) {
--		int len = xdr->buf->len - post_err_offset;
-+		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
++	if (sb->s_op->show_options) {
+ 		err = sb->s_op->show_options(seq, mnt->mnt_root);
+ 		if (err)
+ 			return err;
++	}
  
- 		so->so_replay.rp_status = op->status;
- 		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, post_err_offset,
-+		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
- 						so->so_replay.rp_buf, len);
- 	}
- status:
- 	op->status = nfsd4_map_status(op->status,
- 				      resp->cstate.minorversion);
--	*p = op->status;
-+	write_bytes_to_xdr_buf(xdr->buf, op_status_offset,
-+			       &op->status, XDR_UNIT);
- release:
- 	if (opdesc && opdesc->op_release)
- 		opdesc->op_release(&op->u);
+-		if (unlikely(seq_has_overflowed(seq)))
+-			return -EAGAIN;
++	if (unlikely(seq_has_overflowed(seq)))
++		return -EAGAIN;
+ 
+-		if (seq->count == start)
+-			return 0;
++	if (seq->count == start)
++		return 0;
+ 
+-		/* skip leading comma */
+-		memmove(seq->buf + start, seq->buf + start + 1,
+-			seq->count - start - 1);
+-		seq->count--;
+-	}
++	/* skip leading comma */
++	memmove(seq->buf + start, seq->buf + start + 1,
++		seq->count - start - 1);
++	seq->count--;
+ 
+ 	return 0;
+ }
 
 
 
