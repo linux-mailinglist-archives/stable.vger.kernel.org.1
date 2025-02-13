@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB94FA342FE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854A2A34593
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD98616A3E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D62B189BD1D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F95D28137F;
-	Thu, 13 Feb 2025 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8DA1487FA;
+	Thu, 13 Feb 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRzFHZbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTuCyspA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC90281349;
-	Thu, 13 Feb 2025 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C5C26B0B1;
+	Thu, 13 Feb 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457704; cv=none; b=M2Baai5x7Vg5t1yLKPkHEMqDTCvkBNLXfX2ppEnjzmC0LII5viz1axVO5pauIXpFVfiDwqD5VjxJP5jDY6oa8pxtILK+bzAH4zHA8D8uQKKasVAW8I6NNlCtwTeqAHN3tbZfaU5wPN0etCCKGcCs3ozBASpd1p3ORPHvfGRCCSY=
+	t=1739459232; cv=none; b=r6wNB+KpYcDi79Cql8Cvd6s9csnYBnhJFbfO5saVByLxjWs+leeUMaFw6iN5a4wy26sNQVa/GzWvW/h71pC30WxBte6QavhjPbvoAv+qhcLMsjDVTvu48qHRwyHF6zwOIHbVpkCmpPephAR4AmccPqvB7h1Ze3amT3nyYvSPVAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457704; c=relaxed/simple;
-	bh=MQIUSg3pG3sGAC1U803Z5TPEVxgwP8quqTIe0CHfHzI=;
+	s=arc-20240116; t=1739459232; c=relaxed/simple;
+	bh=yTcKQOyesQ2zWt46gDXyQo0yzLa/QffaKby7R/5+8zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHZfat+tISnYrirAbxIeBfwrh2N0Yt7to5B1L6HPc8BtePiWUSyJ1K+8vkPWX5Sax7WZdf5UZBFx/FyYwGBk9d8gA19qitQm7xj2O2TyGf24tJaz7mf+3fpimerf/npvmtIeVbat1PehlOwnBWmbZDAVwL4KZAieiVB4fXwsd68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRzFHZbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F519C4CED1;
-	Thu, 13 Feb 2025 14:41:43 +0000 (UTC)
+	 MIME-Version; b=a9d5Ed0O9IMwCwa4cgeyxkAp29JDaRVpfcqBF0v9f5TvXWGhUWqyI2/bmldpaf6VmVInzrbBrv7PLpYYc3QRpSNjk+ojfgRp0yWAPx840/OimMnLl9LBSU3Ci7ULBdppD35Lx/hu2Lk5SEvDEyTwiEvzL1VPnMVUXiRQtt42zTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTuCyspA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA49DC4CED1;
+	Thu, 13 Feb 2025 15:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457703;
-	bh=MQIUSg3pG3sGAC1U803Z5TPEVxgwP8quqTIe0CHfHzI=;
+	s=korg; t=1739459232;
+	bh=yTcKQOyesQ2zWt46gDXyQo0yzLa/QffaKby7R/5+8zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRzFHZbUB9WGpqVr8nFQFIQnNc61IZ4iXSKTKdjQPPZ01IGWyGNpDkSmD8QHr7DYX
-	 iIenEPzuTDnEXpZkk5leDZuwRK1nBdKw8+gth+qitu/ZI6JrgKCL0ZtXMMc3H1zg/a
-	 u+9AURjIvbRl4xTSGQwsuc0MyGWrXgPWrn1eZlfQ=
+	b=xTuCyspAFqoh/g8CzBsZ2pqsAqoddvg8RMQQSpoWyV8Delke1C1BU2wxTLItB5De0
+	 sHTyg9Z9tH5S/4XrM3U3DhxlBa4P1ySKoBHnpH6jZ/uqdWlhA9pSuzKdL7mmfLDUtG
+	 tcfOla41AqKGm1cDXvLfw0vqb8Jx+g1nWi3WfCNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.12 188/422] clk: mediatek: mt2701-mm: add missing dummy clk
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 172/443] ksmbd: fix integer overflows on 32 bit systems
 Date: Thu, 13 Feb 2025 15:25:37 +0100
-Message-ID: <20250213142443.801508858@linuxfoundation.org>
+Message-ID: <20250213142447.239516105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 67aea188f23a5dde51c31a720ccf66aed0ce4187 upstream.
+commit aab98e2dbd648510f8f51b83fbf4721206ccae45 upstream.
 
-Add dummy clk which was missed during the conversion to
-mtk_clk_pdev_probe() and is required for the existing DT bindings to
-keep working.
+On 32bit systems the addition operations in ipc_msg_alloc() can
+potentially overflow leading to memory corruption.
+Add bounds checking using KSMBD_IPC_MAX_PAYLOAD to avoid overflow.
 
-Fixes: 65c10c50c9c7 ("clk: mediatek: Migrate to mtk_clk_pdev_probe() for multimedia clocks")
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/9de23440fcba1ffef9e77d58c9f505105e57a250.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-mm.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/transport_ipc.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/clk/mediatek/clk-mt2701-mm.c
-+++ b/drivers/clk/mediatek/clk-mt2701-mm.c
-@@ -31,6 +31,7 @@ static const struct mtk_gate_regs disp1_
- 	GATE_MTK(_id, _name, _parent, &disp1_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -626,6 +626,9 @@ ksmbd_ipc_spnego_authen_request(const ch
+ 	struct ksmbd_spnego_authen_request *req;
+ 	struct ksmbd_spnego_authen_response *resp;
  
- static const struct mtk_gate mm_clks[] = {
-+	GATE_DUMMY(CLK_DUMMY, "mm_dummy"),
- 	GATE_DISP0(CLK_MM_SMI_COMMON, "mm_smi_comm", "mm_sel", 0),
- 	GATE_DISP0(CLK_MM_SMI_LARB0, "mm_smi_larb0", "mm_sel", 1),
- 	GATE_DISP0(CLK_MM_CMDQ, "mm_cmdq", "mm_sel", 2),
++	if (blob_len > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_spnego_authen_request) +
+ 			blob_len + 1);
+ 	if (!msg)
+@@ -805,6 +808,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
+ 	struct ksmbd_rpc_command *req;
+ 	struct ksmbd_rpc_command *resp;
+ 
++	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
+ 	if (!msg)
+ 		return NULL;
+@@ -853,6 +859,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
+ 	struct ksmbd_rpc_command *req;
+ 	struct ksmbd_rpc_command *resp;
+ 
++	if (payload_sz > KSMBD_IPC_MAX_PAYLOAD)
++		return NULL;
++
+ 	msg = ipc_msg_alloc(sizeof(struct ksmbd_rpc_command) + payload_sz + 1);
+ 	if (!msg)
+ 		return NULL;
 
 
 
