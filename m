@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E2BA344C2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB305A3423C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE6E016FB02
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 647FF7A3ED5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2548C1514F6;
-	Thu, 13 Feb 2025 14:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6155F221571;
+	Thu, 13 Feb 2025 14:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEPR57Et"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaO9w96o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749F156F3C;
-	Thu, 13 Feb 2025 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90221D3FD;
+	Thu, 13 Feb 2025 14:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458677; cv=none; b=ldYFpj6TKfuXMVksNnYQd5mWWbmGcUu2wfGcMgeFghcm2J4fDtaQ+UffmHRtApVikuTlrW516wGRoszReiOF2eDX7lR8xnUL8m2nXb1lwZKY99W6IB+NCs5ezZbUS4cp3O2i4h1uMJi3pWZMr+Hv0PO2g1om1cJjvj4FfsiffCI=
+	t=1739457268; cv=none; b=eVtO2/O11o1n5q+aZOAxmpJLzkF6q+K/Lp8WyFF+2FLQ++PDojZynBW+1BBJIsqDAE7gRPO0/pFOqMnYdJ0H93YIZT5AcXIJRb/t4FPWcd4GiU2AS2zsBHm1+Y2F8iDFiEfQNHUeJ5f2X31otMDxOA6iGWHDbp+/BHfaNxIW3Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458677; c=relaxed/simple;
-	bh=igf16KDvPjeMXKQ5Pz1I4WwjoFFMQAJQ7BQhRkKuy+8=;
+	s=arc-20240116; t=1739457268; c=relaxed/simple;
+	bh=yGlPvCZSyxMwICqM8pA/DnJ2BCm09kr/ZHANt11ihYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qfk0SJeOeggN0wJXAOX8Eo5A+BGPlinvoJSxaY1s6z1spb09evwOsWm3RzJM8h83KBRFwOrP2b0oYDXk7ZQT/HjBz1kXkG18LTEuyOD/wxaZj1qYQCtXYAfECfibiL9PL4zu2pisFvDTxD/VwxzDJ/t8saJbSQk8XKtmhaYQsYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEPR57Et; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468DBC4CED1;
-	Thu, 13 Feb 2025 14:57:57 +0000 (UTC)
+	 MIME-Version; b=DKrvsp+ve8h5LBS50iLHWW8H+DGKlz+SJWk9sQUIrJ80Y9CPhN6R/fp7hGOcltYTH+4WXrDymuXuecWoXejge2xuvIdH02xOH8FHMrySIVLIbG1OktD5U0syEfg8ezV8Mk098eUf9fxddLMbk+0ceV1tpBfnnbkEeDezbJ79YYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaO9w96o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D11C4CEF2;
+	Thu, 13 Feb 2025 14:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458677;
-	bh=igf16KDvPjeMXKQ5Pz1I4WwjoFFMQAJQ7BQhRkKuy+8=;
+	s=korg; t=1739457268;
+	bh=yGlPvCZSyxMwICqM8pA/DnJ2BCm09kr/ZHANt11ihYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEPR57EtWCD6Ss6k7UORTg8uCUhW7SHsZDV/KKf19DkJd8L1FzqVa6xJih6e6dxlB
-	 ZSWWGSqINzi3gZ7tzacpMLMEkps7G1+9Rn44zttP6DYnKeKz6pOsoHckfA+LA+74W0
-	 jfDAUykGHbtL7dH3yqbl3WzUTaA4aFxTxFk0h5qI=
+	b=MaO9w96oM5NmpUSYl5f/YBivUj6TeT/UKq7JM3Fj48gU69DxNV2lCT/PHWLPjHmq/
+	 ITUAnPLNtMRodYUOd6QHctzvzXGG9G88oTfO6tv+g2H3oZWQoUpinNLG0VhIEwB5ki
+	 VurshtODeILV8iNQCpH3Tr0/RpbZGgm+gfu4nDq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 048/443] drm/bridge: it6505: fix HDCP CTS KSV list wait timer
+Subject: [PATCH 6.12 064/422] APEI: GHES: Have GHES honor the panic= setting
 Date: Thu, 13 Feb 2025 15:23:33 +0100
-Message-ID: <20250213142442.477062942@linuxfoundation.org>
+Message-ID: <20250213142439.031757788@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Borislav Petkov <bp@alien8.de>
 
-[ Upstream commit 9f9eef9ec1a2b57d95a86fe81df758e8253a7766 ]
+[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
 
-HDCP must disabled encryption and restart authentication after
-waiting KSV for 5s.
-The original method uses a counter in a waitting loop that may
-wait much longer than it is supposed to.
-Use time_after() for KSV wait timeout.
+The GHES driver overrides the panic= setting by force-rebooting the
+system after a fatal hw error has been reported. The intent being that
+such an error would be reported earlier.
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-9-e0fdd4844703@ite.corp-partner.google.com
+However, this is not optimal when a hard-to-debug issue requires long
+time to reproduce and when that happens, the box will get rebooted after
+30 seconds and thus destroy the whole hw context of when the error
+happened.
+
+So rip out the default GHES panic timeout and honor the global one.
+
+In the panic disabled (panic=0) case, the error will still be logged to
+dmesg for later inspection and if panic after a hw error is really
+required, then that can be controlled the usual way - use panic= on the
+cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+
+Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/acpi/apei/ghes.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 029755ee21e23..faee8e2e82a05 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2061,12 +2061,13 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 	struct it6505 *it6505 = container_of(work, struct it6505,
- 					     hdcp_wait_ksv_list);
- 	struct device *dev = it6505->dev;
--	unsigned int timeout = 5000;
--	u8 bstatus = 0;
-+	u8 bstatus;
- 	bool ksv_list_check;
-+	/* 1B-04 wait ksv list for 5s */
-+	unsigned long timeout = jiffies +
-+				msecs_to_jiffies(5000) + 1;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index ada93cfde9ba1..cff6685fa6cc6 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -173,8 +173,6 @@ static struct gen_pool *ghes_estatus_pool;
+ static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+ static atomic_t ghes_estatus_cache_alloced;
  
--	timeout /= 20;
--	while (timeout > 0) {
-+	for (;;) {
- 		if (!it6505_get_sink_hpd_status(it6505))
- 			return;
+-static int ghes_panic_timeout __read_mostly = 30;
+-
+ static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+ {
+ 	phys_addr_t paddr;
+@@ -983,14 +981,16 @@ static void __ghes_panic(struct ghes *ghes,
+ 			 struct acpi_hest_generic_status *estatus,
+ 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+ {
++	const char *msg = GHES_PFX "Fatal hardware error";
++
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
-@@ -2075,13 +2076,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 		if (bstatus & DP_BSTATUS_READY)
- 			break;
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
  
--		msleep(20);
--		timeout--;
--	}
-+		if (time_after(jiffies, timeout)) {
-+			DRM_DEV_DEBUG_DRIVER(dev, "KSV list wait timeout");
-+			goto timeout;
-+		}
+-	/* reboot to log the error! */
+ 	if (!panic_timeout)
+-		panic_timeout = ghes_panic_timeout;
+-	panic("Fatal hardware error!");
++		pr_emerg("%s but panic disabled\n", msg);
++
++	panic(msg);
+ }
  
--	if (timeout == 0) {
--		DRM_DEV_DEBUG_DRIVER(dev, "timeout and ksv list wait failed");
--		goto timeout;
-+		msleep(20);
- 	}
- 
- 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
+ static int ghes_proc(struct ghes *ghes)
 -- 
 2.39.5
 
