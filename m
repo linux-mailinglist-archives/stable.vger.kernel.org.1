@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-115770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30AFA345B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33AD0A34323
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25AF165815
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0303F16C042
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984AF5684;
-	Thu, 13 Feb 2025 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15B74F218;
+	Thu, 13 Feb 2025 14:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umjkZ1pb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClitvBWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505DB26B082;
-	Thu, 13 Feb 2025 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0E3281349;
+	Thu, 13 Feb 2025 14:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459190; cv=none; b=fzA+YvHD8T42M5WTjs280I0G7HY2PSX6YiKpOSKgF8lzbtJh8oL8wHMraQt/i5qYSJh3ryCvDGXwLnMV7cwhY3bv0be3zpPJmg42pmHn1e/37JFW0QEiN2QTiq3ONJ7vjj+E/RqbZTgQOPb4KaiKnAtiFUHXf+9wCmqcBWt1+3Y=
+	t=1739457772; cv=none; b=tp9lzvRGHC76Kqs5qTAWwKAYv/lDrAomDAz7uZLErMEEyMWnhOmHxa6OUKqln4n45+luu5TvxX0vmVrNJfvPWzGH2+EZKVh0GIFuK35sz5FPCE3eVxqRYHNzJ4Qai6NfQ3cIxnuYT3ElMh9pUnX7eynacPHz852gXa+7R+iX/pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459190; c=relaxed/simple;
-	bh=qIkkDf1XziAZcFsc7u38qn+5Oda/iIZWfSsKRxpOvbU=;
+	s=arc-20240116; t=1739457772; c=relaxed/simple;
+	bh=gUM/lufI3Fzk8/cYxayipWvm2ELIEdGbi8jhAri55io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aombEsboPYNFSrkhwE2PKrgstNfNfVjzfhU342zwVdDALIKzigeYtQ8U4NzeWF0fU4MLQusC4oimB+Mfh21ZyoYxaAbwRxEU5EEBx30mQvwk328XNOAuU375NVuHhs3Tg9WSAiwi0iMjNZfoHGv2GVRA5BCcRtLs2qx36cvUD2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umjkZ1pb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1D9C4CED1;
-	Thu, 13 Feb 2025 15:06:29 +0000 (UTC)
+	 MIME-Version; b=td48EqN9Sgg5Muzx2qOQQ+OrlgizBIsPIR3/J1wntu6zDALcXgLeM2AKk/0MccDRLaUM7uJbjAFdUDOXT3PuMwtD3w/RHJNG3BT8MRuLRsMfFARjlB5X075GZTXXupMGuDw/P5yjcmqE1CuQRgFuw94j6QFNGcL+IApdN5PbXdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClitvBWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9818C4CED1;
+	Thu, 13 Feb 2025 14:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459190;
-	bh=qIkkDf1XziAZcFsc7u38qn+5Oda/iIZWfSsKRxpOvbU=;
+	s=korg; t=1739457772;
+	bh=gUM/lufI3Fzk8/cYxayipWvm2ELIEdGbi8jhAri55io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umjkZ1pbtpX5M+Rnd8NgxEIYwkL+b0lq6D6JZmt88Ck5k2Jwicr8pG0RrqIK1RKiV
-	 FjFuhzvfore5+NQMCGP5rS6Q/itVC5bU0wU3zE1/u6KgQ4w+zZjb1vt+a5rwEI06lF
-	 o1RB6EDQYUU55B9rEpF3K2O2AqNONqtXwFlvJ4nM=
+	b=ClitvBWbiFb6D+GAbjTLUvFemKV08dCWPyOirSCHS3pgfwxn4nCTm6qqyYLNPS5Vd
+	 QxdMkjKOxGyUg82yVDVL9zytc8VmPGf/EzxFzavvC2bHDwOSH4sNd0iFzg4f6lZS3R
+	 q/0XgibPVTtzvJ620siYvs9rMxRSHOTE50jqu2a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cody Eksal <masterr3c0rd@epochal.quest>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>
-Subject: [PATCH 6.13 193/443] clk: sunxi-ng: a100: enable MMC clock reparenting
-Date: Thu, 13 Feb 2025 15:25:58 +0100
-Message-ID: <20250213142448.060196483@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 210/422] usb: gadget: f_tcm: ep_autoconfig with fullspeed endpoint
+Date: Thu, 13 Feb 2025 15:25:59 +0100
+Message-ID: <20250213142444.642407738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cody Eksal <masterr3c0rd@epochal.quest>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 16414720045de30945b8d14b7907e0cbf81a4b49 upstream.
+commit 25224c1f07d31c261d04dfbc705a7a0f314a825d upstream.
 
-While testing the MMC nodes proposed in [1], it was noted that mmc0/1
-would fail to initialize, with "mmc: fatal err update clk timeout" in
-the kernel logs. A closer look at the clock definitions showed that the MMC
-MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
-adding this flag in the first place, and its original purpose is unknown,
-but it doesn't seem to make sense and results in severe limitations to MMC
-speeds. Thus, remove this flag from the 3 MMC MPs.
+Match usb endpoint using fullspeed endpoint descriptor to make sure the
+wMaxPacketSize for fullspeed descriptors is automatically configured.
 
-[1] https://msgid.link/20241024170540.2721307-10-masterr3c0rd@epochal.quest
-
-Fixes: fb038ce4db55 ("clk: sunxi-ng: add support for the Allwinner A100 CCU")
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cody Eksal <masterr3c0rd@epochal.quest>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://patch.msgid.link/20241109003739.3440904-1-masterr3c0rd@epochal.quest
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/e4507bc824aed6e7c7f5a718392ab6a7c1480a7f.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-a100.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
-@@ -436,7 +436,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1970,43 +1970,39 @@ static int tcm_bind(struct usb_configura
+ 	bot_intf_desc.bInterfaceNumber = iface;
+ 	uasp_intf_desc.bInterfaceNumber = iface;
+ 	fu->iface = iface;
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bi_desc,
+-			&uasp_bi_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bi_desc);
+ 	if (!ep)
+ 		goto ep_fail;
  
- static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
- 					  0, 4,		/* M */
-@@ -444,7 +444,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
+ 	fu->ep_in = ep;
  
- static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
- 					  0, 4,		/* M */
-@@ -452,7 +452,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
- 					  24, 2,	/* mux */
- 					  BIT(31),	/* gate */
- 					  2,		/* post-div */
--					  CLK_SET_RATE_NO_REPARENT);
-+					  0);
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bo_desc,
+-			&uasp_bo_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bo_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_out = ep;
  
- static SUNXI_CCU_GATE(bus_mmc0_clk, "bus-mmc0", "ahb3", 0x84c, BIT(0), 0);
- static SUNXI_CCU_GATE(bus_mmc1_clk, "bus-mmc1", "ahb3", 0x84c, BIT(1), 0);
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_status_desc,
+-			&uasp_status_in_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_status_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_status = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_cmd_desc,
+-			&uasp_cmd_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_cmd_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_cmd = ep;
+ 
+ 	/* Assume endpoint addresses are the same for both speeds */
+-	uasp_bi_desc.bEndpointAddress =	uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
++	uasp_bi_desc.bEndpointAddress =	uasp_fs_bi_desc.bEndpointAddress;
++	uasp_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
+ 	uasp_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+-	uasp_fs_bi_desc.bEndpointAddress = uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_fs_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
+-	uasp_fs_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_fs_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++	uasp_ss_bi_desc.bEndpointAddress = uasp_fs_bi_desc.bEndpointAddress;
++	uasp_ss_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
++	uasp_ss_status_desc.bEndpointAddress =
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_ss_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+ 	ret = usb_assign_descriptors(f, uasp_fs_function_desc,
+ 			uasp_hs_function_desc, uasp_ss_function_desc,
 
 
 
