@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-116142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FE2A347F3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055C0A34457
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45053B015B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 777B0189310C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E49115A868;
-	Thu, 13 Feb 2025 15:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386202661B9;
+	Thu, 13 Feb 2025 14:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2a3aIP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhs0igZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADD7152532;
-	Thu, 13 Feb 2025 15:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96351993B7;
+	Thu, 13 Feb 2025 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460471; cv=none; b=mFZuHBmgJPWfdZ6/ymrX50swdczi8XgUb/s62uE2tP65nTDj5R+5EtUPf6pItBSAnRXQfwQh8LEIo9YNBMKjoaC1hNOgyTfawFUTixEltpCIJ7+oN7IQ96ud3qCQ8UOs0w0J/HbS/kbVNwO1tffiVzoONBTb/rBFmvOMYdiCgcI=
+	t=1739458247; cv=none; b=ddPXlrTHqnHWoGf/0uUDLnQ55pc1B/i2wB0VgSo+Ni4jcOG7fkXMgae22pcLqI2yQ2t1UM4HOfNLzSMgcHGhcv3MgrzDUHVD+IeW8QNWM660a4BZvx3b7X658NFSb742C6+hUpsdH69bE5to8cjEQtCEYn3kG6FzyvsVZOKqNWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460471; c=relaxed/simple;
-	bh=MYMhQVICxteBfQCUdY7lO/RcV4ITK/63+XzVjGuL5yU=;
+	s=arc-20240116; t=1739458247; c=relaxed/simple;
+	bh=5UHVh1GBLpw9lzq9yGnA0zY7y1vLS+vO3iPbHm8/7Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tYIDuD/e0qVpuCddNl4OB2L7B9J8jB3j8Zd/tlnvgeU9xGiKhcBsmMVnDW132n3ZmgE96BeawQeais8EHRlkHW65qVQ4E/zLRAvdbOIbiMPGGzWnbBQ2DpOVQ/QsioJWLE5HdUG/JLqKKWK1bPz21r+AMmcXGyaG5qZA9ixzT7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2a3aIP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5B2C4CEE4;
-	Thu, 13 Feb 2025 15:27:50 +0000 (UTC)
+	 MIME-Version; b=ff3kUSQEEp7c8vIJMlIa3u7zVzeimxeokB7hZgtGrj+bVjRdyGndbBbnfzUxVUyrY/8OtRxtNMTBbsU5rUdPMM8P9aa1Wl60qCAKycElaQ6ttTzcMp4nLA8XeTWErOCO2xEFpmM5vegUQhl5bhyMCFLrVzdkjMeQ+Tj3Jy5pGfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhs0igZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D58C4CED1;
+	Thu, 13 Feb 2025 14:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460471;
-	bh=MYMhQVICxteBfQCUdY7lO/RcV4ITK/63+XzVjGuL5yU=;
+	s=korg; t=1739458246;
+	bh=5UHVh1GBLpw9lzq9yGnA0zY7y1vLS+vO3iPbHm8/7Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2a3aIP4WjZ6MmiytsFNFb6cIU4gbNOrlgnOsNn6geO07iugytjpLvJtoZ1A9hEjF
-	 WDvStw5OxyPa4hMyqrrNAxhfIMCuqsU3BxUW5Gko9iqvsYkyzvTCu9jrfTgs+UyHPu
-	 p1GkKM6nIOXXeB4WPSFbmviGz16DdE33Euvjq29Q=
+	b=qhs0igZaFXukZr57I36MJfLSHw8S98Jq4j14btEf3Fvb9Q/MTNgHChhj4ep4Ewa4X
+	 RouO2hrMcTEy+EFgaTa+BsdlWxpXuDOJbx5XmYCtueihEE9tQjMrEhfS4JdmHHut68
+	 4LKf698ZWuQL9/yomNnLmkie27w/NPGvSb0juXMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
-	Jakub Jelinek <jakub@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 120/273] efi: libstub: Use -std=gnu11 to fix build with GCC 15
-Date: Thu, 13 Feb 2025 15:28:12 +0100
-Message-ID: <20250213142412.084503497@linuxfoundation.org>
+	Liu Shixin <liushixin2@huawei.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 344/422] mm/compaction: fix UBSAN shift-out-of-bounds warning
+Date: Thu, 13 Feb 2025 15:28:13 +0100
+Message-ID: <20250213142449.829477754@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +66,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Liu Shixin <liushixin2@huawei.com>
 
-commit 8ba14d9f490aef9fd535c04e9e62e1169eb7a055 upstream.
+commit d1366e74342e75555af2648a2964deb2d5c92200 upstream.
 
-GCC 15 changed the default C standard version to C23, which should not
-have impacted the kernel because it requests the gnu11 standard via
-'-std=' in the main Makefile. However, the EFI libstub Makefile uses its
-own set of KBUILD_CFLAGS for x86 without a '-std=' value (i.e., using
-the default), resulting in errors from the kernel's definitions of bool,
-true, and false in stddef.h, which are reserved keywords under C23.
+syzkaller reported a UBSAN shift-out-of-bounds warning of (1UL << order)
+in isolate_freepages_block().  The bogus compound_order can be any value
+because it is union with flags.  Add back the MAX_PAGE_ORDER check to fix
+the warning.
 
-  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
-     11 |         false   = 0,
-  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-     35 | typedef _Bool                   bool;
-
-Set '-std=gnu11' in the x86 cflags to resolve the error and consistently
-use the same C standard version for the entire kernel. All other
-architectures reuse KBUILD_CFLAGS from the rest of the kernel, so this
-issue is not visible for them.
-
-Cc: stable@vger.kernel.org
-Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
-Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
-Reported-by: Jakub Jelinek <jakub@redhat.com>
-Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lkml.kernel.org/r/20250123021029.2826736-1-liushixin2@huawei.com
+Fixes: 3da0272a4c7d ("mm/compaction: correctly return failure with bogus compound_order in strict mode")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/compaction.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -11,7 +11,7 @@ cflags-y			:= $(KBUILD_CFLAGS)
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -630,7 +630,8 @@ static unsigned long isolate_freepages_b
+ 		if (PageCompound(page)) {
+ 			const unsigned int order = compound_order(page);
  
- cflags-$(CONFIG_X86_32)		:= -march=i386
- cflags-$(CONFIG_X86_64)		:= -mcmodel=small
--cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
-+cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
+-			if (blockpfn + (1UL << order) <= end_pfn) {
++			if ((order <= MAX_PAGE_ORDER) &&
++			    (blockpfn + (1UL << order) <= end_pfn)) {
+ 				blockpfn += (1UL << order) - 1;
+ 				page += (1UL << order) - 1;
+ 				nr_scanned += (1UL << order) - 1;
 
 
 
