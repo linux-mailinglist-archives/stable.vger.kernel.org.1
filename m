@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-116138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C010A34765
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ACFA34449
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C2B189437D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A25171646
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DC915252D;
-	Thu, 13 Feb 2025 15:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A672924500F;
+	Thu, 13 Feb 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyBhctKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L031dQFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597FD152532;
-	Thu, 13 Feb 2025 15:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606CA24500C;
+	Thu, 13 Feb 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460457; cv=none; b=gOqID3i1YrX1W8meYo9Pl5EsQb4K8CXeeor+xx0/Io8i6jz9k64SUMaSL5vouMs8TFFiR7F2iYyzdy6JCxb9XGNuiD9gTzTGc6l1th4ImqKpWLHq8PiiHrvczXnuLOc982Ig1S2JsXe2UYm19aiKn8C88FwtRf1yrMrMd9vSWPE=
+	t=1739458341; cv=none; b=B4qsYyNwP4W05tmpqyLc7dG9iEiPrKQusEv1awAs/SEsRjSIdlTzwICOr6XODciqpS8jd+DPI7ASs4Pu24DMA5MhJUutZm8Rtw/brhwXaBu3uTXqBLvBmJmbBSjYh/3ZUlM+FTc1pp85nYg+yFqClZsysTbIpaAGcn5efCkpFmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460457; c=relaxed/simple;
-	bh=DlyYVSWhcqt8F5P3Ew3l9iXOh+bRETfB5WufF/EbSdg=;
+	s=arc-20240116; t=1739458341; c=relaxed/simple;
+	bh=BTim2TsTFU1lhO3D5F/HjSu/MjEAc2lS8dJ0TwYnCtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceyoVJWrLo7ZrlxevzySfNyMi/RQbx8oW3JiAWMj07W7J0VsDh3a/DCcwrVpig9+LBCsjK2BcVPVoCBoZOG84rSVMdCZlrg9tc3+iPFunZ6Erwac3o+Lh/SrD8KzvqPRlYczYHvUmdV8hX1q+P8c5E8lk5Yc4qCmt8CvRc/hM7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyBhctKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B0EC4CED1;
-	Thu, 13 Feb 2025 15:27:36 +0000 (UTC)
+	 MIME-Version; b=GuruR6eNkExT9ilT9NJlUatlgAHxb2M9PPVCSeMO6Yd9+vdPuYKHaLri34lxls7Nhr0rVyLUWiPiN3oWUl8mFh5nHljhsZ4S0m/Wxg91UHG+yOoHJePea4hqcYe+jZHEM7h4j0B/WudoTyc9anu+Oi+kVO2QwWgJH3PepL3NMR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L031dQFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36DFC4CED1;
+	Thu, 13 Feb 2025 14:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460456;
-	bh=DlyYVSWhcqt8F5P3Ew3l9iXOh+bRETfB5WufF/EbSdg=;
+	s=korg; t=1739458341;
+	bh=BTim2TsTFU1lhO3D5F/HjSu/MjEAc2lS8dJ0TwYnCtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyBhctKySJnKsFV8rA9I6B4R8uEEP6nsCYM6de8aGdmGneY4wEB250IOPGNC6A90y
-	 9G1O72fMurLP0vGko250v+W4xYz6yxYj+oui7tTv3CUnn17ENl7Qm9c43TuoTBKpOz
-	 W9Px71l0I9tKko9d2x1jDSIUFGSIlzSA1JvV89nQ=
+	b=L031dQFZUJpw43pwhuZ6zaFyCGtVKAFmq5QAkagKmeJJgHktotTyaJLO1NV5opdKX
+	 qBrGopi4xsr7JE7wmjlhgQgsD2NcIwWshwRE3dt24T8+dWgE4hN4voy3FK0FZUvixk
+	 unuhwtpuDbxxqEHTeA+tvUiKapGg15derGmOTLs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 117/273] clk: mediatek: mt2701-img: add missing dummy clk
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Patrick Wang <patrick.wang.shcn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 340/422] mm: kmemleak: fix upper boundary check for physical address objects
 Date: Thu, 13 Feb 2025 15:28:09 +0100
-Message-ID: <20250213142411.967182515@linuxfoundation.org>
+Message-ID: <20250213142449.674750999@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 366640868ccb4a7991aebe8442b01340fab218e2 upstream.
+commit 488b5b9eca68497b533ced059be5eff19578bbca upstream.
 
-Add dummy clk for index 0 which was missed during the conversion to
-mtk_clk_simple_probe().
+Memblock allocations are registered by kmemleak separately, based on their
+physical address.  During the scanning stage, it checks whether an object
+is within the min_low_pfn and max_low_pfn boundaries and ignores it
+otherwise.
 
-Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/d677486a5c563fe5c47aa995841adc2aaa183b8a.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+With the recent addition of __percpu pointer leak detection (commit
+6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
+started reporting leaks in setup_zone_pageset() and
+setup_per_cpu_pageset().  These were caused by the node_data[0] object
+(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
+boundary.  The non-strict upper boundary check introduced by commit
+84c326299191 ("mm: kmemleak: check physical address when scan") causes the
+pg_data_t object to be ignored (not scanned) and the __percpu pointers it
+contains to be reported as leaks.
+
+Make the max_low_pfn upper boundary check strict when deciding whether to
+ignore a physical address object and not scan it.
+
+Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
+Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
+Cc: <stable@vger.kernel.org>	[6.0.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-img.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/kmemleak.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/mediatek/clk-mt2701-img.c
-+++ b/drivers/clk/mediatek/clk-mt2701-img.c
-@@ -22,6 +22,7 @@ static const struct mtk_gate_regs img_cg
- 	GATE_MTK(_id, _name, _parent, &img_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1650,7 +1650,7 @@ static void kmemleak_scan(void)
+ 			unsigned long phys = object->pointer;
  
- static const struct mtk_gate img_clks[] = {
-+	GATE_DUMMY(CLK_DUMMY, "img_dummy"),
- 	GATE_IMG(CLK_IMG_SMI_COMM, "img_smi_comm", "mm_sel", 0),
- 	GATE_IMG(CLK_IMG_RESZ, "img_resz", "mm_sel", 1),
- 	GATE_IMG(CLK_IMG_JPGDEC_SMI, "img_jpgdec_smi", "mm_sel", 5),
+ 			if (PHYS_PFN(phys) < min_low_pfn ||
+-			    PHYS_PFN(phys + object->size) >= max_low_pfn)
++			    PHYS_PFN(phys + object->size) > max_low_pfn)
+ 				__paint_it(object, KMEMLEAK_BLACK);
+ 		}
+ 
 
 
 
