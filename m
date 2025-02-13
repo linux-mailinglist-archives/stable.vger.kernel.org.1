@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-115638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B73DA3453E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19832A3427C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E6CE3B3ED4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD1973AA0E0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736CE19C54B;
-	Thu, 13 Feb 2025 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F3038389;
+	Thu, 13 Feb 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qn8bMFwS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8vVsz3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE0E26B0B5;
-	Thu, 13 Feb 2025 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525D9281349;
+	Thu, 13 Feb 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458729; cv=none; b=WCJ7uiAQOY3hzxW+8XCu6WscuTyuDAZ45trzMJmPuKKZs13EFO7ZDdQHgMHVjZr65C19lYHcidAqsxT99ux8+oLb9D2SoQMs9mAZmbwm9SWqgo1FHjhSPwTK0WDMZEOGdMmcnjkijJ3Gb3UZ0AYgNplIUhTgYlyEmtw2+P0CW+0=
+	t=1739457313; cv=none; b=A0rYiAN/N+2JYtWE85JpPzgdPJUXSRs/U4xack2XHIU453bvbO50w2ZNmQBGf3daXOMaO/ldQd8uexOStihldh5nX7Hxxg9aYS9rqFUcIQOTU7o43UQUky9262TQbZo2Q5VEUI0ZXG/MdhKVzTowcfJM1yJQ8mp8gORKmQkedIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458729; c=relaxed/simple;
-	bh=S2+2xxaL9wArD+5rDmndAbt7yfidM07z2gg6liHKmF0=;
+	s=arc-20240116; t=1739457313; c=relaxed/simple;
+	bh=quM3px6pXpk6yiW68epsWJfpXIrW7+jptajNjNHMUok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm98j305/DcwrYCMTHhBpPRzSr44mVJCnLGqVBMLBcHLrLkWquOqMbb6xo9axdQv8kFHVCHHN3zsI3bJh3C6vpdPXnCX7wJf8KPf8jlQ2genb6Obs4oXU9pfJkwG6UsBERThmqNJRAmDIpc1qGFvUa44YN15wO9WGFECGsSx+0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qn8bMFwS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906C6C4CED1;
-	Thu, 13 Feb 2025 14:58:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mA/QRWlqqBEA9JV/645uxzCzm0Lz/WhRtvPUYlHdbXDojiXokrT/kjw6HzHxfAPcBraWrAFDXX+Jo/cSdYDoTJ3+VGkVpgttrxyFtk8eAvQAPZAXJ9EnCmg7VOgek0iMQJcl/FdEy/hvJwXc9J/Yh14GMSLLUX6PDc/JR7Pz3Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8vVsz3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8608C4CED1;
+	Thu, 13 Feb 2025 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458729;
-	bh=S2+2xxaL9wArD+5rDmndAbt7yfidM07z2gg6liHKmF0=;
+	s=korg; t=1739457313;
+	bh=quM3px6pXpk6yiW68epsWJfpXIrW7+jptajNjNHMUok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qn8bMFwS0MiNGFVf3TQQZqML+ytcu+YfQq0SDP1pL+WfQFYP3ZsF1sQ9o88X2SNEn
-	 cvZAR+Q1+no2SC95mmzVzrz6qiRygsIbXPDW9mOGOOKQXoaFwEwbLyAyx4kc+LPuE/
-	 qPTkEY6Gnds6ShGHueP2qo6Qo6N6D6jd6l2iq8q0=
+	b=Z8vVsz3UFB3iQg5TTvxFTsi97K16Tkuyz6bYAST/ToCX0k/QvPNuRUb/BxeBRv4nz
+	 nJMPjNVTnV+ZBBgCSfgLJkxpZWjbKQ1pAzLKKF78eQ8t4ziKQq6VQ6MiDEw2324H2n
+	 KPahwWAJwhimo0Im/5ZvmhOLlF+ZVqVoHBIDsvuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 060/443] tomoyo: dont emit warning in tomoyo_write_control()
+Subject: [PATCH 6.12 076/422] ASoC: SOF: Intel: hda-dai: Ensure DAI widget is valid during params
 Date: Thu, 13 Feb 2025 15:23:45 +0100
-Message-ID: <20250213142442.938277905@linuxfoundation.org>
+Message-ID: <20250213142439.489902332@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 3df7546fc03b8f004eee0b9e3256369f7d096685 ]
+[ Upstream commit 569922b82ca660f8b24e705f6cf674e6b1f99cc7 ]
 
-syzbot is reporting too large allocation warning at tomoyo_write_control(),
-for one can write a very very long line without new line character. To fix
-this warning, I use __GFP_NOWARN rather than checking for KMALLOC_MAX_SIZE,
-for practically a valid line should be always shorter than 32KB where the
-"too small to fail" memory-allocation rule applies.
+Each cpu DAI should associate with a widget. However, the topology might
+not create the right number of DAI widgets for aggregated amps. And it
+will cause NULL pointer deference.
+Check that the DAI widget associated with the CPU DAI is valid to prevent
+NULL pointer deference due to missing DAI widgets in topologies with
+aggregated amps.
 
-One might try to write a valid line that is longer than 32KB, but such
-request will likely fail with -ENOMEM. Therefore, I feel that separately
-returning -EINVAL when a line is longer than KMALLOC_MAX_SIZE is redundant.
-There is no need to distinguish over-32KB and over-KMALLOC_MAX_SIZE.
-
-Reported-by: syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7536f77535e5210a5c76
-Reported-by: Leo Stone <leocstone@gmail.com>
-Closes: https://lkml.kernel.org/r/20241216021459.178759-2-leocstone@gmail.com
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://patch.msgid.link/20241203104853.56956-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/tomoyo/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-dai.c | 12 ++++++++++++
+ sound/soc/sof/intel/hda.c     |  5 +++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/security/tomoyo/common.c b/security/tomoyo/common.c
-index 5c7b059a332aa..972664962e8f6 100644
---- a/security/tomoyo/common.c
-+++ b/security/tomoyo/common.c
-@@ -2665,7 +2665,7 @@ ssize_t tomoyo_write_control(struct tomoyo_io_buffer *head,
+diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
+index 82f46ecd94301..2e58a264da556 100644
+--- a/sound/soc/sof/intel/hda-dai.c
++++ b/sound/soc/sof/intel/hda-dai.c
+@@ -503,6 +503,12 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
+ 	int ret;
+ 	int i;
  
- 		if (head->w.avail >= head->writebuf_size - 1) {
- 			const int len = head->writebuf_size * 2;
--			char *cp = kzalloc(len, GFP_NOFS);
-+			char *cp = kzalloc(len, GFP_NOFS | __GFP_NOWARN);
++	if (!w) {
++		dev_err(cpu_dai->dev, "%s widget not found, check amp link num in the topology\n",
++			cpu_dai->name);
++		return -EINVAL;
++	}
++
+ 	ops = hda_dai_get_ops(substream, cpu_dai);
+ 	if (!ops) {
+ 		dev_err(cpu_dai->dev, "DAI widget ops not set\n");
+@@ -582,6 +588,12 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
+ 	 */
+ 	for_each_rtd_cpu_dais(rtd, i, dai) {
+ 		w = snd_soc_dai_get_widget(dai, substream->stream);
++		if (!w) {
++			dev_err(cpu_dai->dev,
++				"%s widget not found, check amp link num in the topology\n",
++				dai->name);
++			return -EINVAL;
++		}
+ 		ipc4_copier = widget_to_copier(w);
+ 		memcpy(&ipc4_copier->dma_config_tlv[cpu_dai_id], dma_config_tlv,
+ 		       sizeof(*dma_config_tlv));
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 70fc08c8fc99e..f10ed4d102501 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -63,6 +63,11 @@ static int sdw_params_stream(struct device *dev,
+ 	struct snd_soc_dapm_widget *w = snd_soc_dai_get_widget(d, params_data->substream->stream);
+ 	struct snd_sof_dai_config_data data = { 0 };
  
- 			if (!cp) {
- 				error = -ENOMEM;
++	if (!w) {
++		dev_err(dev, "%s widget not found, check amp link num in the topology\n",
++			d->name);
++		return -EINVAL;
++	}
+ 	data.dai_index = (params_data->link_id << 8) | d->id;
+ 	data.dai_data = params_data->alh_stream_id;
+ 	data.dai_node_id = data.dai_data;
 -- 
 2.39.5
 
