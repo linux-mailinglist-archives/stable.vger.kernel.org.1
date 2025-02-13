@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD34EA3448E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2997CA34354
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F6A97A1AC9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EECF3A672C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF6D200105;
-	Thu, 13 Feb 2025 15:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6215C22172F;
+	Thu, 13 Feb 2025 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goLff/91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsITwqsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1C826B098;
-	Thu, 13 Feb 2025 15:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D667211468;
+	Thu, 13 Feb 2025 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459030; cv=none; b=S4+jSS659jAd4DaGGtiu00ufnYLF/IX5sp92wOaxZR3chACR/NvxtKob3A81P4fu9jVyg+H08ujm7vBd7XOh/n0Z+Ozf3nx8w2lWGwDk+PsexMBaJBTyJGyPqqlGyBlK5rzTGaKdTn2wLxfBb/910qi75gpgB1n1E4+pZl6VfvM=
+	t=1739457728; cv=none; b=iRno7qGHckmW9k6CyFhxU6KQjytqk++LfKKTALARIWFlf8J6O7AXWFfxB3VbTVjPSfyo+S5plWTwvVxGfOHerQtS8HhU2mr841WaNe88vcE7dBEagOmnqhCqhjPyOqYHciRs0U9UiOQhtLyxi6azYt+6rqsAPsRhV9oLNjCgRb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459030; c=relaxed/simple;
-	bh=/5ieJs5zNCcPootpiu/OsIL2a7sOKtlYj5K+zhJmKno=;
+	s=arc-20240116; t=1739457728; c=relaxed/simple;
+	bh=ih4XgMTNBIwCVFJRZqPOSehWhVrmIt7PU9zNLtCMxQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOWTKN9wtffO7JLlVTrqxN5QXogTgRDRwAH/ip/P34y7WZqbhwGQS5zoJukkyWl9Z77FnHMdggI14bn0n1w81iAKhGRjocQRzDNreW1BwEBgLGAWGofdAEDCQkEsnpb8h9pelOryzZvgfdO0uIgALTiEeQ4wVhUHAhoILmKfX40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goLff/91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCB9C4CED1;
-	Thu, 13 Feb 2025 15:03:49 +0000 (UTC)
+	 MIME-Version; b=PFvDgNVLH9biIups0PyVSj9alVZkNluQNbgVOs/3pkiXdFm060wDDFP/Ilaf1IT1xdjhuyV32dc9CWImAaqdT0a3OfnOfzxJGZho3DnnrQ1u5UfXO8IxTKoNuHWr/9gyOjmZNUZHpym1LEltjwrfpprd6eNvZirzZH8xhwLiYWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsITwqsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEA6C4CED1;
+	Thu, 13 Feb 2025 14:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459030;
-	bh=/5ieJs5zNCcPootpiu/OsIL2a7sOKtlYj5K+zhJmKno=;
+	s=korg; t=1739457728;
+	bh=ih4XgMTNBIwCVFJRZqPOSehWhVrmIt7PU9zNLtCMxQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=goLff/91b7jIIuvtEnQSn0xukKsJPtI2fFh5zHQGtqmD/NzgdBD32NQUfO7+FatL1
-	 KU08B0c/SP/dL77vhkjMy+Qq0lfCa93tP8VMqUXWohm2ele3F0IX5JVyELX9B0FPcK
-	 Oyopq2dEeo4ofUKMAUvlLs+hS8J3EPqad2st8xME=
+	b=PsITwqsQUlqAKb2qEmH5jDaTQzDO5puL7oC/rEQx1S/noT0FrIKclbc/OX46paMeE
+	 2K3Vp60x1ygMV8qUi+y/JXThFElvPZ5hbVhtVBm8nNFUmuEZVDF8DvNFFWquaZp/GP
+	 jILWUZn6YZqVstGi+pPxqGuXedXEKAI17qndoLSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <dev@lankhorst.se>
-Subject: [PATCH 6.13 148/443] drm/client: Handle tiled displays better
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Liviu Dudau <liviu.dudau@arm.com>
+Subject: [PATCH 6.12 164/422] drm/komeda: Add check for komeda_get_layer_fourcc_list()
 Date: Thu, 13 Feb 2025 15:25:13 +0100
-Message-ID: <20250213142446.309264645@linuxfoundation.org>
+Message-ID: <20250213142442.873604993@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 10026f536843eb8c9148ef6ffb4c6deeebc26838 upstream.
+commit 79fc672a092d93a7eac24fe20a571d4efd8fa5a4 upstream.
 
-When testing on my tiled display, initially the tiled display is
-detected correctly:
-[90376.523692] xe 0000:67:00.0: [drm:drm_client_firmware_config.isra.0 [drm]] fallback: Not all outputs enabled
-[90376.523713] xe 0000:67:00.0: [drm:drm_client_firmware_config.isra.0 [drm]] Enabled: 0, detected: 2
-...
-[90376.523967] xe 0000:67:00.0: [drm:drm_client_modeset_probe [drm]] [CRTC:82:pipe A] desired mode 1920x2160 set (1920,0)
-[90376.524020] xe 0000:67:00.0: [drm:drm_client_modeset_probe [drm]] [CRTC:134:pipe B] desired mode 1920x2160 set (0,0)
+Add check for the return value of komeda_get_layer_fourcc_list()
+to catch the potential exception.
 
-But then, when modes have been set:
-[90379.729525] xe 0000:67:00.0: [drm:drm_client_firmware_config.isra.0 [drm]] [CONNECTOR:287:DP-4] on [CRTC:82:pipe A]: 1920x2160
-[90379.729640] xe 0000:67:00.0: [drm:drm_client_firmware_config.isra.0 [drm]] [CONNECTOR:289:DP-5] on [CRTC:134:pipe B]: 1920x2160
-...
-[90379.730036] xe 0000:67:00.0: [drm:drm_client_modeset_probe [drm]] [CRTC:82:pipe A] desired mode 1920x2160 set (0,0)
-[90379.730124] xe 0000:67:00.0: [drm:drm_client_modeset_probe [drm]] [CRTC:134:pipe B] desired mode 1920x2160 set (0,0)
-
-Call drm_client_get_tile_offsets() in drm_client_firmware_config() as
-well, to ensure that the offset is set correctly.
-
-This has to be done as a separate pass, as the tile order may not be
-equal to the drm connector order.
-
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116142825.3933-2-dev@lankhorst.se
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Cc: <stable@vger.kernel.org>
+Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20241219090256.146424-1-haoxiang_li2024@163.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -743,6 +743,15 @@ retry:
- 	if ((conn_configured & mask) != mask && conn_configured != conn_seq)
- 		goto retry;
- 
-+	for (i = 0; i < count; i++) {
-+		struct drm_connector *connector = connectors[i];
-+
-+		if (connector->has_tile)
-+			drm_client_get_tile_offsets(dev, connectors, connector_count,
-+						    modes, offsets, i,
-+						    connector->tile_h_loc, connector->tile_v_loc);
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struc
+ 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
+ 					       kwb_conn->wb_layer->layer_type,
+ 					       &n_formats);
++	if (!formats) {
++		kfree(kwb_conn);
++		return -ENOMEM;
 +	}
-+
- 	/*
- 	 * If the BIOS didn't enable everything it could, fall back to have the
- 	 * same user experiencing of lighting up as much as possible like the
+ 
+ 	err = drm_writeback_connector_init(&kms->base, wb_conn,
+ 					   &komeda_wb_connector_funcs,
 
 
 
