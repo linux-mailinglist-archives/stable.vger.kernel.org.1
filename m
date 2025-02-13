@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C997CA345C2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9A5A34342
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8168616F924
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F602188D7AB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39BF26B0B1;
-	Thu, 13 Feb 2025 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE3F28137F;
+	Thu, 13 Feb 2025 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZBundi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oo+eGzl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B042726B09D;
-	Thu, 13 Feb 2025 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF56C221710;
+	Thu, 13 Feb 2025 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459242; cv=none; b=mlsyGB2d+MZxHpZIQxA5I+Luwy5e2O2vfTexLiaYIJjJE/UqIrWG5DgS82yHM059gqHRSvXN/FCo977v/NCnWiYKlOCbZuNWk6qyB7lhCqaGTRZO+QYLctWFel6FO16qQq86f8JNk0GxxNAnA/HgNtEbIRSt3TsoivTxzlXcQvA=
+	t=1739457717; cv=none; b=GSoqOGl5nDAa/k2bELIPkHBNflrYou2guzqJiTDHHKRwOASLcI0evW+Y9N1egVqoq4bRdW2XPzlTbzVuL6yo60KS9VmB6MN2mZqi32UhHV/8ZQieA2w1/lYfGOCi7H23deCNMMhXvufOAAaBhatdCyLUnYigb8zQS0ioCoDB6rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459242; c=relaxed/simple;
-	bh=Yv310Ee3oZfVw8s46BeE1O+cFioS9f5jGyKkr0ho/0g=;
+	s=arc-20240116; t=1739457717; c=relaxed/simple;
+	bh=wx9L3YmLzo4Lal455142hHk1bAln2Ng1uodDO1D4vK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HidpVM5Q0Vq9UX8Pok+PXd3tTo99OuRPZZjokq68O2luYb5BJ4tRXSJ1HBtnfpFuPMrYIEEyywLH7uwdZDXATyqg+gmz6Vuacy00O6xqbUMI1dDCLMqhZKl7xsXi0L++NwijYxfucVX6VS8zOcBuot4n0nby+mPRdqG9a0JLwpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZBundi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DA9C4CED1;
-	Thu, 13 Feb 2025 15:07:21 +0000 (UTC)
+	 MIME-Version; b=pdrmtID+QpSSKtPej9wrm0FXgUOZOJQnu1CNfQtEkeQGbklwyi40mvW+vSU/hpYMXJIOwRBurq3+E/YAhx3z9PE5Ok14wyOU5z3xYH2GovFMeOzWl+mVPgpMxSYq6A3DzwE8/UiQBNAfs8ilvo8fHOBUDH2IyU9K9ceSNri/+gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oo+eGzl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF0CC4CED1;
+	Thu, 13 Feb 2025 14:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459242;
-	bh=Yv310Ee3oZfVw8s46BeE1O+cFioS9f5jGyKkr0ho/0g=;
+	s=korg; t=1739457717;
+	bh=wx9L3YmLzo4Lal455142hHk1bAln2Ng1uodDO1D4vK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZBundi7VlfNK2xdOFaNQ7Rhp2H/q15As1uxJjcOs7IHcmA5pxkvO1tZqadsN/4ha
-	 uUgroqbbxAawzTe2E2IBMHIkcuDyV/oj7PHR/5hu1WIYCke9MVeiJU/LhugNvyRFEo
-	 cYFNYQtnrCY06WELsNWr4WQ9ZbEMZnLnrmFl/sTc=
+	b=Oo+eGzl21WRJ6Y9oXgBO+KrM+umBf6jZs3Ury2SaGZAA0egtUDJITAfftvJj/OloM
+	 Ks4P/dA7nVdcVuX9/byVh4wqZWaBrtFy49nAPnLMMJoHi6TK4gL7huP3SIOmP4LH9J
+	 58+hWbY0ZG3usOFDAhYjLFSvV+lB0BNgC+uZvlcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 175/443] drm/amd/amdgpu: change the config of cgcg on gfx12
-Date: Thu, 13 Feb 2025 15:25:40 +0100
-Message-ID: <20250213142447.356851425@linuxfoundation.org>
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 6.12 192/422] perf bench: Fix undefined behavior in cmpworker()
+Date: Thu, 13 Feb 2025 15:25:41 +0100
+Message-ID: <20250213142443.954257105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Feng <kenneth.feng@amd.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 5cda56bd86c455341087dca29c65dc7c87f84340 upstream.
+commit 62892e77b8a64b9dc0e1da75980aa145347b6820 upstream.
 
-change the config of cgcg on gfx12
+The comparison function cmpworker() violates the C standard's
+requirements for qsort() comparison functions, which mandate symmetry
+and transitivity:
 
-Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.12.x
+Symmetry: If x < y, then y > x.
+Transitivity: If x < y and y < z, then x < z.
+
+In its current implementation, cmpworker() incorrectly returns 0 when
+w1->tid < w2->tid, which breaks both symmetry and transitivity. This
+violation causes undefined behavior, potentially leading to issues such
+as memory corruption in glibc [1].
+
+Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
+compliance with the C standard and preventing undefined behavior.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250116110842.4087530-1-visitorckw@gmail.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |   11 -----------
- 1 file changed, 11 deletions(-)
+ tools/perf/bench/epoll-wait.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -3999,17 +3999,6 @@ static void gfx_v12_0_update_coarse_grai
+--- a/tools/perf/bench/epoll-wait.c
++++ b/tools/perf/bench/epoll-wait.c
+@@ -420,7 +420,12 @@ static int cmpworker(const void *p1, con
  
- 		if (def != data)
- 			WREG32_SOC15(GC, 0, regRLC_CGCG_CGLS_CTRL_3D, data);
--
--		data = RREG32_SOC15(GC, 0, regSDMA0_RLC_CGCG_CTRL);
--		data &= ~SDMA0_RLC_CGCG_CTRL__CGCG_INT_ENABLE_MASK;
--		WREG32_SOC15(GC, 0, regSDMA0_RLC_CGCG_CTRL, data);
--
--		/* Some ASICs only have one SDMA instance, not need to configure SDMA1 */
--		if (adev->sdma.num_instances > 1) {
--			data = RREG32_SOC15(GC, 0, regSDMA1_RLC_CGCG_CTRL);
--			data &= ~SDMA1_RLC_CGCG_CTRL__CGCG_INT_ENABLE_MASK;
--			WREG32_SOC15(GC, 0, regSDMA1_RLC_CGCG_CTRL, data);
--		}
- 	}
+ 	struct worker *w1 = (struct worker *) p1;
+ 	struct worker *w2 = (struct worker *) p2;
+-	return w1->tid > w2->tid;
++
++	if (w1->tid > w2->tid)
++		return 1;
++	if (w1->tid < w2->tid)
++		return -1;
++	return 0;
  }
  
+ int bench_epoll_wait(int argc, const char **argv)
 
 
 
