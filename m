@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-115975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBF9A34678
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 724FBA344F0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F7E51894EB3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C93B03B0C5C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1226A26B0BC;
-	Thu, 13 Feb 2025 15:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04281CBEAA;
+	Thu, 13 Feb 2025 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xqim8c1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMuVnmfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C425126B0B8;
-	Thu, 13 Feb 2025 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEB71C863C;
+	Thu, 13 Feb 2025 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459904; cv=none; b=VY95Xz1u7XYSCGOJlNgCDy2JrtkGuP9X+niCz9W43w3HRx8WR2js5zsWtA7FyiHIma9dYVsM5Cop2JgChsZ6LKKxCwtBctc3VXi2d1wb4nRki0u+Z2PtRqG7qi0mhaczcjBgrqTvdt3JIaeZ1JgWcidT/+KsXesP4veqNz3FMrA=
+	t=1739458488; cv=none; b=sv3jBQIciozTOOFZsF5CUvG/ckGf2GG8AsWPXhSDpnZcDUNFZJ3GE+YSwcdju+vPSasXm7+zUagcrXd3gEbxvxH23U7eQWgxw4tegkhaEEn8LF4rua4+/2UQmhGBlSruDe2gwSFVH53+CIhwbbEdE4cSDcN+KMgCVD76wKAQQKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459904; c=relaxed/simple;
-	bh=exW7DAWkJNAza7tlc8T6oWFihGUD3mUtgpih/kvxAu8=;
+	s=arc-20240116; t=1739458488; c=relaxed/simple;
+	bh=0NXWlmckeu8fXqmV3yCVRNMo1MC7kldubx2s43s8oLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kl+/qh70B0R713vG3HFMXxupIJ08hwb6SdVz5iVoddv289DkAPUkcUzwySZxAeKSKw7u6idpnqCOFRp0pwt36B5xgSJqXUBqs3i6sfoWCZbtO7d7eHt1CQk1MoCe5JYxCqEzEQByRd/qDlEeC+7psZ76m6oGvo6ajoZvpDYvZ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xqim8c1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28585C4CED1;
-	Thu, 13 Feb 2025 15:18:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hXp8BGVcqzMIMo6lC7X2rRurnyqCnEJWGlrjWnkKQkfKIXYo8m+Oy9ZI3/OkcpYvgJIlgKEitknDof4OJ3CjoDtdmaq4ibngd1BWyXLTyUMZ6+IHEE/wPR0PJyjOeMYJEQpjXbzeNajX7PfD2RwDU3B2pZVlttf4gyqt7BXi7L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMuVnmfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C566C4CED1;
+	Thu, 13 Feb 2025 14:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459904;
-	bh=exW7DAWkJNAza7tlc8T6oWFihGUD3mUtgpih/kvxAu8=;
+	s=korg; t=1739458488;
+	bh=0NXWlmckeu8fXqmV3yCVRNMo1MC7kldubx2s43s8oLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xqim8c1DAbbyxbevd0v5r67fPAxfTcpdEjbSZGWo/N+kO1n2CCgyjI2HofopHlTpz
-	 vx7DIhTR66GgZLuMD+soOjXs1PhQU/4LMEnc85ePhgQy4M8BjQ3Qm1RzU9j93DFZfO
-	 i0OYCJ0OYgrFVTBVgKMxB9CabfW5YLPKQgTAudCQ=
+	b=yMuVnmfNYjS8cGJff6T6inxnE+BxpArf7ASgM088SRbkPy8DOhBeToblrlFhhnlcq
+	 eELMpK9hk091Y/Uos0uwWYI6u6xrNzh9RhixFBy7CazJUyfvFjtjYTvGuHiBZ6ZsBO
+	 9WaQI6jZ5E3i91RB7y7SpD0u1sxbctDgLuLVfr5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.13 398/443] pnfs/flexfiles: retry getting layout segment for reads
-Date: Thu, 13 Feb 2025 15:29:23 +0100
-Message-ID: <20250213142455.965246757@linuxfoundation.org>
+	Libo Chen <libo.chen@oracle.com>
+Subject: [PATCH 6.12 415/422] [PATCH 6.12] Revert "selftests/sched_ext: fix build after renames in sched_ext API"
+Date: Thu, 13 Feb 2025 15:29:24 +0100
+Message-ID: <20250213142452.578076494@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,85 +58,215 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Libo Chen <libo.chen@oracle.com>
 
-commit eb3fabde15bccdf34f1c9b35a83aa4c0dacbb4ca upstream.
+This reverts commit fc20e87419e59d86f3bbcee2d4506bcd01c6450a which is
+commit ef7009decc30eb2515a64253791d61b72229c119 upstream.
 
-If ff_layout_pg_get_read()'s attempt to get a layout segment results
-in -EAGAIN have ff_layout_pg_init_read() retry it after sleeping.
-
-If "softerr" mount is used, use 'io_maxretrans' to limit the number of
-attempts to get a layout segment.
-
-This fixes a long-standing issue of O_DIRECT reads failing with
--EAGAIN (11) when using flexfiles Client Side Mirroring (CSM).
+Commit "selftests/sched_ext: fix build after renames in sched_ext API”
+was pulled into 6.12.y without the sched_ext API renames it depends on.
+The prereqs can be found in
+https://lore.kernel.org/lkml/20241110200308.103681-1-tj@kernel.org/
+As a result, sched_ext selftests fail to compile.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: fc20e87419e59 ("selftests/sched_ext: fix build after renames in sched_ext API")
+Signed-off-by: Libo Chen <libo.chen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ tools/testing/selftests/sched_ext/ddsp_bogus_dsq_fail.bpf.c         |    2 +-
+ tools/testing/selftests/sched_ext/ddsp_vtimelocal_fail.bpf.c        |    4 ++--
+ tools/testing/selftests/sched_ext/dsp_local_on.bpf.c                |    2 +-
+ tools/testing/selftests/sched_ext/enq_select_cpu_fails.bpf.c        |    2 +-
+ tools/testing/selftests/sched_ext/exit.bpf.c                        |    4 ++--
+ tools/testing/selftests/sched_ext/maximal.bpf.c                     |    4 ++--
+ tools/testing/selftests/sched_ext/select_cpu_dfl.bpf.c              |    2 +-
+ tools/testing/selftests/sched_ext/select_cpu_dfl_nodispatch.bpf.c   |    2 +-
+ tools/testing/selftests/sched_ext/select_cpu_dispatch.bpf.c         |    2 +-
+ tools/testing/selftests/sched_ext/select_cpu_dispatch_bad_dsq.bpf.c |    2 +-
+ tools/testing/selftests/sched_ext/select_cpu_dispatch_dbl_dsp.bpf.c |    4 ++--
+ tools/testing/selftests/sched_ext/select_cpu_vtime.bpf.c            |    8 ++++----
+ 12 files changed, 19 insertions(+), 19 deletions(-)
 
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -847,6 +847,9 @@ ff_layout_pg_init_read(struct nfs_pageio
- 	struct nfs4_pnfs_ds *ds;
- 	u32 ds_idx;
- 
-+	if (NFS_SERVER(pgio->pg_inode)->flags &
-+			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
-+		pgio->pg_maxretrans = io_maxretrans;
- retry:
- 	pnfs_generic_pg_check_layout(pgio, req);
- 	/* Use full layout for now */
-@@ -860,6 +863,8 @@ retry:
- 		if (!pgio->pg_lseg)
- 			goto out_nolseg;
+--- a/tools/testing/selftests/sched_ext/ddsp_bogus_dsq_fail.bpf.c
++++ b/tools/testing/selftests/sched_ext/ddsp_bogus_dsq_fail.bpf.c
+@@ -20,7 +20,7 @@ s32 BPF_STRUCT_OPS(ddsp_bogus_dsq_fail_s
+ 		 * If we dispatch to a bogus DSQ that will fall back to the
+ 		 * builtin global DSQ, we fail gracefully.
+ 		 */
+-		scx_bpf_dsq_insert_vtime(p, 0xcafef00d, SCX_SLICE_DFL,
++		scx_bpf_dispatch_vtime(p, 0xcafef00d, SCX_SLICE_DFL,
+ 				       p->scx.dsq_vtime, 0);
+ 		return cpu;
  	}
-+	/* Reset wb_nio, since getting layout segment was successful */
-+	req->wb_nio = 0;
+--- a/tools/testing/selftests/sched_ext/ddsp_vtimelocal_fail.bpf.c
++++ b/tools/testing/selftests/sched_ext/ddsp_vtimelocal_fail.bpf.c
+@@ -17,8 +17,8 @@ s32 BPF_STRUCT_OPS(ddsp_vtimelocal_fail_
  
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
- 	if (!ds) {
-@@ -876,14 +881,24 @@ retry:
- 	pgm->pg_bsize = mirror->mirror_ds->ds_versions[0].rsize;
+ 	if (cpu >= 0) {
+ 		/* Shouldn't be allowed to vtime dispatch to a builtin DSQ. */
+-		scx_bpf_dsq_insert_vtime(p, SCX_DSQ_LOCAL, SCX_SLICE_DFL,
+-					 p->scx.dsq_vtime, 0);
++		scx_bpf_dispatch_vtime(p, SCX_DSQ_LOCAL, SCX_SLICE_DFL,
++				       p->scx.dsq_vtime, 0);
+ 		return cpu;
+ 	}
  
- 	pgio->pg_mirror_idx = ds_idx;
--
--	if (NFS_SERVER(pgio->pg_inode)->flags &
--			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
--		pgio->pg_maxretrans = io_maxretrans;
- 	return;
- out_nolseg:
--	if (pgio->pg_error < 0)
--		return;
-+	if (pgio->pg_error < 0) {
-+		if (pgio->pg_error != -EAGAIN)
-+			return;
-+		/* Retry getting layout segment if lower layer returned -EAGAIN */
-+		if (pgio->pg_maxretrans && req->wb_nio++ > pgio->pg_maxretrans) {
-+			if (NFS_SERVER(pgio->pg_inode)->flags & NFS_MOUNT_SOFTERR)
-+				pgio->pg_error = -ETIMEDOUT;
-+			else
-+				pgio->pg_error = -EIO;
-+			return;
-+		}
-+		pgio->pg_error = 0;
-+		/* Sleep for 1 second before retrying */
-+		ssleep(1);
-+		goto retry;
-+	}
- out_mds:
- 	trace_pnfs_mds_fallback_pg_init_read(pgio->pg_inode,
- 			0, NFS4_MAX_UINT64, IOMODE_READ,
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+@@ -48,7 +48,7 @@ void BPF_STRUCT_OPS(dsp_local_on_dispatc
+ 	else
+ 		target = scx_bpf_task_cpu(p);
+ 
+-	scx_bpf_dsq_insert(p, SCX_DSQ_LOCAL_ON | target, SCX_SLICE_DFL, 0);
++	scx_bpf_dispatch(p, SCX_DSQ_LOCAL_ON | target, SCX_SLICE_DFL, 0);
+ 	bpf_task_release(p);
+ }
+ 
+--- a/tools/testing/selftests/sched_ext/enq_select_cpu_fails.bpf.c
++++ b/tools/testing/selftests/sched_ext/enq_select_cpu_fails.bpf.c
+@@ -31,7 +31,7 @@ void BPF_STRUCT_OPS(enq_select_cpu_fails
+ 	/* Can only call from ops.select_cpu() */
+ 	scx_bpf_select_cpu_dfl(p, 0, 0, &found);
+ 
+-	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dispatch(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ SEC(".struct_ops.link")
+--- a/tools/testing/selftests/sched_ext/exit.bpf.c
++++ b/tools/testing/selftests/sched_ext/exit.bpf.c
+@@ -33,7 +33,7 @@ void BPF_STRUCT_OPS(exit_enqueue, struct
+ 	if (exit_point == EXIT_ENQUEUE)
+ 		EXIT_CLEANLY();
+ 
+-	scx_bpf_dsq_insert(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dispatch(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ void BPF_STRUCT_OPS(exit_dispatch, s32 cpu, struct task_struct *p)
+@@ -41,7 +41,7 @@ void BPF_STRUCT_OPS(exit_dispatch, s32 c
+ 	if (exit_point == EXIT_DISPATCH)
+ 		EXIT_CLEANLY();
+ 
+-	scx_bpf_dsq_move_to_local(DSQ_ID);
++	scx_bpf_consume(DSQ_ID);
+ }
+ 
+ void BPF_STRUCT_OPS(exit_enable, struct task_struct *p)
+--- a/tools/testing/selftests/sched_ext/maximal.bpf.c
++++ b/tools/testing/selftests/sched_ext/maximal.bpf.c
+@@ -22,7 +22,7 @@ s32 BPF_STRUCT_OPS(maximal_select_cpu, s
+ 
+ void BPF_STRUCT_OPS(maximal_enqueue, struct task_struct *p, u64 enq_flags)
+ {
+-	scx_bpf_dsq_insert(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dispatch(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
+@@ -30,7 +30,7 @@ void BPF_STRUCT_OPS(maximal_dequeue, str
+ 
+ void BPF_STRUCT_OPS(maximal_dispatch, s32 cpu, struct task_struct *prev)
+ {
+-	scx_bpf_dsq_move_to_local(DSQ_ID);
++	scx_bpf_consume(DSQ_ID);
+ }
+ 
+ void BPF_STRUCT_OPS(maximal_runnable, struct task_struct *p, u64 enq_flags)
+--- a/tools/testing/selftests/sched_ext/select_cpu_dfl.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_dfl.bpf.c
+@@ -30,7 +30,7 @@ void BPF_STRUCT_OPS(select_cpu_dfl_enque
+ 	}
+ 	scx_bpf_put_idle_cpumask(idle_mask);
+ 
+-	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dispatch(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ SEC(".struct_ops.link")
+--- a/tools/testing/selftests/sched_ext/select_cpu_dfl_nodispatch.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_dfl_nodispatch.bpf.c
+@@ -67,7 +67,7 @@ void BPF_STRUCT_OPS(select_cpu_dfl_nodis
+ 		saw_local = true;
+ 	}
+ 
+-	scx_bpf_dsq_insert(p, dsq_id, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dispatch(p, dsq_id, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ s32 BPF_STRUCT_OPS(select_cpu_dfl_nodispatch_init_task,
+--- a/tools/testing/selftests/sched_ext/select_cpu_dispatch.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_dispatch.bpf.c
+@@ -29,7 +29,7 @@ s32 BPF_STRUCT_OPS(select_cpu_dispatch_s
+ 	cpu = prev_cpu;
+ 
+ dispatch:
+-	scx_bpf_dsq_insert(p, dsq_id, SCX_SLICE_DFL, 0);
++	scx_bpf_dispatch(p, dsq_id, SCX_SLICE_DFL, 0);
+ 	return cpu;
+ }
+ 
+--- a/tools/testing/selftests/sched_ext/select_cpu_dispatch_bad_dsq.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_dispatch_bad_dsq.bpf.c
+@@ -18,7 +18,7 @@ s32 BPF_STRUCT_OPS(select_cpu_dispatch_b
+ 		   s32 prev_cpu, u64 wake_flags)
+ {
+ 	/* Dispatching to a random DSQ should fail. */
+-	scx_bpf_dsq_insert(p, 0xcafef00d, SCX_SLICE_DFL, 0);
++	scx_bpf_dispatch(p, 0xcafef00d, SCX_SLICE_DFL, 0);
+ 
+ 	return prev_cpu;
+ }
+--- a/tools/testing/selftests/sched_ext/select_cpu_dispatch_dbl_dsp.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_dispatch_dbl_dsp.bpf.c
+@@ -18,8 +18,8 @@ s32 BPF_STRUCT_OPS(select_cpu_dispatch_d
+ 		   s32 prev_cpu, u64 wake_flags)
+ {
+ 	/* Dispatching twice in a row is disallowed. */
+-	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, 0);
+-	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, 0);
++	scx_bpf_dispatch(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, 0);
++	scx_bpf_dispatch(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, 0);
+ 
+ 	return prev_cpu;
+ }
+--- a/tools/testing/selftests/sched_ext/select_cpu_vtime.bpf.c
++++ b/tools/testing/selftests/sched_ext/select_cpu_vtime.bpf.c
+@@ -2,8 +2,8 @@
+ /*
+  * A scheduler that validates that enqueue flags are properly stored and
+  * applied at dispatch time when a task is directly dispatched from
+- * ops.select_cpu(). We validate this by using scx_bpf_dsq_insert_vtime(),
+- * and making the test a very basic vtime scheduler.
++ * ops.select_cpu(). We validate this by using scx_bpf_dispatch_vtime(), and
++ * making the test a very basic vtime scheduler.
+  *
+  * Copyright (c) 2024 Meta Platforms, Inc. and affiliates.
+  * Copyright (c) 2024 David Vernet <dvernet@meta.com>
+@@ -47,13 +47,13 @@ s32 BPF_STRUCT_OPS(select_cpu_vtime_sele
+ 	cpu = prev_cpu;
+ 	scx_bpf_test_and_clear_cpu_idle(cpu);
+ ddsp:
+-	scx_bpf_dsq_insert_vtime(p, VTIME_DSQ, SCX_SLICE_DFL, task_vtime(p), 0);
++	scx_bpf_dispatch_vtime(p, VTIME_DSQ, SCX_SLICE_DFL, task_vtime(p), 0);
+ 	return cpu;
+ }
+ 
+ void BPF_STRUCT_OPS(select_cpu_vtime_dispatch, s32 cpu, struct task_struct *p)
+ {
+-	if (scx_bpf_dsq_move_to_local(VTIME_DSQ))
++	if (scx_bpf_consume(VTIME_DSQ))
+ 		consumed = true;
+ }
+ 
 
 
 
