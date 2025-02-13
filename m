@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-115493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055C0A34457
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3F2A34701
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 777B0189310C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEFFC3A3AB9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386202661B9;
-	Thu, 13 Feb 2025 14:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9569826B0A4;
+	Thu, 13 Feb 2025 15:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhs0igZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNfxe3pY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96351993B7;
-	Thu, 13 Feb 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A6E26B096;
+	Thu, 13 Feb 2025 15:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458247; cv=none; b=ddPXlrTHqnHWoGf/0uUDLnQ55pc1B/i2wB0VgSo+Ni4jcOG7fkXMgae22pcLqI2yQ2t1UM4HOfNLzSMgcHGhcv3MgrzDUHVD+IeW8QNWM660a4BZvx3b7X658NFSb742C6+hUpsdH69bE5to8cjEQtCEYn3kG6FzyvsVZOKqNWc=
+	t=1739459665; cv=none; b=fIR+VfBxrPtg/sCbWhSPb21QV7TgxefZ074fO5nIujlVLxyb27IYRkHoH92VsGywqG1E7LtRkQiRODI8sCpgioa0KB8oXRYNcqNExq1z+RBd6CSCUS6STZiGwtUpKSwzsbaNhRM+7/QYXqFQ+SmOJ9ZQgpaFPZqanT/KpReEsSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458247; c=relaxed/simple;
-	bh=5UHVh1GBLpw9lzq9yGnA0zY7y1vLS+vO3iPbHm8/7Gc=;
+	s=arc-20240116; t=1739459665; c=relaxed/simple;
+	bh=ASjuVbbh/ca5mDGf7+7GRDNxBAcwz6OrJFaWnLyNsi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ff3kUSQEEp7c8vIJMlIa3u7zVzeimxeokB7hZgtGrj+bVjRdyGndbBbnfzUxVUyrY/8OtRxtNMTBbsU5rUdPMM8P9aa1Wl60qCAKycElaQ6ttTzcMp4nLA8XeTWErOCO2xEFpmM5vegUQhl5bhyMCFLrVzdkjMeQ+Tj3Jy5pGfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhs0igZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D58C4CED1;
-	Thu, 13 Feb 2025 14:50:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZwoGvRe7kS/NrOp2yDiGKL51lpdc5U12m8MpompkuW62xZca41cEfjchm6D0aTpkIkd86PnsX01fZe4H/7aU66y53rLalUCUbCJCHdpie33E87c0+/h0ZpvJoKTrKSrRQZ0xClKAc2YVXlhuUwx7y0dPAoDOv/MR8jArEcvxq9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNfxe3pY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5575C4CED1;
+	Thu, 13 Feb 2025 15:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458246;
-	bh=5UHVh1GBLpw9lzq9yGnA0zY7y1vLS+vO3iPbHm8/7Gc=;
+	s=korg; t=1739459665;
+	bh=ASjuVbbh/ca5mDGf7+7GRDNxBAcwz6OrJFaWnLyNsi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhs0igZaFXukZr57I36MJfLSHw8S98Jq4j14btEf3Fvb9Q/MTNgHChhj4ep4Ewa4X
-	 RouO2hrMcTEy+EFgaTa+BsdlWxpXuDOJbx5XmYCtueihEE9tQjMrEhfS4JdmHHut68
-	 4LKf698ZWuQL9/yomNnLmkie27w/NPGvSb0juXMM=
+	b=nNfxe3pYTum+clR7eC6w0eblqnLsOiG/02l/DX9GRplRgfVhOBo0dn6iO26Xs8Qq7
+	 s+m3Dz8sN1SE3KwcaXMeDVPIGCDgLmCcGHFhKZ8onSFrLnYsr+5cCZnUWAFmofc6oj
+	 jRxa3JjAZdPAbQsU496UTz6jURTDu0XDVcl9yGEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 344/422] mm/compaction: fix UBSAN shift-out-of-bounds warning
+	Conor Dooley <conor.dooley@microchip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.13 328/443] pwm: microchip-core: fix incorrect comparison with max period
 Date: Thu, 13 Feb 2025 15:28:13 +0100
-Message-ID: <20250213142449.829477754@linuxfoundation.org>
+Message-ID: <20250213142453.274933892@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit d1366e74342e75555af2648a2964deb2d5c92200 upstream.
+commit 752b6e3af374460a2de18f0c10bfa06bf844dbe8 upstream.
 
-syzkaller reported a UBSAN shift-out-of-bounds warning of (1UL << order)
-in isolate_freepages_block().  The bogus compound_order can be any value
-because it is union with flags.  Add back the MAX_PAGE_ORDER check to fix
-the warning.
+In mchp_core_pwm_apply_locked(), if hw_period_steps is equal to its max,
+an error is reported and .apply fails. The max value is actually a
+permitted value however, and so this check can fail where multiple
+channels are enabled.
 
-Link: https://lkml.kernel.org/r/20250123021029.2826736-1-liushixin2@huawei.com
-Fixes: 3da0272a4c7d ("mm/compaction: correctly return failure with bogus compound_order in strict mode")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+For example, the first channel to be configured requests a period that
+sets hw_period_steps to the maximum value, and when a second channel
+is enabled the driver reads hw_period_steps back from the hardware and
+finds it to be the maximum possible value, triggering the warning on a
+permitted value. The value to be avoided is 255 (PERIOD_STEPS_MAX + 1),
+as that will produce undesired behaviour, so test for greater than,
+rather than equal to.
+
+Fixes: 2bf7ecf7b4ff ("pwm: add microchip soft ip corePWM driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250122-pastor-fancied-0b993da2d2d2@spud
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/compaction.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-microchip-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -630,7 +630,8 @@ static unsigned long isolate_freepages_b
- 		if (PageCompound(page)) {
- 			const unsigned int order = compound_order(page);
+--- a/drivers/pwm/pwm-microchip-core.c
++++ b/drivers/pwm/pwm-microchip-core.c
+@@ -327,7 +327,7 @@ static int mchp_core_pwm_apply_locked(st
+ 		 * mchp_core_pwm_calc_period().
+ 		 * The period is locked and we cannot change this, so we abort.
+ 		 */
+-		if (hw_period_steps == MCHPCOREPWM_PERIOD_STEPS_MAX)
++		if (hw_period_steps > MCHPCOREPWM_PERIOD_STEPS_MAX)
+ 			return -EINVAL;
  
--			if (blockpfn + (1UL << order) <= end_pfn) {
-+			if ((order <= MAX_PAGE_ORDER) &&
-+			    (blockpfn + (1UL << order) <= end_pfn)) {
- 				blockpfn += (1UL << order) - 1;
- 				page += (1UL << order) - 1;
- 				nr_scanned += (1UL << order) - 1;
+ 		prescale = hw_prescale;
 
 
 
