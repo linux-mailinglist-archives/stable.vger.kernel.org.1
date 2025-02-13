@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06928A343E7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D29A345D9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B09C718954BA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2814516C59F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4834926981D;
-	Thu, 13 Feb 2025 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0311826B094;
+	Thu, 13 Feb 2025 15:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRzPi6Rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbG39cfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0236C241665;
-	Thu, 13 Feb 2025 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5226B089;
+	Thu, 13 Feb 2025 15:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458073; cv=none; b=cmRLz4avZC50b6K3r4igM2zdqoA0dV0W3ScaX1gFFVWA6dUfg/ow4MIhJS1JYTAMWIIYDGDF87Bl3rDkKCjbg7qLyMxzSsYsVukgYickRPHQUGq/djg0TEFC67TMsSk1AmMvuNfs1evKuvycTZjk6UoZeThXhnA6Fa7zusULSWY=
+	t=1739459390; cv=none; b=BWZgXEgETtXHZpor25K5XzuQ/kF83zi6JtI4FosR2PEfARz+1lXJmlh130m49WqfCcJqXFDXcxf52nawXhzGn2SmeUvK179gzclQdra4fLkbUua7ymLlzszdG7TZ2cKtKEAB2wCyLKNb08Bjd5calzULvSgYZRpf8I5BDM0pE6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458073; c=relaxed/simple;
-	bh=INK+RiBUyEWRTp0lnOK0W2HoHobYYuGG7U7UmC56IJ0=;
+	s=arc-20240116; t=1739459390; c=relaxed/simple;
+	bh=4mzHCnJdHmmJ7J6/P5qXous0LyoRZh18rT5PqVyLwj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM6QEkX4BCF1DjWzbSkSLhcr9yhHfeSfiSHkvwRbeDFGlB0ccJnfE+pmv4iSaevmRjBGozLYwc/As5vxl2FycZ/LvXAo2UzBm409OG0yuHuJCe34s68t/OyB90s/+gME1tyfoLtiy9TLyEEaMj86RaRMtU8wcT7YKlQPs9cQOA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRzPi6Rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6303FC4CEE2;
-	Thu, 13 Feb 2025 14:47:52 +0000 (UTC)
+	 MIME-Version; b=A3F2El1vKkPse7QQVLHEpHK1l0+lVHcSavIM5vlaBbL9gPyAoG7cZKg6jER3yKFf5GcT1uPtziJd37vARtCGjF+jAJJeYACtrBuhyvrEfxEZB7XrJlcFbPIrbqtigupmsYU8RpKY9xEmqbju/nQN65/CoTe2pHzL/tr9eBZmwnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbG39cfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE97C4CED1;
+	Thu, 13 Feb 2025 15:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458072;
-	bh=INK+RiBUyEWRTp0lnOK0W2HoHobYYuGG7U7UmC56IJ0=;
+	s=korg; t=1739459390;
+	bh=4mzHCnJdHmmJ7J6/P5qXous0LyoRZh18rT5PqVyLwj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRzPi6RbvvrjjzMlIxYgWQ0GiO+LBZT/8UlP94lzQfnGNqCN9coG079vZSeERPzAR
-	 P+qXPE3ccJumBvaewoqNKBli9vVURd7BoR4yzMCyOkhrm66i7OSmyeo7AqU/AobBrg
-	 P9JBKGaTxRU2wA+hNibXxigQmCz29KAS3QkoBUcw=
+	b=BbG39cfhvR/pDiyF+rbEvpcKQrwqfJXJ6MSwnpOL4Z0a4u6dNeUc5jDc/PwCIMDNu
+	 av6ATrXfkGdHfE5z+C23fRoVQKC7CYCpy/G9i5VhMh7MNZjp4IUXwQqxbHTGM1dHZG
+	 zdC5Z4hwYQyubRoEEicsaQlE4k1F5lk9YT9HHRKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Naour <romain.naour@skf.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.12 266/422] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
-Date: Thu, 13 Feb 2025 15:26:55 +0100
-Message-ID: <20250213142446.806481773@linuxfoundation.org>
+	nijs1@lenovo.com,
+	pgriffais@valvesoftware.com,
+	mpearson-lenovo@squebb.ca,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 251/443] ASoC: acp: Support microphone from Lenovo Go S
+Date: Thu, 13 Feb 2025 15:26:56 +0100
+Message-ID: <20250213142450.302953641@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Naour <romain.naour@skf.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c1472ec1dc4419d0bae663c1a1e6cb98dc7881ad upstream.
+commit b9a8ea185f3f8024619b2e74b74375493c87df8c upstream.
 
-A bus_dma_limit was added for l3 bus by commit cfb5d65f2595
-("ARM: dts: dra7: Add bus_dma_limit for L3 bus") to fix an issue
-observed only with SATA on DRA7-EVM with 4GB RAM and CONFIG_ARM_LPAE
-enabled.
+On Lenovo Go S there is a DMIC connected to the ACP but the firmware
+has no `AcpDmicConnected` ACPI _DSD.
 
-Since kernel 5.13, the SATA issue can be reproduced again following
-the SATA node move from L3 bus to L4_cfg in commit 8af15365a368
-("ARM: dts: Configure interconnect target module for dra7 sata").
+Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
 
-Fix it by adding an empty dma-ranges property to l4_cfg and
-segment@100000 nodes (parent device tree node of SATA controller) to
-inherit the 2GB dma ranges limit from l3 bus node.
-
-Note: A similar fix was applied for PCIe controller by commit
-90d4d3f4ea45 ("ARM: dts: dra7: Fix bus_dma_limit for PCIe").
-
-Fixes: 8af15365a368 ("ARM: dts: Configure interconnect target module for dra7 sata").
-Link: https://lore.kernel.org/linux-omap/c583e1bb-f56b-4489-8012-ce742e85f233@smile.fr/
-Cc: stable@vger.kernel.org # 5.13
-Signed-off-by: Romain Naour <romain.naour@skf.com>
-Link: https://lore.kernel.org/r/20241115102537.1330300-1-romain.naour@smile.fr
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Cc: nijs1@lenovo.com
+Cc: pgriffais@valvesoftware.com
+Cc: mpearson-lenovo@squebb.ca
+Cc: stable@vger.kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250123024915.2457115-1-superm1@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/dra7-l4.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
-@@ -12,6 +12,7 @@
- 	ranges = <0x00000000 0x4a000000 0x100000>,	/* segment 0 */
- 		 <0x00100000 0x4a100000 0x100000>,	/* segment 1 */
- 		 <0x00200000 0x4a200000 0x100000>;	/* segment 2 */
-+	dma-ranges;
- 
- 	segment@0 {					/* 0x4a000000 */
- 		compatible = "simple-pm-bus";
-@@ -557,6 +558,7 @@
- 			 <0x0007e000 0x0017e000 0x001000>,	/* ap 124 */
- 			 <0x00059000 0x00159000 0x001000>,	/* ap 125 */
- 			 <0x0005a000 0x0015a000 0x001000>;	/* ap 126 */
-+		dma-ranges;
- 
- 		target-module@2000 {			/* 0x4a102000, ap 27 3c.0 */
- 			compatible = "ti,sysc";
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -307,6 +307,34 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
+ 		}
 
 
 
