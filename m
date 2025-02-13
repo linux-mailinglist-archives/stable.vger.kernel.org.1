@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F22DA343C7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C224A345C7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867EA16493A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3515E173F5B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC1624BBFC;
-	Thu, 13 Feb 2025 14:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEA926B096;
+	Thu, 13 Feb 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTTF4ptu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILqqCHY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1BD24BBF5;
-	Thu, 13 Feb 2025 14:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D26726B0BB;
+	Thu, 13 Feb 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458045; cv=none; b=LQH37ktXplAJvGmlQlSDwqh8qUPy+qWEyYPZpZPzl0bo8fGBgrA4/RO9G7yvxuVB+Y1U62ys6yeUftvyyHxHB3kNcsfbxtHaaipduZ4FG+qhqShUCUeIPUEVlTdKv6Zdv3QvAqXgzeiozOX8uMi9lFK+AhVCgYqep5rV26YCk7k=
+	t=1739459457; cv=none; b=CsbNvBMgsOtBUzTjCIA2Sqz46SEJgu/h0PZ5a62BZ072TslBilrj4QkTDNsTg9hQiGSrenmN5Lk7kBlM/6yR481WMlYD4URP3aK/nSJ845XqSmvRSmBPA5wBMXqQHt33cEwdy4SUWY/MlFmkFaoVfCCCQyfGzRURWU9lVbCeDYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458045; c=relaxed/simple;
-	bh=JD5ZR32FaW2twtOXbxrY8rz+bwi/RW5vtlevSIE5LgM=;
+	s=arc-20240116; t=1739459457; c=relaxed/simple;
+	bh=F0lWGcre5OAC3iQ3jaIN7oI+lGer6ox9kP8w0O2aMUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmC7PQa6cxgswlF0ip7c1ONH528BXHVkH3VsYhNpFQ0ji9s5+3V5bOLQ88oISKiDsth/+Qq7uoCN74spXb5xKcJu9jfKDHTiYZHZldPMLZoMaPMZVAmvCQ9gBlwVQJ26YYgbvWPeaPsp2dDHP5xi3cRydvhIXCtzMuFNOh4tyos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTTF4ptu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87E6C4CED1;
-	Thu, 13 Feb 2025 14:47:24 +0000 (UTC)
+	 MIME-Version; b=nPDNZrCVLpq7KC+j6iZTQ0BgYlR9/qoivq7Fwf0WQo1H2LVlJdf/cxG/+xfbXJPIGqerTWKy6ETQTVHmI+wm05buydhWTMmCRYzCSTRxE3HUoV/0UiQ6Ij3XUAY4Fl9FiTz+BJVPm7ExaTiDEfG4PiKmBCHI3fPL8LVxsXvkdgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILqqCHY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFA2C4CED1;
+	Thu, 13 Feb 2025 15:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458045;
-	bh=JD5ZR32FaW2twtOXbxrY8rz+bwi/RW5vtlevSIE5LgM=;
+	s=korg; t=1739459457;
+	bh=F0lWGcre5OAC3iQ3jaIN7oI+lGer6ox9kP8w0O2aMUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTTF4ptuKWRmWbFUzS5oF16gKzJXTYCWpI0Gb+C+C0k01dEVMXxqvYtVhaggtPds+
-	 FcoAKFTml9UIfPcoKo7oCrz2TghuTbWjdwfrpUAo30Cog9ezclQaOGSoOMPsLG8I/m
-	 eHHufeXCfMsViHmTaPf5iSpypTo+8b7Qh1iEqDzk=
+	b=ILqqCHY+rodhkRL5sp4yolQHUbLhbp5Js3H4iF2kVw9vj7ArS4EBDcO6R1Ga9ikmc
+	 bc8792Qz7lCCQWiDx711yNfTn4n9x2rrY8kQQT9yfhB5gET0HZ5WXgNPNqK/L3A4pW
+	 NqjsKdsNNTCwuO87Ix5Qe4ZhcLXcfewtkLJFFViQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 285/422] arm64: dts: qcom: sm8450: Fix CDSP memory length
+	Austrum <austrum.lab@gmail.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 269/443] ALSA: hda: Fix headset detection failure due to unstable sort
 Date: Thu, 13 Feb 2025 15:27:14 +0100
-Message-ID: <20250213142447.542860853@linuxfoundation.org>
+Message-ID: <20250213142450.993261921@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 3751fe2cba2a9fba2204ef62102bc4bb027cec7b upstream.
+commit 3b4309546b48fc167aa615a2d881a09c0a97971f upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+The auto_parser assumed sort() was stable, but the kernel's sort() uses
+heapsort, which has never been stable. After commit 0e02ca29a563
+("lib/sort: optimize heapsort with double-pop variation"), the order of
+equal elements changed, causing the headset to fail to work.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+Fix the issue by recording the original order of elements before
+sorting and using it as a tiebreaker for equal elements in the
+comparison function.
 
-Fixes: 1172729576fb ("arm64: dts: qcom: sm8450: Add remoteproc enablers and instances")
+Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
+Reported-by: Austrum <austrum.lab@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
+Tested-by: Austrum <austrum.lab@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-5-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://patch.msgid.link/20250128165415.643223-1-visitorckw@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/hda_auto_parser.c |    8 +++++++-
+ sound/pci/hda/hda_auto_parser.h |    1 +
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2796,7 +2796,7 @@
+--- a/sound/pci/hda/hda_auto_parser.c
++++ b/sound/pci/hda/hda_auto_parser.c
+@@ -80,7 +80,11 @@ static int compare_input_type(const void
  
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,sm8450-cdsp-pas";
--			reg = <0 0x32300000 0 0x1400000>;
-+			reg = <0 0x32300000 0 0x10000>;
+ 	/* In case one has boost and the other one has not,
+ 	   pick the one with boost first. */
+-	return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
++	if (a->has_boost_on_pin != b->has_boost_on_pin)
++		return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
++
++	/* Keep the original order */
++	return a->order - b->order;
+ }
  
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ /* Reorder the surround channels
+@@ -400,6 +404,8 @@ int snd_hda_parse_pin_defcfg(struct hda_
+ 	reorder_outputs(cfg->speaker_outs, cfg->speaker_pins);
+ 
+ 	/* sort inputs in the order of AUTO_PIN_* type */
++	for (i = 0; i < cfg->num_inputs; i++)
++		cfg->inputs[i].order = i;
+ 	sort(cfg->inputs, cfg->num_inputs, sizeof(cfg->inputs[0]),
+ 	     compare_input_type, NULL);
+ 
+--- a/sound/pci/hda/hda_auto_parser.h
++++ b/sound/pci/hda/hda_auto_parser.h
+@@ -37,6 +37,7 @@ struct auto_pin_cfg_item {
+ 	unsigned int is_headset_mic:1;
+ 	unsigned int is_headphone_mic:1; /* Mic-only in headphone jack */
+ 	unsigned int has_boost_on_pin:1;
++	int order;
+ };
+ 
+ struct auto_pin_cfg;
 
 
 
