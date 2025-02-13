@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95E5A345B1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B87A343CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D353ACBC7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A381891347
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E02F26B0A5;
-	Thu, 13 Feb 2025 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9EB241692;
+	Thu, 13 Feb 2025 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/DRXtmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwDM8D4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53826B099;
-	Thu, 13 Feb 2025 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C4213D8A4;
+	Thu, 13 Feb 2025 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459444; cv=none; b=VvA8k2qbuvr4mhq86xAJNxKGrhUjCdbdHS7Y5tElewniCSfxklcMTCrHvg8nUajSLhY5WDpkPbqIG0sS6jrh+CfXT43Cm73icKn5O587q+S6JAn+r4NPl9L1p1UAQ2glXDHi1Xq6h6Na0WttRb0a42Nt6cMnKpCmy0SNyeZCVBI=
+	t=1739458038; cv=none; b=S6VmkLp4u2qg3sre/IWIVKTGFaV2ZRoNCx68cb/podeaoakEHW03XVVJXqjAbfvig7WNnUoswnNwYDvCVlecrDopWeH2PgEHQzwRH4nlIOQw+7CRfGu8KZ4KAYSRW1o9LwrIciPm8ODg7y/362yNXfoxqaXwhjTd19+ZCLMBX3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459444; c=relaxed/simple;
-	bh=7XW2O377xc1AvbXH60iUNCbjcyvB3pg+4jE00J5ameI=;
+	s=arc-20240116; t=1739458038; c=relaxed/simple;
+	bh=/HBa2XgjcE/JMEMvl2tW2dfqOOx92Ba6m0Lq0CrctfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQFTrmsNWVcyzh603vWupEJiBB+YepJ8bvcAMLhpZVhcsvGJWXf/UNYSf3iQnMPuQ7XOl5IE1HoBnW6lOh2aJG5E1VLZWqCkf7oyyNVmpC56B8rRsAtGK/g3aseyORnPXYHUq6NxB8SiyHsdubC8N548O+vdp7yKOJBAb0vQTNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/DRXtmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD94C4CEE4;
-	Thu, 13 Feb 2025 15:10:43 +0000 (UTC)
+	 MIME-Version; b=tAn+yGSCtToLfJWyev3kWGBskp8mhbczbo7V8xe+ruh79qwaLTULsGBFQ7Eq2S5dsRQqlZFHKjNm40RK2sN8v6r5gMf4DBKQ3znSGPz/ML/fAmq3IZpcBwaAZ+8YDhZctUDMZXyDXFMCAoYUxQW+prTRRqiOgUOeW3mNPaKBQT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwDM8D4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9DC4CED1;
+	Thu, 13 Feb 2025 14:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459444;
-	bh=7XW2O377xc1AvbXH60iUNCbjcyvB3pg+4jE00J5ameI=;
+	s=korg; t=1739458038;
+	bh=/HBa2XgjcE/JMEMvl2tW2dfqOOx92Ba6m0Lq0CrctfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/DRXtmLArHlO8FL7ymiLIpH/oIofBjMLHFoMEbi4PX1Fur/F4kQXFK0kNJlB02rB
-	 y/w8ej1gbXXebhJC2ojzUFPuA1r+4rbbWI5FxYODrb/611HVe2gWOWJ1n7tspSryE1
-	 qDTRvmA1Al5vjmL+BzX5aQIWSIBfVsxi3P/bDXUw=
+	b=UwDM8D4MQpf9FpA5kyKxw66loj64U+jGcCPJNBdnu/Mj4YI4iYivmXI2BfyAcilMP
+	 gvJhN5b+DXin/szzltr5Ltbr6njkoWFQms/zmdKgTxUqVxuuf+P6OhFx3T1EPMmySS
+	 lzxwLFuL9EaP2VSqufkb2RqV28FsKYo1On7GGUjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 266/443] firmware: qcom: scm: Fix missing read barrier in qcom_scm_get_tzmem_pool()
-Date: Thu, 13 Feb 2025 15:27:11 +0100
-Message-ID: <20250213142450.880117954@linuxfoundation.org>
+Subject: [PATCH 6.12 283/422] arm64: dts: qcom: sm8350: Fix MPSS memory length
+Date: Thu, 13 Feb 2025 15:27:12 +0100
+Message-ID: <20250213142447.464812765@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b628510397b5cafa1f5d3e848a28affd1c635302 upstream.
+commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
 
-Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
-completion variable initialization") introduced a write barrier in probe
-function to store global '__scm' variable.  We all known barriers are
-paired (see memory-barriers.txt: "Note that write barriers should
-normally be paired with read or address-dependency barriers"), therefore
-accessing it from concurrent contexts requires read barrier.  Previous
-commit added such barrier in qcom_scm_is_available(), so let's use that
-directly.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-Lack of this read barrier can result in fetching stale '__scm' variable
-value, NULL, and dereferencing it.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-Note that barrier in qcom_scm_is_available() satisfies here the control
-dependency.
-
-Fixes: ca61d6836e6f ("firmware: qcom: scm: fix a NULL-pointer dereference")
-Fixes: 449d0d84bcd8 ("firmware: qcom: scm: smc: switch to using the SCM allocator")
+Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
 Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-2-9061013c8d92@linaro.org
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/qcom/qcom_scm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -217,7 +217,10 @@ static DEFINE_SPINLOCK(scm_query_lock);
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2214,7 +2214,7 @@
  
- struct qcom_tzmem_pool *qcom_scm_get_tzmem_pool(void)
- {
--	return __scm ? __scm->mempool : NULL;
-+	if (!qcom_scm_is_available())
-+		return NULL;
-+
-+	return __scm->mempool;
- }
+ 		mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8350-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
  
- static enum qcom_scm_convention __get_convention(void)
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
