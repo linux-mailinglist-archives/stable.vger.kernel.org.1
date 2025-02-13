@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BF0A34677
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89220A34753
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3A823B13E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB091891E51
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0322A1CF;
-	Thu, 13 Feb 2025 15:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A65F156F5E;
+	Thu, 13 Feb 2025 15:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="142Hrf5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsNaPWXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971226B0A5;
-	Thu, 13 Feb 2025 15:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737014658D;
+	Thu, 13 Feb 2025 15:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459727; cv=none; b=hbTn/9dRLualySVy8GyKcpyhBDBQrFzmuH1liAfOl7OqGf+Lx4b0LRAAgVQvmRLCw34/nrUP+AoUBajogn7pSBjDSbkrJv8wEpmiR2MpTEqj/jEO1bNqE/Dh3wBpYwx0cOKmM3VNmXs8zoofMLX5JdemomwElsPuyk/iXxuSHEg=
+	t=1739460421; cv=none; b=iYT60hkQ3XF5y5tbuMgG2pxL+trOuErZ1EHkwIA5DXXjvsQJBizxUvDUE4+WcTK/nL6n8cOFind6eq+bUaw93sslHFZ7zKctr4stdTcLw/kBGXsc8eAAtVHsbeMwYANkrDOTl624BL96Bhtmc2CN6Qq2pvs4Co/59iGOh63erLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459727; c=relaxed/simple;
-	bh=Gv5wcYTR9arZtzaU9LyRA0+az+QHMJ661JO+emecJKI=;
+	s=arc-20240116; t=1739460421; c=relaxed/simple;
+	bh=i0/h4INy3Nnm6frpfYxeAw9erVyndsaqoXYddCJUqKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMGi3kZK4TO8GTyjY/Ui1UE3LQXGiCU9j05ePLR1IYcO2sOvIXmLAvSfnZCiDkvOBJNRFN7XtxrQLx4oYeOpPWvdU9rMWkrJN0ZacXMhzRR/m/jZ73AAi9H6CNg2ILD9VSDhqB5fAS23RUMm8a+tLMCI5fvffhXMtrbGAzMTN7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=142Hrf5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE0EC4CED1;
-	Thu, 13 Feb 2025 15:15:26 +0000 (UTC)
+	 MIME-Version; b=L941XEshh8Wo/zROPRqd71MOiKUe8G0jgPqEuYGaq7Vrx8WBoT/Rd9HCrxfsG+tIH8lZdJw+vRE9QcRawwWdnPjDrGJbZ1l7q/1zJiL3STjAzXKOKOMlwazM+IPNGdlSTH780G+B6NpImogZRsrsScEUFEoM4GJTVOe3srbgXq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsNaPWXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B17AC4CEE5;
+	Thu, 13 Feb 2025 15:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459727;
-	bh=Gv5wcYTR9arZtzaU9LyRA0+az+QHMJ661JO+emecJKI=;
+	s=korg; t=1739460421;
+	bh=i0/h4INy3Nnm6frpfYxeAw9erVyndsaqoXYddCJUqKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=142Hrf5f/sTksNlPyCoudtfh/kj/hTjZY1UX1hV0u+hXRUkGRZz6dyzBx3wqBg2rC
-	 S0oMOBW8qkAmrsZqeO3A9ibb2xRPNrNIPJGTXmCZ1EEWONADdBxxc1THi9o32ac9n9
-	 KrOd3a3HqAD1LyLsY7iGea3sqUEjEPakIpSsCjIY=
+	b=GsNaPWXQ2q0kPmzh6Z17HVYtprp1W4FGFyPQQ9YpmGn/RFAbjaxjZY9xbKI/1E7a6
+	 ZBdJBEnbVXa8TorNjoLBWYqHJn8vR/3PU9b8ZCxhI+FQQ2KXJwxjEon8WVv+n2Gdks
+	 0TRVDO3aKIN7+4kd1u4QrECnsG9/AzJlDwFrofz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 314/443] arm64: dts: qcom: sm8450: Fix CDSP memory length
-Date: Thu, 13 Feb 2025 15:27:59 +0100
-Message-ID: <20250213142452.735241294@linuxfoundation.org>
+Subject: [PATCH 6.6 108/273] clk: qcom: clk-alpha-pll: fix alpha mode configuration
+Date: Thu, 13 Feb 2025 15:28:00 +0100
+Message-ID: <20250213142411.614646285@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 3751fe2cba2a9fba2204ef62102bc4bb027cec7b upstream.
+commit 33f1722eb86e45320a3dd7b3d42f6593a1d595c2 upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+Commit c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+added support for configuring alpha mode, but it seems that the feature
+was never working in practice.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+The value of the alpha_{en,mode}_mask members of the configuration gets
+added to the value parameter passed to the regmap_update_bits() function,
+however the same values are not getting applied to the bitmask. As the
+result, the respective bits in the USER_CTL register are never modifed
+which leads to improper configuration of several PLLs.
 
-Fixes: 1172729576fb ("arm64: dts: qcom: sm8450: Add remoteproc enablers and instances")
+The following table shows the PLL configurations where the 'alpha_en_mask'
+member is set and which are passed as a parameter for the
+clk_alpha_pll_configure() function. In the table the 'expected rate' column
+shows the rate the PLL should run at with the given configuration, and
+the 'real rate' column shows the rate the PLL runs at actually. The real
+rates has been verified on hardwareOn IPQ* platforms, on other platforms,
+those are computed values only.
+
+      file                 pll         expected rate   real rate
+  dispcc-qcm2290.c     disp_cc_pll0      768.0 MHz     768.0 MHz
+  dispcc-sm6115.c      disp_cc_pll0      768.0 MHz     768.0 MHz
+  gcc-ipq5018.c        ubi32_pll        1000.0 MHz !=  984.0 MHz
+  gcc-ipq6018.c        nss_crypto_pll   1200.0 MHz    1200.0 MHz
+  gcc-ipq6018.c        ubi32_pll        1497.6 MHz != 1488.0 MHz
+  gcc-ipq8074.c        nss_crypto_pll   1200.0 MHz != 1190.4 MHz
+  gcc-qcm2290.c        gpll11            532.0 MHz !=  518.4 MHz
+  gcc-qcm2290.c        gpll8             533.2 MHz !=  518.4 MHz
+  gcc-qcs404.c         gpll3             921.6 MHz     921.6 MHz
+  gcc-sm6115.c         gpll11            600.0 MHz !=  595.2 MHz
+  gcc-sm6115.c         gpll8             800.0 MHz !=  787.2 MHz
+  gpucc-sdm660.c       gpu_cc_pll0       800.0 MHz !=  787.2 MHz
+  gpucc-sdm660.c       gpu_cc_pll1       740.0 MHz !=  729.6 MHz
+  gpucc-sm6115.c       gpu_cc_pll0      1200.0 MHz != 1190.4 MHz
+  gpucc-sm6115.c       gpu_cc_pll1       640.0 MHz !=  633.6 MHz
+  gpucc-sm6125.c       gpu_pll0         1020.0 MHz != 1017.6 MHz
+  gpucc-sm6125.c       gpu_pll1          930.0 MHz !=  921.6 MHz
+  mmcc-sdm660.c        mmpll8            930.0 MHz !=  921.6 MHz
+  mmcc-sdm660.c        mmpll5            825.0 MHz !=  806.4 MHz
+
+As it can be seen from the above, there are several PLLs which are
+configured incorrectly.
+
+Change the code to apply both 'alpha_en_mask' and 'alpha_mode_mask'
+values to the bitmask in order to configure the alpha mode correctly.
+
+Applying the 'alpha_en_mask' fixes the initial rate of the PLLs showed
+in the table above. Since the 'alpha_mode_mask' is not used by any driver
+currently, that part of the change causes no functional changes.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-5-2e0036fccd8d@linaro.org
+Fixes: c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2800,7 +2800,7 @@
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -407,6 +407,8 @@ void clk_alpha_pll_configure(struct clk_
+ 	mask |= config->pre_div_mask;
+ 	mask |= config->post_div_mask;
+ 	mask |= config->vco_mask;
++	mask |= config->alpha_en_mask;
++	mask |= config->alpha_mode_mask;
  
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,sm8450-cdsp-pas";
--			reg = <0 0x32300000 0 0x1400000>;
-+			reg = <0 0x32300000 0 0x10000>;
+ 	regmap_update_bits(regmap, PLL_USER_CTL(pll), mask, val);
  
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
