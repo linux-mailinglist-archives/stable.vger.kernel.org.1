@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-115351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55422A3435A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:47:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B126CA345D5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84813A2B83
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DE4189B824
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FE2221552;
-	Thu, 13 Feb 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D4913D8A4;
+	Thu, 13 Feb 2025 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJOJuRoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L11MF73t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFDD4F218;
-	Thu, 13 Feb 2025 14:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F2A26B097;
+	Thu, 13 Feb 2025 15:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457749; cv=none; b=gW6NlNLt/3xKuH2fj//ssjRxGZDHAs6KGQoEyc9Gd/rzjl7BQfVsWIEDzREyXYDYHgIop5nZ2o7fz2Yf+E040gctrSfpNoVvKlkN7yytrl+SVlIkS6p/ETUKHsw3E3Og0fSIz6zDVGnZc1MUULL5FJmBA48YeYcQLqZWBKWQIAc=
+	t=1739459162; cv=none; b=dWwgsuEOPe+MT+0u6A7C3Ns1br63gBQWAoU9FrcivnOOv68Z2muK9pKSGIHc85Q95inVO+tdkTrwTetLLQv2JX1S6RSwHEklTIq3Vkr0vQQLAkVfRrwZwoWWWFTH3MxUSw+3l5ouXwOyTl2L0nvgEqU7uKaN2ZiRO3joIVVn1DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457749; c=relaxed/simple;
-	bh=xAzAj8qGZwkX83t2LFZRwC24tbKKg+5akQrUdsJk3/E=;
+	s=arc-20240116; t=1739459162; c=relaxed/simple;
+	bh=8aFFFJfWOeusvNUrfMOJiCeK4FI6QuDzqqhlCnpFXZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9Gh0gdgqjdqdfK78T8QOik9Sc+Hp5zFPcH2wASmMLLb8bkJOFBkecrdmmSg8cYd1xs7tB9Xt7VCnSZX2n40hpt2gJ8aaGEc9InfZPHig/kZus8gCyczRJ4YzK+stmzJjIT1Yo0tqXSeqrP0rvzC0JVQtn/oK+4b4Fu73qVurzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJOJuRoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F9AC4CED1;
-	Thu, 13 Feb 2025 14:42:28 +0000 (UTC)
+	 MIME-Version; b=PPhxnw9vrRseVOgjZ9ZfX/dQCJKR9/JNoLHxu+Y5vSXIcXP7CcMxsFIVwlf0Zh8RXSFuDCgn122kYyVvWq3ZrBCh8TPXH/SjI8F5/tx6efL3JlEoGYxd4J8jzQ4yKxeXinP/d8WFVD0LWxJix03JAzxEa4jws82KUek9GhMANsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L11MF73t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECB1C4CED1;
+	Thu, 13 Feb 2025 15:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457748;
-	bh=xAzAj8qGZwkX83t2LFZRwC24tbKKg+5akQrUdsJk3/E=;
+	s=korg; t=1739459161;
+	bh=8aFFFJfWOeusvNUrfMOJiCeK4FI6QuDzqqhlCnpFXZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJOJuRoU1vtziQmF/uC6YCRxoJd8H0YHBbNNjnLEAfc5xPzhwNzVPB0qReCdVdPGw
-	 g6tfgUlNeho52Ue+y1xgID4sfhYbIAgWRZj4sSwM688c+OiT8W9YYySWS8EGXbvi8H
-	 kbbvVLnORQMYrmsz1zBv8N5w5htRelpHzYb7WYs0=
+	b=L11MF73tXOe8XiWbitW7pNfpbrULeFhhfRKO9lj23DCrG23afT0/fDri/SgmJai9O
+	 mjI+oIbkkI2AMMef7ZyJ5w2HTdR6frmJAm3Ej1fj9r6mWIZXIik2zpy5Ojc8nzzmww
+	 2JQGworAxUlbuqVJFiYRVBMUdKpbcpKRWMdZnxQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.12 203/422] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Lo-an Chen <lo-an.chen@amd.com>,
+	Paul Hsieh <paul.hsieh@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.13 187/443] drm/amd/display: Fix seamless boot sequence
 Date: Thu, 13 Feb 2025 15:25:52 +0100
-Message-ID: <20250213142444.376830612@linuxfoundation.org>
+Message-ID: <20250213142447.831133226@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +66,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Lo-an Chen <lo-an.chen@amd.com>
 
-commit 68abd0c4ebf24cd499841a488b97a6873d5efabb upstream.
+commit e01f07cb92513ca4b9b219ab9caa34d607bc1e2d upstream.
 
-On removal of the device or unloading of the kernel module a potential NULL
-pointer dereference occurs.
+[WHY]
+When the system powers up eDP with external monitors in seamless boot
+sequence, stutter get enabled before TTU and HUBP registers being
+programmed, which resulting in underflow.
 
-The following sequence deletes the interface:
+[HOW]
+Enable TTU in hubp_init.
+Change the sequence that do not perpare_bandwidth and optimize_bandwidth
+while having seamless boot streams.
 
-  brcmf_detach()
-    brcmf_remove_interface()
-      brcmf_del_if()
-
-Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-
-After brcmf_remove_interface() call the brcmf_proto_detach() function is
-called providing the following sequence:
-
-  brcmf_detach()
-    brcmf_proto_detach()
-      brcmf_proto_msgbuf_detach()
-        brcmf_flowring_detach()
-          brcmf_msgbuf_delete_flowring()
-            brcmf_msgbuf_remove_flowring()
-              brcmf_flowring_delete()
-                brcmf_get_ifp()
-                brcmf_txfinalize()
-
-Since brcmf_get_ip() can and actually will return NULL in this case the
-call to brcmf_txfinalize() will result in a NULL pointer dereference inside
-brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
-
-This will only happen if a flowring still has an skb.
-
-Although the NULL pointer dereference has only been seen when trying to
-update the tx statistic, all other uses of the ifp pointer have been
-guarded as well with an early return if ifp is NULL.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250116132240.731039-1-marcel.hamer@windriver.com
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Lo-an Chen <lo-an.chen@amd.com>
+Signed-off-by: Paul Hsieh <paul.hsieh@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c                   |    2 +-
+ drivers/gpu/drm/amd/display/dc/hubbub/dcn30/dcn30_hubbub.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/hubbub/dcn31/dcn31_hubbub.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/hubbub/dcn32/dcn32_hubbub.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/hubbub/dcn35/dcn35_hubbub.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c     |    2 ++
+ drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c     |    2 ++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c    |    3 ++-
+ 8 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -540,6 +540,11 @@ void brcmf_txfinalize(struct brcmf_if *i
- 	struct ethhdr *eh;
- 	u16 type;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -2063,7 +2063,7 @@ static enum dc_status dc_commit_state_no
  
-+	if (!ifp) {
-+		brcmu_pkt_buf_free_skb(txp);
-+		return;
-+	}
+ 	dc_enable_stereo(dc, context, dc_streams, context->stream_count);
+ 
+-	if (context->stream_count > get_seamless_boot_stream_count(context) ||
++	if (get_seamless_boot_stream_count(context) == 0 ||
+ 		context->stream_count == 0) {
+ 		/* Must wait for no flips to be pending before doing optimize bw */
+ 		hwss_wait_for_no_pipes_pending(dc, context);
+--- a/drivers/gpu/drm/amd/display/dc/hubbub/dcn30/dcn30_hubbub.c
++++ b/drivers/gpu/drm/amd/display/dc/hubbub/dcn30/dcn30_hubbub.c
+@@ -129,7 +129,8 @@ bool hubbub3_program_watermarks(
+ 	REG_UPDATE(DCHUBBUB_ARB_DF_REQ_OUTSTAND,
+ 			DCHUBBUB_ARB_MIN_REQ_OUTSTAND, 0x1FF);
+ 
+-	hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
++	if (safe_to_lower || hubbub->ctx->dc->debug.disable_stutter)
++		hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
+ 
+ 	return wm_pending;
+ }
+--- a/drivers/gpu/drm/amd/display/dc/hubbub/dcn31/dcn31_hubbub.c
++++ b/drivers/gpu/drm/amd/display/dc/hubbub/dcn31/dcn31_hubbub.c
+@@ -750,7 +750,8 @@ static bool hubbub31_program_watermarks(
+ 	REG_UPDATE(DCHUBBUB_ARB_DF_REQ_OUTSTAND,
+ 			DCHUBBUB_ARB_MIN_REQ_OUTSTAND, 0x1FF);*/
+ 
+-	hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
++	if (safe_to_lower || hubbub->ctx->dc->debug.disable_stutter)
++		hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
+ 	return wm_pending;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/hubbub/dcn32/dcn32_hubbub.c
++++ b/drivers/gpu/drm/amd/display/dc/hubbub/dcn32/dcn32_hubbub.c
+@@ -786,7 +786,8 @@ static bool hubbub32_program_watermarks(
+ 	REG_UPDATE(DCHUBBUB_ARB_DF_REQ_OUTSTAND,
+ 			DCHUBBUB_ARB_MIN_REQ_OUTSTAND, 0x1FF);*/
+ 
+-	hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
++	if (safe_to_lower || hubbub->ctx->dc->debug.disable_stutter)
++		hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
+ 
+ 	hubbub32_force_usr_retraining_allow(hubbub, hubbub->ctx->dc->debug.force_usr_allow);
+ 
+--- a/drivers/gpu/drm/amd/display/dc/hubbub/dcn35/dcn35_hubbub.c
++++ b/drivers/gpu/drm/amd/display/dc/hubbub/dcn35/dcn35_hubbub.c
+@@ -326,7 +326,8 @@ static bool hubbub35_program_watermarks(
+ 			DCHUBBUB_ARB_MIN_REQ_OUTSTAND_COMMIT_THRESHOLD, 0xA);/*hw delta*/
+ 	REG_UPDATE(DCHUBBUB_ARB_HOSTVM_CNTL, DCHUBBUB_ARB_MAX_QOS_COMMIT_THRESHOLD, 0xF);
+ 
+-	hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
++	if (safe_to_lower || hubbub->ctx->dc->debug.disable_stutter)
++		hubbub1_allow_self_refresh_control(hubbub, !hubbub->ctx->dc->debug.disable_stutter);
+ 
+ 	hubbub32_force_usr_retraining_allow(hubbub, hubbub->ctx->dc->debug.force_usr_allow);
+ 
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
+@@ -484,6 +484,8 @@ void hubp3_init(struct hubp *hubp)
+ 	//hubp[i].HUBPREQ_DEBUG.HUBPREQ_DEBUG[26] = 1;
+ 	REG_WRITE(HUBPREQ_DEBUG, 1 << 26);
+ 
++	REG_UPDATE(DCHUBP_CNTL, HUBP_TTU_DISABLE, 0);
 +
- 	eh = (struct ethhdr *)(txp->data);
- 	type = ntohs(eh->h_proto);
+ 	hubp_reset(hubp);
+ }
  
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
+@@ -168,6 +168,8 @@ void hubp32_init(struct hubp *hubp)
+ {
+ 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
+ 	REG_WRITE(HUBPREQ_DEBUG_DB, 1 << 8);
++
++	REG_UPDATE(DCHUBP_CNTL, HUBP_TTU_DISABLE, 0);
+ }
+ static struct hubp_funcs dcn32_hubp_funcs = {
+ 	.hubp_enable_tripleBuffer = hubp2_enable_triplebuffer,
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -236,7 +236,8 @@ void dcn35_init_hw(struct dc *dc)
+ 		}
+ 
+ 		hws->funcs.init_pipes(dc, dc->current_state);
+-		if (dc->res_pool->hubbub->funcs->allow_self_refresh_control)
++		if (dc->res_pool->hubbub->funcs->allow_self_refresh_control &&
++			!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter)
+ 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
+ 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
+ 	}
 
 
 
