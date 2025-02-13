@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B73AA3442E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:01:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AF0A34282
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47E647A1569
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9897B188F85F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF621487FA;
-	Thu, 13 Feb 2025 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52ABE13D8A4;
+	Thu, 13 Feb 2025 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byd1PrDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wt/bHCE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B317E00E;
-	Thu, 13 Feb 2025 14:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A2738389;
+	Thu, 13 Feb 2025 14:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458686; cv=none; b=VkLUs220nhek+3x4xMNkBH/nnM8gLFx6JYqEXMjR8eK81Pjnw5ye8EgGIJc1+vEmYFqsz6DrzOR0l0f5Th7BmlzB/hHo7GqefjlLU6R51dWxcsxZqRKIcLMB04TmGcI6aGGaWAzQQOPpYcar1cJBQPXgD8fhSL2wU4l+beq0LJQ=
+	t=1739457276; cv=none; b=hg2alBCc5rq19N7r5EnTX45f6C7zCGxPF/yaAEEZLcjlOUjA4VCJ9GzfWmQGeS3RECN6SJcINLbTBQgfTB1GEGrhq5oF94bfZ1R5In8sSX4E146c+gl4UUU/mQSW38ZooYisM5tuqFNvqmoRgFUwwvCgeVgRQRWFjOmMG/sNI5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458686; c=relaxed/simple;
-	bh=v6j/0mLM+PUL+7MCW7Ckn8W7z3HeTrX4lT6DdthI5s8=;
+	s=arc-20240116; t=1739457276; c=relaxed/simple;
+	bh=G19wNqkGQLXlcmEDMLOAyfyFjxUpJB6SnQ/UuI2koOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaT4Aqh6PDwCx1WjYQvBaJkQl7pvN4y79TKQbGH/nXKFc6TL1iuGkOF1j81IzDGSbFSiGkWr4PBH+KUm71Y9WIt57lbrKb7hs2EjgPS2fqSDqpOV1yEKEM6x8Sbtwr/X6pJpYJCkveq4JonirSBsfAlTrANPCrPj9ykPALG859Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byd1PrDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7836FC4CEE4;
-	Thu, 13 Feb 2025 14:58:05 +0000 (UTC)
+	 MIME-Version; b=Wlfgy/w5R0N9wuujvUiv+Y5x5N4EPeFcw1tt+iGPv+GSu0UnhMnD4QnspgmcClRVAsYthSy/dt6MC8lregsiy2w8sJcGvevPSAIarXAmbk8v0bz4K4lWVq/rWMt1qTFRbmk4DTJlAE+yYZQYoTNgm7GfVS0xhxgD6YzOjuQK+x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wt/bHCE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB6EC4CED1;
+	Thu, 13 Feb 2025 14:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458685;
-	bh=v6j/0mLM+PUL+7MCW7Ckn8W7z3HeTrX4lT6DdthI5s8=;
+	s=korg; t=1739457275;
+	bh=G19wNqkGQLXlcmEDMLOAyfyFjxUpJB6SnQ/UuI2koOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byd1PrDh8dVQqHg7hRNgXiupU6gaxkVjINYjHLoaZDuJ3rUj1FdH2FVYsMqL6KP8j
-	 XQ6akO/crw3zJsPU+wd/KXIAQAPsb+h9MYXzJLnVAm4aHWtZ0L7LyWlVwqr9FyZhH0
-	 DHAkswIsGR+aMhvfyvYdFh7qUdDpRS4WNenncY88=
+	b=Wt/bHCE7bRiZE2CZRdiFS+RLYUUovwjWJ5HUxQBxOXLLTw7vJWk+Dd8PF6hL4M7Ih
+	 TyPHiB6O39ZTue++Qn2sOk5r0h4+krIGqc+esrS/luUOST9CeWEGaLyISvmfrZ/daM
+	 4032NywIxvL/4LOecVnkH3h52qHy60RW2stV22y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Paul Moore <paul@paul-moore.com>,
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 049/443] safesetid: check size of policy writes
-Date: Thu, 13 Feb 2025 15:23:34 +0100
-Message-ID: <20250213142442.514426617@linuxfoundation.org>
+Subject: [PATCH 6.12 066/422] Bluetooth: btusb: Add new VID/PID 13d3/3628 for MT7925
+Date: Thu, 13 Feb 2025 15:23:35 +0100
+Message-ID: <20250213142439.108151407@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Stone <leocstone@gmail.com>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
+[ Upstream commit f63f401130e5c5cd0dd2f18c9df967ab75cd4732 ]
 
-syzbot attempts to write a buffer with a large size to a sysfs entry
-with writes handled by handle_policy_update(), triggering a warning
-in kmalloc.
+Add VID 13d3 & PID 3628 for MediaTek MT7925 USB Bluetooth chip.
 
-Check the size specified for write buffers before allocating.
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
-Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-[PM: subject tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3628 Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/safesetid/securityfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
-index 25310468bcddf..8e1ffd70b18ab 100644
---- a/security/safesetid/securityfs.c
-+++ b/security/safesetid/securityfs.c
-@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
- 	char *buf, *p, *end;
- 	int err;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index a5dec56de893d..6bc6dd417adf6 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -670,6 +670,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3608), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3628), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
-+	if (len >= KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
- 	if (!pol)
- 		return -ENOMEM;
+ 	/* Additional Realtek 8723AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0930, 0x021d), .driver_info = BTUSB_REALTEK },
 -- 
 2.39.5
 
