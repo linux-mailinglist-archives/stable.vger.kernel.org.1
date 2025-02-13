@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA096A34592
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1359EA3425C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6393D188F10F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41AD165BB6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E542419882B;
-	Thu, 13 Feb 2025 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906F028382;
+	Thu, 13 Feb 2025 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xclu+zLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhYBtIC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FBB156C71;
-	Thu, 13 Feb 2025 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D517281353;
+	Thu, 13 Feb 2025 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458718; cv=none; b=P/O9jbAeFOSTGQBFiNEz7+M40ro8DWdJJ+m/eJqqGUHEs5ucagdxoauY5YfO215rYJ8j8X5utTRx4Nz3xst9pGoiLv/wiW3cPdOlKT/JgmHtDn+ML3KVoHnJCuD4GXOVsdaZxH0mcFEfnMS3FRk7OVfzQXw6mUL3NJhKgFhR5tQ=
+	t=1739457306; cv=none; b=pOeMsr3E29kJxiFpl5OBI0Elz4PmzfZwZFnrRU7EypgNIUvOzC3a/OcsHl1jEEdKwpDyayt6ZrpS/nTMqeSdYYAWdzrki1H71RO+icozlCdYKY1jrvUNXLaffaU2qTEzyemW3ow3BlwvlimmolHweO8z7utr6Xs7N8GA0jUnr40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458718; c=relaxed/simple;
-	bh=Liv0rFxhnUrme89gNxM3WDt1rBc/T49ik6uivbK7QYw=;
+	s=arc-20240116; t=1739457306; c=relaxed/simple;
+	bh=HhIp5wbfaHL3jy3VYsakeZgXnMiV0HWSDH2Gd5nPgZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZruNv+qsVfmBg7KaZIMOdqoh1BWUeLYjUHRk6A+0/rNk3aH6U5LY2lNmkr73R0RJ9M13TLOUaX/J0KLq4L2aepNHO7hUh6hCG8RbnTZHHbiy1dM8/0rHHAO2Ri7Df1pkPqFrVn2DxhBDCPywCkgqfPBNjT9D+rOeVz/lGrZ1QYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xclu+zLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B93C4CED1;
-	Thu, 13 Feb 2025 14:58:37 +0000 (UTC)
+	 MIME-Version; b=gwAASPx7EPftoNHo66pSZWNzuJ+zOG6FD5xBMRIx6yB2QBnxHLXr6FnnlZh1uzqBOXL1R2XjBfXMlhMs8SAzdZnlnqD4efpA/TnenJAs8Hk6HHxKJIbPK3vPo0h49bth5XRCShF2TEF6WbTw5ay67urELDOA93ftNCiN9wXLG1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhYBtIC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF815C4CEE2;
+	Thu, 13 Feb 2025 14:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458718;
-	bh=Liv0rFxhnUrme89gNxM3WDt1rBc/T49ik6uivbK7QYw=;
+	s=korg; t=1739457306;
+	bh=HhIp5wbfaHL3jy3VYsakeZgXnMiV0HWSDH2Gd5nPgZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xclu+zLbFgRwqAaLed6cHXUkCKguhb1n+bK4JrVM+EZyW8YP68uGCBHHzPhMiprJf
-	 ZylT4LypYr7GJefl478i0SXOFrxQExLB+ly0reZrylNVa6h7snOmWaVBcX6cU4yrBS
-	 08lc0S8HznD2KoR854KbuSLxHwfMYLJhmAJY69H4=
+	b=FhYBtIC42PXi56xAv0Bnsi2CmaBLAmof4WO3jNL504ljyrVjA8kl6ObQ+1n8Kabrn
+	 ekibfzAnUSwDdRHONiVeugvcLxLPHr+L7BKvIJo6i+eoqrguiuiSEZNT9yashKbxIe
+	 rBwCpufaM7Hu0q+nk0tqeBdEjd6Zx1UFj+eZ1664=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Liu Ye <liuye@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 058/443] mmc: sdhci-esdhc-imx: enable SDHCI_QUIRK_NO_LED quirk for S32G
+Subject: [PATCH 6.12 074/422] selftests/net/ipsec: Fix Null pointer dereference in rtattr_pack()
 Date: Thu, 13 Feb 2025 15:23:43 +0100
-Message-ID: <20250213142442.862647943@linuxfoundation.org>
+Message-ID: <20250213142439.412261841@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Liu Ye <liuye@kylinos.cn>
 
-[ Upstream commit 0202dfbdc5dea70e213205aa42ab49a1a08aad3a ]
+[ Upstream commit 3a0b7fa095212b51ed63892540c4f249991a2d74 ]
 
-Enable SDHCI_QUIRK_NO_LED quirk for S32G2/S32G3 variants as the controller
-does not have a LED signal line.
+Address Null pointer dereference / undefined behavior in rtattr_pack
+(note that size is 0 in the bad case).
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Message-ID: <20241125083357.1041949-1-ciprianmarian.costea@oss.nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Flagged by cppcheck as:
+    tools/testing/selftests/net/ipsec.c:230:25: warning: Possible null pointer
+    dereference: payload [nullPointer]
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+    tools/testing/selftests/net/ipsec.c:1618:54: note: Calling function 'rtattr_pack',
+    4th argument 'NULL' value is 0
+    if (rtattr_pack(&req.nh, sizeof(req), XFRMA_IF_ID, NULL, 0)) {
+                                                       ^
+    tools/testing/selftests/net/ipsec.c:230:25: note: Null pointer dereference
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+Signed-off-by: Liu Ye <liuye@kylinos.cn>
+
+Link: https://patch.msgid.link/20250116013037.29470-1-liuye@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/ipsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index d55d045ef2363..e23177ea9d916 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -304,6 +304,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_SKIP_ERR004536 | ESDHC_FLAG_SKIP_CD_WAKE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index be4a30a0d02ae..9b44a091802cb 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -227,7 +227,8 @@ static int rtattr_pack(struct nlmsghdr *nh, size_t req_sz,
  
- static struct esdhc_soc_data usdhc_imx7ulp_data = {
+ 	attr->rta_len = RTA_LENGTH(size);
+ 	attr->rta_type = rta_type;
+-	memcpy(RTA_DATA(attr), payload, size);
++	if (payload)
++		memcpy(RTA_DATA(attr), payload, size);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
