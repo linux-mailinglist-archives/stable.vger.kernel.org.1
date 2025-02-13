@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4396FA34515
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37332A3424C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D62D3AB0AC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E226188CD13
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFBE227EB2;
-	Thu, 13 Feb 2025 14:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27462222C1;
+	Thu, 13 Feb 2025 14:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5VY40tZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G++bfCgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDC31FFC69;
-	Thu, 13 Feb 2025 14:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9CB38389;
+	Thu, 13 Feb 2025 14:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458565; cv=none; b=ltnBOtXrKTSCaficShsFzg8DjoZkgq6lHftqNXKFlNxMLzFpJaBHvUD0IScsaasdpJ0m59SuUshhGUiCv/nDjTSzDAk9L98xsoMJa48bgZAlLB0XuNkr7SMFpFl8JqULXhW6XlFGUwizpMtquMyIvnLbxSeLIV7V9zb2RyTERbg=
+	t=1739457155; cv=none; b=FR4kWhXI0FDBmd7a2RYNPLKB73XEEcdVeVKL6on4+3pJIwULi09UYCGfX8KXbQlyIwSzBfmbcaPcW5EL2slJhUSpM1eebMNGGo6ko4HlYDphiD3P0/gMWUcCG5KAq5Ac4PkKYrcJ1mm/mio4nyZCOCcAJNgYz4IfcoZ/Gpl9c2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458565; c=relaxed/simple;
-	bh=f51ENt12m/koaDj+iMlAkF2opNdCbPIHa7JvkE2p7b4=;
+	s=arc-20240116; t=1739457155; c=relaxed/simple;
+	bh=Z8BVZ44xD3zTzSW5N6i3FJfNsACZjYQN9yRDKKxHUmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8MNStkxfHdLF3RKFsaH7SyGlnpMhNren3mIN168gABOczCW+oxnZ0Cb+zVhUGWHtj9KBdLlGp/m28RYZTAd7T0qEU6aXx6hxqW1GekT7QddpyZzcZrC4hxIfu5IMgNBKQLspuJjbmTDNScvVP23nmOjJdXFaWGHthpL8TTTi1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5VY40tZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94CDC4CED1;
-	Thu, 13 Feb 2025 14:56:04 +0000 (UTC)
+	 MIME-Version; b=jZ5VHipzbbdyA9sDmxlPv72Z8FZgSGupQ3+KBYXd0owicqM6PUbU2o4v2c/r1xpsrOHqIv7rKe4yo1J+a4bOyhybsGjlCR3rvx5qfZzqQ3evTUdO97rWFB2+ZvHtU64E9jFOGLEFECzFmp/vZzW1WBOUiovvKUHxJCQoWFhOl+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G++bfCgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA634C4CED1;
+	Thu, 13 Feb 2025 14:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458565;
-	bh=f51ENt12m/koaDj+iMlAkF2opNdCbPIHa7JvkE2p7b4=;
+	s=korg; t=1739457155;
+	bh=Z8BVZ44xD3zTzSW5N6i3FJfNsACZjYQN9yRDKKxHUmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5VY40tZObxKPSI3UtD0uTtVwUc+/qyNA8MBUFGpwwjTtNVlIXhW0mzxZVAXW3O/B
-	 OxGEa7P1ILSL7yTSCBk6TPF6MTRuTe6a+4/x/pidCvPIjNC6qQoIxOviUyCoRDHq4t
-	 XWVbcJpqM9LLXIYctmg8Os3j9lkPee9G3QxjgYXI=
+	b=G++bfCgiQgpqeY52Q+Mtuc0sbiEmIrQ+RnlVJmgfnJ5Xeb/OQUcrgdp0hd3CETS8O
+	 rpmJZwGvRGrI/54HGCsfj1I+DcuCLdRDqmQ/o3/4myfJGrS0PYwmpA6VXLleZEBI1p
+	 32EpAB7e53A+WjxBNy9vIJurSA6ONzA3UP/8ZnYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 015/443] x86: Convert unreachable() to BUG()
-Date: Thu, 13 Feb 2025 15:23:00 +0100
-Message-ID: <20250213142441.210879450@linuxfoundation.org>
+Subject: [PATCH 6.12 032/422] drm/exynos: hdmi: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:23:01 +0100
+Message-ID: <20250213142437.795521966@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 2190966fbc14ca2cd4ea76eefeb96a47d8e390df ]
+[ Upstream commit 5e8436d334ed7f6785416447c50b42077c6503e0 ]
 
-Avoid unreachable() as it can (and will in the absence of UBSAN)
-generate fallthrough code. Use BUG() so we get a UD2 trap (with
-unreachable annotation).
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20241128094312.028316261@infradead.org
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-5-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 2 +-
- arch/x86/kernel/reboot.c  | 2 +-
- arch/x86/kvm/svm/sev.c    | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index f63f8fd00a91f..15507e739c255 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -838,7 +838,7 @@ void __noreturn stop_this_cpu(void *dummy)
- #ifdef CONFIG_SMP
- 	if (smp_ops.stop_this_cpu) {
- 		smp_ops.stop_this_cpu();
--		unreachable();
-+		BUG();
- 	}
- #endif
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index 1e26cd4f83479..52059cfff4f0b 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1643,7 +1643,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf,
+ 	struct hdmi_context *hdata = dev_get_drvdata(dev);
+ 	struct drm_connector *connector = &hdata->connector;
  
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 615922838c510..dc1dd3f3e67fc 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -883,7 +883,7 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
  
- 	if (smp_ops.stop_this_cpu) {
- 		smp_ops.stop_this_cpu();
--		unreachable();
-+		BUG();
- 	}
- 
- 	/* Assume hlt works */
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 943bd074a5d37..fe6cc763fd518 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3820,7 +3820,7 @@ static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
- 		goto next_range;
- 	}
- 
--	unreachable();
-+	BUG();
+ 	return 0;
  }
- 
- static int __sev_snp_update_protected_guest_state(struct kvm_vcpu *vcpu)
 -- 
 2.39.5
 
