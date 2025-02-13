@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C44A34456
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754F2A34797
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26BA53AE886
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36B616CC9E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551D42222BA;
-	Thu, 13 Feb 2025 14:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D6F152532;
+	Thu, 13 Feb 2025 15:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8vFkaIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwlFdg1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1357A221710;
-	Thu, 13 Feb 2025 14:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E0826B098;
+	Thu, 13 Feb 2025 15:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458305; cv=none; b=vCOgIeJnoO1HTehkH+8c1EU4u+c4aOaOXpHSPVbYDs4mWWPKqt+u9cZUAR1SN8Qofk3LAivE3r0lenRx1qRVybMMgBIvHhOmUT3NdDVBxc+yVWlx8jktj6P/mrqoPLZMXTWIDc9dKXTud6ZoqEq8zJGX02wZMzS6aicdJFrfzqw=
+	t=1739460639; cv=none; b=PxYt+xODc6xuJ03L9lFi+mPZp5Uoueu8QWPpddchL9oseqUcOwd4iIzrWsgVSKZcl7AtMCLtgfwvRodjf0+YTmgSygffuu5QnrPedJWOfrrGY6vV7Z5avf4a3fxeR7UlJjIXAWZIaVuJc5ZHaqAM8NDJC55SbaidJVfcsrfInYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458305; c=relaxed/simple;
-	bh=88niFh5+YPUIlzKdGRBn2tmw1HL0km4+K9rBJdHNH1o=;
+	s=arc-20240116; t=1739460639; c=relaxed/simple;
+	bh=otYxkzWB37ChRxUMWkdw14I+0ZZZWgkAW1WwBlEuLFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+i50GNVahokKg4f7v8NOrtAR1OMX3l6IrkBxaiRlNuC7qraGgW/2I6GauofHe+bWXNnn6efApuKONKWroa7ukFl5Fv6Azhu53BJ1OlK4eDZg3GhQVAO0Vp6S9afN/zZUSDAjqF7nKvYdmNtT7DTwtNVoIj91Cj/Ix/5j/f80u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8vFkaIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B7EC4CED1;
-	Thu, 13 Feb 2025 14:51:43 +0000 (UTC)
+	 MIME-Version; b=uX9rFGM/dOs4kSBNWHyLRyFqKsTK2qmI53tgtcCglYup9BShACmYFJj621pgcYbzAxxG/KV0Ck/nm6rckwjUZ8trvzxOi+j/v0UzACTCDVUqta5bOjDjPEufBFCrR46IkSAWe5djAaQX9Df64Qujo2UoE7iXcaq/0aN8I0XKFfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwlFdg1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8234C4CED1;
+	Thu, 13 Feb 2025 15:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458304;
-	bh=88niFh5+YPUIlzKdGRBn2tmw1HL0km4+K9rBJdHNH1o=;
+	s=korg; t=1739460639;
+	bh=otYxkzWB37ChRxUMWkdw14I+0ZZZWgkAW1WwBlEuLFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8vFkaItd0hDEaFx6RYynwhQ1n73lHyKO2sOSPfVb77VU26JZqafmLL6Kg35jCnOV
-	 VNB9Me8KHy1TaVzxPKn9Km+5bsp3PECqgwhe+0jXvgl0S6N7m4iOKhssv/0PljgOdj
-	 +kJs4Ni48IqQMiJvp+pheRlQiqXcz6Af/M9BRpHE=
+	b=rwlFdg1SJmVqKW2zAvTf4Ni2wQSloTSlkXZeCUMxmW/m96P7pxqxJgSDhY9fwsiC6
+	 U2gbNSzJZGZR9aiP3Rhjy4glr/iH7dOEcQRhgLaV5YhJjk9tsjrZ40gpKXb0FHrLUx
+	 hxfcQtuZ3bwvnJVFc8Tinfwy/1Wygb+39zoaCwR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 360/422] selftests: mptcp: connect: -f: no reconnect
-Date: Thu, 13 Feb 2025 15:28:29 +0100
-Message-ID: <20250213142450.443681183@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 138/273] usbnet: ipheth: check that DPE points past NCM header
+Date: Thu, 13 Feb 2025 15:28:30 +0100
+Message-ID: <20250213142412.792124141@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 5368a67307b3b2c347dc8965ac55b888be665934 upstream.
+commit 429fa68b58cefb9aa9de27e4089637298b46b757 upstream.
 
-The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
-by closing the connection with unread bytes in the receive queue.
+By definition, a DPE points at the start of a network frame/datagram.
+Thus it makes no sense for it to point at anything that's part of the
+NCM header. It is not a security issue, but merely an indication of
+a malformed DPE.
 
-The xdisconnect() helper was used to stop the connection, but it does
-more than that: it will shut it down, then wait before reconnecting to
-the same address. This causes the mptcp_join's "fastclose test" to fail
-all the time.
+Enforce that all DPEs point at the data portion of the URB, past the
+NCM header.
 
-This failure is due to a recent change, with commit 218cc166321f
-("selftests: mptcp: avoid spurious errors on disconnect"), but that went
-unnoticed because the test is currently ignored. The recent modification
-only shown an existing issue: xdisconnect() doesn't need to be used
-here, only the shutdown() part is needed.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/ipheth.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1302,7 +1302,7 @@ again:
- 		return ret;
- 
- 	if (cfg_truncate > 0) {
--		xdisconnect(fd);
-+		shutdown(fd, SHUT_WR);
- 	} else if (--cfg_repeat > 0) {
- 		xdisconnect(fd);
- 
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -241,7 +241,8 @@ static int ipheth_rcvbulk_callback_ncm(s
+ 	dpe = ncm0->dpe16;
+ 	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
+ 	       le16_to_cpu(dpe->wDatagramLength) != 0) {
+-		if (le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
++		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
++		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
+ 		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
+ 		    le16_to_cpu(dpe->wDatagramIndex)) {
+ 			dev->net->stats.rx_length_errors++;
 
 
 
