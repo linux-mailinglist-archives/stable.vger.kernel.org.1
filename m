@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D805A34268
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0CFA344F4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436583A3AA2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242E21896FF8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA3D70830;
-	Thu, 13 Feb 2025 14:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC7D245004;
+	Thu, 13 Feb 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEqiTHOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzCWIogm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16FE281360;
-	Thu, 13 Feb 2025 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D126B09C;
+	Thu, 13 Feb 2025 14:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457247; cv=none; b=edi9bsNgvRp9o7UIBDsaDkM3CZXCOadsscmHNUNZpbg/PoDb7Emz39XT9f3lQYU2RjU0sMq4foEm8pt3v7Yh839ccEqSjyaQh5WJLH+UfMV/nqmTbgHmwqHwW1Nu0UXwr7Dr22wd4HOrlTEr1dI/uBmaqjhb7bbywOu6npmjOeM=
+	t=1739458637; cv=none; b=NcLUawGaFTY11Gl4i/+gm7je4oASPCY95c12YsDyeKAhtZhpoYGtFpp8JkQmYrabLz30qFrN7yO6mdUSQZE/aZ5eJfnW13VHLAIl3G2uydPVCICPllQQmKl5QeEvaohtSKMaiAcwgZhTIdEc8H3c8FPdgql2zpYay5GUtDzQQY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457247; c=relaxed/simple;
-	bh=txmYRemdGgV2hQo8pp6i/i440C0qFxgmbDYSkDSiwts=;
+	s=arc-20240116; t=1739458637; c=relaxed/simple;
+	bh=jhoZfP6U5Sz0bYTt/H/dc3jnE2D6wLc4dmCwC1Ckeco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoeV88A2FXV/avA4vBJi3mNVVCTMoE/H67PvImJCCTv9f17mfaoYNv37ASRJeLJIIPyaK8EUGuAia97kl9cFksELhqKOftC10D7QcE6UI2phjazMPxKPf6RWktDDZe7Gur8gg3198AaYH1mmcRGnis8AqQjltora1HehpWeiVNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEqiTHOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FEFC4CED1;
-	Thu, 13 Feb 2025 14:34:06 +0000 (UTC)
+	 MIME-Version; b=MAcS4QsnbZwm1CJ/qgohfTfmzT+5IhldyjDl/j0yTnqcSP6fFluY2xLpqpVetpphFt31X/FkeUPNaPRGeSoyLP0too/75hsWjut/gRzjwq4isYyRI65aGWHK9vq77eKuiMHlZ3hRQ2k9Q2I340xdWPVk0pyuA9ddTJ4KnnqIah8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzCWIogm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DB6C4CED1;
+	Thu, 13 Feb 2025 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457246;
-	bh=txmYRemdGgV2hQo8pp6i/i440C0qFxgmbDYSkDSiwts=;
+	s=korg; t=1739458636;
+	bh=jhoZfP6U5Sz0bYTt/H/dc3jnE2D6wLc4dmCwC1Ckeco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEqiTHOgdb6q/Z5FDV/2k+l/WM8z7/4adjeViZXdUdG2o4B+EEUEPf86Z4UJIb52L
-	 AUEqWyGM+ZIwf35D6Neyl8k7M3JU2N5zo57O7HoQYy+wtY5SosNxRSoZOSOOAdupUj
-	 bLqZdds9bm6GsWh7IBfHKcSU/tIYDLwgo49Ozvhs=
+	b=XzCWIogmqIwHHbWn6K6Tj0a6+g7ORpGe4jea8/blAUXz7xg2vCEsbj3IHD4Fneq53
+	 NXs0bUxt7/7xPs7IcVrtxK8TlRdmt9htLEsg6smBl8n1xqh10wt4XQnuJdIQCBhtHB
+	 3k/KNAzamZ/4Re2VrP2kGOY/Su6Qvx8XT7Jn3LMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Hao-ran Zheng <zhenghaoran154@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/422] drm/amd/display: Populate chroma prefetch parameters, DET buffer fix
+Subject: [PATCH 6.13 009/443] btrfs: fix data race when accessing the inodes disk_i_size at btrfs_drop_extents()
 Date: Thu, 13 Feb 2025 15:22:54 +0100
-Message-ID: <20250213142437.526133273@linuxfoundation.org>
+Message-ID: <20250213142440.980241513@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Hao-ran Zheng <zhenghaoran154@gmail.com>
 
-[ Upstream commit 70fec46519fca859aa209f5f02e7e0a0123aca4a ]
+[ Upstream commit 5324c4e10e9c2ce307a037e904c0d9671d7137d9 ]
 
-[WHY]
-Soft hang/lag observed during 10bit playback + moving cursor, corruption
-observed in other tickets for same reason, also failing MPO.
+A data race occurs when the function `insert_ordered_extent_file_extent()`
+and the function `btrfs_inode_safe_disk_i_size_write()` are executed
+concurrently. The function `insert_ordered_extent_file_extent()` is not
+locked when reading inode->disk_i_size, causing
+`btrfs_inode_safe_disk_i_size_write()` to cause data competition when
+writing inode->disk_i_size, thus affecting the value of `modify_tree`.
 
-1. Currently, we are always running
-   calculate_lowest_supported_state_for_temp_read which is only
-   necessary on dGPU
-2. Fast validate path does not apply DET buffer allocation policy
-3. Prefetch UrgBFactor chroma parameter not populated in prefetch
-   calculation
+The specific call stack that appears during testing is as follows:
 
-[HOW]
-1. Add a check to see if we are on APU, if so, skip the code
-2. Add det buffer alloc policy checks to fast validate path
-3. Populate UrgentBurstChroma param in call to calculate
-   UrgBChroma prefetch values
+  ============DATA_RACE============
+   btrfs_drop_extents+0x89a/0xa060 [btrfs]
+   insert_reserved_file_extent+0xb54/0x2960 [btrfs]
+   insert_ordered_extent_file_extent+0xff5/0x1760 [btrfs]
+   btrfs_finish_one_ordered+0x1b85/0x36a0 [btrfs]
+   btrfs_finish_ordered_io+0x37/0x60 [btrfs]
+   finish_ordered_fn+0x3e/0x50 [btrfs]
+   btrfs_work_helper+0x9c9/0x27a0 [btrfs]
+   process_scheduled_works+0x716/0xf10
+   worker_thread+0xb6a/0x1190
+   kthread+0x292/0x330
+   ret_from_fork+0x4d/0x80
+   ret_from_fork_asm+0x1a/0x30
+  ============OTHER_INFO============
+   btrfs_inode_safe_disk_i_size_write+0x4ec/0x600 [btrfs]
+   btrfs_finish_one_ordered+0x24c7/0x36a0 [btrfs]
+   btrfs_finish_ordered_io+0x37/0x60 [btrfs]
+   finish_ordered_fn+0x3e/0x50 [btrfs]
+   btrfs_work_helper+0x9c9/0x27a0 [btrfs]
+   process_scheduled_works+0x716/0xf10
+   worker_thread+0xb6a/0x1190
+   kthread+0x292/0x330
+   ret_from_fork+0x4d/0x80
+   ret_from_fork_asm+0x1a/0x30
+  =================================
 
--revision commits: small formatting/brackets/null check addition + remove test change + dGPU code
+The main purpose of the check of the inode's disk_i_size is to avoid
+taking write locks on a btree path when we have a write at or beyond
+EOF, since in these cases we don't expect to find extent items in the
+root to drop. However if we end up taking write locks due to a data
+race on disk_i_size, everything is still correct, we only add extra
+lock contention on the tree in case there's concurrency from other tasks.
+If the race causes us to not take write locks when we actually need them,
+then everything is functionally correct as well, since if we find out we
+have extent items to drop and we took read locks (modify_tree set to 0),
+we release the path and retry again with write locks.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Since this data race does not affect the correctness of the function,
+it is a harmless data race, use data_race() to check inode->disk_i_size.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Hao-ran Zheng <zhenghaoran154@gmail.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml2/display_mode_core.c   |  5 ++-
- .../drm/amd/display/dc/dml2/dml2_wrapper.c    | 35 +++++++++++++------
- 2 files changed, 29 insertions(+), 11 deletions(-)
+ fs/btrfs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index 8dabb1ac0b684..be87dc0f07799 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6434,7 +6434,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 							/* Output */
- 							&mode_lib->ms.UrgentBurstFactorCursorPre[k],
- 							&mode_lib->ms.UrgentBurstFactorLumaPre[k],
--							&mode_lib->ms.UrgentBurstFactorChroma[k],
-+							&mode_lib->ms.UrgentBurstFactorChromaPre[k],
- 							&mode_lib->ms.NotUrgentLatencyHidingPre[k]);
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 14e27473c5bce..4d7c7a296d2d1 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -224,7 +224,7 @@ int btrfs_drop_extents(struct btrfs_trans_handle *trans,
+ 	if (args->drop_cache)
+ 		btrfs_drop_extent_map_range(inode, args->start, args->end - 1, false);
  
- 					mode_lib->ms.cursor_bw_pre[k] = mode_lib->ms.cache_display_cfg.plane.NumberOfCursors[k] * mode_lib->ms.cache_display_cfg.plane.CursorWidth[k] *
-@@ -9190,6 +9190,8 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			&locals->FractionOfUrgentBandwidth,
- 			&s->dummy_boolean[0]); // dml_bool_t *PrefetchBandwidthSupport
+-	if (args->start >= inode->disk_i_size && !args->replace_extent)
++	if (data_race(args->start >= inode->disk_i_size) && !args->replace_extent)
+ 		modify_tree = 0;
  
-+
-+
- 		if (s->VRatioPrefetchMoreThanMax != false || s->DestinationLineTimesForPrefetchLessThan2 != false) {
- 			dml_print("DML::%s: VRatioPrefetchMoreThanMax                   = %u\n", __func__, s->VRatioPrefetchMoreThanMax);
- 			dml_print("DML::%s: DestinationLineTimesForPrefetchLessThan2    = %u\n", __func__, s->DestinationLineTimesForPrefetchLessThan2);
-@@ -9204,6 +9206,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			}
- 		}
- 
-+
- 		if (locals->PrefetchModeSupported == true && mode_lib->ms.support.ImmediateFlipSupport == true) {
- 			locals->BandwidthAvailableForImmediateFlip = CalculateBandwidthAvailableForImmediateFlip(
- 																	mode_lib->ms.num_active_planes,
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index 866b0abcff1ba..4d64c45930da4 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -533,14 +533,21 @@ static bool optimize_pstate_with_svp_and_drr(struct dml2_context *dml2, struct d
- static bool call_dml_mode_support_and_programming(struct dc_state *context)
- {
- 	unsigned int result = 0;
--	unsigned int min_state;
-+	unsigned int min_state = 0;
- 	int min_state_for_g6_temp_read = 0;
-+
-+
-+	if (!context)
-+		return false;
-+
- 	struct dml2_context *dml2 = context->bw_ctx.dml2;
- 	struct dml2_wrapper_scratch *s = &dml2->v20.scratch;
- 
--	min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
-+	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+		min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
- 
--	ASSERT(min_state_for_g6_temp_read >= 0);
-+		ASSERT(min_state_for_g6_temp_read >= 0);
-+	}
- 
- 	if (!dml2->config.use_native_pstate_optimization) {
- 		result = optimize_pstate_with_svp_and_drr(dml2, context);
-@@ -551,14 +558,20 @@ static bool call_dml_mode_support_and_programming(struct dc_state *context)
- 	/* Upon trying to sett certain frequencies in FRL, min_state_for_g6_temp_read is reported as -1. This leads to an invalid value of min_state causing crashes later on.
- 	 * Use the default logic for min_state only when min_state_for_g6_temp_read is a valid value. In other cases, use the value calculated by the DML directly.
- 	 */
--	if (min_state_for_g6_temp_read >= 0)
--		min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
--	else
--		min_state = s->mode_support_params.out_lowest_state_idx;
--
--	if (result)
--		result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
-+	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+		if (min_state_for_g6_temp_read >= 0)
-+			min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
-+		else
-+			min_state = s->mode_support_params.out_lowest_state_idx;
-+	}
- 
-+	if (result) {
-+		if (!context->streams[0]->sink->link->dc->caps.is_apu) {
-+			result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
-+		} else {
-+			result = dml_mode_programming(&dml2->v20.dml_core_ctx, s->mode_support_params.out_lowest_state_idx, &s->cur_display_config, true);
-+		}
-+	}
- 	return result;
- }
- 
-@@ -687,6 +700,8 @@ static bool dml2_validate_only(struct dc_state *context)
- 	build_unoptimized_policy_settings(dml2->v20.dml_core_ctx.project, &dml2->v20.dml_core_ctx.policy);
- 
- 	map_dc_state_into_dml_display_cfg(dml2, context, &dml2->v20.scratch.cur_display_config);
-+	 if (!dml2->config.skip_hw_state_mapping)
-+		 dml2_apply_det_buffer_allocation_policy(dml2, &dml2->v20.scratch.cur_display_config);
- 
- 	result = pack_and_call_dml_mode_support_ex(dml2,
- 		&dml2->v20.scratch.cur_display_config,
+ 	update_refs = (btrfs_root_id(root) != BTRFS_TREE_LOG_OBJECTID);
 -- 
 2.39.5
 
