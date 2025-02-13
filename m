@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-115648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C30A34558
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1B7A3425B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BA31885C8F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191E43AC34D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5D02A1D1;
-	Thu, 13 Feb 2025 14:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0283221552;
+	Thu, 13 Feb 2025 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHa2P3/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/Swqgx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985461DB154;
-	Thu, 13 Feb 2025 14:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E152281343;
+	Thu, 13 Feb 2025 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458763; cv=none; b=bbLE9CqyWJJ4Z2r+9IdBiN+ZliaRs+3wIWKbx7Tivtbqu1UOEha+Sy4NdX1e+QPFuvNCSoHYvM4TnLdIuMVSKikKczwldneY9LEZBSk5cvqJeHV2ClfYvuwMtFStzKXLLBMUzPc0zBG2FQAsLlRrMPhi+GRxanCCqw7znQyKJrg=
+	t=1739457208; cv=none; b=V1/DHihA6U7UHuHf5fyPjeKnQPON7WmnGlKeh9AmsPcglrMsbXcZimwieNLvFjVQNf+/ecZGr0BG0ib4j8IhS//bsZT3LhkuclMqGZpLUkAPTq5BFFmoA7+Ucsg/KtngcPLCS54IiF3r3j49xQMKStvk5POtYshbOzh3oaUfhHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458763; c=relaxed/simple;
-	bh=fZNqbb5d3sktCuFEb256aA0OR7ov9FXWKgQhUsJ+ekU=;
+	s=arc-20240116; t=1739457208; c=relaxed/simple;
+	bh=qJy/iBZ2we9IDQNYsAPw5yXKqkOcGPmj4KZHlZ5vgF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWYODForsAMpbOd9L9nQhj0bGE0iEJ/yDMiJuT/wuW1vT2P4NdB0Kj81SwpRcL/nRRd2A+eZWtBZFc4gNQCiIvK5bW7ShPXFurUSV7DFI94rBRlkSvY9e8WTBFm1BIiXVRQXhTOvu8P5UXZtx9wVhFfEl9deAeFBdSMs6KTYaaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHa2P3/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A635C4CED1;
-	Thu, 13 Feb 2025 14:59:22 +0000 (UTC)
+	 MIME-Version; b=IFB23FKAexhejU//ayvsEmH2606NPTVVYpl38UGq623yTPQiwdK68u/rYeox2oOdNc12YkwNHcKC2LPx8lmI82PY1KdKNaZk5FYJ50H1q7yheY2/+EnsisIoz5/pDO36Ml2zD7yh0B46YfUyW4mpbXbFmOKlvm0+j1/xcxCRvtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/Swqgx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083A6C4CEE2;
+	Thu, 13 Feb 2025 14:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458763;
-	bh=fZNqbb5d3sktCuFEb256aA0OR7ov9FXWKgQhUsJ+ekU=;
+	s=korg; t=1739457208;
+	bh=qJy/iBZ2we9IDQNYsAPw5yXKqkOcGPmj4KZHlZ5vgF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHa2P3/aytgR4qRz54YZ7IUAocupmYrm5ps9/obIu3KI/bOw9ekROwTv4CYWCX/az
-	 0be3bymG9ZVJldSqJtxnsMHcXc6V3v9CHcQeySGUVZtkuwWRqzUds9t1YFdrR2WjfU
-	 qcNiX2GxTY/XogRAP7oYMWp3XNJXLp4kWvxOEwPs=
+	b=f/Swqgx9Orpmma8CItOTV4LmZrmMXhviZU+JMXQi7pm2XGaRk0uhSfi3pGuRrD32Z
+	 OpfGP2gI/sFRjZQvaHAfN/7kzZE3kAjjYj6mhEUNdhoMDNVVnzLRaL8d4gHfmpaf1o
+	 bLotNnqIRKi4RjMzhR3s03P3c8w5KQbuFnG+40bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Gabe Teeger <Gabe.Teeger@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 029/443] drm/amd/display: Overwriting dualDPP UBF values before usage
-Date: Thu, 13 Feb 2025 15:23:14 +0100
-Message-ID: <20250213142441.749878273@linuxfoundation.org>
+Subject: [PATCH 6.12 046/422] drm/amd/display: Limit Scaling Ratio on DCN3.01
+Date: Thu, 13 Feb 2025 15:23:15 +0100
+Message-ID: <20250213142438.340149895@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Gabe Teeger <Gabe.Teeger@amd.com>
 
-[ Upstream commit 24909d9ec7c3afa8da2f3c9afa312e7a4a61f250 ]
+[ Upstream commit abc0ad6d08440761b199988c329ad7ac83f41c9b ]
 
-[WHY]
-Right now in dml2 mode validation we are calculating UBF parameters for
-prefetch calculation for single and dual DPP scenarios. Data structure
-to store such values are just 1D arrays, the single DPP values are
-overwritten by the dualDPP values, and we end up using dualDPP for
-prefetch calculations twice (once in place of singleDPP support check
-and again for dual).
+[why]
+Underflow and flickering was occuring due to high scaling ratios
+when resizing videos.
 
-This naturally leads to many problems, one of which validating a mode in
-"singleDPP" (when we used dual DPP parameters) and sending the singleDPP
-parameters to mode programming, if we cannot support then we observe the
-corruption as described in the ticket.
-
-[HOW]
-UBF values need to have 2d arrays to store values specific to single and
-dual DPP states to avoid single DPP values being overwritten. Other
-parameters are recorded on a per state basis such as prefetch UBF values
-but they are in the same loop used for calculation and at that point its
-fine to overwrite them, its not the case for plain UBF values.
+[how]
+Limit the scaling ratios by increasing the max scaling factor
 
 Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Gabe Teeger <Gabe.Teeger@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml2/display_mode_core.c   | 30 +++++++++----------
- .../dc/dml2/display_mode_core_structs.h       |  6 ++--
- 2 files changed, 18 insertions(+), 18 deletions(-)
+ .../drm/amd/display/dc/resource/dcn301/dcn301_resource.c  | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index be87dc0f07799..6822b07951204 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6301,9 +6301,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 			mode_lib->ms.meta_row_bandwidth_this_state,
- 			mode_lib->ms.dpte_row_bandwidth_this_state,
- 			mode_lib->ms.NoOfDPPThisState,
--			mode_lib->ms.UrgentBurstFactorLuma,
--			mode_lib->ms.UrgentBurstFactorChroma,
--			mode_lib->ms.UrgentBurstFactorCursor);
-+			mode_lib->ms.UrgentBurstFactorLuma[j],
-+			mode_lib->ms.UrgentBurstFactorChroma[j],
-+			mode_lib->ms.UrgentBurstFactorCursor[j]);
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn301/dcn301_resource.c
+index 7d04739c3ba14..4bbbe07ecde7d 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn301/dcn301_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn301/dcn301_resource.c
+@@ -671,9 +671,9 @@ static const struct dc_plane_cap plane_cap = {
  
- 		s->VMDataOnlyReturnBWPerState = dml_get_return_bw_mbps_vm_only(
- 																	&mode_lib->ms.soc,
-@@ -6458,9 +6458,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 				mode_lib->ms.cursor_bw_pre,
- 				mode_lib->ms.prefetch_vmrow_bw,
- 				mode_lib->ms.NoOfDPPThisState,
--				mode_lib->ms.UrgentBurstFactorLuma,
--				mode_lib->ms.UrgentBurstFactorChroma,
--				mode_lib->ms.UrgentBurstFactorCursor,
-+				mode_lib->ms.UrgentBurstFactorLuma[j],
-+				mode_lib->ms.UrgentBurstFactorChroma[j],
-+				mode_lib->ms.UrgentBurstFactorCursor[j],
- 				mode_lib->ms.UrgentBurstFactorLumaPre,
- 				mode_lib->ms.UrgentBurstFactorChromaPre,
- 				mode_lib->ms.UrgentBurstFactorCursorPre,
-@@ -6517,9 +6517,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 						mode_lib->ms.cursor_bw,
- 						mode_lib->ms.cursor_bw_pre,
- 						mode_lib->ms.NoOfDPPThisState,
--						mode_lib->ms.UrgentBurstFactorLuma,
--						mode_lib->ms.UrgentBurstFactorChroma,
--						mode_lib->ms.UrgentBurstFactorCursor,
-+						mode_lib->ms.UrgentBurstFactorLuma[j],
-+						mode_lib->ms.UrgentBurstFactorChroma[j],
-+						mode_lib->ms.UrgentBurstFactorCursor[j],
- 						mode_lib->ms.UrgentBurstFactorLumaPre,
- 						mode_lib->ms.UrgentBurstFactorChromaPre,
- 						mode_lib->ms.UrgentBurstFactorCursorPre);
-@@ -6586,9 +6586,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 													mode_lib->ms.cursor_bw_pre,
- 													mode_lib->ms.prefetch_vmrow_bw,
- 													mode_lib->ms.NoOfDPP[j], // VBA_ERROR DPPPerSurface is not assigned at this point, should use NoOfDpp here
--													mode_lib->ms.UrgentBurstFactorLuma,
--													mode_lib->ms.UrgentBurstFactorChroma,
--													mode_lib->ms.UrgentBurstFactorCursor,
-+													mode_lib->ms.UrgentBurstFactorLuma[j],
-+													mode_lib->ms.UrgentBurstFactorChroma[j],
-+													mode_lib->ms.UrgentBurstFactorCursor[j],
- 													mode_lib->ms.UrgentBurstFactorLumaPre,
- 													mode_lib->ms.UrgentBurstFactorChromaPre,
- 													mode_lib->ms.UrgentBurstFactorCursorPre,
-@@ -7809,9 +7809,9 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
- 				mode_lib->ms.DETBufferSizeYThisState[k],
- 				mode_lib->ms.DETBufferSizeCThisState[k],
- 				/* Output */
--				&mode_lib->ms.UrgentBurstFactorCursor[k],
--				&mode_lib->ms.UrgentBurstFactorLuma[k],
--				&mode_lib->ms.UrgentBurstFactorChroma[k],
-+				&mode_lib->ms.UrgentBurstFactorCursor[j][k],
-+				&mode_lib->ms.UrgentBurstFactorLuma[j][k],
-+				&mode_lib->ms.UrgentBurstFactorChroma[j][k],
- 				&mode_lib->ms.NotUrgentLatencyHiding[k]);
- 		}
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
-index f951936bb579e..504c427b3b319 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
-@@ -884,11 +884,11 @@ struct mode_support_st {
- 	dml_uint_t meta_row_height[__DML_NUM_PLANES__];
- 	dml_uint_t meta_row_height_chroma[__DML_NUM_PLANES__];
- 	dml_float_t UrgLatency;
--	dml_float_t UrgentBurstFactorCursor[__DML_NUM_PLANES__];
-+	dml_float_t UrgentBurstFactorCursor[2][__DML_NUM_PLANES__];
- 	dml_float_t UrgentBurstFactorCursorPre[__DML_NUM_PLANES__];
--	dml_float_t UrgentBurstFactorLuma[__DML_NUM_PLANES__];
-+	dml_float_t UrgentBurstFactorLuma[2][__DML_NUM_PLANES__];
- 	dml_float_t UrgentBurstFactorLumaPre[__DML_NUM_PLANES__];
--	dml_float_t UrgentBurstFactorChroma[__DML_NUM_PLANES__];
-+	dml_float_t UrgentBurstFactorChroma[2][__DML_NUM_PLANES__];
- 	dml_float_t UrgentBurstFactorChromaPre[__DML_NUM_PLANES__];
- 	dml_float_t MaximumSwathWidthInLineBufferLuma;
- 	dml_float_t MaximumSwathWidthInLineBufferChroma;
+ 	/* 6:1 downscaling ratio: 1000/6 = 166.666 */
+ 	.max_downscale_factor = {
+-			.argb8888 = 167,
+-			.nv12 = 167,
+-			.fp16 = 167 
++			.argb8888 = 358,
++			.nv12 = 358,
++			.fp16 = 358
+ 	},
+ 	64,
+ 	64
+@@ -694,7 +694,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.disable_dcc = DCC_ENABLE,
+ 	.vsr_support = true,
+ 	.performance_trace = false,
+-	.max_downscale_src_width = 7680,/*upto 8K*/
++	.max_downscale_src_width = 4096,/*upto true 4k*/
+ 	.scl_reset_length10 = true,
+ 	.sanity_checks = false,
+ 	.underflow_assert_delay_us = 0xFFFFFFFF,
 -- 
 2.39.5
 
