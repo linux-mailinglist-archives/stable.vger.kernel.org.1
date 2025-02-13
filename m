@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE1BA34654
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77007A34802
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCED316B257
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFAF13B4E10
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B5B335BA;
-	Thu, 13 Feb 2025 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D231632DD;
+	Thu, 13 Feb 2025 15:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vStvZmYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUdxJLmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7444126B091;
-	Thu, 13 Feb 2025 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43314F121;
+	Thu, 13 Feb 2025 15:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459895; cv=none; b=SAyxpcplPz/fteP428yctSYdq7v5HfeD5u2sR0gVhuNzmEqKyJoc26mu8rfNDc/Whf8vWT9wweWw39HJ/euwpRLoxS+5ZuKUlWjvfL8EJYKYI0sPpaFdbn4FSmaAWIbEymTwQ98NNAcZj9rRdCuEZmsCTXqeuImgfzNdYW9ukUs=
+	t=1739460704; cv=none; b=Ns158mCxI20V32a1b8JPoNuyx4pf1bN3803lL7mYreRn8Qn+Ph1BaSQWMkq6HUOFQeYw1Ul2y0ecUmHAB9MgJI2BxcLXXhYm1KlnRdn0gzrmWExh8eBmCUqDQu65+Z6yu6MNueVdZjhKvb1dX97o+cV/S6iTH56x+PDMJzq24/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459895; c=relaxed/simple;
-	bh=iH1crWkGYjX9dxfS/sOn2Oxf03NAwD0S4cE6n7bAZ1s=;
+	s=arc-20240116; t=1739460704; c=relaxed/simple;
+	bh=P4fAWQf9X/EA+IGAjNp9HcFuLI3jL/AC33x7dQrDt9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMMOJ2snGSntTD7C8k1HGsbRsaMKznC6kHZV/UlOKWmbBO3JV8w2XqTz0P9W90qIh3nRmiWClDiF/yWQt8Ttq8k2Pp3GoxJAMlXmyG5MdJ8GptgImxfZffSSNdGLqwnC/pkq/Iar6SnUCtwmYsQ1l6LIOteoK32xsYPJuNwhW4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vStvZmYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC97C4CEE4;
-	Thu, 13 Feb 2025 15:18:14 +0000 (UTC)
+	 MIME-Version; b=EbQv5nKlWinJCW8mku+C9KJz8fnEp59NptdjtidQR/E7OPZEI5Wj/cFRPZfSVEIyb/iq0ZPumug+mhMVV2VjswBMG0WrCZNT2E/43rCTko4gsGTShQCY6vmBdvKPIuhL6kYwJdawVZxIpn4xXry79J8jQ4/zv41xn7Us7zxjQpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUdxJLmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA49AC4CED1;
+	Thu, 13 Feb 2025 15:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459895;
-	bh=iH1crWkGYjX9dxfS/sOn2Oxf03NAwD0S4cE6n7bAZ1s=;
+	s=korg; t=1739460704;
+	bh=P4fAWQf9X/EA+IGAjNp9HcFuLI3jL/AC33x7dQrDt9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vStvZmYYV0Crromrd3h7a2StkhUR+8d9EKkTGb/ZnWYl3E/1wWSFCpWnYajq6en15
-	 Po6xdtnLzXXiCr8nbwFVv3/n33mO26+gQtRwpOItECLfwomCQSZIoxh6Mwtq1y5K2Y
-	 R3Tua3QwEzu6lKyRetAlxqBLd9s09LrAMMBz+VQM=
+	b=tUdxJLmxULR+kiJ+CCRr2AW9jgwkCC8p3J86/c88CHpZ7ooY2QrWVJhN1TzcfZ5Rl
+	 D9W79sLxbDhaqoiv5z+c+ojwCRRcTWkTt7pbMUtGqzzGcKRzkVy6fCD7u4cHSIPHCk
+	 82ftqjwP1O6KvzWJW+IpUWEiZzTRwzO945Xk5048=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Galas <ssgalas@cloud.ru>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.13 395/443] io_uring/net: dont retry connect operation on EPOLLERR
+	stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 188/273] arm64: dts: qcom: sm8550: correct MDSS interconnects
 Date: Thu, 13 Feb 2025 15:29:20 +0100
-Message-ID: <20250213142455.850174893@linuxfoundation.org>
+Message-ID: <20250213142414.752409178@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 8c8492ca64e79c6e0f433e8c9d2bcbd039ef83d0 upstream.
+commit b8591df49cde459e3b84cdc0517d7bf92053d244 upstream.
 
-If a socket is shutdown before the connection completes, POLLERR is set
-in the poll mask. However, connect ignores this as it doesn't know, and
-attempts the connection again. This may lead to a bogus -ETIMEDOUT
-result, where it should have noticed the POLLERR and just returned
--ECONNRESET instead.
+SM8550 lists two interconnects for the display subsystem, mdp0-mem
+(between MDP and LLCC) and mdp1-mem (between LLCC and EBI, memory).
+The second interconnect is a misuse. mdpN-mem paths should be used for
+several outboud MDP interconnects rather than the path between LLCC and
+memory. This kind of misuse can result in bandwidth underflows, possibly
+degrading picture quality as the required memory bandwidth is divided
+between all mdpN-mem paths (and LLCC-EBI should not be a part of such
+division).
 
-Have the poll logic check for whether or not POLLERR is set in the mask,
-and if so, mark the request as failed. Then connect can appropriately
-fail the request rather than retry it.
+Drop the second path and use direct MDP-EBI path for mdp0-mem until we
+support separate MDP-LLCC and LLCC-EBI paths.
 
-Reported-by: Sergey Galas <ssgalas@cloud.ru>
-Cc: stable@vger.kernel.org
-Link: https://github.com/axboe/liburing/discussions/1335
-Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d7da51db5b81 ("arm64: dts: qcom: sm8550: add display hardware devices")
+Cc: stable@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241026-fix-sm8x50-mdp-icc-v2-1-fd8ddf755acc@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c  |    5 +++++
- io_uring/poll.c |    2 ++
- 2 files changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1709,6 +1709,11 @@ int io_connect(struct io_kiocb *req, uns
- 	int ret;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2448,9 +2448,8 @@
  
-+	if (unlikely(req->flags & REQ_F_FAIL)) {
-+		ret = -ECONNRESET;
-+		goto out;
-+	}
-+
- 	file_flags = force_nonblock ? O_NONBLOCK : 0;
+ 			power-domains = <&dispcc MDSS_GDSC>;
  
- 	ret = __sys_connect_file(req->file, &io->addr, connect->addr_len,
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -273,6 +273,8 @@ static int io_poll_check_events(struct i
- 				return IOU_POLL_REISSUE;
- 			}
- 		}
-+		if (unlikely(req->cqe.res & EPOLLERR))
-+			req_set_fail(req);
- 		if (req->apoll_events & EPOLLONESHOT)
- 			return IOU_POLL_DONE;
+-			interconnects = <&mmss_noc MASTER_MDP 0 &gem_noc SLAVE_LLCC 0>,
+-					<&mc_virt MASTER_LLCC 0 &mc_virt SLAVE_EBI1 0>;
+-			interconnect-names = "mdp0-mem", "mdp1-mem";
++			interconnects = <&mmss_noc MASTER_MDP 0 &mc_virt SLAVE_EBI1 0>;
++			interconnect-names = "mdp0-mem";
+ 
+ 			iommus = <&apps_smmu 0x1c00 0x2>;
  
 
 
