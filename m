@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EA9A34499
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8740FA34695
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64EA53B2CE6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AF71897B11
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914681FF5F7;
-	Thu, 13 Feb 2025 14:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E68426B091;
+	Thu, 13 Feb 2025 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs65oSV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HneOHM2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ED51DDC33;
-	Thu, 13 Feb 2025 14:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0C226B0A5;
+	Thu, 13 Feb 2025 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458509; cv=none; b=SVRTeu7q7WOIt8C9qcJHtSCtanwaGMYaj4wsdAmxU5RSMq80r/2Sc4CjYXgxXojikFUn1rQFhivyTwQ81s8xkqmI2SJ8CQdCnvOZnO8s5TFZ8twlCNirsxarUZ6DdXPe8jjQGog/RKJ1CiVcVX0MZRQjPc5I+ZXaaojXcCLPbNY=
+	t=1739459866; cv=none; b=cWgxh+M7YSINEv5gfAwX8UwDdYBxYtaFOKS0T44ugarnU991kYrmgLTnEkWgycd0FRGfBEovGzYzlKO+yG0ch/JsJbY9YDHmjOwD6awdaVEy24p3TRTvNdfQRJzko7os03MVrpdsgqxQCyYSWQGPFn1+oUVcnaYqJAwZnZfNs8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458509; c=relaxed/simple;
-	bh=7NE6MSFI90vWjoyGOcDPyiAb3sqv1KiL/nAvNVjQ5E8=;
+	s=arc-20240116; t=1739459866; c=relaxed/simple;
+	bh=hmfV4oiXeTZbRROz1PdSgEhFAMSRQa+UF+EYgOZsq9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaijsR/asMBjhcluHB8TeW3Hka03IClcS8cl61u+fdROGwHngNXPMOaGuDyAfFt/pvx/c6AalTHH82pbH9178Zjh9c/WTwkBVlNzPGbbnFCPodwaUMtfN5wEPj+sp5N6hZI/lKNXjUDdjn1dZR5ecQHnLRpk+ROQGscppYSAAfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs65oSV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A99EC4CED1;
-	Thu, 13 Feb 2025 14:55:08 +0000 (UTC)
+	 MIME-Version; b=gah2SsxLLPC9T8GhozuLI2ZD0SePoNylUHxCDzsdvSfYlT3uF9z3mRhDGTkOhZ2DVtCXVsubD7UcUFQAEhIXbwVD8Fg7y7Ctqastnwln2pWSGE72GNLPE4jBeDhwAfypsd2CEwpHmnGDTMg94K9+dEnE5i5Vzund2DwRcEwtoqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HneOHM2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F617C4CED1;
+	Thu, 13 Feb 2025 15:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458509;
-	bh=7NE6MSFI90vWjoyGOcDPyiAb3sqv1KiL/nAvNVjQ5E8=;
+	s=korg; t=1739459865;
+	bh=hmfV4oiXeTZbRROz1PdSgEhFAMSRQa+UF+EYgOZsq9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xs65oSV1Fn3fHmdl8VWm2eD1aJJbiLp21wBw3+EXuaxvXOO3DA2opMkQx+NCiSnt0
-	 /a5TZ//rNguIzn+chhfw/ABrvLrmvIWt/f6XPNRd9UIxRJYjU1qY+6DDgoZYOGujOH
-	 2Jfraov+mynYehSmWQx+QYVVdpbWA3DMpi8ModHk=
+	b=HneOHM2xtLq1VLN46TZ5AeiR/F4Z9VhgW2ctmWKuh9p/QpdJDKCqSlrG5P0F/s0Ct
+	 akX4a9V7N2QgPp7YKnf0/vM8+TKmplAFMs4cxm94ixN2CcIgFfQroRyWqkg3D66dBa
+	 Km+QYJSiGvxZTYdOj2Ct3HxygPMU+sgVu20hgiBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 403/422] xfs: convert quotacheck to attach dquot buffers
+	Antoine Viallon <antoine@lesviallon.fr>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.13 387/443] ceph: fix memory leak in ceph_mds_auth_match()
 Date: Thu, 13 Feb 2025 15:29:12 +0100
-Message-ID: <20250213142452.104363118@linuxfoundation.org>
+Message-ID: <20250213142455.542958269@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Antoine Viallon <antoine@lesviallon.fr>
 
-commit ca378189fdfa890a4f0622f85ee41b710bbac271 upstream
+commit 3b7d93db450e9d8ead80d75e2a303248f1528c35 upstream.
 
-Now that we've converted the dquot logging machinery to attach the dquot
-buffer to the li_buf pointer so that the AIL dqflush doesn't have to
-allocate or read buffers in a reclaim path, do the same for the
-quotacheck code so that the reclaim shrinker dqflush call doesn't have
-to do that either.
+We now free the temporary target path substring allocation on every
+possible branch, instead of omitting the default branch.  In some
+cases, a memory leak occured, which could rapidly crash the system
+(depending on how many file accesses were attempted).
 
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: 903edea6c53f09 ("mm: warn about illegal __GFP_NOFAIL usage in a more appropriate location and manner")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+This was detected in production because it caused a continuous memory
+growth, eventually triggering kernel OOM and completely hard-locking
+the kernel.
+
+Relevant kmemleak stacktrace:
+
+    unreferenced object 0xffff888131e69900 (size 128):
+      comm "git", pid 66104, jiffies 4295435999
+      hex dump (first 32 bytes):
+        76 6f 6c 75 6d 65 73 2f 63 6f 6e 74 61 69 6e 65  volumes/containe
+        72 73 2f 67 69 74 65 61 2f 67 69 74 65 61 2f 67  rs/gitea/gitea/g
+      backtrace (crc 2f3bb450):
+        [<ffffffffaa68fb49>] __kmalloc_noprof+0x359/0x510
+        [<ffffffffc32bf1df>] ceph_mds_check_access+0x5bf/0x14e0 [ceph]
+        [<ffffffffc3235722>] ceph_open+0x312/0xd80 [ceph]
+        [<ffffffffaa7dd786>] do_dentry_open+0x456/0x1120
+        [<ffffffffaa7e3729>] vfs_open+0x79/0x360
+        [<ffffffffaa832875>] path_openat+0x1de5/0x4390
+        [<ffffffffaa834fcc>] do_filp_open+0x19c/0x3c0
+        [<ffffffffaa7e44a1>] do_sys_openat2+0x141/0x180
+        [<ffffffffaa7e4945>] __x64_sys_open+0xe5/0x1a0
+        [<ffffffffac2cc2f7>] do_syscall_64+0xb7/0x210
+        [<ffffffffac400130>] entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+It can be triggered by mouting a subdirectory of a CephFS filesystem,
+and then trying to access files on this subdirectory with an auth token
+using a path-scoped capability:
+
+    $ ceph auth get client.services
+    [client.services]
+            key = REDACTED
+            caps mds = "allow rw fsname=cephfs path=/volumes/"
+            caps mon = "allow r fsname=cephfs"
+            caps osd = "allow rw tag cephfs data=cephfs"
+
+    $ cat /proc/self/mounts
+    services@[REDACTED].cephfs=/volumes/containers /ceph/containers ceph rw,noatime,name=services,secret=<hidden>,ms_mode=prefer-crc,mount_timeout=300,acl,mon_addr=[REDACTED]:3300,recover_session=clean 0 0
+
+    $ seq 1 1000000 | xargs -P32 --replace={} touch /ceph/containers/file-{} && \
+    seq 1 1000000 | xargs -P32 --replace={} cat /ceph/containers/file-{}
+
+[ idryomov: combine if statements, rename rc to path_matched and make
+            it a bool, formatting ]
+
+Cc: stable@vger.kernel.org
+Fixes: 596afb0b8933 ("ceph: add ceph_mds_check_access() helper")
+Signed-off-by: Antoine Viallon <antoine@lesviallon.fr>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot.c |    9 +++------
- fs/xfs/xfs_dquot.h |    2 --
- fs/xfs/xfs_qm.c    |   18 +++++++++++++-----
- 3 files changed, 16 insertions(+), 13 deletions(-)
+ fs/ceph/mds_client.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1278,11 +1278,10 @@ xfs_qm_dqflush_check(
-  * Requires dquot flush lock, will clear the dirty flag, delete the quota log
-  * item from the AIL, and shut down the system if something goes wrong.
-  */
--int
-+static int
- xfs_dquot_read_buf(
- 	struct xfs_trans	*tp,
- 	struct xfs_dquot	*dqp,
--	xfs_buf_flags_t		xbf_flags,
- 	struct xfs_buf		**bpp)
- {
- 	struct xfs_mount	*mp = dqp->q_mount;
-@@ -1290,10 +1289,8 @@ xfs_dquot_read_buf(
- 	int			error;
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -5690,18 +5690,18 @@ static int ceph_mds_auth_match(struct ce
+ 			 *
+ 			 * All the other cases                       --> mismatch
+ 			 */
++			bool path_matched = true;
+ 			char *first = strstr(_tpath, auth->match.path);
+-			if (first != _tpath) {
+-				if (free_tpath)
+-					kfree(_tpath);
+-				return 0;
++			if (first != _tpath ||
++			    (tlen > len && _tpath[len] != '/')) {
++				path_matched = false;
+ 			}
  
- 	error = xfs_trans_read_buf(mp, tp, mp->m_ddev_targp, dqp->q_blkno,
--				   mp->m_quotainfo->qi_dqchunklen, xbf_flags,
-+				   mp->m_quotainfo->qi_dqchunklen, 0,
- 				   &bp, &xfs_dquot_buf_ops);
--	if (error == -EAGAIN)
--		return error;
- 	if (xfs_metadata_is_sick(error))
- 		xfs_dquot_mark_sick(dqp);
- 	if (error)
-@@ -1327,7 +1324,7 @@ xfs_dquot_attach_buf(
- 		struct xfs_buf	*bp = NULL;
- 
- 		spin_unlock(&qlip->qli_lock);
--		error = xfs_dquot_read_buf(tp, dqp, 0, &bp);
-+		error = xfs_dquot_read_buf(tp, dqp, &bp);
- 		if (error)
- 			return error;
- 
---- a/fs/xfs/xfs_dquot.h
-+++ b/fs/xfs/xfs_dquot.h
-@@ -204,8 +204,6 @@ void xfs_dquot_to_disk(struct xfs_disk_d
- #define XFS_DQ_IS_DIRTY(dqp)	((dqp)->q_flags & XFS_DQFLAG_DIRTY)
- 
- void		xfs_qm_dqdestroy(struct xfs_dquot *dqp);
--int		xfs_dquot_read_buf(struct xfs_trans *tp, struct xfs_dquot *dqp,
--				xfs_buf_flags_t flags, struct xfs_buf **bpp);
- int		xfs_qm_dqflush(struct xfs_dquot *dqp, struct xfs_buf *bp);
- void		xfs_qm_dqunpin_wait(struct xfs_dquot *dqp);
- void		xfs_qm_adjust_dqtimers(struct xfs_dquot *d);
---- a/fs/xfs/xfs_qm.c
-+++ b/fs/xfs/xfs_qm.c
-@@ -146,13 +146,13 @@ xfs_qm_dqpurge(
- 		 * We don't care about getting disk errors here. We need
- 		 * to purge this dquot anyway, so we go ahead regardless.
- 		 */
--		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
-+		error = xfs_dquot_use_attached_buf(dqp, &bp);
- 		if (error == -EAGAIN) {
- 			xfs_dqfunlock(dqp);
- 			dqp->q_flags &= ~XFS_DQFLAG_FREEING;
- 			goto out_unlock;
- 		}
--		if (error)
-+		if (!bp)
- 			goto out_funlock;
- 
- 		/*
-@@ -474,8 +474,8 @@ xfs_qm_dquot_isolate(
- 		/* we have to drop the LRU lock to flush the dquot */
- 		spin_unlock(lru_lock);
- 
--		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
--		if (error) {
-+		error = xfs_dquot_use_attached_buf(dqp, &bp);
-+		if (!bp || error == -EAGAIN) {
- 			xfs_dqfunlock(dqp);
- 			goto out_unlock_dirty;
- 		}
-@@ -1132,6 +1132,10 @@ xfs_qm_quotacheck_dqadjust(
- 		return error;
- 	}
- 
-+	error = xfs_dquot_attach_buf(NULL, dqp);
-+	if (error)
-+		return error;
+-			if (tlen > len && _tpath[len] != '/') {
+-				if (free_tpath)
+-					kfree(_tpath);
++			if (free_tpath)
++				kfree(_tpath);
 +
- 	trace_xfs_dqadjust(dqp);
- 
- 	/*
-@@ -1311,9 +1315,13 @@ xfs_qm_flush_one(
- 		goto out_unlock;
++			if (!path_matched)
+ 				return 0;
+-			}
+ 		}
  	}
  
--	error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
-+	error = xfs_dquot_use_attached_buf(dqp, &bp);
- 	if (error)
- 		goto out_unlock;
-+	if (!bp) {
-+		error = -EFSCORRUPTED;
-+		goto out_unlock;
-+	}
- 
- 	error = xfs_qm_dqflush(dqp, bp);
- 	if (!error)
 
 
 
