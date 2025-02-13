@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D556EA34613
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084B1A34757
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E08D3A2FA5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E911882DDE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0CA26B099;
-	Thu, 13 Feb 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA67714AD2D;
+	Thu, 13 Feb 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odsM9+p3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAJ++fic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF81F26B096;
-	Thu, 13 Feb 2025 15:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ABC26B0B4;
+	Thu, 13 Feb 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459569; cv=none; b=F5o37NEMbk37E32vzDlcqa0NZX/6rmn1c0E3pgwayQlXCVjajTi5UPHtkmtzc0fW26vZKlu6U7XpzqzMMa1ATbAQAMHrUy23xSOKdH/WRh9gloC10liLD3N4KoQQO+6/NCfTWyvH9QGshM82uE3oFwlMQtYe/QS4maBBhwCns80=
+	t=1739460385; cv=none; b=Dk16izTJ89P6IJUG6OD2N25euVJJFT8texOilNv5byivqoXOS4aG85rTcDf028E7ku9RlTU9bo5JQfT51TMxHGY77YOZlG2akTGGXy9Np3jX5LdPtfmThHUOfWNf3Vud51vGuSP6qrOU1Mk/vzLIxJ5HAGsKZeZAsiU2NZVzZf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459569; c=relaxed/simple;
-	bh=MWBeeHO9Am2pVKtJ4PUx9NXwSjJ15jxHhIHpP880iyg=;
+	s=arc-20240116; t=1739460385; c=relaxed/simple;
+	bh=+aBNxAQAw/0oHSnTrp+L3DfkBZFMFeJc0wW0Chd42Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyxzvGylTBMxSJLloqjQ56ECyF7HTR/s9PwivHzMnSpjwDQaYzVRAoVnZ28zD2DquVLxaWpPwO/7OrXCKGFvw5QUPUiwN9jgO4IB1aWBGG7D3kxuUqUE+/PZ1Ap7Pgqo9MCKn9BLNj6WPs9KKDSkbfavlli8xVj19FsFpAYkHAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odsM9+p3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E08AC4CED1;
-	Thu, 13 Feb 2025 15:12:48 +0000 (UTC)
+	 MIME-Version; b=PZmRl9LXOFfo/bVVjpt0OYealh+YMJiFtdbbagSE6GycGmTVcsfrXUdD6FxpFE460ec2E+vOIT/t0BmgoupCPD6sM5CCRAx8JEIav8LEWAGoSBx0Sq5ymwIA2Gv8bEcM8Zd31T0YORUeK6ajLonpE21iRJ+3GIyPo9ksbTaZWv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAJ++fic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E4DC4CED1;
+	Thu, 13 Feb 2025 15:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459568;
-	bh=MWBeeHO9Am2pVKtJ4PUx9NXwSjJ15jxHhIHpP880iyg=;
+	s=korg; t=1739460384;
+	bh=+aBNxAQAw/0oHSnTrp+L3DfkBZFMFeJc0wW0Chd42Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odsM9+p3uEomWrWK/Fie01n0jNKtG1TJJMAwc9BhrU7Kqc0o2wZgkWUQdYpRCCaQ2
-	 TlIqV6uVuw2ly3piyqXtpGtMYTGBtVOZF+8WP9eHKbnIjCZujBXt/0j5ioJCpof9/J
-	 Z3SCAf/T+j+OknFiN49Bhd+FITYLRgTCglRsOWto=
+	b=dAJ++fic6lLPgyWniSUwKwd7KAm5rU7/JTTVAey/FaJMyVXUBN/69KSJLgRto4Pc8
+	 UKWLoWMZa8tvcxXHMJFeNJxGX8q1TMQwi2RoM659VvkQVUMNSPak2IsGOeUniYEmh8
+	 2pq9LoEOOXjtFzDqqA1uBlXfyj3/WGLf0zbHDNmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 302/443] arm64: dts: qcom: sm6115: Fix CDSP memory length
+	David Hildenbrand <david@redhat.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [PATCH 6.6 095/273] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
 Date: Thu, 13 Feb 2025 15:27:47 +0100
-Message-ID: <20250213142452.267276763@linuxfoundation.org>
+Message-ID: <20250213142411.096679716@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 846f49c3f01680f4af3043bf5b7abc9cf71bb42d upstream.
+commit 5f230f41fdd9e799f43a699348dc572bca7159aa upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x4040.  Value of 0x100000 covers
-entire Touring/CDSP memory block seems to big here.
+We try to reuse the same vsie page when re-executing the vsie with a
+given SCB address. The result is that we use the same shadow SCB --
+residing in the vsie page -- and can avoid flushing the TLB when
+re-running the vsie on a CPU.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+So, when we allocate a fresh vsie page, or when we reuse a vsie page for
+a different SCB address -- reusing the shadow SCB in different context --
+we set ihcpu=0xffff to trigger the flush.
 
+However, after we looked up the SCB address in the radix tree, but before
+we grabbed the vsie page by raising the refcount to 2, someone could reuse
+the vsie page for a different SCB address, adjusting page->index and the
+radix tree. In that case, we would be reusing the vsie page with a
+wrong page->index.
+
+Another corner case is that we might set the SCB address for a vsie
+page, but fail the insertion into the radix tree. Whoever would reuse
+that page would remove the corresponding radix tree entry -- which might
+now be a valid entry pointing at another page, resulting in the wrong
+vsie page getting removed from the radix tree.
+
+Let's handle such races better, by validating that the SCB address of a
+vsie page didn't change after we grabbed it (not reuse for a different
+SCB; the alternative would be performing another tree lookup), and by
+setting the SCB address to invalid until the insertion in the tree
+succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
+
+These scenarios are rare, the effects a bit unclear, and these issues were
+only found by code inspection. Let's CC stable to be safe.
+
+Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
 Cc: stable@vger.kernel.org
-Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-22-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Tested-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Message-ID: <20250107154344.1003072-2-david@redhat.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/vsie.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2744,7 +2744,7 @@
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1335,8 +1335,14 @@ static struct vsie_page *get_vsie_page(s
+ 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
+ 	rcu_read_unlock();
+ 	if (page) {
+-		if (page_ref_inc_return(page) == 2)
+-			return page_to_virt(page);
++		if (page_ref_inc_return(page) == 2) {
++			if (page->index == addr)
++				return page_to_virt(page);
++			/*
++			 * We raced with someone reusing + putting this vsie
++			 * page before we grabbed it.
++			 */
++		}
+ 		page_ref_dec(page);
+ 	}
  
- 		remoteproc_cdsp: remoteproc@b300000 {
- 			compatible = "qcom,sm6115-cdsp-pas";
--			reg = <0x0 0x0b300000 0x0 0x100000>;
-+			reg = <0x0 0x0b300000 0x0 0x4040>;
+@@ -1366,15 +1372,20 @@ static struct vsie_page *get_vsie_page(s
+ 			kvm->arch.vsie.next++;
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 	}
+-	page->index = addr;
+-	/* double use of the same address */
++	/* Mark it as invalid until it resides in the tree. */
++	page->index = ULONG_MAX;
++
++	/* Double use of the same address or allocation failure. */
+ 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
+ 		page_ref_dec(page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+ 	}
++	page->index = addr;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
  
- 			interrupts-extended = <&intc GIC_SPI 265 IRQ_TYPE_EDGE_RISING>,
- 					      <&cdsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+ 	vsie_page = page_to_virt(page);
+@@ -1467,7 +1478,9 @@ void kvm_s390_vsie_destroy(struct kvm *k
+ 		vsie_page = page_to_virt(page);
+ 		release_gmap_shadow(vsie_page);
+ 		/* free the radix tree entry */
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 		__free_page(page);
+ 	}
+ 	kvm->arch.vsie.page_count = 0;
 
 
 
