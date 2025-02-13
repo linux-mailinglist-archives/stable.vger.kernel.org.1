@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA538A34450
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC29EA34750
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B976188C1ED
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D5E16B8EF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A825203709;
-	Thu, 13 Feb 2025 14:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9658014F121;
+	Thu, 13 Feb 2025 15:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9npgwA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTS013f3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDB32036FE;
-	Thu, 13 Feb 2025 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527791411DE;
+	Thu, 13 Feb 2025 15:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458250; cv=none; b=Kd7bogJRG/7HVe91B/+1tAaPFzUj2mtbWkIRX960bYTTotc16At3fqN8CDXT7YzxsyVCa/cjdurTNesGpSfJpd++oMWDecJGsZG8agTgi2JccrKDs2rOyaj+5HJpNLW5dmOSJPiOmWfLY1I3hpycCqQbUFR2LhklmTN2acYYlJU=
+	t=1739460478; cv=none; b=R/Xrygjh55dfyR/T+dVGyV6elhVOH6z9EZrDlZ6mmQwQ2q85C0un/maR8vIY+6J08kpKMqvQpsFvTEZAKb/0BC/6SDsCyp8x/BKOm/dYHX3ZUzo0nnYjm6abdg+VB+GDF+ZM0VjxftikvVCFmF1OqJ0iKk8tTR6ShJyYYeID5yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458250; c=relaxed/simple;
-	bh=BfBKFjKW7uiZGtDqZvB46FhCtfAkDfNEdp5VjWAkY6M=;
+	s=arc-20240116; t=1739460478; c=relaxed/simple;
+	bh=hX48zKxI8IIh4jS2dJ5pvQfNgu89/htwsh/awtN4Cbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1XCQFlzWaDzZIysOlEZ93Id7UMwPMv8KUvBCizacX1iSJBHf9JMkkIa9YW0vCMX17OUqn/jwxIKsfXk7W+mLnW+lRQVSm3WqrdBoX8PEa3T0eKLPX0NmbmYBh3oIILVdWmbFDCxLH+EBvNO480obzCcHdg5et/RlIuAzjNrzjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9npgwA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32263C4CED1;
-	Thu, 13 Feb 2025 14:50:50 +0000 (UTC)
+	 MIME-Version; b=QiVLlf7fDSgVKbzBmef3Jv65cohluFun/bmfS4kUHcNraq6yzSOADQ4ptCSjXKZ3fPPodG6Hmq3wVRnwLySS7xSmtK9nm++nZh2fpFT2zFdEmJKYy0gTvI4bf+5EbdO5cKjnL7n+9JylhtLwpREeeQDM8EV1qn2061d9JOUEAAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTS013f3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B9BC4CED1;
+	Thu, 13 Feb 2025 15:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458250;
-	bh=BfBKFjKW7uiZGtDqZvB46FhCtfAkDfNEdp5VjWAkY6M=;
+	s=korg; t=1739460477;
+	bh=hX48zKxI8IIh4jS2dJ5pvQfNgu89/htwsh/awtN4Cbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9npgwA939vIeH7rwUngJZo/AoT9QhShsNL0XwNTCE8rbIptsf/y0OvSf94VHGoC+
-	 hsx306ELJLwM1+U1puMcUciUjbGDZJT3aWzr/Poge60eWOMMdk4bjvq9I1y6K5iCe0
-	 Hp4SvzxhhspXUWPgMzkoCE7t8L/wJh171oaLAZdQ=
+	b=pTS013f3yW3abtD224eS8DP4vrGmA9IN//0uJlUdEzeBZQEnZRfS4FTWrnaVMHuit
+	 p1gwiKawvupllY3GCi1xYfIHXBmtR3VM5+LUfL5pGFCgm8ZQFp7k8C4WjoUr1rv64V
+	 cZx58K2V/xSvpKsWKc8S9bsrL7UKXzCe2Io/iqAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Baumann <daniel@debian.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 345/422] ata: libata-core: Add ATA_QUIRK_NOLPM for Samsung SSD 870 QVO drives
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Avri Altman <Avri.Altman@wdc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 122/273] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
 Date: Thu, 13 Feb 2025 15:28:14 +0100
-Message-ID: <20250213142449.867734843@linuxfoundation.org>
+Message-ID: <20250213142412.165048940@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Baumann <daniel@debian.org>
+From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
 
-commit cc77e2ce187d26cc66af3577bf896d7410eb25ab upstream.
+commit 1b3e2d4ec0c5848776cc56d2624998aa5b2f0d27 upstream.
 
-Disabling link power management on Samsung SSD 870 QVO drives
-to make them work again after the switch of the default LPM
-policy to low.
-
-Testing so far has shown that regular Samsung SSD 870
-(the non QVO variants) do not need it and work fine with
-the default LPM policy.
+According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
+defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
+TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
+the UFS device specification definition.
 
 Cc: stable@vger.kernel.org
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Signed-off-by: Daniel Baumann <daniel@debian.org>
-Link: https://lore.kernel.org/linux-ide/ac64a484-022c-42a0-95bc-1520333b1536@debian.org/
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
+Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Link: https://lore.kernel.org/r/69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com
+Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/ufs/ufs.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4143,6 +4143,10 @@ static const struct ata_dev_quirks_entry
- 	{ "Samsung SSD 860*",		NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM |
- 						ATA_QUIRK_NO_NCQ_ON_ATI },
-+	{ "Samsung SSD 870 QVO*",	NULL,	ATA_QUIRK_NO_NCQ_TRIM |
-+						ATA_QUIRK_ZERO_AFTER_TRIM |
-+						ATA_QUIRK_NO_NCQ_ON_ATI |
-+						ATA_QUIRK_NOLPM },
- 	{ "Samsung SSD 870*",		NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM |
- 						ATA_QUIRK_NO_NCQ_ON_ATI },
+--- a/include/ufs/ufs.h
++++ b/include/ufs/ufs.h
+@@ -384,8 +384,8 @@ enum {
+ 
+ /* Possible values for dExtendedUFSFeaturesSupport */
+ enum {
+-	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
+-	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
++	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
++	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
+ 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
+ 	UFS_DEV_HPB_SUPPORT		= BIT(7),
+ 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
 
 
 
