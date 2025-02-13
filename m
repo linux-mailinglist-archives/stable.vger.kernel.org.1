@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-115614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3310FA344D5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A65FA34511
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C3AA3B1D0C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854CD1892D44
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B233FB3B;
-	Thu, 13 Feb 2025 14:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E957116FF37;
+	Thu, 13 Feb 2025 14:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5nXUHIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7Nwrgso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5444426B0BC;
-	Thu, 13 Feb 2025 14:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58801487FA;
+	Thu, 13 Feb 2025 14:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458644; cv=none; b=KKNdYDArt/5BOshnfptAiHcDC2coUANQI0wHGRvvEqO0uspKvCPIpMtMeAXD/BOZPc3nf0VsCGnnZMMNdWUqJRJEeQoye381rkd6f16FkM/AoJ5ctdOFLu2sfYS38RhIH8fzwfZ1/e28rcsGfxTKKWGA6aqzXNA01oqxeltbXzY=
+	t=1739458681; cv=none; b=EleukaJrltY5NERW3DbrikpSGwitg5sNbeGDJQTr2gZPdr+Gy/cZDswVrfESs3/AGl5f0/VjsbuHJuB8Lu2PGh/zGGXCL1NmCN7oEXRMGC70xOqDL2ylFSbmEoSSBx6TKBRzlKn47jawnqVAaHwv+GC4uoxHDR+Ocg6Qhoqt1zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458644; c=relaxed/simple;
-	bh=9R4JYlMq7hj/LHNe8jxsDotkO4DyR28/+8gau7yJ7eA=;
+	s=arc-20240116; t=1739458681; c=relaxed/simple;
+	bh=2cMVJz2JrAGEKxtq1jmbq0+Cowkjjn/H+2ieRKDuXB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXxnOZxv0ZmaqPU7GKKvE97+xjhv7mLeIrgWHmvdMSSKeonZkuRJ6BP/V+upQlf1hV2Sh4XVe0iLBZNR2HJv88OYJWSMu3bo8LBVav6tJJ/a6j5QKyr/ygLT588Vg5Hhjp+UX56IPVNzYzFXxRNA4sJGFeR6lX2byJdVb6+to6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5nXUHIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEEEC4CED1;
-	Thu, 13 Feb 2025 14:57:23 +0000 (UTC)
+	 MIME-Version; b=q03NJsPgyBcME1axsTKcCa+yCeUH8BWEI0micx5z4fZH9zVr6X0gd9zpB1Pp3vDNdpilrRwO1ubS3ZGRCEA/eIzkX5souMOvAE1H2iQg1aj/g5jPnnZkxZlpSEAdWglj2G6RDIgxQy7mOFPmJZFWW+NnCGMmzQIJ3Q4SBTzSeyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7Nwrgso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34D8C4CED1;
+	Thu, 13 Feb 2025 14:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458644;
-	bh=9R4JYlMq7hj/LHNe8jxsDotkO4DyR28/+8gau7yJ7eA=;
+	s=korg; t=1739458681;
+	bh=2cMVJz2JrAGEKxtq1jmbq0+Cowkjjn/H+2ieRKDuXB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5nXUHIKhs4EWVLkSfbirEtJs7kEg52sJrovwaZcMgGhEFmaWzm1/SALdAeE/BkM6
-	 usSP/ns7HtQnzZjKxKhYrsjSljdrY91KBJiO8E3TjU7l39XtOFjjr4cFRPfpCti9tF
-	 o9M2Dwr7aoxUPz7VcPVLY9+GBspJ2Qc87f2m+OIE=
+	b=b7NwrgsoP2frvRX512dh8z+aXhsNlCVCo0+YXDo2bZ2B9I0iuSnZLTJhSs0TrVxRy
+	 W4fZBpof3bbLHyCg1CX/L/iCUkB4gMjM2zxL8AWzpQ/i06odoPHgkgIc77ihflhACe
+	 1o4wsuDJmTEcaIaLoK29ISMb457jgpdx8p0BVrzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 030/443] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
-Date: Thu, 13 Feb 2025 15:23:15 +0100
-Message-ID: <20250213142441.787453956@linuxfoundation.org>
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangxu Yin <quic_xiangxuy@quicinc.com>
+Subject: [PATCH 6.13 031/443] drm/msm/dpu: filter out too wide modes if no 3dmux is present
+Date: Thu, 13 Feb 2025 15:23:16 +0100
+Message-ID: <20250213142441.825944794@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -66,39 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
+[ Upstream commit dbc7bb1a93f41c533fe31ddc97bdf777d7a61faa ]
 
-Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
-leads to undefined behavior. To prevent this, cast 1 to u32 before
-performing the shift, ensuring well-defined behavior.
+On chipsets such as QCS615, there is no 3dmux present. In such
+a case, a layer exceeding the max_mixer_width cannot be split,
+hence cannot be supported.
 
-This change explicitly avoids any potential overflow by ensuring that
-the shift occurs on an unsigned 32-bit integer.
+Filter out the modes which exceed the max_mixer_width when there
+is no 3dmux present. Also, add a check in the dpu_crtc_atomic_check()
+to return failure for such modes.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Xiangxu Yin <quic_xiangxuy@quicinc.com> # QCS615
+Patchwork: https://patchwork.freedesktop.org/patch/627974/
+Link: https://lore.kernel.org/r/20241209-no_3dmux-v3-1-48aaa555b0d3@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index f446a06b4da8c..07668433644b8 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -523,7 +523,7 @@ static struct latched_seq clear_seq = {
- /* record buffer */
- #define LOG_ALIGN __alignof__(unsigned long)
- #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
--#define LOG_BUF_LEN_MAX (u32)(1 << 31)
-+#define LOG_BUF_LEN_MAX ((u32)1 << 31)
- static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
- static char *log_buf = __log_buf;
- static u32 log_buf_len = __LOG_BUF_LEN;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+index 9f6ffd344693e..ad3462476a143 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+@@ -732,6 +732,13 @@ static int _dpu_crtc_check_and_setup_lm_bounds(struct drm_crtc *crtc,
+ 	struct dpu_kms *dpu_kms = _dpu_crtc_get_kms(crtc);
+ 	int i;
+ 
++	/* if we cannot merge 2 LMs (no 3d mux) better to fail earlier
++	 * before even checking the width after the split
++	 */
++	if (!dpu_kms->catalog->caps->has_3d_merge &&
++	    adj_mode->hdisplay > dpu_kms->catalog->caps->max_mixer_width)
++		return -E2BIG;
++
+ 	for (i = 0; i < cstate->num_mixers; i++) {
+ 		struct drm_rect *r = &cstate->lm_bounds[i];
+ 		r->x1 = crtc_split_width * i;
+@@ -1251,6 +1258,12 @@ static enum drm_mode_status dpu_crtc_mode_valid(struct drm_crtc *crtc,
+ {
+ 	struct dpu_kms *dpu_kms = _dpu_crtc_get_kms(crtc);
+ 
++	/* if there is no 3d_mux block we cannot merge LMs so we cannot
++	 * split the large layer into 2 LMs, filter out such modes
++	 */
++	if (!dpu_kms->catalog->caps->has_3d_merge &&
++	    mode->hdisplay > dpu_kms->catalog->caps->max_mixer_width)
++		return MODE_BAD_HVALUE;
+ 	/*
+ 	 * max crtc width is equal to the max mixer width * 2 and max height is 4K
+ 	 */
 -- 
 2.39.5
 
