@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-116078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA77CA346F8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7526AA345E0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395D716F63D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D5A170DAD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B98D14658D;
-	Thu, 13 Feb 2025 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71572A1D1;
+	Thu, 13 Feb 2025 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY/1FdNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeYgdR7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5B626B0BD;
-	Thu, 13 Feb 2025 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A0D26B097;
+	Thu, 13 Feb 2025 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460244; cv=none; b=X4iG1hIrbvXxIOMb563yYXjPBjtByGq4hM1wJvecED3yZoMzVZ6vAqIUjC4zY4QbNIn8RFUhR0m5emncM7X+0hSB2nNm1WO6UdiEKLKUeHUlUFayApDW04GFkTmiRhJraQGlf4QEpm0joGSvLX2SauliHHs6lRfZGtQDRo4uifc=
+	t=1739459434; cv=none; b=tmmyqPC8ZwSwW65skK+27BhAwsJXbDdBCT4GYhgOXvd2+4pv0clUlPUTR/oa4ABR8zs4isRG3anwOSxftVr4Kuj8rpK80/y8HHvyDVTg9/OFezBDpA8JCqS4Tql2d23+W6LO1Kzv3YAZtkS3/uKcpUwcLILjCpPL33x/i1gK4jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460244; c=relaxed/simple;
-	bh=ALt+U3OufzL3s0fh4V8DhIz7uwCrDKs2vCNl173MffY=;
+	s=arc-20240116; t=1739459434; c=relaxed/simple;
+	bh=+1mMJItrqnH12Mlo3XkFKDl0fydtuh2uscrqx2zkkfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feTz+Vfbj8ucYvJ+ja/R0oXWcBUkFmR++fWzAC5uajO77d8/YJQTYXXE/BEaWTTU7bMGoRlJu7AOFA8KabqjMAL12bt5pOiBaCcMzQLlJ+CxsNtf4/KnmjdFOB6wytTnFy/Dwcf2Fsu0d0Dl8X7ZHxpJaOhJJzL5ALFecty5qII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY/1FdNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B114CC4CEE7;
-	Thu, 13 Feb 2025 15:24:03 +0000 (UTC)
+	 MIME-Version; b=jWug5MjihE8gBzvAtSywl4/IsjNMz65g2yzOM0xG1ROXhI7By7njfHbHI2oPl+z1HyTD/1xiWi5JFFXnDXiyW6RR14OPdH6Uic7vUelY5fvBnc12ZD2aWEu0aNfKvjApM112xQiWFa1O+TbOaGWNuKvv5fQx47S/j45hwCTLU/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeYgdR7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D60C4CED1;
+	Thu, 13 Feb 2025 15:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460244;
-	bh=ALt+U3OufzL3s0fh4V8DhIz7uwCrDKs2vCNl173MffY=;
+	s=korg; t=1739459434;
+	bh=+1mMJItrqnH12Mlo3XkFKDl0fydtuh2uscrqx2zkkfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY/1FdNmv5fd494XAH8gRMzI5nSTFoLLi1TvkoGNWIyk0stgasJu6a9XoBu6ZfqYd
-	 sF4xQa4nLQtYO6bVM+ZlGQAB+eMO/5PJ9B+T0VraBRjx0HQFuEtMtEKSC015z4OIfV
-	 ZHf/nR2OQHCxn+S5Zg2O8tvMEYVO7hhp64FkKaRw=
+	b=QeYgdR7qwmisXbPtjI3AUmhtoP/g7KGJiUZOQJBHIw6USb1vxfGGc0JuzIPqz0AgX
+	 qiq7Y9LpVXnRIqacNi9J39kkB4cZJ9pij3Wibb49M6QNi+y05EiOHda1zIp3jZMzXj
+	 5dNbpMQXWT6nQ8h+d7+V5QGl1hZjQQ8RTMFgywc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/273] KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.13 263/443] block: dont revert iter for -EIOCBQUEUED
 Date: Thu, 13 Feb 2025 15:27:08 +0100
-Message-ID: <20250213142409.566936828@linuxfoundation.org>
+Message-ID: <20250213142450.765802315@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 419cfb983ca93e75e905794521afefcfa07988bb ]
+commit b13ee668e8280ca5b07f8ce2846b9957a8a10853 upstream.
 
-Convert PPC e500 to use __kvm_faultin_pfn()+kvm_release_faultin_page(),
-and continue the inexorable march towards the demise of
-kvm_pfn_to_refcounted_page().
+blkdev_read_iter() has a few odd checks, like gating the position and
+count adjustment on whether or not the result is bigger-than-or-equal to
+zero (where bigger than makes more sense), and not checking the return
+value of blkdev_direct_IO() before doing an iov_iter_revert(). The
+latter can lead to attempting to revert with a negative value, which
+when passed to iov_iter_revert() as an unsigned value will lead to
+throwing a WARN_ON() because unroll is bigger than MAX_RW_COUNT.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20241010182427.1434605-55-seanjc@google.com>
-Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Be sane and don't revert for -EIOCBQUEUED, like what is done in other
+spots.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ block/fops.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index dc75f025dfe27..1910a48679e52 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -322,6 +322,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- {
- 	struct kvm_memory_slot *slot;
- 	unsigned long pfn = 0; /* silence GCC warning */
-+	struct page *page = NULL;
- 	unsigned long hva;
- 	int pfnmap = 0;
- 	int tsize = BOOK3E_PAGESZ_4K;
-@@ -443,7 +444,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -758,11 +758,12 @@ static ssize_t blkdev_read_iter(struct k
+ 		file_accessed(iocb->ki_filp);
  
- 	if (likely(!pfnmap)) {
- 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
--		pfn = gfn_to_pfn_memslot(slot, gfn);
-+		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
- 		if (is_error_noslot_pfn(pfn)) {
- 			if (printk_ratelimit())
- 				pr_err("%s: real page not found for gfn %lx\n",
-@@ -488,8 +489,6 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 		ret = blkdev_direct_IO(iocb, to);
+-		if (ret >= 0) {
++		if (ret > 0) {
+ 			iocb->ki_pos += ret;
+ 			count -= ret;
  		}
+-		iov_iter_revert(to, count - iov_iter_count(to));
++		if (ret != -EIOCBQUEUED)
++			iov_iter_revert(to, count - iov_iter_count(to));
+ 		if (ret < 0 || !count)
+ 			goto reexpand;
  	}
- 	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
--	if (writable)
--		kvm_set_pfn_dirty(pfn);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
-@@ -498,8 +497,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 	kvmppc_mmu_flush_icache(pfn);
- 
- out:
--	/* Drop refcount on page, so that mmu notifiers can clear it */
--	kvm_release_pfn_clean(pfn);
-+	kvm_release_faultin_page(kvm, page, !!ret, writable);
- 	spin_unlock(&kvm->mmu_lock);
- 	return ret;
- }
--- 
-2.39.5
-
 
 
 
