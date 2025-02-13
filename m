@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-116098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236F4A3470E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9224A34517
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B4416C4DD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 876367A4423
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E748156F5E;
-	Thu, 13 Feb 2025 15:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CAE26B0BD;
+	Thu, 13 Feb 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBzTV4Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtRH2JfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A215539A;
-	Thu, 13 Feb 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82DD26B0A5;
+	Thu, 13 Feb 2025 15:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460314; cv=none; b=oSG3QM4U0SU0Me5TfxF2P+u6rgl4QlnroU3NAhMionEm7aEGhwA98jPB1WhqS5KELVXMc1BHX99hFj/JxM4p4gBxtyzp0HWkOtjDTo8Nf6O8CgQms7+Vdvve6Ovo0WP8cjGK2kzhkCqVg7NUvWPaRC2vwgAmYfqez575ETx8FJ4=
+	t=1739459503; cv=none; b=b8oX/C6TDuPoyBsn6BnG8VI4dufNyam6xN5jdJVmCxN5yP3YqVj+Anm3RAM8k9sf0G6TJfcU/hQd9KzkoE3ZYRAfIUABWwJrmE9tkWD35r7an2ufsBl/FFgvxRypRMvL2hRsNF/xjVgIXFAd+CGMOIxGrAiDhhFNeTUUieFcdGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460314; c=relaxed/simple;
-	bh=2nVip/ek+opnhgHPpZAPDSVsAyzjT+LZu1qI+7yfdSk=;
+	s=arc-20240116; t=1739459503; c=relaxed/simple;
+	bh=oeolEs5zXhZbzNEdTT1QscT+K9zORJ6WcRXlFtKWRwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn+BUrcv/+vrodP9XtjIV0x+ib1lgB9XSwLflTA8GkAtFBRvH82FV/0q4H9Mm3FJpzF8Uc7hAqGFLjf2EH6EuMe0TnssWzdAzjbtpz4heD4v3qJRwoYHcmW5PC2AX8CNioOE0HHwAj6ee6FayI+9msRyKjT2/hYolOEzHvhuCdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBzTV4Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9AEC4CEE8;
-	Thu, 13 Feb 2025 15:25:13 +0000 (UTC)
+	 MIME-Version; b=ZP9EmO/7bw+yOxb/T79CPlOUkfcRaB42ak1/5S86EyNrzwppwAprTEJFSc6GXsWZct7qyZXCLbBI3knPed8rl0CCDOdTP8K4133yrnvm+ihb+/gO8YI2szX++l+o8CAc/PKjR2uNiaYfQsJXQNEZPHJot/qffBJ+388MUhsJSYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtRH2JfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4026EC4CEE4;
+	Thu, 13 Feb 2025 15:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460313;
-	bh=2nVip/ek+opnhgHPpZAPDSVsAyzjT+LZu1qI+7yfdSk=;
+	s=korg; t=1739459503;
+	bh=oeolEs5zXhZbzNEdTT1QscT+K9zORJ6WcRXlFtKWRwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBzTV4YlO9JOeuanLssZdyoyE9GB4DSWK1xd4cfMLiT/HelCLwDHlm4kqrFibrl70
-	 y8XrvFMdvdzkLN1y+QIKhDE/IeSbj1iaZhghnFwZvfVNfCbJejPaTjjNIbGWH7SDyU
-	 rVwQkkmPjn6E6BZ7deN97TMgbYXRCmdlyKd1dfP8=
+	b=YtRH2JfDtXviaqLTLuL3VQqjlIiT6w7hsxlM5JEfk7FE4fQkyXgaFZ+vchYA6WDci
+	 W22WKXkz496zBjAPbZD+sD7ufIuYar31AY0VKtayO4RBQDFSDY5YG/7k8HQ+5gAGtN
+	 DVmg2fZVxPMxoPoTMyxTkHYwgphf04V5lsKUODwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/273] netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
-Date: Thu, 13 Feb 2025 15:27:29 +0100
-Message-ID: <20250213142410.391113599@linuxfoundation.org>
+	Igor Pylypiv <ipylypiv@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.13 285/443] scsi: core: Do not retry I/Os during depopulation
+Date: Thu, 13 Feb 2025 15:27:30 +0100
+Message-ID: <20250213142451.610318752@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit 638ba5089324796c2ee49af10427459c2de35f71 ]
+commit 9ff7c383b8ac0c482a1da7989f703406d78445c6 upstream.
 
-qdisc_tree_reduce_backlog() notifies parent qdisc only if child
-qdisc becomes empty, therefore we need to reduce the backlog of the
-child qdisc before calling it. Otherwise it would miss the opportunity
-to call cops->qlen_notify(), in the case of DRR, it resulted in UAF
-since DRR uses ->qlen_notify() to maintain its active list.
+Fail I/Os instead of retry to prevent user space processes from being
+blocked on the I/O completion for several minutes.
 
-Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
-Cc: Martin Ottens <martin.ottens@fau.de>
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Link: https://patch.msgid.link/20250204005841.223511-4-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Retrying I/Os during "depopulation in progress" or "depopulation restore in
+progress" results in a continuous retry loop until the depopulation
+completes or until the I/O retry loop is aborted due to a timeout by the
+scsi_cmd_runtime_exceeced().
+
+Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
+Most I/Os in the depopulation retry loop end up taking several minutes
+before returning the failure to user space.
+
+Cc: stable@vger.kernel.org # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
+Cc: stable@vger.kernel.org # 4.18.x
+Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Link: https://lore.kernel.org/r/20250131184408.859579-1-ipylypiv@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/scsi_lib.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 152dbbe8fd31a..447d3e836a24f 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -748,9 +748,9 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 				if (err != NET_XMIT_SUCCESS) {
- 					if (net_xmit_drop_count(err))
- 						qdisc_qstats_drop(sch);
--					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 					sch->qstats.backlog -= pkt_len;
- 					sch->q.qlen--;
-+					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
- 				}
- 				goto tfifo_dequeue;
- 			}
--- 
-2.39.5
-
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -868,13 +868,18 @@ static void scsi_io_completion_action(st
+ 				case 0x1a: /* start stop unit in progress */
+ 				case 0x1b: /* sanitize in progress */
+ 				case 0x1d: /* configuration in progress */
+-				case 0x24: /* depopulation in progress */
+-				case 0x25: /* depopulation restore in progress */
+ 					action = ACTION_DELAYED_RETRY;
+ 					break;
+ 				case 0x0a: /* ALUA state transition */
+ 					action = ACTION_DELAYED_REPREP;
+ 					break;
++				/*
++				 * Depopulation might take many hours,
++				 * thus it is not worthwhile to retry.
++				 */
++				case 0x24: /* depopulation in progress */
++				case 0x25: /* depopulation restore in progress */
++					fallthrough;
+ 				default:
+ 					action = ACTION_FAIL;
+ 					break;
 
 
 
