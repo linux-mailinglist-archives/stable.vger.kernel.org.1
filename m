@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE402A34509
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0062A34700
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D23C07A35B4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03A1118956D6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD0C26B097;
-	Thu, 13 Feb 2025 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6176918C900;
+	Thu, 13 Feb 2025 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rusNh7hX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw+lcZYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF28E26B080;
-	Thu, 13 Feb 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F052189913;
+	Thu, 13 Feb 2025 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459484; cv=none; b=XwOVW+5kXCPXJxMS6lC2ovyoUhetc1AyqZPMdRieIu6vTdINvOt8PaLI3riLVKgpxTlxr/5aOexmeqJ9H4UbFCyp1cETzlQPaCQshnV5oLgG4HTefIfoki9cRSYBVC64S9vxVK3Rp0BlBNGpER5qtnzj7yCIf2LelermJFGbeeU=
+	t=1739460181; cv=none; b=BL2aY2daAseCc46Yez/j1DhEHOXwqsMNLsBmzVRk1xa1vwabWP6Dq8oOnd/jzlWLrk4GrgG5Myyh+hYQPTBYsTbgXjryzO6hoPAZZmkDKjjpLXmgzIOijJagQHPJn3Clyy+T5hgRcML0HTgSLpng8kxhxnZyRfq0dsbHmLQMSiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459484; c=relaxed/simple;
-	bh=ZVuXIx0WOUnUhYxKHyJbi0da6nT1ZmUAZki7vncwLTk=;
+	s=arc-20240116; t=1739460181; c=relaxed/simple;
+	bh=fZ5ebqF3IWYrDwgO/PijLXgmaX0L/GzhwmI/87vWlio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/kk4+jdc1i8AFHbs+pUL+6fj9pVYfviXD2VXk6btExf63SWoMC5Qa1V8fUkkPssNtUBPfQ6GOV9vJVDqTlRQ9m9V1lSK0uyRqr7Kc6j/+1AkcZm2JvfYv/YLcxHUuBRHAe0uiWCwApCfPZcXi9/T4fwd8XWNdRQvc4L9AtcMLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rusNh7hX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D318C4CEE4;
-	Thu, 13 Feb 2025 15:11:23 +0000 (UTC)
+	 MIME-Version; b=AEDWt5VW2G/TH+CjIU/cQaCfDGq15VvBObUvimmMJcX6nDuayr6S6OYjS0sJXbuvD7/WNTk4Wu+XOf6srRLqtK8cm2uWzhPbihTRD/9F4heUtMCGoDrcv8fL7s25j3JBwpFJTnUIcq3ElDILcHHHEHDxyZ8bGWKlDXQCKap1yJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw+lcZYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829E4C4CED1;
+	Thu, 13 Feb 2025 15:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459483;
-	bh=ZVuXIx0WOUnUhYxKHyJbi0da6nT1ZmUAZki7vncwLTk=;
+	s=korg; t=1739460181;
+	bh=fZ5ebqF3IWYrDwgO/PijLXgmaX0L/GzhwmI/87vWlio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rusNh7hXNfbXP16tjV66IFhlPf/UNXTYRfb9AEgec97XBzFIOCeEHi8XphwG7qtEY
-	 4fKzKhS1X+UTBN3ZUVuD0P0rIg2/gFArzaxUxVUY3g1nxPyQ0/3e9byLbH/agU59V5
-	 1vlH95oFxZtLfqRcsRJ0yeopy8AhREPoC0jc7WVA=
+	b=Mw+lcZYdX0rh/eTOnPQd6H+Omv2c6fUxzF/xW5ayod/bQD1OSNhAenI8kT6uHqkUH
+	 G3hqdhR4m0lQrOAydbBXJvNrCrmQpxWAnzZh8bynNAXLk5KKOwUnCZcgmOsmjZ80xn
+	 1rrncejfYKBr+MvQNON/Aa4VTTeI8qIlqvWPqxn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 246/443] arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Fix USB QMP PHY supplies
+	Randolph Ha <rha051117@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/273] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
 Date: Thu, 13 Feb 2025 15:26:51 +0100
-Message-ID: <20250213142450.109075533@linuxfoundation.org>
+Message-ID: <20250213142408.899266751@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Randolph Ha <rha051117@gmail.com>
 
-commit 6ba8e1b8242d27dd83ed4ce58a104c709e72f45f upstream.
+[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
 
-On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
-(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
-are actually powered by &vreg_l2j_1p2.
+When a 400KHz freq is used on this model of ELAN touchpad in Linux,
+excessive smoothing (similar to when the touchpad's firmware detects
+a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
+V15 G4) ACPI tables specify a 400KHz frequency for this device and
+some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
+force the speed to 100KHz as a workaround.
 
-Since x1e80100-lenovo-yoga-slim7x mostly just mirrors the power supplies
-from the x1e80100-crd device tree, assume that the fix also applies here.
+For future investigation: This problem may be related to the default
+HCNT/LCNT values given by some busses' drivers, because they are not
+specified in the aforementioned devices' ACPI tables, and because
+the device works without issues on Windows at what is expected to be
+a 400KHz frequency. The root cause of the issue is not known.
 
-Cc: stable@vger.kernel.org
-Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-6-0adda5d30bbd@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Randolph Ha <rha051117@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-@@ -908,7 +908,7 @@
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 14ae0cfc325ef..d2499f302b508 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -355,6 +355,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
+ 	{}
  };
  
- &usb_1_ss0_qmpphy {
--	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-phy-supply = <&vreg_l2j_1p2>;
- 	vdda-pll-supply = <&vreg_l1j_0p8>;
++static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
++	/*
++	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
++	 * excessive smoothing (similar to when the touchpad's firmware detects
++	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
++	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
++	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
++	 * force the speed to 100KHz as a workaround.
++	 *
++	 * For future investigation: This problem may be related to the default
++	 * HCNT/LCNT values given by some busses' drivers, because they are not
++	 * specified in the aforementioned devices' ACPI tables, and because
++	 * the device works without issues on Windows at what is expected to be
++	 * a 400KHz frequency. The root cause of the issue is not known.
++	 */
++	{ "ELAN06FA", 0 },
++	{}
++};
++
+ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 					   void *data, void **return_value)
+ {
+@@ -373,6 +392,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
+ 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
  
- 	status = "okay";
-@@ -940,7 +940,7 @@
- };
++	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
++		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
++
+ 	return AE_OK;
+ }
  
- &usb_1_ss1_qmpphy {
--	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-phy-supply = <&vreg_l2j_1p2>;
- 	vdda-pll-supply = <&vreg_l2d_0p9>;
- 
- 	status = "okay";
-@@ -972,7 +972,7 @@
- };
- 
- &usb_1_ss2_qmpphy {
--	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-phy-supply = <&vreg_l2j_1p2>;
- 	vdda-pll-supply = <&vreg_l2d_0p9>;
- 
- 	status = "okay";
+-- 
+2.39.5
+
 
 
 
