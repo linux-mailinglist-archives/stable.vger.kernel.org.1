@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-116073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A3AA34726
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A0EA345E3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F418E188814A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D733816C4AE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1561547F0;
-	Thu, 13 Feb 2025 15:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F21B26B097;
+	Thu, 13 Feb 2025 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5DXDrQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOzPgLYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5E33FB3B;
-	Thu, 13 Feb 2025 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE1826B080;
+	Thu, 13 Feb 2025 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460225; cv=none; b=gZW39az3vYksXBCwP62/k5tjmoAI5hghASnrc7qv030+TQs8U9cH8Gv30mVoKFjbaPBJeBUFUWk2Vfarnc+9h66vZzwfLbVMo3XbeH7eP12EQhRC3x6CuYZje9wLG6zYfidFNCU6yvOxbxZOeKrNnz5kqh301HM4yD8RzHPNz8M=
+	t=1739459418; cv=none; b=h8bHy9ZCnMRYg12fZIBmgaKoLK9LhM7gAgvgCVqBzA0ydU0uXWD0PSfrRqNnVeU3x0rvspYZqXGda5TXRKGadGipLbWGj8A5ltZQQBI2vxoyY0S3ppC564SwzRrcWKMn3JMUlBKtjIUGF2qsnfXL3nMZkhyMpKPvrVpzh7ymN3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460225; c=relaxed/simple;
-	bh=4jUPFnbXEc0rfsPWMks2s/Jff8Ld3VbVOnSdtN3324k=;
+	s=arc-20240116; t=1739459418; c=relaxed/simple;
+	bh=3+p70e+Sa5DG6VyHz3MW2lvdyAAJvLS0bTg+0WGZ6Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUsjpFeqRf3mMLK/0FBhumvKKwU6F8wMN/TOLISKodGL24K8U8Bguxv3SUXiNZT4lxIYNeflpgTrRA0wr8GTMot2NrekQ2SBWTRR3h2sO+EUzOiVFkVhdN8bhwZecCf91oJSFNPHmvsZDuLmm/CoqNwZZXLiqe2QqkuCHntupbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5DXDrQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6D0C4CEE5;
-	Thu, 13 Feb 2025 15:23:44 +0000 (UTC)
+	 MIME-Version; b=eYK5pYHnyhheX9QsbuFNjtXHxM5a/2jEWE5TSsVdENrjriBmaFkeAVCQRAzXqmcRrszz/Qr7Y3ZIzNK+8mm+EwUtu9KSKIbxOx87lzAKWccnjaAivHDIp6YZv2C954vmclSoYa86ILbaI+ed0rwHOncbHj9rVSjNpY4nlAKvBZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOzPgLYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB5C4CED1;
+	Thu, 13 Feb 2025 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460225;
-	bh=4jUPFnbXEc0rfsPWMks2s/Jff8Ld3VbVOnSdtN3324k=;
+	s=korg; t=1739459417;
+	bh=3+p70e+Sa5DG6VyHz3MW2lvdyAAJvLS0bTg+0WGZ6Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5DXDrQpVvBjr9XljQ8MlAadJKRrUW/QzFzqJyvU4XA6Qp5BlrYNnuwo6ctSkrlrD
-	 JMi08QxuDNrMcKFbaKz+p+4+jp+nu6NB+nMX59aFUWOj6rGJCl0tewAjr4fd2OyNAv
-	 CzzrZUDQPtMnUzDqAismx8T+mC/gYMm1D/0TXBwQ=
+	b=sOzPgLYO/GKEZj1GCzo6muzN8Otxgu+/JF/NSuF9WL4Q6tBvWewaESWg13MhbVwn2
+	 7XCrgINeipK3eR+oLdPQNuWRCRHSraNGCfNeguew2k2ZYC8lV+0dBdgsnoXgx0fwq6
+	 IIT9N1WhzWTAwl6wJj04RWkpJwyqPZoT1n8rUYBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/273] ASoC: amd: Add ACPI dependency to fix build error
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.13 258/443] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
 Date: Thu, 13 Feb 2025 15:27:03 +0100
-Message-ID: <20250213142409.367660222@linuxfoundation.org>
+Message-ID: <20250213142450.570629634@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 7e24ec93aecd12e33d31e38e5af4625553bbc727 ]
+commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
 
-As reported by the kernel test robot, the following error occurs:
+The updates of io->sector are the leftovers when dm-crypt allocated
+pages for partial write request. However, since commit cf2f1abfbd0db
+("dm crypt: don't allocate pages for a partial request"), there is no
+partial request anymore.
 
-   sound/soc/amd/yc/acp6x-mach.c: In function 'acp6x_probe':
->> sound/soc/amd/yc/acp6x-mach.c:573:15: error: implicit declaration of function 'acpi_evaluate_integer'; did you mean 'acpi_evaluate_object'? [-Werror=implicit-function-declaration]
-     573 |         ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-         |               ^~~~~~~~~~~~~~~~~~~~~
-         |               acpi_evaluate_object
-   cc1: some warnings being treated as errors
+After the introduction of write request rb-tree, the updates of
+io->sectors may interfere the insertion procedure, because ->sectors of
+these write requests which have already been added in the rb-tree may be
+changed during the insertion of new write request.
 
-The function 'acpi_evaluate_integer' and its prototype in 'acpi_bus.h'
-are only available when 'CONFIG_ACPI' is enabled. Add a 'depends on ACPI'
-directive in Kconfig to ensure proper compilation.
+Fix it by removing these buggy updates of io->sectors. Considering these
+updates only effect the write request rb-tree, the commit which
+introduces the write request rb-tree is used as the fix tag.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501090345.pBIDRTym-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250109171547.362412-1-eleanor15x@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b3c5fd305249 ("dm crypt: sort writes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |   14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/amd/Kconfig b/sound/soc/amd/Kconfig
-index 273688c053172..0b6a01c6bbb1b 100644
---- a/sound/soc/amd/Kconfig
-+++ b/sound/soc/amd/Kconfig
-@@ -105,7 +105,7 @@ config SND_SOC_AMD_ACP6x
- config SND_SOC_AMD_YC_MACH
- 	tristate "AMD YC support for DMIC"
- 	select SND_SOC_DMIC
--	depends on SND_SOC_AMD_ACP6x
-+	depends on SND_SOC_AMD_ACP6x && ACPI
- 	help
- 	  This option enables machine driver for Yellow Carp platform
- 	  using dmic. ACP IP has PDM Decoder block with DMA controller.
--- 
-2.39.5
-
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2092,7 +2092,6 @@ static void kcryptd_crypt_write_continue
+ 	struct crypt_config *cc = io->cc;
+ 	struct convert_context *ctx = &io->ctx;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
+ 
+ 	wait_for_completion(&ctx->restart);
+@@ -2109,10 +2108,8 @@ static void kcryptd_crypt_write_continue
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ 	crypt_dec_pending(io);
+ }
+@@ -2123,14 +2120,13 @@ static void kcryptd_crypt_write_convert(
+ 	struct convert_context *ctx = &io->ctx;
+ 	struct bio *clone;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
+ 
+ 	/*
+ 	 * Prevent io from disappearing until this function completes.
+ 	 */
+ 	crypt_inc_pending(io);
+-	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
++	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
+ 
+ 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
+ 	if (unlikely(!clone)) {
+@@ -2147,8 +2143,6 @@ static void kcryptd_crypt_write_convert(
+ 		io->ctx.iter_in = clone->bi_iter;
+ 	}
+ 
+-	sector += bio_sectors(clone);
+-
+ 	crypt_inc_pending(io);
+ 	r = crypt_convert(cc, ctx,
+ 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
+@@ -2172,10 +2166,8 @@ static void kcryptd_crypt_write_convert(
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ dec:
+ 	crypt_dec_pending(io);
 
 
 
