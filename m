@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-115414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7635EA343D7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A645A346D0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC83D3A491A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3E40166D6D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B22C24500B;
-	Thu, 13 Feb 2025 14:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92366335BA;
+	Thu, 13 Feb 2025 15:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VsoHubL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRejkn8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25B211468;
-	Thu, 13 Feb 2025 14:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6E115A856;
+	Thu, 13 Feb 2025 15:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457969; cv=none; b=JBmoaX59qJN7MzK23wSPS6Z3LHjoPC+GWHgHxou9+HL8oaFB0xe5FOSVP1Jv9o0Pd1TqAQeaQwwaz9ATCrGTR1Zp8zcn12nJbZjUAhitZtmi3C/SZxmxfC2J1kKVRzUuGnC1/yg/OqVKMJOhRU8F1ra/0SoujKatZPX9Cl9rJEs=
+	t=1739460171; cv=none; b=hnMT/GNuzvIY9RVojdKR5Gw/jbpbOsgUuIOCQIcQy2e/qcC0T1b/uhfrjtvGRCgDRiFqrH8uIX37vSD7u4gcXTnsHA/5iUQtmOQumiXSSUMY+y6f2mX6wvgP8bzaU7LvQtvPpRy88F/C9k9/6oLFtD+auhYJp11x/TLP+WW7wyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457969; c=relaxed/simple;
-	bh=UPNdboZj/N+JFP8DWY46Hj/LAHK7QHaalhINdJ/0jh0=;
+	s=arc-20240116; t=1739460171; c=relaxed/simple;
+	bh=QT67HcyAeCeUIdn/SVcHHOBquvV2umTLSO/9PFMRK1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJgVzBbuFwAZWjzLc45o6ezNIcjm2rpGZ68JILq7MB9Db7G1nnhXLyB7EMI7VaNHWvbLrfMW7SnGtdtpf71PCZxPOdXPjfCnBuALhNFX4Tmoz+N/C9HGGOkrxslAv/ydMAJo5nC0JlsEEAmXAj+r7+VgIWmnqaN2v+aukA7Fndo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VsoHubL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAE5C4CED1;
-	Thu, 13 Feb 2025 14:46:08 +0000 (UTC)
+	 MIME-Version; b=R3X4UC17NXswyCLoGhyzB/Gl/My8pWvb68OwFMq+Qb3gMHGLBgeUB4Pu77gPfmrHVt9VowDkEetkwhB3cQD3vTKJQYH4jfB90u2QomEh9NE+SyyCcV/MLPGZdMSgxwQ+NAojdqHj84aTmRvC7t2dTViYyLasBXj6mnmYqakxJZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRejkn8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD86C4CED1;
+	Thu, 13 Feb 2025 15:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457968;
-	bh=UPNdboZj/N+JFP8DWY46Hj/LAHK7QHaalhINdJ/0jh0=;
+	s=korg; t=1739460171;
+	bh=QT67HcyAeCeUIdn/SVcHHOBquvV2umTLSO/9PFMRK1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VsoHubLzEGSIC7xlohsDtBZBzTfBSLfyIfVaBhWxiVkj1lcuCNoN27yp+W6S+Pqq
-	 UBfXsd6nyxmP42Zm4Ei+hcqirBBHOOesTg5uiqwPD9vUv0D6/nWFV5oE7eWQXJgPle
-	 eJdQZVyVOCOzlKBVsuuJrEpvcvBozJnmm6bQ+aHE=
+	b=aRejkn8JLKVyb9i9m9T90M6oBl43RP5P0j62MSgaYs4fgGJwGKVIE8QnJeHIkPh8b
+	 tCYWxw3cXP3sB1S+E/o+d0R6hw1zqKwvwNCF94agGp6eGpqEcTB7phJ2gv9IUsTDG3
+	 gO/uhTe6uAOsTEOSIKqFodkeNfPCdmRpE0zysoms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.12 232/422] powerpc/pseries/eeh: Fix get PE state translation
+	"J. R. Okajima" <hooanon05g@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/273] lockdep: Fix upper limit for LOCKDEP_*_BITS configs
 Date: Thu, 13 Feb 2025 15:26:21 +0100
-Message-ID: <20250213142445.489551211@linuxfoundation.org>
+Message-ID: <20250213142407.727852756@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +67,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
+[ Upstream commit e638072e61726cae363d48812815197a2a0e097f ]
 
-The PE Reset State "0" returned by RTAS calls
-"ibm_read_slot_reset_[state|state2]" indicates that the reset is
-deactivated and the PE is in a state where MMIO and DMA are allowed.
-However, the current implementation of "pseries_eeh_get_state()" does
-not reflect this, causing drivers to incorrectly assume that MMIO and
-DMA operations cannot be resumed.
+Lockdep has a set of configs used to determine the size of the static
+arrays that it uses. However, the upper limit that was initially setup
+for these configs is too high (30 bit shift). This equates to several
+GiB of static memory for individual symbols. Using such high values
+leads to linker errors:
 
-The userspace drivers as a part of EEH recovery using VFIO ioctls fail
-to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
-ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
-userspace drivers from functioning properly on pseries systems.
+  $ make defconfig
+  $ ./scripts/config -e PROVE_LOCKING --set-val LOCKDEP_BITS 30
+  $ make olddefconfig all
+  [...]
+  ld: kernel image bigger than KERNEL_IMAGE_SIZE
+  ld: section .bss VMA wraps around address space
 
-The patch addresses this issue by updating 'pseries_eeh_get_state()'
-to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
-the result mask for PE Reset State "0". This ensures correct state
-reporting to the callers, aligning the behavior with the PAPR specification
-and fixing the bug in EEH recovery for VFIO user workflows.
+Adjust the upper limits to the maximum values that avoid these issues.
+The need for anything more, likely points to a problem elsewhere. Note
+that LOCKDEP_CHAINS_BITS was intentionally left out as its upper limit
+had a different symptom and has already been fixed [1].
 
-Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: J. R. Okajima <hooanon05g@gmail.com>
+Closes: https://lore.kernel.org/all/30795.1620913191@jrobl/ [1]
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20241024183631.643450-2-cmllamas@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/Kconfig.debug | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-+++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct
- 
- 	switch(rets[0]) {
- 	case 0:
--		result = EEH_STATE_MMIO_ACTIVE |
--			 EEH_STATE_DMA_ACTIVE;
-+		result = EEH_STATE_MMIO_ACTIVE	|
-+			 EEH_STATE_DMA_ACTIVE	|
-+			 EEH_STATE_MMIO_ENABLED	|
-+			 EEH_STATE_DMA_ENABLED;
- 		break;
- 	case 1:
- 		result = EEH_STATE_RESET_ACTIVE |
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index f94c3e957b829..e809b6d8bc537 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1454,7 +1454,7 @@ config LOCKDEP_SMALL
+ config LOCKDEP_BITS
+ 	int "Bitsize for MAX_LOCKDEP_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 24
+ 	default 15
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_LOCKDEP_ENTRIES too low!" message.
+@@ -1470,7 +1470,7 @@ config LOCKDEP_CHAINS_BITS
+ config LOCKDEP_STACK_TRACE_BITS
+ 	int "Bitsize for MAX_STACK_TRACE_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 19
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_STACK_TRACE_ENTRIES too low!" message.
+@@ -1478,7 +1478,7 @@ config LOCKDEP_STACK_TRACE_BITS
+ config LOCKDEP_STACK_TRACE_HASH_BITS
+ 	int "Bitsize for STACK_TRACE_HASH_SIZE"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 14
+ 	help
+ 	  Try increasing this value if you need large STACK_TRACE_HASH_SIZE.
+@@ -1486,7 +1486,7 @@ config LOCKDEP_STACK_TRACE_HASH_BITS
+ config LOCKDEP_CIRCULAR_QUEUE_BITS
+ 	int "Bitsize for elements in circular_queue struct"
+ 	depends on LOCKDEP
+-	range 10 30
++	range 10 26
+ 	default 12
+ 	help
+ 	  Try increasing this value if you hit "lockdep bfs error:-1" warning due to __cq_enqueue() failure.
+-- 
+2.39.5
+
 
 
 
