@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2CAA34252
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC39FA34494
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E96A5188DB91
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310C616EC94
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B09281343;
-	Thu, 13 Feb 2025 14:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B0D24168C;
+	Thu, 13 Feb 2025 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFGYjqPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9Z3QfrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3E28136D;
-	Thu, 13 Feb 2025 14:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24457241689;
+	Thu, 13 Feb 2025 14:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457174; cv=none; b=oW0EjJVPX7k3EwtwaMWV9jGlDwE+7VrXnL69K7SYdBznZy20PTqBhjetE1G+KV1B1rn9xVgYZTyV9MPPn8ZPXhFPu+i2A/Ga1lSOHLkO4aKkxeFzF0bx4YFXEDZO4uR2/y1I0YiVthRIM3mqXPH35cVRCohzAowza4S3vV4K/YU=
+	t=1739458589; cv=none; b=SeEvXFmyHsJu7+SXxiRauRLKsRvfv+v2wyya3scnz/8BUs7UxOztLqFpKNWreVOGsi07aKldMf0LEEO6LwZU2L5dOY15Qxmk+eGTeggXvVjEZ2yY9zIu5OhfuyxpjkGe/H4iZaxoru2fsOHO+LLFqAThnFx4lr6pFxxR5Iy+WM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457174; c=relaxed/simple;
-	bh=6ZOScTvSUa2wRkRhfJxwSOGcFTbmvGiVBlA4cnKwqp0=;
+	s=arc-20240116; t=1739458589; c=relaxed/simple;
+	bh=ZTdqW7sIFphbxB2r9QU++WnVRFFy26h+O3QyHTh5VDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1E2jrm8RZyfJeN0UsymBTLioALy6xSP0wIKyNp5cil84SWUs7/h3e1aux0xaBFk0xRnb5PnXlD8gySRyY7HoJ45nhXqbRkvEDAH9H6t248iqd5EYOJLICDQOFnVrs4APuXAWmvYUi9uhEfEj3VysW9Y1tAVlWtyMaIr/cDirZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFGYjqPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D808C4CEE2;
-	Thu, 13 Feb 2025 14:32:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uTp+LpCx9u5oC4Qy1aiIyEUxxgGABsMwJ0sZwUNw0oMlL8CxUJ4sn+P/fH+D5lhvfh6eteMChkvM0UzlW4eesWrirb1/IdrtpsYqVKAVFe4p9hXMrzbPB2hXlIBaXqXLzP0sWXR4AvYQMpSuwClxvtffAaegRSOZEgfsVf9+q2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9Z3QfrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEA7C4CED1;
+	Thu, 13 Feb 2025 14:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457173;
-	bh=6ZOScTvSUa2wRkRhfJxwSOGcFTbmvGiVBlA4cnKwqp0=;
+	s=korg; t=1739458588;
+	bh=ZTdqW7sIFphbxB2r9QU++WnVRFFy26h+O3QyHTh5VDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFGYjqPiNdPnKrEqFYQWzYt7mtP27eS0OaLwdmqnK3mlIZj55oJT3gvLolqbOvz4w
-	 jYUX6ltBM1GOyOGe/YSNLax9iXq3DlWQLRZFk934x40Mm8FoUlzbG7PrMR9xJyNfeR
-	 luZzC6d/spmX2KxOtewFx26mE9bJ9LMP8VVwTyxw=
+	b=m9Z3QfrR4SvVferjUn0PDGlJQEGHnz2lkdTXjJod+l5lofCtthnmKm1jr66zpnHtW
+	 Y49Ohem8HJrhxtjxGY9Rcg5jx5eapcGPDPzUYLQUk68E0B5L3eN5P1+y33aIHwnda/
+	 8VZjDHt1KxivIs1INkBNb9TCSavxlM5ZzxjCAu3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Dustin L. Howett" <dustin@howett.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/422] drm/amdgpu: Dont enable sdma 4.4.5 CTXEMPTY interrupt
+Subject: [PATCH 6.13 021/443] drm/amd/display: Add support for minimum backlight quirk
 Date: Thu, 13 Feb 2025 15:23:06 +0100
-Message-ID: <20250213142437.988204413@linuxfoundation.org>
+Message-ID: <20250213142441.439069341@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit b4b7271e5ca95b581f2fcc4ae852c4079215e92d ]
+[ Upstream commit c2753b2471c65955de18cbc58530641447e5bfe9 ]
 
-The sdma context empty interrupt is dropped in amdgpu_irq_dispatch
-as unregistered interrupt src_id 243, this interrupt accounts to 1/3 of
-total interrupts and causes IH primary ring overflow when running
-stressful benchmark application. Disable this interrupt has no side
-effect found.
+Not all platforms provide the full range of PWM backlight capabilities
+supported by the hardware through ATIF.
+Use the generic drm panel minimum backlight quirk infrastructure to
+override the capabilities where necessary.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Testing the backlight quirk together with the "panel_power_savings"
+sysfs file has not shown any negative impact.
+One quirk seems to be that 0% at panel_power_savings=0 seems to be
+slightly darker than at panel_power_savings=4.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-2-f662851fda69@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/Kconfig                | 1 +
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-index c77889040760a..4dd86c682ee6a 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-@@ -953,10 +953,12 @@ static int sdma_v4_4_2_inst_start(struct amdgpu_device *adev,
- 		/* set utc l1 enable flag always to 1 */
- 		temp = RREG32_SDMA(i, regSDMA_CNTL);
- 		temp = REG_SET_FIELD(temp, SDMA_CNTL, UTC_L1_ENABLE, 1);
--		/* enable context empty interrupt during initialization */
--		temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
--		WREG32_SDMA(i, regSDMA_CNTL, temp);
+diff --git a/drivers/gpu/drm/amd/amdgpu/Kconfig b/drivers/gpu/drm/amd/amdgpu/Kconfig
+index 41fa3377d9cf5..1a11cab741aca 100644
+--- a/drivers/gpu/drm/amd/amdgpu/Kconfig
++++ b/drivers/gpu/drm/amd/amdgpu/Kconfig
+@@ -26,6 +26,7 @@ config DRM_AMDGPU
+ 	select DRM_BUDDY
+ 	select DRM_SUBALLOC_HELPER
+ 	select DRM_EXEC
++	select DRM_PANEL_BACKLIGHT_QUIRKS
+ 	# amdgpu depends on ACPI_VIDEO when ACPI is enabled, for select to work
+ 	# ACPI_VIDEO's dependencies must also be selected.
+ 	select INPUT if ACPI
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 53694baca9663..92e1d59921f49 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -93,6 +93,7 @@
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_eld.h>
++#include <drm/drm_utils.h>
+ #include <drm/drm_vblank.h>
+ #include <drm/drm_audio_component.h>
+ #include <drm/drm_gem_atomic_helper.h>
+@@ -3457,6 +3458,7 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
+ 	struct drm_connector *conn_base;
+ 	struct amdgpu_device *adev;
+ 	struct drm_luminance_range_info *luminance_range;
++	int min_input_signal_override;
  
-+		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) < IP_VERSION(4, 4, 5)) {
-+			/* enable context empty interrupt during initialization */
-+			temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
-+			WREG32_SDMA(i, regSDMA_CNTL, temp);
-+		}
- 		if (!amdgpu_sriov_vf(adev)) {
- 			if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP) {
- 				/* unhalt engine */
+ 	if (aconnector->bl_idx == -1 ||
+ 	    aconnector->dc_link->connector_signal != SIGNAL_TYPE_EDP)
+@@ -3493,6 +3495,10 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
+ 		caps->aux_min_input_signal = 0;
+ 		caps->aux_max_input_signal = 512;
+ 	}
++
++	min_input_signal_override = drm_get_panel_min_brightness_quirk(aconnector->drm_edid);
++	if (min_input_signal_override >= 0)
++		caps->min_input_signal = min_input_signal_override;
+ }
+ 
+ void amdgpu_dm_update_connector_after_detect(
 -- 
 2.39.5
 
