@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F915A346DC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4567AA344DA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A9916DEE6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F42067A2E83
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618A14831C;
-	Thu, 13 Feb 2025 15:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3885684;
+	Thu, 13 Feb 2025 15:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oULZR8uW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pobrn07c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25DC335BA;
-	Thu, 13 Feb 2025 15:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD32726B097;
+	Thu, 13 Feb 2025 15:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460191; cv=none; b=uc5oI16g+zNgdQ7KmiaXug3vEf8yhe8tSETYYfNewoK+NT0VqGwY2aPBk2LsLsHhDmmXCo1MJAc6eIuyWENSOM8XS3qWu3yiEJDn+UIRu14KhjXoRI4v4kvW8liq+IZjnX86ql7z4kv2xiLOTjHPKNS9SChv3hFwuQf/NbimjwM=
+	t=1739459383; cv=none; b=YuUm7ersWD4hBVzE7oc1vPL43oWiWuprMpaRl9oGyiWQci/mKUIqwG7JuJqXBslEsrkpNzS/UjjHM/gs/L5R9BSFUezwuKqjfghEEqW7cWTnt2wscVflfwd7HGY3b/3yDqWT4ppYrVTsDSQLX7DuX/eyxjqL8MGDAb7l+Rxh58Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460191; c=relaxed/simple;
-	bh=GsufXCY6LMnBAjLg6nSBFnUtwy/ufS6emYISkPFrXtE=;
+	s=arc-20240116; t=1739459383; c=relaxed/simple;
+	bh=iAU/0u7R9zqkR0FRlcamCOcyUI0LhETO5fHZOVMQPIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQussTeCkIK00ElvZK4RYY31/xITeJJuwfKhMcWsGoLaWGWMYSq7H62hnjAKkaxU9MeCwanm1JM4LLEBxMQoGiS7b5ycKv0qNtSc/MFCWnCT4mURp1PVRt9sDGz3vE8H/oSXvPp2J444AfbqjPAJwqQt+0IGNHL2bwmSnHNEWjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oULZR8uW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44B6C4CED1;
-	Thu, 13 Feb 2025 15:23:10 +0000 (UTC)
+	 MIME-Version; b=idCDRBMBOHWERhIf9Rfto8o5W8INU1H2TPVDCdzu9JcvlpA2Gq1Tfz1OPifjzYfnNHBkK+s8DSG2ezJG5My5aIJ3PUTV5v8tHlj9DgAjwbW489CTXpFfoy+GZYU5RKE6Ax+c5Gi3B4dJudixKuJAr7/7CkzO3TTNxRsDekujsZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pobrn07c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B84C4CED1;
+	Thu, 13 Feb 2025 15:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460191;
-	bh=GsufXCY6LMnBAjLg6nSBFnUtwy/ufS6emYISkPFrXtE=;
+	s=korg; t=1739459383;
+	bh=iAU/0u7R9zqkR0FRlcamCOcyUI0LhETO5fHZOVMQPIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oULZR8uWgq7kS5NxqRcnvazXBPcJ8RiVrLssRVEbgITiUt6kdYJRhsHMKorpKKUE4
-	 NSOt5/mq52Adc6u4JkUbqgxOUZW1fQ+SqBKyUJiFlTlEJPhIyi9z+czbLe+WTG8KPt
-	 pf1u3DsGdBipXKR1vTdiNZJL1dLz7bOo6rSXDvLY=
+	b=Pobrn07cclkfE/xrLOoBmTM8x1HFMLN1QlhWWyBniJam7jueRW9G62qQNmdenndpq
+	 O8VQkDj315maZ7/WoXfOaLuNaIBIHES5kMG9FGh2MHB1zWUrX/T1rIajuPbx+bZNSt
+	 jKBiKXPPc1scrdTkyFIYef3FJiQrlmjnuycQTX/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/273] net: wwan: iosm: Fix hibernation by re-binding the driver around it
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 249/443] ASoC: renesas: rz-ssi: Terminate all the DMA transactions
 Date: Thu, 13 Feb 2025 15:26:54 +0100
-Message-ID: <20250213142409.016168635@linuxfoundation.org>
+Message-ID: <20250213142450.224205417@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 0b6f6593aa8c3a05f155c12fd0e7ad33a5149c31 ]
+commit 541011dc2d7c4c82523706f726f422a5e23cc86f upstream.
 
-Currently, the driver is seriously broken with respect to the
-hibernation (S4): after image restore the device is back into
-IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
-full re-launch of the rest of its firmware, but the driver restore
-handler treats the device as merely sleeping and just sends it a
-wake-up command.
+The stop trigger invokes rz_ssi_stop() and rz_ssi_stream_quit().
+- The purpose of rz_ssi_stop() is to disable TX/RX, terminate DMA
+  transactions, and set the controller to idle.
+- The purpose of rz_ssi_stream_quit() is to reset the substream-specific
+  software data by setting strm->running and strm->substream appropriately.
 
-This wake-up command times out but device nodes (/dev/wwan*) remain
-accessible.
-However attempting to use them causes the bootloader to crash and
-enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a crash
-dump is ready").
+The function rz_ssi_is_stream_running() checks if both strm->substream and
+strm->running are valid and returns true if so. Its implementation is as
+follows:
 
-It seems that the device cannot be re-initialized from this crashed
-stage without toggling some reset pin (on my test platform that's
-apparently what the device _RST ACPI method does).
+static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
+{
+    return strm->substream && strm->running;
+}
 
-While it would theoretically be possible to rewrite the driver to tear
-down the whole MUX / IPC layers on hibernation (so the bootloader does
-not crash from improper access) and then re-launch the device on
-restore this would require significant refactoring of the driver
-(believe me, I've tried), since there are quite a few assumptions
-hard-coded in the driver about the device never being partially
-de-initialized (like channels other than devlink cannot be closed,
-for example).
-Probably this would also need some programming guide for this hardware.
+When the controller is configured in full-duplex mode (with both playback
+and capture active), the rz_ssi_stop() function does not modify the
+controller settings when called for the first substream in the full-duplex
+setup. Instead, it simply sets strm->running = 0 and returns if the
+companion substream is still running. The following code illustrates this:
 
-Considering that the driver seems orphaned [1] and other people are
-hitting this issue too [2] fix it by simply unbinding the PCI driver
-before hibernation and re-binding it after restore, much like
-USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
-problem.
+static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
+{
+    strm->running = 0;
 
-Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses
-the existing suspend / resume handlers) and S4 (which uses the new code).
+    if (rz_ssi_is_stream_running(&ssi->playback) ||
+        rz_ssi_is_stream_running(&ssi->capture))
+        return 0;
 
-[1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bdebb@leemhuis.info/
-[2]:
-https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804139413
+    // ...
+}
 
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://patch.msgid.link/e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The controller settings, along with the DMA termination (for the last
+stopped substream), are only applied when the last substream in the
+full-duplex setup is stopped.
+
+While applying the controller settings only when the last substream stops
+is not problematic, terminating the DMA operations for only one substream
+causes failures when starting and stopping full-duplex operations multiple
+times in a loop.
+
+To address this issue, call dmaengine_terminate_async() for both substreams
+involved in the full-duplex setup when the last substream in the setup is
+stopped.
+
+Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20241210170953.2936724-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_pcie.c | 56 ++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ sound/soc/renesas/rz-ssi.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-index 04517bd3325a2..a066977af0be5 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-@@ -6,6 +6,7 @@
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
-+#include <linux/suspend.h>
- #include <net/rtnetlink.h>
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -414,8 +414,12 @@ static int rz_ssi_stop(struct rz_ssi_pri
+ 	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
  
- #include "iosm_ipc_imem.h"
-@@ -18,6 +19,7 @@ MODULE_LICENSE("GPL v2");
- /* WWAN GUID */
- static guid_t wwan_acpi_guid = GUID_INIT(0xbad01b75, 0x22a8, 0x4f48, 0x87, 0x92,
- 				       0xbd, 0xde, 0x94, 0x67, 0x74, 0x7d);
-+static bool pci_registered;
- 
- static void ipc_pcie_resources_release(struct iosm_pcie *ipc_pcie)
- {
-@@ -448,7 +450,6 @@ static struct pci_driver iosm_ipc_driver = {
- 	},
- 	.id_table = iosm_ipc_ids,
- };
--module_pci_driver(iosm_ipc_driver);
- 
- int ipc_pcie_addr_map(struct iosm_pcie *ipc_pcie, unsigned char *data,
- 		      size_t size, dma_addr_t *mapping, int direction)
-@@ -530,3 +531,56 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
- 	IPC_CB(skb)->mapping = 0;
- 	dev_kfree_skb(skb);
- }
-+
-+static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
-+{
-+	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
-+		if (pci_registered) {
-+			pci_unregister_driver(&iosm_ipc_driver);
-+			pci_registered = false;
-+		}
-+	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
-+		if (!pci_registered) {
-+			int ret;
-+
-+			ret = pci_register_driver(&iosm_ipc_driver);
-+			if (ret) {
-+				pr_err(KBUILD_MODNAME ": unable to re-register PCI driver: %d\n",
-+				       ret);
-+			} else {
-+				pci_registered = true;
-+			}
-+		}
+ 	/* Cancel all remaining DMA transactions */
+-	if (rz_ssi_is_dma_enabled(ssi))
+-		dmaengine_terminate_async(strm->dma_ch);
++	if (rz_ssi_is_dma_enabled(ssi)) {
++		if (ssi->playback.dma_ch)
++			dmaengine_terminate_async(ssi->playback.dma_ch);
++		if (ssi->capture.dma_ch)
++			dmaengine_terminate_async(ssi->capture.dma_ch);
 +	}
-+
-+	return 0;
-+}
-+
-+static struct notifier_block pm_notifier = {
-+	.notifier_call = pm_notify,
-+};
-+
-+static int __init iosm_ipc_driver_init(void)
-+{
-+	int ret;
-+
-+	ret = pci_register_driver(&iosm_ipc_driver);
-+	if (ret)
-+		return ret;
-+
-+	pci_registered = true;
-+
-+	register_pm_notifier(&pm_notifier);
-+
-+	return 0;
-+}
-+module_init(iosm_ipc_driver_init);
-+
-+static void __exit iosm_ipc_driver_exit(void)
-+{
-+	unregister_pm_notifier(&pm_notifier);
-+
-+	if (pci_registered)
-+		pci_unregister_driver(&iosm_ipc_driver);
-+}
-+module_exit(iosm_ipc_driver_exit);
--- 
-2.39.5
-
+ 
+ 	rz_ssi_set_idle(ssi);
+ 
 
 
 
