@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-116043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDDCA346E5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E37DA3463C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844AC1893272
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAEC3A8A63
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24EA14658D;
-	Thu, 13 Feb 2025 15:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176EC26B085;
+	Thu, 13 Feb 2025 15:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+W+FnWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJGJbKaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBB773176;
-	Thu, 13 Feb 2025 15:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C711226B082;
+	Thu, 13 Feb 2025 15:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460123; cv=none; b=XDLX66VbQWUp23oQ++eI/47PsI+e38Wi1SViQkyCwTkoaajHU5503axvXfXdNbYdYDrbfvLuKKFIPbJwJKH5ZAik4lAVAg0pgfmrb/UnseQEbAdyEVcPGEW1UiYhR+8AVtY3HBoWKA5+c9pn2QWsXUoyw7NYzk3w88ItaI7Xmxo=
+	t=1739459314; cv=none; b=Qtq4vjuxlPjFugBYGLvDvbYy8WLgD0Ly+ncTdE/BzFeHRSAGeA0J+KWNnuTMKbRETkxl471Po+UyN8WTqiVpZr/sCNTOZlKuGgINdq2p9TazSJo+8awqSVEHFM89U6WK0P211eV92yK9iXonLYx6mT4vNAqnrXcDbClJbODB/Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460123; c=relaxed/simple;
-	bh=uA0IQcpx3ARR2rd7E88yWVY70X9MADQ8wOBEAkXVoD4=;
+	s=arc-20240116; t=1739459314; c=relaxed/simple;
+	bh=x5Z0vGlMJ8biUX3CFPGBQpoMKfC7e+yr3Uqzp7xMAD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6leOfcXmhb52gBN11dY+bEVRwBseM+b9cq1EdOzd5RN1WYd434rB7WWG59t29kDaWSpAaW96ncNT1kLUjgb0HJCPifBg1NVG/nQGnSmhbbO/AOXk0RffVGpMw/kFaV37HgiOmvwUaeu+1gR3tHfvPABMCxHe5E1TVEHpbDuM/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+W+FnWq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1278C4CED1;
-	Thu, 13 Feb 2025 15:22:02 +0000 (UTC)
+	 MIME-Version; b=VCEIDdJX/We0VKO2TtaOmox3vfNnDy8bk/9dZehxuy0SRXuPOdsSsUFnLYKGHCHoyhfk2euhSV/FtL74ELePlN84Gx7yRVGn7zmNjW5iLduK3vofoj83mgzdhGsE5Cp9JpVdwNAW7MYztFuKGzGH79OYkHdWkxAtEusQcVE6/9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJGJbKaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95935C4CEE5;
+	Thu, 13 Feb 2025 15:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460123;
-	bh=uA0IQcpx3ARR2rd7E88yWVY70X9MADQ8wOBEAkXVoD4=;
+	s=korg; t=1739459314;
+	bh=x5Z0vGlMJ8biUX3CFPGBQpoMKfC7e+yr3Uqzp7xMAD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+W+FnWqq6m3n7aZokMXPRHD4S1smSErQeXvTCsyBSV+FfCUiHkZN487P99K4y8rp
-	 yxlHPRMZsv08XEKkJUcIM5ZwbFj90j1yQZbaYq5/2IkYRqU3s5kkVovM2f7vlv7iH6
-	 AMAD+8yPLjoGEC67gterQh65T5PTLtzTALe2PIrQ=
+	b=JJGJbKaM1yxtOg6SBVvd4j7G5hM/u0hWb4TkLS6gLnghqF8kEFhAsbVS+6mpe3Imm
+	 hbIEZUwM7klaCq9i868hrw1HviC54/rFlMW+U+WwH+cfbcH3nDC/qw167YQ4oC2wcA
+	 AqEUI7Lt0WtOTn+lt+zNgxZHzIkK8/WakJt6kyug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/273] drm/amd/display: Fix Mode Cutoff in DSC Passthrough to DP2.1 Monitor
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.13 228/443] wifi: mt76: mt7915: add module param to select 5 GHz or 6 GHz on MT7916
 Date: Thu, 13 Feb 2025 15:26:33 +0100
-Message-ID: <20250213142408.199345888@linuxfoundation.org>
+Message-ID: <20250213142449.413547895@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit e56ad45e991128bf4db160b75a1d9f647a341d8f ]
+commit 57af267d2b8f5d88485c6372761386d79c5e6a1a upstream.
 
-Source --> DP2.1 MST hub --> DP1.4/2.1 monitor
+Due to a limitation in available memory, the MT7916 firmware can only
+handle either 5 GHz or 6 GHz at a time. It does not support runtime
+switching without a full restart.
 
-When change from DP1.4 to DP2.1 from monitor manual, modes higher than
-4k120 are all cutoff by mode validation. Switch back to DP1.4 gets all
-the modes up to 4k240 available to be enabled by dsc passthrough.
+On older firmware, this accidentally worked to some degree due to missing
+checks, but couldn't be supported properly, because it left the 6 GHz
+channels uncalibrated.
+Newer firmware refuses to start on either band if the passed EEPROM
+data indicates support for both.
 
-[why]
-Compared to DP1.4 link from hub to monitor, DP2.1 link has larger
-full_pbn value that causes overflow in the process of doing conversion
-from pbn to kbps.
+Deal with this limitation by using a module parameter to specify the
+preferred band in case both are supported.
 
-[how]
-Change the data type accordingly to fit into the data limit during
-conversion calculation.
-
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b4d093e321bd ("mt76: mt7915: add 6 GHz support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20241010083816.51880-1-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c |   21 +++++++++++++++++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c   |    4 ++--
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 385a5a75fdf87..5858e288b3fd6 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1578,16 +1578,16 @@ int pre_validate_dsc(struct drm_atomic_state *state,
- 	return ret;
- }
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -2,9 +2,14 @@
+ /* Copyright (C) 2020 MediaTek Inc. */
  
--static unsigned int kbps_from_pbn(unsigned int pbn)
-+static uint32_t kbps_from_pbn(unsigned int pbn)
+ #include <linux/firmware.h>
++#include <linux/moduleparam.h>
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
++static bool enable_6ghz;
++module_param(enable_6ghz, bool, 0644);
++MODULE_PARM_DESC(enable_6ghz, "Enable 6 GHz instead of 5 GHz on hardware that supports both");
++
+ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
  {
--	unsigned int kbps = pbn;
-+	uint64_t kbps = (uint64_t)pbn;
+ 	struct mt76_dev *mdev = &dev->mt76;
+@@ -170,8 +175,20 @@ static void mt7915_eeprom_parse_band_con
+ 			phy->mt76->cap.has_6ghz = true;
+ 			return;
+ 		case MT_EE_V2_BAND_SEL_5GHZ_6GHZ:
+-			phy->mt76->cap.has_5ghz = true;
+-			phy->mt76->cap.has_6ghz = true;
++			if (enable_6ghz) {
++				phy->mt76->cap.has_6ghz = true;
++				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
++						 MT_EE_V2_BAND_SEL_6GHZ,
++						 MT_EE_WIFI_CONF0_BAND_SEL);
++			} else {
++				phy->mt76->cap.has_5ghz = true;
++				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
++						 MT_EE_V2_BAND_SEL_5GHZ,
++						 MT_EE_WIFI_CONF0_BAND_SEL);
++			}
++			/* force to buffer mode */
++			dev->flash_mode = true;
++
+ 			return;
+ 		default:
+ 			phy->mt76->cap.has_2ghz = true;
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1239,14 +1239,14 @@ int mt7915_register_device(struct mt7915
+ 	if (ret)
+ 		goto unreg_dev;
  
- 	kbps *= (1000000 / PEAK_FACTOR_X1000);
- 	kbps *= 8;
- 	kbps *= 54;
- 	kbps /= 64;
+-	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+-
+ 	if (phy2) {
+ 		ret = mt7915_register_ext_phy(dev, phy2);
+ 		if (ret)
+ 			goto unreg_thermal;
+ 	}
  
--	return kbps;
-+	return (uint32_t)kbps;
- }
++	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
++
+ 	dev->recovery.hw_init_done = true;
  
- static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
--- 
-2.39.5
-
+ 	ret = mt7915_init_debugfs(&dev->phy);
 
 
 
