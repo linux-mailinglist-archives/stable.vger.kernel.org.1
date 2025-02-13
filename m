@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6502CA343C0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988F0A346A8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C8F188F2AA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722421704CB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF40624500F;
-	Thu, 13 Feb 2025 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A1C1547F0;
+	Thu, 13 Feb 2025 15:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/p/6XTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThBKil9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC84211468;
-	Thu, 13 Feb 2025 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5D35961;
+	Thu, 13 Feb 2025 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457972; cv=none; b=YAowjC66KHLntBz2XbLDDDA3Q0AoLyiiEl52a06u/Im34llhztjhSRbMBOA6NMTwtZTdihT/8MDzuAXPwcOsvuSYrBLqA9FZ8/Udj6rktwhH3WGaDXld/8dek+yZSX/Ys4E4c629g8WEGlHgKTaxyYJQq0VwXhXCmOmN7lF6bfY=
+	t=1739460083; cv=none; b=WoxGK5sO0HR8oMEEMecfmb41rR3b5BhZcHfIp2YvtUgeoN2f2lS0QyKChxUGvxekEGDeCS1/9fK9AhYXR0g/3s9zZO9YvcGYkUHfrUwI6O5aqst6+PSc8dX0SScb1X6Lgwt6MG3ZBhYNB3ycZOCFvTsVAlh6U/RC9/0B39HatKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457972; c=relaxed/simple;
-	bh=N/sjQwCEPdxnKQus909jv7U/hSxNvT+66oQOe9lk3C8=;
+	s=arc-20240116; t=1739460083; c=relaxed/simple;
+	bh=+ZP7PxDRDfo9gDhvGDJTOQDmEePGhmbAMVHfa6Ndhtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqUMXBflvj0pTLTVZfMMmZlVf2gdFLrSV06UxQoVlLQj476L+DVduf8OzRPmglNmWHM9j5U3igqoqPgJ9+yti6I2OMt+NEqhC4dxKo5oUxRXbUW1z0ibleDd6wNIMjrwDNVGnaszoFhHtD8aVefRfgubynmLwoU9TCjYQkAU+uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/p/6XTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8E1C4CED1;
-	Thu, 13 Feb 2025 14:46:11 +0000 (UTC)
+	 MIME-Version; b=ULUEZEO7HZx89/9zMeglyR3exKp1Y6qnq74V728QZWd9yTMfYoWCwhsTj966w/Dd6i/1cwKWvMJw6b3+hEeGlaHHfNflxq1vRIM8Q0eMZk/EcUO6bLcWcjB4MD8eIThn7pZDmYn6sjuhQy9mm+8142VfDa3e2aGrBqan6gQ1+bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThBKil9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FFDC4CED1;
+	Thu, 13 Feb 2025 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457972;
-	bh=N/sjQwCEPdxnKQus909jv7U/hSxNvT+66oQOe9lk3C8=;
+	s=korg; t=1739460083;
+	bh=+ZP7PxDRDfo9gDhvGDJTOQDmEePGhmbAMVHfa6Ndhtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/p/6XTtH0JwsqAKzkD2Zk1g7vI/3He3t5QH/0iL+H0I51beJVnO9JQIxvJuLBEP/
-	 ImfbJsQrYGqyuvXgt8E61i/W/VGrWn/MhoFQr0wrIayzhpcizQ4mx0NlhscLEenghn
-	 wSN+QRuO6CuHWci/7DkrklZ/VoXD9D7LZF5mH/bo=
+	b=ThBKil9nh16GKQBYZoRIWHl8Y199wP660GfFoLdAyUBmB+uSFYr645/eukiVFKE/l
+	 EQKfBs00F9VkqkY70GHyDoaglnlRINEtGJZQfXYAw/w6FWA1rk1cTZUZ5Z38SNkDaB
+	 8pMIon0FPfsebCpaUgWGKF7izLnOHP40KxGTIHCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 233/422] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 010/273] x86/amd_nb: Restrict init function to AMD-based systems
 Date: Thu, 13 Feb 2025 15:26:22 +0100
-Message-ID: <20250213142445.527424332@linuxfoundation.org>
+Message-ID: <20250213142407.770247099@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
+[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
 
-The updates of io->sector are the leftovers when dm-crypt allocated
-pages for partial write request. However, since commit cf2f1abfbd0db
-("dm crypt: don't allocate pages for a partial request"), there is no
-partial request anymore.
+The code implicitly operates on AMD-based systems by matching on PCI
+IDs. However, the use of these IDs is going away.
 
-After the introduction of write request rb-tree, the updates of
-io->sectors may interfere the insertion procedure, because ->sectors of
-these write requests which have already been added in the rb-tree may be
-changed during the insertion of new write request.
+Add an explicit CPU vendor check instead of relying on PCI IDs.
 
-Fix it by removing these buggy updates of io->sectors. Considering these
-updates only effect the write request rb-tree, the commit which
-introduces the write request rb-tree is used as the fix tag.
-
-Fixes: b3c5fd305249 ("dm crypt: sort writes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-crypt.c |   14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/x86/kernel/amd_nb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -2092,7 +2092,6 @@ static void kcryptd_crypt_write_continue
- 	struct crypt_config *cc = io->cc;
- 	struct convert_context *ctx = &io->ctx;
- 	int crypt_finished;
--	sector_t sector = io->sector;
- 	blk_status_t r;
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 6dabb53f58a44..b6d5fc396f88c 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -537,6 +537,10 @@ static __init void fix_erratum_688(void)
  
- 	wait_for_completion(&ctx->restart);
-@@ -2109,10 +2108,8 @@ static void kcryptd_crypt_write_continue
- 	}
+ static __init int init_amd_nbs(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
++	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
++		return 0;
++
+ 	amd_cache_northbridges();
+ 	amd_cache_gart();
  
- 	/* Encryption was already finished, submit io now */
--	if (crypt_finished) {
-+	if (crypt_finished)
- 		kcryptd_crypt_write_io_submit(io, 0);
--		io->sector = sector;
--	}
- 
- 	crypt_dec_pending(io);
- }
-@@ -2123,14 +2120,13 @@ static void kcryptd_crypt_write_convert(
- 	struct convert_context *ctx = &io->ctx;
- 	struct bio *clone;
- 	int crypt_finished;
--	sector_t sector = io->sector;
- 	blk_status_t r;
- 
- 	/*
- 	 * Prevent io from disappearing until this function completes.
- 	 */
- 	crypt_inc_pending(io);
--	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
-+	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
- 
- 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
- 	if (unlikely(!clone)) {
-@@ -2147,8 +2143,6 @@ static void kcryptd_crypt_write_convert(
- 		io->ctx.iter_in = clone->bi_iter;
- 	}
- 
--	sector += bio_sectors(clone);
--
- 	crypt_inc_pending(io);
- 	r = crypt_convert(cc, ctx,
- 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
-@@ -2172,10 +2166,8 @@ static void kcryptd_crypt_write_convert(
- 	}
- 
- 	/* Encryption was already finished, submit io now */
--	if (crypt_finished) {
-+	if (crypt_finished)
- 		kcryptd_crypt_write_io_submit(io, 0);
--		io->sector = sector;
--	}
- 
- dec:
- 	crypt_dec_pending(io);
+-- 
+2.39.5
+
 
 
 
