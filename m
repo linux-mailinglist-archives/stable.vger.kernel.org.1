@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-116150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DB6A34755
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C826A343E9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176CF16DE2F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D89A16DDBB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5B026B0BD;
-	Thu, 13 Feb 2025 15:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FC71531DB;
+	Thu, 13 Feb 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRndtaFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2incijDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2901422D8;
-	Thu, 13 Feb 2025 15:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4065114A605;
+	Thu, 13 Feb 2025 14:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460498; cv=none; b=s1xkM4Lx6tsS8Dt7aIf5UEgvrOtBbA7qwSjUsXmmUVbj0FHl99d2HrYu4fXkKrAk+OxKFgPem9VC0MzBqTi8t+cRQKAuwIQDHnvDOx+BrL+kZ6h/a7l3ILMSEIA6mATtEpz/xC7REIW1WkGPCKDrX7oZQhfYuGT4z9w7qFOi3H4=
+	t=1739458177; cv=none; b=a4+p08uc7kGdX2hBjrh5AsFojMIZQCzew0P25V0DoGRuIDmPm6jASZ0zvTgffIgb+JvzvwStI/37EGLjmd+Z2AxjyxN7BCRxcyY6Ra/H+v1pf4a2GvlcLvyPxV3SQujm5Zq3q9mok7qSoTteZO9hlq5m5Hi6KCLHd0+Cb01qxcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460498; c=relaxed/simple;
-	bh=jfLj4OAEHFx6HvbLyhKaTNdrnpaQlRJYZk22N0JgtzQ=;
+	s=arc-20240116; t=1739458177; c=relaxed/simple;
+	bh=9eNLhlrxKG7UbMAmOlS+YNS8dYaNojFpJqx6XDUMxi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G2h1P31ZcsVJO2EUWwiuRYbJvS0JI6ne3q0I/ONaC7JUjPdNa0QHFwDuurLgyMe6YAkeb+PUJUQQBmethty5C0Cz2NrGbC387QJP+zmq4wZzqn4NVr2nCRIoBmv4GUwiy66KDZ66HTig659t27BSKpzkgAl3wydYD5CTnneK2cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRndtaFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59109C4CED1;
-	Thu, 13 Feb 2025 15:28:17 +0000 (UTC)
+	 MIME-Version; b=jj95wvNN8TNJWVeCP+KO7te1dhtLMIOxHA82qaJ+WKWCJtlkXwDr278s4baxIwOo/dgvW5i3kHCXv6x+E41HHvGoKADjUTklOnLkBTgvvcV8Z/XG89c01lFn/qidTS2QM042g0KNilzt9y4dLtBJMtNC5gcND6pzgZZA/jGWXcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2incijDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E39C4CEE5;
+	Thu, 13 Feb 2025 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460497;
-	bh=jfLj4OAEHFx6HvbLyhKaTNdrnpaQlRJYZk22N0JgtzQ=;
+	s=korg; t=1739458176;
+	bh=9eNLhlrxKG7UbMAmOlS+YNS8dYaNojFpJqx6XDUMxi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRndtaFFpmSx03Ec3pcLF3/qXt+JRkpATr5wvhkjX8DXQc52m30zpmIDQIfAi8GuQ
-	 ETqTNOMK+hcngokPJA0ScuOcRkq/j0D+RlVQQtorB0BcB0WKpO52fKgFpCAACQgI8C
-	 j1SQ58bWZyRYlM/QnD+6E+uF7rGCxASqQ3YEpURk=
+	b=2incijDxZR5YZP27q8RervhT1rDAdRIKVuumD5bEBpxwarH/iV6qKFj2MU8r2IXJS
+	 Jp9krpn2YBLoUsyudphOR+gVUpMmG0VFhiKSivieGYHT88jzJfErhDju5WljDjszJk
+	 WeKpE9N7WwwFtCJplEfrCvva1sev31KXXhIis7Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Vidya Srinivas <vidya.srinivas@intel.com>,
-	Brian Geffon <bgeffon@google.com>,
-	Tomasz Figa <tfiga@google.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 101/273] drm/i915: Fix page cleanup on DMA remap failure
+	Alexandru Ardelean <aardelean@baylibre.com>,
+	Naushir Patuck <naush@raspberrypi.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 324/422] media: imx296: Add standby delay during probe
 Date: Thu, 13 Feb 2025 15:27:53 +0100
-Message-ID: <20250213142411.335537963@linuxfoundation.org>
+Message-ID: <20250213142449.053961851@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Naushir Patuck <naush@raspberrypi.com>
 
-commit fa6182c8b13ebfdc70ebdc09161a70dd8131f3b1 upstream.
+commit 57d10bcac67707caaa542e09dee86e13ea85defc upstream.
 
-When converting to folios the cleanup path of shmem_get_pages() was
-missed. When a DMA remap fails and the max segment size is greater than
-PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
-size. The cleanup code isn't properly using the folio apis and as a
-result isn't handling compound pages correctly.
+Add a 2-5ms delay when coming out of standby and before reading the
+sensor info register durning probe, as instructed by the datasheet. This
+standby delay is already present when the sensor starts streaming.
 
-v2 -> v3:
-(Ville) Just use shmem_sg_free_table() as-is in the failure path of
-shmem_get_pages(). shmem_sg_free_table() will clear mapping unevictable
-but it will be reset when it retries in shmem_sg_alloc_table().
+During a cold-boot, reading the IMX296_SENSOR_INFO register would often
+return a value of 0x0000, if this delay is not present before.
 
-v1 -> v2:
-(Ville) Fixed locations where we were not clearing mapping unevictable.
-
+Fixes: cb33db2b6ccf ("media: i2c: IMX296 camera sensor driver")
 Cc: stable@vger.kernel.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
-Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
-Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Suggested-by: Tomasz Figa <tfiga@google.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250127204332.336665-1-bgeffon@google.com
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-(cherry picked from commit 9e304a18630875352636ad52a3d2af47c3bde824)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Tested-by: Alexandru Ardelean <aardelean@baylibre.com>
+Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/media/i2c/imx296.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-index fe69f2c8527d..ae3343c81a64 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -209,8 +209,6 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
- 	struct address_space *mapping = obj->base.filp->f_mapping;
- 	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
- 	struct sg_table *st;
--	struct sgt_iter sgt_iter;
--	struct page *page;
- 	int ret;
+--- a/drivers/media/i2c/imx296.c
++++ b/drivers/media/i2c/imx296.c
+@@ -954,6 +954,8 @@ static int imx296_identify_model(struct
+ 		return ret;
+ 	}
  
- 	/*
-@@ -239,9 +237,7 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
- 		 * for PAGE_SIZE chunks instead may be helpful.
- 		 */
- 		if (max_segment > PAGE_SIZE) {
--			for_each_sgt_page(page, sgt_iter, st)
--				put_page(page);
--			sg_free_table(st);
-+			shmem_sg_free_table(st, mapping, false, false);
- 			kfree(st);
- 
- 			max_segment = PAGE_SIZE;
--- 
-2.48.1
-
++	usleep_range(2000, 5000);
++
+ 	ret = imx296_read(sensor, IMX296_SENSOR_INFO);
+ 	if (ret < 0) {
+ 		dev_err(sensor->dev, "failed to read sensor information (%d)\n",
 
 
 
