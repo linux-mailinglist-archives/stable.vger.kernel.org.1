@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-115298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C25CA342B0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:40:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14BFA3457B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 445F17A5FFD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BBF16E8A6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AEE23A9BA;
-	Thu, 13 Feb 2025 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0800155759;
+	Thu, 13 Feb 2025 15:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaEmkJT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqOe2f1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE23F221571;
-	Thu, 13 Feb 2025 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDAB159596;
+	Thu, 13 Feb 2025 15:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457570; cv=none; b=W4wpAlliN9LS+5Te5JtYT39A/TiyoyB8XKmASUz4g1q2BctvOdEhorPQUonmWoFuGrlx80ipywHXQirK7s1eThXvxaPIZLoedas58ZwoXC3MX5SYe9AxW3XqJQr2JLBxwW/GdfiXUdNYvu9LthB9BzOJgyJq+NWUasLLWbqmAe0=
+	t=1739459009; cv=none; b=eyWTr0oUuquaZxGz3C/prieDr2o1KxRX1SQPipXBwoCcWJGjBJIdY1uqNwZMgRSOonx/v8uYv8rpqucVyWXZ3Tybo99HnEDeYv+3CgQBK8xZan6amnmWurMIPVsIHvIeVFOdfL3Tw5uzcX8zQkOdbhQzG45OSZUF0pBlxq4Qyhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457570; c=relaxed/simple;
-	bh=DJ5u3NWB/OY3rQagS7X7AlEuOiAW6ZKH/36ybRwGBmI=;
+	s=arc-20240116; t=1739459009; c=relaxed/simple;
+	bh=id3ts1IgoliR0XUlSFes/4q5CNJoVoOY3s3s1afIfX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2pbe04HiBttiYG+nmQ6Eia83kJxyw3lcBcg3OcKMKvEcXZZBAn0qMnWZ6BRiP6qHUwMv+deCX6bBmv/w2hTcM99N05pmKHG7+cb0uG55jQedFPqSH1AZvVbIXkaLm36gZ1maWieosfIjGc/Tv5Ge6bxw4aQlAel9Mfcr6HHwRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaEmkJT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF160C4CEE4;
-	Thu, 13 Feb 2025 14:39:28 +0000 (UTC)
+	 MIME-Version; b=gVGCklhlOq48rCXhiLgG46RYcj/qQtIYs7OAJNi8PoLB/uQxpXSiJqFgSOTz6xgDy7g7UcLt6PDWiQLTRzsDockLpzCbVovzDmjssy/kRmGsx8uQmVhjpXUEk4M9rlNJ5wLd8KtLjHLxgKSHBrjhNTiZrsdo9rRyvLrJB0I8LDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqOe2f1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FF9C4CED1;
+	Thu, 13 Feb 2025 15:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457569;
-	bh=DJ5u3NWB/OY3rQagS7X7AlEuOiAW6ZKH/36ybRwGBmI=;
+	s=korg; t=1739459009;
+	bh=id3ts1IgoliR0XUlSFes/4q5CNJoVoOY3s3s1afIfX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaEmkJT5LRnBygx7lMmnq+jobJ+drTia8PPe5nvBSSn6YiBX9GMdHShA50lUTqHck
-	 YutPUFYo7W9HVLGRgCEDgP8WNwJ0JvI9LuSgzv6/1ROR1AZ4BdyFb8j4ugs0EDEy4h
-	 At6cPz0HzdwFBWCyGMYHGVPx7hpWX0aHsDgYbLFo=
+	b=fqOe2f1EmJArNtYJ+TfXkR03ZKHv3S3C0OkaTXebR+2oPdnwxWsiIaohIu2kMssqs
+	 Y258cl+ta+qL4jbrj0Y3R/2sq2Hv50B1Pwrth3NXZEzC3b82UJ6h57LUcFyNjDFqn6
+	 OUCCOLoThBBE/vpoWohgmCs431fGPbBARda7yKpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Chris Zhong <zyw@rock-chips.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	Sandy Huang <hjc@rock-chips.com>,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH 6.12 149/422] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
-Date: Thu, 13 Feb 2025 15:24:58 +0100
-Message-ID: <20250213142442.297407023@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 134/443] x86/xen: add FRAME_END to xen_hypercall_hvm()
+Date: Thu, 13 Feb 2025 15:24:59 +0100
+Message-ID: <20250213142445.776444353@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Juergen Gross <jgross@suse.com>
 
-commit 666e1960464140cc4bc9203c203097e70b54c95a upstream.
+[ Upstream commit 0bd797b801bd8ee06c822844e20d73aaea0878dd ]
 
-The code for detecting and updating the connector status in
-cdn_dp_pd_event_work() has a number of problems.
+xen_hypercall_hvm() is missing a FRAME_END at the end, add it.
 
-- It does not aquire the locks to call the detect helper and update
-the connector status. These are struct drm_mode_config.connection_mutex
-and struct drm_mode_config.mutex.
-
-- It does not use drm_helper_probe_detect(), which helps with the
-details of locking and detection.
-
-- It uses the connector's status field to determine a change to
-the connector status. The epoch_counter field is the correct one. The
-field signals a change even if the connector status' value did not
-change.
-
-Replace the code with a call to drm_connector_helper_hpd_irq_event(),
-which fixes all these problems.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
-Cc: Chris Zhong <zyw@rock-chips.com>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Sandy Huang <hjc@rock-chips.com>
-Cc: "Heiko Stübner" <heiko@sntech.de>
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v4.11+
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502030848.HTNTTuo9-lkp@intel.com/
+Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/x86/xen/xen-head.S | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -947,9 +947,6 @@ static void cdn_dp_pd_event_work(struct
- {
- 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
- 						event_work);
--	struct drm_connector *connector = &dp->connector;
--	enum drm_connector_status old_status;
--
- 	int ret;
- 
- 	mutex_lock(&dp->lock);
-@@ -1009,11 +1006,7 @@ static void cdn_dp_pd_event_work(struct
- 
- out:
- 	mutex_unlock(&dp->lock);
--
--	old_status = connector->status;
--	connector->status = connector->funcs->detect(connector, false);
--	if (old_status != connector->status)
--		drm_kms_helper_hotplug_event(dp->drm_dev);
-+	drm_connector_helper_hpd_irq_event(&dp->connector);
- }
- 
- static int cdn_dp_pd_event(struct notifier_block *nb,
+diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
+index 72f28d66e0e52..4e481b0eefc96 100644
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -132,6 +132,7 @@ SYM_FUNC_START(xen_hypercall_hvm)
+ 	pop %rcx
+ 	pop %rax
+ #endif
++	FRAME_END
+ 	/* Use correct hypercall function. */
+ 	jz xen_hypercall_amd
+ 	jmp xen_hypercall_intel
+-- 
+2.39.5
+
 
 
 
