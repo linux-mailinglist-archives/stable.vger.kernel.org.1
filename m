@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F20CA34418
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E75A34759
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D02FB16F3CB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8B4718949A0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF762661AD;
-	Thu, 13 Feb 2025 14:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9201547F0;
+	Thu, 13 Feb 2025 15:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPsvpH25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYugKXAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DC32A1D1;
-	Thu, 13 Feb 2025 14:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA47126B0BD;
+	Thu, 13 Feb 2025 15:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458240; cv=none; b=UArAiLRcH0sfqUnAV919xGJquB90XgW3solh1DMjvwWZe8JcTHV1RQGbprZUD6PaMPuS+Em4KnmxmcjtrsNrKU2brF9zXnzCi54cc19bP2O++JBSluIldleWV1hBgYGzQQDHM08F9gxqhLgrATXfL/F5TQLxhRPY6k0GiBsUwew=
+	t=1739460467; cv=none; b=Qy1Xc1ZWUN06vulqUgEzK5uFvlj6j0J1bY5fKk/3uC+t9XlHQGUY8wl2i/eo9vobzs8RZxp3mwKCV2Ly9ewsyai1+ntFshzay1SqQi3ItaR1TsGyfOYepZWn9R13+3B4qLtYAPc2iP3xJFhU1PzPgT8hwMwUm9Pc1Lhq0g8zUFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458240; c=relaxed/simple;
-	bh=NECLSObHoS7zeUidH5DrmMCVm4FUDTsiLBpX1ENv/+I=;
+	s=arc-20240116; t=1739460467; c=relaxed/simple;
+	bh=zm040RkMbMnejHO/F4p6IBXJ1UMoGaW3pvu/5CJ0rz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQds2SGOuPt+nCzNhm+U90HKGuSIjDy6aU/SXuw+r1nYYRby04JSAXhwwcY9gk2YZLTTyGGMFj+zdTTJ0ajC81akGbs45EJCvjFW2ZxnIOYqUFWw8nvX/0O2U0JdCPk4loxlZezlrQu1pKsebHxo0yH+BXwHGXuXCg9zF9l8/j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPsvpH25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75793C4CED1;
-	Thu, 13 Feb 2025 14:50:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YkONsYwaUyFVx1PCUoNjdUjlGu4DPtdXeybH4FEekytyGmYh5CYwvEScKnpFretM4uTzTZoFjXC0OpISnr8Ct9kUIeJ0KA9kv5Figzz2kTglu7hC4V3GfFAZ9fM6xnFzVtkGYGyZ2zCpdyAe4yHUBRIHsd6yLrRVm6NeWh7WcaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYugKXAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F00C4CED1;
+	Thu, 13 Feb 2025 15:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458239;
-	bh=NECLSObHoS7zeUidH5DrmMCVm4FUDTsiLBpX1ENv/+I=;
+	s=korg; t=1739460467;
+	bh=zm040RkMbMnejHO/F4p6IBXJ1UMoGaW3pvu/5CJ0rz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPsvpH25b3zDWkvnxIvDQx5hCIw1HaRNoARvtrMrs4UqfYtiN0aeqDlcPg89kp9jA
-	 mVl7ohDntN2V6qewbg/QZZ0M/eEkmyaI2YnUB4up5IfrHaUxfOCuK9yBudXGd9cp3Q
-	 QP+tamu3p/OeY5NmegwQ++oJEv/1kdHEm4OSprgU=
+	b=SYugKXASE6g0aKtnyOpIWhM9je2htqkJlfCO0PwSRPd/sJgtbXCL1LRVpSEEl4W5I
+	 bHkb5eAUVcJ5E20e363JH68CTQ0si5/UiTjR3Er+4JUB1ryBCXpFknSIPeNZY0uXX1
+	 8r5DH21LFOfhc4m6C56vPLct1c1MNrnBS1zrCZCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 342/422] mm/vmscan: accumulate nr_demoted for accurate demotion statistics
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.6 119/273] blk-cgroup: Fix class @block_classs subsystem refcount leakage
 Date: Thu, 13 Feb 2025 15:28:11 +0100
-Message-ID: <20250213142449.752680518@linuxfoundation.org>
+Message-ID: <20250213142412.046934943@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit a479b078fddb0ad7f9e3c6da22d9cf8f2b5c7799 upstream.
+commit d1248436cbef1f924c04255367ff4845ccd9025e upstream.
 
-In shrink_folio_list(), demote_folio_list() can be called 2 times.
-Currently stat->nr_demoted will only store the last nr_demoted( the later
-nr_demoted is always zero, the former nr_demoted will get lost), as a
-result number of demoted pages is not accurate.
+blkcg_fill_root_iostats() iterates over @block_class's devices by
+class_dev_iter_(init|next)(), but does not end iterating with
+class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
 
-Accumulate the nr_demoted count across multiple calls to
-demote_folio_list(), ensuring accurate reporting of demotion statistics.
+Fix by ending the iterating with class_dev_iter_exit().
 
-[lizhijian@fujitsu.com: introduce local nr_demoted to fix nr_reclaimed double counting]
-  Link: https://lkml.kernel.org/r/20250111015253.425693-1-lizhijian@fujitsu.com
-Link: https://lkml.kernel.org/r/20250110122133.423481-1-lizhijian@fujitsu.com
-Fixes: f77f0c751478 ("mm,memcg: provide per-cgroup counters for NUMA balancing operations")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Acked-by: Kaiyang Zhao <kaiyang2@cs.cmu.edu>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250105-class_fix-v6-2-3a2f1768d4d4@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block/blk-cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1053,7 +1053,7 @@ static unsigned int shrink_folio_list(st
- 	struct folio_batch free_folios;
- 	LIST_HEAD(ret_folios);
- 	LIST_HEAD(demote_folios);
--	unsigned int nr_reclaimed = 0;
-+	unsigned int nr_reclaimed = 0, nr_demoted = 0;
- 	unsigned int pgactivate = 0;
- 	bool do_demote_pass;
- 	struct swap_iocb *plug = NULL;
-@@ -1522,8 +1522,9 @@ keep:
- 	/* 'folio_list' is always empty here */
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1139,6 +1139,7 @@ static void blkcg_fill_root_iostats(void
+ 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
+ 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
+ 	}
++	class_dev_iter_exit(&iter);
+ }
  
- 	/* Migrate folios selected for demotion */
--	stat->nr_demoted = demote_folio_list(&demote_folios, pgdat);
--	nr_reclaimed += stat->nr_demoted;
-+	nr_demoted = demote_folio_list(&demote_folios, pgdat);
-+	nr_reclaimed += nr_demoted;
-+	stat->nr_demoted += nr_demoted;
- 	/* Folios that could not be demoted are still in @demote_folios */
- 	if (!list_empty(&demote_folios)) {
- 		/* Folios which weren't demoted go back on @folio_list */
+ static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
 
 
 
