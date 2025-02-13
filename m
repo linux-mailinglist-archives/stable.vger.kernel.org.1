@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A8CA34773
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAF4A34484
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1032A3AE000
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDF53B025B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21D6159596;
-	Thu, 13 Feb 2025 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38023A9B2;
+	Thu, 13 Feb 2025 14:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zu3iY3ws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWV8Md4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E06926B0B4;
-	Thu, 13 Feb 2025 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0854B2222C5;
+	Thu, 13 Feb 2025 14:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460445; cv=none; b=BHrgLtEh48vqajbf9J1/gaK/KTXVjCqw7Aw0vRK7UrlLiBCEA7Dmo1x4SjBweYoxji34WIh+mj6IJ3jTO1icdu0/lCrJr5PCZPZXJ6ryHqjHPiPBgXeN9t75BP8F9JrD/ODOCrB8sF6EDHNia6T8u+Q2K94OCSLBw7S5L30QZoo=
+	t=1739458334; cv=none; b=PmmLAjG9t5D6CGOq6i3xJWLrqmSMOE7zSJcYzvEFBys+ryza6LzgILHUasQkF1GSVmyfKhgDnr5HIUJIh823BgMPpYCV//Z47mCTGVIemSspUyOb7moEIsNqw9FfFDEGIkXPr8I2GFVJOuqLM6vZmYSn4ibBT4fQfx7DDFcuH78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460445; c=relaxed/simple;
-	bh=vnQICQvIKrqbyVo29+V5cCwkUkoh8spZM52nxOAM8cI=;
+	s=arc-20240116; t=1739458334; c=relaxed/simple;
+	bh=siGVTLvTSr4ClUOhW8STcb1PXbsnV337JQpq9sNy0x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkNBSw2xV2UjOIsUywSfzF0A9Oii4+XPrnCluTrjapHP+Ck42Mu5XDgEXaWpg/0ghS/aFfGzH+7LIjpzxE44VYshqWfy07kT9vfO+smDsh7YBfrvl1c/rV2vlKnDH8+9dmJAuoo3mx0yxMUT+cadAOeHWSgs2BwTwbNlepSU7YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zu3iY3ws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81316C4CEE4;
-	Thu, 13 Feb 2025 15:27:24 +0000 (UTC)
+	 MIME-Version; b=GWp4cnfmvvvXZPSVPiQPm0WLaWhJ64BJHu/njQRAbdXSRfMNedO1y0S3MLRLv5PSdwz0/GOojYTcnfRlaIXyYZolCBanZv8KvAvb0OxJ+Qkg0xqNz/MhZvNI1X6dMOauohBGjOQHP3jxpGyD/f1GuwhfPMKQbzDW4tWHMD7Ngpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWV8Md4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78939C4CEE4;
+	Thu, 13 Feb 2025 14:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460445;
-	bh=vnQICQvIKrqbyVo29+V5cCwkUkoh8spZM52nxOAM8cI=;
+	s=korg; t=1739458333;
+	bh=siGVTLvTSr4ClUOhW8STcb1PXbsnV337JQpq9sNy0x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zu3iY3wsh7fx4G89DY63uLlESwRLAfzPDGM6vmeY/a8kphExkgB321Xb6ijxDtJ9z
-	 X3XaZqlonqvoYIiv+num+sfHwg15dSmm+u2zJIbR+QC0helTWUY1/uGG6NU7OXz7JQ
-	 W5HqSX5joRKNDc/9Yu+LCdPk59xVINXTRa3Kaysw=
+	b=tWV8Md4k3R9D5xa4LD7YAhswtaHw60enFiu+5gibVkHfIGfyZmkVVtuIeE4GtqL0s
+	 CEjkuMWFU8gunckpApHj8vIFPRMJksd/cVTCeuZ/Ml9JsHuH5wO9D3WEytFX3fWNtw
+	 Nehd9plK/zwkTlaon2HGMAhUcVD0quYvlX3/eqwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 115/273] clk: mediatek: mt2701-aud: fix conversion to mtk_clk_simple_probe
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 338/422] media: uvcvideo: Remove redundant NULL assignment
 Date: Thu, 13 Feb 2025 15:28:07 +0100
-Message-ID: <20250213142411.888552971@linuxfoundation.org>
+Message-ID: <20250213142449.599512594@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 5fba40be5fbad563914e3ce9d5129a6baaea1ff5 upstream.
+commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
 
-Some of the audio subsystem clocks defined in clk-mt2701.h aren't
-actually used by the driver. This broke conversion to
-mtk_clk_simple_probe which expects that the highest possible clk id is
-defined by the ARRAY_SIZE.
+ctrl->handle will only be different than NULL for controls that have
+mappings. This is because that assignment is only done inside
+uvc_ctrl_set() for mapped controls.
 
-Add additional dummy clocks to fill the gaps and remain compatible with
-the existing DT bindings.
-
-Fixes: 0f69a423c458 ("clk: mediatek: Switch to mtk_clk_simple_probe() where possible")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/a07584d803af57b9ce4b5df5e122c09bf5a56ac9.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-aud.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/clk/mediatek/clk-mt2701-aud.c
-+++ b/drivers/clk/mediatek/clk-mt2701-aud.c
-@@ -55,10 +55,16 @@ static const struct mtk_gate audio_clks[
- 	GATE_DUMMY(CLK_DUMMY, "aud_dummy"),
- 	/* AUDIO0 */
- 	GATE_AUDIO0(CLK_AUD_AFE, "audio_afe", "aud_intbus_sel", 2),
-+	GATE_DUMMY(CLK_AUD_LRCK_DETECT, "audio_lrck_detect_dummy"),
-+	GATE_DUMMY(CLK_AUD_I2S, "audio_i2c_dummy"),
-+	GATE_DUMMY(CLK_AUD_APLL_TUNER, "audio_apll_tuner_dummy"),
- 	GATE_AUDIO0(CLK_AUD_HDMI, "audio_hdmi", "audpll_sel", 20),
- 	GATE_AUDIO0(CLK_AUD_SPDF, "audio_spdf", "audpll_sel", 21),
- 	GATE_AUDIO0(CLK_AUD_SPDF2, "audio_spdf2", "audpll_sel", 22),
- 	GATE_AUDIO0(CLK_AUD_APLL, "audio_apll", "audpll_sel", 23),
-+	GATE_DUMMY(CLK_AUD_TML, "audio_tml_dummy"),
-+	GATE_DUMMY(CLK_AUD_AHB_IDLE_EXT, "audio_ahb_idle_ext_dummy"),
-+	GATE_DUMMY(CLK_AUD_AHB_IDLE_INT, "audio_ahb_idle_int_dummy"),
- 	/* AUDIO1 */
- 	GATE_AUDIO1(CLK_AUD_I2SIN1, "audio_i2sin1", "aud_mux1_sel", 0),
- 	GATE_AUDIO1(CLK_AUD_I2SIN2, "audio_i2sin2", "aud_mux1_sel", 1),
-@@ -76,10 +82,12 @@ static const struct mtk_gate audio_clks[
- 	GATE_AUDIO1(CLK_AUD_ASRCI2, "audio_asrci2", "asm_h_sel", 13),
- 	GATE_AUDIO1(CLK_AUD_ASRCO1, "audio_asrco1", "asm_h_sel", 14),
- 	GATE_AUDIO1(CLK_AUD_ASRCO2, "audio_asrco2", "asm_h_sel", 15),
-+	GATE_DUMMY(CLK_AUD_HDMIRX, "audio_hdmirx_dummy"),
- 	GATE_AUDIO1(CLK_AUD_INTDIR, "audio_intdir", "intdir_sel", 20),
- 	GATE_AUDIO1(CLK_AUD_A1SYS, "audio_a1sys", "aud_mux1_sel", 21),
- 	GATE_AUDIO1(CLK_AUD_A2SYS, "audio_a2sys", "aud_mux2_sel", 22),
- 	GATE_AUDIO1(CLK_AUD_AFE_CONN, "audio_afe_conn", "aud_mux1_sel", 23),
-+	GATE_DUMMY(CLK_AUD_AFE_PCMIF, "audio_afe_pcmif_dummy"),
- 	GATE_AUDIO1(CLK_AUD_AFE_MRGIF, "audio_afe_mrgif", "aud_mux1_sel", 25),
- 	/* AUDIO2 */
- 	GATE_AUDIO2(CLK_AUD_MMIF_UL1, "audio_ul1", "aud_mux1_sel", 0),
-@@ -100,6 +108,8 @@ static const struct mtk_gate audio_clks[
- 	GATE_AUDIO2(CLK_AUD_MMIF_AWB2, "audio_awb2", "aud_mux1_sel", 15),
- 	GATE_AUDIO2(CLK_AUD_MMIF_DAI, "audio_dai", "aud_mux1_sel", 16),
- 	/* AUDIO3 */
-+	GATE_DUMMY(CLK_AUD_DMIC1, "audio_dmic1_dummy"),
-+	GATE_DUMMY(CLK_AUD_DMIC2, "audio_dmic2_dummy"),
- 	GATE_AUDIO3(CLK_AUD_ASRCI3, "audio_asrci3", "asm_h_sel", 2),
- 	GATE_AUDIO3(CLK_AUD_ASRCI4, "audio_asrci4", "asm_h_sel", 3),
- 	GATE_AUDIO3(CLK_AUD_ASRCI5, "audio_asrci5", "asm_h_sel", 4),
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1640,10 +1640,8 @@ bool uvc_ctrl_status_event_async(struct
+ 	struct uvc_device *dev = chain->dev;
+ 	struct uvc_ctrl_work *w = &dev->async_ctrl;
+ 
+-	if (list_empty(&ctrl->info.mappings)) {
+-		ctrl->handle = NULL;
++	if (list_empty(&ctrl->info.mappings))
+ 		return false;
+-	}
+ 
+ 	w->data = data;
+ 	w->urb = urb;
 
 
 
