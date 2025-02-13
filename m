@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6049BA344C5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AFEA34392
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238267A4256
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67B7D3A258C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A5A1422D8;
-	Thu, 13 Feb 2025 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AF523F400;
+	Thu, 13 Feb 2025 14:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAUOFE6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ulhz8cKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118CC26B080;
-	Thu, 13 Feb 2025 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDA0271284;
+	Thu, 13 Feb 2025 14:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459304; cv=none; b=MJNr0SaxyKAHCxaVgEiOrCr3q5H8Hs9DaUGLCiAxrQAXy0dg1djaMtuEn2h3q573rC3KeVjsRK4kvzi525LYr9aQ1/kIwiwp1hG8gpif6etw6/YkJIAgAWd/osdMRYRnzDkGenVd4c3m8xVm1QloxCMjm/EAH+pgFLv+eScxp54=
+	t=1739457883; cv=none; b=AuZzTCPpOPIE+RLKGkJN8LpvcfW4FlEGLssahDJkIUs77JTLxDGzFKqtpsH9LrZnZZmsf/oxORksQKlbO4sqooFn1BAZn6gsuTI416rxJAN3sGzy/Rg8N3W8k8wVNKw2V0C9yKcfLdfdXAkmHjvIwSRJNXMUt00XJ8JHg6dizDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459304; c=relaxed/simple;
-	bh=PmRKJ78pADVz6UHpjGG1ceJLdh+QYvbgb91LTYUJoTs=;
+	s=arc-20240116; t=1739457883; c=relaxed/simple;
+	bh=sWjBNdSNTa9mF3gbFgkwEpnSIWUqx7Mx7yIZP3wq9gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5aMoakgij8X84HEkbDB5gZhDP5imXweWpxa6JKXwTavWFtcioVG6mCnRXVNA/X9kSW9ot/NjtSxMev99ToHS9XMyTZlTunk4L/yhqYo5F/hooOnnF16zeAGbnIPNA55URMHabB/nEY9h9xJbiPi77gEIsp8pF9Rmo70J/zhoKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAUOFE6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73115C4CED1;
-	Thu, 13 Feb 2025 15:08:23 +0000 (UTC)
+	 MIME-Version; b=iQdkVQ3fMXpp/hegnKnJF1Fs63Fr8bFIa8XHvc/cWxDSGPcxKn+m+MV/BX/MQlMQOQV/OuhaSLoe8VOWoDZe4zQqEFPEaOWsssnAiRqTSCNzmoa7BzGd/sAB8xbZCJR4kMdQ71Li2D1yLKdCCbYS+WsbH3pLA1WvmoNwlnZVzik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ulhz8cKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8632DC4CEE9;
+	Thu, 13 Feb 2025 14:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459303;
-	bh=PmRKJ78pADVz6UHpjGG1ceJLdh+QYvbgb91LTYUJoTs=;
+	s=korg; t=1739457883;
+	bh=sWjBNdSNTa9mF3gbFgkwEpnSIWUqx7Mx7yIZP3wq9gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAUOFE6BFlQF9uPQUvZ3DOT7tJg7H/hW/iIuuOqwRIcABraJMhad84XNwd9M7dhNx
-	 sVgCUHdGXPwO3NMDh2BYEuozYaaloyasqD0Pgk0dfYVYGdnu3appy5SqtT4LYmWZ6P
-	 n8SePvTItwOqWT+guzCo4UcfngY6gccfFfu+UsJ0=
+	b=Ulhz8cKYGBabp+YM3YRcaLP/Hsg6N8BmMUBpP1W2KRc5VCLf+RRux98tHYGsjCIxL
+	 ab9K46BhRF6KVEc4Rrj+nUoOTXsCQzupR1dngCZgdC9eY5etZpG7+xRs40Ih0ZszF3
+	 I/Pa6JYsyatYDa5bMGiYeHdhQleeFgCg1MaaA6Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.13 225/443] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 241/422] firmware: qcom: scm: Fix missing read barrier in qcom_scm_get_tzmem_pool()
 Date: Thu, 13 Feb 2025 15:26:30 +0100
-Message-ID: <20250213142449.294330767@linuxfoundation.org>
+Message-ID: <20250213142445.836605414@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 68abd0c4ebf24cd499841a488b97a6873d5efabb upstream.
+commit b628510397b5cafa1f5d3e848a28affd1c635302 upstream.
 
-On removal of the device or unloading of the kernel module a potential NULL
-pointer dereference occurs.
+Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
+completion variable initialization") introduced a write barrier in probe
+function to store global '__scm' variable.  We all known barriers are
+paired (see memory-barriers.txt: "Note that write barriers should
+normally be paired with read or address-dependency barriers"), therefore
+accessing it from concurrent contexts requires read barrier.  Previous
+commit added such barrier in qcom_scm_is_available(), so let's use that
+directly.
 
-The following sequence deletes the interface:
+Lack of this read barrier can result in fetching stale '__scm' variable
+value, NULL, and dereferencing it.
 
-  brcmf_detach()
-    brcmf_remove_interface()
-      brcmf_del_if()
+Note that barrier in qcom_scm_is_available() satisfies here the control
+dependency.
 
-Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-
-After brcmf_remove_interface() call the brcmf_proto_detach() function is
-called providing the following sequence:
-
-  brcmf_detach()
-    brcmf_proto_detach()
-      brcmf_proto_msgbuf_detach()
-        brcmf_flowring_detach()
-          brcmf_msgbuf_delete_flowring()
-            brcmf_msgbuf_remove_flowring()
-              brcmf_flowring_delete()
-                brcmf_get_ifp()
-                brcmf_txfinalize()
-
-Since brcmf_get_ip() can and actually will return NULL in this case the
-call to brcmf_txfinalize() will result in a NULL pointer dereference inside
-brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
-
-This will only happen if a flowring still has an skb.
-
-Although the NULL pointer dereference has only been seen when trying to
-update the tx statistic, all other uses of the ifp pointer have been
-guarded as well with an early return if ifp is NULL.
-
+Fixes: ca61d6836e6f ("firmware: qcom: scm: fix a NULL-pointer dereference")
+Fixes: 449d0d84bcd8 ("firmware: qcom: scm: smc: switch to using the SCM allocator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250116132240.731039-1-marcel.hamer@windriver.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-2-9061013c8d92@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/firmware/qcom/qcom_scm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -540,6 +540,11 @@ void brcmf_txfinalize(struct brcmf_if *i
- 	struct ethhdr *eh;
- 	u16 type;
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index cde60566c793..4a1c05a7bf20 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -217,7 +217,10 @@ static DEFINE_SPINLOCK(scm_query_lock);
  
-+	if (!ifp) {
-+		brcmu_pkt_buf_free_skb(txp);
-+		return;
-+	}
+ struct qcom_tzmem_pool *qcom_scm_get_tzmem_pool(void)
+ {
+-	return __scm ? __scm->mempool : NULL;
++	if (!qcom_scm_is_available())
++		return NULL;
 +
- 	eh = (struct ethhdr *)(txp->data);
- 	type = ntohs(eh->h_proto);
++	return __scm->mempool;
+ }
  
+ static enum qcom_scm_convention __get_convention(void)
+-- 
+2.48.1
+
 
 
 
