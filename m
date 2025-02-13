@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-116148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F5EA3476B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F67A3461B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26511189326B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADDE618972BC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C36156F3C;
-	Thu, 13 Feb 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA7B26B096;
+	Thu, 13 Feb 2025 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QySuolh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rl9GdYf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C014A605;
-	Thu, 13 Feb 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFD926B0AD;
+	Thu, 13 Feb 2025 15:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460491; cv=none; b=ceKzF2VV7mckETs1TH9Q1WpbCNuyDSwCS9WoDe2ud/DdKeZwfjJu+qxe68CEfg09AqpKvPSwqmGaVqUofQdBJff3Sfg5vBhDIah1FfXq4mGMpA3hiBb58IansRiL/TVhr6u3OwP5ulP7VJ7TWff4hfAk5VTYon042DC7X6vHI0M=
+	t=1739459685; cv=none; b=CxAESpnwrrYbPSZNdl03/oLhLVDq9RwjkA+JEMtMbEfK2f2yQkOcOVVShck7BRAFZI+WMuf6Dw59O4IxLLUdaVhOoDcUCorNf5kUHearis4p5EyQTyTVTkpvOjovbOloSDk0/oZslN3MyjKZZyAt4gBdtHaPkBcJNXVWCf05T7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460491; c=relaxed/simple;
-	bh=qzdZfEN7UWyP6BCERglfjsBedg6p/15xp+aGc3UB8YA=;
+	s=arc-20240116; t=1739459685; c=relaxed/simple;
+	bh=JIQLqqe532Z8U7l2eQnzmDNhxVoAY30D/c6VhgvZ+Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgFhQ1ZNOrjC++eOnv/aLX4Fm43zXVykjPQtJIR39mhH+1WL31vL5809KFC1ARkdfZUg/dRJHFi4yEVdpdXZ1y/vwtdehqOQr1R3upl2PwQkbnyLk5w/Q/5x/oV/7Srg9WRR5uyQu5iJsjzuXk9IFB8DLxzk0wsP4eYFIhuvaKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QySuolh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE51C4CED1;
-	Thu, 13 Feb 2025 15:28:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tDmCGeZDUFEof/OXdV5NUGMrFTS5UUorslHBq8r7fgwc6R2s8vSOaapP3GxWLQHzwfVrYqUAnjiFnWtWExqZQS4vxOg72YYBPXrnu+iubUzx+pcxuH7dAAX9PhLoUTGOnEhNJfEP+1OwpkPiPKi3EOgj9LDWGnMLZFR/WK9LXJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rl9GdYf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373CDC4CEE4;
+	Thu, 13 Feb 2025 15:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460491;
-	bh=qzdZfEN7UWyP6BCERglfjsBedg6p/15xp+aGc3UB8YA=;
+	s=korg; t=1739459685;
+	bh=JIQLqqe532Z8U7l2eQnzmDNhxVoAY30D/c6VhgvZ+Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QySuolh7GwwMciwCrK+K2PRNxYEO/MCbywb1OkCNW0Xnlg/rj8Qg5z+6Om96F+kIW
-	 stX5kEMvJvxK8O1TMqLVGoSqyMqutrN2OehAnQYj+sfFbavWrx7/sxA2BxWikndUpE
-	 YSbcfb6YaX+VuW5FeWKHLhpKP9R/8szsVQ9gu6Fo=
+	b=Rl9GdYf+N50aRhleujrWCRNrZpIpJX+7wNhpyUJR1LQ85G7wyCOXfwjip9JOROrJo
+	 M+19gvTo1LIT1QC8GgtJHtwS3/ztpxSYVZPDMG5kgMuDYQ+6AS3WKncaSKF7IjbbBu
+	 hPt+T7IFDl2fWTmKjXTrnNYRRD8MC6fvSXQAx4sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 126/273] HID: hid-sensor-hub: dont use stale platform-data on remove
-Date: Thu, 13 Feb 2025 15:28:18 +0100
-Message-ID: <20250213142412.320515530@linuxfoundation.org>
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.13 334/443] accel/ivpu: Fix error handling in recovery/reset
+Date: Thu, 13 Feb 2025 15:28:19 +0100
+Message-ID: <20250213142453.513558138@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
+commit 41a2d8286c905614f29007f1bc8e652d54654b82 upstream.
 
-The hid-sensor-hub creates the individual device structs and transfers them
-to the created mfd platform-devices via the platform_data in the mfd_cell.
+Disable runtime PM for the duration of reset/recovery so it is possible
+to set the correct runtime PM state depending on the outcome of the
+`ivpu_resume()`. Don’t suspend or reset the HW if the NPU is suspended
+when the reset/recovery is requested. Also, move common reset/recovery
+code to separate functions for better code readability.
 
-Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-the sensor-hub was managing access centrally, with one "completion" in the
-hub's data structure, which needed to be finished on removal at the latest.
-
-The mentioned commit then moved this central management to each hid sensor
-device, resulting on a completion in each struct hid_sensor_hub_device.
-The remove procedure was adapted to go through all sensor devices and
-finish any pending "completion".
-
-What this didn't take into account was, platform_device_add_data() that is
-used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
-platform-data. So the data the platform-device gets is a copy of the
-original data, meaning that the device worked on a different completion
-than what sensor_hub_remove() currently wants to access.
-
-To fix that, use device_for_each_child() to go through each child-device
-similar to how mfd_remove_devices() unregisters the devices later and
-with that get the live platform_data to finalize the correct completion.
-
-Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 27d19268cf39 ("accel/ivpu: Improve recovery and reset support")
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250129124009.1039982-4-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/accel/ivpu/ivpu_pm.c |   79 +++++++++++++++++++++++--------------------
+ 1 file changed, 43 insertions(+), 36 deletions(-)
 
---- a/drivers/hid/hid-sensor-hub.c
-+++ b/drivers/hid/hid-sensor-hub.c
-@@ -730,23 +730,30 @@ err_stop_hw:
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -115,41 +115,57 @@ err_power_down:
  	return ret;
  }
  
-+static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
-+{
-+	struct hid_sensor_hub_device *hsdev = dev->platform_data;
-+
-+	if (hsdev->pending.status)
-+		complete(&hsdev->pending.ready);
-+
-+	return 0;
+-static void ivpu_pm_recovery_work(struct work_struct *work)
++static void ivpu_pm_reset_begin(struct ivpu_device *vdev)
+ {
+-	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
+-	struct ivpu_device *vdev = pm->vdev;
+-	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
+-	int ret;
+-
+-	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
+-
+-	ret = pm_runtime_resume_and_get(vdev->drm.dev);
+-	if (ret)
+-		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
+-
+-	ivpu_jsm_state_dump(vdev);
+-	ivpu_dev_coredump(vdev);
++	pm_runtime_disable(vdev->drm.dev);
+ 
+ 	atomic_inc(&vdev->pm->reset_counter);
+ 	atomic_set(&vdev->pm->reset_pending, 1);
+ 	down_write(&vdev->pm->reset_lock);
 +}
 +
- static void sensor_hub_remove(struct hid_device *hdev)
- {
- 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
- 	unsigned long flags;
--	int i;
++static void ivpu_pm_reset_complete(struct ivpu_device *vdev)
++{
++	int ret;
  
- 	hid_dbg(hdev, " hardware removed\n");
- 	hid_hw_close(hdev);
- 	hid_hw_stop(hdev);
+-	ivpu_suspend(vdev);
+ 	ivpu_pm_prepare_cold_boot(vdev);
+ 	ivpu_jobs_abort_all(vdev);
+ 	ivpu_ms_cleanup_all(vdev);
+ 
+ 	ret = ivpu_resume(vdev);
+-	if (ret)
++	if (ret) {
+ 		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
++		pm_runtime_set_suspended(vdev->drm.dev);
++	} else {
++		pm_runtime_set_active(vdev->drm.dev);
++	}
+ 
+ 	up_write(&vdev->pm->reset_lock);
+ 	atomic_set(&vdev->pm->reset_pending, 0);
+ 
+-	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
+ 	pm_runtime_mark_last_busy(vdev->drm.dev);
+-	pm_runtime_put_autosuspend(vdev->drm.dev);
++	pm_runtime_enable(vdev->drm.dev);
++}
 +
- 	spin_lock_irqsave(&data->lock, flags);
--	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
--		struct hid_sensor_hub_device *hsdev =
--			data->hid_sensor_hub_client_devs[i].platform_data;
--		if (hsdev->pending.status)
--			complete(&hsdev->pending.ready);
--	}
-+	device_for_each_child(&hdev->dev, NULL,
-+			      sensor_hub_finalize_pending_fn);
- 	spin_unlock_irqrestore(&data->lock, flags);
++static void ivpu_pm_recovery_work(struct work_struct *work)
++{
++	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
++	struct ivpu_device *vdev = pm->vdev;
++	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
 +
- 	mfd_remove_devices(&hdev->dev);
- 	mutex_destroy(&data->mutex);
++	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
++
++	ivpu_pm_reset_begin(vdev);
++
++	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
++		ivpu_jsm_state_dump(vdev);
++		ivpu_dev_coredump(vdev);
++		ivpu_suspend(vdev);
++	}
++
++	ivpu_pm_reset_complete(vdev);
++
++	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
  }
+ 
+ void ivpu_pm_trigger_recovery(struct ivpu_device *vdev, const char *reason)
+@@ -328,16 +344,13 @@ void ivpu_pm_reset_prepare_cb(struct pci
+ 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
+ 
+ 	ivpu_dbg(vdev, PM, "Pre-reset..\n");
+-	atomic_inc(&vdev->pm->reset_counter);
+-	atomic_set(&vdev->pm->reset_pending, 1);
+ 
+-	pm_runtime_get_sync(vdev->drm.dev);
+-	down_write(&vdev->pm->reset_lock);
+-	ivpu_prepare_for_reset(vdev);
+-	ivpu_hw_reset(vdev);
+-	ivpu_pm_prepare_cold_boot(vdev);
+-	ivpu_jobs_abort_all(vdev);
+-	ivpu_ms_cleanup_all(vdev);
++	ivpu_pm_reset_begin(vdev);
++
++	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
++		ivpu_prepare_for_reset(vdev);
++		ivpu_hw_reset(vdev);
++	}
+ 
+ 	ivpu_dbg(vdev, PM, "Pre-reset done.\n");
+ }
+@@ -345,18 +358,12 @@ void ivpu_pm_reset_prepare_cb(struct pci
+ void ivpu_pm_reset_done_cb(struct pci_dev *pdev)
+ {
+ 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
+-	int ret;
+ 
+ 	ivpu_dbg(vdev, PM, "Post-reset..\n");
+-	ret = ivpu_resume(vdev);
+-	if (ret)
+-		ivpu_err(vdev, "Failed to set RESUME state: %d\n", ret);
+-	up_write(&vdev->pm->reset_lock);
+-	atomic_set(&vdev->pm->reset_pending, 0);
+-	ivpu_dbg(vdev, PM, "Post-reset done.\n");
+ 
+-	pm_runtime_mark_last_busy(vdev->drm.dev);
+-	pm_runtime_put_autosuspend(vdev->drm.dev);
++	ivpu_pm_reset_complete(vdev);
++
++	ivpu_dbg(vdev, PM, "Post-reset done.\n");
+ }
+ 
+ void ivpu_pm_init(struct ivpu_device *vdev)
 
 
 
