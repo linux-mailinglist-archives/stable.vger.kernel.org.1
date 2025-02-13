@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-115394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568FCA3438F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776D2A3465E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B3918953A9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE023B59C7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E812E2661A2;
-	Thu, 13 Feb 2025 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFBF1514F6;
+	Thu, 13 Feb 2025 15:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krjq6Uh0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OchVjRcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CE226619A;
-	Thu, 13 Feb 2025 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370C8148855;
+	Thu, 13 Feb 2025 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457896; cv=none; b=cZ2lyhak1z5ech43Zzz8mT+o8sM1drcGbSo7X+tqwdPW2W77yu0/vpxL6AIk69eOJ8deU4cHUpFCpzgRR6yc2QEVmAq3qoJ1Ttx+do4YEbDy7cECcIc+0L9hKVI04yOtMIzoBNagg85BGMHXV688AODTWlGOJfg7WtpZtMwEFGE=
+	t=1739459321; cv=none; b=P81eRF0ponlXBCv567JnoJ1UY3fDZZsn05JqVbZjdOylK07qZxDaI8wNyWJpREVFoIIATqoWhXaHrbyQhRDdpBNcl9VxZKV5hTaLHo32k3Yxsr5+BkcOJpynGKj9zlxFNbUe0fwK1zBvxETmKTtBy9K4SP1gFD0IbmGbfL4t3aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457896; c=relaxed/simple;
-	bh=xnYucc3aD7QkW4Jc/L70zGQMM6D1KjhNXdhGNrmozWw=;
+	s=arc-20240116; t=1739459321; c=relaxed/simple;
+	bh=mpO+wJ2a/ZCMN5YzWIyLStl+UItoi0geKGFXildanYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFXl1B57IQNn0Gl90Of8SZN2N1zGhwQY0ieOmfGh5eNIks8ZwhKfYNnJoUlGIDBWX77CtF40BLhWHv1PxtKUda/v62Nw5erY4aUmYMdfDp6bCdKlaf6SrzTZFc+I2lswHptnNS1bM/F974OClSWcrIWe6IZ/iCFlVOEHRV+r0n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krjq6Uh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10851C4CEE7;
-	Thu, 13 Feb 2025 14:44:55 +0000 (UTC)
+	 MIME-Version; b=dIpOan8BaeCM6MSyrOQVMBU7lf1GJcJ8oj/6BZrkrVAwh3P5yNplCt5gRKnkGziUuDu0WKR6O/O3274aS7V9Nve1aJCBGzWn4aH18kl2E2PKlBReWNhfM0CN6FAXbR+FW7Rg9QqVMvN5f5ycJFY2I3ifI6VRKQ1O3ex6fzJF9H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OchVjRcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FB9C4CEE5;
+	Thu, 13 Feb 2025 15:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457896;
-	bh=xnYucc3aD7QkW4Jc/L70zGQMM6D1KjhNXdhGNrmozWw=;
+	s=korg; t=1739459320;
+	bh=mpO+wJ2a/ZCMN5YzWIyLStl+UItoi0geKGFXildanYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krjq6Uh0JcaBTkHClEk3fgT7vbGyoW1uIjSUil0DVOyxhSvCcv+6vv2cK0BEh7CSn
-	 rBNSk8elMD8UHOF94zHc1ashCa7nMYWoRzSXMijTyLWLYNblIaTLh/sN+YBCeFfoS7
-	 qkfcqIuj4EY+UR4EsLGtQezAXZ29dOztxlyqdmqo=
+	b=OchVjRcOzWgbwKsm84W69sWjLZmQff2Qfdn7UlnCWe8pKToYm6qXh+qhZQTmYKBRc
+	 Sdm/AQDTiw9Lz9VBRd9NzbXP8RRJkbA1oRRDFoPQ1BB2kiPtkonEzBBkt6Lj/ZqwOR
+	 LGd/LAdAranB0YmqJalyIBNZpxH8WJHK19gfw1qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brad Griffis <bgriffis@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.12 245/422] arm64: tegra: Fix Tegra234 PCIe interrupt-map
-Date: Thu, 13 Feb 2025 15:26:34 +0100
-Message-ID: <20250213142445.991675377@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.13 230/443] usb: gadget: f_tcm: Translate error to sense
+Date: Thu, 13 Feb 2025 15:26:35 +0100
+Message-ID: <20250213142449.489793165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brad Griffis <bgriffis@nvidia.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit b615fbd70fce8582d92b3bdbbf3c9b80cadcfb55 upstream.
+commit 98fa00fd3ae43b857b4976984a135483d89d9281 upstream.
 
-For interrupt-map entries, the DTS specification requires
-that #address-cells is defined for both the child node and the
-interrupt parent.  For the PCIe interrupt-map entries, the parent
-node ("gic") has not specified #address-cells. The existing layout
-of the PCIe interrupt-map entries indicates that it assumes
-that #address-cells is zero for this node.
+When respond with check_condition error status, clear from_transport
+input so the target layer can translate the sense reason reported by
+f_tcm.
 
-Explicitly set #address-cells to zero for "gic" so that it complies
-with the device tree specification.
-
-NVIDIA EDK2 works around this issue by assuming #address-cells
-is zero in this scenario, but that workaround is being removed and so
-this update is needed or else NVIDIA EDK2 cannot successfully parse the
-device tree and the board cannot boot.
-
-Fixes: ec142c44b026 ("arm64: tegra: Add P2U and PCIe controller nodes to Tegra234 DT")
-Signed-off-by: Brad Griffis <bgriffis@nvidia.com>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241213235602.452303-1-bgriffis@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/b2a5577efe7abd0af0051229622cf7d3be5cdcd0.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_tcm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -4018,6 +4018,8 @@
- 			#redistributor-regions = <1>;
- 			#interrupt-cells = <3>;
- 			interrupt-controller;
-+
-+			#address-cells = <0>;
- 		};
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1065,7 +1065,7 @@ static void usbg_cmd_work(struct work_st
  
- 		smmu_iso: iommu@10000000 {
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++			TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
+ 
+ static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
+@@ -1193,7 +1193,7 @@ static void bot_cmd_work(struct work_str
+ 
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+-				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
++				TCM_UNSUPPORTED_SCSI_OPCODE, 0);
+ }
+ 
+ static int bot_submit_command(struct f_uas *fu,
 
 
 
