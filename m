@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DDBA3460A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6917A347A8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B7F16E78C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACAD03AB4E5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBDB26B0BC;
-	Thu, 13 Feb 2025 15:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945891411DE;
+	Thu, 13 Feb 2025 15:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkh/mxfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqGHk8t7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCBE26B091;
-	Thu, 13 Feb 2025 15:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D3626B087;
+	Thu, 13 Feb 2025 15:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459743; cv=none; b=L4e+d39VxOeH3pLss5cGVJbpsZD0y5RPAQlyzd2DUek5AdBJV/ISchweYIN1gH/drkKmL9XpaVIs8rCb95hYqVNctSqv/2Fj10MicSAvdZPtFcgdEtXj6Cc5/7Ujdmice9wiDjiC9AZFc3PGaitXD7D/xZleW6KbTT00IT5LIZQ=
+	t=1739460552; cv=none; b=gylO3VyaozCXuytn/YukFy7uQo4DWVrERv/MXzOFeA9YowAqxg7GHMto+R11C8axaEYhaHgp1iQFRjTfdTLTd6sObasXbDL8Bc6fPMHu9KGPNeoym0ScjMposc37uqQ/ef6YRrTjqf7wZG7s/bxxFJlccl9kXvvB4JsTYvA/E2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459743; c=relaxed/simple;
-	bh=13taCr/vGDYemdj4RRMSPEibCtiSALsCR1jB9BF2LRE=;
+	s=arc-20240116; t=1739460552; c=relaxed/simple;
+	bh=57m4QCEGfRd+7TK+26AJEo9zS3CsZEYJuirvpGk24PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9e2pMKgV5XZWMQakj+DEbh4Nx1E2GCQ/EIzOHOD8k609AXwMxjyCti7zU8QtLkkidZ4xSAEfJzm5d2XqE5AvIrnRbkjYdVfKwGImtj4Z65MuSB6xoywIDOiObv4cmHtye+Gv7TS9j5p7EnaFc3FtJgR2rMxETdu1tiC+5N+36g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkh/mxfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A8AC4CED1;
-	Thu, 13 Feb 2025 15:15:42 +0000 (UTC)
+	 MIME-Version; b=bKozQrNbJ0lBpzaB5gWN0c1WIPgY3z9dq7Q8BNICmzS+VOkRnCvivBGHgH2r8C9G8+6UlsFzj/LcLJ7N36BwbfcRG/sowp0cVsSqZlbCjcnE9ngpVi4v1nBVDmVaAOQzz5y4OQoTVCcvrTaABgsFWcx+LvMMrU9vddNZ9C2tU0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqGHk8t7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B557FC4CED1;
+	Thu, 13 Feb 2025 15:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459743;
-	bh=13taCr/vGDYemdj4RRMSPEibCtiSALsCR1jB9BF2LRE=;
+	s=korg; t=1739460552;
+	bh=57m4QCEGfRd+7TK+26AJEo9zS3CsZEYJuirvpGk24PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkh/mxfv9WC35Y0O2hFiJIrVRKDdB/CbnmGJr5mwR25x2rPFOi3nR8BxX2+G2BVlm
-	 PzWG1wkx9NZbLbvAh0klIJbGJJ0jVC7ziUU1K+XG0qU8sZSe+hmV72SjsMYyzHO4Vq
-	 7CFLa7cJkZVO379ThwVsmNQRzLDY+hh8a14Ogc2k=
+	b=AqGHk8t7rZlq/sLPjiNXhpbGesR3P/LnJ+amyaxm0DqVMt859rplfq3m2SMH99wAm
+	 DVImBUEPhxhCX88pnw32sEF1zIAPOMtCe09zlI5iGT+XX/UslrIC5WkUjEFbZbhjhU
+	 AKfvTfhD3BwO8REF2FNlp3UZuYyiAVXqwQnvXhds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.13 352/443] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.6 145/273] serial: sh-sci: Drop __initdata macro for port_cfg
 Date: Thu, 13 Feb 2025 15:28:37 +0100
-Message-ID: <20250213142454.200762598@linuxfoundation.org>
+Message-ID: <20250213142413.064458696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit c0eb059a4575ed57f265d9883a5203799c19982c upstream.
+commit eaeee4225dba30bef4d424bdf134a07b7f423e8b upstream.
 
-Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
-Smatch:
+The port_cfg object is used by serial_console_write(), which serves as
+the write function for the earlycon device. Marking port_cfg as __initdata
+causes it to be freed after kernel initialization, resulting in earlycon
+becoming unavailable thereafter. Remove the __initdata macro from port_cfg
+to resolve this issue.
 
-  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
-
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 0b0cced19ab15c9e ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Link: https://lore.kernel.org/r/20250116182249.3828577-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/tty/serial/sh-sci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -273,23 +273,31 @@ static int mtk_devapc_probe(struct platf
- 		return -EINVAL;
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3503,7 +3503,7 @@ sh_early_platform_init_buffer("earlyprin
+ 			   early_serial_buf, ARRAY_SIZE(early_serial_buf));
+ #endif
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+-static struct plat_sci_port port_cfg __initdata;
++static struct plat_sci_port port_cfg;
  
- 	devapc_irq = irq_of_parse_and_map(node, 0);
--	if (!devapc_irq)
--		return -EINVAL;
-+	if (!devapc_irq) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
--	if (IS_ERR(ctx->infra_clk))
--		return -EINVAL;
-+	if (IS_ERR(ctx->infra_clk)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
- 			       IRQF_TRIGGER_NONE, "devapc", ctx);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	platform_set_drvdata(pdev, ctx);
- 
- 	start_devapc(ctx);
- 
- 	return 0;
-+
-+err:
-+	iounmap(ctx->infra_base);
-+	return ret;
- }
- 
- static void mtk_devapc_remove(struct platform_device *pdev)
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
 
 
 
