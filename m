@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B1DA345C5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26C5A34258
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E2A1897AC6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E73B16B7FA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387EF189913;
-	Thu, 13 Feb 2025 14:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC0A21D3C3;
+	Thu, 13 Feb 2025 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/RfVwlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lh+EVhpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94DE13B58A;
-	Thu, 13 Feb 2025 14:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FCA281349;
+	Thu, 13 Feb 2025 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458698; cv=none; b=PY4T1QHYUjitohXUknIPqE1Y3kEHZzqz1AcgN43THR4FJ2on32kHdk9LLOCmc3jWq+aw6DZbZMSQK5V2fH+g3i//vahV38Tlx5LbWKvuZkM0g3PISP9NEABeyeXcr2esIFw4ZsqUAj9IBvOfnddMUkDxff1o9g+xYWGk/h3rB84=
+	t=1739457282; cv=none; b=Dx/HlRg9qayf5legm+Am4V5Q5lj5Cge/bsVstur7VqHBhr8gzNZlbpiXcPb5pBNSKwCxWumcVMeoO4e9F8SOoootIUWZLWzvhOxctSAvlRvOP1qRgPm5XqDXwYOfJWmsLo2TCbnxOoGkpbSrq8eO6BOWMTQTd0DcpNn3AFKFoDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458698; c=relaxed/simple;
-	bh=q7IFpJ6caSxRCGnLgOYUn22c7JHN9q2/3hjwT9d0qSQ=;
+	s=arc-20240116; t=1739457282; c=relaxed/simple;
+	bh=N5IFDKjA1VQ0vB41AqsybVRtnJJuEYH8AmIV3KNoyEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dibpeOQPi9c+hBHfmQDbIwqt9WtpudRqFeeq40rfJJOhCZXNllkGZtruIgSDPy3PAEGrDrCdvtOLunRdGmPS/ry0R3I2aFiW+OlwntOVnHXGs9Mx43FIRgQG1VOWBqwEVzkHUDJhbriiFfCd4x+LqahKNvpUeo7e4R8POg9wz+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/RfVwlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64604C4CEE4;
-	Thu, 13 Feb 2025 14:58:17 +0000 (UTC)
+	 MIME-Version; b=EolWkTRLLZzZcB5Vzf/yPPJ/nB7sSdoKZwJB0u0BwuUVI2gsEDpTdtX2jWQvroMP9la24Ks1a8XhPW+oyxzJ2qGjlRr3p6wfNvidI6ac5v1p7IQtXz9Jq8tRCfFgf8tTEXM+IXAIZafb4QBAS/Yhs4wuCN0C7G2VLOLjrk37rws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lh+EVhpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26BBC4CEE8;
+	Thu, 13 Feb 2025 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458697;
-	bh=q7IFpJ6caSxRCGnLgOYUn22c7JHN9q2/3hjwT9d0qSQ=;
+	s=korg; t=1739457282;
+	bh=N5IFDKjA1VQ0vB41AqsybVRtnJJuEYH8AmIV3KNoyEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/RfVwlOyAYQFsRxBlFgMWCAWebUlIut8V2cHNtpP1bf7aajWcWivdGMAYy2pzjhc
-	 Qoq2L2HX2fnUxHlXGEL+CFh4mvlPZ41oOAg5/H1zOI0wqnacjBYMfwLWwyFLuxM7s/
-	 QoxlIMkAIjVT6zczect0Orbb8NvWI6N2XmNZ2LxQ=
+	b=Lh+EVhpPHukFxki/fKyBNEFN0wxoq1RN0ZpM9PgH6BHewUwBTPPxJIe8U/1jyMCmk
+	 o39hTKzbqn1s1dpBuMs9x7n3OVoTulX0kW3MjUGUujoqIEjmialGiMEV0NpLNmuowp
+	 IHCEfP7cnIaiJCIbdgCXrJIaRo43+Hh0UFGfSvnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 052/443] ring-buffer: Make reading page consistent with the code logic
+Subject: [PATCH 6.12 068/422] net: wwan: iosm: Fix hibernation by re-binding the driver around it
 Date: Thu, 13 Feb 2025 15:23:37 +0100
-Message-ID: <20250213142442.629283453@linuxfoundation.org>
+Message-ID: <20250213142439.184099718@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-[ Upstream commit 6e31b759b076eebb4184117234f0c4eb9e4bc460 ]
+[ Upstream commit 0b6f6593aa8c3a05f155c12fd0e7ad33a5149c31 ]
 
-In the loop of __rb_map_vma(), the 's' variable is calculated from the
-same logic that nr_pages is and they both come from nr_subbufs. But the
-relationship is not obvious and there's a WARN_ON_ONCE() around the 's'
-variable to make sure it never becomes equal to nr_subbufs within the
-loop. If that happens, then the code is buggy and needs to be fixed.
+Currently, the driver is seriously broken with respect to the
+hibernation (S4): after image restore the device is back into
+IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
+full re-launch of the rest of its firmware, but the driver restore
+handler treats the device as merely sleeping and just sends it a
+wake-up command.
 
-The 'page' variable is calculated from cpu_buffer->subbuf_ids[s] which is
-an array of 'nr_subbufs' entries. If the code becomes buggy and 's'
-becomes equal to or greater than 'nr_subbufs' then this will be an out of
-bounds hit before the WARN_ON() is triggered and the code exiting safely.
+This wake-up command times out but device nodes (/dev/wwan*) remain
+accessible.
+However attempting to use them causes the bootloader to crash and
+enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a crash
+dump is ready").
 
-Make the 'page' initialization consistent with the code logic and assign
-it after the out of bounds check.
+It seems that the device cannot be re-initialized from this crashed
+stage without toggling some reset pin (on my test platform that's
+apparently what the device _RST ACPI method does).
 
-Link: https://lore.kernel.org/20250110162612.13983-1-aha310510@gmail.com
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-[ sdr: rewrote change log ]
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+While it would theoretically be possible to rewrite the driver to tear
+down the whole MUX / IPC layers on hibernation (so the bootloader does
+not crash from improper access) and then re-launch the device on
+restore this would require significant refactoring of the driver
+(believe me, I've tried), since there are quite a few assumptions
+hard-coded in the driver about the device never being partially
+de-initialized (like channels other than devlink cannot be closed,
+for example).
+Probably this would also need some programming guide for this hardware.
+
+Considering that the driver seems orphaned [1] and other people are
+hitting this issue too [2] fix it by simply unbinding the PCI driver
+before hibernation and re-binding it after restore, much like
+USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
+problem.
+
+Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses
+the existing suspend / resume handlers) and S4 (which uses the new code).
+
+[1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bdebb@leemhuis.info/
+[2]:
+https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804139413
+
+Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Link: https://patch.msgid.link/e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wwan/iosm/iosm_ipc_pcie.c | 56 ++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 60210fb5b2110..6804ab126802b 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7059,7 +7059,7 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
- 	}
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+index 04517bd3325a2..a066977af0be5 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+@@ -6,6 +6,7 @@
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
++#include <linux/suspend.h>
+ #include <net/rtnetlink.h>
  
- 	while (p < nr_pages) {
--		struct page *page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
-+		struct page *page;
- 		int off = 0;
+ #include "iosm_ipc_imem.h"
+@@ -18,6 +19,7 @@ MODULE_LICENSE("GPL v2");
+ /* WWAN GUID */
+ static guid_t wwan_acpi_guid = GUID_INIT(0xbad01b75, 0x22a8, 0x4f48, 0x87, 0x92,
+ 				       0xbd, 0xde, 0x94, 0x67, 0x74, 0x7d);
++static bool pci_registered;
  
- 		if (WARN_ON_ONCE(s >= nr_subbufs)) {
-@@ -7067,6 +7067,8 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
- 			goto out;
- 		}
+ static void ipc_pcie_resources_release(struct iosm_pcie *ipc_pcie)
+ {
+@@ -448,7 +450,6 @@ static struct pci_driver iosm_ipc_driver = {
+ 	},
+ 	.id_table = iosm_ipc_ids,
+ };
+-module_pci_driver(iosm_ipc_driver);
  
-+		page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
+ int ipc_pcie_addr_map(struct iosm_pcie *ipc_pcie, unsigned char *data,
+ 		      size_t size, dma_addr_t *mapping, int direction)
+@@ -530,3 +531,56 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
+ 	IPC_CB(skb)->mapping = 0;
+ 	dev_kfree_skb(skb);
+ }
 +
- 		for (; off < (1 << (subbuf_order)); off++, page++) {
- 			if (p >= nr_pages)
- 				break;
++static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
++{
++	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
++		if (pci_registered) {
++			pci_unregister_driver(&iosm_ipc_driver);
++			pci_registered = false;
++		}
++	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
++		if (!pci_registered) {
++			int ret;
++
++			ret = pci_register_driver(&iosm_ipc_driver);
++			if (ret) {
++				pr_err(KBUILD_MODNAME ": unable to re-register PCI driver: %d\n",
++				       ret);
++			} else {
++				pci_registered = true;
++			}
++		}
++	}
++
++	return 0;
++}
++
++static struct notifier_block pm_notifier = {
++	.notifier_call = pm_notify,
++};
++
++static int __init iosm_ipc_driver_init(void)
++{
++	int ret;
++
++	ret = pci_register_driver(&iosm_ipc_driver);
++	if (ret)
++		return ret;
++
++	pci_registered = true;
++
++	register_pm_notifier(&pm_notifier);
++
++	return 0;
++}
++module_init(iosm_ipc_driver_init);
++
++static void __exit iosm_ipc_driver_exit(void)
++{
++	unregister_pm_notifier(&pm_notifier);
++
++	if (pci_registered)
++		pci_unregister_driver(&iosm_ipc_driver);
++}
++module_exit(iosm_ipc_driver_exit);
 -- 
 2.39.5
 
