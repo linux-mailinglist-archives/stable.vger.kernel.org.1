@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773ECA343B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5672DA3458D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1189D170794
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E822F16F95E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562B723A9BD;
-	Thu, 13 Feb 2025 14:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C7526B097;
+	Thu, 13 Feb 2025 15:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bDbORWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX2v0BSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C713D8A4;
-	Thu, 13 Feb 2025 14:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC5E26B094;
+	Thu, 13 Feb 2025 15:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458035; cv=none; b=ReILDjrD24LEYDn8s7GCXei0ISwGppVJrLW20CcRaLRujvAETnQd0B6OV8GjCnCtzPmG2efKC5LUg5fv+2GnloTEpyQtukLQx2u6Y/3Oq9IUcdU/Q+qDWdnlfRKggeLkS9FlP/mt46Tr/5c/tUUEnQtgs5mL5oog1IVVp5F+eeU=
+	t=1739459387; cv=none; b=S7dveBnEgUAFoXj9SWb6DsjItUhT5LcU2dCcLJ+7Fxjn2QMYOL757BLf5so3fzjJciwUHg/pYMYzZcbLTbrgWmkEmqIqHGoMYOtGKj4LP0dqjJKLgJ+RAhUJp0/6r9cPOayE5GAvLGqUPrJbUelYPj3IrN6dRycHH1Mqjc0OzwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458035; c=relaxed/simple;
-	bh=y1z3XLTsJPjsQRRreAYi1ECW8Pr7A8fFVeBiJIuNRPo=;
+	s=arc-20240116; t=1739459387; c=relaxed/simple;
+	bh=1Z0S3Bana4ifBDTTjiHrGdslO/fcrYU6VMonpaTeQVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZCw9TMBiZuCZZVZbZLaaXT8djcy+Pf2ksY00pgNk+pg9lj6fTW7GDzbk3i/HDeGJ2MAqfe5AhdWv1K6fGXcToYWoyuTjR4+2xjbo9Hbw0luFy6IHcOILMXyg2feCVmlo0KS0NkqpRrq7SjzdDF/5E2FyoLLQmhOkK95Ne3gIig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bDbORWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65540C4CED1;
-	Thu, 13 Feb 2025 14:47:14 +0000 (UTC)
+	 MIME-Version; b=LdY708IQXrDQXXa2CbKnB3L0runTewzyHoa2tle5BkgUOBV6oAoEHUUNU/CpHoS9XfCg05yhffbTgUcOxDYfRQD7o2I+8272NBxesMt7KAAOT613gO5GkcrSAImW+8VkG+nA3qdaVmfqQw2eSn0cnSjMLJKK6t4TRNn8JWN2vDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EX2v0BSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09F2C4CED1;
+	Thu, 13 Feb 2025 15:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458034;
-	bh=y1z3XLTsJPjsQRRreAYi1ECW8Pr7A8fFVeBiJIuNRPo=;
+	s=korg; t=1739459387;
+	bh=1Z0S3Bana4ifBDTTjiHrGdslO/fcrYU6VMonpaTeQVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bDbORWXCPPMfsfnFRfWyO/4puvuiluJG7mJPH5jOnSBvLdhs845nP0UFQtpmmSmM
-	 L18u6N8M7L1HZX6FoAmvQiB4c5nBhRngWLmVvUJq9yMHatw9TIm0oyKr6VJq5teVA+
-	 7gYeoos2QBd3C/WzX0FtjfQXY0H+YznIBg5ud41U=
+	b=EX2v0BSq9d8w4RwVaI1iSLVlrhx+8HvuP0KuF7W1ei/hYl7gO5OvNr/M3wN0RhAx2
+	 X0MkSr1wRPh2Fxn6aO3R7oJb6Qon4S3Hn7/eYthLOj4+eMuQ+Oy8STDcji+pAsaO5Z
+	 CWgxveVotc/hRG+gjp6gKp0nc724XryrMuiOlurg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.12 265/422] ubi: Add a check for ubi_num
-Date: Thu, 13 Feb 2025 15:26:54 +0100
-Message-ID: <20250213142446.767490068@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 250/443] ASoC: renesas: rz-ssi: Add a check for negative sample_space
+Date: Thu, 13 Feb 2025 15:26:55 +0100
+Message-ID: <20250213142450.262617955@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 97bbf9e312c3fbaf0baa56120238825d2eb23b8a upstream.
+commit 82a0a3e6f8c02b3236b55e784a083fa4ee07c321 upstream.
 
-Added a check for ubi_num for negative numbers
-If the variable ubi_num takes negative values then we get:
+My static checker rule complains about this code.  The concern is that
+if "sample_space" is negative then the "sample_space >= runtime->channels"
+condition will not work as intended because it will be type promoted to a
+high unsigned int value.
 
-qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
-[    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
-[    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
-[    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
-[    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
-[    0.745600]  kernel_init from ret_from_fork+0x14/0x28
-[    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
+strm->fifo_sample_size is SSI_FIFO_DEPTH (32).  The SSIFSR_TDC_MASK is
+0x3f.  Without any further context it does seem like a reasonable warning
+and it can't hurt to add a check for negatives.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
 Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: 03e786bd4341 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/e07c3dc5-d885-4b04-a742-71f42243f4fd@stanley.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/build.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/renesas/rz-ssi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -1537,7 +1537,7 @@ static int ubi_mtd_param_parse(const cha
- 	if (token) {
- 		int err = kstrtoint(token, 10, &p->ubi_num);
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -526,6 +526,8 @@ static int rz_ssi_pio_send(struct rz_ssi
+ 	sample_space = strm->fifo_sample_size;
+ 	ssifsr = rz_ssi_reg_readl(ssi, SSIFSR);
+ 	sample_space -= (ssifsr >> SSIFSR_TDC_SHIFT) & SSIFSR_TDC_MASK;
++	if (sample_space < 0)
++		return -EINVAL;
  
--		if (err) {
-+		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
- 			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
- 			       token);
- 			return -EINVAL;
+ 	/* Only add full frames at a time */
+ 	while (frames_left && (sample_space >= runtime->channels)) {
 
 
 
