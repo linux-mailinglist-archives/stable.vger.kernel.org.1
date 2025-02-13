@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-115687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE28A345C6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F1DA342B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28D21893505
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 530837A60C8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2711547C5;
-	Thu, 13 Feb 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163182222BB;
+	Thu, 13 Feb 2025 14:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdH1OrUw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZ1DQxf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFBF1547E3;
-	Thu, 13 Feb 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B1F281360;
+	Thu, 13 Feb 2025 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458902; cv=none; b=uAN6B7TwRZPZy8Aab+Gn8tP+x4HPidXuk9zd/UXQdr+6S2K9LiTO09mEy5n8PQ5fchOx0D1QpUlzTOC1qI2N1oyvBj6YColta1FNwmqHaZGTGwk6DH6NVtQnDy/46luKJ0P6aDw3uYic2X4mzX1Pez5Mudyfqni5ODGtxQKDvYc=
+	t=1739457604; cv=none; b=IbVGAf5NHwg0NJZE3LoRMqxEQBpTJtQYWeNqsaochDZkqDGnwkSnwmoWx+buy9U6ogwbwygt1HAOkXiBZa6a9kWVhdvBWRhXe91rxLrQhSbcOoXVGlWVlkZiayfr52PzoHZwPodK6BHdlCcYDdJbHgp0m/zz+QcRs/lqQe7ACFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458902; c=relaxed/simple;
-	bh=VZr1Ro/Kguo7fHajJ8+DynOsMAKJFtfDJw9i0jt542M=;
+	s=arc-20240116; t=1739457604; c=relaxed/simple;
+	bh=gTkoNHz8gXb1m0pGruHn6H0scb8Q1uoqRwr403n9DTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nn4OvQ9MF7EGmSymIjieX5LnHDuotc/SCptz++LkZlK/pryA2K74zSSh6sCPhaEZfmmaAF30iw+VPr+V2+yIs32PLJrte+Wv7+AKyURjtaaLbg2FDsRqCdupR9iKDVhOX5gGSsStdS9QU3WgU5pNUDAE5HQ/FbnGc/rfqeUCPUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdH1OrUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72494C4CEE4;
-	Thu, 13 Feb 2025 15:01:41 +0000 (UTC)
+	 MIME-Version; b=hz0549VFv8QjIdWZUZB9lwKBb1bNQUsYLDK40g0KVFZZ23XYpq7U2xW/zEanpRufKQ1XW1LfkbdcHWhKKXqDuVrvgC2whQtbVm0sPw6nSa6Q6WbBjzbBzi2IHjENwH/ZNZj4Lo4bqzLze6RYDEIFwFHIWNADetX9pWWkGiWtU7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZ1DQxf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A9FC4CED1;
+	Thu, 13 Feb 2025 14:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458902;
-	bh=VZr1Ro/Kguo7fHajJ8+DynOsMAKJFtfDJw9i0jt542M=;
+	s=korg; t=1739457604;
+	bh=gTkoNHz8gXb1m0pGruHn6H0scb8Q1uoqRwr403n9DTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdH1OrUw9Y4c1QCfQ9KwKIKhjh4YH4JH5lPibhVlvhBrKUSsqwFY/12KKWkNXWgFM
-	 OufcdPaJaU2S29VRBmpKfp8ChDnr0lVJNNnGt5hioTFYPfQIgvfCjJN6ieEFCOHmx9
-	 CzPxmB6ipqLqHiiWL8n1hxcSc1F//HApu/a2fLK8=
+	b=wZ1DQxf53MHqzpsBn2AHhsvVn+iYHN7hp7IfMLIBrcR4pxs5uE4yXxWsTWNBLMmxT
+	 5t1G2zVWFeS1JHCm/AyXsmHfCUFkwZLCx60q1l398hpzQhjs+C5f8QbjzZ1toCe/nk
+	 ymq8b87m4QvmD3Qy/WydDrW2ubkg9Mhdva8ww8pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Xu Du <xudu@redhat.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.13 111/443] ice: gather page_count()s of each frag right before XDP prog call
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 127/422] rxrpc: Fix call state set to not include the SERVER_SECURING state
 Date: Thu, 13 Feb 2025 15:24:36 +0100
-Message-ID: <20250213142444.893306397@linuxfoundation.org>
+Message-ID: <20250213142441.448670901@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +65,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 11c4aa074d547d825b19cd8d9f288254d89d805c ]
+[ Upstream commit 41b996ce83bf944de5569d6263c8dbd5513e7ed0 ]
 
-If we store the pgcnt on few fragments while being in the middle of
-gathering the whole frame and we stumbled upon DD bit not being set, we
-terminate the NAPI Rx processing loop and come back later on. Then on
-next NAPI execution we work on previously stored pgcnt.
+The RXRPC_CALL_SERVER_SECURING state doesn't really belong with the other
+states in the call's state set as the other states govern the call's Rx/Tx
+phase transition and govern when packets can and can't be received or
+transmitted.  The "Securing" state doesn't actually govern the reception of
+packets and would need to be split depending on whether or not we've
+received the last packet yet (to mirror RECV_REQUEST/ACK_REQUEST).
 
-Imagine that second half of page was used actively by networking stack
-and by the time we came back, stack is not busy with this page anymore
-and decremented the refcnt. The page reuse algorithm in this case should
-be good to reuse the page but given the old refcnt it will not do so and
-attempt to release the page via page_frag_cache_drain() with
-pagecnt_bias used as an arg. This in turn will result in negative refcnt
-on struct page, which was initially observed by Xu Du.
+The "Securing" state is more about whether or not we can start forwarding
+packets to the application as recvmsg will need to decode them and the
+decoding can't take place until the challenge/response exchange has
+completed.
 
-Therefore, move the page count storage from ice_get_rx_buf() to a place
-where we are sure that whole frame has been collected, but before
-calling XDP program as it internally can also change the page count of
-fragments belonging to xdp_buff.
+Fix this by removing the RXRPC_CALL_SERVER_SECURING state from the state
+set and, instead, using a flag, RXRPC_CALL_CONN_CHALLENGING, to track
+whether or not we can queue the call for reception by recvmsg() or notify
+the kernel app that data is ready.  In the event that we've already
+received all the packets, the connection event handler will poke the app
+layer in the appropriate manner.
 
-Fixes: ac0753391195 ("ice: Store page count inside ice_rx_buf")
-Reported-and-tested-by: Xu Du <xudu@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Also there's a race whereby the app layer sees the last packet before rxrpc
+has managed to end the rx phase and change the state to one amenable to
+allowing a reply.  Fix this by queuing the packet after calling
+rxrpc_end_rx_phase().
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250204230558.712536-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 27 ++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ net/rxrpc/ar-internal.h | 2 +-
+ net/rxrpc/call_object.c | 6 ++----
+ net/rxrpc/conn_event.c  | 4 +---
+ net/rxrpc/input.c       | 2 +-
+ net/rxrpc/sendmsg.c     | 2 +-
+ 5 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index e173d9c989883..cf46bcf143b4b 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -924,7 +924,6 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	struct ice_rx_buf *rx_buf;
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index d0fd37bdcfe9c..6b036c0564c7a 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -567,6 +567,7 @@ enum rxrpc_call_flag {
+ 	RXRPC_CALL_EXCLUSIVE,		/* The call uses a once-only connection */
+ 	RXRPC_CALL_RX_IS_IDLE,		/* recvmsg() is idle - send an ACK */
+ 	RXRPC_CALL_RECVMSG_READ_ALL,	/* recvmsg() read all of the received data */
++	RXRPC_CALL_CONN_CHALLENGING,	/* The connection is being challenged */
+ };
  
- 	rx_buf = &rx_ring->rx_buf[ntc];
--	rx_buf->pgcnt = page_count(rx_buf->page);
- 	prefetchw(rx_buf->page);
+ /*
+@@ -587,7 +588,6 @@ enum rxrpc_call_state {
+ 	RXRPC_CALL_CLIENT_AWAIT_REPLY,	/* - client awaiting reply */
+ 	RXRPC_CALL_CLIENT_RECV_REPLY,	/* - client receiving reply phase */
+ 	RXRPC_CALL_SERVER_PREALLOC,	/* - service preallocation */
+-	RXRPC_CALL_SERVER_SECURING,	/* - server securing request connection */
+ 	RXRPC_CALL_SERVER_RECV_REQUEST,	/* - server receiving request */
+ 	RXRPC_CALL_SERVER_ACK_REQUEST,	/* - server pending ACK of request */
+ 	RXRPC_CALL_SERVER_SEND_REPLY,	/* - server sending reply */
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index f9e983a12c149..e379a2a9375ae 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -22,7 +22,6 @@ const char *const rxrpc_call_states[NR__RXRPC_CALL_STATES] = {
+ 	[RXRPC_CALL_CLIENT_AWAIT_REPLY]		= "ClAwtRpl",
+ 	[RXRPC_CALL_CLIENT_RECV_REPLY]		= "ClRcvRpl",
+ 	[RXRPC_CALL_SERVER_PREALLOC]		= "SvPrealc",
+-	[RXRPC_CALL_SERVER_SECURING]		= "SvSecure",
+ 	[RXRPC_CALL_SERVER_RECV_REQUEST]	= "SvRcvReq",
+ 	[RXRPC_CALL_SERVER_ACK_REQUEST]		= "SvAckReq",
+ 	[RXRPC_CALL_SERVER_SEND_REPLY]		= "SvSndRpl",
+@@ -453,17 +452,16 @@ void rxrpc_incoming_call(struct rxrpc_sock *rx,
+ 	call->cong_tstamp	= skb->tstamp;
  
- 	if (!size)
-@@ -940,6 +939,31 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	return rx_buf;
+ 	__set_bit(RXRPC_CALL_EXPOSED, &call->flags);
+-	rxrpc_set_call_state(call, RXRPC_CALL_SERVER_SECURING);
++	rxrpc_set_call_state(call, RXRPC_CALL_SERVER_RECV_REQUEST);
+ 
+ 	spin_lock(&conn->state_lock);
+ 
+ 	switch (conn->state) {
+ 	case RXRPC_CONN_SERVICE_UNSECURED:
+ 	case RXRPC_CONN_SERVICE_CHALLENGING:
+-		rxrpc_set_call_state(call, RXRPC_CALL_SERVER_SECURING);
++		__set_bit(RXRPC_CALL_CONN_CHALLENGING, &call->flags);
+ 		break;
+ 	case RXRPC_CONN_SERVICE:
+-		rxrpc_set_call_state(call, RXRPC_CALL_SERVER_RECV_REQUEST);
+ 		break;
+ 
+ 	case RXRPC_CONN_ABORTED:
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index ca5e694ab858b..c4eb7986efddf 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -222,10 +222,8 @@ static void rxrpc_abort_calls(struct rxrpc_connection *conn)
+  */
+ static void rxrpc_call_is_secure(struct rxrpc_call *call)
+ {
+-	if (call && __rxrpc_call_state(call) == RXRPC_CALL_SERVER_SECURING) {
+-		rxrpc_set_call_state(call, RXRPC_CALL_SERVER_RECV_REQUEST);
++	if (call && __test_and_clear_bit(RXRPC_CALL_CONN_CHALLENGING, &call->flags))
+ 		rxrpc_notify_socket(call);
+-	}
  }
  
-+/**
-+ * ice_get_pgcnts - grab page_count() for gathered fragments
-+ * @rx_ring: Rx descriptor ring to store the page counts on
-+ *
-+ * This function is intended to be called right before running XDP
-+ * program so that the page recycling mechanism will be able to take
-+ * a correct decision regarding underlying pages; this is done in such
-+ * way as XDP program can change the refcount of page
-+ */
-+static void ice_get_pgcnts(struct ice_rx_ring *rx_ring)
-+{
-+	u32 nr_frags = rx_ring->nr_frags + 1;
-+	u32 idx = rx_ring->first_desc;
-+	struct ice_rx_buf *rx_buf;
-+	u32 cnt = rx_ring->count;
-+
-+	for (int i = 0; i < nr_frags; i++) {
-+		rx_buf = &rx_ring->rx_buf[idx];
-+		rx_buf->pgcnt = page_count(rx_buf->page);
-+
-+		if (++idx == cnt)
-+			idx = 0;
-+	}
-+}
-+
- /**
-  * ice_build_skb - Build skb around an existing buffer
-  * @rx_ring: Rx descriptor ring to transact packets on
-@@ -1241,6 +1265,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		if (ice_is_non_eop(rx_ring, rx_desc))
- 			continue;
- 
-+		ice_get_pgcnts(rx_ring);
- 		ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_buf, rx_desc);
- 		if (rx_buf->act == ICE_XDP_PASS)
- 			goto construct_skb;
+ /*
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 16d49a861dbb5..6a075a7c190db 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -573,7 +573,7 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
+ 		rxrpc_propose_delay_ACK(call, sp->hdr.serial,
+ 					rxrpc_propose_ack_input_data);
+ 	}
+-	if (notify) {
++	if (notify && !test_bit(RXRPC_CALL_CONN_CHALLENGING, &call->flags)) {
+ 		trace_rxrpc_notify_socket(call->debug_id, sp->hdr.serial);
+ 		rxrpc_notify_socket(call);
+ 	}
+diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+index 23d18fe5de9f0..154f650efb0ab 100644
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -654,7 +654,7 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+ 	} else {
+ 		switch (rxrpc_call_state(call)) {
+ 		case RXRPC_CALL_CLIENT_AWAIT_CONN:
+-		case RXRPC_CALL_SERVER_SECURING:
++		case RXRPC_CALL_SERVER_RECV_REQUEST:
+ 			if (p.command == RXRPC_CMD_SEND_ABORT)
+ 				break;
+ 			fallthrough;
 -- 
 2.39.5
 
