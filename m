@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-116251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E854FA347E7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601F3A346A7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9AEA1631F0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3471897E52
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A2915DBBA;
-	Thu, 13 Feb 2025 15:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EEC139566;
+	Thu, 13 Feb 2025 15:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQYnPOL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0xJL3wL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E3C14A605;
-	Thu, 13 Feb 2025 15:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943612A1CF;
+	Thu, 13 Feb 2025 15:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460839; cv=none; b=jBY04aFWoIjqIPtv1Rx6goGedFTCA47XERuh97ojZrsv6H5xnGrFhqjC/BcWj6fCi/S+sgIKru7AlTUfweB5UoS0RxUW6osxNdh616v2umjSD/7Knx14Pb0eo8NLfAhE9Tr6HXlM/ZObR+iw57inen52WkOFM0bnAchx1BeeyZ0=
+	t=1739460022; cv=none; b=tw9LPMTvGti1l7vwqI8xGH21j+sj9a+4TfrxCsMTWd9L8Zb4lm+Rnhdf838KVmcpe+Rk9yYmE5sszhCJh7QVU2srO1vNtMA3gCAA8zpfzSK0zxHuspFKA2SQXeTfSN7yrMsGWmIsl+vqsNUAJCfBjPyBtF0l0fzONmzQI6bkEMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460839; c=relaxed/simple;
-	bh=48c8XAZlb8wntmlib++b9/qsp+R2SMW5yp5cESQgouo=;
+	s=arc-20240116; t=1739460022; c=relaxed/simple;
+	bh=+9fUBj1pFnTmt1XKZJ+mfsNde2QQHvda7L/RSYuHBSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CL9miC6mFKqcMOIjLiIorbnZKYy3vGtgSrCklwZ51Cet75mPG790ij9TERlEDkbwCL8SeYWmxP9rkwTyWHJafF4/0lAkTkPv8HWE+8bJYqr9qK8Csarm13ovDMi4GPMV3xgON8cp1V9vKrRtA5wcoFzEXmoL3uOayESCsoUqFZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQYnPOL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48E3C4CED1;
-	Thu, 13 Feb 2025 15:33:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WzPdQr5smiBrA0cULEFyyRNj7FtScCOMRebSkEvzdxwf6b0GvH9IxBrbbKqk8QEm8DXMK+poSA8gGnLQhS9Me1v+J3rJEOZlm6wFiy3vE+yas1hg3jkux88AmTbMTqdm3/OZLfdCQTOxmIa554pEcVqItcuDM96zOqE/7cMaGjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0xJL3wL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A68C4CED1;
+	Thu, 13 Feb 2025 15:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460839;
-	bh=48c8XAZlb8wntmlib++b9/qsp+R2SMW5yp5cESQgouo=;
+	s=korg; t=1739460022;
+	bh=+9fUBj1pFnTmt1XKZJ+mfsNde2QQHvda7L/RSYuHBSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQYnPOL9E+wnKca0moMNOYOm4c2I23de8CP3WUU2tFhb8pDuCLngg3YYEKQxrhODr
-	 QGO9tUP5Pz6KDuj/jNreB2Yp57oBsZwvUc9rTR3PafwNvu1ifCGtpMvzJJKuqRkl7D
-	 nLx0CroiS0mQ6DA8Vc2oIBSJKI+Sc10MBMm5zcn8=
+	b=d0xJL3wLsoqapQ404h8KZyb7GMHOVV8gCfi9agWgDgF/P9Zx/xHLs78p8IQ4hKcEt
+	 hVq1wB5pLaq2P7z4TOJrLXsxJMgvCgyZRh7RqC2ptCKx+EKsCAL0s+Mwf237C7fD0j
+	 wkqQ3cBorGFHJ0oxmD3U9O2JExQe04dKk+atqrGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Galas <ssgalas@cloud.ru>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 227/273] io_uring/net: dont retry connect operation on EPOLLERR
+	WangYuli <wangyuli@uniontech.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.13 434/443] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
 Date: Thu, 13 Feb 2025 15:29:59 +0100
-Message-ID: <20250213142416.283783356@linuxfoundation.org>
+Message-ID: <20250213142457.365582332@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 8c8492ca64e79c6e0f433e8c9d2bcbd039ef83d0 upstream.
+commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
 
-If a socket is shutdown before the connection completes, POLLERR is set
-in the poll mask. However, connect ignores this as it doesn't know, and
-attempts the connection again. This may lead to a bogus -ETIMEDOUT
-result, where it should have noticed the POLLERR and just returned
--ECONNRESET instead.
+Declare ftrace_get_parent_ra_addr() as static to suppress clang
+compiler warning that 'no previous prototype'. This function is
+not intended to be called from other parts.
 
-Have the poll logic check for whether or not POLLERR is set in the mask,
-and if so, mark the request as failed. Then connect can appropriately
-fail the request rather than retry it.
+Fix follow error with clang-19:
 
-Reported-by: Sergey Galas <ssgalas@cloud.ru>
-Cc: stable@vger.kernel.org
-Link: https://github.com/axboe/liburing/discussions/1335
-Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      |               ^
+arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      | ^
+      | static
+1 error generated.
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c  |    5 +++++
- io_uring/poll.c |    2 ++
- 2 files changed, 7 insertions(+)
+ arch/mips/kernel/ftrace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1533,6 +1533,11 @@ int io_connect(struct io_kiocb *req, uns
- 		io = &__io;
- 	}
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(v
+ #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
+ #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
  
-+	if (unlikely(req->flags & REQ_F_FAIL)) {
-+		ret = -ECONNRESET;
-+		goto out;
-+	}
-+
- 	file_flags = force_nonblock ? O_NONBLOCK : 0;
- 
- 	ret = __sys_connect_file(req->file, &io->address,
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -308,6 +308,8 @@ static int io_poll_check_events(struct i
- 				return IOU_POLL_REISSUE;
- 			}
- 		}
-+		if (unlikely(req->cqe.res & EPOLLERR))
-+			req_set_fail(req);
- 		if (req->apoll_events & EPOLLONESHOT)
- 			return IOU_POLL_DONE;
- 
+-unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
++static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+ 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
+ {
+ 	unsigned long sp, ip, tmp;
 
 
 
