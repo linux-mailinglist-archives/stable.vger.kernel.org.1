@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB98A344BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B84BA346D3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FA757A3E3A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7397A171FEF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C52E18D620;
-	Thu, 13 Feb 2025 15:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5408D14AD2D;
+	Thu, 13 Feb 2025 15:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1Nv/Shs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4WQ2cPv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F5518A6A7;
-	Thu, 13 Feb 2025 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135B335BA;
+	Thu, 13 Feb 2025 15:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459263; cv=none; b=CLyPeDHD9349ErlczNzPqAgCYUeBs0HzZSc514VgJIfDC8c5vsz+lSN5cE/EwcMdYRp3LrXw8X1qYIa7caG5dh3vFjLDd33e62YTXO7G5mnWgPH8PrrGU9I+1jnP+DIgpkdPS9Si6ZAuQCvL2MlXtCjc1EpihmYiAmLNIQWAhAY=
+	t=1739460165; cv=none; b=LumcAiHgYCxp9/ASVsnW1/FiCVi6vLF2vnqzfa8iLpnFWVcejRq3iqM13mtffjvcpKSe4NXmr7AM7MVBhTqhIpNKq89YDasRpWZMAyySyq3JhBZR76PQ9tT8BM5QQmYozKPH4vczK1NBy754+cauLIEcjt6hPiX+IkRwFPRXpc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459263; c=relaxed/simple;
-	bh=NEqQkHa+6ddkS5XVxOJvB0+QBrUINR1tkpii9EagaCE=;
+	s=arc-20240116; t=1739460165; c=relaxed/simple;
+	bh=AFaTEMAcz7ZjT86a33SZmjXmc15Lj9BArGJHVK/Z3+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We3iUQanpcDTvyhkH6NBxN33XZQIJNMrjBGTMZlLAHCloKhxoj7wC8shBnU2QY95WHNCkBBJ8e5Krx2Dh6ICgwSbGmiBB3V+6l6Jewmlss6OBx3Vrjqx3CBxpbd5X4QKsePe5ipwE54P6Q+wf/rxxd1bNO/OKHWj7Gv4hvjsZbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1Nv/Shs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1333FC4CED1;
-	Thu, 13 Feb 2025 15:07:41 +0000 (UTC)
+	 MIME-Version; b=B/Xhy2zWoUH12roj5fDqXba4LSTwzKdZiSAwBKSD1VCO11BK903RIVfEZsxTBxbPXobz+VECya1m0NmWlguRUjOXtPbH+JlBTNtwhVrN9JSaJ4gCkvK6Lb7JrWrjXIQS5AR+5YwrT/T85WY7oUhO6qPyDXabyvJM8UGLqy4dvpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4WQ2cPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E10FC4CED1;
+	Thu, 13 Feb 2025 15:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459262;
-	bh=NEqQkHa+6ddkS5XVxOJvB0+QBrUINR1tkpii9EagaCE=;
+	s=korg; t=1739460164;
+	bh=AFaTEMAcz7ZjT86a33SZmjXmc15Lj9BArGJHVK/Z3+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1Nv/ShsfKWKwXcP9lGugnlOFmATlHwIwBAjLUtzN667xhsOU1VwKfMIY7IZeuRFe
-	 CTHqRVnLmB44wUZ812jcoO/2hoF9XMTtCa2y9LVj8q5ZB3VOgj7d1YRVK7PzesfNj6
-	 fo8fr/OdpyYSsN5qu4jUUsuBBSc5i3O55KOndqZE=
+	b=t4WQ2cPvOX7i2YLojs1+pfNiu0Ov8U7p+KdaNClpMRMJ0oe0QRRbow4T20VI2NShs
+	 /5dMReShEEbVxiajJpPjNWwPmKh0JzlU/xh9GLqQM+BlzCfeCt8JpAMYjY2HpUU676
+	 2q1MRO6JZWG/yZ0AXT0PE4jKlV9Sf0J5/q6zB56I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Avri Altman <Avri.Altman@wdc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.13 214/443] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
+	Boris Burkov <boris@bur.io>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/273] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
 Date: Thu, 13 Feb 2025 15:26:19 +0100
-Message-ID: <20250213142448.874096105@linuxfoundation.org>
+Message-ID: <20250213142407.650522963@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 1b3e2d4ec0c5848776cc56d2624998aa5b2f0d27 upstream.
+[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
 
-According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
-defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
-TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
-the UFS device specification definition.
+This BUG_ON is meant to catch backref cache problems, but these can
+arise from either bugs in the backref cache or corruption in the extent
+tree.  Fix it to be a proper error.
 
-Cc: stable@vger.kernel.org
-Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
-Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Link: https://lore.kernel.org/r/69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com
-Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/ufs/ufs.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/relocation.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/include/ufs/ufs.h
-+++ b/include/ufs/ufs.h
-@@ -386,8 +386,8 @@ enum {
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 299eac696eb42..537e184b4b1df 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -4378,8 +4378,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
+ 		WARN_ON(!first_cow && level == 0);
  
- /* Possible values for dExtendedUFSFeaturesSupport */
- enum {
--	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
--	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
-+	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
-+	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
- 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
- 	UFS_DEV_HPB_SUPPORT		= BIT(7),
- 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
+ 		node = rc->backref_cache.path[level];
+-		BUG_ON(node->bytenr != buf->start &&
+-		       node->new_bytenr != buf->start);
++
++		/*
++		 * If node->bytenr != buf->start and node->new_bytenr !=
++		 * buf->start then we've got the wrong backref node for what we
++		 * expected to see here and the cache is incorrect.
++		 */
++		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
++			btrfs_err(fs_info,
++"bytenr %llu was found but our backref cache was expecting %llu or %llu",
++				  buf->start, node->bytenr, node->new_bytenr);
++			return -EUCLEAN;
++		}
+ 
+ 		btrfs_backref_drop_node_buffer(node);
+ 		atomic_inc(&cow->refs);
+-- 
+2.39.5
+
 
 
 
