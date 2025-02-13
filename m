@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6003CA34388
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:51:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66B8A3472D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 113BB7A25A7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11BFD1896B01
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB9F2222A9;
-	Thu, 13 Feb 2025 14:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBDF145A03;
+	Thu, 13 Feb 2025 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yaOMqCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhZynrgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDA7211468;
-	Thu, 13 Feb 2025 14:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4833826B0BD;
+	Thu, 13 Feb 2025 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457954; cv=none; b=gCEyf/LyGkDT4e1m/r/XHyOL05k+hiBl4bXV9LkMr0nM8NRbv9QFIU4fIFsYhpNzjanYpgIcAgjg0HzRMZeImpuduN9O0yTuIjotfEvkxuIQr9hZOGAx7T88HM7SsExGmWP9hv0cUOO66B7yT9/BMCN+vFVL7UrCN8m9ZHVcI28=
+	t=1739460290; cv=none; b=fFXJg6IywQDOVcCj8slfPcO9bsFI1xW+B8E3bA3r7b52hcGqEMQ5VGpQLX931m7ILL6Laklm+rrMicWtGlAgR/tRhsyIPXhsPwIzSExsMsyWGCBEeoydle1h+O+Ysih0IE85Wu+eXMt7+ywjRySyu7Ms0Xml1MQYrRFrFk8f4FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457954; c=relaxed/simple;
-	bh=0qaQafI86SFbZJsDPC+W8MATH++Rqly7HYxaWC5u03Q=;
+	s=arc-20240116; t=1739460290; c=relaxed/simple;
+	bh=4lSS+P3VK1/EBhW7SEzhHEB9kvtUaDcR1ELMJgyjQS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIZ5j7tWpSe2C1ZQKGBLhcjhZOozdSqCSsdv2g3y9aKZF4zrReChlAvAeOgF1XWdQXHpdyHXohg5HYmSgOT5zm9xJNN3eXlTpnfDPQGgq6pZHv1joG4WCqdDBvgRW6P7TvJv4aR6bK53R7/H2M/sYycgfOonKN0R6+8EpVjVbT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yaOMqCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2BCC4CED1;
-	Thu, 13 Feb 2025 14:45:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qlehHlVEbFqaVEpkJuInh9KsJKV6iMFFGWJRZX3dFxeyWdzqpAvrfjDf2IjRXzR6WtrSReb2oQHTZCtQmEP74iitkJHDUnwMiQ9Ddyb62mZjDvXl9EZJ8v7aC+X9tYckrroflxld4fTBtVKtaXsF00P9eMqZ82lLvHfad+1jQvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhZynrgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A993BC4CED1;
+	Thu, 13 Feb 2025 15:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457953;
-	bh=0qaQafI86SFbZJsDPC+W8MATH++Rqly7HYxaWC5u03Q=;
+	s=korg; t=1739460290;
+	bh=4lSS+P3VK1/EBhW7SEzhHEB9kvtUaDcR1ELMJgyjQS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yaOMqCRql8H7MhRuuSf11DNGcmS3W4ls6JaPejTwh8zzrKIO6Tu5oBJp13We1zFb
-	 wVlkGNf2DtJx+Nmeso/NaZuCSIvyl2olEAJYlOxLpbYZVe6sM9Er+6sIo1/qLDRklT
-	 ZCi69MW670D63HuTF9hnWVyzmgUV9RDRqvAkJp0w=
+	b=lhZynrgc/F0v/wV2i0URwbu79kWH0VGUIsClblr/DUTzFP8U1FCQN52ZAEbHYJnln
+	 Oyc9cWekbLtJwcVubNcl4hnIELJYw5jaRm5XCmQM01/cDgJZx1AEuTXkf0cTfkKqDE
+	 faYowPyo7Dyglr391peS7Ptsxs758w26cZDir0x0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 260/422] kbuild: Move -Wenum-enum-conversion to W=2
+	=?UTF-8?q?Stefan=20D=C3=B6singer?= <stefan@codeweavers.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/273] wifi: brcmfmac: Check the return value of of_property_read_string_index()
 Date: Thu, 13 Feb 2025 15:26:49 +0100
-Message-ID: <20250213142446.574045838@linuxfoundation.org>
+Message-ID: <20250213142408.822188357@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Stefan Dösinger <stefan@codeweavers.com>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+[ Upstream commit 082d9e263af8de68f0c34f67b251818205160f6e ]
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+Somewhen between 6.10 and 6.11 the driver started to crash on my
+MacBookPro14,3. The property doesn't exist and 'tmp' remains
+uninitialized, so we pass a random pointer to devm_kstrdup().
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+The crash I am getting looks like this:
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+BUG: unable to handle page fault for address: 00007f033c669379
+PF: supervisor read access in kernel mode
+PF: error_code(0x0001) - permissions violation
+PGD 8000000101341067 P4D 8000000101341067 PUD 101340067 PMD 1013bb067 PTE 800000010aee9025
+Oops: Oops: 0001 [#1] SMP PTI
+CPU: 4 UID: 0 PID: 827 Comm: (udev-worker) Not tainted 6.11.8-gentoo #1
+Hardware name: Apple Inc. MacBookPro14,3/Mac-551B86E5744E2388, BIOS 529.140.2.0.0 06/23/2024
+RIP: 0010:strlen+0x4/0x30
+Code: f7 75 ec 31 c0 c3 cc cc cc cc 48 89 f8 c3 cc cc cc cc 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <80> 3f 00 74 14 48 89 f8 48 83 c0 01 80 38 00 75 f7 48 29 f8 c3 cc
+RSP: 0018:ffffb4aac0683ad8 EFLAGS: 00010202
+RAX: 00000000ffffffea RBX: 00007f033c669379 RCX: 0000000000000001
+RDX: 0000000000000cc0 RSI: 00007f033c669379 RDI: 00007f033c669379
+RBP: 00000000ffffffea R08: 0000000000000000 R09: 00000000c0ba916a
+R10: ffffffffffffffff R11: ffffffffb61ea260 R12: ffff91f7815b50c8
+R13: 0000000000000cc0 R14: ffff91fafefffe30 R15: ffffb4aac0683b30
+FS:  00007f033ccbe8c0(0000) GS:ffff91faeed00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f033c669379 CR3: 0000000107b1e004 CR4: 00000000003706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x149/0x4c0
+ ? raw_spin_rq_lock_nested+0xe/0x20
+ ? sched_balance_newidle+0x22b/0x3c0
+ ? update_load_avg+0x78/0x770
+ ? exc_page_fault+0x6f/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? __pfx_pci_conf1_write+0x10/0x10
+ ? strlen+0x4/0x30
+ devm_kstrdup+0x25/0x70
+ brcmf_of_probe+0x273/0x350 [brcmfmac]
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Dösinger <stefan@codeweavers.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20250106170958.3595-1-stefan@codeweavers.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -130,7 +130,6 @@ KBUILD_CFLAGS += $(call cc-disable-warni
- KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index 73fc701204e29..90d2c536bdaf0 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -96,13 +96,13 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+ 	if (root && err) {
+-		char *board_type;
++		char *board_type = NULL;
+ 		const char *tmp;
  
- endif
-@@ -154,6 +153,10 @@ KBUILD_CFLAGS += -Wno-missing-field-init
- KBUILD_CFLAGS += -Wno-type-limits
- KBUILD_CFLAGS += -Wno-shift-negative-value
- 
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
+-		of_property_read_string_index(root, "compatible", 0, &tmp);
+-
+ 		/* get rid of '/' in the compatible string to be able to find the FW */
+-		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++		if (!of_property_read_string_index(root, "compatible", 0, &tmp))
++			board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
 +
- ifdef CONFIG_CC_IS_GCC
- KBUILD_CFLAGS += -Wno-maybe-uninitialized
- endif
+ 		if (!board_type) {
+ 			of_node_put(root);
+ 			return;
+-- 
+2.39.5
+
 
 
 
