@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD2BA3466B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3B0A347C4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F20C1894A9B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A29161583
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBEF165F1F;
-	Thu, 13 Feb 2025 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB321531DB;
+	Thu, 13 Feb 2025 15:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ0x/krV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WQg15vG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7463FB3B;
-	Thu, 13 Feb 2025 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CCA26B098;
+	Thu, 13 Feb 2025 15:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459945; cv=none; b=fw30UaCRlay/lErfi0RzdiKCadtOhXdC8st6yO6EaRwR3d75Dl60Usw4qgqIDITpM/n36ig2IreBzDXEn+qjIi48Dio/4QIWAQ3w+YxwyO4Jzg2cZqay4zZIIbNRQVNOUsWl1VJ0OkIESJhBOl676qiz/OebNRtebnCMt/plkQ8=
+	t=1739460762; cv=none; b=rr6c8+t+0AHGLLMjkLoAfrayovG+GaQ4lyQocWOmSs+yWAZ3ljvdH335euRXGy4YVvFpTuiF5eAlCHFxOtlIIO/qB4EMXVqlwUPmy66RHKeSnHLcZvbgUrSITzsBXEZ6sEx5aWbv67m2hfy4PXjWuCaPfIf8AKbdreq+Z0Q78/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459945; c=relaxed/simple;
-	bh=t8j9CFioDK5fFFQQ6qX1kBskGDE5DTzxyxIHNVu8WcA=;
+	s=arc-20240116; t=1739460762; c=relaxed/simple;
+	bh=o+AVKgkQl6J76IS+Nc0eoXnCZmLmQamb0fSKb1UQuGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pc6peHH5D1opWVWI+QRspEpaJgKvOasS50ORHAC0xzJeNi49DkEHs4F/cymSKvWMk0KkKvaZ5i61iTqVwMYDGZUmRiHnrmDFBvUryT+KKh3LmFlDhhD0H39IKFyBWmIRXH++Cp3zN0JfbkPwlMAaINXa9jRtbwKiEDuGRwd3GN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ0x/krV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BB6C4CEE4;
-	Thu, 13 Feb 2025 15:19:04 +0000 (UTC)
+	 MIME-Version; b=UgE63TANEMuBKX4yL9u4+4MGeSOAbNn9lTYS2m3tLpVu/1zAu6eQCO0ouHG3XOrN5Ij6sgR/ESZwrWvF8SwO1CdOgIPQXd2r74lli2OicrQFFMUfDHYR0oSugAFF76TyX/6FitCq9oYoCRFoymcjT5Bu/41H2Gwq0M6jKWVuo2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WQg15vG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1A3C4CED1;
+	Thu, 13 Feb 2025 15:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459945;
-	bh=t8j9CFioDK5fFFQQ6qX1kBskGDE5DTzxyxIHNVu8WcA=;
+	s=korg; t=1739460762;
+	bh=o+AVKgkQl6J76IS+Nc0eoXnCZmLmQamb0fSKb1UQuGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJ0x/krVLNzXQuo3J7ElO0MJqXi9vH9WGi+g0d68fpMPFFYa7m3YGT8yq94o3kx82
-	 veEsD63rY0Ss6wXeq2sL0l6BF8JE7zvVKuwny44HEz4gOLGUYdX6hmhzKL7Qb+Kh/g
-	 tS8m8Yh6hEMsH1EBOXmhhEJ++7ysQLjz+GL0MWV4=
+	b=2WQg15vGyyWJBQoYUkNUXpLVLujPltQzE00l/bdzDxARNbbq582ENyGJIGxJ4JTuN
+	 6PibNLkTqrRSbu/nfd0XC1hIWAzMsqRwr6wgX6GESnogGknGBn8/bLuzLoS6Mpsrhe
+	 EC1HVV6p/+zdmatsWN2WZZlmnH8+4iLbYZI88pvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 379/443] mm/vmscan: accumulate nr_demoted for accurate demotion statistics
-Date: Thu, 13 Feb 2025 15:29:04 +0100
-Message-ID: <20250213142455.231935229@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 173/273] arm64: dts: qcom: sm6115: Fix CDSP memory length
+Date: Thu, 13 Feb 2025 15:29:05 +0100
+Message-ID: <20250213142414.168422846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a479b078fddb0ad7f9e3c6da22d9cf8f2b5c7799 upstream.
+commit 846f49c3f01680f4af3043bf5b7abc9cf71bb42d upstream.
 
-In shrink_folio_list(), demote_folio_list() can be called 2 times.
-Currently stat->nr_demoted will only store the last nr_demoted( the later
-nr_demoted is always zero, the former nr_demoted will get lost), as a
-result number of demoted pages is not accurate.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x4040.  Value of 0x100000 covers
+entire Touring/CDSP memory block seems to big here.
 
-Accumulate the nr_demoted count across multiple calls to
-demote_folio_list(), ensuring accurate reporting of demotion statistics.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-[lizhijian@fujitsu.com: introduce local nr_demoted to fix nr_reclaimed double counting]
-  Link: https://lkml.kernel.org/r/20250111015253.425693-1-lizhijian@fujitsu.com
-Link: https://lkml.kernel.org/r/20250110122133.423481-1-lizhijian@fujitsu.com
-Fixes: f77f0c751478 ("mm,memcg: provide per-cgroup counters for NUMA balancing operations")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Acked-by: Kaiyang Zhao <kaiyang2@cs.cmu.edu>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-22-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1053,7 +1053,7 @@ static unsigned int shrink_folio_list(st
- 	struct folio_batch free_folios;
- 	LIST_HEAD(ret_folios);
- 	LIST_HEAD(demote_folios);
--	unsigned int nr_reclaimed = 0;
-+	unsigned int nr_reclaimed = 0, nr_demoted = 0;
- 	unsigned int pgactivate = 0;
- 	bool do_demote_pass;
- 	struct swap_iocb *plug = NULL;
-@@ -1522,8 +1522,9 @@ keep:
- 	/* 'folio_list' is always empty here */
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -2384,7 +2384,7 @@
  
- 	/* Migrate folios selected for demotion */
--	stat->nr_demoted = demote_folio_list(&demote_folios, pgdat);
--	nr_reclaimed += stat->nr_demoted;
-+	nr_demoted = demote_folio_list(&demote_folios, pgdat);
-+	nr_reclaimed += nr_demoted;
-+	stat->nr_demoted += nr_demoted;
- 	/* Folios that could not be demoted are still in @demote_folios */
- 	if (!list_empty(&demote_folios)) {
- 		/* Folios which weren't demoted go back on @folio_list */
+ 		remoteproc_cdsp: remoteproc@b300000 {
+ 			compatible = "qcom,sm6115-cdsp-pas";
+-			reg = <0x0 0x0b300000 0x0 0x100000>;
++			reg = <0x0 0x0b300000 0x0 0x4040>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 265 IRQ_TYPE_EDGE_RISING>,
+ 					      <&cdsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
