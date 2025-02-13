@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-115649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A1A3459E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECBCBA3428A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9B811899379
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781061881F0E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398081DB154;
-	Thu, 13 Feb 2025 14:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE8B38389;
+	Thu, 13 Feb 2025 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmcsxBof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgqYsgNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A051DC745;
-	Thu, 13 Feb 2025 14:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA2281379;
+	Thu, 13 Feb 2025 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458769; cv=none; b=gv75t3OsF32t9a1HlOcCjfENRorfAniZ+6OqNaVd23wnhdMjJNkLjuNGbhiSTcqO1Ox0NO0N6zWYJgs8MzVlMFQ09g9RF9iYyfsIYIuLCI0kuA/7XnyrgNqyxIfGxa4pcNzJn3dh+2hUmLhZJtn/9Cpp/5arrTY8u4FF5eIEj7w=
+	t=1739457338; cv=none; b=HWURIR+yfTntn31TXKRf+0sD9nDKQyfELSL7qVCTwRQzyyfgAJ/fy6gQFlHvn/x94lBERvOFB4IfLcmHtAGIVVOjkiN6zpeVRlUqtY70tzaGlil8MhWJZ1lrKEEs8ZJ5TyW8pcbEEk19jW168aaGvEGlQoPDJjFRDfepiSTpmAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458769; c=relaxed/simple;
-	bh=FRbsv8ABApmWnnJtmqhKV6fHTMOac+B0iwxhlbdHcmk=;
+	s=arc-20240116; t=1739457338; c=relaxed/simple;
+	bh=EPzNovS3iaMuVKULyk3d1N6UtLDb2qLp1a5cRPZTQ54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STFo5AAuDNPLGgOdmA7e0CANs0dBaOqopxGGRhLYbyJz1k3aq6I7sKVpwnUhLRx/arVghePkxZptPprvaHHVRky5T4wsuD4E7kpepOTmYlfffJ08woAl4Ueaq+k9PMrwYmLprQsOFuZAqJRqTZpYsVWeyWZYY+FilqR7UiYQdKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmcsxBof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69530C4CEE5;
-	Thu, 13 Feb 2025 14:59:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lncnhT1u+8cal6ND5lYe9BQNDjTsk+gQSHbr8pyNSWK71QtAzE2KasR8lm8Jx99TwKFZIjdRIvxEF7W3QYGE+EqrNI9ay4WtGFVbhFWBS5Y8mm9G5JArmhcN1lMly9G2M+Lrr0wCweMHGbpLr9Lf5iY7dA4roldC1SFCU4fHthw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgqYsgNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA60C4CED1;
+	Thu, 13 Feb 2025 14:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458768;
-	bh=FRbsv8ABApmWnnJtmqhKV6fHTMOac+B0iwxhlbdHcmk=;
+	s=korg; t=1739457338;
+	bh=EPzNovS3iaMuVKULyk3d1N6UtLDb2qLp1a5cRPZTQ54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmcsxBofiBjYpwQabmIRlPBhT4jlogxUiHf/dUmzuPLG7bHwuaIXVbfM5tjnt40Mu
-	 +oYK0+Xy/M9PryB5GCFIBssGoLipZ1z9/fVcM+a0tCKHbB+5U96s4WAqkcwVXw+l27
-	 gS5KmXYKKbDgZX4TFsrVTEFeVvvkqX2xgow6TpQE=
+	b=ZgqYsgNtuP9GoRPUHxgzmLUgbRHaf64mcj2ectXIfo5I8PKnZW5teAQYNCs0lN2IG
+	 XbYik9P3lf485XGlYNAoWbcsVdUVhdyYHUtnJWELLpxOB95jAO86uoCPZTx9/Urf68
+	 cPtTbRfh7Q7G7IrUej2SIWeeXh8L+RYYKSgULRVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rayan Margham <rayanmargham4@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 065/443] net/mlx5: HWS, num_of_rules counter on matcher should be atomic
-Date: Thu, 13 Feb 2025 15:23:50 +0100
-Message-ID: <20250213142443.128754476@linuxfoundation.org>
+Subject: [PATCH 6.12 082/422] platform/x86: acer-wmi: Add support for Acer PH14-51
+Date: Thu, 13 Feb 2025 15:23:51 +0100
+Message-ID: <20250213142439.718121194@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 61fb92701b8ac9174857c417cfa988adc24e32c2 ]
+[ Upstream commit 9741f9aa13f6dc3ff24e1d006b2ced5f460e6b6f ]
 
-Rule counter in matcher's struct is used in two places:
+Add the Acer Predator PT14-51 to acer_quirks to provide support
+for the turbo button and predator_v4 hwmon interface.
 
-1. As heuristics to decide when the number of rules have crossed a
-certain percentage threshold and the matcher should be resized.
-We don't mind here if the number will be off by 1-2 due to concurrency.
-
-2. When destroying matcher, the counter value is checked and the
-user is warned if it is not 0. Here we lock all the queues, so the
-counter will be correct.
-
-We don't need to always have *exact* number, but we do need this
-number to not be corrupted, which is what is happening when the
-counter isn't atomic, due to update by different threads.
-
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250102181415.1477316-10-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Rayan Margham <rayanmargham4@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CACzB==6tUsCnr5musVMz-EymjTUCJfNtKzhMFYqMRU_h=kydXA@mail.gmail.com
+Tested-by: Rayan Margham <rayanmargham4@gmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20241210001657.3362-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/steering/hws/bwc.c       | 17 +++++++++++------
- .../mellanox/mlx5/core/steering/hws/bwc.h       |  2 +-
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-index baacf662c0ab8..ae2849cf4dd49 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-@@ -152,6 +152,8 @@ mlx5hws_bwc_matcher_create(struct mlx5hws_table *table,
- 	if (!bwc_matcher)
- 		return NULL;
- 
-+	atomic_set(&bwc_matcher->num_of_rules, 0);
-+
- 	/* Check if the required match params can be all matched
- 	 * in single STE, otherwise complex matcher is needed.
- 	 */
-@@ -199,10 +201,12 @@ int mlx5hws_bwc_matcher_destroy_simple(struct mlx5hws_bwc_matcher *bwc_matcher)
- 
- int mlx5hws_bwc_matcher_destroy(struct mlx5hws_bwc_matcher *bwc_matcher)
- {
--	if (bwc_matcher->num_of_rules)
-+	u32 num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
-+
-+	if (num_of_rules)
- 		mlx5hws_err(bwc_matcher->matcher->tbl->ctx,
- 			    "BWC matcher destroy: matcher still has %d rules\n",
--			    bwc_matcher->num_of_rules);
-+			    num_of_rules);
- 
- 	mlx5hws_bwc_matcher_destroy_simple(bwc_matcher);
- 
-@@ -309,7 +313,7 @@ static void hws_bwc_rule_list_add(struct mlx5hws_bwc_rule *bwc_rule, u16 idx)
- {
- 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
- 
--	bwc_matcher->num_of_rules++;
-+	atomic_inc(&bwc_matcher->num_of_rules);
- 	bwc_rule->bwc_queue_idx = idx;
- 	list_add(&bwc_rule->list_node, &bwc_matcher->rules[idx]);
- }
-@@ -318,7 +322,7 @@ static void hws_bwc_rule_list_remove(struct mlx5hws_bwc_rule *bwc_rule)
- {
- 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
- 
--	bwc_matcher->num_of_rules--;
-+	atomic_dec(&bwc_matcher->num_of_rules);
- 	list_del_init(&bwc_rule->list_node);
- }
- 
-@@ -704,7 +708,8 @@ hws_bwc_matcher_rehash_size(struct mlx5hws_bwc_matcher *bwc_matcher)
- 	 * Need to check again if we really need rehash.
- 	 * If the reason for rehash was size, but not any more - skip rehash.
- 	 */
--	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher, bwc_matcher->num_of_rules))
-+	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher,
-+						atomic_read(&bwc_matcher->num_of_rules)))
- 		return 0;
- 
- 	/* Now we're done all the checking - do the rehash:
-@@ -797,7 +802,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 	}
- 
- 	/* check if number of rules require rehash */
--	num_of_rules = bwc_matcher->num_of_rules;
-+	num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
- 
- 	if (unlikely(hws_bwc_matcher_rehash_size_needed(bwc_matcher, num_of_rules))) {
- 		mutex_unlock(queue_lock);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-index 0b745968e21e1..655fa7a22d84f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-@@ -19,7 +19,7 @@ struct mlx5hws_bwc_matcher {
- 	u8 num_of_at;
- 	u16 priority;
- 	u8 size_log;
--	u32 num_of_rules; /* atomically accessed */
-+	atomic_t num_of_rules;
- 	struct list_head *rules;
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 7169b84ccdb6e..844e623ddeb30 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -398,6 +398,13 @@ static struct quirk_entry quirk_acer_predator_ph315_53 = {
+ 	.gpu_fans = 1,
  };
  
++static struct quirk_entry quirk_acer_predator_pt14_51 = {
++	.turbo = 1,
++	.cpu_fans = 1,
++	.gpu_fans = 1,
++	.predator_v4 = 1,
++};
++
+ static struct quirk_entry quirk_acer_predator_v4 = {
+ 	.predator_v4 = 1,
+ };
+@@ -605,6 +612,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
+ 		},
+ 		.driver_data = &quirk_acer_predator_v4,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "Acer Predator PT14-51",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT14-51"),
++		},
++		.driver_data = &quirk_acer_predator_pt14_51,
++	},
+ 	{
+ 		.callback = set_force_caps,
+ 		.ident = "Acer Aspire Switch 10E SW3-016",
 -- 
 2.39.5
 
