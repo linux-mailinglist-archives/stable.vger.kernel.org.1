@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F40A3445B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FA4A3466C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0EB8171712
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4CB18868F5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124F22222D4;
-	Thu, 13 Feb 2025 14:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5621E2A1CF;
+	Thu, 13 Feb 2025 15:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MElUoD1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA7qmthA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91D63D97A;
-	Thu, 13 Feb 2025 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E5426B091;
+	Thu, 13 Feb 2025 15:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458378; cv=none; b=nMPcVCe5dHeqvF2ABMC+K9ouCt90TyR9JPH9P5B0pk1J8f4CflEAfhIvm9bnpbUlFc9VoOBVGyBpYje0glBfNhBmcIB47tKMN3ohWDDdRxdl95xQuAcDgOnOiDfCtRw58cALUgI+S3GkOev0s0lI33p/Nt1KiTUxqM2XIEx2XBk=
+	t=1739459801; cv=none; b=CGGBb5djtbOdVUAu+IjqmIN2NuV0tF0T6fuCFNFgXWoYCOHxPjlX5YKvd9gTdy+9xuhuXUdL+HLPqIoMSrkh3iZATjwAD8Rd9lCMbXSwCqlXlctiUEcH0irt65vbf2Kgcop9KXx9oWkb05ckEO0vw00MCwXvFjCpes7ZWewpPU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458378; c=relaxed/simple;
-	bh=gYrTDg5Bp7cVI6Tpz8akgfmwe7YdJVUxnKjbIIaWcbQ=;
+	s=arc-20240116; t=1739459801; c=relaxed/simple;
+	bh=iRQMeZJSIMYk3xq8h0a6EAG8F5Tt4LrvWKZm8k7+LPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtENw5HyHmLEZBKhQ35l++JW6xVOVR+hgXuHJMMB63+l6LuCka72Xhb/8i3PTAEQ2Wy5JsMR4lDOwHiytBRDBft3HXCA6CJrClhzpOR3VPU8103ldSSrefJUopXH59ELYi8qWLTFBVkKnz5Ppr+/uOnBnJRh0neqvKfvQgp93dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MElUoD1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35249C4CEE4;
-	Thu, 13 Feb 2025 14:52:58 +0000 (UTC)
+	 MIME-Version; b=URmNRwTwHThVMknz8w8scGaUPlr9JtIr2Yn1q3P6RZRntAXd9pUtRKXcr06kugU5LgGEFeVl8Xx1u2/yfXQ6QEmedLGp3sk2J2NVcnDgmvnwZwAgMtT/RelR3dfGCs5Q5QBadTGOucFBb2WwmZpRoQkvZ8kMb3m8dVwZILiUdI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA7qmthA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C82C4CED1;
+	Thu, 13 Feb 2025 15:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458378;
-	bh=gYrTDg5Bp7cVI6Tpz8akgfmwe7YdJVUxnKjbIIaWcbQ=;
+	s=korg; t=1739459800;
+	bh=iRQMeZJSIMYk3xq8h0a6EAG8F5Tt4LrvWKZm8k7+LPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MElUoD1rOK7UbbfglP9p4OhZiUQSrfjYkyGL+IRWHEnER7g0hI37tjRXb6GJvGfDh
-	 5mu8PSrySA5EUVjqilR5np/l2M8yy6edooa/yYm1z6ax9xqC0BELKVVzsjjpGuFbLt
-	 sBbK/RgcAPiXQKWFhvy859jrTsICG5Y3l494+hq0=
+	b=uA7qmthAunELvCyoQiQ6u55A09xA81ByKhj2hJHis7V1s3nPHsRMMJm01goD6SmHY
+	 RSlOYZeVqWeNHl8goLRCuFhHImLlw8lnsqyTlI2vIA15Kd4QaXjDrnusPXM2PGpD4U
+	 NIl9QwiKtmJp1V+3/uL4Zs+ndF16glckwvzkdyok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 383/422] rtla/osnoise: Distinguish missing workload option
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 367/443] media: i2c: ds90ub9x3: Fix extra fwnode_handle_put()
 Date: Thu, 13 Feb 2025 15:28:52 +0100
-Message-ID: <20250213142451.326878588@linuxfoundation.org>
+Message-ID: <20250213142454.771715319@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 80d3ba1cf51bfbbb3b098434f2b2c95cd7c0ae5c upstream.
+commit 60b45ece41c5632a3a3274115a401cb244180646 upstream.
 
-osnoise_set_workload returns -1 for both missing OSNOISE_WORKLOAD option
-and failure in setting the option.
+The ub913 and ub953 drivers call fwnode_handle_put(priv->sd.fwnode) as
+part of their remove process, and if the driver is removed multiple
+times, eventually leads to put "overflow", possibly causing memory
+corruption or crash.
 
-Return -1 for missing and -2 for failure to distinguish them.
+The fwnode_handle_put() is a leftover from commit 905f88ccebb1 ("media:
+i2c: ds90ub9x3: Fix sub-device matching"), which changed the code
+related to the sd.fwnode, but missed removing these fwnode_handle_put()
+calls.
 
 Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/20250107144823.239782-2-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 905f88ccebb1 ("media: i2c: ds90ub9x3: Fix sub-device matching")
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ds90ub913.c |    1 -
+ drivers/media/i2c/ds90ub953.c |    1 -
+ 2 files changed, 2 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise.c
-+++ b/tools/tracing/rtla/src/osnoise.c
-@@ -867,7 +867,7 @@ int osnoise_set_workload(struct osnoise_
+--- a/drivers/media/i2c/ds90ub913.c
++++ b/drivers/media/i2c/ds90ub913.c
+@@ -793,7 +793,6 @@ static void ub913_subdev_uninit(struct u
+ 	v4l2_async_unregister_subdev(&priv->sd);
+ 	ub913_v4l2_nf_unregister(priv);
+ 	v4l2_subdev_cleanup(&priv->sd);
+-	fwnode_handle_put(priv->sd.fwnode);
+ 	media_entity_cleanup(&priv->sd.entity);
+ }
  
- 	retval = osnoise_options_set_option("OSNOISE_WORKLOAD", onoff);
- 	if (retval < 0)
--		return -1;
-+		return -2;
- 
- 	context->opt_workload = onoff;
+--- a/drivers/media/i2c/ds90ub953.c
++++ b/drivers/media/i2c/ds90ub953.c
+@@ -1288,7 +1288,6 @@ static void ub953_subdev_uninit(struct u
+ 	v4l2_async_unregister_subdev(&priv->sd);
+ 	ub953_v4l2_notifier_unregister(priv);
+ 	v4l2_subdev_cleanup(&priv->sd);
+-	fwnode_handle_put(priv->sd.fwnode);
+ 	media_entity_cleanup(&priv->sd.entity);
+ }
  
 
 
