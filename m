@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4BBA3462D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEC5A34489
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8102416E137
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9871893EA8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882D35961;
-	Thu, 13 Feb 2025 15:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CDA2222D8;
+	Thu, 13 Feb 2025 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qut6WvT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiWvgTt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754D526B0BF;
-	Thu, 13 Feb 2025 15:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DB826B083;
+	Thu, 13 Feb 2025 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459821; cv=none; b=VbCagyBTaCCc6Ga+EN5+lhQOqZlhB0PcLM+gzHuqGDC2uE1g5HdV9JDnHVXLE3H3dx9XT9sBQkgL6ZSdrfmNC9XRHfcqd5PAf4jE1KyP2Kgb1vR+42WgkLwbOXgNqDkx9yvCmNBG7zITpqQgTVG6Hqz6/+XKK5fM1F7IcL+JJXI=
+	t=1739458399; cv=none; b=hu/W+TXuMkAujab+19LrpsEtY94ba+Deuzh9OXEd1VNGoMWzgNywL92A7LQt+/JhneKgz9NztNIRQAakCyEMfl+Dt2buK8AoZRUftrWOZ5dTL1f0F/y49X6ardc4gDXOS/L2+UuxQd5sbQqyFOP8QXisyGrCS2jD6bKYXM2eT28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459821; c=relaxed/simple;
-	bh=oZTOhPGTWxze1aDunnvw+E89G1af/3e5EEGMWfEUwtU=;
+	s=arc-20240116; t=1739458399; c=relaxed/simple;
+	bh=hPJhw8TztUyqUCbilzpv7nXqv1CwjPGCWAz6EGZi3O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITRY3BPWChExdXHLkRIa+dkOVywkm+gs3I/S7eOt8FRRkCaa58qNBbw/glkfcxE1N2xuQpnjlL+0lS1gIg+gUGgG2lFkrBHbLcerO2VG94usEutFPkfNV7Ho4gOvQM9QKs0c8F/Fd0gFZ3fgud45wDftgtb1I3xiscbILrkH5TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qut6WvT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792F8C4CED1;
-	Thu, 13 Feb 2025 15:17:00 +0000 (UTC)
+	 MIME-Version; b=IhX49RPwIkrOsipeVpIKtW1YHM1KQvOATpZVS79MdxLjWn/kboOs+pa2ipCR3g20mL0UT9mCadzsEDkXoKVIlbsI1Tbkv4J//EGunxmUyYvCCqaojDbmc4gJ+yn346cArMe1B8iZwMiWoFltN1ahY2/CJZN8ndrzt1SO7i1qMbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiWvgTt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AD1C4CED1;
+	Thu, 13 Feb 2025 14:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459821;
-	bh=oZTOhPGTWxze1aDunnvw+E89G1af/3e5EEGMWfEUwtU=;
+	s=korg; t=1739458399;
+	bh=hPJhw8TztUyqUCbilzpv7nXqv1CwjPGCWAz6EGZi3O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qut6WvT/f/58G3Hq1aezZF4hj0CxzImBoNjvm3DfEk8PTg1ZlEzhmPsDvyJMFSmk0
-	 Q73h9bDXQPzV3WKmBTF9I5yRuSvD/j3v24fBowFXOUUQoap5HohoVZuATg3l2vxZJX
-	 Hc4nLTz6JSdHeAAx36+KWDfxwhanTEg9P81lI7GE=
+	b=qiWvgTt2NSkn9ChL0PutieqVdHzNkUDUoiBA5iWPz3ZuTAaHPCUWk5o3jgLDktHC8
+	 4D+BI2GZeZWemH0NP9nHIQQwfN7xZVqtdU5GNTNABcRl96/Lmh81h8RohGiuHAM2Nf
+	 qc9UHb8EY0M87scYt363bCR6Gr3Xdx+ZeT8Nl74U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 372/443] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 388/422] rtla/timerlat_top: Stop timerlat tracer on signal
 Date: Thu, 13 Feb 2025 15:28:57 +0100
-Message-ID: <20250213142454.964195876@linuxfoundation.org>
+Message-ID: <20250213142451.521893489@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit c31cffd5ae2c3d7ef21d9008977a9d117ce7a64e upstream.
+commit a4dfce7559d75430c464294ddee554be2a413c4a upstream.
 
-If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
-the following events will have that flag, regardless if they need it or
-not.
+Currently, when either SIGINT from the user or SIGALRM from the duration
+timer is caught by rtla-timerlat, stop_tracing is set to break out of
+the main loop. This is not sufficient for cases where the timerlat
+tracer is producing more data than rtla can consume, since in that case,
+rtla is looping indefinitely inside tracefs_iterate_raw_events, never
+reaches the check of stop_tracing and hangs.
 
-This is because we keep using the same variable all the time and we do
-not reset its original value.
+In addition to setting stop_tracing, also stop the timerlat tracer on
+received signal (SIGINT or SIGALRM). This will stop new samples so that
+the existing samples may be processed and tracefs_iterate_raw_events
+eventually exits.
 
 Cc: stable@vger.kernel.org
-Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241114-uvc-roi-v15-1-64cfeb56b6f8@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-4-tglozar@redhat.com
+Fixes: a828cd18bc4a ("rtla: Add timerlat tool and timelart top mode")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/tracing/rtla/src/timerlat_top.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1673,13 +1673,13 @@ static void uvc_ctrl_send_events(struct
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -894,9 +894,12 @@ out_err:
+ }
+ 
+ static int stop_tracing;
++static struct trace_instance *top_inst = NULL;
+ static void stop_top(int sig)
  {
- 	struct uvc_control_mapping *mapping;
- 	struct uvc_control *ctrl;
--	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
- 	unsigned int i;
- 	unsigned int j;
+ 	stop_tracing = 1;
++	if (top_inst)
++		trace_instance_stop(top_inst);
+ }
  
- 	for (i = 0; i < xctrls_count; ++i) {
--		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ /*
+@@ -943,6 +946,13 @@ int timerlat_top_main(int argc, char *ar
+ 	}
  
-+		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
+ 	trace = &top->trace;
++	/*
++	* Save trace instance into global variable so that SIGINT can stop
++	* the timerlat tracer.
++	* Otherwise, rtla could loop indefinitely when overloaded.
++	*/
++	top_inst = trace;
++
+ 
+ 	retval = enable_timerlat(trace);
+ 	if (retval) {
+@@ -1102,7 +1112,7 @@ int timerlat_top_main(int argc, char *ar
+ 
+ 	return_value = 0;
+ 
+-	if (trace_is_off(&top->trace, &record->trace)) {
++	if (trace_is_off(&top->trace, &record->trace) && !stop_tracing) {
+ 		printf("rtla timerlat hit stop tracing\n");
+ 
+ 		if (!params->no_aa)
 
 
 
