@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65DCA343AA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:55:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0502A34680
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0B4716F435
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E3F3A690A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4344A202C49;
-	Thu, 13 Feb 2025 14:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB8326B09E;
+	Thu, 13 Feb 2025 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZ3eehIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYsA4B09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F288F202C22;
-	Thu, 13 Feb 2025 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5226B096;
+	Thu, 13 Feb 2025 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457928; cv=none; b=tgwPn/30oT0cZ/6O1aZBGDdfg3fHRV9WbOB0fl03FOmKLtgU0Uh7Vy8rGidRbgBUF0tFOakiq076DRfFmsCInOrti2aooeUtG2ktSwHpJyNy6i/UkMIm0Nak625krDsQt2OkCn2IhAILPtdmMkUkMP8gEr2LG2hHRQ3OZ0xZqQ4=
+	t=1739459487; cv=none; b=qi6FFQageeLl1HNsCTt359Lp1vdSG6mK8zGrFqcH+4ULpueF0gWaRGJQ7sivVs9mNwZutN8mz0RZFJ+22SNh/AE/6aXmOhVkp4XQ0BhuTlNl7qf+a6FMq1BLxKMXJ8m7Oodd4JubINXugT6lUPt9cqCt0Anq7fW9vAaFP3U9zOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457928; c=relaxed/simple;
-	bh=wlwwH0nYVRgWRiRJXrs1hFmUk+Xsil9AtgYM+ZcYtGo=;
+	s=arc-20240116; t=1739459487; c=relaxed/simple;
+	bh=ugO4zsefLiEyVoHCaMb8PH+Tccbm9KrIvYKj/U/wRy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkPUotyyRtxlFpxcBhuZqnGB7zn2fTLK75MsPJf6waCb3awbjpsuMQcT+lvHMrhx9fnuiT4IfGOjIe3uGlL7U8KmRueD5/nw1RZWPSBUD3BPTgEAf7GJT2HE9hzw7yqsAGh9ePG3zCQDiOPa9PB/p6EBlef8xL1ZJgjSJtBW5YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZ3eehIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58965C4CED1;
-	Thu, 13 Feb 2025 14:45:27 +0000 (UTC)
+	 MIME-Version; b=I+dYKwTJlwMlOtbjlvSFLXcxTcbhx2Ks9RmIjTO0Ldhu3SC8PUSJeRfIyFbhLTn94FaX3KH1xmSK9rN6VZVeTDXNpQG2fKrdvmNxPZXqAg8TrjydQbzR3zTRe82vqBAGT0t29BskRnisAxL2l9KPpxztZ0uZS9O5rdGAolv3qKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYsA4B09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E45C4CED1;
+	Thu, 13 Feb 2025 15:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457927;
-	bh=wlwwH0nYVRgWRiRJXrs1hFmUk+Xsil9AtgYM+ZcYtGo=;
+	s=korg; t=1739459487;
+	bh=ugO4zsefLiEyVoHCaMb8PH+Tccbm9KrIvYKj/U/wRy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZ3eehIOHyDZ37sYEr3qh61ydmsiHUva7/suGA5Mv64wz2q8BU6yF3ZG6gByT/v3R
-	 0D5RT+rvRVARKERcg6v1B8hPXgYSpFEJyhW7fapTNzMnRLpX7VFD7t9u3JyjNzbF9T
-	 c+qly0Ovbo7Op/f3an67L1f2KnFJzvqLCntZoLow=
+	b=LYsA4B092hSYLZ6wqkuLToIBD6TicugmTKy5/HmUBNjKwFFOWxC4whpMXkAD6qkwP
+	 MbHG1AGk8/OhkhrldxYGq0MbLakNAcaHlw2Ls1IpkF+tWDn9ZWEitpIu5Ujrl0H1CT
+	 EybT3EjL/kIIXMMH63DKOK0kGcoiTMk6Kcoj+ZS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 253/422] KVM: x86/mmu: Ensure NX huge page recovery thread is alive before waking
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.13 237/443] usbnet: ipheth: refactor NCM datagram loop
 Date: Thu, 13 Feb 2025 15:26:42 +0100
-Message-ID: <20250213142446.304553795@linuxfoundation.org>
+Message-ID: <20250213142449.760924156@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 43fb96ae78551d7bfa4ecca956b258f085d67c40 upstream.
+commit 2a9a196429e98fcc64078366c2679bc40aba5466 upstream.
 
-When waking a VM's NX huge page recovery thread, ensure the thread is
-actually alive before trying to wake it.  Now that the thread is spawned
-on-demand during KVM_RUN, a VM without a recovery thread is reachable via
-the related module params.
+Introduce an rx_error label to reduce repetitions in the header
+signature checks.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000040
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:vhost_task_wake+0x5/0x10
-  Call Trace:
-   <TASK>
-   set_nx_huge_pages+0xcc/0x1e0 [kvm]
-   param_attr_store+0x8a/0xd0
-   module_attr_store+0x1a/0x30
-   kernfs_fop_write_iter+0x12f/0x1e0
-   vfs_write+0x233/0x3e0
-   ksys_write+0x60/0xd0
-   do_syscall_64+0x5b/0x160
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f3b52710104
-   </TASK>
-  Modules linked in: kvm_intel kvm
-  CR2: 0000000000000040
+Store wDatagramIndex and wDatagramLength after endianness conversion to
+avoid repeated le16_to_cpu() calls.
 
-Fixes: 931656b9e2ff ("kvm: defer huge page recovery vhost task to later")
-Cc: stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250124234623.3609069-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Rewrite the loop to return on a null trailing DPE, which is required
+by the CDC NCM spec. In case it is missing, fall through to rx_error.
+
+This change does not fix any particular issue. Its purpose is to
+simplify a subsequent commit that fixes a potential OoB read by limiting
+the maximum amount of processed DPEs.
+
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ drivers/net/usb/ipheth.c |   42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7227,6 +7227,19 @@ static void mmu_destroy_caches(void)
- 	kmem_cache_destroy(mmu_page_header_cache);
- }
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -213,9 +213,9 @@ static int ipheth_rcvbulk_callback_ncm(s
+ 	struct usb_cdc_ncm_ndp16 *ncm0;
+ 	struct usb_cdc_ncm_dpe16 *dpe;
+ 	struct ipheth_device *dev;
++	u16 dg_idx, dg_len;
+ 	int retval = -EINVAL;
+ 	char *buf;
+-	int len;
  
-+static void kvm_wake_nx_recovery_thread(struct kvm *kvm)
-+{
-+	/*
-+	 * The NX recovery thread is spawned on-demand at the first KVM_RUN and
-+	 * may not be valid even though the VM is globally visible.  Do nothing,
-+	 * as such a VM can't have any possible NX huge pages.
-+	 */
-+	struct vhost_task *nx_thread = READ_ONCE(kvm->arch.nx_huge_page_recovery_thread);
-+
-+	if (nx_thread)
-+		vhost_task_wake(nx_thread);
-+}
-+
- static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
- {
- 	if (nx_hugepage_mitigation_hard_disabled)
-@@ -7287,7 +7300,7 @@ static int set_nx_huge_pages(const char
- 			kvm_mmu_zap_all_fast(kvm);
- 			mutex_unlock(&kvm->slots_lock);
+ 	dev = urb->context;
  
--			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
-+			kvm_wake_nx_recovery_thread(kvm);
+@@ -227,39 +227,43 @@ static int ipheth_rcvbulk_callback_ncm(s
+ 	ncmh = urb->transfer_buffer;
+ 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
+ 	    /* On iOS, NDP16 directly follows NTH16 */
+-	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
+-		dev->net->stats.rx_errors++;
+-		return retval;
+-	}
++	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16)))
++		goto rx_error;
+ 
+ 	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
+-	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
+-		dev->net->stats.rx_errors++;
+-		return retval;
+-	}
++	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN))
++		goto rx_error;
+ 
+ 	dpe = ncm0->dpe16;
+-	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
+-	       le16_to_cpu(dpe->wDatagramLength) != 0) {
+-		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
+-		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
+-		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
+-		    le16_to_cpu(dpe->wDatagramIndex)) {
++	while (true) {
++		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
++		dg_len = le16_to_cpu(dpe->wDatagramLength);
++
++		/* Null DPE must be present after last datagram pointer entry
++		 * (3.3.1 USB CDC NCM spec v1.0)
++		 */
++		if (dg_idx == 0 && dg_len == 0)
++			return 0;
++
++		if (dg_idx < IPHETH_NCM_HEADER_SIZE ||
++		    dg_idx >= urb->actual_length ||
++		    dg_len > urb->actual_length - dg_idx) {
+ 			dev->net->stats.rx_length_errors++;
+ 			return retval;
  		}
- 		mutex_unlock(&kvm_lock);
+ 
+-		buf = urb->transfer_buffer + le16_to_cpu(dpe->wDatagramIndex);
+-		len = le16_to_cpu(dpe->wDatagramLength);
++		buf = urb->transfer_buffer + dg_idx;
+ 
+-		retval = ipheth_consume_skb(buf, len, dev);
++		retval = ipheth_consume_skb(buf, dg_len, dev);
+ 		if (retval != 0)
+ 			return retval;
+ 
+ 		dpe++;
  	}
-@@ -7433,7 +7446,7 @@ static int set_nx_huge_pages_recovery_pa
- 		mutex_lock(&kvm_lock);
  
- 		list_for_each_entry(kvm, &vm_list, vm_list)
--			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
-+			kvm_wake_nx_recovery_thread(kvm);
- 
- 		mutex_unlock(&kvm_lock);
- 	}
-@@ -7569,14 +7582,20 @@ static void kvm_mmu_start_lpage_recovery
- {
- 	struct kvm_arch *ka = container_of(once, struct kvm_arch, nx_once);
- 	struct kvm *kvm = container_of(ka, struct kvm, arch);
-+	struct vhost_task *nx_thread;
- 
- 	kvm->arch.nx_huge_page_last = get_jiffies_64();
--	kvm->arch.nx_huge_page_recovery_thread = vhost_task_create(
--		kvm_nx_huge_page_recovery_worker, kvm_nx_huge_page_recovery_worker_kill,
--		kvm, "kvm-nx-lpage-recovery");
-+	nx_thread = vhost_task_create(kvm_nx_huge_page_recovery_worker,
-+				      kvm_nx_huge_page_recovery_worker_kill,
-+				      kvm, "kvm-nx-lpage-recovery");
-+
-+	if (!nx_thread)
-+		return;
-+
-+	vhost_task_start(nx_thread);
- 
--	if (kvm->arch.nx_huge_page_recovery_thread)
--		vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
-+	/* Make the task visible only once it is fully started. */
-+	WRITE_ONCE(kvm->arch.nx_huge_page_recovery_thread, nx_thread);
+-	return 0;
++rx_error:
++	dev->net->stats.rx_errors++;
++	return retval;
  }
  
- int kvm_mmu_post_init_vm(struct kvm *kvm)
+ static void ipheth_rcvbulk_callback(struct urb *urb)
 
 
 
