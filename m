@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C86A3444E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 614D0A346D8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F40243A4228
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5E13AC03A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6E0241699;
-	Thu, 13 Feb 2025 14:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D600B14F121;
+	Thu, 13 Feb 2025 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D62aPMix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKqGOMJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2344924168F;
-	Thu, 13 Feb 2025 14:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9122F14A605;
+	Thu, 13 Feb 2025 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458288; cv=none; b=PHfnItQz8bdxr2yLbTOiidmNNHaoasC/5I0zA+gU6w+UH80S4do+mgjrJX1btMDHEjQYCKyK00moLlml3zcooLqxSsIRD1kF64y1E7wq6YRbjuGtTDcoffJuFxzywzhYRg4qTizdc4/nUiWjmgYDg+diKw6nnpwoJYSKOcxj+Wc=
+	t=1739459710; cv=none; b=b3x9cNZUWlUd7pBEiAuXK0PE+FiiBUhFETRtsxipGhYJ5hxswedq87mL0k9UDXw/g1dTKVcAaiuzgml7N2lRMUsRp6tf7S8gGuN6bRZAz8qaHrNYkea+WERZZxdITAErwGYuAjwfQKvpbbnCLGYHhEnXhkdd4epVvmh53fPJe6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458288; c=relaxed/simple;
-	bh=vA34+ZP4SVq3xWBq8SUXnxHICym5uhg9akrdZxD/fOM=;
+	s=arc-20240116; t=1739459710; c=relaxed/simple;
+	bh=MtpgyGppXRL3aC0RYWxIc14A3cTfy/KIYyM7LntrWTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaUnhsOaYfbwI3K4Vn8pPfUzD/nNWv/dS1q1inkNCqIOoSPZsrIz9DsnqGV0jeVhOD4JC8vOlgtOOy7zGWoyj4mW7jYRRhthQeaap5COmrlj4dPZnd9rdsiAB6JolnnYb3UaRGMbaCRiCIzMW4XnAZRv0MMPeI7EMd+OdVXVoo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D62aPMix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23014C4CED1;
-	Thu, 13 Feb 2025 14:51:26 +0000 (UTC)
+	 MIME-Version; b=OjQJte2VKdGpue5nTFULLwbweEm9GtpQD8JPFGaZtNdTyBxSVmnk+OMkRbXznTGM/S9DKzKK02GsQnrB415TRclH0JCfxdGFln4U09ClaOY7Bz9rt8Nw/Zhm1VXF9JPhoDLKQ6nu9mImYotBjGVc5AoZrVLESqCqrXe4tUUHkoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKqGOMJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023BCC4CEE4;
+	Thu, 13 Feb 2025 15:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458287;
-	bh=vA34+ZP4SVq3xWBq8SUXnxHICym5uhg9akrdZxD/fOM=;
+	s=korg; t=1739459710;
+	bh=MtpgyGppXRL3aC0RYWxIc14A3cTfy/KIYyM7LntrWTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D62aPMix8XSxL02IJsj41vZnXhI57PP/nXvD0vG97bKrvWm8dXZOGYCxuEVJjzu83
-	 TANXPK2DKhF1gCdc70gqf7OSF/ABaY68sfwvNYNWDzczwvbR9HG4guN3ZbGqp/C6cT
-	 SmlPbp+mZcZqcMuffED7cq+qHs6pty5I7sHSJs2M=
+	b=xKqGOMJMtG0tdg31rt1wNSbQcvF7edIKEWJqDc7ikC6+Cdw5DLgf7NPkfxdZ1W8+v
+	 ycCNI+BEj6YmkiO5THVy/Gwiavfq2bUpeyC7sKD8JPR1KGdeMucDljnT+mywsaixIu
+	 rHvhCdIRDrPvm8KJnF0lnB3AZi5UdhBaT79pKuT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	stable <stable@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.12 355/422] nvmem: imx-ocotp-ele: fix reading from non zero offset
-Date: Thu, 13 Feb 2025 15:28:24 +0100
-Message-ID: <20250213142450.252629358@linuxfoundation.org>
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Subject: [PATCH 6.13 340/443] iommufd: Fix struct iommu_hwpt_pgfault init and padding
+Date: Thu, 13 Feb 2025 15:28:25 +0100
+Message-ID: <20250213142453.743345320@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 3c9e2cb6cecf65f7501004038c5d1ed85fb7db84 upstream.
+commit e721f619e3ec9bae08bf419c3944cf1e6966c821 upstream.
 
-In imx_ocotp_reg_read() the offset comes in as bytes and not as words.
-This means we have to divide offset by 4 to get to the correct word
-offset.
+The iommu_hwpt_pgfault is used to report IO page fault data to userspace,
+but iommufd_fault_fops_read was never zeroing its padding. This leaks the
+content of the kernel stack memory to userspace.
 
-Also the incoming offset might not be word aligned. In order to read
-from the OCOTP the driver aligns down the previous word boundary and
-reads from there. This means we have to skip this alignment offset from
-the temporary buffer when copying the data to the output buffer.
+Also, the iommufd uAPI requires explicit padding and use of __aligned_u64
+to ensure ABI compatibility's with 32 bit.
 
-Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+pahole result, before:
+struct iommu_hwpt_pgfault {
+        __u32     flags;                /*     0     4 */
+        __u32     dev_id;               /*     4     4 */
+        __u32     pasid;                /*     8     4 */
+        __u32     grpid;                /*    12     4 */
+        __u32     perm;                 /*    16     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        __u64     addr;                 /*    24     8 */
+        __u32     length;               /*    32     4 */
+        __u32     cookie;               /*    36     4 */
+
+        /* size: 40, cachelines: 1, members: 8 */
+        /* sum members: 36, holes: 1, sum holes: 4 */
+        /* last cacheline: 40 bytes */
+};
+
+pahole result, after:
+struct iommu_hwpt_pgfault {
+        __u32      flags;                /*     0     4 */
+        __u32      dev_id;               /*     4     4 */
+        __u32      pasid;                /*     8     4 */
+        __u32      grpid;                /*    12     4 */
+        __u32      perm;                 /*    16     4 */
+        __u32      __reserved;           /*    20     4 */
+        __u64      addr __attribute__((__aligned__(8))); /*    24     8 */
+        __u32      length;               /*    32     4 */
+        __u32      cookie;               /*    36     4 */
+
+        /* size: 40, cachelines: 1, members: 9 */
+        /* forced alignments: 1 */
+        /* last cacheline: 40 bytes */
+} __attribute__((__aligned__(8)));
+
+Fixes: c714f15860fc ("iommufd: Add fault and response message definitions")
+Link: https://patch.msgid.link/r/20250120195051.2450-1-nicolinc@nvidia.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp-ele.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iommu/iommufd/fault.c |    2 +-
+ include/uapi/linux/iommufd.h  |    4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -71,12 +71,14 @@ static int imx_ocotp_reg_read(void *cont
- 	u32 *buf;
- 	void *p;
- 	int i;
-+	u8 skipbytes;
- 
- 	if (offset + bytes > priv->data->size)
- 		bytes = priv->data->size - offset;
- 
--	index = offset;
--	num_bytes = round_up(bytes, 4);
-+	index = offset >> 2;
-+	skipbytes = offset - (index << 2);
-+	num_bytes = round_up(bytes + skipbytes, 4);
- 	count = num_bytes >> 2;
- 
- 	p = kzalloc(num_bytes, GFP_KERNEL);
-@@ -100,7 +102,7 @@ static int imx_ocotp_reg_read(void *cont
- 			*buf++ = readl_relaxed(reg + (i << 2));
- 	}
- 
--	memcpy(val, (u8 *)p, bytes);
-+	memcpy(val, ((u8 *)p) + skipbytes, bytes);
- 
- 	mutex_unlock(&priv->lock);
- 
+--- a/drivers/iommu/iommufd/fault.c
++++ b/drivers/iommu/iommufd/fault.c
+@@ -247,7 +247,7 @@ static ssize_t iommufd_fault_fops_read(s
+ {
+ 	size_t fault_size = sizeof(struct iommu_hwpt_pgfault);
+ 	struct iommufd_fault *fault = filep->private_data;
+-	struct iommu_hwpt_pgfault data;
++	struct iommu_hwpt_pgfault data = {};
+ 	struct iommufd_device *idev;
+ 	struct iopf_group *group;
+ 	struct iopf_fault *iopf;
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -868,6 +868,7 @@ enum iommu_hwpt_pgfault_perm {
+  * @pasid: Process Address Space ID
+  * @grpid: Page Request Group Index
+  * @perm: Combination of enum iommu_hwpt_pgfault_perm
++ * @__reserved: Must be 0.
+  * @addr: Fault address
+  * @length: a hint of how much data the requestor is expecting to fetch. For
+  *          example, if the PRI initiator knows it is going to do a 10MB
+@@ -883,7 +884,8 @@ struct iommu_hwpt_pgfault {
+ 	__u32 pasid;
+ 	__u32 grpid;
+ 	__u32 perm;
+-	__u64 addr;
++	__u32 __reserved;
++	__aligned_u64 addr;
+ 	__u32 length;
+ 	__u32 cookie;
+ };
 
 
 
