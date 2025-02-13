@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-115500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D171AA3444C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D92A34420
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60A87188D9B0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77AFD16F84E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE648221713;
-	Thu, 13 Feb 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7247B2222DA;
+	Thu, 13 Feb 2025 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZDR3x+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWTfg9pV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABF145348;
-	Thu, 13 Feb 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30493202C3A;
+	Thu, 13 Feb 2025 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458270; cv=none; b=p4QZ7f9DwnLcEDZc/W5B6Z8nnHEnIzTjuig/odIQPcE+dxl9Gl64NukYK7HxPUeRhsC9QDTjKgIGZjsi/x9z3I3iwquh5KBIlM34lmGamWtl8GKA7Es9fFS8sTGkGJExZLAvEKUS0kzpVsL1seqf37t7eHT6TdbFRhsVIOzcWGY=
+	t=1739458277; cv=none; b=qcKx2XaGtrPi99Bgbn5EDVRTEs0Ph7xDmdkwFmaAqK5K285cXPEljJfXLQJsANrby3fTkYtk9K6eIkaHZdKzf+jNQByA3OAnuOaHddWdRmea/3GI5kEO27ZbeQhKH2umBv2nc1iZBLoUPcKOaIvzw/WC6m+0lf4aDW/3NWBlB1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458270; c=relaxed/simple;
-	bh=Vt3c8GzlsxbZCQgea6+7PLnxOOMTIzSgpPlqTdkpwzs=;
+	s=arc-20240116; t=1739458277; c=relaxed/simple;
+	bh=fGCY5YH9/X/hwzNgdw3GMrj1BRPixBR1s8pScvqrQb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tt1MefBFAHHPbWgP5zKLfSTnwiFvJ1zsbcBaSUR4dz108WYcJZJTNhU4kOFs/HjcNS07AIQFgKG3coaMlY6wodiKYlXVLaqAwWQwW4ueCsp66wcOk9ZiO636m2WQoWEa6zgCMwNMo66qbpZXKVV852zxy0MhUJen7AMz7ViHtqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZDR3x+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A0FC4CED1;
-	Thu, 13 Feb 2025 14:51:09 +0000 (UTC)
+	 MIME-Version; b=prH/I4reGxD9CeazceyYzBiXq7eGu7JCAhndc27Lcmso6CDCoXBemBuYTGcYY/auiQBpWcN38XhgJ+HemwjgCSYB7XDHells/vsZ59aM7lV1ZY8JPgnsJohwpcbATr4TNSURgiGTdVQPPxxYRlHHWc/9w6beAczh7bIXbYKQOnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWTfg9pV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1C4C4CED1;
+	Thu, 13 Feb 2025 14:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458270;
-	bh=Vt3c8GzlsxbZCQgea6+7PLnxOOMTIzSgpPlqTdkpwzs=;
+	s=korg; t=1739458277;
+	bh=fGCY5YH9/X/hwzNgdw3GMrj1BRPixBR1s8pScvqrQb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZDR3x+ncVtM0koVJdgo+fN2uhj7YNuCZdIdU6B9YE0MozQAheT6f27uidiXmhF14
-	 I4sZq+/wrNQohZgQ8BH964CAJC7H8cyWSQTJxF+EWuug+UfYUq+9XZx4uaz5XHsTRs
-	 V8RyeBwBX9oJx+2Oe/gDjjRaVgupp2TdVnnweMoQ=
+	b=jWTfg9pVRs5nigLXLrNLqeqpmJl0BQua0v6mTVcMuYiB9ABDTHJfp9MGJjLLaREBL
+	 V/TMXTp12A/VLCn+YwkENktCQVBbfmgT0j6+Vz2cBt+jE2hpVt15lXKnuoxEmiTyNo
+	 A8XsNFpuR45mf1J3eujyT/IixO+Zys1CIiFAnP2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Jennifer Berringer <jberring@redhat.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.12 351/422] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
-Date: Thu, 13 Feb 2025 15:28:20 +0100
-Message-ID: <20250213142450.097875824@linuxfoundation.org>
+Subject: [PATCH 6.12 352/422] nvmem: core: improve range check for nvmem_cell_write()
+Date: Thu, 13 Feb 2025 15:28:21 +0100
+Message-ID: <20250213142450.137021106@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
 References: <20250213142436.408121546@linuxfoundation.org>
@@ -66,42 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Jennifer Berringer <jberring@redhat.com>
 
-commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
+commit 31507fc2ad36e0071751a710449db19c85d82a7f upstream.
 
-Let the nvmem core know what size the SDAM is, most notably this fixes
-the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
-user space work with that file.
+When __nvmem_cell_entry_write() is called for an nvmem cell that does
+not need bit shifting, it requires that the len parameter exactly
+matches the nvmem cell size. However, when the nvmem cell has a nonzero
+bit_offset, it was skipping this check.
 
-  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
-  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
-  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-  *
-  00000080
+Accepting values of len larger than the cell size results in
+nvmem_cell_prepare_write_buffer() trying to write past the end of a heap
+buffer that it allocates. Add a check to avoid that problem and instead
+return -EINVAL when len doesn't match the number of bits expected by the
+nvmem cell when bit_offset is nonzero.
 
-Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+This check uses cell->nbits in order to allow providing the smaller size
+to cells that are shifted into another byte by bit_offset. For example,
+a cell with nbits=8 and nonzero bit_offset would have bytes=2 but should
+accept a 1-byte write here, although no current callers depend on this.
+
+Fixes: 69aba7948cbe ("nvmem: Add a simple NVMEM framework for consumers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Jennifer Berringer <jberring@redhat.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20241230141901.263976-7-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/qcom-spmi-sdam.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvmem/core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/nvmem/qcom-spmi-sdam.c
-+++ b/drivers/nvmem/qcom-spmi-sdam.c
-@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_de
- 	sdam->sdam_config.owner = THIS_MODULE;
- 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
- 	sdam->sdam_config.stride = 1;
-+	sdam->sdam_config.size = sdam->size;
- 	sdam->sdam_config.word_size = 1;
- 	sdam->sdam_config.reg_read = sdam_read;
- 	sdam->sdam_config.reg_write = sdam_write;
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1780,6 +1780,8 @@ static int __nvmem_cell_entry_write(stru
+ 		return -EINVAL;
+ 
+ 	if (cell->bit_offset || cell->nbits) {
++		if (len != BITS_TO_BYTES(cell->nbits) && len != cell->bytes)
++			return -EINVAL;
+ 		buf = nvmem_cell_prepare_write_buffer(cell, buf, len);
+ 		if (IS_ERR(buf))
+ 			return PTR_ERR(buf);
 
 
 
