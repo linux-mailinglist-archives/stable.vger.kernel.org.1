@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC39FA34494
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFA6A3424B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310C616EC94
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E6343A47B2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B0D24168C;
-	Thu, 13 Feb 2025 14:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE52221552;
+	Thu, 13 Feb 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9Z3QfrR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajajctqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24457241689;
-	Thu, 13 Feb 2025 14:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70EA21D3C3;
+	Thu, 13 Feb 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458589; cv=none; b=SeEvXFmyHsJu7+SXxiRauRLKsRvfv+v2wyya3scnz/8BUs7UxOztLqFpKNWreVOGsi07aKldMf0LEEO6LwZU2L5dOY15Qxmk+eGTeggXvVjEZ2yY9zIu5OhfuyxpjkGe/H4iZaxoru2fsOHO+LLFqAThnFx4lr6pFxxR5Iy+WM0=
+	t=1739457180; cv=none; b=fXXwB/LoKfg51wZG4q1T3oM4Pl98pbHVyEDcl22deWOm9xQNhfLsMwMyUjgA9FxO9Jf6sDPrf9yJpE8EaZHK/IljgA3ejBHeWzUlDRn+nvalVAtfFWvLoSHCeXYdlOUKRJI5NEii0kJ/vE6Ixo7Q4Oe6aAJcyvdpnKGCgSdNYew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458589; c=relaxed/simple;
-	bh=ZTdqW7sIFphbxB2r9QU++WnVRFFy26h+O3QyHTh5VDg=;
+	s=arc-20240116; t=1739457180; c=relaxed/simple;
+	bh=ksNZl20mZtNNYE8QleVULJnz9q6XCr/DLIyUDal3qYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uTp+LpCx9u5oC4Qy1aiIyEUxxgGABsMwJ0sZwUNw0oMlL8CxUJ4sn+P/fH+D5lhvfh6eteMChkvM0UzlW4eesWrirb1/IdrtpsYqVKAVFe4p9hXMrzbPB2hXlIBaXqXLzP0sWXR4AvYQMpSuwClxvtffAaegRSOZEgfsVf9+q2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9Z3QfrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEA7C4CED1;
-	Thu, 13 Feb 2025 14:56:27 +0000 (UTC)
+	 MIME-Version; b=WMf+C5CaNS6ChycPFCINDnyR73PaHSNi6vtkrD3gEZ02vaqRI+frWRopQrFwR+GHcI7kpEi2QBX+wNKS4y6x7xcGBkXj2skNITBpiuU4o/Hejyqd9YBoxFo1dsODaczMdcA0FeHxE9SOr5ssqu/EThbPBh0nVvi2TdT0phny8+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajajctqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C74C4CEE4;
+	Thu, 13 Feb 2025 14:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458588;
-	bh=ZTdqW7sIFphbxB2r9QU++WnVRFFy26h+O3QyHTh5VDg=;
+	s=korg; t=1739457180;
+	bh=ksNZl20mZtNNYE8QleVULJnz9q6XCr/DLIyUDal3qYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9Z3QfrR4SvVferjUn0PDGlJQEGHnz2lkdTXjJod+l5lofCtthnmKm1jr66zpnHtW
-	 Y49Ohem8HJrhxtjxGY9Rcg5jx5eapcGPDPzUYLQUk68E0B5L3eN5P1+y33aIHwnda/
-	 8VZjDHt1KxivIs1INkBNb9TCSavxlM5ZzxjCAu3w=
+	b=ajajctqVfP21xrUOT0MI9fkbk47sQzwPcfU7r7Kezxqod2Llj/GfVrwGEYLaYOayw
+	 rCQAtr1IdgQDjdfZinwioNk+LI8Flhdzt7mWXiH0aFyc8bEzt6J5UVbxiWehySedBJ
+	 AB7f/GWVxz9pwMS4Ob6yL7N8ocia2zBjbzqy7oSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 021/443] drm/amd/display: Add support for minimum backlight quirk
-Date: Thu, 13 Feb 2025 15:23:06 +0100
-Message-ID: <20250213142441.439069341@linuxfoundation.org>
+Subject: [PATCH 6.12 038/422] drm/amdkfd: Queue interrupt work to different CPU
+Date: Thu, 13 Feb 2025 15:23:07 +0100
+Message-ID: <20250213142438.026289543@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit c2753b2471c65955de18cbc58530641447e5bfe9 ]
+[ Upstream commit 34db5a32617d102e8042151bb87590e43c97132e ]
 
-Not all platforms provide the full range of PWM backlight capabilities
-supported by the hardware through ATIF.
-Use the generic drm panel minimum backlight quirk infrastructure to
-override the capabilities where necessary.
+For CPX mode, each KFD node has interrupt worker to process ih_fifo to
+send events to user space. Currently all interrupt workers of same adev
+queue to same CPU, all workers execution are actually serialized and
+this cause KFD ih_fifo overflow when CPU usage is high.
 
-Testing the backlight quirk together with the "panel_power_savings"
-sysfs file has not shown any negative impact.
-One quirk seems to be that 0% at panel_power_savings=0 seems to be
-slightly darker than at panel_power_savings=4.
+Use per-GPU unbounded highpri queue with number of workers equals to
+number of partitions, let queue_work select the next CPU round robin
+among the local CPUs of same NUMA.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-2-f662851fda69@weissschuh.net
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/Kconfig                | 1 +
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c    | 25 ++++++++--------------
+ drivers/gpu/drm/amd/amdkfd/kfd_interrupt.c | 25 ++++++++--------------
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h      |  3 ++-
+ 3 files changed, 20 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/Kconfig b/drivers/gpu/drm/amd/amdgpu/Kconfig
-index 41fa3377d9cf5..1a11cab741aca 100644
---- a/drivers/gpu/drm/amd/amdgpu/Kconfig
-+++ b/drivers/gpu/drm/amd/amdgpu/Kconfig
-@@ -26,6 +26,7 @@ config DRM_AMDGPU
- 	select DRM_BUDDY
- 	select DRM_SUBALLOC_HELPER
- 	select DRM_EXEC
-+	select DRM_PANEL_BACKLIGHT_QUIRKS
- 	# amdgpu depends on ACPI_VIDEO when ACPI is enabled, for select to work
- 	# ACPI_VIDEO's dependencies must also be selected.
- 	select INPUT if ACPI
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 53694baca9663..92e1d59921f49 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -93,6 +93,7 @@
- #include <drm/drm_fourcc.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_eld.h>
-+#include <drm/drm_utils.h>
- #include <drm/drm_vblank.h>
- #include <drm/drm_audio_component.h>
- #include <drm/drm_gem_atomic_helper.h>
-@@ -3457,6 +3458,7 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
- 	struct drm_connector *conn_base;
- 	struct amdgpu_device *adev;
- 	struct drm_luminance_range_info *luminance_range;
-+	int min_input_signal_override;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index b05be24531e18..d350c7ce35b3d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -637,6 +637,14 @@ static void kfd_cleanup_nodes(struct kfd_dev *kfd, unsigned int num_nodes)
+ 	struct kfd_node *knode;
+ 	unsigned int i;
  
- 	if (aconnector->bl_idx == -1 ||
- 	    aconnector->dc_link->connector_signal != SIGNAL_TYPE_EDP)
-@@ -3493,6 +3495,10 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
- 		caps->aux_min_input_signal = 0;
- 		caps->aux_max_input_signal = 512;
- 	}
++	/*
++	 * flush_work ensures that there are no outstanding
++	 * work-queue items that will access interrupt_ring. New work items
++	 * can't be created because we stopped interrupt handling above.
++	 */
++	flush_workqueue(kfd->ih_wq);
++	destroy_workqueue(kfd->ih_wq);
 +
-+	min_input_signal_override = drm_get_panel_min_brightness_quirk(aconnector->drm_edid);
-+	if (min_input_signal_override >= 0)
-+		caps->min_input_signal = min_input_signal_override;
+ 	for (i = 0; i < num_nodes; i++) {
+ 		knode = kfd->nodes[i];
+ 		device_queue_manager_uninit(knode->dqm);
+@@ -1058,21 +1066,6 @@ static int kfd_resume(struct kfd_node *node)
+ 	return err;
  }
  
- void amdgpu_dm_update_connector_after_detect(
+-static inline void kfd_queue_work(struct workqueue_struct *wq,
+-				  struct work_struct *work)
+-{
+-	int cpu, new_cpu;
+-
+-	cpu = new_cpu = smp_processor_id();
+-	do {
+-		new_cpu = cpumask_next(new_cpu, cpu_online_mask) % nr_cpu_ids;
+-		if (cpu_to_node(new_cpu) == numa_node_id())
+-			break;
+-	} while (cpu != new_cpu);
+-
+-	queue_work_on(new_cpu, wq, work);
+-}
+-
+ /* This is called directly from KGD at ISR. */
+ void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
+ {
+@@ -1098,7 +1091,7 @@ void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
+ 			    	patched_ihre, &is_patched)
+ 		    && enqueue_ih_ring_entry(node,
+ 			    	is_patched ? patched_ihre : ih_ring_entry)) {
+-			kfd_queue_work(node->ih_wq, &node->interrupt_work);
++			queue_work(node->kfd->ih_wq, &node->interrupt_work);
+ 			spin_unlock_irqrestore(&node->interrupt_lock, flags);
+ 			return;
+ 		}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_interrupt.c b/drivers/gpu/drm/amd/amdkfd/kfd_interrupt.c
+index 9b6b6e8825934..15b4b70cf1997 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_interrupt.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_interrupt.c
+@@ -62,11 +62,14 @@ int kfd_interrupt_init(struct kfd_node *node)
+ 		return r;
+ 	}
+ 
+-	node->ih_wq = alloc_workqueue("KFD IH", WQ_HIGHPRI, 1);
+-	if (unlikely(!node->ih_wq)) {
+-		kfifo_free(&node->ih_fifo);
+-		dev_err(node->adev->dev, "Failed to allocate KFD IH workqueue\n");
+-		return -ENOMEM;
++	if (!node->kfd->ih_wq) {
++		node->kfd->ih_wq = alloc_workqueue("KFD IH", WQ_HIGHPRI | WQ_UNBOUND,
++						   node->kfd->num_nodes);
++		if (unlikely(!node->kfd->ih_wq)) {
++			kfifo_free(&node->ih_fifo);
++			dev_err(node->adev->dev, "Failed to allocate KFD IH workqueue\n");
++			return -ENOMEM;
++		}
+ 	}
+ 	spin_lock_init(&node->interrupt_lock);
+ 
+@@ -96,16 +99,6 @@ void kfd_interrupt_exit(struct kfd_node *node)
+ 	spin_lock_irqsave(&node->interrupt_lock, flags);
+ 	node->interrupts_active = false;
+ 	spin_unlock_irqrestore(&node->interrupt_lock, flags);
+-
+-	/*
+-	 * flush_work ensures that there are no outstanding
+-	 * work-queue items that will access interrupt_ring. New work items
+-	 * can't be created because we stopped interrupt handling above.
+-	 */
+-	flush_workqueue(node->ih_wq);
+-
+-	destroy_workqueue(node->ih_wq);
+-
+ 	kfifo_free(&node->ih_fifo);
+ }
+ 
+@@ -162,7 +155,7 @@ static void interrupt_wq(struct work_struct *work)
+ 			/* If we spent more than a second processing signals,
+ 			 * reschedule the worker to avoid soft-lockup warnings
+ 			 */
+-			queue_work(dev->ih_wq, &dev->interrupt_work);
++			queue_work(dev->kfd->ih_wq, &dev->interrupt_work);
+ 			break;
+ 		}
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 26e48fdc87289..75523f30cd38b 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -273,7 +273,6 @@ struct kfd_node {
+ 
+ 	/* Interrupts */
+ 	struct kfifo ih_fifo;
+-	struct workqueue_struct *ih_wq;
+ 	struct work_struct interrupt_work;
+ 	spinlock_t interrupt_lock;
+ 
+@@ -366,6 +365,8 @@ struct kfd_dev {
+ 	struct kfd_node *nodes[MAX_KFD_NODES];
+ 	unsigned int num_nodes;
+ 
++	struct workqueue_struct *ih_wq;
++
+ 	/* Kernel doorbells for KFD device */
+ 	struct amdgpu_bo *doorbells;
+ 
 -- 
 2.39.5
 
