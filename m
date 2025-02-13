@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-115699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8F0A34563
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F762A342DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2446716DD0E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73D518919EE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1023426B09D;
-	Thu, 13 Feb 2025 15:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998C1242934;
+	Thu, 13 Feb 2025 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD+KjFJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiXjg0jY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFF338389;
-	Thu, 13 Feb 2025 15:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F4024292A;
+	Thu, 13 Feb 2025 14:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458943; cv=none; b=cWT26JByXet/0v8ZodB2VNGkubNUwlzLQAjgaQqd8Y0qztZyqpIjLqG7g1ZxvJyJ7CisJhcyoxKtmSQ8a9zlnnreqwZ3zfezBmX8A3zzryRZDnPgS5WvIoyAXzKOh8wX9kH04cnXwDd4aFvUoLvd8OBbx+stF1HHzg9MiioFCXg=
+	t=1739457529; cv=none; b=pFLqg1H9Of3JLvHPJiFsoMmNkH/UbtqH32Da5zUwgj+hAg95l+K6P6BiAXAFpUJKi8hccdU9QvYrKhryLTYZo6Z8s8tnkUwaE0iZND/viMpwl3r2cu4GzLKzW3CNPnPhUpfdvuCbXkeUoSNvrC5hw3xY44U16VWAIlGHdzu4GjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458943; c=relaxed/simple;
-	bh=KeEOf5YjgwBe0yU16sPUk2GJ7qXfk7v/hAaIMZ9TvQI=;
+	s=arc-20240116; t=1739457529; c=relaxed/simple;
+	bh=UqFac7ywRzDomLrFjwAL9Yy2TJ9LSKnUeL1IaxFfFIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obBFPXhcxVIAebXJhxC2rm7z6RBNGwuU2vWyh4CfxHSbiia42Pqvaa5DJdBr/ZRPmtk15YtIy2NXr59wDM2g941oAFPW4kZ74Npeprez2jAvBQBzmYG2nUqK9xq9YFZKwQNhp/ek1ZaJNJymamTmVazfzD2hEDcRPsbJL6+0x/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD+KjFJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3ACC4CED1;
-	Thu, 13 Feb 2025 15:02:22 +0000 (UTC)
+	 MIME-Version; b=DKB+4U27mcE61gyf1OTiJb/UIDaVpvCS3QkUiOk4zy4+46DR2zYXjgLFwmGP/qpcgY7IPh4OkibgtGJbZPVYQs3tMtZ5RsQEaWkod4RqnvABxe6FyeY6GeD4PG9v5SqrPAIdWbwi80nXGRWlB6GvFqrbE48PT6bYR/DGBG25QlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiXjg0jY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D6AC4CED1;
+	Thu, 13 Feb 2025 14:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458943;
-	bh=KeEOf5YjgwBe0yU16sPUk2GJ7qXfk7v/hAaIMZ9TvQI=;
+	s=korg; t=1739457528;
+	bh=UqFac7ywRzDomLrFjwAL9Yy2TJ9LSKnUeL1IaxFfFIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YD+KjFJCi3oSgVy28Mq0p3ktoFBZneZAtPQYfSV20I8JJWHNJOb5ojyMlNw7NP/lV
-	 BE+Kbw2IZWzc7v/m4MgQ86bGGZFOyPK+MAxjapqprHtXT0UVPVLurSvH7RVStDqvbj
-	 u038wx3a+b2YTNUNWCHBiRorMWN9WxA34w30G06Q=
+	b=FiXjg0jY3tHodgoea4GUJr3/mwq27mP6+mD79IdTyGcTM2ZFSFvm59zvibVP1TkYE
+	 r7RhrYdJ+2PCJTRZpmgJ2rNmib87QujFdWU5nIul/tQVJGymXqfMnFugWSE3FAYRDO
+	 pwqbldQ0+4N31Fmbq9VDa8vb3p5fJFWkSKlFI0PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 122/443] drm/xe/oa: Preserve oa_ctrl unused bits
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.12 138/422] s390/futex: Fix FUTEX_OP_ANDN implementation
 Date: Thu, 13 Feb 2025 15:24:47 +0100
-Message-ID: <20250213142445.319645262@linuxfoundation.org>
+Message-ID: <20250213142441.872793809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 588c20079e17dae9e1f49ba42981a05de1c9136e ]
+commit 26701574cee6777f867f89b4a5c667817e1ee0dd upstream.
 
-UMD's have interest in setting unused bits of the oa_ctrl register "out of
-band" for certain experiments. To facilitate this, don't clobber previous
-oa_ctrl unused bits, i.e. rmw the values rather than simply write them.
+The futex operation FUTEX_OP_ANDN is supposed to implement
 
-Fixes: e936f885f1e9 ("drm/xe/oa/uapi: Expose OA stream fd")
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250117032155.3048063-1-ashutosh.dixit@intel.com
-(cherry picked from commit cfa9d40db8c30d894171010fe765d96e9bc6a47e)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+*(int *)UADDR2 &= ~OPARG;
+
+The s390 implementation just implements an AND instead of ANDN.
+Add the missing bitwise not operation to oparg to fix this.
+
+This is broken since nearly 19 years, so it looks like user space is
+not making use of this operation.
+
+Fixes: 3363fbdd6fb4 ("[PATCH] s390: futex atomic operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_oa_regs.h |  6 ++++++
- drivers/gpu/drm/xe/xe_oa.c           | 12 ++++++++++--
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/futex.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_oa_regs.h b/drivers/gpu/drm/xe/regs/xe_oa_regs.h
-index a9b0091cb7ee1..6d31573ed1765 100644
---- a/drivers/gpu/drm/xe/regs/xe_oa_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_oa_regs.h
-@@ -59,6 +59,10 @@
- /* Common to all OA units */
- #define  OA_OACONTROL_REPORT_BC_MASK		REG_GENMASK(9, 9)
- #define  OA_OACONTROL_COUNTER_SIZE_MASK		REG_GENMASK(8, 8)
-+#define  OAG_OACONTROL_USED_BITS \
-+	(OAG_OACONTROL_OA_PES_DISAG_EN | OAG_OACONTROL_OA_CCS_SELECT_MASK | \
-+	 OAG_OACONTROL_OA_COUNTER_SEL_MASK | OAG_OACONTROL_OA_COUNTER_ENABLE | \
-+	 OA_OACONTROL_REPORT_BC_MASK | OA_OACONTROL_COUNTER_SIZE_MASK)
- 
- #define OAG_OA_DEBUG XE_REG(0xdaf8, XE_REG_OPTION_MASKED)
- #define  OAG_OA_DEBUG_DISABLE_MMIO_TRG			REG_BIT(14)
-@@ -85,6 +89,8 @@
- #define OAM_CONTEXT_CONTROL_OFFSET		(0x1bc)
- #define OAM_CONTROL_OFFSET			(0x194)
- #define  OAM_CONTROL_COUNTER_SEL_MASK		REG_GENMASK(3, 1)
-+#define  OAM_OACONTROL_USED_BITS \
-+	(OAM_CONTROL_COUNTER_SEL_MASK | OAG_OACONTROL_OA_COUNTER_ENABLE)
- #define OAM_DEBUG_OFFSET			(0x198)
- #define OAM_STATUS_OFFSET			(0x19c)
- #define OAM_MMIO_TRG_OFFSET			(0x1d0)
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index 678fa40e4cea7..d8af82dcdce4b 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -445,6 +445,12 @@ static u32 __oa_ccs_select(struct xe_oa_stream *stream)
- 	return val;
- }
- 
-+static u32 __oactrl_used_bits(struct xe_oa_stream *stream)
-+{
-+	return stream->hwe->oa_unit->type == DRM_XE_OA_UNIT_TYPE_OAG ?
-+		OAG_OACONTROL_USED_BITS : OAM_OACONTROL_USED_BITS;
-+}
-+
- static void xe_oa_enable(struct xe_oa_stream *stream)
- {
- 	const struct xe_oa_format *format = stream->oa_buffer.format;
-@@ -465,14 +471,14 @@ static void xe_oa_enable(struct xe_oa_stream *stream)
- 	    stream->hwe->oa_unit->type == DRM_XE_OA_UNIT_TYPE_OAG)
- 		val |= OAG_OACONTROL_OA_PES_DISAG_EN;
- 
--	xe_mmio_write32(&stream->gt->mmio, regs->oa_ctrl, val);
-+	xe_mmio_rmw32(&stream->gt->mmio, regs->oa_ctrl, __oactrl_used_bits(stream), val);
- }
- 
- static void xe_oa_disable(struct xe_oa_stream *stream)
- {
- 	struct xe_mmio *mmio = &stream->gt->mmio;
- 
--	xe_mmio_write32(mmio, __oa_regs(stream)->oa_ctrl, 0);
-+	xe_mmio_rmw32(mmio, __oa_regs(stream)->oa_ctrl, __oactrl_used_bits(stream), 0);
- 	if (xe_mmio_wait32(mmio, __oa_regs(stream)->oa_ctrl,
- 			   OAG_OACONTROL_OA_COUNTER_ENABLE, 0, 50000, NULL, false))
- 		drm_err(&stream->oa->xe->drm,
-@@ -2569,6 +2575,8 @@ static void __xe_oa_init_oa_units(struct xe_gt *gt)
- 			u->type = DRM_XE_OA_UNIT_TYPE_OAM;
- 		}
- 
-+		xe_mmio_write32(&gt->mmio, u->regs.oa_ctrl, 0);
-+
- 		/* Ensure MMIO trigger remains disabled till there is a stream */
- 		xe_mmio_write32(&gt->mmio, u->regs.oa_debug,
- 				oag_configure_mmio_trigger(NULL, false));
--- 
-2.39.5
-
+--- a/arch/s390/include/asm/futex.h
++++ b/arch/s390/include/asm/futex.h
+@@ -44,7 +44,7 @@ static inline int arch_futex_atomic_op_i
+ 		break;
+ 	case FUTEX_OP_ANDN:
+ 		__futex_atomic_op("lr %2,%1\nnr %2,%5\n",
+-				  ret, oldval, newval, uaddr, oparg);
++				  ret, oldval, newval, uaddr, ~oparg);
+ 		break;
+ 	case FUTEX_OP_XOR:
+ 		__futex_atomic_op("lr %2,%1\nxr %2,%5\n",
 
 
 
