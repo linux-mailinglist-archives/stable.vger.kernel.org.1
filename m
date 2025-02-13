@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4974A34433
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D455EA345F9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E42C188D86D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA42216C1DE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB2D211A36;
-	Thu, 13 Feb 2025 14:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973FA3FB3B;
+	Thu, 13 Feb 2025 15:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8m3XL+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbdPf/Os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694AA20409A;
-	Thu, 13 Feb 2025 14:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48924139566;
+	Thu, 13 Feb 2025 15:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458267; cv=none; b=YZZeKF7NUfk+o3WWqrydR+847PKQ5oaa0rmUDe2TSreKEqlFWJJV8m8nIBL9H1vZtIr6LpVMwG47cC6BpzSxX5rd/joudFzSVJShZTtMmn9AHQT6O2EOeYa2V7rPm6gAPU2IBBj27OtRx9bCS5oGyw4POor5Axi4fZYWyK6BUf8=
+	t=1739459689; cv=none; b=IFlVQClc+w31x9xe6PQaPLT6J1QxYdY6Od8wZ0XzVHjeTo7IS36XcZZTC2WnQvFMkLgMrQe5jSI4KdbGfSQ+WLu6SImggr9YF/JSr6BxiuoYI+ihPNOtblEn7BMrWYZkauw8Z1TP3azR6qy/9CPgMJ3DZxmKqP8bfAk3T35b3r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458267; c=relaxed/simple;
-	bh=xWacjJxetpxcNVpt+mSY2lAg6khtETR8DcqIg9KuifA=;
+	s=arc-20240116; t=1739459689; c=relaxed/simple;
+	bh=EbhIxQGrLHkQZVwU3NCFRfsq/4Oh1PgVs8OtOpXvdHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnrfzlE3IssdxjiVx6Fi5ITX3//wmMX+JkcfmhdoPhfjYw83b9sdVuzgBFSB3OD4Yhf5Nm3N4oSjbj5hrUpiOA2xknKGex9JBpO+cE9bo4g3HqSEC9A5CxPXsWUU3R+kJlwuRrPIf3l55ukmWkpLi8lLXSOz8DcTxA2EFUrP9vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8m3XL+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ABCC4CEE5;
-	Thu, 13 Feb 2025 14:51:06 +0000 (UTC)
+	 MIME-Version; b=FVNmgZop+pq5XfUVqDV6KAUgGWAKEnBTgTn9gUY9h0YUQt6A9yby9RaYj9thDrHQ52y+Kb9i5dfhgLiE7Bhj+vFXZhR4Pfpo7kAQzye1pBlmpxpIbOxus8WWkV54FfSu3SkhX6B+qCVPCGloU1EWB5Q1dvGzv8m5BHUn1p4Y0h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbdPf/Os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE9DC4CED1;
+	Thu, 13 Feb 2025 15:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458267;
-	bh=xWacjJxetpxcNVpt+mSY2lAg6khtETR8DcqIg9KuifA=;
+	s=korg; t=1739459689;
+	bh=EbhIxQGrLHkQZVwU3NCFRfsq/4Oh1PgVs8OtOpXvdHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8m3XL+SynozXLLlZQUb798SN7g4Lz6QDUbWHAf4RWGdR+CMTj31KaR4HXU0B1D04
-	 9WtTTS4QZFc68atDm9YxhImBVkng3uKSLkwmOb1+LnonKdogfoTMNW88sXmbP4GBbT
-	 4O+mhjRFxS8Vg1XSD3d7VihGvRJizGPMjTqcnzl8=
+	b=IbdPf/Os/G18G7PMXLdBp4wKgJGwnlx/GQKXPF8UAglboorY8PV3dwcl51GxTaDan
+	 LWAxucnrmqhLDQy3a4O6jMryEdKHA6epcPKDzLyV1JEjk8JTvYiKBH6QcjFbPeZc8K
+	 w0jvMtRuVx6930wfOtVploQGz3y9POKjVc0u/Uac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Viallon <antoine@lesviallon.fr>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 350/422] ceph: fix memory leak in ceph_mds_auth_match()
-Date: Thu, 13 Feb 2025 15:28:19 +0100
-Message-ID: <20250213142450.058730090@linuxfoundation.org>
+	Aubrey Li <aubrey.li@linux.intel.com>,
+	Koba Ko <kobak@nvidia.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shi Liu <aurelianliu@tencent.com>
+Subject: [PATCH 6.13 335/443] ACPI: PRM: Remove unnecessary strict handler address checks
+Date: Thu, 13 Feb 2025 15:28:20 +0100
+Message-ID: <20250213142453.554052333@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Viallon <antoine@lesviallon.fr>
+From: Aubrey Li <aubrey.li@linux.intel.com>
 
-commit 3b7d93db450e9d8ead80d75e2a303248f1528c35 upstream.
+commit 7f5704b6a143b8eca640cba820968e798d065e91 upstream.
 
-We now free the temporary target path substring allocation on every
-possible branch, instead of omitting the default branch.  In some
-cases, a memory leak occured, which could rapidly crash the system
-(depending on how many file accesses were attempted).
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") added unnecessary strict handler address checks,
+causing the PRM module to fail in translating memory error addresses.
 
-This was detected in production because it caused a continuous memory
-growth, eventually triggering kernel OOM and completely hard-locking
-the kernel.
+Both static data buffer address and ACPI parameter buffer address may
+be NULL if they are not needed, as described in section 4.1.2 PRM Handler
+Information Structure of Platform Runtime Mechanism specification [1].
 
-Relevant kmemleak stacktrace:
+Here are two examples from real hardware:
 
-    unreferenced object 0xffff888131e69900 (size 128):
-      comm "git", pid 66104, jiffies 4295435999
-      hex dump (first 32 bytes):
-        76 6f 6c 75 6d 65 73 2f 63 6f 6e 74 61 69 6e 65  volumes/containe
-        72 73 2f 67 69 74 65 61 2f 67 69 74 65 61 2f 67  rs/gitea/gitea/g
-      backtrace (crc 2f3bb450):
-        [<ffffffffaa68fb49>] __kmalloc_noprof+0x359/0x510
-        [<ffffffffc32bf1df>] ceph_mds_check_access+0x5bf/0x14e0 [ceph]
-        [<ffffffffc3235722>] ceph_open+0x312/0xd80 [ceph]
-        [<ffffffffaa7dd786>] do_dentry_open+0x456/0x1120
-        [<ffffffffaa7e3729>] vfs_open+0x79/0x360
-        [<ffffffffaa832875>] path_openat+0x1de5/0x4390
-        [<ffffffffaa834fcc>] do_filp_open+0x19c/0x3c0
-        [<ffffffffaa7e44a1>] do_sys_openat2+0x141/0x180
-        [<ffffffffaa7e4945>] __x64_sys_open+0xe5/0x1a0
-        [<ffffffffac2cc2f7>] do_syscall_64+0xb7/0x210
-        [<ffffffffac400130>] entry_SYSCALL_64_after_hwframe+0x77/0x7f
+----PRMT.dsl----
 
-It can be triggered by mouting a subdirectory of a CephFS filesystem,
-and then trying to access files on this subdirectory with an auth token
-using a path-scoped capability:
+- staic data address is not used
+[10Ch 0268   2]                     Revision : 0000
+[10Eh 0270   2]                       Length : 002C
+[110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-2A50D4AA109B
+[120h 0288   8]              Handler address : 0000000065CE51F4
+[128h 0296   8]           Satic Data Address : 0000000000000000
+[130h 0304   8]       ACPI Parameter Address : 000000006522A718
 
-    $ ceph auth get client.services
-    [client.services]
-            key = REDACTED
-            caps mds = "allow rw fsname=cephfs path=/volumes/"
-            caps mon = "allow r fsname=cephfs"
-            caps osd = "allow rw tag cephfs data=cephfs"
+- ACPI parameter address is not used
+[1B0h 0432   2]                     Revision : 0000
+[1B2h 0434   2]                       Length : 002C
+[1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-42E7DE1899A5
+[1C4h 0452   8]              Handler address : 0000000065C567C8
+[1CCh 0460   8]           Satic Data Address : 000000006113FB98
+[1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
 
-    $ cat /proc/self/mounts
-    services@[REDACTED].cephfs=/volumes/containers /ceph/containers ceph rw,noatime,name=services,secret=<hidden>,ms_mode=prefer-crc,mount_timeout=300,acl,mon_addr=[REDACTED]:3300,recover_session=clean 0 0
-
-    $ seq 1 1000000 | xargs -P32 --replace={} touch /ceph/containers/file-{} && \
-    seq 1 1000000 | xargs -P32 --replace={} cat /ceph/containers/file-{}
-
-[ idryomov: combine if statements, rename rc to path_matched and make
-            it a bool, formatting ]
-
-Cc: stable@vger.kernel.org
-Fixes: 596afb0b8933 ("ceph: add ceph_mds_check_access() helper")
-Signed-off-by: Antoine Viallon <antoine@lesviallon.fr>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Reviewed-by: Koba Ko <kobak@nvidia.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20250126022250.3014210-1-aubrey.li@linux.intel.com
+[ rjw: Minor changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/mds_client.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/acpi/prmt.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -5698,18 +5698,18 @@ static int ceph_mds_auth_match(struct ce
- 			 *
- 			 * All the other cases                       --> mismatch
- 			 */
-+			bool path_matched = true;
- 			char *first = strstr(_tpath, auth->match.path);
--			if (first != _tpath) {
--				if (free_tpath)
--					kfree(_tpath);
--				return 0;
-+			if (first != _tpath ||
-+			    (tlen > len && _tpath[len] != '/')) {
-+				path_matched = false;
- 			}
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -287,9 +287,7 @@ static acpi_status acpi_platformrt_space
+ 		if (!handler || !module)
+ 			goto invalid_guid;
  
--			if (tlen > len && _tpath[len] != '/') {
--				if (free_tpath)
--					kfree(_tpath);
-+			if (free_tpath)
-+				kfree(_tpath);
-+
-+			if (!path_matched)
- 				return 0;
--			}
+-		if (!handler->handler_addr ||
+-		    !handler->static_data_buffer_addr ||
+-		    !handler->acpi_param_buffer_addr) {
++		if (!handler->handler_addr) {
+ 			buffer->prm_status = PRM_HANDLER_ERROR;
+ 			return AE_OK;
  		}
- 	}
- 
 
 
 
