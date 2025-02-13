@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E71DA34690
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8F7A34808
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 372AB16DBFF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17684164D47
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00EE1411DE;
-	Thu, 13 Feb 2025 15:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E308670805;
+	Thu, 13 Feb 2025 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogLeVTMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKzsda+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEB878F30;
-	Thu, 13 Feb 2025 15:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F61926B087;
+	Thu, 13 Feb 2025 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460056; cv=none; b=VM/m08ZfR0Sc5x9pZKK4EUZf1KAbSQ4FWz/bqUHJpk6A1ZNvTBrKI7i3GNNx41NScHKGTp6gRzpa3RSpz5q+zieDtPGKboUkNuLWhnoxFoBYVhUGa8tu6HOU/lVwymU0Eu5U0R1LDbMIevFK/ItVmMtZRLVhq6czeXH0mGC9EEY=
+	t=1739460885; cv=none; b=PiHTmvL3VXkw6fNXXtUbWAe3ew/zpeNCuqu3C4t4Pw0ZCqsRmYvTxHsD3UL6sbk9/3+vw1fZOXr8KpkH0OE2lJkk8TnIks39jnDfdtJhTZKN+p/1WoqRTYf4c0c1qp+lXIoyi5Ss77R0SBqWAqrhIgU7fNIRckT8qDfxYxQjlEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460056; c=relaxed/simple;
-	bh=RXTXUIwuSqEodO+3z5iCRDAjQhvtaUsicikddK2G1tg=;
+	s=arc-20240116; t=1739460885; c=relaxed/simple;
+	bh=YBjw/bet8HcAXnLclaSvVAEvZVjQyNkPio4mVITVm+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+XEIn97WufLdaFqrSsQhl7XMMvuzsS5ONl1mLgv4AGUAk7BuAZU5zH24tC977U9CgR4d9IHTmIc1P7zkU+X4RwiCtbJys5+bSOhGhBXGfbEfPLV6k+kJJAz79VDk6EcfhW4JNgWlau0S/Yet3XAztwLZ/hQ6Tmx2lbstH8+k+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogLeVTMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFBFC4CED1;
-	Thu, 13 Feb 2025 15:20:55 +0000 (UTC)
+	 MIME-Version; b=ePubw1GO1azKIDI0DvSbG4jr8NzVQVosnFXy/AobiDCvelRstGVtB0gtQRd7wAnoHXEDbF5WOMH/3HM1PxC7F+s+J1pZVf3qKQafPawEIuPbKAESuqupFlIQKzHBNN6jgekWs2b83iatNFKH8yrxA9qYcq/skEcAI9VCKWD9M+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKzsda+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7F3C4CED1;
+	Thu, 13 Feb 2025 15:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460056;
-	bh=RXTXUIwuSqEodO+3z5iCRDAjQhvtaUsicikddK2G1tg=;
+	s=korg; t=1739460885;
+	bh=YBjw/bet8HcAXnLclaSvVAEvZVjQyNkPio4mVITVm+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogLeVTMVio6aSOFI+44PITCyGtIxSqPN2Peh0XN2BkItmJCaTI3rJyz/jZ4TUT2Nm
-	 4VnEvq/5sFQZM2wNpvkwSuQ+SvLHBU7ee6eejNuEcevBxvlFdoMVk7HqdiJJv7Ab61
-	 l4QkX9X87cO7OwIaYRvOP6l+khkICkMatqxPba5o=
+	b=kKzsda+BsZ8rQuXbnumSRMgoacadY1QTi7uVkzXR7d2CpSeUiCjWpftcp1DO9grlT
+	 waHRm7uMLwhUVgD3sXAwmTM+2wZ1gZl16DlHQhCE72XSAqRMvtS1jyyV6fUJ2ZP6Vz
+	 sGsKcYPTo5vdr2mQGaE8lh+UstA81acvvvgWlnqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.13 414/443] misc: fastrpc: Fix copy buffer page size
-Date: Thu, 13 Feb 2025 15:29:39 +0100
-Message-ID: <20250213142456.585010772@linuxfoundation.org>
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 208/273] media: ccs: Fix cleanup order in ccs_probe()
+Date: Thu, 13 Feb 2025 15:29:40 +0100
+Message-ID: <20250213142415.540937303@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-commit e966eae72762ecfdbdb82627e2cda48845b9dd66 upstream.
+commit 6fdbff0f54786e94f0f630ff200ec1d666b1633e upstream.
 
-For non-registered buffer, fastrpc driver copies the buffer and
-pass it to the remote subsystem. There is a problem with current
-implementation of page size calculation which is not considering
-the offset in the calculation. This might lead to passing of
-improper and out-of-bounds page size which could result in
-memory issue. Calculate page start and page end using the offset
-adjusted address instead of absolute address.
+ccs_limits is allocated in ccs_read_all_limits() after the allocation of
+mdata.backing. Ensure that resources are freed in the reverse order of
+their allocation by moving out_free_ccs_limits up.
 
-Fixes: 02b45b47fbe8 ("misc: fastrpc: fix remote page size calculation")
-Cc: stable@kernel.org
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-4-srinivas.kandagatla@linaro.org
+Fixes: a11d3d6891f0 ("media: ccs: Read CCS static data from firmware binaries")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1019,8 +1019,8 @@ static int fastrpc_get_args(u32 kernel,
- 					(pkt_size - rlen);
- 			pages[i].addr = pages[i].addr &	PAGE_MASK;
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3658,15 +3658,15 @@ out_media_entity_cleanup:
+ out_cleanup:
+ 	ccs_cleanup(sensor);
  
--			pg_start = (args & PAGE_MASK) >> PAGE_SHIFT;
--			pg_end = ((args + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
-+			pg_start = (rpra[i].buf.pv & PAGE_MASK) >> PAGE_SHIFT;
-+			pg_end = ((rpra[i].buf.pv + len - 1) & PAGE_MASK) >> PAGE_SHIFT;
- 			pages[i].size = (pg_end - pg_start + 1) * PAGE_SIZE;
- 			args = args + mlen;
- 			rlen -= mlen;
++out_free_ccs_limits:
++	kfree(sensor->ccs_limits);
++
+ out_release_mdata:
+ 	kvfree(sensor->mdata.backing);
+ 
+ out_release_sdata:
+ 	kvfree(sensor->sdata.backing);
+ 
+-out_free_ccs_limits:
+-	kfree(sensor->ccs_limits);
+-
+ out_power_off:
+ 	ccs_power_off(&client->dev);
+ 	mutex_destroy(&sensor->mutex);
 
 
 
