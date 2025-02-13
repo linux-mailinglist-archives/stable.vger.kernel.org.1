@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984B1A3475A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3348EA34459
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58E66171642
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD33188DA99
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839F61547F0;
-	Thu, 13 Feb 2025 15:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0A0202C34;
+	Thu, 13 Feb 2025 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boF+D4jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqfScEf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411B9143736;
-	Thu, 13 Feb 2025 15:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68CE145348;
+	Thu, 13 Feb 2025 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460508; cv=none; b=NS+RsXSNgQtyNJ8t8oPxWkNhKXeo62CXAZsRFrOjAxvkh4rRQ8SQLlLbUxAviC/PEbeJxorqXBNXGj10UvAudrTHxU5jO7qh1d//d7CiX2GEYdNK5yOs+UZusT73JZvMlHKzWSVZYyb5ySuNF3/qqebjXuZ8zcPxcyvd2ELiPQ0=
+	t=1739458280; cv=none; b=hcDZI/k9/afh7vYNzuGE3+8gPnIldJhgkSy6jFu7IzpvLNvn1BAvXEtjKtkooK+AaBjKs2gVS9My9NpjEqM8tPhXJZQkPo8EIARcKhkdOTieX7ef18K1IbSGl8NxDNV5bQoSQWri1fPh8/zb3kKt9kRb4ZVAhlAW+JK2MQPbPGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460508; c=relaxed/simple;
-	bh=FHLB7LhYEZZvuxl3nRi67BUCWjwv5GvxtXaD9zQKy08=;
+	s=arc-20240116; t=1739458280; c=relaxed/simple;
+	bh=z21vstcQ5rhZs7S/OJKwhjqt+z/6pKBCFNf8lG+150Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXbgjPhnctpixyAYSrwQ2B1mWGSh45v0kcEgKrYB1JUgM12DW3127Jtbbi1uEYUfH6IjxeZi3q4VxoURGwoVrxjp2ekUazrkg0vN8f8QlmFsZAELvdjwL5WDBCx9JV0BFRQ8RPpe/kQQDFwwTLZupJkdZtDf8jyi3Yuhgh+yg+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boF+D4jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987C4C4CED1;
-	Thu, 13 Feb 2025 15:28:27 +0000 (UTC)
+	 MIME-Version; b=OYhFiQjAubrpX01wLvs5oVF+4XLOM9fDhsP7xEtHbwEjqPgvuqbIEjgjYoTIjdrQM1slkdTf23ITgF37ERRIdQWoIi0K1v5EOTMXI1qTVk87dP50Mfqt3pgXhPI/nl/iMC7wmAOkZJbN2Rj3NE639fVanQv6HirnqUAXVQGQrQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqfScEf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A34C4CEE5;
+	Thu, 13 Feb 2025 14:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460508;
-	bh=FHLB7LhYEZZvuxl3nRi67BUCWjwv5GvxtXaD9zQKy08=;
+	s=korg; t=1739458280;
+	bh=z21vstcQ5rhZs7S/OJKwhjqt+z/6pKBCFNf8lG+150Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boF+D4jgrGVPbpeRZR8W5Jzo3S30zAOTu62EGCPVcDClEpjmM1NMoVGa2GhU+Yu0j
-	 HK5XxbeLqGPVfhOdfRJZHoCDcJH/i6Y7SI3Rg8rnsxUPl0PQtBTbBczZYminKoqhpq
-	 g/rzXt8Vke9pTR6u5FxlCSeTQVsYR5RjaOuow93g=
+	b=WqfScEf/kzEH5oObh/pe8De2Xxbou2bssKAR3v3eObhBX7CrIzjyw0FWiDcj2vIzi
+	 i5g4WThidHsYsF7OUvvADd0Br9jA6ePmGCp1EkEyRPBcERx+QLiF1bvbbaGrrHkrTt
+	 UqTuQjvl6lxm43XXczLh355e52N9MVJGnlGdhYJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Vasily Khoruzhick <anarsoul@gmail.com>
-Subject: [PATCH 6.6 130/273] wifi: rtw88: sdio: Fix disconnection after beacon loss
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.12 353/422] nvmem: imx-ocotp-ele: simplify read beyond device check
 Date: Thu, 13 Feb 2025 15:28:22 +0100
-Message-ID: <20250213142412.477448043@linuxfoundation.org>
+Message-ID: <20250213142450.176340058@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit fb2fcfbe5eef9ae26b0425978435ae1308951e51 upstream.
+commit 343aa1e289e8e3dba5e3d054c4eb27da7b4e1ecc upstream.
 
-This is the equivalent of commit 28818b4d871b ("wifi: rtw88: usb: Fix
-disconnection after beacon loss") for SDIO chips.
-Tested on Pinephone (RTL8723CS), random disconnections became rare,
-instead of a frequent nuisance.
+Do the read beyond device check on function entry in bytes instead of
+32bit words which is easier to follow.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Tested-by: Vasily Khoruzhick <anarsoul@gmail.com> # Tested on Pinebook
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250106135434.35936-1-fiona.klute@gmx.de
+Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvmem/imx-ocotp-ele.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -1191,6 +1191,8 @@ static void rtw_sdio_indicate_tx_status(
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_hw *hw = rtwdev->hw;
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -72,13 +72,13 @@ static int imx_ocotp_reg_read(void *cont
+ 	void *p;
+ 	int i;
  
-+	skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
++	if (offset + bytes > priv->data->size)
++		bytes = priv->data->size - offset;
 +
- 	/* enqueue to wait for tx report */
- 	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
- 		rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+ 	index = offset;
+ 	num_bytes = round_up(bytes, 4);
+ 	count = num_bytes >> 2;
+ 
+-	if (count > ((priv->data->size >> 2) - index))
+-		count = (priv->data->size >> 2) - index;
+-
+ 	p = kzalloc(num_bytes, GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
 
 
 
