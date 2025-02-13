@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0173FA3431B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEB4A3463E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A605C1893EE0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E2B3B4E90
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDDF227EB2;
-	Thu, 13 Feb 2025 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D8270820;
+	Thu, 13 Feb 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSaTfADi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAgO5U5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF34E214A69;
-	Thu, 13 Feb 2025 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C4326B0BC;
+	Thu, 13 Feb 2025 15:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457632; cv=none; b=hyFLfABiEliyeYXLE4OJ+3k+czNZirN8ZAjB9OGJvHEwGW+s4xBMhOWgQMmS1qqPoJlSjr1L2gQrmQJVS5GmISi5FcqlNB9DgtDiGxKsB+EDG9aDEAfw2sP3Pds8GAFb4jrETCjh7vvf1lWUGc1Az3a/Juuff31cJknIlFgXFyQ=
+	t=1739459044; cv=none; b=i+bhgycxstcsC1Ppz9t8QBMIw3RmMwe91BamK2tDTLjjTuvYptkR730iC1fZHleK0/0HZXDnrdk9HV/2rUAOxymcgpcElj/KN7aGoTiMHuBoD1qW4XNBP16OzZJEmsrW1J+kgL5vj3x/hr2hzzDhWnxeW3ZV5Z7plPKO/l8QDrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457632; c=relaxed/simple;
-	bh=TjYMXCDlchaSuZWCh53LnS+5yR4NhFMUzoPXKAaPd6I=;
+	s=arc-20240116; t=1739459044; c=relaxed/simple;
+	bh=BbQvZ/4fPHUtvkWE1phcvDEFELAGRwgvUKifKaF+ylk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oIWGgDarfJBnx9BFxki85pSjYsysZQlD+hTP48t1ehO/63QOztgN3LEfqZjfZAphpEAMxa57oh5Nvp+C4eSTMg1gkvT+d0I5/p6adn818XezNLfja93H862THCeFVJUGaTskRS1i5fmnCzLv0M2W+hoOLoYZOpwyD7Ubry1aILI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSaTfADi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646BAC4CED1;
-	Thu, 13 Feb 2025 14:40:31 +0000 (UTC)
+	 MIME-Version; b=kOo1GBjDLh7FoN2Lo72CBgf42YFOnWGR+wwxVhpglPml7xpmbVe0/+iPMvnKLwwACZK4cC8FegL8WpoJ2vdb820gNw91o3zsW7mkBd73kupbs9GLvXMynXRp5iAiWjCSJIdTGhucbq6O5gVACzpzYh/W29FDEI9eJiwpsvt9KQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAgO5U5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4EDC4CED1;
+	Thu, 13 Feb 2025 15:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457631;
-	bh=TjYMXCDlchaSuZWCh53LnS+5yR4NhFMUzoPXKAaPd6I=;
+	s=korg; t=1739459043;
+	bh=BbQvZ/4fPHUtvkWE1phcvDEFELAGRwgvUKifKaF+ylk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSaTfADi1nBlSURdpZE08Gxw3so/xQj5opVh7MvZorCUrsCydngo+Mfy6jSOx68lb
-	 UXV5fVs54+o4wayY0h29uyhKee/TCqKh2SDrMo/I1tY8cpMoWYrOLdwfPx4eyYHX6P
-	 pRhlDujoVxWMTyls0E6pPQfXrab5pKbGC3Zp1Ylg=
+	b=iAgO5U5NMGoJqGp222/4JQaHvbUH17TPwdBFI+tpJkFP8oHo2FHijAqjHEFWq47EM
+	 cmeXSqbHNh/guOyR+Th1MdjeowcME0A3XhKJnImqH84/lkywxEMZC0ZDqqWtGTNy7H
+	 6ynRdXoaVpy2VuJdxKJrAfAZNXUbP5wwrVMEvbEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 168/422] drm/amdgpu: add a BO metadata flag to disable write compression for Vulkan
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.13 152/443] s390/futex: Fix FUTEX_OP_ANDN implementation
 Date: Thu, 13 Feb 2025 15:25:17 +0100
-Message-ID: <20250213142443.027258295@linuxfoundation.org>
+Message-ID: <20250213142446.464097611@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,136 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Olšák <marek.olsak@amd.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 2255b40cacc2e5ef1b127770fc1808c60de4a2fc upstream.
+commit 26701574cee6777f867f89b4a5c667817e1ee0dd upstream.
 
-Vulkan can't support DCC and Z/S compression on GFX12 without
-WRITE_COMPRESS_DISABLE in this commit or a completely different DCC
-interface.
+The futex operation FUTEX_OP_ANDN is supposed to implement
 
-AMDGPU_TILING_GFX12_SCANOUT is added because it's already used by userspace.
+*(int *)UADDR2 &= ~OPARG;
 
-Cc: stable@vger.kernel.org # 6.12.x
-Signed-off-by: Marek Olšák <marek.olsak@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The s390 implementation just implements an AND instead of ANDN.
+Add the missing bitwise not operation to oparg to fix this.
+
+This is broken since nearly 19 years, so it looks like user space is
+not making use of this operation.
+
+Fixes: 3363fbdd6fb4 ("[PATCH] s390: futex atomic operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ++-
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    8 ++++++--
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h |    2 ++
- drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c  |    5 +++--
- include/uapi/drm/amdgpu_drm.h           |    9 ++++++++-
- 5 files changed, 21 insertions(+), 6 deletions(-)
+ arch/s390/include/asm/futex.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -118,9 +118,10 @@
-  * - 3.57.0 - Compute tunneling on GFX10+
-  * - 3.58.0 - Add GFX12 DCC support
-  * - 3.59.0 - Cleared VRAM
-+ * - 3.60.0 - Add AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE (Vulkan requirement)
-  */
- #define KMS_DRIVER_MAJOR	3
--#define KMS_DRIVER_MINOR	59
-+#define KMS_DRIVER_MINOR	60
- #define KMS_DRIVER_PATCHLEVEL	0
- 
- /*
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -309,7 +309,7 @@ int amdgpu_ttm_copy_mem_to_mem(struct am
- 	mutex_lock(&adev->mman.gtt_window_lock);
- 	while (src_mm.remaining) {
- 		uint64_t from, to, cur_size, tiling_flags;
--		uint32_t num_type, data_format, max_com;
-+		uint32_t num_type, data_format, max_com, write_compress_disable;
- 		struct dma_fence *next;
- 
- 		/* Never copy more than 256MiB at once to avoid a timeout */
-@@ -340,9 +340,13 @@ int amdgpu_ttm_copy_mem_to_mem(struct am
- 			max_com = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_MAX_COMPRESSED_BLOCK);
- 			num_type = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_NUMBER_TYPE);
- 			data_format = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_DATA_FORMAT);
-+			write_compress_disable =
-+				AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_WRITE_COMPRESS_DISABLE);
- 			copy_flags |= (AMDGPU_COPY_FLAGS_SET(MAX_COMPRESSED, max_com) |
- 				       AMDGPU_COPY_FLAGS_SET(NUMBER_TYPE, num_type) |
--				       AMDGPU_COPY_FLAGS_SET(DATA_FORMAT, data_format));
-+				       AMDGPU_COPY_FLAGS_SET(DATA_FORMAT, data_format) |
-+				       AMDGPU_COPY_FLAGS_SET(WRITE_COMPRESS_DISABLE,
-+							     write_compress_disable));
- 		}
- 
- 		r = amdgpu_copy_buffer(ring, from, to, cur_size, resv,
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-@@ -118,6 +118,8 @@ struct amdgpu_copy_mem {
- #define AMDGPU_COPY_FLAGS_NUMBER_TYPE_MASK		0x07
- #define AMDGPU_COPY_FLAGS_DATA_FORMAT_SHIFT		8
- #define AMDGPU_COPY_FLAGS_DATA_FORMAT_MASK		0x3f
-+#define AMDGPU_COPY_FLAGS_WRITE_COMPRESS_DISABLE_SHIFT	14
-+#define AMDGPU_COPY_FLAGS_WRITE_COMPRESS_DISABLE_MASK	0x1
- 
- #define AMDGPU_COPY_FLAGS_SET(field, value) \
- 	(((__u32)(value) & AMDGPU_COPY_FLAGS_##field##_MASK) << AMDGPU_COPY_FLAGS_##field##_SHIFT)
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-@@ -1688,11 +1688,12 @@ static void sdma_v7_0_emit_copy_buffer(s
- 				       uint32_t byte_count,
- 				       uint32_t copy_flags)
- {
--	uint32_t num_type, data_format, max_com;
-+	uint32_t num_type, data_format, max_com, write_cm;
- 
- 	max_com = AMDGPU_COPY_FLAGS_GET(copy_flags, MAX_COMPRESSED);
- 	data_format = AMDGPU_COPY_FLAGS_GET(copy_flags, DATA_FORMAT);
- 	num_type = AMDGPU_COPY_FLAGS_GET(copy_flags, NUMBER_TYPE);
-+	write_cm = AMDGPU_COPY_FLAGS_GET(copy_flags, WRITE_COMPRESS_DISABLE) ? 2 : 1;
- 
- 	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_COPY) |
- 		SDMA_PKT_COPY_LINEAR_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR) |
-@@ -1709,7 +1710,7 @@ static void sdma_v7_0_emit_copy_buffer(s
- 	if ((copy_flags & (AMDGPU_COPY_FLAGS_READ_DECOMPRESSED | AMDGPU_COPY_FLAGS_WRITE_COMPRESSED)))
- 		ib->ptr[ib->length_dw++] = SDMA_DCC_DATA_FORMAT(data_format) | SDMA_DCC_NUM_TYPE(num_type) |
- 			((copy_flags & AMDGPU_COPY_FLAGS_READ_DECOMPRESSED) ? SDMA_DCC_READ_CM(2) : 0) |
--			((copy_flags & AMDGPU_COPY_FLAGS_WRITE_COMPRESSED) ? SDMA_DCC_WRITE_CM(1) : 0) |
-+			((copy_flags & AMDGPU_COPY_FLAGS_WRITE_COMPRESSED) ? SDMA_DCC_WRITE_CM(write_cm) : 0) |
- 			SDMA_DCC_MAX_COM(max_com) | SDMA_DCC_MAX_UCOM(1);
- 	else
- 		ib->ptr[ib->length_dw++] = 0;
---- a/include/uapi/drm/amdgpu_drm.h
-+++ b/include/uapi/drm/amdgpu_drm.h
-@@ -411,13 +411,20 @@ struct drm_amdgpu_gem_userptr {
- /* GFX12 and later: */
- #define AMDGPU_TILING_GFX12_SWIZZLE_MODE_SHIFT			0
- #define AMDGPU_TILING_GFX12_SWIZZLE_MODE_MASK			0x7
--/* These are DCC recompression setting for memory management: */
-+/* These are DCC recompression settings for memory management: */
- #define AMDGPU_TILING_GFX12_DCC_MAX_COMPRESSED_BLOCK_SHIFT	3
- #define AMDGPU_TILING_GFX12_DCC_MAX_COMPRESSED_BLOCK_MASK	0x3 /* 0:64B, 1:128B, 2:256B */
- #define AMDGPU_TILING_GFX12_DCC_NUMBER_TYPE_SHIFT		5
- #define AMDGPU_TILING_GFX12_DCC_NUMBER_TYPE_MASK		0x7 /* CB_COLOR0_INFO.NUMBER_TYPE */
- #define AMDGPU_TILING_GFX12_DCC_DATA_FORMAT_SHIFT		8
- #define AMDGPU_TILING_GFX12_DCC_DATA_FORMAT_MASK		0x3f /* [0:4]:CB_COLOR0_INFO.FORMAT, [5]:MM */
-+/* When clearing the buffer or moving it from VRAM to GTT, don't compress and set DCC metadata
-+ * to uncompressed. Set when parts of an allocation bypass DCC and read raw data. */
-+#define AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE_SHIFT	14
-+#define AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE_MASK	0x1
-+/* bit gap */
-+#define AMDGPU_TILING_GFX12_SCANOUT_SHIFT			63
-+#define AMDGPU_TILING_GFX12_SCANOUT_MASK			0x1
- 
- /* Set/Get helpers for tiling flags. */
- #define AMDGPU_TILING_SET(field, value) \
+--- a/arch/s390/include/asm/futex.h
++++ b/arch/s390/include/asm/futex.h
+@@ -44,7 +44,7 @@ static inline int arch_futex_atomic_op_i
+ 		break;
+ 	case FUTEX_OP_ANDN:
+ 		__futex_atomic_op("lr %2,%1\nnr %2,%5\n",
+-				  ret, oldval, newval, uaddr, oparg);
++				  ret, oldval, newval, uaddr, ~oparg);
+ 		break;
+ 	case FUTEX_OP_XOR:
+ 		__futex_atomic_op("lr %2,%1\nxr %2,%5\n",
 
 
 
