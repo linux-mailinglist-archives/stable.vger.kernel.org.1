@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-116127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67716A3473B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21775A343E4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB22168214
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73F221891191
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDA214AD2D;
-	Thu, 13 Feb 2025 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC61241662;
+	Thu, 13 Feb 2025 14:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1Rp96TA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeWvI2pX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE92314F121;
-	Thu, 13 Feb 2025 15:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09088245027;
+	Thu, 13 Feb 2025 14:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460414; cv=none; b=l4WIehnHUQJlgYhyi7xjlGXsdN0rzeochVOFE3ySxf+3HNMMLFbtFjfXGZRgrmpWurL3mh7c7zOj3StMXC3lUH0BkN2wAaYhmAFFFZSekODgIz6edDRbAAsYhtCk1buOw+gsX5sxyh4yJrUY5ovUUKT7fxY1TYi0/xRfEyOqvgc=
+	t=1739458052; cv=none; b=iiWoaQBvcqLtNtftiGsx4nqdmDZmqg3UHGzat5ULCoIlFeaTjS/mIQJCgWm6BeQdbhl8p0IDDYXYQCteUIWGNAmO0rZQY5KYp5T+/Rpq3D65WqXywWr1KlgdC3L42SEdyXUj1AsY5VrH66wT1T5hwU16obfeU3/czXa6PXggjVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460414; c=relaxed/simple;
-	bh=Ck+rA0qkslfTMh8qOlGZu1ED2ZCmlmVSFAgL9JBLDHk=;
+	s=arc-20240116; t=1739458052; c=relaxed/simple;
+	bh=bXam3oxHrxiSIs0lzyR+8tGKmLlIiVSp1FsCI0CPViE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1BInSe86+1Fw3hGEzAm/jlxHuxMHEcq6PhouMks9FU5qbsmxoBMJP9W0TDYfmjouWx+Fm3qSdF0d9WRzkXxTZNHH1DhnjEzM5EzKCesh9C0DLNZK9MLF+sl5kFGkISOLav8Jjlv6sPas2ncKiZIpVEMomz9910FV58fmciym6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1Rp96TA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C7DC4CED1;
-	Thu, 13 Feb 2025 15:26:53 +0000 (UTC)
+	 MIME-Version; b=PzAUvG7jd0/49wxm0Y+oegR/Qv+cAotSpA4+z4x/g+TON9zGU5ismdlkw7Va32An8Ck0v4roiLjZAfBFjF5E7T+DDpJc5E41RJuOKIycqiocOu8cHZ26KCwJVQNCtGpa4xGSUWhHxsKi2YN0Oc0vvsQeIrS+qJdiIZE7xJgQ2gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeWvI2pX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6604DC4CED1;
+	Thu, 13 Feb 2025 14:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460414;
-	bh=Ck+rA0qkslfTMh8qOlGZu1ED2ZCmlmVSFAgL9JBLDHk=;
+	s=korg; t=1739458051;
+	bh=bXam3oxHrxiSIs0lzyR+8tGKmLlIiVSp1FsCI0CPViE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1Rp96TA2WqzHWKI8KGLYtYVUMc1x8AOLV2rtxSQn/OR+W22W2ug1wZmTxh9rBtSn
-	 nRzRtx9UO/GjSg0T15u4EqHp2i6F+r8Sfoq6cy72dyXdYT2qFKVn0IWkqwVLzLlGcW
-	 fmHofWJA+iFmomvrIcgEhM0VCYkhnf85lwUhBwic=
+	b=zeWvI2pXTSoP0SCYuQQH2TJTVtbOcZ0XU6ZAHFG+c7ZynGkf+ba1xldRhiQ0V0moB
+	 4oXQ6d9kkUERzJeaWfP3eybXgpLAchhtMzyTVxbGHJ87+0TH9X8E/9cxEYBO3CsKIJ
+	 JbA7WUzZw8nWlpYDXeho+5Ly49KeuiWzGd96AfO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/273] nvme-fc: use ctrl state getter
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 287/422] arm64: dts: qcom: sm8550: Fix ADSP memory base and length
 Date: Thu, 13 Feb 2025 15:27:16 +0100
-Message-ID: <20250213142409.884812786@linuxfoundation.org>
+Message-ID: <20250213142447.619441550@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,318 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c8ed6cb5d37bc09c7e25e49a670e9fd1a3bd1dfa ]
+commit a6a8f54bc2af555738322783ba1e990c2ae7f443 upstream.
 
-Do not access the state variable directly, instead use proper
-synchronization so not stale data is read.
+The address space in ADSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0680_0000 with length of 0x10000.
 
-Fixes: e6e7f7ac03e4 ("nvme: ensure reset state check ordering")
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x3000_0000, value used so far, is the main region of CDSP.  Downstream
+DTS uses 0x0300_0000, which is oddly similar to 0x3000_0000, yet quite
+different and points to unused area.
+
+Correct the base address and length, which also moves the node to
+different place to keep things sorted by unit address.  The diff looks
+big, but only the unit address and "reg" property were changed.  This
+should have no functional impact on Linux users, because PAS loader does
+not use this address space at all.
+
+Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-7-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/fc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |  262 +++++++++++++++++------------------
+ 1 file changed, 131 insertions(+), 131 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index cdb1e706f855e..91324791a5b66 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -2080,7 +2080,8 @@ nvme_fc_fcpio_done(struct nvmefc_fcp_req *req)
- 		nvme_fc_complete_rq(rq);
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2353,6 +2353,137 @@
+ 			};
+ 		};
  
- check_error:
--	if (terminate_assoc && ctrl->ctrl.state != NVME_CTRL_RESETTING)
-+	if (terminate_assoc &&
-+	    nvme_ctrl_state(&ctrl->ctrl) != NVME_CTRL_RESETTING)
- 		queue_work(nvme_reset_wq, &ctrl->ioerr_work);
- }
- 
-@@ -2534,6 +2535,8 @@ __nvme_fc_abort_outstanding_ios(struct nvme_fc_ctrl *ctrl, bool start_queues)
- static void
- nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- {
-+	enum nvme_ctrl_state state = nvme_ctrl_state(&ctrl->ctrl);
++		remoteproc_adsp: remoteproc@6800000 {
++			compatible = "qcom,sm8550-adsp-pas";
++			reg = <0x0 0x06800000 0x0 0x10000>;
 +
- 	/*
- 	 * if an error (io timeout, etc) while (re)connecting, the remote
- 	 * port requested terminating of the association (disconnect_ls)
-@@ -2541,7 +2544,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- 	 * the controller.  Abort any ios on the association and let the
- 	 * create_association error path resolve things.
- 	 */
--	if (ctrl->ctrl.state == NVME_CTRL_CONNECTING) {
-+	if (state == NVME_CTRL_CONNECTING) {
- 		__nvme_fc_abort_outstanding_ios(ctrl, true);
- 		set_bit(ASSOC_FAILED, &ctrl->flags);
- 		dev_warn(ctrl->ctrl.device,
-@@ -2551,7 +2554,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- 	}
++			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog", "fatal", "ready",
++					  "handover", "stop-ack";
++
++			clocks = <&rpmhcc RPMH_CXO_CLK>;
++			clock-names = "xo";
++
++			power-domains = <&rpmhpd RPMHPD_LCX>,
++					<&rpmhpd RPMHPD_LMX>;
++			power-domain-names = "lcx", "lmx";
++
++			interconnects = <&lpass_lpicx_noc MASTER_LPASS_PROC 0 &mc_virt SLAVE_EBI1 0>;
++
++			memory-region = <&adspslpi_mem>, <&q6_adsp_dtb_mem>;
++
++			qcom,qmp = <&aoss_qmp>;
++
++			qcom,smem-states = <&smp2p_adsp_out 0>;
++			qcom,smem-state-names = "stop";
++
++			status = "disabled";
++
++			remoteproc_adsp_glink: glink-edge {
++				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
++							     IPCC_MPROC_SIGNAL_GLINK_QMP
++							     IRQ_TYPE_EDGE_RISING>;
++				mboxes = <&ipcc IPCC_CLIENT_LPASS
++						IPCC_MPROC_SIGNAL_GLINK_QMP>;
++
++				label = "lpass";
++				qcom,remote-pid = <2>;
++
++				fastrpc {
++					compatible = "qcom,fastrpc";
++					qcom,glink-channels = "fastrpcglink-apps-dsp";
++					label = "adsp";
++					qcom,non-secure-domain;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					compute-cb@3 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <3>;
++						iommus = <&apps_smmu 0x1003 0x80>,
++							 <&apps_smmu 0x1063 0x0>;
++						dma-coherent;
++					};
++
++					compute-cb@4 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <4>;
++						iommus = <&apps_smmu 0x1004 0x80>,
++							 <&apps_smmu 0x1064 0x0>;
++						dma-coherent;
++					};
++
++					compute-cb@5 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <5>;
++						iommus = <&apps_smmu 0x1005 0x80>,
++							 <&apps_smmu 0x1065 0x0>;
++						dma-coherent;
++					};
++
++					compute-cb@6 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <6>;
++						iommus = <&apps_smmu 0x1006 0x80>,
++							 <&apps_smmu 0x1066 0x0>;
++						dma-coherent;
++					};
++
++					compute-cb@7 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <7>;
++						iommus = <&apps_smmu 0x1007 0x80>,
++							 <&apps_smmu 0x1067 0x0>;
++						dma-coherent;
++					};
++				};
++
++				gpr {
++					compatible = "qcom,gpr";
++					qcom,glink-channels = "adsp_apps";
++					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
++					qcom,intents = <512 20>;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					q6apm: service@1 {
++						compatible = "qcom,q6apm";
++						reg = <GPR_APM_MODULE_IID>;
++						#sound-dai-cells = <0>;
++						qcom,protection-domain = "avs/audio",
++									 "msm/adsp/audio_pd";
++
++						q6apmdai: dais {
++							compatible = "qcom,q6apm-dais";
++							iommus = <&apps_smmu 0x1001 0x80>,
++								 <&apps_smmu 0x1061 0x0>;
++						};
++
++						q6apmbedai: bedais {
++							compatible = "qcom,q6apm-lpass-dais";
++							#sound-dai-cells = <1>;
++						};
++					};
++
++					q6prm: service@2 {
++						compatible = "qcom,q6prm";
++						reg = <GPR_PRM_MODULE_IID>;
++						qcom,protection-domain = "avs/audio",
++									 "msm/adsp/audio_pd";
++
++						q6prmcc: clock-controller {
++							compatible = "qcom,q6prm-lpass-clocks";
++							#clock-cells = <2>;
++						};
++					};
++				};
++			};
++		};
++
+ 		lpass_wsa2macro: codec@6aa0000 {
+ 			compatible = "qcom,sm8550-lpass-wsa-macro";
+ 			reg = <0 0x06aa0000 0 0x1000>;
+@@ -4575,137 +4706,6 @@
+ 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
  
- 	/* Otherwise, only proceed if in LIVE state - e.g. on first error */
--	if (ctrl->ctrl.state != NVME_CTRL_LIVE)
-+	if (state != NVME_CTRL_LIVE)
- 		return;
- 
- 	dev_warn(ctrl->ctrl.device,
--- 
-2.39.5
-
+-		remoteproc_adsp: remoteproc@30000000 {
+-			compatible = "qcom,sm8550-adsp-pas";
+-			reg = <0x0 0x30000000 0x0 0x100>;
+-
+-			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "wdog", "fatal", "ready",
+-					  "handover", "stop-ack";
+-
+-			clocks = <&rpmhcc RPMH_CXO_CLK>;
+-			clock-names = "xo";
+-
+-			power-domains = <&rpmhpd RPMHPD_LCX>,
+-					<&rpmhpd RPMHPD_LMX>;
+-			power-domain-names = "lcx", "lmx";
+-
+-			interconnects = <&lpass_lpicx_noc MASTER_LPASS_PROC 0 &mc_virt SLAVE_EBI1 0>;
+-
+-			memory-region = <&adspslpi_mem>, <&q6_adsp_dtb_mem>;
+-
+-			qcom,qmp = <&aoss_qmp>;
+-
+-			qcom,smem-states = <&smp2p_adsp_out 0>;
+-			qcom,smem-state-names = "stop";
+-
+-			status = "disabled";
+-
+-			remoteproc_adsp_glink: glink-edge {
+-				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
+-							     IPCC_MPROC_SIGNAL_GLINK_QMP
+-							     IRQ_TYPE_EDGE_RISING>;
+-				mboxes = <&ipcc IPCC_CLIENT_LPASS
+-						IPCC_MPROC_SIGNAL_GLINK_QMP>;
+-
+-				label = "lpass";
+-				qcom,remote-pid = <2>;
+-
+-				fastrpc {
+-					compatible = "qcom,fastrpc";
+-					qcom,glink-channels = "fastrpcglink-apps-dsp";
+-					label = "adsp";
+-					qcom,non-secure-domain;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					compute-cb@3 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <3>;
+-						iommus = <&apps_smmu 0x1003 0x80>,
+-							 <&apps_smmu 0x1063 0x0>;
+-						dma-coherent;
+-					};
+-
+-					compute-cb@4 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <4>;
+-						iommus = <&apps_smmu 0x1004 0x80>,
+-							 <&apps_smmu 0x1064 0x0>;
+-						dma-coherent;
+-					};
+-
+-					compute-cb@5 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <5>;
+-						iommus = <&apps_smmu 0x1005 0x80>,
+-							 <&apps_smmu 0x1065 0x0>;
+-						dma-coherent;
+-					};
+-
+-					compute-cb@6 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <6>;
+-						iommus = <&apps_smmu 0x1006 0x80>,
+-							 <&apps_smmu 0x1066 0x0>;
+-						dma-coherent;
+-					};
+-
+-					compute-cb@7 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <7>;
+-						iommus = <&apps_smmu 0x1007 0x80>,
+-							 <&apps_smmu 0x1067 0x0>;
+-						dma-coherent;
+-					};
+-				};
+-
+-				gpr {
+-					compatible = "qcom,gpr";
+-					qcom,glink-channels = "adsp_apps";
+-					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
+-					qcom,intents = <512 20>;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					q6apm: service@1 {
+-						compatible = "qcom,q6apm";
+-						reg = <GPR_APM_MODULE_IID>;
+-						#sound-dai-cells = <0>;
+-						qcom,protection-domain = "avs/audio",
+-									 "msm/adsp/audio_pd";
+-
+-						q6apmdai: dais {
+-							compatible = "qcom,q6apm-dais";
+-							iommus = <&apps_smmu 0x1001 0x80>,
+-								 <&apps_smmu 0x1061 0x0>;
+-						};
+-
+-						q6apmbedai: bedais {
+-							compatible = "qcom,q6apm-lpass-dais";
+-							#sound-dai-cells = <1>;
+-						};
+-					};
+-
+-					q6prm: service@2 {
+-						compatible = "qcom,q6prm";
+-						reg = <GPR_PRM_MODULE_IID>;
+-						qcom,protection-domain = "avs/audio",
+-									 "msm/adsp/audio_pd";
+-
+-						q6prmcc: clock-controller {
+-							compatible = "qcom,q6prm-lpass-clocks";
+-							#clock-cells = <2>;
+-						};
+-					};
+-				};
+-			};
+-		};
+-
+ 		nsp_noc: interconnect@320c0000 {
+ 			compatible = "qcom,sm8550-nsp-noc";
+ 			reg = <0 0x320c0000 0 0xe080>;
 
 
 
