@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F67A3461B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E89DA34752
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADDE618972BC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DD616EA81
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA7B26B096;
-	Thu, 13 Feb 2025 15:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3821547F0;
+	Thu, 13 Feb 2025 15:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rl9GdYf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1miFBCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFD926B0AD;
-	Thu, 13 Feb 2025 15:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9D9146588;
+	Thu, 13 Feb 2025 15:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459685; cv=none; b=CxAESpnwrrYbPSZNdl03/oLhLVDq9RwjkA+JEMtMbEfK2f2yQkOcOVVShck7BRAFZI+WMuf6Dw59O4IxLLUdaVhOoDcUCorNf5kUHearis4p5EyQTyTVTkpvOjovbOloSDk0/oZslN3MyjKZZyAt4gBdtHaPkBcJNXVWCf05T7A=
+	t=1739460494; cv=none; b=N/wevIbExgTkpT3fAOJVuytHC0i2i+E611QAAQWtQYjubF1Rg1Z9Gp1qMKTNuN3/gtn/fjVi8X0K5nA6LW7vESVfYcS8ltdmFgCeIkucTuk5Qy8RfniyLeTYqbnU8zOF7iKewvl3TCKJgyrtTFoXeh3L2s0URGMxI8wYlTfgvak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459685; c=relaxed/simple;
-	bh=JIQLqqe532Z8U7l2eQnzmDNhxVoAY30D/c6VhgvZ+Mc=;
+	s=arc-20240116; t=1739460494; c=relaxed/simple;
+	bh=Pl/0EQ9PVo4P4lncDtr7h8r1Ms/YnHu2PD33AQyICcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tDmCGeZDUFEof/OXdV5NUGMrFTS5UUorslHBq8r7fgwc6R2s8vSOaapP3GxWLQHzwfVrYqUAnjiFnWtWExqZQS4vxOg72YYBPXrnu+iubUzx+pcxuH7dAAX9PhLoUTGOnEhNJfEP+1OwpkPiPKi3EOgj9LDWGnMLZFR/WK9LXJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rl9GdYf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373CDC4CEE4;
-	Thu, 13 Feb 2025 15:14:45 +0000 (UTC)
+	 MIME-Version; b=NYAHyyq8JGhAI5zKX+aFCkiJZW67UkA3L2ERNeylwtRu6YdEcu+BOc7npmbZk5l4ZGgynSiN+gbt0zMa4FjqvzKNoKYkDqwKHLUSAuLyfhbhWpjNT3q/ziX0pXWoftrG6Fy3XyoJBD4fFewjKPZqtO+ROj987Ut5ggGIHk2DsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1miFBCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A02EC4CED1;
+	Thu, 13 Feb 2025 15:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459685;
-	bh=JIQLqqe532Z8U7l2eQnzmDNhxVoAY30D/c6VhgvZ+Mc=;
+	s=korg; t=1739460494;
+	bh=Pl/0EQ9PVo4P4lncDtr7h8r1Ms/YnHu2PD33AQyICcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rl9GdYf+N50aRhleujrWCRNrZpIpJX+7wNhpyUJR1LQ85G7wyCOXfwjip9JOROrJo
-	 M+19gvTo1LIT1QC8GgtJHtwS3/ztpxSYVZPDMG5kgMuDYQ+6AS3WKncaSKF7IjbbBu
-	 hPt+T7IFDl2fWTmKjXTrnNYRRD8MC6fvSXQAx4sI=
+	b=L1miFBCmmX692gD8QiUcW6E/ahutAfcEqaohma4w6uXAjrGdDkECdilCH7X+baAyB
+	 vxhTOz/8XIFjFhmpZ9/rNaM62xAicYUaoZ828lng5HSj1Qu1tVdp82JjSk6UXjCWfs
+	 DCznjXs+cc7HKej6ZluTPr5Yh4zAdi+z2LLuDWZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.13 334/443] accel/ivpu: Fix error handling in recovery/reset
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 127/273] wifi: rtlwifi: rtl8821ae: Fix media status report
 Date: Thu, 13 Feb 2025 15:28:19 +0100
-Message-ID: <20250213142453.513558138@linuxfoundation.org>
+Message-ID: <20250213142412.359536044@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,157 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 41a2d8286c905614f29007f1bc8e652d54654b82 upstream.
+commit 66ef0289ac99e155d206ddaa0fdfad09ae3cd007 upstream.
 
-Disable runtime PM for the duration of reset/recovery so it is possible
-to set the correct runtime PM state depending on the outcome of the
-`ivpu_resume()`. Don’t suspend or reset the HW if the NPU is suspended
-when the reset/recovery is requested. Also, move common reset/recovery
-code to separate functions for better code readability.
+RTL8821AE is stuck transmitting at the lowest rate allowed by the rate
+mask. This is because the firmware doesn't know the device is connected
+to a network.
 
-Fixes: 27d19268cf39 ("accel/ivpu: Improve recovery and reset support")
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129124009.1039982-4-jacek.lawrynowicz@linux.intel.com
+Fix the macros SET_H2CCMD_MSRRPT_PARM_OPMODE and
+SET_H2CCMD_MSRRPT_PARM_MACID_IND to work on the first byte of __cmd,
+not the second. Now the firmware is correctly notified when the device
+is connected to a network and it activates the rate control.
+
+Before (MCS3):
+
+[  5]   0.00-1.00   sec  12.5 MBytes   105 Mbits/sec    0    339 KBytes
+[  5]   1.00-2.00   sec  10.6 MBytes  89.1 Mbits/sec    0    339 KBytes
+[  5]   2.00-3.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
+[  5]   3.00-4.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
+[  5]   4.00-5.00   sec  10.2 MBytes  86.0 Mbits/sec    0    427 KBytes
+
+After (MCS9):
+
+[  5]   0.00-1.00   sec  33.9 MBytes   284 Mbits/sec    0    771 KBytes
+[  5]   1.00-2.00   sec  31.6 MBytes   265 Mbits/sec    0    865 KBytes
+[  5]   2.00-3.00   sec  29.9 MBytes   251 Mbits/sec    0    963 KBytes
+[  5]   3.00-4.00   sec  28.2 MBytes   237 Mbits/sec    0    963 KBytes
+[  5]   4.00-5.00   sec  26.8 MBytes   224 Mbits/sec    0    963 KBytes
+
+Fixes: 39f40710d0b5 ("rtlwifi: rtl88821ae: Remove usage of private bit manipulation macros")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/754785b3-8a78-4554-b80d-de5f603b410b@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_pm.c |   79 +++++++++++++++++++++++--------------------
- 1 file changed, 43 insertions(+), 36 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -115,41 +115,57 @@ err_power_down:
- 	return ret;
- }
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
+@@ -197,9 +197,9 @@ enum rtl8821a_h2c_cmd {
  
--static void ivpu_pm_recovery_work(struct work_struct *work)
-+static void ivpu_pm_reset_begin(struct ivpu_device *vdev)
- {
--	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
--	struct ivpu_device *vdev = pm->vdev;
--	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
--	int ret;
--
--	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
--
--	ret = pm_runtime_resume_and_get(vdev->drm.dev);
--	if (ret)
--		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
--
--	ivpu_jsm_state_dump(vdev);
--	ivpu_dev_coredump(vdev);
-+	pm_runtime_disable(vdev->drm.dev);
+ /* _MEDIA_STATUS_RPT_PARM_CMD1 */
+ #define SET_H2CCMD_MSRRPT_PARM_OPMODE(__cmd, __value)	\
+-	u8p_replace_bits(__cmd + 1, __value, BIT(0))
++	u8p_replace_bits(__cmd, __value, BIT(0))
+ #define SET_H2CCMD_MSRRPT_PARM_MACID_IND(__cmd, __value)	\
+-	u8p_replace_bits(__cmd + 1, __value, BIT(1))
++	u8p_replace_bits(__cmd, __value, BIT(1))
  
- 	atomic_inc(&vdev->pm->reset_counter);
- 	atomic_set(&vdev->pm->reset_pending, 1);
- 	down_write(&vdev->pm->reset_lock);
-+}
-+
-+static void ivpu_pm_reset_complete(struct ivpu_device *vdev)
-+{
-+	int ret;
- 
--	ivpu_suspend(vdev);
- 	ivpu_pm_prepare_cold_boot(vdev);
- 	ivpu_jobs_abort_all(vdev);
- 	ivpu_ms_cleanup_all(vdev);
- 
- 	ret = ivpu_resume(vdev);
--	if (ret)
-+	if (ret) {
- 		ivpu_err(vdev, "Failed to resume NPU: %d\n", ret);
-+		pm_runtime_set_suspended(vdev->drm.dev);
-+	} else {
-+		pm_runtime_set_active(vdev->drm.dev);
-+	}
- 
- 	up_write(&vdev->pm->reset_lock);
- 	atomic_set(&vdev->pm->reset_pending, 0);
- 
--	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
- 	pm_runtime_mark_last_busy(vdev->drm.dev);
--	pm_runtime_put_autosuspend(vdev->drm.dev);
-+	pm_runtime_enable(vdev->drm.dev);
-+}
-+
-+static void ivpu_pm_recovery_work(struct work_struct *work)
-+{
-+	struct ivpu_pm_info *pm = container_of(work, struct ivpu_pm_info, recovery_work);
-+	struct ivpu_device *vdev = pm->vdev;
-+	char *evt[2] = {"IVPU_PM_EVENT=IVPU_RECOVER", NULL};
-+
-+	ivpu_err(vdev, "Recovering the NPU (reset #%d)\n", atomic_read(&vdev->pm->reset_counter));
-+
-+	ivpu_pm_reset_begin(vdev);
-+
-+	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
-+		ivpu_jsm_state_dump(vdev);
-+		ivpu_dev_coredump(vdev);
-+		ivpu_suspend(vdev);
-+	}
-+
-+	ivpu_pm_reset_complete(vdev);
-+
-+	kobject_uevent_env(&vdev->drm.dev->kobj, KOBJ_CHANGE, evt);
- }
- 
- void ivpu_pm_trigger_recovery(struct ivpu_device *vdev, const char *reason)
-@@ -328,16 +344,13 @@ void ivpu_pm_reset_prepare_cb(struct pci
- 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
- 
- 	ivpu_dbg(vdev, PM, "Pre-reset..\n");
--	atomic_inc(&vdev->pm->reset_counter);
--	atomic_set(&vdev->pm->reset_pending, 1);
- 
--	pm_runtime_get_sync(vdev->drm.dev);
--	down_write(&vdev->pm->reset_lock);
--	ivpu_prepare_for_reset(vdev);
--	ivpu_hw_reset(vdev);
--	ivpu_pm_prepare_cold_boot(vdev);
--	ivpu_jobs_abort_all(vdev);
--	ivpu_ms_cleanup_all(vdev);
-+	ivpu_pm_reset_begin(vdev);
-+
-+	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
-+		ivpu_prepare_for_reset(vdev);
-+		ivpu_hw_reset(vdev);
-+	}
- 
- 	ivpu_dbg(vdev, PM, "Pre-reset done.\n");
- }
-@@ -345,18 +358,12 @@ void ivpu_pm_reset_prepare_cb(struct pci
- void ivpu_pm_reset_done_cb(struct pci_dev *pdev)
- {
- 	struct ivpu_device *vdev = pci_get_drvdata(pdev);
--	int ret;
- 
- 	ivpu_dbg(vdev, PM, "Post-reset..\n");
--	ret = ivpu_resume(vdev);
--	if (ret)
--		ivpu_err(vdev, "Failed to set RESUME state: %d\n", ret);
--	up_write(&vdev->pm->reset_lock);
--	atomic_set(&vdev->pm->reset_pending, 0);
--	ivpu_dbg(vdev, PM, "Post-reset done.\n");
- 
--	pm_runtime_mark_last_busy(vdev->drm.dev);
--	pm_runtime_put_autosuspend(vdev->drm.dev);
-+	ivpu_pm_reset_complete(vdev);
-+
-+	ivpu_dbg(vdev, PM, "Post-reset done.\n");
- }
- 
- void ivpu_pm_init(struct ivpu_device *vdev)
+ /* AP_OFFLOAD */
+ #define SET_H2CCMD_AP_OFFLOAD_ON(__cmd, __value)	\
 
 
 
