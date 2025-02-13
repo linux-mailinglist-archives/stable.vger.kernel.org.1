@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-116034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04024A346E8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FF0A3459F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78B333A2EC6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FF8F18954DA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA72146588;
-	Thu, 13 Feb 2025 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A77826B0B7;
+	Thu, 13 Feb 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKSHS4H2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THEsS7wW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA973FB3B;
-	Thu, 13 Feb 2025 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB8926B085;
+	Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460093; cv=none; b=MMUM3jxcwzu9/DTVwI37jlHKWkHn7Hte6Jtu+6L+mhe3lbCx2T0xHNEfxtG8Amoq875eEV3D9XMht1Pe6IWL4hx8FmPyA7xv5X4IUwUOj2xBkdIOovhDlHLz9JXxmymPWRnKSsllc3Yesqyn4PXC+/yV8IikdCT/JZ9F5k8E3z8=
+	t=1739459287; cv=none; b=fGPJ3zTXQXPibfszPzuRBSuHdGQQcevu5OswX3a30/IzV8r4Oi/EKXBlMFotTkIvZNcQne15U7oFUPq0DMgVm18gAtyRmlDztJTcQEpp4fuwO1/E7Txu0F6kD9uRjx5t7FiU7tW9JE2jH8iIDCs2oMF2D8zU3VoupBZJFgeNw+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460093; c=relaxed/simple;
-	bh=0r84LOJIfySYzCzgYS87QK0kk5Se8hUZeDAuUdG7IHE=;
+	s=arc-20240116; t=1739459287; c=relaxed/simple;
+	bh=TQNJ0BTwhTd5D/djREZg+qcnMD6dH29bCyk2anf8a/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPFJF/WVGmG1uo9YcZi6sZx6BJS4SDxtNNTG1p5gQHSn6AK6b23ahkP4bne3kOR2K2fqJxwPQanRF1E5iF0Z5qHZd8r+q5JNguz8bDJ8fmvAvPzUl9v+HkVM1rsQNMX5Vg+O+yAWP9uBxRLmVpgraWFcpvEb+cSfipCrKFGxv9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKSHS4H2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA30C4CED1;
-	Thu, 13 Feb 2025 15:21:32 +0000 (UTC)
+	 MIME-Version; b=dXxbWEd+df1IgkkQqFegBzSSuXQ6e0VgIdV91UFJ13WfZE0O2eQBJVQNmfqbwX3ET2v1pwZhc5pvpE27S65RfFc4190XgBLM873PR8oEbShxDpDGMseeVXSmSsXf8nDaIQCbW+Y2cqVAc6+vwrXuNIceD/vbY0aT9qxWV1PYy8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THEsS7wW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C1CC4CED1;
+	Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460093;
-	bh=0r84LOJIfySYzCzgYS87QK0kk5Se8hUZeDAuUdG7IHE=;
+	s=korg; t=1739459286;
+	bh=TQNJ0BTwhTd5D/djREZg+qcnMD6dH29bCyk2anf8a/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKSHS4H2+2EvoYQihF402427aJu+I6D4juE6fxPReCXyT1xYJJ0Up9J8UO6h2BYu/
-	 9Rksr8ngF1wbbMNmbjnPzdxb4F69CAfLDvjm68DloCzgUVp4bKsyUQF+RHw4k10OXJ
-	 I3+IegVzurT4WEclQKhNTFs1Q7yiQKtBUIVAEQO8=
+	b=THEsS7wW3BnaUZe+WAPB1qkoWYA19XYPTaYTRAlQbR/OqKf+4geAUFS/AS6IC55ex
+	 l3ACUXu2RuZX/VF5VXZcGgIX1NQb9YGVFKimNbxBL5MQXyx6KVkLNC5cEB0h5oTS9p
+	 kho/BDD3k162G8k6qj1oNq0emRd4f6nk4Ghq9Amg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/273] drm/connector: add mutex to protect ELD from concurrent access
-Date: Thu, 13 Feb 2025 15:26:25 +0100
-Message-ID: <20250213142407.887003814@linuxfoundation.org>
+	Heiko Stuebner <heiko@sntech.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.13 221/443] HID: hid-sensor-hub: dont use stale platform-data on remove
+Date: Thu, 13 Feb 2025 15:26:26 +0100
+Message-ID: <20250213142449.140598275@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit df7c8e3dde37a9d81c0613285b43600f3cc70f34 ]
+commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
 
-The connector->eld is accessed by the .get_eld() callback. This access
-can collide with the drm_edid_to_eld() updating the data at the same
-time. Add drm_connector.eld_mutex to protect the data from concurrenct
-access. Individual drivers are not updated (to reduce possible issues
-while applying the patch), maintainers are to find a best suitable way
-to lock that mutex while accessing the ELD data.
+The hid-sensor-hub creates the individual device structs and transfers them
+to the created mfd platform-devices via the platform_data in the mfd_cell.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-1-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+the sensor-hub was managing access centrally, with one "completion" in the
+hub's data structure, which needed to be finished on removal at the latest.
+
+The mentioned commit then moved this central management to each hid sensor
+device, resulting on a completion in each struct hid_sensor_hub_device.
+The remove procedure was adapted to go through all sensor devices and
+finish any pending "completion".
+
+What this didn't take into account was, platform_device_add_data() that is
+used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+platform-data. So the data the platform-device gets is a copy of the
+original data, meaning that the device worked on a different completion
+than what sensor_hub_remove() currently wants to access.
+
+To fix that, use device_for_each_child() to go through each child-device
+similar to how mfd_remove_devices() unregisters the devices later and
+with that get the live platform_data to finalize the correct completion.
+
+Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_connector.c | 1 +
- drivers/gpu/drm/drm_edid.c      | 6 ++++++
- include/drm/drm_connector.h     | 5 ++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index 309aad5f0c808..35bed66214474 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -277,6 +277,7 @@ static int __drm_connector_init(struct drm_device *dev,
- 	INIT_LIST_HEAD(&connector->probed_modes);
- 	INIT_LIST_HEAD(&connector->modes);
- 	mutex_init(&connector->mutex);
-+	mutex_init(&connector->eld_mutex);
- 	mutex_init(&connector->edid_override_mutex);
- 	connector->edid_blob_ptr = NULL;
- 	connector->epoch_counter = 0;
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index ee3fab115c4b5..ad872c61aac0e 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -5499,7 +5499,9 @@ EXPORT_SYMBOL(drm_edid_get_monitor_name);
- 
- static void clear_eld(struct drm_connector *connector)
- {
-+	mutex_lock(&connector->eld_mutex);
- 	memset(connector->eld, 0, sizeof(connector->eld));
-+	mutex_unlock(&connector->eld_mutex);
- 
- 	connector->latency_present[0] = false;
- 	connector->latency_present[1] = false;
-@@ -5530,6 +5532,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
- 	if (!drm_edid)
- 		return;
- 
-+	mutex_lock(&connector->eld_mutex);
-+
- 	mnl = get_monitor_name(drm_edid, &eld[DRM_ELD_MONITOR_NAME_STRING]);
- 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD monitor %s\n",
- 		    connector->base.id, connector->name,
-@@ -5590,6 +5594,8 @@ static void drm_edid_to_eld(struct drm_connector *connector,
- 	drm_dbg_kms(connector->dev, "[CONNECTOR:%d:%s] ELD size %d, SAD count %d\n",
- 		    connector->base.id, connector->name,
- 		    drm_eld_size(eld), total_sad_count);
-+
-+	mutex_unlock(&connector->eld_mutex);
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -730,23 +730,30 @@ err_stop_hw:
+ 	return ret;
  }
  
- static int _drm_edid_to_sad(const struct drm_edid *drm_edid,
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index d300fde6c1a47..b2e9dc02fa349 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -1764,8 +1764,11 @@ struct drm_connector {
- 	struct drm_encoder *encoder;
- 
- #define MAX_ELD_BYTES	128
--	/** @eld: EDID-like data, if present */
-+	/** @eld: EDID-like data, if present, protected by @eld_mutex */
- 	uint8_t eld[MAX_ELD_BYTES];
-+	/** @eld_mutex: protection for concurrenct access to @eld */
-+	struct mutex eld_mutex;
++static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
++{
++	struct hid_sensor_hub_device *hsdev = dev->platform_data;
 +
- 	/** @latency_present: AV delay info from ELD, if found */
- 	bool latency_present[2];
- 	/**
--- 
-2.39.5
-
++	if (hsdev->pending.status)
++		complete(&hsdev->pending.ready);
++
++	return 0;
++}
++
+ static void sensor_hub_remove(struct hid_device *hdev)
+ {
+ 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
+ 	unsigned long flags;
+-	int i;
+ 
+ 	hid_dbg(hdev, " hardware removed\n");
+ 	hid_hw_close(hdev);
+ 	hid_hw_stop(hdev);
++
+ 	spin_lock_irqsave(&data->lock, flags);
+-	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
+-		struct hid_sensor_hub_device *hsdev =
+-			data->hid_sensor_hub_client_devs[i].platform_data;
+-		if (hsdev->pending.status)
+-			complete(&hsdev->pending.ready);
+-	}
++	device_for_each_child(&hdev->dev, NULL,
++			      sensor_hub_finalize_pending_fn);
+ 	spin_unlock_irqrestore(&data->lock, flags);
++
+ 	mfd_remove_devices(&hdev->dev);
+ 	mutex_destroy(&data->mutex);
+ }
 
 
 
