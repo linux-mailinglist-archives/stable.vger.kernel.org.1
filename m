@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457C2A3440A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07831A3452E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E6D3AA2DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 190C07A3315
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAE71422DD;
-	Thu, 13 Feb 2025 14:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6109A26B099;
+	Thu, 13 Feb 2025 15:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAkK70Nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mONBxMOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1344F26B0BC;
-	Thu, 13 Feb 2025 14:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0A326B097;
+	Thu, 13 Feb 2025 15:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458153; cv=none; b=Lrk+rtiLOpV4/gGaM3V8nQDHiYKM2Y8LEkHQTkgcOkBZAnX3T6bevqSL+BNYpZraB/5Gm6eW00+H+9zkQMQgizL4f2KTtYZj7k5hacXOG0y/LPjziVH74AXRQrApTdT+Wk4pm/W29WhiFCj3AiA+IMQiEv3HwOfIRplviD//PUI=
+	t=1739459562; cv=none; b=MI2oYWPVO4ENXxC77EMQV17BzySIXQ87AkF4MO4LZYoyXUjvRWVZoRIUwS28QCxynR3cHIa7vw82/T4eUuacOh6vL9A+8y9RuyRFe2vHglBjQw/bgRa7474s/3cSB1uWcn6hy/G61gYHNrYdAJOGSWrSxFc+mIuB6RUg7dzaZas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458153; c=relaxed/simple;
-	bh=dk67/5gDAHQkariIGgJ/FU5CQaCRv2e0clqq3FZn71w=;
+	s=arc-20240116; t=1739459562; c=relaxed/simple;
+	bh=Whzi7na7bHqbJz4TCRzJqAhRDxn4g1U3WukgD3fcR20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKSd9iMQRxOlMd3+mRMprLMAwoGzkotfszJbW5xq+rhEG7Ov6/Fox0D7VCxBUMkpH0iYhsyozCV7Pe80TsoZRsytJxzOLg+Jn4n/K3y1syLCOfTDgIASvNbHi8eLm2uIZZSZmoPQxG3UqnG4H2xh9L5SFqlvfCkuj7x9MCsc1wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAkK70Nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F91AC4CED1;
-	Thu, 13 Feb 2025 14:49:12 +0000 (UTC)
+	 MIME-Version; b=jeq6QxNtMfOYSaepdB44iYFX+yY3QPeAJCJNDtUr99593nnNmxVRL7yuZxmNJAFl8TqG2pGFOFdIY8BYNyVMp+h0akz0Vyli4b78pcTRjXvWBtL19MRB5FuKTGaS8fcs/A6enEzksRkXAgd1rBmuDouMqNAQEKxKBa8K00GKFSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mONBxMOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE7BC4CED1;
+	Thu, 13 Feb 2025 15:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458152;
-	bh=dk67/5gDAHQkariIGgJ/FU5CQaCRv2e0clqq3FZn71w=;
+	s=korg; t=1739459562;
+	bh=Whzi7na7bHqbJz4TCRzJqAhRDxn4g1U3WukgD3fcR20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAkK70NxwDd/PDrAUoI2XVzairdBd4FlTnmZiICsNvMNfNl9s9CXE7tIMBjLWlxzK
-	 U27l3dA7uyv7XNXD1+EuhRHjZsM3zERnhbWQ/yBQTI+ZACylkWUEHOLPcDnlBLhSHi
-	 pO9oeVW/5911As4LKgzEX1BIZIN3GAhDMGT1r/DA=
+	b=mONBxMOn5WzPiG6yW76d43AunyJsUrwcQ8DefkXd3IYJr16yo+nz2kwnyakVYwecv
+	 Kd7Uo/OuWii/D7qPV6jHhEJNyNBHEpN6fsBCAIwTdzSo1mNob5ZkIWDW9BGk+TZyD9
+	 H3Buv9KqdiCDdVH078DfV9kqA7IOzofez7BkqKsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.12 317/422] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 301/443] arm64: dts: qcom: sm6115: Fix MPSS memory length
 Date: Thu, 13 Feb 2025 15:27:46 +0100
-Message-ID: <20250213142448.783038018@linuxfoundation.org>
+Message-ID: <20250213142452.228700646@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c0eb059a4575ed57f265d9883a5203799c19982c upstream.
+commit 472d65e7cb591c8379dd6f40561f96be73a46f0f upstream.
 
-Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
-Smatch:
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x100 was
+copied from older DTS, but it grew since then.
 
-  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
 Cc: stable@vger.kernel.org
+Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-21-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -273,23 +273,31 @@ static int mtk_devapc_probe(struct platf
- 		return -EINVAL;
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -2027,7 +2027,7 @@
  
- 	devapc_irq = irq_of_parse_and_map(node, 0);
--	if (!devapc_irq)
--		return -EINVAL;
-+	if (!devapc_irq) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
+ 		remoteproc_mpss: remoteproc@6080000 {
+ 			compatible = "qcom,sm6115-mpss-pas";
+-			reg = <0x0 0x06080000 0x0 0x100>;
++			reg = <0x0 0x06080000 0x0 0x10000>;
  
- 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
--	if (IS_ERR(ctx->infra_clk))
--		return -EINVAL;
-+	if (IS_ERR(ctx->infra_clk)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
- 			       IRQF_TRIGGER_NONE, "devapc", ctx);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	platform_set_drvdata(pdev, ctx);
- 
- 	start_devapc(ctx);
- 
- 	return 0;
-+
-+err:
-+	iounmap(ctx->infra_base);
-+	return ret;
- }
- 
- static void mtk_devapc_remove(struct platform_device *pdev)
+ 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
+ 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
