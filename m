@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-116006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBF1A3469D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0326DA347F4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4761918965D9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85ACE3B4A4F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A432A1CF;
-	Thu, 13 Feb 2025 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA557153828;
+	Thu, 13 Feb 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvMsTPRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZqDtkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6150D26B0BC;
-	Thu, 13 Feb 2025 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D4313C816;
+	Thu, 13 Feb 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460005; cv=none; b=UIe1njMMehKsfW69Y1emZ+3a3XgMuRS7HiN5FpDsRDjbUVxP+HBNpoVsCO7oDzILykUxoKtQdrrlsQw8Ry+ALqWIMbd4ZYtMOsTlrQLZaxtDUubVoPRTNfBpXiNizGPIjTxpu8rH8hjEfneYhIezpzeQZzzZwxaaoAfNXtBZoIY=
+	t=1739460822; cv=none; b=iK7aWuQqLQbm13IQd3HenUEnhzHG74JsWNJZ7G8Z6oYeMBgrQbsfIX3WWkpUrSEBqAZY6+DH4wm4tKPFYkQTxXzOvUwItpvhIt2MiBpIHK7vq5qWsT/Uk4v4WQ/eOh8xkoMAdz2EyarBqKMuQYWafI5dV4LmC3XytDDweEC1aUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460005; c=relaxed/simple;
-	bh=Gd2IoymuJ0rtVSPZDia3F20SawnmvvwO071og4lKTm8=;
+	s=arc-20240116; t=1739460822; c=relaxed/simple;
+	bh=rzd3XT2mdd9fTve0SrmB3kTfnJKZ3xGe4Qlg7A6DbY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QasYtpU8HBcS9ZYYhJyDDT0VSZh7+DtSEIx37j/S6ebUc7UtM9OlbB1KiuqPql05qVNjEZdX0bFC69XyJG0XQnN7/0ypxdtOiaecOOWLCvjMVzBRLBv10QWMdhkq2Esz91PW9ZPFcDr6MzY+9odoNwz2HDGIW6gzlcS3/VuIkPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvMsTPRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA942C4CEE5;
-	Thu, 13 Feb 2025 15:20:04 +0000 (UTC)
+	 MIME-Version; b=eAxsIiNT5PkOAQg5G4xB6WxOYCTDPD0H8wOW6yTlPFpJsPenkJB24/D16IY0X5XdhiuCKdjwLDdUn0a14DOlJYmA0/HAli6IeHcZmdJ718ZcnclzlVrms6/l8ybOW2hW/R4D+CzQzvZr498r0cYitkzIhi/KY+bFb0yEl9/KdEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/ZqDtkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A03BC4CED1;
+	Thu, 13 Feb 2025 15:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460005;
-	bh=Gd2IoymuJ0rtVSPZDia3F20SawnmvvwO071og4lKTm8=;
+	s=korg; t=1739460822;
+	bh=rzd3XT2mdd9fTve0SrmB3kTfnJKZ3xGe4Qlg7A6DbY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvMsTPRQgkF+9Q7FD4F8Aav8bMlxsXWj3stCNdlDBnzPt0HJKYhrKw/kfpLIu2/PR
-	 LKZ+qKjoFgZQhwV0F/87Gc0rUeXid2WjAJ6qmO9B1G757tCvrXPOuJQ2PwSZ/1j1lO
-	 DZ1OWlJTWfDCeK2BofM/pW6AYtSab5l7ql4pdBUY=
+	b=p/ZqDtkLA1wQxmXm9CyEfLYjJU0uoYDEH6aWkInN8zQsrnPQty+UCs7gWfkEkUBJ2
+	 WY1m8XR96bJU1vHifzTMkRyrOBDvNVZLwXOIWNCZ2nqpUVrZTkaTw5slFVoXw9BpuU
+	 Qai6mOp93ZJvVGEJakQU0YGUxJSeGTJFmlNH+kPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Anandu Krishnan E <quic_anane@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.13 412/443] misc: fastrpc: Deregister device nodes properly in error scenarios
+	Alexandru Ardelean <aardelean@baylibre.com>,
+	Naushir Patuck <naush@raspberrypi.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 205/273] media: imx296: Add standby delay during probe
 Date: Thu, 13 Feb 2025 15:29:37 +0100
-Message-ID: <20250213142456.507770058@linuxfoundation.org>
+Message-ID: <20250213142415.422100331@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anandu Krishnan E <quic_anane@quicinc.com>
+From: Naushir Patuck <naush@raspberrypi.com>
 
-commit 637c20002dc8c347001292664055bfbf56544ec6 upstream.
+commit 57d10bcac67707caaa542e09dee86e13ea85defc upstream.
 
-During fastrpc_rpmsg_probe, if secure device node registration
-succeeds but non-secure device node registration fails, the secure
-device node deregister is not called during error cleanup. Add proper
-exit paths to ensure proper cleanup in case of error.
+Add a 2-5ms delay when coming out of standby and before reading the
+sensor info register durning probe, as instructed by the datasheet. This
+standby delay is already present when the sensor starts streaming.
 
-Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
-Cc: stable@kernel.org
-Signed-off-by: Anandu Krishnan E <quic_anane@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-2-srinivas.kandagatla@linaro.org
+During a cold-boot, reading the IMX296_SENSOR_INFO register would often
+return a value of 0x0000, if this delay is not present before.
+
+Fixes: cb33db2b6ccf ("media: i2c: IMX296 camera sensor driver")
+Cc: stable@vger.kernel.org
+Tested-by: Alexandru Ardelean <aardelean@baylibre.com>
+Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx296.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2344,7 +2344,7 @@ static int fastrpc_rpmsg_probe(struct rp
+--- a/drivers/media/i2c/imx296.c
++++ b/drivers/media/i2c/imx296.c
+@@ -960,6 +960,8 @@ static int imx296_identify_model(struct
+ 		return ret;
+ 	}
  
- 		err = fastrpc_device_register(rdev, data, false, domains[domain_id]);
- 		if (err)
--			goto fdev_error;
-+			goto populate_error;
- 		break;
- 	default:
- 		err = -EINVAL;
++	usleep_range(2000, 5000);
++
+ 	ret = imx296_read(sensor, IMX296_SENSOR_INFO);
+ 	if (ret < 0) {
+ 		dev_err(sensor->dev, "failed to read sensor information (%d)\n",
 
 
 
