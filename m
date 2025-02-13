@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB59A347C1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5330FA3465B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF661884245
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1A3F16FD1D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EAE26B096;
-	Thu, 13 Feb 2025 15:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B8238389;
+	Thu, 13 Feb 2025 15:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRjtOzt/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fECl1QYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55E826B087;
-	Thu, 13 Feb 2025 15:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C9926B0BE;
+	Thu, 13 Feb 2025 15:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460746; cv=none; b=FHk0vOgat8qDxemSiXW1cVgLfS0HebV/vyS25RcVcC3v7ejcehkQrXHljKCKLxghx91nkIqs1qXFxhNi7kS8BXyumAH1cb6IJBPVGK0ujYv+I+NCPasZphGyI9QA53IVcURttcPbs2DFHdndPDF7iTjzQ8goVTsb5HJIp0B9lGY=
+	t=1739459935; cv=none; b=XaK0hbkeb9/a6nSk2YxqVbtdsXzpOPfHIz0j40ie6DTQBatB/yCLVKkbk9duglm8zsFjj1k7p8VMSUALLd87EeVRjfzA99pNyUJxO1JXYikNXihQFw/gMBkAaaZpQjpjEZAbxiQY50u9l1TbfADyjf7vC5Zb37y47q6mGs+ha74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460746; c=relaxed/simple;
-	bh=fzFB36MfuvHI9H6+sZNYFTWRRCO4YnaSxLWuI6yerLU=;
+	s=arc-20240116; t=1739459935; c=relaxed/simple;
+	bh=0czd+4Gor7rsvnFHaFA16kr3XqTIKXSJfr/2CN2WL+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqFWM87clSPPxaoQb11jQtkKp2my6LVcm/aNUZHyPvD+nJgHx/L0FNHsQ82t2YDFVMTW1Nk+/zzDBQWGJJj/omO7Fghdvx7X1d7El7RkAHHObtQ5yOY/C3SwtPqiVhgrNTCuJGRSN+xcW2aKaB4paaMMs5Impa0GynmQMIAot0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRjtOzt/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4443EC4CEE4;
-	Thu, 13 Feb 2025 15:32:25 +0000 (UTC)
+	 MIME-Version; b=dhCxOZIARjb6cQ007eAhslo5AvIjQ3rI4hoK0K2pPcSKQiQBmtxnY+EfXuUdFDTLl63C0RlbMp1759tXtdbt5V2nfE0Zc/ucp4mP7YCw98s2LZlyNZ0pBmasoW7hW/DsWxp4walOq6V6Zlj+MpPECTZl4M919rI7TgzZsw9tA+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fECl1QYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A341C4CED1;
+	Thu, 13 Feb 2025 15:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460745;
-	bh=fzFB36MfuvHI9H6+sZNYFTWRRCO4YnaSxLWuI6yerLU=;
+	s=korg; t=1739459935;
+	bh=0czd+4Gor7rsvnFHaFA16kr3XqTIKXSJfr/2CN2WL+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRjtOzt/vEQq19QCKcdb5rzognQV25htw0e2ZiAyxLAoF45eemsmjuVcotNJQeXsK
-	 4GZ6Bw7wXTgSlOrIUyEdg4lvToH04FOPDcxH+OL2UFcabK4vl6vSVJ7P9GCehnmmh2
-	 drAehDsnEcmOOojUSAuSJeM6TTSRI3SCcWzREWP0=
+	b=fECl1QYKhAGNDjSEwl3nGISZtgBskfzw8CzcaFRIN9NvpoqGb6+CFNqjRVX0PK6b5
+	 rT8TO9GvXipEAlTT45aUL57OCnudwnCPrWPXUqltMu4KS9rBPUciqrqXE3hbF20uit
+	 6eAlUD+rcmu61PaFCzo7YffGCaBRMcGW6yr3hb8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 199/273] media: ccs: Clean up parsed CCS static data on parse failure
-Date: Thu, 13 Feb 2025 15:29:31 +0100
-Message-ID: <20250213142415.189901764@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 407/443] fgraph: Fix set_graph_notrace with setting TRACE_GRAPH_NOTRACE_BIT
+Date: Thu, 13 Feb 2025 15:29:32 +0100
+Message-ID: <20250213142456.313895061@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit da73efa8e675a2b58f1c7ae61201acfe57714bf7 upstream.
+commit c8c9b1d2d5b4377c72a979f5a26e842a869aefc9 upstream.
 
-ccs_data_parse() releases the allocated in-memory data structure when the
-parser fails, but it does not clean up parsed metadata that is there to
-help access the actual data. Do that, in order to return the data
-structure in a sane state.
+The code was restructured where the function graph notrace code, that
+would not trace a function and all its children is done by setting a
+NOTRACE flag when the function that is not to be traced is hit.
 
-Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
+There's a TRACE_GRAPH_NOTRACE_BIT which defines the bit in the flags and a
+TRACE_GRAPH_NOTRACE which is the mask with that bit set. But the
+restructuring used TRACE_GRAPH_NOTRACE_BIT when it should have used
+TRACE_GRAPH_NOTRACE.
+
+For example:
+
+ # cd /sys/kernel/tracing
+ # echo set_track_prepare stack_trace_save  > set_graph_notrace
+ # echo function_graph > current_tracer
+ # cat trace
+[..]
+ 0)               |                          __slab_free() {
+ 0)               |                            free_to_partial_list() {
+ 0)               |                                  arch_stack_walk() {
+ 0)               |                                    __unwind_start() {
+ 0)   0.501 us    |                                      get_stack_info();
+
+Where a non filter trace looks like:
+
+ # echo > set_graph_notrace
+ # cat trace
+ 0)               |                            free_to_partial_list() {
+ 0)               |                              set_track_prepare() {
+ 0)               |                                stack_trace_save() {
+ 0)               |                                  arch_stack_walk() {
+ 0)               |                                    __unwind_start() {
+
+Where the filter should look like:
+
+ # cat trace
+ 0)               |                            free_to_partial_list() {
+ 0)               |                              _raw_spin_lock_irqsave() {
+ 0)   0.350 us    |                                preempt_count_add();
+ 0)   0.351 us    |                                do_raw_spin_lock();
+ 0)   2.440 us    |                              }
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250208001511.535be150@batman.local.home
+Fixes: b84214890a9bc ("function_graph: Move graph notrace bit to shadow stack global var")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-data.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ kernel/trace/trace_functions_graph.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ccs/ccs-data.c
-+++ b/drivers/media/i2c/ccs/ccs-data.c
-@@ -10,6 +10,7 @@
- #include <linux/limits.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
-+#include <linux/string.h>
- 
- #include "ccs-data-defs.h"
- 
-@@ -948,15 +949,15 @@ int ccs_data_parse(struct ccs_data_conta
- 
- 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, verbose);
- 	if (rval)
--		return rval;
-+		goto out_cleanup;
- 
- 	rval = bin_backing_alloc(&bin);
- 	if (rval)
--		return rval;
-+		goto out_cleanup;
- 
- 	rval = __ccs_data_parse(&bin, ccsdata, data, len, dev, false);
- 	if (rval)
--		goto out_free;
-+		goto out_cleanup;
- 
- 	if (verbose && ccsdata->version)
- 		print_ccs_data_version(dev, ccsdata->version);
-@@ -965,15 +966,16 @@ int ccs_data_parse(struct ccs_data_conta
- 		rval = -EPROTO;
- 		dev_dbg(dev, "parsing mismatch; base %p; now %p; end %p\n",
- 			bin.base, bin.now, bin.end);
--		goto out_free;
-+		goto out_cleanup;
- 	}
- 
- 	ccsdata->backing = bin.base;
- 
- 	return 0;
- 
--out_free:
-+out_cleanup:
- 	kvfree(bin.base);
-+	memset(ccsdata, 0, sizeof(*ccsdata));
- 
- 	return rval;
- }
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -198,7 +198,7 @@ int trace_graph_entry(struct ftrace_grap
+ 	 * returning from the function.
+ 	 */
+ 	if (ftrace_graph_notrace_addr(trace->func)) {
+-		*task_var |= TRACE_GRAPH_NOTRACE_BIT;
++		*task_var |= TRACE_GRAPH_NOTRACE;
+ 		/*
+ 		 * Need to return 1 to have the return called
+ 		 * that will clear the NOTRACE bit.
 
 
 
