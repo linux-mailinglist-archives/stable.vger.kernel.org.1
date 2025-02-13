@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-115664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1E4A34502
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:11:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AF4A342B5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10A0172B18
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B50AC3ABD72
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16091221562;
-	Thu, 13 Feb 2025 15:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2615E24502A;
+	Thu, 13 Feb 2025 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxkChpss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkCdn8HE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C766B26B0BA;
-	Thu, 13 Feb 2025 15:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C482222D9;
+	Thu, 13 Feb 2025 14:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458823; cv=none; b=T4tGT29VAbh+nEWef3cGmjb6aw3+JydBiSp/q8qNPtAe4UVqlaW2d0ATVJbVNIOUZ48cdYyCeBDnspDSTtu7UywDZC4donivy4zIZdl9YySu3JS2Fm8rW0x+9a8LvCjWnxL2V7tnZXCz/8CjQN2PNNT2wutunlNrds+g5U1/768=
+	t=1739457410; cv=none; b=JLhVFKDn8ncV/7kRjfjPROdsMziFgf3olkw6Um27ezpiKEUJAVQkiOR4uJcuSQRVZe6CGQkSh314rNIYrgtt2Gt17AcjMrwfnOXr4HfkKAjRxIczbECN3ZyGAWh+sTMmnm0a8K3cEuuZUry3j1As9P3qWYnoBeENBPqBoGIvk2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458823; c=relaxed/simple;
-	bh=oNyaSlFAvjyHAvJqzAEYU1ZlpCM9AaB0kXDUO6Ak+to=;
+	s=arc-20240116; t=1739457410; c=relaxed/simple;
+	bh=53Z9OwsREfMvMqH0R0joI45MCrCjH0xVjTYY/zPQ7Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F4egfDiJOrvpwmEj3t4ns/o8CZO6o8YHF1QuchLigSPw3h+yzp6QZbrtCGahFTWEAyHbgDj+NbaYXQF6mR3hhEoc+IY6wK3mDiOjewQz0jByXrIieqzhA8yJy0buVpd002GjbpPtIxXYRHXgVIlxRHAFP3Z+qiC6N50rmSsK+PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxkChpss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6DFC4CED1;
-	Thu, 13 Feb 2025 15:00:23 +0000 (UTC)
+	 MIME-Version; b=Bjf24bMQbU1pzP78fX2OMRh2dcOxVDCgURwvRPeIdMAbpeTEZlXF7DWcEyXGM+U8rBOEi3MdxR8Or9MAU4ZkBzGd9t4oxoDHDy5Arh5FrRC7q5/GSwcs0wGVILHgHAYjhuqSRhF9ahALRGBqhBupv89y2q9V9ODnQH/UbYrPTH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkCdn8HE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44909C4CEE2;
+	Thu, 13 Feb 2025 14:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458823;
-	bh=oNyaSlFAvjyHAvJqzAEYU1ZlpCM9AaB0kXDUO6Ak+to=;
+	s=korg; t=1739457410;
+	bh=53Z9OwsREfMvMqH0R0joI45MCrCjH0xVjTYY/zPQ7Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxkChpssxgpbx89lhw69EnCX5HrNHu3HPbcpc9DnsRAKjyTlAI+wd7DwQ9O056+v5
-	 B69pv8EvIVtS4pA7X/7eQuUf/tJbLlgnrA1BMzTTCzywFlxGK1MWz+RI8tyICECyGb
-	 rEStyUwzk+OB4d1wmA6XbFNpUUcTQ+Urc3mF3hgE=
+	b=mkCdn8HEpXT96mgZAuTSHZouDveKeUgRNMovL9ljCRvt1LmjXoFzAhbl4IHB9jOqa
+	 ELi7nvBZd93WHLsny3q0Ho35ziLobN0FQOltQ+W00aWVNlozUgsHyBehhfvjL7BD9a
+	 zeGV0/9pNoh2b/q2c/4NtDLTW8uHmg4sSYpuTpmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 087/443] ASoC: SOF: Intel: hda-dai: Ensure DAI widget is valid during params
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Xu Du <xudu@redhat.com>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.12 103/422] ice: put Rx buffers after being done with current frame
 Date: Thu, 13 Feb 2025 15:24:12 +0100
-Message-ID: <20250213142443.968007438@linuxfoundation.org>
+Message-ID: <20250213142440.529706611@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +65,184 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 569922b82ca660f8b24e705f6cf674e6b1f99cc7 ]
+[ Upstream commit 743bbd93cf29f653fae0e1416a31f03231689911 ]
 
-Each cpu DAI should associate with a widget. However, the topology might
-not create the right number of DAI widgets for aggregated amps. And it
-will cause NULL pointer deference.
-Check that the DAI widget associated with the CPU DAI is valid to prevent
-NULL pointer deference due to missing DAI widgets in topologies with
-aggregated amps.
+Introduce a new helper ice_put_rx_mbuf() that will go through gathered
+frags from current frame and will call ice_put_rx_buf() on them. Current
+logic that was supposed to simplify and optimize the driver where we go
+through a batch of all buffers processed in current NAPI instance turned
+out to be broken for jumbo frames and very heavy load that was coming
+from both multi-thread iperf and nginx/wrk pair between server and
+client. The delay introduced by approach that we are dropping is simply
+too big and we need to take the decision regarding page
+recycling/releasing as quick as we can.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20241203104853.56956-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+While at it, address an error path of ice_add_xdp_frag() - we were
+missing buffer putting from day 1 there.
+
+As a nice side effect we get rid of annoying and repetitive three-liner:
+
+	xdp->data = NULL;
+	rx_ring->first_desc = ntc;
+	rx_ring->nr_frags = 0;
+
+by embedding it within introduced routine.
+
+Fixes: 1dc1a7e7f410 ("ice: Centrallize Rx buffer recycling")
+Reported-and-tested-by: Xu Du <xudu@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-dai.c | 12 ++++++++++++
- sound/soc/sof/intel/hda.c     |  5 +++++
- 2 files changed, 17 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 79 ++++++++++++++---------
+ 1 file changed, 50 insertions(+), 29 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
-index 0db2a3e554fb2..da12aabc1bb85 100644
---- a/sound/soc/sof/intel/hda-dai.c
-+++ b/sound/soc/sof/intel/hda-dai.c
-@@ -503,6 +503,12 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 	int ret;
- 	int i;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 8208055d6e7fc..4660e2302e2ae 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -1103,6 +1103,49 @@ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
+ 	rx_buf->page = NULL;
+ }
  
-+	if (!w) {
-+		dev_err(cpu_dai->dev, "%s widget not found, check amp link num in the topology\n",
-+			cpu_dai->name);
-+		return -EINVAL;
++/**
++ * ice_put_rx_mbuf - ice_put_rx_buf() caller, for all frame frags
++ * @rx_ring: Rx ring with all the auxiliary data
++ * @xdp: XDP buffer carrying linear + frags part
++ * @xdp_xmit: XDP_TX/XDP_REDIRECT verdict storage
++ * @ntc: a current next_to_clean value to be stored at rx_ring
++ *
++ * Walk through gathered fragments and satisfy internal page
++ * recycle mechanism; we take here an action related to verdict
++ * returned by XDP program;
++ */
++static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
++			    u32 *xdp_xmit, u32 ntc)
++{
++	u32 nr_frags = rx_ring->nr_frags + 1;
++	u32 idx = rx_ring->first_desc;
++	u32 cnt = rx_ring->count;
++	struct ice_rx_buf *buf;
++	int i;
++
++	for (i = 0; i < nr_frags; i++) {
++		buf = &rx_ring->rx_buf[idx];
++
++		if (buf->act & (ICE_XDP_TX | ICE_XDP_REDIR)) {
++			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
++			*xdp_xmit |= buf->act;
++		} else if (buf->act & ICE_XDP_CONSUMED) {
++			buf->pagecnt_bias++;
++		} else if (buf->act == ICE_XDP_PASS) {
++			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
++		}
++
++		ice_put_rx_buf(rx_ring, buf);
++
++		if (++idx == cnt)
++			idx = 0;
 +	}
 +
- 	ops = hda_dai_get_ops(substream, cpu_dai);
- 	if (!ops) {
- 		dev_err(cpu_dai->dev, "DAI widget ops not set\n");
-@@ -582,6 +588,12 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 	 */
- 	for_each_rtd_cpu_dais(rtd, i, dai) {
- 		w = snd_soc_dai_get_widget(dai, substream->stream);
-+		if (!w) {
-+			dev_err(cpu_dai->dev,
-+				"%s widget not found, check amp link num in the topology\n",
-+				dai->name);
-+			return -EINVAL;
-+		}
- 		ipc4_copier = widget_to_copier(w);
- 		memcpy(&ipc4_copier->dma_config_tlv[cpu_dai_id], dma_config_tlv,
- 		       sizeof(*dma_config_tlv));
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index f991785f727e9..be689f6e10c81 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -63,6 +63,11 @@ static int sdw_params_stream(struct device *dev,
- 	struct snd_soc_dapm_widget *w = snd_soc_dai_get_widget(d, params_data->substream->stream);
- 	struct snd_sof_dai_config_data data = { 0 };
++	xdp->data = NULL;
++	rx_ring->first_desc = ntc;
++	rx_ring->nr_frags = 0;
++}
++
+ /**
+  * ice_clean_rx_irq - Clean completed descriptors from Rx ring - bounce buf
+  * @rx_ring: Rx descriptor ring to transact packets on
+@@ -1120,7 +1163,6 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 	unsigned int total_rx_bytes = 0, total_rx_pkts = 0;
+ 	unsigned int offset = rx_ring->rx_offset;
+ 	struct xdp_buff *xdp = &rx_ring->xdp;
+-	u32 cached_ntc = rx_ring->first_desc;
+ 	struct ice_tx_ring *xdp_ring = NULL;
+ 	struct bpf_prog *xdp_prog = NULL;
+ 	u32 ntc = rx_ring->next_to_clean;
+@@ -1128,7 +1170,6 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 	u32 xdp_xmit = 0;
+ 	u32 cached_ntu;
+ 	bool failure;
+-	u32 first;
  
-+	if (!w) {
-+		dev_err(dev, "%s widget not found, check amp link num in the topology\n",
-+			d->name);
-+		return -EINVAL;
-+	}
- 	data.dai_index = (params_data->link_id << 8) | d->id;
- 	data.dai_data = params_data->alh_stream_id;
- 	data.dai_node_id = data.dai_data;
+ 	xdp_prog = READ_ONCE(rx_ring->xdp_prog);
+ 	if (xdp_prog) {
+@@ -1190,6 +1231,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			xdp_prepare_buff(xdp, hard_start, offset, size, !!offset);
+ 			xdp_buff_clear_frags_flag(xdp);
+ 		} else if (ice_add_xdp_frag(rx_ring, xdp, rx_buf, size)) {
++			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc);
+ 			break;
+ 		}
+ 		if (++ntc == cnt)
+@@ -1205,9 +1247,8 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		total_rx_bytes += xdp_get_buff_len(xdp);
+ 		total_rx_pkts++;
+ 
+-		xdp->data = NULL;
+-		rx_ring->first_desc = ntc;
+-		rx_ring->nr_frags = 0;
++		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
++
+ 		continue;
+ construct_skb:
+ 		if (likely(ice_ring_uses_build_skb(rx_ring)))
+@@ -1221,14 +1262,11 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			if (unlikely(xdp_buff_has_frags(xdp)))
+ 				ice_set_rx_bufs_act(xdp, rx_ring,
+ 						    ICE_XDP_CONSUMED);
+-			xdp->data = NULL;
+-			rx_ring->first_desc = ntc;
+-			rx_ring->nr_frags = 0;
+-			break;
+ 		}
+-		xdp->data = NULL;
+-		rx_ring->first_desc = ntc;
+-		rx_ring->nr_frags = 0;
++		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc);
++
++		if (!skb)
++			break;
+ 
+ 		stat_err_bits = BIT(ICE_RX_FLEX_DESC_STATUS0_RXE_S);
+ 		if (unlikely(ice_test_staterr(rx_desc->wb.status_error0,
+@@ -1257,23 +1295,6 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		total_rx_pkts++;
+ 	}
+ 
+-	first = rx_ring->first_desc;
+-	while (cached_ntc != first) {
+-		struct ice_rx_buf *buf = &rx_ring->rx_buf[cached_ntc];
+-
+-		if (buf->act & (ICE_XDP_TX | ICE_XDP_REDIR)) {
+-			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
+-			xdp_xmit |= buf->act;
+-		} else if (buf->act & ICE_XDP_CONSUMED) {
+-			buf->pagecnt_bias++;
+-		} else if (buf->act == ICE_XDP_PASS) {
+-			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
+-		}
+-
+-		ice_put_rx_buf(rx_ring, buf);
+-		if (++cached_ntc >= cnt)
+-			cached_ntc = 0;
+-	}
+ 	rx_ring->next_to_clean = ntc;
+ 	/* return up to cleaned_count buffers to hardware */
+ 	failure = ice_alloc_rx_bufs(rx_ring, ICE_RX_DESC_UNUSED(rx_ring));
 -- 
 2.39.5
 
