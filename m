@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAF4A34484
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31225A34743
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDF53B025B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7169C18868C6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38023A9B2;
-	Thu, 13 Feb 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B60214F121;
+	Thu, 13 Feb 2025 15:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWV8Md4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0u66xi1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0854B2222C5;
-	Thu, 13 Feb 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284C5143736;
+	Thu, 13 Feb 2025 15:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458334; cv=none; b=PmmLAjG9t5D6CGOq6i3xJWLrqmSMOE7zSJcYzvEFBys+ryza6LzgILHUasQkF1GSVmyfKhgDnr5HIUJIh823BgMPpYCV//Z47mCTGVIemSspUyOb7moEIsNqw9FfFDEGIkXPr8I2GFVJOuqLM6vZmYSn4ibBT4fQfx7DDFcuH78=
+	t=1739460454; cv=none; b=toxzD2uFSb6EJhQiLfuvd3pge37KSET2S7j+ya59JIpOSxwStcnXEMovzgpI31Dq0WxzV4+W2tJsH+n5rsFHT/oW+5NN12Bg26Ry0aBwbAf6slrs1Ahz5AG8On7exy5LmbA/Xm3V3pYLhCSsR05lP4YHkgz3xwnnktyPA3ZzHP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458334; c=relaxed/simple;
-	bh=siGVTLvTSr4ClUOhW8STcb1PXbsnV337JQpq9sNy0x0=;
+	s=arc-20240116; t=1739460454; c=relaxed/simple;
+	bh=I8lJQJkDcMlbISDAUF2UKLM7aCOszj5VaCkB2nldxIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWp4cnfmvvvXZPSVPiQPm0WLaWhJ64BJHu/njQRAbdXSRfMNedO1y0S3MLRLv5PSdwz0/GOojYTcnfRlaIXyYZolCBanZv8KvAvb0OxJ+Qkg0xqNz/MhZvNI1X6dMOauohBGjOQHP3jxpGyD/f1GuwhfPMKQbzDW4tWHMD7Ngpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWV8Md4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78939C4CEE4;
-	Thu, 13 Feb 2025 14:52:13 +0000 (UTC)
+	 MIME-Version; b=YFzgmCwcy9rdsuRIE331somrl3P5HcJWoPChE6nBpT/2e16QDH4nf7WkfdfUULwdHdi6sjC4qV7cB9H4oIYLxLY9jDb9C2n7bVugpI1VQmVsxknfBGsM3JHLHvwGLDUgKFVXlPEFPaKl+c8GNIPs7LCct6lS4HxoJrKljSD98gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u66xi1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B45C4CED1;
+	Thu, 13 Feb 2025 15:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458333;
-	bh=siGVTLvTSr4ClUOhW8STcb1PXbsnV337JQpq9sNy0x0=;
+	s=korg; t=1739460453;
+	bh=I8lJQJkDcMlbISDAUF2UKLM7aCOszj5VaCkB2nldxIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWV8Md4k3R9D5xa4LD7YAhswtaHw60enFiu+5gibVkHfIGfyZmkVVtuIeE4GtqL0s
-	 CEjkuMWFU8gunckpApHj8vIFPRMJksd/cVTCeuZ/Ml9JsHuH5wO9D3WEytFX3fWNtw
-	 Nehd9plK/zwkTlaon2HGMAhUcVD0quYvlX3/eqwg=
+	b=0u66xi1W+mI/6Yl9zVO4YOHAFUllbnsvau+JtKlN66r9Us7QjRDsJNc4QkCOLOaaJ
+	 v1FB4qe4f5bQ2HVuw2UZz94W35Kilto47X2NHKd/ZidbpNWSwk9f2gCDT5gwsc3T/1
+	 5LHQGiqtEQveWvzkYKf71WGjNF5LxHf4XNKeivmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 338/422] media: uvcvideo: Remove redundant NULL assignment
-Date: Thu, 13 Feb 2025 15:28:07 +0100
-Message-ID: <20250213142449.599512594@linuxfoundation.org>
+	Daniel Golle <daniel@makrotopia.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 116/273] clk: mediatek: mt2701-bdp: add missing dummy clk
+Date: Thu, 13 Feb 2025 15:28:08 +0100
+Message-ID: <20250213142411.928082171@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
+commit fd291adc5e9a4ee6cd91e57f148f3b427f80647b upstream.
 
-ctrl->handle will only be different than NULL for controls that have
-mappings. This is because that assignment is only done inside
-uvc_ctrl_set() for mapped controls.
+Add dummy clk for index 0 which was missed during the conversion to
+mtk_clk_simple_probe().
 
+Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
 Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://lore.kernel.org/r/b8526c882a50f2b158df0eccb4a165956fd8fa13.1734300668.git.daniel@makrotopia.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clk/mediatek/clk-mt2701-bdp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1640,10 +1640,8 @@ bool uvc_ctrl_status_event_async(struct
- 	struct uvc_device *dev = chain->dev;
- 	struct uvc_ctrl_work *w = &dev->async_ctrl;
+--- a/drivers/clk/mediatek/clk-mt2701-bdp.c
++++ b/drivers/clk/mediatek/clk-mt2701-bdp.c
+@@ -31,6 +31,7 @@ static const struct mtk_gate_regs bdp1_c
+ 	GATE_MTK(_id, _name, _parent, &bdp1_cg_regs, _shift, &mtk_clk_gate_ops_setclr_inv)
  
--	if (list_empty(&ctrl->info.mappings)) {
--		ctrl->handle = NULL;
-+	if (list_empty(&ctrl->info.mappings))
- 		return false;
--	}
- 
- 	w->data = data;
- 	w->urb = urb;
+ static const struct mtk_gate bdp_clks[] = {
++	GATE_DUMMY(CLK_DUMMY, "bdp_dummy"),
+ 	GATE_BDP0(CLK_BDP_BRG_BA, "brg_baclk", "mm_sel", 0),
+ 	GATE_BDP0(CLK_BDP_BRG_DRAM, "brg_dram", "mm_sel", 1),
+ 	GATE_BDP0(CLK_BDP_LARB_DRAM, "larb_dram", "mm_sel", 2),
 
 
 
