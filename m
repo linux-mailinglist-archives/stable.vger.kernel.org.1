@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-116225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FE1A34816
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:43:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7044AA3465D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121AB3AF860
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AACA216F975
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D3A14A605;
-	Thu, 13 Feb 2025 15:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EDF35961;
+	Thu, 13 Feb 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVTH9AbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1INcwYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F326B087;
-	Thu, 13 Feb 2025 15:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408D626B0BF;
+	Thu, 13 Feb 2025 15:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460752; cv=none; b=GHXPRR7m8O58JiXzmrNaPJaKhIOxlo61B5WVnVTHdbjFyH3JRt9DFbBUedCRntQ9SVhvCfi1Qxme5ErsKA38tt88QK3wSSOv2SBLRwco741XjfstnYDiS5bpQoDD328hBdQiJXsMImel6WAB3cP9eVqNE3hSCl8KnTPBeYImC6c=
+	t=1739459939; cv=none; b=uGqszIDlDISv3obP3XVIKutGGIjIaoMd+dpE2xLnWQVEiPX4N3IGPe9ti8DF2HDfsAZtB2LFkjVnS7RpCDTTYotL6Qr6MFG+qBafvsN/eJXFSKJOoed6EnhJLKpgZ3MC7ZtnCoFm/3nWS9ntqd/tGPSMXp/M6op6LlKlEbEaTOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460752; c=relaxed/simple;
-	bh=kl05zxWiEsgs/kFAREcHrc9uuWesOaXmzAUXQHdsOEY=;
+	s=arc-20240116; t=1739459939; c=relaxed/simple;
+	bh=dnBy3BN16SXNozrhNda77XO8qEtQAb9BzcgBqawbL/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h47FQ/mh5V0s8p93qnexL4zDMsNB65qVD/gS6GLmXniR4xpGFla6+FDVfFW0sRiMtL9kDWuy9kfvbH+cjKtmsprod30/F8Fwtvpe9Vj0TQlFGXbVxF1K4E3tRl8TtWaJPygly2Z0RWPYW/z97mydKkXCwMHMo/jmuGUZghIzkXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVTH9AbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25333C4CED1;
-	Thu, 13 Feb 2025 15:32:31 +0000 (UTC)
+	 MIME-Version; b=MaFOiZ+fonaz9ck8t3Eh4NGWgj0wAZpfeuoVpFk7QEYoWXzI5CtAEdkq1oghek9v/Pq2BBm9HmViX7W2AhXRJHoYmkOGvOqHINf3pePKQZ97DQBGU3++qAduUsiagO1FG+MFXYxO1WSL7noCTPMzWhkW9O5ClSiud8IbPJkSBMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1INcwYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5722DC4CED1;
+	Thu, 13 Feb 2025 15:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460752;
-	bh=kl05zxWiEsgs/kFAREcHrc9uuWesOaXmzAUXQHdsOEY=;
+	s=korg; t=1739459938;
+	bh=dnBy3BN16SXNozrhNda77XO8qEtQAb9BzcgBqawbL/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVTH9AbULMKANRyUYxbVmUEWLoEd3i6NN8jdRTxBOCfO4tgJfBntqP7L0WW3pMioC
-	 QCJXwbRe6wCppAJEUNXQdCCwTxiMYC3u5MH0zUC9K3+Ei7Q0L9OiRqQTc2StLqHLgY
-	 zqwdj/U1WP8rWwE5j6q3nxiYVOVFJfspcvQYJcWk=
+	b=z1INcwYWHbYhtbJd7qNBgTa4Q5Lx67Wdw9WP36VTcxMTD2KGTqH/1rjDzTCF7tg6e
+	 LB02En9VNltlucqi+zydyXhG1trejKxt8Evs3RqfrcQS8+ehYmYt/CQ+GCnvXX1B0Z
+	 wZEAsDqDagJQ7u5JAg543LLfJzU4iKq0n0mTHzt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 201/273] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
+	Frank Li <Frank.Li@nxp.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.13 408/443] i3c: master: Fix missing ret assignment in set_speed()
 Date: Thu, 13 Feb 2025 15:29:33 +0100
-Message-ID: <20250213142415.267482206@linuxfoundation.org>
+Message-ID: <20250213142456.352980463@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit c0eb059a4575ed57f265d9883a5203799c19982c upstream.
+commit b266e0d4dac00eecdfaf50ec3f708fd0c3b39637 upstream.
 
-Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
-Smatch:
+Fix a probe failure in the i3c master driver that occurs when no i3c
+devices are connected to the bus.
 
-  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
+The issue arises in `i3c_master_bus_init()` where the `ret` value is not
+updated after calling `master->ops->set_speed()`. If no devices are
+present, `ret` remains set to `I3C_ERROR_M2`, causing the code to
+incorrectly proceed to `err_bus_cleanup`.
 
-Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: aef79e189ba2 ("i3c: master: support to adjust first broadcast address speed")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20250108225533.915334-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/i3c/master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -273,23 +273,31 @@ static int mtk_devapc_probe(struct platf
- 		return -EINVAL;
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1919,7 +1919,7 @@ static int i3c_master_bus_init(struct i3
+ 		goto err_bus_cleanup;
  
- 	devapc_irq = irq_of_parse_and_map(node, 0);
--	if (!devapc_irq)
--		return -EINVAL;
-+	if (!devapc_irq) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
--	if (IS_ERR(ctx->infra_clk))
--		return -EINVAL;
-+	if (IS_ERR(ctx->infra_clk)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
- 			       IRQF_TRIGGER_NONE, "devapc", ctx);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	platform_set_drvdata(pdev, ctx);
- 
- 	start_devapc(ctx);
- 
- 	return 0;
-+
-+err:
-+	iounmap(ctx->infra_base);
-+	return ret;
- }
- 
- static int mtk_devapc_remove(struct platform_device *pdev)
+ 	if (master->ops->set_speed) {
+-		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
++		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+ 		if (ret)
+ 			goto err_bus_cleanup;
+ 	}
 
 
 
