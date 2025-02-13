@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34E7A34506
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E50EA34387
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE087A3D07
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C91A17A2557
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A41826B099;
-	Thu, 13 Feb 2025 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B0023A9B5;
+	Thu, 13 Feb 2025 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QjoR3ry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ox0IoTKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D1826B096;
-	Thu, 13 Feb 2025 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246A1211468;
+	Thu, 13 Feb 2025 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459471; cv=none; b=C7zAtJbFFpsjYhvpvipZ897b1WMJplbQTB3MAXJbgfCoaixzVQ469ycC0unXfIbGXUifzAoP6R1ARXHLQRjCEKQHt7aj0oGvDbGBg0fVt9h3QFguC86C9muYs4ommvKuEBfYBOcxDtBBvjvMxIYfZnKSwoi/iTVG8NNjbzTbJrE=
+	t=1739457947; cv=none; b=c3c7LGlcETyQhZivYpGNoJKgrnYAybGg0eWxAUQUu/yK5vhaSwJuEnAMCcITcUgKsM6dJS9jtTZdAuIAl4AbQt6g2UVsTJo3mmc1FX64kYWSYRhTISHVIAc9bhFXKqRbBBGy6b53Y2E6AW0z/QOd5BCo69jhP75E4l+ikoXUeS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459471; c=relaxed/simple;
-	bh=jlqOnnmo+pviOK4/lnmzcs7YLe5bVbO0RMqjKaZCSFY=;
+	s=arc-20240116; t=1739457947; c=relaxed/simple;
+	bh=6FMeWs4degIA/ld5l04hHnSRES6Y7H/TZbylga4wCjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCAVCEXxNvnGyhE9ISFU8TqsRkkJ7vIPBMNqprHFazG8QDb5cM2k0m/l1dTX6DVs8qyPkmx6H4pfEJRCCMWg0hkDZJB/GBj8nK1dYnOPeOkqZTVJIDhZrrmF0YID94o4o1OA15Y7g0j+Jif2H3s49sUE53TxjTDOBg/FAKz2KJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QjoR3ry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF8FC4CED1;
-	Thu, 13 Feb 2025 15:11:10 +0000 (UTC)
+	 MIME-Version; b=fIueDyAn6jaxfEoB8yppwmupuFvn3WS8BTcM4OQiSqMNqc2VUHeyPri6mLfbDF6+wdLemlRihvehOhseOu8Dy2uipWP4oJiC/LgmJxrNn5eFSk9lo7esGN5oalClRasVIu0E6RGSYbImyTaFtHmhz83NsCGwpqWVYK5TKdt5Uko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ox0IoTKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0252C4CED1;
+	Thu, 13 Feb 2025 14:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459470;
-	bh=jlqOnnmo+pviOK4/lnmzcs7YLe5bVbO0RMqjKaZCSFY=;
+	s=korg; t=1739457947;
+	bh=6FMeWs4degIA/ld5l04hHnSRES6Y7H/TZbylga4wCjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QjoR3ry7hjM+Ck7a0E3Ky3HhHpCFg/zYA9gETca5W9w96DNTxRovHMsbu2YDch4l
-	 Tnt7CSPvOKYBIKbQP3pOX1kv94694X1HLuownqshITZM6uj0UTkOpVQgMkeIWmscuN
-	 hpsGltRB6vm2Ri/TKFLe5ictx45vGIigZql14Sds=
+	b=Ox0IoTKaHbcFEX+H2Y/ePTZRBnuWT3/H14+9trsV9YVLS/ciflqNnyIGu6aQcleyG
+	 OVOYp/EXp1+BvrsWGqIjwy9tZw2KrY8QIna+dLsRacO72M9vaiP/w6nFmr5q9Yq8Xd
+	 K5xlhHNwmwINOETqI7NnByofvfdniQt8TAba4dRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 242/443] arm64: dts: qcom: x1e80100-dell-xps13-9345: Fix USB QMP PHY supplies
+	stable@kernel.org,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 258/422] scsi: storvsc: Set correct data length for sending SCSI command without payload
 Date: Thu, 13 Feb 2025 15:26:47 +0100
-Message-ID: <20250213142449.954466757@linuxfoundation.org>
+Message-ID: <20250213142446.495896480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Long Li <longli@microsoft.com>
 
-commit 26a1b22aaf0c6f5128f8d0242caf3d983d5a2836 upstream.
+commit 87c4b5e8a6b65189abd9ea5010ab308941f964a4 upstream.
 
-On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
-(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
-are actually powered by &vreg_l2j_1p2.
+In StorVSC, payload->range.len is used to indicate if this SCSI command
+carries payload. This data is allocated as part of the private driver data
+by the upper layer and may get passed to lower driver uninitialized.
 
-Since x1e80100-dell-xps13-9345 mostly just mirrors the power supplies from
-the x1e80100-crd device tree, assume that the fix also applies here.
+For example, the SCSI error handling mid layer may send TEST_UNIT_READY or
+REQUEST_SENSE while reusing the buffer from a failed command. The private
+data section may have stale data from the previous command.
 
-Cc: stable@vger.kernel.org
-Fixes: f5b788d0e8cd ("arm64: dts: qcom: Add support for X1-based Dell XPS 13 9345")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Tested-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-5-0adda5d30bbd@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+If the SCSI command doesn't carry payload, the driver may use this value as
+is for communicating with host, resulting in possible corruption.
+
+Fix this by always initializing this value.
+
+Fixes: be0cf6ca301c ("scsi: storvsc: Set the tablesize based on the information given by the host")
+Cc: stable@kernel.org
+Tested-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1737601642-7759-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/storvsc_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-@@ -820,7 +820,7 @@
- };
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1800,6 +1800,7 @@ static int storvsc_queuecommand(struct S
  
- &usb_1_ss0_qmpphy {
--	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-phy-supply = <&vreg_l2j_1p2>;
- 	vdda-pll-supply = <&vreg_l1j_0p9>;
+ 	length = scsi_bufflen(scmnd);
+ 	payload = (struct vmbus_packet_mpb_array *)&cmd_request->mpb;
++	payload->range.len = 0;
+ 	payload_sz = 0;
  
- 	status = "okay";
-@@ -852,7 +852,7 @@
- };
- 
- &usb_1_ss1_qmpphy {
--	vdda-phy-supply = <&vreg_l3e_1p2>;
-+	vdda-phy-supply = <&vreg_l2j_1p2>;
- 	vdda-pll-supply = <&vreg_l2d_0p9>;
- 
- 	status = "okay";
+ 	if (scsi_sg_count(scmnd)) {
 
 
 
