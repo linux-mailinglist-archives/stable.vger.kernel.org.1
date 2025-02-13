@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-115995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE101A346BA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBF1A3469D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7277318949A0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4761918965D9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696B13D97A;
-	Thu, 13 Feb 2025 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A432A1CF;
+	Thu, 13 Feb 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAUGmQb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvMsTPRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263D2335BA;
-	Thu, 13 Feb 2025 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6150D26B0BC;
+	Thu, 13 Feb 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459968; cv=none; b=A/BkWLNxY7sT0/GDMpCy2sws/jMqUkSeYCZITz7Y6QnMx+DNdUZ+KJ7zPgKfQ/8pipbAqvups7Bxp29oUY/Us7EkeR+DRJdQvS40x05qdfd9P+b108T/4cASbPy0/J1zqg2nRIHuRd7FgIJzf/aIzmUKZ+nQ024pLvz/FeSsrTw=
+	t=1739460005; cv=none; b=UIe1njMMehKsfW69Y1emZ+3a3XgMuRS7HiN5FpDsRDjbUVxP+HBNpoVsCO7oDzILykUxoKtQdrrlsQw8Ry+ALqWIMbd4ZYtMOsTlrQLZaxtDUubVoPRTNfBpXiNizGPIjTxpu8rH8hjEfneYhIezpzeQZzzZwxaaoAfNXtBZoIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459968; c=relaxed/simple;
-	bh=6HHbDhSn1qx38aA+c2rdNldmjRzTR5zzZuQDOEm3Rs8=;
+	s=arc-20240116; t=1739460005; c=relaxed/simple;
+	bh=Gd2IoymuJ0rtVSPZDia3F20SawnmvvwO071og4lKTm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SK50aaI22fVNSbErXhU/SgzB71zVJ4FS8FdCJg9p4kM1ibrlZkBXUlYynnXlrH7ssBKAnW/fLxJBBE9bGEklL0Xe2/0jEVTuIZ1Z8tGh2a7JCKUr0RQemwnFgO8fMm6K5iQd936mHEpglPOTwIAkFKflMXOALEJw9ECNyeNbJ/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAUGmQb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8581CC4CED1;
-	Thu, 13 Feb 2025 15:19:27 +0000 (UTC)
+	 MIME-Version; b=QasYtpU8HBcS9ZYYhJyDDT0VSZh7+DtSEIx37j/S6ebUc7UtM9OlbB1KiuqPql05qVNjEZdX0bFC69XyJG0XQnN7/0ypxdtOiaecOOWLCvjMVzBRLBv10QWMdhkq2Esz91PW9ZPFcDr6MzY+9odoNwz2HDGIW6gzlcS3/VuIkPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvMsTPRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA942C4CEE5;
+	Thu, 13 Feb 2025 15:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459968;
-	bh=6HHbDhSn1qx38aA+c2rdNldmjRzTR5zzZuQDOEm3Rs8=;
+	s=korg; t=1739460005;
+	bh=Gd2IoymuJ0rtVSPZDia3F20SawnmvvwO071og4lKTm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAUGmQb8GABey9PRjDh5flC1g5TIHHmCE70t4zIkwPV3PZhDikzENzpp6mpNn434W
-	 n+X4/e13CTALRl2w5qwGWbO6QPOXVE9dasXFMUn4+9tWGZezB1jaCmt4nzgNs/AVoI
-	 XUsuNRCX8njz0qVeebtJkxztbL80Ech03lsxckzE=
+	b=qvMsTPRQgkF+9Q7FD4F8Aav8bMlxsXWj3stCNdlDBnzPt0HJKYhrKw/kfpLIu2/PR
+	 LKZ+qKjoFgZQhwV0F/87Gc0rUeXid2WjAJ6qmO9B1G757tCvrXPOuJQ2PwSZ/1j1lO
+	 DZ1OWlJTWfDCeK2BofM/pW6AYtSab5l7ql4pdBUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vimal Agrawal <vimal.agrawal@sophos.com>,
-	Dirk VanDerMerwe <dirk.vandermerwe@sophos.com>
-Subject: [PATCH 6.13 411/443] misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors
-Date: Thu, 13 Feb 2025 15:29:36 +0100
-Message-ID: <20250213142456.470290065@linuxfoundation.org>
+	stable@kernel.org,
+	Anandu Krishnan E <quic_anane@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.13 412/443] misc: fastrpc: Deregister device nodes properly in error scenarios
+Date: Thu, 13 Feb 2025 15:29:37 +0100
+Message-ID: <20250213142456.507770058@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -65,104 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vimal Agrawal <vimal.agrawal@sophos.com>
+From: Anandu Krishnan E <quic_anane@quicinc.com>
 
-commit 6d04d2b554b14ae6c428a9c60b6c85f1e5c89f68 upstream.
+commit 637c20002dc8c347001292664055bfbf56544ec6 upstream.
 
-misc_minor_alloc was allocating id using ida for minor only in case of
-MISC_DYNAMIC_MINOR but misc_minor_free was always freeing ids
-using ida_free causing a mismatch and following warn:
-> > WARNING: CPU: 0 PID: 159 at lib/idr.c:525 ida_free+0x3e0/0x41f
-> > ida_free called for id=127 which is not allocated.
-> > <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-...
-> > [<60941eb4>] ida_free+0x3e0/0x41f
-> > [<605ac993>] misc_minor_free+0x3e/0xbc
-> > [<605acb82>] misc_deregister+0x171/0x1b3
+During fastrpc_rpmsg_probe, if secure device node registration
+succeeds but non-secure device node registration fails, the secure
+device node deregister is not called during error cleanup. Add proper
+exit paths to ensure proper cleanup in case of error.
 
-misc_minor_alloc is changed to allocate id from ida for all minors
-falling in the range of dynamic/ misc dynamic minors
-
-Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
-Signed-off-by: Vimal Agrawal <vimal.agrawal@sophos.com>
-Reviewed-by: Dirk VanDerMerwe <dirk.vandermerwe@sophos.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241021133812.23703-1-vimal.agrawal@sophos.com
+Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
+Cc: stable@kernel.org
+Signed-off-by: Anandu Krishnan E <quic_anane@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20250110134239.123603-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/misc.c |   37 +++++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -63,16 +63,30 @@ static DEFINE_MUTEX(misc_mtx);
- #define DYNAMIC_MINORS 128 /* like dynamic majors */
- static DEFINE_IDA(misc_minors_ida);
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -2344,7 +2344,7 @@ static int fastrpc_rpmsg_probe(struct rp
  
--static int misc_minor_alloc(void)
-+static int misc_minor_alloc(int minor)
- {
--	int ret;
-+	int ret = 0;
- 
--	ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
--	if (ret >= 0) {
--		ret = DYNAMIC_MINORS - ret - 1;
-+	if (minor == MISC_DYNAMIC_MINOR) {
-+		/* allocate free id */
-+		ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
-+		if (ret >= 0) {
-+			ret = DYNAMIC_MINORS - ret - 1;
-+		} else {
-+			ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
-+					      MINORMASK, GFP_KERNEL);
-+		}
- 	} else {
--		ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
--				      MINORMASK, GFP_KERNEL);
-+		/* specific minor, check if it is in dynamic or misc dynamic range  */
-+		if (minor < DYNAMIC_MINORS) {
-+			minor = DYNAMIC_MINORS - minor - 1;
-+			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
-+		} else if (minor > MISC_DYNAMIC_MINOR) {
-+			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
-+		} else {
-+			/* case of non-dynamic minors, no need to allocate id */
-+			ret = 0;
-+		}
- 	}
- 	return ret;
- }
-@@ -219,7 +233,7 @@ int misc_register(struct miscdevice *mis
- 	mutex_lock(&misc_mtx);
- 
- 	if (is_dynamic) {
--		int i = misc_minor_alloc();
-+		int i = misc_minor_alloc(misc->minor);
- 
- 		if (i < 0) {
- 			err = -EBUSY;
-@@ -228,6 +242,7 @@ int misc_register(struct miscdevice *mis
- 		misc->minor = i;
- 	} else {
- 		struct miscdevice *c;
-+		int i;
- 
- 		list_for_each_entry(c, &misc_list, list) {
- 			if (c->minor == misc->minor) {
-@@ -235,6 +250,12 @@ int misc_register(struct miscdevice *mis
- 				goto out;
- 			}
- 		}
-+
-+		i = misc_minor_alloc(misc->minor);
-+		if (i < 0) {
-+			err = -EBUSY;
-+			goto out;
-+		}
- 	}
- 
- 	dev = MKDEV(MISC_MAJOR, misc->minor);
+ 		err = fastrpc_device_register(rdev, data, false, domains[domain_id]);
+ 		if (err)
+-			goto fdev_error;
++			goto populate_error;
+ 		break;
+ 	default:
+ 		err = -EINVAL;
 
 
 
