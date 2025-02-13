@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-115192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EC6A34228
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C30A34558
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E3B87A2EF6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BA31885C8F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330621D3FD;
-	Thu, 13 Feb 2025 14:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5D02A1D1;
+	Thu, 13 Feb 2025 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM6D74FI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHa2P3/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3051F14B95A;
-	Thu, 13 Feb 2025 14:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985461DB154;
+	Thu, 13 Feb 2025 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457205; cv=none; b=hmLEMU9n6oYsE05O7oLyUt3qaJzZk5ZCGkxQ2nJibIAS7SYwoK2jj+OQwYFLcXzfONQr0ZV+r5qPaXd4WMao/IWXwJudQWR+3Sk+zNw2emmO0vFLs5HLneBilmkYivFGKlJ6XIsn/juqj6sYt161uLLadbXh9ia+q8oHGvKhF0Q=
+	t=1739458763; cv=none; b=bbLE9CqyWJJ4Z2r+9IdBiN+ZliaRs+3wIWKbx7Tivtbqu1UOEha+Sy4NdX1e+QPFuvNCSoHYvM4TnLdIuMVSKikKczwldneY9LEZBSk5cvqJeHV2ClfYvuwMtFStzKXLLBMUzPc0zBG2FQAsLlRrMPhi+GRxanCCqw7znQyKJrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457205; c=relaxed/simple;
-	bh=VF8LFm3M2Krj7sB9XfHa2qepJ8x9LCEUNZzVjUcVUnI=;
+	s=arc-20240116; t=1739458763; c=relaxed/simple;
+	bh=fZNqbb5d3sktCuFEb256aA0OR7ov9FXWKgQhUsJ+ekU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8YGb1GyDpGJNl1JwJ2bwg0xwUhaeZmxQcSfzMjxbAtonUgx5ubfLc6L/XTo7wzfqHbIENWsmqQeQXmUq64K+NMxOtYj7V0XLWD2fQDOK0t1DVmkX2ZsmRQYzXE7eWEXkVqVT3+N8PxNA4w02YMlYN59Tr5l1K3acSzknJrCwo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM6D74FI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B755C4CED1;
-	Thu, 13 Feb 2025 14:33:24 +0000 (UTC)
+	 MIME-Version; b=mWYODForsAMpbOd9L9nQhj0bGE0iEJ/yDMiJuT/wuW1vT2P4NdB0Kj81SwpRcL/nRRd2A+eZWtBZFc4gNQCiIvK5bW7ShPXFurUSV7DFI94rBRlkSvY9e8WTBFm1BIiXVRQXhTOvu8P5UXZtx9wVhFfEl9deAeFBdSMs6KTYaaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHa2P3/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A635C4CED1;
+	Thu, 13 Feb 2025 14:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457205;
-	bh=VF8LFm3M2Krj7sB9XfHa2qepJ8x9LCEUNZzVjUcVUnI=;
+	s=korg; t=1739458763;
+	bh=fZNqbb5d3sktCuFEb256aA0OR7ov9FXWKgQhUsJ+ekU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CM6D74FI2JAPq3+CE/6jXt7MWpC5YTFoqD9ptqCUpZm3FXDLFnNx5Hu+Xq9p0zd85
-	 EV+veKKbhPiW/kMFhhJg87ElaYJcnorzqyyRbELl79CVoIeLVjsEbucWSu2SEBdngf
-	 83eMOsnFyt8RXkOE8CywWxR0nOWFmD2wstl3iC4U=
+	b=bHa2P3/aytgR4qRz54YZ7IUAocupmYrm5ps9/obIu3KI/bOw9ekROwTv4CYWCX/az
+	 0be3bymG9ZVJldSqJtxnsMHcXc6V3v9CHcQeySGUVZtkuwWRqzUds9t1YFdrR2WjfU
+	 qcNiX2GxTY/XogRAP7oYMWp3XNJXLp4kWvxOEwPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Ausef Yousof <Ausef.Yousof@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/422] drm/amd/display: Increase sanitizer frame larger than limit when compile testing with clang
+Subject: [PATCH 6.13 029/443] drm/amd/display: Overwriting dualDPP UBF values before usage
 Date: Thu, 13 Feb 2025 15:23:14 +0100
-Message-ID: <20250213142438.301529198@linuxfoundation.org>
+Message-ID: <20250213142441.749878273@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ausef Yousof <Ausef.Yousof@amd.com>
 
-[ Upstream commit e4479aecf6581af81bc0908575447878d2a07e01 ]
+[ Upstream commit 24909d9ec7c3afa8da2f3c9afa312e7a4a61f250 ]
 
-Commit 24909d9ec7c3 ("drm/amd/display: Overwriting dualDPP UBF values
-before usage") added a new warning in dml2/display_mode_core.c when
-building allmodconfig with clang:
+[WHY]
+Right now in dml2 mode validation we are calculating UBF parameters for
+prefetch calculation for single and dual DPP scenarios. Data structure
+to store such values are just 1D arrays, the single DPP values are
+overwritten by the dualDPP values, and we end up using dualDPP for
+prefetch calculations twice (once in place of singleDPP support check
+and again for dual).
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/display_mode_core.c:6268:13: error: stack frame size (3128) exceeds limit (3072) in 'dml_prefetch_check' [-Werror,-Wframe-larger-than]
-   6268 | static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
-        |             ^
+This naturally leads to many problems, one of which validating a mode in
+"singleDPP" (when we used dual DPP parameters) and sending the singleDPP
+parameters to mode programming, if we cannot support then we observe the
+corruption as described in the ticket.
 
-Commit be4e3509314a ("drm/amd/display: DML21 Reintegration For Various
-Fixes") introduced one in dml2_core/dml2_core_dcn4_calcs.c with the same
-configuration:
+[HOW]
+UBF values need to have 2d arrays to store values specific to single and
+dual DPP states to avoid single DPP values being overwritten. Other
+parameters are recorded on a per state basis such as prefetch UBF values
+but they are in the same loop used for calculation and at that point its
+fine to overwrite them, its not the case for plain UBF values.
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:7236:13: error: stack frame size (3256) exceeds limit (3072) in 'dml_core_mode_support' [-Werror,-Wframe-larger-than]
-   7236 | static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out_params)
-        |             ^
-
-In the case of the first warning, the stack usage was already at the
-limit at the parent change, so the offending change was rather
-innocuous. In the case of the second warning, there was a rather
-dramatic increase in stack usage compared to the parent:
-
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:7032:13: error: stack frame size (2696) exceeds limit (2048) in 'dml_core_mode_support' [-Werror,-Wframe-larger-than]
-   7032 | static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out_params)
-        |             ^
-
-This is an unfortunate interaction between an issue with stack slot
-reuse in LLVM that gets exacerbated by sanitization (which gets enabled
-with all{mod,yes}config) and function calls using a much higher number
-of parameters than is typical in the kernel, necessitating passing most
-of these values on the stack.
-
-While it is possible that there should be source code changes to address
-these warnings, this code is difficult to modify for various reasons, as
-has been noted in other changes that have occurred for similar reasons,
-such as commit 6740ec97bcdb ("drm/amd/display: Increase frame warning
-limit with KASAN or KCSAN in dml2").
-
-Increase the frame larger than limit when compile testing with clang and
-the sanitizers enabled to avoid this breakage in all{mod,yes}config, as
-they are commonly used and valuable testing targets. While it is not the
-best to hide this issue, it is not really relevant when compile testing,
-as the sanitizers are commonly stressful on optimizations and they are
-only truly useful at runtime, which COMPILE_TEST states will not occur
-with the current build.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412121748.chuX4sap-lkp@intel.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../amd/display/dc/dml2/display_mode_core.c   | 30 +++++++++----------
+ .../dc/dml2/display_mode_core_structs.h       |  6 ++--
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-index c4378e620cbf9..986a69c5bd4bc 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-@@ -29,7 +29,11 @@ dml2_rcflags := $(CC_FLAGS_NO_FPU)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index be87dc0f07799..6822b07951204 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -6301,9 +6301,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 			mode_lib->ms.meta_row_bandwidth_this_state,
+ 			mode_lib->ms.dpte_row_bandwidth_this_state,
+ 			mode_lib->ms.NoOfDPPThisState,
+-			mode_lib->ms.UrgentBurstFactorLuma,
+-			mode_lib->ms.UrgentBurstFactorChroma,
+-			mode_lib->ms.UrgentBurstFactorCursor);
++			mode_lib->ms.UrgentBurstFactorLuma[j],
++			mode_lib->ms.UrgentBurstFactorChroma[j],
++			mode_lib->ms.UrgentBurstFactorCursor[j]);
  
- ifneq ($(CONFIG_FRAME_WARN),0)
- ifeq ($(filter y,$(CONFIG_KASAN)$(CONFIG_KCSAN)),y)
-+ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_COMPILE_TEST),yy)
-+frame_warn_flag := -Wframe-larger-than=4096
-+else
- frame_warn_flag := -Wframe-larger-than=3072
-+endif
- else
- frame_warn_flag := -Wframe-larger-than=2048
- endif
+ 		s->VMDataOnlyReturnBWPerState = dml_get_return_bw_mbps_vm_only(
+ 																	&mode_lib->ms.soc,
+@@ -6458,9 +6458,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 				mode_lib->ms.cursor_bw_pre,
+ 				mode_lib->ms.prefetch_vmrow_bw,
+ 				mode_lib->ms.NoOfDPPThisState,
+-				mode_lib->ms.UrgentBurstFactorLuma,
+-				mode_lib->ms.UrgentBurstFactorChroma,
+-				mode_lib->ms.UrgentBurstFactorCursor,
++				mode_lib->ms.UrgentBurstFactorLuma[j],
++				mode_lib->ms.UrgentBurstFactorChroma[j],
++				mode_lib->ms.UrgentBurstFactorCursor[j],
+ 				mode_lib->ms.UrgentBurstFactorLumaPre,
+ 				mode_lib->ms.UrgentBurstFactorChromaPre,
+ 				mode_lib->ms.UrgentBurstFactorCursorPre,
+@@ -6517,9 +6517,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 						mode_lib->ms.cursor_bw,
+ 						mode_lib->ms.cursor_bw_pre,
+ 						mode_lib->ms.NoOfDPPThisState,
+-						mode_lib->ms.UrgentBurstFactorLuma,
+-						mode_lib->ms.UrgentBurstFactorChroma,
+-						mode_lib->ms.UrgentBurstFactorCursor,
++						mode_lib->ms.UrgentBurstFactorLuma[j],
++						mode_lib->ms.UrgentBurstFactorChroma[j],
++						mode_lib->ms.UrgentBurstFactorCursor[j],
+ 						mode_lib->ms.UrgentBurstFactorLumaPre,
+ 						mode_lib->ms.UrgentBurstFactorChromaPre,
+ 						mode_lib->ms.UrgentBurstFactorCursorPre);
+@@ -6586,9 +6586,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 													mode_lib->ms.cursor_bw_pre,
+ 													mode_lib->ms.prefetch_vmrow_bw,
+ 													mode_lib->ms.NoOfDPP[j], // VBA_ERROR DPPPerSurface is not assigned at this point, should use NoOfDpp here
+-													mode_lib->ms.UrgentBurstFactorLuma,
+-													mode_lib->ms.UrgentBurstFactorChroma,
+-													mode_lib->ms.UrgentBurstFactorCursor,
++													mode_lib->ms.UrgentBurstFactorLuma[j],
++													mode_lib->ms.UrgentBurstFactorChroma[j],
++													mode_lib->ms.UrgentBurstFactorCursor[j],
+ 													mode_lib->ms.UrgentBurstFactorLumaPre,
+ 													mode_lib->ms.UrgentBurstFactorChromaPre,
+ 													mode_lib->ms.UrgentBurstFactorCursorPre,
+@@ -7809,9 +7809,9 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
+ 				mode_lib->ms.DETBufferSizeYThisState[k],
+ 				mode_lib->ms.DETBufferSizeCThisState[k],
+ 				/* Output */
+-				&mode_lib->ms.UrgentBurstFactorCursor[k],
+-				&mode_lib->ms.UrgentBurstFactorLuma[k],
+-				&mode_lib->ms.UrgentBurstFactorChroma[k],
++				&mode_lib->ms.UrgentBurstFactorCursor[j][k],
++				&mode_lib->ms.UrgentBurstFactorLuma[j][k],
++				&mode_lib->ms.UrgentBurstFactorChroma[j][k],
+ 				&mode_lib->ms.NotUrgentLatencyHiding[k]);
+ 		}
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
+index f951936bb579e..504c427b3b319 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
+@@ -884,11 +884,11 @@ struct mode_support_st {
+ 	dml_uint_t meta_row_height[__DML_NUM_PLANES__];
+ 	dml_uint_t meta_row_height_chroma[__DML_NUM_PLANES__];
+ 	dml_float_t UrgLatency;
+-	dml_float_t UrgentBurstFactorCursor[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorCursor[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorCursorPre[__DML_NUM_PLANES__];
+-	dml_float_t UrgentBurstFactorLuma[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorLuma[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorLumaPre[__DML_NUM_PLANES__];
+-	dml_float_t UrgentBurstFactorChroma[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorChroma[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorChromaPre[__DML_NUM_PLANES__];
+ 	dml_float_t MaximumSwathWidthInLineBufferLuma;
+ 	dml_float_t MaximumSwathWidthInLineBufferChroma;
 -- 
 2.39.5
 
