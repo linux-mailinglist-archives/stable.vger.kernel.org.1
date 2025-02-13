@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F527A345F5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CBFA343FD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136473B0136
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C89F3AB3EB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E9B26B0AD;
-	Thu, 13 Feb 2025 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AAB269810;
+	Thu, 13 Feb 2025 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doZRhIEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTxYv3bF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B67645;
-	Thu, 13 Feb 2025 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2533E23A9BA;
+	Thu, 13 Feb 2025 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459490; cv=none; b=CsEYVLFwUJxD963dV9yufE3gR8j0fjg2weYNHkajtUtwqM7xPcn8DbPftj3+Pu3adtnTisNUhesuvLOcFPxlCdJMIQ6L7dK2GFZ+kBYChKAB4VFB++zSKWrmmUAa01IysTPcerwOJJbRXbo9+H/EAkQlcvQnJTztomvUlOvBMkM=
+	t=1739458059; cv=none; b=ohnpydtGFBA5yr6LPC2fqeXC8bdDZpDwL24H5LKncWiPKjyDNr7zsWc7jEsWMP++skTTxmNCWWg4Y3F1i2Wr/L5UJ0NlwlqfbMFlcGgS/nSfCHkIVF9a9Z4bDyjK1FXJrZNGRna2G1RkrxGnUQMRKvD7Uo8vHJvRYGYyRe3gnjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459490; c=relaxed/simple;
-	bh=4aU66a+aFBBisyiD6IJY2NeJMWcjsqWSbliXKe9zHTE=;
+	s=arc-20240116; t=1739458059; c=relaxed/simple;
+	bh=MXp0O4GyBJBczkCC6bs8vpBJXo2gDaBQBnkeA93D/uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q4mAaLSbxq0yL2knLaAn45eyKo92UYxIxKdU9/qarjl84q/P5JvSUvloWy2UlpQt21w8j9d41/IKJten8KLRHfSR95CEz0g7at67bNedgDK26ph+GS9jwFRxnDpJKW7YiU5mLszm6YePFQd6gkwhoseUag9QkwYFm3t3/uO+hBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doZRhIEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1217C4CEE7;
-	Thu, 13 Feb 2025 15:11:29 +0000 (UTC)
+	 MIME-Version; b=sNKjCScUfyNmM/uLxRiilPQrVFo3WUIsGGcI8iW2cwqaEBpS0aD85IL6c6xIHZ/iku84Pekqh7AQEdNLD+oQ28f/8S+w9BhCsNAhAAahqmb2RLokLM6Jp9HzL4BNIlx6l+RrZaq1nvfpCTZXQ6TXC9S764EAkH4MMl6nHaW45C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTxYv3bF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76664C4CED1;
+	Thu, 13 Feb 2025 14:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459490;
-	bh=4aU66a+aFBBisyiD6IJY2NeJMWcjsqWSbliXKe9zHTE=;
+	s=korg; t=1739458058;
+	bh=MXp0O4GyBJBczkCC6bs8vpBJXo2gDaBQBnkeA93D/uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doZRhIEzGhqbT0zCpPp+BN3+6B7H4f1CpZq8BiEfw2WsEvH1yu1qszHmglUokdQfJ
-	 5YZyRKqINu2X/shlkmZPTeyPZkeHICSfDp77OwoAXgpXz0/s5Avpz5A1MBn6oCLOjA
-	 vf7cP7HoC23C3q7fhZmInH6GEcpQEE7hESZDH/Og=
+	b=pTxYv3bFENfaYfDuGIeHpd1LhHHlhbw6iMHp2k1XvW6Wa7S2EEtsDNRdUHNUQH2Im
+	 So5bh1W00I7Tk4EQWrvAc7eXD2eSUrE98UOSkjYU/sOKIIQ7QFPuoNlOlTiG/uNrTc
+	 HGV3cPZayI7tkyDBUXp3t9oPSbvGKWBchweVIljA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.13 273/443] PCI: Avoid putting some root ports into D3 on TUXEDO Sirius Gen1
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 289/422] arm64: dts: qcom: sm8550: Fix MPSS memory length
 Date: Thu, 13 Feb 2025 15:27:18 +0100
-Message-ID: <20250213142451.143985111@linuxfoundation.org>
+Message-ID: <20250213142447.696558705@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b1049f2d68693c80a576c4578d96774a68df2bad upstream.
+commit 8ef227e93a513d431f9345f23cd4d2d65607b985 upstream.
 
-commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend") sets the
-policy that all PCIe ports are allowed to use D3.  When the system is
-suspended if the port is not power manageable by the platform and won't be
-used for wakeup via a PME this sets up the policy for these ports to go
-into D3hot.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-This policy generally makes sense from an OSPM perspective but it leads to
-problems with wakeup from suspend on the TUXEDO Sirius 16 Gen 1 with a
-specific old BIOS. This manifests as a system hang.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-On the affected Device + BIOS combination, add a quirk for the root port of
-the problematic controller to ensure that these root ports are not put into
-D3hot at suspend.
-
-This patch is based on
-
-  https://lore.kernel.org/linux-pci/20230708214457.1229-2-mario.limonciello@amd.com
-
-but with the added condition both in the documentation and in the code to
-apply only to the TUXEDO Sirius 16 Gen 1 with a specific old BIOS and only
-the affected root ports.
-
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250114222436.1075456-1-wse@tuxedocomputers.com
-Co-developed-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.1+
+Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-9-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/pci/fixup.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -1010,4 +1010,34 @@ DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
- DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
-+
-+/*
-+ * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
-+ * may cause problems when the system attempts wake up from s2idle.
-+ *
-+ * On the TUXEDO Sirius 16 Gen 1 with a specific old BIOS this manifests as
-+ * a system hang.
-+ */
-+static const struct dmi_system_id quirk_tuxeo_rp_d3_dmi_table[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "APX958"),
-+			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "V1.00A00_20240108"),
-+		},
-+	},
-+	{}
-+};
-+
-+static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
-+{
-+	struct pci_dev *root_pdev;
-+
-+	if (dmi_check_system(quirk_tuxeo_rp_d3_dmi_table)) {
-+		root_pdev = pcie_find_root_port(pdev);
-+		if (root_pdev)
-+			root_pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
-+	}
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
- #endif /* CONFIG_SUSPEND */
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2313,7 +2313,7 @@
+ 
+ 		remoteproc_mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm8550-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
