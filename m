@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-115990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD9EA34686
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DC9A347C5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7261884A45
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4488D1610E6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F813D97A;
-	Thu, 13 Feb 2025 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2FE70805;
+	Thu, 13 Feb 2025 15:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfpa763R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asEhC5R2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2526B091;
-	Thu, 13 Feb 2025 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF16326B087;
+	Thu, 13 Feb 2025 15:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459951; cv=none; b=H9uf2Bpr7TkeGDF/BJKHmNixidpBn5P9bWulqS9DDjo7W/Pf0mq1Yu1uKQYNq51c+lrY9Fr1BxE9sodZZ9BBWqfzygyXiJcIxmNwBu37rt9AFyVf8IjMaOvctHlqi8ui1jp8ikepXHpWhtGv6+sBsPnC8funUvQQgVv0DUIOdCQ=
+	t=1739460765; cv=none; b=EUKbPQFkyWU8UYVtvvDJCSRBWJsGifzJjbiUdj0+3/pbNIxEo7mH0yHOhU7t8OX3AQ+zzpyFRJTEKAbWxzSq9bj9hS3Ig7EK1vc9HB+liYsN7CjsEwN+N1Z1SDkdYqKDi1VDLlrHCZ4z2IIDPsslthjHzlprl1xaZbsEEYXoouA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459951; c=relaxed/simple;
-	bh=kSxBppXARG35Rq0IxoZF4XuGFdCNxqZOTN/W9Yuce6o=;
+	s=arc-20240116; t=1739460765; c=relaxed/simple;
+	bh=sqah4PnpFKIZDmb5KZYU17BDtMj1E5XcjZuSTobtLNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWWxnNfjulbs66i5EuemsADWar3Te4AfErZSZpClKQOipvNehfBQiLMJ90+3NZXDQ9JxV94TI+aao+fdyDWgPKc6C1Flcq89l5wAZ2so+mnPKgVhHWHSzlI5C8fIOtC1NLU9YouhXx0LuEM60zDH0XGy0IDZuVZ0GybZ+0Y51RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfpa763R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28ECAC4CEE4;
-	Thu, 13 Feb 2025 15:19:10 +0000 (UTC)
+	 MIME-Version; b=lMQJMqi5RWLoiKAdGhr+z4L5cEAk3w53kUFTAzYUEqi3o1koMIyTJuvCbEtsBO8a3H0ezBCGGcayjRCUliU+mf7YBbY7vYcA1+qxKtdg/o268ME2Rp/VLUcZYU51KdZy5H2PeOimojZUWj1snzuFygjWfTEA2344yXYCHg9Rlys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asEhC5R2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFE7C4CED1;
+	Thu, 13 Feb 2025 15:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459951;
-	bh=kSxBppXARG35Rq0IxoZF4XuGFdCNxqZOTN/W9Yuce6o=;
+	s=korg; t=1739460765;
+	bh=sqah4PnpFKIZDmb5KZYU17BDtMj1E5XcjZuSTobtLNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfpa763RHYGBCkNYwp+swr1JZVWoTwG4CnCQ/hHtlDBEU2Omi/Roty4OBCVj6DhWr
-	 sLboAGOaQsUH7+I+jy0lBM8cabMFTI/aW9bpHoUBMPkCo9ZEiT6YTNpPmJ+HHhzjat
-	 smQ2iDvvLAgZa8YttUGuKFpEfq08LuG/awbf50e0=
+	b=asEhC5R2Ii0R9/Y8Vv84kwvYBd0P5L3+lBj0KfVItdaRy3JknNMpO33n7wrhjXSSm
+	 0TqVFG/eX52LLHajSTPQ1QI0eaVOm5FAv1+xQiuSxhWdJVzlMhq33jiRUFVzCrOxqv
+	 z/Ggrwbsh/HV0SBhaOxSuiNsdFvJyGy8vtRwqzmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 381/443] mm/compaction: fix UBSAN shift-out-of-bounds warning
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 174/273] arm64: dts: qcom: sm6115: Fix ADSP memory base and length
 Date: Thu, 13 Feb 2025 15:29:06 +0100
-Message-ID: <20250213142455.307110976@linuxfoundation.org>
+Message-ID: <20250213142414.210599120@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,50 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d1366e74342e75555af2648a2964deb2d5c92200 upstream.
+commit 47d178caac3ec13f5f472afda25fcfdfaa00d0da upstream.
 
-syzkaller reported a UBSAN shift-out-of-bounds warning of (1UL << order)
-in isolate_freepages_block().  The bogus compound_order can be any value
-because it is union with flags.  Add back the MAX_PAGE_ORDER check to fix
-the warning.
+The address space in ADSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0a40_0000 with length of 0x4040.
 
-Link: https://lkml.kernel.org/r/20250123021029.2826736-1-liushixin2@huawei.com
-Fixes: 3da0272a4c7d ("mm/compaction: correctly return failure with bogus compound_order in strict mode")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+0x0ab0_0000, value used so far, is the SSC_QUPV3 block, so entierly
+unrelated.
+
+Correct the base address and length, which should have no functional
+impact on Linux users, because PAS loader does not use this address
+space at all.
+
+Cc: stable@vger.kernel.org
+Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-23-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/compaction.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -630,7 +630,8 @@ static unsigned long isolate_freepages_b
- 		if (PageCompound(page)) {
- 			const unsigned int order = compound_order(page);
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -2310,9 +2310,9 @@
+ 			};
+ 		};
  
--			if (blockpfn + (1UL << order) <= end_pfn) {
-+			if ((order <= MAX_PAGE_ORDER) &&
-+			    (blockpfn + (1UL << order) <= end_pfn)) {
- 				blockpfn += (1UL << order) - 1;
- 				page += (1UL << order) - 1;
- 				nr_scanned += (1UL << order) - 1;
+-		remoteproc_adsp: remoteproc@ab00000 {
++		remoteproc_adsp: remoteproc@a400000 {
+ 			compatible = "qcom,sm6115-adsp-pas";
+-			reg = <0x0 0x0ab00000 0x0 0x100>;
++			reg = <0x0 0x0a400000 0x0 0x4040>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_EDGE_RISING>,
+ 					      <&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
