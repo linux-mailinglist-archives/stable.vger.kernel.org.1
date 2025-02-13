@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-116013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EFAA346AF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53CDA347F2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9AA718854B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F4E1661F0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860C5145A03;
-	Thu, 13 Feb 2025 15:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD0814F121;
+	Thu, 13 Feb 2025 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDskFT1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bUMB0DZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D82335BA;
-	Thu, 13 Feb 2025 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC8713C816;
+	Thu, 13 Feb 2025 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460029; cv=none; b=OAWwBMLpjqsM4XWZGv5txLNKrOdQDQ5PFIXgxzD36M6PqGWEnEbb/Xp9/80z96Sw3D3b2EquVT48c2vyz/69EaNbTutpPIrJj9T+mkpBTWWcCusyvzeSYzc12RnJKsVLtD6nwAY2uXtE8VRCsQIggV0AvCxTXNTTW4JVrcW/JE0=
+	t=1739460850; cv=none; b=E72288Jg4WRwUg6lX01AhLR743CH8HKyhdsGLpbr3z1RX5NmsFzjIlAvFDiJeriJg7RS9PSeaEHZoPH9BcnX6leTRb9u11ukCxQCpmWwHXFclfsWxQsBUFS4ZwKyRIzSGjb0Gwml0/IYpBM/fbXK+lDkNa/XOqZunt+vM1bTgq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460029; c=relaxed/simple;
-	bh=gFHBVqDro80LjHoAjnj8uTloRwQzmDYkN1JTcT1zA1E=;
+	s=arc-20240116; t=1739460850; c=relaxed/simple;
+	bh=KfrXCcaFj0ldly/8Syb+McuRe599gUIFKTY/EIl1OR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDwvNErLwLqoUBVPcc+d9RFBAeSkubtEzu47Sz323zs2pwHFfP/YhOgLu+3HjtpxByDDRNHWp4NXh48g+yF8k7bjvcH2K1LmWHNDYn+1+4wVbCZ3EeiJkBlqVF2GZtNJ0KuxjwkKy1fBhOWrRe3sK6W4QgDyLg7W3CL31yb03Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDskFT1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5188EC4CED1;
-	Thu, 13 Feb 2025 15:20:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GNv7/KZDKGT4Cqln/RXcPKguR7nmhFTYUZNOMAETXUq88wX/W5nekM2C5UTsDgnrktHU/hlts3dWV61B+hd0iHfz0BbjPNHvRcO6svMUMJN3T7bdmiFSWSovJnYdHsx1RTC21A2bbY6BbrQbSOFBsrIoSW2ZIN4AeoYIuAZ2AGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bUMB0DZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D346C4CED1;
+	Thu, 13 Feb 2025 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460028;
-	bh=gFHBVqDro80LjHoAjnj8uTloRwQzmDYkN1JTcT1zA1E=;
+	s=korg; t=1739460849;
+	bh=KfrXCcaFj0ldly/8Syb+McuRe599gUIFKTY/EIl1OR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDskFT1T6Lq6b3V7cHzX60U+mM2e6e0PwHW83Suz4Wqtbziz3ztyz6zUqp8TjDq/2
-	 oT6mmu7Lec3SP8BYcjtoZgzV5cmbkGUYNZ8DXmNPA/cj7fPK3fd9e+cs5BYoqnTBAZ
-	 ZZowFFB4b49s/c2W+YgCLqVto1uuGohNxtYOFXFc=
+	b=0bUMB0DZwX7lt6Wfiw51ehjBJ3kueX9iooeF8qQrHNsqLi9N5o4Hr2JSe7Jr3mSN8
+	 nylDi4zEskpo4Aey7nCyufS7EU08tcOpB3wQ/W2hk7ALIq/NyQXNgjJmljUXY/EIXY
+	 DsJiOcBR2Jym9+idnpYZSW+Y4I445k2Vz2l3zZmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari.PrasathGE@microchip.com,
-	Mahesh.Abotula@microchip.com,
-	Marco.Cardellini@microchip.com,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 436/443] spi: atmel-qspi: Memory barriers after memory-mapped I/O
-Date: Thu, 13 Feb 2025 15:30:01 +0100
-Message-ID: <20250213142457.442000921@linuxfoundation.org>
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.6 230/273] vfio/platform: check the bounds of read/write syscalls
+Date: Thu, 13 Feb 2025 15:30:02 +0100
+Message-ID: <20250213142416.525095256@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +63,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit be92ab2de0ee1a13291c3b47b2d7eb24d80c0a2c upstream.
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-The QSPI peripheral control and status registers are
-accessible via the SoC's APB bus, whereas MMIO transactions'
-data travels on the AHB bus.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Microchip documentation and even sample code from Atmel
-emphasises the need for a memory barrier before the first
-MMIO transaction to the AHB-connected QSPI, and before the
-last write to its registers via APB. This is achieved by
-the following lines in `atmel_qspi_transfer()`:
-
-	/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
-	(void)atmel_qspi_read(aq, QSPI_IFR);
-
-However, the current documentation makes no mention to
-synchronization requirements in the other direction, i.e.
-after the last data written via AHB, and before the first
-register access on APB.
-
-In our case, we were facing an issue where the QSPI peripheral
-would cease to send any new CSR (nCS Rise) interrupts,
-leading to a timeout in `atmel_qspi_wait_for_completion()`
-and ultimately this panic in higher levels:
-
-	ubi0 error: ubi_io_write: error -110 while writing 63108 bytes
- to PEB 491:128, written 63104 bytes
-
-After months of extensive research of the codebase, fiddling
-around the debugger with kgdb, and back-and-forth with
-Microchip, we came to the conclusion that the issue is
-probably that the peripheral is still busy receiving on AHB
-when the LASTXFER bit is written to its Control Register
-on APB, therefore this write gets lost, and the peripheral
-still thinks there is more data to come in the MMIO transfer.
-This was first formulated when we noticed that doubling the
-write() of QSPI_CR_LASTXFER seemed to solve the problem.
-
-Ultimately, the solution is to introduce memory barriers
-after the AHB-mapped MMIO transfers, to ensure ordering.
-
-Fixes: d5433def3153 ("mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi")
-Cc: Hari.PrasathGE@microchip.com
-Cc: Mahesh.Abotula@microchip.com
-Cc: Marco.Cardellini@microchip.com
-Cc: stable@vger.kernel.org # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
-Cc: stable@vger.kernel.org # 6.x.y
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20241219091258.395187-1-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/atmel-quadspi.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -454,13 +454,20 @@ static int atmel_qspi_transfer(struct sp
- 	(void)atmel_qspi_read(aq, QSPI_IFR);
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -393,6 +393,11 @@ static ssize_t vfio_platform_read_mmio(s
  
- 	/* Send/Receive data */
--	if (op->data.dir == SPI_MEM_DATA_IN)
-+	if (op->data.dir == SPI_MEM_DATA_IN) {
- 		memcpy_fromio(op->data.buf.in, aq->mem + offset,
- 			      op->data.nbytes);
--	else
-+
-+		/* Synchronize AHB and APB accesses again */
-+		rmb();
-+	} else {
- 		memcpy_toio(aq->mem + offset, op->data.buf.out,
- 			    op->data.nbytes);
+ 	count = min_t(size_t, count, reg->size - off);
  
-+		/* Synchronize AHB and APB accesses again */
-+		wmb();
-+	}
++	if (off >= reg->size)
++		return -EINVAL;
 +
- 	/* Release the chip-select */
- 	atmel_qspi_write(QSPI_CR_LASTXFER, aq, QSPI_CR);
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -474,6 +479,11 @@ static ssize_t vfio_platform_write_mmio(
+ 
+ 	if (off >= reg->size)
+ 		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
++	if (off >= reg->size)
++		return -EINVAL;
+ 
+ 	count = min_t(size_t, count, reg->size - off);
  
 
 
