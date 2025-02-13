@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FFDA347D6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B413CA3472C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBBC3B4303
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77DD03AE6B8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C563F143736;
-	Thu, 13 Feb 2025 15:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F5E26B0BF;
+	Thu, 13 Feb 2025 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0cbi9s2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E41uhe6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE4D70805;
-	Thu, 13 Feb 2025 15:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F82626B0A5;
+	Thu, 13 Feb 2025 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460642; cv=none; b=TBxksTkku0m0yCIYL8bIt3QYXyZsLsGpkzZZXC9F1khlrjA1tBB8+BaY3oANEIUYYcojagVQOdg2eF0bM++cG8v3nnWg0yYfqcJVLOi5Ioj9Icwk8MluPHa43XodVZPgm+iL53U1MhMRlHPs3iGi7rHBGNWISTExS9DB+48CkEA=
+	t=1739459835; cv=none; b=Ta5h7lhSe3ol11yLOx+z13s0uCqccz+tahCqHZZjXFtE4fGXF5P746K8DsjNt/PGkrMThd3lFbQ0+8BHH+N3hlWExLRvCah10IrhLYlHyNGkLD0jb0XAjJPu/VkdtA9A1RRLgBqzV4rCa7Ve2c+nxpDdeQY0oYlb4BEqlXO1qf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460642; c=relaxed/simple;
-	bh=AdPCh8HsSyEq3DDthl8DL+4hA2NVOYtgPAOAW+xCWts=;
+	s=arc-20240116; t=1739459835; c=relaxed/simple;
+	bh=GFtV5lYug9R6fue8oPsafpq3EFlJPs1RpGDAAy2cNzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeA1T1G3LjcRK7bBcvW3rD62HEegHKeXUS1IBClqrNi2b2Xp+in7O9pQGpjURLFVA7uhQ3Rqhb0V8dCvo5pTl1Y4yz3S5m7LBaYOzSDclfEoz2ayKjpji8kD2dESUn49P6t2Vc+qDnDcvqerVVFkSm/phIgqLyINczw2RkdznYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0cbi9s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E977CC4CED1;
-	Thu, 13 Feb 2025 15:30:41 +0000 (UTC)
+	 MIME-Version; b=gsAONfpgHnVUDtch0y4Z4d56yHV6KFGO2nJRm6/LS0DL/SmZMMoaamwOq92WQQCZCrP0A5sUaFFMdGK+5gpNCNeylpZh+SPCUREcJDxxZLi2W5zSOgLLVPx7f6yQqpc4Zs3eAE6Ai56G7nnWIVqaQ8DwyA0cKLz9eeBXsOnh/ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E41uhe6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E114C4CED1;
+	Thu, 13 Feb 2025 15:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460642;
-	bh=AdPCh8HsSyEq3DDthl8DL+4hA2NVOYtgPAOAW+xCWts=;
+	s=korg; t=1739459835;
+	bh=GFtV5lYug9R6fue8oPsafpq3EFlJPs1RpGDAAy2cNzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0cbi9s2JNVViFQrtz9Pb7jcoDGIQULhQpg1uI1Tc/1qv0g3USa2pDjEzslaLms6d
-	 0ojV/L/dFChmHPlDXorFQbLBbmhO/0/h5vzNSEg+7IwSm2X9D+nkTodSc5+YYQzJpI
-	 /HpkPz5ZZ86qlY/1lRvBd1aqVzke2gAGqYnINqh8=
+	b=E41uhe6nhHmg6o2Eb9vBJwEB59okhN1MLZ+M7vk3LSmfeZxhv+i3cF6SxpIla+wEq
+	 9VFciZRhXFzSZwDJOZw5hlXQ/G62YmuszCpXP/07oceTqETR9qxtqoeENScVKsx1JC
+	 T6w9u8ZNqgzUSjI8gV9zbz8Tr9oPx8s+1MfcxZ1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 139/273] usbnet: ipheth: refactor NCM datagram loop
+	Angelo Dureghello <adureghello@baylibre.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.13 346/443] iio: dac: ad3552r-hs: clear reset status flag
 Date: Thu, 13 Feb 2025 15:28:31 +0100
-Message-ID: <20250213142412.831075866@linuxfoundation.org>
+Message-ID: <20250213142453.972671775@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-commit 2a9a196429e98fcc64078366c2679bc40aba5466 upstream.
+commit 012b8276f08a67b9f2e2fd0f35363ae4a75e5267 upstream.
 
-Introduce an rx_error label to reduce repetitions in the header
-signature checks.
+Clear reset status flag, to keep error status register
+clean after reset (ad3552r manual, rev B table 38).
 
-Store wDatagramIndex and wDatagramLength after endianness conversion to
-avoid repeated le16_to_cpu() calls.
+Reset error flag was left to 1, so debugging registers, the
+"Error Status Register" was dirty (0x01). It is important
+to clear this bit, so if there is any reset event over normal
+working mode, it is possible to detect it.
 
-Rewrite the loop to return on a null trailing DPE, which is required
-by the CDC NCM spec. In case it is missing, fall through to rx_error.
-
-This change does not fix any particular issue. Its purpose is to
-simplify a subsequent commit that fixes a potential OoB read by limiting
-the maximum amount of processed DPEs.
-
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0b4d9fe58be8 ("iio: dac: ad3552r: add high-speed platform driver")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-2-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c | 42 ++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ drivers/iio/dac/ad3552r-hs.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index c385623596d2..069979e2bb6e 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -213,9 +213,9 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
- 	struct usb_cdc_ncm_ndp16 *ncm0;
- 	struct usb_cdc_ncm_dpe16 *dpe;
- 	struct ipheth_device *dev;
-+	u16 dg_idx, dg_len;
- 	int retval = -EINVAL;
- 	char *buf;
--	int len;
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -329,6 +329,12 @@ static int ad3552r_hs_setup(struct ad355
+ 		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
+ 			 AD3552R_ID, id);
  
- 	dev = urb->context;
- 
-@@ -227,39 +227,43 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
- 	ncmh = urb->transfer_buffer;
- 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
- 	    /* On iOS, NDP16 directly follows NTH16 */
--	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16)))
-+		goto rx_error;
- 
- 	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
--	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
--		dev->net->stats.rx_errors++;
--		return retval;
--	}
-+	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN))
-+		goto rx_error;
- 
- 	dpe = ncm0->dpe16;
--	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
--	       le16_to_cpu(dpe->wDatagramLength) != 0) {
--		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
--		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
--		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
--		    le16_to_cpu(dpe->wDatagramIndex)) {
-+	while (true) {
-+		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
-+		dg_len = le16_to_cpu(dpe->wDatagramLength);
++	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
++	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
++				      AD3552R_MASK_RESET_STATUS, 1);
++	if (ret)
++		return ret;
 +
-+		/* Null DPE must be present after last datagram pointer entry
-+		 * (3.3.1 USB CDC NCM spec v1.0)
-+		 */
-+		if (dg_idx == 0 && dg_len == 0)
-+			return 0;
-+
-+		if (dg_idx < IPHETH_NCM_HEADER_SIZE ||
-+		    dg_idx >= urb->actual_length ||
-+		    dg_len > urb->actual_length - dg_idx) {
- 			dev->net->stats.rx_length_errors++;
- 			return retval;
- 		}
- 
--		buf = urb->transfer_buffer + le16_to_cpu(dpe->wDatagramIndex);
--		len = le16_to_cpu(dpe->wDatagramLength);
-+		buf = urb->transfer_buffer + dg_idx;
- 
--		retval = ipheth_consume_skb(buf, len, dev);
-+		retval = ipheth_consume_skb(buf, dg_len, dev);
- 		if (retval != 0)
- 			return retval;
- 
- 		dpe++;
- 	}
- 
--	return 0;
-+rx_error:
-+	dev->net->stats.rx_errors++;
-+	return retval;
- }
- 
- static void ipheth_rcvbulk_callback(struct urb *urb)
--- 
-2.48.1
-
+ 	ret = st->data->bus_reg_write(st->back,
+ 				      AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
+ 				      0, 1);
 
 
 
