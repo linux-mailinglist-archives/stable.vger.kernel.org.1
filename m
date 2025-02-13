@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920C4A3469F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E620A34858
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A19188E908
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01593AE3A1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17ED26B0BF;
-	Thu, 13 Feb 2025 15:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA0315E5D4;
+	Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WevyfKHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny6F37Gu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEE2A1CF;
-	Thu, 13 Feb 2025 15:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1A214A605;
+	Thu, 13 Feb 2025 15:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459995; cv=none; b=ZeAbhn2c4QCwgv62Wkwp+3pkETcivdeqi5M40t7z7FU0ul8DwTr51haSBYAmNN2LQdIIzFJC0V5m8NLZNxCxZAi0tS6iOO5ayOARdCKiPGn9Ip9HBYVv2MUu7ajuSy6I7iEakjzux/ge05QkOtFqNhMYniENVFh3Sw1RxgVPRIY=
+	t=1739460815; cv=none; b=MjDQEYBKpVosbcXrYhU49hq25bULbFuqlG92OIJywFQMHKyyKg3eRKf+9de9jR0Ui8PG/GLKl8frPXSRVxSGtLdOj72ce88VSxD6zVShgHxW/KrWus6FZOri2etzBAzMhwiWoETNs72NnnbIZceCU5UwVzVA+H0B0UzoqAQD3NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459995; c=relaxed/simple;
-	bh=O8fUV/m9N01bB4/ZIXc+i1DfRLL30tPZ9H1LUXIOSxM=;
+	s=arc-20240116; t=1739460815; c=relaxed/simple;
+	bh=OvkX8KFeO4ijvF/eNHkMNXh4TAEl9QkLQT/NsLqssD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+01STraJzkHjLCLfcxvetacL7xJcK3pF3YhfH4sYInJoK6p/oxHmUdUQq0MTtxPNZAcwCkE9nGHnyU1PasY0XhyvP2YIKBfxkJvxL23bOp0ixUvX9FZp4HPGQWwXPvly3LRD9Ibl+DL2sy20mXZ9zXBYV2jftaHjZ9bHnyzTeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WevyfKHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF118C4CED1;
-	Thu, 13 Feb 2025 15:19:54 +0000 (UTC)
+	 MIME-Version; b=SOQjX0vc0hwt8fZu9MNwm7qEimLwF/2ELdF0EoIPq0tNSlr3MVDq7QGPhXDXsD0nnVjCpr7gTxWkD+xpU4umO7/XEbaP2W5i9DCb0aqCo+GOdYsv3GjSjEKR7KtqgzNfVeWsQzxDQiDYPXJieudr4LoQQ2g5/KM9oosmpgUU1es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny6F37Gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9477FC4CED1;
+	Thu, 13 Feb 2025 15:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459995;
-	bh=O8fUV/m9N01bB4/ZIXc+i1DfRLL30tPZ9H1LUXIOSxM=;
+	s=korg; t=1739460815;
+	bh=OvkX8KFeO4ijvF/eNHkMNXh4TAEl9QkLQT/NsLqssD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WevyfKHAY25t+zamr4U7RBXgwImNrC9V6mV85CvtbbL3n2SnNsRcAfdqAOcl8xfJj
-	 uoyRjJ4yHaIleu8eNiwG+A/gHTVfJjQim9c2aYscUjmWOuS7EBMr6hj7N4heNvag92
-	 M4rUvJNkvHI8L8scgtJKLKps2p5uOvqcXy/2pAG4=
+	b=ny6F37GukB5wvmOgSLVkM4qvEYY+2/782Nr7L4mO8sR7BDlFjjvwt8/YoUdx8TvTP
+	 Zut/gidivMn6rCjZtPriFZdyEZ1wK7n886JJ6WVSKWCJH+3vp8wDouWWAD2HeBdx6+
+	 pAo976oRYOIo1eMX+HIT9z9jnTXEecW+kNUQqw6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.13 427/443] pinctrl: renesas: rzg2l: Fix PFC_MASK for RZ/V2H and RZ/G3E
-Date: Thu, 13 Feb 2025 15:29:52 +0100
-Message-ID: <20250213142457.097341162@linuxfoundation.org>
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 221/273] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+Date: Thu, 13 Feb 2025 15:29:53 +0100
+Message-ID: <20250213142416.045747804@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit accabfaae0940f9427c782bfee7340ce4c15151c upstream.
+commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
 
-The PFC_MASK value for the PFC_mx registers is currently hardcoded to
-0x07, which is correct for SoCs in the RZ/G2L family, but insufficient
-for RZ/V2H and RZ/G3E, where the mask value should be 0x0f.  This
-discrepancy causes incorrect PFC register configuration on RZ/V2H and
-RZ/G3E SoCs.
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-On RZ/G2L, the PFC_mx bitfields are also 4 bits wide, with bit 4 marked
-as reserved.  The reserved bits are documented to read as zero and be
-ignored when written.  Updating the PFC_MASK definition from 0x07 to
-0x0f ensures compatibility with both SoC families while maintaining
-correct behavior on RZ/G2L.
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
-Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC")
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
 Cc: stable@vger.kernel.org
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/qcom-spmi-sdam.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -157,7 +157,7 @@
- #define PWPR_REGWE_B		BIT(5)	/* OEN Register Write Enable, known only in RZ/V2H(P) */
- 
- #define PM_MASK			0x03
--#define PFC_MASK		0x07
-+#define PFC_MASK		0x0f
- #define IEN_MASK		0x01
- #define IOLH_MASK		0x03
- #define SR_MASK			0x01
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_de
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
 
 
 
