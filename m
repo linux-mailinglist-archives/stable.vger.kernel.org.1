@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFFAA343C8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E31A34612
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2A0188FF8B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E70918939C9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4952222BE;
-	Thu, 13 Feb 2025 14:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40BE26B0A5;
+	Thu, 13 Feb 2025 15:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUwntbyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUHX0QwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0FF21D3FC;
-	Thu, 13 Feb 2025 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8105B26B08F;
+	Thu, 13 Feb 2025 15:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458003; cv=none; b=e4G5Ar6i7WP9BmvOGSa2qAxxZQ2DSZbYUZTfdavoSQ6ZQiLmCMW4xQHFQEfh3brpZZdCxGiUHLYSfhEPZDiBLPUBccnissLVlDFy31UbZuMix0teXw9/Kh1AlAqZYsqasDPeefirvjAIZW0hHVCJI2Oga67JFaFPOSJ+IUmJ04U=
+	t=1739459421; cv=none; b=KmaZo8ZZk53RI2nVrtUT/3Fsvy6XlooXhMnN+4bhjiOWYx5ZJIjT/dnvAwSdMm6HU3a0ToDpazyRh2NVR15gBstUStMYdtOQly00sLcANEVIChspHW2j/AEyPYezEYurNVSZE0oc5qsUerKA2QYZB7AToRBHzMVSqSDIbQdwFtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458003; c=relaxed/simple;
-	bh=9CIVWbTdu+YAFT75YroykI1oNLuj/bfR480jbdIAsmY=;
+	s=arc-20240116; t=1739459421; c=relaxed/simple;
+	bh=JE+ifE7Vl1vUxXm4LDSL0b5pEfoDqosRiXjOGBwJrI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwW1HJzda8FlQvJ25eOuSYQ23tsG8/S/R7Ey1wova6sYjXbSSiorULM38YUC+3XlZCgyeIfMF6cd22UVpX10XOR45OAahXk9qbb0r9uv8uHcm9ab6jdFU87tY2Id0FEVquqhY9ml3L9G6DlYBYbq4WyBHwGKgbfmYPjhAN3ZZI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUwntbyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4AFC4CED1;
-	Thu, 13 Feb 2025 14:46:43 +0000 (UTC)
+	 MIME-Version; b=LKOrdlfFuYg/2ovfSj7vnPgagjomYKIo2zKcIbIH34YURJpW1mp0p+Bd+sORVlaPGTYrj/w+AN5otZw5onnLrXu7nJhqecGymEKwjPvDuAI/4usk2ieXTQrZrVVcoJtYvIc9ittl+UUYUecgf9TOKsgPjhPlqYRbjxphDYbvJDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUHX0QwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76D8C4CEEA;
+	Thu, 13 Feb 2025 15:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458003;
-	bh=9CIVWbTdu+YAFT75YroykI1oNLuj/bfR480jbdIAsmY=;
+	s=korg; t=1739459421;
+	bh=JE+ifE7Vl1vUxXm4LDSL0b5pEfoDqosRiXjOGBwJrI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUwntbyyC9dUNu/2eZyPqAteW5EKFWVcr0bZf3MZ8dx/4tcGD91Pqbr9naBzSJMVR
-	 U99a+506kqQgpS2ABoyBmthELo2wWC4VzL9K/WMz3uW6zOw2a6rySWzq+XUl3xAZpU
-	 GmlHJe6v4wBpSJQHoO3G7yRFyvD96K+fAK61u5XM=
+	b=mUHX0QwOZnW4CFLjPW/zlo+rLI2Ok5qDYnOnoK1ILRCXR99bwPjCIckaqFFjaniW8
+	 6RCN0da9EqtztPKH0n9eH6DByFBnS7znzW4W6tlHlXq7un2misJKqs4n7SZL984WQK
+	 LhaSP5pi5AB2pMRITirPLO1gS2uGuYTcYWv1EMCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 274/422] arm64: dts: qcom: sm6115: Fix ADSP memory base and length
-Date: Thu, 13 Feb 2025 15:27:03 +0100
-Message-ID: <20250213142447.115711154@linuxfoundation.org>
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.13 259/443] dm-crypt: track tag_offset in convert_context
+Date: Thu, 13 Feb 2025 15:27:04 +0100
+Message-ID: <20250213142450.610584873@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 47d178caac3ec13f5f472afda25fcfdfaa00d0da upstream.
+commit 8b8f8037765757861f899ed3a2bfb34525b5c065 upstream.
 
-The address space in ADSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0a40_0000 with length of 0x4040.
+dm-crypt uses tag_offset to index the integrity metadata for each crypt
+sector. When the initial crypt_convert() returns BLK_STS_DEV_RESOURCE,
+dm-crypt will try to continue the crypt/decrypt procedure in a kworker.
+However, it resets tag_offset as zero instead of using the tag_offset
+related with current sector. It may return unexpected data when using
+random IV or return unexpected integrity related error.
 
-0x0ab0_0000, value used so far, is the SSC_QUPV3 block, so entierly
-unrelated.
+Fix the problem by tracking tag_offset in per-IO convert_context.
+Therefore, when the crypt/decrypt procedure continues in a kworker, it
+could use the next tag_offset saved in convert_context.
 
-Correct the base address and length, which should have no functional
-impact on Linux users, because PAS loader does not use this address
-space at all.
-
+Fixes: 8abec36d1274 ("dm crypt: do not wait for backlogged crypto request completion in softirq")
 Cc: stable@vger.kernel.org
-Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-23-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-crypt.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2670,9 +2670,9 @@
- 			};
- 		};
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -59,6 +59,7 @@ struct convert_context {
+ 	struct bio *bio_out;
+ 	struct bvec_iter iter_out;
+ 	atomic_t cc_pending;
++	unsigned int tag_offset;
+ 	u64 cc_sector;
+ 	union {
+ 		struct skcipher_request *req;
+@@ -1256,6 +1257,7 @@ static void crypt_convert_init(struct cr
+ 	if (bio_out)
+ 		ctx->iter_out = bio_out->bi_iter;
+ 	ctx->cc_sector = sector + cc->iv_offset;
++	ctx->tag_offset = 0;
+ 	init_completion(&ctx->restart);
+ }
  
--		remoteproc_adsp: remoteproc@ab00000 {
-+		remoteproc_adsp: remoteproc@a400000 {
- 			compatible = "qcom,sm6115-adsp-pas";
--			reg = <0x0 0x0ab00000 0x0 0x100>;
-+			reg = <0x0 0x0a400000 0x0 0x4040>;
+@@ -1588,7 +1590,6 @@ static void crypt_free_req(struct crypt_
+ static blk_status_t crypt_convert(struct crypt_config *cc,
+ 			 struct convert_context *ctx, bool atomic, bool reset_pending)
+ {
+-	unsigned int tag_offset = 0;
+ 	unsigned int sector_step = cc->sector_size >> SECTOR_SHIFT;
+ 	int r;
  
- 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_EDGE_RISING>,
- 					      <&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+@@ -1611,9 +1612,9 @@ static blk_status_t crypt_convert(struct
+ 		atomic_inc(&ctx->cc_pending);
+ 
+ 		if (crypt_integrity_aead(cc))
+-			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, tag_offset);
++			r = crypt_convert_block_aead(cc, ctx, ctx->r.req_aead, ctx->tag_offset);
+ 		else
+-			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, tag_offset);
++			r = crypt_convert_block_skcipher(cc, ctx, ctx->r.req, ctx->tag_offset);
+ 
+ 		switch (r) {
+ 		/*
+@@ -1633,8 +1634,8 @@ static blk_status_t crypt_convert(struct
+ 					 * exit and continue processing in a workqueue
+ 					 */
+ 					ctx->r.req = NULL;
++					ctx->tag_offset++;
+ 					ctx->cc_sector += sector_step;
+-					tag_offset++;
+ 					return BLK_STS_DEV_RESOURCE;
+ 				}
+ 			} else {
+@@ -1648,8 +1649,8 @@ static blk_status_t crypt_convert(struct
+ 		 */
+ 		case -EINPROGRESS:
+ 			ctx->r.req = NULL;
++			ctx->tag_offset++;
+ 			ctx->cc_sector += sector_step;
+-			tag_offset++;
+ 			continue;
+ 		/*
+ 		 * The request was already processed (synchronously).
+@@ -1657,7 +1658,7 @@ static blk_status_t crypt_convert(struct
+ 		case 0:
+ 			atomic_dec(&ctx->cc_pending);
+ 			ctx->cc_sector += sector_step;
+-			tag_offset++;
++			ctx->tag_offset++;
+ 			if (!atomic)
+ 				cond_resched();
+ 			continue;
 
 
 
