@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-115557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156D9A34492
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE3DA347B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F35A43B0DBD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B40213AE130
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E417189913;
-	Thu, 13 Feb 2025 14:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206BD14F121;
+	Thu, 13 Feb 2025 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODCMhEeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XE3S2bIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5940B18C900;
-	Thu, 13 Feb 2025 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F7514A605;
+	Thu, 13 Feb 2025 15:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458465; cv=none; b=oF5P+7HDR9lgg+IEs5ro+Wez5rtj0iZWuvqaXsyUJhOjYpTGu3Ib0GMM3g2VIkIAByLeYHJbRu6x2GCGrKdLXVA+H25g22Qz1uqwbKKPBGApz53Bvv20RCvI/HHdzvtYxDkLikgEKRqNq9qhKnwiQNS4MibZMuqtIHHTfDdK830=
+	t=1739460582; cv=none; b=Haed0OmdFYbr5D4FkcgaftJsk8o7HeUGUEMEIp/4aeMdROkvINC7l4juYJludIUnCs3MMNrz70b79mEO5seKBmmRaOxQ9YsTpquKBBC71+DKkaE7+0fgln/GWYNw4v/L32GsPRu6AGmRBpLzXSIraMXjfSw+rzcsV3abvCUxLJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458465; c=relaxed/simple;
-	bh=c+3nPC2+Eo4ZngAnkrCo/jIdO1nP2bjNyXfjbIuDL0Q=;
+	s=arc-20240116; t=1739460582; c=relaxed/simple;
+	bh=A8TwQ8rCjc+WS4aOGH40voXoYx2EpNF8wSiqyk2uRGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvmmWi5o0mc/yGebsZG++N/CktzmoXo00xRyrkgovolic8A8s9LAji5zs/pw970xoqQ9GsRJX4v1u/h11XY6ooDJG5nveRJ9rrMEiYF1HPuCD5pD31NIF+Q/C9YvTO7W0i1HbzaRFSJHMMdc2OkXyJf20Ul0SzId4tev5mtJjaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODCMhEeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473D3C4CED1;
-	Thu, 13 Feb 2025 14:54:24 +0000 (UTC)
+	 MIME-Version; b=CgdGUad8WaYsheMAlNC9Kfj4C6Bmi8lHidxZ3LkoX2MZh9JCIJjcLHK460u8ZT5UtHTAXgDXidFI15drPj8yEkbkGRqtpzW88wy5mkrcaE/DSGUHJm1AVRXT7UUH43IhRWDxKEuROUkWe7EVEhjb5VOl5v50cE36NMfdyNuBC1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XE3S2bIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B6FC4CED1;
+	Thu, 13 Feb 2025 15:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458464;
-	bh=c+3nPC2+Eo4ZngAnkrCo/jIdO1nP2bjNyXfjbIuDL0Q=;
+	s=korg; t=1739460582;
+	bh=A8TwQ8rCjc+WS4aOGH40voXoYx2EpNF8wSiqyk2uRGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODCMhEeYvu7mgllZ8Ve1hZtb3XgDUrthqsRCDxBan50gEe+2Sk/lrDiWxPUfmzc5C
-	 HM2H4AJxGL9VtYzqtGJL+SP4GINKPXkvhFCttQXisnmCrawADiW1g7cvFv0iqdfojG
-	 lBOgQRoKRlX0xktMvOKrykb9SxZkukm+Ii9bl/sA=
+	b=XE3S2bIvpMmznf4e6ru8Dy+nH97nQg1vvay52h5VZULMyG+bPRfsM7r2DxGGcfLLn
+	 zCnx9gKvJGyWb6yemRrPgtNh9QO6de2K4DhNMdyoMQqJZpK3J5885kCMgAvNhGdsX4
+	 xAparUCvjE6wI9sqg1o31t6Kys0MDlSWT2VAkgnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Anandu Krishnan E <quic_anane@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.12 375/422] misc: fastrpc: Deregister device nodes properly in error scenarios
-Date: Thu, 13 Feb 2025 15:28:44 +0100
-Message-ID: <20250213142451.018884090@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 153/273] block: dont revert iter for -EIOCBQUEUED
+Date: Thu, 13 Feb 2025 15:28:45 +0100
+Message-ID: <20250213142413.386309560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anandu Krishnan E <quic_anane@quicinc.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 637c20002dc8c347001292664055bfbf56544ec6 upstream.
+commit b13ee668e8280ca5b07f8ce2846b9957a8a10853 upstream.
 
-During fastrpc_rpmsg_probe, if secure device node registration
-succeeds but non-secure device node registration fails, the secure
-device node deregister is not called during error cleanup. Add proper
-exit paths to ensure proper cleanup in case of error.
+blkdev_read_iter() has a few odd checks, like gating the position and
+count adjustment on whether or not the result is bigger-than-or-equal to
+zero (where bigger than makes more sense), and not checking the return
+value of blkdev_direct_IO() before doing an iov_iter_revert(). The
+latter can lead to attempting to revert with a negative value, which
+when passed to iov_iter_revert() as an unsigned value will lead to
+throwing a WARN_ON() because unroll is bigger than MAX_RW_COUNT.
 
-Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
-Cc: stable@kernel.org
-Signed-off-by: Anandu Krishnan E <quic_anane@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-2-srinivas.kandagatla@linaro.org
+Be sane and don't revert for -EIOCBQUEUED, like what is done in other
+spots.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/fops.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2344,7 +2344,7 @@ static int fastrpc_rpmsg_probe(struct rp
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -718,11 +718,12 @@ static ssize_t blkdev_read_iter(struct k
+ 		file_accessed(iocb->ki_filp);
  
- 		err = fastrpc_device_register(rdev, data, false, domains[domain_id]);
- 		if (err)
--			goto fdev_error;
-+			goto populate_error;
- 		break;
- 	default:
- 		err = -EINVAL;
+ 		ret = blkdev_direct_IO(iocb, to);
+-		if (ret >= 0) {
++		if (ret > 0) {
+ 			iocb->ki_pos += ret;
+ 			count -= ret;
+ 		}
+-		iov_iter_revert(to, count - iov_iter_count(to));
++		if (ret != -EIOCBQUEUED)
++			iov_iter_revert(to, count - iov_iter_count(to));
+ 		if (ret < 0 || !count)
+ 			goto reexpand;
+ 	}
 
 
 
