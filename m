@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09605A3446D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420E4A346D9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CF21885C5A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 201563A5F72
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE032222B6;
-	Thu, 13 Feb 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078AE2A1CF;
+	Thu, 13 Feb 2025 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7t/mAH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Awaxi9cl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C2D221710;
-	Thu, 13 Feb 2025 14:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A9526B0A5;
+	Thu, 13 Feb 2025 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458309; cv=none; b=OKw4dLSycKwIrVU8H7oNasijnPm5H9TuJPSeZiq71fATF2fmczpooj8CN9D9uG6uax/pyp6wA5N30aJdwrSmHu0O2l3vkgfS5ctSbe5z985dN/y/jrTo4iMer09Z4Y5rWyOGxxMDISauViaZzm1X2yjvF3SFXl2rsNziI0ggi9I=
+	t=1739459831; cv=none; b=HEZrjb609MboaOzJSezTZy7uvPiJGoxmkU7HHgQer1cpD75aYRNKnS+2EVcqseKTBmnu08ZRfii/hEYUjgiGtR5QNPVZcnBsMfIIrSKPE7LcppvS0iQXYJXw148zSHmF3vBnIgukp/a+qvLyzFAJPcyhIZOsHsR1NQWGXUECxCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458309; c=relaxed/simple;
-	bh=iDvJBbHSdV6rtTp9ANhlBJxaOdG0O59xQbMrPGSCv9E=;
+	s=arc-20240116; t=1739459831; c=relaxed/simple;
+	bh=Ok8f85eZ7my79NANxCM461VWb9aCWp5RdBSMifZ9HV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YusWaTylVt4mso/zNZeDJJlhDt5BEi+TIdLezPl7KyVce7zBR7BA9qu7+n6fFGXRmLwGwM8wg8IFGzTQkJaD7oS8mNFlfrFpdFRtH/CFGF6V0/0xKprtC5oaGq4Wl969sToa++siX6qiXyqptmdkqrGzVDnQQe+ebrEpKSJRugc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7t/mAH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2344C4CEE4;
-	Thu, 13 Feb 2025 14:51:47 +0000 (UTC)
+	 MIME-Version; b=TobnaxlnGtcNJ7eeeUc2njbKXXKYsLa9Tk17pgKoYOLvvm68aOy+CUFRr93eRDwT6hMNGeZW9VtUPuuinv/Ne2RjY71+/rZz9FfkWM55cukjdpLKN7vNDBQZzXrwIakhbEz5I2xjELYMlVv3lce6NcDXg6cenbu0R7iFFm0uj8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Awaxi9cl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239F6C4CED1;
+	Thu, 13 Feb 2025 15:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458308;
-	bh=iDvJBbHSdV6rtTp9ANhlBJxaOdG0O59xQbMrPGSCv9E=;
+	s=korg; t=1739459831;
+	bh=Ok8f85eZ7my79NANxCM461VWb9aCWp5RdBSMifZ9HV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7t/mAH2shVa9Kde7g253Hm0ddpbm9T3HV2Z8aaAfEnyJxH/vmzhYPPK8y3P3mLw3
-	 6TTNgXIyjcnhvewdyjjGDK9yVS8PzHR4LWI6ecbLvJA3F7yOAKxu0tmUG46EoUPlPe
-	 CD3sMPAu7cnBnf6k6gPj55uMTsn8ReiJamC3SFvI=
+	b=Awaxi9clSdj649YeIo5AsHTbPzx6NqVzjo2QAeii6jOGRMeOSrcn93HUAaBvEKwyi
+	 lKZLewcezJOBzCp9FsiEFd3LUDhIxEaVUo+wMVbumznUcurFXPB1t5F/wUsBVTkQ1U
+	 +NBXtCGI2sfOL96c5AJM/t1yJFre1JeDkbf6KqfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.12 361/422] pnfs/flexfiles: retry getting layout segment for reads
+	Angelo Dureghello <adureghello@baylibre.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.13 345/443] iio: dac: ad3552r-common: fix ad3541/2r ranges
 Date: Thu, 13 Feb 2025 15:28:30 +0100
-Message-ID: <20250213142450.482233651@linuxfoundation.org>
+Message-ID: <20250213142453.935414231@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-commit eb3fabde15bccdf34f1c9b35a83aa4c0dacbb4ca upstream.
+commit 1e758b613212b6964518a67939535910b5aee831 upstream.
 
-If ff_layout_pg_get_read()'s attempt to get a layout segment results
-in -EAGAIN have ff_layout_pg_init_read() retry it after sleeping.
+Fix ad3541/2r voltage ranges to be as per ad3542r datasheet,
+rev. C, table 38 (page 57).
 
-If "softerr" mount is used, use 'io_maxretrans' to limit the number of
-attempts to get a layout segment.
+The wrong ad354xr ranges was generating erroneous Vpp output.
 
-This fixes a long-standing issue of O_DIRECT reads failing with
--EAGAIN (11) when using flexfiles Client Side Mirroring (CSM).
+In more details:
+- fix wrong number of ranges, they are 5 ranges, not 6,
+- remove non-existent 0-3V range,
+- adjust order, since ad3552r_find_range() get a wrong index,
+  producing a wrong Vpp as output.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Retested all the ranges on real hardware, EVALAD3542RFMCZ:
+
+adi,output-range-microvolt (fdt):
+<(000000) (2500000)>;   ok (Rfbx1, switch 10)
+<(000000) (5000000)>;   ok (Rfbx1, switch 10)
+<(000000) (10000000)>;  ok (Rfbx1, switch 10)
+<(-5000000) (5000000)>; ok (Rfbx2, switch +/- 5)
+<(-2500000) (7500000)>; ok (Rfbx2, switch -2.5/7.5)
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-1-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ drivers/iio/dac/ad3552r-common.c |    5 ++---
+ drivers/iio/dac/ad3552r.h        |    8 +++-----
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -847,6 +847,9 @@ ff_layout_pg_init_read(struct nfs_pageio
- 	struct nfs4_pnfs_ds *ds;
- 	u32 ds_idx;
+--- a/drivers/iio/dac/ad3552r-common.c
++++ b/drivers/iio/dac/ad3552r-common.c
+@@ -22,11 +22,10 @@ EXPORT_SYMBOL_NS_GPL(ad3552r_ch_ranges,
  
-+	if (NFS_SERVER(pgio->pg_inode)->flags &
-+			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
-+		pgio->pg_maxretrans = io_maxretrans;
- retry:
- 	pnfs_generic_pg_check_layout(pgio, req);
- 	/* Use full layout for now */
-@@ -860,6 +863,8 @@ retry:
- 		if (!pgio->pg_lseg)
- 			goto out_nolseg;
- 	}
-+	/* Reset wb_nio, since getting layout segment was successful */
-+	req->wb_nio = 0;
+ const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2] = {
+ 	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= { 0, 2500 },
+-	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= { 0, 3000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= { 0, 5000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= { 0, 10000 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 }
++	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 },
++	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 }
+ };
+ EXPORT_SYMBOL_NS_GPL(ad3542r_ch_ranges, "IIO_AD3552R");
  
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
- 	if (!ds) {
-@@ -876,14 +881,24 @@ retry:
- 	pgm->pg_bsize = mirror->mirror_ds->ds_versions[0].rsize;
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -131,7 +131,7 @@
+ #define AD3552R_CH1_ACTIVE				BIT(1)
  
- 	pgio->pg_mirror_idx = ds_idx;
--
--	if (NFS_SERVER(pgio->pg_inode)->flags &
--			(NFS_MOUNT_SOFT|NFS_MOUNT_SOFTERR))
--		pgio->pg_maxretrans = io_maxretrans;
- 	return;
- out_nolseg:
--	if (pgio->pg_error < 0)
--		return;
-+	if (pgio->pg_error < 0) {
-+		if (pgio->pg_error != -EAGAIN)
-+			return;
-+		/* Retry getting layout segment if lower layer returned -EAGAIN */
-+		if (pgio->pg_maxretrans && req->wb_nio++ > pgio->pg_maxretrans) {
-+			if (NFS_SERVER(pgio->pg_inode)->flags & NFS_MOUNT_SOFTERR)
-+				pgio->pg_error = -ETIMEDOUT;
-+			else
-+				pgio->pg_error = -EIO;
-+			return;
-+		}
-+		pgio->pg_error = 0;
-+		/* Sleep for 1 second before retrying */
-+		ssleep(1);
-+		goto retry;
-+	}
- out_mds:
- 	trace_pnfs_mds_fallback_pg_init_read(pgio->pg_inode,
- 			0, NFS4_MAX_UINT64, IOMODE_READ,
+ #define AD3552R_MAX_RANGES	5
+-#define AD3542R_MAX_RANGES	6
++#define AD3542R_MAX_RANGES	5
+ #define AD3552R_QUAD_SPI	2
+ 
+ extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+@@ -189,16 +189,14 @@ enum ad3552r_ch_vref_select {
+ enum ad3542r_ch_output_range {
+ 	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
+ 	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
+-	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_0__3V,
+ 	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__5V,
+ 	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__10V,
+-	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ 	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
++	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
++	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ };
+ 
+ enum ad3552r_ch_output_range {
 
 
 
