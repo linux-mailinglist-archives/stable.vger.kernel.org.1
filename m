@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD63A346D4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B43AA3447B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D003ADF3E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FC5E16D261
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C537538389;
-	Thu, 13 Feb 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5DD1FFC41;
+	Thu, 13 Feb 2025 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqE55ZJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv3nfIQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B9826B0A5;
-	Thu, 13 Feb 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4C31FF7B9;
+	Thu, 13 Feb 2025 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459869; cv=none; b=SJB10RCqk02lfpFagU3moUFBuUY9GDVwuIRvzN1Ix3rpCWvcRHTq7JJtmYrYcboubwhvCohuMrWheM/LYlIucylEKXa2flrp2e5V80fjp+A6bTtx5XtcX62IduCNMY2EwK8MX1U5LCsZFe9NM9oVCWF/R5iX9FFaGWGxr67xCUI=
+	t=1739458519; cv=none; b=sTQOuvjYmFMt9pf6MCkBFGiMP+HvlGbgyNK+eFcLBLH3KG2ozy1BeFDHJByWEZyaOFopZ8jmFLFU480geo9TrpxO23FZhx+4+JdIKv5q6YaHPfMl64QRLMl6lPIfklpNLbeqfXfqSG5ewvTSxqPo9aRcBU3N866d2A5s3vcR+i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459869; c=relaxed/simple;
-	bh=+xqjyPMWYs+5YvqDh0aSL7eP1bsZ1EmsSlqwFtnv40U=;
+	s=arc-20240116; t=1739458519; c=relaxed/simple;
+	bh=RocZ2MVJ9AAs3xJR+E3vucAs1WbF1RNSyjLgC6QIGWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTiBrNLeiA8Hi+cQjuVr8h7KK+Q/L2ACJj/8iLMB4kEX4Ezaro/+JKp5BVHSdwy/MP8vG8Af2wHeVcJsUkcSZt/PsdInRtsvayGcrjUm5PIlJ4aV/lNCzdQ01oSolCug5sqM/t0Fi0/lSytxBnMFiS/Z+JACtL6MkY8XP1mH5zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqE55ZJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FBDC4CEE4;
-	Thu, 13 Feb 2025 15:17:48 +0000 (UTC)
+	 MIME-Version; b=tZsLP5SESINtsUPKZMjhBrlm5IrQ2XGi7RH5s7+Iml8loNgwGlbGWMj3poJfc0oJQ4Or3JgjNyfemmeernn2M/WlexKs3vSaUdFEcUEYuJ1K/Bc4v77yRx5TspE6JE3NBxYih1ZPVF5VhG4NYv3oO+108qDELqKwLGN+As8JmiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv3nfIQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB9C4CEE8;
+	Thu, 13 Feb 2025 14:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459869;
-	bh=+xqjyPMWYs+5YvqDh0aSL7eP1bsZ1EmsSlqwFtnv40U=;
+	s=korg; t=1739458519;
+	bh=RocZ2MVJ9AAs3xJR+E3vucAs1WbF1RNSyjLgC6QIGWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqE55ZJeOrNRAi9k93cs738bG/AnpHrbp8HIxHmoimhcnGaC5KlcHHyt3Gc4PaR8u
-	 RG1gQve/xdYzs0fNDplnGxaULFh+SJTEiGMq74oMMbvWklhr8OTHmcVaqbWXvc4MJo
-	 8nFY9raQgObZ4zLuKMpJOwT59T3sHUlKqx8MCBWw=
+	b=Zv3nfIQuEV1Xt8LgInagY8mQZM811ZCJA8TdgXB5IrRtckOhtOHOWeYS/kUdx54j/
+	 wAkqlueICrpRcSkB/DbQ3YjdUUEbYqgJfgyU9FfobVb4KLCPXAllCEEIttpddCKsma
+	 6aQYvM9q/bcDi42oxSc4Au45QqeT4FAqfF1cCquY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.13 388/443] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+	syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 404/422] xfs: release the dquot buf outside of qli_lock
 Date: Thu, 13 Feb 2025 15:29:13 +0100
-Message-ID: <20250213142455.582027013@linuxfoundation.org>
+Message-ID: <20250213142452.143422942@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit e88f516ea417c71bb3702603ac6af9e95338cfa6 upstream.
+commit 1aacd3fac248902ea1f7607f2d12b93929a4833b upstream
 
-Let the nvmem core know what size the SDAM is, most notably this fixes
-the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
-user space work with that file.
+Lai Yi reported a lockdep complaint about circular locking:
 
-  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
-  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
-  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-  *
-  00000080
+ Chain exists of:
+   &lp->qli_lock --> &bch->bc_lock --> &l->lock
 
-Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-6-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&l->lock);
+                                lock(&bch->bc_lock);
+                                lock(&l->lock);
+   lock(&lp->qli_lock);
+
+I /think/ the problem here is that xfs_dquot_attach_buf during
+quotacheck will release the buffer while it's holding the qli_lock.
+Because this is a cached buffer, xfs_buf_rele_cached takes b_lock before
+decrementing b_hold.  Other threads have taught lockdep that a locking
+dependency chain is bp->b_lock -> bch->bc_lock -> l(ru)->lock; and that
+another chain is l(ru)->lock -> lp->qli_lock.  Hence we do not want to
+take b_lock while holding qli_lock.
+
+Reported-by: syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org> # v6.13-rc3
+Fixes: ca378189fdfa89 ("xfs: convert quotacheck to attach dquot buffers")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/qcom-spmi-sdam.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_dquot.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/nvmem/qcom-spmi-sdam.c
-+++ b/drivers/nvmem/qcom-spmi-sdam.c
-@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_de
- 	sdam->sdam_config.owner = THIS_MODULE;
- 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
- 	sdam->sdam_config.stride = 1;
-+	sdam->sdam_config.size = sdam->size;
- 	sdam->sdam_config.word_size = 1;
- 	sdam->sdam_config.reg_read = sdam_read;
- 	sdam->sdam_config.reg_write = sdam_write;
+
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -1308,7 +1308,8 @@ out_abort:
+ 
+ /*
+  * Attach a dquot buffer to this dquot to avoid allocating a buffer during a
+- * dqflush, since dqflush can be called from reclaim context.
++ * dqflush, since dqflush can be called from reclaim context.  Caller must hold
++ * the dqlock.
+  */
+ int
+ xfs_dquot_attach_buf(
+@@ -1329,13 +1330,16 @@ xfs_dquot_attach_buf(
+ 			return error;
+ 
+ 		/*
+-		 * Attach the dquot to the buffer so that the AIL does not have
+-		 * to read the dquot buffer to push this item.
++		 * Hold the dquot buffer so that we retain our ref to it after
++		 * detaching it from the transaction, then give that ref to the
++		 * dquot log item so that the AIL does not have to read the
++		 * dquot buffer to push this item.
+ 		 */
+ 		xfs_buf_hold(bp);
++		xfs_trans_brelse(tp, bp);
++
+ 		spin_lock(&qlip->qli_lock);
+ 		lip->li_buf = bp;
+-		xfs_trans_brelse(tp, bp);
+ 	}
+ 	qlip->qli_dirty = true;
+ 	spin_unlock(&qlip->qli_lock);
 
 
 
