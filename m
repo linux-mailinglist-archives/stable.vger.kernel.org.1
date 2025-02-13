@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E133A3468A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC90FA347FF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32B4A188D957
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 968313A3551
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95411422D8;
-	Thu, 13 Feb 2025 15:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251FF15DBBA;
+	Thu, 13 Feb 2025 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8gtgeE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4c6Jysj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A503FB3B;
-	Thu, 13 Feb 2025 15:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BC726B096;
+	Thu, 13 Feb 2025 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459842; cv=none; b=ABym46L9NnvLPcgY+2XZDTSnleEgVLijtFgc2PwpW1unEk8z/2woFpPXooXYPu3FygfgNjuTsZD9RpRrvY2mJLsG2ZcEJ1lfzDs1XjGHdz/54MEzd7sbIAMzCcVhTr0E3f6iwmtrWOxCrXVvkvH3eFpiErfmF+uBtaQ8M2PgY1Y=
+	t=1739460652; cv=none; b=qGaHsW7tG15f0Yt8hKsYOIRgwxRfAJ8a0kyVU9T9G0iNwIIssnP09lU0zwAyMI4zOO9IUC/6ITEWSD/uakPc2I7fNUPmXGH+ioINa8/ql09fC3bL5Sqelh+07Zw9IjUiwTJeDwpIBLBkSogUy0I19a62FAXoE363v03Uhr5HKuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459842; c=relaxed/simple;
-	bh=q9xqjp/z9uUiYN5APOT8EWhStaT05SyDBPl9xKMPvrM=;
+	s=arc-20240116; t=1739460652; c=relaxed/simple;
+	bh=1Mo/ZpwpBR3bMQ8YqUZVvWQf1gQERpfgL4xvR8KivP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8ZGLRTOeWI8mUW/7Kt5g1kb9e2Vm9K2qxmI8DASDC6G6eIg/jxvzoh3xsVi0KwRooGOweCGzDA+13U8cQw/TIeihs94WzaWvkwgEnGrAPtKU9PSp81Jj2LpHI42cTzuKYxbMlUx1TvcjNrfcTckcy7RNfAi25ay5UE8daZvF98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8gtgeE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEB2C4CED1;
-	Thu, 13 Feb 2025 15:17:21 +0000 (UTC)
+	 MIME-Version; b=ZrfSz/XNVzjqNQbQwpL/gLJ40Tw3lPCMZrKBYbnrroVKgh78MxaqpLh2+0BaBmDvDyk81Yyd6u4L71XosokyveMAVloaJGG6BU0OWM17N9lVK0VBR4b8/uqHMwCLw0f0OGV0nXHRSc15PaY1u2zQ8uh68FI34yn0gjEzMTjSrOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4c6Jysj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4303C4CEE4;
+	Thu, 13 Feb 2025 15:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459841;
-	bh=q9xqjp/z9uUiYN5APOT8EWhStaT05SyDBPl9xKMPvrM=;
+	s=korg; t=1739460652;
+	bh=1Mo/ZpwpBR3bMQ8YqUZVvWQf1gQERpfgL4xvR8KivP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8gtgeE70HCpiNjDkWBSoK5AU3nCg41YJd8fsbRHgD0hzE4ZDFhjce2fv1Id5Gond
-	 dcRwsp1RZr3t2X624CsyvccfItZiuj4CfxujmDRdfX+QrqmwLH1J1vmE870UG/Eu09
-	 tEeE5N4XtU8/YC9LudgSie8I4dsXdKaCpKJr7yVM=
+	b=q4c6Jysj2REuf0gwu/3UJfvTsiQwzbGhFvC8xQlyjJQew3+Q/zLLXz9JL66Zjw4Xo
+	 9dKrLPvooiZkMYGDOa5J1fiX5/6Gy4jV50fU9DMaXVvgqzJgrJePltKTPjpertA8WA
+	 1vQWa4YUpxjzapk5JfsaSp/RHlghkXcph+w3kvc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Kalinowski <ikalinowski@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 348/443] iommu/tegra241-cmdqv: Read SMMU IDR1.CMDQS instead of hardcoding
-Date: Thu, 13 Feb 2025 15:28:33 +0100
-Message-ID: <20250213142454.049138184@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 142/273] usbnet: ipheth: document scope of NCM implementation
+Date: Thu, 13 Feb 2025 15:28:34 +0100
+Message-ID: <20250213142412.947045636@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit e94dc6ddda8dd3770879a132d577accd2cce25f9 upstream.
+commit be154b598fa54136e2be17d6dd13c8a8bc0078ce upstream.
 
-The hardware limitation "max=19" actually comes from SMMU Command Queue.
-So, it'd be more natural for tegra241-cmdqv driver to read it out rather
-than hardcoding it itself.
+Clarify that the "NCM" implementation in `ipheth` is very limited, as
+iOS devices aren't compatible with the CDC NCM specification in regular
+tethering mode.
 
-This is not an issue yet for a kernel on a baremetal system, but a guest
-kernel setting the queue base/size in form of IPA/gPA might result in a
-noncontiguous queue in the physical address space, if underlying physical
-pages backing up the guest RAM aren't contiguous entirely: e.g. 2MB-page
-backed guest RAM cannot guarantee a contiguous queue if it is 8MB (capped
-to VCMDQ_LOG2SIZE_MAX=19). This might lead to command errors when HW does
-linear-read from a noncontiguous queue memory.
+For a standards-compliant implementation, one shall turn to
+the `cdc_ncm` module.
 
-Adding this extra IDR1.CMDQS cap (in the guest kernel) allows VMM to set
-SMMU's IDR1.CMDQS=17 for the case mentioned above, so a guest-level queue
-will be capped to maximum 2MB, ensuring a contiguous queue memory.
-
-Fixes: a3799717b881 ("iommu/tegra241-cmdqv: Fix alignment failure at max_n_shift")
-Reported-by: Ian Kalinowski <ikalinowski@nvidia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/20241219051421.1850267-1-nicolinc@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/usb/ipheth.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-index c8ec74f089f3..dc7af970e9d0 100644
---- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-@@ -79,7 +79,6 @@
- #define TEGRA241_VCMDQ_PAGE1(q)		(TEGRA241_VCMDQ_PAGE1_BASE + 0x80*(q))
- #define  VCMDQ_ADDR			GENMASK(47, 5)
- #define  VCMDQ_LOG2SIZE			GENMASK(4, 0)
--#define  VCMDQ_LOG2SIZE_MAX		19
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 5347cd7e295b..a19789b57190 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -218,6 +218,14 @@ static int ipheth_rcvbulk_callback_legacy(struct urb *urb)
+ 	return ipheth_consume_skb(buf, len, dev);
+ }
  
- #define TEGRA241_VCMDQ_BASE		0x00000
- #define TEGRA241_VCMDQ_CONS_INDX_BASE	0x00008
-@@ -505,12 +504,15 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
- 	struct arm_smmu_cmdq *cmdq = &vcmdq->cmdq;
- 	struct arm_smmu_queue *q = &cmdq->q;
- 	char name[16];
-+	u32 regval;
- 	int ret;
- 
- 	snprintf(name, 16, "vcmdq%u", vcmdq->idx);
- 
--	/* Queue size, capped to ensure natural alignment */
--	q->llq.max_n_shift = min_t(u32, CMDQ_MAX_SZ_SHIFT, VCMDQ_LOG2SIZE_MAX);
-+	/* Cap queue size to SMMU's IDR1.CMDQS and ensure natural alignment */
-+	regval = readl_relaxed(smmu->base + ARM_SMMU_IDR1);
-+	q->llq.max_n_shift =
-+		min_t(u32, CMDQ_MAX_SZ_SHIFT, FIELD_GET(IDR1_CMDQS, regval));
- 
- 	/* Use the common helper to init the VCMDQ, and then... */
- 	ret = arm_smmu_init_one_queue(smmu, q, vcmdq->page0,
++/* In "NCM mode", the iOS device encapsulates RX (phone->computer) traffic
++ * in NCM Transfer Blocks (similarly to CDC NCM). However, unlike reverse
++ * tethering (handled by the `cdc_ncm` driver), regular tethering is not
++ * compliant with the CDC NCM spec, as the device is missing the necessary
++ * descriptors, and TX (computer->phone) traffic is not encapsulated
++ * at all. Thus `ipheth` implements a very limited subset of the spec with
++ * the sole purpose of parsing RX URBs.
++ */
+ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ {
+ 	struct usb_cdc_ncm_nth16 *ncmh;
 -- 
 2.48.1
 
