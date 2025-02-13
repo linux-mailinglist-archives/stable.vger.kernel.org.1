@@ -1,132 +1,104 @@
-Return-Path: <stable+bounces-115084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCEBA334A0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 02:27:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7070A334B2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 02:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30870166A27
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 01:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4086F3A6D64
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 01:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5855913635C;
-	Thu, 13 Feb 2025 01:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD88B132117;
+	Thu, 13 Feb 2025 01:29:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D186349;
-	Thu, 13 Feb 2025 01:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259A04A29;
+	Thu, 13 Feb 2025 01:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739410039; cv=none; b=Y/jIof7qHiLdpjmZ3pSo2w52v4ULeSKEfwcInZbNfvB1MPek8qe9xpPjfBvD4Z9Fv+Or5n6Jqcqx6BnSkGemedqMWKg525ay1rvNT2cw6HEpFZNniKuw83l0NJ3t+Ey9GPaw+OM5xuUZ5kkXIKp8e8leaxhiFy1hQaeB15/nlZQ=
+	t=1739410190; cv=none; b=a/y3zoYjjESwCuXRf+TFSrY73PfbFAHmHeCVZZJmYbIfJTeF/LLRU8FxUZtuK22sjA/4a6R385HtBj5XADkOJI34aHy+90GD7rs1HOiDg7W1iKPIWdfeSVrSJDA2WDPq0DkVnDIdL5gwVqS2MwXzJFBLT/7JyURxfBBYMXIFpIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739410039; c=relaxed/simple;
-	bh=TCm5BAMNTDYEnSG5kZoN/Oq2zatcj9gc5r0PcZI02qA=;
+	s=arc-20240116; t=1739410190; c=relaxed/simple;
+	bh=BwGNN0WPDjQPlX+dzowQ2wyxG7TkR/Wr2GU26NweXTE=;
 	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=l/+ljC5dX8+qitHFq6WcjuAd4MTqBOIktA3R87U15bcw5T8yzFHBUrRFyKaROtO6XjG0Aj6n297+gqXHL3JmLEEzZDeFPD+Xr0qu7BSt0rlDBhXZhzyqCJczgHieSaYDkesmyEYrCNb58WrC1S//ff6jdXn8Y6Un0SwQxYWG4ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4YtcwT4588z4f3khS;
-	Thu, 13 Feb 2025 09:26:49 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id DC84E1A1743;
-	Thu, 13 Feb 2025 09:27:10 +0800 (CST)
-Received: from [10.174.179.143] (unknown [10.174.179.143])
-	by APP4 (Coremail) with SMTP id gCh0CgB32l5tSq1ndWXBDg--.7430S3;
-	Thu, 13 Feb 2025 09:27:10 +0800 (CST)
-Subject: Re: [PATCH] block: Check blkg_to_lat return value to avoid NULL
- dereference
-To: Wentao Liang <vulab@iscas.ac.cn>, tj@kernel.org, josef@toxicpanda.com,
- axboe@kernel.dk
-Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20250212083203.1030-1-vulab@iscas.ac.cn>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <8793e238-1b12-5ce9-e9d6-e936750109b2@huaweicloud.com>
-Date: Thu, 13 Feb 2025 09:27:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	 In-Reply-To:Content-Type; b=AxawC6ayHBm7FvzWsGxdSrlkPV9kZZmBiVeHMCzOMy0mxMTaug845QjCWZ459xG/i/HTM37bB0erKANhgmtDpv8f1Iccx6MmUG3iDDXuTmkw+GHPm3paBDiDCjMVJCyh7HeOwVjrIA+SdSyaY9tYCiRdCHIlgBAdL/WmvRcLlqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.164])
+	by gateway (Coremail) with SMTP id _____8CxqmoGS61nHLRzAA--.4783S3;
+	Thu, 13 Feb 2025 09:29:42 +0800 (CST)
+Received: from [10.20.42.164] (unknown [10.20.42.164])
+	by front1 (Coremail) with SMTP id qMiowMBxrMYCS61n6_wOAA--.3807S2;
+	Thu, 13 Feb 2025 09:29:40 +0800 (CST)
+Subject: Re: [PATCH V2] net: stmmac: dwmac-loongson: Add fix_soc_reset()
+ callback
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, kuba@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, si.yanteng@linux.dev, fancer.lancer@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
+References: <20250212023622.14512-1-zhaoqunqin@loongson.cn>
+ <1def2434-9033-4c83-b7de-c6364b7d3003@kernel.org>
+ <63882ba5-0b19-308c-d3d8-0dca7509c105@loongson.cn>
+ <CAAhV-H5207Mf5QCHfT-Of-e=66snNrC9F-3T24JUaTGMf1xdcA@mail.gmail.com>
+From: Qunqin Zhao <zhaoqunqin@loongson.cn>
+Message-ID: <9d2de420-7cc6-855d-1f1f-c787e68c8fbf@loongson.cn>
+Date: Thu, 13 Feb 2025 09:30:21 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250212083203.1030-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+In-Reply-To: <CAAhV-H5207Mf5QCHfT-Of-e=66snNrC9F-3T24JUaTGMf1xdcA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgB32l5tSq1ndWXBDg--.7430S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww4ftFWUXw1fXr47ZrW5KFg_yoW8AFyxpw
-	48WwsFy3yrWr47XF1xKa1rCryrCr4UKFyUCrs8A34FkF1S9F4rtF1rZ3W5tFWFyrWUCw4D
-	Jr15tF9Yvr45C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AK
-	xVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
-	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
-	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU17KsU
-	UUUUU==
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+Content-Language: en-US
+X-CM-TRANSID:qMiowMBxrMYCS61n6_wOAA--.3807S2
+X-CM-SenderInfo: 52kd01pxqtx0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7Jw1UJw17KFWUtFy5WFWDJrc_yoW3Jwc_Xr
+	ZFvwn7Cr93XasF9wnrKan29rnagayDG347G3y5Xr40q34IyryDur1Dur97u3ZIq3ykXF15
+	ur4kua4rCr4fWosvyTuYvTs0mTUanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbDxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
+	oVCq3wAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa02
+	0Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1l
+	Yx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI
+	0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC2
+	0s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr
+	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
+	wIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
+	W8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
+	cVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcbAwUUUUU
 
-Hi,
 
-�� 2025/02/12 16:32, Wentao Liang д��:
-> The function blkg_to_lat() may return NULL if the blkg is not associated
-> with an iolatency group. In iolatency_set_min_lat_nsec() and
-> iolatency_pd_init(), the return values are not checked, leading to
-> potential NULL pointer dereferences.
-> 
-> This patch adds checks for the return values of blkg_to_lat and let it
-> returns early if it is NULL, preventing the NULL pointer dereference.
-> 
-> Fixes: d70675121546 ("block: introduce blk-iolatency io controller")
-> Cc: stable@vger.kernel.org # 4.19+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   block/blk-iolatency.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/block/blk-iolatency.c b/block/blk-iolatency.c
-> index ebb522788d97..398f0a1747c4 100644
-> --- a/block/blk-iolatency.c
-> +++ b/block/blk-iolatency.c
-> @@ -787,6 +787,8 @@ static int blk_iolatency_init(struct gendisk *disk)
->   static void iolatency_set_min_lat_nsec(struct blkcg_gq *blkg, u64 val)
->   {
->   	struct iolatency_grp *iolat = blkg_to_lat(blkg);
-> +	if (!iolat)
-> +		return;
->   	struct blk_iolatency *blkiolat = iolat->blkiolat;
->   	u64 oldval = iolat->min_lat_nsec;
-
-This is not needed, this is called from iolatency_set_limit() or
-iolatency_pd_offline() where the policy data can't be NULL.
->   
-> @@ -1013,6 +1015,8 @@ static void iolatency_pd_init(struct blkg_policy_data *pd)
->   	 */
->   	if (blkg->parent && blkg_to_pd(blkg->parent, &blkcg_policy_iolatency)) {
->   		struct iolatency_grp *parent = blkg_to_lat(blkg->parent);
-> +		if (!parent)
-> +			return;
-
-blkg_to_pd() already checked, how can this be NULL?
-
-Thanks,
-Kuai
->   		atomic_set(&iolat->scale_cookie,
->   			   atomic_read(&parent->child_lat.scale_cookie));
->   	} else {
-> 
+在 2025/2/12 下午2:13, Huacai Chen 写道:
+> On Wed, Feb 12, 2025 at 2:03 PM Qunqin Zhao <zhaoqunqin@loongson.cn> wrote:
+>>
+>> 在 2025/2/12 下午1:42, Krzysztof Kozlowski 写道:
+>>> On 12/02/2025 03:36, Qunqin Zhao wrote:
+>>>> Loongson's DWMAC device may take nearly two seconds to complete DMA reset,
+>>>> however, the default waiting time for reset is 200 milliseconds.
+>>>>
+>>>> Fixes: 803fc61df261 ("net: stmmac: dwmac-loongson: Add Loongson Multi-channels GMAC support")
+>>> You still miss cc-stable.
+>> OK, thanks.
+> You can copy-paste the error message to commit message since you need
+> V3, and the title should begin with [PATCH net V3].
+OK, thanks.
+>
+> Huacai
+>
+>>> Best regards,
+>>> Krzysztof
 
 
