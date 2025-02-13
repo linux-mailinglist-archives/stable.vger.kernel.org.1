@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5178A34559
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84266A3432C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57CF416EF71
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F8D1894246
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3F203703;
-	Thu, 13 Feb 2025 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCAD2222B1;
+	Thu, 13 Feb 2025 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ5Ytfx4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8W0DQ6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB2F153801;
-	Thu, 13 Feb 2025 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0099281369;
+	Thu, 13 Feb 2025 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459088; cv=none; b=b/hVqHGAWsFvAbVbugE8j9jj/n35tbTirYdhfVwn0PoU43t3IUAD8/gRKBgkF3K/miTEOyGr7/STaIqx7zP3KnCeBa9K4yjE62u6UGQ9Bn80PlAXWpo1oF6FRX6lGQlYY95O7xGoJwpLW8wmfGQdwnEgZ9HdC8k00AXpMGF9awU=
+	t=1739457671; cv=none; b=nIFvJdGYa0kMZKj0gbWJiXs6FIu0/3Epwlnd5y8IJ9mZxIMPseq9O6tti/Jr06Q1E/JkbedBKncmwthpECI2vm1DGwTtp/fGTDfo3D9hfwK97BgOvXLamF2Sx97TvgEk+5nd05MGXR1YfvWhLstYNQJd9+Yx7QHtCrolULyLS2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459088; c=relaxed/simple;
-	bh=T4yPeDiWMDpCCXxqRkG9nKYjqg8eNBpEyOldopOFymE=;
+	s=arc-20240116; t=1739457671; c=relaxed/simple;
+	bh=29s7/HCXHltFzCrslfljfDJJe1PZuIY1bSZSVtVxkx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZyzSdiL+s4dtUgOwjLukA9D35HliYR2Yju+Mx85pQgQJfmuGrTI4wuO6POBDjsZiPm4Y3J4Yg9FT30/mGnI2wjT9/3GM1bs2PdvAIilS6eOIdOTp/PSrvuGl9lqq478pT1bVjkBwj7kal47DXHlwEn6aBpQUlebkPZ/BXSAHNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ5Ytfx4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C13C4CED1;
-	Thu, 13 Feb 2025 15:04:47 +0000 (UTC)
+	 MIME-Version; b=rConCDLcoJxh7iF9jG2sEH6qyyygX53UCPDYiYGXMD8UbHDmgHatxbAHrQdqXfrRligteQlyLFje1Pkkk6VJpJbwuYQDdnpa+lLsh+c0LqxTLmJros4UkdpoKpw99384lsq0U9jlr5inbX0CjovPFFKSR/oumASktInxHzlq9NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8W0DQ6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BADC4CED1;
+	Thu, 13 Feb 2025 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459088;
-	bh=T4yPeDiWMDpCCXxqRkG9nKYjqg8eNBpEyOldopOFymE=;
+	s=korg; t=1739457670;
+	bh=29s7/HCXHltFzCrslfljfDJJe1PZuIY1bSZSVtVxkx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQ5Ytfx4768pCmGEMJAQlEMqE8DVTgq1fVoyzpQu9Lx1m4MdZY0hawKbSvSTfNtDp
-	 i4bdi9wxmCFv5+Uydgm61Z/Z6Z/tDaJkRnNPKYWBR4wn2MJnq2kjmTD56yUEaXtotA
-	 oNL/CSS5Hdnfn8Kti1k3jNtxYRPgIjpowQb/q6OE=
+	b=V8W0DQ6ASnpzRI8S4LrDu7FeCKhHYqaSZFBAWo6sjsbuYVrwwJ/lHzARTbRs27Y3w
+	 evb2wZxJpWsIn0q0xl5FQtA1gsqFrwH/eIC6FJ2wxuC3mU70PO2jXho0h/YWORzS8V
+	 AmIxUzCvXVXuauHmc2sQYgj4Rvay38purckRbLZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 163/443] arm64/mm: Reduce PA space to 48 bits when LPA2 is not enabled
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 179/422] clk: qcom: gcc-sm8650: Do not turn off PCIe GDSCs during gdsc_disable()
 Date: Thu, 13 Feb 2025 15:25:28 +0100
-Message-ID: <20250213142446.887214895@linuxfoundation.org>
+Message-ID: <20250213142443.451216625@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit bf74bb73cd87c64bd5afc1fd4b749029997b6170 upstream.
+commit a57465766a91c6e173876f9cbb424340e214313f upstream.
 
-Currently, LPA2 kernel support implies support for up to 52 bits of
-physical addressing, and this is reflected in global definitions such as
-PHYS_MASK_SHIFT and MAX_PHYSMEM_BITS.
+With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+can happen during scenarios such as system suspend and breaks the resume
+of PCIe controllers from suspend.
 
-This is potentially problematic, given that LPA2 hardware support is
-modeled as a CPU feature which can be overridden, and with LPA2 hardware
-support turned off, attempting to map physical regions with address bits
-[51:48] set (which may exist on LPA2 capable systems booting with
-arm64.nolva) will result in corrupted mappings with a truncated output
-address and bogus shareability attributes.
+So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+during gdsc_disable() and allow the hardware to transition the GDSCs to
+retention when the parent domain enters low power state during system
+suspend.
 
-This means that the accepted physical address range in the mapping
-routines should be at most 48 bits wide when LPA2 support is configured
-but not enabled at runtime.
-
-Fixes: 352b0395b505 ("arm64: Enable 52-bit virtual addressing for 4k and 16k granule configs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20241212081841.2168124-9-ardb+git@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org # 6.8
+Fixes: c58225b7e3d7 ("clk: qcom: add the SM8650 Global Clock Controller driver, part 1")
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on QRD8650
+Link: https://lore.kernel.org/r/20241219170011.70140-2-manivannan.sadhasivam@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable-hwdef.h |    6 ------
- arch/arm64/include/asm/pgtable-prot.h  |    7 +++++++
- arch/arm64/include/asm/sparsemem.h     |    5 ++++-
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/clk/qcom/gcc-sm8650.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/include/asm/pgtable-hwdef.h
-+++ b/arch/arm64/include/asm/pgtable-hwdef.h
-@@ -222,12 +222,6 @@
-  */
- #define S1_TABLE_AP		(_AT(pmdval_t, 3) << 61)
+--- a/drivers/clk/qcom/gcc-sm8650.c
++++ b/drivers/clk/qcom/gcc-sm8650.c
+@@ -3437,7 +3437,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
--/*
-- * Highest possible physical address supported.
-- */
--#define PHYS_MASK_SHIFT		(CONFIG_ARM64_PA_BITS)
--#define PHYS_MASK		((UL(1) << PHYS_MASK_SHIFT) - 1)
--
- #define TTBR_CNP_BIT		(UL(1) << 0)
+@@ -3448,7 +3448,7 @@ static struct gdsc pcie_0_phy_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_phy_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- /*
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -81,6 +81,7 @@ extern unsigned long prot_ns_shared;
- #define lpa2_is_enabled()	false
- #define PTE_MAYBE_SHARED	PTE_SHARED
- #define PMD_MAYBE_SHARED	PMD_SECT_S
-+#define PHYS_MASK_SHIFT		(CONFIG_ARM64_PA_BITS)
- #else
- static inline bool __pure lpa2_is_enabled(void)
- {
-@@ -89,9 +90,15 @@ static inline bool __pure lpa2_is_enable
+@@ -3459,7 +3459,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- #define PTE_MAYBE_SHARED	(lpa2_is_enabled() ? 0 : PTE_SHARED)
- #define PMD_MAYBE_SHARED	(lpa2_is_enabled() ? 0 : PMD_SECT_S)
-+#define PHYS_MASK_SHIFT		(lpa2_is_enabled() ? CONFIG_ARM64_PA_BITS : 48)
- #endif
+@@ -3470,7 +3470,7 @@ static struct gdsc pcie_1_phy_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_phy_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | VOTABLE,
+ };
  
- /*
-+ * Highest possible physical address supported.
-+ */
-+#define PHYS_MASK		((UL(1) << PHYS_MASK_SHIFT) - 1)
-+
-+/*
-  * If we have userspace only BTI we don't want to mark kernel pages
-  * guarded even if the system does support BTI.
-  */
---- a/arch/arm64/include/asm/sparsemem.h
-+++ b/arch/arm64/include/asm/sparsemem.h
-@@ -5,7 +5,10 @@
- #ifndef __ASM_SPARSEMEM_H
- #define __ASM_SPARSEMEM_H
- 
--#define MAX_PHYSMEM_BITS	CONFIG_ARM64_PA_BITS
-+#include <asm/pgtable-prot.h>
-+
-+#define MAX_PHYSMEM_BITS		PHYS_MASK_SHIFT
-+#define MAX_POSSIBLE_PHYSMEM_BITS	(52)
- 
- /*
-  * Section size must be at least 512MB for 64K base
 
 
 
