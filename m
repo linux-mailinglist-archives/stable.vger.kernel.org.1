@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86426A345BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0CDA342A8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEF518932C5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27C2A7A5D1D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA7414F9FB;
-	Thu, 13 Feb 2025 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129972222D2;
+	Thu, 13 Feb 2025 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIXY6NUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0RrKz22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9827226B080;
-	Thu, 13 Feb 2025 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32DB2222CA;
+	Thu, 13 Feb 2025 14:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458879; cv=none; b=GK9Wy9claVD/n73ZfYpx6822h7GmtFbrvSR3Wghk4rYOWL+c/T68Voc23TAY3LpHLECFR4MV46JWZMjOqmv5VQ0CzYhmi4yKHuv7hZqpvAqRpkMgN15vkfq1y7+QRtAwXFrq/TzDdW+e6Oxo5CxKWOm2o/jNuDwHcduO/AFdlyU=
+	t=1739457505; cv=none; b=E7s3OZmlvWHorrAgvIFANJPXL4J6NSq9knFIA8fg/jdyiaO9sCEsKj56Ugyhd3ksnB8VFGhs3g/oyXxvw7GAkYthXRgoQNYBz6IqHr2SnKE04sR9Dc93kfgQQn/5PyVV0/HvDZv2k2zWwQtHjJyAc/JbgNpXb6yWa53Jz7OnM7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458879; c=relaxed/simple;
-	bh=2rjN6Njc59icbRVGWK3N+krkgdPpEH4r/mgKkw492dQ=;
+	s=arc-20240116; t=1739457505; c=relaxed/simple;
+	bh=a1CATRk27q9k+AUvl+8r5lVQhxxuI9YHR0lLpG18NkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkeXpRaA0up6a1w+oLvaGsPRLBEQo9RtnOrDHIN4QdxOrd7LRwLwJVqj4g2BmAjKdzUYLrUGe7Usv/A5NpPGRzzlsK1UFnxrjaTWeo+Qo+0lvMQ/SrRoxG7fZ9CwBdeAwsORt4fgFAGeGr2SNFl2oFDNfxwzYBjUaj3Q9WUoZ2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIXY6NUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952E4C4CED1;
-	Thu, 13 Feb 2025 15:01:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=paAIQVxXFxDNqLmOCyotwYallzj4G9Kc2jvPQdIj08j4lk3aeYvoQZtmKL4fiHQD7i+dqFmtK0dlxFrSrJ19j2pQXEhfHkvzjhBy/SX55O/P+tKC7LnaV0IHh2itzaJsD136MoNtY78QalDEonwGljRatfM9hMAVpwrI7qI3Z08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0RrKz22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AC9C4CED1;
+	Thu, 13 Feb 2025 14:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458879;
-	bh=2rjN6Njc59icbRVGWK3N+krkgdPpEH4r/mgKkw492dQ=;
+	s=korg; t=1739457505;
+	bh=a1CATRk27q9k+AUvl+8r5lVQhxxuI9YHR0lLpG18NkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kIXY6NUMwtBAhlTCJ2JpvdXBFX4sF3gd00Q7OUdKQ+uq5yo7YxfiHk4A1whrfAnwx
-	 Zy3w//IktN0Xd0iHQbY+cKhYfXxrQohfLtoTX1scGAnDF1ThUwJYv3C/SMQSiUpx19
-	 Vu2ejxjbhGBDUak9G6O4vlbVTUnuCZYSFbBac/SY=
+	b=p0RrKz22EYRcSdw0391ACNXZyOs+ANIJ7rGi+exPz/N+dhwcTtGFVZ/rDlD/1fgyV
+	 Q7QLEDXOuAi4h0AvJ5wsMymnfGtrUGVanDPL+zlEJaFlvLxaG6Bnso0Z09EbITFvPl
+	 8djOXj4sVKfrR4+EwFIr2YIQEMyMPzEf9VC7pN40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Farhan Anwar <farhan.anwar8@gmail.com>,
+	Rayan Margham <rayanmargham4@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 072/443] wifi: iwlwifi: avoid memory leak
+Subject: [PATCH 6.12 088/422] platform/x86: acer-wmi: Ignore AC events
 Date: Thu, 13 Feb 2025 15:23:57 +0100
-Message-ID: <20250213142443.393444597@linuxfoundation.org>
+Message-ID: <20250213142439.949435167@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
+[ Upstream commit f6bfa25c6665f8721421ea94fe506cc22f1d4b43 ]
 
-A caller of iwl_acpi_get_dsm_object must free the returned object.
-iwl_acpi_get_dsm_integer returns immediately without freeing
-it if the expected size is more than 8 bytes. Fix that.
+On the Acer Swift SFG14-41, the events 8 - 1 and 8 - 0 are printed on
+AC connect/disconnect. Ignore those events to avoid spamming the
+kernel log with error messages.
 
-Note that with the current code this will never happen, since the caller
-of iwl_acpi_get_dsm_integer already checks that the expected size if
-either 1 or 4 bytes, so it can't exceed 8 bytes.
-
-While at it, print the DSM value instead of the return value, as this
-was the intention in the first place.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Farhan Anwar <farhan.anwar8@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/2ffb529d-e7c8-4026-a3b8-120c8e7afec8@gmail.com
+Tested-by: Rayan Margham <rayanmargham4@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250119201723.11102-2-W_Armin@gmx.de
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 0bc32291815e1..a26c5573d2091 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -108,7 +108,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 				    size_t expected_size)
- {
- 	union acpi_object *obj;
--	int ret = 0;
-+	int ret;
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 6534f0cdeb2bb..c5679e4a58a76 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -95,6 +95,7 @@ enum acer_wmi_event_ids {
+ 	WMID_HOTKEY_EVENT = 0x1,
+ 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
+ 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
++	WMID_AC_EVENT = 0x8,
+ };
  
- 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
- 	if (IS_ERR(obj)) {
-@@ -123,8 +123,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	} else if (obj->type == ACPI_TYPE_BUFFER) {
- 		__le64 le_value = 0;
- 
--		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
- 		/* if the buffer size doesn't match the expected size */
- 		if (obj->buffer.length != expected_size)
-@@ -145,8 +147,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	}
- 
- 	IWL_DEBUG_DEV_RADIO(dev,
--			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
--			    func, ret);
-+			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
-+			    func, *value);
-+	ret = 0;
- out:
- 	ACPI_FREE(obj);
- 	return ret;
+ enum acer_wmi_predator_v4_sys_info_command {
+@@ -2326,6 +2327,9 @@ static void acer_wmi_notify(union acpi_object *obj, void *context)
+ 		if (return_value.key_num == 0x5 && has_cap(ACER_CAP_PLATFORM_PROFILE))
+ 			acer_thermal_profile_change();
+ 		break;
++	case WMID_AC_EVENT:
++		/* We ignore AC events here */
++		break;
+ 	default:
+ 		pr_warn("Unknown function number - %d - %d\n",
+ 			return_value.function, return_value.key_num);
 -- 
 2.39.5
 
