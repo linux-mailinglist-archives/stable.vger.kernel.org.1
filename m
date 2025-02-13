@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA85A3447A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B559A34672
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286163A9E6C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA00C188CC6C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F0618784A;
-	Thu, 13 Feb 2025 14:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B27126B0BC;
+	Thu, 13 Feb 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OKQBaWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMwX9Po+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD5217E00E;
-	Thu, 13 Feb 2025 14:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573ED26B0A5;
+	Thu, 13 Feb 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458461; cv=none; b=oUZe9DaCtl9+Ii4lnMdfWYPlSE0/L+ZgvmdWyjbQgEZoejebpYRrabPI2LlsBT/n1fBu+K0ZAA7UVVNAzGiaxWzaz7uVb2BFo5tPkNh3CyvSFvtLAxXBu7nJXU8mX2SpNl+ugNTd46Ee7xx9KfFFdtqXRQDTLFAg1A3ojm1IRes=
+	t=1739459763; cv=none; b=BjX2apUL+iQrdQ9kcSkwwhjY9WduaYkekEhHq1oi/FlOrny+K6hEucSKUadFn3daP/RhFkDCEOAl65UaWFk4hI9MEZYelI2063NcBr6KWu0F/mElHxgyaHlIsG1y5Bezi3NfaJkOE7YphGrTtFay+xPv3r2nIl3xojLM6ZiigzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458461; c=relaxed/simple;
-	bh=JB60/nhzOHyWUkUum8HCJvZpreGL+djqomooHw95mhA=;
+	s=arc-20240116; t=1739459763; c=relaxed/simple;
+	bh=VkW2NkiNgOjVt64zEhR+Yfv4ZkplcLQSsKxQTamCt74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EM95nA3snXTlIFctPrXaCwJrg0BDQtSRBNGhm2gCE+Ek8jm0LivDskA2OtUX0dqN5VE7/OFC3CevRCdQqQVt644vg9A6hrB0Cz6hYZ67yIYZi8FY8JhlOLSoPy07r5/g6mFSYUOT91udyQWdQPl6qSLAYUaVUVqENoBz4WRKpdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OKQBaWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CC7C4CEE4;
-	Thu, 13 Feb 2025 14:54:20 +0000 (UTC)
+	 MIME-Version; b=ghy3ALRQz9RLVKDsxARgl9w5o8BzSn+tSmGuwBMs2ndemUNXYGLEzvlScGfqIaq8yD9XtpOKS0FGRbakIeELtdoegue4Gd6A2/bFcRp83JWD+Lf/b4+YdPV7wy2C6lYK5iK1mUO5SRWktt9dWTNqZ+Dx/kDwMGFBor304ACtAYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMwX9Po+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8DAC4CED1;
+	Thu, 13 Feb 2025 15:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458461;
-	bh=JB60/nhzOHyWUkUum8HCJvZpreGL+djqomooHw95mhA=;
+	s=korg; t=1739459763;
+	bh=VkW2NkiNgOjVt64zEhR+Yfv4ZkplcLQSsKxQTamCt74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OKQBaWg2llUf1CRt1VhZr48BdoJsfdFQ29Ae/VWAPiBW97XpRi7N5SpJBpIsRzof
-	 +ITqRig7SjEdyZnEzcmQXTpBMa3t7di05urp12YfZsZTk8NHM9NYS0Vx+WF1gHNoiY
-	 R8M6N8X3aDQd8lwO0/qDpIxDHc23jY2slxfP8uho=
+	b=vMwX9Po+bVOoStGeZ1Rt7+wSn6kF8MJzWwDmaO7xXD671K/mbr5KZLaMH50B9TZeg
+	 pjgJmmQSQ9SKc1Bs6mI3nnvSiqkSF+HmAb9O4MSsXENANcIPKiN0oL3hQOn4SrEWSx
+	 VgEkK4PMr8XbetXaD8LPGt3QV7bMnuKuxf1xjaHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vimal Agrawal <vimal.agrawal@sophos.com>,
-	Dirk VanDerMerwe <dirk.vandermerwe@sophos.com>
-Subject: [PATCH 6.12 374/422] misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 358/443] media: mc: fix endpoint iteration
 Date: Thu, 13 Feb 2025 15:28:43 +0100
-Message-ID: <20250213142450.979943955@linuxfoundation.org>
+Message-ID: <20250213142454.430183002@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vimal Agrawal <vimal.agrawal@sophos.com>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-commit 6d04d2b554b14ae6c428a9c60b6c85f1e5c89f68 upstream.
+commit fb2bd86270cd0ad004f4c614ba4f8c63a5720e25 upstream.
 
-misc_minor_alloc was allocating id using ida for minor only in case of
-MISC_DYNAMIC_MINOR but misc_minor_free was always freeing ids
-using ida_free causing a mismatch and following warn:
-> > WARNING: CPU: 0 PID: 159 at lib/idr.c:525 ida_free+0x3e0/0x41f
-> > ida_free called for id=127 which is not allocated.
-> > <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-...
-> > [<60941eb4>] ida_free+0x3e0/0x41f
-> > [<605ac993>] misc_minor_free+0x3e/0xbc
-> > [<605acb82>] misc_deregister+0x171/0x1b3
+When creating links from a subdev to a sink, the current logic tries to
+iterate over the endpoints of dev's fwnode.
 
-misc_minor_alloc is changed to allocate id from ida for all minors
-falling in the range of dynamic/ misc dynamic minors
+This might not be correct when the subdev uses a different fwnode
+compared to the dev's fwnode.
 
-Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
-Signed-off-by: Vimal Agrawal <vimal.agrawal@sophos.com>
-Reviewed-by: Dirk VanDerMerwe <dirk.vandermerwe@sophos.com>
+If, when registering, the subdev's fwnode is not set, the code inside
+v4l2_async_register_subdev will set it to the dev's fwnode.
+
+To fix this, just use the subdev's fwnode.
+
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Fixes: 0d3c81e82da9 ("media: v4l2-mc: add v4l2_create_fwnode_links helpers")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241021133812.23703-1-vimal.agrawal@sophos.com
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/misc.c |   37 +++++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/media/v4l2-core/v4l2-mc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -63,16 +63,30 @@ static DEFINE_MUTEX(misc_mtx);
- #define DYNAMIC_MINORS 128 /* like dynamic majors */
- static DEFINE_IDA(misc_minors_ida);
+--- a/drivers/media/v4l2-core/v4l2-mc.c
++++ b/drivers/media/v4l2-core/v4l2-mc.c
+@@ -329,7 +329,7 @@ int v4l2_create_fwnode_links_to_pad(stru
+ 	if (!(sink->flags & MEDIA_PAD_FL_SINK))
+ 		return -EINVAL;
  
--static int misc_minor_alloc(void)
-+static int misc_minor_alloc(int minor)
- {
--	int ret;
-+	int ret = 0;
- 
--	ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
--	if (ret >= 0) {
--		ret = DYNAMIC_MINORS - ret - 1;
-+	if (minor == MISC_DYNAMIC_MINOR) {
-+		/* allocate free id */
-+		ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
-+		if (ret >= 0) {
-+			ret = DYNAMIC_MINORS - ret - 1;
-+		} else {
-+			ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
-+					      MINORMASK, GFP_KERNEL);
-+		}
- 	} else {
--		ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
--				      MINORMASK, GFP_KERNEL);
-+		/* specific minor, check if it is in dynamic or misc dynamic range  */
-+		if (minor < DYNAMIC_MINORS) {
-+			minor = DYNAMIC_MINORS - minor - 1;
-+			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
-+		} else if (minor > MISC_DYNAMIC_MINOR) {
-+			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
-+		} else {
-+			/* case of non-dynamic minors, no need to allocate id */
-+			ret = 0;
-+		}
- 	}
- 	return ret;
- }
-@@ -219,7 +233,7 @@ int misc_register(struct miscdevice *mis
- 	mutex_lock(&misc_mtx);
- 
- 	if (is_dynamic) {
--		int i = misc_minor_alloc();
-+		int i = misc_minor_alloc(misc->minor);
- 
- 		if (i < 0) {
- 			err = -EBUSY;
-@@ -228,6 +242,7 @@ int misc_register(struct miscdevice *mis
- 		misc->minor = i;
- 	} else {
- 		struct miscdevice *c;
-+		int i;
- 
- 		list_for_each_entry(c, &misc_list, list) {
- 			if (c->minor == misc->minor) {
-@@ -235,6 +250,12 @@ int misc_register(struct miscdevice *mis
- 				goto out;
- 			}
- 		}
-+
-+		i = misc_minor_alloc(misc->minor);
-+		if (i < 0) {
-+			err = -EBUSY;
-+			goto out;
-+		}
- 	}
- 
- 	dev = MKDEV(MISC_MAJOR, misc->minor);
+-	fwnode_graph_for_each_endpoint(dev_fwnode(src_sd->dev), endpoint) {
++	fwnode_graph_for_each_endpoint(src_sd->fwnode, endpoint) {
+ 		struct fwnode_handle *remote_ep;
+ 		int src_idx, sink_idx, ret;
+ 		struct media_pad *src;
 
 
 
