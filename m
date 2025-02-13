@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-116155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20660A346DD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037E0A3463D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68337A311E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD5781893259
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2871547F0;
-	Thu, 13 Feb 2025 15:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AE226B0BC;
+	Thu, 13 Feb 2025 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8GRajkI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARWEKuGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C45143736;
-	Thu, 13 Feb 2025 15:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5D95684;
+	Thu, 13 Feb 2025 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460515; cv=none; b=ICRe76DWekOOLVmU+uuj6n6Z+IQ9DF36nCRR/XeYLocvqHBZQZGoBFYqr5Xocy3gQ9Vop8GyA8scEYGu1ZBOjNgeSuoDhLQFxFcQGEgGIJJu28pFqfSOrFfP5HSiVQECyqnbwJX5wFrQBk6qT62PRHU3ASDJXit+KGRvgtagWVU=
+	t=1739459707; cv=none; b=RFxrJvue3Fyh8fu6O/XPdRqjoFTgf9ufbe25cA6aWI42NRQ9xX7kCur80M4U7jopYcEE9Rzl50/0M8YE0pl6jbUgI0C3BzZPn91Y0rPT8X7vhsF+YgQ11Ekpq+beAjDln+eydv64qZrDI76zF9k9Un6+BZkzeUXRnv1dgkLplck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460515; c=relaxed/simple;
-	bh=RpQnUIzLnx+avYrGV7nvYmGlLz6I/HNyr9duQCj9QLw=;
+	s=arc-20240116; t=1739459707; c=relaxed/simple;
+	bh=cxFJd/LA8LqPjCdCc7Jq8KnGP48DfnY+g6nS52G1WgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLazahG72GNXweKW87jVv6DdtyonfjqgwXk0Z23+HV0JlEhEhgp1wODPtG8SmAW2E3/MtyIcFxLtXbZdstI0l9gJahZK5GQu74kRjsRBcffQ2OV+Mjg50pqNy69gG30qQYq64u3i4MtASSQzMiR7rlwahmXSXV87jPuJXW4rUw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8GRajkI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725DEC4CED1;
-	Thu, 13 Feb 2025 15:28:34 +0000 (UTC)
+	 MIME-Version; b=XiR46rX4tmv4ljAx8wLyo3AIYD5vqA8eHNK/pnfnQxPYK8g/R8IBEUELrH1EFtWAasib8dqIwrnhr0qWu123naSWIX1mXNjyQK02r0PrEmjxhgvNDXBkLBrqlx1MtmYHKUkDSrfqNM3qraSZygQzi6Pl7+RXui/T1VytBxoSkSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARWEKuGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D5C4CED1;
+	Thu, 13 Feb 2025 15:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460514;
-	bh=RpQnUIzLnx+avYrGV7nvYmGlLz6I/HNyr9duQCj9QLw=;
+	s=korg; t=1739459707;
+	bh=cxFJd/LA8LqPjCdCc7Jq8KnGP48DfnY+g6nS52G1WgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8GRajkIQWneJImcIePK30qppGiq37l0P8mg9+dGXBDbDuqkba2b0xQhDVrmuMYPr
-	 E3+eCRQa6ay7S+TsqsQB6fs40psTvAZwNFV8TArrWEr0SqZwPOXg4dAWPJPLuqZCCA
-	 zXmtahlJg1T1YbZqxsu1Vwp+AIDRUUck3tohBRus=
+	b=ARWEKuGWF46rCO+Ywa0RE4uqzl/39Uaju58Bu7z96NUk7+XPSg2C1BJtJP1Mzhyl7
+	 ryCon30dMx+Nzk09WTl/bPCM70OlpH4gEa98dvWuqWawnTNadW7ZktcRA2hpO86AvV
+	 +Zev2dmRh/IprEZK7Uq3BZRF8tNrAWgSDp+4cbFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 132/273] usb: gadget: f_tcm: Translate error to sense
+	kernel test robot <lkp@intel.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.13 339/443] jiffies: Cast to unsigned long in secs_to_jiffies() conversion
 Date: Thu, 13 Feb 2025 15:28:24 +0100
-Message-ID: <20250213142412.554539157@linuxfoundation.org>
+Message-ID: <20250213142453.706531432@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-commit 98fa00fd3ae43b857b4976984a135483d89d9281 upstream.
+commit bb2784d9ab49587ba4fbff37a319fff2924db289 upstream.
 
-When respond with check_condition error status, clear from_transport
-input so the target layer can translate the sense reason reported by
-f_tcm.
+While converting users of msecs_to_jiffies(), lkp reported that some range
+checks would always be true because of the mismatch between the implied int
+value of secs_to_jiffies() vs the unsigned long return value of the
+msecs_to_jiffies() calls it was replacing.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Fix this by casting the secs_to_jiffies() input value to unsigned long.
+
+Fixes: b35108a51cf7ba ("jiffies: Define secs_to_jiffies()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/b2a5577efe7abd0af0051229622cf7d3be5cdcd0.1733876548.git.Thinh.Nguyen@synopsys.com
+Link: https://lore.kernel.org/all/20250130192701.99626-1-eahariha@linux.microsoft.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202501301334.NB6NszQR-lkp@intel.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/jiffies.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1065,7 +1065,7 @@ static void usbg_cmd_work(struct work_st
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index ed945f42e064..0ea8c9887429 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -537,7 +537,7 @@ static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
+  *
+  * Return: jiffies value
+  */
+-#define secs_to_jiffies(_secs) ((_secs) * HZ)
++#define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
  
- out:
- 	transport_send_check_condition_and_sense(se_cmd,
--			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
-+			TCM_UNSUPPORTED_SCSI_OPCODE, 0);
- }
- 
- static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
-@@ -1193,7 +1193,7 @@ static void bot_cmd_work(struct work_str
- 
- out:
- 	transport_send_check_condition_and_sense(se_cmd,
--				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
-+				TCM_UNSUPPORTED_SCSI_OPCODE, 0);
- }
- 
- static int bot_submit_command(struct f_uas *fu,
+ extern unsigned long __usecs_to_jiffies(const unsigned int u);
+ #if !(USEC_PER_SEC % HZ)
+-- 
+2.48.1
+
 
 
 
