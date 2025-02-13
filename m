@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B1AA3430B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E78AA3446E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3C11893B50
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCECE7A1147
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD96A2222CA;
-	Thu, 13 Feb 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4521662E9;
+	Thu, 13 Feb 2025 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uksfspkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5wu3hIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87293281349;
-	Thu, 13 Feb 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E8415DBBA;
+	Thu, 13 Feb 2025 15:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457614; cv=none; b=Gkqvu6d5kNFq6M2Y5Ga/vdfEzB7y7zIibV3YKNFRUMuGM9emOmJP8bVS+Sgp0bfmgHXvOu4isY7EU10aIy9d1HoKhiG/p7Ei0dNvBe9emryWGCRaEz4sAqyy7tVhQhcLs591dHgHSr8ZwnZPSu3i3dxjJ2C0xjXtzfVnIhJWV5Q=
+	t=1739458913; cv=none; b=FJIfn5Cx40EPfmEKk0ychNeJbu/hNbHVO8ST7iz40PHX2IAtIpik6IASk5SvppQYOG+MdB/2bvZ2N5EJeRS7xZfcdLwQkuGXgRpGzYOWJciIWjcnW+pDhz6hXsCJ3jWOSyuWC9u6Pi9wJDDbh2GWPJ1g9fSEnhoELgq/1H57QRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457614; c=relaxed/simple;
-	bh=b7UfQI6+FIOT92qgxHABajcrvofAc7S4nhyF1GqE8ig=;
+	s=arc-20240116; t=1739458913; c=relaxed/simple;
+	bh=7og+cwnnJFT8oPAT7Sj8C04N+PkjXh7X1CihiHJMjPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYaTWVTnq7Ks5aM32mSlbOwwuuctCxCb5tK558GBGBBK1hDt6CEZ4vubWVGT5MacqnifGmzQ4ZECpSq/19QdkdMhG6QctuW7zE28zAzz717/n5/rAyNZIFjp+kFZqm2TtcDXoL6JcCV+ifiVzsAHQuSGiUQmNDH2haD3k3gp9bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uksfspkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9894C4CED1;
-	Thu, 13 Feb 2025 14:40:13 +0000 (UTC)
+	 MIME-Version; b=kMHxkKvuXiKww7Ala93LsomiWZaVnqUw+i846J1jI0vt5pWLOMwKY5Tp7GZQGy6AtcukrMUHgdxiuCYbSCmoCxjOYilIvlKGgB6G7mFSmNaUzzGlP5nha6pOVclpz7NTJJ+b8Cd1Ww8RbGjsG/gxTiQKnxjyj0xhZEjcl7qaKaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5wu3hIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3107DC4CEE5;
+	Thu, 13 Feb 2025 15:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457614;
-	bh=b7UfQI6+FIOT92qgxHABajcrvofAc7S4nhyF1GqE8ig=;
+	s=korg; t=1739458912;
+	bh=7og+cwnnJFT8oPAT7Sj8C04N+PkjXh7X1CihiHJMjPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uksfspkdgNuE7J3NhbnaTUzBp8ROahdi+6Bm+IdqwRF7vXVvlmR+8kOV3Lnrc+Ex8
-	 Gr6Fn7jsSyh9LH92HiWBI6ylS3hCLysogP3J1oLdpKDbf6mkDRsASnEBC4+2yFRTF9
-	 8kfg4YwzG4lLAAiA1R3lSIVScPaSpg5D2nrrVyfg=
+	b=F5wu3hImD8aCGYgM8KX1YMt2RU62qwLNU5pf9Tbgd1xjXPHiPuwqsXO50BASbzQpT
+	 lQdi1c+KBBIf/3lCQv1KWimvl4lE4DYJhHhv1frnb5lnNLEsEucpQjR9JaagR3fBfs
+	 XFfKkQQLOzpJ7Xoslbjf9I8+E7UAzUNz+dlawxY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 130/422] leds: lp8860: Write full EEPROM, not only half of it
+	Daniel Wagner <wagi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 114/443] nvme-fc: use ctrl state getter
 Date: Thu, 13 Feb 2025 15:24:39 +0100
-Message-ID: <20250213142441.565759994@linuxfoundation.org>
+Message-ID: <20250213142445.012129000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-commit 0d2e820a86793595e2a776855d04701109e46663 upstream.
+[ Upstream commit c8ed6cb5d37bc09c7e25e49a670e9fd1a3bd1dfa ]
 
-I struggle to explain dividing an ARRAY_SIZE() by the size of an element
-once again. As the latter equals to 2, only the half of EEPROM was ever
-written. Drop the unexplainable division and write full ARRAY_SIZE().
+Do not access the state variable directly, instead use proper
+synchronization so not stale data is read.
 
-Cc: stable@vger.kernel.org
-Fixes: 7a8685accb95 ("leds: lp8860: Introduce TI lp8860 4 channel LED driver")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20241114101402.2562878-1-alexander.sverdlin@siemens.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6e7f7ac03e4 ("nvme: ensure reset state check ordering")
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp8860.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/fc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/leds/leds-lp8860.c
-+++ b/drivers/leds/leds-lp8860.c
-@@ -265,7 +265,7 @@ static int lp8860_init(struct lp8860_led
- 		goto out;
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index b81af7919e94c..682234da2fabe 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -2080,7 +2080,8 @@ nvme_fc_fcpio_done(struct nvmefc_fcp_req *req)
+ 		nvme_fc_complete_rq(rq);
+ 
+ check_error:
+-	if (terminate_assoc && ctrl->ctrl.state != NVME_CTRL_RESETTING)
++	if (terminate_assoc &&
++	    nvme_ctrl_state(&ctrl->ctrl) != NVME_CTRL_RESETTING)
+ 		queue_work(nvme_reset_wq, &ctrl->ioerr_work);
+ }
+ 
+@@ -2534,6 +2535,8 @@ __nvme_fc_abort_outstanding_ios(struct nvme_fc_ctrl *ctrl, bool start_queues)
+ static void
+ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
+ {
++	enum nvme_ctrl_state state = nvme_ctrl_state(&ctrl->ctrl);
++
+ 	/*
+ 	 * if an error (io timeout, etc) while (re)connecting, the remote
+ 	 * port requested terminating of the association (disconnect_ls)
+@@ -2541,7 +2544,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
+ 	 * the controller.  Abort any ios on the association and let the
+ 	 * create_association error path resolve things.
+ 	 */
+-	if (ctrl->ctrl.state == NVME_CTRL_CONNECTING) {
++	if (state == NVME_CTRL_CONNECTING) {
+ 		__nvme_fc_abort_outstanding_ios(ctrl, true);
+ 		set_bit(ASSOC_FAILED, &ctrl->flags);
+ 		dev_warn(ctrl->ctrl.device,
+@@ -2551,7 +2554,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
  	}
  
--	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs) / sizeof(lp8860_eeprom_disp_regs[0]);
-+	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
- 	for (i = 0; i < reg_count; i++) {
- 		ret = regmap_write(led->eeprom_regmap,
- 				lp8860_eeprom_disp_regs[i].reg,
+ 	/* Otherwise, only proceed if in LIVE state - e.g. on first error */
+-	if (ctrl->ctrl.state != NVME_CTRL_LIVE)
++	if (state != NVME_CTRL_LIVE)
+ 		return;
+ 
+ 	dev_warn(ctrl->ctrl.device,
+-- 
+2.39.5
+
 
 
 
