@@ -1,121 +1,98 @@
-Return-Path: <stable+bounces-115117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E518A33CCD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 11:35:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556D3A33CDF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 11:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAA883A2C8B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB811682B5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7632135BC;
-	Thu, 13 Feb 2025 10:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BBF212F9A;
+	Thu, 13 Feb 2025 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aFuAtIj"
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="H2FNE6/8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41D6201006;
-	Thu, 13 Feb 2025 10:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121F3211A06
+	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 10:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739442899; cv=none; b=RJsXxOBSH21VlmKElNiOgt0B5u4ol0RCxXJrrUsNAlJcjGYydMaujHjxtX32cLPeA3ZSmhzSjmZKveKqh79D3J74HxW3XWKoH97vNUQw//SpKT0CQtivCrHv5WdmAigMUud4nyf+/My5JH9e2qvzRLlzvUsLxZTvqqpqnexeNws=
+	t=1739443227; cv=none; b=t3iOxHIVkzfulyXlnUZfBDwt7bhcXuWhXD5fObJkXbG1LFrpyP9Q6055GDMLaR1EL4pJhUvPeUiqB9aRJPnIEb7nTmU09O8a7goF3FitJqYG/QL/3XoM8FT0ppUbD7VRlkRF6Pdv9wWzlW5mi7HUV6jaMFWcR1Z0te5FY4AfozQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739442899; c=relaxed/simple;
-	bh=JMaCGADzD7MFRF5VZqrFPk5oHwexej0iuTowZKSK75Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rgBGDBrmGeZQxR3/HXuh4Ww9RfCg2vAq/RwBwQIWZI5RYHZ3PbC+NVxkHQvQ33loiA1EnNo+8ecDUpujuECVrFzRpDAQo1dxNwQqMNMf02MEB9AkL6ekz2KlNs6xNKkycPM3Gammkd9DkyltCKmKggk8prJfaeDeWTAcW4r0zfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aFuAtIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B98C4CEE2;
-	Thu, 13 Feb 2025 10:34:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739442898;
-	bh=JMaCGADzD7MFRF5VZqrFPk5oHwexej0iuTowZKSK75Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0aFuAtIjv8g7Fff8KGc+azbZOCoEurRkR9XJ9JrTIgRUthqVoupb6ANdckgJAbnNF
-	 6J5TV/o0D2WAuClIJIuOx5Mgrx1cmJkonVeu5UOqaHGhLicRSse86pjdffPVtVq4PO
-	 4VXuOhMFzTBfvqep65WLOh/7VpEZdtaKwLCIU1os=
-Date: Thu, 13 Feb 2025 11:34:50 +0100
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-	"javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
-	"make_ruc2021@163.com" <make_ruc2021@163.com>,
-	"peter.chen@nxp.com" <peter.chen@nxp.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pawel Eichler <peichler@cadence.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: xhci: lack of clearing xHC resources
-Message-ID: <2025021359-culture-wow-55d5@gregkh>
-References: <20250213101158.8153-1-pawell@cadence.com>
- <PH7PR07MB95384002E4FBBC7FE971862FDDFF2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	s=arc-20240116; t=1739443227; c=relaxed/simple;
+	bh=JsVXYWKYEmqlueQ5Dmhe4uJrs2X53jk8MY1CucfezlY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UVrPMnQNffByItFMRCptXMnOdxyMkNAuLDvN1wEsZaD3qxqBH2sW5Hc458QbI9zoE/dg41w7nb6lY0yyncj+hSHhE//CM1lxqCLQdWzrEUutRS/zb4oCvv7LGWKOi3ARSx/nUxeaKKIZhSgT41I522Nd44kqhS1ZH77DLJLA5dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=H2FNE6/8; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c072d6199eso35922985a.1
+        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 02:40:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1739443225; x=1740048025; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=JsVXYWKYEmqlueQ5Dmhe4uJrs2X53jk8MY1CucfezlY=;
+        b=H2FNE6/8+ao5s3Rubq4Vcq1qewNccgBcXGVv55TMCMxkAFZTw4d7Yvd5p7QCp5gpx0
+         xUJMSq6FbeJOXoqrxi8/rju0m8Alid17eiRU//QMtGb+yhb5pKMFvs9hQt5ADj0xOlQD
+         DcdeSEpq+fdN/sI7P/8qffMT2pGAEsQ8Ij6uo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739443225; x=1740048025;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JsVXYWKYEmqlueQ5Dmhe4uJrs2X53jk8MY1CucfezlY=;
+        b=eHIy5vMrG29JGgtdc/kpkO/GbQjY03nL0grGyoxCfyVBNY9n4Zp/aAOVLUzK1ZCBg5
+         1gcaxpMJZsAPcH1z2UCD7PhYUOIxERwn6UP+q6ZY04oaM8oyelXvM1tUE7/Dvn/43GAu
+         Kj7JwI8JCBq/ugy5Se/xtmi872GJFEbxHNkyxNHylRQewmMKSv+weNbvj8AqyFQqAFRm
+         9ScKVxg4NgLNVgfYpeaXViO8VylaGrhyvMZGpOwJ/7zXQgElwS8JsyHLR5GEHkN+tcPg
+         GYwlzQUpIjthESYkbmXf+1Ck9AdsVAYv1/J2U+vdouTLQWx8ATtwDhwSoXKMjESUn3JQ
+         Nptw==
+X-Forwarded-Encrypted: i=1; AJvYcCULs6g9qzXwNuAgMdWIngD1bPMMEZz5tf+INA7dvjPWkDrjj/nZj+BPBf/H9f+SOmIMvItXdgk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvA/Jf4SFKn6/3L7rgQavwVc9BLVlVAFYTvDexbb1epaD4+gce
+	cgTRXLGuZfrltRBBpT6RpwDtwT/PuoYEvaxgrRRbo/XX8cgNoHEUQ/UV7QbIxxrhMvRUSLaoIxJ
+	ICNyZsWtEMf5e1D9JjZ7p5oep5cT0Pm1dF5FWOA==
+X-Gm-Gg: ASbGncunENZOLjVF570uTJ5LxCXuzXCHVS6dEgkzsWArOfxcYKZqGxARORJfnz7CvSK
+	UY0KlvAH1eSx/E+QWGZIBApXqH3rjmSVWG8c08cqyWUduvwB51FXmTEzEvYyujnR/Yf5R2A==
+X-Google-Smtp-Source: AGHT+IES7Wq/c8Wha7OQPciT4W4vsKg4h55hXzDfZBmTqkbm4nWumYHNj5nAJMi7S6W4FwEcaH6bfqCs+of3dBRm+AA=
+X-Received: by 2002:a05:622a:1449:b0:471:c14f:5ef6 with SMTP id
+ d75a77b69052e-471c14f6144mr27620461cf.17.1739443224991; Thu, 13 Feb 2025
+ 02:40:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB95384002E4FBBC7FE971862FDDFF2@PH7PR07MB9538.namprd07.prod.outlook.com>
+References: <20250211214750.1527026-1-joannelkoong@gmail.com>
+In-Reply-To: <20250211214750.1527026-1-joannelkoong@gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Thu, 13 Feb 2025 11:40:14 +0100
+X-Gm-Features: AWEUYZnH71sCx2vS7F-ixqQY8DRlp00tM7NXt4xsKY8ZKjLN5VbJHLl2N1KwWi8
+Message-ID: <CAJfpegs58oGMrjCpmYbzZ1ZLPzMXTOm86TXbdko9ndYE4F7NRQ@mail.gmail.com>
+Subject: Re: [PATCH] fuse: revert back to __readahead_folio() for readahead
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, jlayton@kernel.org, josef@toxicpanda.com, 
+	vbabka@suse.cz, bernd.schubert@fastmail.fm, christian@heusel.eu, 
+	grawity@gmail.com, willy@infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 13, 2025 at 10:27:00AM +0000, Pawel Laszczak wrote:
-> The xHC resources allocated for USB devices are not released in correct order after resuming in case when while suspend device was reconnected.
+On Tue, 11 Feb 2025 at 22:48, Joanne Koong <joannelkoong@gmail.com> wrote:
+>
+> In 3eab9d7bc2f4 ("fuse: convert readahead to use folios"), the logic
+> was converted to using the new folio readahead code, which drops the
+> reference on the folio once it is locked, using an inferred reference
+> on the folio. Previously we held a reference on the folio for the
+> entire duration of the readpages call.
 
-Please wrap your changelog text properly, checkpatch.pl should have
-caught this, did you forget to run it?
+Applied to #for-next
 
-> 
-> This issue has been detected during the fallowing scenario:
-> - connect hub HS to root port
-> - connect LS/FS device to hub port
-> - wait for enumeration to finish
-> - force DUT to suspend
-> - reconnect hub attached to root port
-> - wake DUT
-> 
-> For this scenario during enumeration of USB LS/FS device the Cadence xHC reports completion error code for xHCi commands because the devices was not property disconnected and in result the xHC resources has not been correct freed.
-> XHCI specification doesn't mention that device can be reset in any order so, we should not treat this issue as Cadence xHC controller bug.
+Thanks everyone for taking care of this.
 
-But if it operates unlike all other xhci controllers, isn't that a bug
-on its side?
-
-> Similar as during disconnecting in this case the device should be cleared starting form the last usb device in tree toward the root hub.
-> To fix this issue usbcore driver should disconnect all USB devices connected to hub which was reconnected while suspending.
-> 
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> cc: <stable@vger.kernel.org>
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-> ---
->  drivers/usb/core/hub.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c index 0cd44f1fd56d..2473cbf317a8 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -3627,10 +3627,12 @@ static int finish_port_resume(struct usb_device *udev)
->  		 * the device will be rediscovered.
->  		 */
->   retry_reset_resume:
-> -		if (udev->quirks & USB_QUIRK_RESET)
-> +		if (udev->quirks & USB_QUIRK_RESET) {
->  			status = -ENODEV;
-> -		else
-> +		} else {
-> +			hub_disconnect_children(udev);
-
-This feels odd, and will hit more than just xhci controllers, right?
-You aren't really disconnecting the hub, only resetting it (well the
-logical disconnect will cause a real disconnect later on, so this should
-be called from that code path, right?
-
-thanks,
-
-greg k-h
+Miklos
 
