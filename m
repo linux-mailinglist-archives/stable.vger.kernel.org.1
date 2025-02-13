@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-115757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C425A3457C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8928DA3436E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8FE3B2869
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BE53AD4CF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27041D54E3;
-	Thu, 13 Feb 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D3228137F;
+	Thu, 13 Feb 2025 14:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nqwa45+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEbiykjh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF3F1AAE17;
-	Thu, 13 Feb 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C4F23A9B1;
+	Thu, 13 Feb 2025 14:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459142; cv=none; b=iR92n7VU6Uc5tAK5Ho3PgcqEXZGX05ZFf2V17Ivek4henr+nQBpjCFlr/zsOivKVYmsuL8YeQHoor9akGAZ7XL7+Y55hYgh6F4L10BNU9MbACehbq1lM5jUHdN8SWkJBv5fXPpC1RWJpC9qAAAuCTHTNeJYVMF6hadxMTQWtlTg=
+	t=1739457846; cv=none; b=RB7oz3Hx38BSDCmf/JgqViR8KQeYSDu+idqjOgz6fHlakCg1GUEbm2hhBBl9yGziFEm9WcJpbrD+ih5/MBIK6/qEZi3BCH2/nw07rqwVwjFMdNGIz/9ELWQpBpboQuVVEyrjXeIErFGBuejdOUhZr1MGhh92EBOia1U57YBSMNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459142; c=relaxed/simple;
-	bh=g8LzZoJekrd9c5VnX6i59jyXHKXQuXWdgXiDLxgD8fI=;
+	s=arc-20240116; t=1739457846; c=relaxed/simple;
+	bh=GoU2QOJSwoti3NQ9XwM3B7T6S32fNKMp+k5qInDhpLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/o3y1GJXFA82O41foyl9nKkYdOn7MIDm1x87ZGFebq1zc9i4rgfIZZjF0nZNA4bMQO8Jodcw3u3L45mGi+ttM4X7d6JwI8Mm6KpZecjkH72/jIsdXUtI/BhVXdGfkg8scLk23t712DCeq/4yQSXVw6OgSa5VG4mi2nef+3P7/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nqwa45+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F6CC4CED1;
-	Thu, 13 Feb 2025 15:05:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jBJwq1WrdpUbwUolG2ZBx509Y1urIpb+++WQzjb1E/wLdFKGpSkxW+rvbhDqW1Lja+DSLtHcqPx0eyzp/4PgiYb1xlkmBSMv/KYy+7HhoyBmvpI58KwgkX9Mzohpt9KKmP6KGB+sAUmxYpvlCApaB0Z/rGdciMSHYYo/gXMpcmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEbiykjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C39C4CEE2;
+	Thu, 13 Feb 2025 14:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459142;
-	bh=g8LzZoJekrd9c5VnX6i59jyXHKXQuXWdgXiDLxgD8fI=;
+	s=korg; t=1739457845;
+	bh=GoU2QOJSwoti3NQ9XwM3B7T6S32fNKMp+k5qInDhpLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nqwa45+cLVt67yVqUNOI5CDAHc+fpMeyzP4wy7N5TnM+TEX8kqvSmLQjgV0jbi1iE
-	 XZbKmmV31Bb61pYUhsxQOeVwWg/6I3Pk4XQIb/IS4F4p+wwRZkaRRLo9mlct5vpfdi
-	 ZQLBmdcbQ+JJx14AKzNci/KqBA8Qr+AW9TwfoqbY=
+	b=EEbiykjh9mjz8AF6DRk69RTH97JrNM9iSLB9C7nCCdVPFmK7xo3d+AEo8zPJmX2Ed
+	 s0ayCjJfXFaVUoa4xD8i74vU/4Imp7hoHVO3NjOWoOO43n5JqAllEyLH+K3o2Yci+8
+	 50+CwR0SR/cwL/maq6CJPdl9xFh7z0o04CBih3kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.13 181/443] drm/ast: astdp: Fix timeout for enabling video signal
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 197/422] of: reserved-memory: Fix using wrong number of cells to get property alignment
 Date: Thu, 13 Feb 2025 15:25:46 +0100
-Message-ID: <20250213142447.600494500@linuxfoundation.org>
+Message-ID: <20250213142444.147046970@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit fd39c41bcd82d5ebaaebadb944eab5598c668a90 upstream.
+commit 267b21d0bef8e67dbe6c591c9991444e58237ec9 upstream.
 
-The ASTDP transmitter sometimes takes up to 1 second for enabling the
-video signal, while the timeout is only 200 msec. This results in a
-kernel error message. Increase the timeout to 1 second. An example
-of the error message is shown below.
+According to DT spec, size of property 'alignment' is based on parent
+node’s #size-cells property.
 
-[  697.084433] ------------[ cut here ]------------
-[  697.091115] ast 0000:02:00.0: [drm] drm_WARN_ON(!__ast_dp_wait_enable(ast, enabled))
-[  697.091233] WARNING: CPU: 1 PID: 160 at drivers/gpu/drm/ast/ast_dp.c:232 ast_dp_set_enable+0x123/0x140 [ast]
-[...]
-[  697.272469] RIP: 0010:ast_dp_set_enable+0x123/0x140 [ast]
-[...]
-[  697.415283] Call Trace:
-[  697.420727]  <TASK>
-[  697.425908]  ? show_trace_log_lvl+0x196/0x2c0
-[  697.433304]  ? show_trace_log_lvl+0x196/0x2c0
-[  697.440693]  ? drm_atomic_helper_commit_modeset_enables+0x30a/0x470
-[  697.450115]  ? ast_dp_set_enable+0x123/0x140 [ast]
-[  697.458059]  ? __warn.cold+0xaf/0xca
-[  697.464713]  ? ast_dp_set_enable+0x123/0x140 [ast]
-[  697.472633]  ? report_bug+0x134/0x1d0
-[  697.479544]  ? handle_bug+0x58/0x90
-[  697.486127]  ? exc_invalid_op+0x13/0x40
-[  697.492975]  ? asm_exc_invalid_op+0x16/0x20
-[  697.500224]  ? preempt_count_sub+0x14/0xc0
-[  697.507473]  ? ast_dp_set_enable+0x123/0x140 [ast]
-[  697.515377]  ? ast_dp_set_enable+0x123/0x140 [ast]
-[  697.523227]  drm_atomic_helper_commit_modeset_enables+0x30a/0x470
-[  697.532388]  drm_atomic_helper_commit_tail+0x58/0x90
-[  697.540400]  ast_mode_config_helper_atomic_commit_tail+0x30/0x40 [ast]
-[  697.550009]  commit_tail+0xfe/0x1d0
-[  697.556547]  drm_atomic_helper_commit+0x198/0x1c0
+But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
+the property obviously.
 
-This is a cosmetical problem. Enabling the video signal still works
-even with the error message. The problem has always been present, but
-only recent versions of the ast driver warn about missing the timeout.
+Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 4e29cc7c5c67 ("drm/ast: astdp: Replace ast_dp_set_on_off()")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.13+
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250127134423.84266-1-tzimmermann@suse.de
+Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/of_reserved_mem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -195,7 +195,7 @@ static bool __ast_dp_wait_enable(struct
- 	if (enabled)
- 		vgacrdf_test |= AST_IO_VGACRDF_DP_VIDEO_ENABLE;
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -360,12 +360,12 @@ static int __init __reserved_mem_alloc_s
  
--	for (i = 0; i < 200; ++i) {
-+	for (i = 0; i < 1000; ++i) {
- 		if (i)
- 			mdelay(1);
- 		vgacrdf = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xdf,
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
+-		if (len != dt_root_addr_cells * sizeof(__be32)) {
++		if (len != dt_root_size_cells * sizeof(__be32)) {
+ 			pr_err("invalid alignment property in '%s' node.\n",
+ 				uname);
+ 			return -EINVAL;
+ 		}
+-		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
++		align = dt_mem_next_cell(dt_root_size_cells, &prop);
+ 	}
+ 
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
 
 
 
