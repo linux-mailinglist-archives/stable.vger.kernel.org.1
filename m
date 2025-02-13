@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-116270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6F1A347EE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602DBA34819
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B09189167E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAF25188BF79
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D7F70805;
-	Thu, 13 Feb 2025 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D641946C7;
+	Thu, 13 Feb 2025 15:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUGyE1vK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drx760uN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6D5199934;
-	Thu, 13 Feb 2025 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9441531DB;
+	Thu, 13 Feb 2025 15:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460906; cv=none; b=EeOUdLt3Cue5PFFeKFhjE1uYT0egHNfocBiBDR/hl69X6yWFfOPPLxip686wgpJUFdmjLWNufAg3AAdZZidcGnsuOstYImFyRogPyp9s0bl/sMGjwJ4bhaLjUY3C9N+47au5bXOi8Iu66N7p3ZSTQdk4dFPnZq/6UB6/KeP7eGA=
+	t=1739460943; cv=none; b=i2IeDhJC944Pk9WmewPrEBjQtxXwNbn8++Q3sgZxW9kr1SczTFZyptpybBLBxzGe+C3/y1KtTYYCOuUctiiIN2aeGI3j7nKvloCY/PgPAbiNXThPihF7HhsJF3RliOmzhXc4MLI5twbJVe+6lhsAuXZykLNmWmGTwFhaWEYALyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460906; c=relaxed/simple;
-	bh=EOVzI3obJX675i6Kg5SLf3RKOwg//OOP/RVigKno0C0=;
+	s=arc-20240116; t=1739460943; c=relaxed/simple;
+	bh=gxkNLhN5Vywso3kIlbPB/ydear+z2K+5Pj1apJpNgjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MngNqfnGYLTTKne1XupINpwgLZ42ROMi4MY+5Nird42Kzy5q9pLU1Ar1SiCEQMgxdgLB8pZKayMEUCF0cmQktcFM9foAStXtX0i03ltEH8nn1oHVOfV3Feha4k1y2asT0V8hrh2nnxfJvbHZz/JPqYX8GUuMXVIpdPNvPOkNN/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUGyE1vK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841ABC4CED1;
-	Thu, 13 Feb 2025 15:35:05 +0000 (UTC)
+	 MIME-Version; b=GoCYDOCReugBHO4e4OUIGG3mNT8oM5wVE1ithYhBwu1EGxidU276h3cGp9bXDmZvfP/bjBayRtlkTrNqmpgdOSK5Z9DbgVoVXP8TCW2WkBXsDEU+Ip1j1gQzyjX3Kv15fYjNCjmQpmUVhc7n9+eRAGtO3kj8vHvtry7XJ3EUG6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drx760uN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7179C4CED1;
+	Thu, 13 Feb 2025 15:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460906;
-	bh=EOVzI3obJX675i6Kg5SLf3RKOwg//OOP/RVigKno0C0=;
+	s=korg; t=1739460943;
+	bh=gxkNLhN5Vywso3kIlbPB/ydear+z2K+5Pj1apJpNgjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUGyE1vKLhRnn30My+/NBgfjCFPrSV414YBAV6k+X1niSZOxIQwhd38p1oUxO9ehJ
-	 smvaWRhaSfoU8ExmFlFMGpH/uTObYjvHN9eUZxjtEX8bKkhdnCCEKh9gej+hZ/x5Az
-	 kfnSbvGV9BnL7sOIN/pNK3FzBfyddFdWzXr5QrtY=
+	b=drx760uN9WezII3l2g7ViZIQwROlw7c5jro+KwP6gOhz7R7dL8qK5N2yP2XgO0rVb
+	 r4/nZMGDMgjOtAYIzpDW8Bib4YzGA2JSFN/wgeAbyuqqKosLc3hSezsxHrYjs+33+c
+	 q0dJw9MkOLPt9Y0k5TeXwiDe+ZngLC/i50JrkYtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Chan <towinchenmi@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 239/273] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured so
-Date: Thu, 13 Feb 2025 15:30:11 +0100
-Message-ID: <20250213142416.879133677@linuxfoundation.org>
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 240/273] mtd: onenand: Fix uninitialized retlen in do_otp_read()
+Date: Thu, 13 Feb 2025 15:30:12 +0100
+Message-ID: <20250213142416.918297790@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -65,43 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nick Chan <towinchenmi@gmail.com>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-commit 698244bbb3bfd32ddf9a0b70a12b1c7d69056497 upstream.
+commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
 
-The CPU PMU in Apple SoCs can be configured to fire its interrupt in one of
-several ways, and since Apple A11 one of the methods is FIQ, but the check
-of the configuration register fails to test explicitely for FIQ mode. It
-tests whether the IMODE bitfield is zero or not and the PMCRO_IACT bit is
-set. That results in false positives when the IMODE bitfield is not zero,
-but does not have the mode PMCR0_IMODE_FIQ.
+The function do_otp_read() does not set the output parameter *retlen,
+which is expected to contain the number of bytes actually read.
+As a result, in onenand_otp_walk(), the tmp_retlen variable remains
+uninitialized after calling do_otp_walk() and used to change
+the values of the buf, len and retlen variables.
 
-Only handle the PMC interrupt as a FIQ when the CPU PMU has been configured
-to fire FIQs, i.e. the IMODE bitfield value is PMCR0_IMODE_FIQ and
-PMCR0_IACT is set.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250118163554.16733-1-towinchenmi@gmail.com
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-apple-aic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/onenand/onenand_base.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/irqchip/irq-apple-aic.c
-+++ b/drivers/irqchip/irq-apple-aic.c
-@@ -563,7 +563,8 @@ static void __exception_irq_entry aic_ha
- 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
- 	}
+--- a/drivers/mtd/nand/onenand/onenand_base.c
++++ b/drivers/mtd/nand/onenand/onenand_base.c
+@@ -2923,6 +2923,7 @@ static int do_otp_read(struct mtd_info *
+ 	ret = ONENAND_IS_4KB_PAGE(this) ?
+ 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
+ 		onenand_read_ops_nolock(mtd, from, &ops);
++	*retlen = ops.retlen;
  
--	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
-+	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
-+			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
- 		int irq;
- 		if (cpumask_test_cpu(smp_processor_id(),
- 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
+ 	/* Exit OTP access mode */
+ 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
 
 
 
