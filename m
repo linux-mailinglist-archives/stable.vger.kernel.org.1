@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2301A3452D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDA1A34315
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC25D16E205
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB2C1893D7E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4611FFC4A;
-	Thu, 13 Feb 2025 15:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B62241683;
+	Thu, 13 Feb 2025 14:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRSbg6v/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLpifsKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0601615853B;
-	Thu, 13 Feb 2025 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7007124167F;
+	Thu, 13 Feb 2025 14:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459003; cv=none; b=szewAJBy+9iYTXIDxUCnuKzNcVZtrulEXQVN/xU/lCBJOR1e7LmhYle/WuJkwu8CHC0DwBPrJwij7J+EeAksW+n3rmibiZbPdBLDw953HQ43J0A7Obi23CYsn/SVTNjFxvPlW8T+nZIdiLw+NtLuyscmoFiFo3AlMfzX8zArPqM=
+	t=1739457625; cv=none; b=A/e18LEUkMe0t890t5GOhta3xyjKOeNiZc9ISzmtLLgZebvGT3N7sl5VYvA/NCwjmGNipCrbTAkwk6Xq6H+eO0SjbeSOkT6gmWv05HZXX9sELDFLxAjAmM8WJ34FkElDDgc1Q8nNPJX34LaV8hjHIsZbO9d9Qz05yY+RVwWNwGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459003; c=relaxed/simple;
-	bh=00QYngDnONxZR45AeBBo4GfJG8/Op53g3Y/YV7CLw0c=;
+	s=arc-20240116; t=1739457625; c=relaxed/simple;
+	bh=aleAURu2BmRsW9krMxaH9GeYw5FMKaJIK7yRqEh+FRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1SaMcrRs03BzLmco6KB4xyAV7kowqBezyvcj5yPDeUVEsZwqUvrszhIHRx54t5hl/3HcW541SThS0TwhDufYBpITqlS3dVmLaJnqZ0dKUGP+oAicFK1EgV6Y3e/n9yQwTdvKlncVhhm9cKxoRDevRzn+tj8xZXQDmPxcVphc3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRSbg6v/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01294C4CED1;
-	Thu, 13 Feb 2025 15:03:21 +0000 (UTC)
+	 MIME-Version; b=AcmXjgIaR/KtvvPmkQRspyODC/tZvP3XlGflonXs7mFwZrF2Mg3ypgXXUn8LEtYKuyiC5wC2OFWhMKzRJJ4pmAivLs6vk38oDF1wHZPdPUZczbqxABzwiWlF3paByE8Q6Q9iULSHqd1BLKkuun1v4kCES40G3Ps9ismFnDMi0Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLpifsKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6236FC4CEEB;
+	Thu, 13 Feb 2025 14:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459002;
-	bh=00QYngDnONxZR45AeBBo4GfJG8/Op53g3Y/YV7CLw0c=;
+	s=korg; t=1739457625;
+	bh=aleAURu2BmRsW9krMxaH9GeYw5FMKaJIK7yRqEh+FRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRSbg6v/DjgN57igG4JTL71nzdHv6mE3v9lnvv/wU+8dm+Da5v3XH9ymaxTjyH0Fr
-	 9DXkOAaWZr5H6yqZqZES9UBW+Kz7os7Fv2Zlfq6VxkjMNifYKgP68fAji0vxHvt8bJ
-	 JCW5sbaFWAYBFpUmbeMYTNvolxG7aHUp0WtJxhhg=
+	b=yLpifsKvstuvBsMKKbDXBDmgYhsoUfNVY7/33YY5Ma0f55f6CLydKzEHMWz76/yGS
+	 JKaKXvH1xGj3nMgS2pM4e+jKI3xNx4y8WdJQOwMU00S6N7MHkjKNAsHu48lo4kZj9D
+	 4B0rhKggvQmrdtp7eeXoCGq36fZdHhCAwxvMzy3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Quang Le <quanglex97@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 107/443] nvmet: fix a memory leak in controller identify
+Subject: [PATCH 6.12 123/422] pfifo_tail_enqueue: Drop new packet when sch->limit == 0
 Date: Thu, 13 Feb 2025 15:24:32 +0100
-Message-ID: <20250213142444.739656706@linuxfoundation.org>
+Message-ID: <20250213142441.295819504@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Quang Le <quanglex97@gmail.com>
 
-[ Upstream commit 58f5c8d5ca07a2f9fa93fb073f5b1646ec482ff2 ]
+[ Upstream commit 647cef20e649c576dff271e018d5d15d998b629d ]
 
-Simply free an allocated buffer once we copied its content
-to the request sgl.
+Expected behaviour:
+In case we reach scheduler's limit, pfifo_tail_enqueue() will drop a
+packet in scheduler's queue and decrease scheduler's qlen by one.
+Then, pfifo_tail_enqueue() enqueue new packet and increase
+scheduler's qlen by one. Finally, pfifo_tail_enqueue() return
+`NET_XMIT_CN` status code.
 
-kmemleak complaint:
-unreferenced object 0xffff8cd40c388000 (size 4096):
-  comm "kworker/2:2H", pid 14739, jiffies 4401313113
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 0):
-    [<ffffffff9e01087a>] kmemleak_alloc+0x4a/0x90
-    [<ffffffff9d30324a>] __kmalloc_cache_noprof+0x35a/0x420
-    [<ffffffffc180b0e2>] nvmet_execute_identify+0x912/0x9f0 [nvmet]
-    [<ffffffffc181a72c>] nvmet_tcp_try_recv_pdu+0x84c/0xc90 [nvmet_tcp]
-    [<ffffffffc181ac02>] nvmet_tcp_io_work+0x82/0x8b0 [nvmet_tcp]
-    [<ffffffff9cfa7158>] process_one_work+0x178/0x3e0
-    [<ffffffff9cfa8e9c>] worker_thread+0x2ec/0x420
-    [<ffffffff9cfb2140>] kthread+0xf0/0x120
-    [<ffffffff9cee36a4>] ret_from_fork+0x44/0x70
-    [<ffffffff9ce7fdda>] ret_from_fork_asm+0x1a/0x30
+Weird behaviour:
+In case we set `sch->limit == 0` and trigger pfifo_tail_enqueue() on a
+scheduler that has no packet, the 'drop a packet' step will do nothing.
+This means the scheduler's qlen still has value equal 0.
+Then, we continue to enqueue new packet and increase scheduler's qlen by
+one. In summary, we can leverage pfifo_tail_enqueue() to increase qlen by
+one and return `NET_XMIT_CN` status code.
 
-Fixes: 84909f7decbd ("nvmet: use kzalloc instead of ZERO_PAGE in nvme_execute_identify_ns_nvm()")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+The problem is:
+Let's say we have two qdiscs: Qdisc_A and Qdisc_B.
+ - Qdisc_A's type must have '->graft()' function to create parent/child relationship.
+   Let's say Qdisc_A's type is `hfsc`. Enqueue packet to this qdisc will trigger `hfsc_enqueue`.
+ - Qdisc_B's type is pfifo_head_drop. Enqueue packet to this qdisc will trigger `pfifo_tail_enqueue`.
+ - Qdisc_B is configured to have `sch->limit == 0`.
+ - Qdisc_A is configured to route the enqueued's packet to Qdisc_B.
+
+Enqueue packet through Qdisc_A will lead to:
+ - hfsc_enqueue(Qdisc_A) -> pfifo_tail_enqueue(Qdisc_B)
+ - Qdisc_B->q.qlen += 1
+ - pfifo_tail_enqueue() return `NET_XMIT_CN`
+ - hfsc_enqueue() check for `NET_XMIT_SUCCESS` and see `NET_XMIT_CN` => hfsc_enqueue() don't increase qlen of Qdisc_A.
+
+The whole process lead to a situation where Qdisc_A->q.qlen == 0 and Qdisc_B->q.qlen == 1.
+Replace 'hfsc' with other type (for example: 'drr') still lead to the same problem.
+This violate the design where parent's qlen should equal to the sum of its childrens'qlen.
+
+Bug impact: This issue can be used for user->kernel privilege escalation when it is reachable.
+
+Fixes: 57dbb2d83d10 ("sched: add head drop fifo queue")
+Reported-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://patch.msgid.link/20250204005841.223511-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/admin-cmd.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_fifo.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
-index fa89b0549c36c..7b70635373fd8 100644
---- a/drivers/nvme/target/admin-cmd.c
-+++ b/drivers/nvme/target/admin-cmd.c
-@@ -915,6 +915,7 @@ static void nvme_execute_identify_ns_nvm(struct nvmet_req *req)
- 		goto out;
- 	}
- 	status = nvmet_copy_to_sgl(req, 0, id, sizeof(*id));
-+	kfree(id);
- out:
- 	nvmet_req_complete(req, status);
- }
+diff --git a/net/sched/sch_fifo.c b/net/sched/sch_fifo.c
+index b50b2c2cc09bc..e6bfd39ff3396 100644
+--- a/net/sched/sch_fifo.c
++++ b/net/sched/sch_fifo.c
+@@ -40,6 +40,9 @@ static int pfifo_tail_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ {
+ 	unsigned int prev_backlog;
+ 
++	if (unlikely(READ_ONCE(sch->limit) == 0))
++		return qdisc_drop(skb, sch, to_free);
++
+ 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
+ 		return qdisc_enqueue_tail(skb, sch);
+ 
 -- 
 2.39.5
 
