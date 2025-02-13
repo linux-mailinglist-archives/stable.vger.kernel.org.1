@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD23A345DB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15194A346F7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444FD189C00A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB4918995E5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FA31411DE;
-	Thu, 13 Feb 2025 15:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BFE14F121;
+	Thu, 13 Feb 2025 15:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inpGmu0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VET9ldzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AE026B087;
-	Thu, 13 Feb 2025 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59E145A03;
+	Thu, 13 Feb 2025 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459318; cv=none; b=tFOSC1NsHVusUHfu4oRb7ZjoRGnCbq7ECrkE5N9t6Resl7gSQbR6i/rmzCKi85pWPOYaXvHjeRN5QXXDfKjPxRq3hhVhawuyZ2qaN7MNh6W0fFsrNtKFWgwvZpBxMQ+9prDD3FbSF+IYvj3G7yhhcTIKqJXqMFvKXMc2HS403xE=
+	t=1739460127; cv=none; b=K6Zhv84XLWGgaQtVl7HevFXRW/jssJLuqpbzs3uKlfllfWiqdlGtg6qQEOmbeMBkpwHQ0ho88sy+d6sqLipRCdZJy3eeXkOyZwRRSaqB/c8GO3IfkVF3Uw1t+s09wRP7vSxnnUYGdSXJBSOr2yJB+gzxl9BH8SiIrINf+6WdHIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459318; c=relaxed/simple;
-	bh=HSPhcN8xidDg/xqI9dgldLz9vzSe+Y7cElOtFY0KHUM=;
+	s=arc-20240116; t=1739460127; c=relaxed/simple;
+	bh=/Pgg7L9CGHk/+MYkX55y/TEs/xcSNk4WTkxohRo9ISw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7KLdA9JHOkbrAI0/cof7Nw81vfv25lhAMDvLPlTkURWOe10k/0ZjK3nmcLo4L1PK8knXf8lVMQ6a+jbcD/TF66c/eUWNh4z04dEr5qfO+ngqKjJHQfMjIrCjdBiF6vw2XZaPtjEUW3btmiq9M3l2MzfBwKZQBFi2RdHPX2iwwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inpGmu0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1581CC4CEE5;
-	Thu, 13 Feb 2025 15:08:36 +0000 (UTC)
+	 MIME-Version; b=pLW1V8jwA4KAT2CgsHAHiBzd/Ype3iiN9xqbzEyxHAkTWXzvyNAfjJ8Du8JTEnLNvCAIjkN7ksW9FBlbk0yjroxCB6dDUqApj9TWqO1TtscM6TuSp4kmztUYUsT59CvTHvaFFSIJqB7x3Y56fMaFyCLqZPo82glrLCZb7fZCqns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VET9ldzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FA2C4CED1;
+	Thu, 13 Feb 2025 15:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459317;
-	bh=HSPhcN8xidDg/xqI9dgldLz9vzSe+Y7cElOtFY0KHUM=;
+	s=korg; t=1739460126;
+	bh=/Pgg7L9CGHk/+MYkX55y/TEs/xcSNk4WTkxohRo9ISw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inpGmu0gl6dl/wSkEVy5YqVvhoCbOYAY79dS+UBhMerHyskrEgfSffSnQAJgX0wmV
-	 Vyu7gsrM7tBYOsLJNqcRRI0X7cQjuuswxGCqAkdMHvkpNMZ8JlvsUXgHs1omhvFwt8
-	 pOJjNyVfB4g5Uho4ff/xHAkjk6TplUwBRVD9KawE=
+	b=VET9ldzQawJMbeXHxufp0NBqzpsokDb9qxhkYq6rxfPuLXaZovnomjP5wTfcRtg0R
+	 TEzdy19KAS2PfTvbqVwLSGkGYtFk9TD9jTxGpkerL8C2eE/1PnHkIeIjpWWbGTl4ts
+	 bgptf47NL5pi5rszKvG3GYt+29V08JFQP+4i3s3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Fiona Klute <fiona.klute@gmx.de>,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Subject: [PATCH 6.13 229/443] wifi: rtw88: 8703b: Fix RX/TX issues
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 022/273] drm/bridge: it6505: Change definition MAX_HDCP_DOWN_STREAM_COUNT
 Date: Thu, 13 Feb 2025 15:26:34 +0100
-Message-ID: <20250213142449.450607702@linuxfoundation.org>
+Message-ID: <20250213142408.238855269@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-commit a806a8160a0fcaff368bb510c8a52eff37faf727 upstream.
+[ Upstream commit 85597bc0d70c287ba41f17d14d3d857a38a3d727 ]
 
-Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
-fatal and do not seem to have any impact, just fix them to match vendor
-driver.
+A HDCP source device shall support max downstream to 127 devices.
+Change definition MAX_HDCP_DOWN_STREAM_COUNT to 127
 
-However the last one in rtw8703b_set_channel_bb() clears too many bits
-in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
-above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+KSVs shall save for DRM blocked devices check.
+This results in struct it6505 growth by ~0.5 KiB.
 
-With the last typo fixed, the driver is able to reach MCS7 on Pinebook
-
-Cc: stable@vger.kernel.org
-Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Fiona Klute <fiona.klute@gmx.de>
-Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250103075107.1337533-1-anarsoul@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-4-e0fdd4844703@ite.corp-partner.google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8703b.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-@@ -903,7 +903,7 @@ static void rtw8703b_set_channel_bb(stru
- 		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_OFDM0_TX_PSD_NOISE,
--				 GENMASK(31, 20), 0x0);
-+				 GENMASK(31, 30), 0x0);
- 		rtw_write32(rtwdev, REG_BBRX_DFIR, 0x4A880000);
- 		rtw_write32(rtwdev, REG_OFDM0_A_TX_AFE, 0x19F60000);
- 		break;
-@@ -1198,9 +1198,9 @@ static u8 rtw8703b_iqk_rx_path(struct rt
- 	rtw_write32(rtwdev, REG_RXIQK_TONE_A_11N, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_RX_IQK_TONE_B, 0x38008c1c);
--	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8216000f);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8214030f);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_A_11N, 0x28110000);
--	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x28110000);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x82110000);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_B, 0x28110000);
- 
- 	/* LOK setting */
-@@ -1372,7 +1372,7 @@ void rtw8703b_iqk_fill_a_matrix(struct r
- 		return;
- 
- 	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_X, result[IQK_S1_RX_X]);
--	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_X]);
-+	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_Y]);
- 	rtw_write32(rtwdev, REG_A_RXIQI, tmp_rx_iqi);
- 	rtw_write32_mask(rtwdev, REG_RXIQK_MATRIX_LSB_11N, BIT_MASK_RXIQ_S1_Y2,
- 			 BIT_SET_RXIQ_S1_Y2(result[IQK_S1_RX_Y]));
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 24c5a926af8d1..bd4c8f5d55a64 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -295,7 +295,7 @@
+ #define MAX_LANE_COUNT 4
+ #define MAX_LINK_RATE HBR
+ #define AUTO_TRAIN_RETRY 3
+-#define MAX_HDCP_DOWN_STREAM_COUNT 10
++#define MAX_HDCP_DOWN_STREAM_COUNT 127
+ #define MAX_CR_LEVEL 0x03
+ #define MAX_EQ_LEVEL 0x03
+ #define AUX_WAIT_TIMEOUT_MS 15
+-- 
+2.39.5
+
 
 
 
