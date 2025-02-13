@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCEAA34304
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF46BA34552
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CAD1893A43
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1E3173746
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE53723A9BD;
-	Thu, 13 Feb 2025 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6F616BE17;
+	Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNyJpibR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIlaY5r7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990EC2222AE;
-	Thu, 13 Feb 2025 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1F91662E9;
+	Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457597; cv=none; b=pM8TjE5bm10Iukbi177blLIMhmwjromk0lphbrn9AMpollc+bxgywJmrxF3qBum45EGjat7qy7yN15EJkToSLm7t09AgctehL583uMFoT0hBmgMTamf4NfW99G0JMf0xjjrJU1knfD2vxCUKLfrsgPgu64vAHUT38JyTC8lBW0w=
+	t=1739459120; cv=none; b=okQp3KO6E7FCvW8Dmc43JtKNXjDCQO/u+mW+RYTiKPiH8wHYUKv7makaABmQQeJjQBWELXbursXq8QMMlwpOlo+6sr9JDa48tVVtdxqRnxxzIlh0jUFFUx7QeXqs4V/HRGjk2dvtBXSr1MmTeH5gM5RT23rPZiSaEobfb5ZLYmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457597; c=relaxed/simple;
-	bh=CbQC9HoAPQ1GebOFMNVHtqagVSsX42oI5xD37btGuE4=;
+	s=arc-20240116; t=1739459120; c=relaxed/simple;
+	bh=ZYncKfp073bCki3UucooyEccaPqTAMS3w8n5msTzm1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nn8GVaMv5N5ZHDRDAppnMrEXqFH1X7J7VeUcfxS2PeTTJDpQ3N/jciMmADvjTc3rfCKMJLu01cacdIglDcLU1RkoLJzL25jiLOlxSpp7WGUXkbEjakaeUKUaQQ506EIWPjMGBlVDDpZYbQXeizZDk7+mSfvofnLobdGic5ExVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNyJpibR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85109C4CED1;
-	Thu, 13 Feb 2025 14:39:56 +0000 (UTC)
+	 MIME-Version; b=d6eEtFxsBNdrUHJa0vb/4ODyA4LyksMNgfHfOolo75iDXH7Mp5AocoFu4w8dm9iTodBNYHc8B5EAfJ0IpAbgN7JcYwuYIVm+A9ZO54tlGRWcdHUBc2DQFxqa38T2vFiS3NbboUB+8gxDrZNQGc0E48lPPxxT/6aPg8oMLmIHP3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIlaY5r7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B39C4CEE4;
+	Thu, 13 Feb 2025 15:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457597;
-	bh=CbQC9HoAPQ1GebOFMNVHtqagVSsX42oI5xD37btGuE4=;
+	s=korg; t=1739459119;
+	bh=ZYncKfp073bCki3UucooyEccaPqTAMS3w8n5msTzm1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNyJpibRgTgZQYA2w2OQjG81b2EuKaG2/GQNdsROMK24O+T6MbvdVzpARZcz4m5mu
-	 k60PkRKKuxD6L9T2aSx5xWpkAiuST1/svdLX2mzviUhBlWDny+SO601QGR2iuZx2wp
-	 c53KfDZwY9O1xlqLUAgdwExfbRY5EifGVP5odJP4=
+	b=RIlaY5r7vNTS7f7rT/5Z26xrThlGpu+ls8aJ7XrCcTPI7tEy2KbDGV0P96jAxPdE8
+	 p+2Qhv0hx8ITbgS9XD+Q0XhNxfyYcbnhKttHlwemsgJCjCIFuaxFZsi/BMZ4/u1oMk
+	 U66BA0UWOR5Pw1C4OadKtqSUj2Y55r/1W1uDLCEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sung Lee <sung.lee@amd.com>,
-	Aric Cyr <Aric.Cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 156/422] drm/amd/display: Optimize cursor position updates
-Date: Thu, 13 Feb 2025 15:25:05 +0100
-Message-ID: <20250213142442.566107031@linuxfoundation.org>
+	Robin Murphy <robin.murphy@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wei Huang <wei.huang2@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 141/443] PCI/TPH: Restore TPH Requester Enable correctly
+Date: Thu, 13 Feb 2025 15:25:06 +0100
+Message-ID: <20250213142446.040855597@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <Aric.Cyr@amd.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit 024771f3fb75dc817e9429d5763f1a6eb84b6f21 upstream.
+[ Upstream commit 6f64b83d9fe9729000a0616830cb1606945465d8 ]
 
-[why]
-Updating the cursor enablement register can be a slow operation and accumulates
-when high polling rate cursors cause frequent updates asynchronously to the
-cursor position.
+When we reenable TPH after changing a Steering Tag value, we need the
+actual TPH Requester Enable value, not the ST Mode (which only happens to
+work out by chance for non-extended TPH in interrupt vector mode).
 
-[how]
-Since the cursor enable bit is cached there is no need to update the
-enablement register if there is no change to it.  This removes the
-read-modify-write from the cursor position programming path in HUBP and
-DPP, leaving only the register writes.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Sung Lee <sung.lee@amd.com>
-Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/13118098116d7bce07aa20b8c52e28c7d1847246.1738759933.git.robin.murphy@arm.com
+Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wei Huang <wei.huang2@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c      |    7 ++++---
- drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c |    6 ++++--
- drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c    |    8 +++++---
- drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c  |   10 ++++++----
- 4 files changed, 19 insertions(+), 12 deletions(-)
+ drivers/pci/tph.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
-@@ -483,10 +483,11 @@ void dpp1_set_cursor_position(
- 	if (src_y_offset + cursor_height <= 0)
- 		cur_en = 0;  /* not visible beyond top edge*/
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index 1e604fbbda657..07de59ca2ebfa 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -360,7 +360,7 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
+ 		return err;
+ 	}
  
--	REG_UPDATE(CURSOR0_CONTROL,
--			CUR0_ENABLE, cur_en);
-+	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
-+		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
+-	set_ctrl_reg_req_en(pdev, pdev->tph_mode);
++	set_ctrl_reg_req_en(pdev, pdev->tph_req_type);
  
--	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+	}
- }
- 
- void dpp1_cnv_set_optional_cursor_attributes(
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
-@@ -154,9 +154,11 @@ void dpp401_set_cursor_position(
- 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
- 	uint32_t cur_en = pos->enable ? 1 : 0;
- 
--	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
-+	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
-+		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
- 
--	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
-+	}
- }
- 
- void dpp401_set_optional_cursor_attributes(
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-@@ -1044,11 +1044,13 @@ void hubp2_cursor_set_position(
- 	if (src_y_offset + cursor_height <= 0)
- 		cur_en = 0;  /* not visible beyond top edge*/
- 
--	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
--		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
-+	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
-+		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
-+			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
- 
--	REG_UPDATE(CURSOR_CONTROL,
-+		REG_UPDATE(CURSOR_CONTROL,
- 			CURSOR_ENABLE, cur_en);
-+	}
- 
- 	REG_SET_2(CURSOR_POSITION, 0,
- 			CURSOR_X_POSITION, pos->x,
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
-@@ -718,11 +718,13 @@ void hubp401_cursor_set_position(
- 			dc_fixpt_from_int(dst_x_offset),
- 			param->h_scale_ratio));
- 
--	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
--		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
-+	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
-+		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
-+			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
- 
--	REG_UPDATE(CURSOR_CONTROL,
--		CURSOR_ENABLE, cur_en);
-+		REG_UPDATE(CURSOR_CONTROL,
-+			CURSOR_ENABLE, cur_en);
-+	}
- 
- 	REG_SET_2(CURSOR_POSITION, 0,
- 		CURSOR_X_POSITION, x_pos,
+ 	pci_dbg(pdev, "set steering tag: %s table, index=%d, tag=%#04x\n",
+ 		(loc == PCI_TPH_LOC_MSIX) ? "MSI-X" : "ST", index, tag);
+-- 
+2.39.5
+
 
 
 
