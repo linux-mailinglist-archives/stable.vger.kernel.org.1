@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8057BA345DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A91A34355
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378B9173D26
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A6B18845B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0607F26B089;
-	Thu, 13 Feb 2025 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90B638389;
+	Thu, 13 Feb 2025 14:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMCwoGLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NP873DLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82AB26B08A;
-	Thu, 13 Feb 2025 15:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C84281349;
+	Thu, 13 Feb 2025 14:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459331; cv=none; b=C1ZhgaY4sGiiBTDJ2gq80crFoZV2vryH5HwlZg3/3kICgowhRXInDQo/ZNdVs51NMPtFva/DfA3Mr9pTeDcyr+7S3eqbe67pdY1j5+j13EXYGg5d+5AzLEFWX0D7WR+/s2boEk7KjhieaFlt3NEEemFDruNivbJ3Hr9MyruiqS8=
+	t=1739457822; cv=none; b=oHI4s+z4AuOFHUBsjbvJEEEc4FRr6zxBNh58pwcKocWzPaVF1+M93Yd0c7a3MRQMGUqv1EUDSG2slaz6fKRpTmIU80akBWJ8+VVl+3zpz2i9sUwxE3AQw5IqviK0rNfmEw5BmZxPJ9mzuGhUSn4Gt/6RBFZDYz7rDt2vC5VME2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459331; c=relaxed/simple;
-	bh=sgUNkdAn25OHdBpQWYKYagjl9JNdIxRHorm0NjFwBGg=;
+	s=arc-20240116; t=1739457822; c=relaxed/simple;
+	bh=VvXogFh45kvjLAJ74GrDf7iwzg9MvybOIx0h5L+yJgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZ60ezXPamuo+6Va80k4j6D6+JaElBuilh2ya3h6USa2nEJsoW7yED6dQJPcKgS4ZcZPogn3gVd3c6P1opJAZOtVG4l1Iuxi/PPcs6XXqlRc0su5mR/9O64vndIITMqdZMrzFHnVSZUpL9wY2ukRPmKLDLM3OO8vW/rbbZXKo8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMCwoGLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD983C4CEE5;
-	Thu, 13 Feb 2025 15:08:50 +0000 (UTC)
+	 MIME-Version; b=TUJEKcdmElrDNGJNVfsjb4lW9Ekfacfp2W/Vc9RHdVOH2wMRrjaT1qCeou5YNUg7TV0BdybAeBpO1KzINaL99NJVBSTDlcJRwWostzTtiqX7NR4s8MnA7xUxQoncH3d4MFjxvrTImWJQAgKEIcvoBFy9FWE64JYr3dNZKe6d+Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NP873DLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C71C4CEE2;
+	Thu, 13 Feb 2025 14:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459331;
-	bh=sgUNkdAn25OHdBpQWYKYagjl9JNdIxRHorm0NjFwBGg=;
+	s=korg; t=1739457821;
+	bh=VvXogFh45kvjLAJ74GrDf7iwzg9MvybOIx0h5L+yJgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMCwoGLyWp78lU31igO112khE8YVCnBUdZaAdMyHPoil1puFy75eJ4IWllsrIYXPo
-	 7/V6Pi4WQPBRgTqLW3BmYGlSPJc/AyMcMo4T5rRCiQ2izq8d1A4WKVaNbQio8rX5mc
-	 PrmlJGNTIkT4LkUjpoDbMo6akQYKWUUo6HnGgtU0=
+	b=NP873DLyzb4Uw2r0dZp54zixJ8uUhfGGcEA/vrZJjHPzO6rGkqHVAklXFaaINr3yL
+	 5GV36idIEoKHCqw07DqZdWDNpN6R7cQ52T38Gpk+WcoJWRPwm967PD5hLWgXQAQpEM
+	 T5NKkie6H6+OCdy0vEHYboyjTw9o736vF64SS41s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.13 206/443] clk: mediatek: mt2701-bdp: add missing dummy clk
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 222/422] arm64: dts: qcom: x1e80100-crd: Fix USB QMP PHY supplies
 Date: Thu, 13 Feb 2025 15:26:11 +0100
-Message-ID: <20250213142448.568624940@linuxfoundation.org>
+Message-ID: <20250213142445.105213283@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit fd291adc5e9a4ee6cd91e57f148f3b427f80647b upstream.
+commit 789209dd08124da448bfa7524b21049a04d98f83 upstream.
 
-Add dummy clk for index 0 which was missed during the conversion to
-mtk_clk_simple_probe().
+On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
+(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
+are actually powered by &vreg_l2j_1p2.
 
-Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/b8526c882a50f2b158df0eccb4a165956fd8fa13.1734300668.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: ae5cee8e7349 ("arm64: dts: qcom: x1e80100-crd: Fix USB PHYs regulators")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-4-0adda5d30bbd@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt2701-bdp.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/mediatek/clk-mt2701-bdp.c
-+++ b/drivers/clk/mediatek/clk-mt2701-bdp.c
-@@ -31,6 +31,7 @@ static const struct mtk_gate_regs bdp1_c
- 	GATE_MTK(_id, _name, _parent, &bdp1_cg_regs, _shift, &mtk_clk_gate_ops_setclr_inv)
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -1147,7 +1147,7 @@
+ };
  
- static const struct mtk_gate bdp_clks[] = {
-+	GATE_DUMMY(CLK_DUMMY, "bdp_dummy"),
- 	GATE_BDP0(CLK_BDP_BRG_BA, "brg_baclk", "mm_sel", 0),
- 	GATE_BDP0(CLK_BDP_BRG_DRAM, "brg_dram", "mm_sel", 1),
- 	GATE_BDP0(CLK_BDP_LARB_DRAM, "larb_dram", "mm_sel", 2),
+ &usb_1_ss0_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l1j_0p8>;
+ 
+ 	status = "okay";
+@@ -1179,7 +1179,7 @@
+ };
+ 
+ &usb_1_ss1_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
+@@ -1211,7 +1211,7 @@
+ };
+ 
+ &usb_1_ss2_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
 
 
 
