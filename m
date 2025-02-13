@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-116002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F960A34699
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297BBA347DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9032D188CD95
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE8B16B204
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD4626B0BC;
-	Thu, 13 Feb 2025 15:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85331547E3;
+	Thu, 13 Feb 2025 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIOuSHM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wqtl+85p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E1E26B0BF;
-	Thu, 13 Feb 2025 15:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8648426B098;
+	Thu, 13 Feb 2025 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459992; cv=none; b=E9uOV7cK8MGeQO7bcGF6KLqyL/T6SYLh/tqE4IWAt9QDnow6gDwQd1Elf/FDLpYN8/1SSpFA5zGrCtYEuocVvAojQYsUtkgjT8FlQJ0c268A0j6XwkNJDhuEqbZ0TrAyZWs1V75vuvDHkSz+dTbyNO0gQFD+Nq1erhsAwZErzYQ=
+	t=1739460808; cv=none; b=Lo6rsGynyWolU3E5OS9KTzdEbsMKJ/XZB4xyPQ7IbKnikE3MnJglzoF+6Xp+867GqQVp/E78aVUX8tc45vpIfZIlLCYPV8vI6jHyr+q7RSN7MNleU7TRs9DcejRAU9qRCuCjHA9NWjDZcSf8i8lZsDoB/KxzR2u8dYXMRH0qf/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459992; c=relaxed/simple;
-	bh=5JOCB+FJYtACfcJI1x76GbDC9yZbFJvY7G8rK1r+t7Y=;
+	s=arc-20240116; t=1739460808; c=relaxed/simple;
+	bh=//FjETKofN1Hzv9rGd4E3YOdLtOQ76OfsxW5sMDJLdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xz6TUGyuC9H6G2tpye4woMQ4w3mWg6deaRj6gXQfU9J0jiKT+C+aVWNFIu0opZ1YtHyqnEUWiihJ6ueh3HL216qCdBUPODZvFTrbCExmQ/gyxGDnczEpRvr0Skci9D0l+2S/n2h7aKx6hAF3ozdj7J00Oow0DEahYOJa271Prk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIOuSHM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7996AC4CED1;
-	Thu, 13 Feb 2025 15:19:51 +0000 (UTC)
+	 MIME-Version; b=oF7BasYoQ3kHbXmU6yk7wc/cjc4XeNQL1QpV/VT1QLtO+11bOHgR0pcdCoLk3Cpc2N6WmLK2vr+zPalm8Luq0Od/zAF7xE2Jc3T3uMUnTgVoeCN6VyPzuSf1wqdD2IbFibZL/vGOAabNb8OuW/mR4XDCCNBPge8ID9y1GdLGtIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wqtl+85p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE14C4CED1;
+	Thu, 13 Feb 2025 15:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459991;
-	bh=5JOCB+FJYtACfcJI1x76GbDC9yZbFJvY7G8rK1r+t7Y=;
+	s=korg; t=1739460808;
+	bh=//FjETKofN1Hzv9rGd4E3YOdLtOQ76OfsxW5sMDJLdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIOuSHM8Pqe6nJmY2A0KqTW35KBBbkpOA0RxwklvlCg5S4g0I+Yn7tThNfdhNHf/q
-	 fQ3K1D/EJAmtgSPksmwqzR8odA45pmFuHyLPO52BfHP+UmZrMXQtHMPZLJA285Q9ea
-	 UVSiQPrv6NpVjkhknq/YrjEO4XtNUHMTabks17vM=
+	b=Wqtl+85p04GTUWsgRS/hRKU7JxNvGp6V9/yCs5q0OpdfUvSVYC/1ebWcMA/qK45th
+	 n75lC4q+H9Y04iIlUL8sUT3n8UvsyLSRW7To28oZp9c1I7sLLk3jvaNQD7JRbw+faE
+	 TATFtxmHoqwZ/mf7YVQ0gcWZl3pG6k0kZQQF/vmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.13 426/443] pinctrl: samsung: fix fwnode refcount cleanup if platform_get_irq_optional() fails
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 219/273] crypto: qce - fix goto jump in error path
 Date: Thu, 13 Feb 2025 15:29:51 +0100
-Message-ID: <20250213142457.059597281@linuxfoundation.org>
+Message-ID: <20250213142415.968839189@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 459915f55509f4bfd6076daa1428e28490ddee3b upstream.
+commit 5278275c1758a38199b43530adfc50098f4b41c7 upstream.
 
-Commit 50ebd19e3585 ("pinctrl: samsung: drop pin banks references on
-error paths") fixed the pin bank references on the error paths of the
-probe function, but there is still an error path where this is not done.
-
-If samsung_pinctrl_get_soc_data() does not fail, the child references
-will have acquired, and they will need to be released in the error path
-of platform_get_irq_optional(), as it is done in the following error
-paths within the probe function.
-
-Replace the direct return in the error path with a goto instruction to
-the cleanup function.
+If qce_check_version() fails, we should jump to err_dma as we already
+called qce_dma_request() a couple lines before.
 
 Cc: stable@vger.kernel.org
-Fixes: a382d568f144 ("pinctrl: samsung: Use platform_get_irq_optional() to get the interrupt")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241106-samsung-pinctrl-put-v1-1-de854e26dd03@gmail.com
-[krzysztof: change Fixes SHA to point to commit introducing the return
- leading to OF node leak]
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/samsung/pinctrl-samsung.c |    2 +-
+ drivers/crypto/qce/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/samsung/pinctrl-samsung.c
-+++ b/drivers/pinctrl/samsung/pinctrl-samsung.c
-@@ -1272,7 +1272,7 @@ static int samsung_pinctrl_probe(struct
+--- a/drivers/crypto/qce/core.c
++++ b/drivers/crypto/qce/core.c
+@@ -247,7 +247,7 @@ static int qce_crypto_probe(struct platf
  
- 	ret = platform_get_irq_optional(pdev, 0);
- 	if (ret < 0 && ret != -ENXIO)
--		return ret;
-+		goto err_put_banks;
- 	if (ret > 0)
- 		drvdata->irq = ret;
+ 	ret = qce_check_version(qce);
+ 	if (ret)
+-		goto err_clks;
++		goto err_dma;
  
+ 	spin_lock_init(&qce->lock);
+ 	tasklet_init(&qce->done_tasklet, qce_tasklet_req_done,
 
 
 
