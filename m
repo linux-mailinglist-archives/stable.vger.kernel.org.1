@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-115513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDF9A343B2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FFDA347D6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 456D07A01EC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBBC3B4303
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB952222DC;
-	Thu, 13 Feb 2025 14:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C563F143736;
+	Thu, 13 Feb 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCdInQFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0cbi9s2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906EC242918;
-	Thu, 13 Feb 2025 14:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE4D70805;
+	Thu, 13 Feb 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458314; cv=none; b=aLtq59REvuHqs6RMEQv3M7R6mk9158NG/mLz/eTkkSOVlCwpVfnW0G5A2fhAhlzZzXZFpwUoeiH0YTQXZql6VddEwvasU8gQKR/Rdkx7DuouX3HkunWwgOiSV1aHV2tMNSeGwJT/07OFS9yBM8AL5os47/Gn84BrFB1TIDo+5Mg=
+	t=1739460642; cv=none; b=TBxksTkku0m0yCIYL8bIt3QYXyZsLsGpkzZZXC9F1khlrjA1tBB8+BaY3oANEIUYYcojagVQOdg2eF0bM++cG8v3nnWg0yYfqcJVLOi5Ioj9Icwk8MluPHa43XodVZPgm+iL53U1MhMRlHPs3iGi7rHBGNWISTExS9DB+48CkEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458314; c=relaxed/simple;
-	bh=eGspjZ7qoAlQ6iuJxju0yWyf2kjx0Qu5idyKHv+tiAk=;
+	s=arc-20240116; t=1739460642; c=relaxed/simple;
+	bh=AdPCh8HsSyEq3DDthl8DL+4hA2NVOYtgPAOAW+xCWts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCyv9LB9i93vI6QeiSAazgWPu05Rlf6NbjzXR7rqluFGJ0Fg/ljmxHBzssrjwNuiKZRYEIW0usRFHbcPG5WzqnIKaDwc+GSLiLYc2iOm550mGt+AXPd+eGXGiHxVH4ZqHulV3hzXNWbFieZ2N22obBk4yF1pkgXAgYqZJYVqrdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCdInQFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B0EC4CED1;
-	Thu, 13 Feb 2025 14:51:53 +0000 (UTC)
+	 MIME-Version; b=AeA1T1G3LjcRK7bBcvW3rD62HEegHKeXUS1IBClqrNi2b2Xp+in7O9pQGpjURLFVA7uhQ3Rqhb0V8dCvo5pTl1Y4yz3S5m7LBaYOzSDclfEoz2ayKjpji8kD2dESUn49P6t2Vc+qDnDcvqerVVFkSm/phIgqLyINczw2RkdznYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0cbi9s2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E977CC4CED1;
+	Thu, 13 Feb 2025 15:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458314;
-	bh=eGspjZ7qoAlQ6iuJxju0yWyf2kjx0Qu5idyKHv+tiAk=;
+	s=korg; t=1739460642;
+	bh=AdPCh8HsSyEq3DDthl8DL+4hA2NVOYtgPAOAW+xCWts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCdInQFVr2cjG5KgfCFMklyNC+XT5vXhTzNHZBOw+I4z70wPcGV1JOH0GTvo92LlE
-	 ReClsr4gCR8IMszb1MY310hwriJWIcgJkNJmuGyvQHqJ148BhuNkUiks3c8kMILiBC
-	 8KJHaXXpt9qZsMcipG+J6uYM8gOoKwY3EuMTjKdc=
+	b=n0cbi9s2JNVViFQrtz9Pb7jcoDGIQULhQpg1uI1Tc/1qv0g3USa2pDjEzslaLms6d
+	 0ojV/L/dFChmHPlDXorFQbLBbmhO/0/h5vzNSEg+7IwSm2X9D+nkTodSc5+YYQzJpI
+	 /HpkPz5ZZ86qlY/1lRvBd1aqVzke2gAGqYnINqh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 362/422] ocfs2: fix incorrect CPU endianness conversion causing mount failure
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 139/273] usbnet: ipheth: refactor NCM datagram loop
 Date: Thu, 13 Feb 2025 15:28:31 +0100
-Message-ID: <20250213142450.519830024@linuxfoundation.org>
+Message-ID: <20250213142412.831075866@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit f921da2c34692dfec5f72b5ae347b1bea22bb369 upstream.
+commit 2a9a196429e98fcc64078366c2679bc40aba5466 upstream.
 
-Commit 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-introduced a regression bug.  The blksz_bits value is already converted to
-CPU endian in the previous code; therefore, the code shouldn't use
-le32_to_cpu() anymore.
+Introduce an rx_error label to reduce repetitions in the header
+signature checks.
 
-Link: https://lkml.kernel.org/r/20250121112204.12834-1-heming.zhao@suse.com
-Fixes: 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Store wDatagramIndex and wDatagramLength after endianness conversion to
+avoid repeated le16_to_cpu() calls.
+
+Rewrite the loop to return on a null trailing DPE, which is required
+by the CDC NCM spec. In case it is missing, fall through to rx_error.
+
+This change does not fix any particular issue. Its purpose is to
+simplify a subsequent commit that fixes a potential OoB read by limiting
+the maximum amount of processed DPEs.
+
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/ipheth.c | 42 ++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -2340,7 +2340,7 @@ static int ocfs2_verify_volume(struct oc
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size bits: found %u, should be 9, 10, 11, or 12\n",
- 			     blksz_bits);
--		} else if ((1 << le32_to_cpu(blksz_bits)) != blksz) {
-+		} else if ((1 << blksz_bits) != blksz) {
- 			mlog(ML_ERROR, "found superblock with incorrect block "
- 			     "size: found %u, should be %u\n", 1 << blksz_bits, blksz);
- 		} else if (le16_to_cpu(di->id2.i_super.s_major_rev_level) !=
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index c385623596d2..069979e2bb6e 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -213,9 +213,9 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ 	struct usb_cdc_ncm_ndp16 *ncm0;
+ 	struct usb_cdc_ncm_dpe16 *dpe;
+ 	struct ipheth_device *dev;
++	u16 dg_idx, dg_len;
+ 	int retval = -EINVAL;
+ 	char *buf;
+-	int len;
+ 
+ 	dev = urb->context;
+ 
+@@ -227,39 +227,43 @@ static int ipheth_rcvbulk_callback_ncm(struct urb *urb)
+ 	ncmh = urb->transfer_buffer;
+ 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
+ 	    /* On iOS, NDP16 directly follows NTH16 */
+-	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
+-		dev->net->stats.rx_errors++;
+-		return retval;
+-	}
++	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16)))
++		goto rx_error;
+ 
+ 	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
+-	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
+-		dev->net->stats.rx_errors++;
+-		return retval;
+-	}
++	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN))
++		goto rx_error;
+ 
+ 	dpe = ncm0->dpe16;
+-	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
+-	       le16_to_cpu(dpe->wDatagramLength) != 0) {
+-		if (le16_to_cpu(dpe->wDatagramIndex) < IPHETH_NCM_HEADER_SIZE ||
+-		    le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
+-		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
+-		    le16_to_cpu(dpe->wDatagramIndex)) {
++	while (true) {
++		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
++		dg_len = le16_to_cpu(dpe->wDatagramLength);
++
++		/* Null DPE must be present after last datagram pointer entry
++		 * (3.3.1 USB CDC NCM spec v1.0)
++		 */
++		if (dg_idx == 0 && dg_len == 0)
++			return 0;
++
++		if (dg_idx < IPHETH_NCM_HEADER_SIZE ||
++		    dg_idx >= urb->actual_length ||
++		    dg_len > urb->actual_length - dg_idx) {
+ 			dev->net->stats.rx_length_errors++;
+ 			return retval;
+ 		}
+ 
+-		buf = urb->transfer_buffer + le16_to_cpu(dpe->wDatagramIndex);
+-		len = le16_to_cpu(dpe->wDatagramLength);
++		buf = urb->transfer_buffer + dg_idx;
+ 
+-		retval = ipheth_consume_skb(buf, len, dev);
++		retval = ipheth_consume_skb(buf, dg_len, dev);
+ 		if (retval != 0)
+ 			return retval;
+ 
+ 		dpe++;
+ 	}
+ 
+-	return 0;
++rx_error:
++	dev->net->stats.rx_errors++;
++	return retval;
+ }
+ 
+ static void ipheth_rcvbulk_callback(struct urb *urb)
+-- 
+2.48.1
+
 
 
 
