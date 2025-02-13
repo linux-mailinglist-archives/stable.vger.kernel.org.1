@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-115399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF93A3439E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:54:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B57AA34587
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA43216E830
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:49:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A431F16AA7B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B47158868;
-	Thu, 13 Feb 2025 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D17726B094;
+	Thu, 13 Feb 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDW+S9pg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2q5+Gyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C411662E9;
-	Thu, 13 Feb 2025 14:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3895A26B080;
+	Thu, 13 Feb 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457914; cv=none; b=uP0a7vaide13gcYknXkyD+odpu7kJgU94C0NdaOntBBEyKAnvt4HyEkhDTiXyt6oNVfw3iMFwq5nYt4uU+ZW92tYzB0b9fSasDFF5ZIMCyZRq3EMWRzE8LtRBfisrExDEU7ttWYreYAmMQKSAXKs2IeZV0OTbFfv7MY+4lf9GkA=
+	t=1739459335; cv=none; b=ZEqe9ftRI8LBrTSkLCTSOClW49s39E2oAe/ZTHbQBW2HVaxGEIKB3RbdSS35uCG19IDqqlumJA0m3/9d/K2Gq8DXytTAfYbNH18tBilz3vpE3fbzAR565xCOAiwM0dNtnG2zYV7Z1uWwSPM4udsjxurWlYrN+Zny7ftOLiP9d2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457914; c=relaxed/simple;
-	bh=45ct/gd5EPjoSmnpZmscWZXYhFZDjVwZtlILCJVeb4w=;
+	s=arc-20240116; t=1739459335; c=relaxed/simple;
+	bh=DAvRsbi5NWEt4+tqtXxPWV5Kr2FZBxYvCPWHtQKIShY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YPHgqG3kfmclk8Uu8VRsLIPWdD+ODNSJbU8UwNJbz/99696uZr2qOBAlb9bZXDJ2G09G8mRFiRwfJbYy3urvCgcAuyc2BI2mvM/Qjazdxn7iQlvOLHah6i6WTFWoSRd2c+ZyS6YaC9REH+nDOL0YdvHDtlA0dnphw7xfC6iJIuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDW+S9pg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F05C4CED1;
-	Thu, 13 Feb 2025 14:45:12 +0000 (UTC)
+	 MIME-Version; b=DrJKpcnlat/VzVluArkdsLOthyuhwb7DQvcF8bE0mu2B1ldQawyV5EYIITB8++SnL/W5jtCjTkaeS/2r+XV+v1bR6JR90+vil4YWO71zifRkr0rNQHZ71Nn0mdnBF1JgfC5z2plgCIjqTAZOyVsnJ7BZ3p7BmtfkJvmFN/fSb98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2q5+Gyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3BEC4CED1;
+	Thu, 13 Feb 2025 15:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457913;
-	bh=45ct/gd5EPjoSmnpZmscWZXYhFZDjVwZtlILCJVeb4w=;
+	s=korg; t=1739459334;
+	bh=DAvRsbi5NWEt4+tqtXxPWV5Kr2FZBxYvCPWHtQKIShY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDW+S9pgrkebPWfl7Wom8Wsoo7BPcKwvZi6WrACTuMeg0BpwNO5B8Mh0DbSGGZLnG
-	 vKakGiHt6jkfeF788k0w3xmpUgfcxf8VI4sEyZvO3qXiHHJ+/cU3PwvNVgQyYUjE1O
-	 Sj9kDFd/IzWBievo4foRXfVqFq3a+5bRVPafWECU=
+	b=U2q5+Gyn/D63pIEnLcZQ4JdVQGTFu0opPEb70UtUuxL4J4tZocKzwOHYfJhBhbxTS
+	 KE/mAnGL8GCgqVMGoNvNh26ApHamsBedLd2H6ii0x3mVzY0hSvLtnAUZmqzYbkpu8p
+	 bN9YjyUPPOuqhBF3KDkRX/Bz7hJ/qTNfLcWgdmG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.12 249/422] PCI: dwc: ep: Write BAR_MASK before iATU registers in pci_epc_set_bar()
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.13 233/443] usb: gadget: f_tcm: Dont prepare BOT write request twice
 Date: Thu, 13 Feb 2025 15:26:38 +0100
-Message-ID: <20250213142446.150594515@linuxfoundation.org>
+Message-ID: <20250213142449.604918839@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +58,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 33a6938e0c3373f2d11f92d098f337668cd64fdd upstream.
+commit 94d9bf671ae314cacc2d7bf96bd233b4abc7cede upstream.
 
-The "DesignWare Cores PCI Express Controller Register Descriptions,
-Version 4.60a", section "1.21.70 IATU_LWR_TARGET_ADDR_OFF_INBOUND_i",
-fields LWR_TARGET_RW and LWR_TARGET_HW both state that:
-"Field size depends on log2(BAR_MASK+1) in BAR match mode."
+The duplicate kmalloc here is causing memory leak. The request
+preparation in bot_send_write_request is also done in
+usbg_prepare_w_request. Remove the duplicate work.
 
-I.e. only the upper bits are writable, and the number of writable bits is
-dependent on the configured BAR_MASK.
-
-If we do not write the BAR_MASK before writing the iATU registers, we are
-relying the reset value of the BAR_MASK being larger than the requested
-BAR size (which is supplied in the struct pci_epf_bar which is passed to
-pci_epc_set_bar()). The reset value of the BAR_MASK is SoC dependent.
-
-Thus, if the struct pci_epf_bar requests a BAR size that is larger than the
-reset value of the BAR_MASK, the iATU will try to write to read-only bits,
-which will cause the iATU to end up redirecting to a physical address that
-is different from the address that was intended.
-
-Thus, we should always write the iATU registers after writing the BAR_MASK.
-
-Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
-Link: https://lore.kernel.org/r/20241213143301.4158431-9-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
 Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/f4f26c3d586cde0d46f8c3bcb4e8ae32311b650d.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |   28 ++++++++++++------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   17 -----------------
+ 1 file changed, 17 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci
- 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -245,7 +245,6 @@ static int bot_send_write_request(struct
+ {
+ 	struct f_uas *fu = cmd->fu;
+ 	struct se_cmd *se_cmd = &cmd->se_cmd;
+-	struct usb_gadget *gadget = fuas_to_gadget(fu);
+ 	int ret;
+ 
+ 	init_completion(&cmd->write_complete);
+@@ -256,22 +255,6 @@ static int bot_send_write_request(struct
  		return -EINVAL;
- 
--	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
--
--	if (!(flags & PCI_BASE_ADDRESS_SPACE))
--		type = PCIE_ATU_TYPE_MEM;
--	else
--		type = PCIE_ATU_TYPE_IO;
--
--	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
--	if (ret)
--		return ret;
--
- 	if (ep->epf_bar[bar])
--		return 0;
-+		goto config_atu;
-+
-+	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
- 
- 	dw_pcie_dbi_ro_wr_en(pci);
- 
-@@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci
- 		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
  	}
  
--	ep->epf_bar[bar] = epf_bar;
- 	dw_pcie_dbi_ro_wr_dis(pci);
- 
-+config_atu:
-+	if (!(flags & PCI_BASE_ADDRESS_SPACE))
-+		type = PCIE_ATU_TYPE_MEM;
-+	else
-+		type = PCIE_ATU_TYPE_IO;
-+
-+	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
-+	if (ret)
-+		return ret;
-+
-+	ep->epf_bar[bar] = epf_bar;
-+
- 	return 0;
- }
- 
+-	if (!gadget->sg_supported) {
+-		cmd->data_buf = kmalloc(se_cmd->data_length, GFP_KERNEL);
+-		if (!cmd->data_buf)
+-			return -ENOMEM;
+-
+-		fu->bot_req_out->buf = cmd->data_buf;
+-	} else {
+-		fu->bot_req_out->buf = NULL;
+-		fu->bot_req_out->num_sgs = se_cmd->t_data_nents;
+-		fu->bot_req_out->sg = se_cmd->t_data_sg;
+-	}
+-
+-	fu->bot_req_out->complete = usbg_data_write_cmpl;
+-	fu->bot_req_out->length = se_cmd->data_length;
+-	fu->bot_req_out->context = cmd;
+-
+ 	ret = usbg_prepare_w_request(cmd, fu->bot_req_out);
+ 	if (ret)
+ 		goto cleanup;
 
 
 
