@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BA3A34491
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:06:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A6A342F4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F28D67A1603
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FF21893786
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6774F3FB3B;
-	Thu, 13 Feb 2025 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFAF1487FA;
+	Thu, 13 Feb 2025 14:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG0iSIl/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJeTFiMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247AA26B0BC;
-	Thu, 13 Feb 2025 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E4223A9BE;
+	Thu, 13 Feb 2025 14:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459047; cv=none; b=H9LAwhV0zp85AwucdL5x9BRHZoWKKdvA88+RsRLKY+vbI7RaWAFjpbsM9+Cl0R0xiNaeFH42W7z8iL8Il2nSTsSnrb/wveG9rpxWWen+qrLK3OgSMjGD3Bl5WOXm3Npu8GdiBWu925ZleIksSodvfmzmFH7raHjT2q4VM2voLTg=
+	t=1739457576; cv=none; b=tvrnI30hPz6YO1PPAkJkVl2Lb09Q940/hIM1sQQjiKNciWWdIsuWqYB1VKI8+njsZM90zm3GeFgqzOwEWtfauVHiM7u0Q27sZBnRYkjWFr4OpyNxV1dnDk1FhQDXgZ/3apsV48BoGPGodMz0hMy3EPFWKI5GYpgBnJYlDjLjYrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459047; c=relaxed/simple;
-	bh=eHjKyovkvkfQshSrBMzKiynJntOpUlyUyi98uQn4MWg=;
+	s=arc-20240116; t=1739457576; c=relaxed/simple;
+	bh=V+YbQQeumw9Au/HabFEKjpA+ZIg6F/9twb+ohHlTolU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBVE3ARmDznvawjtHlmuEjeWbeGBtHDFF1HmhnaHx1r6dRO8VYNoBvj6XzfIpn/SwOcOHHqa+hoP6VPXs6HeLuHfIyOzQ0TPeq+/jcM1RC56mXdxGtA0NSyGQM6Brp+XtsaKAKlPCUiiEO3L0Nsbi3/3nN6LI54DYaBjPzHJGF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG0iSIl/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D96C4CED1;
-	Thu, 13 Feb 2025 15:04:06 +0000 (UTC)
+	 MIME-Version; b=i3r/63pOJO5UF8OTJAjRnAjF8D5XpGquH2TZ5USOdISueuJ5nLctcq5gGTXNW3YFTAK72i3XYY9oEeY3W+qItPhtlc/fj0dKu/FXNXTrmnQOEKDBBAR8fFl+84SH4ygX74jGQTSqEVTOo2VH/3ESV0f3e5oPzSwdWywtw4Rqq48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJeTFiMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CACAC4CED1;
+	Thu, 13 Feb 2025 14:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459047;
-	bh=eHjKyovkvkfQshSrBMzKiynJntOpUlyUyi98uQn4MWg=;
+	s=korg; t=1739457575;
+	bh=V+YbQQeumw9Au/HabFEKjpA+ZIg6F/9twb+ohHlTolU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZG0iSIl/dBHm6cAUr6p4beUdzTbEPCWR4PnOoWWGUbqtnwNEKedQdzb6zrqlE0i6H
-	 SE/yny2iuXS8oVC9AfrhdVD8He00Afs0hyHoMZiXhQ5TuXt2ytHRKXh+9MvKq8RqGA
-	 nwyjpCGvWElJZVstZV8f7eTQ06nCDnCs1YnHC/G4=
+	b=wJeTFiMg/W30TTfojkyBXvOSu3ymiWA5WqmLakmkXOrHxeSnJPk4A7CTWpJSrgW0G
+	 BGmvDU10nMqBftXIR1sPQODG8vreOvyVSO8th0WHf3tDFCwOJUxPcIftEj7U0timTy
+	 9aUVF1kRzXfmrE75hXN80INKWKSInpy1sfBzms5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 135/443] ACPI: property: Fix return value for nval == 0 in acpi_data_prop_read()
+	Robin Murphy <robin.murphy@arm.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.12 151/422] remoteproc: omap: Handle ARM dma_iommu_mapping
 Date: Thu, 13 Feb 2025 15:25:00 +0100
-Message-ID: <20250213142445.813847798@linuxfoundation.org>
+Message-ID: <20250213142442.377956836@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit ab930483eca9f3e816c35824b5868599af0c61d7 ]
+commit 1dc7c8ed7cb378dd3974387692dfa833aee718d4 upstream.
 
-While analysing code for software and OF node for the corner case when
-caller asks to read zero items in the supposed to be an array of values
-I found that ACPI behaves differently to what OF does, i.e.
+It's no longer practical for the OMAP IOMMU driver to trick
+arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
+same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
+the arch code's dma_iommu_mapping out of the way to avoid problems.
 
- 1. It returns -EINVAL when caller asks to read zero items from integer
-    array, while OF returns 0, if no other errors happened.
-
- 2. It returns -EINVAL when caller asks to read zero items from string
-    array, while OF returns -ENODATA, if no other errors happened.
-
-Amend ACPI implementation to follow what OF does.
-
-Fixes: b31384fa5de3 ("Driver core: Unified device properties interface for platform firmware")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250203194629.3731895-1-andriy.shevchenko@linux.intel.com
-[ rjw: Added empty line after a conditional ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Tested-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/6186e311cb6f64a787f87fd41e49a73f409b789c.1730136799.git.robin.murphy@arm.com
+[Fixed changelog title]
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/remoteproc/omap_remoteproc.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 80a52a4e66dd1..e9186339f6e6b 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1187,8 +1187,6 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
- 		}
- 		break;
- 	}
--	if (nval == 0)
--		return -EINVAL;
+--- a/drivers/remoteproc/omap_remoteproc.c
++++ b/drivers/remoteproc/omap_remoteproc.c
+@@ -37,6 +37,10 @@
  
- 	if (obj->type == ACPI_TYPE_BUFFER) {
- 		if (proptype != DEV_PROP_U8)
-@@ -1212,9 +1210,11 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
- 		ret = acpi_copy_property_array_uint(items, (u64 *)val, nval);
- 		break;
- 	case DEV_PROP_STRING:
--		ret = acpi_copy_property_array_string(
--			items, (char **)val,
--			min_t(u32, nval, obj->package.count));
-+		nval = min_t(u32, nval, obj->package.count);
-+		if (nval == 0)
-+			return -ENODATA;
+ #include <linux/platform_data/dmtimer-omap.h>
+ 
++#ifdef CONFIG_ARM_DMA_USE_IOMMU
++#include <asm/dma-iommu.h>
++#endif
 +
-+		ret = acpi_copy_property_array_string(items, (char **)val, nval);
- 		break;
- 	default:
- 		ret = -EINVAL;
--- 
-2.39.5
-
+ #include "omap_remoteproc.h"
+ #include "remoteproc_internal.h"
+ 
+@@ -1323,6 +1327,19 @@ static int omap_rproc_probe(struct platf
+ 	/* All existing OMAP IPU and DSP processors have an MMU */
+ 	rproc->has_iommu = true;
+ 
++#ifdef CONFIG_ARM_DMA_USE_IOMMU
++	/*
++	 * Throw away the ARM DMA mapping that we'll never use, so it doesn't
++	 * interfere with the core rproc->domain and we get the right DMA ops.
++	 */
++	if (pdev->dev.archdata.mapping) {
++		struct dma_iommu_mapping *mapping = to_dma_iommu_mapping(&pdev->dev);
++
++		arm_iommu_detach_device(&pdev->dev);
++		arm_iommu_release_mapping(mapping);
++	}
++#endif
++
+ 	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
+ 	if (ret)
+ 		return ret;
 
 
 
