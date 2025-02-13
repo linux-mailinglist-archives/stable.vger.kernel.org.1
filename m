@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06646A34603
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E30A3473A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C8C3A9BFC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59FE16DA62
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9CA14F9FB;
-	Thu, 13 Feb 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3593194AD5;
+	Thu, 13 Feb 2025 15:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+ndNpoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZLbOyH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0925C26B0B5;
-	Thu, 13 Feb 2025 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCCA1865EE;
+	Thu, 13 Feb 2025 15:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459595; cv=none; b=p707vDjsBRG+n/Qk5Ehb0RAdNO9FF2oxgmONaF3/lfnvDe1ts4N3xmOXnFzhaIwJXKA/UQiFJam+2NVkqsXr+KPXWhjZaHX1s3sN3BzprZmHYwNTgrtwggrNSY/18/rcMGCHJTY3lI6VUIOMesmJ+FiLZn6tBWZt2DQWU4U4l+4=
+	t=1739460404; cv=none; b=HNUrSJcPO/mCTVK1sGYW7og6OQoa6GHy2583F4YsUs4Nrf/3jf8kBj2zUDaffVAPIN9oYTzmaZgydNkeaJCnAXLZTSDtbHuwQgPNgK5x8v3pfQSQ+u5v2WeeyBucj6b4ovrfJZ/E94kKOWSz170q5xGQt5jj7CAtFj4YY6wVnC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459595; c=relaxed/simple;
-	bh=zSoCbaT8+tJYMK9w+0tiZoFp63u7ZRl9gaKIDtqLEYk=;
+	s=arc-20240116; t=1739460404; c=relaxed/simple;
+	bh=3YRkrpJZWl31gce+76ONQZ+dY7mmJqqV3kFrGUl1mkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aakQSLZMSM0sHhYsA593ofzVzdjPRHPeK/2faQT5NRjg0fYt0Bvd5IfBXWHFw+wTwGVBP1DUVVDMyENSfqsnSoejFGdp72jsGCHNRYsp9z/GkPPBI6tSd8kapWwzMLyYzM5eCPdGBkSRFPS1U7GtsvRfnyho0jM06YvtsasrDoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+ndNpoT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15404C4CED1;
-	Thu, 13 Feb 2025 15:13:13 +0000 (UTC)
+	 MIME-Version; b=uqxOsVdW5/F44n34rvXmdy2bUp+k7z56LBhKh/hLxz8Gxny4lB/M/KXdA8WZanzp7vMqZn6vvMh1vrKr5gvCIJH56g5dhU4HDGnvH7ccZdxT678HOS/WoGUCOA0yGFzLAan9mILMRO+1tjPOvrug9BzuSU7nvO6g6IOofxnnFWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZLbOyH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EBEC4CED1;
+	Thu, 13 Feb 2025 15:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459594;
-	bh=zSoCbaT8+tJYMK9w+0tiZoFp63u7ZRl9gaKIDtqLEYk=;
+	s=korg; t=1739460404;
+	bh=3YRkrpJZWl31gce+76ONQZ+dY7mmJqqV3kFrGUl1mkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+ndNpoTtUmD2rxTeV4avjkgfbEakfG9al7tIR9Ia/f2aIlMCMcP65lca7yFpaFe7
-	 mp0iX1Sf5KYRt2LDZ9jQLYwvs+9j/TWMuG9qNsldsse0bH8B/o7ZknlUzKE62Byjnw
-	 qRBjrPNJXHYuKpVXCOmah0SLzeDT7Cepl8n9ds4A=
+	b=IZLbOyH4lWhltANMtZ8BkKeeyCGc5f1AKLcip50/AZnsWLaAPMpO4gr4KRzZXbQjS
+	 30pLIidVFXKvEDDWOUISo/zYNYoDiyXiJlV7enOVOndBj0IgmpxIDLTuYDOM+EqB3m
+	 n0JdUkLEPZn8IdHnOyHPsIOwCsznQWG2Kp79plXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.13 278/443] nvme-pci: Add TUXEDO IBP Gen9 to Samsung sleep quirk
+	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 071/273] gpio: pca953x: Improve interrupt support
 Date: Thu, 13 Feb 2025 15:27:23 +0100
-Message-ID: <20250213142451.336973985@linuxfoundation.org>
+Message-ID: <20250213142410.158024957@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 
-commit 11cb3529d18514f7d28ad2190533192aedefd761 upstream.
+[ Upstream commit d6179f6c6204f9932aed3a7a2100b4a295dfed9d ]
 
-On the TUXEDO InfinityBook Pro Gen9 Intel, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (4 watts).
+The GPIO drivers with latch interrupt support (typically types starting
+with PCAL) have interrupt status registers to determine which particular
+inputs have caused an interrupt. Unfortunately there is no atomic
+operation to read these registers and clear the interrupt. Clearing the
+interrupt is done by reading the input registers.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1.2 watts.
+The code was reading the interrupt status registers, and then reading
+the input registers. If an input changed between these two events it was
+lost.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The solution in this patch is to revert to the non-latch version of
+code, i.e. remembering the previous input status, and looking for the
+changes. This system results in no more I2C transfers, so is no slower.
+The latch property of the device still means interrupts will still be
+noticed if the input changes back to its initial state.
+
+Fixes: 44896beae605 ("gpio: pca953x: add PCAL9535 interrupt support for Galileo Gen2")
+Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606033102.2271916-1-mark.tomlinson@alliedtelesis.co.nz
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-pca953x.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3150,6 +3150,7 @@ static unsigned long check_vendor_combin
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
-+		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 9c33f9da724cf..b882b26ab5007 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -847,25 +847,6 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 	DECLARE_BITMAP(trigger, MAX_LINE);
+ 	int ret;
+ 
+-	if (chip->driver_data & PCA_PCAL) {
+-		/* Read the current interrupt status from the device */
+-		ret = pca953x_read_regs(chip, PCAL953X_INT_STAT, trigger);
+-		if (ret)
+-			return false;
+-
+-		/* Check latched inputs and clear interrupt status */
+-		ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+-		if (ret)
+-			return false;
+-
+-		/* Apply filter for rising/falling edge selection */
+-		bitmap_replace(new_stat, chip->irq_trig_fall, chip->irq_trig_raise, cur_stat, gc->ngpio);
+-
+-		bitmap_and(pending, new_stat, trigger, gc->ngpio);
+-
+-		return !bitmap_empty(pending, gc->ngpio);
+-	}
+-
+ 	ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+ 	if (ret)
+ 		return false;
+-- 
+2.39.5
+
 
 
 
