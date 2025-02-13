@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-115385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F742A34381
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6074A3458F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3EF3A4680
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8788F3A838B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ABA24BC13;
-	Thu, 13 Feb 2025 14:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6298188CDB;
+	Thu, 13 Feb 2025 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COPgotAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRYp1kiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A3E24BC0E;
-	Thu, 13 Feb 2025 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49AA16BE17;
+	Thu, 13 Feb 2025 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457869; cv=none; b=GxdXzxoiRfrdg8QgOQ/RAg1rTFyOpAaGqhKN05IHtGIPwihlqptFR8MRZEs0E/rdQZ9lDVjUbSWWYteuCkhd8+g75GjKiTMycZbi1S3A6arOejtsI7EhHPkx0pWsuJLUl6j+gMDilYpmMILnTiT66dhMhTGwYQXgc8jTUnb2Cco=
+	t=1739459259; cv=none; b=P6Sg6ZEVjd8rrb/HlT0pPoSYSgsYCRAgcqIT4gElGOgKoQFkZKmQnlflDLZrVHF1DWwnq3yjLiAUQJJYunxHttVHvpe8VSo2oSIaAlWMeD4qCyiN1l4EUxl5GcIj+dQdqr4UqDGHL8vro2OxAje8cctOteW83ofCtI6y+35J1ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457869; c=relaxed/simple;
-	bh=7yS6ZkMM4Rl9NIrmT4jxBd4ecahG65ARxY/OpYLREcQ=;
+	s=arc-20240116; t=1739459259; c=relaxed/simple;
+	bh=1RYuAqPjm/6kFarOqphXN1HeIKGg8VplI42uaxqEbNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7x8SOedc+pm+D43BKpH44yjFYeIlmhBPW6TIa+CAGVZwPM0ZADVj+bjSg5hIXbdluKMOwI7WxmPGpToXsebK73ick+jrknFd/lb0meKeiG/s2oyvK3gSkj5Yb2/B/eUIDV/urotUa5JV+wSPjt7APKcB2YPU+zKfaYhfPcq+zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COPgotAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29792C4CEE2;
-	Thu, 13 Feb 2025 14:44:28 +0000 (UTC)
+	 MIME-Version; b=Zb5n9G/h5DW5SPZLU3x+tIp4JHjPcAtpL/RlMBqIPC9BbxCcefPO8LjEM42TLgbHmzlMDaA3XiB/nUmYw6c+AHec8SKyDiuJSPlo3fKUUlGdN6OTa0zBle1e24m7MGuxrw0BhSihbtU3Qp+t3N2keLkNgpnkhvGYD2mjewjq+M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRYp1kiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0667C4CED1;
+	Thu, 13 Feb 2025 15:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457869;
-	bh=7yS6ZkMM4Rl9NIrmT4jxBd4ecahG65ARxY/OpYLREcQ=;
+	s=korg; t=1739459259;
+	bh=1RYuAqPjm/6kFarOqphXN1HeIKGg8VplI42uaxqEbNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COPgotAl5+tEeMgPFK4xCgAA1UvqbJlkK3AqwfO19zi/x5KNiOutV+ZtTZsE7P1jO
-	 C/kHJ1+pVNRjHChwXUwi5Ai7XBGgI5mjcNXgiqqOKgp4whVHJt5ohGNk2baROz/KSa
-	 IyMZYSml5l/pIFXWZ1pB5l1UHWdOMc5AuZuEMPn8=
+	b=eRYp1kiJ3Xe4ItPhCKXcQQsaM6SVa4/ZxTuOHwQ2Di45X5FreXO4rGPROQJyjn+cD
+	 lgQKYuny4QebwWLdWUeA46xEUtUqH6BB8nq85gAUTkImXPJ/7seJGYSQViFKVfPRQJ
+	 YBMYd2lvXfjqPVqkB4+v0fe7whM95oq/nTTvoJj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.12 229/422] serial: sh-sci: Do not probe the serial port if its slot in sci_ports[] is in use
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 6.13 213/443] perf bench: Fix undefined behavior in cmpworker()
 Date: Thu, 13 Feb 2025 15:26:18 +0100
-Message-ID: <20250213142445.373896550@linuxfoundation.org>
+Message-ID: <20250213142448.836836799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 9f7dea875cc7f9c1a56a5c688290634a59cd1420 upstream.
+commit 62892e77b8a64b9dc0e1da75980aa145347b6820 upstream.
 
-In the sh-sci driver, sci_ports[0] is used by earlycon. If the earlycon is
-still active when sci_probe() is called and the new serial port is supposed
-to map to sci_ports[0], return -EBUSY to prevent breaking the earlycon.
+The comparison function cmpworker() violates the C standard's
+requirements for qsort() comparison functions, which mandate symmetry
+and transitivity:
 
-This situation should occurs in debug scenarios, and users should be
-aware of the potential conflict.
+Symmetry: If x < y, then y > x.
+Transitivity: If x < y and y < z, then x < z.
 
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+In its current implementation, cmpworker() incorrectly returns 0 when
+w1->tid < w2->tid, which breaks both symmetry and transitivity. This
+violation causes undefined behavior, potentially leading to issues such
+as memory corruption in glibc [1].
+
+Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
+compliance with the C standard and preventing undefined behavior.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
 Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250116110842.4087530-1-visitorckw@gmail.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tools/perf/bench/epoll-wait.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -165,6 +165,7 @@ struct sci_port {
- static struct sci_port sci_ports[SCI_NPORTS];
- static unsigned long sci_ports_in_use;
- static struct uart_driver sci_uart_driver;
-+static bool sci_uart_earlycon;
+--- a/tools/perf/bench/epoll-wait.c
++++ b/tools/perf/bench/epoll-wait.c
+@@ -420,7 +420,12 @@ static int cmpworker(const void *p1, con
  
- static inline struct sci_port *
- to_sci_port(struct uart_port *uart)
-@@ -3450,6 +3451,7 @@ static int sci_probe_single(struct platf
- static int sci_probe(struct platform_device *dev)
- {
- 	struct plat_sci_port *p;
-+	struct resource *res;
- 	struct sci_port *sp;
- 	unsigned int dev_id;
- 	int ret;
-@@ -3479,6 +3481,26 @@ static int sci_probe(struct platform_dev
- 	}
+ 	struct worker *w1 = (struct worker *) p1;
+ 	struct worker *w2 = (struct worker *) p2;
+-	return w1->tid > w2->tid;
++
++	if (w1->tid > w2->tid)
++		return 1;
++	if (w1->tid < w2->tid)
++		return -1;
++	return 0;
+ }
  
- 	sp = &sci_ports[dev_id];
-+
-+	/*
-+	 * In case:
-+	 * - the probed port alias is zero (as the one used by earlycon), and
-+	 * - the earlycon is still active (e.g., "earlycon keep_bootcon" in
-+	 *   bootargs)
-+	 *
-+	 * defer the probe of this serial. This is a debug scenario and the user
-+	 * must be aware of it.
-+	 *
-+	 * Except when the probed port is the same as the earlycon port.
-+	 */
-+
-+	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -ENODEV;
-+
-+	if (sci_uart_earlycon && sp == &sci_ports[0] && sp->port.mapbase != res->start)
-+		return dev_err_probe(&dev->dev, -EBUSY, "sci_port[0] is used by earlycon!\n");
-+
- 	platform_set_drvdata(dev, sp);
- 
- 	ret = sci_probe_single(dev, dev_id, p, sp);
-@@ -3575,6 +3597,7 @@ static int __init early_console_setup(st
- 	port_cfg.type = type;
- 	sci_ports[0].cfg = &port_cfg;
- 	sci_ports[0].params = sci_probe_regmap(&port_cfg);
-+	sci_uart_earlycon = true;
- 	port_cfg.scscr = sci_serial_in(&sci_ports[0].port, SCSCR);
- 	sci_serial_out(&sci_ports[0].port, SCSCR,
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ int bench_epoll_wait(int argc, const char **argv)
 
 
 
