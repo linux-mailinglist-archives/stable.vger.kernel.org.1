@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-116296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF8BA34865
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B2DA3486C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9993B61FA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFD23A70F4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1151CDA3F;
-	Thu, 13 Feb 2025 15:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F2C202C21;
+	Thu, 13 Feb 2025 15:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8xiV6mk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzehsnUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E092A14658D;
-	Thu, 13 Feb 2025 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C241DE4C1;
+	Thu, 13 Feb 2025 15:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460999; cv=none; b=YMNlAe0VRCxcPtfn6W8ll6kgSMMbU+RRxLWsZMjQlVP55FSF9iBB8zowYrn11lCOQheh+72w2Prph285Q4Tth2R26NpIE0iZoFLKVpzOYjq0VmbEV1w/gIJpzX2ULJ4VMaSD5G0Rds1sgzBpY2buFtRGwRVUsOoWCcD3NngtNzw=
+	t=1739461030; cv=none; b=SbqCWXCobKmUUj3i+DoAVslX5fmwapLtfw08jI5zrfovnAcCG1zZ/pmKUg8fyZpAgItGVFr9ad0tPdbVlQwtG1DZMNNeeWyMus3TchHzqw6yPIdWwhZT2RqOvkyWkqPYb4/aS4k6icVT7+8b/7/4z88JG8mZM4/dTzIQon8Rb4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460999; c=relaxed/simple;
-	bh=wEIuAMUf3O9Q5RD6PiL2tlpJFPSotbXCXCbCxbA7UQ0=;
+	s=arc-20240116; t=1739461030; c=relaxed/simple;
+	bh=3SHyI0jLYWWbAAkdAuAxZzuaDVJktjD68MJgj4w9Mds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=an8VgvnSW++TBCyuZeKfytlMb8AqULYrrNfx+AZjZujBP33+6LJYp4Dg+keKJl62JZHkPBUPBWrYlNBi8QgGM8QXQ/ZbBKwB/B1O89ZaIwTCG+XmZdtJk6qRoccp5iKOonH5mhmBHgv/txTrX7COQB9YBHnRjXv7VAN/P3Es98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8xiV6mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572ACC4CED1;
-	Thu, 13 Feb 2025 15:36:38 +0000 (UTC)
+	 MIME-Version; b=WRJ5Rlp9yYdT9J6krHEAiiK1Fr3mZwp6qoZpOJ/qgWPVPQFriqnx+qk6NyGkFaHoV66MInPQ3Le6zdyeJPVvpO6NWVQSM1LcYzTwzAKK8qBbdVzbnzZ3EWOKeJKTzgReYl1CeYCkZ0QOIAompD0NwvgSqfXWkfQ3ywYN/OO/0IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzehsnUO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DBBC4CED1;
+	Thu, 13 Feb 2025 15:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460998;
-	bh=wEIuAMUf3O9Q5RD6PiL2tlpJFPSotbXCXCbCxbA7UQ0=;
+	s=korg; t=1739461029;
+	bh=3SHyI0jLYWWbAAkdAuAxZzuaDVJktjD68MJgj4w9Mds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8xiV6mkXUwSwO+Uliy1w4YF9WBuJeMY792ApAwGMQttzaWvRCv1rwDBlkdE4FALL
-	 gMSdRmYJPR1Ym3lPygu0nFxxxJbDkmN0Acd+K5f+oVdtGiguhgtQFNIo0o/nZ3UchG
-	 eGmYuYQxf2ODRgNP6bPuTcDfMx1FrYxKBzapvajg=
+	b=UzehsnUOO6kPNKsjsWQCaFyAWeCD3NsE7pHpGpucSV3BVTra3gk8EKxOPrbdIvH30
+	 NIipjcGAqGnrZQ6KPmHnmhapMYPikN+YUIOVZxExfh66BYgdvxyuR1NdtXVyIyDf6y
+	 pNV7T0O+2hK92NX9IUDNyZO8+3mb/SNs6VNPD7P8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 6.6 271/273] tty: xilinx_uartps: split sysrq handling
-Date: Thu, 13 Feb 2025 15:30:43 +0100
-Message-ID: <20250213142418.133119000@linuxfoundation.org>
+	Michal Luczaj <mhal@rbox.co>,
+	Haoyu Wu <haoyuwu254@gmail.com>,
+	syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	James Houghton <jthoughton@google.com>
+Subject: [PATCH 6.6 272/273] KVM: x86: Make x2APIC ID 100% readonly
+Date: Thu, 13 Feb 2025 15:30:44 +0100
+Message-ID: <20250213142418.172267554@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -65,78 +69,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b06f388994500297bb91be60ffaf6825ecfd2afe upstream.
+commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 upstream.
 
-lockdep detects the following circular locking dependency:
+Ignore the userspace provided x2APIC ID when fixing up APIC state for
+KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
+a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
+register"), which added the fixup, didn't intend to allow userspace to
+modify the x2APIC ID.  In fact, that commit is when KVM first started
+treating the x2APIC ID as readonly, apparently to fix some race:
 
-CPU 0                      CPU 1
-========================== ============================
-cdns_uart_isr()            printk()
-  uart_port_lock(port)       console_lock()
-			     cdns_uart_console_write()
-                               if (!port->sysrq)
-                                 uart_port_lock(port)
-  uart_handle_break()
-    port->sysrq = ...
-  uart_handle_sysrq_char()
-    printk()
-      console_lock()
+ static inline u32 kvm_apic_id(struct kvm_lapic *apic)
+ {
+-       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
++       /* To avoid a race between apic_base and following APIC_ID update when
++        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
++        */
++       if (apic_x2apic_mode(apic))
++               return apic->vcpu->vcpu_id;
++
++       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+ }
 
-The fixed commit attempts to avoid this situation by only taking the
-port lock in cdns_uart_console_write if port->sysrq unset. However, if
-(as shown above) cdns_uart_console_write runs before port->sysrq is set,
-then it will try to take the port lock anyway. This may result in a
-deadlock.
+Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
+modified x2APIC ID, but KVM *does* return the modified value on a guest
+RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
+work with a modified x2APIC ID.
 
-Fix this by splitting sysrq handling into two parts. We use the prepare
-helper under the port lock and defer handling until we release the lock.
+Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
+calculation, which expects the LDR to align with the x2APIC ID.
 
-Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: stable@vger.kernel.org # c980248179d: serial: xilinx_uartps: Use port lock wrappers
-Acked-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20250110213822.2107462-1-sean.anderson@linux.dev
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
+  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
+   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
+   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
+   __x64_sys_ioctl+0xb8/0xf0
+   do_syscall_64+0x56/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+  RIP: 0033:0x7fade8b9dd6f
+
+Unfortunately, the WARN can still trigger for other CPUs than the current
+one by racing against KVM_SET_LAPIC, so remove it completely.
+
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
+Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
+Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
+Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240802202941.344889-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: James Houghton <jthoughton@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/xilinx_uartps.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/x86/kvm/lapic.c |   22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -268,7 +268,7 @@ static void cdns_uart_handle_rx(void *de
- 				continue;
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -338,10 +338,8 @@ static void kvm_recalculate_logical_map(
+ 	 * reversing the LDR calculation to get cluster of APICs, i.e. no
+ 	 * additional work is required.
+ 	 */
+-	if (apic_x2apic_mode(apic)) {
+-		WARN_ON_ONCE(ldr != kvm_apic_calc_x2apic_ldr(kvm_x2apic_id(apic)));
++	if (apic_x2apic_mode(apic))
+ 		return;
+-	}
+ 
+ 	if (WARN_ON_ONCE(!kvm_apic_map_get_logical_dest(new, ldr,
+ 							&cluster, &mask))) {
+@@ -2964,18 +2962,28 @@ static int kvm_apic_state_fixup(struct k
+ 		struct kvm_lapic_state *s, bool set)
+ {
+ 	if (apic_x2apic_mode(vcpu->arch.apic)) {
++		u32 x2apic_id = kvm_x2apic_id(vcpu->arch.apic);
+ 		u32 *id = (u32 *)(s->regs + APIC_ID);
+ 		u32 *ldr = (u32 *)(s->regs + APIC_LDR);
+ 		u64 icr;
+ 
+ 		if (vcpu->kvm->arch.x2apic_format) {
+-			if (*id != vcpu->vcpu_id)
++			if (*id != x2apic_id)
+ 				return -EINVAL;
+ 		} else {
++			/*
++			 * Ignore the userspace value when setting APIC state.
++			 * KVM's model is that the x2APIC ID is readonly, e.g.
++			 * KVM only supports delivering interrupts to KVM's
++			 * version of the x2APIC ID.  However, for backwards
++			 * compatibility, don't reject attempts to set a
++			 * mismatched ID for userspace that hasn't opted into
++			 * x2apic_format.
++			 */
+ 			if (set)
+-				*id >>= 24;
++				*id = x2apic_id;
+ 			else
+-				*id <<= 24;
++				*id = x2apic_id << 24;
  		}
  
--		if (uart_handle_sysrq_char(port, data))
-+		if (uart_prepare_sysrq_char(port, data))
- 			continue;
+ 		/*
+@@ -2984,7 +2992,7 @@ static int kvm_apic_state_fixup(struct k
+ 		 * split to ICR+ICR2 in userspace for backwards compatibility.
+ 		 */
+ 		if (set) {
+-			*ldr = kvm_apic_calc_x2apic_ldr(*id);
++			*ldr = kvm_apic_calc_x2apic_ldr(x2apic_id);
  
- 		if (is_rxbs_support) {
-@@ -369,7 +369,7 @@ static irqreturn_t cdns_uart_isr(int irq
- 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
- 		cdns_uart_handle_rx(dev_id, isrstatus);
- 
--	spin_unlock(&port->lock);
-+	uart_unlock_and_check_sysrq(port);
- 	return IRQ_HANDLED;
- }
- 
-@@ -1229,10 +1229,8 @@ static void cdns_uart_console_write(stru
- 	unsigned int imr, ctrl;
- 	int locked = 1;
- 
--	if (port->sysrq)
--		locked = 0;
--	else if (oops_in_progress)
--		locked = spin_trylock_irqsave(&port->lock, flags);
-+	if (oops_in_progress)
-+		locked = uart_port_trylock_irqsave(port, &flags);
- 	else
- 		spin_lock_irqsave(&port->lock, flags);
- 
+ 			icr = __kvm_lapic_get_reg(s->regs, APIC_ICR) |
+ 			      (u64)__kvm_lapic_get_reg(s->regs, APIC_ICR2) << 32;
 
 
 
