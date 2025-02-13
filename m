@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A97A345D7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8BEA347BA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D6A1887F51
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4719C3B119D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8596026B0AD;
-	Thu, 13 Feb 2025 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ECD1917E4;
+	Thu, 13 Feb 2025 15:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSA65roE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+gSGbTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D6B26B097;
-	Thu, 13 Feb 2025 15:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63094156F41;
+	Thu, 13 Feb 2025 15:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459559; cv=none; b=hx4bVW0pHGOGxaKShZmvhv/4B9Neq2KJouxDDgry2QmHUndvXbbRTZEF/6ChCK5h/unR41UsxQqu4nOJUv2jjZcn8q9VybTKgz3PPnW6L3oimbQHq1jlsyDkw4kGlApEUnogpC+IZr8ElK2TD0+QfwW4sptRIcXiELTp5iFREXg=
+	t=1739460375; cv=none; b=NbMY0n/Y9qJQJskNKx2lRkCW4Murj7948LOugGr1/uVs8ub5OFj3GNmkona1Ob/2ocbk/ALRL4Bpc1+xUszoAVw4Lq7iz6Kkavt8MZxrt4xIArZdUZ/G10h6ua3NxhWRCYj66i2uxX/VTlYStbl8L58yCBZE1PBXeNWNpNHdwt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459559; c=relaxed/simple;
-	bh=o+uqwRWg+HmAvCaJwoFYPe00myuehWHbflAtNN3nGdI=;
+	s=arc-20240116; t=1739460375; c=relaxed/simple;
+	bh=VvpmPRIaWfYAHFsvgjHDElw0EgWufqmoyHtj538J06Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RE8FzMmIxD3T1RsVKbP7WfrTiosRuV14LfV0AHzx6JJXAU9tEP6j6VYX17yzqGd06wYKkmWmdE9yPRTzeBt8KxBFgwJbvqTsdA3F+e8u5ayB5W2wFZCmmq3GG7N46SNwxsnjvQ/oJxwJVm+X11/o2tw8TahCiXWYkTB1iT8aSmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSA65roE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D77C4CED1;
-	Thu, 13 Feb 2025 15:12:38 +0000 (UTC)
+	 MIME-Version; b=HjJ5rvaTU+aImgzACw+/aqST626MK4Bk/e6OkHTwwymG2Of5jPR7IFz4sZZa9Uw+u1XMMSoGk2Ihx6QxgZJd0aAoQOLmNIhi902GQdmC8yytL0CH39s5Qv1cNH0ZA5X/HjV5cXY9t+Y7mUJGSuLFDPTUUHiQ4Kr/GuCuxRYnvgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+gSGbTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B8FC4CED1;
+	Thu, 13 Feb 2025 15:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459558;
-	bh=o+uqwRWg+HmAvCaJwoFYPe00myuehWHbflAtNN3nGdI=;
+	s=korg; t=1739460375;
+	bh=VvpmPRIaWfYAHFsvgjHDElw0EgWufqmoyHtj538J06Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSA65roEyrHnqjbCnyCpBtZCbixLM81BJ16SehudLhqdZ3POZRjAymkpZ3qqDgiBO
-	 QOID9zs+iZC529dc2lVA3CT5mCKhlFm0EWgvZSGSywTFrdHQrh5YNlX7vkhmS+trX0
-	 TpFW92FtPHCgxmeFB8LhEV/XtNMWxJjAD1SmDRws=
+	b=q+gSGbTTFQ1SRRnZDC0HD93rNgR2Q6FFmFKx2q9TVcAigswUUTSC8oz2bKERmerCw
+	 h93I8mAyvlLCKwZhlqSF+RcEHnAuuHkLZKUi/JmdvcvXbGZddwnJFvIlCG7WZoHnaE
+	 w2hfxQDzrdu3t8SGYuYTuf40KGbQtfE+ADqMYyHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 300/443] arm64: dts: qcom: x1e80100: Fix CDSP memory length
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 093/273] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
 Date: Thu, 13 Feb 2025 15:27:45 +0100
-Message-ID: <20250213142452.190633845@linuxfoundation.org>
+Message-ID: <20250213142411.019041756@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-commit 3de1bf12c6bfb9a92f0803941ecae39b08470446 upstream.
+commit 9d241b06802c6c2176ae7aa4f9f17f8a577ed337 upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+During mass manufacturing, we noticed the mmc_rx_crc_error counter,
+as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
+above zero during nuttcp speedtests. Most of the time, this did not
+affect the achieved speed, but it prompted this investigation.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+Cycling through the rx_delay range on six boards (see table below) of
+various ages shows that there is a large good region from 0x12 to 0x35
+where we see zero crc errors on all tested boards.
 
-Fixes: 5f2a9cd4b104 ("arm64: dts: qcom: x1e80100: Add ADSP/CDSP remoteproc nodes")
+The old rx_delay value (0x10) seems to have always been on the edge for
+the KSZ9031RNX that is usually placed on Puma.
+
+Choose "rx_delay = 0x23" to put us smack in the middle of the good
+region. This works fine as well with the KSZ9131RNX PHY that was used
+for a small number of boards during the COVID chip shortages.
+
+	Board S/N        PHY        rx_delay good region
+	---------        ---        --------------------
+	Puma TT0069903   KSZ9031RNX 0x11 0x35
+	Puma TT0157733   KSZ9031RNX 0x11 0x35
+	Puma TT0681551   KSZ9031RNX 0x12 0x37
+	Puma TT0681156   KSZ9031RNX 0x10 0x38
+	Puma 17496030079 KSZ9031RNX 0x10 0x37 (Puma v1.2 from 2017)
+	Puma TT0681720   KSZ9131RNX 0x02 0x39 (alternative PHY used in very few boards)
+
+	Intersection of good regions = 0x12 0x35
+	Middle of good region = 0x23
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
 Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-14-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # Puma v2.1 and v2.3 with KSZ9031
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+Link: https://lore.kernel.org/r/20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -6250,7 +6250,7 @@
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -147,7 +147,7 @@
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+ 	tx_delay = <0x10>;
+-	rx_delay = <0x10>;
++	rx_delay = <0x23>;
+ 	status = "okay";
+ };
  
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,x1e80100-cdsp-pas";
--			reg = <0 0x32300000 0 0x1400000>;
-+			reg = <0x0 0x32300000 0x0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
