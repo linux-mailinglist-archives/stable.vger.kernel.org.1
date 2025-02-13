@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68836A345A6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CB9A3436C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7398217262C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48EBB3A4CC3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EFC26B098;
-	Thu, 13 Feb 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D5227E88;
+	Thu, 13 Feb 2025 14:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrI+3seR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xV+DF5UM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5751E26B094;
-	Thu, 13 Feb 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36156281369;
+	Thu, 13 Feb 2025 14:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459359; cv=none; b=TqlcMsu5y5aPhzrFztKsp0wY8uUrqHUpXMU3cbYrWMufpqKfJu1cCQDyWip/b3MM9/N8Fc2J5oeT+Vpr5shJI1b0TkeUasssje7nQbukk3llJk5RjulXrbtNZpZ2S99hPi8B+Orooxa36CQ1nmX93UcuZivRUaiVl+pXZGBsIrU=
+	t=1739457839; cv=none; b=BgWQJ17w1BwN7H+2ShWtuCR2ebzTqIaCtdEomJepqXsOkwyVyfVQYcQwbaxtZIWL3Ouo+KMqv3W7uMqR9U+lM0rbKT83JGjby6jMSnvoqM4HLJX7cQ1q9WYYMyClt7jvPiMTvIvD5Ods9xQ8o9rAxymuFJBrMNbqw0mqL0NVN7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459359; c=relaxed/simple;
-	bh=NZSaq6cxkGviZifGT1ijr/QVrK8yadoNUlp9EIrr/mU=;
+	s=arc-20240116; t=1739457839; c=relaxed/simple;
+	bh=Oqc1+uuBUJ+/h/lQFeOroSlPOdFEh71RnuoMQSCHftc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mnMOu4btaDr7eMTqdNzsT9UVb0m82RTJROAWRHvveJSPXa8K1cFngA5OOk59a98QdfeQjdXrlRqZOkwxGAaBuTntMsEmO01iAIOiYmF28t4b8bUM+MCnZJxwBxWQrgLDs6SCPc/7hTRevgWvERPqrJxGB6eA4/NbJuRJ3e23mtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrI+3seR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9D7C4CED1;
-	Thu, 13 Feb 2025 15:09:18 +0000 (UTC)
+	 MIME-Version; b=QEhcXX17jtxN9gslu7rrF7qyzDmyfNm9BK5wVzKqEHjFF98HA66wde7L1VB4OZQsuVhNmdqJ09YLhZCyU1AsGn+tK7dp8RWW3NzznHAYLuGSw9n+CKXMrBZFA7+Y1GTFvcefuGz29+l5Vm84za+gXbxFT6H6lRcmihSAzszRAsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xV+DF5UM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96094C4CEE2;
+	Thu, 13 Feb 2025 14:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459359;
-	bh=NZSaq6cxkGviZifGT1ijr/QVrK8yadoNUlp9EIrr/mU=;
+	s=korg; t=1739457839;
+	bh=Oqc1+uuBUJ+/h/lQFeOroSlPOdFEh71RnuoMQSCHftc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrI+3seR+LP1TZ1QlO3JPCOLQuIzScR+LAsulTMGh1Tc+0FbROK2peGYmQNlMqeOv
-	 rn//R1oxbw0v5Jo2++tNEcjXjo5A6IzYCyOmgJKujqqvS/sxc/dUzruLaZ9zlY7DOv
-	 4vR3iJlLaUpM+iTN/u+/j8XOYdph9lw2+/IECN3g=
+	b=xV+DF5UMlseOzuUepTJEUIkncw9z0zAB2Iklx6PRyIu/gaimo/n04yZ+ucIqDNwK9
+	 sa/tRJJ+U6CZAYEZF+ZDzl1SmUZHViW7jNJfYQe66k7FbJy8USpe7tRrlz5fADMc0v
+	 ZBHUzPOuPeZqh8AHTbjTeqNlN0DkvEdOM6heTB+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 6.13 210/443] blk-cgroup: Fix class @block_classs subsystem refcount leakage
+	nijs1@lenovo.com,
+	pgriffais@valvesoftware.com,
+	mpearson-lenovo@squebb.ca,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 226/422] ASoC: acp: Support microphone from Lenovo Go S
 Date: Thu, 13 Feb 2025 15:26:15 +0100
-Message-ID: <20250213142448.721410897@linuxfoundation.org>
+Message-ID: <20250213142445.258738296@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit d1248436cbef1f924c04255367ff4845ccd9025e upstream.
+commit b9a8ea185f3f8024619b2e74b74375493c87df8c upstream.
 
-blkcg_fill_root_iostats() iterates over @block_class's devices by
-class_dev_iter_(init|next)(), but does not end iterating with
-class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
+On Lenovo Go S there is a DMIC connected to the ACP but the firmware
+has no `AcpDmicConnected` ACPI _DSD.
 
-Fix by ending the iterating with class_dev_iter_exit().
+Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
 
-Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: nijs1@lenovo.com
+Cc: pgriffais@valvesoftware.com
+Cc: mpearson-lenovo@squebb.ca
 Cc: stable@vger.kernel.org
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250105-class_fix-v6-2-3a2f1768d4d4@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250123024915.2457115-1-superm1@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1138,6 +1138,7 @@ static void blkcg_fill_root_iostats(void
- 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
- 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
- 	}
-+	class_dev_iter_exit(&iter);
- }
- 
- static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -307,6 +307,34 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
+ 		}
 
 
 
