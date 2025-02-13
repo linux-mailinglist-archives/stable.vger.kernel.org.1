@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4764BA346B1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916B3A3481D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931351898726
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E14716AA56
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C9426B091;
-	Thu, 13 Feb 2025 15:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C871662E9;
+	Thu, 13 Feb 2025 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOwTR1Vg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOTe8MNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DD5145A03;
-	Thu, 13 Feb 2025 15:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512F926B087;
+	Thu, 13 Feb 2025 15:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459942; cv=none; b=Ac4d0hoEYHMaukiaQfbQiV6bD6OesdznqfQa6CCTRv2Wbb8DA0oTXaKkNQhPesTl+gkoaKyiJL+Zqz76R0p4lmd/Q2lt0SBjZ1eZDKRpfuiF9gnjfXBPr36c/qbVVM75iRwGkqbXh0p6PbPniqOW+bVD6ps1QmzvHj3jpP8lu3E=
+	t=1739460903; cv=none; b=DOmy/i45GaaOotZpdJxuIcEZ5JfjBaLBS4P4qTtHgNWMfK3LVHroWs6dXuRhZyrVfgM1MEOZCVtnZtDhXsx0YpvEwFjzs0vbjDcJ+0WpXsyvtEU4UIoGYLEAnk8OiKqwXpf5H8fi6SqEJGIjeQECuncAiza1ZTc3FKaR6s8st94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459942; c=relaxed/simple;
-	bh=sKzxIir9Yb/rk6AVSsOTyK0DmXoqDJHHaf2iLyJxA74=;
+	s=arc-20240116; t=1739460903; c=relaxed/simple;
+	bh=zeIz8ze3heyuG8NCeG4JsrMl/wloFdgDGwso3TfW8+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyJq5dSlvhAtoh/FLJsEK2AU5CBZ7WPROKVOXFBSvTgzSnwCcFIUeYpW2AN9s0hYXchirRlb3/ghyRTKMl8sN8wvjT61GUULDTpvhbqPRaamyy/8bGWjEgPo5NVUbpXZfKIYxaYCL5Rjbdr7LxNry5D4dma6+qXqNaWvj3N3Gxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOwTR1Vg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53735C4CED1;
-	Thu, 13 Feb 2025 15:19:01 +0000 (UTC)
+	 MIME-Version; b=f13+SCycl/lIk18WHJkU9rBCjp9EnxZbeeSzMnr1Z25ait/UDqG43nIaLabcqZCMijL0SOx0sUQ9HUeXVL6L2xPn3nBvz6dn7W0Bx3dP3PKzp5AMC0BdklOt/JK2C/qoRnIpeyqE+kgrWy5DvHVqLc12wrw3LDd7Q/7K4EfBgTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOTe8MNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDEDC4CED1;
+	Thu, 13 Feb 2025 15:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459941;
-	bh=sKzxIir9Yb/rk6AVSsOTyK0DmXoqDJHHaf2iLyJxA74=;
+	s=korg; t=1739460902;
+	bh=zeIz8ze3heyuG8NCeG4JsrMl/wloFdgDGwso3TfW8+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOwTR1VgjMAV+31c40xUUErAHb2zmJm3cRbyK1Aod8+zVUw9azsTF0/bMbOm60nuK
-	 BleDQWbQtfePKJYIXQd3NrqGH9GS8SXgEx6/RygVKb60THQvND71kFYBasqq/AusJH
-	 TsapUu5NN48MIs2WhcraLlrQondw3PWnKKgBzE/g=
+	b=lOTe8MNqfG8pZiKwi1lJQdqU1SrjME1Sc+3QXgSXxXyTZSaRcf+biuhAXSFNNVbCC
+	 flDbg17jvDYszlBqhNbQKUoBaObnQOdeE+u67+w1O5hQzZ5+2lUy+6s3+5f6ZUiadt
+	 DYPth9at4yYOVMVAKmjweeLVJ9HqmEEnzrfkZGgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Chan <towinchenmi@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.13 409/443] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured so
-Date: Thu, 13 Feb 2025 15:29:34 +0100
-Message-ID: <20250213142456.391001024@linuxfoundation.org>
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 203/273] media: mmp: Bring back registration of the device
+Date: Thu, 13 Feb 2025 15:29:35 +0100
+Message-ID: <20250213142415.343695755@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Chan <towinchenmi@gmail.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-commit 698244bbb3bfd32ddf9a0b70a12b1c7d69056497 upstream.
+commit fbb5298bf1a7b71723cd2bb193642429ceb0fb84 upstream.
 
-The CPU PMU in Apple SoCs can be configured to fire its interrupt in one of
-several ways, and since Apple A11 one of the methods is FIQ, but the check
-of the configuration register fails to test explicitely for FIQ mode. It
-tests whether the IMODE bitfield is zero or not and the PMCRO_IACT bit is
-set. That results in false positives when the IMODE bitfield is not zero,
-but does not have the mode PMCR0_IMODE_FIQ.
+In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
+earlier"), a call to v4l2_device_register() was moved away from
+mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
+This is not the only caller though -- there's also marvell/mmp.
 
-Only handle the PMC interrupt as a FIQ when the CPU PMU has been configured
-to fire FIQs, i.e. the IMODE bitfield value is PMCR0_IMODE_FIQ and
-PMCR0_IACT is set.
+Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
+driver, in a fashion analogous to what's been done to the Cafe driver.
+Same for the teardown path.
 
-Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250118163554.16733-1-towinchenmi@gmail.com
+Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-apple-aic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/marvell/mmp-driver.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/irqchip/irq-apple-aic.c
-+++ b/drivers/irqchip/irq-apple-aic.c
-@@ -577,7 +577,8 @@ static void __exception_irq_entry aic_ha
- 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
+--- a/drivers/media/platform/marvell/mmp-driver.c
++++ b/drivers/media/platform/marvell/mmp-driver.c
+@@ -231,12 +231,22 @@ static int mmpcam_probe(struct platform_
+ 	mcam_init_clk(mcam);
+ 
+ 	/*
++	 * Register with V4L.
++	 */
++
++	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
++	if (ret)
++		return ret;
++
++	/*
+ 	 * Create a match of the sensor against its OF node.
+ 	 */
+ 	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
+ 					    NULL);
+-	if (!ep)
+-		return -ENODEV;
++	if (!ep) {
++		ret = -ENODEV;
++		goto out_v4l2_device_unregister;
++	}
+ 
+ 	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
+ 
+@@ -245,7 +255,7 @@ static int mmpcam_probe(struct platform_
+ 	fwnode_handle_put(ep);
+ 	if (IS_ERR(asd)) {
+ 		ret = PTR_ERR(asd);
+-		goto out;
++		goto out_v4l2_device_unregister;
  	}
  
--	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
-+	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
-+			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
- 		int irq;
- 		if (cpumask_test_cpu(smp_processor_id(),
- 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
+ 	/*
+@@ -253,7 +263,7 @@ static int mmpcam_probe(struct platform_
+ 	 */
+ 	ret = mccic_register(mcam);
+ 	if (ret)
+-		goto out;
++		goto out_v4l2_device_unregister;
+ 
+ 	/*
+ 	 * Add OF clock provider.
+@@ -282,6 +292,8 @@ static int mmpcam_probe(struct platform_
+ 	return 0;
+ out:
+ 	mccic_shutdown(mcam);
++out_v4l2_device_unregister:
++	v4l2_device_unregister(&mcam->v4l2_dev);
+ 
+ 	return ret;
+ }
+@@ -292,6 +304,7 @@ static void mmpcam_remove(struct platfor
+ 	struct mcam_camera *mcam = &cam->mcam;
+ 
+ 	mccic_shutdown(mcam);
++	v4l2_device_unregister(&mcam->v4l2_dev);
+ 	pm_runtime_force_suspend(mcam->dev);
+ }
+ 
 
 
 
