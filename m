@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-115677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E073CA3451E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600EBA34266
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0FB1169988
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54D4C16ACE6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A1514037F;
-	Thu, 13 Feb 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4968A70830;
+	Thu, 13 Feb 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGhjTeJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDGPLxeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0646526B080;
-	Thu, 13 Feb 2025 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059E9281377;
+	Thu, 13 Feb 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458870; cv=none; b=jWquGfwmblMjb1aeef5LmZ02L3ECiYP5qi3IhmrbhYBsVRSuo1rTa3Dpi2hxA+flYYuemQVYzkSJUdwrhZfdGDEGb6DvN/Ef7izTU51h1rvmjD/82bnH9IHgBae7HKFvR5LlljhhtodqnpsXK9jC1Zstyq8kSSJVw1NRMDESmFM=
+	t=1739457360; cv=none; b=klSJi7N5mE13QxoCuDqC36baDDUf/8DriF5VgCHTURNB3CmJRS888uu0DGh9rwmfzdmxCvaYycPoLj4pDCxpskfAzaK7y17g+0OGNUg0H2B4IxkWk38iTPIq5V361cRwlCsZGz1rYnlK8TwJaMcniEPDNOb0SAlJew01XUbqlAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458870; c=relaxed/simple;
-	bh=0ul/nY5OYe/K8yyMvuI0wHmOqlDvdwCsv9+4y9J0vJ4=;
+	s=arc-20240116; t=1739457360; c=relaxed/simple;
+	bh=OK+lGGDBXJ0M9rOQJ2+0IGR0yX9WQ5pMAETLtXeIibI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LadRdSgQ6XzfOpPWXGgkxe4f9Q6gXgkhCd4x8laHVAsg9e2KSy0Cs9iU5VIxRXixyI9S/XSoMRjFHizA04BbEHzyMIK7hSJziO5Z2J9VGHDAmpJcsuFb7LgwqyOYTJIyFZlAgqdAkh4rNsS0xXaD/oXvxHU4ZJL4A6hNMGxOaPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGhjTeJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D6DC4CEE4;
-	Thu, 13 Feb 2025 15:01:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SunEZAGqbVbjSFumH3BlU9/YilAz9OF+e64iolk57zjoNk2L1MJIeABZagEQU7iIR1cMZsULPKqU149a6Ucg+PqAI/dPupA1+xdhj2nXwKICNFqRu/PWDT0nu50OKGkokD/yR3sFUyGWY+AzE+zUomYexo9uA6ga9HlfjF2z0xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDGPLxeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DC1C4CEE4;
+	Thu, 13 Feb 2025 14:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458869;
-	bh=0ul/nY5OYe/K8yyMvuI0wHmOqlDvdwCsv9+4y9J0vJ4=;
+	s=korg; t=1739457359;
+	bh=OK+lGGDBXJ0M9rOQJ2+0IGR0yX9WQ5pMAETLtXeIibI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UGhjTeJCWgH3l028cM5tSIUkk4iMO6p0lj1Qvr29nquHujoKrwWjAIQKUJQ+7fKRb
-	 k48d/uPBbACga5EElnE+QTiOnKotXHIFsxm/9Z/gu5A+IOUZ2LJ1hHDNurLscEW6zS
-	 kjAFNhw3KjsmO3h0Jc+8FWSJVXihtwL2xG8xybXM=
+	b=fDGPLxeQUKosuUkUZA+pib9QZ5TElPl/P9S8WkeqfZ0z4Mh5NHNsnPUrZ1a0cDVps
+	 EAZEhAIMRAZ0bAqR+WQZfI6GmyYspwerXBa8C+yQSH5w24XH/1OmXP4o25qTwlMJQo
+	 KLojomRmRYmkxWq2vSTRcBtsBd5ykMdnj4wIAc/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macroalpha82@gmail.com>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Lee Jones <lee@kernel.org>,
+	Illia Ostapyshyn <illia@yshyn.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 069/443] Revert "mfd: axp20x: Allow multiple regulators"
-Date: Thu, 13 Feb 2025 15:23:54 +0100
-Message-ID: <20250213142443.280351390@linuxfoundation.org>
+Subject: [PATCH 6.12 086/422] Input: allocate keycode for phone linking
+Date: Thu, 13 Feb 2025 15:23:55 +0100
+Message-ID: <20250213142439.872840429@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Illia Ostapyshyn <illia@yshyn.com>
 
-[ Upstream commit b246bd32a34c1b0d80670e60e4e4102be6366191 ]
+[ Upstream commit 1bebc7869c99d466f819dd2cffaef0edf7d7a035 ]
 
-As Chris and Vasily reported, the attempt to support multiple AXP PMICs
-in one system [1] breaks some of the battery and charging functionality
-on devices with AXP PMICs. The reason is that the drivers now fail to get
-the correct IIO channel for the ADC component, as the current code seems
-to rely on the zero-based enumeration of the regulator devices.
-A fix is possible, but not trivial, as it requires some rework in the AXP
-MFD driver, which cannot be fully reviewed or tested in time for the
-6.13 release.
+The F11 key on the new Lenovo Thinkpad T14 Gen 5, T16 Gen 3, and P14s
+Gen 5 laptops includes a symbol showing a smartphone and a laptop
+chained together.  According to the user manual, it starts the Microsoft
+Phone Link software used to connect to Android/iOS devices and relay
+messages/calls or sync data.
 
-So revert this patch for now, to avoid regressions on battery powered
-devices. This patch was really only necessary for devices with two
-PMICs, support for which is not mainline yet anyway, so we don't lose
-any functionality.
+As there are no suitable keycodes for this action, introduce a new one.
 
-This reverts commit e37ec32188701efa01455b9be42a392adab06ce4.
-
-[1] https://lore.kernel.org/linux-sunxi/20241007001408.27249-4-andre.przywara@arm.com/
-
-Reported-by: Chris Morgan <macroalpha82@gmail.com>
-Closes: https://lore.kernel.org/linux-sunxi/675489c1.050a0220.8d73f.6e90@mx.google.com/
-Reported-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Closes: https://lore.kernel.org/linux-sunxi/CA+E=qVf8_9gn0y=mcdKXvj2PFoHT2eF+JN=CmtTNdRGaSnpgKg@mail.gmail.com/
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Acked-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20250108164359.2609078-1-andre.przywara@arm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20241114173930.44983-2-illia@yshyn.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/axp20x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index 251465a656d09..bce85a58944ac 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -1445,7 +1445,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
- 		}
- 	}
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index a4206723f5033..5a199f3d4a26a 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -519,6 +519,7 @@
+ #define KEY_NOTIFICATION_CENTER	0x1bc	/* Show/hide the notification center */
+ #define KEY_PICKUP_PHONE	0x1bd	/* Answer incoming call */
+ #define KEY_HANGUP_PHONE	0x1be	/* Decline incoming call */
++#define KEY_LINK_PHONE		0x1bf   /* AL Phone Syncing */
  
--	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
-+	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_NONE, axp20x->cells,
- 			      axp20x->nr_cells, NULL, 0, NULL);
- 
- 	if (ret) {
+ #define KEY_DEL_EOL		0x1c0
+ #define KEY_DEL_EOS		0x1c1
 -- 
 2.39.5
 
