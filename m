@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-116134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D42BA346C1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C668A3446C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A1F37A3D91
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97CF21884C73
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86DD14F121;
-	Thu, 13 Feb 2025 15:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B77227EB3;
+	Thu, 13 Feb 2025 14:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGQL5NVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyQfyhbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DB614658D;
-	Thu, 13 Feb 2025 15:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D302222C0;
+	Thu, 13 Feb 2025 14:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460438; cv=none; b=GM2J91o0IU30mlJWYCfvVtT4MoArxD9wsg+AX2JhOz7xbnWg/IW4dXVUJbBRmoEHKrR/J9eWolFoXPkj5HeAcukFFsVe9AeCsXQUFNMKwVeILVoU9quEyMATk2cVNkq7/tahuNVO+f3OpaPWGu+NL+hj0AetQVk/1m0C3MgVezw=
+	t=1739458327; cv=none; b=VDdjDsMsfZyBqiISm2kn3uqutK+tyCoxi+QsHronnf7i4LfSJm3DF99WWHjDz7izI+qornGfJEKkLvQyx54cBjOT/Hfoizi/ZJfqMXX/8Ynd7OOpMWn7EQdUu18CL/GrTq/fSHMZQvkMcX5OvIdZf1sADgCuYVomI0p6yAYmvQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460438; c=relaxed/simple;
-	bh=2qn67VbYVKmoUeTGV/rKob5YNLB4BQqou6CE4fWacZc=;
+	s=arc-20240116; t=1739458327; c=relaxed/simple;
+	bh=OaiFX7PluS5nq+i9+MrO0uv61Qw9d8ciOJayw5n+su0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xk5w4FybAzVErJcKIOFdgzElwhIlQAlZdo0yjAlTzFGKmStIE3NmqykhyF/+zjGAUtqkFhv4U2neroIZOo8miEAW6t4QEfrI9/BOnDfa8wChPdph0D7wSdrC+OvQ5FqRGIujlzcj1miClb3x5gHIGYm4ucoO9GiZDw0smjiLYP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGQL5NVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F5AC4CED1;
-	Thu, 13 Feb 2025 15:27:17 +0000 (UTC)
+	 MIME-Version; b=o4hnwzUObH87r7IWc9APMij0w/c/zLKe/BfkNLLVI2s3IO5RnzZ2pRE2XvTHZl5l8A77XzRbMUKjLY/e+rZRRTFYFeEs4ALT7Z+n141XVI+OmifheTn53LrTriWCgG1g2oYxqvCwvW2iKcxW03w81FN/kVUa7ZlmMSgc6llW1TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyQfyhbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A621DC4CED1;
+	Thu, 13 Feb 2025 14:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460438;
-	bh=2qn67VbYVKmoUeTGV/rKob5YNLB4BQqou6CE4fWacZc=;
+	s=korg; t=1739458327;
+	bh=OaiFX7PluS5nq+i9+MrO0uv61Qw9d8ciOJayw5n+su0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGQL5NVkL5zT8Iz+H0xy/pyTeebpujGJhxgSZDo4KLE7S22jwy2oG7lcEx4ocdryv
-	 sayTSZlDRhlt++/hdsdnmO9jr3d7Lnov8i3J9zgzNJ6JX9PCuaHaF6p/G2jWwqMCe1
-	 5rrWWigewLzFVvK2Jj6bSq/NKTvJ1fZOMQ2KrhpU=
+	b=RyQfyhbnk4AGERNcxowB2zi88LXxAbyyHATShUXg/BrVEy6/9grKa1KqtJCHWp9e4
+	 0BRt3VhSJaYIPwPZsMe2T8L1vj+5TyAeTNtG1HuBmOe5JMWjpd6DtztFwf5Ki0QtF8
+	 Z6kf0HZv2dFO4mZccv6v0dPYiTogJU7K4ejFmfuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 113/273] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 336/422] media: uvcvideo: Support partial control reads
 Date: Thu, 13 Feb 2025 15:28:05 +0100
-Message-ID: <20250213142411.809017932@linuxfoundation.org>
+Message-ID: <20250213142449.520536891@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 89aa5925d201b90a48416784831916ca203658f9 upstream.
+commit f00ee2ca8da25ebccb8e19956d853c9055e2c8d0 upstream.
 
-aggr_state and unit fields are u32. The result of their
-multiplication may not fit in this type.
+Some cameras, like the ELMO MX-P3, do not return all the bytes
+requested from a control if it can fit in less bytes.
+Eg: Returning 0xab instead of 0x00ab.
+usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
 
-Add explicit casting to prevent overflow.
+Extend the returned value from the camera and return it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Link: https://lore.kernel.org/r/20241203084231.6001-1-abelova@astralinux.ru
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_video.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -329,7 +329,7 @@ static unsigned long clk_rpmh_bcm_recalc
- {
- 	struct clk_rpmh *c = to_clk_rpmh(hw);
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *de
+ 	if (likely(ret == size))
+ 		return 0;
  
--	return c->aggr_state * c->unit;
-+	return (unsigned long)c->aggr_state * c->unit;
- }
- 
- static const struct clk_ops clk_rpmh_bcm_ops = {
++	/*
++	 * Some devices return shorter USB control packets than expected if the
++	 * returned value can fit in less bytes. Zero all the bytes that the
++	 * device has not written.
++	 *
++	 * This quirk is applied to all controls, regardless of their data type.
++	 * Most controls are little-endian integers, in which case the missing
++	 * bytes become 0 MSBs. For other data types, a different heuristic
++	 * could be implemented if a device is found needing it.
++	 *
++	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
++	 * to be excluded because its size is always 1.
++	 */
++	if (ret > 0 && query != UVC_GET_INFO) {
++		memset(data + ret, 0, size - ret);
++		dev_warn_once(&dev->udev->dev,
++			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
++			      uvc_query_name(query), cs, unit, ret, size);
++		return 0;
++	}
++
+ 	if (ret != -EPIPE) {
+ 		dev_err(&dev->udev->dev,
+ 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
 
 
