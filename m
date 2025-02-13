@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-116146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D4A34751
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5499A34444
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B53166658
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E131D1886A4A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45A4156F3F;
-	Thu, 13 Feb 2025 15:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA183203703;
+	Thu, 13 Feb 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="071Llrp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUF2B5xL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8356D143736;
-	Thu, 13 Feb 2025 15:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676D22036FA;
+	Thu, 13 Feb 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460484; cv=none; b=qDcGyXk5cvadEYSi0F5l3l9w7nwdH6LzuAwu8OIE8whjxUFbAkcckbnzLjegpfTWJtG76fa8VTgiSDCPOg4Q0IRd51tnW11CZRsmQzMuDATRS7xgmnP7+oGJEsM2uqucxYvBOrtS1ITg36Gg5y4niYp3wDINC0qWHTrqaW4LThs=
+	t=1739458257; cv=none; b=miEXwxgtt6TWN1Mz6mr0L6ZkrRdNN+q46XRCUYSVRHDXFfPPOSJW0+DKpv0+iAzQd4joDO0KiwWjR+6vnGtmbVNjzahGSH5ev1WSRw1QysyjzsXczjEWpc1jPUnePMA2ktxcx3AflQHSYhdkIsmour71+sc5keVXA9BnmT9NU94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460484; c=relaxed/simple;
-	bh=L0FPQ/cciSC3eIUmnVrgpy9Qthlb61qwkouDvjM/3X8=;
+	s=arc-20240116; t=1739458257; c=relaxed/simple;
+	bh=EMmVw7jBG0qWt2O55QGQbmJYeG5h39Qgd7gXgEcIfhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsS7w7knAQ++j8Y3OfRPP0J7EpCBvtdun1w8lvZ1bhNj1rDofGEddUc2hQmcSx+XuxKulrzQw6H8MLiRLfpu143gijpfM3ClFjaDt4UGOcBBCUnqvoRr7PHNi55Ezbn5r+eXBYnfiywsHizWJk+ABI1azk5iTkri9xwvukKZBWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=071Llrp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6F5C4CED1;
-	Thu, 13 Feb 2025 15:28:03 +0000 (UTC)
+	 MIME-Version; b=CzL05MOrIleBOi9GE6B0Tmm2hahOE4ibh7bS53nBCAbYThTLdHKHDw3IpVZET+v9IlJu0xGg911sxr62u7sSPHKGP3DFrpa9BULFHjWuljaHOJ02NPOlSmAMHrSbUk3yeZweL9Lx+UAW1M8dNTApWS2MEIceowUFIAZFbASTkdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUF2B5xL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA54BC4CED1;
+	Thu, 13 Feb 2025 14:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460484;
-	bh=L0FPQ/cciSC3eIUmnVrgpy9Qthlb61qwkouDvjM/3X8=;
+	s=korg; t=1739458257;
+	bh=EMmVw7jBG0qWt2O55QGQbmJYeG5h39Qgd7gXgEcIfhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=071Llrp+bfkU5OfZxf/dBXjelR/CB3hbXQXpDKcJT2ma+3HgprNGkh64zQ8VgOOk1
-	 Yo8E6kjj7e5fpMUW3iDclUpBQlQhoDqchzO/LCw0xnymjX2Ptb+RTvS6ZV1FflWN/A
-	 TuK7eOkziv7BBy7lrlpni4Cbj5S56lM1H80StLCg=
+	b=CUF2B5xLvTDFexphzPrynWe3+f+Mq4xmGRTFzewHBpotNwyZfR7RHebTSSRSIC6a7
+	 6EckMbRQ86EDhpW2PI0AHeZLhvf6MrT008LNNMxEnry2ZsbFxXgYLswmawZDc0u9hJ
+	 8DUnQEiARTcaHEJJPOq0U7c4xo4AQyO6Zsxqj/Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 124/273] of: Fix of_find_node_opts_by_path() handling of alias+path+options
+	Stefan Eichenberger <eichest@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 347/422] irqchip/irq-mvebu-icu: Fix access to msi_data from irq_domain::host_data
 Date: Thu, 13 Feb 2025 15:28:16 +0100
-Message-ID: <20250213142412.242429093@linuxfoundation.org>
+Message-ID: <20250213142449.943383827@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Stefan Eichenberger <eichest@gmail.com>
 
-commit b9e58c934c56aa35b0fb436d9afd86ef326bae0e upstream.
+commit 987f379b54091cc1b1db986bde71cee1081350b3 upstream.
 
-of_find_node_opts_by_path() fails to find OF device node when its
-@path parameter have pattern below:
+mvebu_icu_translate() incorrectly casts irq_domain::host_data directly to
+mvebu_icu_msi_data. However, host_data actually points to a structure of
+type msi_domain_info.
 
-"alias-name/node-name-1/.../node-name-N:options".
+This incorrect cast causes issues such as the thermal sensors of the
+CP110 platform malfunctioning. Specifically, the translation of the SEI
+interrupt to IRQ_TYPE_EDGE_RISING fails, preventing proper interrupt
+handling. The following error was observed:
 
-The reason is that alias name length calculated by the API is wrong, as
-explained by example below:
+  genirq: Setting trigger mode 4 for irq 85 failed (irq_chip_set_type_parent+0x0/0x34)
+  armada_thermal f2400000.system-controller:thermal-sensor@70: Cannot request threaded IRQ 85
 
-"testcase-alias/phandle-tests/consumer-a:testaliasoption".
- ^             ^                        ^
- 0             14                       39
+Resolve the issue by first casting host_data to msi_domain_info and then
+accessing mvebu_icu_msi_data through msi_domain_info::chip_data.
 
-The right length of alias 'testcase-alias' is 14, but the result worked
-out by the API is 39 which is obvious wrong.
-
-Fix by using index of either '/' or ':' as the length who comes earlier.
-
-Fixes: 75c28c09af99 ("of: add optional options parameter to of_find_node_by_path()")
+Fixes: d929e4db22b6 ("irqchip/irq-mvebu-icu: Prepare for real per device MSI")
+Signed-off-by: Stefan Eichenberger <eichest@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241216-of_core_fix-v2-1-e69b8f60da63@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/all/20250124085140.44792-1-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/base.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-mvebu-icu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -788,10 +788,10 @@ struct device_node *of_find_node_opts_by
- 	/* The path could begin with an alias */
- 	if (*path != '/') {
- 		int len;
--		const char *p = separator;
-+		const char *p = strchrnul(path, '/');
+--- a/drivers/irqchip/irq-mvebu-icu.c
++++ b/drivers/irqchip/irq-mvebu-icu.c
+@@ -68,7 +68,8 @@ static int mvebu_icu_translate(struct ir
+ 			       unsigned long *hwirq, unsigned int *type)
+ {
+ 	unsigned int param_count = static_branch_unlikely(&legacy_bindings) ? 3 : 2;
+-	struct mvebu_icu_msi_data *msi_data = d->host_data;
++	struct msi_domain_info *info = d->host_data;
++	struct mvebu_icu_msi_data *msi_data = info->chip_data;
+ 	struct mvebu_icu *icu = msi_data->icu;
  
--		if (!p)
--			p = strchrnul(path, '/');
-+		if (separator && separator < p)
-+			p = separator;
- 		len = p - path;
- 
- 		/* of_aliases must not be NULL */
+ 	/* Check the count of the parameters in dt */
 
 
 
