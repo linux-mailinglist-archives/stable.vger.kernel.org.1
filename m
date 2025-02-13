@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF0EA346F2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55625A347B6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DCAD3B4090
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5058118934E5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62AE78F30;
-	Thu, 13 Feb 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CAC1865EE;
+	Thu, 13 Feb 2025 15:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUSDDnfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OydzJirE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E3226B0BC;
-	Thu, 13 Feb 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D52926B098;
+	Thu, 13 Feb 2025 15:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459859; cv=none; b=PWYdMCtN4QvNe7SvOgj8CfEL2PJQFaPXhoHKjbWw2ICBFSM3Rf29YobKH2511O4oZpUJPyFmq7AI6txqt2qW5Y1uBXkOTcWg5/5Ah5H/VpKR5aM5R2TSk84qvLLtGYc40EF/DFQZToHZSyImezb+CLMPOISkgkPyc7T2b1g+48g=
+	t=1739460663; cv=none; b=kQIu4r4pezi/IEboG1bSCuPLyX4biz4bpyAYZKGoUqrwQbDn3f8C9HrMCXggQnpwdaBbnAhHdZg9nGgPDhgOKWOsfjBLYdbgGqRee/ttXOrEgvzfoO0urVGiIUMqTDstZY57Ot6VriqQMkhvvvo57OWtSd0WXEBXSJNx+GxLDgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459859; c=relaxed/simple;
-	bh=l5dcdxSktwZULrElyAWY03IqHr1oXiRTBaei9435mmA=;
+	s=arc-20240116; t=1739460663; c=relaxed/simple;
+	bh=onnV6hLqXxWbKEr7fq4B20z13SKgZ7HpK03a+qJBobU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSle2XBGSVv8KCD52E8w8CZ7lDGbVSxOfYssqfyhxA42sBBXNmlgQDC/3QWZ8bhIFZkZnz9qw/fRSCTU+N2yQ+AI+2G7ACp581Em09/9idqkghYSS7CRwDpRgjWSnV5t5ts3AJdzRS9srYUxiHtn2i6cZaKLEKAWSkTMBaCNGrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUSDDnfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767B1C4CED1;
-	Thu, 13 Feb 2025 15:17:38 +0000 (UTC)
+	 MIME-Version; b=Z6Evo8hV/xP9zifHW7nXG9XHN20tOR0f39slZUZ+cgL3CvTJNY+SHy6ktwV33R1qGFpL0tzNMQ2zmLIPXpksAonhknVRFmNHbM8swpgKRkSevHgBNIdZiSg5adDGY8Q7flOUASY1boNRXhheMiIc3IEchz8ZltaTxNK2RxaQ5cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OydzJirE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219ECC4CED1;
+	Thu, 13 Feb 2025 15:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459859;
-	bh=l5dcdxSktwZULrElyAWY03IqHr1oXiRTBaei9435mmA=;
+	s=korg; t=1739460662;
+	bh=onnV6hLqXxWbKEr7fq4B20z13SKgZ7HpK03a+qJBobU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUSDDnfcoffZZKKK8hKLO6l9VbXNCsCvIXeyrcF3jBQX2p/x+YhplwPrkIZpVUu1n
-	 +lzNsgL/2mJIiAHI3lrJqLAZCZovy5wS4GbeoYlhKA2Tn9XA5NDA+DbtJVCUzGbBPy
-	 RP0Jtj0SWiftoLhIcnWjLWAOopDLI3lv6Pi6KT5Y=
+	b=OydzJirE3tJbx2rvfgX/zH0Q/ja4R8365FLl37d+jb6ENTDcRWDUIsnDmxX5cSlSw
+	 KPUIM/Dq46pn/nweQbfc/qpZEoA728IoGowk7aVVIIdB1Fh9fyTOtJlIsrUIJEG7xQ
+	 bsPDZWuIaFT5zMJn8Z1/3k9oAOQKDjaIlh77d6kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.13 385/443] crypto: qce - fix goto jump in error path
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 178/273] arm64: dts: qcom: sm6375: Fix ADSP memory length
 Date: Thu, 13 Feb 2025 15:29:10 +0100
-Message-ID: <20250213142455.467963512@linuxfoundation.org>
+Message-ID: <20250213142414.365090737@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 5278275c1758a38199b43530adfc50098f4b41c7 upstream.
+commit bf4dda83da27b7efc49326ebb82cbd8b3e637c38 upstream.
 
-If qce_check_version() fails, we should jump to err_dma as we already
-called qce_dma_request() a couple lines before.
+The address space in ADSP (Peripheral Authentication Service) remoteproc
+node should point to the QDSP PUB address space (QDSP6...SS_PUB) which
+has a length of 0x10000.
 
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
+
+Fixes: fe6fd26aeddf ("arm64: dts: qcom: sm6375: Add ADSP&CDSP")
 Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-17-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qce/core.c |    2 +-
+ arch/arm64/boot/dts/qcom/sm6375.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -247,7 +247,7 @@ static int qce_crypto_probe(struct platf
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -1514,7 +1514,7 @@
  
- 	ret = qce_check_version(qce);
- 	if (ret)
--		goto err_clks;
-+		goto err_dma;
+ 		remoteproc_adsp: remoteproc@a400000 {
+ 			compatible = "qcom,sm6375-adsp-pas";
+-			reg = <0 0x0a400000 0 0x100>;
++			reg = <0 0x0a400000 0 0x10000>;
  
- 	spin_lock_init(&qce->lock);
- 	tasklet_init(&qce->done_tasklet, qce_tasklet_req_done,
+ 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
