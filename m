@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661C4A34619
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205CEA343E1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C055D1893381
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322B93A646F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA8D26B098;
-	Thu, 13 Feb 2025 15:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074922222D2;
+	Thu, 13 Feb 2025 14:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH9iI8Vf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGjF1ji+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BE26B089;
-	Thu, 13 Feb 2025 15:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BBA28382;
+	Thu, 13 Feb 2025 14:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459424; cv=none; b=ZoiAKXj5mlKLgQy3Z1ZmpENY3i3p1Y77dSXYq+3JjXHM5BB+r9gUAYOhNRECMLro3CGTWKdN1iSG0InbiWO7sr3vUyBZeFCJXg1YcOmG8WaWsroITjWRttJ3JhUBKz+1l0hWwCU+9u/E56omEKY8uQhsGCyhi6S+A8DjlRSla2A=
+	t=1739458014; cv=none; b=KzqI9VCpmF0jPuaZUg27ax3hfCW66oLGVQkarOVMyx3/IB76/u4nycuVygX7rpaJVWUOqYlAzGhX/dvt9ckg9hceRkuB2XD7ZEZQMJKxiD2WhbxgHli06CmxgS4S8BZZsJRscdTxJQA+cJ2KlLmFywmtNbuj5bNMOiH7PE8HkUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459424; c=relaxed/simple;
-	bh=4DiBU0JZuAdYzJB99ZDOUoKW6Va7jdHVsEorvco2w5I=;
+	s=arc-20240116; t=1739458014; c=relaxed/simple;
+	bh=J34STkw8n1bDHxW6Lp9zkwDUPJl9t8D52pa1nciLudI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s0Ee/CDimVKygneAr8v7Kroukq4hV6DA3IVONhSE0dEQGvOIay1j0JGsbzg8qmhIPn5J9VOcOCmHcT+yYaisnCvrg0gb/J0svdAfqBVFyxxEl35dUIJjQhjrOpbqvO8BN7IJbPOE/aR4FkXSITokGCG870ciYlqL6ATCJtpjatE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH9iI8Vf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C4CC4CED1;
-	Thu, 13 Feb 2025 15:10:23 +0000 (UTC)
+	 MIME-Version; b=G8+/Bf1CddXpZ6V3Absr94yI4B48+PTCAdT7OWqB3E1MmQB+FUNiOwqcoHa6DtEK/s115N6X0pfoZNT2As2xw0tMTOt4VfnKR8VtIBTtpc7k/bbZjqPXhT1oSkEe+ic66Lk2apBB/Y7jQx+Kpy2iJEy5gp9KImoQhwCCWqxyqxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGjF1ji+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B78EC4CEE2;
+	Thu, 13 Feb 2025 14:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459424;
-	bh=4DiBU0JZuAdYzJB99ZDOUoKW6Va7jdHVsEorvco2w5I=;
+	s=korg; t=1739458014;
+	bh=J34STkw8n1bDHxW6Lp9zkwDUPJl9t8D52pa1nciLudI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH9iI8VfRxYTQI2Xyk+siUA4KXm+d7wSeJU73qWD/m/QiPUh4tHzS8KZ1Y+79ctN0
-	 u89wYLuHx9IQwcZhFLcbS2jVIhyrkcI7T0TSqY0NPLuzvV3A0r7luxLJDytiTY3XH9
-	 pUBkVkxRhiKFQG8fjx/6WY+JBGwV4QnZBs3hWiVU=
+	b=dGjF1ji+uPKIlpu8wHanL2DMSUV4lE2U4D1+fSYUrJzH4SY5Hy7QvKn2aXInO/qVw
+	 Bnu9d4yMo6eRE6klt6bVZVOkeWvBsVIc7zVGDhJHhQuhaeALBCQrpxbd/QREuYAGBn
+	 AJ0oOB9LDp6TnLXYTegfW+A2H1wN/TJDh8P555zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Dengcheng Zhu <dzhu@wavecomp.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Ming Wang <wangming01@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH 6.13 260/443] mips/math-emu: fix emulation of the prefx instruction
-Date: Thu, 13 Feb 2025 15:27:05 +0100
-Message-ID: <20250213142450.649297768@linuxfoundation.org>
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 277/422] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
+Date: Thu, 13 Feb 2025 15:27:06 +0100
+Message-ID: <20250213142447.230463792@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-commit 42a39e4aa59a10aa4afdc14194f3ee63d2db94e1 upstream.
+commit be2f81eaa2c8e81d3de5b73dca5e133f63384cb3 upstream.
 
-Currently, installation of Debian 12.8 for mipsel fails on machines
-without an FPU [1]. This is caused by the fact that zstd (which is used
-for initramfs compression) executes the prefx instruction, which is not
-emulated properly by the kernel.
+The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+bindings, just replace that path with the correct path for qup-config.
 
-The prefx (Prefetch Indexed) instruction fetches data from memory into
-the cache without any side effects. Though functionally unrelated, it
-requires an FPU [2].
-
-Bytecode format of this instruction ends on "001111" binary:
-
-	(prefx instruction format) & 0x0000003f = 0x0000000f
-
-The code in fpux_emu() runs like so:
-
-	#define MIPSInst(x) x
-	#define MIPSInst_FMA_FFMT(x) (MIPSInst(x) & 0x00000007)
-	#define MIPSInst_FUNC(x) (MIPSInst(x) & 0x0000003f)
-	enum cop1x_func { ..., pfetch_op = 0x0f, ... };
-
-	...
-
-	switch (MIPSInst_FMA_FFMT(ir)) {
-	...
-
-	case 0x3:
-		if (MIPSInst_FUNC(ir) != pfetch_op)
-			return SIGILL;
-
-		/* ignore prefx operation */
-		break;
-
-	default:
-		return SIGILL;
-	}
-
-That snippet above contains a logic error and the
-	if (MIPSInst_FUNC(ir) != pfetch_op)
-comparison always fires.
-
-When MIPSInst_FUNC(ir) is equal to pfetch_op, ir must end on 001111
-binary. In this case, MIPSInst_FMA_FFMT(ir) must be equal to 0x7, which
-does not match that case label.
-
-This causes emulation failure for the prefx instruction. Fix it.
-
-This has been broken by
-commit 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
-which modified the MIPSInst_FMA_FFMT macro without updating the users.
-
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Cc: stable@vger.kernel.org # after 3 weeks
-Cc: Dengcheng Zhu <dzhu@wavecomp.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Ming Wang <wangming01@loongson.cn>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Fixes: 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1091858
-[2] MIPS Architecture For Programmers Volume II-A: The MIPS32 Instruction Set
-
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- arch/mips/math-emu/cp1emu.c |    2 +-
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -1660,7 +1660,7 @@ static int fpux_emu(struct pt_regs *xcp,
- 		break;
- 	}
- 
--	case 0x3:
-+	case 0x7:
- 		if (MIPSInst_FUNC(ir) != pfetch_op)
- 			return SIGILL;
- 
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -936,7 +936,7 @@
+ 				power-domains = <&rpmhpd SM6350_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+-						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
++						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
+ 				interconnect-names = "qup-core", "qup-config";
+ 				status = "disabled";
+ 			};
 
 
 
