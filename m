@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-116220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8A4A347BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE10A344C7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEAA5188A825
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E90618909A7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D84D155330;
-	Thu, 13 Feb 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C6D1662F1;
+	Thu, 13 Feb 2025 14:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIFK4uMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9lp9PJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205F126B087;
-	Thu, 13 Feb 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252C815689A;
+	Thu, 13 Feb 2025 14:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460735; cv=none; b=KmGiXhw8Sh7Ml+T0QlM9pynATfgcaDgqFMghVeZT8q8d5U5pe3vfv5Bg0xs0N94/g5xbqhrXtiO5FVkwv+5zrb4LU8giIw1+E4GAlFNJdJU/QlK2taCDFc6t4QDjsD8WWfP2gYTRO55EWR+w2UAAJnHJNCePnMUeTU6e6gnCgDw=
+	t=1739458506; cv=none; b=Ds0804lAiLLv7OeYqOT9oKeT7dgGelPZ6P2lNlzJOmdXTXwmfwwCWA5BSyQ+D+nBoZAq2f7pYMAj9JWd9vsFRw70h9bVYeeBiU7rVFUSc6pvGFZhzg9xeZOET6UC4/4eoy5oCCoHiZL/KspcOsw/ZCnVV9i4dce8v+Flg6E6z5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460735; c=relaxed/simple;
-	bh=mWGrj0xOkohZt5zpy2T8y6k1llGCKFsKcAHiKYt4v7E=;
+	s=arc-20240116; t=1739458506; c=relaxed/simple;
+	bh=92PhqNrwZ4SCH1QTlvFERVKZjWGNgJvaIuaeyHzdO+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQuRzwsIXsUaDoa+BXHNftK2F0xH2GphAQmzIqXAhG80rDRtuJxw8bLic3ae96ahOfbBrVlaNs5Mmwy+FzQOiYi57k5ayhUnSGhcAnZBEZ9igjiASvBov8ePu/62xsgVNeUgej5obU5w36DcJBSogsZ8Ox/2s4mysr88C2+uEBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIFK4uMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812B5C4CED1;
-	Thu, 13 Feb 2025 15:32:14 +0000 (UTC)
+	 MIME-Version; b=CrYaxNYjwnb0N4F+YmWmu0PxhX8WBUhl/x9uXpGxbUMpXPmBnO/oVwP11x2qjAIFC8/dwjAJiycyl3XClyAOTc7dMTY9Vz9rxo430a7hMkXS43+dL4jilLd8Yraj6DMIdLyqkYiE2UoWjZpzatE3fzKt6O4ECMa+VKK4WbglfGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9lp9PJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C37C4CED1;
+	Thu, 13 Feb 2025 14:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460735;
-	bh=mWGrj0xOkohZt5zpy2T8y6k1llGCKFsKcAHiKYt4v7E=;
+	s=korg; t=1739458505;
+	bh=92PhqNrwZ4SCH1QTlvFERVKZjWGNgJvaIuaeyHzdO+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIFK4uMpjANmysx3LtTc9H1AdC3cdmNKJp9bswD0h+5wZDjrM+n5lDBusOv6WY/hi
-	 kOXc2Dv7Ib+xlrOtlPy+YFgRHoE940cNAjkiJcnGxMMh1S1yPeGeFB0uX7EaIA2+2G
-	 A+zgwfIs25Ly1gLqWFRgYZE0+wl2CPhHJzzTAI78=
+	b=a9lp9PJOut0eZRHO5W9wC4keS41EHXY4v1F815WALN3HYsQ9janurMKIM4h5arVzN
+	 YWokZGR4I3CJxO5Hnp+zXkbh3ZuYysd4wri2qcsxJzNp1VQGquJ2L/XlXrnn8JIwMg
+	 YmSd8QQGts0jK9rQFHoaxNdsFX4d1VtTEq+ZZnLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Kacur <jkacur@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 197/273] rv: Reset per-task monitors also for idle tasks
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 420/422] statmount: let unset strings be empty
 Date: Thu, 13 Feb 2025 15:29:29 +0100
-Message-ID: <20250213142415.111604796@linuxfoundation.org>
+Message-ID: <20250213142452.773668291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 8259cb14a70680553d5e82d65d1302fe589e9b39 upstream.
+commit e52e97f09fb66fd868260d05bd6b74a9a3db39ee upstream.
 
-RV per-task monitors are implemented through a monitor structure
-available for each task_struct. This structure is reset every time the
-monitor is (re-)started, to avoid inconsistencies if the monitor was
-activated previously.
-To do so, we reset the monitor on all threads using the macro
-for_each_process_thread. However, this macro excludes the idle tasks on
-each CPU. Idle tasks could be considered tasks on their own right and it
-should be up to the model whether to ignore them or not.
+Just like it's normal for unset values to be zero, unset strings should be
+empty instead of containing random values.
 
-Reset monitors also on the idle tasks for each present CPU whenever we
-reset all per-task monitors.
+It seems to be a typical mistake that the mask returned by statmount is not
+checked, which can result in various bugs.
 
-Cc: stable@vger.kernel.org
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: John Kacur <jkacur@redhat.com>
-Link: https://lore.kernel.org/20250115151547.605750-2-gmonaco@redhat.com
-Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+With this fix, these bugs are prevented, since it is highly likely that
+userspace would just want to turn the missing mask case into an empty
+string anyway (most of the recently found cases are of this type).
+
+Link: https://lore.kernel.org/all/CAJfpegsVCPfCn2DpM8iiYSS5DpMsLB8QBUCHecoj6s0Vxf4jzg@mail.gmail.com/
+Fixes: 68385d77c05b ("statmount: simplify string option retrieval")
+Fixes: 46eae99ef733 ("add statmount(2) syscall")
+Cc: stable@vger.kernel.org # v6.8
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/r/20250130121500.113446-1-mszeredi@redhat.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/rv/da_monitor.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/namespace.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/include/rv/da_monitor.h
-+++ b/include/rv/da_monitor.h
-@@ -14,6 +14,7 @@
- #include <rv/automata.h>
- #include <linux/rv.h>
- #include <linux/bug.h>
-+#include <linux/sched.h>
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5053,22 +5053,29 @@ static int statmount_string(struct kstat
+ 	size_t kbufsize;
+ 	struct seq_file *seq = &s->seq;
+ 	struct statmount *sm = &s->sm;
++	u32 start, *offp;
++
++	/* Reserve an empty string at the beginning for any unset offsets */
++	if (!seq->count)
++		seq_putc(seq, 0);
++
++	start = seq->count;
  
- #ifdef CONFIG_RV_REACTORS
+ 	switch (flag) {
+ 	case STATMOUNT_FS_TYPE:
+-		sm->fs_type = seq->count;
++		offp = &sm->fs_type;
+ 		ret = statmount_fs_type(s, seq);
+ 		break;
+ 	case STATMOUNT_MNT_ROOT:
+-		sm->mnt_root = seq->count;
++		offp = &sm->mnt_root;
+ 		ret = statmount_mnt_root(s, seq);
+ 		break;
+ 	case STATMOUNT_MNT_POINT:
+-		sm->mnt_point = seq->count;
++		offp = &sm->mnt_point;
+ 		ret = statmount_mnt_point(s, seq);
+ 		break;
+ 	case STATMOUNT_MNT_OPTS:
+-		sm->mnt_opts = seq->count;
++		offp = &sm->mnt_opts;
+ 		ret = statmount_mnt_opts(s, seq);
+ 		break;
+ 	default:
+@@ -5090,6 +5097,7 @@ static int statmount_string(struct kstat
  
-@@ -324,10 +325,13 @@ static inline struct da_monitor *da_get_
- static void da_monitor_reset_all_##name(void)							\
- {												\
- 	struct task_struct *g, *p;								\
-+	int cpu;										\
- 												\
- 	read_lock(&tasklist_lock);								\
- 	for_each_process_thread(g, p)								\
- 		da_monitor_reset_##name(da_get_monitor_##name(p));				\
-+	for_each_present_cpu(cpu)								\
-+		da_monitor_reset_##name(da_get_monitor_##name(idle_task(cpu)));			\
- 	read_unlock(&tasklist_lock);								\
- }												\
- 												\
+ 	seq->buf[seq->count++] = '\0';
+ 	sm->mask |= flag;
++	*offp = start;
+ 	return 0;
+ }
+ 
 
 
 
