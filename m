@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CE2A34810
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:42:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B90A34717
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD4516CAAE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72A13B4C9A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F4B19D084;
-	Thu, 13 Feb 2025 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B033F14B95A;
+	Thu, 13 Feb 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCWmFAA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrb5vupm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0299519C542;
-	Thu, 13 Feb 2025 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA2226B0BC;
+	Thu, 13 Feb 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460893; cv=none; b=utiiFWhBkahV9L1GU3KjjXPlrb3C9Y8++LIZimFYCI7aIA/GZFwGPaBsJ+2tSBfj8uA9zaRvY3boTWgnvse1HMbfgSL7ANNlS0Kt0H8TLoVxV7lmX3fkum0OL/dX6aJx8N3hIU7BH85rU8Th+d1gzGY+NCiiq3lqErnj5DhHjVw=
+	t=1739460070; cv=none; b=Anj9wnyflCbTPD/23D2Nm+vdPLYpGmz1iiu+xz11gEz0UkmY6lwVXwMGN2cYSmoElKQTfzblKIpxRgMjdQ6DBAvx5BaK7A3Cvun6HSzHXgpHvHlqIwWERkc36hDuptYebnRrv76s6Q7zK2v+d0FRiJaeRllHvhaSpDRT5qV8m9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460893; c=relaxed/simple;
-	bh=yW77SQtZzMH+4eUbEBWe3sbx6Yv4yVgUuoshQwKLF0I=;
+	s=arc-20240116; t=1739460070; c=relaxed/simple;
+	bh=Rw9SFSa5pfgPIyRrzhMq6yEIXumOCQswnssD5PtJ/KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QL3ePsDUhBgWFp7BFqf6ZF23qsekJugKL8+63nB8cq693h+VGKvu/5kQSyTBqhv432H0fMaYt/Nd2oKdO4HL60MlqZ2YdfDv9cyYGVaFFAEqwW6bSXcLW1sxwInaJghaup1nVUJB7hmJTMEAp7JHSDhjCN7eIOTxEYdj1RYMARY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCWmFAA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053D5C4CEE5;
-	Thu, 13 Feb 2025 15:34:51 +0000 (UTC)
+	 MIME-Version; b=XtF9I5Tf4UW431VqmR92bYPSSaU7kFDLls7kUrwTvf9sVNJUgDrlTbnmr0u4Zd0AhhniH9q/iJLKG0YAG5q574HTsDWKcluoOMK3FGZqZDDAnSdqPug3M3oXtuQIOWm3BEW1lqoZ1MykE2KHXG97LAnBYybIFXWDtQsfIuVTmu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrb5vupm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7B0C4CED1;
+	Thu, 13 Feb 2025 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460892;
-	bh=yW77SQtZzMH+4eUbEBWe3sbx6Yv4yVgUuoshQwKLF0I=;
+	s=korg; t=1739460070;
+	bh=Rw9SFSa5pfgPIyRrzhMq6yEIXumOCQswnssD5PtJ/KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCWmFAA5FNgafV71vNVk7CgtA0SH4r4nfS3VYvl/e4nYeDh1aUpOj8rvtw2gRTgOT
-	 lL4FXvU2+IUDp23UlPejzRYmhfABYfOe4wvqxq9c7l5PEvffcOQoPM1z6tBn/LSGNk
-	 xWHC598dbFbbu/PJf3gWr1mPjrZRYIgwcXJmNVLY=
+	b=yrb5vupmNezPXRrjhTN437xXbnBRdBwlQlIJggJiVzL8Km7QfBAbxDc0YyMeBVW6F
+	 Qz72hq05QGsr8o0Z86LbT8jHqJ3JXKHAHIXzsj3EsM63WIdM4dgXcQx8VLE3XLMhCs
+	 6+D0572Cx3KCrksZio6GDP0rmJ26OvwlHRwtVZkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 210/273] media: i2c: ds90ub960: Fix use of non-existing registers on UB9702
-Date: Thu, 13 Feb 2025 15:29:42 +0100
-Message-ID: <20250213142415.618144168@linuxfoundation.org>
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Barry Song <baohua@kernel.org>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 418/443] scripts/gdb: fix aarch64 userspace detection in get_current_task
+Date: Thu, 13 Feb 2025 15:29:43 +0100
+Message-ID: <20250213142456.742767628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-commit 698cf6df87ffa83f259703e7443c15a4c5ceae86 upstream.
+commit 4ebc417ef9cb34010a71270421fe320ec5d88aa2 upstream.
 
-UB9702 doesn't have the registers for SP and EQ. Adjust the code in
-ub960_rxport_wait_locks() to not use those registers for UB9702. As
-these values are only used for a debug print here, there's no functional
-change.
+At least recent gdb releases (seen with 14.2) return SP_EL0 as signed long
+which lets the right-shift always return 0.
 
-Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://lkml.kernel.org/r/dcd2fabc-9131-4b48-8419-6444e2d67454@siemens.com
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub960.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ scripts/gdb/linux/cpus.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -1577,16 +1577,24 @@ static int ub960_rxport_wait_locks(struc
- 
- 		ub960_rxport_read16(priv, nport, UB960_RR_RX_FREQ_HIGH, &v);
- 
--		ret = ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
--		if (ret)
--			return ret;
-+		if (priv->hw_data->is_ub9702) {
-+			dev_dbg(dev, "\trx%u: locked, freq %llu Hz\n",
-+				nport, (v * 1000000ULL) >> 8);
-+		} else {
-+			ret = ub960_rxport_get_strobe_pos(priv, nport,
-+							  &strobe_pos);
-+			if (ret)
-+				return ret;
- 
--		ret = ub960_rxport_get_eq_level(priv, nport, &eq_level);
--		if (ret)
--			return ret;
-+			ret = ub960_rxport_get_eq_level(priv, nport, &eq_level);
-+			if (ret)
-+				return ret;
- 
--		dev_dbg(dev, "\trx%u: locked, SP: %d, EQ: %u, freq %llu Hz\n",
--			nport, strobe_pos, eq_level, (v * 1000000ULL) >> 8);
-+			dev_dbg(dev,
-+				"\trx%u: locked, SP: %d, EQ: %u, freq %llu Hz\n",
-+				nport, strobe_pos, eq_level,
-+				(v * 1000000ULL) >> 8);
-+		}
- 	}
- 
- 	return 0;
+--- a/scripts/gdb/linux/cpus.py
++++ b/scripts/gdb/linux/cpus.py
+@@ -167,7 +167,7 @@ def get_current_task(cpu):
+             var_ptr = gdb.parse_and_eval("&pcpu_hot.current_task")
+             return per_cpu(var_ptr, cpu).dereference()
+     elif utils.is_target_arch("aarch64"):
+-        current_task_addr = gdb.parse_and_eval("$SP_EL0")
++        current_task_addr = gdb.parse_and_eval("(unsigned long)$SP_EL0")
+         if (current_task_addr >> 63) != 0:
+             current_task = current_task_addr.cast(task_ptr_type)
+             return current_task.dereference()
 
 
 
