@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BC8A3441C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BE3A34267
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAE337A13C8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0597D3AD2E1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA12242931;
-	Thu, 13 Feb 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39DC38389;
+	Thu, 13 Feb 2025 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+jeI29D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAxyisH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEDD24292C;
-	Thu, 13 Feb 2025 14:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0403281360;
+	Thu, 13 Feb 2025 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458634; cv=none; b=GREaBCHe/oCQgBJ1p5RR6B/VDjm6363Cd5DyNRgIcROG3pgpiLwW43z16PdThTZDqd+fHabwedFu+wg20E/cMbmM9HluFMl32Oi0FnvUotTvHO/H9mwlMEV3qQywkh48+ryx5FP5S+BlB11wOJkKCDWUpbEnWN7pZ9a98wssGEc=
+	t=1739457243; cv=none; b=hBDa3RCMirJMfEYVwPucccztvfin0ir6cyIKIzekL8i2e3CjwNzZIgnYxWwNevmp4ZIToH2bNrF2PbklJQ+8cufVdDpaWb0VthEKbLgvVwL5JJ2zwMH9ZQUx3QGWsKIffaIA3k8F7QZMVHwryBtKQlu/PnTVKRpezMlN//MY/3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458634; c=relaxed/simple;
-	bh=q+FEjk5AZCRqSg1/HjCKWnHoPAZ/LyL7Dzsh4iAj4Qc=;
+	s=arc-20240116; t=1739457243; c=relaxed/simple;
+	bh=Ib6VOnxdG1MVP9wVs/iIwNqcIhQ8lpNZgeyqcMZTsIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quIa+xcEL+03ZyGBp9Bigp+vlbiPID0VYrtZY0yIHulREhy2+O3cW9GDZjM7UavX/CuzJKe1WOkKrl8/rUhfXWMkZdJuzqF/QhJgb3LTyxx9kdJcanWV+gHfpIBA51kwKrtO+vAsZg3sIW7B63IGDIf9aMLeMhsC+krpBly4aFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+jeI29D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF97C4CEE5;
-	Thu, 13 Feb 2025 14:57:12 +0000 (UTC)
+	 MIME-Version; b=CidDdZGFtqcqOn/IWRQ44Dp0bCW+S/SVeWFEPmvlcrf21Tj+mzFgc5cfyVUAZV8B3XWDKogLy+WDoAzLtb0OqwYmgr3hiy3uvNExI6ZYB5Z5UBNsSplfcV2Br7EFwHzPBnKQ5uECE+Od5x8i4yuJ+Sq3icDGUPRoxbsGaFLOY1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAxyisH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E086C4CED1;
+	Thu, 13 Feb 2025 14:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458633;
-	bh=q+FEjk5AZCRqSg1/HjCKWnHoPAZ/LyL7Dzsh4iAj4Qc=;
+	s=korg; t=1739457243;
+	bh=Ib6VOnxdG1MVP9wVs/iIwNqcIhQ8lpNZgeyqcMZTsIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+jeI29DHFkDoO7hKS03z7wPChBu7x9DWaeGvGy3NXv/uegHrESgepXad35cyyM33
-	 aDK2LDvY0203z4AatYMUkh9sO/jV5YoU+YG6c13Ki1GpALjEzFQ25tV1yysoSl88LM
-	 +LiNafm6a+8bRZyyuS4pQokaiZTuYWQkdEbAUqXs=
+	b=tAxyisH/FbXUizROj0IAio2s3u/PKJQI8JXCQcKLeH7EyTghp6HhtLi8ZklllJnk0
+	 WnEqZrOnlhr0ybZ2ge9NZyFz+msYlm4siCybZPLjwQ0CIrOekv2blcsCZnNyW7mCyr
+	 Srlh71aZcQZzGXUirr651ZxTyKNgLZaQKVSFYwik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 008/443] s390/stackleak: Use exrl instead of ex in __stackleak_poison()
+Subject: [PATCH 6.12 024/422] drm/tests: hdmi: return meaningful value from set_connector_edid()
 Date: Thu, 13 Feb 2025 15:22:53 +0100
-Message-ID: <20250213142440.941404117@linuxfoundation.org>
+Message-ID: <20250213142437.488353182@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a88c26bb8e04ee5f2678225c0130a5fbc08eef85 ]
+[ Upstream commit a8403be6eea91e4f5d8ad5dbc463dd08339eaece ]
 
-exrl is present in all machines currently supported, therefore prefer
-it over ex. This saves one instruction and doesn't need an additional
-register to hold the address of the target instruction.
+The set_connector_edid() function returns a bogus 0, performing the
+check on the connector->funcs->fill_modes() result internally. Make the
+function pass the fill_modes()'s return value to the caller and move
+corresponding checks to the caller site.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241130-hdmi-mode-valid-v5-3-742644ec3b1f@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/processor.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../drm/tests/drm_hdmi_state_helper_test.c    | 31 +++++++++----------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index 8761fd01a9f09..4f8d5592c2981 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -163,8 +163,7 @@ static __always_inline void __stackleak_poison(unsigned long erase_low,
- 		"	la	%[addr],256(%[addr])\n"
- 		"	brctg	%[tmp],0b\n"
- 		"1:	stg	%[poison],0(%[addr])\n"
--		"	larl	%[tmp],3f\n"
--		"	ex	%[count],0(%[tmp])\n"
-+		"	exrl	%[count],3f\n"
- 		"	j	4f\n"
- 		"2:	stg	%[poison],0(%[addr])\n"
- 		"	j	4f\n"
+diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+index 1e77689af6549..4ba869e0e794c 100644
+--- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+@@ -105,9 +105,8 @@ static int set_connector_edid(struct kunit *test, struct drm_connector *connecto
+ 	mutex_lock(&drm->mode_config.mutex);
+ 	ret = connector->funcs->fill_modes(connector, 4096, 4096);
+ 	mutex_unlock(&drm->mode_config.mutex);
+-	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static const struct drm_connector_hdmi_funcs dummy_connector_hdmi_funcs = {
+@@ -223,7 +222,7 @@ drm_atomic_helper_connector_hdmi_init(struct kunit *test,
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	return priv;
+ }
+@@ -728,7 +727,7 @@ static void drm_test_check_output_bpc_crtc_mode_changed(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -802,7 +801,7 @@ static void drm_test_check_output_bpc_crtc_mode_not_changed(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -873,7 +872,7 @@ static void drm_test_check_output_bpc_dvi(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_dvi_1080p,
+ 				 ARRAY_SIZE(test_edid_dvi_1080p));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_FALSE(test, info->is_hdmi);
+@@ -920,7 +919,7 @@ static void drm_test_check_tmds_char_rate_rgb_8bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -967,7 +966,7 @@ static void drm_test_check_tmds_char_rate_rgb_10bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -1014,7 +1013,7 @@ static void drm_test_check_tmds_char_rate_rgb_12bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -1121,7 +1120,7 @@ static void drm_test_check_max_tmds_rate_bpc_fallback(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1190,7 +1189,7 @@ static void drm_test_check_max_tmds_rate_format_fallback(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1254,7 +1253,7 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1314,7 +1313,7 @@ static void drm_test_check_output_bpc_format_driver_rgb_only(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1381,7 +1380,7 @@ static void drm_test_check_output_bpc_format_display_rgb_only(struct kunit *test
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1447,7 +1446,7 @@ static void drm_test_check_output_bpc_format_driver_8bpc_only(struct kunit *test
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1507,7 +1506,7 @@ static void drm_test_check_output_bpc_format_display_8bpc_only(struct kunit *tes
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
 -- 
 2.39.5
 
