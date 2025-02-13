@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D15EA3428C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5077DA3451C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 624D91884F2C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B1081899C61
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923CE28382;
-	Thu, 13 Feb 2025 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6E7185E4A;
+	Thu, 13 Feb 2025 15:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrKXJoyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia/ky4g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51400281379;
-	Thu, 13 Feb 2025 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6FD645;
+	Thu, 13 Feb 2025 15:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457345; cv=none; b=COb+qwYs2oZTsJiazZZD1K4coFkljXqd6NLvBFtu0CRV6YQzz3rCbFbxrpSR7ADM+3e4sYMQrWVnlJ1fNeZIh+rS0B8GqUV+qLNeEgRhxDNmNSxIba/V+3g7ZvZfP3B+Jsa+aVf9Cz/bPG9hB1Sb7vkqigfwGN/0zCecKq4ImLg=
+	t=1739458849; cv=none; b=oOSMRgkxjh1R+Xc948RnJWJmH2P73UaayPTe4LjA9pBw2t8MKLr8gY8JBqY4KajJaFme1gF713C3dWdJJsBhmy5PnKz9sNynBphXRCyMlohuQ9FCychnUF3HIlccoMZpnkhIKPtOuwidY4ig/S8tqwrckJaAN1uHmXc2AY8pauc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457345; c=relaxed/simple;
-	bh=hfc9qhOfO6EnaXTKNOuC6THuKLYbatr1hGc/vaNX2F8=;
+	s=arc-20240116; t=1739458849; c=relaxed/simple;
+	bh=+0jM1Ht1zY0ks8BXH5Af9VSyfrHRHBVeBwBzrVkP50k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzS69rPU6vRUiLlDAjpsTbZH0HGAG/90Fa29LhahOkfeg4moQS0YmfOj61mRxpDF+1M5gS2la6J+L/CCOXWzsDP1wPUuc7k4dM37lmQ4u+WSvJB/ZplKPxnVdEFSJy1SbqCMKgqmsfW3CdQ9aP7aGFYRKv7La34quGM9DBlep8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrKXJoyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B405DC4CEE4;
-	Thu, 13 Feb 2025 14:35:44 +0000 (UTC)
+	 MIME-Version; b=DkjUi0znLWnT4rG6pMNnmFgLKUCb37hxgZ4YcEP38mmJ+Fs5jhH5fw+38i/Fofh+MgDg2QTHUvBeZPmvsPHNfezIF6u+GvOcR6jwTrGxJk0+LxcX973/xnqv+5GrSu11XCR2lS0ATBuYlkwI/vbsVecOzHRuFIkNI8UT4iarOxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia/ky4g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BC5C4CED1;
+	Thu, 13 Feb 2025 15:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457345;
-	bh=hfc9qhOfO6EnaXTKNOuC6THuKLYbatr1hGc/vaNX2F8=;
+	s=korg; t=1739458849;
+	bh=+0jM1Ht1zY0ks8BXH5Af9VSyfrHRHBVeBwBzrVkP50k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrKXJoylj+NTfnjzmQJMatVud2nq1xZ+TKcpc2QC5LwhBKKv9HUEXe3sdYOc7axAE
-	 ULiyhpUSrq6PCB5BJs9GhXj4rKHj3ybytEr6CdZaz61/6GyxFOCw4T/Xb31ll4RDT3
-	 ssBCZUw3fJdtUq5RpRJJ4Nxmnm7DAwpFNlecgVqA=
+	b=Ia/ky4g6heDNzcB2Mn6l/B2FoBwYq6x3gSEWGKrxXJ9YGeQlSewIim2p6N9/UPP6D
+	 DEjvytfyJN962JjYx3dQxSDcwc2ScfS6VRi03vs2hy65h/S9qgfkq1nwlrzUwoOSmi
+	 hP991hNDSntznztMxYMVxIUe5MxO+AHYPdUgz2Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Even Xu <even.xu@intel.com>,
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/422] ASoC: soc-pcm: dont use soc_pcm_ret() on .prepare callback
+Subject: [PATCH 6.13 067/443] HID: Wacom: Add PCI Wacom device support
 Date: Thu, 13 Feb 2025 15:23:52 +0100
-Message-ID: <20250213142439.756792660@linuxfoundation.org>
+Message-ID: <20250213142443.204460279@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Even Xu <even.xu@intel.com>
 
-[ Upstream commit 301c26a018acb94dd537a4418cefa0f654500c6f ]
+[ Upstream commit c4c123504a65583e3689b3de04a61dc5272e453a ]
 
-commit 1f5664351410 ("ASoC: lower "no backend DAIs enabled for ... Port"
-log severity") ignores -EINVAL error message on common soc_pcm_ret().
-It is used from many functions, ignoring -EINVAL is over-kill.
+Add PCI device ID of wacom device into driver support list.
 
-The reason why -EINVAL was ignored was it really should only be used
-upon invalid parameters coming from userspace and in that case we don't
-want to log an error since we do not want to give userspace a way to do
-a denial-of-service attack on the syslog / diskspace.
-
-So don't use soc_pcm_ret() on .prepare callback is better idea.
-
-Link: https://lore.kernel.org/r/87v7vptzap.wl-kuninori.morimoto.gx@renesas.com
-Cc: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87bjxg8jju.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Even Xu <even.xu@intel.com>
+Tested-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ drivers/hid/wacom_wac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 7a59121fc323c..1102599403c53 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -38,7 +38,6 @@ static inline int _soc_pcm_ret(struct snd_soc_pcm_runtime *rtd,
- 	switch (ret) {
- 	case -EPROBE_DEFER:
- 	case -ENOTSUPP:
--	case -EINVAL:
- 		break;
- 	default:
- 		dev_err(rtd->dev,
-@@ -1001,7 +1000,13 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
- 	}
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 5501a560fb07f..b60bfafc6a8fb 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -4946,6 +4946,10 @@ static const struct wacom_features wacom_features_0x94 =
+ 	HID_DEVICE(BUS_I2C, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
  
- out:
--	return soc_pcm_ret(rtd, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- /* PCM prepare ops for non-DPCM streams */
-@@ -1013,6 +1018,13 @@ static int soc_pcm_prepare(struct snd_pcm_substream *substream)
- 	snd_soc_dpcm_mutex_lock(rtd);
- 	ret = __soc_pcm_prepare(rtd, substream);
- 	snd_soc_dpcm_mutex_unlock(rtd);
++#define PCI_DEVICE_WACOM(prod)						\
++	HID_DEVICE(BUS_PCI, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
++	.driver_data = (kernel_ulong_t)&wacom_features_##prod
 +
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
- 	return ret;
- }
+ #define USB_DEVICE_LENOVO(prod)					\
+ 	HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, prod),			\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+@@ -5115,6 +5119,7 @@ const struct hid_device_id wacom_ids[] = {
  
-@@ -2554,7 +2566,13 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
- 		be->dpcm[stream].state = SND_SOC_DPCM_STATE_PREPARE;
- 	}
- 
--	return soc_pcm_ret(fe, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
-@@ -2594,7 +2612,13 @@ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
- 	dpcm_set_fe_update_state(fe, stream, SND_SOC_DPCM_UPDATE_NO);
- 	snd_soc_dpcm_mutex_unlock(fe);
- 
--	return soc_pcm_ret(fe, ret);
-+	/*
-+	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
-+	 *
-+	 * We don't want to log an error since we do not want to give userspace a way to do a
-+	 * denial-of-service attack on the syslog / diskspace.
-+	 */
-+	return ret;
- }
- 
- static int dpcm_run_update_shutdown(struct snd_soc_pcm_runtime *fe, int stream)
+ 	{ USB_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ I2C_DEVICE_WACOM(HID_ANY_ID) },
++	{ PCI_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ BT_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ }
+ };
 -- 
 2.39.5
 
