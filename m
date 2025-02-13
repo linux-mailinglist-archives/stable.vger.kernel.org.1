@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3962A34803
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54717A34647
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC8B3B223D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80F0169B04
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D26416B3A1;
-	Thu, 13 Feb 2025 15:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05413D8A4;
+	Thu, 13 Feb 2025 15:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnV4+MNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQLCE2dR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AA51547E3;
-	Thu, 13 Feb 2025 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACF826B091;
+	Thu, 13 Feb 2025 15:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460670; cv=none; b=nVG6YA/AjNvBIXqBWp2HCdIj8ga9IZdAXzsuQ7trTbUnk/s/+KsE4C2eb9Ca/a9dLHpZ93auhdlmJKskNNZ5DYggctVhDGfMfIWQ1nZq5jRfqVdJGPF7K75cFAenpbWtOjZRxHl6+9gVR6/NaG11id+Q02uILnTP75EpJVNfOk0=
+	t=1739459862; cv=none; b=jWl2xTP9GjRgs6MBGU4chlr5Ro66QrpPDCTGvBqug+0/2nYJgqU1/7YDtU0diUaQffq1vMOOMo5gJ1E+R258R5uJo8i4ouZZTSczB+K8cDKrhas5jq6Rvp7KhFIcf/weXjVRw5LhjPDvlZYNM51cnfGNj8I+BuvrOpkNySzjTNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460670; c=relaxed/simple;
-	bh=GRtFZ+2baNPpy52od+5d5Jzsw7HkCi6m7MxbZXvt8TI=;
+	s=arc-20240116; t=1739459862; c=relaxed/simple;
+	bh=h88dX2z6UceqFhs9p6tPKKd7eqrQHa9iti/mZf4Tnwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWXbqD5st9R4nO1Xqo1SZEHrbuTyY9fUEBJHMsG5d24Q14Mt8gs/1bPyUS/wQWAJBdEiut1vT36b7q3lKFLjNpjgPbk+nxqH8eWZ8AyfB6aBQhnzhVkYheeoRa8KnoMlHeEdoOzUQuAZ1y/N6D7E1qgKfydP9Os55UMUk9nHVc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnV4+MNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D43AC4CED1;
-	Thu, 13 Feb 2025 15:31:09 +0000 (UTC)
+	 MIME-Version; b=arEojJNmL6e3cWpaeC1KrQDh3ghmLuhBiTQGjuR9P2i8GCALRUsnc4OSQb2gi9t6BSupCrWDvmAX1GXLaROzFYxW9TVsXPA5pctkX9xp0/jUMVLvjNUJeA0sjGSHg1LlP/hqLCG3m1cdUNSCoqRG0hFvgtDWNu9lFTMTkSDBJNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQLCE2dR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9AEC4CED1;
+	Thu, 13 Feb 2025 15:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460670;
-	bh=GRtFZ+2baNPpy52od+5d5Jzsw7HkCi6m7MxbZXvt8TI=;
+	s=korg; t=1739459862;
+	bh=h88dX2z6UceqFhs9p6tPKKd7eqrQHa9iti/mZf4Tnwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnV4+MNFqV4in/1GYgi4e3jhPbZN+FGPxi355sJmAhrYnh1Np1nhI1AHZ5yTySIrR
-	 B6UXN+bl1OqqLHrmMjHoXdE5ryKkhMOKO82PFFjiKDpbhS5CYgiU5LzLD+XblLElwS
-	 kH/TWDKtc0ZYuXuMIz0KgsJoJGwVm3RSOL5JjkaQ=
+	b=JQLCE2dR+MHz2AVMvUxNMJF88ViaPu3LzqtOfRSSuR7Ser62fr8gUYbQq4k8YsZHU
+	 TyhsqmfJFjkCQHJ9Pwm7A8lzdeCkENGXzytLReBJpiBa1TGTwujDwpZ/WNxXh8Nlfc
+	 pCxvHQS0P/SHiCiBL2MK+5+UG6ih35Qrmsrs4SHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 179/273] arm64: dts: qcom: sm6375: Fix CDSP memory base and length
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.13 386/443] crypto: qce - unregister previously registered algos in error path
 Date: Thu, 13 Feb 2025 15:29:11 +0100
-Message-ID: <20250213142414.403902663@linuxfoundation.org>
+Message-ID: <20250213142455.505379425@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit c9f7f341e896836c99709421a23bae5f53039aab upstream.
+commit e80cf84b608725303113d6fe98bb727bf7b7a40d upstream.
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0b30_0000 with length of 0x10000.
+If we encounter an error when registering alorithms with the crypto
+framework, we just bail out and don't unregister the ones we
+successfully registered in prior iterations of the loop.
 
-0x0b00_0000, value used so far, is the main region of CDSP.
+Add code that goes back over the algos and unregisters them before
+returning an error from qce_register_algs().
 
-Correct the base address and length, which should have no functional
-impact on Linux users, because PAS loader does not use this address
-space at all.
-
-Fixes: fe6fd26aeddf ("arm64: dts: qcom: sm6375: Add ADSP&CDSP")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-18-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6375.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/qce/core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
-@@ -1550,9 +1550,9 @@
- 			};
- 		};
+--- a/drivers/crypto/qce/core.c
++++ b/drivers/crypto/qce/core.c
+@@ -51,16 +51,19 @@ static void qce_unregister_algs(struct q
+ static int qce_register_algs(struct qce_device *qce)
+ {
+ 	const struct qce_algo_ops *ops;
+-	int i, ret = -ENODEV;
++	int i, j, ret = -ENODEV;
  
--		remoteproc_cdsp: remoteproc@b000000 {
-+		remoteproc_cdsp: remoteproc@b300000 {
- 			compatible = "qcom,sm6375-cdsp-pas";
--			reg = <0x0 0x0b000000 0x0 0x100000>;
-+			reg = <0x0 0x0b300000 0x0 0x10000>;
+ 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
+ 		ops = qce_ops[i];
+ 		ret = ops->register_algs(qce);
+-		if (ret)
+-			break;
++		if (ret) {
++			for (j = i - 1; j >= 0; j--)
++				ops->unregister_algs(qce);
++			return ret;
++		}
+ 	}
  
- 			interrupts-extended = <&intc GIC_SPI 265 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-	return ret;
++	return 0;
+ }
+ 
+ static int qce_handle_request(struct crypto_async_request *async_req)
 
 
 
