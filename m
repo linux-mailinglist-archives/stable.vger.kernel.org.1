@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-116107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C87A34725
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8D4A34401
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DED1897FE7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 811D43AA194
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714C926B0B4;
-	Thu, 13 Feb 2025 15:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B2324167F;
+	Thu, 13 Feb 2025 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jewn5aIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moe8xbTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA5F26B0BD;
-	Thu, 13 Feb 2025 15:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85FA2661A3;
+	Thu, 13 Feb 2025 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460349; cv=none; b=kyspLNgAPVAiMwHG7limwN1ilO2KQDxX1LZKG+uR/al/cI5+0hPztPBIkNgOsF1ylX72lTj1BvrUHKUheyNI1tpQ/XLuVoftp2PAlSFgKmtV/gyU7jVzV9ICHbSxeaGX7vXJdyltiih8fGPn+shaMmfOFJX14QQQC3zrtJVh7O0=
+	t=1739458120; cv=none; b=mQuCivHHRjI1T1oJCAM+6LwTN6TMh+2weRSG+CWvPKbum+qDCh6I69/DvGyd5Q4gV7VIqL77Q/57CccVWurRK92mGDNvgQFq3/rFvuS9FuiVE0fUSJCl35sdfoStoW0vp2CmU8l1H1AR4OZEFz2OReWJFjJqRfOeEglK/ZWcG/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460349; c=relaxed/simple;
-	bh=ZMLl9hdvw0utmrbsZwZr8PQD+ZJa5/XGrW5KqYWFcdQ=;
+	s=arc-20240116; t=1739458120; c=relaxed/simple;
+	bh=o69I6uWFAmJDBYwNfFwzSXS/wekiF6/3dbsvBnv3dcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUoutGofc7vg5HIUsERL9luOXx/qfLGn/8vWAbUhXw3C1AU5z4dAcSUtiLmMmRALEkmPorAoVW1jSnB9Ct6oJyhglrRR8oT4Q/pNuSNtUolIc9/L5m2dtioWUqHv9YjUZ7PenSQsoRXnD1oHvkWpi1eo2NTy3LnHymhNmfr7EEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jewn5aIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EFDC4CED1;
-	Thu, 13 Feb 2025 15:25:48 +0000 (UTC)
+	 MIME-Version; b=Vhtckcan5VzcDZM27pdMltWF1vmvaCKjlv32obNrOAx+se/XZZc6/7E5jtE2kM2g1PeeplV2ewVQABDKFE6ayiAVPaNVfytuxNDNkrIMHwb5yds1luB5a0c0L1K/uxJtVB63YkA5GwH/MQuPTXttLoEnHksbMoMRBx4ENjhqeTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moe8xbTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE6EC4CED1;
+	Thu, 13 Feb 2025 14:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460349;
-	bh=ZMLl9hdvw0utmrbsZwZr8PQD+ZJa5/XGrW5KqYWFcdQ=;
+	s=korg; t=1739458120;
+	bh=o69I6uWFAmJDBYwNfFwzSXS/wekiF6/3dbsvBnv3dcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jewn5aIuY5vjoIKYhkdVVdBD+oODhE6u8444l6Gedld9EVcRJpOYrnXfmOlC/7Q/j
-	 qxuhXbVJHqZmse27pg426J4sZ+ElGmLByFeaEyoLhcyxGJHyMFCXtSfoBGamBKjm8a
-	 EIOT2M2d10F/soLGLmE0xI9E15IdjqYu4xLun6BQ=
+	b=moe8xbTS4rmb9n1gpiKwNBmac6RPPc3Ppyq2WgC05QhSJPiFaPkl5wQusBQWz5ZLR
+	 DiczXh9bqHw1WaeW9N3R3BLZub4ca/scLUJRX1bfNt2l9K4pvoXofIGj4gbb/ZCWSk
+	 Th6A3xnbGrwtJaus04dlHAm9OJnkx5uSVOs3Vodg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruben Devos <devosruben6@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 085/273] smb: client: fix order of arguments of tracepoints
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Subject: [PATCH 6.12 308/422] iommufd: Fix struct iommu_hwpt_pgfault init and padding
 Date: Thu, 13 Feb 2025 15:27:37 +0100
-Message-ID: <20250213142410.704031548@linuxfoundation.org>
+Message-ID: <20250213142448.429166608@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,335 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruben Devos <devosruben6@gmail.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 11f8b80ab9f99291dc88d09855b9f8f43b772335 upstream.
+commit e721f619e3ec9bae08bf419c3944cf1e6966c821 upstream.
 
-The tracepoints based on smb3_inf_compound_*_class have tcon id and
-session id swapped around. This results in incorrect output in
-`trace-cmd report`.
+The iommu_hwpt_pgfault is used to report IO page fault data to userspace,
+but iommufd_fault_fops_read was never zeroing its padding. This leaks the
+content of the kernel stack memory to userspace.
 
-Fix the order of arguments to resolve this issue. The trace-cmd output
-below shows the before and after of the smb3_delete_enter and
-smb3_delete_done events as an example. The smb3_cmd_* events show the
-correct session and tcon id for reference.
+Also, the iommufd uAPI requires explicit padding and use of __aligned_u64
+to ensure ABI compatibility's with 32 bit.
 
-Also fix tracepoint set -> get in the SMB2_OP_GET_REPARSE case.
+pahole result, before:
+struct iommu_hwpt_pgfault {
+        __u32     flags;                /*     0     4 */
+        __u32     dev_id;               /*     4     4 */
+        __u32     pasid;                /*     8     4 */
+        __u32     grpid;                /*    12     4 */
+        __u32     perm;                 /*    16     4 */
 
-BEFORE:
-rm-2211  [001] .....  1839.550888: smb3_delete_enter:    xid=281 sid=0x5 tid=0x3d path=\hello2.txt
-rm-2211  [001] .....  1839.550894: smb3_cmd_enter:        sid=0x1ac000000003d tid=0x5 cmd=5 mid=61
-rm-2211  [001] .....  1839.550896: smb3_cmd_enter:        sid=0x1ac000000003d tid=0x5 cmd=6 mid=62
-rm-2211  [001] .....  1839.552091: smb3_cmd_done:         sid=0x1ac000000003d tid=0x5 cmd=5 mid=61
-rm-2211  [001] .....  1839.552093: smb3_cmd_done:         sid=0x1ac000000003d tid=0x5 cmd=6 mid=62
-rm-2211  [001] .....  1839.552103: smb3_delete_done:     xid=281 sid=0x5 tid=0x3d
+        /* XXX 4 bytes hole, try to pack */
 
-AFTER:
-rm-2501  [001] .....  3237.656110: smb3_delete_enter:    xid=88 sid=0x1ac0000000041 tid=0x5 path=\hello2.txt
-rm-2501  [001] .....  3237.656122: smb3_cmd_enter:        sid=0x1ac0000000041 tid=0x5 cmd=5 mid=84
-rm-2501  [001] .....  3237.656123: smb3_cmd_enter:        sid=0x1ac0000000041 tid=0x5 cmd=6 mid=85
-rm-2501  [001] .....  3237.657909: smb3_cmd_done:         sid=0x1ac0000000041 tid=0x5 cmd=5 mid=84
-rm-2501  [001] .....  3237.657909: smb3_cmd_done:         sid=0x1ac0000000041 tid=0x5 cmd=6 mid=85
-rm-2501  [001] .....  3237.657922: smb3_delete_done:     xid=88 sid=0x1ac0000000041 tid=0x5
+        __u64     addr;                 /*    24     8 */
+        __u32     length;               /*    32     4 */
+        __u32     cookie;               /*    36     4 */
 
+        /* size: 40, cachelines: 1, members: 8 */
+        /* sum members: 36, holes: 1, sum holes: 4 */
+        /* last cacheline: 40 bytes */
+};
+
+pahole result, after:
+struct iommu_hwpt_pgfault {
+        __u32      flags;                /*     0     4 */
+        __u32      dev_id;               /*     4     4 */
+        __u32      pasid;                /*     8     4 */
+        __u32      grpid;                /*    12     4 */
+        __u32      perm;                 /*    16     4 */
+        __u32      __reserved;           /*    20     4 */
+        __u64      addr __attribute__((__aligned__(8))); /*    24     8 */
+        __u32      length;               /*    32     4 */
+        __u32      cookie;               /*    36     4 */
+
+        /* size: 40, cachelines: 1, members: 9 */
+        /* forced alignments: 1 */
+        /* last cacheline: 40 bytes */
+} __attribute__((__aligned__(8)));
+
+Fixes: c714f15860fc ("iommufd: Add fault and response message definitions")
+Link: https://patch.msgid.link/r/20250120195051.2450-1-nicolinc@nvidia.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Ruben Devos <devosruben6@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/dir.c       |    6 +-
- fs/smb/client/smb2inode.c |  108 +++++++++++++++++++++++-----------------------
- 2 files changed, 57 insertions(+), 57 deletions(-)
+ drivers/iommu/iommufd/fault.c |    2 +-
+ include/uapi/linux/iommufd.h  |    4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -627,7 +627,7 @@ int cifs_mknod(struct mnt_idmap *idmap,
- 		goto mknod_out;
- 	}
- 
--	trace_smb3_mknod_enter(xid, tcon->ses->Suid, tcon->tid, full_path);
-+	trace_smb3_mknod_enter(xid, tcon->tid, tcon->ses->Suid, full_path);
- 
- 	rc = tcon->ses->server->ops->make_node(xid, inode, direntry, tcon,
- 					       full_path, mode,
-@@ -635,9 +635,9 @@ int cifs_mknod(struct mnt_idmap *idmap,
- 
- mknod_out:
- 	if (rc)
--		trace_smb3_mknod_err(xid,  tcon->ses->Suid, tcon->tid, rc);
-+		trace_smb3_mknod_err(xid,  tcon->tid, tcon->ses->Suid, rc);
- 	else
--		trace_smb3_mknod_done(xid, tcon->ses->Suid, tcon->tid);
-+		trace_smb3_mknod_done(xid, tcon->tid, tcon->ses->Suid);
- 
- 	free_dentry_path(page);
- 	free_xid(xid);
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -298,8 +298,8 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_query_info_compound_enter(xid, ses->Suid,
--							     tcon->tid, full_path);
-+			trace_smb3_query_info_compound_enter(xid, tcon->tid,
-+							     ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_POSIX_QUERY_INFO:
- 			rqst[num_rqst].rq_iov = &vars->qi_iov;
-@@ -334,18 +334,18 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_posix_query_info_compound_enter(xid, ses->Suid,
--								   tcon->tid, full_path);
-+			trace_smb3_posix_query_info_compound_enter(xid, tcon->tid,
-+								   ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_DELETE:
--			trace_smb3_delete_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_delete_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_MKDIR:
- 			/*
- 			 * Directories are created through parameters in the
- 			 * SMB2_open() call.
- 			 */
--			trace_smb3_mkdir_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_mkdir_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_RMDIR:
- 			rqst[num_rqst].rq_iov = &vars->si_iov[0];
-@@ -363,7 +363,7 @@ replay_again:
- 				goto finished;
- 			smb2_set_next_command(tcon, &rqst[num_rqst]);
- 			smb2_set_related(&rqst[num_rqst++]);
--			trace_smb3_rmdir_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_rmdir_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_SET_EOF:
- 			rqst[num_rqst].rq_iov = &vars->si_iov[0];
-@@ -398,7 +398,7 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_set_eof_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_set_eof_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_SET_INFO:
- 			rqst[num_rqst].rq_iov = &vars->si_iov[0];
-@@ -429,8 +429,8 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_set_info_compound_enter(xid, ses->Suid,
--							   tcon->tid, full_path);
-+			trace_smb3_set_info_compound_enter(xid, tcon->tid,
-+							   ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_RENAME:
- 			rqst[num_rqst].rq_iov = &vars->si_iov[0];
-@@ -469,7 +469,7 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_rename_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_rename_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_HARDLINK:
- 			rqst[num_rqst].rq_iov = &vars->si_iov[0];
-@@ -496,7 +496,7 @@ replay_again:
- 				goto finished;
- 			smb2_set_next_command(tcon, &rqst[num_rqst]);
- 			smb2_set_related(&rqst[num_rqst++]);
--			trace_smb3_hardlink_enter(xid, ses->Suid, tcon->tid, full_path);
-+			trace_smb3_hardlink_enter(xid, tcon->tid, ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_SET_REPARSE:
- 			rqst[num_rqst].rq_iov = vars->io_iov;
-@@ -523,8 +523,8 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_set_reparse_compound_enter(xid, ses->Suid,
--							      tcon->tid, full_path);
-+			trace_smb3_set_reparse_compound_enter(xid, tcon->tid,
-+							      ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_GET_REPARSE:
- 			rqst[num_rqst].rq_iov = vars->io_iov;
-@@ -549,8 +549,8 @@ replay_again:
- 				goto finished;
- 			}
- 			num_rqst++;
--			trace_smb3_get_reparse_compound_enter(xid, ses->Suid,
--							      tcon->tid, full_path);
-+			trace_smb3_get_reparse_compound_enter(xid, tcon->tid,
-+							      ses->Suid, full_path);
- 			break;
- 		case SMB2_OP_QUERY_WSL_EA:
- 			rqst[num_rqst].rq_iov = &vars->ea_iov;
-@@ -663,11 +663,11 @@ finished:
- 			}
- 			SMB2_query_info_free(&rqst[num_rqst++]);
- 			if (rc)
--				trace_smb3_query_info_compound_err(xid,  ses->Suid,
--								   tcon->tid, rc);
-+				trace_smb3_query_info_compound_err(xid,  tcon->tid,
-+								   ses->Suid, rc);
- 			else
--				trace_smb3_query_info_compound_done(xid, ses->Suid,
--								    tcon->tid);
-+				trace_smb3_query_info_compound_done(xid, tcon->tid,
-+								    ses->Suid);
- 			break;
- 		case SMB2_OP_POSIX_QUERY_INFO:
- 			idata = in_iov[i].iov_base;
-@@ -690,15 +690,15 @@ finished:
- 
- 			SMB2_query_info_free(&rqst[num_rqst++]);
- 			if (rc)
--				trace_smb3_posix_query_info_compound_err(xid,  ses->Suid,
--									 tcon->tid, rc);
-+				trace_smb3_posix_query_info_compound_err(xid,  tcon->tid,
-+									 ses->Suid, rc);
- 			else
--				trace_smb3_posix_query_info_compound_done(xid, ses->Suid,
--									  tcon->tid);
-+				trace_smb3_posix_query_info_compound_done(xid, tcon->tid,
-+									  ses->Suid);
- 			break;
- 		case SMB2_OP_DELETE:
- 			if (rc)
--				trace_smb3_delete_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_delete_err(xid, tcon->tid, ses->Suid, rc);
- 			else {
- 				/*
- 				 * If dentry (hence, inode) is NULL, lease break is going to
-@@ -706,59 +706,59 @@ finished:
- 				 */
- 				if (inode)
- 					cifs_mark_open_handles_for_deleted_file(inode, full_path);
--				trace_smb3_delete_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_delete_done(xid, tcon->tid, ses->Suid);
- 			}
- 			break;
- 		case SMB2_OP_MKDIR:
- 			if (rc)
--				trace_smb3_mkdir_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_mkdir_err(xid, tcon->tid, ses->Suid, rc);
- 			else
--				trace_smb3_mkdir_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_mkdir_done(xid, tcon->tid, ses->Suid);
- 			break;
- 		case SMB2_OP_HARDLINK:
- 			if (rc)
--				trace_smb3_hardlink_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_hardlink_err(xid,  tcon->tid, ses->Suid, rc);
- 			else
--				trace_smb3_hardlink_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_hardlink_done(xid, tcon->tid, ses->Suid);
- 			SMB2_set_info_free(&rqst[num_rqst++]);
- 			break;
- 		case SMB2_OP_RENAME:
- 			if (rc)
--				trace_smb3_rename_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_rename_err(xid, tcon->tid, ses->Suid, rc);
- 			else
--				trace_smb3_rename_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_rename_done(xid, tcon->tid, ses->Suid);
- 			SMB2_set_info_free(&rqst[num_rqst++]);
- 			break;
- 		case SMB2_OP_RMDIR:
- 			if (rc)
--				trace_smb3_rmdir_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_rmdir_err(xid, tcon->tid, ses->Suid, rc);
- 			else
--				trace_smb3_rmdir_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_rmdir_done(xid, tcon->tid, ses->Suid);
- 			SMB2_set_info_free(&rqst[num_rqst++]);
- 			break;
- 		case SMB2_OP_SET_EOF:
- 			if (rc)
--				trace_smb3_set_eof_err(xid,  ses->Suid, tcon->tid, rc);
-+				trace_smb3_set_eof_err(xid, tcon->tid, ses->Suid, rc);
- 			else
--				trace_smb3_set_eof_done(xid, ses->Suid, tcon->tid);
-+				trace_smb3_set_eof_done(xid, tcon->tid, ses->Suid);
- 			SMB2_set_info_free(&rqst[num_rqst++]);
- 			break;
- 		case SMB2_OP_SET_INFO:
- 			if (rc)
--				trace_smb3_set_info_compound_err(xid,  ses->Suid,
--								 tcon->tid, rc);
-+				trace_smb3_set_info_compound_err(xid,  tcon->tid,
-+								 ses->Suid, rc);
- 			else
--				trace_smb3_set_info_compound_done(xid, ses->Suid,
--								  tcon->tid);
-+				trace_smb3_set_info_compound_done(xid, tcon->tid,
-+								  ses->Suid);
- 			SMB2_set_info_free(&rqst[num_rqst++]);
- 			break;
- 		case SMB2_OP_SET_REPARSE:
- 			if (rc) {
--				trace_smb3_set_reparse_compound_err(xid,  ses->Suid,
--								    tcon->tid, rc);
-+				trace_smb3_set_reparse_compound_err(xid, tcon->tid,
-+								    ses->Suid, rc);
- 			} else {
--				trace_smb3_set_reparse_compound_done(xid, ses->Suid,
--								     tcon->tid);
-+				trace_smb3_set_reparse_compound_done(xid, tcon->tid,
-+								     ses->Suid);
- 			}
- 			SMB2_ioctl_free(&rqst[num_rqst++]);
- 			break;
-@@ -771,18 +771,18 @@ finished:
- 				rbuf = reparse_buf_ptr(iov);
- 				if (IS_ERR(rbuf)) {
- 					rc = PTR_ERR(rbuf);
--					trace_smb3_set_reparse_compound_err(xid,  ses->Suid,
--									    tcon->tid, rc);
-+					trace_smb3_get_reparse_compound_err(xid, tcon->tid,
-+									    ses->Suid, rc);
- 				} else {
- 					idata->reparse.tag = le32_to_cpu(rbuf->ReparseTag);
--					trace_smb3_set_reparse_compound_done(xid, ses->Suid,
--									     tcon->tid);
-+					trace_smb3_get_reparse_compound_done(xid, tcon->tid,
-+									     ses->Suid);
- 				}
- 				memset(iov, 0, sizeof(*iov));
- 				resp_buftype[i + 1] = CIFS_NO_BUFFER;
- 			} else {
--				trace_smb3_set_reparse_compound_err(xid, ses->Suid,
--								    tcon->tid, rc);
-+				trace_smb3_get_reparse_compound_err(xid, tcon->tid,
-+								    ses->Suid, rc);
- 			}
- 			SMB2_ioctl_free(&rqst[num_rqst++]);
- 			break;
-@@ -799,11 +799,11 @@ finished:
- 				}
- 			}
- 			if (!rc) {
--				trace_smb3_query_wsl_ea_compound_done(xid, ses->Suid,
--								      tcon->tid);
-+				trace_smb3_query_wsl_ea_compound_done(xid, tcon->tid,
-+								      ses->Suid);
- 			} else {
--				trace_smb3_query_wsl_ea_compound_err(xid, ses->Suid,
--								     tcon->tid, rc);
-+				trace_smb3_query_wsl_ea_compound_err(xid, tcon->tid,
-+								     ses->Suid, rc);
- 			}
- 			SMB2_query_info_free(&rqst[num_rqst++]);
- 			break;
+--- a/drivers/iommu/iommufd/fault.c
++++ b/drivers/iommu/iommufd/fault.c
+@@ -242,7 +242,7 @@ static ssize_t iommufd_fault_fops_read(s
+ {
+ 	size_t fault_size = sizeof(struct iommu_hwpt_pgfault);
+ 	struct iommufd_fault *fault = filep->private_data;
+-	struct iommu_hwpt_pgfault data;
++	struct iommu_hwpt_pgfault data = {};
+ 	struct iommufd_device *idev;
+ 	struct iopf_group *group;
+ 	struct iopf_fault *iopf;
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -737,6 +737,7 @@ enum iommu_hwpt_pgfault_perm {
+  * @pasid: Process Address Space ID
+  * @grpid: Page Request Group Index
+  * @perm: Combination of enum iommu_hwpt_pgfault_perm
++ * @__reserved: Must be 0.
+  * @addr: Fault address
+  * @length: a hint of how much data the requestor is expecting to fetch. For
+  *          example, if the PRI initiator knows it is going to do a 10MB
+@@ -752,7 +753,8 @@ struct iommu_hwpt_pgfault {
+ 	__u32 pasid;
+ 	__u32 grpid;
+ 	__u32 perm;
+-	__u64 addr;
++	__u32 __reserved;
++	__aligned_u64 addr;
+ 	__u32 length;
+ 	__u32 cookie;
+ };
 
 
 
