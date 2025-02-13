@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBCBA3428A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF01A345C8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781061881F0E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428211897890
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE8B38389;
-	Thu, 13 Feb 2025 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D25C155759;
+	Thu, 13 Feb 2025 15:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgqYsgNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GnQP3h1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA2281379;
-	Thu, 13 Feb 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8F92A1CF;
+	Thu, 13 Feb 2025 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457338; cv=none; b=HWURIR+yfTntn31TXKRf+0sD9nDKQyfELSL7qVCTwRQzyyfgAJ/fy6gQFlHvn/x94lBERvOFB4IfLcmHtAGIVVOjkiN6zpeVRlUqtY70tzaGlil8MhWJZ1lrKEEs8ZJ5TyW8pcbEEk19jW168aaGvEGlQoPDJjFRDfepiSTpmAk=
+	t=1739458811; cv=none; b=gQ3q/DG4d3um0XRNR5yxdp6Fk5TJHyfX0a2xkWPl/V44qgi5zrbG70dAe88rFIlsQFRQqYF0PdbHVed8O6RoJZoRVmbBrwwpFZazi9eD6lGqqtBdt3Vzwtvm114XcfbN7DMnlL8wk1SW/df1/LafjVLndoIASlErX0AwL26set0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457338; c=relaxed/simple;
-	bh=EPzNovS3iaMuVKULyk3d1N6UtLDb2qLp1a5cRPZTQ54=;
+	s=arc-20240116; t=1739458811; c=relaxed/simple;
+	bh=/Lkm+X27qeeRsEVLHmKJ/2mk1WPYCBKNB/ZcOIe3cfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lncnhT1u+8cal6ND5lYe9BQNDjTsk+gQSHbr8pyNSWK71QtAzE2KasR8lm8Jx99TwKFZIjdRIvxEF7W3QYGE+EqrNI9ay4WtGFVbhFWBS5Y8mm9G5JArmhcN1lMly9G2M+Lrr0wCweMHGbpLr9Lf5iY7dA4roldC1SFCU4fHthw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgqYsgNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA60C4CED1;
-	Thu, 13 Feb 2025 14:35:38 +0000 (UTC)
+	 MIME-Version; b=LLrCmElMbo0Nh0vNI6XAbTBZOcXDArlowqQWSw2qibu4p7HrXzkTNwvEraO5jQkOkhwWhuqfAK8VFipcUdc6tnGd8FqMRKDeZuT8yyigtjn52GbUJqklpa8Uh4s1KgVqcx9uKyACvSamI5U0XrWBQq9FiaDHhBKThWxdiVipLOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GnQP3h1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F6CC4CED1;
+	Thu, 13 Feb 2025 15:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457338;
-	bh=EPzNovS3iaMuVKULyk3d1N6UtLDb2qLp1a5cRPZTQ54=;
+	s=korg; t=1739458810;
+	bh=/Lkm+X27qeeRsEVLHmKJ/2mk1WPYCBKNB/ZcOIe3cfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgqYsgNtuP9GoRPUHxgzmLUgbRHaf64mcj2ectXIfo5I8PKnZW5teAQYNCs0lN2IG
-	 XbYik9P3lf485XGlYNAoWbcsVdUVhdyYHUtnJWELLpxOB95jAO86uoCPZTx9/Urf68
-	 cPtTbRfh7Q7G7IrUej2SIWeeXh8L+RYYKSgULRVk=
+	b=1GnQP3h1eThMWYGrqqQblM0oL0TzdyXQDIFFLMNtgSsYe3E5fgZhUixAEdMOrUsus
+	 u+acUO2dJ0fEvtiAVpNryde9iyANeIP6L59I8/istltrj+VJP00RNdYrDtVN3YvsEO
+	 Cm1fAJJdl05uFGzyrCry3SyFM18g6DoeRTagvi6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rayan Margham <rayanmargham4@gmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Enze Xie <enze@nfschina.com>,
+	Youwan Wang <youwan@nfschina.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/422] platform/x86: acer-wmi: Add support for Acer PH14-51
+Subject: [PATCH 6.13 066/443] HID: multitouch: Add quirk for Hantick 5288 touchpad
 Date: Thu, 13 Feb 2025 15:23:51 +0100
-Message-ID: <20250213142439.718121194@linuxfoundation.org>
+Message-ID: <20250213142443.166395209@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Youwan Wang <youwan@nfschina.com>
 
-[ Upstream commit 9741f9aa13f6dc3ff24e1d006b2ced5f460e6b6f ]
+[ Upstream commit b5e65ae557da9fd17b08482ee44ee108ba636182 ]
 
-Add the Acer Predator PT14-51 to acer_quirks to provide support
-for the turbo button and predator_v4 hwmon interface.
+This device sometimes doesn't send touch release signals when moving
+from >=2 fingers to <2 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-Reported-by: Rayan Margham <rayanmargham4@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CACzB==6tUsCnr5musVMz-EymjTUCJfNtKzhMFYqMRU_h=kydXA@mail.gmail.com
-Tested-by: Rayan Margham <rayanmargham4@gmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20241210001657.3362-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Enze Xie <enze@nfschina.com>
+Signed-off-by: Youwan Wang <youwan@nfschina.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 7169b84ccdb6e..844e623ddeb30 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -398,6 +398,13 @@ static struct quirk_entry quirk_acer_predator_ph315_53 = {
- 	.gpu_fans = 1,
- };
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 42c0bd9d2f31e..82900857bfd87 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2314,6 +2314,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, USB_VENDOR_ID_SIS_TOUCH,
+ 			HID_ANY_ID) },
  
-+static struct quirk_entry quirk_acer_predator_pt14_51 = {
-+	.turbo = 1,
-+	.cpu_fans = 1,
-+	.gpu_fans = 1,
-+	.predator_v4 = 1,
-+};
++	/* Hantick */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			   I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288) },
 +
- static struct quirk_entry quirk_acer_predator_v4 = {
- 	.predator_v4 = 1,
- };
-@@ -605,6 +612,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_acer_predator_v4,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Acer Predator PT14-51",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PT14-51"),
-+		},
-+		.driver_data = &quirk_acer_predator_pt14_51,
-+	},
- 	{
- 		.callback = set_force_caps,
- 		.ident = "Acer Aspire Switch 10E SW3-016",
+ 	/* Generic MT device */
+ 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_MULTITOUCH, HID_ANY_ID, HID_ANY_ID) },
+ 
 -- 
 2.39.5
 
