@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-115195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A53A3426F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8BEA34263
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34A3188917D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739333A8BBD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4F0221571;
-	Thu, 13 Feb 2025 14:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A82570830;
+	Thu, 13 Feb 2025 14:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvivoh4f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0OQ4xO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF8321D3FC;
-	Thu, 13 Feb 2025 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8200281360;
+	Thu, 13 Feb 2025 14:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457216; cv=none; b=AbkiwVvQD0z3j1iZ1HZTjndaEUBAgB+FLd7JDfywmFygnXMPCE4Us2Do9mZAnjjStpKrF9wMNfboBkvsVA5/CJOhv41sSIhnny7F5Y9lxOBZTvCsSMXzaPjA3D2uJxAAKw1gc83KhLysThQao/ff1r7o4+IbwzFGMSiP5PSyBZk=
+	t=1739457236; cv=none; b=HJgr8LDdtGSB6cBgJGbc46U/f1VmAzCxl3SxkLbOIvCz+jpo5l49iRFR0gLBD/hBiX6dXTZztCo+r7SyRkiOwaYTwY50RwspoRKaDDAvPE4aX2cP3WrrfQkEG/SVRK6qK5v0M3dZE+cpLW9nm4yTRx0mZDLRNmrdgGYGYX53sVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457216; c=relaxed/simple;
-	bh=wCoIKSr10ov6RTyrz2enivUtb/p18e2wvPJJBQRmO3I=;
+	s=arc-20240116; t=1739457236; c=relaxed/simple;
+	bh=NwhlRtqmaLEG4SObeuz3xPmiAKdMG9Uk8CxGK9Uuj4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYunBVnFuf4BIVe402OuQWhlxvD+9NX0pIQIa+D+3Bu4LtoIwsq37qNXge2amDKs/uxaq7li9+0BsSfNfiOsK1EfFP9vFhRZVxgF00Oom9WUtq2wlw4B+GJP44mlrmm4UIQJ6lCN4w+P25H6XpV3xaO4aTblALsuJn487Hz28qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvivoh4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A60FC4CED1;
-	Thu, 13 Feb 2025 14:33:35 +0000 (UTC)
+	 MIME-Version; b=ICCrwbgfA+J2lVF4Gc7oyTKkxkIJjyrhgqhR1cxbuC8DTC/qxuWT2vyP0bemZByIXDmI8MQS3GEa2vnLFOIMWWPfEovxsOM4sgWmspkVBk/4VvQIsllsJaicE7pbcYQ226QmxUJ68xziA2ygrMUu+ilbV4ahDaYvpOeIMiy/Z90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0OQ4xO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4857CC4CED1;
+	Thu, 13 Feb 2025 14:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457215;
-	bh=wCoIKSr10ov6RTyrz2enivUtb/p18e2wvPJJBQRmO3I=;
+	s=korg; t=1739457236;
+	bh=NwhlRtqmaLEG4SObeuz3xPmiAKdMG9Uk8CxGK9Uuj4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kvivoh4fdfVCiZ8NTGFUoXFqnbZFuAOyb8Kbhoxl68Qf/DSJX+mCUf8GEhO2otdoU
-	 jshX5RRIu9f+usSHPdSgN7z6EQS4jJGUoD5btzrhhn8bTqmRs7vv1Y05MujtCbgses
-	 557VqcbQIkkeWVpGn4lp46I9PVbKBnrF5jPKXxR8=
+	b=b0OQ4xO+xxwk6yayTabdvD7h6PoHLsIUKTQISg87ovMwPbdtSxeSoIXLzxlLlwjiK
+	 oSiEKXqK96i1m7DECKt3WXPXP6IvCsQEo51sRoXgKNLii8ilC9IBofk9U7FNrpx1Aa
+	 wHsE1/s57XDAfzebPd9reHiVWWpO77RaKsHS/TwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Zhi Wang <zhiw@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/422] nvkm/gsp: correctly advance the read pointer of GSP message queue
-Date: Thu, 13 Feb 2025 15:22:50 +0100
-Message-ID: <20250213142437.372902068@linuxfoundation.org>
+Subject: [PATCH 6.12 022/422] nvkm: correctly calculate the available space of the GSP cmdq buffer
+Date: Thu, 13 Feb 2025 15:22:51 +0100
+Message-ID: <20250213142437.412010032@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
 References: <20250213142436.408121546@linuxfoundation.org>
@@ -68,201 +68,133 @@ Content-Transfer-Encoding: quoted-printable
 
 From: Zhi Wang <zhiw@nvidia.com>
 
-[ Upstream commit 8d9beb4aebc02c4bd09e1d39c9c5f1c68c786dbc ]
+[ Upstream commit 01ed662bdd6fce4f59c1804b334610d710d79fa0 ]
 
-A GSP event message consists three parts: message header, RPC header,
-message body. GSP calculates the number of pages to write from the
-total size of a GSP message. This behavior can be observed from the
-movement of the write pointer.
+r535_gsp_cmdq_push() waits for the available page in the GSP cmdq
+buffer when handling a large RPC request. When it sees at least one
+available page in the cmdq, it quits the waiting with the amount of
+free buffer pages in the queue.
 
-However, nvkm takes only the size of RPC header and message body as
-the message size when advancing the read pointer. When handling a
-two-page GSP message in the non rollback case, It wrongly takes the
-message body of the previous message as the message header of the next
-message. As the "message length" tends to be zero, in the calculation of
-size needs to be copied (0 - size of (message header)), the size needs to
-be copied will be "0xffffffxx". It also triggers a kernel panic due to a
-NULL pointer error.
+Unfortunately, it always takes the [write pointer, buf_size) as
+available buffer pages before rolling back and wrongly calculates the
+size of the data should be copied. Thus, it can overwrite the RPC
+request that GSP is currently reading, which causes GSP hang due
+to corrupted RPC request:
 
-[  547.614102] msg: 00000f90: ff ff ff ff ff ff ff ff 40 d7 18 fb 8b 00 00 =
-00  ........@.......
-[  547.622533] msg: 00000fa0: 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 =
-00  ................
-[  547.630965] msg: 00000fb0: ff ff ff ff ff ff ff ff 00 00 00 00 ff ff ff =
-ff  ................
-[  547.639397] msg: 00000fc0: ff ff ff ff 00 00 00 00 ff ff ff ff ff ff ff =
-ff  ................
-[  547.647832] nvkm 0000:c1:00.0: gsp: peek msg rpc fn:0 len:0x0/0xffffffff=
-ffffffe0
-[  547.655225] nvkm 0000:c1:00.0: gsp: get msg rpc fn:0 len:0x0/0xfffffffff=
-fffffe0
-[  547.662532] BUG: kernel NULL pointer dereference, address: 0000000000000=
-020
-[  547.669485] #PF: supervisor read access in kernel mode
-[  547.674624] #PF: error_code(0x0000) - not-present page
-[  547.679755] PGD 0 P4D 0
-[  547.682294] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[  547.686643] CPU: 22 PID: 322 Comm: kworker/22:1 Tainted: G            E =
-     6.9.0-rc6+ #1
-[  547.694893] Hardware name: ASRockRack 1U1G-MILAN/N/ROMED8-NL, BIOS L3.12=
-E 09/06/2022
-[  547.702626] Workqueue: events r535_gsp_msgq_work [nvkm]
-[  547.707921] RIP: 0010:r535_gsp_msg_recv+0x87/0x230 [nvkm]
-[  547.713375] Code: 00 8b 70 08 48 89 e1 31 d2 4c 89 f7 e8 12 f5 ff ff 48 =
-89 c5 48 85 c0 0f 84 cf 00 00 00 48 81 fd 00 f0 ff ff 0f 87 c4 00 00 00 <8b=
-> 55 10 41 8b 46 30 85 d2 0f 85 f6 00 00 00 83 f8 04 76 10 ba 05
-[  547.732119] RSP: 0018:ffffabe440f87e10 EFLAGS: 00010203
-[  547.737335] RAX: 0000000000000010 RBX: 0000000000000008 RCX: 00000000000=
-0003f
-[  547.744461] RDX: 0000000000000000 RSI: ffffabe4480a8030 RDI: 00000000000=
-00010
-[  547.751585] RBP: 0000000000000010 R08: 0000000000000000 R09: ffffabe440f=
-87bb0
-[  547.758707] R10: ffffabe440f87dc8 R11: 0000000000000010 R12: 00000000000=
-00000
-[  547.765834] R13: 0000000000000000 R14: ffff9351df1e5000 R15: 00000000000=
-00000
-[  547.772958] FS:  0000000000000000(0000) GS:ffff93708eb00000(0000) knlGS:=
-0000000000000000
-[  547.781035] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  547.786771] CR2: 0000000000000020 CR3: 00000003cc220002 CR4: 00000000007=
-70ef0
-[  547.793896] PKRU: 55555554
-[  547.796600] Call Trace:
-[  547.799046]  <TASK>
-[  547.801152]  ? __die+0x20/0x70
-[  547.804211]  ? page_fault_oops+0x75/0x170
-[  547.808221]  ? print_hex_dump+0x100/0x160
-[  547.812226]  ? exc_page_fault+0x64/0x150
-[  547.816152]  ? asm_exc_page_fault+0x22/0x30
-[  547.820341]  ? r535_gsp_msg_recv+0x87/0x230 [nvkm]
-[  547.825184]  r535_gsp_msgq_work+0x42/0x50 [nvkm]
-[  547.829845]  process_one_work+0x196/0x3d0
-[  547.833861]  worker_thread+0x2fc/0x410
-[  547.837613]  ? __pfx_worker_thread+0x10/0x10
-[  547.841885]  kthread+0xdf/0x110
-[  547.845031]  ? __pfx_kthread+0x10/0x10
-[  547.848775]  ret_from_fork+0x30/0x50
-[  547.852354]  ? __pfx_kthread+0x10/0x10
-[  547.856097]  ret_from_fork_asm+0x1a/0x30
-[  547.860019]  </TASK>
-[  547.862208] Modules linked in: nvkm(E) gsp_log(E) snd_seq_dummy(E) snd_h=
-rtimer(E) snd_seq(E) snd_timer(E) snd_seq_device(E) snd(E) soundcore(E) rfk=
-ill(E) qrtr(E) vfat(E) fat(E) ipmi_ssif(E) amd_atl(E) intel_rapl_msr(E) int=
-el_rapl_common(E) amd64_edac(E) mlx5_ib(E) edac_mce_amd(E) kvm_amd(E) ib_uv=
-erbs(E) kvm(E) ib_core(E) acpi_ipmi(E) ipmi_si(E) ipmi_devintf(E) mxm_wmi(E=
-) joydev(E) rapl(E) ptdma(E) i2c_piix4(E) acpi_cpufreq(E) wmi_bmof(E) pcspk=
-r(E) k10temp(E) ipmi_msghandler(E) xfs(E) libcrc32c(E) ast(E) i2c_algo_bit(=
-E) drm_shmem_helper(E) crct10dif_pclmul(E) drm_kms_helper(E) ahci(E) crc32_=
-pclmul(E) nvme_tcp(E) libahci(E) nvme(E) crc32c_intel(E) nvme_fabrics(E) cd=
-c_ether(E) nvme_core(E) usbnet(E) mlx5_core(E) ghash_clmulni_intel(E) drm(E=
-) libata(E) ccp(E) mii(E) t10_pi(E) mlxfw(E) sp5100_tco(E) psample(E) pci_h=
-yperv_intf(E) wmi(E) dm_multipath(E) sunrpc(E) dm_mirror(E) dm_region_hash(=
-E) dm_log(E) dm_mod(E) be2iscsi(E) bnx2i(E) cnic(E) uio(E) cxgb4i(E) cxgb4(=
-E) tls(E) libcxgbi(E) libcxgb(E) qla4xxx(E)
-[  547.862283]  iscsi_boot_sysfs(E) iscsi_tcp(E) libiscsi_tcp(E) libiscsi(E=
+[  549.209389] ------------[ cut here ]------------
+[  549.214010] WARNING: CPU: 8 PID: 6314 at drivers/gpu/drm/nouveau/nvkm/su=
+bdev/gsp/r535.c:116 r535_gsp_msgq_wait+0xd0/0x190 [nvkm]
+[  549.225678] Modules linked in: nvkm(E+) gsp_log(E) snd_seq_dummy(E) snd_=
+hrtimer(E) snd_seq(E) snd_timer(E) snd_seq_device(E) snd(E) soundcore(E) rf=
+kill(E) qrtr(E) vfat(E) fat(E) ipmi_ssif(E) amd_atl(E) intel_rapl_msr(E) in=
+tel_rapl_common(E) mlx5_ib(E) amd64_edac(E) edac_mce_amd(E) kvm_amd(E) ib_u=
+verbs(E) kvm(E) ib_core(E) acpi_ipmi(E) ipmi_si(E) mxm_wmi(E) ipmi_devintf(=
+E) rapl(E) i2c_piix4(E) wmi_bmof(E) joydev(E) ptdma(E) acpi_cpufreq(E) k10t=
+emp(E) pcspkr(E) ipmi_msghandler(E) xfs(E) libcrc32c(E) ast(E) i2c_algo_bit=
+(E) crct10dif_pclmul(E) drm_shmem_helper(E) nvme_tcp(E) crc32_pclmul(E) ahc=
+i(E) drm_kms_helper(E) libahci(E) nvme_fabrics(E) crc32c_intel(E) nvme(E) c=
+dc_ether(E) mlx5_core(E) nvme_core(E) usbnet(E) drm(E) libata(E) ccp(E) gha=
+sh_clmulni_intel(E) mii(E) t10_pi(E) mlxfw(E) sp5100_tco(E) psample(E) pci_=
+hyperv_intf(E) wmi(E) dm_multipath(E) sunrpc(E) dm_mirror(E) dm_region_hash=
+(E) dm_log(E) dm_mod(E) be2iscsi(E) bnx2i(E) cnic(E) uio(E) cxgb4i(E) cxgb4=
+(E) tls(E) libcxgbi(E) libcxgb(E) qla4xxx(E)
+[  549.225752]  iscsi_boot_sysfs(E) iscsi_tcp(E) libiscsi_tcp(E) libiscsi(E=
 ) scsi_transport_iscsi(E) fuse(E) [last unloaded: gsp_log(E)]
-[  547.962691] CR2: 0000000000000020
-[  547.966003] ---[ end trace 0000000000000000 ]---
-[  549.012012] clocksource: Long readout interval, skipping watchdog check:=
- cs_nsec: 1370499158 wd_nsec: 1370498904
-[  549.043676] pstore: backend (erst) writing error (-28)
-[  549.050924] RIP: 0010:r535_gsp_msg_recv+0x87/0x230 [nvkm]
-[  549.056389] Code: 00 8b 70 08 48 89 e1 31 d2 4c 89 f7 e8 12 f5 ff ff 48 =
-89 c5 48 85 c0 0f 84 cf 00 00 00 48 81 fd 00 f0 ff ff 0f 87 c4 00 00 00 <8b=
-> 55 10 41 8b 46 30 85 d2 0f 85 f6 00 00 00 83 f8 04 76 10 ba 05
-[  549.075138] RSP: 0018:ffffabe440f87e10 EFLAGS: 00010203
-[  549.080361] RAX: 0000000000000010 RBX: 0000000000000008 RCX: 00000000000=
-0003f
-[  549.087484] RDX: 0000000000000000 RSI: ffffabe4480a8030 RDI: 00000000000=
-00010
-[  549.094609] RBP: 0000000000000010 R08: 0000000000000000 R09: ffffabe440f=
-87bb0
-[  549.101733] R10: ffffabe440f87dc8 R11: 0000000000000010 R12: 00000000000=
-00000
-[  549.108857] R13: 0000000000000000 R14: ffff9351df1e5000 R15: 00000000000=
-00000
-[  549.115982] FS:  0000000000000000(0000) GS:ffff93708eb00000(0000) knlGS:=
+[  549.326293] CPU: 8 PID: 6314 Comm: insmod Tainted: G            E      6=
+.9.0-rc6+ #1
+[  549.334039] Hardware name: ASRockRack 1U1G-MILAN/N/ROMED8-NL, BIOS L3.12=
+E 09/06/2022
+[  549.341781] RIP: 0010:r535_gsp_msgq_wait+0xd0/0x190 [nvkm]
+[  549.347343] Code: 08 00 00 89 da c1 e2 0c 48 8d ac 11 00 10 00 00 48 8b =
+0c 24 48 85 c9 74 1f c1 e0 0c 4c 8d 6d 30 83 e8 30 89 01 e9 68 ff ff ff <0f=
+> 0b 49 c7 c5 92 ff ff ff e9 5a ff ff ff ba ff ff ff ff be c0 0c
+[  549.366090] RSP: 0018:ffffacbccaaeb7d0 EFLAGS: 00010246
+[  549.371315] RAX: 0000000000000000 RBX: 0000000000000012 RCX: 00000000009=
+23e28
+[  549.378451] RDX: 0000000000000000 RSI: 0000000055555554 RDI: ffffacbccaa=
+eb730
+[  549.385590] RBP: 0000000000000001 R08: ffff8bd14d235f70 R09: ffff8bd14d2=
+35f70
+[  549.392721] R10: 0000000000000002 R11: ffff8bd14d233864 R12: 00000000000=
+00020
+[  549.399854] R13: ffffacbccaaeb818 R14: 0000000000000020 R15: ffff8bb298c=
+67000
+[  549.406988] FS:  00007f5179244740(0000) GS:ffff8bd14d200000(0000) knlGS:=
 0000000000000000
-[  549.124061] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  549.129807] CR2: 0000000000000020 CR3: 00000003cc220002 CR4: 00000000007=
+[  549.415076] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  549.420829] CR2: 00007fa844000010 CR3: 00000001567dc005 CR4: 00000000007=
 70ef0
-[  549.136940] PKRU: 55555554
-[  549.139653] Kernel panic - not syncing: Fatal exception
-[  549.145054] Kernel Offset: 0x18c00000 from 0xffffffff81000000 (relocatio=
-n range: 0xffffffff80000000-0xffffffffbfffffff)
-[  549.165074] ---[ end Kernel panic - not syncing: Fatal exception ]---
+[  549.427963] PKRU: 55555554
+[  549.430672] Call Trace:
+[  549.433126]  <TASK>
+[  549.435233]  ? __warn+0x7f/0x130
+[  549.438473]  ? r535_gsp_msgq_wait+0xd0/0x190 [nvkm]
+[  549.443426]  ? report_bug+0x18a/0x1a0
+[  549.447098]  ? handle_bug+0x3c/0x70
+[  549.450589]  ? exc_invalid_op+0x14/0x70
+[  549.454430]  ? asm_exc_invalid_op+0x16/0x20
+[  549.458619]  ? r535_gsp_msgq_wait+0xd0/0x190 [nvkm]
+[  549.463565]  r535_gsp_msg_recv+0x46/0x230 [nvkm]
+[  549.468257]  r535_gsp_rpc_push+0x106/0x160 [nvkm]
+[  549.473033]  r535_gsp_rpc_rm_ctrl_push+0x40/0x130 [nvkm]
+[  549.478422]  nvidia_grid_init_vgpu_types+0xbc/0xe0 [nvkm]
+[  549.483899]  nvidia_grid_init+0xb1/0xd0 [nvkm]
+[  549.488420]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  549.493213]  nvkm_device_pci_probe+0x305/0x420 [nvkm]
+[  549.498338]  local_pci_probe+0x46/0xa0
+[  549.502096]  pci_call_probe+0x56/0x170
+[  549.505851]  pci_device_probe+0x79/0xf0
+[  549.509690]  ? driver_sysfs_add+0x59/0xc0
+[  549.513702]  really_probe+0xd9/0x380
+[  549.517282]  __driver_probe_device+0x78/0x150
+[  549.521640]  driver_probe_device+0x1e/0x90
+[  549.525746]  __driver_attach+0xd2/0x1c0
+[  549.529594]  ? __pfx___driver_attach+0x10/0x10
+[  549.534045]  bus_for_each_dev+0x78/0xd0
+[  549.537893]  bus_add_driver+0x112/0x210
+[  549.541750]  driver_register+0x5c/0x120
+[  549.545596]  ? __pfx_nvkm_init+0x10/0x10 [nvkm]
+[  549.550224]  do_one_initcall+0x44/0x300
+[  549.554063]  ? do_init_module+0x23/0x240
+[  549.557989]  do_init_module+0x64/0x240
 
-Also, nvkm wrongly advances the read pointer when handling a two-page GSP
-message in the rollback case. In the rollback case, the GSP message will
-be copied in two rounds. When handling a two-page GSP message, nvkm first
-copies amount of (GSP_PAGE_SIZE - header) data into the buffer, then
-advances the read pointer by the result of DIV_ROUND_UP(size,
-GSP_PAGE_SIZE). Thus, the read pointer is advanced by 1.
-
-Next, nvkm copies the amount of (total size - (GSP_PAGE_SIZE -
-header)) data into the buffer. The left amount of the data will be always
-larger than one page since the message header is not taken into account
-in the first copy. Thus, the read pointer is advanced by DIV_ROUND_UP(
-size(larger than one page), GSP_PAGE_SIZE) =3D 2.
-
-In the end, the read pointer is wrongly advanced by 3 when handling a
-two-page GSP message in the rollback case.
-
-Fix the problems by taking the total size of the message into account
-when advancing the read pointer and calculate the read pointer in the end
-of the all copies for the rollback case.
-
-BTW: the two-page GSP message can be observed in the msgq when vGPU is
-enabled.
+Calculate the available buffer page before rolling back based on
+the result from the waiting.
 
 Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Link: https://patchwork.freedesktop.org/patch/msgid/20241017071922.2518724-=
-2-zhiw@nvidia.com
+3-zhiw@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/d=
 rm/nouveau/nvkm/subdev/gsp/r535.c
-index d586aea308984..bd4b5d6a7bd36 100644
+index bd4b5d6a7bd36..9c83bab0a5309 100644
 --- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
 +++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -121,6 +121,8 @@ r535_gsp_msgq_wait(struct nvkm_gsp *gsp, u32 repc, u32 =
-*prepc, int *ptime)
- 		return mqe->data;
- 	}
+@@ -161,7 +161,7 @@ r535_gsp_cmdq_push(struct nvkm_gsp *gsp, void *argv)
+ 	u64 *end;
+ 	u64 csum =3D 0;
+ 	int free, time =3D 1000000;
+-	u32 wptr, size;
++	u32 wptr, size, step;
+ 	u32 off =3D 0;
 =20
-+	size =3D ALIGN(repc + GSP_MSG_HDR_SIZE, GSP_PAGE_SIZE);
+ 	argc =3D ALIGN(GSP_MSG_HDR_SIZE + argc, GSP_PAGE_SIZE);
+@@ -195,7 +195,9 @@ r535_gsp_cmdq_push(struct nvkm_gsp *gsp, void *argv)
+ 		}
+=20
+ 		cqe =3D (void *)((u8 *)gsp->shm.cmdq.ptr + 0x1000 + wptr * 0x1000);
+-		size =3D min_t(u32, argc, (gsp->cmdq.cnt - wptr) * GSP_PAGE_SIZE);
++		step =3D min_t(u32, free, (gsp->cmdq.cnt - wptr));
++		size =3D min_t(u32, argc, step * GSP_PAGE_SIZE);
 +
- 	msg =3D kvmalloc(repc, GFP_KERNEL);
- 	if (!msg)
- 		return ERR_PTR(-ENOMEM);
-@@ -129,19 +131,15 @@ r535_gsp_msgq_wait(struct nvkm_gsp *gsp, u32 repc, u3=
-2 *prepc, int *ptime)
- 	len =3D min_t(u32, repc, len);
- 	memcpy(msg, mqe->data, len);
+ 		memcpy(cqe, (u8 *)cmd + off, size);
 =20
--	rptr +=3D DIV_ROUND_UP(len, GSP_PAGE_SIZE);
--	if (rptr =3D=3D gsp->msgq.cnt)
--		rptr =3D 0;
--
- 	repc -=3D len;
-=20
- 	if (repc) {
- 		mqe =3D (void *)((u8 *)gsp->shm.msgq.ptr + 0x1000 + 0 * 0x1000);
- 		memcpy(msg + len, mqe, repc);
--
--		rptr +=3D DIV_ROUND_UP(repc, GSP_PAGE_SIZE);
- 	}
-=20
-+	rptr =3D (rptr + DIV_ROUND_UP(size, GSP_PAGE_SIZE)) % gsp->msgq.cnt;
-+
- 	mb();
- 	(*gsp->msgq.rptr) =3D rptr;
- 	return msg;
+ 		wptr +=3D DIV_ROUND_UP(size, 0x1000);
 --=20
 2.39.5
 
