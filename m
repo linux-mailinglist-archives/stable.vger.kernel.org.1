@@ -1,128 +1,130 @@
-Return-Path: <stable+bounces-116322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0855FA34C8E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 18:57:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AADA34CA0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 18:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 978EA188CC30
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 17:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB57E16C0CD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 17:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92F923A9BE;
-	Thu, 13 Feb 2025 17:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2352724167D;
+	Thu, 13 Feb 2025 17:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKqet2+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644A823A9BA;
-	Thu, 13 Feb 2025 17:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CBF241661
+	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 17:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739469419; cv=none; b=ORWWxP+Uh330omxq5KitABzOF/kQESzz/lrfwS9BuCvxFxykQ6/sdtkoZfkxGJDCmsOt4fr10V6mmi/bh6PfAXTqIvlB/FjunSqyHLE+ND5akkspmiahMcAgYfHXx7OTAZWL2QpbaUTFyrNBHH0LGzUNJ2/LdsYFs8cMnYISC8Q=
+	t=1739469522; cv=none; b=e66N8HJEpfpfwndy0AniycDV+Go+yIyvaaGh6Be1UkgUIRzIL7fe6FrX5bdNbtrQKzAfVSCT/K0+CQutihfJGwXMzP4ZUb5S99zlN/TRy4W03GijDG44sauLyFPzf21kLMg+OQcLpGfUKu5sCzRZ7rn7r3niaZg/Ze0Qt4oGaqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739469419; c=relaxed/simple;
-	bh=0WV2CmcTZUiH+zQk/eImcSLFCn6EHvq25FoHekBJf6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ha6eaXpPiA+MVWaYPHynquYne2hrTGsL2/5eb8ZxObU5uCfas3uwsuL4/JYn1oj1SLkUShR8dK1iVeHmtvI7xnCzyBfK8arDtTf+mpSZ+g7ELjXus6MsahgubF1pEwF3LeysjKrjaPOiSZSWjZVceFIIe7eyVnn3IhppqVbdWtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220B4C4CED1;
-	Thu, 13 Feb 2025 17:56:55 +0000 (UTC)
-Date: Thu, 13 Feb 2025 17:56:53 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, anshuman.khandual@arm.com,
-	will@kernel.org, ardb@kernel.org, ryan.roberts@arm.com,
-	mark.rutland@arm.com, joey.gouly@arm.com,
-	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
-	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	quic_tingweiz@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v6] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-Message-ID: <Z64yZRPpyR9A_BiR@arm.com>
-References: <20250213075703.1270713-1-quic_zhenhuah@quicinc.com>
- <9bc91fe3-c590-48e2-b29f-736d0b056c34@redhat.com>
- <Z64UcwSGQ53mFmWF@arm.com>
- <b2964ea1-a22c-4b66-89ef-3082b6d00d21@redhat.com>
+	s=arc-20240116; t=1739469522; c=relaxed/simple;
+	bh=iCD1EJbH1lIRLMhar/vubBdCo81+Zp/krmtY+yjRst0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m7mWDeuZidY2XcKMC1lgQZKn++RBKYaUNz35oR94SRbXt5/A1gatVCCNEOQCGg3bWDZdq7ha6X3hu1pK3XaYhJ2m1JlaVyi22SMCUcI1E19EYpLIx96lheay3gOKUkboyr80AXUu+wZcysy4UpZSdEEyKKfy1XP6lFKK0fxWU/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKqet2+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64738C4CEE4
+	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 17:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739469522;
+	bh=iCD1EJbH1lIRLMhar/vubBdCo81+Zp/krmtY+yjRst0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PKqet2+zH1t97Tb9PYh+csE5Hdb00pQkostRd2H2ctUmml1g8pGaPSCFUWnd+A+O0
+	 bOMyt4JNMnU96lRXLcWJRor87iyLPNItlWNX/iX3dZG/1Uiu89IzQ4X1LtvLTcY/2O
+	 7WicsQQbKQWDPk3XgXrgyZQz+ak29vrd2BaMECULVVsLSjv6pwN53nd3BBp1r2DRDD
+	 pIZ75RwafjHlIFQ0r/x5yRo8Lo9WUvLtkAcvnfH1UGQHS0RIb9w282c8FYrQtCWJzD
+	 mHbM4bZhXbdkWtKXrrOa0kyfEtO0tPU8X02toteJqeRdwmKZL4nLi3fjSdEH7rvIaQ
+	 lI+jDpT9mbxmQ==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5dec996069aso2010310a12.2
+        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 09:58:42 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVpKmidSDow+dT+fvDQn/S34lFgqVPC9OpRMdoolSXMmOqKgANTEoQeeQQ7SILi0YG6OM3UeXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxnu1A5NyQ/vGH+L4vDjNvQPqwxAmN379HydvxePwhnZDbXQuqT
+	iWxc7uvY87U7NlT0mQPt2Cx3NWeOIDqkV9cVBA0wQeP4Ks/oTey6XBTw3fOrAZB9QhtaZcykvGH
+	tdJUypBWYj4z8HVg7FKIXqaMnpNp0/Z9ICmlk
+X-Google-Smtp-Source: AGHT+IFHopkCd1IJRkVGtcRhcYRjj+s4dlwwFJCs/2tuVCIcDrZdxsclaMkaSiHDnOZupJK47TfVKKdiSuDfdpu5g6U=
+X-Received: by 2002:a17:907:3ea2:b0:ab7:c43f:8382 with SMTP id
+ a640c23a62f3a-ab7f33cab3bmr916405866b.31.1739469520915; Thu, 13 Feb 2025
+ 09:58:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2964ea1-a22c-4b66-89ef-3082b6d00d21@redhat.com>
+References: <20250212220433.3624297-1-jolsa@kernel.org> <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
+ <Z623ZcZj6Wsbnrhs@krava>
+In-Reply-To: <Z623ZcZj6Wsbnrhs@krava>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Thu, 13 Feb 2025 09:58:29 -0800
+X-Gmail-Original-Message-ID: <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
+X-Gm-Features: AWEUYZkKsWtgJBXXFU3xbPGAlALgrkQUHGzWNL5HcC7wERAjq_EEPmO7fwgtv2M
+Message-ID: <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
+Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline check
+To: Jiri Olsa <olsajiri@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org, 
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, 
+	bpf@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Deepak Gupta <debug@rivosinc.com>, Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 13, 2025 at 05:16:37PM +0100, David Hildenbrand wrote:
-> On 13.02.25 16:49, Catalin Marinas wrote:
-> > On Thu, Feb 13, 2025 at 01:59:25PM +0100, David Hildenbrand wrote:
-> > > On 13.02.25 08:57, Zhenhua Huang wrote:
-> > > > On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
-> > > > to 27, making one section 128M. The related page struct which vmemmap
-> > > > points to is 2M then.
-> > > > Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
-> > > > vmemmap to populate at the PMD section level which was suitable
-> > > > initially since hot plug granule is always one section(128M). However,
-> > > > commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> > > > introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
-> > > > existing arm64 assumptions.
-> > > > 
-> > > > Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
-> > > > pmd_sect() is true, the entire PMD section is cleared, even if there is
-> > > > other effective subsection. For example page_struct_map1 and
-> > > > page_strcut_map2 are part of a single PMD entry and they are hot-added
-> > > > sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
-> > > > the entire PMD entry freeing the struct page map for the whole section,
-> > > > even though page_struct_map2 is still active. Similar problem exists
-> > > > with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
-> > > > base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
-> > > > Tearing down the entire PMD mapping too will leave other subsections
-> > > > unmapped in the linear mapping.
-> > > > 
-> > > > To address the issue, we need to prevent PMD/PUD/CONT mappings for both
-> > > > linear and vmemmap for non-boot sections if corresponding size on the
-> > > > given base page exceeds SUBSECTION_SIZE(2MB now).
-> > > > 
-> > > > Cc: <stable@vger.kernel.org> # v5.4+
-> > > > Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> > > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> > > > Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> > > 
-> > > Just so I understand correctly: for ordinary memory-sections-size hotplug
-> > > (NVDIMM, virtio-mem), we still get a large mapping where possible?
-> > 
-> > Up to 2MB blocks only since that's the SUBSECTION_SIZE value. The
-> > vmemmap mapping is also limited to PAGE_SIZE mappings (we could use
-> > contiguous mappings for vmemmap but it's not wired up; I don't think
-> > it's worth the hassle).
-> 
-> But that's messed up, no?
-> 
-> If someone hotplugs a memory section, they have to hotunplug a memory
-> section, not parts of it.
-> 
-> That's why x86 does in vmemmap_populate():
-> 
-> if (end - start < PAGES_PER_SECTION * sizeof(struct page))
-> 	err = vmemmap_populate_basepages(start, end, node, NULL);
-> else if (boot_cpu_has(X86_FEATURE_PSE))
-> 	err = vmemmap_populate_hugepages(start, end, node, altmap);
-> ...
-> 
-> Maybe I'm missing something. Most importantly, why the weird subsection
-> stuff is supposed to degrade ordinary hotplug of dimms/virtio-mem etc.
+On Thu, Feb 13, 2025 at 1:16=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrot=
+e:
+>
+> On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
+> > On Wed, Feb 12, 2025 at 2:04=E2=80=AFPM Jiri Olsa <jolsa@kernel.org> wr=
+ote:
+> > >
+> > > Jann reported [1] possible issue when trampoline_check_ip returns
+> > > address near the bottom of the address space that is allowed to
+> > > call into the syscall if uretprobes are not set up.
+> > >
+> > > Though the mmap minimum address restrictions will typically prevent
+> > > creating mappings there, let's make sure uretprobe syscall checks
+> > > for that.
+> >
+> > It would be a layering violation, but we could perhaps do better here:
+> >
+> > > -       if (regs->ip !=3D trampoline_check_ip())
+> > > +       /* Make sure the ip matches the only allowed sys_uretprobe ca=
+ller. */
+> > > +       if (unlikely(regs->ip !=3D trampoline_check_ip(tramp)))
+> > >                 goto sigill;
+> >
+> > Instead of SIGILL, perhaps this should do the seccomp action?  So the
+> > logic in seccomp would be (sketchily, with some real mode1 mess):
+> >
+> > if (is_a_real_uretprobe())
+> >     skip seccomp;
+>
+> IIUC you want to move the address check earlier to the seccomp path..
+> with the benefit that we would kill not allowed caller sooner?
 
-I think that's based on the discussion for a previous version assuming
-that the hotplug/unplug sizes are not guaranteed to be symmetric:
+The benefit would be that seccomp users that want to do something
+other than killing a process (returning an error code, getting
+notified, etc) could retain that functionality without the new
+automatic hole being poked for uretprobe() in cases where uprobes
+aren't in use or where the calling address doesn't match the uprobe
+trampoline.  IOW it would reduce the scope to which we're making
+seccomp behave unexpectedly.
 
-https://lore.kernel.org/lkml/a720aaa5-a75e-481e-b396-a5f2b50ed362@quicinc.com/
-
-If that's not the case, we can indeed ignore the SUBSECTION_SIZE
-altogether and just rely on the start/end of the hotplugged region.
-
--- 
-Catalin
+>
+> jirka
+>
+> >
+> > where is_a_real_uretprobe() is only true if the nr and arch match
+> > uretprobe *and* the address is right.
+> >
+> > --Andy
+>
 
