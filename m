@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F8A34570
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AD3A34756
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19052189C120
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF2D3AB74B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA3C26B097;
-	Thu, 13 Feb 2025 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B59514831C;
+	Thu, 13 Feb 2025 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7iY/qEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqxJRSTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF4A26B083;
-	Thu, 13 Feb 2025 15:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167C9335BA;
+	Thu, 13 Feb 2025 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459362; cv=none; b=pEixw7+efINFmYUCnRH/61wNA5/dOy65B0suAzeQT2u+ooxO9UvUheofZ8N1Msxor28QkJahF8Uk2vaYgddG5FAF0xJnPfOkYBq7N1T6jDfqUWyrfDFr7Y+TFrJRAviiz2xAMtQN14BundkM6WcdWMVAslvIM6oAIyloMOPuMUc=
+	t=1739460158; cv=none; b=rRqz0SLp0ltv6PXaFo1RL8UI1QjfrC2sJkgGDA1MLK3scr7fIV02bzDLriy7iT5/IBOXGb5+sqIg+sDVwxIapbWlHturd6lT7J4v3xO2MOCoUh5PXc+3TvvwvPk1vbj0EiLxiMLtSnCf3stfofi1QJ+WTIex0/XxQ7OFvhQtLu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459362; c=relaxed/simple;
-	bh=TT4u5GDLXr6ktm/JLOt7Qnowo7Tsj1OEhyMp7834/iw=;
+	s=arc-20240116; t=1739460158; c=relaxed/simple;
+	bh=ucucFfSD1EwT17bLwMDVCTRxCtXsVkC3X35dgl09nxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L/R0gjSkCXZgMyxn9fG/cK146SM6VFe/0BQq+C8iHgGa2siMAawpvjsjtmWN7SH5QKXvJufWakWBbCSOGVb8GLPSUy//sl5EhypL4E38Bn1I+vFIpRKvMGUtM1wGpzA7yxeDS11rIjYMcl/y77yEVRxkdHvd3Rmuw3t7e2qK9hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7iY/qEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40059C4CED1;
-	Thu, 13 Feb 2025 15:09:22 +0000 (UTC)
+	 MIME-Version; b=RImf6WRIr5s+5UzZx95BGuXWYEionYRlJfZPgb9fRBSqnP2O2S4QnkjuI2e2iH7xNg8VXN+Dyxs0FDN6yNiwaA1GNWXaMgM0XNNJVj+/jXtNUIen0YliLdJ2ULVCmFR69ZxjLdRCDuz1ghfECF6WmUXzZenddA5CEez4Z9uqq/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqxJRSTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5B4C4CED1;
+	Thu, 13 Feb 2025 15:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459362;
-	bh=TT4u5GDLXr6ktm/JLOt7Qnowo7Tsj1OEhyMp7834/iw=;
+	s=korg; t=1739460158;
+	bh=ucucFfSD1EwT17bLwMDVCTRxCtXsVkC3X35dgl09nxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7iY/qEe3ekAnBHD5FQCpFT6Od1710qbinbihN6adB2J+e/VwMSznH8OihKzpp45q
-	 4AWlvwcmWq0krcPeLzG6huhrIM95gK+7edsM+0QfTWRSytfvAXWkXGPyKPb5RNfuIt
-	 9qcKx3AlHc4+MnschLc95JQgn++T+tZS5+7skJpk=
+	b=wqxJRSTZQyP0TPPi1SA1SQvBsMI9Rs6Y0CYsq5IeXy/JK9WaT1GVX20bARdDGAxjI
+	 8jOHpyQnNfMhmJ4mpcBoxrNfqTJzIVbfbliYsXApyL1VvijIjiGnlrlBRDTCeK1loG
+	 CXkLYYXN+MFWHCJ8guXzqtxX84RYpqS+lSZlJjAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
-	Jakub Jelinek <jakub@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.13 211/443] efi: libstub: Use -std=gnu11 to fix build with GCC 15
-Date: Thu, 13 Feb 2025 15:26:16 +0100
-Message-ID: <20250213142448.759131610@linuxfoundation.org>
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 005/273] s390/stackleak: Use exrl instead of ex in __stackleak_poison()
+Date: Thu, 13 Feb 2025 15:26:17 +0100
+Message-ID: <20250213142407.569845380@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 8ba14d9f490aef9fd535c04e9e62e1169eb7a055 upstream.
+[ Upstream commit a88c26bb8e04ee5f2678225c0130a5fbc08eef85 ]
 
-GCC 15 changed the default C standard version to C23, which should not
-have impacted the kernel because it requests the gnu11 standard via
-'-std=' in the main Makefile. However, the EFI libstub Makefile uses its
-own set of KBUILD_CFLAGS for x86 without a '-std=' value (i.e., using
-the default), resulting in errors from the kernel's definitions of bool,
-true, and false in stddef.h, which are reserved keywords under C23.
+exrl is present in all machines currently supported, therefore prefer
+it over ex. This saves one instruction and doesn't need an additional
+register to hold the address of the target instruction.
 
-  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
-     11 |         false   = 0,
-  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-     35 | typedef _Bool                   bool;
-
-Set '-std=gnu11' in the x86 cflags to resolve the error and consistently
-use the same C standard version for the entire kernel. All other
-architectures reuse KBUILD_CFLAGS from the rest of the kernel, so this
-issue is not visible for them.
-
-Cc: stable@vger.kernel.org
-Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
-Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
-Reported-by: Jakub Jelinek <jakub@redhat.com>
-Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/processor.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -11,7 +11,7 @@ cflags-y			:= $(KBUILD_CFLAGS)
- 
- cflags-$(CONFIG_X86_32)		:= -march=i386
- cflags-$(CONFIG_X86_64)		:= -mcmodel=small
--cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
-+cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index e7338ed540d8f..2f373e8cfed33 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -140,8 +140,7 @@ static __always_inline void __stackleak_poison(unsigned long erase_low,
+ 		"	la	%[addr],256(%[addr])\n"
+ 		"	brctg	%[tmp],0b\n"
+ 		"1:	stg	%[poison],0(%[addr])\n"
+-		"	larl	%[tmp],3f\n"
+-		"	ex	%[count],0(%[tmp])\n"
++		"	exrl	%[count],3f\n"
+ 		"	j	4f\n"
+ 		"2:	stg	%[poison],0(%[addr])\n"
+ 		"	j	4f\n"
+-- 
+2.39.5
+
 
 
 
