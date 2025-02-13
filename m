@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8740FA34695
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A501FA347A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AF71897B11
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC56C16C7ED
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E68426B091;
-	Thu, 13 Feb 2025 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C12E189BAF;
+	Thu, 13 Feb 2025 15:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HneOHM2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYU3mPSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0C226B0A5;
-	Thu, 13 Feb 2025 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A781547E3;
+	Thu, 13 Feb 2025 15:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459866; cv=none; b=cWgxh+M7YSINEv5gfAwX8UwDdYBxYtaFOKS0T44ugarnU991kYrmgLTnEkWgycd0FRGfBEovGzYzlKO+yG0ch/JsJbY9YDHmjOwD6awdaVEy24p3TRTvNdfQRJzko7os03MVrpdsgqxQCyYSWQGPFn1+oUVcnaYqJAwZnZfNs8o=
+	t=1739460674; cv=none; b=os7wfIrjwoc3YeSUiM6tz0Z0LPetC1VqfrwcU6k2D9n6jv5vynI21VZCZG81OApWJrQ2LkpqsPclt8E82mzShIL5huqYM5aQkTlwIjrP6X/504BsR126gpLX7qHxUhhCCUXwQ/ioXqEBUtfuRUqRo9NYlM7sX5PFcfmCg/78Ne0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459866; c=relaxed/simple;
-	bh=hmfV4oiXeTZbRROz1PdSgEhFAMSRQa+UF+EYgOZsq9M=;
+	s=arc-20240116; t=1739460674; c=relaxed/simple;
+	bh=PcNi2dn5L7XFvUiVASryvSO/BJH5tHuE6zn1+2S6Rws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gah2SsxLLPC9T8GhozuLI2ZD0SePoNylUHxCDzsdvSfYlT3uF9z3mRhDGTkOhZ2DVtCXVsubD7UcUFQAEhIXbwVD8Fg7y7Ctqastnwln2pWSGE72GNLPE4jBeDhwAfypsd2CEwpHmnGDTMg94K9+dEnE5i5Vzund2DwRcEwtoqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HneOHM2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F617C4CED1;
-	Thu, 13 Feb 2025 15:17:45 +0000 (UTC)
+	 MIME-Version; b=hCD6UB65PVvuRVX7A0FLBKujyNkdYqDIGw7jNE6Tm+hMPhBSF8e58s9OSDI0Br2JQk/uLfZTC8f1736gWp7RKVYq2q9aYAGy6Mqdj/b0x6HzPGLOnjq9pH6lIje2lOAcscl3NIyIYE7y1PwfEF+YjEfFSGuKvktI7pL6Xt6w4H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYU3mPSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFF6C4CED1;
+	Thu, 13 Feb 2025 15:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459865;
-	bh=hmfV4oiXeTZbRROz1PdSgEhFAMSRQa+UF+EYgOZsq9M=;
+	s=korg; t=1739460674;
+	bh=PcNi2dn5L7XFvUiVASryvSO/BJH5tHuE6zn1+2S6Rws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HneOHM2xtLq1VLN46TZ5AeiR/F4Z9VhgW2ctmWKuh9p/QpdJDKCqSlrG5P0F/s0Ct
-	 akX4a9V7N2QgPp7YKnf0/vM8+TKmplAFMs4cxm94ixN2CcIgFfQroRyWqkg3D66dBa
-	 Km+QYJSiGvxZTYdOj2Ct3HxygPMU+sgVu20hgiBo=
+	b=UYU3mPSWzloDd6HFvCwu4Jtvb6445TWu9JkhqB6WdDxVuCh5CUy7ewkseUL3h0Ghi
+	 AqTAQeC2akZSGFvxsy3HJsHwJ3yh0JZmppyWhVP7QUwb7a01+GTxc7Hv1eqapNSS+E
+	 63dbJwROA8Z8HIYUkjezDqXU03UANl3VGQM/LzDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Viallon <antoine@lesviallon.fr>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.13 387/443] ceph: fix memory leak in ceph_mds_auth_match()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 180/273] arm64: dts: qcom: sm6375: Fix MPSS memory base and length
 Date: Thu, 13 Feb 2025 15:29:12 +0100
-Message-ID: <20250213142455.542958269@linuxfoundation.org>
+Message-ID: <20250213142414.443103716@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Viallon <antoine@lesviallon.fr>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 3b7d93db450e9d8ead80d75e2a303248f1528c35 upstream.
+commit 918e71ba0c08c3d609ad69067854b0f675c4a253 upstream.
 
-We now free the temporary target path substring allocation on every
-possible branch, instead of omitting the default branch.  In some
-cases, a memory leak occured, which could rapidly crash the system
-(depending on how many file accesses were attempted).
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0608_0000 with length of 0x10000.
 
-This was detected in production because it caused a continuous memory
-growth, eventually triggering kernel OOM and completely hard-locking
-the kernel.
+0x0600_0000, value used so far, is the main region of Modem.
 
-Relevant kmemleak stacktrace:
+Correct the base address and length, which should have no functional
+impact on Linux users, because PAS loader does not use this address
+space at all.
 
-    unreferenced object 0xffff888131e69900 (size 128):
-      comm "git", pid 66104, jiffies 4295435999
-      hex dump (first 32 bytes):
-        76 6f 6c 75 6d 65 73 2f 63 6f 6e 74 61 69 6e 65  volumes/containe
-        72 73 2f 67 69 74 65 61 2f 67 69 74 65 61 2f 67  rs/gitea/gitea/g
-      backtrace (crc 2f3bb450):
-        [<ffffffffaa68fb49>] __kmalloc_noprof+0x359/0x510
-        [<ffffffffc32bf1df>] ceph_mds_check_access+0x5bf/0x14e0 [ceph]
-        [<ffffffffc3235722>] ceph_open+0x312/0xd80 [ceph]
-        [<ffffffffaa7dd786>] do_dentry_open+0x456/0x1120
-        [<ffffffffaa7e3729>] vfs_open+0x79/0x360
-        [<ffffffffaa832875>] path_openat+0x1de5/0x4390
-        [<ffffffffaa834fcc>] do_filp_open+0x19c/0x3c0
-        [<ffffffffaa7e44a1>] do_sys_openat2+0x141/0x180
-        [<ffffffffaa7e4945>] __x64_sys_open+0xe5/0x1a0
-        [<ffffffffac2cc2f7>] do_syscall_64+0xb7/0x210
-        [<ffffffffac400130>] entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-It can be triggered by mouting a subdirectory of a CephFS filesystem,
-and then trying to access files on this subdirectory with an auth token
-using a path-scoped capability:
-
-    $ ceph auth get client.services
-    [client.services]
-            key = REDACTED
-            caps mds = "allow rw fsname=cephfs path=/volumes/"
-            caps mon = "allow r fsname=cephfs"
-            caps osd = "allow rw tag cephfs data=cephfs"
-
-    $ cat /proc/self/mounts
-    services@[REDACTED].cephfs=/volumes/containers /ceph/containers ceph rw,noatime,name=services,secret=<hidden>,ms_mode=prefer-crc,mount_timeout=300,acl,mon_addr=[REDACTED]:3300,recover_session=clean 0 0
-
-    $ seq 1 1000000 | xargs -P32 --replace={} touch /ceph/containers/file-{} && \
-    seq 1 1000000 | xargs -P32 --replace={} cat /ceph/containers/file-{}
-
-[ idryomov: combine if statements, rename rc to path_matched and make
-            it a bool, formatting ]
-
+Fixes: 31cc61104f68 ("arm64: dts: qcom: sm6375: Add modem nodes")
 Cc: stable@vger.kernel.org
-Fixes: 596afb0b8933 ("ceph: add ceph_mds_check_access() helper")
-Signed-off-by: Antoine Viallon <antoine@lesviallon.fr>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-19-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/mds_client.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -5690,18 +5690,18 @@ static int ceph_mds_auth_match(struct ce
- 			 *
- 			 * All the other cases                       --> mismatch
- 			 */
-+			bool path_matched = true;
- 			char *first = strstr(_tpath, auth->match.path);
--			if (first != _tpath) {
--				if (free_tpath)
--					kfree(_tpath);
--				return 0;
-+			if (first != _tpath ||
-+			    (tlen > len && _tpath[len] != '/')) {
-+				path_matched = false;
- 			}
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -1471,9 +1471,9 @@
+ 			#power-domain-cells = <1>;
+ 		};
  
--			if (tlen > len && _tpath[len] != '/') {
--				if (free_tpath)
--					kfree(_tpath);
-+			if (free_tpath)
-+				kfree(_tpath);
-+
-+			if (!path_matched)
- 				return 0;
--			}
- 		}
- 	}
+-		remoteproc_mss: remoteproc@6000000 {
++		remoteproc_mss: remoteproc@6080000 {
+ 			compatible = "qcom,sm6375-mpss-pas";
+-			reg = <0 0x06000000 0 0x4040>;
++			reg = <0x0 0x06080000 0x0 0x10000>;
  
+ 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
