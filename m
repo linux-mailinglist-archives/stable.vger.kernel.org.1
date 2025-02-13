@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D130A3434E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8576EA3460E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6220D168CCF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE663B29A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432BB38389;
-	Thu, 13 Feb 2025 14:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1729915DBBA;
+	Thu, 13 Feb 2025 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcQaZFtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzTS+Rox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A41281349;
-	Thu, 13 Feb 2025 14:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7ACF26B0B1;
+	Thu, 13 Feb 2025 15:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457805; cv=none; b=OayKnSUKn6uc+naCdxsenSF85uykt2og60jEhHSfkDGR8QKCQwuht0LX/N4pSG1/t8sarFaujJFckVIDc/DmddtuSmmt+4KBAJpGmVnDcHcD/PeS2lR+s5JEUN0vf2eiSxVlyNXgMc5CfdyLFr+ra6bPS/TiSKgDb7JHjInLxnY=
+	t=1739459228; cv=none; b=bzAwvYEct6p1H7wIbU5q/eonHXaqdi9Lb/BigpQ3TDgSQfceTPVk3Zeq4ktfMun/ASUFMw5JSP4YBoX6SXpTjDUtnUePMuw9cueVYtSvpvjwPLuB3ScHgxnDLmFqv1hi4BsV3EVcV2dpcck5LXzoexffBcTU3OlYh7cIvH5upuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457805; c=relaxed/simple;
-	bh=Nh8M1KTEg6FlM9SEbwh+W4Dsr8EsUG5YAhqZXXitk5o=;
+	s=arc-20240116; t=1739459228; c=relaxed/simple;
+	bh=DnJxvQjzcOuIAOiQzHDRTGve/634MZ3SlMHow8oQFaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOe+6VIam4V15UeYTalqMDw+KsUYn5ek3CEvKSg0tF+WGNVzfizMfd5L0vJNcUwWwDT80mMV9y+W0dfeSBMKQZhMYMN3jvixEa17GekLoidPaNnIpFuCOxXakTDfy6bOkwIm3a7rHg7yS08SzYVK/PbQEnZ5+n4/5VgDUudnq7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcQaZFtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67033C4CED1;
-	Thu, 13 Feb 2025 14:43:24 +0000 (UTC)
+	 MIME-Version; b=SCbcNLXnwFxCsa+MM0OG13wwKJ9vvx48UAnfsluC6bbjLk/YdcimCi4hKYfBZbM7huD/FIlcBRJaUk/yWtb/VHHzxs8L+/1F30A94pYmtCSEDrVXpyoUcqPAeVgmFDRHj0gPMCJJdhxx6NpsgFzbrHzBQcbfvwkCftNKVrxuefw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzTS+Rox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FB9C4CEE4;
+	Thu, 13 Feb 2025 15:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457804;
-	bh=Nh8M1KTEg6FlM9SEbwh+W4Dsr8EsUG5YAhqZXXitk5o=;
+	s=korg; t=1739459228;
+	bh=DnJxvQjzcOuIAOiQzHDRTGve/634MZ3SlMHow8oQFaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcQaZFtAsPa1ewOeNS8JFSWE5aaxrHIXNI8xTckhsLHpqvEifkoL+sLQawIutdjQt
-	 hVd7b+FJajosz1RnZu5eDsY0lRwjupyGe4Bw9sCW5kHpp907rFqkU/DhcbpMG4UlXG
-	 lUS/xJgHxjemndcUgYkuXQ317bK5Dbgi1gMdu4v0=
+	b=lzTS+Rox8FL+pdAT9dcl2y6I32J+r+zHFh/NuyfwYIR11TOaOTBRL1dRfetpvwRWF
+	 9EszyLY25q1o7o1eEzW5RMkL8lrMIIa83a/dnDczNHHrshLZQvUc5eagmbejmmBsZ3
+	 L/3vX1v087ODI+SVCIiVmr+3qWwyctLm7ct1bnks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 217/422] usbnet: ipheth: fix DPE OoB read
-Date: Thu, 13 Feb 2025 15:26:06 +0100
-Message-ID: <20250213142444.911737982@linuxfoundation.org>
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 202/443] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
+Date: Thu, 13 Feb 2025 15:26:07 +0100
+Message-ID: <20250213142448.407306226@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit ee591f2b281721171896117f9946fced31441418 upstream.
+commit 88d9dca36aac9659446be1e569d8fbe3462b5741 upstream.
 
-Fix an out-of-bounds DPE read, limit the number of processed DPEs to
-the amount that fits into the fixed-size NDP16 header.
+Fix cmd_rcgr offset for blsp1_uart6_apps_clk_src on mdm9607 platform.
 
-Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
+Fixes: 48b7253264ea ("clk: qcom: Add MDM9607 GCC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241220095048.248425-1-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ipheth.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-mdm9607.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -246,7 +246,7 @@ static int ipheth_rcvbulk_callback_ncm(s
- 		goto rx_error;
+--- a/drivers/clk/qcom/gcc-mdm9607.c
++++ b/drivers/clk/qcom/gcc-mdm9607.c
+@@ -535,7 +535,7 @@ static struct clk_rcg2 blsp1_uart5_apps_
+ };
  
- 	dpe = ncm0->dpe16;
--	while (true) {
-+	for (int dpe_i = 0; dpe_i < IPHETH_NDP16_MAX_DPE; ++dpe_i, ++dpe) {
- 		dg_idx = le16_to_cpu(dpe->wDatagramIndex);
- 		dg_len = le16_to_cpu(dpe->wDatagramLength);
- 
-@@ -268,8 +268,6 @@ static int ipheth_rcvbulk_callback_ncm(s
- 		retval = ipheth_consume_skb(buf, dg_len, dev);
- 		if (retval != 0)
- 			return retval;
--
--		dpe++;
- 	}
- 
- rx_error:
+ static struct clk_rcg2 blsp1_uart6_apps_clk_src = {
+-	.cmd_rcgr = 0x6044,
++	.cmd_rcgr = 0x7044,
+ 	.mnd_width = 16,
+ 	.hid_width = 5,
+ 	.parent_map = gcc_xo_gpll0_map,
 
 
 
