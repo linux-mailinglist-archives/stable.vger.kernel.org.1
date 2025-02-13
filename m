@@ -1,85 +1,89 @@
-Return-Path: <stable+bounces-116335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A00A3501E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 22:05:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9455CA3502A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 22:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FB287A3ED5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 21:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 470F816BDDF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 21:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91787221720;
-	Thu, 13 Feb 2025 21:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019C8269836;
+	Thu, 13 Feb 2025 21:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="QIy+G1CL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B/5JdAUG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2C526619D
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 21:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB465266B74;
+	Thu, 13 Feb 2025 21:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739480751; cv=none; b=k4wcq5ENeWWA4XSBXkzxdxocLmXmz4HIBJdhzI3eOOAChzvH+9211J4y+3DV0kBcEj4OL85sJ32VjgO2y5aULmkS6qnOo4wpfOfOjcSdEV78FRzImowEf2bP+AyNU+uE3Z3btm4mzxT14vJ/Idf8h/INyKUDh/YShG4rvV6y+Og=
+	t=1739480802; cv=none; b=aabK6U/1+tWbdLhZkTIXLShurzndj3owq22NuVo+lsc1pdvjTL8K5soRb8gNtXZ4d6aOCkzoPspgWY4szb5AxwKktBftzYTO0TacaMlcdbg4+/pIm+iX5KX1WpjVmerYN8nPCvpdHdoU8xDgFuPAbsYGpqXC9YYv4VsyMKl51iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739480751; c=relaxed/simple;
-	bh=Ws6iFJpvHxmaBtwyedb0vWZcE9Hhm9sGOq4GFnkEUnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flaAxAK+hb+18FhwNroGGa/CVyia7ClKilwaRn0j5omh7cRNcjmnVLIRMMtYFk1O4aVfUFq7PuvLLen+W7eghB71AVHYMmf+yigtgXI/p2VMsKOu0eHiEBdRB96u61013FI23dlqgVf3wYTdlRN2XYYT42bSWoc+qdrLUbCkg0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=QIy+G1CL; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4396424d173so10203815e9.0
-        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 13:05:47 -0800 (PST)
+	s=arc-20240116; t=1739480802; c=relaxed/simple;
+	bh=hK2r8d4CW/cwvDuuMbpTukJ/vvFf/JZqXrC75rIGDrs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XdQCd9i8utX4ugpuMh5prMj1rgXn1TH9vr7vd8b880mR+6UiNsJ6meAfb/WjsHAdIiVK3Lt6OYnqYEwcYqvxN71S9x9GjUw8AimT879j8rdysmDpeEo/RhTyDPvBX99xyZpjmgyKH4vAvEkmLcNq4StH1mddJx0YzPUG917oHtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B/5JdAUG; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43967004304so1170285e9.2;
+        Thu, 13 Feb 2025 13:06:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1739480746; x=1740085546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QSqnIy7Es9O1D62Gmw73IwQ1Q2czJE1Ze+P+6EWBU1w=;
-        b=QIy+G1CLM1Sgy3HJ6acIGGEJCenYmaYg/+/gGM+Q/5pmZxmyTdBCmlrx9EqDPDcX5B
-         F+wnsFOJrg5xnXEhzPPZN35omFM0z+hhnPz6O83dmcxQyV2xJn39ZYz6UYIzT/f22GV7
-         gIxbC40ElsZcZ6cfLKU/NPAwdoQSComSeHf9I=
+        d=gmail.com; s=20230601; t=1739480799; x=1740085599; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4SxlfpmEUW0FnLcr8a0midof5G/rcbn5Skbhr1r78A=;
+        b=B/5JdAUGfkj2nE1Qgku47w9uD/qT9GLVN7NwYF9AoTNNUPrbDgIHr3XK6DllhwFP3t
+         77DcwyhpUcdJjA4ojt7mCMXzV+ywmi+/rl9aTHNJebaPBAyuIQvJIN1f6Vm77YfSLw0J
+         nlfyngTcSseOHn5JnC7pCaZ57DoZR5d13xgedE/R6uEEwCCnW8+iQmVhrAABYUItH0BT
+         RirAlJ//dRN9b/vonOwNsjp0eC2976Z5ogXsDE2H5ip7CKsiBKQt20AZm1bX+85LD3WX
+         iMyA8vPewikZha09vypTVsmIq9xi3fh1sYGW/iYwir97iLMr2HNAB6BbeAGKG/VM4w5w
+         Tn9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739480746; x=1740085546;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QSqnIy7Es9O1D62Gmw73IwQ1Q2czJE1Ze+P+6EWBU1w=;
-        b=E1FJGMQoXyAWNwtkE1jQklRtMPJBudJfngJXs99EVDnYDHRG26YdcKOQArinXd8sjl
-         epqQzSVIB9OKLod7k7llT92Q3uDr0ixC+0aV9hKbgJO5Na+4U9wQbEzl8jxiNilVc1Z/
-         1lax1vziIpQ16dwIUW+E1iREwDu5eD5xtLK56zVmfP8BlXxzupiiSnZYdl6dv1sBlZYv
-         Z4MEio+zYi4SjgkRAwjhOrgk8viQeG+UCUfRMMVE0Q5BQ57FNjrwOaMjmT9arsBILqlP
-         Qa9jpkxEUDvYx+rpN8fz0338DggCPKmZAgqvaxoF01dXjPZIUsNAXnjCb8xVyseVt6Mo
-         oIBA==
-X-Gm-Message-State: AOJu0Yxq6RYtUtw05TDqo6yT/9y0ynOESgI5qzrxd6GyA3fX3G48V3tl
-	gQKfMMqCsztYisQzsV10U6LbVOYB0+zAwKWsbFMe3tZPeah5Wq16Yx3Dua7VGjgWQyFbSLy12Uu
-	V
-X-Gm-Gg: ASbGncsDSLBsNj0XOpmnWIDJRL7AqhDBIrO48A49IHwtMbPyznuKF/YvfqyGUJe0viy
-	nxcZOrBof1YGPcv5ZvD9z7FNqKwYXkEFqQTJB8lsftx1elAtRa+JREFN7fr0uQvu3qm/HyzF1Av
-	Yvpvc0ftxHb20bEnh1tXz7ky7CpMNDnOsH8i3L2w0hm5lc5B4t8UCh0jKBIDUJR7F3NCyujmC6D
-	ifoViE+oAEcXGZOuc57Scsh6KV5KFvtbxQFcAt09r1xmFpJZwJGxTLa2UmXdzngd4DkQXvJocpo
-	s0TVC0GK5y9RFWJcYhx9VPKVpxNeUrAndnvKYMDOyUensUuBvt4z6hnN02h8Pj3MaWX2ofUfwef
-	8Ef5QhGO9c+EA
-X-Google-Smtp-Source: AGHT+IHrED963hIbUv64mXHPYSeyt8fivBWdEEgVR0eZs9pABXx4oy2LbcxkfrVxn/UPz9IDciUo+g==
-X-Received: by 2002:a05:600c:458e:b0:434:f4fa:83c4 with SMTP id 5b1f17b1804b1-439601c530amr72115805e9.29.1739480745714;
-        Thu, 13 Feb 2025 13:05:45 -0800 (PST)
-Received: from P-NTS-Evian.home (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439617da90bsm28100335e9.4.2025.02.13.13.05.45
+        d=1e100.net; s=20230601; t=1739480799; x=1740085599;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V4SxlfpmEUW0FnLcr8a0midof5G/rcbn5Skbhr1r78A=;
+        b=FhN14Y9GSlMWlOzrZt2hOhqSYbcv5x6BT4W4u106R2nPRacKlHTLsOVoAq8RF5t51b
+         cR43SxwlDlPEQW+CIjJMT/ORFJtPt8QYcC9rY0OZOgWyEtn4EjIaWlfVZy8OpqpN2nMs
+         /L3hjaUGlN0y1pNlhYA0yDjSoG58HJYYouyZNjcmtHAJKgrVKVYkw+X8Su2GaM0+6FBm
+         tDkek0DO+hkAltJISzeHycUG2p9GGWJ503ekGnndsDQNP7nS75n3Mzhxh0PZhWJOoRgg
+         +JLaF1XSFhhRH5WJzxk6OtVgY4v0J1fP7oMcT/XI0zSvcsHUchX810BcZ3HO5yRYG7bC
+         ytVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCfBtVxYLNiWdvJwsaVPiSbvh6DhXToSaNw5pZ1Fj/i+1zf6C0H/TlNHUqPiuAp/O/J2aPlGZl@vger.kernel.org, AJvYcCV0LzE8KOURAz2mYfsuzKoRYkfetj/l59MKrLzCV4vaQ8J4a9O2vkQx9HDP+XtoTjFrtNseeihfmJp/GVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRNjgl0znenGxfhX4Gl1CNZgEpP7WTWBAI7gYRc0z7yDe0Z4qf
+	8x/VXLcCuFlrKiknvTjYyM7GwIyXPJCw6alBHOqBoeJlqSAKiTUj
+X-Gm-Gg: ASbGncvx0m7k2gUi8nR54yw7DAdyZvwxhRtDDz9NO+/t0zWR/GMIgIx3Ppol9G8ux3g
+	k9lgMb5b+Do17jExqeBtk2ItjURqoV+yLBzeoAJRvFhbozp02fC505vzsZdnr+oDlwOtjiqaAKk
+	1BfDyJ/9hqa2nVeT8VG4DOYKEMBwimph7XIzfHtISm/0eMSnlXPEjcBS8OZv6C0Vi5zmRxZ+ElA
+	ciQhO5gV6L+fqjHWjTtPywQxPH3DuudFXOyNFBbGNZOl6PFub4JpYC2AoONN0lh23aF/fvqzlHB
+	SfaXC4KlOxGQwkvr
+X-Google-Smtp-Source: AGHT+IF7u7hR4wJ9MUECIOlUfhxo/vYJ/M4oO5lTySXwILQOrrh7aVaRI3hMredeSbdzBUL62uyBnw==
+X-Received: by 2002:a05:600c:1d88:b0:439:574c:bf77 with SMTP id 5b1f17b1804b1-439601799b2mr65697825e9.8.1739480798965;
+        Thu, 13 Feb 2025 13:06:38 -0800 (PST)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:594f:c4b7:a2b1:c822])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a04ee48sm59038735e9.3.2025.02.13.13.06.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 13:05:45 -0800 (PST)
-From: Romain Naour <romain.naour@smile.fr>
-To: stable@vger.kernel.org
-Cc: Romain Naour <romain.naour@skf.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.1.y] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
-Date: Thu, 13 Feb 2025 22:05:10 +0100
-Message-ID: <20250213210510.844588-1-romain.naour@smile.fr>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025021032-showgirl-penknife-7098@gregkh>
-References: <2025021032-showgirl-penknife-7098@gregkh>
+        Thu, 13 Feb 2025 13:06:37 -0800 (PST)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: shaggy@kernel.org,
+	zhaomengmeng@kylinos.cn,
+	llfamsec@gmail.com,
+	gregkh@linuxfoundation.org,
+	ancowi69@gmail.com
+Cc: jfs-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] jfs: fix slab-out-of-bounds read in ea_get()
+Date: Thu, 13 Feb 2025 21:05:53 +0000
+Message-Id: <20250213210553.28613-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,57 +92,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Romain Naour <romain.naour@skf.com>
+During the "size_check" label in ea_get(), the code checks if the extended 
+attribute list (xattr) size matches ea_size. If not, it logs 
+"ea_get: invalid extended attribute" and calls print_hex_dump().
 
-commit c1472ec1dc4419d0bae663c1a1e6cb98dc7881ad upstream.
+Here, EALIST_SIZE(ea_buf->xattr) returns 4110417968, which exceeds 
+INT_MAX (2,147,483,647). Then ea_size is clamped:
 
-A bus_dma_limit was added for l3 bus by commit cfb5d65f2595
-("ARM: dts: dra7: Add bus_dma_limit for L3 bus") to fix an issue
-observed only with SATA on DRA7-EVM with 4GB RAM and CONFIG_ARM_LPAE
-enabled.
+	int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
 
-Since kernel 5.13, the SATA issue can be reproduced again following
-the SATA node move from L3 bus to L4_cfg in commit 8af15365a368
-("ARM: dts: Configure interconnect target module for dra7 sata").
+Although clamp_t aims to bound ea_size between 0 and 4110417968, the upper 
+limit is treated as an int, causing an overflow above 2^31 - 1. This leads 
+"size" to wrap around and become negative (-184549328).
 
-Fix it by adding an empty dma-ranges property to l4_cfg and
-segment@100000 nodes (parent device tree node of SATA controller) to
-inherit the 2GB dma ranges limit from l3 bus node.
+The "size" is then passed to print_hex_dump() (called "len" in 
+print_hex_dump()), it is passed as type size_t (an unsigned 
+type), this is then stored inside a variable called 
+"int remaining", which is then assigned to "int linelen" which 
+is then passed to hex_dump_to_buffer(). In print_hex_dump() 
+the for loop, iterates through 0 to len-1, where len is 
+18446744073525002176, calling hex_dump_to_buffer() 
+on each iteration:
 
-Note: A similar fix was applied for PCIe controller by commit
-90d4d3f4ea45 ("ARM: dts: dra7: Fix bus_dma_limit for PCIe").
+	for (i = 0; i < len; i += rowsize) {
+		linelen = min(remaining, rowsize);
+		remaining -= rowsize;
 
-Fixes: 8af15365a368 ("ARM: dts: Configure interconnect target module for dra7 sata").
-Link: https://lore.kernel.org/linux-omap/c583e1bb-f56b-4489-8012-ce742e85f233@smile.fr/
-Cc: stable@vger.kernel.org # 5.13
-Signed-off-by: Romain Naour <romain.naour@skf.com>
-Link: https://lore.kernel.org/r/20241115102537.1330300-1-romain.naour@smile.fr
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
+				   linebuf, sizeof(linebuf), ascii);
+	
+		...
+	}
+	
+The expected stopping condition (i < len) is effectively broken 
+since len is corrupted and very large. This eventually leads to 
+the "ptr+i" being passed to hex_dump_to_buffer() to get closer 
+to the end of the actual bounds of "ptr", eventually an out of 
+bounds access is done in hex_dump_to_buffer() in the following 
+for loop:
+
+	for (j = 0; j < len; j++) {
+			if (linebuflen < lx + 2)
+				goto overflow2;
+			ch = ptr[j];
+		...
+	}
+
+To fix this we should validate "EALIST_SIZE(ea_buf->xattr)" 
+before it is utilised.
+
+Reported-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+Tested-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=4e6e7e4279d046613bc5
+Fixes: d9f9d96136cb ("jfs: xattr: check invalid xattr size more strictly")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
- arch/arm/boot/dts/dra7-l4.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ v2:
+- Added Cc stable tag
 
-diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
-index 5733e3a4ea8e..3fdb79b0e8bf 100644
---- a/arch/arm/boot/dts/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/dra7-l4.dtsi
-@@ -12,6 +12,7 @@ &l4_cfg {						/* 0x4a000000 */
- 	ranges = <0x00000000 0x4a000000 0x100000>,	/* segment 0 */
- 		 <0x00100000 0x4a100000 0x100000>,	/* segment 1 */
- 		 <0x00200000 0x4a200000 0x100000>;	/* segment 2 */
-+	dma-ranges;
+ fs/jfs/xattr.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
+index 24afbae87225..7575c51cce9b 100644
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -559,11 +555,16 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
  
- 	segment@0 {					/* 0x4a000000 */
- 		compatible = "simple-pm-bus";
-@@ -557,6 +558,7 @@ segment@100000 {					/* 0x4a100000 */
- 			 <0x0007e000 0x0017e000 0x001000>,	/* ap 124 */
- 			 <0x00059000 0x00159000 0x001000>,	/* ap 125 */
- 			 <0x0005a000 0x0015a000 0x001000>;	/* ap 126 */
-+		dma-ranges;
- 
- 		target-module@2000 {			/* 0x4a102000, ap 27 3c.0 */
- 			compatible = "ti,sysc";
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
+-		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+-
+-		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+-		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-				     ea_buf->xattr, size, 1);
++		if (unlikely(EALIST_SIZE(ea_buf->xattr) > INT_MAX)) {
++			printk(KERN_ERR "ea_get: extended attribute size too large: %u > INT_MAX\n",
++			       EALIST_SIZE(ea_buf->xattr));
++		} else {
++			int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
++
++			printk(KERN_ERR "ea_get: invalid extended attribute\n");
++			print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
++				       ea_buf->xattr, size, 1);
++		}
+ 		ea_release(inode, ea_buf);
+ 		rc = -EIO;
+ 		goto clean_up;
 -- 
-2.48.1
+2.39.5
 
 
