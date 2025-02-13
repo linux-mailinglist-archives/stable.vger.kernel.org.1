@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23774A3453D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EFEA34333
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EA9E3B0DBD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C9893A4421
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFEB26B080;
-	Thu, 13 Feb 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAEF23A98F;
+	Thu, 13 Feb 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Poe1Ci8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAeQSG+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFA926B0B1;
-	Thu, 13 Feb 2025 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A47281369;
+	Thu, 13 Feb 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459061; cv=none; b=A8sxNM1MUUWGCMjDJzeSm2sFpj5cdRGu4rHb/oUxO08rRlph/8FnoQBLRpbKE0hbcjcOLPfsxpE/KUJnWPaQ43pviyF4WRCM7EAnLLOGEsk/CoXi3+pcNg6gz5P7CtstmIFLHH5GPXljccCunJrteYGa2rCm1reNbrkwsdVRNIc=
+	t=1739457648; cv=none; b=peG0TXCirhtXSH42xQwS0mtFqyzZcWVs0XuOdUswm343r4X1iOWeHX26Fq0GpZBiduBbkVL6L7OTYx38NoQD4y/88Mw7uzpTJ2QGfBpB7lz8VpkTkfbWDiW9UOhDp2OJAhut/oCbYkiwGUZxryTTMLKiX+j9CDzOyzA+o3OhAkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459061; c=relaxed/simple;
-	bh=G0yUaObmzvVE0kRzVVPvP9Ktxg4G+exdCT4T+0DaTnM=;
+	s=arc-20240116; t=1739457648; c=relaxed/simple;
+	bh=zFPfamPXhYPnxvNxryukQM4UemmFejTm+iv/ogVPRvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LzrH45DabY7jINjzd2RS9choXwf2dQ008B8HMxbHtHPDuLNA57awJQl/8JHdRRg2+88A3Mr3AmgT27noKuHwu+M1qTupRWFgGEH/FxvJK8MmdGjhSshSQ3vUTNrkE8Oc5TE2uE7nT5PG63GvwGGMF5GDZBtj02WpgqXaFxAcGps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Poe1Ci8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7EFC4CED1;
-	Thu, 13 Feb 2025 15:04:20 +0000 (UTC)
+	 MIME-Version; b=kaRjy5W57fGcPArv1xc2wXWzU94OYR3xO+1mSQaZw2vf1+fhD6Ctw1/W2U6DVM3SQHb5slS1HlKyAlooh+p8TpjiXe8geVKvWmuzxyCwvb956qalFA+AkaaKqPghVuj8KorEPqe40n/rmVP/aGyhKgM780knVpdqAQ2wn87hTak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAeQSG+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFBBC4CED1;
+	Thu, 13 Feb 2025 14:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459060;
-	bh=G0yUaObmzvVE0kRzVVPvP9Ktxg4G+exdCT4T+0DaTnM=;
+	s=korg; t=1739457648;
+	bh=zFPfamPXhYPnxvNxryukQM4UemmFejTm+iv/ogVPRvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Poe1Ci8jOpLYG6uH0yu7n60CcwAPfXakpQUYuEsRv804Dz/R4K/zOzhXmyNv7csKB
-	 DGSy+V7heOryK2jAoe8DnMU2oYEC+Pwc3kSs4XHtaIg1hTbs9pVLsYA1duW7Ld6C4e
-	 swk8GdyUmyYMnjkZI4Oe9DNtPOIMGZlvx5K6NSco=
+	b=mAeQSG+SZDOtgZF0mufnAbKeBZJhHElf4JLAXi1iCy/Zkoxbwkd0aKBkDYwYlNR1V
+	 OSwTWR58itjoDt0KR5ktXxn5+JryhTk9qOnbHw+mu3aeZBroS/YJOm41UpaeR0lZNU
+	 khRRszQgMon5oq82WY8kDccvv4uIt3ZlP3IY6Mv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.13 156/443] block: mark GFP_NOIO around sysfs ->store()
-Date: Thu, 13 Feb 2025 15:25:21 +0100
-Message-ID: <20250213142446.616474691@linuxfoundation.org>
+	Cody Eksal <masterr3c0rd@epochal.quest>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>
+Subject: [PATCH 6.12 173/422] clk: sunxi-ng: a100: enable MMC clock reparenting
+Date: Thu, 13 Feb 2025 15:25:22 +0100
+Message-ID: <20250213142443.220656957@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <tom.leiming@gmail.com>
+From: Cody Eksal <masterr3c0rd@epochal.quest>
 
-commit 7c0be4ead1f8f5f8be0803f347de0de81e3b8e1c upstream.
+commit 16414720045de30945b8d14b7907e0cbf81a4b49 upstream.
 
-sysfs ->store is called with queue freezed, meantime we have several
-->store() callbacks(update_nr_requests, wbt, scheduler) to allocate
-memory with GFP_KERNEL which may run into direct reclaim code path,
-then potential deadlock can be caused.
+While testing the MMC nodes proposed in [1], it was noted that mmc0/1
+would fail to initialize, with "mmc: fatal err update clk timeout" in
+the kernel logs. A closer look at the clock definitions showed that the MMC
+MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
+adding this flag in the first place, and its original purpose is unknown,
+but it doesn't seem to make sense and results in severe limitations to MMC
+speeds. Thus, remove this flag from the 3 MMC MPs.
 
-Fix the issue by marking NOIO around sysfs ->store()
+[1] https://msgid.link/20241024170540.2721307-10-masterr3c0rd@epochal.quest
 
-Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: fb038ce4db55 ("clk: sunxi-ng: add support for the Allwinner A100 CCU")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20250113015833.698458-1-ming.lei@redhat.com
-Link: https://lore.kernel.org/linux-block/Z4RkemI9f6N5zoEF@fedora/T/#mc774c65eeca5c024d29695f9ac6152b87763f305
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Cody Eksal <masterr3c0rd@epochal.quest>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://patch.msgid.link/20241109003739.3440904-1-masterr3c0rd@epochal.quest
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-sysfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/sunxi-ng/ccu-sun50i-a100.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -681,6 +681,7 @@ queue_attr_store(struct kobject *kobj, s
- 	struct queue_sysfs_entry *entry = to_queue(attr);
- 	struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
- 	struct request_queue *q = disk->queue;
-+	unsigned int noio_flag;
- 	ssize_t res;
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
+@@ -436,7 +436,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
- 	if (!entry->store_limit && !entry->store)
-@@ -711,7 +712,9 @@ queue_attr_store(struct kobject *kobj, s
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
+ 					  0, 4,		/* M */
+@@ -444,7 +444,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
- 	mutex_lock(&q->sysfs_lock);
- 	blk_mq_freeze_queue(q);
-+	noio_flag = memalloc_noio_save();
- 	res = entry->store(disk, page, length);
-+	memalloc_noio_restore(noio_flag);
- 	blk_mq_unfreeze_queue(q);
- 	mutex_unlock(&q->sysfs_lock);
- 	return res;
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
+ 					  0, 4,		/* M */
+@@ -452,7 +452,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
+ 
+ static SUNXI_CCU_GATE(bus_mmc0_clk, "bus-mmc0", "ahb3", 0x84c, BIT(0), 0);
+ static SUNXI_CCU_GATE(bus_mmc1_clk, "bus-mmc1", "ahb3", 0x84c, BIT(1), 0);
 
 
 
