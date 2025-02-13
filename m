@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5E8A3437D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E34E7A3455D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD093AEE0B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:45:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F161A3B16BE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226BC245027;
-	Thu, 13 Feb 2025 14:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A28155759;
+	Thu, 13 Feb 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAOLNshZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b58YwhSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ADE245022;
-	Thu, 13 Feb 2025 14:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BC73D97A;
+	Thu, 13 Feb 2025 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457862; cv=none; b=PpX4oq46HKnFP61BeUEHpU9Y6Rt8QqzhMJgYa3/NGob7CxdipwtFEXtDWFx8Idfz6qPGbTtriQDaJWRHkQVPH1pFsXuadOOkK8LtzmVZO9dMcuv6f8fyE5DQtYOCc3IGgH8ZAARUsmU6kUbXHVle8eF3EnCVyL/k59KuEq0Vy1E=
+	t=1739459158; cv=none; b=q4Y/BR28IMBmLy1ITwHSS19z0IyaqJToAi2GzWD90+KbdLuYt0ZiSDHWwoKkhyzAkMezOPr0aj9l65P5RxhyOrOIPkvJEppUJlaF+h6dyE6d50yAEnTPZCC+FcHHZf4CbLCBW+AwRYIUT2uIcP27BvCRDqkgH02EczkLT6bG3dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457862; c=relaxed/simple;
-	bh=lKxnZaKD0Z710uAW4v5Bpk2EO5DcCr0F5DIkCDpHsF8=;
+	s=arc-20240116; t=1739459158; c=relaxed/simple;
+	bh=OLACWyPcqCA0LKc0Wx98HVIJNzzufYK83iwdMUV5OCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHILBqxQPSt2dTKj4fLiMiibiKHzZ/PkqAqvv8LrezILokSSnclFudAlkk1JbAJCuoFniNn4brs81BbaOE0ASyx2GDUABOmcJHW2JwAv+0ZT69DCZG49es+6g912zAMS2zXGy36DG6xhwJqSEd0bkB+0kFgrvY5w4L4b6YjkzVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAOLNshZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43216C4CEE4;
-	Thu, 13 Feb 2025 14:44:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V54XVAuE4x2h7kNIm4SW/DzGGtDmopDrdbMVq+WUlwSTIR3i4/mpmz7D0iZiSqIz3I++5erqpD01aRDBqlDXcrNZrsXBoirqZx/BtE98mXGqzKL400ZiYmpqGH4SbsUY1OCW2Plh3VWV7RZCr4iyLkHdz8usMhjrJdeZjLAioYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b58YwhSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394B6C4CEE4;
+	Thu, 13 Feb 2025 15:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457862;
-	bh=lKxnZaKD0Z710uAW4v5Bpk2EO5DcCr0F5DIkCDpHsF8=;
+	s=korg; t=1739459158;
+	bh=OLACWyPcqCA0LKc0Wx98HVIJNzzufYK83iwdMUV5OCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAOLNshZl4GtJCGIhO3pyC71Znc4xhdHeUeVw92fbRZ1WAHcRKkVpEZiSd1+DRmnG
-	 R31+MKMsNSUL9+7Mj/0xjCeVgtWVFLXyArawMJKBkYVj9EccVsx9mndZ8HqkG81OR2
-	 qnPJ1iuwynw4cd01WYhg4l72A+dRfKOINWSxrva0=
+	b=b58YwhSiDN+W+rC4o+kh3oYNzS9ev/PAB5cJN0rACy9hP7zkAuI+m0byqwxEJ2c2I
+	 5ODHWNpbZIVbI2+4xAlYxv/wL+oN3DZxAwTsFY/u6V8Ab34g5Xnm34vMnIV5bPMZ5i
+	 Lp2tL6Bu34mXpGO49ZGdvSREf7Bqykd9Q+PzsyZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 202/422] wifi: rtlwifi: rtl8821ae: Fix media status report
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 186/443] drm/amdgpu: add a BO metadata flag to disable write compression for Vulkan
 Date: Thu, 13 Feb 2025 15:25:51 +0100
-Message-ID: <20250213142444.338979820@linuxfoundation.org>
+Message-ID: <20250213142447.792238462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +59,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Marek Olšák <marek.olsak@amd.com>
 
-commit 66ef0289ac99e155d206ddaa0fdfad09ae3cd007 upstream.
+commit 2255b40cacc2e5ef1b127770fc1808c60de4a2fc upstream.
 
-RTL8821AE is stuck transmitting at the lowest rate allowed by the rate
-mask. This is because the firmware doesn't know the device is connected
-to a network.
+Vulkan can't support DCC and Z/S compression on GFX12 without
+WRITE_COMPRESS_DISABLE in this commit or a completely different DCC
+interface.
 
-Fix the macros SET_H2CCMD_MSRRPT_PARM_OPMODE and
-SET_H2CCMD_MSRRPT_PARM_MACID_IND to work on the first byte of __cmd,
-not the second. Now the firmware is correctly notified when the device
-is connected to a network and it activates the rate control.
+AMDGPU_TILING_GFX12_SCANOUT is added because it's already used by userspace.
 
-Before (MCS3):
-
-[  5]   0.00-1.00   sec  12.5 MBytes   105 Mbits/sec    0    339 KBytes
-[  5]   1.00-2.00   sec  10.6 MBytes  89.1 Mbits/sec    0    339 KBytes
-[  5]   2.00-3.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   3.00-4.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   4.00-5.00   sec  10.2 MBytes  86.0 Mbits/sec    0    427 KBytes
-
-After (MCS9):
-
-[  5]   0.00-1.00   sec  33.9 MBytes   284 Mbits/sec    0    771 KBytes
-[  5]   1.00-2.00   sec  31.6 MBytes   265 Mbits/sec    0    865 KBytes
-[  5]   2.00-3.00   sec  29.9 MBytes   251 Mbits/sec    0    963 KBytes
-[  5]   3.00-4.00   sec  28.2 MBytes   237 Mbits/sec    0    963 KBytes
-[  5]   4.00-5.00   sec  26.8 MBytes   224 Mbits/sec    0    963 KBytes
-
-Fixes: 39f40710d0b5 ("rtlwifi: rtl88821ae: Remove usage of private bit manipulation macros")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/754785b3-8a78-4554-b80d-de5f603b410b@gmail.com
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Marek Olšák <marek.olsak@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    8 ++++++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h |    2 ++
+ drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c  |    5 +++--
+ include/uapi/drm/amdgpu_drm.h           |    9 ++++++++-
+ 5 files changed, 21 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-@@ -197,9 +197,9 @@ enum rtl8821a_h2c_cmd {
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -119,9 +119,10 @@
+  * - 3.57.0 - Compute tunneling on GFX10+
+  * - 3.58.0 - Add GFX12 DCC support
+  * - 3.59.0 - Cleared VRAM
++ * - 3.60.0 - Add AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE (Vulkan requirement)
+  */
+ #define KMS_DRIVER_MAJOR	3
+-#define KMS_DRIVER_MINOR	59
++#define KMS_DRIVER_MINOR	60
+ #define KMS_DRIVER_PATCHLEVEL	0
  
- /* _MEDIA_STATUS_RPT_PARM_CMD1 */
- #define SET_H2CCMD_MSRRPT_PARM_OPMODE(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(0))
-+	u8p_replace_bits(__cmd, __value, BIT(0))
- #define SET_H2CCMD_MSRRPT_PARM_MACID_IND(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(1))
-+	u8p_replace_bits(__cmd, __value, BIT(1))
+ /*
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -309,7 +309,7 @@ int amdgpu_ttm_copy_mem_to_mem(struct am
+ 	mutex_lock(&adev->mman.gtt_window_lock);
+ 	while (src_mm.remaining) {
+ 		uint64_t from, to, cur_size, tiling_flags;
+-		uint32_t num_type, data_format, max_com;
++		uint32_t num_type, data_format, max_com, write_compress_disable;
+ 		struct dma_fence *next;
  
- /* AP_OFFLOAD */
- #define SET_H2CCMD_AP_OFFLOAD_ON(__cmd, __value)	\
+ 		/* Never copy more than 256MiB at once to avoid a timeout */
+@@ -340,9 +340,13 @@ int amdgpu_ttm_copy_mem_to_mem(struct am
+ 			max_com = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_MAX_COMPRESSED_BLOCK);
+ 			num_type = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_NUMBER_TYPE);
+ 			data_format = AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_DATA_FORMAT);
++			write_compress_disable =
++				AMDGPU_TILING_GET(tiling_flags, GFX12_DCC_WRITE_COMPRESS_DISABLE);
+ 			copy_flags |= (AMDGPU_COPY_FLAGS_SET(MAX_COMPRESSED, max_com) |
+ 				       AMDGPU_COPY_FLAGS_SET(NUMBER_TYPE, num_type) |
+-				       AMDGPU_COPY_FLAGS_SET(DATA_FORMAT, data_format));
++				       AMDGPU_COPY_FLAGS_SET(DATA_FORMAT, data_format) |
++				       AMDGPU_COPY_FLAGS_SET(WRITE_COMPRESS_DISABLE,
++							     write_compress_disable));
+ 		}
+ 
+ 		r = amdgpu_copy_buffer(ring, from, to, cur_size, resv,
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -119,6 +119,8 @@ struct amdgpu_copy_mem {
+ #define AMDGPU_COPY_FLAGS_NUMBER_TYPE_MASK		0x07
+ #define AMDGPU_COPY_FLAGS_DATA_FORMAT_SHIFT		8
+ #define AMDGPU_COPY_FLAGS_DATA_FORMAT_MASK		0x3f
++#define AMDGPU_COPY_FLAGS_WRITE_COMPRESS_DISABLE_SHIFT	14
++#define AMDGPU_COPY_FLAGS_WRITE_COMPRESS_DISABLE_MASK	0x1
+ 
+ #define AMDGPU_COPY_FLAGS_SET(field, value) \
+ 	(((__u32)(value) & AMDGPU_COPY_FLAGS_##field##_MASK) << AMDGPU_COPY_FLAGS_##field##_SHIFT)
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
+@@ -1684,11 +1684,12 @@ static void sdma_v7_0_emit_copy_buffer(s
+ 				       uint32_t byte_count,
+ 				       uint32_t copy_flags)
+ {
+-	uint32_t num_type, data_format, max_com;
++	uint32_t num_type, data_format, max_com, write_cm;
+ 
+ 	max_com = AMDGPU_COPY_FLAGS_GET(copy_flags, MAX_COMPRESSED);
+ 	data_format = AMDGPU_COPY_FLAGS_GET(copy_flags, DATA_FORMAT);
+ 	num_type = AMDGPU_COPY_FLAGS_GET(copy_flags, NUMBER_TYPE);
++	write_cm = AMDGPU_COPY_FLAGS_GET(copy_flags, WRITE_COMPRESS_DISABLE) ? 2 : 1;
+ 
+ 	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_COPY) |
+ 		SDMA_PKT_COPY_LINEAR_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR) |
+@@ -1705,7 +1706,7 @@ static void sdma_v7_0_emit_copy_buffer(s
+ 	if ((copy_flags & (AMDGPU_COPY_FLAGS_READ_DECOMPRESSED | AMDGPU_COPY_FLAGS_WRITE_COMPRESSED)))
+ 		ib->ptr[ib->length_dw++] = SDMA_DCC_DATA_FORMAT(data_format) | SDMA_DCC_NUM_TYPE(num_type) |
+ 			((copy_flags & AMDGPU_COPY_FLAGS_READ_DECOMPRESSED) ? SDMA_DCC_READ_CM(2) : 0) |
+-			((copy_flags & AMDGPU_COPY_FLAGS_WRITE_COMPRESSED) ? SDMA_DCC_WRITE_CM(1) : 0) |
++			((copy_flags & AMDGPU_COPY_FLAGS_WRITE_COMPRESSED) ? SDMA_DCC_WRITE_CM(write_cm) : 0) |
+ 			SDMA_DCC_MAX_COM(max_com) | SDMA_DCC_MAX_UCOM(1);
+ 	else
+ 		ib->ptr[ib->length_dw++] = 0;
+--- a/include/uapi/drm/amdgpu_drm.h
++++ b/include/uapi/drm/amdgpu_drm.h
+@@ -411,13 +411,20 @@ struct drm_amdgpu_gem_userptr {
+ /* GFX12 and later: */
+ #define AMDGPU_TILING_GFX12_SWIZZLE_MODE_SHIFT			0
+ #define AMDGPU_TILING_GFX12_SWIZZLE_MODE_MASK			0x7
+-/* These are DCC recompression setting for memory management: */
++/* These are DCC recompression settings for memory management: */
+ #define AMDGPU_TILING_GFX12_DCC_MAX_COMPRESSED_BLOCK_SHIFT	3
+ #define AMDGPU_TILING_GFX12_DCC_MAX_COMPRESSED_BLOCK_MASK	0x3 /* 0:64B, 1:128B, 2:256B */
+ #define AMDGPU_TILING_GFX12_DCC_NUMBER_TYPE_SHIFT		5
+ #define AMDGPU_TILING_GFX12_DCC_NUMBER_TYPE_MASK		0x7 /* CB_COLOR0_INFO.NUMBER_TYPE */
+ #define AMDGPU_TILING_GFX12_DCC_DATA_FORMAT_SHIFT		8
+ #define AMDGPU_TILING_GFX12_DCC_DATA_FORMAT_MASK		0x3f /* [0:4]:CB_COLOR0_INFO.FORMAT, [5]:MM */
++/* When clearing the buffer or moving it from VRAM to GTT, don't compress and set DCC metadata
++ * to uncompressed. Set when parts of an allocation bypass DCC and read raw data. */
++#define AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE_SHIFT	14
++#define AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE_MASK	0x1
++/* bit gap */
++#define AMDGPU_TILING_GFX12_SCANOUT_SHIFT			63
++#define AMDGPU_TILING_GFX12_SCANOUT_MASK			0x1
+ 
+ /* Set/Get helpers for tiling flags. */
+ #define AMDGPU_TILING_SET(field, value) \
 
 
 
