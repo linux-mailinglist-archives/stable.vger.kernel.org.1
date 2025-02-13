@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CB8A346FA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E69A345AA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C1C16EBD2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E8E116C4AF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1EC15E5D4;
-	Thu, 13 Feb 2025 15:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278C526B0A5;
+	Thu, 13 Feb 2025 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5TMRcSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVWtigYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21A3FB3B;
-	Thu, 13 Feb 2025 15:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81EB26B094;
+	Thu, 13 Feb 2025 15:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460236; cv=none; b=d3p4mmY1DHtRefJVutBJWd4JqdnompL+Wypz6uSr12jLtbu+Dj7N+qavkbjsC6CX7i8CCIKWdYIKTh5zLI67bATg9bO8DueA+bl4J4jNRBWSTH3YNy8XwU/P47NAv+BZ9o3UBKqNlbhMQEmnbK5d9UgsvVfTVdgvDnh+YhzygRo=
+	t=1739459427; cv=none; b=WpyLmgSQTRmm6Cyly89Mz1CTPNH0i1NAVikgj4HLMFS1XjhTildHUuQeXs5y61DgOMcmT2mdc+HABxrZSIMKah58ZBy74cwNoqJUAJ+tuU4kTntdwOrq2LEwWunLTZYFye54G68vnPd6P1MHTl35v55pxsvgYV2anGE8xv5R5Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460236; c=relaxed/simple;
-	bh=VhfVkOhwxtVUP16oMP+PBv4yjQWmd9LeCiHn06l/MkA=;
+	s=arc-20240116; t=1739459427; c=relaxed/simple;
+	bh=yULXNnE2H5L3o3iF5e6QnaUA7kRwz7wxejOcHM6+ujc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSb0mkei6NcPffOp89IHjmWnnifK+Lt30i9bGapWeyVm3QH7i2K13rso89rpbecE815UAKztWuA/13RnZzxw/VeA1IjTQWwE0rewc8F1p1RTG65r12F57VBsMlEL6o5kit6wcq9TpKvmG2OoaHrH8YN+G6CQZrppnexIFFAKPNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5TMRcSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22733C4CED1;
-	Thu, 13 Feb 2025 15:23:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IIThmrscYo9EODaTCnNt9kRsKIjAj5aR6OjrHr5ZYDBIObN6wj8hXeoB+ZCVKx3fR53yz+W5T3jrlpOSKoWTjFcgeIFuxnJAsVSHgoLH7oeHtRGaSfWy6f5C382z4gdPs+SbU81IX45jz0vSamOrfazjWkLUBpcSuetPEEpp+2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVWtigYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9E6C4CEE4;
+	Thu, 13 Feb 2025 15:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460236;
-	bh=VhfVkOhwxtVUP16oMP+PBv4yjQWmd9LeCiHn06l/MkA=;
+	s=korg; t=1739459427;
+	bh=yULXNnE2H5L3o3iF5e6QnaUA7kRwz7wxejOcHM6+ujc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5TMRcSF0TL2thr/PR/qfAsiqk5Hiob+MVSAWM7TyX4Cd28W6NTQ01IwA2E0IEidv
-	 Xvw8z/McaWz9CkQ3y7rZrxWSDeBLLxgjVqSkSTK8OIjGfDVvsrGOI5/VSkCVvGjdDI
-	 QbpO2PUi1/Z+FylSSGW1CeemevuPKPXeXWt6t/H4=
+	b=DVWtigYYB1O8qVPENOXZJGQJ0T/68GUs6R3WOqGRsoj6JDtVH8QP0yrfeuCH5122o
+	 FmiCNiBwVjidoX3guE0hEauIBtxg3vv6huhn/V2LV4Z3miv4B8ot0e1KDvf8aeV4RI
+	 7vJnOnkZ63E+jVy/J2tZ1XQAPHD335HMnY9R+tpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/273] KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.13 261/443] MIPS: pci-legacy: Override pci_address_to_pio
 Date: Thu, 13 Feb 2025 15:27:06 +0100
-Message-ID: <20250213142409.487218669@linuxfoundation.org>
+Message-ID: <20250213142450.688540081@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit c9be85dabb376299504e0d391d15662c0edf8273 ]
+commit df1b8d6e89db0edd572a1e375f5d3dd5575b9a9b upstream.
 
-Mark the underlying page as dirty in kvmppc_e500_ref_setup()'s sole
-caller, kvmppc_e500_shadow_map(), which will allow converting e500 to
-__kvm_faultin_pfn() + kvm_release_faultin_page() without having to do
-a weird dance between ref_setup() and shadow_map().
+pci-legacy systems are not using logic_pio to managed PIO
+allocations, thus the generic pci_address_to_pio won't work
+when PCI_IOBASE is defined.
 
-Opportunistically drop the redundant kvm_set_pfn_accessed(), as
-shadow_map() puts the page via kvm_release_pfn_clean().
+Override the function to use architecture implementation to
+fix the problem.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20241010182427.1434605-53-seanjc@google.com>
-Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4bfb53e7d317 ("mips: add <asm-generic/io.h> including")
+Reported-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Closes: https://lore.kernel.org/r/99f75c66-4c2d-45dc-a808-b5ba440c7551@app.fastmail.com/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_mmu_host.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/mips/pci/pci-legacy.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index ccb8f16ffe412..79c6359b18ae3 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struct kvm_book3e_206_tlb_entry *tlbe)
- 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
- }
+--- a/arch/mips/pci/pci-legacy.c
++++ b/arch/mips/pci/pci-legacy.c
+@@ -29,6 +29,14 @@ static LIST_HEAD(controllers);
  
--static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
-+static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 					 struct kvm_book3e_206_tlb_entry *gtlbe,
- 					 kvm_pfn_t pfn, unsigned int wimg)
- {
-@@ -252,11 +252,7 @@ static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 	/* Use guest supplied MAS2_G and MAS2_E */
- 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
+ static int pci_initialized;
  
--	/* Mark the page accessed */
--	kvm_set_pfn_accessed(pfn);
--
--	if (tlbe_is_writable(gtlbe))
--		kvm_set_pfn_dirty(pfn);
-+	return tlbe_is_writable(gtlbe);
- }
- 
- static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
-@@ -337,6 +333,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 	unsigned int wimg = 0;
- 	pgd_t *pgdir;
- 	unsigned long flags;
-+	bool writable = false;
- 
- 	/* used to check for invalidations in progress */
- 	mmu_seq = kvm->mmu_invalidate_seq;
-@@ -490,7 +487,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 			goto out;
- 		}
- 	}
--	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	if (writable)
-+		kvm_set_pfn_dirty(pfn);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
--- 
-2.39.5
-
++unsigned long pci_address_to_pio(phys_addr_t address)
++{
++	if (address > IO_SPACE_LIMIT)
++		return (unsigned long)-1;
++
++	return (unsigned long) address;
++}
++
+ /*
+  * We need to avoid collisions with `mirrored' VGA ports
+  * and other strange ISA hardware, so we always want the
 
 
 
