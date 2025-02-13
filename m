@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88068A343E2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA77CA34617
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD37716D239
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A537E3A48AC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6F826B09E;
-	Thu, 13 Feb 2025 14:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC3426B0A4;
+	Thu, 13 Feb 2025 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qouYsZWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VueNc80r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7739C26B084;
-	Thu, 13 Feb 2025 14:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B38426B098;
+	Thu, 13 Feb 2025 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458133; cv=none; b=EUovw9/gclRA8ilMWVKD+EOdDq3YTR1HxzYskfcrEkKBtQgeRcaElT9a61Wx3xGiQAxu0MFu4ugWGgJ2J7ZGWL1nKzNOvEvC0JkQWgtJJieAWbY5LH1plH2pa1Hlgn097nCRgGkxjuQkeM5XXeRKgzFRmrIbBYHW9Up5siUKhk4=
+	t=1739459545; cv=none; b=X9Q+e4paz0Au0TNoUkqQ2zZUNDqlydrWukbTZCv2uHeu45xTeC85bHHCrut6p2+E+qFdRGPXeN1WHYGX8OV/lK9N3WrN06fEn/DYIWQosIAe5cwSSGm6ybnUBteHUw5ld00fUZ8T+Cev3Rwo+B3Uud9bBXNyE197nAnOTAVF0WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458133; c=relaxed/simple;
-	bh=buXbbmVlgxd4QICiqPCuc2APEuppY/F8YT8T5xycZ30=;
+	s=arc-20240116; t=1739459545; c=relaxed/simple;
+	bh=GcW8Za9VZlLTjecky1SXN8JwNgmsaPoyrQ3hqn2dd58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2Hrg6eHu//SCC9XmkpZ65w39SH5d2M+8pEpsJKPNNhPj5SlRDy1tKTrWv8bcmPoYhakc2hH8MkQNp0bkQzq1wY9dp6fQEg1F6eahXiOhf1pk+1belShK60t8lwKdjn7vFJOkMdq0uqseQY8C0Bm7VuOkS7jvOAPbHsBDd4Gs5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qouYsZWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA94C4CED1;
-	Thu, 13 Feb 2025 14:48:52 +0000 (UTC)
+	 MIME-Version; b=sDdc3nMCE+WIddG4y2Pr854VNs6RiYUYeRPZo/7JCYIlsiAGlhC8lue+kPLAa5Gqa1F79OfKdaurA9mVCuCXkQ0I04AButCVHasQxoCTHds2t+gWPLpSzLZi7rqnLS2KNlAppVIYuW0WTaI5ZxJJ7VfcEnMntOp1C2qQBjTMp14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VueNc80r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808C4C4CED1;
+	Thu, 13 Feb 2025 15:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458132;
-	bh=buXbbmVlgxd4QICiqPCuc2APEuppY/F8YT8T5xycZ30=;
+	s=korg; t=1739459545;
+	bh=GcW8Za9VZlLTjecky1SXN8JwNgmsaPoyrQ3hqn2dd58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qouYsZWsrhnPwbwngUkQi7Et6Mi6/s8huIt6wosNGNej9bZ6huEpE3WNImgVy5AlR
-	 LW+BTNx3iUONC2dY2AJC6Cq7Ckegj+PvSW1hD2nZyjQqw/DsJvJDcUEIEpGjKDT1cy
-	 EtZbbBoI8gKZMSWTxAvpOrdg5FuO0bo8ngtTFJMo=
+	b=VueNc80r0mNIZIOqxdcykZJbe6eHbYGWpz7sDSRZGlCBoGaxPiPkkDkpH9hH5UndL
+	 LwqnU1uupLo44T+GZQoNfel4aTUqe0CaJzDOafO4JOOZEhANOcsHQEfXR9zZ4zDzi2
+	 og96+cXiwA4YWyeAIYr+YbcnDOSvGxUu0el0VDPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 312/422] iio: light: as73211: fix channel handling in only-color triggered buffer
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Fei Shao <fshao@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.13 296/443] arm64: dts: mediatek: mt8183: Disable DPI display output by default
 Date: Thu, 13 Feb 2025 15:27:41 +0100
-Message-ID: <20250213142448.585077106@linuxfoundation.org>
+Message-ID: <20250213142452.037518550@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit ab09c6cfe01b317f515bcd944668697241a54b9d upstream.
+commit 93a680af46436780fd64f4e856a4cfa8b393be6e upstream.
 
-The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-set (optimized path for color channel readings), and it must be shifted
-instead of leaving an empty channel for the temperature when it is off.
+This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
 
-Once the channel index is fixed, the uninitialized channel must be set
-to zero to avoid pushing uninitialized data.
+Most SoC dtsi files have the display output interfaces disabled by
+default, and only enabled on boards that utilize them. The MT8183
+has it backwards: the display outputs are left enabled by default,
+and only disabled at the board level.
 
-Add available_scan_masks for all channels and only-color channels to let
-the IIO core demux and repack the enabled channels.
+Reverse the situation for the DPI output so that it follows the
+normal scheme. For ease of backporting the DSI output is handled
+in a separate patch.
 
+Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
+Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI display interface")
 Cc: stable@vger.kernel.org
-Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-Tested-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20241025075630.3917458-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/as73211.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    5 -----
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi       |    1 +
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -177,6 +177,12 @@ struct as73211_data {
- 	BIT(AS73211_SCAN_INDEX_TEMP) | \
- 	AS73211_SCAN_MASK_COLOR)
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -269,11 +269,6 @@
+ 	};
+ };
  
-+static const unsigned long as73211_scan_masks[] = {
-+	AS73211_SCAN_MASK_COLOR,
-+	AS73211_SCAN_MASK_ALL,
-+	0
-+};
-+
- static const struct iio_chan_spec as73211_channels[] = {
- 	{
- 		.type = IIO_TEMP,
-@@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handl
+-&dpi0 {
+-	/* TODO Re-enable after DP to Type-C port muxing can be described */
+-	status = "disabled";
+-};
+-
+ &gic {
+ 	mediatek,broken-save-restore-fw;
+ };
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1846,6 +1846,7 @@
+ 				 <&mmsys CLK_MM_DPI_MM>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL>;
+ 			clock-names = "pixel", "engine", "pll";
++			status = "disabled";
  
- 		/* AS73211 starts reading at address 2 */
- 		ret = i2c_master_recv(data->client,
--				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-+				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
- 		if (ret < 0)
- 			goto done;
-+
-+		/* Avoid pushing uninitialized data */
-+		scan.chan[3] = 0;
- 	}
- 
- 	if (data_result) {
-@@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handl
- 		 * Saturate all channels (in case of overflows). Temperature channel
- 		 * is not affected by overflows.
- 		 */
--		scan.chan[1] = cpu_to_le16(U16_MAX);
--		scan.chan[2] = cpu_to_le16(U16_MAX);
--		scan.chan[3] = cpu_to_le16(U16_MAX);
-+		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+			scan.chan[3] = cpu_to_le16(U16_MAX);
-+		} else {
-+			scan.chan[0] = cpu_to_le16(U16_MAX);
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+		}
- 	}
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-@@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_clie
- 	indio_dev->channels = data->spec_dev->channels;
- 	indio_dev->num_channels = data->spec_dev->num_channels;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = as73211_scan_masks;
- 
- 	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
- 	if (ret < 0)
+ 			port {
+ 				dpi_out: endpoint { };
 
 
 
