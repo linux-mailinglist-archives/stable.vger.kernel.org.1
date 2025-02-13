@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D782A34840
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4BBA3462D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93AA93B1958
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8102416E137
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DCF156F3C;
-	Thu, 13 Feb 2025 15:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882D35961;
+	Thu, 13 Feb 2025 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayALFfUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qut6WvT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B3C70805;
-	Thu, 13 Feb 2025 15:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754D526B0BF;
+	Thu, 13 Feb 2025 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460623; cv=none; b=p/UMN3x2NshIYUVBhvFrSFe1/tpGexONiSdCwg+fdK/BgkIW19V/iZD/143jGjZNTOOXku9gZZX/LoMLT27Qzf6mvzvCJrdE7vs9OKBTRzXpw3vLjg4Zh8q4TZIBjHzxU4jSVfsJ6AdSVQgjeIAdHv94b32WwOKrbiXZirSABaQ=
+	t=1739459821; cv=none; b=VbCagyBTaCCc6Ga+EN5+lhQOqZlhB0PcLM+gzHuqGDC2uE1g5HdV9JDnHVXLE3H3dx9XT9sBQkgL6ZSdrfmNC9XRHfcqd5PAf4jE1KyP2Kgb1vR+42WgkLwbOXgNqDkx9yvCmNBG7zITpqQgTVG6Hqz6/+XKK5fM1F7IcL+JJXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460623; c=relaxed/simple;
-	bh=dUHuv0oMt0oDVZN3tzlUmkWjz71irm425O+ZTF5DjPg=;
+	s=arc-20240116; t=1739459821; c=relaxed/simple;
+	bh=oZTOhPGTWxze1aDunnvw+E89G1af/3e5EEGMWfEUwtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjyqY/BSCf3r/CyQXSkkNSn0BvmeOKsY75ZHBTWY2R7lzDiEOEWlb+SkqJzNal/j7MX7YzjD47JOU15ubDeCHXe/cZVaBmstJ81cxh6h3yl5q1nrQcgotjI57VVPz07qBkF2d95yTIPCxmdeNp1/C1ncORZfR34j9k11h8ORhm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayALFfUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A54C4CED1;
-	Thu, 13 Feb 2025 15:30:22 +0000 (UTC)
+	 MIME-Version; b=ITRY3BPWChExdXHLkRIa+dkOVywkm+gs3I/S7eOt8FRRkCaa58qNBbw/glkfcxE1N2xuQpnjlL+0lS1gIg+gUGgG2lFkrBHbLcerO2VG94usEutFPkfNV7Ho4gOvQM9QKs0c8F/Fd0gFZ3fgud45wDftgtb1I3xiscbILrkH5TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qut6WvT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792F8C4CED1;
+	Thu, 13 Feb 2025 15:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460622;
-	bh=dUHuv0oMt0oDVZN3tzlUmkWjz71irm425O+ZTF5DjPg=;
+	s=korg; t=1739459821;
+	bh=oZTOhPGTWxze1aDunnvw+E89G1af/3e5EEGMWfEUwtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayALFfUZOulcTF1QofSYJ0I85oQGwcG4yzuCjPjZi0qUHBTfb6jeqRZvaBK3Fk/jC
-	 M5I512VxN+cu1fUmmLD6yWI31Fg8HicFK1NWDrlqRMNVLLiJD82/Be3WulW2uJorBn
-	 CjfXvrasYTjw0kf09pnS2+JuAPQNEK7PjDq95CeM=
+	b=Qut6WvT/f/58G3Hq1aezZF4hj0CxzImBoNjvm3DfEk8PTg1ZlEzhmPsDvyJMFSmk0
+	 Q73h9bDXQPzV3WKmBTF9I5yRuSvD/j3v24fBowFXOUUQoap5HohoVZuATg3l2vxZJX
+	 Hc4nLTz6JSdHeAAx36+KWDfxwhanTEg9P81lI7GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Eric Biggers <ebiggers@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 164/273] scsi: ufs: qcom: Fix crypto key eviction
-Date: Thu, 13 Feb 2025 15:28:56 +0100
-Message-ID: <20250213142413.814274286@linuxfoundation.org>
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 372/443] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+Date: Thu, 13 Feb 2025 15:28:57 +0100
+Message-ID: <20250213142454.964195876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 7a0905caf5665be41094a6ceb5e9d2524de4627a upstream.
+commit c31cffd5ae2c3d7ef21d9008977a9d117ce7a64e upstream.
 
-Commit 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
-introduced an incorrect check of the algorithm ID into the key eviction
-path, and thus qcom_ice_evict_key() is no longer ever called.  Fix it.
+If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
+the following events will have that flag, regardless if they need it or
+not.
 
-Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+This is because we keep using the same variable all the time and we do
+not reset its original value.
+
 Cc: stable@vger.kernel.org
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20241210030839.1118805-1-ebiggers@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241114-uvc-roi-v15-1-64cfeb56b6f8@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c |   18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -158,8 +158,9 @@ static int ufs_qcom_ice_program_key(stru
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1673,13 +1673,13 @@ static void uvc_ctrl_send_events(struct
  {
- 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
- 	union ufs_crypto_cap_entry cap;
--	bool config_enable =
--		cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE;
-+
-+	if (!(cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE))
-+		return qcom_ice_evict_key(host->ice, slot);
+ 	struct uvc_control_mapping *mapping;
+ 	struct uvc_control *ctrl;
+-	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 	unsigned int i;
+ 	unsigned int j;
  
- 	/* Only AES-256-XTS has been tested so far. */
- 	cap = hba->crypto_cap_array[cfg->crypto_cap_idx];
-@@ -167,14 +168,11 @@ static int ufs_qcom_ice_program_key(stru
- 	    cap.key_size != UFS_CRYPTO_KEY_SIZE_256)
- 		return -EOPNOTSUPP;
+ 	for (i = 0; i < xctrls_count; ++i) {
+-		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
  
--	if (config_enable)
--		return qcom_ice_program_key(host->ice,
--					    QCOM_ICE_CRYPTO_ALG_AES_XTS,
--					    QCOM_ICE_CRYPTO_KEY_SIZE_256,
--					    cfg->crypto_key,
--					    cfg->data_unit_size, slot);
--	else
--		return qcom_ice_evict_key(host->ice, slot);
-+	return qcom_ice_program_key(host->ice,
-+				    QCOM_ICE_CRYPTO_ALG_AES_XTS,
-+				    QCOM_ICE_CRYPTO_KEY_SIZE_256,
-+				    cfg->crypto_key,
-+				    cfg->data_unit_size, slot);
- }
- 
- #else
++		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
 
 
 
