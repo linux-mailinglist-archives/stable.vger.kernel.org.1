@@ -1,112 +1,215 @@
-Return-Path: <stable+bounces-115106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00956A338C8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 08:26:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38481A33915
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 08:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E6D33A71F6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAA823A5E4B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE0320969D;
-	Thu, 13 Feb 2025 07:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C220AF7A;
+	Thu, 13 Feb 2025 07:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="G02y8nMl"
-X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D5208992;
-	Thu, 13 Feb 2025 07:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="CmIagTw0"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFDE20AF66;
+	Thu, 13 Feb 2025 07:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739431596; cv=none; b=hXY8MMqdMmJXlUecSi+XZeZdKR6NQmd24Uog4VzUhLO/wfEfSKjcqiGX3o9v9sXy/m3CiQwXOAR1j58j3fMZhrqm6xRXliuzdvHWAPrx0wmu4lUnGneYvoB7ug4teHbClBgHWrdYONTPQWUNv5ktum0PIs+Kbrnrtkc8zZG0Zu0=
+	t=1739432549; cv=none; b=eW58vQG7ytmKyYsNGQzYKhGla1iBrs8QsZCljMRP9GjiFog2voxa5FdlzjhQksjWqJn/yQarwEG2XWhhKAIowpoB1VkAemChdHr13vGmSguIqKGkGzJKi69WDwsMP0hxa1Awi6G1nh3TeKYcsZsQqHYRojhFAgH7eXQSd0pCaQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739431596; c=relaxed/simple;
-	bh=OTiYJTw6dWzO6R+bnZPo5eajbZ/LQMlpQREGfDWsYh8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=oDMGR0hJFIjIOJO8mXU53gWFL5DyeDJEM7/MRq8q5ivThekoCwF71AfTjFnHhrI7Xxc3VFhZ0EcgyvrEVYxdCWu6aj08Y1RmSGHGiqYW1ljV2bmfyVzllLTwMupqWoYUHubts7lCGxJhG5Kt/ZIexlXs5q4L3AswcJwG/9sBotI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=G02y8nMl; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1739431587; x=1740036387; i=markus.elfring@web.de;
-	bh=OTiYJTw6dWzO6R+bnZPo5eajbZ/LQMlpQREGfDWsYh8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=G02y8nMl36P0PqPsSbh/94j3hGJZ8voPUGs4Syqukmyz1liCfWDSW5e9W6MynhOk
-	 0IAuxhtpJa6pO5i4jwGoR4pUnwRUPXfHLz8PZKiWz/5DBce15tpeI1m/QDew8XaC9
-	 rWsUzYcuMcEf61qDLfpfSkJwyRAHk07B2xDWTSWUbQKsjBYKXdpUEJoSTHPFBk5qR
-	 3xqEaSmea7W3iFzK2jDCJFK9OmeYyVBfMyMEaBkkp6AE9qCsYsyby7IcB4YkzwLam
-	 QyVHs5tJWJ5R/wP4oSf3mJVySvNvrPVYJt/rSIFO0v7rhxCAITcE31/LezKRhQc1a
-	 dOurSElu3+Qt6zCqOg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.78]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N7QQD-1tIq7S0kof-00vmXo; Thu, 13
- Feb 2025 08:26:27 +0100
-Message-ID: <491e74f2-b503-4486-a8e0-b4eddc16b2be@web.de>
-Date: Thu, 13 Feb 2025 08:26:09 +0100
+	s=arc-20240116; t=1739432549; c=relaxed/simple;
+	bh=IlVYh+wZ/YIFB/UgdqiAswcv4hn7Nfi0gPcL0hnnO3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JK7i6n/4D3/9vjBMiX32faOtxrabs4afqEvsPzBM4nl1WLFgnWeDS6ayZ0pB/S6aT3JQt8a5DfN3XGJCkWKiZlTvx12dnpYSCm3dTsAucIW9cYVsOs0JyMow47OiQfzzadyqx7mYqv/mOSwK74xYLZvgYnIQ3RFLuA8Ll4IMx1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=CmIagTw0; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id D69B642529;
+	Thu, 13 Feb 2025 08:42:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1739432540;
+	bh=IlVYh+wZ/YIFB/UgdqiAswcv4hn7Nfi0gPcL0hnnO3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CmIagTw072QVKg6X2zF7CjJurHTdhFIIdQEKgjmvrTlWE/dhMXwuw81+d2esttJTW
+	 1Y5ahtF8Fh/SNFP1P2RR1sujXeleOSH1HJl/VWQ+xg4ZehSMZVJUiWLJSjesYZK0bO
+	 INumkDNROadS9kEyDgL/db6dJo8AvtGeSnYok5/tosCl3G+YJGQOKeyshvdDM2ZcNu
+	 xudPDBoXknDJGg3hN5/h/oS5jZh1yx3J563YBU6NemsY4JynKHoKUNrpdeH2lDs9VK
+	 7XBBTpmsyUoP0bd2AI13NqcUQzea1IEkVHpYZ4hkviX4l9Nr6eXPw9zpNl1Wi7lDZL
+	 r2pcW+wJeNMNQ==
+Date: Thu, 13 Feb 2025 08:42:18 +0100
+From: Joerg Roedel <joro@8bytes.org>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, thomas.lendacky@amd.com,
+	john.allen@amd.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, suravee.suthikulpanit@amd.com, will@kernel.org,
+	robin.murphy@arm.com, michael.roth@amd.com, dionnaglaze@google.com,
+	nikunj@amd.com, ardb@kernel.org, kevinloughlin@google.com,
+	Neeraj.Upadhyay@amd.com, vasant.hegde@amd.com,
+	Stable@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev
+Subject: Re: [PATCH v4 3/3] x86/sev: Fix broken SNP support with KVM module
+ built-in
+Message-ID: <Z62iWr77bPWsZcDC@8bytes.org>
+References: <cover.1739226950.git.ashish.kalra@amd.com>
+ <138b520fb83964782303b43ade4369cd181fdd9c.1739226950.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, linux-sound@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Cezary Rojewski <cezary.rojewski@intel.com>, Jaroslav Kysela
- <perex@perex.cz>, Julia Lawall <Julia.Lawall@inria.fr>,
- Takashi Iwai <tiwai@suse.com>
-References: <20250213070546.1572-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] ALSA: hda: Add error check for snd_ctl_rename_id() in
- snd_hda_create_dig_out_ctls()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250213070546.1572-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:A4/AA8rcihgpl6rsOFxSGFatHFrVBRGoijQL0IrZrjwgjadffvq
- S0FidvsMStG9EpfZtYOFtiL+iwZsXpcZBZu7OzXP7rgwUl4LCOIa4djO4IH/ZkeD4mpClTl
- qe54W6/8UBAcvnUZ+z8SiPsIHQ6DikdiOl18VjGVsrRofkMo6A30xXFT/oUT/o4eOFWQxCO
- Ee4CrlVdLkOna1IjKriTw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Dj6pCAqs3Ks=;XbWPrYIAhujbPECWV0/rzt+UUsY
- R+hCQFFiGkuvLCkdo2lTGMaMyd5tTaRD35SFIRRto61K7Wh3Pmt/LYaIOv07VoVO2KnN+MYxC
- D0DRAxbfLnOxnQDAayhHe/QXgNvxnTyoi1v8OIGu51hv0ZrRiqiTvtZksy5LdtFuMcdABlGST
- tuCnWwxij04KoewGBQKZ9cU8b/MmXX+YuU6+kOn45dqxgLByV0Lh8L8qIHosrrDV1RQl1EcSL
- rAI8UWmqu/VlrTb7LacPH0BhWfyWnPDX4axTK1zDz0DuL/+HcjczYzqzLM5ajED9m+vWxU91V
- KgkIgYOHAGsKaj/75SaU+EhwzqKga2B7MLZGCIyjOqF7ABOSb1IFuQFW29OuvxDvMQVOl4Tmi
- IBmvsStqiKOkMz4/nAg6aAv0y77gQ/0UhA/RULCs/8s1dzH9IDJTxeRSfHaGVhIvQTEpdprfA
- RMTBYgMqRsl+pfZ7/++QfZ6nYX1x5ljdZhxB4EYU9DfDOEmSJ4au8VerTyxDun+nHLR1Cped5
- r5tBlHyYNCFSQF1YAowmjgfj8qy0E6Yi0bz940OSyIVNjNr4GjDJ/aJveHTAb64WAP5830FD/
- zyn3Nu1p7yyvISKoAoXSYqLGSEq89tEy7KObCHgMr011q0y2kJptfsZQmBe1yRLmy429+q2yb
- iurlKfqfNqf2ihll9aU6XhXnkcBQ6+FXzfmDWgEvaTS6B+0lHilQImbi+1GPD11sBTtRv+dBP
- yhF60+Q80NX3cSvW4m/xoP8lpKARKM3bqMhd14OdYOcxjMPrjp3rm6A/CFev/WITautHpcSR1
- AFiD14mKBfyWSuJaq1PE6rKX9nLwfFiWQfOZl1pYgy9B8ESsWvPAIAnFLyHPwuJc3wRIYQd6r
- GICP4Ooud+5jh1tON2ykw244dXN68zG6m182Xlg3d//rTEPIMmipfp2Cmee0rlSfUv7g9AbOG
- DFMSJXYEcJbCiVb6y3iVOeaQWbE8jklthDH+gDGE5Icuq4v7+JqxC+AXwMhB8qCfJ2DueuSIt
- tlPNnnDFysmkLZPdlzZWpPL2lOarfqfDA1N1qNLl92zH3d/RU70T7o6oLiAu8+bPHXH/AQpAv
- vfcH/DWt37hB9BLws7SsRuyT9FhUOlExXL1eznXASLjvZLH35k7CA48JWNnPUIosaAaXMjzNd
- OUy0vx7PwZRsSXYu2TXJqjlJe+s7UO4UWEkFH24O5s78hnsnITyQ+0zZwQye14jN0rhUTnT+x
- ou1NXt8P7lWpZt0fCJPXArqBzlR7RqkgPwdRlAdwaW7B+iBDA2IGGs6OsxJBc/06Yid+J7jaf
- TZg9mKro6TZt4vr9maX5rxZgXJoRIH3DAQfdjuSaUEPh49GFKFE3U9uNPD2I1woEzFWO7W96g
- 1RyKNkLWmrzS2QC2dN84cVSmnrkA2eHgkTlxmb/SnbGwrfb+MSSqVrJeLaLOWsQQkvSBrCDSO
- AOfsjicdFL8QuzwoJD1NRb4nOubs=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <138b520fb83964782303b43ade4369cd181fdd9c.1739226950.git.ashish.kalra@amd.com>
 
-> Check the return value of snd_ctl_rename_id() in
-> snd_hda_create_dig_out_ctls(). Ensure that potential
-> failures are properly handled.
+On Mon, Feb 10, 2025 at 10:54:18PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Fix issues with enabling SNP host support and effectively SNP support
+> which is broken with respect to the KVM module being built-in.
+> 
+> SNP host support is enabled in snp_rmptable_init() which is invoked as
+> device_initcall(). SNP check on IOMMU is done during IOMMU PCI init
+> (IOMMU_PCI_INIT stage). And for that reason snp_rmptable_init() is
+> currently invoked via device_initcall() and cannot be invoked via
+> subsys_initcall() as core IOMMU subsystem gets initialized via
+> subsys_initcall().
+> 
+> Now, if kvm_amd module is built-in, it gets initialized before SNP host
+> support is enabled in snp_rmptable_init() :
+> 
+> [   10.131811] kvm_amd: TSC scaling supported
+> [   10.136384] kvm_amd: Nested Virtualization enabled
+> [   10.141734] kvm_amd: Nested Paging enabled
+> [   10.146304] kvm_amd: LBR virtualization supported
+> [   10.151557] kvm_amd: SEV enabled (ASIDs 100 - 509)
+> [   10.156905] kvm_amd: SEV-ES enabled (ASIDs 1 - 99)
+> [   10.162256] kvm_amd: SEV-SNP enabled (ASIDs 1 - 99)
+> [   10.171508] kvm_amd: Virtual VMLOAD VMSAVE supported
+> [   10.177052] kvm_amd: Virtual GIF supported
+> ...
+> ...
+> [   10.201648] kvm_amd: in svm_enable_virtualization_cpu
+> 
+> And then svm_x86_ops->enable_virtualization_cpu()
+> (svm_enable_virtualization_cpu) programs MSR_VM_HSAVE_PA as following:
+> wrmsrl(MSR_VM_HSAVE_PA, sd->save_area_pa);
+> 
+> So VM_HSAVE_PA is non-zero before SNP support is enabled on all CPUs.
+> 
+> snp_rmptable_init() gets invoked after svm_enable_virtualization_cpu()
+> as following :
+> ...
+> [   11.256138] kvm_amd: in svm_enable_virtualization_cpu
+> ...
+> [   11.264918] SEV-SNP: in snp_rmptable_init
+> 
+> This triggers a #GP exception in snp_rmptable_init() when snp_enable()
+> is invoked to set SNP_EN in SYSCFG MSR:
+> 
+> [   11.294289] unchecked MSR access error: WRMSR to 0xc0010010 (tried to write 0x0000000003fc0000) at rIP: 0xffffffffaf5d5c28 (native_write_msr+0x8/0x30)
+> ...
+> [   11.294404] Call Trace:
+> [   11.294482]  <IRQ>
+> [   11.294513]  ? show_stack_regs+0x26/0x30
+> [   11.294522]  ? ex_handler_msr+0x10f/0x180
+> [   11.294529]  ? search_extable+0x2b/0x40
+> [   11.294538]  ? fixup_exception+0x2dd/0x340
+> [   11.294542]  ? exc_general_protection+0x14f/0x440
+> [   11.294550]  ? asm_exc_general_protection+0x2b/0x30
+> [   11.294557]  ? __pfx_snp_enable+0x10/0x10
+> [   11.294567]  ? native_write_msr+0x8/0x30
+> [   11.294570]  ? __snp_enable+0x5d/0x70
+> [   11.294575]  snp_enable+0x19/0x20
+> [   11.294578]  __flush_smp_call_function_queue+0x9c/0x3a0
+> [   11.294586]  generic_smp_call_function_single_interrupt+0x17/0x20
+> [   11.294589]  __sysvec_call_function+0x20/0x90
+> [   11.294596]  sysvec_call_function+0x80/0xb0
+> [   11.294601]  </IRQ>
+> [   11.294603]  <TASK>
+> [   11.294605]  asm_sysvec_call_function+0x1f/0x30
+> ...
+> [   11.294631]  arch_cpu_idle+0xd/0x20
+> [   11.294633]  default_idle_call+0x34/0xd0
+> [   11.294636]  do_idle+0x1f1/0x230
+> [   11.294643]  ? complete+0x71/0x80
+> [   11.294649]  cpu_startup_entry+0x30/0x40
+> [   11.294652]  start_secondary+0x12d/0x160
+> [   11.294655]  common_startup_64+0x13e/0x141
+> [   11.294662]  </TASK>
+> 
+> This #GP exception is getting triggered due to the following errata for
+> AMD family 19h Models 10h-1Fh Processors:
+> 
+> Processor may generate spurious #GP(0) Exception on WRMSR instruction:
+> Description:
+> The Processor will generate a spurious #GP(0) Exception on a WRMSR
+> instruction if the following conditions are all met:
+> - the target of the WRMSR is a SYSCFG register.
+> - the write changes the value of SYSCFG.SNPEn from 0 to 1.
+> - One of the threads that share the physical core has a non-zero
+> value in the VM_HSAVE_PA MSR.
+> 
+> The document being referred to above:
+> https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/revision-guides/57095-PUB_1_01.pdf
+> 
+> To summarize, with kvm_amd module being built-in, KVM/SVM initialization
+> happens before host SNP is enabled and this SVM initialization
+> sets VM_HSAVE_PA to non-zero, which then triggers a #GP when
+> SYSCFG.SNPEn is being set and this will subsequently cause
+> SNP_INIT(_EX) to fail with INVALID_CONFIG error as SYSCFG[SnpEn] is not
+> set on all CPUs.
+> 
+> Essentially SNP host enabling code should be invoked before KVM
+> initialization, which is currently not the case when KVM is built-in.
+> 
+> Add fix to call snp_rmptable_init() early from iommu_snp_enable()
+> directly and not invoked via device_initcall() which enables SNP host
+> support before KVM initialization with kvm_amd module built-in.
+> 
+> Add additional handling for `iommu=off` or `amd_iommu=off` options.
+> 
+> Note that IOMMUs need to be enabled for SNP initialization, therefore,
+> if host SNP support is enabled but late IOMMU initialization fails
+> then that will cause PSP driver's SNP_INIT to fail as IOMMU SNP sanity
+> checks in SNP firmware will fail with invalid configuration error as
+> below:
+> 
+> [    9.723114] ccp 0000:23:00.1: sev enabled
+> [    9.727602] ccp 0000:23:00.1: psp enabled
+> [    9.732527] ccp 0000:a2:00.1: enabling device (0000 -> 0002)
+> [    9.739098] ccp 0000:a2:00.1: no command queues available
+> [    9.745167] ccp 0000:a2:00.1: psp enabled
+> [    9.805337] ccp 0000:23:00.1: SEV-SNP: failed to INIT rc -5, error 0x3
+> [    9.866426] ccp 0000:23:00.1: SEV API:1.53 build:5
+> 
+> Fixes: c3b86e61b756 ("x86/cpufeatures: Enable/unmask SEV-SNP CPU feature")
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Vasant Hegde <vasant.hegde@amd.com>
+> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+> Cc: <Stable@vger.kernel.org>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h |  2 ++
+>  arch/x86/virt/svm/sev.c    | 23 +++++++----------------
+>  drivers/iommu/amd/init.c   | 34 ++++++++++++++++++++++++++++++----
+>  3 files changed, 39 insertions(+), 20 deletions(-)
 
-I would prefer a change description variant without the word =E2=80=9Cpote=
-ntial=E2=80=9D
-for this issue.
-https://cwe.mitre.org/data/definitions/252.html
+For the IOMMU part:
 
-Regards,
-Markus
+Acked-by: Joerg Roedel <jroedel@suse.de>
+
 
