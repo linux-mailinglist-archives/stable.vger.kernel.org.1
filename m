@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-115407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701CAA343BC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:57:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C88A34712
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35B251893E18
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609931895DFF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDECC281363;
-	Thu, 13 Feb 2025 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5276715B0EF;
+	Thu, 13 Feb 2025 15:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJAXKonG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN9MrI3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A707B23A9B5;
-	Thu, 13 Feb 2025 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0C2165F1F;
+	Thu, 13 Feb 2025 15:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457940; cv=none; b=gdA57ORb6CQ016LDLuDA6kwdC5ezDzU9EeCeejIGx6zSZWegdy5xL6mok+306b7bDlQ4HfkE9HXjsGez2D2uAGVRXl6PM8bquzbm1TVgK/cPkrok971DyMq4ZabnsSMaHoDPkBP3WbwFC/DiCj9mou+P1P06vqsDGONyv66qIow=
+	t=1739460280; cv=none; b=ViHIU2rUz14ZyBMR1o7qaWt3J8vi+mozuifbQ+xS4UarHAUUPuSygxMPxU+dbHLh/sUCptpilD99Ft8EhVgTgrgvTFvJ1g9Hjv9eZ/dHpIiYw97jYB+k3Vt5e0XDBPnQgIhWnUxItGOXb3cxyfPPEwKa00GKVpwR3NPs1TVsPTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457940; c=relaxed/simple;
-	bh=oQeKm2chHVC3aRy3Vf/rUPx0xIV8Tky4CT18KCAjQJI=;
+	s=arc-20240116; t=1739460280; c=relaxed/simple;
+	bh=ZSGMGHyfC7l2RxkWfiIqZnf3hcxiWs13A765XAgihuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=urUqRN2EWZ53YMkxxcknM1khCqL9/0Jrn/4bCj1xVGjxLfKvNab38UC/29mSGwmzCEupalAbek0tUaLBtAQ7S7KMMqjD2nttVIDGI54z/FjRPXANmtM1eEBz8VauYnK5H+Vx/ifDPFqawK8GpyVVhWu1ekRYa4CXZwYtdEx1F7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJAXKonG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FF7C4CEEC;
-	Thu, 13 Feb 2025 14:45:39 +0000 (UTC)
+	 MIME-Version; b=J9kzlVZQ/5cHl1+bBFrNBz20eUx7rJyxJyDhldoIpu8oZX8PT+1qgoQ7RHL4XbJTBUCPs4Du3wlvJHB8l77K+qyUG+qm2JY7HAypJ7eX8/ViTsfN286hylSDyb6wf2vqKFh1uVYENPzXuZOV/5mV9mM6paB27A0KBCD/p+m+OeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN9MrI3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF6BC4CEE4;
+	Thu, 13 Feb 2025 15:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457940;
-	bh=oQeKm2chHVC3aRy3Vf/rUPx0xIV8Tky4CT18KCAjQJI=;
+	s=korg; t=1739460279;
+	bh=ZSGMGHyfC7l2RxkWfiIqZnf3hcxiWs13A765XAgihuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJAXKonGZD6DSLEyvTw+q8dhKnkPdS3Ddju/ebnN7rJODNAENCYU1hddmjXYcP/7o
-	 ZQm+tVcFpmlRzK+Y7T2uLtojsMwvWGMPgSq66GkyzXbAHkqUx185WRkraIUXiFDkjK
-	 52Ex3BqVUsYXvtyd859gEUj0ekXcz2viLnDSMyXw=
+	b=kN9MrI3gFR2hBOMfcHqd4RzgdD54JZbdEujwObgCUxqCTgrp299RV0R5oKkiTeFUw
+	 RLGlH3NxMtoM0q9eiH6PwxF7cRLUqcKmi6OxY/aG7zVF2WpuQvFP8/pL64C0/nc8Kh
+	 Twn1mMe0Z91SVa07G03F0up4kpfaLfNUw/1gMzpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 257/422] scsi: ufs: core: Fix use-after free in init error and remove paths
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/273] clk: qcom: Make GCC_8150 depend on QCOM_GDSC
 Date: Thu, 13 Feb 2025 15:26:46 +0100
-Message-ID: <20250213142446.456731396@linuxfoundation.org>
+Message-ID: <20250213142408.702932137@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,261 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit f8fb2403ddebb5eea0033d90d9daae4c88749ada upstream.
+[ Upstream commit 1474149c4209943b37a2c01b82f07ba39465e5fe ]
 
-devm_blk_crypto_profile_init() registers a cleanup handler to run when
-the associated (platform-) device is being released. For UFS, the
-crypto private data and pointers are stored as part of the ufs_hba's
-data structure 'struct ufs_hba::crypto_profile'. This structure is
-allocated as part of the underlying ufshcd and therefore Scsi_host
-allocation.
+Like all other non-ancient Qualcomm clock drivers, QCOM_GDSC is
+required, as the GCC driver defines and instantiates a bunch of GDSCs.
 
-During driver release or during error handling in ufshcd_pltfrm_init(),
-this structure is released as part of ufshcd_dealloc_host() before the
-(platform-) device associated with the crypto call above is released.
-Once this device is released, the crypto cleanup code will run, using
-the just-released 'struct ufs_hba::crypto_profile'. This causes a
-use-after-free situation:
+Add the missing dependency.
 
-  Call trace:
-   kfree+0x60/0x2d8 (P)
-   kvfree+0x44/0x60
-   blk_crypto_profile_destroy_callback+0x28/0x70
-   devm_action_release+0x1c/0x30
-   release_nodes+0x6c/0x108
-   devres_release_all+0x98/0x100
-   device_unbind_cleanup+0x20/0x70
-   really_probe+0x218/0x2d0
-
-In other words, the initialisation code flow is:
-
-  platform-device probe
-    ufshcd_pltfrm_init()
-      ufshcd_alloc_host()
-        scsi_host_alloc()
-          allocation of struct ufs_hba
-          creation of scsi-host devices
-    devm_blk_crypto_profile_init()
-      devm registration of cleanup handler using platform-device
-
-and during error handling of ufshcd_pltfrm_init() or during driver
-removal:
-
-  ufshcd_dealloc_host()
-    scsi_host_put()
-      put_device(scsi-host)
-        release of struct ufs_hba
-  put_device(platform-device)
-    crypto cleanup handler
-
-To fix this use-after free, change ufshcd_alloc_host() to register a
-devres action to automatically cleanup the underlying SCSI device on
-ufshcd destruction, without requiring explicit calls to
-ufshcd_dealloc_host(). This way:
-
-    * the crypto profile and all other ufs_hba-owned resources are
-      destroyed before SCSI (as they've been registered after)
-    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
-      side-effect
-    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
-      it's not needed anymore
-    * no future drivers using ufshcd_alloc_host() could ever forget
-      adding the cleanup
-
-Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
-Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Closes: https://lore.kernel.org/linux-arm-msm/ab85f2ae-6c97-4fbb-a15b-31cc9e1f77fc@linaro.org/
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20241026-topic-8150gcc_kconfig-v1-1-3772013d8804@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c        |   31 +++++++++++++++++++++----------
- drivers/ufs/host/ufshcd-pci.c    |    2 --
- drivers/ufs/host/ufshcd-pltfrm.c |   28 +++++++++-------------------
- include/ufs/ufshcd.h             |    1 -
- 4 files changed, 30 insertions(+), 32 deletions(-)
+ drivers/clk/qcom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10324,16 +10324,6 @@ EXPORT_SYMBOL_GPL(ufshcd_system_thaw);
- #endif /* CONFIG_PM_SLEEP  */
- 
- /**
-- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
-- * @hba: pointer to Host Bus Adapter (HBA)
-- */
--void ufshcd_dealloc_host(struct ufs_hba *hba)
--{
--	scsi_host_put(hba->host);
--}
--EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
--
--/**
-  * ufshcd_set_dma_mask - Set dma mask based on the controller
-  *			 addressing capability
-  * @hba: per adapter instance
-@@ -10352,11 +10342,25 @@ static int ufshcd_set_dma_mask(struct uf
- }
- 
- /**
-+ * ufshcd_devres_release - devres cleanup handler, invoked during release of
-+ *			   hba->dev
-+ * @host: pointer to SCSI host
-+ */
-+static void ufshcd_devres_release(void *host)
-+{
-+	scsi_host_put(host);
-+}
-+
-+/**
-  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
-  * @dev: pointer to device handle
-  * @hba_handle: driver private handle
-  *
-  * Return: 0 on success, non-zero value on failure.
-+ *
-+ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
-+ * keeps track of its allocations using devres and deallocates everything on
-+ * device removal automatically.
-  */
- int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- {
-@@ -10378,6 +10382,13 @@ int ufshcd_alloc_host(struct device *dev
- 		err = -ENOMEM;
- 		goto out_error;
- 	}
-+
-+	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
-+				       host);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "failed to add ufshcd dealloc action\n");
-+
- 	host->nr_maps = HCTX_TYPE_POLL + 1;
- 	hba = shost_priv(host);
- 	hba->host = host;
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -562,7 +562,6 @@ static void ufshcd_pci_remove(struct pci
- 	pm_runtime_forbid(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- }
- 
- /**
-@@ -607,7 +606,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, c
- 	err = ufshcd_init(hba, mmio_base, pdev->irq);
- 	if (err) {
- 		dev_err(&pdev->dev, "Initialization failed\n");
--		ufshcd_dealloc_host(hba);
- 		return err;
- 	}
- 
---- a/drivers/ufs/host/ufshcd-pltfrm.c
-+++ b/drivers/ufs/host/ufshcd-pltfrm.c
-@@ -465,21 +465,17 @@ int ufshcd_pltfrm_init(struct platform_d
- 	struct device *dev = &pdev->dev;
- 
- 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mmio_base)) {
--		err = PTR_ERR(mmio_base);
--		goto out;
--	}
-+	if (IS_ERR(mmio_base))
-+		return PTR_ERR(mmio_base);
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		err = irq;
--		goto out;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	err = ufshcd_alloc_host(dev, &hba);
- 	if (err) {
- 		dev_err(dev, "Allocation failed\n");
--		goto out;
-+		return err;
- 	}
- 
- 	hba->vops = vops;
-@@ -488,13 +484,13 @@ int ufshcd_pltfrm_init(struct platform_d
- 	if (err) {
- 		dev_err(dev, "%s: clock parse failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 	err = ufshcd_parse_regulator_info(hba);
- 	if (err) {
- 		dev_err(dev, "%s: regulator init failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	ufshcd_init_lanes_per_dir(hba);
-@@ -502,25 +498,20 @@ int ufshcd_pltfrm_init(struct platform_d
- 	err = ufshcd_parse_operating_points(hba);
- 	if (err) {
- 		dev_err(dev, "%s: OPP parse failed %d\n", __func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	err = ufshcd_init(hba, mmio_base, irq);
- 	if (err) {
- 		dev_err_probe(dev, err, "Initialization failed with error %d\n",
- 			      err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
- 	return 0;
--
--dealloc_host:
--	ufshcd_dealloc_host(hba);
--out:
--	return err;
- }
- EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
- 
-@@ -534,7 +525,6 @@ void ufshcd_pltfrm_remove(struct platfor
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- }
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1297,7 +1297,6 @@ static inline void ufshcd_rmwl(struct uf
- void ufshcd_enable_irq(struct ufs_hba *hba);
- void ufshcd_disable_irq(struct ufs_hba *hba);
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
--void ufshcd_dealloc_host(struct ufs_hba *);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
- int ufshcd_link_recovery(struct ufs_hba *hba);
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index a79b837583894..1de1661037b1b 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -881,6 +881,7 @@ config SM_GCC_7150
+ config SM_GCC_8150
+ 	tristate "SM8150 Global Clock Controller"
+ 	depends on ARM64 || COMPILE_TEST
++	select QCOM_GDSC
+ 	help
+ 	  Support for the global clock controller on SM8150 devices.
+ 	  Say Y if you want to use peripheral devices such as UART,
+-- 
+2.39.5
+
 
 
 
