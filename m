@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF82A34479
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8F6A346AE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEF23B0F11
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DEF3B3F8D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BD7194080;
-	Thu, 13 Feb 2025 14:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A1E335BA;
+	Thu, 13 Feb 2025 15:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py5eCLz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QamMJPbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EB615E5D4;
-	Thu, 13 Feb 2025 14:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD26B0A5;
+	Thu, 13 Feb 2025 15:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458468; cv=none; b=tORlzvbPpg7Hd2Lh8f4dTWcnG1m7hMUpTIGdIgNsKIFcngkWBvqwflg2lKnSM9Q4jwgqjUhtHj4+FyBmvlvnkHuRJNUwRnCGemS852i6kBFQMmQ3AM73eNnzRAfs/Lw5wze8v484247cLK9EfT8ZVgkh4M5XvJl9pTSkfPp5yZI=
+	t=1739459848; cv=none; b=k069fPFBxkzoH4E/ToTsHSc8vpW4WItZhW/b6vKXCA+VBq4jRJlBuyYNUoeCvlJ/lC3AA2oHF3E3fABjQW74Q0fV4FHlpYyUtxK45bLTAHFHiOS+B72jqha3q/QyQI1rW5bhGOrgN3IdQbH/0w6SpazNolvOMUlqQS9nsaMC1ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458468; c=relaxed/simple;
-	bh=gqllOHqZHVxFicvY+MiypapSicD12BIXwDattFCENvw=;
+	s=arc-20240116; t=1739459848; c=relaxed/simple;
+	bh=Yq14Rgd66o7NvqhP0z3cUr2QRwpS1+sezXzvKQCeJWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFV8LDIMbCcRs81AOdEshATXS4p5QSkuhMubX4m3qpgWwFqUQP8CZOGw1lJ5b0LrJjzQGM4GF5zQ+B0nLEJzP543tQgxoKp9y5v+oAz1f+0qDrl6CKFyR2RRcWbFU4nw1S3/aThYdeG2ZbDxIHphoVmaZbDkG3ubDsDtAwmB8kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py5eCLz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A555FC4CED1;
-	Thu, 13 Feb 2025 14:54:27 +0000 (UTC)
+	 MIME-Version; b=tV0fSmIxZ/7kSKds/bAM85pzM6lhOjxGhFz+ZfEItDzzD22v8angZT7fGE9oOKRHXuM9DyVR/yE4I7mMYzletNVoHvUMfZil01vJVe7+t7rcicN6IzGFl3xao9Ws1UbnnAZapnV1WiKexTSOWemgwRke5+7TB9gmOi+v+LCZ/Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QamMJPbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5556DC4CEE4;
+	Thu, 13 Feb 2025 15:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458468;
-	bh=gqllOHqZHVxFicvY+MiypapSicD12BIXwDattFCENvw=;
+	s=korg; t=1739459848;
+	bh=Yq14Rgd66o7NvqhP0z3cUr2QRwpS1+sezXzvKQCeJWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py5eCLz79NGyDtT6p2CJnQa/IVSIWKOKPdWlB270mAzOZ6QlyHEdH81fWMEhR+wqN
-	 35GMJeateOSMcW81n1bQ+r9oBnrbCENZeAI+OBmDJlmhXkDR3DMYLn5yPic4sfG9zm
-	 Ijf8HFSZiShYoQGYPYtlyhmYUekp0W/VoUsef1qU=
+	b=QamMJPbZjSpKb+lBUEM+AngMRWQ2nlMLFf35AOk0H1+mROuoJ964/u34QwOmaOs8H
+	 cbuCUl6XRkxNXb7ByildCQ0VxXZQR+manQOQabUw9kyPoRfcB84Fu0DL8mGrx/yHfC
+	 Mky+bb1X4iYAkFylBmmh7C5pyf4Mk2aF7dlWsN/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	J David <j.david.lists@gmail.com>,
-	Rick Macklem <rmacklem@uoguelph.ca>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 366/422] NFSD: Encode COMPOUND operation status on page boundaries
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.13 350/443] iommufd/fault: Use a separate spinlock to protect fault->deliver list
 Date: Thu, 13 Feb 2025 15:28:35 +0100
-Message-ID: <20250213142450.672950979@linuxfoundation.org>
+Message-ID: <20250213142454.125857959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +63,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit ef3675b45bcb6c17cabbbde620c6cea52ffb21ac upstream.
+commit 3d49020a327cd7d069059317c11df24e407ccfa3 upstream.
 
-J. David reports an odd corruption of a READDIR reply sent to a
-FreeBSD client.
+The fault->mutex serializes the fault read()/write() fops and the
+iommufd_fault_auto_response_faults(), mainly for fault->response. Also, it
+was conveniently used to fence the fault->deliver in poll() fop and
+iommufd_fault_iopf_handler().
 
-xdr_reserve_space() has to do a special trick when the @nbytes value
-requests more space than there is in the current page of the XDR
-buffer.
+However, copy_from/to_user() may sleep if pagefaults are enabled. Thus,
+they could take a long time to wait for user pages to swap in, blocking
+iommufd_fault_iopf_handler() and its caller that is typically a shared IRQ
+handler of an IOMMU driver, resulting in a potential global DOS.
 
-In that case, xdr_reserve_space() returns a pointer to the start of
-the next page, and then the next call to xdr_reserve_space() invokes
-__xdr_commit_encode() to copy enough of the data item back into the
-previous page to make that data item contiguous across the page
-boundary.
+Instead of reusing the mutex to protect the fault->deliver list, add a
+separate spinlock, nested under the mutex, to do the job.
+iommufd_fault_iopf_handler() would no longer be blocked by
+copy_from/to_user().
 
-But we need to be careful in the case where buffer space is reserved
-early for a data item whose value will be inserted into the buffer
-later.
+Add a free_list in iommufd_auto_response_faults(), so the spinlock can
+simply fence a fast list_for_each_entry_safe routine.
 
-One such caller, nfsd4_encode_operation(), reserves 8 bytes in the
-encoding buffer for each COMPOUND operation. However, a READDIR
-result can sometimes encode file names so that there are only 4
-bytes left at the end of the current XDR buffer page (though plenty
-of pages are left to handle the remaining encoding tasks).
+Provide two deliver list helpers for iommufd_fault_fops_read() to use:
+ - Fetch the first iopf_group out of the fault->deliver list
+ - Restore an iopf_group back to the head of the fault->deliver list
 
-If a COMPOUND operation follows the READDIR result (say, a GETATTR),
-then nfsd4_encode_operation() will reserve 8 bytes for the op number
-(9) and the op status (usually NFS4_OK). In this weird case,
-xdr_reserve_space() returns a pointer to byte zero of the next buffer
-page, as it assumes the data item will be copied back into place (in
-the previous page) on the next call to xdr_reserve_space().
+Lastly, move the mutex closer to the response in the fault structure,
+and update its kdoc accordingly.
 
-nfsd4_encode_operation() writes the op num into the buffer, then
-saves the next 4-byte location for the op's status code. The next
-xdr_reserve_space() call is part of GETATTR encoding, so the op num
-gets copied back into the previous page, but the saved location for
-the op status continues to point to the wrong spot in the current
-XDR buffer page because __xdr_commit_encode() moved that data item.
-
-After GETATTR encoding is complete, nfsd4_encode_operation() writes
-the op status over the first XDR data item in the GETATTR result.
-The NFS4_OK status code (0) makes it look like there are zero items
-in the GETATTR's attribute bitmask.
-
-The patch description of commit 2825a7f90753 ("nfsd4: allow encoding
-across page boundaries") [2014] remarks that NFSD "can't handle a
-new operation starting close to the end of a page." This bug appears
-to be one reason for that remark.
-
-Reported-by: J David <j.david.lists@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/3998d739-c042-46b4-8166-dbd6c5f0e804@oracle.com/T/#t
-Tested-by: Rick Macklem <rmacklem@uoguelph.ca>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
+Link: https://patch.msgid.link/r/20250117192901.79491-1-nicolinc@nvidia.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/iommu/iommufd/fault.c           |   34 ++++++++++++++++++++------------
+ drivers/iommu/iommufd/iommufd_private.h |   29 +++++++++++++++++++++++++--
+ 2 files changed, 49 insertions(+), 14 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5747,15 +5747,14 @@ nfsd4_encode_operation(struct nfsd4_comp
- 	struct nfs4_stateowner *so = resp->cstate.replay_owner;
- 	struct svc_rqst *rqstp = resp->rqstp;
- 	const struct nfsd4_operation *opdesc = op->opdesc;
--	int post_err_offset;
-+	unsigned int op_status_offset;
- 	nfsd4_enc encoder;
--	__be32 *p;
+--- a/drivers/iommu/iommufd/fault.c
++++ b/drivers/iommu/iommufd/fault.c
+@@ -103,15 +103,23 @@ static void iommufd_auto_response_faults
+ {
+ 	struct iommufd_fault *fault = hwpt->fault;
+ 	struct iopf_group *group, *next;
++	struct list_head free_list;
+ 	unsigned long index;
  
--	p = xdr_reserve_space(xdr, 8);
--	if (!p)
-+	if (xdr_stream_encode_u32(xdr, op->opnum) != XDR_UNIT)
-+		goto release;
-+	op_status_offset = xdr->buf->len;
-+	if (!xdr_reserve_space(xdr, XDR_UNIT))
- 		goto release;
--	*p++ = cpu_to_be32(op->opnum);
--	post_err_offset = xdr->buf->len;
+ 	if (!fault)
+ 		return;
++	INIT_LIST_HEAD(&free_list);
  
- 	if (op->opnum == OP_ILLEGAL)
- 		goto status;
-@@ -5796,20 +5795,21 @@ nfsd4_encode_operation(struct nfsd4_comp
- 		 * bug if we had to do this on a non-idempotent op:
- 		 */
- 		warn_on_nonidempotent_op(op);
--		xdr_truncate_encode(xdr, post_err_offset);
-+		xdr_truncate_encode(xdr, op_status_offset + XDR_UNIT);
+ 	mutex_lock(&fault->mutex);
++	spin_lock(&fault->lock);
+ 	list_for_each_entry_safe(group, next, &fault->deliver, node) {
+ 		if (group->attach_handle != &handle->handle)
+ 			continue;
++		list_move(&group->node, &free_list);
++	}
++	spin_unlock(&fault->lock);
++
++	list_for_each_entry_safe(group, next, &free_list, node) {
+ 		list_del(&group->node);
+ 		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
+ 		iopf_free_group(group);
+@@ -266,17 +274,19 @@ static ssize_t iommufd_fault_fops_read(s
+ 		return -ESPIPE;
+ 
+ 	mutex_lock(&fault->mutex);
+-	while (!list_empty(&fault->deliver) && count > done) {
+-		group = list_first_entry(&fault->deliver,
+-					 struct iopf_group, node);
+-
+-		if (group->fault_count * fault_size > count - done)
++	while ((group = iommufd_fault_deliver_fetch(fault))) {
++		if (done >= count ||
++		    group->fault_count * fault_size > count - done) {
++			iommufd_fault_deliver_restore(fault, group);
+ 			break;
++		}
+ 
+ 		rc = xa_alloc(&fault->response, &group->cookie, group,
+ 			      xa_limit_32b, GFP_KERNEL);
+-		if (rc)
++		if (rc) {
++			iommufd_fault_deliver_restore(fault, group);
+ 			break;
++		}
+ 
+ 		idev = to_iommufd_handle(group->attach_handle)->idev;
+ 		list_for_each_entry(iopf, &group->faults, list) {
+@@ -285,13 +295,12 @@ static ssize_t iommufd_fault_fops_read(s
+ 						      group->cookie);
+ 			if (copy_to_user(buf + done, &data, fault_size)) {
+ 				xa_erase(&fault->response, group->cookie);
++				iommufd_fault_deliver_restore(fault, group);
+ 				rc = -EFAULT;
+ 				break;
+ 			}
+ 			done += fault_size;
+ 		}
+-
+-		list_del(&group->node);
  	}
- 	if (so) {
--		int len = xdr->buf->len - post_err_offset;
-+		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
+ 	mutex_unlock(&fault->mutex);
  
- 		so->so_replay.rp_status = op->status;
- 		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, post_err_offset,
-+		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
- 						so->so_replay.rp_buf, len);
- 	}
- status:
- 	op->status = nfsd4_map_status(op->status,
- 				      resp->cstate.minorversion);
--	*p = op->status;
-+	write_bytes_to_xdr_buf(xdr->buf, op_status_offset,
-+			       &op->status, XDR_UNIT);
- release:
- 	if (opdesc && opdesc->op_release)
- 		opdesc->op_release(&op->u);
+@@ -349,10 +358,10 @@ static __poll_t iommufd_fault_fops_poll(
+ 	__poll_t pollflags = EPOLLOUT;
+ 
+ 	poll_wait(filep, &fault->wait_queue, wait);
+-	mutex_lock(&fault->mutex);
++	spin_lock(&fault->lock);
+ 	if (!list_empty(&fault->deliver))
+ 		pollflags |= EPOLLIN | EPOLLRDNORM;
+-	mutex_unlock(&fault->mutex);
++	spin_unlock(&fault->lock);
+ 
+ 	return pollflags;
+ }
+@@ -394,6 +403,7 @@ int iommufd_fault_alloc(struct iommufd_u
+ 	INIT_LIST_HEAD(&fault->deliver);
+ 	xa_init_flags(&fault->response, XA_FLAGS_ALLOC1);
+ 	mutex_init(&fault->mutex);
++	spin_lock_init(&fault->lock);
+ 	init_waitqueue_head(&fault->wait_queue);
+ 
+ 	filep = anon_inode_getfile("[iommufd-pgfault]", &iommufd_fault_fops,
+@@ -442,9 +452,9 @@ int iommufd_fault_iopf_handler(struct io
+ 	hwpt = group->attach_handle->domain->fault_data;
+ 	fault = hwpt->fault;
+ 
+-	mutex_lock(&fault->mutex);
++	spin_lock(&fault->lock);
+ 	list_add_tail(&group->node, &fault->deliver);
+-	mutex_unlock(&fault->mutex);
++	spin_unlock(&fault->lock);
+ 
+ 	wake_up_interruptible(&fault->wait_queue);
+ 
+--- a/drivers/iommu/iommufd/iommufd_private.h
++++ b/drivers/iommu/iommufd/iommufd_private.h
+@@ -443,14 +443,39 @@ struct iommufd_fault {
+ 	struct iommufd_ctx *ictx;
+ 	struct file *filep;
+ 
+-	/* The lists of outstanding faults protected by below mutex. */
+-	struct mutex mutex;
++	spinlock_t lock; /* protects the deliver list */
+ 	struct list_head deliver;
++	struct mutex mutex; /* serializes response flows */
+ 	struct xarray response;
+ 
+ 	struct wait_queue_head wait_queue;
+ };
+ 
++/* Fetch the first node out of the fault->deliver list */
++static inline struct iopf_group *
++iommufd_fault_deliver_fetch(struct iommufd_fault *fault)
++{
++	struct list_head *list = &fault->deliver;
++	struct iopf_group *group = NULL;
++
++	spin_lock(&fault->lock);
++	if (!list_empty(list)) {
++		group = list_first_entry(list, struct iopf_group, node);
++		list_del(&group->node);
++	}
++	spin_unlock(&fault->lock);
++	return group;
++}
++
++/* Restore a node back to the head of the fault->deliver list */
++static inline void iommufd_fault_deliver_restore(struct iommufd_fault *fault,
++						 struct iopf_group *group)
++{
++	spin_lock(&fault->lock);
++	list_add(&group->node, &fault->deliver);
++	spin_unlock(&fault->lock);
++}
++
+ struct iommufd_attach_handle {
+ 	struct iommu_attach_handle handle;
+ 	struct iommufd_device *idev;
 
 
 
