@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-116117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD1BA3469A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 457C2A3440A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3926C7A27C4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E6D3AA2DF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCC315DBBA;
-	Thu, 13 Feb 2025 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAE71422DD;
+	Thu, 13 Feb 2025 14:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX1iXA/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAkK70Nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF17B143736;
-	Thu, 13 Feb 2025 15:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1344F26B0BC;
+	Thu, 13 Feb 2025 14:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460381; cv=none; b=m73oWFWaLdT6p5BpeqpG7OPEjORLIzEoL13fYSidKX7vNQAOUsAzLtGibHHVtgrItuyxNp0L7ZbdqNbtvCEfwx6vmFXzqfcJ0wcdvJb/z1kIlSC/gvmUz3XwKyvOpcQbHkz8Uzlmu0d1k3UDm9BLd4kPKXPMGO5+a69ZBW3GJLI=
+	t=1739458153; cv=none; b=Lrk+rtiLOpV4/gGaM3V8nQDHiYKM2Y8LEkHQTkgcOkBZAnX3T6bevqSL+BNYpZraB/5Gm6eW00+H+9zkQMQgizL4f2KTtYZj7k5hacXOG0y/LPjziVH74AXRQrApTdT+Wk4pm/W29WhiFCj3AiA+IMQiEv3HwOfIRplviD//PUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460381; c=relaxed/simple;
-	bh=oiiwujN1hmnKjh8UqyU1dxA7NqTgAqbftliBeFmts8c=;
+	s=arc-20240116; t=1739458153; c=relaxed/simple;
+	bh=dk67/5gDAHQkariIGgJ/FU5CQaCRv2e0clqq3FZn71w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyJXNGILR5prYBh1u1AL+MKkBcewSlDpkaJM09rUwE0+2dOACsvFBCq7epxOvrLpuGvP3wJuEj2wzelz5IYjZHNSmkah+fjyH4+MqhcTkoXf2q2EFpj+lxvysgq2VVdcWYNBwmcOEqJDt8IpDjajoF1NcUCisFkgfWifeZc2jVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX1iXA/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C58BC4CED1;
-	Thu, 13 Feb 2025 15:26:21 +0000 (UTC)
+	 MIME-Version; b=WKSd9iMQRxOlMd3+mRMprLMAwoGzkotfszJbW5xq+rhEG7Ov6/Fox0D7VCxBUMkpH0iYhsyozCV7Pe80TsoZRsytJxzOLg+Jn4n/K3y1syLCOfTDgIASvNbHi8eLm2uIZZSZmoPQxG3UqnG4H2xh9L5SFqlvfCkuj7x9MCsc1wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAkK70Nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F91AC4CED1;
+	Thu, 13 Feb 2025 14:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460381;
-	bh=oiiwujN1hmnKjh8UqyU1dxA7NqTgAqbftliBeFmts8c=;
+	s=korg; t=1739458152;
+	bh=dk67/5gDAHQkariIGgJ/FU5CQaCRv2e0clqq3FZn71w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HX1iXA/G+nYRtuV2ifaa39KZLa3pUOQDpcXkrylSoC/nhJQk/oLrA/OWdqCD7z0Zo
-	 i+sYX4k1k4pJ7L4Xlk7hqmGd4XQxGO9Fb/GaIqMJX+olQN1pO9ZOiPXWhkcPV4IVzo
-	 fQk/jduHiGhDC1m2G3x2j+qMlLdfi1fe4b48kjsY=
+	b=UAkK70NxwDd/PDrAUoI2XVzairdBd4FlTnmZiICsNvMNfNl9s9CXE7tIMBjLWlxzK
+	 U27l3dA7uyv7XNXD1+EuhRHjZsM3zERnhbWQ/yBQTI+ZACylkWUEHOLPcDnlBLhSHi
+	 pO9oeVW/5911As4LKgzEX1BIZIN3GAhDMGT1r/DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 094/273] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.12 317/422] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
 Date: Thu, 13 Feb 2025 15:27:46 +0100
-Message-ID: <20250213142411.058488437@linuxfoundation.org>
+Message-ID: <20250213142448.783038018@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
+commit c0eb059a4575ed57f265d9883a5203799c19982c upstream.
 
-Explicitly verify the target vCPU is fully online _prior_ to clamping the
-index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
-generate '0', i.e. KVM will return vCPU0 instead of NULL.
+Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
+Smatch:
 
-In practice, the bug is unlikely to cause problems, as it will only come
-into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
-send interrupts to vCPU0 instead of dropping them on the floor.
+  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
 
-However, returning vCPU0 when it shouldn't exist per online_vcpus is
-problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
-to insert into the xarray before publishing the vCPU to userspace (see
-commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
-i.e. before vCPU creation is guaranteed to succeed.
-
-As a result, incorrectly providing access to vCPU0 will trigger a
-use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
-bails out of vCPU creation due to an error and frees vCPU0.  Commit
-afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
-in doing so introduced an unsolvable teardown conundrum.  Preventing
-accesses to vCPU0 before it's fully online will allow reverting commit
-afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
-
-Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
+Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
 Cc: stable@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>
-Cc: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kvm_host.h |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/soc/mediatek/mtk-devapc.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -920,6 +920,15 @@ static inline struct kvm_io_bus *kvm_get
- static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
- {
- 	int num_vcpus = atomic_read(&kvm->online_vcpus);
-+
-+	/*
-+	 * Explicitly verify the target vCPU is online, as the anti-speculation
-+	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
-+	 * index, clamping the index to 0 would return vCPU0, not NULL.
-+	 */
-+	if (i >= num_vcpus)
-+		return NULL;
-+
- 	i = array_index_nospec(i, num_vcpus);
+--- a/drivers/soc/mediatek/mtk-devapc.c
++++ b/drivers/soc/mediatek/mtk-devapc.c
+@@ -273,23 +273,31 @@ static int mtk_devapc_probe(struct platf
+ 		return -EINVAL;
  
- 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+ 	devapc_irq = irq_of_parse_and_map(node, 0);
+-	if (!devapc_irq)
+-		return -EINVAL;
++	if (!devapc_irq) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
+-	if (IS_ERR(ctx->infra_clk))
+-		return -EINVAL;
++	if (IS_ERR(ctx->infra_clk)) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
+ 			       IRQF_TRIGGER_NONE, "devapc", ctx);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	platform_set_drvdata(pdev, ctx);
+ 
+ 	start_devapc(ctx);
+ 
+ 	return 0;
++
++err:
++	iounmap(ctx->infra_base);
++	return ret;
+ }
+ 
+ static void mtk_devapc_remove(struct platform_device *pdev)
 
 
 
