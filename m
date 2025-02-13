@@ -1,156 +1,138 @@
-Return-Path: <stable+bounces-115148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E816A34134
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9150CA34137
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37D521600BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:02:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 527153A5067
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703982222C8;
-	Thu, 13 Feb 2025 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ECE22170A;
+	Thu, 13 Feb 2025 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b66ZRD10"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W2tvBoQ2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5862222B5
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 13:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CA821D3E2;
+	Thu, 13 Feb 2025 13:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739455109; cv=none; b=B36dJH6HGLvj+5z8xUv4UBmKxEMMF+Mxm8N9Z+cduEvN/AKkLuzKMmLJnbjQsIYUGvnlBl4jPmhhBRgclaT1dHIw5iHtyE2+Xo+f03qBndHd4hJQthkCzvwP0yGZkdOJhXKD0iSGKSTdqYxCOead22a2dqMKumPVn6sTH+q+los=
+	t=1739455106; cv=none; b=pq87kIozWLIjSabLfEGRnmNvK9+qjXqLmSPF4Z6cHrMv2+RRw5BEIHK6yPvg9L1jbX7HauxUkrj2CVhoZFDU3v+4jpAN4nrlwg0m+gMthSxtoTKz0LVvBAQeiY9wGRRfAjnuCu04nUwKuI7cxMhWYq4zAPTh4PsiHQp5NW0VEXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739455109; c=relaxed/simple;
-	bh=bHZeZfKNTDogIf6Y2kInrbME7S2+Xgh/ojub8j6miqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QYzzTwg5VzJC3j0KBip0tG6h0kT+I98TQrIJSniWQElCMU9Cq8DoSt/mHSpnbe91jfd8jl3ceklxy0dWm2yKwV5+eueRuiZQ4zzyrfArCNKQf129BmQT2AxRcqysR1KcZYTy8nVQf5yiWdBOhnZ7bIEdXn1wlkgzXTA8FzhxzLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b66ZRD10; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1739455106; c=relaxed/simple;
+	bh=cWTP3mIm51t7PN0mcXoRdd1yxkp6VaJwokjt7+D96Yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jjQxdeKp6Vo4J4dZJ2fkRF9GD+RMhTiwjmEFG4BZCTjfSrIUgcyELI5o7QLyHYN9S/GCFyLLMNeCKtsgt07GkZaewUWcpXiRJkp6KsPnOHOmKgoHnrb9KCbtSidCF0y4vYwwln5gKvUIoy3joAA46eeG/7vB2sSjK3PZlQJk6VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W2tvBoQ2; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739455108; x=1770991108;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bHZeZfKNTDogIf6Y2kInrbME7S2+Xgh/ojub8j6miqU=;
-  b=b66ZRD10sEWUzUUJIc04hDsOFMqQTM9wjdcpgJOvTlXu0tFEqh6DBXHR
-   7TM2d2dwPj72+4f3lSBtyvzkxZSNG2SupUxh9qozgtivV7mXyuB6wSTrk
-   zKmsNzjq+CjloQdOAfTTN04acXF/QOFzatlwqIcf7+31rN7yWHvOI+hce
-   dfF89Gn75lofiDh6XHjPKnGtWbMQJtvORummRg4L6L8EkktEahwPkgOYn
-   UY0VJS9CDBREbuumvJC7VW4kryutDhQBNrbptCGVrjl5jkplc8EInYRwR
-   t6klsbYJcMBitsit2HNCG7X0iCucX/XVE4IHzEnmYcjpzf7fHeS4VLS6t
-   Q==;
-X-CSE-ConnectionGUID: rpiyYuIBQdGQwhNOY6d6SA==
-X-CSE-MsgGUID: vngqxW1yQ/GVCZ6lxd/3bg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="40020309"
+  t=1739455105; x=1770991105;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cWTP3mIm51t7PN0mcXoRdd1yxkp6VaJwokjt7+D96Yw=;
+  b=W2tvBoQ2uHGHcuubhSbFAxZtl6xXy7jV1euffhQiCht/95fSDz3CByWZ
+   5EnRuwv6zFPhnlQNFXqaB/uQ+zfEjNdcSlGG+Qpvq2bGAjEdHViUosGru
+   6ImQGheljB/VYznZ3NdJeTyKHIn0AKoRKwq6V+XMz/0J3+N4gxlOCA852
+   boPkUDEr0bdUMptFbyT+Kcn3lfscBGmqjSM0I8amDMtdRAVvYZcYoxTwI
+   GwZmOrZhYssE0yFnITm0o2j1zadvYhTDigM20GN/51MpB+/z2G+hLJf9E
+   p3SBhXnb5EMjbLjv+1Qzy5ElY/AfUaoi5CXMaptMqZdIEnNHXZ6Qg5ToP
+   g==;
+X-CSE-ConnectionGUID: Ih5pRCYtRaSyaUm53nG8MQ==
+X-CSE-MsgGUID: QYvM81YySBaok5eS0eT8Gg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="50802881"
 X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="40020309"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:58:27 -0800
-X-CSE-ConnectionGUID: pIb+x+DWRsaD5bHpJKZ8cg==
-X-CSE-MsgGUID: l2gAYjgQSwOJnNjr+/4Zgw==
+   d="scan'208";a="50802881"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:58:24 -0800
+X-CSE-ConnectionGUID: gW+iue03QJSLTldzvY4IqQ==
+X-CSE-MsgGUID: BwWktHwtRHymN44ATEq/uA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118081434"
-Received: from apaszkie-mobl2.apaszkie-mobl2 (HELO mwauld-desk.intel.com) ([10.245.245.31])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:58:26 -0800
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="144097026"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa001.fm.intel.com with SMTP; 13 Feb 2025 05:58:20 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 13 Feb 2025 15:58:19 +0200
+Date: Thu, 13 Feb 2025 15:58:19 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Fedor Pchelkin <boddah8794@gmail.com>
+Cc: "Christian A. Ehrhardt" <lk@c--e.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Saranya Gopal <saranya.gopal@intel.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mark Pearson <mpearson@squebb.ca>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm/xe/userptr: fix EFAULT handling
-Date: Thu, 13 Feb 2025 13:58:09 +0000
-Message-ID: <20250213135808.189144-3-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.48.1
+Subject: Re: [PATCH RFC 2/2] usb: typec: ucsi: increase timeout for PPM reset
+ operations
+Message-ID: <Z636e6Vdr4FC7HbQ@kuha.fi.intel.com>
+References: <20250206184327.16308-1-boddah8794@gmail.com>
+ <20250206184327.16308-3-boddah8794@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206184327.16308-3-boddah8794@gmail.com>
 
-Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
-when called from xe_vm_userptr_pin() with the idea that we want to avoid
-killing the entire vm and chucking an error, under the assumption that
-the user just did an unmap or something, and has no intention of
-actually touching that memory from the GPU.  At this point we have
-already zapped the PTEs so any access should generate a page fault, and
-if the pin fails there also it will then become fatal.
+On Thu, Feb 06, 2025 at 09:43:15PM +0300, Fedor Pchelkin wrote:
+> It is observed that on some systems an initial PPM reset during the boot
+> phase can trigger a timeout:
+> 
+> [    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
+> [    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+> 
+> Still, increasing the timeout value, albeit being the most straightforward
+> solution, eliminates the problem: the initial PPM reset may take up to
+> ~8000-10000ms on some Lenovo laptops. When it is reset after the above
+> period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
+> works as expected.
+> 
+> Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
+> system has booted, reading the CCI values and resetting the PPM works
+> perfectly, without any timeout. Thus it's only a boot-time issue.
+> 
+> The reason for this behavior is not clear but it may be the consequence
+> of some tricks that the firmware performs or be an actual firmware bug.
+> As a workaround, increase the timeout to avoid failing the UCSI
+> initialization prematurely.
+> 
+> Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
 
-However it looks like it's possible for the userptr vma to still be on
-the rebind list in preempt_rebind_work_func(), if we had to retry the
-pin again due to something happening in the caller before we did the
-rebind step, but in the meantime needing to re-validate the userptr and
-this time hitting the EFAULT.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-This might explain an internal user report of hitting:
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index 0fe1476f4c29..7a56d3f840d7 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -25,7 +25,7 @@
+>   * difficult to estimate the time it takes for the system to process the command
+>   * before it is actually passed to the PPM.
+>   */
+> -#define UCSI_TIMEOUT_MS		5000
+> +#define UCSI_TIMEOUT_MS		10000
+>  
+>  /*
+>   * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
+> -- 
+> 2.48.1
 
-[  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
-[  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738690] Call Trace:
-[  191.738692]  <TASK>
-[  191.738694]  ? show_regs+0x69/0x80
-[  191.738698]  ? __warn+0x93/0x1a0
-[  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738759]  ? report_bug+0x18f/0x1a0
-[  191.738764]  ? handle_bug+0x63/0xa0
-[  191.738767]  ? exc_invalid_op+0x19/0x70
-[  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
-[  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738834]  ? ret_from_fork_asm+0x1a/0x30
-[  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
-[  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
-[  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
-[  191.738966]  ? kmemleak_alloc+0x4b/0x80
-[  191.738973]  ops_execute+0x188/0x9d0 [xe]
-[  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
-[  191.739098]  ? trace_hardirqs_on+0x4d/0x60
-[  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
-
-Followed by NPD, when running some workload, since the sg was never
-actually populated but the vma is still marked for rebind when it should
-be skipped for this special EFAULT case. And from the logs it does seem
-like we hit this special EFAULT case before the explosions.
-
-Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
----
- drivers/gpu/drm/xe/xe_vm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index d664f2e418b2..1caee9cbeafb 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -692,6 +692,17 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 			xe_vm_unlock(vm);
- 			if (err)
- 				return err;
-+
-+			/*
-+			 * We might have already done the pin once already, but then had to retry
-+			 * before the re-bind happended, due some other condition in the caller, but
-+			 * in the meantime the userptr got dinged by the notifier such that we need
-+			 * to revalidate here, but this time we hit the EFAULT. In such a case
-+			 * make sure we remove ourselves from the rebind list to avoid going down in
-+			 * flames.
-+			 */
-+			if (!list_empty(&uvma->vma.combined_links.rebind))
-+				list_del_init(&uvma->vma.combined_links.rebind);
- 		} else {
- 			if (err < 0)
- 				return err;
 -- 
-2.48.1
-
+heikki
 
