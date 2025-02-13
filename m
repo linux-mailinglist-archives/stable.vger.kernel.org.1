@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-116218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DBEA347B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BD9A34670
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5845616604E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC33018828B6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AF2153828;
-	Thu, 13 Feb 2025 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F22926B0BF;
+	Thu, 13 Feb 2025 15:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBX2gzv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGPzNpkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AE826B098;
-	Thu, 13 Feb 2025 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0E626B0A5;
+	Thu, 13 Feb 2025 15:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460728; cv=none; b=J8YfkvOKNMYvaZruy/ciSyuJQlUdUHKwKfUTnlchD0rxWj6NffS5JqL35Y2R4Dxkm5AvnWEhe/oNdqFCTB4AfoF3v79yJERZ7y9v6RGDfUG/NtH3UroKKB1P94FWoTUGCZIUiekEVp6V8AA0AvPjez8wXIjKsy325Qxi7FRrEa0=
+	t=1739459917; cv=none; b=XcMCqXIYlu4tke5c+YYZZrfqe9J45OJctwBCRtsNygrhzDJbNKieRlCf9L6/vaAYSrWUBKVDmURCYe45twi3S6rC0oacITx7knHhhIDYb2J7D3K3AshCNx8duv6oNvEQUjmJyEusb1rs74uPYY8kbibRxufc+7MU5HsjuZK9OhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460728; c=relaxed/simple;
-	bh=hvmDQ8GRe/D6DqqaZBuxtdnCaxJxRNN3SLbGJRk3mmY=;
+	s=arc-20240116; t=1739459917; c=relaxed/simple;
+	bh=+sGkqxacSEr5Ohu9eaB0lZAyr3MBpdH7KU1CIGDrt74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xl9jj2hI7WGdDM54k4zZHf/Y3lsiTemqkcW7afwIfZuhBGY00q1BrgowGojlxL+pI6GRoS7JChqK0VkcPHFcR5oflU1JgrBsUUjNm15Gjr7u/H39IyaZwNMoNy/89GAefnrf6ta4BOJmatmkL3yDeIlvtqmiRmAPFIES7PVI2tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBX2gzv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F69C4CED1;
-	Thu, 13 Feb 2025 15:32:07 +0000 (UTC)
+	 MIME-Version; b=T1oJsIfLZoybAEMI3Xz0vtRMhqZQZAlam4zgIooIm6XgDqTjdhkpEKbAPmXc5D5SCwxYbBYFXYgjGIhSJ99qXVxmlViQETk2xVl9yvGIOA/RtjVXLES2L7zOV5haaa8EmIZ5zVHEEvfoDZqLYgfOiWsHtY+JdZYZ2HipIhWsVrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGPzNpkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E33C4CED1;
+	Thu, 13 Feb 2025 15:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460728;
-	bh=hvmDQ8GRe/D6DqqaZBuxtdnCaxJxRNN3SLbGJRk3mmY=;
+	s=korg; t=1739459917;
+	bh=+sGkqxacSEr5Ohu9eaB0lZAyr3MBpdH7KU1CIGDrt74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBX2gzv5oGHVIbw1pWV2wIIFbObAtXYfs9N316Q9/g0YilXebBOznTPVnNatYpPAQ
-	 kszNK3stgeOQupy1BlfbC+UDknBdtJV7e0/c3WJF+hf5ThmO83vwPgSDcV+ntAox9E
-	 TnLtp4MqWppWJqPVvj6DtJ0u7jcMO1hf5IgDdn54=
+	b=uGPzNpkgJH5Fb4vgbRUDOxaUx+sqcTFRFyIDFhaZwg4jKy/s8rVAzEeF98kLaqirl
+	 ax1H06uOEjqLzJLa0DRHElgtX/Rp+8Dw7aRpbJFSeYpA8wUyDU8af5HzM3+k4XsGB6
+	 htXarILqlqaAUisr0xZYZrLtBSxR7ExfzDJHIo3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aubrey Li <aubrey.li@linux.intel.com>,
-	Koba Ko <kobak@nvidia.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shi Liu <aurelianliu@tencent.com>
-Subject: [PATCH 6.6 195/273] ACPI: PRM: Remove unnecessary strict handler address checks
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.13 402/443] nfs: Make NFS_FSCACHE select NETFS_SUPPORT instead of depending on it
 Date: Thu, 13 Feb 2025 15:29:27 +0100
-Message-ID: <20250213142415.031840218@linuxfoundation.org>
+Message-ID: <20250213142456.119481916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aubrey Li <aubrey.li@linux.intel.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit 7f5704b6a143b8eca640cba820968e798d065e91 upstream.
+commit 90190ba1c3b11687e2c251fda1f5d9893b4bab17 upstream.
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") added unnecessary strict handler address checks,
-causing the PRM module to fail in translating memory error addresses.
+Having the NFS_FSCACHE option depend on the NETFS_SUPPORT options makes
+selecting NFS_FSCACHE impossible unless another option that additionally
+selects NETFS_SUPPORT is already selected.
 
-Both static data buffer address and ACPI parameter buffer address may
-be NULL if they are not needed, as described in section 4.1.2 PRM Handler
-Information Structure of Platform Runtime Mechanism specification [1].
+As a result, for example, being able to reach and select the NFS_FSCACHE
+option requires the CEPH_FS or CIFS option to be selected beforehand, which
+obviously doesn't make much sense.
 
-Here are two examples from real hardware:
+Let's correct this by making the NFS_FSCACHE option actually select the
+NETFS_SUPPORT option, instead of depending on it.
 
-----PRMT.dsl----
-
-- staic data address is not used
-[10Ch 0268   2]                     Revision : 0000
-[10Eh 0270   2]                       Length : 002C
-[110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-2A50D4AA109B
-[120h 0288   8]              Handler address : 0000000065CE51F4
-[128h 0296   8]           Satic Data Address : 0000000000000000
-[130h 0304   8]       ACPI Parameter Address : 000000006522A718
-
-- ACPI parameter address is not used
-[1B0h 0432   2]                     Revision : 0000
-[1B2h 0434   2]                       Length : 002C
-[1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-42E7DE1899A5
-[1C4h 0452   8]              Handler address : 0000000065C567C8
-[1CCh 0460   8]           Satic Data Address : 000000006113FB98
-[1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
-
-Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
-Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Reviewed-by: Koba Ko <kobak@nvidia.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/20250126022250.3014210-1-aubrey.li@linux.intel.com
-[ rjw: Minor changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 915cd30cdea8 ("netfs, fscache: Combine fscache with netfs")
+Cc: stable@vger.kernel.org
+Reported-by: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/nfs/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -263,9 +263,7 @@ static acpi_status acpi_platformrt_space
- 		if (!handler || !module)
- 			goto invalid_guid;
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -170,7 +170,8 @@ config ROOT_NFS
  
--		if (!handler->handler_addr ||
--		    !handler->static_data_buffer_addr ||
--		    !handler->acpi_param_buffer_addr) {
-+		if (!handler->handler_addr) {
- 			buffer->prm_status = PRM_HANDLER_ERROR;
- 			return AE_OK;
- 		}
+ config NFS_FSCACHE
+ 	bool "Provide NFS client caching support"
+-	depends on NFS_FS=m && NETFS_SUPPORT || NFS_FS=y && NETFS_SUPPORT=y
++	depends on NFS_FS
++	select NETFS_SUPPORT
+ 	select FSCACHE
+ 	help
+ 	  Say Y here if you want NFS data to be cached locally on disc through
 
 
 
