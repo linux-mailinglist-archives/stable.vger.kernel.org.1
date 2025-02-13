@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E122A345BF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748BAA3435F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF9771897D78
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60AA83A5B4F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957CA1CB31D;
-	Thu, 13 Feb 2025 15:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E84714B95A;
+	Thu, 13 Feb 2025 14:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNLoeXCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwyxHAkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E6B1AAE17;
-	Thu, 13 Feb 2025 15:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA171281349;
+	Thu, 13 Feb 2025 14:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459136; cv=none; b=uV91/S/yXwcBGxur+H8/Yc5zKzBHZT5gq45JHS906ccIexnNsm1NAh/ugKi8fCmUNRVpbx0R95gqzx+qxwOhfzUP/uA77c+sa55n47/UxFWO+rF/1uoKoTQkKEPx+9/H4e9MWdOitkg21MusjXw1kgKmrIoRDN4wwEakL4NC7YM=
+	t=1739457782; cv=none; b=VuTX18gKgSsU3iJYz5S4fVTHPRfJ6jEKyRqTxpGjeYxmyOBUpkC1LKs76qVqInJIqP2Lb57vRae0ukeVQQHPTunBXJFHmRYCtOrrk2wMy+pdlURX5wgiy/C0lU0prlkHSca1GExAughqgdkbfPLX/7xeshBsO1MrrXWwhkyuk1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459136; c=relaxed/simple;
-	bh=kPYxqQF9JQ2eLISFgWLROO3aqEQIT217cyBwgVaFMN8=;
+	s=arc-20240116; t=1739457782; c=relaxed/simple;
+	bh=yN2i9JgXpEGY3uDlwSZmGgqhrLlikBx7nkybcxlQPQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVh1ZCrZKrHYJgx/EZ9Ir5zfb9rh1lOj3IlY7Hs1vlQd2BK/ziSVYbsp2rrNASZwQxH2h513mGevXC10lpa1dweHTwkLmyC0GUSoSIy3hzke43wLNNkRvqwi2pttvfBcvB+EiBszZ2NeZ4jObW+XuAipMjVqFFKxEp0Jlnix8sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNLoeXCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2035C4CED1;
-	Thu, 13 Feb 2025 15:05:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rtwinz3yRb7+B4ACQ4z5tX9ncHhKnn5gF0sYQFRhoqfdI08nyCRO/suqHR0gEQP0H9ebFe8ylGgXDcdlG+FHRzaFboWQl64XrpR+BjlAF3nJUj+02xgfI5ecj7FVCHbiQk9KmV4029qsmrbGf53JvzfOWXXr3ub008GUVCCdIQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwyxHAkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00720C4CED1;
+	Thu, 13 Feb 2025 14:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459136;
-	bh=kPYxqQF9JQ2eLISFgWLROO3aqEQIT217cyBwgVaFMN8=;
+	s=korg; t=1739457782;
+	bh=yN2i9JgXpEGY3uDlwSZmGgqhrLlikBx7nkybcxlQPQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNLoeXCTpUZGu+tFl1iJ0XUkINSt4xl1J8jfoD9rfzwHHy2VPzHELg5DB223mg8uu
-	 PtMWw0K+nW/C5OoEPWLaZfyYi2M/W2al+uRDNfOSy+w87XpRUqpn2XiGTm9KoGCRtF
-	 a1E6FX/rwoVntlAudMabVagcMPBfrhzgpgZ6yFxw=
+	b=HwyxHAkNy8+nzC6nbI71EGiz3V3pXsc90zTgsKaeUXsZk7XuvCp7bQy7wJ0dEvCZl
+	 egxvOZw0tFlS6igb/UoQ2Wj548D2KCkXWoTjuK94FzHP0wLgHE+hjUxfzNnfHPxthE
+	 5Cc3VZVVy4e/0keYZlePLooI8kuj/xvUnD3Hm6ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 179/443] drm/i915/guc: Debug print LRC state entries only if the context is pinned
+	Basharath Hussain Khaja <basharath@couthit.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 195/422] of: address: Fix empty resource handling in __of_address_resource_bounds()
 Date: Thu, 13 Feb 2025 15:25:44 +0100
-Message-ID: <20250213142447.516481909@linuxfoundation.org>
+Message-ID: <20250213142444.069792737@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 57965269896313e1629a518d3971ad55f599b792 upstream.
+commit 15e2f65f2ecfeb8e39315522e2b5cfdc5651fc10 upstream.
 
-After the context is unpinned the backing memory can also be unpinned,
-so any accesses via the lrc_reg_state pointer can end up in unmapped
-memory. To avoid that, make sure to only access that memory if the
-context is pinned when printing its info.
+"resource->end" needs to always be equal to "resource->start + size - 1".
+The previous version of the function did not perform the "- 1" in case
+of an empty resource.
 
-v2: fix newline alignment
+Also make sure to allow an empty resource at address 0.
 
-Fixes: 28ff6520a34d ("drm/i915/guc: Update GuC debugfs to support new GuC")
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v5.15+
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250115001334.3875347-1-daniele.ceraolospurio@intel.com
-(cherry picked from commit 5bea40687c5cf2a33bf04e9110eb2e2b80222ef5)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reported-by: Basharath Hussain Khaja <basharath@couthit.com>
+Closes: https://lore.kernel.org/lkml/20250108140414.13530-1-basharath@couthit.com/
+Fixes: 1a52a094c2f0 ("of: address: Unify resource bounds overflow checking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250120-of-address-overflow-v1-1-dd68dbf47bce@linutronix.de
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/of/address.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -5511,12 +5511,20 @@ static inline void guc_log_context(struc
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -200,17 +200,15 @@ static u64 of_bus_pci_map(__be32 *addr,
+ 
+ static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
  {
- 	drm_printf(p, "GuC lrc descriptor %u:\n", ce->guc_id.id);
- 	drm_printf(p, "\tHW Context Desc: 0x%08x\n", ce->lrc.lrca);
--	drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
--		   ce->ring->head,
--		   ce->lrc_reg_state[CTX_RING_HEAD]);
--	drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
--		   ce->ring->tail,
--		   ce->lrc_reg_state[CTX_RING_TAIL]);
-+	if (intel_context_pin_if_active(ce)) {
-+		drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
-+			   ce->ring->head,
-+			   ce->lrc_reg_state[CTX_RING_HEAD]);
-+		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
-+			   ce->ring->tail,
-+			   ce->lrc_reg_state[CTX_RING_TAIL]);
-+		intel_context_unpin(ce);
-+	} else {
-+		drm_printf(p, "\t\tLRC Head: Internal %u, Memory not pinned\n",
-+			   ce->ring->head);
-+		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory not pinned\n",
-+			   ce->ring->tail);
-+	}
- 	drm_printf(p, "\t\tContext Pin Count: %u\n",
- 		   atomic_read(&ce->pin_count));
- 	drm_printf(p, "\t\tGuC ID Ref Count: %u\n",
+-	u64 end = start;
+-
+ 	if (overflows_type(start, r->start))
+ 		return -EOVERFLOW;
+-	if (size && check_add_overflow(end, size - 1, &end))
+-		return -EOVERFLOW;
+-	if (overflows_type(end, r->end))
+-		return -EOVERFLOW;
+ 
+ 	r->start = start;
+-	r->end = end;
++
++	if (!size)
++		r->end = wrapping_sub(typeof(r->end), r->start, 1);
++	else if (size && check_add_overflow(r->start, size - 1, &r->end))
++		return -EOVERFLOW;
+ 
+ 	return 0;
+ }
 
 
 
