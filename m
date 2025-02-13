@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EEAA3454D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9FDA342C9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B511F3B47A8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C809916BEB0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C021526B080;
-	Thu, 13 Feb 2025 15:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631CC2222D4;
+	Thu, 13 Feb 2025 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYLCoIv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOELI+gB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD84201113;
-	Thu, 13 Feb 2025 15:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1714B95A;
+	Thu, 13 Feb 2025 14:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458895; cv=none; b=JVpBYeNNk0BWTE7agFNWHE45vnVDVlUyaF/V8ZNP281XPrdl8Oxqz8byu8Ve3xU7KfXTr2OF7FqzQ1QDFrPmY2TiyZSbEAEPKmKECCvMKoP+8p32QzEpMP1I/z8xBvdromKYr0Xs4bxRYrWpy9IsWJH60K+1guSAY6nQOM2mG0c=
+	t=1739457546; cv=none; b=JyID0l5lVlMs7Tgt3loa1VY31oDvWzhXgpkVFpndN2EXG6zimwOxRv+9t3B3iFHOOUmurZMs6lBEaOM8JlS2C6GfVfmWxldNk+dkls35Lqvnd0fFpMuCSJ+I9/gm2B/d9lM1jYoic26tPOvEMLai41OfupPI/iK/xcPHSU1+sVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458895; c=relaxed/simple;
-	bh=OI9vxFP+iuZwWrZ7U0WM79dQmG6Tr0bBU23ruDJLcQc=;
+	s=arc-20240116; t=1739457546; c=relaxed/simple;
+	bh=Z2IxAh4pYGcDRXJMbrAUj1ctWO4CVnYivrGDLYpkWfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sC+bHKeiSgmDq4MH9lNC+K9s6DTHjbIgqu9//B31XWAo8EwJEqPWmw86XNXXpxQhFNw86EIFRL2CjCLjPIF5UkblREjOt39Sb00eYOfTTyMIw3j+NJo3NMBFTFdzldFU6C5t95X/3le0c9XwhN46iNKKpUJ9eLv3MBa4Ca4lw48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYLCoIv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23E3C4CED1;
-	Thu, 13 Feb 2025 15:01:34 +0000 (UTC)
+	 MIME-Version; b=AQQS04+zzBsoQliGX2QzQNHf3eoyBRq1nd4YfFtR9I4mt3LGwUUm1zSdoZexSINffOOdQLX8CgyLCelS6c34pbjk67/7sfZHNgO7pA/PAck2KgL3MN+QfO7DgRI5wol/54F7oGl3ADM3GVlUFLrMMSVFsQg02Q82sS7o+I+sEzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOELI+gB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FF1C4CED1;
+	Thu, 13 Feb 2025 14:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458895;
-	bh=OI9vxFP+iuZwWrZ7U0WM79dQmG6Tr0bBU23ruDJLcQc=;
+	s=korg; t=1739457545;
+	bh=Z2IxAh4pYGcDRXJMbrAUj1ctWO4CVnYivrGDLYpkWfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYLCoIv5lII5pkLci+pktUseLNjqh0kHPo1hXK7z67gYM4xLGu9Gt+pfJK8lU7iIL
-	 HoWA6t9UL2IiHKDfzVip0+Q2Z4ncgCUpTckYzKdBTfDRCD8Ux3NtUcmwItzXN5YXuy
-	 QO2HH67VazuNIIjvUOFls72VHq7uYuIJVNcbv9SM=
+	b=AOELI+gBYi6HD8ni3lwDOpItH2vhlqR66xVADBkVYF+xh+PMP6g/NQS1mCKqAX8ZZ
+	 4MLFY3+x06pXszzjkTPLnncVLvm6NVULIe9hWsBMIKDuOiEmMc3uFgLKuAGhJP/PU1
+	 xtpvOM7YVvOlW6SQbKQT1RWbdKj1JoC1aOv4pUeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Farblos <farblos@vodafonemail.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Stas Sergeev <stsp2@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 109/443] gpu: drm_dp_cec: fix broken CEC adapter properties check
+Subject: [PATCH 6.12 125/422] tun: revert fix group permission check
 Date: Thu, 13 Feb 2025 15:24:34 +0100
-Message-ID: <20250213142444.816242464@linuxfoundation.org>
+Message-ID: <20250213142441.372416572@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 6daaae5ff7f3b23a2dacc9c387ff3d4f95b67cad ]
+[ Upstream commit a70c7b3cbc0688016810bb2e0b9b8a0d6a530045 ]
 
-If the hotplug detect of a display is low for longer than one second
-(configurable through drm_dp_cec_unregister_delay), then the CEC adapter
-is unregistered since we assume the display was disconnected. If the
-HPD went low for less than one second, then we check if the properties
-of the CEC adapter have changed, since that indicates that we actually
-switch to new hardware and we have to unregister the old CEC device and
-register a new one.
+This reverts commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3.
 
-Unfortunately, the test for changed properties was written poorly, and
-after a new CEC capability was added to the CEC core code the test always
-returned true (i.e. the properties had changed).
+The blamed commit caused a regression when neither tun->owner nor
+tun->group is set. This is intended to be allowed, but now requires
+CAP_NET_ADMIN.
 
-As a result the CEC device was unregistered and re-registered for every
-HPD toggle. If the CEC remote controller integration was also enabled
-(CONFIG_MEDIA_CEC_RC was set), then the corresponding input device was
-also unregistered and re-registered. As a result the input device in
-/sys would keep incrementing its number, e.g.:
+Discussion in the referenced thread pointed out that the original
+issue that prompted this patch can be resolved in userspace.
 
-/sys/devices/pci0000:00/0000:00:08.1/0000:e7:00.0/rc/rc0/input20
+The relaxed access control may also make a device accessible when it
+previously wasn't, while existing users may depend on it to not be.
 
-Since short HPD toggles are common, the number could over time get into
-the thousands.
+This is a clean pure git revert, except for fixing the indentation on
+the gid_valid line that checkpatch correctly flagged.
 
-While not a serious issue (i.e. nothing crashes), it is not intended
-to work that way.
-
-This patch changes the test so that it only checks for the single CEC
-capability that can actually change, and it ignores any other
-capabilities, so this is now safe as well if new caps are added in
-the future.
-
-With the changed test the bit under #ifndef CONFIG_MEDIA_CEC_RC can be
-dropped as well, so that's a nice cleanup.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reported-by: Farblos <farblos@vodafonemail.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 2c6d1fffa1d9 ("drm: add support for DisplayPort CEC-Tunneling-over-AUX")
-Tested-by: Farblos <farblos@vodafonemail.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/361bb03d-1691-4e23-84da-0861ead5dbdc@xs4all.nl
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 3ca459eaba1b ("tun: fix group permission check")
+Link: https://lore.kernel.org/netdev/CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Stas Sergeev <stsp2@yandex.ru>
+Link: https://patch.msgid.link/20250204161015.739430-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_cec.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/net/tun.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_cec.c b/drivers/gpu/drm/display/drm_dp_cec.c
-index 007ceb281d00d..56a4965e518cc 100644
---- a/drivers/gpu/drm/display/drm_dp_cec.c
-+++ b/drivers/gpu/drm/display/drm_dp_cec.c
-@@ -311,16 +311,6 @@ void drm_dp_cec_attach(struct drm_dp_aux *aux, u16 source_physical_address)
- 	if (!aux->transfer)
- 		return;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 6c24a9ce6c155..fae1a0ab36bdf 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -574,18 +574,14 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
+ }
  
--#ifndef CONFIG_MEDIA_CEC_RC
--	/*
--	 * CEC_CAP_RC is part of CEC_CAP_DEFAULTS, but it is stripped by
--	 * cec_allocate_adapter() if CONFIG_MEDIA_CEC_RC is undefined.
--	 *
--	 * Do this here as well to ensure the tests against cec_caps are
--	 * correct.
--	 */
--	cec_caps &= ~CEC_CAP_RC;
--#endif
- 	cancel_delayed_work_sync(&aux->cec.unregister_work);
+-static inline bool tun_capable(struct tun_struct *tun)
++static inline bool tun_not_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
  
- 	mutex_lock(&aux->cec.lock);
-@@ -337,7 +327,9 @@ void drm_dp_cec_attach(struct drm_dp_aux *aux, u16 source_physical_address)
- 		num_las = CEC_MAX_LOG_ADDRS;
+-	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
+-		return 1;
+-	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
+-		return 1;
+-	if (gid_valid(tun->group) && in_egroup_p(tun->group))
+-		return 1;
+-	return 0;
++	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
++		(gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
++		!ns_capable(net->user_ns, CAP_NET_ADMIN);
+ }
  
- 	if (aux->cec.adap) {
--		if (aux->cec.adap->capabilities == cec_caps &&
-+		/* Check if the adapter properties have changed */
-+		if ((aux->cec.adap->capabilities & CEC_CAP_MONITOR_ALL) ==
-+		    (cec_caps & CEC_CAP_MONITOR_ALL) &&
- 		    aux->cec.adap->available_log_addrs == num_las) {
- 			/* Unchanged, so just set the phys addr */
- 			cec_s_phys_addr(aux->cec.adap, source_physical_address, false);
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2782,7 +2778,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (!tun_capable(tun))
++		if (tun_not_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
 -- 
 2.39.5
 
