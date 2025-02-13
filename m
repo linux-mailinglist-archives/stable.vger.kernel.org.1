@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E11A34801
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFF3A3471F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 085F2162900
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C4C3AB59D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B501531DB;
-	Thu, 13 Feb 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33B073176;
+	Thu, 13 Feb 2025 15:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knl/aRy2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Quy0nwcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DF726B087;
-	Thu, 13 Feb 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4D35961;
+	Thu, 13 Feb 2025 15:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460871; cv=none; b=IiY6En5+PP5Eu11iyADtfpUnhfccAR70svLt5RTgxZ6Nl8Ds8SUvMS23uEpioR/v8nXrM4pOeeu+LqgnC26khwxCtYc8S7K5QE0Gf+277xE44znMDvxVH4avNNImv56LHy+0dca2LwgSSM5ZGNtoEI6AHzxPdVMXY8mP1Z3aQAs=
+	t=1739460053; cv=none; b=e3+xDHFa8PnNTO8JtuLLrWUlVlt0Mr33qyCmobo7FUTQlP9Kup2uLXUyGp2+wxAxs/FC2NE6u6ZoQKlJ1h5cm7ni5vr0xGyoUaRQ4MB38CMu8mJbRW/OpgGp7Q4T8Huu3ZDOBcwEAvSILzzo3RVkHeryrk1wdRt8A1VkL2dwSko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460871; c=relaxed/simple;
-	bh=dwQHhRUjl+wF6tS0zGHf3rcy/DWrVuLDW0d/W4IXUC8=;
+	s=arc-20240116; t=1739460053; c=relaxed/simple;
+	bh=MqP5DaJPsAYuAiUiibbqYpgAghgZhiYKWjK2B+z3JxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttlmHJvcaXngMiQP/7//ZLQYlsfqauY/1ATYmLA2nhNsR/AEJ6E9/kehK41idkDOB+gMW4Eh0wzMMU5KS5Rn0di/SGuoaQ14yzQof3aQ9vZCyqO3L8v9iFQUPzlloutM9Vfr3pl2Fywm3aqpKFaIyzEIuJMojzq6WPoAdDfUzHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knl/aRy2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092F9C4CED1;
-	Thu, 13 Feb 2025 15:34:30 +0000 (UTC)
+	 MIME-Version; b=UlVoO77JcfZULTeb3DpAn6JnHALc+cI2Es4T2I1j/KGkId4wjvsx4gmnpRDKwyCWRA9oG72Kwhy/9CJsNSNiqbtewPeD1qWBFX/f8/GwDNZRm5Y8SqGYQD1RzURX5W7QAw+tpC8QSjghMOGL5Tc9LECCs5fzNymsFZzA8K9NWMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Quy0nwcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25401C4CED1;
+	Thu, 13 Feb 2025 15:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460871;
-	bh=dwQHhRUjl+wF6tS0zGHf3rcy/DWrVuLDW0d/W4IXUC8=;
+	s=korg; t=1739460053;
+	bh=MqP5DaJPsAYuAiUiibbqYpgAghgZhiYKWjK2B+z3JxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knl/aRy2g900KPcDMohGO9b6uqTG4vp68WK3L6Z8h2N4EbrhzhyHyLJqfDQMF1HV1
-	 mYI3LvmfNBqVOmHFfuNWOk9DMuIZkqkQQSX00QlGL6dhDOJLeu9FBNNwm5Z7oWIz0K
-	 X96Ate2S2q2lcpgcZiBV4c6LQGtCeSc5Wa4//Vws=
+	b=Quy0nwcvr5phjTICwuSLl8dvzR0GYskMLwkRgMqyG0rhVmdp4blGoUv2yTreR59yg
+	 XRoWyx8+jfOT5uNumKKsFvC/nITcDhZ7uqYpLR6TV8BMxXgUy4Jp2DqtJA/PIj0GSL
+	 oIM2wSEbM4pjRaVPeL+UeRfy36dc7mCAai1MEaGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 235/273] nilfs2: fix possible int overflows in nilfs_fiemap()
-Date: Thu, 13 Feb 2025 15:30:07 +0100
-Message-ID: <20250213142416.720921132@linuxfoundation.org>
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 443/443] fs: fix adding security options to statmount.mnt_opt
+Date: Thu, 13 Feb 2025 15:30:08 +0100
+Message-ID: <20250213142457.708518801@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 6438ef381c183444f7f9d1de18f22661cba1e946 upstream.
+commit 5eb987105357cb7cfa7cf3b1e2f66d5c0977e412 upstream.
 
-Since nilfs_bmap_lookup_contig() in nilfs_fiemap() calculates its result
-by being prepared to go through potentially maxblocks == INT_MAX blocks,
-the value in n may experience an overflow caused by left shift of blkbits.
+Prepending security options was made conditional on sb->s_op->show_options,
+but security options are independent of sb options.
 
-While it is extremely unlikely to occur, play it safe and cast right hand
-expression to wider type to mitigate the issue.
-
-Found by Linux Verification Center (linuxtesting.org) with static analysis
-tool SVACE.
-
-Link: https://lkml.kernel.org/r/20250124222133.5323-1-konishi.ryusuke@gmail.com
-Fixes: 622daaff0a89 ("nilfs2: fiemap support")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 056d33137bf9 ("fs: prepend statmount.mnt_opts string with security_sb_mnt_opts()")
+Fixes: f9af549d1fd3 ("fs: export mount options via statmount()")
+Cc: stable@vger.kernel.org # v6.11
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/r/20250129151253.33241-1-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/namespace.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1267,7 +1267,7 @@ int nilfs_fiemap(struct inode *inode, st
- 			if (size) {
- 				if (phys && blkphy << blkbits == phys + size) {
- 					/* The current extent goes on */
--					size += n << blkbits;
-+					size += (u64)n << blkbits;
- 				} else {
- 					/* Terminate the current extent */
- 					ret = fiemap_fill_next_extent(
-@@ -1280,14 +1280,14 @@ int nilfs_fiemap(struct inode *inode, st
- 					flags = FIEMAP_EXTENT_MERGED;
- 					logical = blkoff << blkbits;
- 					phys = blkphy << blkbits;
--					size = n << blkbits;
-+					size = (u64)n << blkbits;
- 				}
- 			} else {
- 				/* Start a new extent */
- 				flags = FIEMAP_EXTENT_MERGED;
- 				logical = blkoff << blkbits;
- 				phys = blkphy << blkbits;
--				size = n << blkbits;
-+				size = (u64)n << blkbits;
- 			}
- 			blkoff += n;
- 		}
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5037,30 +5037,29 @@ static int statmount_mnt_opts(struct kst
+ {
+ 	struct vfsmount *mnt = s->mnt;
+ 	struct super_block *sb = mnt->mnt_sb;
++	size_t start = seq->count;
+ 	int err;
+ 
+-	if (sb->s_op->show_options) {
+-		size_t start = seq->count;
+-
+-		err = security_sb_show_options(seq, sb);
+-		if (err)
+-			return err;
++	err = security_sb_show_options(seq, sb);
++	if (err)
++		return err;
+ 
++	if (sb->s_op->show_options) {
+ 		err = sb->s_op->show_options(seq, mnt->mnt_root);
+ 		if (err)
+ 			return err;
++	}
+ 
+-		if (unlikely(seq_has_overflowed(seq)))
+-			return -EAGAIN;
++	if (unlikely(seq_has_overflowed(seq)))
++		return -EAGAIN;
+ 
+-		if (seq->count == start)
+-			return 0;
++	if (seq->count == start)
++		return 0;
+ 
+-		/* skip leading comma */
+-		memmove(seq->buf + start, seq->buf + start + 1,
+-			seq->count - start - 1);
+-		seq->count--;
+-	}
++	/* skip leading comma */
++	memmove(seq->buf + start, seq->buf + start + 1,
++		seq->count - start - 1);
++	seq->count--;
+ 
+ 	return 0;
+ }
 
 
 
