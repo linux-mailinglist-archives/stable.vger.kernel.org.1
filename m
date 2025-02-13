@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-116214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7163EA34836
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:45:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36418A3449E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB103A37C9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703DB3B0DA2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C7614A605;
-	Thu, 13 Feb 2025 15:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D5C1AAA29;
+	Thu, 13 Feb 2025 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJHYK6Ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As+W+i6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7B713C816;
-	Thu, 13 Feb 2025 15:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFC126B086;
+	Thu, 13 Feb 2025 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460714; cv=none; b=bcBqS1vPkZAjltHXaGA7YsyqFMZQ+M+CXXV7SoMeqlpQn4fOmu1QMH4ob1raSNZtS4iid6WV7DBY8nT0vreXtn5ef4tSfGhiX5aRxoXqDJi2QVP8guWfX7D3ZRgxjqRnwhY1kIpSqPbyEuIwgOTWpJO7RTCKKv3xrqPJAX239qc=
+	t=1739458485; cv=none; b=RvMJmvRO0urdLQkwnJM6o0JBhyN4D4HIL3z4ioEKfl1Ezlwyfu9bfjBKt3NgxrRGJLKetsoXwV2fglIOSfT0HQq9gRgaCcIFqQJ30uefyeeDYVz9BXqpiKv9xKOGrXLghOcUjZ97W6G2Y4/NtotI/wSwsA6S8DFx6F3Eemzx4sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460714; c=relaxed/simple;
-	bh=PL7nnoOMgrTiTeIOvK0OlSKzn0gwQRE19/H+VyAR4a4=;
+	s=arc-20240116; t=1739458485; c=relaxed/simple;
+	bh=g+eBZ7QnxjRrnlZkG+NRe9s4dns3nQSJKWRmwrMUtZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBeeZoKqQJJCmQziiFufVgl3jk9fQkny4W6NvXYC7X3FAnLFNtvKelte+aF6NNZWQxpGRQ2NCBQvdy8BL6p0Ep9WVacMRiLG5+ncdWYpzA3U/aFniiTpdsozt3o7sa/XUk63lUR63ZxCv+0nCO7xc1OKOFcitYtMwNSE6Wkt4VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJHYK6Ff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8209C4CED1;
-	Thu, 13 Feb 2025 15:31:53 +0000 (UTC)
+	 MIME-Version; b=FKFyKeSAs/51jO5Cx7FbsygbdPyAXBvotqWArsho2havUSP828jIvcxsrww4YviG805TfH7OgL9Z39KJ373Zxfgro9vZBfMuVzLHIgtlgZk8ZFgdVIT9vaqTDMKLs/+lr4TEIGjBmu7NdaH4OTi/siRpUBRBwpdyerIqzz24Yc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As+W+i6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21A8C4CED1;
+	Thu, 13 Feb 2025 14:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460714;
-	bh=PL7nnoOMgrTiTeIOvK0OlSKzn0gwQRE19/H+VyAR4a4=;
+	s=korg; t=1739458485;
+	bh=g+eBZ7QnxjRrnlZkG+NRe9s4dns3nQSJKWRmwrMUtZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJHYK6FfAi6ddFoV4RaDAEtAaCzRVoH0/h9ePbEgjRMgyiFNiR2r7Yp2qwFjpOBFx
-	 xO7v984CJG+6ysyDugrfVdWgqaWYpLey5eiWITCgjLn1ayY9qCjz+WH8DgunT/3qp7
-	 ZQmaGO+DXgpeao+AKgGaubMQCz/Xxz7dxYO33iLE=
+	b=As+W+i6Tr2vCYC208C5LiQojTCDnrupQml2T8fb25jPod2vm4bk28+K2eW6WBmt9a
+	 2FFslZPkfHiBQgXdt1K3jREM62uEAwUh3LiAcv0OrfyEy2NwFAUUXQf7DrI6tk2riE
+	 KOXRMmKJiS9D2NIVGDrhBew3ETdskADCpvxRSduE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Ivy Huang <yijuh@nvidia.com>,
-	Brad Griffis <bgriffis@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.6 191/273] arm64: tegra: Disable Tegra234 sce-fabric node
+	Yu Kuai <yukuai3@huawei.com>,
+	Coly Li <colyli@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.12 414/422] md: Fix linear_set_limits()
 Date: Thu, 13 Feb 2025 15:29:23 +0100
-Message-ID: <20250213142414.871970156@linuxfoundation.org>
+Message-ID: <20250213142452.540516001@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit a5e6fc0a10fe280989f1367a3b4f8047c7d00ea6 upstream.
+commit a572593ac80e51eb69ecede7e614289fcccdbf8d upstream.
 
-Access to safety cluster engine (SCE) fabric registers was blocked
-by firewall after the introduction of Functional Safety Island in
-Tegra234. After that, any access by software to SCE registers is
-correctly resulting in the internal bus error. However, when CPUs
-try accessing the SCE-fabric registers to print error info,
-another firewall error occurs as the fabric registers are also
-firewall protected. This results in a second error to be printed.
-Disable the SCE fabric node to avoid printing the misleading error.
-The first error info will be printed by the interrupt from the
-fabric causing the actual access.
+queue_limits_cancel_update() must only be called if
+queue_limits_start_update() is called first. Remove the
+queue_limits_cancel_update() call from linear_set_limits() because
+there is no corresponding queue_limits_start_update() call.
 
-Cc: stable@vger.kernel.org
-Fixes: 302e154000ec ("arm64: tegra: Add node for CBB 2.0 on Tegra234")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Ivy Huang <yijuh@nvidia.com>
-Reviewed-by: Brad Griffis <bgriffis@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20241218000737.1789569-3-yijuh@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+This bug was discovered by annotating all mutex operations with clang
+thread-safety attributes and by building the kernel with clang and
+-Wthread-safety.
+
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Coly Li <colyli@kernel.org>
+Cc: Mike Snitzer <snitzer@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Fixes: 127186cfb184 ("md: reintroduce md-linear")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250129225636.2667932-1-bvanassche@acm.org
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md-linear.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -1709,7 +1709,7 @@
- 			compatible = "nvidia,tegra234-sce-fabric";
- 			reg = <0x0 0xb600000 0x0 0x40000>;
- 			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
--			status = "okay";
-+			status = "disabled";
- 		};
+--- a/drivers/md/md-linear.c
++++ b/drivers/md/md-linear.c
+@@ -76,10 +76,8 @@ static int linear_set_limits(struct mdde
+ 	lim.max_write_zeroes_sectors = mddev->chunk_sectors;
+ 	lim.io_min = mddev->chunk_sectors << 9;
+ 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
+-	if (err) {
+-		queue_limits_cancel_update(mddev->gendisk->queue);
++	if (err)
+ 		return err;
+-	}
  
- 		rce-fabric@be00000 {
+ 	return queue_limits_set(mddev->gendisk->queue, &lim);
+ }
 
 
 
