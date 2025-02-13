@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B413CA3472C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75A2A347A4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77DD03AE6B8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8622E1892BBB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F5E26B0BF;
-	Thu, 13 Feb 2025 15:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFD815A868;
+	Thu, 13 Feb 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E41uhe6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIqLnoU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F82626B0A5;
-	Thu, 13 Feb 2025 15:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EFE70805;
+	Thu, 13 Feb 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459835; cv=none; b=Ta5h7lhSe3ol11yLOx+z13s0uCqccz+tahCqHZZjXFtE4fGXF5P746K8DsjNt/PGkrMThd3lFbQ0+8BHH+N3hlWExLRvCah10IrhLYlHyNGkLD0jb0XAjJPu/VkdtA9A1RRLgBqzV4rCa7Ve2c+nxpDdeQY0oYlb4BEqlXO1qf8=
+	t=1739460646; cv=none; b=pXWfGoFG5eS1NkDeKJQb2nxNC/TylGnN3KX1MSAQAbsxIqyJoWFklMdoYTHJwwhUi2IR+XKTOAubmUgNcFsu3UgGsY/Hn0ZYAI0OXd91fmc0n8jz4+jYEUGVjnbQyHXh21P3DLMQSsxS2xR0bkfa1ANRj1a9ZHf/9mXTeCznVc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459835; c=relaxed/simple;
-	bh=GFtV5lYug9R6fue8oPsafpq3EFlJPs1RpGDAAy2cNzQ=;
+	s=arc-20240116; t=1739460646; c=relaxed/simple;
+	bh=ne7bMfh14Svh2DHsb6eL5ppGexxFV8PgKKm9Y3cxhso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsAONfpgHnVUDtch0y4Z4d56yHV6KFGO2nJRm6/LS0DL/SmZMMoaamwOq92WQQCZCrP0A5sUaFFMdGK+5gpNCNeylpZh+SPCUREcJDxxZLi2W5zSOgLLVPx7f6yQqpc4Zs3eAE6Ai56G7nnWIVqaQ8DwyA0cKLz9eeBXsOnh/ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E41uhe6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E114C4CED1;
-	Thu, 13 Feb 2025 15:17:14 +0000 (UTC)
+	 MIME-Version; b=HJM/lkqoU4eOlgaUwwwrtBce4AiRT/3oqOqunqsvCtQc08F0MBNnv16TgdFbBshInhC0ikiIOsqecapuQRSGG2I7xMyFHmaApq1slIBc7Fdp8higiSxhHKWBevA7UOs1Figj+iUcuR7mWNJFBRwsZYhxiVpN7dF86mPsqchvPk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIqLnoU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CED4C4CED1;
+	Thu, 13 Feb 2025 15:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459835;
-	bh=GFtV5lYug9R6fue8oPsafpq3EFlJPs1RpGDAAy2cNzQ=;
+	s=korg; t=1739460646;
+	bh=ne7bMfh14Svh2DHsb6eL5ppGexxFV8PgKKm9Y3cxhso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E41uhe6nhHmg6o2Eb9vBJwEB59okhN1MLZ+M7vk3LSmfeZxhv+i3cF6SxpIla+wEq
-	 9VFciZRhXFzSZwDJOZw5hlXQ/G62YmuszCpXP/07oceTqETR9qxtqoeENScVKsx1JC
-	 T6w9u8ZNqgzUSjI8gV9zbz8Tr9oPx8s+1MfcxZ1Y=
+	b=aIqLnoU3h633QxC+AAB55HUlcwnTorg2uf1Nzo4DQLgHwi69vdGEJnH0rZb5ydP6+
+	 MK87x4JqFxuDeVWCY5rP90csrC2XXSYi4PM3lGqIQbvJX1wLvQl/IfAcdCYNpvVXMK
+	 0aWbsCve1a/Jox8yN6VEGollgFnwDR9ivaKdYbAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.13 346/443] iio: dac: ad3552r-hs: clear reset status flag
-Date: Thu, 13 Feb 2025 15:28:31 +0100
-Message-ID: <20250213142453.972671775@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 140/273] usbnet: ipheth: break up NCM header size computation
+Date: Thu, 13 Feb 2025 15:28:32 +0100
+Message-ID: <20250213142412.870064410@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 012b8276f08a67b9f2e2fd0f35363ae4a75e5267 upstream.
+commit efcbc678a14be268040ffc1fa33c98faf2d55141 upstream.
 
-Clear reset status flag, to keep error status register
-clean after reset (ad3552r manual, rev B table 38).
+Originally, the total NCM header size was computed as the sum of two
+vaguely labelled constants. While accurate, it wasn't particularly clear
+where they were coming from.
 
-Reset error flag was left to 1, so debugging registers, the
-"Error Status Register" was dirty (0x01). It is important
-to clear this bit, so if there is any reset event over normal
-working mode, it is possible to detect it.
+Use sizes of existing NCM structs where available. Define the total
+NDP16 size based on the maximum amount of DPEs that can fit into the
+iOS-specific fixed-size header.
 
-Fixes: 0b4d9fe58be8 ("iio: dac: ad3552r: add high-speed platform driver")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-2-2dac02f04638@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This change does not fix any particular issue. Rather, it introduces
+intermediate constants that will simplify subsequent commits.
+It should also make it clearer for the reader where the constant values
+come from.
+
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3552r-hs.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/usb/ipheth.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -329,6 +329,12 @@ static int ad3552r_hs_setup(struct ad355
- 		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
- 			 AD3552R_ID, id);
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 069979e2bb6e..03249208612e 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -61,7 +61,18 @@
+ #define IPHETH_USBINTF_PROTO    1
  
-+	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
-+	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
-+				      AD3552R_MASK_RESET_STATUS, 1);
-+	if (ret)
-+		return ret;
-+
- 	ret = st->data->bus_reg_write(st->back,
- 				      AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
- 				      0, 1);
+ #define IPHETH_IP_ALIGN		2	/* padding at front of URB */
+-#define IPHETH_NCM_HEADER_SIZE  (12 + 96) /* NCMH + NCM0 */
++/* On iOS devices, NCM headers in RX have a fixed size regardless of DPE count:
++ * - NTH16 (NCMH): 12 bytes, as per CDC NCM 1.0 spec
++ * - NDP16 (NCM0): 96 bytes, of which
++ *    - NDP16 fixed header: 8 bytes
++ *    - maximum of 22 DPEs (21 datagrams + trailer), 4 bytes each
++ */
++#define IPHETH_NDP16_MAX_DPE	22
++#define IPHETH_NDP16_HEADER_SIZE (sizeof(struct usb_cdc_ncm_ndp16) + \
++				  IPHETH_NDP16_MAX_DPE * \
++				  sizeof(struct usb_cdc_ncm_dpe16))
++#define IPHETH_NCM_HEADER_SIZE	(sizeof(struct usb_cdc_ncm_nth16) + \
++				 IPHETH_NDP16_HEADER_SIZE)
+ #define IPHETH_TX_BUF_SIZE      ETH_FRAME_LEN
+ #define IPHETH_RX_BUF_SIZE_LEGACY (IPHETH_IP_ALIGN + ETH_FRAME_LEN)
+ #define IPHETH_RX_BUF_SIZE_NCM	65536
+-- 
+2.48.1
+
 
 
 
