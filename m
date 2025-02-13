@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7356A34461
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E133A3468A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B91E33AEDC7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32B4A188D957
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C392B2222C1;
-	Thu, 13 Feb 2025 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95411422D8;
+	Thu, 13 Feb 2025 15:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMMUYR7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8gtgeE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E03823A9AA;
-	Thu, 13 Feb 2025 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A503FB3B;
+	Thu, 13 Feb 2025 15:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458320; cv=none; b=MHnf3dCx3tjyNhBoo/L9pupOFDdYryyMYBYhJ18OZvMQqNNEUDBvefkkpnEn4yMouB19RGfcDzZAQPexOLGdU8mf5ROwDjspVrOt4ruJoJPGxMaCzaEhXLQp/j01N9kKpPiLHP/yjwb8XG3bQmSESnCXDIz6z8K9kvUFXo+Oh6c=
+	t=1739459842; cv=none; b=ABym46L9NnvLPcgY+2XZDTSnleEgVLijtFgc2PwpW1unEk8z/2woFpPXooXYPu3FygfgNjuTsZD9RpRrvY2mJLsG2ZcEJ1lfzDs1XjGHdz/54MEzd7sbIAMzCcVhTr0E3f6iwmtrWOxCrXVvkvH3eFpiErfmF+uBtaQ8M2PgY1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458320; c=relaxed/simple;
-	bh=M95MpAwbEb5z4/T8LLHRmYR4DtPQqZvs8ZI/hrAvqyg=;
+	s=arc-20240116; t=1739459842; c=relaxed/simple;
+	bh=q9xqjp/z9uUiYN5APOT8EWhStaT05SyDBPl9xKMPvrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxZzwH+Jsm5qx1WyVug0/n+CpsOUo50lTGAXd4bsWGXzNgn7giKnNSIDnUCaqyCSwi2mU70emVTPkgcb2bZJGmiG0Zxev5DPtoZQx87RQE2V/cHS3TmYgsJ0fbmVdsM3YskMmgSw5X65EehRmrt5uQ56ZSf2msUwlUcjOys2A1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMMUYR7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A6DC4CED1;
-	Thu, 13 Feb 2025 14:51:59 +0000 (UTC)
+	 MIME-Version; b=A8ZGLRTOeWI8mUW/7Kt5g1kb9e2Vm9K2qxmI8DASDC6G6eIg/jxvzoh3xsVi0KwRooGOweCGzDA+13U8cQw/TIeihs94WzaWvkwgEnGrAPtKU9PSp81Jj2LpHI42cTzuKYxbMlUx1TvcjNrfcTckcy7RNfAi25ay5UE8daZvF98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8gtgeE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEB2C4CED1;
+	Thu, 13 Feb 2025 15:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458320;
-	bh=M95MpAwbEb5z4/T8LLHRmYR4DtPQqZvs8ZI/hrAvqyg=;
+	s=korg; t=1739459841;
+	bh=q9xqjp/z9uUiYN5APOT8EWhStaT05SyDBPl9xKMPvrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMMUYR7dZYNi00jBujWcGJgNNClfO+ZtY+0nHqJhf0ow4Mu6Xi5Ai4wVRBARacuM7
-	 dU4wnWhmk0nLpmX0X5y7ioobcu7/ChN1izVRAdBPVjT2RFHMkK3gCJ3mgmQ+EJll7q
-	 REJCPlPI29H9fd/2MDdjYqZHGdyYSkLgYx3VtUE4=
+	b=n8gtgeE70HCpiNjDkWBSoK5AU3nCg41YJd8fsbRHgD0hzE4ZDFhjce2fv1Id5Gond
+	 dcRwsp1RZr3t2X624CsyvccfItZiuj4CfxujmDRdfX+QrqmwLH1J1vmE870UG/Eu09
+	 tEeE5N4XtU8/YC9LudgSie8I4dsXdKaCpKJr7yVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 364/422] nilfs2: fix possible int overflows in nilfs_fiemap()
+	Ian Kalinowski <ikalinowski@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.13 348/443] iommu/tegra241-cmdqv: Read SMMU IDR1.CMDQS instead of hardcoding
 Date: Thu, 13 Feb 2025 15:28:33 +0100
-Message-ID: <20250213142450.596062583@linuxfoundation.org>
+Message-ID: <20250213142454.049138184@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 6438ef381c183444f7f9d1de18f22661cba1e946 upstream.
+commit e94dc6ddda8dd3770879a132d577accd2cce25f9 upstream.
 
-Since nilfs_bmap_lookup_contig() in nilfs_fiemap() calculates its result
-by being prepared to go through potentially maxblocks == INT_MAX blocks,
-the value in n may experience an overflow caused by left shift of blkbits.
+The hardware limitation "max=19" actually comes from SMMU Command Queue.
+So, it'd be more natural for tegra241-cmdqv driver to read it out rather
+than hardcoding it itself.
 
-While it is extremely unlikely to occur, play it safe and cast right hand
-expression to wider type to mitigate the issue.
+This is not an issue yet for a kernel on a baremetal system, but a guest
+kernel setting the queue base/size in form of IPA/gPA might result in a
+noncontiguous queue in the physical address space, if underlying physical
+pages backing up the guest RAM aren't contiguous entirely: e.g. 2MB-page
+backed guest RAM cannot guarantee a contiguous queue if it is 8MB (capped
+to VCMDQ_LOG2SIZE_MAX=19). This might lead to command errors when HW does
+linear-read from a noncontiguous queue memory.
 
-Found by Linux Verification Center (linuxtesting.org) with static analysis
-tool SVACE.
+Adding this extra IDR1.CMDQS cap (in the guest kernel) allows VMM to set
+SMMU's IDR1.CMDQS=17 for the case mentioned above, so a guest-level queue
+will be capped to maximum 2MB, ensuring a contiguous queue memory.
 
-Link: https://lkml.kernel.org/r/20250124222133.5323-1-konishi.ryusuke@gmail.com
-Fixes: 622daaff0a89 ("nilfs2: fiemap support")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a3799717b881 ("iommu/tegra241-cmdqv: Fix alignment failure at max_n_shift")
+Reported-by: Ian Kalinowski <ikalinowski@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/20241219051421.1850267-1-nicolinc@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1219,7 +1219,7 @@ int nilfs_fiemap(struct inode *inode, st
- 			if (size) {
- 				if (phys && blkphy << blkbits == phys + size) {
- 					/* The current extent goes on */
--					size += n << blkbits;
-+					size += (u64)n << blkbits;
- 				} else {
- 					/* Terminate the current extent */
- 					ret = fiemap_fill_next_extent(
-@@ -1232,14 +1232,14 @@ int nilfs_fiemap(struct inode *inode, st
- 					flags = FIEMAP_EXTENT_MERGED;
- 					logical = blkoff << blkbits;
- 					phys = blkphy << blkbits;
--					size = n << blkbits;
-+					size = (u64)n << blkbits;
- 				}
- 			} else {
- 				/* Start a new extent */
- 				flags = FIEMAP_EXTENT_MERGED;
- 				logical = blkoff << blkbits;
- 				phys = blkphy << blkbits;
--				size = n << blkbits;
-+				size = (u64)n << blkbits;
- 			}
- 			blkoff += n;
- 		}
+diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+index c8ec74f089f3..dc7af970e9d0 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
++++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+@@ -79,7 +79,6 @@
+ #define TEGRA241_VCMDQ_PAGE1(q)		(TEGRA241_VCMDQ_PAGE1_BASE + 0x80*(q))
+ #define  VCMDQ_ADDR			GENMASK(47, 5)
+ #define  VCMDQ_LOG2SIZE			GENMASK(4, 0)
+-#define  VCMDQ_LOG2SIZE_MAX		19
+ 
+ #define TEGRA241_VCMDQ_BASE		0x00000
+ #define TEGRA241_VCMDQ_CONS_INDX_BASE	0x00008
+@@ -505,12 +504,15 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
+ 	struct arm_smmu_cmdq *cmdq = &vcmdq->cmdq;
+ 	struct arm_smmu_queue *q = &cmdq->q;
+ 	char name[16];
++	u32 regval;
+ 	int ret;
+ 
+ 	snprintf(name, 16, "vcmdq%u", vcmdq->idx);
+ 
+-	/* Queue size, capped to ensure natural alignment */
+-	q->llq.max_n_shift = min_t(u32, CMDQ_MAX_SZ_SHIFT, VCMDQ_LOG2SIZE_MAX);
++	/* Cap queue size to SMMU's IDR1.CMDQS and ensure natural alignment */
++	regval = readl_relaxed(smmu->base + ARM_SMMU_IDR1);
++	q->llq.max_n_shift =
++		min_t(u32, CMDQ_MAX_SZ_SHIFT, FIELD_GET(IDR1_CMDQS, regval));
+ 
+ 	/* Use the common helper to init the VCMDQ, and then... */
+ 	ret = arm_smmu_init_one_queue(smmu, q, vcmdq->page0,
+-- 
+2.48.1
+
 
 
 
