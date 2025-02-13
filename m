@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-116046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC679A346BB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51E2A34575
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B94016CF99
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38421894F5E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039CB145A11;
-	Thu, 13 Feb 2025 15:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB001487FA;
+	Thu, 13 Feb 2025 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw+8h6L9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifztfq+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4874335BA;
-	Thu, 13 Feb 2025 15:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AA426B082;
+	Thu, 13 Feb 2025 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460133; cv=none; b=T9DW76i502pEcQxgNMWwSqNjfWbHvUIz1M6z4w4HeyZ+Es51vVg9N0yDjQQqmpQSOeM46lU2PFCql+PhQDQAx/J997LVe3hvFnwY/c0drnMbdWxn40Uvs6P0E4SocHyY/8EsketxQzl+l94SL9w9XBm/2YXETLzk0tEDkvtVqhk=
+	t=1739459324; cv=none; b=a4hGuE/+4DTn95/JCVuf8q+7CQmq9tr4a0b8s1M9YoZDJJAgZYFdVCREiSZkh7Laj2ENLqyv3Bo4KdXp63bqWRjkq58emFdNSZdcUAEwvBhWnoH9beqHlkIOUIiUlabumftdeGSrZJnR/XgupPgxSzund/7pkSUx61L17eNw7fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460133; c=relaxed/simple;
-	bh=t37eusKYHxYDC1P04O45UQUJN4GkoB7kHA5cFwARN68=;
+	s=arc-20240116; t=1739459324; c=relaxed/simple;
+	bh=aCKPpj9HPzYOUMC+9t7qfd0eJaf06PdVcmqcBZm3j0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcVWUzWicpWydG8sCx7IKq/20qRflnQoN6C53D0DOPELjwpzle03p1uineZ6LjE7hfBMu0+QNMQMjuP7HlvgYLNmBToyr2yMRmIvUA4z9kTB81GzxiwFczPSAi7biV/LMt+PuSzUGpPRPchMbwQEr3AlS9jMxQgzgNGIZwQmmvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw+8h6L9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE1DC4CED1;
-	Thu, 13 Feb 2025 15:22:12 +0000 (UTC)
+	 MIME-Version; b=N3kehaGyMf6PdMjDX1vzCzraucgionKMWvyUIwwOTSKANxRsVjh72oVnZBx1swtJ6Gi5OqbDfyTtpNb2ewztJQSXJQ2QmjbhWP1SK5cfz2f0GEp+/nsegWTN9ZsVdwPYxCqGJHHeMzW04tKEEAN4FePpDbVGGDN+iTEJVp9kaNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifztfq+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65E2C4CEE4;
+	Thu, 13 Feb 2025 15:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460133;
-	bh=t37eusKYHxYDC1P04O45UQUJN4GkoB7kHA5cFwARN68=;
+	s=korg; t=1739459324;
+	bh=aCKPpj9HPzYOUMC+9t7qfd0eJaf06PdVcmqcBZm3j0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qw+8h6L9UZDE0QweuQFfiDQPUEfhNVyePcuzp4hPfbTwwnQAa75gmdqUsVWVN1B8C
-	 CJ5oPeXdtqi778UsoVxSKREqCgn9cq+1Icv+FVD8TD7KzpBKE4y0a2B6wO9w9V1+PG
-	 xF/+KRVFSIjXdQuGiWZbnCIGQJxrW8AGNuHg7qP4=
+	b=ifztfq+DW9TkirfnIRprwC4rVcjn6nMp4SpNcCy3vToDJ2IMgLy3TNOgLpDiWf+18
+	 BoiLXMUjnc3nE0afAytRnZeo7VFWryvntKWspNO8RVOUFQTmUEd7PvMWjMGYX/OZVN
+	 H+RRNEL6UO3Zc66QEuWo0eOyy2pyixaRoP0JTvak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/273] drm/bridge: it6505: fix HDCP encryption when R0 ready
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.13 231/443] usb: gadget: f_tcm: Decrement command ref count on cleanup
 Date: Thu, 13 Feb 2025 15:26:36 +0100
-Message-ID: <20250213142408.316768429@linuxfoundation.org>
+Message-ID: <20250213142449.528657301@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 8c01b0bae2f9e58f2fee0e811cb90d8331986554 ]
+commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
 
-When starting HDCP authentication, HDCP encryption should be enabled
-when R0'is checked.
+We submitted the command with TARGET_SCF_ACK_KREF, which requires
+acknowledgment of command completion. If the command fails, make sure to
+decrement the ref count.
 
-Change encryption enables time at R0' ready.
-The hardware HDCP engine trigger is changed and the repeater KSV fails
-will restart HDCP.
-
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-6-e0fdd4844703@ite.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index f037288e841ac..f9f67e172eeee 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2078,15 +2078,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
- 	DRM_DEV_DEBUG_DRIVER(dev, "ksv list ready, ksv list check %s",
- 			     ksv_list_check ? "pass" : "fail");
--	if (ksv_list_check) {
--		it6505_set_bits(it6505, REG_HDCP_TRIGGER,
--				HDCP_TRIGGER_KSV_DONE, HDCP_TRIGGER_KSV_DONE);
-+
-+	if (ksv_list_check)
- 		return;
--	}
-+
- timeout:
--	it6505_set_bits(it6505, REG_HDCP_TRIGGER,
--			HDCP_TRIGGER_KSV_DONE | HDCP_TRIGGER_KSV_FAIL,
--			HDCP_TRIGGER_KSV_DONE | HDCP_TRIGGER_KSV_FAIL);
-+	it6505_start_hdcp(it6505);
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -973,6 +973,7 @@ static void usbg_data_write_cmpl(struct
+ 	return;
+ 
+ cleanup:
++	target_put_sess_cmd(se_cmd);
+ 	transport_generic_free_cmd(&cmd->se_cmd, 0);
  }
  
- static void it6505_hdcp_work(struct work_struct *work)
-@@ -2459,7 +2456,11 @@ static void it6505_irq_hdcp_ksv_check(struct it6505 *it6505)
- {
- 	struct device *dev = it6505->dev;
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "HDCP event Interrupt");
-+	DRM_DEV_DEBUG_DRIVER(dev, "HDCP repeater R0 event Interrupt");
-+	/* 1B01 HDCP encription should start when R0 is ready*/
-+	it6505_set_bits(it6505, REG_HDCP_TRIGGER,
-+			HDCP_TRIGGER_KSV_DONE, HDCP_TRIGGER_KSV_DONE);
-+
- 	schedule_work(&it6505->hdcp_wait_ksv_list);
- }
- 
--- 
-2.39.5
-
 
 
 
