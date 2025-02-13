@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-115797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FF0A3459F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A403A346A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FF8F18954DA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA014168CD3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A77826B0B7;
-	Thu, 13 Feb 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E40153598;
+	Thu, 13 Feb 2025 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THEsS7wW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaDCnIqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB8926B085;
-	Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6631414AD2D;
+	Thu, 13 Feb 2025 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459287; cv=none; b=fGPJ3zTXQXPibfszPzuRBSuHdGQQcevu5OswX3a30/IzV8r4Oi/EKXBlMFotTkIvZNcQne15U7oFUPq0DMgVm18gAtyRmlDztJTcQEpp4fuwO1/E7Txu0F6kD9uRjx5t7FiU7tW9JE2jH8iIDCs2oMF2D8zU3VoupBZJFgeNw+o=
+	t=1739460096; cv=none; b=OVjfcxtt3VAbvoeUkBuwNdI/rlysbiYOrjjn+Lg6Bit4h+6H6CfDamMBMmQeolcuu/P5zWF4cbgWC/8KWLhcjXLjF8FDYLKQesIrsZrZ3gn5gAP61yvm4VOADzj19KL46V3TmJpBZInxq6gK5kRtrvyhPk8emjDFOIukovjjH4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459287; c=relaxed/simple;
-	bh=TQNJ0BTwhTd5D/djREZg+qcnMD6dH29bCyk2anf8a/A=;
+	s=arc-20240116; t=1739460096; c=relaxed/simple;
+	bh=wepWsbj4VwyY1ik1IDI08+UBH4/IBFY0Ag1AemuLn5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXxbWEd+df1IgkkQqFegBzSSuXQ6e0VgIdV91UFJ13WfZE0O2eQBJVQNmfqbwX3ET2v1pwZhc5pvpE27S65RfFc4190XgBLM873PR8oEbShxDpDGMseeVXSmSsXf8nDaIQCbW+Y2cqVAc6+vwrXuNIceD/vbY0aT9qxWV1PYy8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THEsS7wW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C1CC4CED1;
-	Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
+	 MIME-Version; b=Z/g2yOE9BPrc5Su3/c2HGw+7XUDjaLnBerktuI755tMquPJdfATSYJvCzZtrN5bO8QABbO/16ERu3hGrPhjHmKr6kUPF3hINyJnimb6Z98TsE1aKwyowoLLrlPmGpF9YSDNodKixpIqfJ0JQQs029w6cXL2wFmdti6Q5tob9Y1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaDCnIqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF846C4CED1;
+	Thu, 13 Feb 2025 15:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459286;
-	bh=TQNJ0BTwhTd5D/djREZg+qcnMD6dH29bCyk2anf8a/A=;
+	s=korg; t=1739460096;
+	bh=wepWsbj4VwyY1ik1IDI08+UBH4/IBFY0Ag1AemuLn5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THEsS7wW3BnaUZe+WAPB1qkoWYA19XYPTaYTRAlQbR/OqKf+4geAUFS/AS6IC55ex
-	 l3ACUXu2RuZX/VF5VXZcGgIX1NQb9YGVFKimNbxBL5MQXyx6KVkLNC5cEB0h5oTS9p
-	 kho/BDD3k162G8k6qj1oNq0emRd4f6nk4Ghq9Amg=
+	b=KaDCnIqN/WbNGBoeV6XvfhcJFJ+SnMocCouBOFTjv4H9rCzf7vBXrOlZv3e+5Y6BM
+	 uwLIrOqkhPMTkGs+xfLyTkKaIfmvhl1T83bG3aBclEhcu+KSDE2/+ST95wfo4CR+ye
+	 qnC/jaB0ApfXi/o8zwZe9gTzHo54BaTGVXxKOtQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.13 221/443] HID: hid-sensor-hub: dont use stale platform-data on remove
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/273] drm/bridge: anx7625: use eld_mutex to protect access to connector->eld
 Date: Thu, 13 Feb 2025 15:26:26 +0100
-Message-ID: <20250213142449.140598275@linuxfoundation.org>
+Message-ID: <20250213142407.926144108@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
+[ Upstream commit e72bf423a60afd744d13e40ab2194044a3af5217 ]
 
-The hid-sensor-hub creates the individual device structs and transfers them
-to the created mfd platform-devices via the platform_data in the mfd_cell.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-the sensor-hub was managing access centrally, with one "completion" in the
-hub's data structure, which needed to be finished on removal at the latest.
-
-The mentioned commit then moved this central management to each hid sensor
-device, resulting on a completion in each struct hid_sensor_hub_device.
-The remove procedure was adapted to go through all sensor devices and
-finish any pending "completion".
-
-What this didn't take into account was, platform_device_add_data() that is
-used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
-platform-data. So the data the platform-device gets is a copy of the
-original data, meaning that the device worked on a different completion
-than what sensor_hub_remove() currently wants to access.
-
-To fix that, use device_for_each_child() to go through each child-device
-similar to how mfd_remove_devices() unregisters the devices later and
-with that get the live platform_data to finalize the correct completion.
-
-Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-2-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/hid-sensor-hub.c
-+++ b/drivers/hid/hid-sensor-hub.c
-@@ -730,23 +730,30 @@ err_stop_hw:
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 412c6575e87b7..ddf944651c55a 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2014,8 +2014,10 @@ static int anx7625_audio_get_eld(struct device *dev, void *data,
+ 		memset(buf, 0, len);
+ 	} else {
+ 		dev_dbg(dev, "audio copy eld\n");
++		mutex_lock(&ctx->connector->eld_mutex);
+ 		memcpy(buf, ctx->connector->eld,
+ 		       min(sizeof(ctx->connector->eld), len));
++		mutex_unlock(&ctx->connector->eld_mutex);
+ 	}
  
-+static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
-+{
-+	struct hid_sensor_hub_device *hsdev = dev->platform_data;
-+
-+	if (hsdev->pending.status)
-+		complete(&hsdev->pending.ready);
-+
-+	return 0;
-+}
-+
- static void sensor_hub_remove(struct hid_device *hdev)
- {
- 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
- 	unsigned long flags;
--	int i;
- 
- 	hid_dbg(hdev, " hardware removed\n");
- 	hid_hw_close(hdev);
- 	hid_hw_stop(hdev);
-+
- 	spin_lock_irqsave(&data->lock, flags);
--	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
--		struct hid_sensor_hub_device *hsdev =
--			data->hid_sensor_hub_client_devs[i].platform_data;
--		if (hsdev->pending.status)
--			complete(&hsdev->pending.ready);
--	}
-+	device_for_each_child(&hdev->dev, NULL,
-+			      sensor_hub_finalize_pending_fn);
- 	spin_unlock_irqrestore(&data->lock, flags);
-+
- 	mfd_remove_devices(&hdev->dev);
- 	mutex_destroy(&data->mutex);
- }
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
