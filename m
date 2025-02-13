@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0171BA345B3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28D1A3426D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB027189928B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45E4169FF9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3921CB31D;
-	Thu, 13 Feb 2025 14:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C0E21D3FD;
+	Thu, 13 Feb 2025 14:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU01UIq/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXZHXKcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB912A1D1;
-	Thu, 13 Feb 2025 14:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C1413D8A4;
+	Thu, 13 Feb 2025 14:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458757; cv=none; b=IdptJD3FP5gcRHkcWI4z0+bjcrYA7Uhez/+/p6loeEayFJVz1oLBaYaHAxIP+wLK6gI0cqTc92Cxa3pumxc2cfx5wFcB8r81554+Wt0Rdy7JuLSmdxWq1ygf+Lw8PSJZgrcRQmRhtXAbic+kE9QFlxAF+L9rZhCsKxbx0o46aDY=
+	t=1739457387; cv=none; b=rwtmJPK1KfdbHATn51PFCGnfngfH5UZABsDku9vvWl58YjXPW7TQ2wNSVa2N0tjYHdP7LJcS1nRM1SCtqBr32gPY/oRenkcpZD9BcFkYw3elUJShfm8AfB49PRMR0m8KtNd3HcaUDMhrjMdJ9yjcd5L6LCMNMGtAqDowZ22wUHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458757; c=relaxed/simple;
-	bh=RMHNSb0Fish/76z8j58yFTs10uy5CjX7Jd5VKsFglAw=;
+	s=arc-20240116; t=1739457387; c=relaxed/simple;
+	bh=LGk7Maajl+/jCZiE15E5o3IcgIVyWtgV7ndaklg/rKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiHgikH/PKTgmHbnhNVGoSwBp/MfSxHl9ZmGw0YStCRvWMfg3j8UeFD49//njfGmKzEx3By1FkEt69mm8MyYavj+66s8skV/3uX57gVp7nU2HPJi//q2yxuBoArshtUnVrCjLaY/oqGIXo0hNOB+eGxKGh/YAi8I7k3Vp/D616U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU01UIq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D47C4CED1;
-	Thu, 13 Feb 2025 14:59:16 +0000 (UTC)
+	 MIME-Version; b=GAlyWZ9OppJq0H35S8G6RXvuf3gt1s6lGQocqd7IYMg8JA0eh8NEkaQHpDudlyLvGGDFHWXhRMC+zKn0HET4X51F0uzxu4FnGMJy8phXBmwWQeboqKSpmrMBjHhUkMsaQnE7DRh6v8pzxvx0t6bt4wNSJKt/rBw8AYhips8HcWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXZHXKcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A51C4CED1;
+	Thu, 13 Feb 2025 14:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458756;
-	bh=RMHNSb0Fish/76z8j58yFTs10uy5CjX7Jd5VKsFglAw=;
+	s=korg; t=1739457386;
+	bh=LGk7Maajl+/jCZiE15E5o3IcgIVyWtgV7ndaklg/rKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GU01UIq/6HGZke0BZ6ASQQGjpOgaXsg5e3IYDFvVIFwheq4CJFdLhRLX673hmtDMT
-	 60GWNHKBWLDzUaH+tpjeLpfhGAwKGRqLydvaxRXIOmyhOe15y2mJVvqZd5qr49yMTL
-	 Vg3NT3kRtkiQsuBG1Gzl9tCdEPX5rfDriWTzjMXY=
+	b=cXZHXKcGRfofK7RZI4ZGvjrfvpmCiYx8+nUDv83wWza/sowjjxlXaRPNVfk+R9iGM
+	 nuzwKzE2CBNELn0PRTU+OeeSpuCKdZ/GnjDz+xS5ZeSgB6i/BwYGH3fyCt5l+23Leo
+	 A12hhswvKsZ/TWQSIN3KgGktdVyaMG2NfU+cQSd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 037/443] drm/msm/dp: use eld_mutex to protect access to connector->eld
+Subject: [PATCH 6.12 053/422] tomoyo: dont emit warning in tomoyo_write_control()
 Date: Thu, 13 Feb 2025 15:23:22 +0100
-Message-ID: <20250213142442.057108288@linuxfoundation.org>
+Message-ID: <20250213142438.608856943@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 9aad030dc64f6994dc5de7bb81ceca55dbc555c3 ]
+[ Upstream commit 3df7546fc03b8f004eee0b9e3256369f7d096685 ]
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+syzbot is reporting too large allocation warning at tomoyo_write_control(),
+for one can write a very very long line without new line character. To fix
+this warning, I use __GFP_NOWARN rather than checking for KMALLOC_MAX_SIZE,
+for practically a valid line should be always shorter than 32KB where the
+"too small to fail" memory-allocation rule applies.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-7-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+One might try to write a valid line that is longer than 32KB, but such
+request will likely fail with -ENOMEM. Therefore, I feel that separately
+returning -EINVAL when a line is longer than KMALLOC_MAX_SIZE is redundant.
+There is no need to distinguish over-32KB and over-KMALLOC_MAX_SIZE.
+
+Reported-by: syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7536f77535e5210a5c76
+Reported-by: Leo Stone <leocstone@gmail.com>
+Closes: https://lkml.kernel.org/r/20241216021459.178759-2-leocstone@gmail.com
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ security/tomoyo/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index 5cbb11986460d..c179ed0e9e2bd 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -414,8 +414,10 @@ static int msm_dp_audio_get_eld(struct device *dev,
- 		return -ENODEV;
- 	}
+diff --git a/security/tomoyo/common.c b/security/tomoyo/common.c
+index 5c7b059a332aa..972664962e8f6 100644
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2665,7 +2665,7 @@ ssize_t tomoyo_write_control(struct tomoyo_io_buffer *head,
  
-+	mutex_lock(&msm_dp_display->connector->eld_mutex);
- 	memcpy(buf, msm_dp_display->connector->eld,
- 		min(sizeof(msm_dp_display->connector->eld), len));
-+	mutex_unlock(&msm_dp_display->connector->eld_mutex);
+ 		if (head->w.avail >= head->writebuf_size - 1) {
+ 			const int len = head->writebuf_size * 2;
+-			char *cp = kzalloc(len, GFP_NOFS);
++			char *cp = kzalloc(len, GFP_NOFS | __GFP_NOWARN);
  
- 	return 0;
- }
+ 			if (!cp) {
+ 				error = -ENOMEM;
 -- 
 2.39.5
 
