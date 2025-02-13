@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-116075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A1AA346F0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661C4A34619
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F03816EDD6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C055D1893381
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A773156F3C;
-	Thu, 13 Feb 2025 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA8D26B098;
+	Thu, 13 Feb 2025 15:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTd9RCX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH9iI8Vf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5891B143736;
-	Thu, 13 Feb 2025 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BE26B089;
+	Thu, 13 Feb 2025 15:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460233; cv=none; b=rowdzqvTwpF5WH3eyMPZ3Be2cBATILqaLqvjYdmwAQS2VN/CgFHMa3FFEMkeMmg6KphkTjsCljehgcXTlD1ifPTRQUUUggNa31UtDq6p6Nfl2v4iimSP094gfH0vYsJD3LcKyOvlA+B7FlrHB0x+uFeNgQRoPQs/3EyKZhvE3VI=
+	t=1739459424; cv=none; b=ZoiAKXj5mlKLgQy3Z1ZmpENY3i3p1Y77dSXYq+3JjXHM5BB+r9gUAYOhNRECMLro3CGTWKdN1iSG0InbiWO7sr3vUyBZeFCJXg1YcOmG8WaWsroITjWRttJ3JhUBKz+1l0hWwCU+9u/E56omEKY8uQhsGCyhi6S+A8DjlRSla2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460233; c=relaxed/simple;
-	bh=wwLH19/I4ipqMNl/VRwTE+HC5Q4omtWQhr9cH7EnvQc=;
+	s=arc-20240116; t=1739459424; c=relaxed/simple;
+	bh=4DiBU0JZuAdYzJB99ZDOUoKW6Va7jdHVsEorvco2w5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WE5FH39eKli77cTMYX7rkK3Pi7hf0WYNQ73lwch1ZH3bLxH41MYIk8tyd4ggU3Hk214tdacw5rbDtdWeigdSpbYYPbyizdbufBmkmdJ0IdBXt9cCzUBN+dqQxv7D+KrgsmLUhHBp/Nf9xHK6KLidOvU+hg0CXZQAXJA443a27Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTd9RCX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38A5C4CED1;
-	Thu, 13 Feb 2025 15:23:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s0Ee/CDimVKygneAr8v7Kroukq4hV6DA3IVONhSE0dEQGvOIay1j0JGsbzg8qmhIPn5J9VOcOCmHcT+yYaisnCvrg0gb/J0svdAfqBVFyxxEl35dUIJjQhjrOpbqvO8BN7IJbPOE/aR4FkXSITokGCG870ciYlqL6ATCJtpjatE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH9iI8Vf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C4CC4CED1;
+	Thu, 13 Feb 2025 15:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460233;
-	bh=wwLH19/I4ipqMNl/VRwTE+HC5Q4omtWQhr9cH7EnvQc=;
+	s=korg; t=1739459424;
+	bh=4DiBU0JZuAdYzJB99ZDOUoKW6Va7jdHVsEorvco2w5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTd9RCX4qOhV9tACvreE700jGjbNUDBdf0SqCVOqo8EVogP5UNis5x4KzYn+mA6Y2
-	 58Q4v0MXCkxV9TWab7Jc34cmDeBMRwifLUHUQV8BaWWp4+0TmP5hJqdWTKGaZ3N8Wu
-	 k5cN8WAeTnwpFyx/wLeqsgjk3cLlKnOOQUNoOkiE=
+	b=PH9iI8VfRxYTQI2Xyk+siUA4KXm+d7wSeJU73qWD/m/QiPUh4tHzS8KZ1Y+79ctN0
+	 u89wYLuHx9IQwcZhFLcbS2jVIhyrkcI7T0TSqY0NPLuzvV3A0r7luxLJDytiTY3XH9
+	 pUBkVkxRhiKFQG8fjx/6WY+JBGwV4QnZBs3hWiVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farhan Anwar <farhan.anwar8@gmail.com>,
-	Rayan Margham <rayanmargham4@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/273] platform/x86: acer-wmi: Ignore AC events
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Dengcheng Zhu <dzhu@wavecomp.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Ming Wang <wangming01@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: [PATCH 6.13 260/443] mips/math-emu: fix emulation of the prefx instruction
 Date: Thu, 13 Feb 2025 15:27:05 +0100
-Message-ID: <20250213142409.446114268@linuxfoundation.org>
+Message-ID: <20250213142450.649297768@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +65,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-[ Upstream commit f6bfa25c6665f8721421ea94fe506cc22f1d4b43 ]
+commit 42a39e4aa59a10aa4afdc14194f3ee63d2db94e1 upstream.
 
-On the Acer Swift SFG14-41, the events 8 - 1 and 8 - 0 are printed on
-AC connect/disconnect. Ignore those events to avoid spamming the
-kernel log with error messages.
+Currently, installation of Debian 12.8 for mipsel fails on machines
+without an FPU [1]. This is caused by the fact that zstd (which is used
+for initramfs compression) executes the prefx instruction, which is not
+emulated properly by the kernel.
 
-Reported-by: Farhan Anwar <farhan.anwar8@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/2ffb529d-e7c8-4026-a3b8-120c8e7afec8@gmail.com
-Tested-by: Rayan Margham <rayanmargham4@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250119201723.11102-2-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The prefx (Prefetch Indexed) instruction fetches data from memory into
+the cache without any side effects. Though functionally unrelated, it
+requires an FPU [2].
+
+Bytecode format of this instruction ends on "001111" binary:
+
+	(prefx instruction format) & 0x0000003f = 0x0000000f
+
+The code in fpux_emu() runs like so:
+
+	#define MIPSInst(x) x
+	#define MIPSInst_FMA_FFMT(x) (MIPSInst(x) & 0x00000007)
+	#define MIPSInst_FUNC(x) (MIPSInst(x) & 0x0000003f)
+	enum cop1x_func { ..., pfetch_op = 0x0f, ... };
+
+	...
+
+	switch (MIPSInst_FMA_FFMT(ir)) {
+	...
+
+	case 0x3:
+		if (MIPSInst_FUNC(ir) != pfetch_op)
+			return SIGILL;
+
+		/* ignore prefx operation */
+		break;
+
+	default:
+		return SIGILL;
+	}
+
+That snippet above contains a logic error and the
+	if (MIPSInst_FUNC(ir) != pfetch_op)
+comparison always fires.
+
+When MIPSInst_FUNC(ir) is equal to pfetch_op, ir must end on 001111
+binary. In this case, MIPSInst_FMA_FFMT(ir) must be equal to 0x7, which
+does not match that case label.
+
+This causes emulation failure for the prefx instruction. Fix it.
+
+This has been broken by
+commit 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+which modified the MIPSInst_FMA_FFMT macro without updating the users.
+
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc: stable@vger.kernel.org # after 3 weeks
+Cc: Dengcheng Zhu <dzhu@wavecomp.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Ming Wang <wangming01@loongson.cn>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Fixes: 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1091858
+[2] MIPS Architecture For Programmers Volume II-A: The MIPS32 Instruction Set
+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/math-emu/cp1emu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 377a0becd1a18..868faccfb8628 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -88,6 +88,7 @@ enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
-+	WMID_AC_EVENT = 0x8,
- };
- 
- static const struct key_entry acer_wmi_keymap[] __initconst = {
-@@ -1999,6 +2000,9 @@ static void acer_wmi_notify(u32 value, void *context)
- 		if (return_value.key_num == 0x4)
- 			acer_toggle_turbo();
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1660,7 +1660,7 @@ static int fpux_emu(struct pt_regs *xcp,
  		break;
-+	case WMID_AC_EVENT:
-+		/* We ignore AC events here */
-+		break;
- 	default:
- 		pr_warn("Unknown function number - %d - %d\n",
- 			return_value.function, return_value.key_num);
--- 
-2.39.5
-
+ 	}
+ 
+-	case 0x3:
++	case 0x7:
+ 		if (MIPSInst_FUNC(ir) != pfetch_op)
+ 			return SIGILL;
+ 
 
 
 
