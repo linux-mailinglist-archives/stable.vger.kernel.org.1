@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A032A345CF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8169A34758
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9D043B2BBA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12ECA3B1F84
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3677114A605;
-	Thu, 13 Feb 2025 15:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7963335BA;
+	Thu, 13 Feb 2025 15:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+LnH2tB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9oZLiaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71A813B58A;
-	Thu, 13 Feb 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0413D8A4;
+	Thu, 13 Feb 2025 15:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459308; cv=none; b=bBJ97ph1E10I0Beg4tCyCqnOsrVvIhT6uiikqxJFHAmpBz8B4TnehHGMTqTKv/kCf6+YziLE8cUMDIOCNdhq3dV5Q9viiHy+zrHSsla3Ue8mQ85TyJ1wqm/gCUMQb3qpsLEXY8GVCfb+NDTWmIdsncgQ0+6FW37dznuemw6j4to=
+	t=1739460120; cv=none; b=a4GLpmt9sJNLkPiyf+vGtNrEvnxIoZTGqgZyQvMSRSicIzFHRMrNUmkAKr4lAkkkt/+hjo0rcYdaXE5S0IhCiNywLdUsdjt8WELuo+sTgXrE0S8csd7KB267OHmdmImHs3vJpQnc/h1Q8HyH9upO4PykpBmTMAPEVdQI6Hn7dFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459308; c=relaxed/simple;
-	bh=bjO7D7H+XgG+PMwKXHVEPhiqKoeBY8pn6RffDKfFX0I=;
+	s=arc-20240116; t=1739460120; c=relaxed/simple;
+	bh=dF8L7tuSvu+aEzrwUkk2dHWpCzm1vcesyeDOPlRoCaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNyhOp7Gh7C52SwFZhd278eZ4Ogg5TuijYhE4LcOqjd/IEQBtqwLIpODDt22qUKbUCVtXPJrWDFIcPvXvciIZc4B3+g2eKxEU4b7FHY1Cg2yZs7q9yO+l9JcJ5U5eB3OqvFR8kAaM3KVTpLFc2969Su5UpDhms84WWJZf5l7+PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+LnH2tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA49BC4CED1;
-	Thu, 13 Feb 2025 15:08:26 +0000 (UTC)
+	 MIME-Version; b=JAugNKdc81/0MHeZtZn+uTDnZSIFZQp0FsAw3uAMF5qKLxTW522rKW6cNDAzIDPHqBFeLUtrPKhwfWF3maewxa8d5nKcmTMD3dj878O39zM8y7kdFyyjHa0SOrG/Vsp8Ggg/0kvty9UluFHqpK/0AsGuYSlFWsgI6ibRqlHAP3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9oZLiaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D12EC4CEE4;
+	Thu, 13 Feb 2025 15:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459307;
-	bh=bjO7D7H+XgG+PMwKXHVEPhiqKoeBY8pn6RffDKfFX0I=;
+	s=korg; t=1739460120;
+	bh=dF8L7tuSvu+aEzrwUkk2dHWpCzm1vcesyeDOPlRoCaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+LnH2tByq7wm2e+rlXSIbcS0KcBSTBR2SjM/BqiabcJciGeqRLCzyCAI6yMoMucm
-	 XiaGZjY667cjP4saOs059K7qC7pUCkxKdmjQTshIjQ7sA3VYGGD9wijuZm0vQS/4On
-	 sPb2AkQAc/4kf1nPMC/fAbyahAWbTzq/xePUYeNQ=
+	b=Y9oZLiaJovSOT4gAK6fOWNeQdrtzUnX0ii6TLj+ePLwYu/TpU7/6FXyEoaHEt/yQ/
+	 /n9epUOH3Zx5mZxdlqxngAdjT6lqkkK5KtFluzQPL6fCYPn/dQGjuPRwL6o8A6YgGo
+	 XVwyLRVv5h5O9dRDNP+O+mIFnpUHbloEEa+TYoOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shang Chieh Tseng <shangchieh.tseng@tsengsy.com>,
-	Nick Morrow <usbwifi2024@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.13 226/443] wifi: mt76: mt7921u: Add VID/PID for TP-Link TXE50UH
-Date: Thu, 13 Feb 2025 15:26:31 +0100
-Message-ID: <20250213142449.334191836@linuxfoundation.org>
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/273] drm/vc4: hdmi: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:26:32 +0100
+Message-ID: <20250213142408.160581441@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Morrow <usbwifi2024@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 47d9a8ba1d7f31c674b6936b3c34ee934aa9b420 upstream.
+[ Upstream commit 81a9a93b169a273ccc4a9a1ee56f17e9981d3f98 ]
 
-Add VID/PID 35bc/0107 for recently released TP-Link TXE50UH USB WiFi adapter.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Tested-by: Shang Chieh Tseng <shangchieh.tseng@tsengsy.com>
-Signed-off-by: Nick Morrow <usbwifi2024@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/e797f105-9ca8-41e9-96de-7d25dec09943@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-10-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
- 	/* Netgear, Inc. [A8000,AXE3000] */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-+	/* TP-Link TXE50UH */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
-+		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ },
- };
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 1727d447786f1..541aba80c1449 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2655,9 +2655,9 @@ static int vc4_hdmi_audio_get_eld(struct device *dev, void *data,
+ 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
+ 	struct drm_connector *connector = &vc4_hdmi->connector;
  
+-	mutex_lock(&vc4_hdmi->mutex);
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
+-	mutex_unlock(&vc4_hdmi->mutex);
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
