@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADE3A346E2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D064DA34536
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C17037A3DC4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BE1B7A4016
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913331422D8;
-	Thu, 13 Feb 2025 15:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E120326B0BC;
+	Thu, 13 Feb 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmPBkSNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRn5BntO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE5926B087;
-	Thu, 13 Feb 2025 15:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE1B26B0BA;
+	Thu, 13 Feb 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460538; cv=none; b=W3qTqz1RyqvTLf9NPa7gggtFu+5wd1WxdQ3m46+ZhOe7FAO7mCUNQaun8ZvoCK3w0WCKJ8SXxN3aXEAhy3Jyz1TN5uskYlkxMtFQ3+D0pNhW7S0LO3Ra0WJvwBo6/DrGS45xdEKVsz7emNTIrvrX5eYDriw+IIjnYszInKp6eZE=
+	t=1739459579; cv=none; b=m/c4yt3DG533wJTn4tmRx14Ts5k220NJ4hj4RdRN8MqdH5xgj1+kLkPMnbH+86BVat7mCNzHQXqOPNyh1rVY8E2jXqKLqdKD6wfBzR0FpCus1XRDjk++JjBZ45n7X7SgBk9SJIe+S/zr4ki5F6/OckhobBfwsk075dluGg9WAlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460538; c=relaxed/simple;
-	bh=E9yBQrpaG7eZqL0D8ZLTTudCntzY1V5ZspNvj/Rc55o=;
+	s=arc-20240116; t=1739459579; c=relaxed/simple;
+	bh=xazOr+UR+kWcKsPymbunF2u2cBF0yxf84O/eVj9tops=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZA0aJy444a8T9i15ilvHFsHb0ByaJv+Xg54s+o3OfatW3h30q6VGzuLzk8+6ryhWRChsxD+hOUzwQoDc7FAEjisSNAzrLClU0iU6Lb4R04JTjhIWMNLk1qfdoca3OdjqDez6/k6Ku2eH+AfB+Vd3Kzac1eAWGJ6COkJe2A6ewB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmPBkSNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE646C4CEE4;
-	Thu, 13 Feb 2025 15:28:57 +0000 (UTC)
+	 MIME-Version; b=SpfogN5gDKPHhFDgZW5+hdWhvPoFyMo0WT0AD79bySS1UTfXcMbIqqgCH5zVh8y9CA9ln41GtmLegn7bmwc0svyBMbDctwIE9RgZzHcK3hfoLRiAtXQFYSCaX6ZH8PlkiSNL02/6thNwc8zQl02qfQyWwlleeJ6OLWIs9ispM78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRn5BntO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982CDC4CEE4;
+	Thu, 13 Feb 2025 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460538;
-	bh=E9yBQrpaG7eZqL0D8ZLTTudCntzY1V5ZspNvj/Rc55o=;
+	s=korg; t=1739459579;
+	bh=xazOr+UR+kWcKsPymbunF2u2cBF0yxf84O/eVj9tops=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmPBkSNJh5jSdY0nnlKdUk0ZZZwCzxb7u/IHympIBWkszwMbLBCf0z/dmku5NIIIp
-	 MukYHgNZylCc8ZEQGqfwe0/7Jsqa9wKj6KextARDROfmqsNM+XnXCEffUjlr64tDpm
-	 n2RrDhyGVt+6NmZjCBHh/PVFqogcuKhJ6/3Br2XU=
+	b=LRn5BntO2QG7jKXnrUzZu1KdfYYPz326dpDfMa2zE+irjzKF05nYrCaMnS/oDM01J
+	 tNI0p+Vw2B44vGYfus/s9ahGK/N2OTPOiVs9EiV08Tz3Cn1ItHwTD0QfwBJJhpfCvf
+	 WrP4GWyFH3k84WXcqmp/vpOBfwncJA/qEn4nP99o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 098/273] drm/amdkfd: only flush the validate MES contex
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 305/443] arm64: dts: qcom: sm6350: Fix MPSS memory length
 Date: Thu, 13 Feb 2025 15:27:50 +0100
-Message-ID: <20250213142411.216876739@linuxfoundation.org>
+Message-ID: <20250213142452.385104000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 9078a5bfa21e78ae68b6d7c365d1b92f26720c55 upstream.
+commit cd8d83de9cc9ecfb1f9a12bc838041c4eb4d10bd upstream.
 
-The following page fault was observed duringthe KFD process release.
-In this particular error case, the HIP test (./MemcpyPerformance -h)
-does not require the queue. As a result, the process_context_addr was
-not assigned when the KFD process was released, ultimately leading to
-this page fault during the execution of the function
-kfd_process_dequeue_from_all_devices().
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+copied from older DTS, but it grew since then.
 
-[345962.294891] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:153 vmid:0 pasid:0)
-[345962.295333] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
-[345962.295775] amdgpu 0000:03:00.0: amdgpu: GCVM_L2_PROTECTION_FAULT_STATUS:0x00000B33
-[345962.296097] amdgpu 0000:03:00.0: amdgpu:     Faulty UTCL2 client ID: CPC (0x5)
-[345962.296394] amdgpu 0000:03:00.0: amdgpu:     MORE_FAULTS: 0x1
-[345962.296633] amdgpu 0000:03:00.0: amdgpu:     WALKER_ERROR: 0x1
-[345962.296876] amdgpu 0000:03:00.0: amdgpu:     PERMISSION_FAULTS: 0x3
-[345962.297135] amdgpu 0000:03:00.0: amdgpu:     MAPPING_ERROR: 0x1
-[345962.297377] amdgpu 0000:03:00.0: amdgpu:     RW: 0x0
-[345962.297682] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:169 vmid:0 pasid:0)
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 489be59b635b ("arm64: dts: qcom: sm6350: Add MPSS nodes")
 Cc: stable@vger.kernel.org
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-16-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -86,9 +86,12 @@ void kfd_process_dequeue_from_device(str
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1503,7 +1503,7 @@
  
- 	if (pdd->already_dequeued)
- 		return;
--
-+	/* The MES context flush needs to filter out the case which the
-+	 * KFD process is created without setting up the MES context and
-+	 * queue for creating a compute queue.
-+	 */
- 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
--	if (dev->kfd->shared_resources.enable_mes &&
-+	if (dev->kfd->shared_resources.enable_mes && !!pdd->proc_ctx_gpu_addr &&
- 	    down_read_trylock(&dev->adev->reset_domain->sem)) {
- 		amdgpu_mes_flush_shader_debugger(dev->adev,
- 						 pdd->proc_ctx_gpu_addr);
+ 		mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sm6350-mpss-pas";
+-			reg = <0x0 0x04080000 0x0 0x4040>;
++			reg = <0x0 0x04080000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_EDGE_RISING>,
+ 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
