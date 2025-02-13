@@ -1,137 +1,179 @@
-Return-Path: <stable+bounces-115081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712CCA3329A
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 23:30:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A104A333DA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 01:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22E1F167170
-	for <lists+stable@lfdr.de>; Wed, 12 Feb 2025 22:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322403A6ABA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 00:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5384E259487;
-	Wed, 12 Feb 2025 22:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB0A4414;
+	Thu, 13 Feb 2025 00:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvuWtecb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbvXWEdb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC24256C6A;
-	Wed, 12 Feb 2025 22:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724971754B;
+	Thu, 13 Feb 2025 00:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739399388; cv=none; b=SeWwTLCPOfABDxJ8FDY4bwe60bMTm1bC2W89s6dCvrCu0yAL8zJx3kkSJ0BfmBXcGPPnf+8vZflg2fMM0v+I96JJCcRypSoKH/hBuIfwsLXKs2atDa7RY3RZV9cmo/RY8QTGhz5vIT+tnSGAoCKex6brjP4hd9jIFUN9hxUCo8k=
+	t=1739405446; cv=none; b=R5ZIyXYAQkII+kGUOIohHBH4h/hoxKaG3F2FFTEOVtzygAT3erjJ9y23dymqeOG3Eq9EiPAQ/MWxf43yCLT6Z3Mm+zLaw3Nyon3+ACzZZ3h1/RZZpDlj70UF2Qi9iOS6rH36syXaOdIXBzJreRWKhgLE9ytGKe+GgKQ3r67V8Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739399388; c=relaxed/simple;
-	bh=BFRXywWhuF494EJYNCYLCR8TnlqDFSbUwgsOkRXCO4M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oP5YwC4724YKClr1A8paN00Tck25Bnq4TAgPsimhjIAodQnDY+JmMcyrxUs2AptySCTKCwCQBiUuom2MjbfJ1XD6vvlxCBH1TFL4T0/qRcHWLPNHp7QCptSEPemPRRmISIfrY96hteloBcIukqtRH3IGUq5lIiKn5nXTNipnbvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvuWtecb; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2f2f5e91393so66678a91.0;
-        Wed, 12 Feb 2025 14:29:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739399386; x=1740004186; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BZ/n9bqBDmoNTEbi3+gOvCn9UNpfuZOs7Z4fB5U9DNQ=;
-        b=BvuWtecb6kwLy/tpZGDWBoCq27CwTWKSpev4f2IXb+08mpiJ52EQDKAOd2uNHR2SVc
-         fbU766Tr2ZuF6+yh9Ra3DuTJDc7vLdwpj2A7G0T0v1k+QruVBzidUkMaWuNzoDdApsSA
-         RojYGZu0URpuhlybIONfUU2qokDFd4aSnfzmO8klq9T2gbWUrptNAS/Ce60waMy8/nEh
-         zcFLf0XSwMHEWvx06KJF3pg47Pd4FERrtNxnFcoLdtk7Q3ZBGCUuxolyNsszn2ozU+xy
-         SfHaxD+KtCxVrX1o3KOqiWSLDpFUm0WBr4Ln+T6Kt/9m+VoOsxX/hzk6OZrTkRB0u1lu
-         gpnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739399386; x=1740004186;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BZ/n9bqBDmoNTEbi3+gOvCn9UNpfuZOs7Z4fB5U9DNQ=;
-        b=FdDAdYj6tFOq3yMPTtVzDC5WI+GgmtYfGbf2EPi1UqQ8GTWaeDN29pW81pmRObftWJ
-         p5pPDlHoGdUl+okl6mprIOWY1ZcpbrFqTaA1dDCOX+U2zLn5QBMMC4QjGzP4ffc6tnrw
-         CVKDwgdF7dZ7qqDQ95s5ycwV1VcP01A+fb9OoDAUPcocyE+i/Rmf9WAhrSw2iJEz1UPz
-         5v48iJuUo2XzX4y5XWebHr94ArkahVE9B8rPGvSYlaUh0oJBuiVleu4thRRXbLB2AV71
-         I5DWzge3rBpFONltDreAi3tUMUCZG1I7DRfxmwB1aEhQZc6vVFfjKwVGuyyncnWzY08/
-         KjeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcs3oYuL2NNMJLpDqcd8ojyjxgOq+uRT+5k7x4AcVp4nnpQ8Q5OR+z92XuWLTTTlZOswik3HICdw7d/Xw=@vger.kernel.org, AJvYcCW5cTiejgec5mOfy4TymQx8B6Ka0ENXpcn0A1yQSwH1CZhjWF4skJ88NzQwervemLX3AWxlPgu2@vger.kernel.org, AJvYcCWgrZVz6Fr1FSFyzhFnQm/EneNm/JQJX213pHdj097HgvML6UjNCK8PUR/74OgKNlyW5RXPCMCk97egXmc+HOE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWAGpPY9aN5BnDS2m6tbEcXUmxh72lnmIf992BcVfWhPURuhKj
-	ogTRhV8+NCKRi2zVXnruP5ug4I8RRAminBNEVYlDBvcnCOu2Ywzbl6+zsxZZp+lz3C//ZWqt9jj
-	EEEhOrhPaJhIk/8zCyu56fTNmjrc=
-X-Gm-Gg: ASbGncv2Zy31GkdfGsdR0u9g5C01Jc955Sj1uAWb352lLX5dWM9GK15CpfwV4DVAjrF
-	lds6xchVM0Ewwj6aUtDSlhoWWA13iF2YBsJO2IxBZYkkcXuqFFshlgWHcJh7xEH6fT+j+3iYM
-X-Google-Smtp-Source: AGHT+IHadNrgevyrSkaQZhOhsxlrzLkSyiZy1ey/P41VMurfsqDNouU1k4AFyaXrZKXXjkyODVF3l1r5ZtwFJzNg/Tw=
-X-Received: by 2002:a17:90b:3b52:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-2fbf5c8b19amr2771748a91.3.1739399385115; Wed, 12 Feb 2025
- 14:29:45 -0800 (PST)
+	s=arc-20240116; t=1739405446; c=relaxed/simple;
+	bh=k0UpztxzmXp3dZXHJw0oYhfBc23L040T2AXt0rcJrWs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=QfE6H/teT6lZiJqkA3rxG8jNL2Sgtj74pohRyzNyUDkY1kLBjRE9G/p8UR4ErMdQR/5VyVY8mubdfEgne4Eacjf5glGBPA6t4FF5Dzrx+DPn2EMfR40BaMUT7EmS0LFIcMOuGiKqCL0MX5EMAeMP9nY+6vVjKXm/3mFSx1xaH7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbvXWEdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD746C4CEE4;
+	Thu, 13 Feb 2025 00:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739405444;
+	bh=k0UpztxzmXp3dZXHJw0oYhfBc23L040T2AXt0rcJrWs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HbvXWEdbv5YXKHAxvnLLO9MRguqiv9BdC2x5i+Rcas/EDQptcDSj5vwafml+0lNYw
+	 HxWgZqKKX6kfYjzbsljjgHd+BbxbFMDNWWuDdiPbK4uZDE1aUpXTSBYBXe8wCRqFO2
+	 sKVElEmzei3vHaB+2nOzri4pMtFVjTKhYX/LZU0JGcigqe26S6vpPZyPJF89zbmHII
+	 gnT50DZ/jvtZfZuWY+kJxt0RUZGgJ8ujzpiYc2PJKi48TzDJB142NVNtc8kI3p4+zE
+	 VVfmI/Ibue6exRPbKFbpWKU0z08g7CODtfNwtIRb5BDFv5u3hLq752VWh+eEz9WOz0
+	 sgJ5Ex8wTcZfw==
+Date: Thu, 13 Feb 2025 09:10:37 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Kees Cook <kees@kernel.org>, Eyal Birger <eyal.birger@gmail.com>,
+ stable@vger.kernel.org, Jann Horn <jannh@google.com>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-api@vger.kernel.org, x86@kernel.org, bpf@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Andy
+ Lutomirski <luto@kernel.org>, Deepak Gupta <debug@rivosinc.com>, Stephen
+ Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall
+ trampoline check
+Message-Id: <20250213091037.1be1b765f3610d1a3f732e41@kernel.org>
+In-Reply-To: <20250212220433.3624297-1-jolsa@kernel.org>
+References: <20250212220433.3624297-1-jolsa@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250206232022.599998-1-ojeda@kernel.org>
-In-Reply-To: <20250206232022.599998-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Feb 2025 23:29:32 +0100
-X-Gm-Features: AWEUYZnuk0VGL_AzcBee1c5Y4k5tHfvfuNR0sTon-_manIWBu0BxLrpeWaavqr4
-Message-ID: <CANiq72kCKgcp6f-K1gtKdq_O6UkkC0A8WmZ-vGGGepvQHT3zLA@mail.gmail.com>
-Subject: Re: [PATCH] rust: rbtree: fix overindented list item
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Yutaro Ohno <yutaro.ono.418@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 7, 2025 at 12:20=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Starting with Rust 1.86.0 (to be released 2025-04-03), Clippy will have
-> a new lint, `doc_overindented_list_items` [1], which catches cases of
-> overindented list items.
->
-> The lint has been added by Yutaro Ohno, based on feedback from the kernel
-> [2] on a patch that fixed a similar case -- commit 0c5928deada1 ("rust:
-> block: fix formatting in GenDisk doc").
->
-> Clippy reports a single case in the kernel, apart from the one already
-> fixed in the commit above:
->
->     error: doc list item overindented
->         --> rust/kernel/rbtree.rs:1152:5
->          |
->     1152 | ///     null, it is a pointer to the root of the [`RBTree`].
->          |     ^^^^ help: try using `  ` (2 spaces)
->          |
->          =3D help: for further information visit https://rust-lang.github=
-.io/rust-clippy/master/index.html#doc_overindented_list_items
->          =3D note: `-D clippy::doc-overindented-list-items` implied by `-=
-D warnings`
->          =3D help: to override `-D warnings` add `#[allow(clippy::doc_ove=
-rindented_list_items)]`
->
-> Thus clean it up.
->
-> Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is =
-pinned in older LTSs).
-> Fixes: a335e9591404 ("rust: rbtree: add `RBTree::entry`")
-> Link: https://github.com/rust-lang/rust-clippy/pull/13711 [1]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13601 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, 12 Feb 2025 23:04:33 +0100
+Jiri Olsa <jolsa@kernel.org> wrote:
 
-Applied to `rust-fixes` -- thanks everyone!
+> Jann reported [1] possible issue when trampoline_check_ip returns
+> address near the bottom of the address space that is allowed to
+> call into the syscall if uretprobes are not set up.
+> 
+> Though the mmap minimum address restrictions will typically prevent
+> creating mappings there, let's make sure uretprobe syscall checks
+> for that.
+> 
+> [1] https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Eyal Birger <eyal.birger@gmail.com>
+> Cc: stable@vger.kernel.org
+> Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+> Acked-by: Andrii Nakryiko <andrii@kernel.org>
+> Reported-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 
-    [ There are a few other cases, so updated message. - Miguel ]
+Looks good to me.
 
-Cheers,
-Miguel
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+Thank you,
+
+> ---
+> v3 changes:
+>  - used ~0UL instead of -1 [Alexei]
+>  - used UPROBE_NO_TRAMPOLINE_VADDR in uprobe_get_trampoline_vaddr [Masami]
+>  - added unlikely [Andrii]
+>  - I kept the review/ack tags, because I think the change is basically
+>    the same, please scream otherwise
+> 
+>  arch/x86/kernel/uprobes.c | 14 +++++++++-----
+>  include/linux/uprobes.h   |  2 ++
+>  kernel/events/uprobes.c   |  2 +-
+>  3 files changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> index 5a952c5ea66b..9194695662b2 100644
+> --- a/arch/x86/kernel/uprobes.c
+> +++ b/arch/x86/kernel/uprobes.c
+> @@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
+>  	return &insn;
+>  }
+>  
+> -static unsigned long trampoline_check_ip(void)
+> +static unsigned long trampoline_check_ip(unsigned long tramp)
+>  {
+> -	unsigned long tramp = uprobe_get_trampoline_vaddr();
+> -
+>  	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
+>  }
+>  
+>  SYSCALL_DEFINE0(uretprobe)
+>  {
+>  	struct pt_regs *regs = task_pt_regs(current);
+> -	unsigned long err, ip, sp, r11_cx_ax[3];
+> +	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
+> +
+> +	/* If there's no trampoline, we are called from wrong place. */
+> +	tramp = uprobe_get_trampoline_vaddr();
+> +	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
+> +		goto sigill;
+>  
+> -	if (regs->ip != trampoline_check_ip())
+> +	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
+> +	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+>  		goto sigill;
+>  
+>  	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
+> diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+> index a40efdda9052..2e46b69ff0a6 100644
+> --- a/include/linux/uprobes.h
+> +++ b/include/linux/uprobes.h
+> @@ -39,6 +39,8 @@ struct page;
+>  
+>  #define MAX_URETPROBE_DEPTH		64
+>  
+> +#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
+> +
+>  struct uprobe_consumer {
+>  	/*
+>  	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index 597b9e036e5f..c5d6307bc5bc 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -2156,8 +2156,8 @@ void uprobe_copy_process(struct task_struct *t, unsigned long flags)
+>   */
+>  unsigned long uprobe_get_trampoline_vaddr(void)
+>  {
+> +	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
+>  	struct xol_area *area;
+> -	unsigned long trampoline_vaddr = -1;
+>  
+>  	/* Pairs with xol_add_vma() smp_store_release() */
+>  	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+> -- 
+> 2.48.1
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
