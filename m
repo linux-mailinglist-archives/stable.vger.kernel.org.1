@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-116000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D227EA34676
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9471A3482A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6B5F16A8C1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDAA93B458F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4538389;
-	Thu, 13 Feb 2025 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C48C70805;
+	Thu, 13 Feb 2025 15:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZB3Ni6PT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpKs4iyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C49235961;
-	Thu, 13 Feb 2025 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CE91547E3;
+	Thu, 13 Feb 2025 15:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459985; cv=none; b=OnkTBo6RLI1F6/eO4Xr4o8cV5JOq46Oe6xJ5+Np5gj3SxgvdW3uTdrH9Kl6TyDs7gCkM0Xuz2UyCKwlyPZ0jc37jjDcBa2QlGb4Oye+cREcOr0azxOx5XtqWqtb9541bXLyq4JRHJfaDf0W7BcfONu1NbX9gzR/B0leNw9LxQUs=
+	t=1739460804; cv=none; b=IkLVSNoHPK9NKMsE9L4aXFuvbSDWPKc6Pbj0IynaZBokuUd4vp8sTzgKb+BCTpgKjnCpBHtvN/B5QuG7pAproaYNYmYRcOUy219bkxW8RGZGDlBw1I1pFm5ANRTSWOo1li5gtXhBlE8Jpjo/wkf9Zjhc7roZCliociGbDftKzLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459985; c=relaxed/simple;
-	bh=KtAT+BIF5RpsLQ9IME1/dnmDgRtv8BI6VF2i5v1ov0k=;
+	s=arc-20240116; t=1739460804; c=relaxed/simple;
+	bh=h4GZpQs0YfUTRVm+hOaw4Y6AT7RiQUN2rMzkKdh52z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOcQukKxayI0JIX2pX+ZAayPPalyLGIp/pyyPvCB7AQRiaUq0JAkCtdUC6IcAQd+0XLP7kf2YSXc5VUjDytkjgQ/nBgvt8FbL9ws8ejyppy20ko4Uo6IyWd/ByElt84m0THjUSQ8wSVXx7ZLz6TDssRWdMTIq3gndEpm5HBBFzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZB3Ni6PT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4DEC4CED1;
-	Thu, 13 Feb 2025 15:19:44 +0000 (UTC)
+	 MIME-Version; b=PS3c44FyZeGZePwcbmn43Nn3NjVV29gYj7elEKIpBLCC+PqhtZ0gtxvgGoD33mj+PdpV7x0xy10G9ZX/S8VNf4+LVvb9ATubg39CQX0ECWi3s7JIIFn4IDEzpe7VorEZSKzhtlcTnfwX3/p1YuoxDMg6RM7PgHVRLUUpLLy/8ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpKs4iyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D01C4CED1;
+	Thu, 13 Feb 2025 15:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459985;
-	bh=KtAT+BIF5RpsLQ9IME1/dnmDgRtv8BI6VF2i5v1ov0k=;
+	s=korg; t=1739460804;
+	bh=h4GZpQs0YfUTRVm+hOaw4Y6AT7RiQUN2rMzkKdh52z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZB3Ni6PTu4xW6klfGfXj9lLmPTPD3rWZ88928aQLVkzBItMDi/CbrKYWRoh61T2Fn
-	 im2qlZge2T+bGqynuZcppsDl2MXuXdf65l9qDViGMeUbr0UxEpqvsi78iVrbLNczvp
-	 3G/FbEE2M7b3KBl8nJaR3u/MlzpxcbjBzHq/n0yQ=
+	b=MpKs4iynX9KlOWowVXlgiAysMtc0zb/mix1VbiW6bu5MGDlGZXjIl98436HtGAjY/
+	 g67c1D3wh/0OrVn9V9bwY/WYpuBHgalJ5mW4fykVBKvLxzHnCmOUP2QYQAWwGSJGvX
+	 m4ChKB60RLt5byHSp8OWEC+JHQ/L8/yW6QPTL/3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 424/443] rtla/timerlat_hist: Stop timerlat tracer on signal
-Date: Thu, 13 Feb 2025 15:29:49 +0100
-Message-ID: <20250213142456.983062063@linuxfoundation.org>
+	reveliofuzzing <reveliofuzzing@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 218/273] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
+Date: Thu, 13 Feb 2025 15:29:50 +0100
+Message-ID: <20250213142415.929891414@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit c73cab9dbed04d8f65ca69177b4b21ed3e09dfa7 upstream.
+commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
 
-Currently, when either SIGINT from the user or SIGALRM from the duration
-timer is caught by rtla-timerlat, stop_tracing is set to break out of
-the main loop. This is not sufficient for cases where the timerlat
-tracer is producing more data than rtla can consume, since in that case,
-rtla is looping indefinitely inside tracefs_iterate_raw_events, never
-reaches the check of stop_tracing and hangs.
+reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
+set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
+ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
+write outside the allocated buffer, overwriting random memory.
 
-In addition to setting stop_tracing, also stop the timerlat tracer on
-received signal (SIGINT or SIGALRM). This will stop new samples so that
-the existing samples may be processed and tracefs_iterate_raw_events
-eventually exits.
+While a ATA device is supposed to abort a ATA_NOP command, there does seem
+to be a bug either in libata-sff or QEMU, where either this status is not
+set, or the status is cleared before read by ata_sff_hsm_move().
+Anyway, that is most likely a separate bug.
+
+Looking at __atapi_pio_bytes(), it already has a safety check to ensure
+that __atapi_pio_bytes() cannot write outside the allocated buffer.
+
+Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
+cannot write outside the allocated buffer.
 
 Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-3-tglozar@redhat.com
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
+Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
+Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/timerlat_hist.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/ata/libata-sff.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -1149,9 +1149,12 @@ out_err:
- }
- 
- static int stop_tracing;
-+static struct trace_instance *hist_inst = NULL;
- static void stop_hist(int sig)
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -602,7 +602,7 @@ static void ata_pio_sector(struct ata_qu
  {
- 	stop_tracing = 1;
-+	if (hist_inst)
-+		trace_instance_stop(hist_inst);
- }
+ 	struct ata_port *ap = qc->ap;
+ 	struct page *page;
+-	unsigned int offset;
++	unsigned int offset, count;
  
- /*
-@@ -1198,6 +1201,12 @@ int timerlat_hist_main(int argc, char *a
+ 	if (!qc->cursg) {
+ 		qc->curbytes = qc->nbytes;
+@@ -618,25 +618,27 @@ static void ata_pio_sector(struct ata_qu
+ 	page = nth_page(page, (offset >> PAGE_SHIFT));
+ 	offset %= PAGE_SIZE;
+ 
+-	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
++	/* don't overrun current sg */
++	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
++
++	trace_ata_sff_pio_transfer_data(qc, offset, count);
+ 
+ 	/*
+ 	 * Split the transfer when it splits a page boundary.  Note that the
+ 	 * split still has to be dword aligned like all ATA data transfers.
+ 	 */
+ 	WARN_ON_ONCE(offset % 4);
+-	if (offset + qc->sect_size > PAGE_SIZE) {
++	if (offset + count > PAGE_SIZE) {
+ 		unsigned int split_len = PAGE_SIZE - offset;
+ 
+ 		ata_pio_xfer(qc, page, offset, split_len);
+-		ata_pio_xfer(qc, nth_page(page, 1), 0,
+-			     qc->sect_size - split_len);
++		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
+ 	} else {
+-		ata_pio_xfer(qc, page, offset, qc->sect_size);
++		ata_pio_xfer(qc, page, offset, count);
  	}
  
- 	trace = &tool->trace;
-+	/*
-+	 * Save trace instance into global variable so that SIGINT can stop
-+	 * the timerlat tracer.
-+	 * Otherwise, rtla could loop indefinitely when overloaded.
-+	 */
-+	hist_inst = trace;
+-	qc->curbytes += qc->sect_size;
+-	qc->cursg_ofs += qc->sect_size;
++	qc->curbytes += count;
++	qc->cursg_ofs += count;
  
- 	retval = enable_timerlat(trace);
- 	if (retval) {
-@@ -1366,7 +1375,7 @@ int timerlat_hist_main(int argc, char *a
- 
- 	return_value = 0;
- 
--	if (trace_is_off(&tool->trace, &record->trace)) {
-+	if (trace_is_off(&tool->trace, &record->trace) && !stop_tracing) {
- 		printf("rtla timerlat hit stop tracing\n");
- 
- 		if (!params->no_aa)
+ 	if (qc->cursg_ofs == qc->cursg->length) {
+ 		qc->cursg = sg_next(qc->cursg);
 
 
 
