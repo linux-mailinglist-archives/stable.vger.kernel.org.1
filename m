@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-115607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEA6A3450B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57B5A3422F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CD8F3B3505
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA2F4165B03
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D1E23F403;
-	Thu, 13 Feb 2025 14:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC3122154E;
+	Thu, 13 Feb 2025 14:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqaGt5W4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcHFwwSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B14F26B095;
-	Thu, 13 Feb 2025 14:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44AF21D3F9;
+	Thu, 13 Feb 2025 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458619; cv=none; b=eMugeRcx9h8BjH8QPVxGcVgj8ZJJXFRg9hreFnILbkanbwdPFYsoq4OMk9AwtakPmPbrQiUs6bRufH26N70kZOXd3DNktptPWdBdsd357XAbubo1Xbv0gjicEt9dojka8nmPDbtFY3mKSeGyVZJZXsWbsIUt0lL64t6zG++r5YU=
+	t=1739457177; cv=none; b=a+VOVX8VpwJLreuHk1XDMaHyApAL+pljTKn8aZBBh0Csf/ETGSyMXmFFmRlGiWswxxpXtMMg1B48Su6wO1cP+pgjD1w+ODgL3692f71JjBYyNCkFcH0V9n1lWPhHfrH0zA3/wXrO1mu9sN9rZyVAQWCWx6x4OnW/+M7QfYCPm/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458619; c=relaxed/simple;
-	bh=mWDeOZ2b8QlRFEBnxLSILHPc8kZtRm1yXPqlzCbmCaY=;
+	s=arc-20240116; t=1739457177; c=relaxed/simple;
+	bh=txZ9A7CvJJGeR5oAuarkyd0tRHNL5IWUfuR0Zj9urYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1T/SvzM/KWuldvV/duyh4cs7bJ1YCUF616R9x2cX+ghRTG8qvu9Itt6o686pl9r3i70Io+49uw6w+qtE2alJsdO+SwqjJb0AvMGPPwSpzN2Dikh7mApOX4hu/B7NHbVo/ZwA4z1CPK8XMap9nIxsvbBlA+J9MkuBEyVIksTm4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqaGt5W4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CED3C4CED1;
-	Thu, 13 Feb 2025 14:56:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S6rLrWi+6goiG0a541BNq2eum9sIjVS4nlQ2XtqO8VaQWuNs7saLtVOFYKNbEwpT4CGaeUGv04E+cG6wVNJyCc+/R4EQqYr1HRUV2Oqcup1v4INL/hAL06VwZ7iUl/ZDPAEp1QtGS94Y9lt3uLqWf945Ha3ldbR43wCPprcahbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcHFwwSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE11C4CED1;
+	Thu, 13 Feb 2025 14:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458619;
-	bh=mWDeOZ2b8QlRFEBnxLSILHPc8kZtRm1yXPqlzCbmCaY=;
+	s=korg; t=1739457177;
+	bh=txZ9A7CvJJGeR5oAuarkyd0tRHNL5IWUfuR0Zj9urYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqaGt5W4SfT6aw1dgA+/3JZYSsKppYzWRleFq+nlQsIb/4ypLFIzUoMTmUUznHrAb
-	 rY/0nDvIHwJ4W6CtmrolG5ul6uaShnImu67xjcW1vbMwQt0HNS28LCR4lYJa+FB8Z4
-	 nvY74y3dlaIMRbgP6TG2kudNd5uT6OcDG9R2aoYo=
+	b=tcHFwwSqUwY0DoYmvtB3RS2vUl7Kg8f6bErYAdKzloCXin/RLZssvzuto7pGQ9g9s
+	 C9gdJeQ10dsVPBWE42WuEYDIBAAjQwCqULGaTpLhUk2E2HOlp70ZVDKBc1Tw7McUEm
+	 cabQyoWfgM0R2gkykcBVk2k4/u0tiUil39WBuRyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Shand <jshand2013@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	"Dustin L. Howett" <dustin@howett.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 004/443] btrfs: do not output error message if a qgroup has been already cleaned up
+Subject: [PATCH 6.12 020/422] drm: panel-backlight-quirks: Add Framework 13 glossy and 2.8k panels
 Date: Thu, 13 Feb 2025 15:22:49 +0100
-Message-ID: <20250213142440.786555573@linuxfoundation.org>
+Message-ID: <20250213142437.333086899@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Dustin L. Howett <dustin@howett.net>
 
-[ Upstream commit c9c863793395cf0a66c2778a29d72c48c02fbb66 ]
+[ Upstream commit d80b5c5b9be6b2e1cdeaaeaa8259523b63cae292 ]
 
-[BUG]
-There is a bug report that btrfs outputs the following error message:
+I have tested these panels on the Framework Laptop 13 AMD with firmware
+revision 3.05 (latest at time of submission).
 
-  BTRFS info (device nvme0n1p2): qgroup scan completed (inconsistency flag cleared)
-  BTRFS warning (device nvme0n1p2): failed to cleanup qgroup 0/1179: -2
-
-[CAUSE]
-The error itself is pretty harmless, and the end user should ignore it.
-
-When a subvolume is fully dropped, btrfs will call
-btrfs_qgroup_cleanup_dropped_subvolume() to delete the qgroup.
-
-However if a qgroup rescan happened before a subvolume fully dropped,
-qgroup for that subvolume will not be re-created, as rescan will only
-create new qgroup if there is a BTRFS_ROOT_REF_KEY found.
-
-But before we drop a subvolume, the subvolume is unlinked thus there is no
-BTRFS_ROOT_REF_KEY.
-
-In that case, btrfs_remove_qgroup() will fail with -ENOENT and trigger
-the above error message.
-
-[FIX]
-Just ignore -ENOENT error from btrfs_remove_qgroup() inside
-btrfs_qgroup_cleanup_dropped_subvolume().
-
-Reported-by: John Shand <jshand2013@gmail.com>
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1236056
-Fixes: 839d6ea4f86d ("btrfs: automatically remove the subvolume qgroup")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241111-amdgpu-min-backlight-quirk-v7-4-f662851fda69@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel_backlight_quirks.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 993b5e803699e..5ab51781d0e4f 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1915,8 +1915,11 @@ int btrfs_qgroup_cleanup_dropped_subvolume(struct btrfs_fs_info *fs_info, u64 su
- 	/*
- 	 * It's squota and the subvolume still has numbers needed for future
- 	 * accounting, in this case we can not delete it.  Just skip it.
-+	 *
-+	 * Or the qgroup is already removed by a qgroup rescan. For both cases we're
-+	 * safe to ignore them.
- 	 */
--	if (ret == -EBUSY)
-+	if (ret == -EBUSY || ret == -ENOENT)
- 		ret = 0;
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/drm_panel_backlight_quirks.c b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+index f2aefff618ddb..c477d98ade2b4 100644
+--- a/drivers/gpu/drm/drm_panel_backlight_quirks.c
++++ b/drivers/gpu/drm/drm_panel_backlight_quirks.c
+@@ -25,6 +25,22 @@ static const struct drm_panel_min_backlight_quirk drm_panel_min_backlight_quirks
+ 		.ident.name = "NE135FBM-N41",
+ 		.min_brightness = 0,
+ 	},
++	/* 13 inch glossy panel */
++	{
++		.dmi_match.field = DMI_BOARD_VENDOR,
++		.dmi_match.value = "Framework",
++		.ident.panel_id = drm_edid_encode_panel_id('B', 'O', 'E', 0x095f),
++		.ident.name = "NE135FBM-N41",
++		.min_brightness = 0,
++	},
++	/* 13 inch 2.8k panel */
++	{
++		.dmi_match.field = DMI_BOARD_VENDOR,
++		.dmi_match.value = "Framework",
++		.ident.panel_id = drm_edid_encode_panel_id('B', 'O', 'E', 0x0cb4),
++		.ident.name = "NE135A1M-NY1",
++		.min_brightness = 0,
++	},
+ };
+ 
+ static bool drm_panel_min_backlight_quirk_matches(const struct drm_panel_min_backlight_quirk *quirk,
 -- 
 2.39.5
 
