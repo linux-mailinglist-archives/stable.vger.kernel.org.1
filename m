@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-116164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120F5A34788
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258C5A34443
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B7118862B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2746170575
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB0A26B0BD;
-	Thu, 13 Feb 2025 15:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6CB245017;
+	Thu, 13 Feb 2025 14:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK/DI03c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGV4HfeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB455684;
-	Thu, 13 Feb 2025 15:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995FA26B08D;
+	Thu, 13 Feb 2025 14:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460545; cv=none; b=aByyUXIOCjbOdhZBaqQNIv30+iIoPaS9PdEPM51Z7wdcM0XGzp8E4q5hOb7SR8qDdnXolezEQdtKLHFQyNwYJhzT4iHG3bVKtZ3Hk30m/byfvVNqcTx9CB3refpWCP7Gaqlzz2LQM11bpq/5UXw33WN8J97tDzg5+cnKVjDUFgI=
+	t=1739458351; cv=none; b=sIbc776Aueicl7YFcQ99febSYwNZPlgVQTpS6BvJLnm/yooXdJCY5JrPNhRBt1bTvV0UyFsD4a9bG52kusu2B0tUKBOpi+IhXN7lHSXBNn20aUDBB1UoF2EqUmmeYBlAY260U8gWh2LhDrX4AbLykMMnvmM0Tyz/9qI93emPrqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460545; c=relaxed/simple;
-	bh=6lyKoWFL+kbQTuB07OwgCOwOsgyVKahG7XJ6x+0rhSw=;
+	s=arc-20240116; t=1739458351; c=relaxed/simple;
+	bh=4gdci7zZzO/Vi0sRXSO+uG6Ft/BTPuZ9vbiM+7nS2hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSBfQFNwoMdkgwDWxy5kz8PX3h8rNPQHhH/YLjYrfngNa4sMYNbHnO09idiHvMgMoMebQ1Np4+79el6jRydO1M+LB3IIK+HXZ9aL6o3w5c27jkpg5OiK1is1k7vDdzUHnoTF4jgrEFJ9LgITDsIJlKYA3yqaW7etG2zDmXviB8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK/DI03c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A4EC4CED1;
-	Thu, 13 Feb 2025 15:29:04 +0000 (UTC)
+	 MIME-Version; b=OLuGFlTJT50hZTG1YDmZKZ8sd8lb4QOwNT502VeU5z5pGcGVy0zhBJtQqFiNRopdBr02Y1krLIuA8FEDktKGutk76qi0GO6pqEcW1DlW8/0clDMQpl7x6rq/9kDYM5fRpelrFq7RriVRkOIqahkiz3ngWCNlLpnAiNnv2N2ClEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGV4HfeZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D66C4CEE4;
+	Thu, 13 Feb 2025 14:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460545;
-	bh=6lyKoWFL+kbQTuB07OwgCOwOsgyVKahG7XJ6x+0rhSw=;
+	s=korg; t=1739458351;
+	bh=4gdci7zZzO/Vi0sRXSO+uG6Ft/BTPuZ9vbiM+7nS2hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yK/DI03cErq9yLPyPlrZHLQyibOV1WIyRgEHB6mdYnNdvWQjSpeNoOX0TVJFwHUdS
-	 OuRENnxiojHjXCLVcYXorG4x1vn3PSMXSeN9sS9hdMHeB81PfSN3zL8UkjJ1CaHJS8
-	 GuUDMRfQCPIbUvCupk37NhfqJEg2/yqeZzMBI0cU=
+	b=MGV4HfeZKtOIwJA9jdaWqzX7MmPnUKCyy2BuKXMP0KqyK2WSQw2zyTgoXxmjSMSls
+	 rgVuCSJrVe/xNLUI2WAn4Bp5OI1WmLFlVQaFjVSZRvKZTYaYN3xauEDbPGRDrtxpZ/
+	 iN9fBGQga07CwEdBmPEnXONP0Ld9RqH07Du0gJC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	nijs1@lenovo.com,
-	pgriffais@valvesoftware.com,
-	mpearson-lenovo@squebb.ca,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 143/273] ASoC: acp: Support microphone from Lenovo Go S
-Date: Thu, 13 Feb 2025 15:28:35 +0100
-Message-ID: <20250213142412.986648257@linuxfoundation.org>
+	Pekka Pessi <ppessi@nvidia.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>
+Subject: [PATCH 6.12 367/422] mailbox: tegra-hsp: Clear mailbox before using message
+Date: Thu, 13 Feb 2025 15:28:36 +0100
+Message-ID: <20250213142450.711412237@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Pekka Pessi <ppessi@nvidia.com>
 
-commit b9a8ea185f3f8024619b2e74b74375493c87df8c upstream.
+commit 0b7f8328f988178b55ee11d772a6e1238c04d29d upstream.
 
-On Lenovo Go S there is a DMIC connected to the ACP but the firmware
-has no `AcpDmicConnected` ACPI _DSD.
+The Tegra RCE (Camera) driver expects the mailbox to be empty before
+processing the IVC messages. On RT kernel, the threads processing the
+IVC messages (which are invoked after `mbox_chan_received_data()` is
+called) may be on a different CPU or running with a higher priority
+than the HSP interrupt handler thread. This can cause it to act on the
+message before the mailbox gets cleared in the HSP interrupt handler
+resulting in a loss of IVC notification.
 
-Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
+Fix this by clearing the mailbox data register before calling
+`mbox_chan_received_data()`.
 
-Cc: nijs1@lenovo.com
-Cc: pgriffais@valvesoftware.com
-Cc: mpearson-lenovo@squebb.ca
+Fixes: 8f585d14030d ("mailbox: tegra-hsp: Add tegra_hsp_sm_ops")
+Fixes: 74c20dd0f892 ("mailbox: tegra-hsp: Add 128-bit shared mailbox support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250123024915.2457115-1-superm1@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Pekka Pessi <ppessi@nvidia.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/mailbox/tegra-hsp.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -307,6 +307,34 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
- 		}
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -388,7 +388,6 @@ static void tegra_hsp_sm_recv32(struct t
+ 	value = tegra_hsp_channel_readl(channel, HSP_SM_SHRD_MBOX);
+ 	value &= ~HSP_SM_SHRD_MBOX_FULL;
+ 	msg = (void *)(unsigned long)value;
+-	mbox_chan_received_data(channel->chan, msg);
+ 
+ 	/*
+ 	 * Need to clear all bits here since some producers, such as TCU, depend
+@@ -398,6 +397,8 @@ static void tegra_hsp_sm_recv32(struct t
+ 	 * explicitly, so we have to make sure we cover all possible cases.
+ 	 */
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SM_SHRD_MBOX);
++
++	mbox_chan_received_data(channel->chan, msg);
+ }
+ 
+ static const struct tegra_hsp_sm_ops tegra_hsp_sm_32bit_ops = {
+@@ -433,7 +434,6 @@ static void tegra_hsp_sm_recv128(struct
+ 	value[3] = tegra_hsp_channel_readl(channel, HSP_SHRD_MBOX_TYPE1_DATA3);
+ 
+ 	msg = (void *)(unsigned long)value;
+-	mbox_chan_received_data(channel->chan, msg);
+ 
+ 	/*
+ 	 * Clear data registers and tag.
+@@ -443,6 +443,8 @@ static void tegra_hsp_sm_recv128(struct
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA2);
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA3);
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_TAG);
++
++	mbox_chan_received_data(channel->chan, msg);
+ }
+ 
+ static const struct tegra_hsp_sm_ops tegra_hsp_sm_128bit_ops = {
 
 
 
