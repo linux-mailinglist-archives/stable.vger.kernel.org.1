@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-115908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD8EA34560
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D4A34751
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21DB57A1163
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B53166658
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFC226B0B5;
-	Thu, 13 Feb 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45A4156F3F;
+	Thu, 13 Feb 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP7l6BtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="071Llrp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF626B096;
-	Thu, 13 Feb 2025 15:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8356D143736;
+	Thu, 13 Feb 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459675; cv=none; b=IwSD9pQdsYQA1xq93B7aUi2CYp2dtx4Qdeldo0tEEYUmc9wJyBSaf1lU3/Y8KL9mcy5lfONESsXfU5szwHe8colfNk5C2bGZI7O67xN8plQvwtfWctdC4k7IREvTPQXNaE+pZwybQFerSzCP7AxvOLZuFxkklxmJ0Fppu1TMn5g=
+	t=1739460484; cv=none; b=qDcGyXk5cvadEYSi0F5l3l9w7nwdH6LzuAwu8OIE8whjxUFbAkcckbnzLjegpfTWJtG76fa8VTgiSDCPOg4Q0IRd51tnW11CZRsmQzMuDATRS7xgmnP7+oGJEsM2uqucxYvBOrtS1ITg36Gg5y4niYp3wDINC0qWHTrqaW4LThs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459675; c=relaxed/simple;
-	bh=w6mJBbT5e+x8oE+ZfQbg+/UIE1A7gl34cHRN1r0WUoY=;
+	s=arc-20240116; t=1739460484; c=relaxed/simple;
+	bh=L0FPQ/cciSC3eIUmnVrgpy9Qthlb61qwkouDvjM/3X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUMuos8HLJmsmMBngLNQZSOAyAh1Ct0HnfRdkZgz+uCR6ybJ3Tma8A1F81liFMAijtRAuUhGFGeVUBbzC5D+Io/WKRNy7y5+FW63qm6JK1i1HiMbLlYlCwIZrLsB6spVo+XH0UsZqNmHuGL7OHL1fOw8nsKpBjVLJObY7SVvNeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP7l6BtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E047C4CED1;
-	Thu, 13 Feb 2025 15:14:34 +0000 (UTC)
+	 MIME-Version; b=TsS7w7knAQ++j8Y3OfRPP0J7EpCBvtdun1w8lvZ1bhNj1rDofGEddUc2hQmcSx+XuxKulrzQw6H8MLiRLfpu143gijpfM3ClFjaDt4UGOcBBCUnqvoRr7PHNi55Ezbn5r+eXBYnfiywsHizWJk+ABI1azk5iTkri9xwvukKZBWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=071Llrp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6F5C4CED1;
+	Thu, 13 Feb 2025 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459675;
-	bh=w6mJBbT5e+x8oE+ZfQbg+/UIE1A7gl34cHRN1r0WUoY=;
+	s=korg; t=1739460484;
+	bh=L0FPQ/cciSC3eIUmnVrgpy9Qthlb61qwkouDvjM/3X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BP7l6BtB4K+owrqd3XBEFP5qd6dqlefpbdpR2I3bf5RapEr8GfwjJHdeWDEmWL+LY
-	 x3m6bXGTxLiG00X9QhbFpbIEjWAZUviMWABaBlo5nP/96dJmrW3gskAWH94zwgo0FP
-	 3xqiaid9k1fcoMsVz8J0dNDKBRyk3gk2n49lMDBI=
+	b=071Llrp+bfkU5OfZxf/dBXjelR/CB3hbXQXpDKcJT2ma+3HgprNGkh64zQ8VgOOk1
+	 Yo8E6kjj7e5fpMUW3iDclUpBQlQhoDqchzO/LCw0xnymjX2Ptb+RTvS6ZV1FflWN/A
+	 TuK7eOkziv7BBy7lrlpni4Cbj5S56lM1H80StLCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.13 331/443] xfs: Add error handling for xfs_reflink_cancel_cow_range
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.6 124/273] of: Fix of_find_node_opts_by_path() handling of alias+path+options
 Date: Thu, 13 Feb 2025 15:28:16 +0100
-Message-ID: <20250213142453.395978939@linuxfoundation.org>
+Message-ID: <20250213142412.242429093@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 26b63bee2f6e711c5a169997fd126fddcfb90848 upstream.
+commit b9e58c934c56aa35b0fb436d9afd86ef326bae0e upstream.
 
-In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
-without error handling, risking unnoticed failures and
-inconsistent behavior compared to other parts of the code.
+of_find_node_opts_by_path() fails to find OF device node when its
+@path parameter have pattern below:
 
-Fix this issue by adding an error handling for the
-xfs_reflink_cancel_cow_range(), improving code robustness.
+"alias-name/node-name-1/.../node-name-N:options".
 
-Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
-Cc: stable@vger.kernel.org # v4.17
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+The reason is that alias name length calculated by the API is wrong, as
+explained by example below:
+
+"testcase-alias/phandle-tests/consumer-a:testaliasoption".
+ ^             ^                        ^
+ 0             14                       39
+
+The right length of alias 'testcase-alias' is 14, but the result worked
+out by the API is 39 which is obvious wrong.
+
+Fix by using index of either '/' or ':' as the length who comes earlier.
+
+Fixes: 75c28c09af99 ("of: add optional options parameter to of_find_node_by_path()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241216-of_core_fix-v2-1-e69b8f60da63@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_inode.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/of/base.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1404,8 +1404,11 @@ xfs_inactive(
- 		goto out;
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -788,10 +788,10 @@ struct device_node *of_find_node_opts_by
+ 	/* The path could begin with an alias */
+ 	if (*path != '/') {
+ 		int len;
+-		const char *p = separator;
++		const char *p = strchrnul(path, '/');
  
- 	/* Try to clean out the cow blocks if there are any. */
--	if (xfs_inode_has_cow_data(ip))
--		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+	if (xfs_inode_has_cow_data(ip)) {
-+		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+		if (error)
-+			goto out;
-+	}
+-		if (!p)
+-			p = strchrnul(path, '/');
++		if (separator && separator < p)
++			p = separator;
+ 		len = p - path;
  
- 	if (VFS_I(ip)->i_nlink != 0) {
- 		/*
+ 		/* of_aliases must not be NULL */
 
 
 
