@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DC4A347AA
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18EEA34669
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2FA516F201
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A211894F2B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05DB1632DD;
-	Thu, 13 Feb 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81172A1CF;
+	Thu, 13 Feb 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbUglNnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOiv3j6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4EA26B098;
-	Thu, 13 Feb 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F3C26B091;
+	Thu, 13 Feb 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460684; cv=none; b=CqCcR46b5ZoTMsUePJIBpUBMaZ7Vu8WMzKKIPIWkAqRlhrgfkkheaiXZ0EGf9mLB72vvZFlsTnBo0cZVop1iBdLgh5GmhF0uRCpAp87c9UeHAmDKtqMsvznywo6VkD0aQ+5h8aBMXkYFRA+sCh1I6N9Y8MhqOd9mD0TglI+F6C4=
+	t=1739459876; cv=none; b=PRQlVCzD87QEWTl67Fr3noiEjaeERjWr729K13RA/4epPgn8J+gotB3aRWZWwdZgG537+0wr3OneQkW0Jg4O8ihzb7CQ1qCobzqxel/rP8odUi8r2Op9+6VqUvVfgUfd0VSxjVHsAoJeGWs2R4gK3uza2OjvLsgBNMkq4kxZgrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460684; c=relaxed/simple;
-	bh=PiO0uEZHXHD6a4Jrz0D3qxMd2yR52Fj3OIqMHLcoMxk=;
+	s=arc-20240116; t=1739459876; c=relaxed/simple;
+	bh=TM/FX8CNyaxsKQDe5Q9ZtyVmT4kOxsbkqcWdorK5iaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=taofAU09ICJRH6v6bqxQH4m0+m3ja7qoPwueGfxz6SQahm/Duyztv03FK3iu5xNWRp+vSZS8yZTR5hJiVU7JF1E3OcTAsbLruJv4LDYi6+Mg2uy8kPm+EuMazVv61fiefzGczXHzlCbPOtavALox1M0FMHWgt7gZ2F+6ZIcg1Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbUglNnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A397EC4CED1;
-	Thu, 13 Feb 2025 15:31:23 +0000 (UTC)
+	 MIME-Version; b=pea312Kc3W2TAZYoM4fuwA+eFXHjiTx1I8/XuOtymhXhA6im5T8W7l8Mi7wP/mkmlwKH3R//+VVk+ExnQMp/0BVGX+rTY1zGAO01c1nOih7EzYSXks9SglM1mTpPTx4yi/XNizIMYRgBKlM/WiOdMA8h+IeMcj7M6pdei5p4q2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOiv3j6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07E2C4CED1;
+	Thu, 13 Feb 2025 15:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460684;
-	bh=PiO0uEZHXHD6a4Jrz0D3qxMd2yR52Fj3OIqMHLcoMxk=;
+	s=korg; t=1739459876;
+	bh=TM/FX8CNyaxsKQDe5Q9ZtyVmT4kOxsbkqcWdorK5iaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbUglNnf6RWstHh4d2Wem9l1utwNwxM42rViHUYrQpCqgDsLQondF/JeL1BmKvcHw
-	 KkHbcat8cEOBLd3S1qzKXUpdoVO0QlS+YUAEFdk0/uuA7bLQt2uzGzKOojc0JMBGVF
-	 8zBvThdG+JStRwWkNS9WPgGn0m+0Z2XnHZBHN8IM=
+	b=aOiv3j6qN0y/szmHLivU9o9Mwv54SW7Dv2S0xHicVIY0zmeVDcrrj0XYsqdKm7JGM
+	 ATZ1opeTjIGClGiOjvsOwWbK8//GCCSDC4d7wsbvkUsP2Rld0IVh+ZXgzXYOQ0qqkt
+	 ph0A1LF3tRjUD/VkNIAdT3wPaB92wpjL8T1wguDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 183/273] arm64: dts: qcom: sm8350: Fix MPSS memory length
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.13 390/443] nvmem: imx-ocotp-ele: simplify read beyond device check
 Date: Thu, 13 Feb 2025 15:29:15 +0100
-Message-ID: <20250213142414.558849098@linuxfoundation.org>
+Message-ID: <20250213142455.658875938@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit da1937dec9cd986e685b6a429b528a4cbc7b1603 upstream.
+commit 343aa1e289e8e3dba5e3d054c4eb27da7b4e1ecc upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+Do the read beyond device check on function entry in bytes instead of
+32bit words which is easier to follow.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
-
-Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-3-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/imx-ocotp-ele.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2156,7 +2156,7 @@
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -72,13 +72,13 @@ static int imx_ocotp_reg_read(void *cont
+ 	void *p;
+ 	int i;
  
- 		mpss: remoteproc@4080000 {
- 			compatible = "qcom,sm8350-mpss-pas";
--			reg = <0x0 0x04080000 0x0 0x4040>;
-+			reg = <0x0 0x04080000 0x0 0x10000>;
++	if (offset + bytes > priv->data->size)
++		bytes = priv->data->size - offset;
++
+ 	index = offset;
+ 	num_bytes = round_up(bytes, 4);
+ 	count = num_bytes >> 2;
  
- 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+-	if (count > ((priv->data->size >> 2) - index))
+-		count = (priv->data->size >> 2) - index;
+-
+ 	p = kzalloc(num_bytes, GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
 
 
 
