@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BCDA346FE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D354A343A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:55:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521EF3AC4F8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353271883ED0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C2B1422D8;
-	Thu, 13 Feb 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFD01CEEBB;
+	Thu, 13 Feb 2025 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jdxeoN2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xfg48jng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ECA3FB3B;
-	Thu, 13 Feb 2025 15:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD95D1C07C3;
+	Thu, 13 Feb 2025 14:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460142; cv=none; b=ijp4e7RvF+3YjS9bQ4OXNenbdl4LDgH4vOitBzD5ajldNmtSldfulahmhJYoJ6OE9X6IYOdW8JXIizO/AjK6H9ubafSxWouGAtrfhPB1uIBK82bJZoFmLmrxIaw+dzbBTa7ckxPY4ABjLG4lLN+lXQGOU3a2Jh6fHXPno0OHUqU=
+	t=1739457917; cv=none; b=kVgAXIhljUhgVCEhQR7Pc2fUehryHFS27u9K4Ee3kEleYMQFjTMFaMmsUynab6draYKaKtJxNoPbL/0fa7tX1XanWyC4eJLyG6Ht5y9E5GCJYUOKPeHPRpAyOkN/cJPji9HF/TpvDD6DD+mQbJy1d/wpg1Z/v5dMozeW22KJJVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460142; c=relaxed/simple;
-	bh=FkeMhyWFf3Ir4x5Y6R65htc8G23SAMXO/YVD/6bXc/E=;
+	s=arc-20240116; t=1739457917; c=relaxed/simple;
+	bh=Il5T577IVA98PyWDzKNey66StXwZef1/PmCIEd+3GsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5o6xiEct46n1UCSagjBaipnAte+wu4aMdvbEEBOT6KmjDjW0RKbiemu6u44W8n5pYa/psMTGtTUtdN1hxyV1VGxtFbeUNG3uTC0Pm39IFcTk+B1v9vRvHQgrHnsfxe55oAGdioRC+fdFGZ0jG7+zYEjXhMPLIqptYt4GFZO9hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jdxeoN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15B5C4CED1;
-	Thu, 13 Feb 2025 15:22:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AxQNKhyDRPjcHv0ZNMP8hbdWJ8RkXa+K/LJVdPuK1zJgdsrHivuiEiY+ZWuJrA3N1cxDOcHjidGIxJAuQ5O4fd717BzfJa0QS/UrhXZjzJ7PP/CGaKj7aFIgdiQ8if5HRRcxZYYfcbB3oXcbBuuJABgPW6NWaKubaZl+v8jABUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xfg48jng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B957BC4CED1;
+	Thu, 13 Feb 2025 14:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460140;
-	bh=FkeMhyWFf3Ir4x5Y6R65htc8G23SAMXO/YVD/6bXc/E=;
+	s=korg; t=1739457917;
+	bh=Il5T577IVA98PyWDzKNey66StXwZef1/PmCIEd+3GsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jdxeoN2o9ZzK3qtssJb6mIIR7WQ/0upd3QCUwh8jNcET8CPQs2bXX4NreEIuB1da
-	 3m9lJlt4nxSHzr0pZEHHKHpXl43xmYOFvcYpcopSg4krwobCH9EbH91D/nFC44q75o
-	 SC321mZszuZ2xRP9zTyY5uIj3qTrIaWIOmBYPvX8=
+	b=Xfg48jngnfd0jsC4peSm3U3kRx2zmknTIYhqDVE/C4SQ2ZczPzvyRK9dZnDtI/sRs
+	 zSYfAs5qz+VGSnAbNeeNodNc+J/YX+cQNQ7s36yLUUao25jc9jEMMbM3OpaPTF6OkT
+	 GyzpIdWVx3OCTpFpGSP752+AMwUEx7HmXlmxx5w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/273] drm/bridge: it6505: fix HDCP CTS KSV list wait timer
-Date: Thu, 13 Feb 2025 15:26:38 +0100
-Message-ID: <20250213142408.394357970@linuxfoundation.org>
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.12 250/422] PCI: dwc: ep: Prevent changing BAR size/flags in pci_epc_set_bar()
+Date: Thu, 13 Feb 2025 15:26:39 +0100
+Message-ID: <20250213142446.188603186@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 9f9eef9ec1a2b57d95a86fe81df758e8253a7766 ]
+commit 3708acbd5f169ebafe1faa519cb28adc56295546 upstream.
 
-HDCP must disabled encryption and restart authentication after
-waiting KSV for 5s.
-The original method uses a counter in a waitting loop that may
-wait much longer than it is supposed to.
-Use time_after() for KSV wait timeout.
+In commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
+inbound map address") set_bar() was modified to support dynamically
+changing the backing physical address of a BAR that was already configured.
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-9-e0fdd4844703@ite.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This means that set_bar() can be called twice, without ever calling
+clear_bar() (as calling clear_bar() would clear the BAR's PCI address
+assigned by the host).
+
+This can only be done if the new BAR size/flags does not differ from the
+existing BAR configuration. Add these missing checks.
+
+If we allow set_bar() to set e.g. a new BAR size that differs from the
+existing BAR size, the new address translation range will be smaller than
+the BAR size already determined by the host, which would mean that a read
+past the new BAR size would pass the iATU untranslated, which could allow
+the host to read memory not belonging to the new struct pci_epf_bar.
+
+While at it, add comments which clarifies the support for dynamically
+changing the physical address of a BAR. (Which was also missing.)
+
+Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+Link: https://lore.kernel.org/r/20241213143301.4158431-10-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |   22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 552d33c4325af..fe33b988d7523 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2058,12 +2058,13 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 	struct it6505 *it6505 = container_of(work, struct it6505,
- 					     hdcp_wait_ksv_list);
- 	struct device *dev = it6505->dev;
--	unsigned int timeout = 5000;
--	u8 bstatus = 0;
-+	u8 bstatus;
- 	bool ksv_list_check;
-+	/* 1B-04 wait ksv list for 5s */
-+	unsigned long timeout = jiffies +
-+				msecs_to_jiffies(5000) + 1;
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -222,8 +222,28 @@ static int dw_pcie_ep_set_bar(struct pci
+ 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
+ 		return -EINVAL;
  
--	timeout /= 20;
--	while (timeout > 0) {
-+	for (;;) {
- 		if (!it6505_get_sink_hpd_status(it6505))
- 			return;
+-	if (ep->epf_bar[bar])
++	/*
++	 * Certain EPF drivers dynamically change the physical address of a BAR
++	 * (i.e. they call set_bar() twice, without ever calling clear_bar(), as
++	 * calling clear_bar() would clear the BAR's PCI address assigned by the
++	 * host).
++	 */
++	if (ep->epf_bar[bar]) {
++		/*
++		 * We can only dynamically change a BAR if the new BAR size and
++		 * BAR flags do not differ from the existing configuration.
++		 */
++		if (ep->epf_bar[bar]->barno != bar ||
++		    ep->epf_bar[bar]->size != size ||
++		    ep->epf_bar[bar]->flags != flags)
++			return -EINVAL;
++
++		/*
++		 * When dynamically changing a BAR, skip writing the BAR reg, as
++		 * that would clear the BAR's PCI address assigned by the host.
++		 */
+ 		goto config_atu;
++	}
  
-@@ -2072,13 +2073,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 		if (bstatus & DP_BSTATUS_READY)
- 			break;
+ 	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
  
--		msleep(20);
--		timeout--;
--	}
-+		if (time_after(jiffies, timeout)) {
-+			DRM_DEV_DEBUG_DRIVER(dev, "KSV list wait timeout");
-+			goto timeout;
-+		}
- 
--	if (timeout == 0) {
--		DRM_DEV_DEBUG_DRIVER(dev, "timeout and ksv list wait failed");
--		goto timeout;
-+		msleep(20);
- 	}
- 
- 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
--- 
-2.39.5
-
 
 
 
