@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8928DA3436E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:49:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A437EA344A9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BE53AD4CF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F4D47A3083
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D3228137F;
-	Thu, 13 Feb 2025 14:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2924F1AAE17;
+	Thu, 13 Feb 2025 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEbiykjh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkh0t6SI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C4F23A9B1;
-	Thu, 13 Feb 2025 14:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3D71AAA29;
+	Thu, 13 Feb 2025 15:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457846; cv=none; b=RB7oz3Hx38BSDCmf/JgqViR8KQeYSDu+idqjOgz6fHlakCg1GUEbm2hhBBl9yGziFEm9WcJpbrD+ih5/MBIK6/qEZi3BCH2/nw07rqwVwjFMdNGIz/9ELWQpBpboQuVVEyrjXeIErFGBuejdOUhZr1MGhh92EBOia1U57YBSMNI=
+	t=1739459145; cv=none; b=JBD+iysevyA/5T1uUpna1bmSnFnuCmocNQIgdKtkVXsbZHz+itQk1OHWZZNHJTr2TvHlSa8Xr0SyYhfUlyiHCvUR2LCYCjh+PYneft/1eMm4UNdc0FrpCEj5e7udkAsY+XisWoPVX2RRFq6gGXMYPHyWn+Ls4e/Tsbr2o0OMwx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457846; c=relaxed/simple;
-	bh=GoU2QOJSwoti3NQ9XwM3B7T6S32fNKMp+k5qInDhpLQ=;
+	s=arc-20240116; t=1739459145; c=relaxed/simple;
+	bh=i8zzqfHWTC4KZmlRVOzH2qQwXOGmdEUV0MYltoBp8eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jBJwq1WrdpUbwUolG2ZBx509Y1urIpb+++WQzjb1E/wLdFKGpSkxW+rvbhDqW1Lja+DSLtHcqPx0eyzp/4PgiYb1xlkmBSMv/KYy+7HhoyBmvpI58KwgkX9Mzohpt9KKmP6KGB+sAUmxYpvlCApaB0Z/rGdciMSHYYo/gXMpcmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEbiykjh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C39C4CEE2;
-	Thu, 13 Feb 2025 14:44:05 +0000 (UTC)
+	 MIME-Version; b=FR/VLFgVTH0e6MAOjrgS+ltmHg4slcs7uSHY2wI8+qUy5DRbOxHKvXICF7Xm8EBZQYfR050piGIIaQYPcY68RB6c9RQ93OLKdesX89lsY8G8Kpk3K15CoOoF00sS0X10jx6JTo2Qb8wrbL/4ry+HE0rq93YO+RZLymUd+b94JRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkh0t6SI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59560C4CED1;
+	Thu, 13 Feb 2025 15:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457845;
-	bh=GoU2QOJSwoti3NQ9XwM3B7T6S32fNKMp+k5qInDhpLQ=;
+	s=korg; t=1739459145;
+	bh=i8zzqfHWTC4KZmlRVOzH2qQwXOGmdEUV0MYltoBp8eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEbiykjh9mjz8AF6DRk69RTH97JrNM9iSLB9C7nCCdVPFmK7xo3d+AEo8zPJmX2Ed
-	 s0ayCjJfXFaVUoa4xD8i74vU/4Imp7hoHVO3NjOWoOO43n5JqAllEyLH+K3o2Yci+8
-	 50+CwR0SR/cwL/maq6CJPdl9xFh7z0o04CBih3kQ=
+	b=wkh0t6SIcoQxDiAAvGc8Zy/50Oeyl900uKorWkShOEJ0+L1IN6ck7u0sJFDO1QaWE
+	 WhcW5YrJJN1PBPqfJe37Z7UYBKzqiuPA0zBmh3/KPnHfd3HpYkMFv6tzseAW7usxHV
+	 86/JTpIMe+Lg9XBNtbXsJHdmyh8GbfEu+i/Cedjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 197/422] of: reserved-memory: Fix using wrong number of cells to get property alignment
-Date: Thu, 13 Feb 2025 15:25:46 +0100
-Message-ID: <20250213142444.147046970@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Liviu Dudau <liviu.dudau@arm.com>
+Subject: [PATCH 6.13 182/443] drm/komeda: Add check for komeda_get_layer_fourcc_list()
+Date: Thu, 13 Feb 2025 15:25:47 +0100
+Message-ID: <20250213142447.639720453@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 267b21d0bef8e67dbe6c591c9991444e58237ec9 upstream.
+commit 79fc672a092d93a7eac24fe20a571d4efd8fa5a4 upstream.
 
-According to DT spec, size of property 'alignment' is based on parent
-node’s #size-cells property.
+Add check for the return value of komeda_get_layer_fourcc_list()
+to catch the potential exception.
 
-But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
-the property obviously.
-
-Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
-
-Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
+Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20241219090256.146424-1-haoxiang_li2024@163.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/of_reserved_mem.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -360,12 +360,12 @@ static int __init __reserved_mem_alloc_s
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struc
+ 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
+ 					       kwb_conn->wb_layer->layer_type,
+ 					       &n_formats);
++	if (!formats) {
++		kfree(kwb_conn);
++		return -ENOMEM;
++	}
  
- 	prop = of_get_flat_dt_prop(node, "alignment", &len);
- 	if (prop) {
--		if (len != dt_root_addr_cells * sizeof(__be32)) {
-+		if (len != dt_root_size_cells * sizeof(__be32)) {
- 			pr_err("invalid alignment property in '%s' node.\n",
- 				uname);
- 			return -EINVAL;
- 		}
--		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
-+		align = dt_mem_next_cell(dt_root_size_cells, &prop);
- 	}
- 
- 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+ 	err = drm_writeback_connector_init(&kms->base, wb_conn,
+ 					   &komeda_wb_connector_funcs,
 
 
 
