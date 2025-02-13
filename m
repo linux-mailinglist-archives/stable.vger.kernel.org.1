@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-115535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F7EA3446F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DDBA3460A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F2FE3AF6D9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B7F16E78C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE302222CD;
-	Thu, 13 Feb 2025 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBDB26B0BC;
+	Thu, 13 Feb 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W34dgGtk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkh/mxfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC87E3FB3B;
-	Thu, 13 Feb 2025 14:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCBE26B091;
+	Thu, 13 Feb 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458389; cv=none; b=k5pRLxpvHeoKZZOVHA03QXZw4RYeY08azikcJ08luAWXjiEWs67bFHbnzne+NMJfnD62zEQDpja81dFC0nXuYKOWEq7q5KlfHAX4P38LSs+y7WuoInSXRkmkCDRQTvFzniue2UmkWxval8ZyhdPuPEdg/ljKVlB/Nlf3cJRyBsg=
+	t=1739459743; cv=none; b=L4e+d39VxOeH3pLss5cGVJbpsZD0y5RPAQlyzd2DUek5AdBJV/ISchweYIN1gH/drkKmL9XpaVIs8rCb95hYqVNctSqv/2Fj10MicSAvdZPtFcgdEtXj6Cc5/7Ujdmice9wiDjiC9AZFc3PGaitXD7D/xZleW6KbTT00IT5LIZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458389; c=relaxed/simple;
-	bh=hcFLfJhs+f7hmQVLuSTP+LfZiknVs1qQSLolJ+27Fuo=;
+	s=arc-20240116; t=1739459743; c=relaxed/simple;
+	bh=13taCr/vGDYemdj4RRMSPEibCtiSALsCR1jB9BF2LRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbAUBfivVY59aSdBPxQ9UF/fl70savxhIGuosxjY4MUlnsGVb7YqKqIA4BZ/8ouTRVQp7BBvcfkwZRLK1Dj7xo+5XijU6kjlBaHugB9chyoM0vIOeUlPOAfwqrtEX2juEPqel2Z8DOffn68Por9rE+wPMjy3xEP+sbOKvFz/wmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W34dgGtk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C567C4CED1;
-	Thu, 13 Feb 2025 14:53:08 +0000 (UTC)
+	 MIME-Version; b=C9e2pMKgV5XZWMQakj+DEbh4Nx1E2GCQ/EIzOHOD8k609AXwMxjyCti7zU8QtLkkidZ4xSAEfJzm5d2XqE5AvIrnRbkjYdVfKwGImtj4Z65MuSB6xoywIDOiObv4cmHtye+Gv7TS9j5p7EnaFc3FtJgR2rMxETdu1tiC+5N+36g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkh/mxfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A8AC4CED1;
+	Thu, 13 Feb 2025 15:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458388;
-	bh=hcFLfJhs+f7hmQVLuSTP+LfZiknVs1qQSLolJ+27Fuo=;
+	s=korg; t=1739459743;
+	bh=13taCr/vGDYemdj4RRMSPEibCtiSALsCR1jB9BF2LRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W34dgGtkmm7+Bp8E1Qjo0H1r8VBYo8UBuZBnRsS7Auy1aK7oHsgdXX0UNUMLQRgYL
-	 3Zmt4vrDm9Mm8VEOyJXbRLgizITtqD3Q+gShulm7n4Dvg1OPCc5o7w5IS4tf33AfYc
-	 7sGSeF+4d8CvnA9v1MM8xU+A38PtjOVnt/Uo83J4=
+	b=pkh/mxfv9WC35Y0O2hFiJIrVRKDdB/CbnmGJr5mwR25x2rPFOi3nR8BxX2+G2BVlm
+	 PzWG1wkx9NZbLbvAh0klIJbGJJ0jVC7ziUU1K+XG0qU8sZSe+hmV72SjsMYyzHO4Vq
+	 7CFLa7cJkZVO379ThwVsmNQRzLDY+hh8a14Ogc2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Tanmay Shah <tanmay.shah@amd.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.12 368/422] mailbox: zynqmp: Remove invalid __percpu annotation in zynqmp_ipi_probe()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.13 352/443] soc: mediatek: mtk-devapc: Fix leaking IO map on error paths
 Date: Thu, 13 Feb 2025 15:28:37 +0100
-Message-ID: <20250213142450.749529546@linuxfoundation.org>
+Message-ID: <20250213142454.200762598@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 170a264d2611a0bfa96b7818730473db5e7546fc upstream.
+commit c0eb059a4575ed57f265d9883a5203799c19982c upstream.
 
-struct zynqmp_ipi_pdata __percpu *pdata is not a per-cpu variable,
-so it should not be annotated with __percpu annotation.
+Error paths of mtk_devapc_probe() should unmap the memory.  Reported by
+Smatch:
 
-Remove invalid __percpu annotation to fix several
+  drivers/soc/mediatek/mtk-devapc.c:292 mtk_devapc_probe() warn: 'ctx->infra_base' from of_iomap() not released on lines: 277,281,286.
 
-zynqmp-ipi-mailbox.c:920:15: warning: incorrect type in assignment (different address spaces)
-zynqmp-ipi-mailbox.c:920:15:    expected struct zynqmp_ipi_pdata [noderef] __percpu *pdata
-zynqmp-ipi-mailbox.c:920:15:    got void *
-zynqmp-ipi-mailbox.c:927:56: warning: incorrect type in argument 3 (different address spaces)
-zynqmp-ipi-mailbox.c:927:56:    expected unsigned int [usertype] *out_value
-zynqmp-ipi-mailbox.c:927:56:    got unsigned int [noderef] __percpu *
-...
-
-and several
-
-drivers/mailbox/zynqmp-ipi-mailbox.c:924:9: warning: dereference of noderef expression
-...
-
-sparse warnings.
-
-There were no changes in the resulting object file.
-
+Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
 Cc: stable@vger.kernel.org
-Fixes: 6ffb1635341b ("mailbox: zynqmp: handle SGI for shared IPI")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Tanmay Shah <tanmay.shah@amd.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250104142012.115974-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/mediatek/mtk-devapc.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -905,7 +905,7 @@ static int zynqmp_ipi_probe(struct platf
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *nc, *np = pdev->dev.of_node;
--	struct zynqmp_ipi_pdata __percpu *pdata;
-+	struct zynqmp_ipi_pdata *pdata;
- 	struct of_phandle_args out_irq;
- 	struct zynqmp_ipi_mbox *mbox;
- 	int num_mboxes, ret = -EINVAL;
+--- a/drivers/soc/mediatek/mtk-devapc.c
++++ b/drivers/soc/mediatek/mtk-devapc.c
+@@ -273,23 +273,31 @@ static int mtk_devapc_probe(struct platf
+ 		return -EINVAL;
+ 
+ 	devapc_irq = irq_of_parse_and_map(node, 0);
+-	if (!devapc_irq)
+-		return -EINVAL;
++	if (!devapc_irq) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	ctx->infra_clk = devm_clk_get_enabled(&pdev->dev, "devapc-infra-clock");
+-	if (IS_ERR(ctx->infra_clk))
+-		return -EINVAL;
++	if (IS_ERR(ctx->infra_clk)) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, devapc_irq, devapc_violation_irq,
+ 			       IRQF_TRIGGER_NONE, "devapc", ctx);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	platform_set_drvdata(pdev, ctx);
+ 
+ 	start_devapc(ctx);
+ 
+ 	return 0;
++
++err:
++	iounmap(ctx->infra_base);
++	return ret;
+ }
+ 
+ static void mtk_devapc_remove(struct platform_device *pdev)
 
 
 
