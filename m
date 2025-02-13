@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4750DA34648
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721C8A34458
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2181516FCBC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ABDF171750
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8470D139566;
-	Thu, 13 Feb 2025 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C361E241665;
+	Thu, 13 Feb 2025 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtBJ7Z/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM1gKmNh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4304526B0BE;
-	Thu, 13 Feb 2025 15:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807591552FA;
+	Thu, 13 Feb 2025 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459804; cv=none; b=tLJUr8DiSmWZYc0hS8HMQNjWutrHtonQyF73J/0ZFgTMX0jiDhf1KYxCmdYUmWboSe+s5+XGVUmHWIkYev2hggVonblQk8qO/75Snp3tT+sBkI8SybL3tlEEm99oiWclkrNDnh77ijwblXSkJDLtKCjCUi7cBWa1E7Ny0Sm84mI=
+	t=1739458385; cv=none; b=ud9ktCVonAXEImNO7h/67bOyiHtiUbhA4BYE0RO6a7KHVM3ZxGprz+tEYd/pAJrV2ASjwUYsl5Z3WkoV5NA2x3BPMSpYt7F260+35qmfFqNZY1Vy0NEhb0yfFGZOKSzo+fRvqjcgCU5LETAyeRvlLky7t9qYP3dsMpD7HNIHDOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459804; c=relaxed/simple;
-	bh=v5jcmLQUEY9iENr9stj54EME+7UJZOI/qGYxu7lO2hU=;
+	s=arc-20240116; t=1739458385; c=relaxed/simple;
+	bh=yBHeFcCigwZyAk15XNokj99M/vQFESdav8TwBEJaJOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yp+VFqmfzFj+morzZRGuQ8Tc9GZIDvZqcoKJOj9yIkM0Xo3K0LWmNw1DGHSGSy4ob0AtynxMnRtHK3uD+LSpo904vE1Z2VtfrZqeNZ6UVq4SgJkaBlxrZdboXWLLB62Qe0rKWg2G9ubXZlmIAYsKE8EVDmm5548obQ9HMBq+eDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtBJ7Z/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A413C4CEE5;
-	Thu, 13 Feb 2025 15:16:43 +0000 (UTC)
+	 MIME-Version; b=bUB8TvxN6pUhub2/p8k9Y86jAb5tjjafUflXHrrQYEtl3fLPyfwCCRLo4D37IU8amDB3PCwcpGYooIO/J1y2kw/C3jncJ4JOVBupsSkwZQmpSAdyfkgRrU3iLRJI83l/VbtRzDHhgWj4Ufhnoy27Ejqmznx7NUnCvp6UL0eujks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM1gKmNh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20B9C4CED1;
+	Thu, 13 Feb 2025 14:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459803;
-	bh=v5jcmLQUEY9iENr9stj54EME+7UJZOI/qGYxu7lO2hU=;
+	s=korg; t=1739458385;
+	bh=yBHeFcCigwZyAk15XNokj99M/vQFESdav8TwBEJaJOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtBJ7Z/mD+9knIiPO+3k+jfwsRlruldZ5gWhdYrXBp/3pOwGViOPKzEOMKT1tiRvB
-	 ZGvF135WxLMUMg86IWV/W5rxsX4xurbJ4WaDPcYsqLZm0nbguE4DIQ25wtEw9Ffj7q
-	 qpdbL3GncGHBF5+qqqSFC2kGeInXpxFqHVmmM7hk=
+	b=RM1gKmNhp2AiM3pksUChW/CgW9v5yCMN+eXTfbqakN+iGLaiW9XrihWjsmgN13evS
+	 8x4zJpxBy6ntqAfCQU4G/HkJJQkXg58EBOXLpgJ0mauE9AxFU8o9wLBmDQD/MUQKYy
+	 dw9nCpTw8+MelVvVSHHpX0mrZdOpkhly5X8w6F6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.13 368/443] media: i2c: ds90ub960: Fix use of non-existing registers on UB9702
-Date: Thu, 13 Feb 2025 15:28:53 +0100
-Message-ID: <20250213142454.810935952@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 385/422] rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads
+Date: Thu, 13 Feb 2025 15:28:54 +0100
+Message-ID: <20250213142451.403430346@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 698cf6df87ffa83f259703e7443c15a4c5ceae86 upstream.
+commit 217f0b1e990e30a1f06f6d531fdb4530f4788d48 upstream.
 
-UB9702 doesn't have the registers for SP and EQ. Adjust the code in
-ub960_rxport_wait_locks() to not use those registers for UB9702. As
-these values are only used for a debug print here, there's no functional
-change.
+When using rtla timerlat with userspace threads (-u or -U), rtla
+disables the OSNOISE_WORKLOAD option in
+/sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
+subsequent run with kernel-space threads, leading to rtla collecting no
+results if the previous run exited abnormally:
+
+$ rtla timerlat top -u
+^\Quit (core dumped)
+$ rtla timerlat top -k -d 1s
+                                     Timer Latency
+  0 00:00:01   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+
+The issue persists until OSNOISE_WORKLOAD is set manually by running:
+$ echo OSNOISE_WORKLOAD > /sys/kernel/tracing/osnoise/options
+
+Set OSNOISE_WORKLOAD when running rtla with kernel-space threads if
+available to fix the issue.
 
 Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Link: https://lore.kernel.org/20250107144823.239782-4-tglozar@redhat.com
+Fixes: cdca4f4e5e8e ("rtla/timerlat_top: Add timerlat user-space support")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub960.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tools/tracing/rtla/src/timerlat_top.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -1576,16 +1576,24 @@ static int ub960_rxport_wait_locks(struc
- 
- 		ub960_rxport_read16(priv, nport, UB960_RR_RX_FREQ_HIGH, &v);
- 
--		ret = ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
--		if (ret)
--			return ret;
-+		if (priv->hw_data->is_ub9702) {
-+			dev_dbg(dev, "\trx%u: locked, freq %llu Hz\n",
-+				nport, (v * 1000000ULL) >> 8);
-+		} else {
-+			ret = ub960_rxport_get_strobe_pos(priv, nport,
-+							  &strobe_pos);
-+			if (ret)
-+				return ret;
- 
--		ret = ub960_rxport_get_eq_level(priv, nport, &eq_level);
--		if (ret)
--			return ret;
-+			ret = ub960_rxport_get_eq_level(priv, nport, &eq_level);
-+			if (ret)
-+				return ret;
- 
--		dev_dbg(dev, "\trx%u: locked, SP: %d, EQ: %u, freq %llu Hz\n",
--			nport, strobe_pos, eq_level, (v * 1000000ULL) >> 8);
-+			dev_dbg(dev,
-+				"\trx%u: locked, SP: %d, EQ: %u, freq %llu Hz\n",
-+				nport, strobe_pos, eq_level,
-+				(v * 1000000ULL) >> 8);
-+		}
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -842,12 +842,15 @@ timerlat_top_apply_config(struct osnoise
+ 		}
  	}
  
- 	return 0;
+-	if (params->user_top) {
+-		retval = osnoise_set_workload(top->context, 0);
+-		if (retval) {
+-			err_msg("Failed to set OSNOISE_WORKLOAD option\n");
+-			goto out_err;
+-		}
++	/*
++	* Set workload according to type of thread if the kernel supports it.
++	* On kernels without support, user threads will have already failed
++	* on missing timerlat_fd, and kernel threads do not need it.
++	*/
++	retval = osnoise_set_workload(top->context, params->kernel_workload);
++	if (retval < -1) {
++		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
++		goto out_err;
+ 	}
+ 
+ 	if (isatty(1) && !params->quiet)
 
 
 
