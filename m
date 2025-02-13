@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C30FA3452C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:13:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F387A34691
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70BC57A20D0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6312D7A1FB3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC6C26B0A4;
-	Thu, 13 Feb 2025 15:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044EF18C900;
+	Thu, 13 Feb 2025 15:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntgGN8EN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4SQTrxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1808826B098;
-	Thu, 13 Feb 2025 15:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B530718991E;
+	Thu, 13 Feb 2025 15:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459552; cv=none; b=WMdtW87yJnwfGg3qH/EFwjyS5+OYtjdWRtR8Kq/MvHU2fwillfpwMxxPigCDi2hF0uVqC1snF8JrXvwmUxUjidsXWb2UPNJuRykKo79j3ZaUpNG4HDfIRn6zPal7gw0/7Fy/XQ1PvsXpxF8J6v6+Eos/rfLnjs0YSba4ZCw9qRo=
+	t=1739460368; cv=none; b=H+1ho/RweRmdmOsfki5Sa2EpOfwmEcjfCuNJq3BOFe4zxdKBw5PzcmAXGM7JivTNIl2aqhz2t1mIiLatB0zVG6QOYoAiZCTgXyC/xhabbR+0wyCHsBPo6boaGXWf/x3yItv2uGbeb0/6tLpYY+HxEtmxChmaIHojpFchvaIU+GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459552; c=relaxed/simple;
-	bh=odCQG7GkFQSfbV+4xjnTW8H3qXTEui0lTJ/aspYWWGE=;
+	s=arc-20240116; t=1739460368; c=relaxed/simple;
+	bh=ymP0XE4JZH3PD1x4PGTlXHHFkVwfsmcRBGN5x6j2MT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNgw3yokGTU6G7K4OtWMKiYuIlLJgVC4ssDQMnflq4fu596ugg8tpRt0i475OumShSd8rNPapUEBovf3TElqB/n/6qVE8BdpHrDTepLHU2qu41HeS0jfBQpBGXl6miVhx9zGrK5SYXGs4w1TYTCgpVLposji+/eQKslVqd5GVjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntgGN8EN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D53C4CED1;
-	Thu, 13 Feb 2025 15:12:31 +0000 (UTC)
+	 MIME-Version; b=lG8Sx5RwDpb0JgXjs+yKfFplYPmVBxjhi7id0UV8oCDDnLOs7vaHUk5rd32pAmPOwjqGB35c6cO0x5GbIHdnV1aJ5rpWOhaKDelF583s5ukJ/kACBpzB00gd3pgGHfwrSgDCCqSIxQslM3b0WlvvU+7ad6AMasCw3XNoky1w/Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4SQTrxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57E8C4CEE7;
+	Thu, 13 Feb 2025 15:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459551;
-	bh=odCQG7GkFQSfbV+4xjnTW8H3qXTEui0lTJ/aspYWWGE=;
+	s=korg; t=1739460368;
+	bh=ymP0XE4JZH3PD1x4PGTlXHHFkVwfsmcRBGN5x6j2MT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntgGN8ENGgeS91gR97X0KalaJ6QcQCtdRHmfGo4i5RR6fy1LdT1eri9avLjLRi7tZ
-	 zVmYHn9txziq+s540I/FZMc5yUS283COIWMh+Jg5VqDZBFyKaVmjUCSFXLpq+9lRO1
-	 VpRfDZ7YNmNw70KNOoTZW9QFTQepgGZ8UAqA+5QE=
+	b=g4SQTrxXrr2oN7RSM5HYOQNdMors01znlRqCB19ql7S5M/3FV3Lq9X3y9uyXGQElv
+	 h61tHXImmi5z9+dq2BbE70VUFFAi6T/19nC3Yx5vzKNa/I9GrRywQIu8+kAobOA5s0
+	 GjJelhMzU4c6IHH+IU0rmGoplROdDTWcH27MnQ2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 298/443] arm64: dts: qcom: sdx75: Fix MPSS memory length
+	Dmytro Terletskyi <dmytro_terletskyi@epam.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 091/273] KVM: arm64: timer: Always evaluate the need for a soft timer
 Date: Thu, 13 Feb 2025 15:27:43 +0100
-Message-ID: <20250213142452.115742888@linuxfoundation.org>
+Message-ID: <20250213142410.938699041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 9a27f0e1869e992e4107e2af8ec348e1a3b9d4d5 upstream.
+commit b450dcce93bc2cf6d2bfaf5a0de88a94ebad8f89 upstream.
 
-The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-copied from older DTS, but it grew since then.
+When updating the interrupt state for an emulated timer, we return
+early and skip the setup of a soft timer that runs in parallel
+with the guest.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
+While this is OK if we have set the interrupt pending, it is pretty
+wrong if the guest moved CVAL into the future.  In that case,
+no timer is armed and the guest can wait for a very long time
+(it will take a full put/load cycle for the situation to resolve).
 
+This is specially visible with EDK2 running at EL2, but still
+using the EL1 virtual timer, which in that case is fully emulated.
+Any key-press takes ages to be captured, as there is no UART
+interrupt and EDK2 relies on polling from a timer...
+
+The fix is simply to drop the early return. If the timer interrupt
+is pending, we will still return early, and otherwise arm the soft
+timer.
+
+Fixes: 4d74ecfa6458b ("KVM: arm64: Don't arm a hrtimer for an already pending timer")
 Cc: stable@vger.kernel.org
-Fixes: 41c72f36b286 ("arm64: dts: qcom: sdx75: Add remoteproc node")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-20-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Tested-by: Dmytro Terletskyi <dmytro_terletskyi@epam.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250204110050.150560-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdx75.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/arch_timer.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-@@ -893,7 +893,7 @@
+--- a/arch/arm64/kvm/arch_timer.c
++++ b/arch/arm64/kvm/arch_timer.c
+@@ -467,10 +467,8 @@ static void timer_emulate(struct arch_ti
  
- 		remoteproc_mpss: remoteproc@4080000 {
- 			compatible = "qcom,sdx75-mpss-pas";
--			reg = <0 0x04080000 0 0x4040>;
-+			reg = <0 0x04080000 0 0x10000>;
+ 	trace_kvm_timer_emulate(ctx, should_fire);
  
- 			interrupts-extended = <&intc GIC_SPI 250 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+-	if (should_fire != ctx->irq.level) {
++	if (should_fire != ctx->irq.level)
+ 		kvm_timer_update_irq(ctx->vcpu, should_fire, ctx);
+-		return;
+-	}
+ 
+ 	/*
+ 	 * If the timer can fire now, we don't need to have a soft timer
 
 
 
