@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-115377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE61FA34361
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:47:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B90CA346D1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28239188E5B0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C5A166446
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35FD23A994;
-	Thu, 13 Feb 2025 14:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CAD1714A1;
+	Thu, 13 Feb 2025 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUcerAkk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLbACafs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921DA2222BB;
-	Thu, 13 Feb 2025 14:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCC61946C7;
+	Thu, 13 Feb 2025 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457842; cv=none; b=ZBxOLCgI7cxnoRzWAU9kUX3wSTL7c4w2VUR37qM6dYXv44sSmDLRf6DqYC9h32mIkmUJdM9APFzlfHxJ7Ph1TjWmDfmDOZ+Xe+TRYg8AHG0fMbqr+PIdBMOv3M32atOO6Dsgpwj1fHuk0R9HRmE/WKcy8RdvZ4pvTFdLpoYab90=
+	t=1739460154; cv=none; b=h8U2NZ07BREQ/WlNINCFXy8RvaxQI5Ag6XzcwZ+fouO+TadsbPfIlSxs/T+osk9oTzNcVgepPB77dkO7Rya9v/eGs9rOg1+fxs1/lPZKY4pA2E/8Nzt0HbyFy+/KhIeOqww7Cko1enrUBIvYOkEXrC3OE4zTB9ScGuJQ6pjKgNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457842; c=relaxed/simple;
-	bh=OW4FyHHpl1A2YPXEgGjCbhI11COOJotXnfzG/H3oirs=;
+	s=arc-20240116; t=1739460154; c=relaxed/simple;
+	bh=HEDbKtGN13Wr6r1JmZ2UKL0uimhE9WT1uLJMbnjihCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEVJJ6jjXLsN01QF72KqjGyWrp7kydE5GWiEMdbhE/iIxuxtqfN2baKT2LxmzKw24isHMJcmMs01KzTlQD9JzZbLi/rjjyWWT91IwWROv+2VgfMCTsWUxXCVQGvWYlc4mZ57zciCnvwtGFvpcN0Lr/xtY5cF7eOuwGTqM009Ytw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUcerAkk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D41C4CEE4;
-	Thu, 13 Feb 2025 14:44:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OFiLRBWrePcjV0CR2AKC0hqr4YnljS9vUCdh9f/MGsxwACTtCKk1mWW9uLX+Kefr7MegPKgdBWm7hmptgO3PN4d0i/E1dI6BcUV047fx8wJqf9XELzSMStQAkzksL6NwNmdwKjs/BQkLVfF2/4UjFg5UyznTd1cX1J0npm89m6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLbACafs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D0FC4CED1;
+	Thu, 13 Feb 2025 15:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457842;
-	bh=OW4FyHHpl1A2YPXEgGjCbhI11COOJotXnfzG/H3oirs=;
+	s=korg; t=1739460154;
+	bh=HEDbKtGN13Wr6r1JmZ2UKL0uimhE9WT1uLJMbnjihCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUcerAkkPSDsW+EOTMHXe5WKLpSe1iIjaJXw8rKZJgyuJ49kF1d21YHQtWf8RSfv5
-	 QvbnDAfh3AwPwH/9hoJR4N2X6iljPqt7F5egNlMHS7JdgvX0yNYVkCFOmmsaGWylth
-	 rORyhx2GDf5JQJmqorL7p8mJpWISVFq32MS6tW4Y=
+	b=VLbACafswl/LpYsrWeyOsjiRrhzmUXXPr5+PCjmtJtTITvwPBRRqt/bsib7ZCaMn+
+	 5TRGWOmCn/L2s4vktU54JHog1T8R0HOTpZn4z7KFJQaSvEyt5jWIes7/8KriaPTDOy
+	 AFZTna/KJj69uMZJI4jRsHlnIZ4bp+a+orRjHfpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 227/422] soc: qcom: socinfo: Avoid out of bounds read of serial number
+	=?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/273] exec: fix up /proc/pid/comm in the execveat(AT_EMPTY_PATH) case
 Date: Thu, 13 Feb 2025 15:26:16 +0100
-Message-ID: <20250213142445.296428857@linuxfoundation.org>
+Message-ID: <20250213142407.532115729@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +64,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Kees Cook <kees@kernel.org>
 
-commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
+[ Upstream commit 543841d1806029889c2f69f040e88b247aba8e22 ]
 
-On MSM8916 devices, the serial number exposed in sysfs is constant and does
-not change across individual devices. It's always:
+Zbigniew mentioned at Linux Plumber's that systemd is interested in
+switching to execveat() for service execution, but can't, because the
+contents of /proc/pid/comm are the file descriptor which was used,
+instead of the path to the binary[1]. This makes the output of tools like
+top and ps useless, especially in a world where most fds are opened
+CLOEXEC so the number is truly meaningless.
 
-  db410c:/sys/devices/soc0$ cat serial_number
-  2644893864
+When the filename passed in is empty (e.g. with AT_EMPTY_PATH), use the
+dentry's filename for "comm" instead of using the useless numeral from
+the synthetic fdpath construction. This way the actual exec machinery
+is unchanged, but cosmetically the comm looks reasonable to admins
+investigating things.
 
-The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
-have support for the serial_num field in the socinfo struct. There is an
-existing check to avoid exposing the serial number in that case, but it's
-not correct: When checking the item_size returned by SMEM, we need to make
-sure the *end* of the serial_num is within bounds, instead of comparing
-with the *start* offset. The serial_number currently exposed on MSM8916
-devices is just an out of bounds read of whatever comes after the socinfo
-struct in SMEM.
+Instead of adding TASK_COMM_LEN more bytes to bprm, use one of the unused
+flag bits to indicate that we need to set "comm" from the dentry.
 
-Fix this by changing offsetof() to offsetofend(), so that the size of the
-field is also taken into account.
-
-Cc: stable@vger.kernel.org
-Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
+Suggested-by: Tycho Andersen <tandersen@netflix.com>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://github.com/uapi-group/kernel-features#set-comm-field-before-exec [1]
+Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+Tested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exec.c               | 29 ++++++++++++++++++++++++++---
+ include/linux/binfmts.h |  4 +++-
+ 2 files changed, 29 insertions(+), 4 deletions(-)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -789,7 +789,7 @@ static int qcom_socinfo_probe(struct pla
- 	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+diff --git a/fs/exec.c b/fs/exec.c
+index 7776209d98c10..4a6255aa4ea7f 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1362,7 +1362,28 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 		set_dumpable(current->mm, SUID_DUMP_USER);
  
--	if (offsetof(struct socinfo, serial_num) <= item_size) {
-+	if (offsetofend(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
+ 	perf_event_exec();
+-	__set_task_comm(me, kbasename(bprm->filename), true);
++
++	/*
++	 * If the original filename was empty, alloc_bprm() made up a path
++	 * that will probably not be useful to admins running ps or similar.
++	 * Let's fix it up to be something reasonable.
++	 */
++	if (bprm->comm_from_dentry) {
++		/*
++		 * Hold RCU lock to keep the name from being freed behind our back.
++		 * Use acquire semantics to make sure the terminating NUL from
++		 * __d_alloc() is seen.
++		 *
++		 * Note, we're deliberately sloppy here. We don't need to care about
++		 * detecting a concurrent rename and just want a terminated name.
++		 */
++		rcu_read_lock();
++		__set_task_comm(me, smp_load_acquire(&bprm->file->f_path.dentry->d_name.name),
++				true);
++		rcu_read_unlock();
++	} else {
++		__set_task_comm(me, kbasename(bprm->filename), true);
++	}
+ 
+ 	/* An exec changes our domain. We are no longer part of the thread
+ 	   group */
+@@ -1521,11 +1542,13 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename)
+ 	if (fd == AT_FDCWD || filename->name[0] == '/') {
+ 		bprm->filename = filename->name;
+ 	} else {
+-		if (filename->name[0] == '\0')
++		if (filename->name[0] == '\0') {
+ 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d", fd);
+-		else
++			bprm->comm_from_dentry = 1;
++		} else {
+ 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d/%s",
+ 						  fd, filename->name);
++		}
+ 		if (!bprm->fdpath)
+ 			goto out_free;
+ 
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 8d51f69f9f5ef..af9056d78fadf 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -42,7 +42,9 @@ struct linux_binprm {
+ 		 * Set when errors can no longer be returned to the
+ 		 * original userspace.
+ 		 */
+-		point_of_no_return:1;
++		point_of_no_return:1,
++		/* Set when "comm" must come from the dentry. */
++		comm_from_dentry:1;
+ 	struct file *executable; /* Executable to pass to the interpreter */
+ 	struct file *interpreter;
+ 	struct file *file;
+-- 
+2.39.5
+
 
 
 
