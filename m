@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE62A342B4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF9BA3458E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA5B166459
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773E31882DBF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B34E23A9AA;
-	Thu, 13 Feb 2025 14:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5153A26B08D;
+	Thu, 13 Feb 2025 15:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuWUlvwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqyXHd6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC2D21D3FD;
-	Thu, 13 Feb 2025 14:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8C926B08F;
+	Thu, 13 Feb 2025 15:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457430; cv=none; b=XreWSNcJu4cO11eVlculAbqKnktDxYd/4lHHePBl3zi5DEbQwrrPzzA8dg1nqub0LYOGmskAmJsy0+G0eqmtCVJpbcv11J3stSg8eZ5oAxUtXdSl+28cDt335CShyNwAlHFnCukepvFDyFwL2Qm64mGE8VJR8mR7tGyZVvBi3nQ=
+	t=1739458842; cv=none; b=hfK73vxBzTxDXuWjGt5OerKqOw7NWNLQ6JNjnDSW8eVMkgxKC03XrXvy/JtnLF/MBnnVEwAcJhuKLOiOPN3g9zpLsD0rEbGZ4dnAPLeDhe51TmOW/OYeAiBnILoAczmL9fsRUn6kYz/OPo7wdbzLIZhU0vbYJavEbL5HioGFHJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457430; c=relaxed/simple;
-	bh=+3C+co+ZHKlH43KUrjpMurqiIoI+LzfgATYfstnSUl4=;
+	s=arc-20240116; t=1739458842; c=relaxed/simple;
+	bh=TIzFIVrWo2yCv/ZpctbHjoMifdOA3b8cAWXVWdkfShE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAIKKvgvHQFd25SjUbEjnPZAj/NBXMdMZbDyRzIcQBzeddphc5xJEhxmye88HRAHuWqQbV5UIQ5eQbraGI1mceiNZWLmGGunCmsJcW4CAx4G2IpU/6K5G2OvyZ6uArJSeHhmgnGET/7kAtq2QjRLriLkfxVAldDkbTRzq734h5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuWUlvwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EE8C4CED1;
-	Thu, 13 Feb 2025 14:37:10 +0000 (UTC)
+	 MIME-Version; b=YpFo3nujRuCZ/1qjMmT2H8CEVO9R1BvEGfG79SmD1uEsWMOSL+N/xSjhCBRJvPX1JAUrVAPqzm3J85LdEjTo2n/W7hZpg25ljny2HfvRp/emqcvluX3sTVDgmK7LcrCaZA3Wm6LAJua+IyFm4/DSWUJCLCD9WKvrSDPrfZBqx7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqyXHd6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFD2C4CED1;
+	Thu, 13 Feb 2025 15:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457430;
-	bh=+3C+co+ZHKlH43KUrjpMurqiIoI+LzfgATYfstnSUl4=;
+	s=korg; t=1739458841;
+	bh=TIzFIVrWo2yCv/ZpctbHjoMifdOA3b8cAWXVWdkfShE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuWUlvwn2h6hcFnI30zBiaDccYSEZGTrSfsjuldJ1SFrtgzcWhbZQOwgHfjhjEicC
-	 7pyZWDCtq8DMj6+zIv5IY0yb5XpCgiX2wbhpvYsUlecPCDT8tFlXOpj5m1JnqTxRot
-	 Wfli7t0+XKeXXHsVD12X+khi0vyGhnGt9UYq1Yho=
+	b=KqyXHd6N1DySaooqsILeaYCI5eNYLYDGFoWlXk4cxWfboDmvAY5c8a3X+fV3rMmxg
+	 crWmeep0fMoSich9w5sSyseh0vRdg8uzFFHZlNreUHHkw3xrpuHLYMmRBW7MOh3IJd
+	 Ooz8VLYO33NWFDzGX4cJ8FImvZLEkUZYA7RVjHrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/422] net: bcmgenet: Correct overlaying of PHY and MAC Wake-on-LAN
+Subject: [PATCH 6.13 092/443] iommu/arm-smmu-v3: Clean up more on probe failure
 Date: Thu, 13 Feb 2025 15:24:17 +0100
-Message-ID: <20250213142440.725005471@linuxfoundation.org>
+Message-ID: <20250213142444.160408396@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 46ded709232344b5750a852747a8881763c721ab ]
+[ Upstream commit fcbd621567420b3a2f21f49bbc056de8b273c625 ]
 
-Some Wake-on-LAN modes such as WAKE_FILTER may only be supported by the MAC,
-while others might be only supported by the PHY. Make sure that the .get_wol()
-returns the union of both rather than only that of the PHY if the PHY supports
-Wake-on-LAN.
+kmemleak noticed that the iopf queue allocated deep down within
+arm_smmu_init_structures() can be leaked by a subsequent error return
+from arm_smmu_device_probe(). Furthermore, after arm_smmu_device_reset()
+we will also leave the SMMU enabled with an empty Stream Table, silently
+blocking all DMA. This proves rather annoying for debugging said probe
+failure, so let's handle it a bit better by putting the SMMU back into
+(more or less) the same state as if it hadn't probed at all.
 
-When disabling Wake-on-LAN, make sure that this is done at both the PHY
-and MAC level, rather than doing an early return from the PHY driver.
-
-Fixes: 7e400ff35cbe ("net: bcmgenet: Add support for PHY-based Wake-on-LAN")
-Fixes: 9ee09edc05f2 ("net: bcmgenet: Properly overlay PHY and MAC Wake-on-LAN capabilities")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250129231342.35013-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/5137901958471cf67f2fad5c2229f8a8f1ae901a.1733406914.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet_wol.c   | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 0715ea5bf13ed..3b082114f2e53 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -41,9 +41,12 @@ void bcmgenet_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	struct device *kdev = &priv->pdev->dev;
-+	u32 phy_wolopts = 0;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 6d15405f0ea3e..42a89d499cda8 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -4670,7 +4670,7 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
+ 	/* Initialise in-memory data structures */
+ 	ret = arm_smmu_init_structures(smmu);
+ 	if (ret)
+-		return ret;
++		goto err_free_iopf;
  
--	if (dev->phydev)
-+	if (dev->phydev) {
- 		phy_ethtool_get_wol(dev->phydev, wol);
-+		phy_wolopts = wol->wolopts;
-+	}
+ 	/* Record our private device structure */
+ 	platform_set_drvdata(pdev, smmu);
+@@ -4681,22 +4681,29 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
+ 	/* Reset the device */
+ 	ret = arm_smmu_device_reset(smmu);
+ 	if (ret)
+-		return ret;
++		goto err_disable;
  
- 	/* MAC is not wake-up capable, return what the PHY does */
- 	if (!device_can_wakeup(kdev))
-@@ -51,9 +54,14 @@ void bcmgenet_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+ 	/* And we're up. Go go go! */
+ 	ret = iommu_device_sysfs_add(&smmu->iommu, dev, NULL,
+ 				     "smmu3.%pa", &ioaddr);
+ 	if (ret)
+-		return ret;
++		goto err_disable;
  
- 	/* Overlay MAC capabilities with that of the PHY queried before */
- 	wol->supported |= WAKE_MAGIC | WAKE_MAGICSECURE | WAKE_FILTER;
--	wol->wolopts = priv->wolopts;
--	memset(wol->sopass, 0, sizeof(wol->sopass));
-+	wol->wolopts |= priv->wolopts;
- 
-+	/* Return the PHY configured magic password */
-+	if (phy_wolopts & WAKE_MAGICSECURE)
-+		return;
-+
-+	/* Otherwise the MAC one */
-+	memset(wol->sopass, 0, sizeof(wol->sopass));
- 	if (wol->wolopts & WAKE_MAGICSECURE)
- 		memcpy(wol->sopass, priv->sopass, sizeof(priv->sopass));
- }
-@@ -70,7 +78,7 @@ int bcmgenet_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- 	/* Try Wake-on-LAN from the PHY first */
- 	if (dev->phydev) {
- 		ret = phy_ethtool_set_wol(dev->phydev, wol);
--		if (ret != -EOPNOTSUPP)
-+		if (ret != -EOPNOTSUPP && wol->wolopts)
- 			return ret;
+ 	ret = iommu_device_register(&smmu->iommu, &arm_smmu_ops, dev);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register iommu\n");
+-		iommu_device_sysfs_remove(&smmu->iommu);
+-		return ret;
++		goto err_free_sysfs;
  	}
  
+ 	return 0;
++
++err_free_sysfs:
++	iommu_device_sysfs_remove(&smmu->iommu);
++err_disable:
++	arm_smmu_device_disable(smmu);
++err_free_iopf:
++	iopf_queue_free(smmu->evtq.iopf);
++	return ret;
+ }
+ 
+ static void arm_smmu_device_remove(struct platform_device *pdev)
 -- 
 2.39.5
 
