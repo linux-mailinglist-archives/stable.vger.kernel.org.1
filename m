@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8592A34657
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DBEA347B9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5DED16F567
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5845616604E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B298F38389;
-	Thu, 13 Feb 2025 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AF2153828;
+	Thu, 13 Feb 2025 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do15G55E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBX2gzv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F0E2A1CF;
-	Thu, 13 Feb 2025 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AE826B098;
+	Thu, 13 Feb 2025 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459914; cv=none; b=jKHGECwY2ifSKumx+bwbXwma1et7kxeDM0rOnJUKvH0ohIlNMJ2D7To9qKrqWTyXgJbi7xHrMF/7L3hHw48WEIS2nVgmRCvRTgeIxA7+OCVl5uKJYva9pU3wTCPifZ/RwUIcDtEfJ+am/856L5SOr/yNtYqhSHm6ryk9gn3CbPk=
+	t=1739460728; cv=none; b=J8YfkvOKNMYvaZruy/ciSyuJQlUdUHKwKfUTnlchD0rxWj6NffS5JqL35Y2R4Dxkm5AvnWEhe/oNdqFCTB4AfoF3v79yJERZ7y9v6RGDfUG/NtH3UroKKB1P94FWoTUGCZIUiekEVp6V8AA0AvPjez8wXIjKsy325Qxi7FRrEa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459914; c=relaxed/simple;
-	bh=lXX9sACP/thvG+c1+plsN8jzulAEphqeELkJPS6AHOk=;
+	s=arc-20240116; t=1739460728; c=relaxed/simple;
+	bh=hvmDQ8GRe/D6DqqaZBuxtdnCaxJxRNN3SLbGJRk3mmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Drr4Bs2xV1dh3eA2qsP+dyiPjH01hawRFHCaa1Kkmqt10672ElVMKo/omWWCymmdjpfl7DKJAEYP4iKSRQ718Oy5lCH+eXBAgfeI02RiYuTrEYS3zEmE61kPlOxj52xKs/ZM3SbCLRp/o/J8qrXDZCU1rerYTV3+fA8rSgcqW4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do15G55E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EC8C4CED1;
-	Thu, 13 Feb 2025 15:18:33 +0000 (UTC)
+	 MIME-Version; b=Xl9jj2hI7WGdDM54k4zZHf/Y3lsiTemqkcW7afwIfZuhBGY00q1BrgowGojlxL+pI6GRoS7JChqK0VkcPHFcR5oflU1JgrBsUUjNm15Gjr7u/H39IyaZwNMoNy/89GAefnrf6ta4BOJmatmkL3yDeIlvtqmiRmAPFIES7PVI2tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBX2gzv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F69C4CED1;
+	Thu, 13 Feb 2025 15:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459913;
-	bh=lXX9sACP/thvG+c1+plsN8jzulAEphqeELkJPS6AHOk=;
+	s=korg; t=1739460728;
+	bh=hvmDQ8GRe/D6DqqaZBuxtdnCaxJxRNN3SLbGJRk3mmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=do15G55Et4VPAoMfkMTGmFobiy6/Kuaxbd30RWURvelUdpYNmDIKT+lvRi7RWzc+r
-	 Q5RjPhv5rRBbwodn6v82t5dIqLcF+9Sy0fTfAG3usA8enGh0TID2tOZknSLFnTpUvQ
-	 7Js3q73dT7M57uZOHEnL7gXS5K3qjlS7dPNHafTc=
+	b=LBX2gzv5oGHVIbw1pWV2wIIFbObAtXYfs9N316Q9/g0YilXebBOznTPVnNatYpPAQ
+	 kszNK3stgeOQupy1BlfbC+UDknBdtJV7e0/c3WJF+hf5ThmO83vwPgSDcV+ntAox9E
+	 TnLtp4MqWppWJqPVvj6DtJ0u7jcMO1hf5IgDdn54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 401/443] nilfs2: fix possible int overflows in nilfs_fiemap()
-Date: Thu, 13 Feb 2025 15:29:26 +0100
-Message-ID: <20250213142456.080748719@linuxfoundation.org>
+	Aubrey Li <aubrey.li@linux.intel.com>,
+	Koba Ko <kobak@nvidia.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shi Liu <aurelianliu@tencent.com>
+Subject: [PATCH 6.6 195/273] ACPI: PRM: Remove unnecessary strict handler address checks
+Date: Thu, 13 Feb 2025 15:29:27 +0100
+Message-ID: <20250213142415.031840218@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Aubrey Li <aubrey.li@linux.intel.com>
 
-commit 6438ef381c183444f7f9d1de18f22661cba1e946 upstream.
+commit 7f5704b6a143b8eca640cba820968e798d065e91 upstream.
 
-Since nilfs_bmap_lookup_contig() in nilfs_fiemap() calculates its result
-by being prepared to go through potentially maxblocks == INT_MAX blocks,
-the value in n may experience an overflow caused by left shift of blkbits.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") added unnecessary strict handler address checks,
+causing the PRM module to fail in translating memory error addresses.
 
-While it is extremely unlikely to occur, play it safe and cast right hand
-expression to wider type to mitigate the issue.
+Both static data buffer address and ACPI parameter buffer address may
+be NULL if they are not needed, as described in section 4.1.2 PRM Handler
+Information Structure of Platform Runtime Mechanism specification [1].
 
-Found by Linux Verification Center (linuxtesting.org) with static analysis
-tool SVACE.
+Here are two examples from real hardware:
 
-Link: https://lkml.kernel.org/r/20250124222133.5323-1-konishi.ryusuke@gmail.com
-Fixes: 622daaff0a89 ("nilfs2: fiemap support")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+----PRMT.dsl----
+
+- staic data address is not used
+[10Ch 0268   2]                     Revision : 0000
+[10Eh 0270   2]                       Length : 002C
+[110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-2A50D4AA109B
+[120h 0288   8]              Handler address : 0000000065CE51F4
+[128h 0296   8]           Satic Data Address : 0000000000000000
+[130h 0304   8]       ACPI Parameter Address : 000000006522A718
+
+- ACPI parameter address is not used
+[1B0h 0432   2]                     Revision : 0000
+[1B2h 0434   2]                       Length : 002C
+[1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-42E7DE1899A5
+[1C4h 0452   8]              Handler address : 0000000065C567C8
+[1CCh 0460   8]           Satic Data Address : 000000006113FB98
+[1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
+
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Reviewed-by: Koba Ko <kobak@nvidia.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20250126022250.3014210-1-aubrey.li@linux.intel.com
+[ rjw: Minor changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/prmt.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1188,7 +1188,7 @@ int nilfs_fiemap(struct inode *inode, st
- 			if (size) {
- 				if (phys && blkphy << blkbits == phys + size) {
- 					/* The current extent goes on */
--					size += n << blkbits;
-+					size += (u64)n << blkbits;
- 				} else {
- 					/* Terminate the current extent */
- 					ret = fiemap_fill_next_extent(
-@@ -1201,14 +1201,14 @@ int nilfs_fiemap(struct inode *inode, st
- 					flags = FIEMAP_EXTENT_MERGED;
- 					logical = blkoff << blkbits;
- 					phys = blkphy << blkbits;
--					size = n << blkbits;
-+					size = (u64)n << blkbits;
- 				}
- 			} else {
- 				/* Start a new extent */
- 				flags = FIEMAP_EXTENT_MERGED;
- 				logical = blkoff << blkbits;
- 				phys = blkphy << blkbits;
--				size = n << blkbits;
-+				size = (u64)n << blkbits;
- 			}
- 			blkoff += n;
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -263,9 +263,7 @@ static acpi_status acpi_platformrt_space
+ 		if (!handler || !module)
+ 			goto invalid_guid;
+ 
+-		if (!handler->handler_addr ||
+-		    !handler->static_data_buffer_addr ||
+-		    !handler->acpi_param_buffer_addr) {
++		if (!handler->handler_addr) {
+ 			buffer->prm_status = PRM_HANDLER_ERROR;
+ 			return AE_OK;
  		}
 
 
