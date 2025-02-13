@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A8AA3423B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E2BA344C2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CF2F7A39A1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE6E016FB02
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE0528137F;
-	Thu, 13 Feb 2025 14:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2548C1514F6;
+	Thu, 13 Feb 2025 14:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7klFvE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEPR57Et"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D30281353;
-	Thu, 13 Feb 2025 14:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749F156F3C;
+	Thu, 13 Feb 2025 14:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457265; cv=none; b=jflbmDrzJg2G7SlFtnm9c40HMH0Nr76bynFOiH4t+eH1wCnePxVFMSTyf8efy7gKjpunWuDQK+ztVzuxD5SH5IUBiKju7qmapEEonkPYvJB8MgNoCUYRxDa3x+Nc9zRcl9X7gTbSE22SJGxSJwSVJQ1DkdvkRs2YPxfmQ5WEm7s=
+	t=1739458677; cv=none; b=ldYFpj6TKfuXMVksNnYQd5mWWbmGcUu2wfGcMgeFghcm2J4fDtaQ+UffmHRtApVikuTlrW516wGRoszReiOF2eDX7lR8xnUL8m2nXb1lwZKY99W6IB+NCs5ezZbUS4cp3O2i4h1uMJi3pWZMr+Hv0PO2g1om1cJjvj4FfsiffCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457265; c=relaxed/simple;
-	bh=7KDmnERmc7PPOX7NXwb63Tp+E3GZjrDQoF/bD0odZuU=;
+	s=arc-20240116; t=1739458677; c=relaxed/simple;
+	bh=igf16KDvPjeMXKQ5Pz1I4WwjoFFMQAJQ7BQhRkKuy+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPAlTfgeQip3tGfVcxNb/hGuEKwvbO6Qa5Aqiain9G4pRrd2jCpFGGT0qxxYvrynpayF94aVC+OlxsPe+prGsl3cVFvpE4oEKu28LU+H+6p9236IWtX5psKxVy9I8SgKJc32Y1kUW6khpXSFJjOrotHF1IUTqHyukNZXJjrVem4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7klFvE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF3C4CEE4;
-	Thu, 13 Feb 2025 14:34:23 +0000 (UTC)
+	 MIME-Version; b=Qfk0SJeOeggN0wJXAOX8Eo5A+BGPlinvoJSxaY1s6z1spb09evwOsWm3RzJM8h83KBRFwOrP2b0oYDXk7ZQT/HjBz1kXkG18LTEuyOD/wxaZj1qYQCtXYAfECfibiL9PL4zu2pisFvDTxD/VwxzDJ/t8saJbSQk8XKtmhaYQsYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEPR57Et; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468DBC4CED1;
+	Thu, 13 Feb 2025 14:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457264;
-	bh=7KDmnERmc7PPOX7NXwb63Tp+E3GZjrDQoF/bD0odZuU=;
+	s=korg; t=1739458677;
+	bh=igf16KDvPjeMXKQ5Pz1I4WwjoFFMQAJQ7BQhRkKuy+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7klFvE1TBikuYP4Vh+ZipcH/2bHEFC+24ZmgEyQYs88cRiXiJnSNZ3/uiUWU04km
-	 /MCDIsAwBTdgveR4HImyzgenciYQme2KZqBA0+8Ub09LGWnBtZHW3zbEGnXNwYh1Bk
-	 mfKBtiPlRSpqNOgZCqIzCEYAaRyMa+B3qeLn57BA=
+	b=WEPR57EtWCD6Ss6k7UORTg8uCUhW7SHsZDV/KKf19DkJd8L1FzqVa6xJih6e6dxlB
+	 ZSWWGSqINzi3gZ7tzacpMLMEkps7G1+9Rn44zttP6DYnKeKz6pOsoHckfA+LA+74W0
+	 jfDAUykGHbtL7dH3yqbl3WzUTaA4aFxTxFk0h5qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randolph Ha <rha051117@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/422] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
-Date: Thu, 13 Feb 2025 15:23:32 +0100
-Message-ID: <20250213142438.993613728@linuxfoundation.org>
+Subject: [PATCH 6.13 048/443] drm/bridge: it6505: fix HDCP CTS KSV list wait timer
+Date: Thu, 13 Feb 2025 15:23:33 +0100
+Message-ID: <20250213142442.477062942@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randolph Ha <rha051117@gmail.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
+[ Upstream commit 9f9eef9ec1a2b57d95a86fe81df758e8253a7766 ]
 
-When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-excessive smoothing (similar to when the touchpad's firmware detects
-a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-V15 G4) ACPI tables specify a 400KHz frequency for this device and
-some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-force the speed to 100KHz as a workaround.
+HDCP must disabled encryption and restart authentication after
+waiting KSV for 5s.
+The original method uses a counter in a waitting loop that may
+wait much longer than it is supposed to.
+Use time_after() for KSV wait timeout.
 
-For future investigation: This problem may be related to the default
-HCNT/LCNT values given by some busses' drivers, because they are not
-specified in the aforementioned devices' ACPI tables, and because
-the device works without issues on Windows at what is expected to be
-a 400KHz frequency. The root cause of the issue is not known.
-
-Signed-off-by: Randolph Ha <rha051117@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-9-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 14ae0cfc325ef..d2499f302b508 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -355,6 +355,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
- 	{}
- };
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 029755ee21e23..faee8e2e82a05 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2061,12 +2061,13 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
+ 	struct it6505 *it6505 = container_of(work, struct it6505,
+ 					     hdcp_wait_ksv_list);
+ 	struct device *dev = it6505->dev;
+-	unsigned int timeout = 5000;
+-	u8 bstatus = 0;
++	u8 bstatus;
+ 	bool ksv_list_check;
++	/* 1B-04 wait ksv list for 5s */
++	unsigned long timeout = jiffies +
++				msecs_to_jiffies(5000) + 1;
  
-+static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
-+	/*
-+	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
-+	 * excessive smoothing (similar to when the touchpad's firmware detects
-+	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
-+	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
-+	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
-+	 * force the speed to 100KHz as a workaround.
-+	 *
-+	 * For future investigation: This problem may be related to the default
-+	 * HCNT/LCNT values given by some busses' drivers, because they are not
-+	 * specified in the aforementioned devices' ACPI tables, and because
-+	 * the device works without issues on Windows at what is expected to be
-+	 * a 400KHz frequency. The root cause of the issue is not known.
-+	 */
-+	{ "ELAN06FA", 0 },
-+	{}
-+};
-+
- static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 					   void *data, void **return_value)
- {
-@@ -373,6 +392,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
- 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
- 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
+-	timeout /= 20;
+-	while (timeout > 0) {
++	for (;;) {
+ 		if (!it6505_get_sink_hpd_status(it6505))
+ 			return;
  
-+	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
-+		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
-+
- 	return AE_OK;
- }
+@@ -2075,13 +2076,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
+ 		if (bstatus & DP_BSTATUS_READY)
+ 			break;
  
+-		msleep(20);
+-		timeout--;
+-	}
++		if (time_after(jiffies, timeout)) {
++			DRM_DEV_DEBUG_DRIVER(dev, "KSV list wait timeout");
++			goto timeout;
++		}
+ 
+-	if (timeout == 0) {
+-		DRM_DEV_DEBUG_DRIVER(dev, "timeout and ksv list wait failed");
+-		goto timeout;
++		msleep(20);
+ 	}
+ 
+ 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
 -- 
 2.39.5
 
