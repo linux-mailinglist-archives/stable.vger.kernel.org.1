@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-115670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4160BA34516
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55887A342C4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFA9F16628A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067E9188D62F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490FD1411DE;
-	Thu, 13 Feb 2025 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B40221571;
+	Thu, 13 Feb 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPXTnqD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMrqkSzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074C126B094;
-	Thu, 13 Feb 2025 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD52321D3FD;
+	Thu, 13 Feb 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458846; cv=none; b=YOobMl6fw69hD1rlPxbKSEZ7wMfFzbnKGBv/imcXYZCNYZ4Uf2YKuomES1m+L17JVFJiexoW5/pvnk6bp5oULOCCpofRIZfeOtAuyppmdlooLzGqUHIf+JTxRhbjAf2jQaP5SuRJjOOLhqcc8K33r8Xr6XbMGMq3C9Fb5A11vgk=
+	t=1739457437; cv=none; b=f/7siiGJw3Qeg0Oz8T+po9vm59VjUlc4+4yc0YlepYU0MfIyCqcYFGl9/+nWGt2X2fEXVCd4pmB16SEngnBnu8X6nav0Y9dUYSjED7Nk5J7F0rG6x/ZT1UebVc1OOIMmvBpexCE9NdxQ1sQzToQe9VMCznxAacxXWcn/hHyKvO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458846; c=relaxed/simple;
-	bh=4eeIaJn21lJdE9CMxk+a28kzlyMNnGI6FqzlBTjIN3M=;
+	s=arc-20240116; t=1739457437; c=relaxed/simple;
+	bh=1AKZYKtdGCw21e22uerJxbuc5MDTvAC4VmVQ3yxq54g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ovJdVFVvw+vM7nDlIuUEWiTH7/JZj0wkwO0V7SeWBwGR43K5ceQUgm+2Bkwdh3+gAyJzGWOGi3EakFQE3d7u89B4pUScwn46LPWO8Kl+KS9an/fb/hWs+t+McVhV7/AZoL4PD6EO97mJ6QfA32SO7VNuu8Lw1Dg9rmgpHfC+X8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPXTnqD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DB5C4CED1;
-	Thu, 13 Feb 2025 15:00:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hw6SgibTRZ/bIN9bm5LGFSQfR+KUKuEWo9LFwUrqMnnmfQoezrjvDihsezwq9MgKgpiCMZwEaCHfywSDfMS20K/gELVDdnl4o7mph3oWSPlqBUvQmeJG/yyW4AcKc6LfheSV05PjXHtTO6pgfqoJhEoyJss8+4LpTovptTlBgZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMrqkSzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8C5C4CED1;
+	Thu, 13 Feb 2025 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458845;
-	bh=4eeIaJn21lJdE9CMxk+a28kzlyMNnGI6FqzlBTjIN3M=;
+	s=korg; t=1739457437;
+	bh=1AKZYKtdGCw21e22uerJxbuc5MDTvAC4VmVQ3yxq54g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPXTnqD0AmUmP8enwmWKGpLH1Cn43j+0aDrXVigbVKjGgWAITQrT6uppn62WSHIQp
-	 nrDHoYpLiMr1DpeLKN6fRCrX0mH6HKJd4xGa7BXRM5VUltDpPk6j5GkkCyaChMoD84
-	 P6EpjACyDsaHgUpmMI4S9bWJyBE73fzc9EnX8Jgw=
+	b=UMrqkSzcjT9iGUwXRkPpR8Y4UPz6NbhbxwlqBr5hkAbbCoMN2ES69qid0dewcIO50
+	 AxfN7XsRymcnSopMVfN2YQpSslPVBDbE5hUjXWL4UBnOoRArZYbxsmAIPdzc2irkPm
+	 62MF7LI7a2EkIygFyn0eYH6/R6sCbQOe6p4hX0BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>,
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 093/443] platform/x86: int3472: Check for adev == NULL
-Date: Thu, 13 Feb 2025 15:24:18 +0100
-Message-ID: <20250213142444.198016669@linuxfoundation.org>
+Subject: [PATCH 6.12 110/422] vmxnet3: Fix tx queue race condition with XDP
+Date: Thu, 13 Feb 2025 15:24:19 +0100
+Message-ID: <20250213142440.800802123@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,113 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
 
-[ Upstream commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c ]
+[ Upstream commit 3f1baa91a1fdf3de9dbad4bd615b35fab347874b ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL. This
-can e.g. (theoretically) happen when a user manually binds one of
-the int3472 drivers to another i2c/platform device through sysfs.
+If XDP traffic runs on a CPU which is greater than or equal to
+the number of the Tx queues of the NIC, then vmxnet3_xdp_get_tq()
+always picks up queue 0 for transmission as it uses reciprocal scale
+instead of simple modulo operation.
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
+vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() use the above
+returned queue without any locking which can lead to race conditions
+when multiple XDP xmits run in parallel on different CPU's.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This patch uses a simple module scheme when the current CPU equals or
+exceeds the number of Tx queues on the NIC. It also adds locking in
+vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() functions.
+
+Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
+Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250131042340.156547-1-sankararaman.jayaraman@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 3 +++
- drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/net/vmxnet3/vmxnet3_xdp.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index d881b2cfcdfcf..09fff213b0911 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -336,6 +336,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 	struct int3472_cldb cldb;
- 	int ret;
+diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
+index 1341374a4588a..616ecc38d1726 100644
+--- a/drivers/net/vmxnet3/vmxnet3_xdp.c
++++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
+@@ -28,7 +28,7 @@ vmxnet3_xdp_get_tq(struct vmxnet3_adapter *adapter)
+ 	if (likely(cpu < tq_number))
+ 		tq = &adapter->tx_queue[cpu];
+ 	else
+-		tq = &adapter->tx_queue[reciprocal_scale(cpu, tq_number)];
++		tq = &adapter->tx_queue[cpu % tq_number];
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	ret = skl_int3472_fill_cldb(adev, &cldb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index 1e107fd49f828..81ac4c6919630 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -152,6 +152,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 	int ret;
+ 	return tq;
+ }
+@@ -124,6 +124,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 	u32 buf_size;
+ 	u32 dw2;
+ 
++	spin_lock_irq(&tq->tx_lock);
+ 	dw2 = (tq->tx_ring.gen ^ 0x1) << VMXNET3_TXD_GEN_SHIFT;
+ 	dw2 |= xdpf->len;
+ 	ctx.sop_txd = tq->tx_ring.base + tq->tx_ring.next2fill;
+@@ -134,6 +135,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 
+ 	if (vmxnet3_cmd_ring_desc_avail(&tq->tx_ring) == 0) {
+ 		tq->stats.tx_ring_full++;
++		spin_unlock_irq(&tq->tx_lock);
+ 		return -ENOSPC;
+ 	}
+ 
+@@ -142,8 +144,10 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 		tbi->dma_addr = dma_map_single(&adapter->pdev->dev,
+ 					       xdpf->data, buf_size,
+ 					       DMA_TO_DEVICE);
+-		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr))
++		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr)) {
++			spin_unlock_irq(&tq->tx_lock);
+ 			return -EFAULT;
++		}
+ 		tbi->map_type |= VMXNET3_MAP_SINGLE;
+ 	} else { /* XDP buffer from page pool */
+ 		page = virt_to_page(xdpf->data);
+@@ -182,6 +186,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 	dma_wmb();
+ 	gdesc->dword[2] = cpu_to_le32(le32_to_cpu(gdesc->dword[2]) ^
+ 						  VMXNET3_TXD_GEN);
++	spin_unlock_irq(&tq->tx_lock);
+ 
+ 	/* No need to handle the case when tx_num_deferred doesn't reach
+ 	 * threshold. Backend driver at hypervisor side will poll and reset
+@@ -225,6 +230,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ {
+ 	struct vmxnet3_adapter *adapter = netdev_priv(dev);
+ 	struct vmxnet3_tx_queue *tq;
++	struct netdev_queue *nq;
  	int i;
  
-+	if (!adev)
-+		return -ENODEV;
+ 	if (unlikely(test_bit(VMXNET3_STATE_BIT_QUIESCED, &adapter->state)))
+@@ -236,6 +242,9 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ 	if (tq->stopped)
+ 		return -ENETDOWN;
+ 
++	nq = netdev_get_tx_queue(adapter->netdev, tq->qid);
 +
- 	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
- 	if (n_consumers < 0)
- 		return n_consumers;
++	__netif_tx_lock(nq, smp_processor_id());
+ 	for (i = 0; i < n; i++) {
+ 		if (vmxnet3_xdp_xmit_frame(adapter, frames[i], tq, true)) {
+ 			tq->stats.xdp_xmit_err++;
+@@ -243,6 +252,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ 		}
+ 	}
+ 	tq->stats.xdp_xmit += i;
++	__netif_tx_unlock(nq);
+ 
+ 	return i;
+ }
 -- 
 2.39.5
 
