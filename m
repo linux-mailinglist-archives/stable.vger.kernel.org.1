@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63C5A34702
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE402A34509
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 645C216CA2C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D23C07A35B4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DDD14831C;
-	Thu, 13 Feb 2025 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD0C26B097;
+	Thu, 13 Feb 2025 15:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrp4YQcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rusNh7hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FE726B0B4;
-	Thu, 13 Feb 2025 15:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF28E26B080;
+	Thu, 13 Feb 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460293; cv=none; b=gE1Ftc1w/X15jHpscTjQzzvp/sKUok9aoKvbL7olY6SEP13c2yujb4Cl0klZVBbd4aUxDFR7SMqfxtfM6qji0wJQ2KSFDf0ssnjFIe6ksyj/I/m49iqR6kTYhXBKWkfup0RJrqG+e4wqin2Lo3EkKG4aRHNs29UlYpP10gWW68Y=
+	t=1739459484; cv=none; b=XwOVW+5kXCPXJxMS6lC2ovyoUhetc1AyqZPMdRieIu6vTdINvOt8PaLI3riLVKgpxTlxr/5aOexmeqJ9H4UbFCyp1cETzlQPaCQshnV5oLgG4HTefIfoki9cRSYBVC64S9vxVK3Rp0BlBNGpER5qtnzj7yCIf2LelermJFGbeeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460293; c=relaxed/simple;
-	bh=wn37DtkQdF5PXDHeFnQDUIsJF2XpTmVChlg+ml68lDU=;
+	s=arc-20240116; t=1739459484; c=relaxed/simple;
+	bh=ZVuXIx0WOUnUhYxKHyJbi0da6nT1ZmUAZki7vncwLTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qr7ZQ7XRAdWGtuvP42Kv2jKYqqz20EUoIt2wCxMDUQtHq/MHmhaHgmY5QzV/19Tp6d64i4Rw9WrPQBzIzpG7LSpgzToGAGn+fAblVMNbfA+pHFIQ/uY5xl0hirFkMZMKoOo05Moi7xm+dnRvscMhlrzZnLIGaI71MRXaReImALc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrp4YQcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D53EC4CED1;
-	Thu, 13 Feb 2025 15:24:52 +0000 (UTC)
+	 MIME-Version; b=e/kk4+jdc1i8AFHbs+pUL+6fj9pVYfviXD2VXk6btExf63SWoMC5Qa1V8fUkkPssNtUBPfQ6GOV9vJVDqTlRQ9m9V1lSK0uyRqr7Kc6j/+1AkcZm2JvfYv/YLcxHUuBRHAe0uiWCwApCfPZcXi9/T4fwd8XWNdRQvc4L9AtcMLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rusNh7hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D318C4CEE4;
+	Thu, 13 Feb 2025 15:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460293;
-	bh=wn37DtkQdF5PXDHeFnQDUIsJF2XpTmVChlg+ml68lDU=;
+	s=korg; t=1739459483;
+	bh=ZVuXIx0WOUnUhYxKHyJbi0da6nT1ZmUAZki7vncwLTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrp4YQcvHUmJOpmsWdlPJTgyGpAtSiMxc/syn24vDcOmNO2JBuiLXphbYmuQUQnh/
-	 5kz0p/XCfUlnJOtgNPTRek5YzsbeJ9j5o3DlN+570xiHuxkdW2j/A8VIXgOYV7uFzJ
-	 2umaBga4EpFZfu/6yoDz5ZDmPkh1oABYMa+R2dns=
+	b=rusNh7hXNfbXP16tjV66IFhlPf/UNXTYRfb9AEgec97XBzFIOCeEHi8XphwG7qtEY
+	 4fKzKhS1X+UTBN3ZUVuD0P0rIg2/gFArzaxUxVUY3g1nxPyQ0/3e9byLbH/agU59V5
+	 1vlH95oFxZtLfqRcsRJ0yeopy8AhREPoC0jc7WVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/273] wifi: iwlwifi: avoid memory leak
-Date: Thu, 13 Feb 2025 15:26:50 +0100
-Message-ID: <20250213142408.860815214@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 246/443] arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Fix USB QMP PHY supplies
+Date: Thu, 13 Feb 2025 15:26:51 +0100
+Message-ID: <20250213142450.109075533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
+commit 6ba8e1b8242d27dd83ed4ce58a104c709e72f45f upstream.
 
-A caller of iwl_acpi_get_dsm_object must free the returned object.
-iwl_acpi_get_dsm_integer returns immediately without freeing
-it if the expected size is more than 8 bytes. Fix that.
+On the X1E80100 CRD, &vreg_l3e_1p2 only powers &usb_mp_qmpphy0/1
+(i.e. USBSS_3 and USBSS_4). The QMP PHYs for USB_0, USB_1 and USB_2
+are actually powered by &vreg_l2j_1p2.
 
-Note that with the current code this will never happen, since the caller
-of iwl_acpi_get_dsm_integer already checks that the expected size if
-either 1 or 4 bytes, so it can't exceed 8 bytes.
+Since x1e80100-lenovo-yoga-slim7x mostly just mirrors the power supplies
+from the x1e80100-crd device tree, assume that the fix also applies here.
 
-While at it, print the DSM value instead of the return value, as this
-was the intention in the first place.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241210-x1e80100-usb-qmp-supply-fix-v1-6-0adda5d30bbd@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 9943e2d21a8f5..e72f238ff7b23 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -155,7 +155,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 				    size_t expected_size)
- {
- 	union acpi_object *obj;
--	int ret = 0;
-+	int ret;
+--- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+@@ -908,7 +908,7 @@
+ };
  
- 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
- 	if (IS_ERR(obj)) {
-@@ -170,8 +170,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	} else if (obj->type == ACPI_TYPE_BUFFER) {
- 		__le64 le_value = 0;
+ &usb_1_ss0_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l1j_0p8>;
  
--		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
+ 	status = "okay";
+@@ -940,7 +940,7 @@
+ };
  
- 		/* if the buffer size doesn't match the expected size */
- 		if (obj->buffer.length != expected_size)
-@@ -192,8 +194,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	}
+ &usb_1_ss1_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
  
- 	IWL_DEBUG_DEV_RADIO(dev,
--			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
--			    func, ret);
-+			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
-+			    func, *value);
-+	ret = 0;
- out:
- 	ACPI_FREE(obj);
- 	return ret;
--- 
-2.39.5
-
+ 	status = "okay";
+@@ -972,7 +972,7 @@
+ };
+ 
+ &usb_1_ss2_qmpphy {
+-	vdda-phy-supply = <&vreg_l3e_1p2>;
++	vdda-phy-supply = <&vreg_l2j_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+ 	status = "okay";
 
 
 
