@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E112A342E7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D36CA34598
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A3C83AACD5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9281891A05
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77312222C0;
-	Thu, 13 Feb 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E442B2036F5;
+	Thu, 13 Feb 2025 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zp+Fl3jO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoMLWnTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E842222D2;
-	Thu, 13 Feb 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2A2202F9A;
+	Thu, 13 Feb 2025 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457502; cv=none; b=R8b7o4FD31p1I245U/MWANVMdO28wJiF1oGHEL6o8U5KsGQCnFRlEShF1xNUt/BfDn9216n9SMaU6HFJuVTtbcR/W6H7pG4P6rZj80i11BuGCsDVKmoiUfwGWvdQALPoBWT6Vny1uF+IHDX314Wjezy2XGmZDDN/97PMPDrSHpM=
+	t=1739458795; cv=none; b=iRerFp14qc8CbE/QLhIVePzV1hn9TnfABTxjLUZ+5W7dZlcovLm2rEuT7YDNmx8+8Tr02gvnWCcj5nGZBEeVzocl7c8YvQvnz22OMZ5eEcefR3hgvvQElEYxg5XRSSfl1cUA+kORfMOPb49+tBr5fwPG8t/oKqy5T6ws6DE24xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457502; c=relaxed/simple;
-	bh=UN6AzCGM7ji2VjYxqqEGpW1LciOD4gQfwKtOzMYRfcQ=;
+	s=arc-20240116; t=1739458795; c=relaxed/simple;
+	bh=5DozOW1Ir3HQtrfCSArwaVbJftDtMoi5Fnpg1oN1bJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p1la8dNwFltrXyZctgCtpynenV0NlUytHdY+xp+FA74IQCskLvDBjcDeK4PZPBtAE+2VJs7KUu+R3C69mLAqlFdGuXwleS4ZUZA53VwEyK/vVaySsHshVZhsG/A9BiU0ZS7TB7qgASPG4tE1zLLyjYGg0Vp9nJ02iDAcD/DngA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zp+Fl3jO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC599C4CED1;
-	Thu, 13 Feb 2025 14:38:21 +0000 (UTC)
+	 MIME-Version; b=HlhPcARAMEj2Bb2s7GEL7bHAAcxmocOcxBWOTr/W3OErDn9DGuhl92yzH94gsgijOumEu/GnCNRG91YVyKlsh7Nt2lphcYx/lTanNruPuQ26eH7Ab3Goqyt06ytBvEgI+ftF8RfWL72jszXlbAfjebF4SaOGC+XFpd31IQ5bels=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoMLWnTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C938C4CED1;
+	Thu, 13 Feb 2025 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457502;
-	bh=UN6AzCGM7ji2VjYxqqEGpW1LciOD4gQfwKtOzMYRfcQ=;
+	s=korg; t=1739458795;
+	bh=5DozOW1Ir3HQtrfCSArwaVbJftDtMoi5Fnpg1oN1bJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zp+Fl3jOvqX7Of5h9pffiLnhLezwW9BbXM7A4i5Ot+LeBZ1MizpjjOXyM4IBrPHmi
-	 /uvyZitPdyenxsZ1eIhE91Y6TBfaOqPFNND0Np1lJ5Vl4lb4rX0JFjS4M5gj4IK4Pq
-	 RN2dFxKVm5Sx/gw0vI7IuhHIQsKS0CBamZhQiTCw=
+	b=UoMLWnTyxuQ87qql/u7kArR0I1+EqXsURyTIIz0XYvjsUAdec6vjG1W6hkQdCJ+U6
+	 //8ZKLO+uIg4LjSkC950TT+fm9LVRZ6DegY16F0ZLVuDJgaE6ma+NKEIoW1nUoBlPb
+	 ZXuKKUATF3yK0BVA57iojaFdz3cDQFlsftBkowK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.12 097/422] tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
+	Yuanjie Yang <quic_yuanjiey@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 081/443] mmc: sdhci-msm: Correctly set the load for the regulator
 Date: Thu, 13 Feb 2025 15:24:06 +0100
-Message-ID: <20250213142440.299478951@linuxfoundation.org>
+Message-ID: <20250213142443.736324457@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Günther Noack <gnoack@google.com>
+From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
 
-commit 2f83e38a095f8bf7c6029883d894668b03b9bd93 upstream.
+[ Upstream commit 20a0c37e44063997391430c4ae09973e9cbc3911 ]
 
-With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
-subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
-TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
+Qualcomm regulator supports two power supply modes: HPM and LPM.
+Currently, the sdhci-msm.c driver does not set the load to adjust
+the current for eMMC and SD. If the regulator dont't set correct
+load in LPM state, it will lead to the inability to properly
+initialize eMMC and SD.
 
-TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
-let callers change the selection buffer and could be used to simulate
-keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
-use, as they do not modify the selection buffer.
+Set the correct regulator current for eMMC and SD to ensure that the
+device can work normally even when the regulator is in LPM.
 
-This fixes a mouse support regression that affected Emacs (invisible mouse
-cursor).
-
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
-Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste subcommands")
-Signed-off-by: Günther Noack <gnoack@google.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250110142122.1013222-1-gnoack@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250114083514.258379-1-quic_yuanjiey@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/selection.c |   14 ++++++++++++++
- drivers/tty/vt/vt.c        |    2 --
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-msm.c | 53 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/vt/selection.c
-+++ b/drivers/tty/vt/selection.c
-@@ -192,6 +192,20 @@ int set_selection_user(const struct tioc
- 	if (copy_from_user(&v, sel, sizeof(*sel)))
- 		return -EFAULT;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 319f0ebbe652d..1fcaaf683d68c 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -134,9 +134,18 @@
+ /* Timeout value to avoid infinite waiting for pwr_irq */
+ #define MSM_PWR_IRQ_TIMEOUT_MS 5000
  
-+	/*
-+	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
-+	 * use without CAP_SYS_ADMIN as they do not modify the selection.
-+	 */
-+	switch (v.sel_mode) {
-+	case TIOCL_SELCLEAR:
-+	case TIOCL_SELPOINTER:
-+	case TIOCL_SELMOUSEREPORT:
-+		break;
-+	default:
-+		if (!capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+	}
++/* Max load for eMMC Vdd supply */
++#define MMC_VMMC_MAX_LOAD_UA	570000
 +
- 	return set_selection_kernel(&v, tty);
+ /* Max load for eMMC Vdd-io supply */
+ #define MMC_VQMMC_MAX_LOAD_UA	325000
+ 
++/* Max load for SD Vdd supply */
++#define SD_VMMC_MAX_LOAD_UA	800000
++
++/* Max load for SD Vdd-io supply */
++#define SD_VQMMC_MAX_LOAD_UA	22000
++
+ #define msm_host_readl(msm_host, host, offset) \
+ 	msm_host->var_ops->msm_readl_relaxed(host, offset)
+ 
+@@ -1403,11 +1412,48 @@ static int sdhci_msm_set_pincfg(struct sdhci_msm_host *msm_host, bool level)
+ 	return ret;
  }
  
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, un
+-static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
++static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
++{
++	int load;
++
++	if (!hpm)
++		load = 0;
++	else if (!mmc->card)
++		load = max(MMC_VMMC_MAX_LOAD_UA, SD_VMMC_MAX_LOAD_UA);
++	else if (mmc_card_mmc(mmc->card))
++		load = MMC_VMMC_MAX_LOAD_UA;
++	else if (mmc_card_sd(mmc->card))
++		load = SD_VMMC_MAX_LOAD_UA;
++	else
++		return;
++
++	regulator_set_load(mmc->supply.vmmc, load);
++}
++
++static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
++{
++	int load;
++
++	if (!hpm)
++		load = 0;
++	else if (!mmc->card)
++		load = max(MMC_VQMMC_MAX_LOAD_UA, SD_VQMMC_MAX_LOAD_UA);
++	else if (mmc_card_sd(mmc->card))
++		load = SD_VQMMC_MAX_LOAD_UA;
++	else
++		return;
++
++	regulator_set_load(mmc->supply.vqmmc, load);
++}
++
++static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
++			      struct mmc_host *mmc, bool hpm)
+ {
+ 	if (IS_ERR(mmc->supply.vmmc))
+ 		return 0;
  
- 	switch (type) {
- 	case TIOCL_SETSEL:
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		return set_selection_user(param, tty);
- 	case TIOCL_PASTESEL:
- 		if (!capable(CAP_SYS_ADMIN))
++	msm_config_vmmc_regulator(mmc, hpm);
++
+ 	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
+ }
+ 
+@@ -1420,6 +1466,8 @@ static int msm_toggle_vqmmc(struct sdhci_msm_host *msm_host,
+ 	if (msm_host->vqmmc_enabled == level)
+ 		return 0;
+ 
++	msm_config_vqmmc_regulator(mmc, level);
++
+ 	if (level) {
+ 		/* Set the IO voltage regulator to default voltage level */
+ 		if (msm_host->caps_0 & CORE_3_0V_SUPPORT)
+@@ -1642,7 +1690,8 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
+ 	}
+ 
+ 	if (pwr_state) {
+-		ret = sdhci_msm_set_vmmc(mmc);
++		ret = sdhci_msm_set_vmmc(msm_host, mmc,
++					 pwr_state & REQ_BUS_ON);
+ 		if (!ret)
+ 			ret = sdhci_msm_set_vqmmc(msm_host, mmc,
+ 					pwr_state & REQ_BUS_ON);
+-- 
+2.39.5
+
 
 
 
