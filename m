@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-115955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADB3A34689
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD47A34432
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D943AFE76
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 916A716C83E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17CA26B091;
-	Thu, 13 Feb 2025 15:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C336C23A9A3;
+	Thu, 13 Feb 2025 14:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrevXGRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk77bPKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D76A26B0A5;
-	Thu, 13 Feb 2025 15:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC89242935;
+	Thu, 13 Feb 2025 14:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459838; cv=none; b=GoSPUt6jmh0R3wrWkcriKY9UyEotZZczdk9vVYuqyKOMz9yc3V6J0iACU0xVVPxoEGaqD+ja83lpU3Z3f7NRwr2DeJfJw9AKCvlGpRBVz5ZWiki9Xy9KfLsIVdAY5n5Jlonsjg9ynbXE3kfTIMxYgzZigg22oHBM+paw9NlCyHU=
+	t=1739458317; cv=none; b=ke3LzwYbgxxHUGTxuBX1DZF5x73QrdonvGXDs1ggGrmX7/EshYn0lfo0CX+lFeyF+shLX0egal9HJyA7I7xM/uNhrgX84oAkvhLhBlrk0nyHQhWapy/JU3D+KiakqUM0IoTzToM/l+VJPy1IyRFO+GsNUsjQuAYJLyfsoCNlm2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459838; c=relaxed/simple;
-	bh=TzcDbJW3oHd9Qzhz9mTq5zc3zDYyCxPcaw9aW0SmjkE=;
+	s=arc-20240116; t=1739458317; c=relaxed/simple;
+	bh=bcmFwRCVxgETNn7ipkPx8d+UZmFOkv34FP5fTpkEcCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHRGuVgAnxPNThWQ6uYehzlqnwEVqb+YxzuUR9Rt7tVHsFNPs2RJHxmbpADvsDu4xGcU2lzz5y7Sk1HbpNqXK9DaL1zWHZ7mje1bigxBRcPmJGGDr/86RBGLOgMy+FtJOnAjWgenc13XPvNM1dvCJfDbLnhwJi3/lcUD1F2R23g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrevXGRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCD4C4CED1;
-	Thu, 13 Feb 2025 15:17:17 +0000 (UTC)
+	 MIME-Version; b=nll5WO6OqdyYUg/VaiMrtl4EPieWhIsQND0UOWQ9dE8tvHqadQpTz9eqjY2NowGcKp41JAOmIhmIbCrzlUrteBcVyiAON5ekKY9PItCJlmkoyJqDhoalgBXynbdidsxPX7qeojj+2pGya3TU0aOjNQ3qY1mu84T5eGyMzHjabUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk77bPKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DE2C4CED1;
+	Thu, 13 Feb 2025 14:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459838;
-	bh=TzcDbJW3oHd9Qzhz9mTq5zc3zDYyCxPcaw9aW0SmjkE=;
+	s=korg; t=1739458317;
+	bh=bcmFwRCVxgETNn7ipkPx8d+UZmFOkv34FP5fTpkEcCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrevXGRA1AxODtYoBcQxXqjzg5jakU6X75Bei5SvzCknlucZRtBs4tEcVHwhfogh2
-	 AHN9eW6YPMm6K72NSUvEowDoLFGRp74Blv2P1VRDOyTxb4BGgWKjnVUf0FXCnkyRSm
-	 +fpY5N9jvUm6gQuE0CS+nZ3hf7xwn+SRGYGmBpOI=
+	b=lk77bPKNkhAtCsclQVwTZUo8t6WcfZjcJ65Vv8cJDh7xjinbaemhIK08FjYlQK5Zo
+	 fgdu3mlRV9uIPCkx8nuLZ29MQvImiGvJAFyr4UselEztuuCJQQDhdNzRlkXk0xSznU
+	 /9d7uodV+IJWYgNq02EEcYQMdFZdmE3s38WkbiOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.13 347/443] iio: light: as73211: fix channel handling in only-color triggered buffer
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 363/422] ocfs2: handle a symlink read error correctly
 Date: Thu, 13 Feb 2025 15:28:32 +0100
-Message-ID: <20250213142454.010343878@linuxfoundation.org>
+Message-ID: <20250213142450.557762026@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +68,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit ab09c6cfe01b317f515bcd944668697241a54b9d upstream.
+commit 2b4c2094da6d84e69b843dd3317902e977bf64bd upstream.
 
-The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-set (optimized path for color channel readings), and it must be shifted
-instead of leaving an empty channel for the temperature when it is off.
+Patch series "Convert ocfs2 to use folios".
 
-Once the channel index is fixed, the uninitialized channel must be set
-to zero to avoid pushing uninitialized data.
+Mark did a conversion of ocfs2 to use folios and sent it to me as a
+giant patch for review ;-)
 
-Add available_scan_masks for all channels and only-color channels to let
-the IIO core demux and repack the enabled channels.
+So I've redone it as individual patches, and credited Mark for the patches
+where his code is substantially the same.  It's not a bad way to do it;
+his patch had some bugs and my patches had some bugs.  Hopefully all our
+bugs were different from each other.  And hopefully Mark likes all the
+changes I made to his code!
 
-Cc: stable@vger.kernel.org
-Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-Tested-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+This patch (of 23):
+
+If we can't read the buffer, be sure to unlock the page before returning.
+
+Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Mark Tinguely <mark.tinguely@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/as73211.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ fs/ocfs2/symlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -177,6 +177,12 @@ struct as73211_data {
- 	BIT(AS73211_SCAN_INDEX_TEMP) | \
- 	AS73211_SCAN_MASK_COLOR)
+--- a/fs/ocfs2/symlink.c
++++ b/fs/ocfs2/symlink.c
+@@ -65,7 +65,7 @@ static int ocfs2_fast_symlink_read_folio
  
-+static const unsigned long as73211_scan_masks[] = {
-+	AS73211_SCAN_MASK_COLOR,
-+	AS73211_SCAN_MASK_ALL,
-+	0
-+};
-+
- static const struct iio_chan_spec as73211_channels[] = {
- 	{
- 		.type = IIO_TEMP,
-@@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handl
- 
- 		/* AS73211 starts reading at address 2 */
- 		ret = i2c_master_recv(data->client,
--				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-+				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
- 		if (ret < 0)
- 			goto done;
-+
-+		/* Avoid pushing uninitialized data */
-+		scan.chan[3] = 0;
+ 	if (status < 0) {
+ 		mlog_errno(status);
+-		return status;
++		goto out;
  	}
  
- 	if (data_result) {
-@@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handl
- 		 * Saturate all channels (in case of overflows). Temperature channel
- 		 * is not affected by overflows.
- 		 */
--		scan.chan[1] = cpu_to_le16(U16_MAX);
--		scan.chan[2] = cpu_to_le16(U16_MAX);
--		scan.chan[3] = cpu_to_le16(U16_MAX);
-+		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+			scan.chan[3] = cpu_to_le16(U16_MAX);
-+		} else {
-+			scan.chan[0] = cpu_to_le16(U16_MAX);
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+		}
- 	}
+ 	fe = (struct ocfs2_dinode *) bh->b_data;
+@@ -76,9 +76,10 @@ static int ocfs2_fast_symlink_read_folio
+ 	memcpy(kaddr, link, len + 1);
+ 	kunmap_atomic(kaddr);
+ 	SetPageUptodate(page);
++out:
+ 	unlock_page(page);
+ 	brelse(bh);
+-	return 0;
++	return status;
+ }
  
- 	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-@@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_clie
- 	indio_dev->channels = data->spec_dev->channels;
- 	indio_dev->num_channels = data->spec_dev->num_channels;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = as73211_scan_masks;
- 
- 	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
- 	if (ret < 0)
+ const struct address_space_operations ocfs2_fast_symlink_aops = {
 
 
 
