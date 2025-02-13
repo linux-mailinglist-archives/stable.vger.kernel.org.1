@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4295DA34428
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83585A347A6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 100A93B18B6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D868B3AE430
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C1D155A4E;
-	Thu, 13 Feb 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC61F26B096;
+	Thu, 13 Feb 2025 15:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyahEPXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/lJIt+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C432115539A;
-	Thu, 13 Feb 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC8826B0B4;
+	Thu, 13 Feb 2025 15:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458197; cv=none; b=uVOGXX7kyOLS0eSwkjgTdbj0DJf+4dxO0bcUVFx8Ao8pAA12QnycU8eQMWW9ozK8Lg15vqLsaoF69s7MB2ROusWD6ucdgSpSjCN4qfn0n8lhq+/fokfRRNhsqHWQlZ/QzfaXaB3R/dZY4vY9p0jBDHDYr92/Pm8Gf/OkO+9ZALo=
+	t=1739460535; cv=none; b=FZ00cw4c/7jnoeEgbHZw9Rh0GVhDsUTAhXxevp4pNBAQ/mLquLBkaHTuV8G4Sz0y2Tcf6R7gce8mkqYeEfgloWGmsAdgPS3oYIMxlUjuQcOz4eRDvXruASiojq1eVFzGeqt206Z4ralQ/O64aiSmwpflKCPEegYozvbROljbKkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458197; c=relaxed/simple;
-	bh=X+fchYnzV+VncjeB2vPKYNC57+wuwXQA2+JgpD/It6E=;
+	s=arc-20240116; t=1739460535; c=relaxed/simple;
+	bh=kBWIR4mNqO7Sdod9ycIztTpih/Tut5jcjZF+Djlwf10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJzvTLwCm34Yz1TwUUmSCHdgpC7U2UrfRn13iqMc5xsiXgaw2ErCU1qpi/WdceSGWs117UzOjxVcvpeEz82YZ19pahLpWcyyJrqUF751FDgG4lgY1XrCwNJpKYI2Ra52p+QYtCDQ4YdrIUDfhx63C62HwrKh7Szei5+VRPH6ZCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyahEPXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A4BC4CED1;
-	Thu, 13 Feb 2025 14:49:56 +0000 (UTC)
+	 MIME-Version; b=Vl2q9/zjwLJ4r5oCF0rRkPB3wL8xBiRT02nZ+4KnIEQ9tV7kqd40bqeOFel/Y5fumnXvZ+ZsHfJOxZE0TaLizliQYhyMG6D33Jnyh0BS/LpATiBn+1dAfuR/tttcKTS21PKSfSjum4LzpShz65TN49XItYLr9mft4+zNUq8ob7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/lJIt+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52125C4CED1;
+	Thu, 13 Feb 2025 15:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458197;
-	bh=X+fchYnzV+VncjeB2vPKYNC57+wuwXQA2+JgpD/It6E=;
+	s=korg; t=1739460534;
+	bh=kBWIR4mNqO7Sdod9ycIztTpih/Tut5jcjZF+Djlwf10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyahEPXoNZ8QxvtOKFs+NBWWtAcUio5VJxkvRqxKUrPzNOnIMgfSGZlrG1WgMKBar
-	 8MiQJR2fm7j1qb8rwHaXBIJJHxACdGY2miERaEf9yRqMvK/NvOTmwm28ADtGhLEd6d
-	 ywh0REE8RK/QzYHgEO0Z07xPMheu1OAoLuzjHAnY=
+	b=O/lJIt+zdX94WFNocuwpzTe/t6FnbNEwNvf0e+L81Wv2ZTygPeEoiX81kDhdgAAAF
+	 G8GY/dhit/7vE5rEjv5g8WbogAbOsq24w/Mgcek5/kxoPc6hW4O21TapwlYIEwMmEG
+	 94HijIF0Kq3Z2ZEpLCvynOYu3pa2vNK3jkGEp8XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 329/422] media: ccs: Fix cleanup order in ccs_probe()
-Date: Thu, 13 Feb 2025 15:27:58 +0100
-Message-ID: <20250213142449.251692805@linuxfoundation.org>
+Subject: [PATCH 6.6 107/273] media: i2c: ds90ub960: Fix UB9702 refclk register access
+Date: Thu, 13 Feb 2025 15:27:59 +0100
+Message-ID: <20250213142411.575319602@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 6fdbff0f54786e94f0f630ff200ec1d666b1633e upstream.
+commit ba3bdb93947c90f098061de1fb2458e2ca040093 upstream.
 
-ccs_limits is allocated in ccs_read_all_limits() after the allocation of
-mdata.backing. Ensure that resources are freed in the reverse order of
-their allocation by moving out_free_ccs_limits up.
+UB9702 has the refclk freq register at a different offset than UB960,
+but the code uses the UB960's offset for both chips. Fix this.
 
-Fixes: a11d3d6891f0 ("media: ccs: Read CCS static data from firmware binaries")
+The refclk freq is only used for a debug print, so there's no functional
+change here.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ds90ub960.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3566,15 +3566,15 @@ out_disable_runtime_pm:
- out_cleanup:
- 	ccs_cleanup(sensor);
+--- a/drivers/media/i2c/ds90ub960.c
++++ b/drivers/media/i2c/ds90ub960.c
+@@ -352,6 +352,8 @@
  
-+out_free_ccs_limits:
-+	kfree(sensor->ccs_limits);
+ #define UB960_SR_I2C_RX_ID(n)			(0xf8 + (n)) /* < UB960_FPD_RX_NPORTS */
+ 
++#define UB9702_SR_REFCLK_FREQ			0x3d
 +
- out_release_mdata:
- 	kvfree(sensor->mdata.backing);
+ /* Indirect register blocks */
+ #define UB960_IND_TARGET_PAT_GEN		0x00
+ #define UB960_IND_TARGET_RX_ANA(n)		(0x01 + (n))
+@@ -3838,7 +3840,10 @@ static int ub960_enable_core_hw(struct u
+ 	if (ret)
+ 		goto err_pd_gpio;
  
- out_release_sdata:
- 	kvfree(sensor->sdata.backing);
+-	ret = ub960_read(priv, UB960_XR_REFCLK_FREQ, &refclk_freq);
++	if (priv->hw_data->is_ub9702)
++		ret = ub960_read(priv, UB9702_SR_REFCLK_FREQ, &refclk_freq);
++	else
++		ret = ub960_read(priv, UB960_XR_REFCLK_FREQ, &refclk_freq);
+ 	if (ret)
+ 		goto err_pd_gpio;
  
--out_free_ccs_limits:
--	kfree(sensor->ccs_limits);
--
- out_power_off:
- 	ccs_power_off(&client->dev);
- 	mutex_destroy(&sensor->mutex);
 
 
 
