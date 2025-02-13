@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F182A344EF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF41DA34223
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DE3189842B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AAF57A2BEF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41842222B6;
-	Thu, 13 Feb 2025 14:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBAA70830;
+	Thu, 13 Feb 2025 14:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TPm63/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYyu0eWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FB84F218;
-	Thu, 13 Feb 2025 14:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26028137F;
+	Thu, 13 Feb 2025 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458575; cv=none; b=P4Dr3m75B5md782gXCWCfafnnsGiFh9tmj+yI2V2scWesjdLt7NVuxhTjHdsiXU/sOCa0ot7POK62OncS20+3LR55y/4EIlE9HV+iTqVneWQscuMxOahbqaso6gvS7ibLS+dlv7BGT2ryZPZKsq4LM6HSsqKZJcxhT3s3VKsbMw=
+	t=1739457163; cv=none; b=Cri40E7439bW+UfqlGMCCTFzDgnjlVQR7JguPVux8FfQhMpAyW8YyGJtcJt1q9R452OrdYn6OY16D6/DemDH5NmIa1vWqWaod9sDxk1P6Tt6cShKNgJl68GQ72G93frtTL4kwddMNPZi+b59+BVH5A1PeWgQBLyBC1aHoVkU2aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458575; c=relaxed/simple;
-	bh=JgTtrGSLTCnZ7sbFmNfJjQvrZ36p6vG8npx8XApNMj0=;
+	s=arc-20240116; t=1739457163; c=relaxed/simple;
+	bh=hqa56YLesLW9VFM1BUEDysprGwUQnm+c0NZFJzrKU5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxKQkxbz8xqT6ZzPB6H1ECm5s/OyUYW6SQoztEs4yDlIXcbTRio6W/mdP7xLBGNuaeDKlFJRtlpxjd0S2mNr6p7x1Xu2JXZ86BrdyVdI2Uxedj8KT36Wjopi4dPXw5xEWMutPiivrqbYMY7k6gsXsj6QwNuGzHcIRQbEHQ36rxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TPm63/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769A3C4CED1;
-	Thu, 13 Feb 2025 14:56:14 +0000 (UTC)
+	 MIME-Version; b=W6dBh9Gxi1FxVq8/T9MyHiZ+MCkCYCz8jDpn2KA6awtuNAmI5A5Bu0aMlvVLYH6nAPszhpsv+NwW6kKxkVUkptt8MOcKeAeBpcgoG0fpD619CPyEvng5x372Dps8wF176JikC04ZERrdP8zYDw5v4t09FcuzZnCGgzg2PDoZIhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYyu0eWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED3CC4CED1;
+	Thu, 13 Feb 2025 14:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458574;
-	bh=JgTtrGSLTCnZ7sbFmNfJjQvrZ36p6vG8npx8XApNMj0=;
+	s=korg; t=1739457162;
+	bh=hqa56YLesLW9VFM1BUEDysprGwUQnm+c0NZFJzrKU5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TPm63/pyL0o3lvk2km4IEuyJcLTh7ZCTFQ8FV4rxAp0DVtyi5lFAAvubByCqDWCU
-	 DXKyPsfSIFMFRf/pB+YamvYvlgA5s026jDT05FrksG8cD77Ncl3ghmU7UCA0BTi/zY
-	 wuDllWWc6sZON5JRIoHyaH+UYYNHyKQItqWOWyFU=
+	b=VYyu0eWLg1ZSRzmGYjmb1ze5j2jZ95gYktjJK/hDymwjrIuyugrUUPFSzTsBPyK/p
+	 jpumbuZeoEnBmLcQd5XQ7QLfsjwXGtRYtbnGrx5wkaiKgx8f93CMF4O/WrtB4aUv4l
+	 bT13h+L3cEIi8ysO3kQ5Zq2UJXggXjwhb73YcZ+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Maxime Ripard <mripard@kernel.org>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 018/443] x86/amd_nb: Restrict init function to AMD-based systems
+Subject: [PATCH 6.12 034/422] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
 Date: Thu, 13 Feb 2025 15:23:03 +0100
-Message-ID: <20250213142441.323795038@linuxfoundation.org>
+Message-ID: <20250213142437.872373882@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
-The code implicitly operates on AMD-based systems by matching on PCI
-IDs. However, the use of these IDs is going away.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Add an explicit CPU vendor check instead of relying on PCI IDs.
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/amd_nb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 9fe9972d2071b..37b8244899d89 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -582,6 +582,10 @@ static __init void fix_erratum_688(void)
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 847470f747c0e..3c8f3532c7972 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1225,7 +1225,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
  
- static __init int init_amd_nbs(void)
- {
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-+	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-+		return 0;
-+
- 	amd_cache_northbridges();
- 	amd_cache_gart();
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
  
+ 	return 0;
+ }
 -- 
 2.39.5
 
