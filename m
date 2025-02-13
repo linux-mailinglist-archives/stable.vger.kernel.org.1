@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14D2A34261
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A1A3459E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC23A16A0ED
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:35:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9B811899379
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24B8281379;
-	Thu, 13 Feb 2025 14:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398081DB154;
+	Thu, 13 Feb 2025 14:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/yRnO8Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmcsxBof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E74B281353;
-	Thu, 13 Feb 2025 14:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A051DC745;
+	Thu, 13 Feb 2025 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457330; cv=none; b=P893dYUhCacqRM1rXRpWywIdLfKJebdIb+EN6OmK5ajXlsGQOOn30ecrkDVxwqMq+hu4R+SbWzMQ6xYc2BvKg7PShrvTAZGlLX9koerqzXJ/nwHqXqQiwMy6isj53KVgyzd0s5AZbCG2WzTq7g4lx6WQDG1RrrzH0kInGzJxmno=
+	t=1739458769; cv=none; b=gv75t3OsF32t9a1HlOcCjfENRorfAniZ+6OqNaVd23wnhdMjJNkLjuNGbhiSTcqO1Ox0NO0N6zWYJgs8MzVlMFQ09g9RF9iYyfsIYIuLCI0kuA/7XnyrgNqyxIfGxa4pcNzJn3dh+2hUmLhZJtn/9Cpp/5arrTY8u4FF5eIEj7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457330; c=relaxed/simple;
-	bh=VX4EcunK/uITKQQpuIohMPsEQAG8YnhLXMqpow89iWo=;
+	s=arc-20240116; t=1739458769; c=relaxed/simple;
+	bh=FRbsv8ABApmWnnJtmqhKV6fHTMOac+B0iwxhlbdHcmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EoH0AYsvvifxc4gOUxnKJAEknPK96F5pBf2icXCUmVQeUvJGhNP0Pp1we9yYcXkyImDomjWHMiNvXjvYonN+ykQcEkxr7k+8NqFbpe7rPnZ+N6eENc+fC6S8P0vSc6nJ7DT60InreMh6l+d0BFe0IsyJTARA30irzcfcUp4axFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/yRnO8Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC71C4CED1;
-	Thu, 13 Feb 2025 14:35:29 +0000 (UTC)
+	 MIME-Version; b=STFo5AAuDNPLGgOdmA7e0CANs0dBaOqopxGGRhLYbyJz1k3aq6I7sKVpwnUhLRx/arVghePkxZptPprvaHHVRky5T4wsuD4E7kpepOTmYlfffJ08woAl4Ueaq+k9PMrwYmLprQsOFuZAqJRqTZpYsVWeyWZYY+FilqR7UiYQdKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmcsxBof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69530C4CEE5;
+	Thu, 13 Feb 2025 14:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457330;
-	bh=VX4EcunK/uITKQQpuIohMPsEQAG8YnhLXMqpow89iWo=;
+	s=korg; t=1739458768;
+	bh=FRbsv8ABApmWnnJtmqhKV6fHTMOac+B0iwxhlbdHcmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/yRnO8Zi6lqLk7z1AwIb7dCp4jwpyNzuIgNtN+2e+bQdaEuodwgM42JN8XIb2/S7
-	 UK3U5UJfLyptKUfbTXT/vaF0BnsBEV84cG3ZEVFsAC9Pw0oc3CkIca3lpnzH9D7j4J
-	 vSkq+zRwrS3CN5EOKiPRxPuinKTVsXUDSLcmhjRU=
+	b=JmcsxBofiBjYpwQabmIRlPBhT4jlogxUiHf/dUmzuPLG7bHwuaIXVbfM5tjnt40Mu
+	 +oYK0+Xy/M9PryB5GCFIBssGoLipZ1z9/fVcM+a0tCKHbB+5U96s4WAqkcwVXw+l27
+	 gS5KmXYKKbDgZX4TFsrVTEFeVvvkqX2xgow6TpQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Erez Shitrit <erezsh@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/422] platform/x86: int3472: Check for adev == NULL
+Subject: [PATCH 6.13 065/443] net/mlx5: HWS, num_of_rules counter on matcher should be atomic
 Date: Thu, 13 Feb 2025 15:23:50 +0100
-Message-ID: <20250213142439.679746445@linuxfoundation.org>
+Message-ID: <20250213142443.128754476@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-[ Upstream commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c ]
+[ Upstream commit 61fb92701b8ac9174857c417cfa988adc24e32c2 ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL. This
-can e.g. (theoretically) happen when a user manually binds one of
-the int3472 drivers to another i2c/platform device through sysfs.
+Rule counter in matcher's struct is used in two places:
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
+1. As heuristics to decide when the number of rules have crossed a
+certain percentage threshold and the matcher should be resized.
+We don't mind here if the number will be off by 1-2 due to concurrency.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+2. When destroying matcher, the counter value is checked and the
+user is warned if it is not 0. Here we lock all the queues, so the
+counter will be correct.
+
+We don't need to always have *exact* number, but we do need this
+number to not be corrupted, which is what is happening when the
+counter isn't atomic, due to update by different threads.
+
+Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250102181415.1477316-10-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 3 +++
- drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
- 2 files changed, 6 insertions(+)
+ .../mellanox/mlx5/core/steering/hws/bwc.c       | 17 +++++++++++------
+ .../mellanox/mlx5/core/steering/hws/bwc.h       |  2 +-
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index 3de463c3d13b8..15678508ee501 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -336,6 +336,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 	struct int3472_cldb cldb;
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
+index baacf662c0ab8..ae2849cf4dd49 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
+@@ -152,6 +152,8 @@ mlx5hws_bwc_matcher_create(struct mlx5hws_table *table,
+ 	if (!bwc_matcher)
+ 		return NULL;
  
-+	if (!adev)
-+		return -ENODEV;
++	atomic_set(&bwc_matcher->num_of_rules, 0);
 +
- 	ret = skl_int3472_fill_cldb(adev, &cldb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index 1e107fd49f828..81ac4c6919630 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -152,6 +152,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 	int ret;
- 	int i;
+ 	/* Check if the required match params can be all matched
+ 	 * in single STE, otherwise complex matcher is needed.
+ 	 */
+@@ -199,10 +201,12 @@ int mlx5hws_bwc_matcher_destroy_simple(struct mlx5hws_bwc_matcher *bwc_matcher)
  
-+	if (!adev)
-+		return -ENODEV;
+ int mlx5hws_bwc_matcher_destroy(struct mlx5hws_bwc_matcher *bwc_matcher)
+ {
+-	if (bwc_matcher->num_of_rules)
++	u32 num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
 +
- 	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
- 	if (n_consumers < 0)
- 		return n_consumers;
++	if (num_of_rules)
+ 		mlx5hws_err(bwc_matcher->matcher->tbl->ctx,
+ 			    "BWC matcher destroy: matcher still has %d rules\n",
+-			    bwc_matcher->num_of_rules);
++			    num_of_rules);
+ 
+ 	mlx5hws_bwc_matcher_destroy_simple(bwc_matcher);
+ 
+@@ -309,7 +313,7 @@ static void hws_bwc_rule_list_add(struct mlx5hws_bwc_rule *bwc_rule, u16 idx)
+ {
+ 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
+ 
+-	bwc_matcher->num_of_rules++;
++	atomic_inc(&bwc_matcher->num_of_rules);
+ 	bwc_rule->bwc_queue_idx = idx;
+ 	list_add(&bwc_rule->list_node, &bwc_matcher->rules[idx]);
+ }
+@@ -318,7 +322,7 @@ static void hws_bwc_rule_list_remove(struct mlx5hws_bwc_rule *bwc_rule)
+ {
+ 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
+ 
+-	bwc_matcher->num_of_rules--;
++	atomic_dec(&bwc_matcher->num_of_rules);
+ 	list_del_init(&bwc_rule->list_node);
+ }
+ 
+@@ -704,7 +708,8 @@ hws_bwc_matcher_rehash_size(struct mlx5hws_bwc_matcher *bwc_matcher)
+ 	 * Need to check again if we really need rehash.
+ 	 * If the reason for rehash was size, but not any more - skip rehash.
+ 	 */
+-	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher, bwc_matcher->num_of_rules))
++	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher,
++						atomic_read(&bwc_matcher->num_of_rules)))
+ 		return 0;
+ 
+ 	/* Now we're done all the checking - do the rehash:
+@@ -797,7 +802,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
+ 	}
+ 
+ 	/* check if number of rules require rehash */
+-	num_of_rules = bwc_matcher->num_of_rules;
++	num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
+ 
+ 	if (unlikely(hws_bwc_matcher_rehash_size_needed(bwc_matcher, num_of_rules))) {
+ 		mutex_unlock(queue_lock);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
+index 0b745968e21e1..655fa7a22d84f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
+@@ -19,7 +19,7 @@ struct mlx5hws_bwc_matcher {
+ 	u8 num_of_at;
+ 	u16 priority;
+ 	u8 size_log;
+-	u32 num_of_rules; /* atomically accessed */
++	atomic_t num_of_rules;
+ 	struct list_head *rules;
+ };
+ 
 -- 
 2.39.5
 
