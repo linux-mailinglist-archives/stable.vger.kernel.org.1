@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FCCA346B8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7698A34465
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C203B4861
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A811884B66
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E3715E5D4;
-	Thu, 13 Feb 2025 15:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B6D2222AC;
+	Thu, 13 Feb 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rM5kdPGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbccYLcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE0D26B0B8;
-	Thu, 13 Feb 2025 15:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEB1227EB5;
+	Thu, 13 Feb 2025 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459845; cv=none; b=CyMinilWgCwKJxi39YBznWsIlOZB84pggFa8wiPzQBJQllZeYz9iZBFbz6Hj91pm8NxQPB2VNMo78uK/9G/RxX8ukgTqyln5q69DnQgDc0Nzzyc4eFcceJChUdS/ToBPR2WUoAvm5BnGK8hXYc/LML5WW7KL29LeD6uoZaCXIZ8=
+	t=1739458324; cv=none; b=shpgSjvJtVWWzNZ3gPWn6Zcm2a89U0JTlP41P2qkbvsIi75JZmPgKo2UO+OrdLiWhBoXDfgP8NOMMMb1DYuPpQv18budrjVHVi+fh1dbsaitsY7KoiT8N1OG+uaMiRNRRGTNtr2ctz6jFy9+6oH/f2t8VNS1Kfx7NaK9oq53iGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459845; c=relaxed/simple;
-	bh=ABmImm4YcdSNdmXBXtAdzqupiVaq0GEJ4G494f5hXGs=;
+	s=arc-20240116; t=1739458324; c=relaxed/simple;
+	bh=PKPzAjWHuUynWy4SeBe8HiK+sZtOa2HeP4AyrN34SXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyjcegD6MQI05DmBrTvzvXr8ceHeidvO1bMRUfYZpNeMWPNwsymY3MAuILPCP9y9CFjhSucfPyX9eJ4BEBZNNGb7mmrupBq4Y90LsnSdn58hDjFqkTWauF56n32es2q+cupiYBvJWwfbcoTxuWXkwbYX/rFllEebzGtd0hAnw2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rM5kdPGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4352C4CEE5;
-	Thu, 13 Feb 2025 15:17:24 +0000 (UTC)
+	 MIME-Version; b=ilO7yY+hBBaD+7hN00Sr0Vm3KyCycI6SWgKIhaE/7Lgnty5BsApvc/F5uS9zzmSX8KaTZWhAbqMfiDM5GTlxaKBk0ne7Cvci1FjU3WPPoOc6Mr8IDl73mgGO2c4PFTozVixEUwQ34CddNYYu6Wdd++5J1H6XHpNlYyYT8R5oIV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbccYLcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3CFC4CEE4;
+	Thu, 13 Feb 2025 14:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459845;
-	bh=ABmImm4YcdSNdmXBXtAdzqupiVaq0GEJ4G494f5hXGs=;
+	s=korg; t=1739458323;
+	bh=PKPzAjWHuUynWy4SeBe8HiK+sZtOa2HeP4AyrN34SXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rM5kdPGTqqOAGkuY/bmThx9Ym0iGpf64nkl+F5dRroifWHyJ60+EFyKJ39dBY1jlP
-	 8fUJaxaL7kIYZZuf0XrOQxgz57t3m9XwJtteTH2Lb4wo4OdsBgxU0i9zPAn8B0Uabr
-	 otGtsrIA50o0JjaZngGoAdFfq0NDZuZxJXX4jrSs=
+	b=HbccYLcRRaKAGnfEpy6QHBC8OvB4yygS+MQoMczUfdAZjPd2e1JQsQOPj6wHQ8ofX
+	 1yY63PEijNCs0DN+Cq6VgyCIGozenZnFLR9i6vqUVW/qyK2ZY039QckDIRDIsXKVW8
+	 my3GENhtnkeNPt2wrAU+CBlszljkJw5AXQNpxDP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH 6.13 349/443] iommufd/fault: Destroy response and mutex in iommufd_fault_destroy()
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.12 365/422] nfs: Make NFS_FSCACHE select NETFS_SUPPORT instead of depending on it
 Date: Thu, 13 Feb 2025 15:28:34 +0100
-Message-ID: <20250213142454.087183863@linuxfoundation.org>
+Message-ID: <20250213142450.634696660@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit 3f4818ec139030f425476bf8a10b616bab53a7b5 upstream.
+commit 90190ba1c3b11687e2c251fda1f5d9893b4bab17 upstream.
 
-Both were missing in the initial patch.
+Having the NFS_FSCACHE option depend on the NETFS_SUPPORT options makes
+selecting NFS_FSCACHE impossible unless another option that additionally
+selects NETFS_SUPPORT is already selected.
 
-Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
-Link: https://patch.msgid.link/r/bc8bb13e215af27e62ee51bdba3648dd4ed2dce3.1736923732.git.nicolinc@nvidia.com
+As a result, for example, being able to reach and select the NFS_FSCACHE
+option requires the CEPH_FS or CIFS option to be selected beforehand, which
+obviously doesn't make much sense.
+
+Let's correct this by making the NFS_FSCACHE option actually select the
+NETFS_SUPPORT option, instead of depending on it.
+
+Fixes: 915cd30cdea8 ("netfs, fscache: Combine fscache with netfs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nfs/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -213,6 +213,7 @@ void iommufd_fault_destroy(struct iommuf
- {
- 	struct iommufd_fault *fault = container_of(obj, struct iommufd_fault, obj);
- 	struct iopf_group *group, *next;
-+	unsigned long index;
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -170,7 +170,8 @@ config ROOT_NFS
  
- 	/*
- 	 * The iommufd object's reference count is zero at this point.
-@@ -225,6 +226,13 @@ void iommufd_fault_destroy(struct iommuf
- 		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
- 		iopf_free_group(group);
- 	}
-+	xa_for_each(&fault->response, index, group) {
-+		xa_erase(&fault->response, index);
-+		iopf_group_response(group, IOMMU_PAGE_RESP_INVALID);
-+		iopf_free_group(group);
-+	}
-+	xa_destroy(&fault->response);
-+	mutex_destroy(&fault->mutex);
- }
- 
- static void iommufd_compose_fault_message(struct iommu_fault *fault,
+ config NFS_FSCACHE
+ 	bool "Provide NFS client caching support"
+-	depends on NFS_FS=m && NETFS_SUPPORT || NFS_FS=y && NETFS_SUPPORT=y
++	depends on NFS_FS
++	select NETFS_SUPPORT
+ 	select FSCACHE
+ 	help
+ 	  Say Y here if you want NFS data to be cached locally on disc through
 
 
 
