@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-116238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E1FA347D4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A19A34693
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432D11891E24
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8845918902D9
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D5016B3A1;
-	Thu, 13 Feb 2025 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0B0335BA;
+	Thu, 13 Feb 2025 15:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhDJDZfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nke2R15n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289570805;
-	Thu, 13 Feb 2025 15:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2FB26B0BF;
+	Thu, 13 Feb 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460794; cv=none; b=pPnbZfCikY968jmJWd0twhdBj7v0d54Ne0rTwikxi7y+onaNxUOtbQ9JEt7tNWV/LOoblcOvujz00kc+nsEqCsukOP3uFAD+QndXeP8sBTGpxNhFZ99nMmgnbgKqJs4minjQBzKkoe+qZG2guSn2a6r6StjRmqMlOVyVvDDNx38=
+	t=1739459982; cv=none; b=D/nC3pSuCgX337AT75QhjiRKoRUmnm7jxMZs/Q0rVhFX82Sl55ZhzabREntzcNLW+RVRK2sNSa0Pizks9l8CrqRxvRzkKHi6aFpZK51h/dTr7sTOr+3fDzCxPLHH/5I0Gt7lI1o0Tu03vZU0ba9ZChNQI5un/7riUdeBIdLBOTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460794; c=relaxed/simple;
-	bh=+l2eoyW5ajj3XqZ0YJSBEEJ4opVEAyyyGhP7Gu+oLh8=;
+	s=arc-20240116; t=1739459982; c=relaxed/simple;
+	bh=Rkw+nfsJrRM7i9cCWOGfgGYzbjZ7YFiBUUPqZhWd0YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbl3pZF1lbM8wwG3YsQKJ3OKsIXMOnmkvzcOAM14G71z6Zcy4bh93tVWF5olcFUYBZ00oHGnDxEnJM0YodNhG1cL4G+5CxRiv8/xLuOuV7KdL5uD115TxN2fD0uMpjTAhJ23BDhzyjT/aWCwScgxj/BmvjqGg11g5Ge/8r8cKSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhDJDZfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0122CC4CED1;
-	Thu, 13 Feb 2025 15:33:12 +0000 (UTC)
+	 MIME-Version; b=OcTwCqaJ75ohsQzmRBkmCH6RGwNjLLUhUpzycvUcqX6IQ1ZarcMbIVFpzs3eg633G4lSNKi0nbhbdPK9Lo7z/pgo2vENNXnTX+vEaxIV3T8cRy42XA2PycX5Yxa7W+yhqVtRfI7h2pMbgS3zChAuXIldjzsLpp4qfJMB+btPoAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nke2R15n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A43FC4CED1;
+	Thu, 13 Feb 2025 15:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460793;
-	bh=+l2eoyW5ajj3XqZ0YJSBEEJ4opVEAyyyGhP7Gu+oLh8=;
+	s=korg; t=1739459981;
+	bh=Rkw+nfsJrRM7i9cCWOGfgGYzbjZ7YFiBUUPqZhWd0YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhDJDZfeWt4HiQaejSeOfQ4G04pxoz5sw2eUzmTJwrMuiYV+WQb9to92sI4BxlD55
-	 UzFNHoc7iPQfyDWHuBhWbKlnRoeRvFaE7+H1pmXrZrg+peG4134+bYuZ//lYOXA0vI
-	 RdXTmBDhUxvRSQIcXvJXYSFTsyLT80f4g/K5wyOE=
+	b=Nke2R15ny6SNzVshre78Za/K7Aqj5HaAJ8izTTBVjEKVoEylKhcAxPUSOTD/bioO3
+	 6b1/CLlSrKU6iDv1z7vz3jSXK+FLX0ykj9WwvlqRTj92DyeiTFbyvD3I9FxYJVSPyG
+	 4kiqPgbdvhnDi/WuuPgAgse2I/d5v66LkEltwKc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 215/273] media: uvcvideo: Support partial control reads
-Date: Thu, 13 Feb 2025 15:29:47 +0100
-Message-ID: <20250213142415.808763717@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 423/443] rtla: Add trace_instance_stop
+Date: Thu, 13 Feb 2025 15:29:48 +0100
+Message-ID: <20250213142456.944869694@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit f00ee2ca8da25ebccb8e19956d853c9055e2c8d0 upstream.
+commit e879b5dcf8d044f3865a32d95cc5b213f314c54f upstream.
 
-Some cameras, like the ELMO MX-P3, do not return all the bytes
-requested from a control if it can fit in less bytes.
-Eg: Returning 0xab instead of 0x00ab.
-usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
+Support not only turning trace on for the timerlat tracer, but also
+turning it off.
 
-Extend the returned value from the camera and return it.
+This will be used in subsequent patches to stop the timerlat tracer
+without also wiping the trace buffer.
 
 Cc: stable@vger.kernel.org
-Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-2-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tools/tracing/rtla/src/trace.c |    8 ++++++++
+ tools/tracing/rtla/src/trace.h |    1 +
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *de
- 	if (likely(ret == size))
- 		return 0;
+--- a/tools/tracing/rtla/src/trace.c
++++ b/tools/tracing/rtla/src/trace.c
+@@ -197,6 +197,14 @@ int trace_instance_start(struct trace_in
+ }
  
-+	/*
-+	 * Some devices return shorter USB control packets than expected if the
-+	 * returned value can fit in less bytes. Zero all the bytes that the
-+	 * device has not written.
-+	 *
-+	 * This quirk is applied to all controls, regardless of their data type.
-+	 * Most controls are little-endian integers, in which case the missing
-+	 * bytes become 0 MSBs. For other data types, a different heuristic
-+	 * could be implemented if a device is found needing it.
-+	 *
-+	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
-+	 * to be excluded because its size is always 1.
-+	 */
-+	if (ret > 0 && query != UVC_GET_INFO) {
-+		memset(data + ret, 0, size - ret);
-+		dev_warn_once(&dev->udev->dev,
-+			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
-+			      uvc_query_name(query), cs, unit, ret, size);
-+		return 0;
-+	}
+ /*
++ * trace_instance_stop - stop tracing a given rtla instance
++ */
++int trace_instance_stop(struct trace_instance *trace)
++{
++	return tracefs_trace_off(trace->inst);
++}
 +
- 	if (ret != -EPIPE) {
- 		dev_err(&dev->udev->dev,
- 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
++/*
+  * trace_events_free - free a list of trace events
+  */
+ static void trace_events_free(struct trace_events *events)
+--- a/tools/tracing/rtla/src/trace.h
++++ b/tools/tracing/rtla/src/trace.h
+@@ -21,6 +21,7 @@ struct trace_instance {
+ 
+ int trace_instance_init(struct trace_instance *trace, char *tool_name);
+ int trace_instance_start(struct trace_instance *trace);
++int trace_instance_stop(struct trace_instance *trace);
+ void trace_instance_destroy(struct trace_instance *trace);
+ 
+ struct trace_seq *get_trace_seq(void);
 
 
 
