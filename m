@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0647CA3479D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC63DA34394
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E043B5795
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FF781881A91
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D2415539A;
-	Thu, 13 Feb 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D4E24167D;
+	Thu, 13 Feb 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkIJwv7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8laIHx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E27E335BA;
-	Thu, 13 Feb 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EC92222D8;
+	Thu, 13 Feb 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460130; cv=none; b=guViAxnyUvv5cPb39/IDFkoyNzH7vTHu4BESamshja/yhLfhbkp+RiJ9X/BsNNHLsCtAPkvXhfZAs/VQWjB09+PXxjgjCuglL5oGEscODe/P5AbwXEHRQLAxE+IDNfBxEKoxxmRv0neBkqymvW0Yzofu1bIYScsd25ks4USxntA=
+	t=1739457900; cv=none; b=L9FHzIyDmr7Bi54mlUUF71YfLrcRSEdHhyTscqyzE0M3OyNXNQnLPCWLSEpv4rN7kmLY30XafYceRoVMo/LcrYO1Q784a+v2sK0R2NgYaaGkxkiCm055oDi32cw+BQk58713A3kPRm/koOcjpXlAfVq7W1+U6FRUjlZo2t+9AAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460130; c=relaxed/simple;
-	bh=DPpEwgxFSLlt5Waufj268Voh/K8GaUoqzuHhYAD5vHg=;
+	s=arc-20240116; t=1739457900; c=relaxed/simple;
+	bh=oUMEO4OJkqK54dLwgjzZuGysRCgVBExmYwShOlE0A+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdOiwMvcoV8t3t/2NCzo+wdGS7btRmiip6Jn6AToFLCdpbpwSZEjYGf5bm6ulipM1zotYzB69lhxMkbtuffED7DpWfGT1r1yAmO487mkX9F9QQVpPXLwoDaNv8BW/L2in+d/z6ZdPNU//1NBF1Gq1OJJVVz/QWDO9nD/g8EHDWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkIJwv7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69AEC4CED1;
-	Thu, 13 Feb 2025 15:22:09 +0000 (UTC)
+	 MIME-Version; b=YGmDBXTll/54WNZDT8Ncs0zHfmQ7YYvjNUuVXB/qFo7qXPG8KV6uSpfIDchAmt9s95n1yRhfp1XUsQgUHydMFex6LTKP1sqvAE57C8IiYOCHLQDtctPHjjFtV69ZIXesG4uQZSGiEjW3FG9sjPMIkcmcLUMSf2eEYpvKegocQco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8laIHx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BB0C4CED1;
+	Thu, 13 Feb 2025 14:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460130;
-	bh=DPpEwgxFSLlt5Waufj268Voh/K8GaUoqzuHhYAD5vHg=;
+	s=korg; t=1739457899;
+	bh=oUMEO4OJkqK54dLwgjzZuGysRCgVBExmYwShOlE0A+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkIJwv7RA8MtKnn+hLvx51lTZrHls52jA6ZihZwVoZMSxacVKffl/FHtMAE5RVeBy
-	 yilQbM+OVdSbWb5htIyPizU8uHznerLZWh+Dsa0yA9zqWM63axQA9QagG18VCJNtem
-	 kYjeWr8a29gGJkyddI0r13AweiCs6ZOXGc3JK5Nc=
+	b=m8laIHx9JvWzc9mTlVRMh8QTRvrYvw8ycLJCV/AYako8jxlG3dvkoqxmT1RKIkwpM
+	 XAhPcUlU/wh4HFYuUxXX6jraRCBAHWVbDE1YBnbXn4YRQvt5XZoPdJuedNwZFoCp/j
+	 CmPpppkagm7coNfbyPjxPAqG3zn0npdoLJzrQm7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/273] drm/bridge: it6505: fix HDCP Bstatus check
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.12 246/422] s390/pci: Fix SR-IOV for PFs initially in standby
 Date: Thu, 13 Feb 2025 15:26:35 +0100
-Message-ID: <20250213142408.277427256@linuxfoundation.org>
+Message-ID: <20250213142446.031148329@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 0fd2ff47d8c207fa3173661de04bb9e8201c0ad2 ]
+commit dc287e4c9149ab54a5003b4d4da007818b5fda3d upstream.
 
-When HDCP is activated,
-a DisplayPort source receiving CP_IRQ from the sink
-shall check Bstatus from DPCD and process the corresponding value
+Since commit 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs") PFs
+which are not initially configured but in standby are considered
+isolated. That is they create only a single function PCI domain. Due to
+the PCI domains being created on discovery, this means that even if they
+are configured later on, sibling PFs and their child VFs will not be
+added to their PCI domain breaking SR-IOV expectations.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-5-e0fdd4844703@ite.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason the referenced commit ignored standby PFs for the creation of
+multi-function PCI subhierarchies, was to work around a PCI domain
+renumbering scenario on reboot. The renumbering would occur after
+removing a previously in standby PF, whose domain number is used for its
+configured sibling PFs and their child VFs, but which itself remained in
+standby. When this is followed by a reboot, the sibling PF is used
+instead to determine the PCI domain number of it and its child VFs.
+
+In principle it is not possible to know which standby PFs will be
+configured later and which may be removed. The PCI domain and root bus
+are pre-requisites for hotplug slots so the decision of which functions
+belong to which domain can not be postponed. With the renumbering
+occurring only in rare circumstances and being generally benign, accept
+it as an oddity and fix SR-IOV for initially standby PFs simply by
+allowing them to create PCI domains.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Fixes: 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/s390/pci/pci_bus.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index bd4c8f5d55a64..f037288e841ac 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2309,14 +2309,20 @@ static int it6505_process_hpd_irq(struct it6505 *it6505)
- 	DRM_DEV_DEBUG_DRIVER(dev, "dp_irq_vector = 0x%02x", dp_irq_vector);
+--- a/arch/s390/pci/pci_bus.c
++++ b/arch/s390/pci/pci_bus.c
+@@ -171,7 +171,6 @@ void zpci_bus_scan_busses(void)
+ static bool zpci_bus_is_multifunction_root(struct zpci_dev *zdev)
+ {
+ 	return !s390_pci_no_rid && zdev->rid_available &&
+-		zpci_is_device_configured(zdev) &&
+ 		!zdev->vfn;
+ }
  
- 	if (dp_irq_vector & DP_CP_IRQ) {
--		it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
--				HDCP_TRIGGER_CPIRQ);
--
- 		bstatus = it6505_dpcd_read(it6505, DP_AUX_HDCP_BSTATUS);
- 		if (bstatus < 0)
- 			return bstatus;
- 
- 		DRM_DEV_DEBUG_DRIVER(dev, "Bstatus = 0x%02x", bstatus);
-+
-+		/*Check BSTATUS when recive CP_IRQ */
-+		if (bstatus & DP_BSTATUS_R0_PRIME_READY &&
-+		    it6505->hdcp_status == HDCP_AUTH_GOING)
-+			it6505_set_bits(it6505, REG_HDCP_TRIGGER, HDCP_TRIGGER_CPIRQ,
-+					HDCP_TRIGGER_CPIRQ);
-+		else if (bstatus & (DP_BSTATUS_REAUTH_REQ | DP_BSTATUS_LINK_FAILURE) &&
-+			 it6505->hdcp_status == HDCP_AUTH_DONE)
-+			it6505_start_hdcp(it6505);
- 	}
- 
- 	ret = drm_dp_dpcd_read_link_status(&it6505->aux, link_status);
--- 
-2.39.5
-
 
 
 
