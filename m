@@ -1,66 +1,52 @@
-Return-Path: <stable+bounces-115150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D4A3413B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD8BA34159
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDC51890161
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:02:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A9897A1116
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E2F242921;
-	Thu, 13 Feb 2025 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261342222DC;
+	Thu, 13 Feb 2025 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAwhYkup"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SuyrXBDN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494F8242910;
-	Thu, 13 Feb 2025 13:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CC6171E43;
+	Thu, 13 Feb 2025 14:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739455158; cv=none; b=QS8wjSNybbm1gCRjKRS/sqrgnMSEyYp9h07G6Bygb2DIdjVC+MQmxRpaHEd2lv4mrO/c8gTYvlqfEnui5EB4v6UwcYVQtsY9jjlEk8BsmC6niGlm9ozjBdV+ziu+LrgOgah0LO+MH39dnq4bj9vAbJTYH5fZG4gq3HmGXRFZ03Y=
+	t=1739455532; cv=none; b=fDKf9aZTLBorWmnElFM/wdTDA6IKr+618wmExj7E4Ev/rjmImZ5Vxi96dEFoT1aDMa4/ALLzxS5HmAXM2+5yzM7cRIXRJVhacWkXS9i8oBoLUKSZUxYIHGnA6XAySGOG33KSrv8s4e8HU9cr5JtLUqasOekTc1h1DdYpey/c3ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739455158; c=relaxed/simple;
-	bh=+yOaOrU3SfpDJ08BIfLD5TlmYaKF+rtZSYB5MoqJ7iQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h0GQPcAuu4KQIaP5Us9Cx2nDtt+3hpqAUGbq9AEuXDn0iN1Ly90JTv+ifA58t40O/gowpatLm/B6jErG6EyziOrt15bL6puEaeXcuNVmkjax5Vc7UORp1XLsKul2JTXSUD7V40OQrCDE2FzB8DKtc4jQbIEJwXo82/cPpDIZalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAwhYkup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D265FC4CEE8;
-	Thu, 13 Feb 2025 13:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739455158;
-	bh=+yOaOrU3SfpDJ08BIfLD5TlmYaKF+rtZSYB5MoqJ7iQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAwhYkup5eKlG2Xz6cQXi9HNC/yphKU1h/lW3n9rqNux8T2iM8CXW4RCb5NOGjjbR
-	 PZWvmCdXQ+Jgt7079SBSvV/Fwf7aSoytMLIC88CBu2CAnOQvAJ1DuEZe155IBuJBew
-	 UQsmwW8Z3XJ+na7FaxgZXDy6TCqhby7tBdP5BcuaUde4rPps/sbWdGJWDP8ZMndljR
-	 iPwO3eBZG4l6wHuesirxe1+hhYj4dnYrUBDoel1Cttmg8ke0TFWhThvUtjUS0r9xpU
-	 Tuyi7RtzcdtaydK8ZvxBSvAQGzje7kw7gOMlfXLP3wZK06asvU10m+jqrs84NRZ07x
-	 ApWRLwUfiaa+A==
-From: Will Deacon <will@kernel.org>
-To: linux-acpi@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Zheng Zengkai <zhengzengkai@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers array count
-Date: Thu, 13 Feb 2025 13:59:04 +0000
-Message-Id: <173944516851.2607091.1871789456035802538.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250128001749.3132656-1-oliver.upton@linux.dev>
-References: <20250128001749.3132656-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1739455532; c=relaxed/simple;
+	bh=PRazXW/kbPHtowtTsKIzPmtMu8CfBctVKjuE3JfV5iU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bJ77aykb7eA2y0VJW8W/UGpsfiFmULChJO3PlkUM+Rk178SzBUORFWJNu0K7lCrHbeAQSWQQxr0fanVbF77u6/a+YKF3U4E4Cbz0Twq1X72khNZiXALKqx6P9qNQTT9MmzGv3V9oFX/nUuwNQjc0jFRpVO+WJRxoz9TWpMeZhGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SuyrXBDN; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 948F843204;
+	Thu, 13 Feb 2025 14:05:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739455529;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QbJppxNHduGQ+2DYZU3v7Z2KhYNzPxsOebdIfv4nVEc=;
+	b=SuyrXBDNecXS47sD8IFsPb+riIglTpi2/yxQkA7eOjkqxW0B3pDgEsWTjKJe3HpudsEKo1
+	rfUHpHNmO25L03hruzfpEYpHQo3LyXgsLW1jmUF6SwdYQ8MpuwWZcW82VOkJuQAouvXGPW
+	qGrboTeu68aJkRs2n/mFAlMXBjN3xwhsLRrQuXqy1n+/cs/Geg6VDEY8Nl/+GezELbs4oe
+	YhBac8FecgPNr+UuZCnAM4et34GPlZ8gboel4wvEOeaI3FN9aJDhJN2yQBaU8W/MfnTxid
+	UKk+Wg0YCbdkY6kSgL4wZGkV+Zd4UrDWhvnHDjMRa1O/IXAe5AZmNEciEaMzrQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Thu, 13 Feb 2025 15:05:13 +0100
+Subject: [PATCH v2] drivers: core: fix device leak in
+ __fw_devlink_relax_cycles()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,29 +54,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250213-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-8cd3b03e6a3f@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIABj8rWcC/52OTQ6DIBCFr2JYl0aoBtNV79EYQsdRJ1UwYKnGe
+ PeiR+jyey/vZ2MBPWFg92xjHiMFcjaBvGQMemM75NQkZjKXZS6F5C0tWrdf3WAcyL61x8EsGlY
+ YMOiRQiDbHSYB6ukz85sCg2VbGAM5S62Tx1RxLj7rxD2F2fn1PBDFof6/FQUXvBCVqEA1Skn5e
+ Dk3p+gV3Mjqfd9/c5/VnvAAAAA=
+X-Change-ID: 20250212-fix__fw_devlink_relax_cycles_missing_device_put-37cae5f4aac0
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Saravana Kannan <saravanak@google.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegieeliecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdeuleetffeutdfhvedvjeffuddtteejtdfhffdvhedvleevteekjeejgfejgfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghloheplgduledvrdduieekrddujeekrdduudekngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoo
+ hhglhgvrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Tue, 28 Jan 2025 00:17:49 +0000, Oliver Upton wrote:
-> Perhaps unsurprisingly there are some platforms where the GTDT isn't
-> quite right and the Platforms Timer array overflows the length of the
-> overall table.
-> 
-> While the recently-added sanity checking isn't wrong, it makes it
-> impossible to boot the kernel on offending platforms. Try to hobble
-> along and limit the Platform Timer count to the bounds of the table.
-> 
-> [...]
+Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
+cycle detection logic") introduced a new struct device *con_dev and a
+get_dev_from_fwnode() call to get it, but without adding a corresponding
+put_device().
 
-Applied to arm64 (for-next/fixes), thanks!
+Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
+Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+Cc: stable@vger.kernel.org
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v2:
+- add 'Cc: stable@vger.kernel.org'
+- use Closes: tag, not Link:
+- Link to v1: https://lore.kernel.org/r/20250212-fix__fw_devlink_relax_cycles_missing_device_put-v1-1-41818c7d7722@bootlin.com
+---
+ drivers/base/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1/1] ACPI: GTDT: Relax sanity checking on Platform Timers array count
-      https://git.kernel.org/arm64/c/f818227a2f3d
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5a1f051981149dc5b5eee4fb69c0ab748a85956d..2fde698430dff98b5e30f7be7d43d310289c4217 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2079,6 +2079,7 @@ static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
+ out:
+ 	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
+ 	put_device(sup_dev);
++	put_device(con_dev);
+ 	put_device(par_dev);
+ 	return ret;
+ }
 
-Cheers,
+---
+base-commit: 09fbf3d502050282bf47ab3babe1d4ed54dd1fd8
+change-id: 20250212-fix__fw_devlink_relax_cycles_missing_device_put-37cae5f4aac0
+
+Best regards,
 -- 
-Will
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
 
