@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF46BA34552
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F951A342DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1E3173746
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D8016C48B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6F616BE17;
-	Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3538241672;
+	Thu, 13 Feb 2025 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIlaY5r7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rSxKsGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1F91662E9;
-	Thu, 13 Feb 2025 15:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7E62222BD;
+	Thu, 13 Feb 2025 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459120; cv=none; b=okQp3KO6E7FCvW8Dmc43JtKNXjDCQO/u+mW+RYTiKPiH8wHYUKv7makaABmQQeJjQBWELXbursXq8QMMlwpOlo+6sr9JDa48tVVtdxqRnxxzIlh0jUFFUx7QeXqs4V/HRGjk2dvtBXSr1MmTeH5gM5RT23rPZiSaEobfb5ZLYmQ=
+	t=1739457600; cv=none; b=shF5GS9D1+uqKUugUQYRBU99E2MlX94N9FFq+/m3g8TsvWks5ulq39t3ekET4bZIRQjySrc5AmVSIelEbatc1/SawyiuqkBnwokyQ7Du3n24k/R+Jd6+NNvrfqRLsRZ7Fw4XbhoYhL038UOgYE9U4A5Yi9JNCat1XKzjd6r5Pu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459120; c=relaxed/simple;
-	bh=ZYncKfp073bCki3UucooyEccaPqTAMS3w8n5msTzm1k=;
+	s=arc-20240116; t=1739457600; c=relaxed/simple;
+	bh=LZrms4Lcxq7AR2sWUNKgquJwa8qTpv24BmILgWk64Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6eEtFxsBNdrUHJa0vb/4ODyA4LyksMNgfHfOolo75iDXH7Mp5AocoFu4w8dm9iTodBNYHc8B5EAfJ0IpAbgN7JcYwuYIVm+A9ZO54tlGRWcdHUBc2DQFxqa38T2vFiS3NbboUB+8gxDrZNQGc0E48lPPxxT/6aPg8oMLmIHP3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIlaY5r7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B39C4CEE4;
-	Thu, 13 Feb 2025 15:05:18 +0000 (UTC)
+	 MIME-Version; b=cdprsrRs9/0x70mKJPfUEFNgbuwAzVr+PIN1e+JsbXnOCwcM43Qo+6jXmkl5yJr6FfLLSYIesgswxUxVMIWc7X8gd71LbA8mpyoHxaZMjMs5y4crz+AzqpHseb2aFqVe/iKupsh17arIvG1RbpA2DbIF6wAhcRPGiES6gLeOGvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rSxKsGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B8AC4CED1;
+	Thu, 13 Feb 2025 14:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459119;
-	bh=ZYncKfp073bCki3UucooyEccaPqTAMS3w8n5msTzm1k=;
+	s=korg; t=1739457600;
+	bh=LZrms4Lcxq7AR2sWUNKgquJwa8qTpv24BmILgWk64Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIlaY5r7vNTS7f7rT/5Z26xrThlGpu+ls8aJ7XrCcTPI7tEy2KbDGV0P96jAxPdE8
-	 p+2Qhv0hx8ITbgS9XD+Q0XhNxfyYcbnhKttHlwemsgJCjCIFuaxFZsi/BMZ4/u1oMk
-	 U66BA0UWOR5Pw1C4OadKtqSUj2Y55r/1W1uDLCEc=
+	b=2rSxKsGUaYrBjJN2jcXAJuDZxfb9s6smWxhZuH7nfkK8NQd9UCMijejmum4eopgy+
+	 /VIf6Uod62okxEYVfo1H8Gi/96wxFDh+25hIhKDvS42U9/Fv5OftaO0/puh9sEUQot
+	 QzKdznxFeTaUN8klguXNxVjAjj7CjExA/YrP5WM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wei Huang <wei.huang2@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 141/443] PCI/TPH: Restore TPH Requester Enable correctly
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 157/422] drm/amd/pm: Mark MM activity as unsupported
 Date: Thu, 13 Feb 2025 15:25:06 +0100
-Message-ID: <20250213142446.040855597@linuxfoundation.org>
+Message-ID: <20250213142442.604032952@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 6f64b83d9fe9729000a0616830cb1606945465d8 ]
+commit 819bf6662b93a5a8b0c396d2c7e7fab6264c9808 upstream.
 
-When we reenable TPH after changing a Steering Tag value, we need the
-actual TPH Requester Enable value, not the ST Mode (which only happens to
-work out by chance for non-extended TPH in interrupt vector mode).
+Aldebaran doesn't support querying MM activity percentage. Keep the
+field as 0xFFs to mark it as unsupported.
 
-Link: https://lore.kernel.org/r/13118098116d7bce07aa20b8c52e28c7d1847246.1738759933.git.robin.murphy@arm.com
-Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Wei Huang <wei.huang2@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/tph.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index 1e604fbbda657..07de59ca2ebfa 100644
---- a/drivers/pci/tph.c
-+++ b/drivers/pci/tph.c
-@@ -360,7 +360,7 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
- 		return err;
- 	}
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+@@ -1731,7 +1731,6 @@ static ssize_t aldebaran_get_gpu_metrics
  
--	set_ctrl_reg_req_en(pdev, pdev->tph_mode);
-+	set_ctrl_reg_req_en(pdev, pdev->tph_req_type);
+ 	gpu_metrics->average_gfx_activity = metrics.AverageGfxActivity;
+ 	gpu_metrics->average_umc_activity = metrics.AverageUclkActivity;
+-	gpu_metrics->average_mm_activity = 0;
  
- 	pci_dbg(pdev, "set steering tag: %s table, index=%d, tag=%#04x\n",
- 		(loc == PCI_TPH_LOC_MSIX) ? "MSI-X" : "ST", index, tag);
--- 
-2.39.5
-
+ 	/* Valid power data is available only from primary die */
+ 	if (aldebaran_is_primary(smu)) {
 
 
 
