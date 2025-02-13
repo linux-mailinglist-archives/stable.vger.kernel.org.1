@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5903FA34409
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:59:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC866A34710
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C78D3A5C49
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041CC1892420
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CAD266182;
-	Thu, 13 Feb 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD08165F1F;
+	Thu, 13 Feb 2025 15:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5NrQYpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSthABs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0152222D3;
-	Thu, 13 Feb 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A1415DBBA;
+	Thu, 13 Feb 2025 15:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458093; cv=none; b=QkbVhgbTA1jHLaxnwTpk5Fop/1o5odUj8rXBmHIY4c+ccO8MBMJQ03whtth0umedK3envFLo3ghjuk8/ngY87tn9B+uitBSnPTKDX/ZTwFxSDmA4ByxH14fDWZNBIfdNtWco4XnrCWCKvyN0Wq/en/iBWTYkAitFihFlRKLBkyc=
+	t=1739460201; cv=none; b=txv7ALGKPs2iwhUf6bQRyxalwR5adbN6Wi4pSWIogSC/VHliAcFF0JNL07odD4bJ0ChAMb+pdNwHnViNktIMK4hN4V7tNxm2czedOitf8C6+0qT0vo+gFx48nYkBV+EkeQ2juRQ4ahCS9MtIOXqyaqapuJz0/2NWuzTr4i8QFeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458093; c=relaxed/simple;
-	bh=AvOvfylN4eYYSe0Brs/IGOAOnUnTvW8m+xuroBM1YRw=;
+	s=arc-20240116; t=1739460201; c=relaxed/simple;
+	bh=7jvsnikbDWKZrKrsbnfRE86ecqg614W9mpFnwhUngKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxOj/NaRqoizCzSYn1OkUAVxPqSPVEt2Mklr7lvhhCDxw9afAmlAtrn299oDBLfay/Wuv32wsv9sQKPGrK+yKzUG30nrgbJXyLSjCuKoPdqMxAVohjNJ79BxLtNSRqsVjCNPLcENNWt9+CB/+KMFtfvFbNM3XNrDmT/So6mL1yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5NrQYpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC941C4CEE4;
-	Thu, 13 Feb 2025 14:48:12 +0000 (UTC)
+	 MIME-Version; b=oMFSIq3rW4jlqOaPJQh02Hbm0ocqb1Pz5zoXkazvT2BA5MHa/C3tdbm0E6/BTxqizwSMYBOWbrGrGvIHnh0Qt8NST/N/xkE0PDEhcJepee3VKilNNlz7gOmlbFlq3rITfMYdGJq19hTU7/9GKptIDs/QBfbScWGxFugZGSn6XD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSthABs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C527DC4CED1;
+	Thu, 13 Feb 2025 15:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458093;
-	bh=AvOvfylN4eYYSe0Brs/IGOAOnUnTvW8m+xuroBM1YRw=;
+	s=korg; t=1739460201;
+	bh=7jvsnikbDWKZrKrsbnfRE86ecqg614W9mpFnwhUngKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5NrQYpqmK4ik3w0mUgXnrmMCxtRzcHGlUFlf51kgdVK+DiqqdQgGvovLBNjCHNPG
-	 Dxq4BPjcRdYpinIKlSqGKN8E2v8b4Lr2mH5Cb5PE0uhHpD8TOaJ8Nel9LUlLhgDcNE
-	 clidsBGGH64clZal2iBrbUU/Y3C+IHBxNjpg/9Y0=
+	b=VSthABs4zxZJjGeFRiJjgveRFqwZBAQVGjmH8Dwknj+Pgy+Q3AE0GPAgIy85c9COU
+	 nzcqn0Xa0Ip2DYCsPOSj93xLudxTOPtK2YOUheEwgDHp8z6CsFPAeaBG1+QsjRacHB
+	 73E3uNuMMhNZsdP7ESlOGtu716xXgH1DYSEpUe4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Fei Shao <fshao@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.12 268/422] arm64: dts: mediatek: mt8183: Disable DPI display output by default
+	Liu Ye <liuye@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/273] selftests/net/ipsec: Fix Null pointer dereference in rtattr_pack()
 Date: Thu, 13 Feb 2025 15:26:57 +0100
-Message-ID: <20250213142446.884562801@linuxfoundation.org>
+Message-ID: <20250213142409.132668452@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Liu Ye <liuye@kylinos.cn>
 
-commit 93a680af46436780fd64f4e856a4cfa8b393be6e upstream.
+[ Upstream commit 3a0b7fa095212b51ed63892540c4f249991a2d74 ]
 
-This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
+Address Null pointer dereference / undefined behavior in rtattr_pack
+(note that size is 0 in the bad case).
 
-Most SoC dtsi files have the display output interfaces disabled by
-default, and only enabled on boards that utilize them. The MT8183
-has it backwards: the display outputs are left enabled by default,
-and only disabled at the board level.
+Flagged by cppcheck as:
+    tools/testing/selftests/net/ipsec.c:230:25: warning: Possible null pointer
+    dereference: payload [nullPointer]
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+    tools/testing/selftests/net/ipsec.c:1618:54: note: Calling function 'rtattr_pack',
+    4th argument 'NULL' value is 0
+    if (rtattr_pack(&req.nh, sizeof(req), XFRMA_IF_ID, NULL, 0)) {
+                                                       ^
+    tools/testing/selftests/net/ipsec.c:230:25: note: Null pointer dereference
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+Signed-off-by: Liu Ye <liuye@kylinos.cn>
 
-Reverse the situation for the DPI output so that it follows the
-normal scheme. For ease of backporting the DSI output is handled
-in a separate patch.
-
-Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
-Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI display interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20241025075630.3917458-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250116013037.29470-1-liuye@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    5 -----
- arch/arm64/boot/dts/mediatek/mt8183.dtsi       |    1 +
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ tools/testing/selftests/net/ipsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -290,11 +290,6 @@
- 	};
- };
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index be4a30a0d02ae..9b44a091802cb 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -227,7 +227,8 @@ static int rtattr_pack(struct nlmsghdr *nh, size_t req_sz,
  
--&dpi0 {
--	/* TODO Re-enable after DP to Type-C port muxing can be described */
--	status = "disabled";
--};
--
- &gic {
- 	mediatek,broken-save-restore-fw;
- };
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1846,6 +1846,7 @@
- 				 <&mmsys CLK_MM_DPI_MM>,
- 				 <&apmixedsys CLK_APMIXED_TVDPLL>;
- 			clock-names = "pixel", "engine", "pll";
-+			status = "disabled";
+ 	attr->rta_len = RTA_LENGTH(size);
+ 	attr->rta_type = rta_type;
+-	memcpy(RTA_DATA(attr), payload, size);
++	if (payload)
++		memcpy(RTA_DATA(attr), payload, size);
  
- 			port {
- 				dpi_out: endpoint { };
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
