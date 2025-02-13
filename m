@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B63A346BE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0753A3457D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4054A16D1E0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7787D16C324
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A314658D;
-	Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A3B26B0A4;
+	Thu, 13 Feb 2025 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVrPGQBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waFdkQ3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E53335BA;
-	Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2E3645;
+	Thu, 13 Feb 2025 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460144; cv=none; b=rzQLpsl+oVfk2MLfBpCPTOWpuf6eWUn1/e3VMZIL9n4n9vICEXFn4SdDLkeD1RxaEdDj5FkM/Kyg6zNFxUCvj6uEBCKaSBCAGf59jULS4jbCN5bJw/mmZj+rfsbIbngmiQyyWcfa8PNjoWY2/xyvuSf+A1jav8qG/DojWPBtLZY=
+	t=1739459342; cv=none; b=Hy7JcXFGLfzV47ROaNg+fh04lSku+oqMnsMAy5DnqQsasJsnusY3KFygLWXRLZGnCkAYnL6PPJipR0KOAZZg1Mmns41DfBW2EmdeBqZKwHhVRsnYkpP70kxnqVoJSFmoTVTndP+CDmJO9zjZB4DMloIJiTGBc+j6DB0T1yu7iw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460144; c=relaxed/simple;
-	bh=ARQTZPh502VMO4VS2GQ7ctflrxYVKuDQVDIYiPMcnBA=;
+	s=arc-20240116; t=1739459342; c=relaxed/simple;
+	bh=r+daqsw3PzsCgkOwv5UuaB1ziBAPJA5Y1QVwOeeZL5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzaeoxJeGbhSB7qSGUusMuhxtv1dIRlaRJRx2V1TOH2jb/B00IjfEIyU9ji7gh+gv4f+4o+mCeC8+UwLMoa/SNdGa66WbFzwMvC67Jv6s5G8YCSZXjHID6hGEufdz5QN1VtXkTwOKw7kNrb8wONdzL5gT7RJzuGUDdsAbh9x8XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVrPGQBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597AEC4CEE8;
-	Thu, 13 Feb 2025 15:22:23 +0000 (UTC)
+	 MIME-Version; b=n4Sc/yBfALZ96jK+vwOkxIv+LUSkgMdFh8SIcOZeL/OFE6b261Asi9/fVltsjRS3w2GVU9iiLEMPFxqshw2oJKBd3NxwFOaiyyArLlmby6UWw7S2E1suKsHSPjl+tQQaFdaGvdxgXf68JWYixBo8y9YGlsPfQQ9uDi5FyMMvq1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waFdkQ3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A384FC4CED1;
+	Thu, 13 Feb 2025 15:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460143;
-	bh=ARQTZPh502VMO4VS2GQ7ctflrxYVKuDQVDIYiPMcnBA=;
+	s=korg; t=1739459342;
+	bh=r+daqsw3PzsCgkOwv5UuaB1ziBAPJA5Y1QVwOeeZL5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVrPGQBRvhkfWxBBEuQJwTDHu0QyXoi+2UCVBOLRB9XBKWNa23WUYRRPmi9PTcecL
-	 jnhcfhQJvgtmlH9sVCm5IE/bjhsl5L+l+jIaPqJF8FYI1jAW0dFXMZeMJV/5XvXmIa
-	 IumiPaWc+Z8VkVOPO7iW4XUO5h5LGs9cgxIoOSLI=
+	b=waFdkQ3WXtGPY2PKsu81A+uUQp5GFcavLP1rR8e7hxsJwbqOYWKFamPCXA8EVnwh0
+	 qn2Hzz0CkD8ydGEg1wQaWt7eL34QssHmjCgaEyYycE49wWQT5lxNc5e6pjgyxsBcYp
+	 lEBPqCziiJ+9QxWP+bHf/DyvbTicuOTk2R4ocD2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/273] safesetid: check size of policy writes
-Date: Thu, 13 Feb 2025 15:26:39 +0100
-Message-ID: <20250213142408.432390351@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.13 235/443] usbnet: ipheth: use static NDP16 location in URB
+Date: Thu, 13 Feb 2025 15:26:40 +0100
+Message-ID: <20250213142449.681474628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Stone <leocstone@gmail.com>
+From: Foster Snowhill <forst@pen.gy>
 
-[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
+commit 86586dcb75cb8fd062a518aca8ee667938b91efb upstream.
 
-syzbot attempts to write a buffer with a large size to a sysfs entry
-with writes handled by handle_policy_update(), triggering a warning
-in kmalloc.
+Original code allowed for the start of NDP16 to be anywhere within the
+URB based on the `wNdpIndex` value in NTH16. Only the start position of
+NDP16 was checked, so it was possible for even the fixed-length part
+of NDP16 to extend past the end of URB, leading to an out-of-bounds
+read.
 
-Check the size specified for write buffers before allocating.
+On iOS devices, the NDP16 header always directly follows NTH16. Rely on
+and check for this specific format.
 
-Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-[PM: subject tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This, along with NCM-specific minimal URB length check that already
+exists, will ensure that the fixed-length part of NDP16 plus a set
+amount of DPEs fit within the URB.
+
+Note that this commit alone does not fully address the OoB read.
+The limit on the amount of DPEs needs to be enforced separately.
+
+Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/safesetid/securityfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/ipheth.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
-index 25310468bcddf..8e1ffd70b18ab 100644
---- a/security/safesetid/securityfs.c
-+++ b/security/safesetid/securityfs.c
-@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
- 	char *buf, *p, *end;
- 	int err;
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -226,15 +226,14 @@ static int ipheth_rcvbulk_callback_ncm(s
  
-+	if (len >= KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
- 	if (!pol)
- 		return -ENOMEM;
--- 
-2.39.5
-
+ 	ncmh = urb->transfer_buffer;
+ 	if (ncmh->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH16_SIGN) ||
+-	    le16_to_cpu(ncmh->wNdpIndex) >= urb->actual_length) {
++	    /* On iOS, NDP16 directly follows NTH16 */
++	    ncmh->wNdpIndex != cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16))) {
+ 		dev->net->stats.rx_errors++;
+ 		return retval;
+ 	}
+ 
+-	ncm0 = urb->transfer_buffer + le16_to_cpu(ncmh->wNdpIndex);
+-	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN) ||
+-	    le16_to_cpu(ncmh->wHeaderLength) + le16_to_cpu(ncm0->wLength) >=
+-	    urb->actual_length) {
++	ncm0 = urb->transfer_buffer + sizeof(struct usb_cdc_ncm_nth16);
++	if (ncm0->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
+ 		dev->net->stats.rx_errors++;
+ 		return retval;
+ 	}
 
 
 
