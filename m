@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DBEA346DF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568B2A343AF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE64188C1BD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9909F18939C1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35556187550;
-	Thu, 13 Feb 2025 15:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B81F2135BC;
+	Thu, 13 Feb 2025 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu9Cpkf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1yzmwXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55EB156653;
-	Thu, 13 Feb 2025 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE7020371A;
+	Thu, 13 Feb 2025 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460178; cv=none; b=AZsRFl3wWrn58iY3PHvDOuvOBQ3hShtSH39eTruvOwyiidEqJqK/h3F8EobOIsY+JZwYy3tZun7GPnyIMS9uwMF9A0HzLsz71XaHQpZT3AARZ4zodp1EcPA59xoKatUxgXsO/+pWJmWH8L7aMMu1/V72H9e0EAgmlh1aUOJiae8=
+	t=1739457931; cv=none; b=QYenY2+DtAj3AXJgUPKoMVCTsPW/Q6e0IdVk7MnyFYeS+iBKXaV6XX8QnZnr2SI8AQQkwzLdRhVhAPjEarO/ywx+fFOjt46P1dSE0XToVDKoTPbqsw89s7s3o1gvMJlzeYUaL+yQS9RVFnWst3tmLk4k4+KfDYU5GHQ/Dgh26Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460178; c=relaxed/simple;
-	bh=gp7XctmyxTndjxiauppn6NXgjwqc+ej7PwHpSCOLfIk=;
+	s=arc-20240116; t=1739457931; c=relaxed/simple;
+	bh=CrO0fH9+VBIIjGzqBkCpUIoer/8H2sI7mH5v9daUX4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQK99CO63TCgODMgHhleDGHcQjhKRUYWUNVghbu/+lIH0Vdwlzt8kb5nUfPvY0IXLGoRaVkEvDzya7EbRDwwNSGdi9hax11nBDurS+xP4bp9PKX6IgmbJf13bMIeZupeRXQW7H/6E8Wg+McyeKGmRCH73+NhvCK4K65aYpiDhOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu9Cpkf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5922BC4CED1;
-	Thu, 13 Feb 2025 15:22:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JvE74S+eeiBOpSYjthnImtnBicepcYVSe+KM2WQnbiEsuZMjp6ckR//hBSXJVDFx3DeVyZqRuiHUoIv0uZ8WN1tb/xMMgq0ONlk142cTGfFxpndqF+Nh2rBKydcdWIbCSJTPDaz+b7cqyQ1Bfvp2O/nprIQr+pb8Qg0uJ6zC5Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1yzmwXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C542C4CEE2;
+	Thu, 13 Feb 2025 14:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460177;
-	bh=gp7XctmyxTndjxiauppn6NXgjwqc+ej7PwHpSCOLfIk=;
+	s=korg; t=1739457930;
+	bh=CrO0fH9+VBIIjGzqBkCpUIoer/8H2sI7mH5v9daUX4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fu9Cpkf4XM6+xJQwUP8RB7QaNalYIlpOTzQo3ZwQTlVFbAJRGz5Dbn+wsA7IcsPOv
-	 h5Mpz+JbVqnC6WBoUm7DfYMbBKmteolZqSE8CyO2B1VkCLm47vIYIkEHabzwPA7+WY
-	 8/O2Xj3wHvyv9dBhuVz/sA3Xxx7YHM6SNOZSxZ70=
+	b=C1yzmwXyjzBloyHkaXmVUMGc5zX4LEBeIKHY/n9PagfqBc6Wx3bgGKZoIdgWhB5qm
+	 2i4uORs2udvzYm/HLb9cJghwln1qQtMx9WKDXe47tOxhD5c2wu90k7m9PIka4IGhGD
+	 g1CIjupT8rKev01W4OkpkhhsXAwUwlNvrLDtVH/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/273] mmc: core: Respect quirk_max_rate for non-UHS SDIO card
-Date: Thu, 13 Feb 2025 15:26:42 +0100
-Message-ID: <20250213142408.546512712@linuxfoundation.org>
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 254/422] scsi: st: Dont set pos_unknown just after device recognition
+Date: Thu, 13 Feb 2025 15:26:43 +0100
+Message-ID: <20250213142446.343391731@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit a2a44f8da29352f76c99c6904ee652911b8dc7dd ]
+commit 98b37881b7492ae9048ad48260cc8a6ee9eb39fd upstream.
 
-The card-quirk was added to limit the clock-rate for a card with UHS-mode
-support, although let's respect the quirk for non-UHS mode too, to make the
-behaviour consistent.
+Commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling") in
+v6.6 added new code to handle the Power On/Reset Unit Attention (POR UA)
+sense data. This was in addition to the existing method. When this Unit
+Attention is received, the driver blocks attempts to read, write and some
+other operations because the reset may have rewinded the tape. Because of
+the added code, also the initial POR UA resulted in blocking operations,
+including those that are used to set the driver options after the device is
+recognized. Also, reading and writing are refused, whereas they succeeded
+before this commit.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add code to not set pos_unknown to block operations if the POR UA is
+received from the first test_ready() call after the st device has been
+created. This restores the behavior before v6.6.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20241216113755.30415-1-Kai.Makisara@kolumbus.fi
+Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+CC: stable@vger.kernel.org
+Closes: https://lore.kernel.org/linux-scsi/2201CF73-4795-4D3B-9A79-6EE5215CF58D@kolumbus.fi/
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/sdio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/st.c |    6 ++++++
+ drivers/scsi/st.h |    1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 5914516df2f7f..cb87e82737793 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -458,6 +458,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
- 	if (mmc_card_sd_combo(card))
- 		max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -1027,6 +1027,11 @@ static int test_ready(struct scsi_tape *
+ 			retval = new_session ? CHKRES_NEW_SESSION : CHKRES_READY;
+ 		break;
+ 	}
++	if (STp->first_tur) {
++		/* Don't set pos_unknown right after device recognition */
++		STp->pos_unknown = 0;
++		STp->first_tur = 0;
++	}
  
-+	max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
-+
- 	return max_dtr;
- }
+ 	if (SRpnt != NULL)
+ 		st_release_request(SRpnt);
+@@ -4325,6 +4330,7 @@ static int st_probe(struct device *dev)
+ 	blk_queue_rq_timeout(tpnt->device->request_queue, ST_TIMEOUT);
+ 	tpnt->long_timeout = ST_LONG_TIMEOUT;
+ 	tpnt->try_dio = try_direct_io;
++	tpnt->first_tur = 1;
  
--- 
-2.39.5
-
+ 	for (i = 0; i < ST_NBR_MODES; i++) {
+ 		STm = &(tpnt->modes[i]);
+--- a/drivers/scsi/st.h
++++ b/drivers/scsi/st.h
+@@ -170,6 +170,7 @@ struct scsi_tape {
+ 	unsigned char rew_at_close;  /* rewind necessary at close */
+ 	unsigned char inited;
+ 	unsigned char cleaning_req;  /* cleaning requested? */
++	unsigned char first_tur;     /* first TEST UNIT READY */
+ 	int block_size;
+ 	int min_block;
+ 	int max_block;
 
 
 
