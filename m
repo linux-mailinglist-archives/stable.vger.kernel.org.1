@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-115295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF54A342CB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:42:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F005BA3455A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A2916D50A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65BCD3B4BAB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62FF23A994;
-	Thu, 13 Feb 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067B12A1D1;
+	Thu, 13 Feb 2025 15:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVOAFFwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnYRa4Q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF0823A992;
-	Thu, 13 Feb 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DA21CEEBB;
+	Thu, 13 Feb 2025 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457559; cv=none; b=QvpbhJqsA2SOJNbhQtFbLqV2jRsg3GppNgMKUdD1yoJavcXFKn74+l1GlV0HFyb/mFYyWX79aRXC8XtxxxOk9zt98M91H4s3/0xyJDqnKzQCgfHc82tVFa7FE3xHCraKc6hLshWdT8Xm/uPli+9sSVH0kit+TqBz9fjFo3fhlNU=
+	t=1739458974; cv=none; b=oxQqX4lfji3Vm3J7HVML1oHDEnuw/6gPK16Y/wg9oM1AfmMSYvPXdWmNUUMeOhFdWvxecVeEsF/6hDPN+AEVTBD2Dv5cEXMriSkRrgpoUW3zFUjNX1+1Xy7wA/x114TEMPYEsyHCWgS44iwD6JXAL2rkczn6p/jGdeNZXx82xK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457559; c=relaxed/simple;
-	bh=YX32fwVsPMImTDBNkLDylWmepp6cIB9QsgZbF4kj0ZI=;
+	s=arc-20240116; t=1739458974; c=relaxed/simple;
+	bh=XOEBUNzwtpYfWyLPb7lbst0pJd5gZMrGXmJ8seLJ0Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSGeYFnGJmtWpvtQUgK41OIVudU3525py2RSmq0i3ij+xrqHNvTxPodY8o2qlcpAlxHYq91qtkhpGzADlsUWvuyAm0xkDe+4UT43Exo4QpyBt1OgFL8PblFH4LzhDruiyGqnmLHpy/CSyc80EwDstsP5a01oowUVOfpDi76dekY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVOAFFwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D394BC4CED1;
-	Thu, 13 Feb 2025 14:39:18 +0000 (UTC)
+	 MIME-Version; b=A3n+r6G3HiBUXS36gxTilbgWwoIBzNziK8AC09SzORJgqrUBUoELuACMs25wNEj92/oaACRpU9VH0kzOL8sxxCZbB7/lGKnwE/fQ6sBCJ4dJ96+xGU/Sje+SRO5wM23BZF7JJo7OfG8c5jn0odyQVbRzquzru2okce9jltYi2AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnYRa4Q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25217C4CED1;
+	Thu, 13 Feb 2025 15:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457559;
-	bh=YX32fwVsPMImTDBNkLDylWmepp6cIB9QsgZbF4kj0ZI=;
+	s=korg; t=1739458974;
+	bh=XOEBUNzwtpYfWyLPb7lbst0pJd5gZMrGXmJ8seLJ0Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVOAFFwuBcCkupyV0YTvcN8rysotZ0KPUd//VIIDmFu8/MMHyTTKSsdW1OXpbB9OO
-	 vwg+zsUdOfLYyqMCgDQ6ON1vSEj0Rl8CKxVZkRDNK37louw7fcq2kQzG7oBEp84cRm
-	 DuszPzlh+XJjZFKcYK+t9TBFe5w1pXQqs65qeHFw=
+	b=JnYRa4Q4ceOQLShxVCN31fTxVpG+Mc08ILw9uG5o2faOAD/wnd5JWMLefEbAa6/cO
+	 vGiw0VcEM3T5ekQsQRYrrr0BpNBMf/dxVy3Ef44hChJa5rGtHkfB7XA3kOWdcMDN6F
+	 3nJi7s+ZUBZpmX+EtFH4G/8z6+nb/MsrMuvL8pzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 146/422] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
+	syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 130/443] net: rose: lock the socket in rose_bind()
 Date: Thu, 13 Feb 2025 15:24:55 +0100
-Message-ID: <20250213142442.182725696@linuxfoundation.org>
+Message-ID: <20250213142445.624950628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d3c7c48d004f6c8d892f39b5d69884fd0fe98c81 upstream.
+[ Upstream commit a1300691aed9ee852b0a9192e29e2bdc2411a7e6 ]
 
-In commit 892f7237b3ff ("arm64: Delay initialisation of
-cpuinfo_arm64::reg_{zcr,smcr}") we moved access to ZCR, SMCR and SMIDR
-later in the boot process in order to ensure that we don't attempt to
-interact with them if SVE or SME is disabled on the command line.
-Unfortunately when initialising the boot CPU in init_cpu_features() we work
-on a copy of the struct cpuinfo_arm64 for the boot CPU used only during
-boot, not the percpu copy used by the sysfs code. The expectation of the
-feature identification code was that the ID registers would be read in
-__cpuinfo_store_cpu() and the values not modified by init_cpu_features().
+syzbot reported a soft lockup in rose_loopback_timer(),
+with a repro calling bind() from multiple threads.
 
-The main reason for the original change was to avoid early accesses to
-ZCR on practical systems that were seen shipping with SVE reported in ID
-registers but traps enabled at EL3 and handled as fatal errors, SME was
-rolled in due to the similarity with SVE. Since then we have removed the
-early accesses to ZCR and SMCR in commits:
+rose_bind() must lock the socket to avoid this issue.
 
-  abef0695f9665c3d ("arm64/sve: Remove ZCR pseudo register from cpufeature code")
-  391208485c3ad50f ("arm64/sve: Remove SMCR pseudo register from cpufeature code")
-
-so only the SMIDR_EL1 part of the change remains. Since SMIDR_EL1 is
-only trapped via FEAT_IDST and not the SME trap it is less likely to be
-affected by similar issues, and the factors that lead to issues with SVE
-are less likely to apply to SME.
-
-Since we have not yet seen practical SME systems that need to use a
-command line override (and are only just beginning to see SME systems at
-all) and the ID register read is much more likely to be safe let's just
-store SMIDR_EL1 along with all the other ID register reads in
-__cpuinfo_store_cpu().
-
-This issue wasn't apparent when testing on emulated platforms that do not
-report values in SMIDR_EL1.
-
-Fixes: 892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241217-arm64-fix-boot-cpu-smidr-v3-1-7be278a85623@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+7ff41b5215f0c534534e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67a0f78d.050a0220.d7c5a.00a0.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250203170838.3521361-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c |   13 -------------
- arch/arm64/kernel/cpuinfo.c    |   10 ++++++++++
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ net/rose/af_rose.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -1153,12 +1153,6 @@ void __init init_cpu_features(struct cpu
- 	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
- 		unsigned long cpacr = cpacr_save_enable_kernel_sme();
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 72c65d938a150..a4a668b88a8f2 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -701,11 +701,9 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	struct net_device *dev;
+ 	ax25_address *source;
+ 	ax25_uid_assoc *user;
++	int err = -EINVAL;
+ 	int n;
  
--		/*
--		 * We mask out SMPS since even if the hardware
--		 * supports priorities the kernel does not at present
--		 * and we block access to them.
--		 */
--		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
- 		vec_init_vq_map(ARM64_VEC_SME);
- 
- 		cpacr_restore(cpacr);
-@@ -1406,13 +1400,6 @@ void update_cpu_features(int cpu,
- 	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
- 		unsigned long cpacr = cpacr_save_enable_kernel_sme();
- 
--		/*
--		 * We mask out SMPS since even if the hardware
--		 * supports priorities the kernel does not at present
--		 * and we block access to them.
--		 */
--		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
+-	if (!sock_flag(sk, SOCK_ZAPPED))
+-		return -EINVAL;
 -
- 		/* Probe vector lengths */
- 		if (!system_capabilities_finalized())
- 			vec_update_vq_map(ARM64_VEC_SME);
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -478,6 +478,16 @@ static void __cpuinfo_store_cpu(struct c
- 	if (id_aa64pfr0_32bit_el0(info->reg_id_aa64pfr0))
- 		__cpuinfo_store_cpu_32bit(&info->aarch32);
+ 	if (addr_len != sizeof(struct sockaddr_rose) && addr_len != sizeof(struct full_sockaddr_rose))
+ 		return -EINVAL;
  
-+	if (IS_ENABLED(CONFIG_ARM64_SME) &&
-+	    id_aa64pfr1_sme(info->reg_id_aa64pfr1)) {
-+		/*
-+		 * We mask out SMPS since even if the hardware
-+		 * supports priorities the kernel does not at present
-+		 * and we block access to them.
-+		 */
-+		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
-+	}
+@@ -718,8 +716,15 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	if ((unsigned int) addr->srose_ndigis > ROSE_MAX_DIGIS)
+ 		return -EINVAL;
+ 
+-	if ((dev = rose_dev_get(&addr->srose_addr)) == NULL)
+-		return -EADDRNOTAVAIL;
++	lock_sock(sk);
 +
- 	cpuinfo_detect_icache_policy(info);
++	if (!sock_flag(sk, SOCK_ZAPPED))
++		goto out_release;
++
++	err = -EADDRNOTAVAIL;
++	dev = rose_dev_get(&addr->srose_addr);
++	if (!dev)
++		goto out_release;
+ 
+ 	source = &addr->srose_call;
+ 
+@@ -730,7 +735,8 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	} else {
+ 		if (ax25_uid_policy && !capable(CAP_NET_BIND_SERVICE)) {
+ 			dev_put(dev);
+-			return -EACCES;
++			err = -EACCES;
++			goto out_release;
+ 		}
+ 		rose->source_call   = *source;
+ 	}
+@@ -753,8 +759,10 @@ static int rose_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+ 	rose_insert_socket(sk);
+ 
+ 	sock_reset_flag(sk, SOCK_ZAPPED);
+-
+-	return 0;
++	err = 0;
++out_release:
++	release_sock(sk);
++	return err;
  }
  
+ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_len, int flags)
+-- 
+2.39.5
+
 
 
 
