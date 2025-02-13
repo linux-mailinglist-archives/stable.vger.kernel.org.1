@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-116149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E89DA34752
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:34:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4974A34433
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DD616EA81
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E42C188D86D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3821547F0;
-	Thu, 13 Feb 2025 15:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB2D211A36;
+	Thu, 13 Feb 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1miFBCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8m3XL+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9D9146588;
-	Thu, 13 Feb 2025 15:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694AA20409A;
+	Thu, 13 Feb 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460494; cv=none; b=N/wevIbExgTkpT3fAOJVuytHC0i2i+E611QAAQWtQYjubF1Rg1Z9Gp1qMKTNuN3/gtn/fjVi8X0K5nA6LW7vESVfYcS8ltdmFgCeIkucTuk5Qy8RfniyLeTYqbnU8zOF7iKewvl3TCKJgyrtTFoXeh3L2s0URGMxI8wYlTfgvak=
+	t=1739458267; cv=none; b=YZZeKF7NUfk+o3WWqrydR+847PKQ5oaa0rmUDe2TSreKEqlFWJJV8m8nIBL9H1vZtIr6LpVMwG47cC6BpzSxX5rd/joudFzSVJShZTtMmn9AHQT6O2EOeYa2V7rPm6gAPU2IBBj27OtRx9bCS5oGyw4POor5Axi4fZYWyK6BUf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460494; c=relaxed/simple;
-	bh=Pl/0EQ9PVo4P4lncDtr7h8r1Ms/YnHu2PD33AQyICcY=;
+	s=arc-20240116; t=1739458267; c=relaxed/simple;
+	bh=xWacjJxetpxcNVpt+mSY2lAg6khtETR8DcqIg9KuifA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYAHyyq8JGhAI5zKX+aFCkiJZW67UkA3L2ERNeylwtRu6YdEcu+BOc7npmbZk5l4ZGgynSiN+gbt0zMa4FjqvzKNoKYkDqwKHLUSAuLyfhbhWpjNT3q/ziX0pXWoftrG6Fy3XyoJBD4fFewjKPZqtO+ROj987Ut5ggGIHk2DsOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1miFBCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A02EC4CED1;
-	Thu, 13 Feb 2025 15:28:13 +0000 (UTC)
+	 MIME-Version; b=CnrfzlE3IssdxjiVx6Fi5ITX3//wmMX+JkcfmhdoPhfjYw83b9sdVuzgBFSB3OD4Yhf5Nm3N4oSjbj5hrUpiOA2xknKGex9JBpO+cE9bo4g3HqSEC9A5CxPXsWUU3R+kJlwuRrPIf3l55ukmWkpLi8lLXSOz8DcTxA2EFUrP9vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8m3XL+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ABCC4CEE5;
+	Thu, 13 Feb 2025 14:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460494;
-	bh=Pl/0EQ9PVo4P4lncDtr7h8r1Ms/YnHu2PD33AQyICcY=;
+	s=korg; t=1739458267;
+	bh=xWacjJxetpxcNVpt+mSY2lAg6khtETR8DcqIg9KuifA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1miFBCmmX692gD8QiUcW6E/ahutAfcEqaohma4w6uXAjrGdDkECdilCH7X+baAyB
-	 vxhTOz/8XIFjFhmpZ9/rNaM62xAicYUaoZ828lng5HSj1Qu1tVdp82JjSk6UXjCWfs
-	 DCznjXs+cc7HKej6ZluTPr5Yh4zAdi+z2LLuDWZk=
+	b=d8m3XL+SynozXLLlZQUb798SN7g4Lz6QDUbWHAf4RWGdR+CMTj31KaR4HXU0B1D04
+	 9WtTTS4QZFc68atDm9YxhImBVkng3uKSLkwmOb1+LnonKdogfoTMNW88sXmbP4GBbT
+	 4O+mhjRFxS8Vg1XSD3d7VihGvRJizGPMjTqcnzl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 127/273] wifi: rtlwifi: rtl8821ae: Fix media status report
+	Antoine Viallon <antoine@lesviallon.fr>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 350/422] ceph: fix memory leak in ceph_mds_auth_match()
 Date: Thu, 13 Feb 2025 15:28:19 +0100
-Message-ID: <20250213142412.359536044@linuxfoundation.org>
+Message-ID: <20250213142450.058730090@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Antoine Viallon <antoine@lesviallon.fr>
 
-commit 66ef0289ac99e155d206ddaa0fdfad09ae3cd007 upstream.
+commit 3b7d93db450e9d8ead80d75e2a303248f1528c35 upstream.
 
-RTL8821AE is stuck transmitting at the lowest rate allowed by the rate
-mask. This is because the firmware doesn't know the device is connected
-to a network.
+We now free the temporary target path substring allocation on every
+possible branch, instead of omitting the default branch.  In some
+cases, a memory leak occured, which could rapidly crash the system
+(depending on how many file accesses were attempted).
 
-Fix the macros SET_H2CCMD_MSRRPT_PARM_OPMODE and
-SET_H2CCMD_MSRRPT_PARM_MACID_IND to work on the first byte of __cmd,
-not the second. Now the firmware is correctly notified when the device
-is connected to a network and it activates the rate control.
+This was detected in production because it caused a continuous memory
+growth, eventually triggering kernel OOM and completely hard-locking
+the kernel.
 
-Before (MCS3):
+Relevant kmemleak stacktrace:
 
-[  5]   0.00-1.00   sec  12.5 MBytes   105 Mbits/sec    0    339 KBytes
-[  5]   1.00-2.00   sec  10.6 MBytes  89.1 Mbits/sec    0    339 KBytes
-[  5]   2.00-3.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   3.00-4.00   sec  10.6 MBytes  89.1 Mbits/sec    0    386 KBytes
-[  5]   4.00-5.00   sec  10.2 MBytes  86.0 Mbits/sec    0    427 KBytes
+    unreferenced object 0xffff888131e69900 (size 128):
+      comm "git", pid 66104, jiffies 4295435999
+      hex dump (first 32 bytes):
+        76 6f 6c 75 6d 65 73 2f 63 6f 6e 74 61 69 6e 65  volumes/containe
+        72 73 2f 67 69 74 65 61 2f 67 69 74 65 61 2f 67  rs/gitea/gitea/g
+      backtrace (crc 2f3bb450):
+        [<ffffffffaa68fb49>] __kmalloc_noprof+0x359/0x510
+        [<ffffffffc32bf1df>] ceph_mds_check_access+0x5bf/0x14e0 [ceph]
+        [<ffffffffc3235722>] ceph_open+0x312/0xd80 [ceph]
+        [<ffffffffaa7dd786>] do_dentry_open+0x456/0x1120
+        [<ffffffffaa7e3729>] vfs_open+0x79/0x360
+        [<ffffffffaa832875>] path_openat+0x1de5/0x4390
+        [<ffffffffaa834fcc>] do_filp_open+0x19c/0x3c0
+        [<ffffffffaa7e44a1>] do_sys_openat2+0x141/0x180
+        [<ffffffffaa7e4945>] __x64_sys_open+0xe5/0x1a0
+        [<ffffffffac2cc2f7>] do_syscall_64+0xb7/0x210
+        [<ffffffffac400130>] entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-After (MCS9):
+It can be triggered by mouting a subdirectory of a CephFS filesystem,
+and then trying to access files on this subdirectory with an auth token
+using a path-scoped capability:
 
-[  5]   0.00-1.00   sec  33.9 MBytes   284 Mbits/sec    0    771 KBytes
-[  5]   1.00-2.00   sec  31.6 MBytes   265 Mbits/sec    0    865 KBytes
-[  5]   2.00-3.00   sec  29.9 MBytes   251 Mbits/sec    0    963 KBytes
-[  5]   3.00-4.00   sec  28.2 MBytes   237 Mbits/sec    0    963 KBytes
-[  5]   4.00-5.00   sec  26.8 MBytes   224 Mbits/sec    0    963 KBytes
+    $ ceph auth get client.services
+    [client.services]
+            key = REDACTED
+            caps mds = "allow rw fsname=cephfs path=/volumes/"
+            caps mon = "allow r fsname=cephfs"
+            caps osd = "allow rw tag cephfs data=cephfs"
 
-Fixes: 39f40710d0b5 ("rtlwifi: rtl88821ae: Remove usage of private bit manipulation macros")
+    $ cat /proc/self/mounts
+    services@[REDACTED].cephfs=/volumes/containers /ceph/containers ceph rw,noatime,name=services,secret=<hidden>,ms_mode=prefer-crc,mount_timeout=300,acl,mon_addr=[REDACTED]:3300,recover_session=clean 0 0
+
+    $ seq 1 1000000 | xargs -P32 --replace={} touch /ceph/containers/file-{} && \
+    seq 1 1000000 | xargs -P32 --replace={} cat /ceph/containers/file-{}
+
+[ idryomov: combine if statements, rename rc to path_matched and make
+            it a bool, formatting ]
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/754785b3-8a78-4554-b80d-de5f603b410b@gmail.com
+Fixes: 596afb0b8933 ("ceph: add ceph_mds_check_access() helper")
+Signed-off-by: Antoine Viallon <antoine@lesviallon.fr>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ceph/mds_client.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/fw.h
-@@ -197,9 +197,9 @@ enum rtl8821a_h2c_cmd {
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -5698,18 +5698,18 @@ static int ceph_mds_auth_match(struct ce
+ 			 *
+ 			 * All the other cases                       --> mismatch
+ 			 */
++			bool path_matched = true;
+ 			char *first = strstr(_tpath, auth->match.path);
+-			if (first != _tpath) {
+-				if (free_tpath)
+-					kfree(_tpath);
+-				return 0;
++			if (first != _tpath ||
++			    (tlen > len && _tpath[len] != '/')) {
++				path_matched = false;
+ 			}
  
- /* _MEDIA_STATUS_RPT_PARM_CMD1 */
- #define SET_H2CCMD_MSRRPT_PARM_OPMODE(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(0))
-+	u8p_replace_bits(__cmd, __value, BIT(0))
- #define SET_H2CCMD_MSRRPT_PARM_MACID_IND(__cmd, __value)	\
--	u8p_replace_bits(__cmd + 1, __value, BIT(1))
-+	u8p_replace_bits(__cmd, __value, BIT(1))
+-			if (tlen > len && _tpath[len] != '/') {
+-				if (free_tpath)
+-					kfree(_tpath);
++			if (free_tpath)
++				kfree(_tpath);
++
++			if (!path_matched)
+ 				return 0;
+-			}
+ 		}
+ 	}
  
- /* AP_OFFLOAD */
- #define SET_H2CCMD_AP_OFFLOAD_ON(__cmd, __value)	\
 
 
 
