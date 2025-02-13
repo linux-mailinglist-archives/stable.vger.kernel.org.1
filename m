@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A96EA344B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4EDA347BC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB2E3B0309
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12651621EC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280F626B08E;
-	Thu, 13 Feb 2025 14:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6A270805;
+	Thu, 13 Feb 2025 15:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4M3wj9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeH9a+XS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA39E26B080;
-	Thu, 13 Feb 2025 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAF826B087;
+	Thu, 13 Feb 2025 15:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458416; cv=none; b=f5Apyi32ejDx6UkTCTmCh0dfkZ5aDWh7WVCJV9C0b2fNg8UII6dkp3y5oUU2YomuYuX8sfZxfTAsuHU7bgbGY+6gkC/0s4q3qNpYnJMQlt2YfRhylOkTcU2iPKemNpbWOSnbLz9zQK1MzKvfHdVJZ5Hp2+XFd/DneAh+/rOIkn4=
+	t=1739460740; cv=none; b=SSAujkUitTJqtcxwOGjfaSPnxWYsS3qq2E0LqaHwjO2dpzNJJ9oxlMSqOpcZ3a+DoXbfGv1EwlL6npl+0w0oQqVHYBgI4WXeqOIx/BBV9fcWTFAQOFTPd+9ccdYD4wihXSJ8wHx7Te5OH2GFnsw1q113x3OhOBCm0xNQweJjzLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458416; c=relaxed/simple;
-	bh=Lbfe3ufOEu61CG45F65ERUuGai55WW8B/qFAUkLqx0M=;
+	s=arc-20240116; t=1739460740; c=relaxed/simple;
+	bh=dVDHUWhDfgfiCV3wmAO5nKkg37DSfs+L5C4PWYs3oQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaDFrmW/312CABdjCQGpOEn7am0KOV2E9sVDYvTrr5sg+aeq0USUnirQ7DgnZ35vq+bpLqpVXExrfOlirsgIyO5XWMOV8eghw6gDa4lryiyhZGUOZSya6Ob1gS3Mkv4cV3FCy6uw50BDtH1mTlhnJt+d7cmciLhE4Vqei6OIkv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4M3wj9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430A4C4CEE5;
-	Thu, 13 Feb 2025 14:53:36 +0000 (UTC)
+	 MIME-Version; b=GJZ+Gh5hs4iKkZh/sLXe65krKBbdB076VpBix32YXiRw1wCPqd9yU791JoKXSFxLBl9LDJKg9gNdgsI+l9krr9GfVpPsZm/f1tqVKJEsqcRavc6M6hDaxf954b3a+jEXHSiP/HGFMrdXyEfzTeArhD8sGDcAaZOMoBJcDyGYjcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeH9a+XS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3429EC4CED1;
+	Thu, 13 Feb 2025 15:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458416;
-	bh=Lbfe3ufOEu61CG45F65ERUuGai55WW8B/qFAUkLqx0M=;
+	s=korg; t=1739460738;
+	bh=dVDHUWhDfgfiCV3wmAO5nKkg37DSfs+L5C4PWYs3oQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4M3wj9IihiLnJI71dmPUO1j2f4VkkE4UV/UdDn2efVMOmA2sbkhfMbHR20vxpe9G
-	 lvZzOVHqgI/lvD3Ijw3uRGVCK/Hqk1G42bvoX9V6wRmCQz6i0aZujGi3PGIrSqUv65
-	 0cD1D115HntCefAYrG5hR3T4GZU8vctkwvjflfxY=
+	b=DeH9a+XS4wJQ6dn4jjm7OcNRjVVAbQV9oFW9Lo1OJaULrIswm3T13tD7ZKC1n/VS4
+	 JTzisU/1iUm3xmSpY6QrBr4DDu3BnE3mSufxRUKBzLpKHQ407GaCJcgZT57jJdhYB3
+	 xwj7HFvU1aInJqEg1m8J5SFXypEAfjDSQeQZm7dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	stable@kernel.org,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 393/422] rtc: zynqmp: Fix optional clock name property
-Date: Thu, 13 Feb 2025 15:29:02 +0100
-Message-ID: <20250213142451.713120465@linuxfoundation.org>
+	Andreas Kemnade <andreas@kemnade.info>,
+	Roger Quadros <rogerq@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.6 171/273] ARM: dts: ti/omap: gta04: fix pm issues caused by spi module
+Date: Thu, 13 Feb 2025 15:29:03 +0100
+Message-ID: <20250213142414.087805883@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit 2a388ff22d2cbfc5cbd628ef085bdcd3b7dc64f5 upstream.
+commit 0cfbd7805fe13406500e6a6f2aa08f198d5db4bd upstream.
 
-Clock description in DT binding introduced by commit f69060c14431
-("dt-bindings: rtc: zynqmp: Add clock information") is talking about "rtc"
-clock name but driver is checking "rtc_clk" name instead.
-Because clock is optional property likely in was never handled properly by
-the driver.
+Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
+disabling SPI leads to messages like when suspending:
+Powerdomain (core_pwrdm) didn't enter target state 0
+and according to /sys/kernel/debug/pm_debug/count off state is not
+entered. That was not connected to SPI during the discussion
+of disabling SPI. See:
+https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
 
-Fixes: 07dcc6f9c762 ("rtc: zynqmp: Add calibration set and get support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Cc: stable@kernel.org
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/cd5f0c9d01ec1f5a240e37a7e0d85b8dacb3a869.1732723280.git.michal.simek@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+The reason is that SPI is per default in slave mode. Linux driver
+will turn it to master per default. It slave mode, the powerdomain seems to
+be kept active if active chip select input is sensed.
+
+Fix that by explicitly disabling the SPI3 pins which used to be muxed by
+the bootloader since they are available on an optionally fitted header
+which would require dtb overlays anyways.
+
+Fixes: a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage")
+CC: stable@vger.kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20241204174152.2360431-1-andreas@kemnade.info
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-zynqmp.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/rtc/rtc-zynqmp.c
-+++ b/drivers/rtc/rtc-zynqmp.c
-@@ -318,8 +318,8 @@ static int xlnx_rtc_probe(struct platfor
- 		return ret;
- 	}
+--- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+@@ -446,6 +446,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <
+ 			&hsusb2_2_pins
++			&mcspi3hog_pins
+ 	>;
  
--	/* Getting the rtc_clk info */
--	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc_clk");
-+	/* Getting the rtc info */
-+	xrtcdev->rtc_clk = devm_clk_get_optional(&pdev->dev, "rtc");
- 	if (IS_ERR(xrtcdev->rtc_clk)) {
- 		if (PTR_ERR(xrtcdev->rtc_clk) != -EPROBE_DEFER)
- 			dev_warn(&pdev->dev, "Device clock not found.\n");
+ 	hsusb2_2_pins: hsusb2-2-pins {
+@@ -459,6 +460,15 @@
+ 		>;
+ 	};
+ 
++	mcspi3hog_pins: mcspi3hog-pins {
++		pinctrl-single,pins = <
++			OMAP3630_CORE2_IOPAD(0x25dc, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d0 */
++			OMAP3630_CORE2_IOPAD(0x25de, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d1 */
++			OMAP3630_CORE2_IOPAD(0x25e0, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d2 */
++			OMAP3630_CORE2_IOPAD(0x25e2, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d3 */
++		>;
++	};
++
+ 	spi_gpio_pins: spi-gpio-pinmux-pins {
+ 		pinctrl-single,pins = <
+ 			OMAP3630_CORE2_IOPAD(0x25d8, PIN_OUTPUT | MUX_MODE4) /* clk */
 
 
 
