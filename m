@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A92A34818
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:43:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8BAA346C0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B631816D1F6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750DF3AE49F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F681E3DED;
-	Thu, 13 Feb 2025 15:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345AC38389;
+	Thu, 13 Feb 2025 15:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZ4s/WXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBP6+Yv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7608B18C900;
-	Thu, 13 Feb 2025 15:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D0126B0BC;
+	Thu, 13 Feb 2025 15:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460899; cv=none; b=Rg8FPMdIDUyLUB+95gs4uJj3uOnyRqW6TDeq+dkVAzf26ZZszslOwo4AyY28IO81KsIUw0TBEAr/jdTCJyfft+MmCbkM+vUkNGRtIZr2dCBX0pTdTx1149Sf6LQMTY8HBK4mgYe8CSP8V7IKxh4JVz4XQL5LFlLYRVH1YHYBWUE=
+	t=1739459972; cv=none; b=Z7n3aHAvLoeKAQFWvaqK5uyY2Vp59eCjvOKhubbDHM9f0bH4SOEkvSiO8VknwIhkT3HjEkzo7pcZ3oQWY66b5jNEvInYV8pMay5MJ82qMHFhnZnFHzqlRvj2xXXk92owK5ko2wN0pbT6U49z/RTMM89fxjGMYdRaMXFxASd3KGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460899; c=relaxed/simple;
-	bh=B9DYIbtfoxogJA5lSACn4uVvZKIxoW0/4WqCVfHibFk=;
+	s=arc-20240116; t=1739459972; c=relaxed/simple;
+	bh=K6+n91TSXwalw6Oa1rvC0fVtJt1/MbuuSa72BWX6F1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ0giUkSyV5b3wMjFtIzN4R7BZjHVdGNbyg9k4wmMd5fHVLoDcM2kADR5jiA0kzJ9yRHLTeqPqX/E6JpY1W0hWLI8aeKPWboA5SveitO3mz+jv/LLk0PfmwdBxVDnW6aeB/j14przgoxb4wbrvs63Y+tQSO/Ovi5O3RimTDzkR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZ4s/WXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D816AC4CEE5;
-	Thu, 13 Feb 2025 15:34:58 +0000 (UTC)
+	 MIME-Version; b=ld5vLCzLm/t5/MlMxKPjlad1SXQ/SuzSc9+Zi31YF7yOr998qaCMKC8cJNd8knP2SGXVT69cMWdu0GNWc1OJByMyRBcgSx+pETIyH8lW2/N4SbBUrWic81xdzoxVQ6Indb+OO7Wo2ke7Ld3lFt6vHoJS3d6YflX5BA24czHvdbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBP6+Yv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0402C4CED1;
+	Thu, 13 Feb 2025 15:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460899;
-	bh=B9DYIbtfoxogJA5lSACn4uVvZKIxoW0/4WqCVfHibFk=;
+	s=korg; t=1739459971;
+	bh=K6+n91TSXwalw6Oa1rvC0fVtJt1/MbuuSa72BWX6F1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZ4s/WXp8LqP23AXIIOEe71/p1fVd4X3Rvxr27g3WVK4TLAFRwdBoAH2G9ZtDXom3
-	 EbsOgGMS4BIlbTuWN5Fmxq6hsGun+u0rDLG4YHu/M28F/HRRX/dyzjACAsD+iPE33t
-	 FVc8hKvR7H6lQb3rgkvBrijVzw9IVUkEji00E2Sk=
+	b=fBP6+Yv89U/jBWRFNL8UHB3s7zAH2dPBwsrlnpstIk1ywbHTDDLnzEB/4Wk93xQD1
+	 hw/pSifbCOymyKHJTm9913P9oTqw2r2dWzmLZgqlV0vNoi80SXe+GGZCV2aAaQqQpJ
+	 J5vGDU6ViEamLuSwOvDocg6vaeVb/YiR4wZ0/tYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 212/273] media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
-Date: Thu, 13 Feb 2025 15:29:44 +0100
-Message-ID: <20250213142415.695008342@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 420/443] rtla/osnoise: Distinguish missing workload option
+Date: Thu, 13 Feb 2025 15:29:45 +0100
+Message-ID: <20250213142456.822419905@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 42d0ec194aa12e9b97f09a94fe565ba2e5f631a2 upstream.
+commit 80d3ba1cf51bfbbb3b098434f2b2c95cd7c0ae5c upstream.
 
-UB9702 does not have SP and EQ registers, but the driver uses them in
-log_status(). Fix this by separating the SP and EQ related log_status()
-work into a separate function (for clarity) and calling that function
-only for UB960.
+osnoise_set_workload returns -1 for both missing OSNOISE_WORKLOAD option
+and failure in setting the option.
+
+Return -1 for missing and -2 for failure to distinguish them.
 
 Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Link: https://lore.kernel.org/20250107144823.239782-2-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub960.c |   90 +++++++++++++++++++++++-------------------
- 1 file changed, 50 insertions(+), 40 deletions(-)
+ tools/tracing/rtla/src/osnoise.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -2956,6 +2956,54 @@ static const struct v4l2_subdev_pad_ops
- 	.init_cfg = ub960_init_cfg,
- };
+--- a/tools/tracing/rtla/src/osnoise.c
++++ b/tools/tracing/rtla/src/osnoise.c
+@@ -867,7 +867,7 @@ int osnoise_set_workload(struct osnoise_
  
-+static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
-+					 unsigned int nport)
-+{
-+	struct device *dev = &priv->client->dev;
-+	u8 eq_level;
-+	s8 strobe_pos;
-+	u8 v = 0;
-+
-+	/* Strobe */
-+
-+	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
-+
-+	dev_info(dev, "\t%s strobe\n",
-+		 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
-+							  "Manual");
-+
-+	if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
-+		ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
-+
-+		dev_info(dev, "\tStrobe range [%d, %d]\n",
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
-+	}
-+
-+	ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
-+
-+	dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
-+
-+	/* EQ */
-+
-+	ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
-+
-+	dev_info(dev, "\t%s EQ\n",
-+		 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
-+						    "Adaptive");
-+
-+	if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
-+		ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
-+
-+		dev_info(dev, "\tEQ range [%u, %u]\n",
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
-+	}
-+
-+	if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
-+		dev_info(dev, "\tEQ level %u\n", eq_level);
-+}
-+
- static int ub960_log_status(struct v4l2_subdev *sd)
- {
- 	struct ub960_data *priv = sd_to_ub960(sd);
-@@ -3003,8 +3051,6 @@ static int ub960_log_status(struct v4l2_
+ 	retval = osnoise_options_set_option("OSNOISE_WORKLOAD", onoff);
+ 	if (retval < 0)
+-		return -1;
++		return -2;
  
- 	for (nport = 0; nport < priv->hw_data->num_rxports; nport++) {
- 		struct ub960_rxport *rxport = priv->rxports[nport];
--		u8 eq_level;
--		s8 strobe_pos;
- 		unsigned int i;
+ 	context->opt_workload = onoff;
  
- 		dev_info(dev, "RX %u\n", nport);
-@@ -3040,44 +3086,8 @@ static int ub960_log_status(struct v4l2_
- 		ub960_rxport_read(priv, nport, UB960_RR_CSI_ERR_COUNTER, &v);
- 		dev_info(dev, "\tcsi_err_counter %u\n", v);
- 
--		/* Strobe */
--
--		ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
--
--		dev_info(dev, "\t%s strobe\n",
--			 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
--								  "Manual");
--
--		if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
--			ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
--
--			dev_info(dev, "\tStrobe range [%d, %d]\n",
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
--		}
--
--		ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
--
--		dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
--
--		/* EQ */
--
--		ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
--
--		dev_info(dev, "\t%s EQ\n",
--			 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
--							    "Adaptive");
--
--		if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
--			ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
--
--			dev_info(dev, "\tEQ range [%u, %u]\n",
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
--		}
--
--		if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
--			dev_info(dev, "\tEQ level %u\n", eq_level);
-+		if (!priv->hw_data->is_ub9702)
-+			ub960_log_status_ub960_sp_eq(priv, nport);
- 
- 		/* GPIOs */
- 		for (i = 0; i < UB960_NUM_BC_GPIOS; i++) {
 
 
 
