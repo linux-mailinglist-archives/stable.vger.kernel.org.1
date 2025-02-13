@@ -1,98 +1,58 @@
-Return-Path: <stable+bounces-115112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03ACA33ADF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:17:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD80A33B85
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24729188DD9B
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5893A5F60
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFD620DD5A;
-	Thu, 13 Feb 2025 09:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1044420DD5C;
+	Thu, 13 Feb 2025 09:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VkB5uNRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHhuORDr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD6020C49E;
-	Thu, 13 Feb 2025 09:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93A4202C31;
+	Thu, 13 Feb 2025 09:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739437932; cv=none; b=LjmQas9DBguPANXmIZkgXNRmLtc+2X9YAib4/2D9Y/v6OfZztUOMNWFMamzZcBn6Mx0yM3ADYVX6ppG2AjHT0Hf3lNZ8iOY1UUkRPCQbkHmjDVsw4ODX4UIRD7ro6gxYn1Q0MksbHcIOgjxmvtKPcC8KJ8EZy68HMBNa7iC6468=
+	t=1739440039; cv=none; b=aF5nw/0BUClrAfkqq6++DNKFhMCV/y+zfGqYgseSQDHvzSvCHzYEhrQD5N5GdxVeHJ35r+hWnNcz8kpQA7HlEbZF0FyIY7rpDBOCM0OjYx0XqwaSSGcgh1lmMTvJNPGWNjtc9Dqy27vWxN9tpV1U9QfQ0KdIJnEH2SDA6CxKt48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739437932; c=relaxed/simple;
-	bh=JPlerEw+HpIcTQO1AoV9HkgsXrH9Q7r63PdqOw1EkME=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DK/7TEsbwc/HrOyZAmUcqD5ypBYRIlOKuMoVGo7XBQWkMUKBE/qGhuUqkuMnuNiBZ+vfVjaUGE+nxnOm8xRTSs1YTirkXtFokY1DkQ3PFMww1UXsg9U/JdSm8qg04ifkddV2wj5p9bpypI//TwBZ7f+07cjeRSKeVG8/8HeBImI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VkB5uNRJ; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ab7f2b3d563so130248766b.1;
-        Thu, 13 Feb 2025 01:12:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739437929; x=1740042729; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kk8GoiJCBLwy0VGMO3TU9B+awh6BEc3xAZZDrhJYR4Q=;
-        b=VkB5uNRJjqUC7rzjY+U4v+ylv5ha2vjEWxjL3XO6KbOiw2VU7P2YulK19n6BrMfPVh
-         Oh0WqiIwTNhVFQC2+UjhYPgSzALE6yQ2abcFkhXBz35POFjlICnQdgrygGiTL8fh+Asd
-         j5VoqctOzf76hMehq0C7ODcsFX1BlRQp3fivn6+72x54XSu4KxvPHUJPdFu3/K9QFVFj
-         HrzvtKb+axeuTObPUzgnsEGTtl2cgE6eaHiej8n0dYo67vP30Kz4XKIyf9xdICJ2DRbj
-         dsaLCqXZqlqj1z3skdOD0QkPxz/1++cSiVjSoqlTcqrsTS1EVItwFGiG4fABKeI3S59c
-         cy1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739437929; x=1740042729;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kk8GoiJCBLwy0VGMO3TU9B+awh6BEc3xAZZDrhJYR4Q=;
-        b=uO1vUv0WmYS4D71MqyvpsANk4+jQKUbyEIU863RLQyV8wzW0yWOcmK9DSt3SVeDufo
-         C0psicrrhECyV4D+mmEQ5K6h8sLcH+5iE4IoN3xn0fIHEVXkzz71ybYy+JwR3EXkgz4+
-         yPK/7B4VZ6Sqr5yfbr6PGCFpIIzuYZfgmCdAc68s9Q0b0o+Lh+i8gAxZ5Msav9kfQx5k
-         DYYgJM6Sjcc7jB6m5XXwdS3JJw3HzfF1zuvc5mwuhi9/KAXljv/sbYXaMv3uifJevKQi
-         hMX+/X2jW4s0VzHeqxqOtttxoXkmOpMZrn+dVYHxru/65OdeZQOzABfa9oye9rsMzvjl
-         6Tvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMV5ncOl6vHXUH9nmUQzxDNGAzKiOZE/taVptbAQBEO4NcUNW7qxFmaj7tPqFStq5Jg0aSvry5BX9W4SkZ@vger.kernel.org, AJvYcCUmM8Ubyx0qWwZK/3eUVMeqrKynVW3ELFGMP40jKvOSpwoE3e21fyN9oekzeA7Qvg/+NGM=@vger.kernel.org, AJvYcCVhWHHRugOZY9cbIIuwRb+R1RwZLHqzBz2AYXLwf5NGcqSUymfx3QGHM6JcsawY2JlROPf+caxq@vger.kernel.org, AJvYcCWHvRWEB5v8NhGw9DZcWtMopzdsXCh8xiTD3gwVcGcZTdw0TX4232L/MfJLcPJq5ShAMIHuRSoV5Dm0LEl6ksP2/PbU@vger.kernel.org, AJvYcCXWbDy4bg796h9DEIsD5HdaYApq+3oaLARU10LGKOL8gUQFD7rlV8IO17C8n7JEY9TBL3h/GmAlU4tg@vger.kernel.org
-X-Gm-Message-State: AOJu0YznvV8fO79wQoYLOzOUGjiBzVQATUTkpN+pu7a1caq9//paI/Yd
-	1+zbfyVVBUJdzSuyyGeCKJ+ggfFyA1s4ysJ4C/g1qprViax12M6G
-X-Gm-Gg: ASbGnctCxqSsloMuiPw/5skEJ51WYAiqq/a5Q5TZVRr2rz+3y9UUlB6MMZDkpmIT2AR
-	zlDbpnSBTcmHWkju7VVAxIMDcW3ODWZrsDrhMJyqO2CBHfjMcrm1qN23mx89TUcIEowyjhQBMto
-	OWm8BWPTR98QRNNP6SpCyjeDrMHSiFMd31KObaBkfrUDS1ZQYs0bnFGVL7RKNJTgig7NA3OkHRm
-	EA/9DZklJ7oUcMC+zDf7NnIHcdv7i1nlf8RvYjisjv0+P/SranZnqlKuu3ed8jfbj8dwnHWwEWZ
-	zw==
-X-Google-Smtp-Source: AGHT+IGs3oJZf7x6yD/Cx3fNNknBE6YPrj9ItenyEdO+HvKskjnm0uGLWq5sjCosjH1kmhwkZqU1rQ==
-X-Received: by 2002:a17:907:6d24:b0:ab7:be81:8940 with SMTP id a640c23a62f3a-aba4eb9b519mr235654066b.10.1739437928410;
-        Thu, 13 Feb 2025 01:12:08 -0800 (PST)
-Received: from krava ([173.38.220.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5337698asm88429866b.120.2025.02.13.01.12.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 01:12:07 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Thu, 13 Feb 2025 10:12:05 +0100
-To: Andy Lutomirski <luto@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, bpf@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
- check
-Message-ID: <Z623ZcZj6Wsbnrhs@krava>
-References: <20250212220433.3624297-1-jolsa@kernel.org>
- <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
+	s=arc-20240116; t=1739440039; c=relaxed/simple;
+	bh=ZxDr6AwnXUdrFTM7NUHu4gVEND5MJ7HwI8ht+KxlXR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aRkIN5pgVGFmwpAJy1v74RLLE24mmfP2PsC/MT9mjWY0gTMuk7++e1kQD5j+SeebezNAvuYhxPte+kfVgixZcsJQELR0EFU8VaP+mk5TKtAJAwiDcbuTndP5JYYU5d1W90vFLX0QgexRg8MZcbHaLKJ69RdMcMROfmgEZW+Qz7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHhuORDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C063DC4CED1;
+	Thu, 13 Feb 2025 09:47:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739440037;
+	bh=ZxDr6AwnXUdrFTM7NUHu4gVEND5MJ7HwI8ht+KxlXR8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QHhuORDrzKwj5nBcVvdvE5Y948j1UgMJfjFp8pw/e97yQK/EVb8EgOuHGtLW+/Sm0
+	 VSpcvBWnl1O9uwpg/75Ztx0bcfcaNXjfr5rPM2mOG/Y5QLBX9ASpAVfNssreu592VR
+	 x0B1SbLlHxlMZ5cFeevkHgHIgNXX4NPCsOnCxarE=
+Date: Thu, 13 Feb 2025 10:47:14 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Badhri Jagan Sridharan <badhri@google.com>
+Cc: Jos Wang <joswang1221@gmail.com>, Amit Sunil Dhamne <amitsd@google.com>,
+	heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] usb: typec: tcpm: PSSourceOffTimer timeout in
+ PR_Swap enters ERROR_RECOVERY
+Message-ID: <2025021323-surviving-straddle-1f68@gregkh>
+References: <20250209071752.69530-1-joswang1221@gmail.com>
+ <5d504702-270f-4227-afd6-a41814c905e3@google.com>
+ <CAPTae5+Z3UcDcdFcn=Ref5aQSUEEyz-yVbRqoPJ1LogP4MzJdg@mail.gmail.com>
+ <CAMtoTm0bchocN6XrQBRdYuye7=4CoFbU-6wMpRAXR4OU77XkwQ@mail.gmail.com>
+ <CAPTae5J5WCD6JmEE2tsgfJDzW9FRusiTXreTdY79MBs4AL6ZHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,40 +62,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
+In-Reply-To: <CAPTae5J5WCD6JmEE2tsgfJDzW9FRusiTXreTdY79MBs4AL6ZHg@mail.gmail.com>
 
-On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
-> On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
+On Wed, Feb 12, 2025 at 11:16:35PM -0800, Badhri Jagan Sridharan wrote:
+> On Tue, Feb 11, 2025 at 5:50 AM Jos Wang <joswang1221@gmail.com> wrote:
 > >
-> > Jann reported [1] possible issue when trampoline_check_ip returns
-> > address near the bottom of the address space that is allowed to
-> > call into the syscall if uretprobes are not set up.
-> >
-> > Though the mmap minimum address restrictions will typically prevent
-> > creating mappings there, let's make sure uretprobe syscall checks
-> > for that.
+> > On Tue, Feb 11, 2025 at 7:51 AM Badhri Jagan Sridharan
+> > <badhri@google.com> wrote:
+> > >
+> > > On Mon, Feb 10, 2025 at 3:02 PM Amit Sunil Dhamne <amitsd@google.com> wrote:
+> > > >
+> > > >
+> > > > On 2/8/25 11:17 PM, joswang wrote:
+> > > > > From: Jos Wang <joswang@lenovo.com>
+> > > nit: From https://elixir.bootlin.com/linux/v6.13.1/source/Documentation/process/submitting-patches.rst#L619
+> > >
+> > >   - A ``from`` line specifying the patch author, followed by an empty
+> > >     line (only needed if the person sending the patch is not the author).
+> > >
+> > > Given that you are the author, wondering why do you have an explicit "From:" ?
+> > >
+> > Hello, thank you for your help in reviewing the code.
+> > My company email address is joswang@lenovo.com, and my personal gmail
+> > email address is joswang1221@gmail.com, which is used to send patches.
+> > Do you suggest deleting the "From:" line?
+> > I am considering deleting the "From:" line, whether the author and
+> > Signed-off-by in the patch need to be changed to
+> > "joswang1221@gmail.com".
 > 
-> It would be a layering violation, but we could perhaps do better here:
-> 
-> > -       if (regs->ip != trampoline_check_ip())
-> > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
-> > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
-> >                 goto sigill;
-> 
-> Instead of SIGILL, perhaps this should do the seccomp action?  So the
-> logic in seccomp would be (sketchily, with some real mode1 mess):
-> 
-> if (is_a_real_uretprobe())
->     skip seccomp;
+> Yes, changing signed-off to joswang1221@gmail.com will remove the need
+> for "From:".
+> Go ahead with it if it makes sense on your side.
 
-IIUC you want to move the address check earlier to the seccomp path..
-with the benefit that we would kill not allowed caller sooner?
+No, what was done here originally is correct, please do not ask people
+to not actually follow the correct procedure.
 
-jirka
+Jos, thank you, there is nothing wrong with the way you sent this.
 
-> 
-> where is_a_real_uretprobe() is only true if the nr and arch match
-> uretprobe *and* the address is right.
-> 
-> --Andy
+thanks,
+
+greg k-h
 
