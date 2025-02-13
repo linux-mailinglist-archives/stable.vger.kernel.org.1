@@ -1,113 +1,120 @@
-Return-Path: <stable+bounces-116306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4D8A34873
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:50:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8470A344BD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 999A43AFE36
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:40:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45ADF1898053
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FF41FECC0;
-	Thu, 13 Feb 2025 15:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FC220013E;
+	Thu, 13 Feb 2025 14:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbwYrvMV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jhvWygYo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gMdo1Fxu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E27E194080;
-	Thu, 13 Feb 2025 15:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A50A2A1D1;
+	Thu, 13 Feb 2025 14:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461182; cv=none; b=AzLSE2wz1QqcjbApWNIJrL3wFYaXxkNDBHW7ysNfHrTGJ1SVg8y7rhgu2t887qQ6j/J/1T+rd8nV1PAKXxSkmwLxnRhnei5AE19bFO4MOTKCIdzEXpUM7ZK6C5FHF0Za+Cqqw4gurSawoX7v0mGY8Oam9t5tTTZ8Zdur+Tf2Hdc=
+	t=1739458536; cv=none; b=nVJSX4Lu9V8KBh7NHJlfVeBy+whbRwIgkD0n60cClJ7BqVGarnX13/MbBCHw78N+L3dhuyiicVRS33blauKZwNVvmGJZTDfMCzi+elDk6V9nGJpd+N6ub9qMQhxxBT8kqjfylSLJrAzeMPKQwa5LtZBn+yz1VdoCwg5S/e87Hiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461182; c=relaxed/simple;
-	bh=N7VgWC9txPrYH43ZJC6BIPtNVK/FbLcCcfiWGu1tJw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OaPlRW1uLqSIyXGJFQXrQa0aUHsLIYTstiqqeD/MMlSCH4JpyXivBHYwzPLf86IZD7gjWFTpStAaFAjKGdGkgjxX7KPMfqGxrw8s9XX3eCXOXhnuQ/YLm39eWohmcVzKg/ey7W/lOtn1TrSRNvAn5063tr2S+y3DQ7/rUilBZ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbwYrvMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40256C4CEE5;
-	Thu, 13 Feb 2025 15:39:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739461180;
-	bh=N7VgWC9txPrYH43ZJC6BIPtNVK/FbLcCcfiWGu1tJw8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CbwYrvMVYyU8YexgFtVOz1C5FBWtZIBB9RmDRka1ijjeiyeMSQRsgGn1XPNFLRgIQ
-	 Zy9pkNgsUeYdqUvRQCjILJdIw/ov0aYbFN8lQO2NJlQeglQ6SxJw9bGzb9x0DULzzb
-	 V+a5YeOfOCr+U0LUByT0TmUkg/1FeVGcEk3odCS4=
-Date: Thu, 13 Feb 2025 15:51:09 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
-	jiri@resnulli.us, liuhangbin@gmail.com, kuba@kernel.org,
-	netdev@vger.kernel.org, stfomichev@gmail.com,
-	shannon.nelson@amd.com, darren.kenny@oracle.com
-Subject: Re: [PATCH 6.12.y 0/2] Fix rtnetlink.sh kselftest failures in stable
-Message-ID: <2025021346-lankiness-vagabond-60d5@gregkh>
-References: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
- <a33f888c-2121-46c0-8fcb-7ba469309a8b@oracle.com>
+	s=arc-20240116; t=1739458536; c=relaxed/simple;
+	bh=vodOrnA+mp/Kiz6MLJ6Gms4MHuag31+UDR9YzBcrYwU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XsAJRm5pJjR/KJy3pgrGPhmifhz3YaQuMRDJekCHv0EQX+93+MRAKYarhWulW316BVzANzweLFTOqJbzjTznYCZqkxMd1ZMytJ02xQnZKhdLpQ8iPMcznFxAAiY6KFvZKRwn0MMU9AxCanugTlEw02RW1qmeg7HSGvyUI1bDMqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jhvWygYo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gMdo1Fxu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739458533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U9uQyD9MxiTKtzDeq5SkjdXy3TxsjG73sLxqRoM0omM=;
+	b=jhvWygYorfUcEr4jsOp6nTps494CSDslJzFbvopeMHTFVsOIkr/Vk+n/TFk9Nln8/Mlwhb
+	kIcv0zSccNdh2fNMMvatrWKLWpKetypX/OYUpsDhJ6FuKWlffg8+wTcbeaZhOEQK+wn4U1
+	bZlJTG23de1q+TBV0n/yl2XjB2IpZcc+XVPQ5Y9vf5aBJ6/RhNI9qfJ1KP4aXOW65UT0eJ
+	ZuTkZvxpU+hSaybfvEWGKL+e9wMFO9PIes1UWPu/dWjtRJqJeTHV2hDc8gQNIz6pcuetxi
+	fk15leYRewDcJGFN/lUcwk8UWVTNCj/sHePMNNjGoPdwwysY+a+3iFWSPXysmw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739458533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U9uQyD9MxiTKtzDeq5SkjdXy3TxsjG73sLxqRoM0omM=;
+	b=gMdo1FxuD9SidanWXipL9Lv4ACmkefZFyTNtMze37yMRx4bfcept1gupP1JuQOVq/aX+Xu
+	rGK8/fgILPYi0PBQ==
+Subject: [PATCH 0/2] kbuild: userprogs: two fixes for LLVM=1
+Date: Thu, 13 Feb 2025 15:55:16 +0100
+Message-Id: <20250213-kbuild-userprog-fixes-v1-0-f255fb477d98@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a33f888c-2121-46c0-8fcb-7ba469309a8b@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANQHrmcC/x3LSQqAMAxA0auUrA20dSpeRVw4RA1KKy2KIN7d4
+ PLzeQ8kikwJGvVApIsTBy9hMgXj2vuFkCdpsNqW2poct+HkfcJT3BHDgjPflLCYdT1UtidnHIg
+ 9Iv1DaNu97wdn91mfZwAAAA==
+X-Change-ID: 20250213-kbuild-userprog-fixes-4f07b62ae818
+To: Masahiro Yamada <masahiroy@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Sam Ravnborg <sam@ravnborg.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739458532; l=992;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=vodOrnA+mp/Kiz6MLJ6Gms4MHuag31+UDR9YzBcrYwU=;
+ b=4cIfzXuaJsZ1Sg5xxpN9sCsSCIyYL4yS+JkK2zcNv5fYt6Ts1JtfWrRmDece8We8pFRhr95YV
+ E5pFV93gukJC/yPiRsLzEugJnIDqW+rlo0Rxfdzl7rYzIEwyc7q14vS
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-On Thu, Feb 13, 2025 at 08:14:25PM +0530, Harshit Mogalapalli wrote:
-> Hi Greg,
-> 
-> On 09/02/25 00:25, Harshit Mogalapalli wrote:
-> > This is reproducible on on stable kernels after the backport of commit:
-> > 2cf567f421db ("netdevsim: copy addresses for both in and out paths") to
-> > stable kernels.
-> > 
-> > Using a single cover letter for all stable kernels but will send
-> ...
-> > Solution:
-> > ========
-> > 
-> > Backport both the commits commit: c71bc6da6198 ("netdevsim: print human
-> > readable IP address") and script fixup commit: 3ec920bb978c ("selftests:
-> > rtnetlink: update netdevsim ipsec output format") to all stable kernels
-> > which have commit: 2cf567f421db ("netdevsim: copy addresses for both in
-> > and out paths") in them.
-> > 
-> > Another clue to say this is right way to do this is that these above
-> > three patches did go as patchset into net/ [1].
-> > 
-> > I am sending patches for all stable trees differently, however I am
-> > using same cover letter.
-> > 
-> > Tested all stable kernels after patching. This failure is no more
-> > reproducible.
-> > 
-> 
-> Ping on this series:
-> 
-> 6.12.y: https://lore.kernel.org/all/20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com/
-> 
-> 6.6.y: https://lore.kernel.org/all/20250208185711.2998210-1-harshit.m.mogalapalli@oracle.com/
-> 
-> 6.1.y: https://lore.kernel.org/all/20250208185756.2998240-1-harshit.m.mogalapalli@oracle.com/
-> 
-> 5.15.y: https://lore.kernel.org/all/20250208185909.2998264-1-harshit.m.mogalapalli@oracle.com/
-> 
-> 5.10.y: https://lore.kernel.org/all/20250208190215.2998554-1-harshit.m.mogalapalli@oracle.com/
-> 
-> I noticed new stable rc tags being released, so pinging. Sorry if I pinged
-> before you got to these.
+Fix two issues when cross-building userprogs with clang.
 
-No, thanks for the ping, these fell through the cracks, I'll queue them
-up for the next round after these.
+Reproducer, using nolibc to avoid libc requirements for cross building:
 
-thanks,
+$ tail -2 init/Makefile
+userprogs-always-y += test-llvm
+test-llvm-userccflags += -nostdlib -nolibc -static -isystem usr/ -include $(srctree)/tools/include/nolibc/nolibc.h
 
-greg k-h
+$ cat init/test-llvm.c
+int main(void)
+{
+	return 0;
+}
+
+$ make ARCH=arm64 LLVM=1 allnoconfig headers_install init/
+
+Validate that init/test-llvm builds and has the correct binary format.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Thomas Weißschuh (2):
+      kbuild: userprogs: fix bitsize and target detection on clang
+      kbuild: userprogs: use lld to link through clang
+
+ Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250213-kbuild-userprog-fixes-4f07b62ae818
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
