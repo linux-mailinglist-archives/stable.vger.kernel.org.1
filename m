@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EB3A34599
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F915A346DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5219616FD19
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A9916DEE6
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FB726B08A;
-	Thu, 13 Feb 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618A14831C;
+	Thu, 13 Feb 2025 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nywGnYNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oULZR8uW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7376C26B080;
-	Thu, 13 Feb 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25DC335BA;
+	Thu, 13 Feb 2025 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459380; cv=none; b=o14TnSTxwbLY0uHzLMjUPv/PqLb9eHpOxtSMrUVAAH9AzkHEZVsJtqPKNSEivTMG9kTB1xMz6Qe7YYJq/AXgMoQtsZ0/QZPzNzir3d8zw8Om4vTAp5NrY6Af5SeUqsGJ2ACZlxP1W9h6w+0mGsJ4LRTmeIHN5nsYjf81sJfR7fM=
+	t=1739460191; cv=none; b=uc5oI16g+zNgdQ7KmiaXug3vEf8yhe8tSETYYfNewoK+NT0VqGwY2aPBk2LsLsHhDmmXCo1MJAc6eIuyWENSOM8XS3qWu3yiEJDn+UIRu14KhjXoRI4v4kvW8liq+IZjnX86ql7z4kv2xiLOTjHPKNS9SChv3hFwuQf/NbimjwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459380; c=relaxed/simple;
-	bh=737DyJiMqxOrMb9yxOnJJkrLOQ4sNedoIOAQDnwFYwo=;
+	s=arc-20240116; t=1739460191; c=relaxed/simple;
+	bh=GsufXCY6LMnBAjLg6nSBFnUtwy/ufS6emYISkPFrXtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkAw4zjsZIPwHH1GqbpGPA8xks76M6PsHqVRzZhSXneddD7B5AKfGsmW9DvgAo7Tn0PnqRZKsFjvJ2QFHe6YQvLjYBY7jL2mvHFcAZaFlrog3hjaEBf2yJzhVNTsMrFlBPQU2/9vn9fv0rvgLm5MK9O+GGmt8YQRqEKajQDVkPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nywGnYNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3365C4CED1;
-	Thu, 13 Feb 2025 15:09:39 +0000 (UTC)
+	 MIME-Version; b=lQussTeCkIK00ElvZK4RYY31/xITeJJuwfKhMcWsGoLaWGWMYSq7H62hnjAKkaxU9MeCwanm1JM4LLEBxMQoGiS7b5ycKv0qNtSc/MFCWnCT4mURp1PVRt9sDGz3vE8H/oSXvPp2J444AfbqjPAJwqQt+0IGNHL2bwmSnHNEWjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oULZR8uW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44B6C4CED1;
+	Thu, 13 Feb 2025 15:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459380;
-	bh=737DyJiMqxOrMb9yxOnJJkrLOQ4sNedoIOAQDnwFYwo=;
+	s=korg; t=1739460191;
+	bh=GsufXCY6LMnBAjLg6nSBFnUtwy/ufS6emYISkPFrXtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nywGnYNZT2k0VFV/IjxeGkc3bxePk+BRs1TcRY3WVzCBO+NF9u5mntUbekvZxwtKk
-	 qQbD6zEqQksEZGS8qMSuHjd+RA1f+n+fd/NOsXwtheEvRpmmd9/YEaJwmckAC21qqC
-	 ZFDeFP3E5lMxcC5B95V0tAa7TEGoJzlXA+NhAuLc=
+	b=oULZR8uWgq7kS5NxqRcnvazXBPcJ8RiVrLssRVEbgITiUt6kdYJRhsHMKorpKKUE4
+	 NSOt5/mq52Adc6u4JkUbqgxOUZW1fQ+SqBKyUJiFlTlEJPhIyi9z+czbLe+WTG8KPt
+	 pf1u3DsGdBipXKR1vTdiNZJL1dLz7bOo6rSXDvLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 248/443] arm64: dts: qcom: x1e80100: Fix usb_2 controller interrupts
-Date: Thu, 13 Feb 2025 15:26:53 +0100
-Message-ID: <20250213142450.185218272@linuxfoundation.org>
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 042/273] net: wwan: iosm: Fix hibernation by re-binding the driver around it
+Date: Thu, 13 Feb 2025 15:26:54 +0100
+Message-ID: <20250213142409.016168635@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-commit 680421056216efe727ff4ed48f481691d5873b9e upstream.
+[ Upstream commit 0b6f6593aa8c3a05f155c12fd0e7ad33a5149c31 ]
 
-Back when the CRD support was brought up, the usb_2 controller didn't
-have anything connected to it in order to test it properly, so it was
-never enabled.
+Currently, the driver is seriously broken with respect to the
+hibernation (S4): after image restore the device is back into
+IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
+full re-launch of the rest of its firmware, but the driver restore
+handler treats the device as merely sleeping and just sends it a
+wake-up command.
 
-On the Lenovo ThinkPad T14s, the usb_2 controller has the fingerprint
-controller connected to it. So enabling it, proved that the interrupts
-lines were wrong from the start.
+This wake-up command times out but device nodes (/dev/wwan*) remain
+accessible.
+However attempting to use them causes the bootloader to crash and
+enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a crash
+dump is ready").
 
-Fix both the pwr_event and the DWC ctrl_irq lines, according to
-documentation.
+It seems that the device cannot be re-initialized from this crashed
+stage without toggling some reset pin (on my test platform that's
+apparently what the device _RST ACPI method does).
 
-Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-Cc: stable@vger.kernel.org	# 6.9
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250107-x1e80100-fix-usb2-controller-irqs-v1-1-4689aa9852a7@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While it would theoretically be possible to rewrite the driver to tear
+down the whole MUX / IPC layers on hibernation (so the bootloader does
+not crash from improper access) and then re-launch the device on
+restore this would require significant refactoring of the driver
+(believe me, I've tried), since there are quite a few assumptions
+hard-coded in the driver about the device never being partially
+de-initialized (like channels other than devlink cannot be closed,
+for example).
+Probably this would also need some programming guide for this hardware.
+
+Considering that the driver seems orphaned [1] and other people are
+hitting this issue too [2] fix it by simply unbinding the PCI driver
+before hibernation and re-binding it after restore, much like
+USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
+problem.
+
+Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses
+the existing suspend / resume handlers) and S4 (which uses the new code).
+
+[1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bdebb@leemhuis.info/
+[2]:
+https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804139413
+
+Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Link: https://patch.msgid.link/e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wwan/iosm/iosm_ipc_pcie.c | 56 ++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -4118,7 +4118,7 @@
- 					  <&gcc GCC_USB20_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <200000000>;
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+index 04517bd3325a2..a066977af0be5 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
+@@ -6,6 +6,7 @@
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
++#include <linux/suspend.h>
+ #include <net/rtnetlink.h>
  
--			interrupts-extended = <&intc GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&intc GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 50 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 49 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "pwr_event",
-@@ -4144,7 +4144,7 @@
- 			usb_2_dwc3: usb@a200000 {
- 				compatible = "snps,dwc3";
- 				reg = <0 0x0a200000 0 0xcd00>;
--				interrupts = <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
- 				iommus = <&apps_smmu 0x14e0 0x0>;
- 				phys = <&usb_2_hsphy>;
- 				phy-names = "usb2-phy";
+ #include "iosm_ipc_imem.h"
+@@ -18,6 +19,7 @@ MODULE_LICENSE("GPL v2");
+ /* WWAN GUID */
+ static guid_t wwan_acpi_guid = GUID_INIT(0xbad01b75, 0x22a8, 0x4f48, 0x87, 0x92,
+ 				       0xbd, 0xde, 0x94, 0x67, 0x74, 0x7d);
++static bool pci_registered;
+ 
+ static void ipc_pcie_resources_release(struct iosm_pcie *ipc_pcie)
+ {
+@@ -448,7 +450,6 @@ static struct pci_driver iosm_ipc_driver = {
+ 	},
+ 	.id_table = iosm_ipc_ids,
+ };
+-module_pci_driver(iosm_ipc_driver);
+ 
+ int ipc_pcie_addr_map(struct iosm_pcie *ipc_pcie, unsigned char *data,
+ 		      size_t size, dma_addr_t *mapping, int direction)
+@@ -530,3 +531,56 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
+ 	IPC_CB(skb)->mapping = 0;
+ 	dev_kfree_skb(skb);
+ }
++
++static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
++{
++	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
++		if (pci_registered) {
++			pci_unregister_driver(&iosm_ipc_driver);
++			pci_registered = false;
++		}
++	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
++		if (!pci_registered) {
++			int ret;
++
++			ret = pci_register_driver(&iosm_ipc_driver);
++			if (ret) {
++				pr_err(KBUILD_MODNAME ": unable to re-register PCI driver: %d\n",
++				       ret);
++			} else {
++				pci_registered = true;
++			}
++		}
++	}
++
++	return 0;
++}
++
++static struct notifier_block pm_notifier = {
++	.notifier_call = pm_notify,
++};
++
++static int __init iosm_ipc_driver_init(void)
++{
++	int ret;
++
++	ret = pci_register_driver(&iosm_ipc_driver);
++	if (ret)
++		return ret;
++
++	pci_registered = true;
++
++	register_pm_notifier(&pm_notifier);
++
++	return 0;
++}
++module_init(iosm_ipc_driver_init);
++
++static void __exit iosm_ipc_driver_exit(void)
++{
++	unregister_pm_notifier(&pm_notifier);
++
++	if (pci_registered)
++		pci_unregister_driver(&iosm_ipc_driver);
++}
++module_exit(iosm_ipc_driver_exit);
+-- 
+2.39.5
+
 
 
 
