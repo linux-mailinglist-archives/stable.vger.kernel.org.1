@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE10A344C7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9F2A34694
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E90618909A7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E91A188884E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C6D1662F1;
-	Thu, 13 Feb 2025 14:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3569E26B0BC;
+	Thu, 13 Feb 2025 15:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9lp9PJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPbfGRuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252C815689A;
-	Thu, 13 Feb 2025 14:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EA726B0B8;
+	Thu, 13 Feb 2025 15:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458506; cv=none; b=Ds0804lAiLLv7OeYqOT9oKeT7dgGelPZ6P2lNlzJOmdXTXwmfwwCWA5BSyQ+D+nBoZAq2f7pYMAj9JWd9vsFRw70h9bVYeeBiU7rVFUSc6pvGFZhzg9xeZOET6UC4/4eoy5oCCoHiZL/KspcOsw/ZCnVV9i4dce8v+Flg6E6z5I=
+	t=1739459923; cv=none; b=lZl2M5dvXDFe48QBe4xXBRS6BOKmBGn1fsTxW/mZQBbmqajDOwNeW6S4Lf9DCVqOMh3P5vU/JnzfXYArPAcLf0EHMhuEqlt4W4Kb6SEBahNu9ZxqCyOBU3AfL21pQ4xPIEjfkBTqcKbNeOeI6mrk0pOa+0Rzf4TnLnmdXv1QWoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458506; c=relaxed/simple;
-	bh=92PhqNrwZ4SCH1QTlvFERVKZjWGNgJvaIuaeyHzdO+8=;
+	s=arc-20240116; t=1739459923; c=relaxed/simple;
+	bh=qRTOiHuF20WY2dJw8VilAv/2Oavna4ugzHkwQT0P/pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrYaxNYjwnb0N4F+YmWmu0PxhX8WBUhl/x9uXpGxbUMpXPmBnO/oVwP11x2qjAIFC8/dwjAJiycyl3XClyAOTc7dMTY9Vz9rxo430a7hMkXS43+dL4jilLd8Yraj6DMIdLyqkYiE2UoWjZpzatE3fzKt6O4ECMa+VKK4WbglfGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9lp9PJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C37C4CED1;
-	Thu, 13 Feb 2025 14:55:04 +0000 (UTC)
+	 MIME-Version; b=M0YZi5By3bLhJz37RHRpk2KTZ9BqlVQ/SgdvRD5BsUwWLMUFVlQL1FI0WK7juiy8Nqu2RMWyM0iyYp4vxSJEB8NsJyQtTwa81S9hVRZo+u2EGLvskq5tSUrijpKVM+oPh1n7FAsA5/r0sVgixoJsSNHwflYlgdN8MzCROleUEfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPbfGRuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7440FC4CED1;
+	Thu, 13 Feb 2025 15:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458505;
-	bh=92PhqNrwZ4SCH1QTlvFERVKZjWGNgJvaIuaeyHzdO+8=;
+	s=korg; t=1739459922;
+	bh=qRTOiHuF20WY2dJw8VilAv/2Oavna4ugzHkwQT0P/pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9lp9PJOut0eZRHO5W9wC4keS41EHXY4v1F815WALN3HYsQ9janurMKIM4h5arVzN
-	 YWokZGR4I3CJxO5Hnp+zXkbh3ZuYysd4wri2qcsxJzNp1VQGquJ2L/XlXrnn8JIwMg
-	 YmSd8QQGts0jK9rQFHoaxNdsFX4d1VtTEq+ZZnLA=
+	b=CPbfGRuCVkkUAFGKaxm5Sz4Yva7UsSM7lW6CzAutVKlRzK7IpcQNpjCysmYOxQDfL
+	 52ydg/4+xQAdc36DihWVYYYOg5CqOmfCPSh3InUvFFwzX6I+apN5YwdGeG59cx8qjC
+	 aM4FBqy5x2KHh7ahiiflORBVY+OXTDkMGDZ9TsPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 420/422] statmount: let unset strings be empty
+	Pekka Pessi <ppessi@nvidia.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>
+Subject: [PATCH 6.13 404/443] mailbox: tegra-hsp: Clear mailbox before using message
 Date: Thu, 13 Feb 2025 15:29:29 +0100
-Message-ID: <20250213142452.773668291@linuxfoundation.org>
+Message-ID: <20250213142456.198404458@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Pekka Pessi <ppessi@nvidia.com>
 
-commit e52e97f09fb66fd868260d05bd6b74a9a3db39ee upstream.
+commit 0b7f8328f988178b55ee11d772a6e1238c04d29d upstream.
 
-Just like it's normal for unset values to be zero, unset strings should be
-empty instead of containing random values.
+The Tegra RCE (Camera) driver expects the mailbox to be empty before
+processing the IVC messages. On RT kernel, the threads processing the
+IVC messages (which are invoked after `mbox_chan_received_data()` is
+called) may be on a different CPU or running with a higher priority
+than the HSP interrupt handler thread. This can cause it to act on the
+message before the mailbox gets cleared in the HSP interrupt handler
+resulting in a loss of IVC notification.
 
-It seems to be a typical mistake that the mask returned by statmount is not
-checked, which can result in various bugs.
+Fix this by clearing the mailbox data register before calling
+`mbox_chan_received_data()`.
 
-With this fix, these bugs are prevented, since it is highly likely that
-userspace would just want to turn the missing mask case into an empty
-string anyway (most of the recently found cases are of this type).
-
-Link: https://lore.kernel.org/all/CAJfpegsVCPfCn2DpM8iiYSS5DpMsLB8QBUCHecoj6s0Vxf4jzg@mail.gmail.com/
-Fixes: 68385d77c05b ("statmount: simplify string option retrieval")
-Fixes: 46eae99ef733 ("add statmount(2) syscall")
-Cc: stable@vger.kernel.org # v6.8
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20250130121500.113446-1-mszeredi@redhat.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 8f585d14030d ("mailbox: tegra-hsp: Add tegra_hsp_sm_ops")
+Fixes: 74c20dd0f892 ("mailbox: tegra-hsp: Add 128-bit shared mailbox support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pekka Pessi <ppessi@nvidia.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/mailbox/tegra-hsp.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5053,22 +5053,29 @@ static int statmount_string(struct kstat
- 	size_t kbufsize;
- 	struct seq_file *seq = &s->seq;
- 	struct statmount *sm = &s->sm;
-+	u32 start, *offp;
-+
-+	/* Reserve an empty string at the beginning for any unset offsets */
-+	if (!seq->count)
-+		seq_putc(seq, 0);
-+
-+	start = seq->count;
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -388,7 +388,6 @@ static void tegra_hsp_sm_recv32(struct t
+ 	value = tegra_hsp_channel_readl(channel, HSP_SM_SHRD_MBOX);
+ 	value &= ~HSP_SM_SHRD_MBOX_FULL;
+ 	msg = (void *)(unsigned long)value;
+-	mbox_chan_received_data(channel->chan, msg);
  
- 	switch (flag) {
- 	case STATMOUNT_FS_TYPE:
--		sm->fs_type = seq->count;
-+		offp = &sm->fs_type;
- 		ret = statmount_fs_type(s, seq);
- 		break;
- 	case STATMOUNT_MNT_ROOT:
--		sm->mnt_root = seq->count;
-+		offp = &sm->mnt_root;
- 		ret = statmount_mnt_root(s, seq);
- 		break;
- 	case STATMOUNT_MNT_POINT:
--		sm->mnt_point = seq->count;
-+		offp = &sm->mnt_point;
- 		ret = statmount_mnt_point(s, seq);
- 		break;
- 	case STATMOUNT_MNT_OPTS:
--		sm->mnt_opts = seq->count;
-+		offp = &sm->mnt_opts;
- 		ret = statmount_mnt_opts(s, seq);
- 		break;
- 	default:
-@@ -5090,6 +5097,7 @@ static int statmount_string(struct kstat
- 
- 	seq->buf[seq->count++] = '\0';
- 	sm->mask |= flag;
-+	*offp = start;
- 	return 0;
+ 	/*
+ 	 * Need to clear all bits here since some producers, such as TCU, depend
+@@ -398,6 +397,8 @@ static void tegra_hsp_sm_recv32(struct t
+ 	 * explicitly, so we have to make sure we cover all possible cases.
+ 	 */
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SM_SHRD_MBOX);
++
++	mbox_chan_received_data(channel->chan, msg);
  }
  
+ static const struct tegra_hsp_sm_ops tegra_hsp_sm_32bit_ops = {
+@@ -433,7 +434,6 @@ static void tegra_hsp_sm_recv128(struct
+ 	value[3] = tegra_hsp_channel_readl(channel, HSP_SHRD_MBOX_TYPE1_DATA3);
+ 
+ 	msg = (void *)(unsigned long)value;
+-	mbox_chan_received_data(channel->chan, msg);
+ 
+ 	/*
+ 	 * Clear data registers and tag.
+@@ -443,6 +443,8 @@ static void tegra_hsp_sm_recv128(struct
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA2);
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA3);
+ 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_TAG);
++
++	mbox_chan_received_data(channel->chan, msg);
+ }
+ 
+ static const struct tegra_hsp_sm_ops tegra_hsp_sm_128bit_ops = {
 
 
 
