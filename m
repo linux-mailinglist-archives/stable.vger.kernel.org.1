@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B09A34564
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B503A34284
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1DCC3A7BA7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFE2C3A53E0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BB815539A;
-	Thu, 13 Feb 2025 14:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC0828137F;
+	Thu, 13 Feb 2025 14:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lj04RzPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bY1c8+Rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D06D1547E3;
-	Thu, 13 Feb 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA3E281349;
+	Thu, 13 Feb 2025 14:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458658; cv=none; b=Z/6DiLGW2OBBo82YJITuEPcE6Haunha84S2FmQd1g2wCXt8ucPxlr499J7L0mf6uclpcFvxnxIHuMK3EPXTBQylP9iV7wJPNaCjAtFIe5YLbinR1/d4itVBy94OnhDW7M6hppaWjZRu22c4+7WRbC5jDABEtp0vPGT7YVJEC0K4=
+	t=1739457373; cv=none; b=pvDH6PvTUpa9h79qq595f2vl7i3/v0aMCbve8eU+RoxaLRuXEnqM8764d+Vvwq5oB+lLHUso5k2jtS4j/nvIDwCdzGklCguND8ku3hJACD4WfsPETGzTlW79pg+bQqaBkccmkUr7HFiz5lWaS5CQzlh7MFltWKTddatwJv8ZARk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458658; c=relaxed/simple;
-	bh=MpOC8OLbFu7uymj8TlNngwZP8/XUynpx4x0FUWcZWio=;
+	s=arc-20240116; t=1739457373; c=relaxed/simple;
+	bh=93vejFsRYxaEeem1okQ0Lm6eyUHbYJlEKhfA7KdTzrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9Qxmeh5suSzP0T5jKz91+A/5/DrbGDeqriOwtRfn701r+W35/A8mT8j2mMbMIevLmVaiP1MOnvTEj6VPh0M7tF3KUXnG6U2Q0QayUvEJ22Fg0rP5oIu1oYeSfpNzJzTZQ/2zh+7fWut8GpGol99WGXiT0J2fCbvhd5QwMWFHJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lj04RzPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0A3C4CED1;
-	Thu, 13 Feb 2025 14:57:37 +0000 (UTC)
+	 MIME-Version; b=bHImUJHik5UnXc2SqvLiSdNdh3a7qlf1KNjB+87vieWWD/rOkmLoksX3KbqJbole8X+N1o0u2KBnG3F2Pi3G8cNk5Y6cHlpmLtHOZnASJKw9yWAZIR3RHsujUD9NrIbphmd0BPt811rYIszZZjKTK2xccC2Or2Cp56EHZijdTlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bY1c8+Rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E479C4CED1;
+	Thu, 13 Feb 2025 14:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458657;
-	bh=MpOC8OLbFu7uymj8TlNngwZP8/XUynpx4x0FUWcZWio=;
+	s=korg; t=1739457372;
+	bh=93vejFsRYxaEeem1okQ0Lm6eyUHbYJlEKhfA7KdTzrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lj04RzPDzfzjLXiKwfg5/pUfOMacPlYOOeVztFhKxBwMyT835Sy91nGloPj3wZSer
-	 tDnVoHWz31J9SKf2V80+qckybJ1H7oilCZrveQZhzVA2fNsWL1KStTF2oXRq5D1wNM
-	 tww5jr/q4eXtpvGe0sO1UWTJB6qozzy21efJ93sM=
+	b=bY1c8+Rw+9EaFIrp30BTE6urhycX9x0orcJIbMoxUEG123aJCJu0S5osHYQCNBrGL
+	 c+76h/l/TZO3M+vPWhWSHoXyX+MDMxkbutxo2awtBLL1kjB0Mo2UTbC5K/yeG9ix25
+	 lpXGDyrey492c/QVVG83qVCu6h9S79iji17A/UCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 042/443] drm/amdgpu: Dont enable sdma 4.4.5 CTXEMPTY interrupt
-Date: Thu, 13 Feb 2025 15:23:27 +0100
-Message-ID: <20250213142442.248148953@linuxfoundation.org>
+Subject: [PATCH 6.12 059/422] net/mlx5: use do_aux_work for PHC overflow checks
+Date: Thu, 13 Feb 2025 15:23:28 +0100
+Message-ID: <20250213142438.839880096@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-[ Upstream commit b4b7271e5ca95b581f2fcc4ae852c4079215e92d ]
+[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
 
-The sdma context empty interrupt is dropped in amdgpu_irq_dispatch
-as unregistered interrupt src_id 243, this interrupt accounts to 1/3 of
-total interrupts and causes IH primary ring overflow when running
-stressful benchmark application. Disable this interrupt has no side
-effect found.
+The overflow_work is using system wq to do overflow checks and updates
+for PHC device timecounter, which might be overhelmed by other tasks.
+But there is dedicated kthread in PTP subsystem designed for such
+things. This patch changes the work queue to proper align with PTP
+subsystem and to avoid overloading system work queue.
+The adjfine() function acts the same way as overflow check worker,
+we can postpone ptp aux worker till the next overflow period after
+adjfine() was called.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
+ include/linux/mlx5/driver.h                   |  1 -
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-index a38553f38fdc8..ed68d7971a93a 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-@@ -953,10 +953,12 @@ static int sdma_v4_4_2_inst_start(struct amdgpu_device *adev,
- 		/* set utc l1 enable flag always to 1 */
- 		temp = RREG32_SDMA(i, regSDMA_CNTL);
- 		temp = REG_SET_FIELD(temp, SDMA_CNTL, UTC_L1_ENABLE, 1);
--		/* enable context empty interrupt during initialization */
--		temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
--		WREG32_SDMA(i, regSDMA_CNTL, temp);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+index b306ae79bf97a..863196ad0ddc7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+@@ -322,17 +322,16 @@ static void mlx5_pps_out(struct work_struct *work)
+ 	}
+ }
  
-+		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) < IP_VERSION(4, 4, 5)) {
-+			/* enable context empty interrupt during initialization */
-+			temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
-+			WREG32_SDMA(i, regSDMA_CNTL, temp);
-+		}
- 		if (!amdgpu_sriov_vf(adev)) {
- 			if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP) {
- 				/* unhalt engine */
+-static void mlx5_timestamp_overflow(struct work_struct *work)
++static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
+ {
+-	struct delayed_work *dwork = to_delayed_work(work);
+ 	struct mlx5_core_dev *mdev;
+ 	struct mlx5_timer *timer;
+ 	struct mlx5_clock *clock;
+ 	unsigned long flags;
+ 
+-	timer = container_of(dwork, struct mlx5_timer, overflow_work);
+-	clock = container_of(timer, struct mlx5_clock, timer);
++	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
+ 	mdev = container_of(clock, struct mlx5_core_dev, clock);
++	timer = &clock->timer;
+ 
+ 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
+ 		goto out;
+@@ -343,7 +342,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
+ 	write_sequnlock_irqrestore(&clock->lock, flags);
+ 
+ out:
+-	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
++	return timer->overflow_period;
+ }
+ 
+ static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
+@@ -521,6 +520,7 @@ static int mlx5_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 	timer->cycles.mult = mult;
+ 	mlx5_update_clock_info_page(mdev);
+ 	write_sequnlock_irqrestore(&clock->lock, flags);
++	ptp_schedule_worker(clock->ptp, timer->overflow_period);
+ 
+ 	return 0;
+ }
+@@ -856,6 +856,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
+ 	.settime64	= mlx5_ptp_settime,
+ 	.enable		= NULL,
+ 	.verify		= NULL,
++	.do_aux_work	= mlx5_timestamp_overflow,
+ };
+ 
+ static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
+@@ -1056,12 +1057,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
+ 	do_div(ns, NSEC_PER_SEC / HZ);
+ 	timer->overflow_period = ns;
+ 
+-	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
+-	if (timer->overflow_period)
+-		schedule_delayed_work(&timer->overflow_work, 0);
+-	else
++	if (!timer->overflow_period) {
++		timer->overflow_period = HZ;
+ 		mlx5_core_warn(mdev,
+-			       "invalid overflow period, overflow_work is not scheduled\n");
++			       "invalid overflow period, overflow_work is scheduled once per second\n");
++	}
+ 
+ 	if (clock_info)
+ 		clock_info->overflow_period = timer->overflow_period;
+@@ -1176,6 +1176,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
+ 
+ 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
+ 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
++
++	if (clock->ptp)
++		ptp_schedule_worker(clock->ptp, 0);
+ }
+ 
+ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+@@ -1192,7 +1195,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+ 	}
+ 
+ 	cancel_work_sync(&clock->pps_info.out_work);
+-	cancel_delayed_work_sync(&clock->timer.overflow_work);
+ 
+ 	if (mdev->clock_info) {
+ 		free_page((unsigned long)mdev->clock_info);
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 82c7056e27599..d4b2c09cd5fec 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -722,7 +722,6 @@ struct mlx5_timer {
+ 	struct timecounter         tc;
+ 	u32                        nominal_c_mult;
+ 	unsigned long              overflow_period;
+-	struct delayed_work        overflow_work;
+ };
+ 
+ struct mlx5_clock {
 -- 
 2.39.5
 
