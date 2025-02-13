@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE958A346F6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFD1A343DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1551D16FDDE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE8C3B11C4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BDE1547F0;
-	Thu, 13 Feb 2025 15:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFA23A9B3;
+	Thu, 13 Feb 2025 14:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1+nFQ4P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYRQ2rmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920E926B098;
-	Thu, 13 Feb 2025 15:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AB313D8A4;
+	Thu, 13 Feb 2025 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460258; cv=none; b=i4lP+9dyfQY4Paa2mXZUB3KaBU0zBmaLC6+YU8Kxo1dPJJ+OmUZ8mq6c2bxIKtBb4eX5uGW7hh9zwAWoNaNacmwvu5ZeclEoytLyMhIlUhMv20iHfviPKBuLZSmOZ7jndzytV8VYD9ARu4y8rjPC8S2d8A7SvLvthoTjjj4Apog=
+	t=1739458032; cv=none; b=ABKIn0BJuZYw4iRDldOU0qRAXOQjA74qNefjOR9BBO1t6khqqre4/1j/XtXDmSm+51byOBygJ5rWWDZTcRc5uqqrKOPtaBA3OkW2Xymwbz3Y9mItfM85aKPyA8Q5nCPbkGUnt00/m2j3Xi+HqpmXWRfIQSDui54n8YTlSt57hF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460258; c=relaxed/simple;
-	bh=OK3+cTm0/dK5Fljsg5HAqIttj92/HNRuhILQntpxWds=;
+	s=arc-20240116; t=1739458032; c=relaxed/simple;
+	bh=qoj9OuinzLo2yp3fZXyUEbwtCRCeGVHjrJzkJs0CAK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJiKued66c13NVAxH+lVlPDUlNIC/w7kwg1tluDXbygcR2MggaA2V9G0pj8r9+y7pT0ws1Ya0muZDqNDkaGOOA7QcVh9Hfruh0zzYsPaXUeuJwN8LWZW6EHSgwAieoN1uVLPkDNZVLw9olTN4rLUPCQ+YDsjn8DSjLgkY7e/4Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1+nFQ4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE43C4CEE4;
-	Thu, 13 Feb 2025 15:24:17 +0000 (UTC)
+	 MIME-Version; b=dVbd+hC3kLrV+ha/WK4au0e9AHVqXuiP2kuJwO1udqih5K1HrqrTGK4vzsF2uJgaiQ/efwysE+4ITgWtTdb/jum6f7jbhTcyaSI1amBPSDwehG3xuy9MxFwrlNyFfPgS5IJqgrlD7KOw/Lwk3B1mbORHgxK7mUY22d9VB1uyIRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYRQ2rmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F5C4CED1;
+	Thu, 13 Feb 2025 14:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460258;
-	bh=OK3+cTm0/dK5Fljsg5HAqIttj92/HNRuhILQntpxWds=;
+	s=korg; t=1739458031;
+	bh=qoj9OuinzLo2yp3fZXyUEbwtCRCeGVHjrJzkJs0CAK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1+nFQ4P+w6zmDKwXQiTaWK1nPsxIEdGQ55uTKbCQppLYt6Vjr54k5v4IEcgeNA1J
-	 7qVEgLYD9JOkOWmvRId3BFOnPto52WBezcr4l7NudEvUCctVtoCAID83nCVs1EY7p+
-	 aJfe4Hd0GJRXqfnAyFDUIcVGgWVIiOtpsVgM3Yi0=
+	b=SYRQ2rmJK90upTB8KrxKOlmvbhBnlM9W8olngL/PrvZsTHLli7ywcpPrdc95AudmX
+	 RERHgpcwuLojtiCOeH7sIvdW2XMWCJNmVc9BCxrAdpXpl0c+k6580v6vivn1ZuaP5p
+	 M5x4PEO+RxhsZtkkmecLgr4wDJquJm47sJxcn/PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Potin Lai <potin.lai.pt@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/273] net/ncsi: fix locking in Get MAC Address handling
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 282/422] arm64: dts: qcom: sm8350: Fix CDSP memory base and length
 Date: Thu, 13 Feb 2025 15:27:11 +0100
-Message-ID: <20250213142409.686587385@linuxfoundation.org>
+Message-ID: <20250213142447.426079418@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +62,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9e2bbab94b88295dcc57c7580393c9ee08d7314d ]
+commit f4afd8ba453b6e82245b9068868c72c831aec84e upstream.
 
-Obtaining RTNL lock in a response handler is not allowed since it runs
-in an atomic softirq context. Postpone setting the MAC address by adding
-a dedicated step to the configuration FSM.
+The address space in CDSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0a30_0000 with length of 0x10000.  0x9890_0000,
+value used so far, was copied from downstream DTS, is in the middle of
+RAM/DDR space and downstream DTS describes the PIL loader, which is a
+bit different interface.  Datasheet says that one of the main CDSP
+address spaces is 0x0980_0000, which is oddly similar to 0x9890_0000,
+but quite different.
 
-Fixes: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
+Assume existing value (thus downstream DTS) is not really describing the
+intended CDSP PAS region.
+
+Correct the base address and length, which also moves the node to
+different place to keep things sorted by unit address.  The diff looks
+big, but only the unit address and "reg" property were changed.  This
+should have no functional impact on Linux users, because PAS loader does
+not use this address space at all.
+
+Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20241129-potin-revert-ncsi-set-mac-addr-v1-1-94ea2cb596af@gmail.com
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Tested-by: Potin Lai <potin.lai.pt@gmail.com>
-Link: https://patch.msgid.link/20250109145054.30925-1-fercerpav@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-2-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/internal.h    |  2 ++
- net/ncsi/ncsi-manage.c | 16 ++++++++++++++--
- net/ncsi/ncsi-rsp.c    | 19 ++++++-------------
- 3 files changed, 22 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |  218 +++++++++++++++++------------------
+ 1 file changed, 109 insertions(+), 109 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index ef0f8f73826f5..4e0842df5234e 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -289,6 +289,7 @@ enum {
- 	ncsi_dev_state_config_sp	= 0x0301,
- 	ncsi_dev_state_config_cis,
- 	ncsi_dev_state_config_oem_gma,
-+	ncsi_dev_state_config_apply_mac,
- 	ncsi_dev_state_config_clear_vids,
- 	ncsi_dev_state_config_svf,
- 	ncsi_dev_state_config_ev,
-@@ -322,6 +323,7 @@ struct ncsi_dev_priv {
- #define NCSI_DEV_RESHUFFLE	4
- #define NCSI_DEV_RESET		8            /* Reset state of NC          */
- 	unsigned int        gma_flag;        /* OEM GMA flag               */
-+	struct sockaddr     pending_mac;     /* MAC address received from GMA */
- 	spinlock_t          lock;            /* Protect the NCSI device    */
- 	unsigned int        package_probe_id;/* Current ID during probe    */
- 	unsigned int        package_num;     /* Number of packages         */
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 5ecf611c88200..e46b930357803 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1038,7 +1038,7 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
- 			  : ncsi_dev_state_config_clear_vids;
- 		break;
- 	case ncsi_dev_state_config_oem_gma:
--		nd->state = ncsi_dev_state_config_clear_vids;
-+		nd->state = ncsi_dev_state_config_apply_mac;
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2496,6 +2496,115 @@
+ 			qcom,bcm-voters = <&apps_bcm_voter>;
+ 		};
  
- 		nca.package = np->id;
- 		nca.channel = nc->id;
-@@ -1050,10 +1050,22 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
- 			nca.type = NCSI_PKT_CMD_OEM;
- 			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
- 		}
--		if (ret < 0)
-+		if (ret < 0) {
-+			nd->state = ncsi_dev_state_config_clear_vids;
- 			schedule_work(&ndp->work);
-+		}
- 
- 		break;
-+	case ncsi_dev_state_config_apply_mac:
-+		rtnl_lock();
-+		ret = dev_set_mac_address(dev, &ndp->pending_mac, NULL);
-+		rtnl_unlock();
-+		if (ret < 0)
-+			netdev_warn(dev, "NCSI: 'Writing MAC address to device failed\n");
++		cdsp: remoteproc@a300000 {
++			compatible = "qcom,sm8350-cdsp-pas";
++			reg = <0x0 0x0a300000 0x0 0x10000>;
 +
-+		nd->state = ncsi_dev_state_config_clear_vids;
++			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp_in 3 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog", "fatal", "ready",
++					  "handover", "stop-ack";
 +
-+		fallthrough;
- 	case ncsi_dev_state_config_clear_vids:
- 	case ncsi_dev_state_config_svf:
- 	case ncsi_dev_state_config_ev:
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index e28be33bdf2c4..14bd66909ca45 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -628,16 +628,14 @@ static int ncsi_rsp_handler_snfc(struct ncsi_request *nr)
- static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct sockaddr *saddr = &ndp->pending_mac;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	struct ncsi_rsp_oem_pkt *rsp;
--	struct sockaddr saddr;
- 	u32 mac_addr_off = 0;
--	int ret = 0;
- 
- 	/* Get the response header */
- 	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
- 
--	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
- 		mac_addr_off = BCM_MAC_ADDR_OFFSET;
-@@ -646,22 +644,17 @@ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- 	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
- 		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
- 
--	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
-+	saddr->sa_family = ndev->type;
-+	memcpy(saddr->sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
- 	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
--		eth_addr_inc((u8 *)saddr.sa_data);
--	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
-+		eth_addr_inc((u8 *)saddr->sa_data);
-+	if (!is_valid_ether_addr((const u8 *)saddr->sa_data))
- 		return -ENXIO;
- 
- 	/* Set the flag for GMA command which should only be called once */
- 	ndp->gma_flag = 1;
- 
--	rtnl_lock();
--	ret = dev_set_mac_address(ndev, &saddr, NULL);
--	rtnl_unlock();
--	if (ret < 0)
--		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
++			clocks = <&rpmhcc RPMH_CXO_CLK>;
++			clock-names = "xo";
++
++			power-domains = <&rpmhpd RPMHPD_CX>,
++					<&rpmhpd RPMHPD_MXC>;
++			power-domain-names = "cx", "mxc";
++
++			interconnects = <&compute_noc MASTER_CDSP_PROC 0 &mc_virt SLAVE_EBI1 0>;
++
++			memory-region = <&pil_cdsp_mem>;
++
++			qcom,qmp = <&aoss_qmp>;
++
++			qcom,smem-states = <&smp2p_cdsp_out 0>;
++			qcom,smem-state-names = "stop";
++
++			status = "disabled";
++
++			glink-edge {
++				interrupts-extended = <&ipcc IPCC_CLIENT_CDSP
++							     IPCC_MPROC_SIGNAL_GLINK_QMP
++							     IRQ_TYPE_EDGE_RISING>;
++				mboxes = <&ipcc IPCC_CLIENT_CDSP
++						IPCC_MPROC_SIGNAL_GLINK_QMP>;
++
++				label = "cdsp";
++				qcom,remote-pid = <5>;
++
++				fastrpc {
++					compatible = "qcom,fastrpc";
++					qcom,glink-channels = "fastrpcglink-apps-dsp";
++					label = "cdsp";
++					qcom,non-secure-domain;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					compute-cb@1 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <1>;
++						iommus = <&apps_smmu 0x2161 0x0400>,
++							 <&apps_smmu 0x1181 0x0420>;
++					};
++
++					compute-cb@2 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <2>;
++						iommus = <&apps_smmu 0x2162 0x0400>,
++							 <&apps_smmu 0x1182 0x0420>;
++					};
++
++					compute-cb@3 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <3>;
++						iommus = <&apps_smmu 0x2163 0x0400>,
++							 <&apps_smmu 0x1183 0x0420>;
++					};
++
++					compute-cb@4 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <4>;
++						iommus = <&apps_smmu 0x2164 0x0400>,
++							 <&apps_smmu 0x1184 0x0420>;
++					};
++
++					compute-cb@5 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <5>;
++						iommus = <&apps_smmu 0x2165 0x0400>,
++							 <&apps_smmu 0x1185 0x0420>;
++					};
++
++					compute-cb@6 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <6>;
++						iommus = <&apps_smmu 0x2166 0x0400>,
++							 <&apps_smmu 0x1186 0x0420>;
++					};
++
++					compute-cb@7 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <7>;
++						iommus = <&apps_smmu 0x2167 0x0400>,
++							 <&apps_smmu 0x1187 0x0420>;
++					};
++
++					compute-cb@8 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <8>;
++						iommus = <&apps_smmu 0x2168 0x0400>,
++							 <&apps_smmu 0x1188 0x0420>;
++					};
++
++					/* note: secure cb9 in downstream */
++				};
++			};
++		};
++
+ 		usb_1: usb@a6f8800 {
+ 			compatible = "qcom,sm8350-dwc3", "qcom,dwc3";
+ 			reg = <0 0x0a6f8800 0 0x400>;
+@@ -3588,115 +3697,6 @@
+ 			#freq-domain-cells = <1>;
+ 			#clock-cells = <1>;
+ 		};
 -
--	return ret;
-+	return 0;
- }
+-		cdsp: remoteproc@98900000 {
+-			compatible = "qcom,sm8350-cdsp-pas";
+-			reg = <0 0x98900000 0 0x1400000>;
+-
+-			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp_in 3 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "wdog", "fatal", "ready",
+-					  "handover", "stop-ack";
+-
+-			clocks = <&rpmhcc RPMH_CXO_CLK>;
+-			clock-names = "xo";
+-
+-			power-domains = <&rpmhpd RPMHPD_CX>,
+-					<&rpmhpd RPMHPD_MXC>;
+-			power-domain-names = "cx", "mxc";
+-
+-			interconnects = <&compute_noc MASTER_CDSP_PROC 0 &mc_virt SLAVE_EBI1 0>;
+-
+-			memory-region = <&pil_cdsp_mem>;
+-
+-			qcom,qmp = <&aoss_qmp>;
+-
+-			qcom,smem-states = <&smp2p_cdsp_out 0>;
+-			qcom,smem-state-names = "stop";
+-
+-			status = "disabled";
+-
+-			glink-edge {
+-				interrupts-extended = <&ipcc IPCC_CLIENT_CDSP
+-							     IPCC_MPROC_SIGNAL_GLINK_QMP
+-							     IRQ_TYPE_EDGE_RISING>;
+-				mboxes = <&ipcc IPCC_CLIENT_CDSP
+-						IPCC_MPROC_SIGNAL_GLINK_QMP>;
+-
+-				label = "cdsp";
+-				qcom,remote-pid = <5>;
+-
+-				fastrpc {
+-					compatible = "qcom,fastrpc";
+-					qcom,glink-channels = "fastrpcglink-apps-dsp";
+-					label = "cdsp";
+-					qcom,non-secure-domain;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					compute-cb@1 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <1>;
+-						iommus = <&apps_smmu 0x2161 0x0400>,
+-							 <&apps_smmu 0x1181 0x0420>;
+-					};
+-
+-					compute-cb@2 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <2>;
+-						iommus = <&apps_smmu 0x2162 0x0400>,
+-							 <&apps_smmu 0x1182 0x0420>;
+-					};
+-
+-					compute-cb@3 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <3>;
+-						iommus = <&apps_smmu 0x2163 0x0400>,
+-							 <&apps_smmu 0x1183 0x0420>;
+-					};
+-
+-					compute-cb@4 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <4>;
+-						iommus = <&apps_smmu 0x2164 0x0400>,
+-							 <&apps_smmu 0x1184 0x0420>;
+-					};
+-
+-					compute-cb@5 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <5>;
+-						iommus = <&apps_smmu 0x2165 0x0400>,
+-							 <&apps_smmu 0x1185 0x0420>;
+-					};
+-
+-					compute-cb@6 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <6>;
+-						iommus = <&apps_smmu 0x2166 0x0400>,
+-							 <&apps_smmu 0x1186 0x0420>;
+-					};
+-
+-					compute-cb@7 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <7>;
+-						iommus = <&apps_smmu 0x2167 0x0400>,
+-							 <&apps_smmu 0x1187 0x0420>;
+-					};
+-
+-					compute-cb@8 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <8>;
+-						iommus = <&apps_smmu 0x2168 0x0400>,
+-							 <&apps_smmu 0x1188 0x0420>;
+-					};
+-
+-					/* note: secure cb9 in downstream */
+-				};
+-			};
+-		};
+ 	};
  
- /* Response handler for Mellanox card */
--- 
-2.39.5
-
+ 	thermal_zones: thermal-zones {
 
 
 
