@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-115758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A437EA344A9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:07:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A58DA34364
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F4D47A3083
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:06:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A2016D01F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2924F1AAE17;
-	Thu, 13 Feb 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA6D23A9BE;
+	Thu, 13 Feb 2025 14:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkh0t6SI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjUq7JWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3D71AAA29;
-	Thu, 13 Feb 2025 15:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6A623A9BC;
+	Thu, 13 Feb 2025 14:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459145; cv=none; b=JBD+iysevyA/5T1uUpna1bmSnFnuCmocNQIgdKtkVXsbZHz+itQk1OHWZZNHJTr2TvHlSa8Xr0SyYhfUlyiHCvUR2LCYCjh+PYneft/1eMm4UNdc0FrpCEj5e7udkAsY+XisWoPVX2RRFq6gGXMYPHyWn+Ls4e/Tsbr2o0OMwx8=
+	t=1739457849; cv=none; b=RkayC0b8csfjfMQ7u6eLsG66yTZO1FcMVx0E2xD0Te3w0FS65pAFMzNS9IpTbXuTX0M8qTJol3A0W2QEGvCWbjEggu+DqyTKnh/yCBSklVdx/BiAmCxCTAuoGFZIkiCUSC5oK3ISFXdRxjaQI4M/sc5DGuOQv9FgbNl7X3DwL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459145; c=relaxed/simple;
-	bh=i8zzqfHWTC4KZmlRVOzH2qQwXOGmdEUV0MYltoBp8eo=;
+	s=arc-20240116; t=1739457849; c=relaxed/simple;
+	bh=8NkTaN1zO9ve5FmYzsDov8hGovTjxnaN5lIcDE7Wpgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FR/VLFgVTH0e6MAOjrgS+ltmHg4slcs7uSHY2wI8+qUy5DRbOxHKvXICF7Xm8EBZQYfR050piGIIaQYPcY68RB6c9RQ93OLKdesX89lsY8G8Kpk3K15CoOoF00sS0X10jx6JTo2Qb8wrbL/4ry+HE0rq93YO+RZLymUd+b94JRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkh0t6SI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59560C4CED1;
-	Thu, 13 Feb 2025 15:05:45 +0000 (UTC)
+	 MIME-Version; b=ocTY7J/Uy+EJpoeO5omEloSxJxkZJjTKKdHFmdsEsEbai0nwJcgmXmhQW8A60SCaEpjMnj+sIEtZYm1zO8r8n/71F8fleo6qKXu0Xuox1ADYhWlTrNmfExeQAXAbInmzJte1GYMYHOrTZOlRHvUIJsmc6wkkiVLt0W2plmz1qHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjUq7JWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CACC4CEE2;
+	Thu, 13 Feb 2025 14:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459145;
-	bh=i8zzqfHWTC4KZmlRVOzH2qQwXOGmdEUV0MYltoBp8eo=;
+	s=korg; t=1739457849;
+	bh=8NkTaN1zO9ve5FmYzsDov8hGovTjxnaN5lIcDE7Wpgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkh0t6SIcoQxDiAAvGc8Zy/50Oeyl900uKorWkShOEJ0+L1IN6ck7u0sJFDO1QaWE
-	 WhcW5YrJJN1PBPqfJe37Z7UYBKzqiuPA0zBmh3/KPnHfd3HpYkMFv6tzseAW7usxHV
-	 86/JTpIMe+Lg9XBNtbXsJHdmyh8GbfEu+i/Cedjg=
+	b=kjUq7JWVcXSNMp/V4iLmIvlSG9vB2PgmbUUV04UzVFkXSjhBfTDdpEKsFMXf4hDyE
+	 Ht3g7cY+n1tNlPFtXkQchLo/UXrFPgsDX2B0eqB3yaR1ltARArYg/GhC5SXoP3Uwek
+	 L19ZtCk6Lyo1HdP76s0qxnjN1icHULLp2v+8L6W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 6.13 182/443] drm/komeda: Add check for komeda_get_layer_fourcc_list()
+	Peng Fan <peng.fan@nxp.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 198/422] Input: bbnsm_pwrkey - add remove hook
 Date: Thu, 13 Feb 2025 15:25:47 +0100
-Message-ID: <20250213142447.639720453@linuxfoundation.org>
+Message-ID: <20250213142444.185244479@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 79fc672a092d93a7eac24fe20a571d4efd8fa5a4 upstream.
+commit 55b75306c3edf369285ce22ba1ced45e335094c2 upstream.
 
-Add check for the return value of komeda_get_layer_fourcc_list()
-to catch the potential exception.
+Without remove hook to clear wake irq, there will be kernel dump when
+doing module test.
+"bbnsm_pwrkey 44440000.bbnsm:pwrkey: wake irq already initialized"
 
-Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
+Add remove hook to clear wake irq and set wakeup to false.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Fixes: 40e40fdfec3f ("Input: bbnsm_pwrkey - add bbnsm power key support")
+Link: https://lore.kernel.org/r/20241212030322.3110017-1-peng.fan@oss.nxp.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/r/20241219090256.146424-1-haoxiang_li2024@163.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/input/misc/nxp-bbnsm-pwrkey.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struc
- 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
- 					       kwb_conn->wb_layer->layer_type,
- 					       &n_formats);
-+	if (!formats) {
-+		kfree(kwb_conn);
-+		return -ENOMEM;
-+	}
+--- a/drivers/input/misc/nxp-bbnsm-pwrkey.c
++++ b/drivers/input/misc/nxp-bbnsm-pwrkey.c
+@@ -187,6 +187,12 @@ static int bbnsm_pwrkey_probe(struct pla
+ 	return 0;
+ }
  
- 	err = drm_writeback_connector_init(&kms->base, wb_conn,
- 					   &komeda_wb_connector_funcs,
++static void bbnsm_pwrkey_remove(struct platform_device *pdev)
++{
++	dev_pm_clear_wake_irq(&pdev->dev);
++	device_init_wakeup(&pdev->dev, false);
++}
++
+ static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+@@ -223,6 +229,8 @@ static struct platform_driver bbnsm_pwrk
+ 		.of_match_table = bbnsm_pwrkey_ids,
+ 	},
+ 	.probe = bbnsm_pwrkey_probe,
++	.remove = bbnsm_pwrkey_remove,
++
+ };
+ module_platform_driver(bbnsm_pwrkey_driver);
+ 
 
 
 
