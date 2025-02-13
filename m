@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9224A34517
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F5DA3440F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 876367A4423
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:10:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D8188A51A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CAE26B0BD;
-	Thu, 13 Feb 2025 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFAF156F3C;
+	Thu, 13 Feb 2025 14:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtRH2JfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQGJsnC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82DD26B0A5;
-	Thu, 13 Feb 2025 15:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EBE15689A;
+	Thu, 13 Feb 2025 14:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459503; cv=none; b=b8oX/C6TDuPoyBsn6BnG8VI4dufNyam6xN5jdJVmCxN5yP3YqVj+Anm3RAM8k9sf0G6TJfcU/hQd9KzkoE3ZYRAfIUABWwJrmE9tkWD35r7an2ufsBl/FFgvxRypRMvL2hRsNF/xjVgIXFAd+CGMOIxGrAiDhhFNeTUUieFcdGE=
+	t=1739458208; cv=none; b=ecjoVe3u7itSj1e/LDi3gRmNNzLA78Jx3vEtFIKk/564KAUU+rg5t1mtdD9jyBnI8sWLgNwslr09UX4u4i9QSgN0sLkGSWzmOdbXfN9R+tQcdPLhUhIA/+GY+eRE5FEC8lPv8PLfqfytREEtL1szVYdMFWMQ+3z2CuxRxnXNCnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459503; c=relaxed/simple;
-	bh=oeolEs5zXhZbzNEdTT1QscT+K9zORJ6WcRXlFtKWRwU=;
+	s=arc-20240116; t=1739458208; c=relaxed/simple;
+	bh=0vHwjksDqkW8om+fFFTLHntlNHbHzX93hz8incbdms8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZP9EmO/7bw+yOxb/T79CPlOUkfcRaB42ak1/5S86EyNrzwppwAprTEJFSc6GXsWZct7qyZXCLbBI3knPed8rl0CCDOdTP8K4133yrnvm+ihb+/gO8YI2szX++l+o8CAc/PKjR2uNiaYfQsJXQNEZPHJot/qffBJ+388MUhsJSYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtRH2JfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4026EC4CEE4;
-	Thu, 13 Feb 2025 15:11:43 +0000 (UTC)
+	 MIME-Version; b=Y74FPi+DBgWs2jNXnNWIaVak3HJq7HlwcsOk5yQvaugt+K/WMLj+QlzHEUyJ7omRADGEyrxicn6OiuaJY14q6fRRraUSlFRnRwIDgYPpl83ljrXPyFoL8eJeaK1SoJ7mO3LfSBgVMTO3YQSwm9Em7FY3Z3GJUV9xymhcGd5ThN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQGJsnC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E8CC4CED1;
+	Thu, 13 Feb 2025 14:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459503;
-	bh=oeolEs5zXhZbzNEdTT1QscT+K9zORJ6WcRXlFtKWRwU=;
+	s=korg; t=1739458207;
+	bh=0vHwjksDqkW8om+fFFTLHntlNHbHzX93hz8incbdms8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtRH2JfDtXviaqLTLuL3VQqjlIiT6w7hsxlM5JEfk7FE4fQkyXgaFZ+vchYA6WDci
-	 W22WKXkz496zBjAPbZD+sD7ufIuYar31AY0VKtayO4RBQDFSDY5YG/7k8HQ+5gAGtN
-	 DVmg2fZVxPMxoPoTMyxTkHYwgphf04V5lsKUODwE=
+	b=aQGJsnC20U2jh/QVJqJq9TF8hFZRtQ8isjAmP8JaWJB24YPePT3uY8JusE8rrLLXD
+	 E11APdWbFJlGo661ihsN305Tbhrq+/w2tOnUI+tnkgs2qxglxCQd/ba7GpoKAi97k6
+	 6ZM1iLbrOs1uhLRQe6XLj0zg2ewoN/hC/zyoU1ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.13 285/443] scsi: core: Do not retry I/Os during depopulation
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 301/422] xfs: Propagate errors from xfs_reflink_cancel_cow_range in xfs_dax_write_iomap_end
 Date: Thu, 13 Feb 2025 15:27:30 +0100
-Message-ID: <20250213142451.610318752@linuxfoundation.org>
+Message-ID: <20250213142448.156651676@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 9ff7c383b8ac0c482a1da7989f703406d78445c6 upstream.
+commit fb95897b8c60653805aa09daec575ca30983f768 upstream.
 
-Fail I/Os instead of retry to prevent user space processes from being
-blocked on the I/O completion for several minutes.
+In xfs_dax_write_iomap_end(), directly return the result of
+xfs_reflink_cancel_cow_range() when !written, ensuring proper
+error propagation and improving code robustness.
 
-Retrying I/Os during "depopulation in progress" or "depopulation restore in
-progress" results in a continuous retry loop until the depopulation
-completes or until the I/O retry loop is aborted due to a timeout by the
-scsi_cmd_runtime_exceeced().
-
-Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
-Most I/Os in the depopulation retry loop end up taking several minutes
-before returning the failure to user space.
-
-Cc: stable@vger.kernel.org # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
-Cc: stable@vger.kernel.org # 4.18.x
-Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20250131184408.859579-1-ipylypiv@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ea6c49b784f0 ("xfs: support CoW in fsdax mode")
+Cc: stable@vger.kernel.org # v6.0
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_lib.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_iomap.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -868,13 +868,18 @@ static void scsi_io_completion_action(st
- 				case 0x1a: /* start stop unit in progress */
- 				case 0x1b: /* sanitize in progress */
- 				case 0x1d: /* configuration in progress */
--				case 0x24: /* depopulation in progress */
--				case 0x25: /* depopulation restore in progress */
- 					action = ACTION_DELAYED_RETRY;
- 					break;
- 				case 0x0a: /* ALUA state transition */
- 					action = ACTION_DELAYED_REPREP;
- 					break;
-+				/*
-+				 * Depopulation might take many hours,
-+				 * thus it is not worthwhile to retry.
-+				 */
-+				case 0x24: /* depopulation in progress */
-+				case 0x25: /* depopulation restore in progress */
-+					fallthrough;
- 				default:
- 					action = ACTION_FAIL;
- 					break;
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -942,10 +942,8 @@ xfs_dax_write_iomap_end(
+ 	if (!xfs_is_cow_inode(ip))
+ 		return 0;
+ 
+-	if (!written) {
+-		xfs_reflink_cancel_cow_range(ip, pos, length, true);
+-		return 0;
+-	}
++	if (!written)
++		return xfs_reflink_cancel_cow_range(ip, pos, length, true);
+ 
+ 	return xfs_reflink_end_cow(ip, pos, written);
+ }
 
 
 
