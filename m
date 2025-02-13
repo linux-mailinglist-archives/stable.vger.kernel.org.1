@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10C9A342C0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A7DA34589
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B42DF188C9DB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB0DB1886520
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B7724BC1E;
-	Thu, 13 Feb 2025 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F52E221723;
+	Thu, 13 Feb 2025 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfjYKSZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAzlJr8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5A5221552;
-	Thu, 13 Feb 2025 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571BA1411DE;
+	Thu, 13 Feb 2025 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457424; cv=none; b=WZAooiTg1vb30VdgLjqNMnpVRi7OdYM6gofKnyYDK/gAvIRrtxMwn/yW7t13cQ5/sFqJuohpog8Lm9TUaG5bN4DoczE2vWE7oGeRTd0SIgtCGgwJd00Maev+gglpMLjKkD3ie0XnZOGWGDdOrWqYw8aT2p8YwH/3naPauNBOS6g=
+	t=1739458838; cv=none; b=iB/odYqz+W5bG+h8ibbMoRe8NW30V5z6SSAgDlP3/qlFa1liMFuXBBlf8YjgAG0H/tuEKwdHOTBokBkx4ZSAqLvDOE1MvjpTY2D1gIPXC4fjrXe+m3POlyP9Br53xTIdVf4KJfmnsJ6LIx5KAa0dPCVYvdmiO5hcdpkhBGRobjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457424; c=relaxed/simple;
-	bh=hz/MTAR82wYAQ8isut0HZKbqxNmQIrsIcyVh//nnYWM=;
+	s=arc-20240116; t=1739458838; c=relaxed/simple;
+	bh=PjV774kIXa3ZNg8TQ19yDXSEUYddOERMHA03/gXwiVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bq6ZczEU41+QdQGt/Pex+pJrlRQ2eTG4BXabclksg8oTGungw5qG+DA+nrTjzZALaGZrPPhBKBu3NTHRLU6exWIeH8hi2UMKo0yf4tl1dxAleuMSy8MLigO1f2Ldq4u7somaGnziGRhWxjt+IM1wsKspVenZYnMYC2O3GYLKAVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfjYKSZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C778FC4CED1;
-	Thu, 13 Feb 2025 14:37:03 +0000 (UTC)
+	 MIME-Version; b=ncCTZwZfRGrAc2UfolYbRBemUBsbgyEtJCmz5P/ubU0tmgTu+reDssLos4E3VHAjLTdMVKCd3ypim1ji0KbBOxMufsh6b4F67NxYTUkqLBYlIjl3PxDeQ0nTDM+dZqWeG/59rc750ONMrBGwTQ1rPOkplMupqhBV66buyNI0p5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAzlJr8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83FCC4CED1;
+	Thu, 13 Feb 2025 15:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457424;
-	bh=hz/MTAR82wYAQ8isut0HZKbqxNmQIrsIcyVh//nnYWM=;
+	s=korg; t=1739458838;
+	bh=PjV774kIXa3ZNg8TQ19yDXSEUYddOERMHA03/gXwiVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfjYKSZzfb5tyMtMHkVhMidEvi+9VX541P1nuRPPGI7bcpWMYUDb1CEajx8UmWt1U
-	 p84u0tkp5Yt/DbTTgrUb6VzNxopeH+gOq+lHEpS8YVmd1HlP9vAfNbHH/iTRQSDhR9
-	 bmIOgmteL2qc0DsEsx0ybhJ0pX7ivo2wIs2oAPeQ=
+	b=BAzlJr8utTuFyBeKciBpwF9UNa78+zAdTMqX5EjDVYInOK5HlEToOvWEJjDFe6db5
+	 BhdEFYSiMsbyzZEaZAzhc1qwggsb6I4OPWr1fN2tRoWICrxBmil2gPHIxOWeCvPoVT
+	 Em3HTcjFD4kP1s0R41H3b5YSBcM50PNFD4X7yTt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Richard Acayan <mailingradian@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/422] nvme-fc: use ctrl state getter
+Subject: [PATCH 6.13 091/443] iommu/arm-smmu-qcom: add sdm670 adreno iommu compatible
 Date: Thu, 13 Feb 2025 15:24:16 +0100
-Message-ID: <20250213142440.686281455@linuxfoundation.org>
+Message-ID: <20250213142444.121947968@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Richard Acayan <mailingradian@gmail.com>
 
-[ Upstream commit c8ed6cb5d37bc09c7e25e49a670e9fd1a3bd1dfa ]
+[ Upstream commit 42314738906380cbd3b6e9caf3ad34e1b2d66035 ]
 
-Do not access the state variable directly, instead use proper
-synchronization so not stale data is read.
+Add the compatible for the separate IOMMU on SDM670 for the Adreno GPU.
 
-Fixes: e6e7f7ac03e4 ("nvme: ensure reset state check ordering")
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This IOMMU has the compatible strings:
+
+	"qcom,sdm670-smmu-v2", "qcom,adreno-smmu", "qcom,smmu-v2"
+
+While the SMMU 500 doesn't need an entry for this specific SoC, the
+SMMU v2 compatible should have its own entry, as the fallback entry in
+arm-smmu.c handles "qcom,smmu-v2" without per-process page table support
+unless there is an entry here. This entry can't be the
+"qcom,adreno-smmu" compatible because dedicated GPU IOMMUs can also be
+SMMU 500 with different handling.
+
+Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241114004713.42404-6-mailingradian@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index b81af7919e94c..682234da2fabe 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -2080,7 +2080,8 @@ nvme_fc_fcpio_done(struct nvmefc_fcp_req *req)
- 		nvme_fc_complete_rq(rq);
- 
- check_error:
--	if (terminate_assoc && ctrl->ctrl.state != NVME_CTRL_RESETTING)
-+	if (terminate_assoc &&
-+	    nvme_ctrl_state(&ctrl->ctrl) != NVME_CTRL_RESETTING)
- 		queue_work(nvme_reset_wq, &ctrl->ioerr_work);
- }
- 
-@@ -2534,6 +2535,8 @@ __nvme_fc_abort_outstanding_ios(struct nvme_fc_ctrl *ctrl, bool start_queues)
- static void
- nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- {
-+	enum nvme_ctrl_state state = nvme_ctrl_state(&ctrl->ctrl);
-+
- 	/*
- 	 * if an error (io timeout, etc) while (re)connecting, the remote
- 	 * port requested terminating of the association (disconnect_ls)
-@@ -2541,7 +2544,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- 	 * the controller.  Abort any ios on the association and let the
- 	 * create_association error path resolve things.
- 	 */
--	if (ctrl->ctrl.state == NVME_CTRL_CONNECTING) {
-+	if (state == NVME_CTRL_CONNECTING) {
- 		__nvme_fc_abort_outstanding_ios(ctrl, true);
- 		set_bit(ASSOC_FAILED, &ctrl->flags);
- 		dev_warn(ctrl->ctrl.device,
-@@ -2551,7 +2554,7 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- 	}
- 
- 	/* Otherwise, only proceed if in LIVE state - e.g. on first error */
--	if (ctrl->ctrl.state != NVME_CTRL_LIVE)
-+	if (state != NVME_CTRL_LIVE)
- 		return;
- 
- 	dev_warn(ctrl->ctrl.device,
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 6372f3e25c4bc..601fb878d0ef2 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -567,6 +567,7 @@ static const struct of_device_id __maybe_unused qcom_smmu_impl_of_match[] = {
+ 	{ .compatible = "qcom,sc8180x-smmu-500", .data = &qcom_smmu_500_impl0_data },
+ 	{ .compatible = "qcom,sc8280xp-smmu-500", .data = &qcom_smmu_500_impl0_data },
+ 	{ .compatible = "qcom,sdm630-smmu-v2", .data = &qcom_smmu_v2_data },
++	{ .compatible = "qcom,sdm670-smmu-v2", .data = &qcom_smmu_v2_data },
+ 	{ .compatible = "qcom,sdm845-smmu-v2", .data = &qcom_smmu_v2_data },
+ 	{ .compatible = "qcom,sdm845-smmu-500", .data = &sdm845_smmu_500_data },
+ 	{ .compatible = "qcom,sm6115-smmu-500", .data = &qcom_smmu_500_impl0_data},
 -- 
 2.39.5
 
