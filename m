@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDD5A34644
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:24:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE78FA34366
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8CBF3B55A5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65EA53A38C1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A33914AD2D;
-	Thu, 13 Feb 2025 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5A54F218;
+	Thu, 13 Feb 2025 14:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PbA9cLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYFDC8Gt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E921726B0B1;
-	Thu, 13 Feb 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C260281369;
+	Thu, 13 Feb 2025 14:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459222; cv=none; b=tSXLLLv328Qqcy8gjTdXAEJ6PUNqZjl+D1FN4OR/od8URHKe04ImhLR+cy3e+g5Jaq00BJuAoKvwLSJc8HPbN/jVn1+nbb7so80skjVJhJDIBMeu9gr5uC/O/xmRw35QmHk0FrrB4I1wXEveab/vSWfZF9rp/NtJJHbo8NqXjhc=
+	t=1739457802; cv=none; b=LW/aI3QdMd4fl0855oM1WclEQMxgUOjAj77TLnGtelu/7xWJvXx4a4iKzObqGfr9PlQM+PLv01SuMjgEq/rHLv0IVBiw65F1UuZsnb9XBJKxCsrASHpqoe8qwZULBmVWCsWtcWUYppp4qx5B+Tt3KyKb7ICs+6oOwBpGFVJ63E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459222; c=relaxed/simple;
-	bh=G90tT/C78pAvCIEQooMuqxRv8IrE4x0tp4UKxjNJONw=;
+	s=arc-20240116; t=1739457802; c=relaxed/simple;
+	bh=Ss7pi1Sm77iBoDhICKhIWzJ+myJ0noLVbhz1GZVfv/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaXsr6SsVZyD3ftQDmgIvRvdBxiQVPmrdzspnSup0NlG4rW8dUhB7+39Ob5iwoFVIhFvVdnrSeC+kI+u9q2Ca3bTlg52PuzAD3JfHLYjbY9467vOqvd2g8r6T2KDf+mU9sGevnimMmz+B0d6nKCO7Xcu8woTq9MQH4/afdIhWto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PbA9cLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E0EC4CED1;
-	Thu, 13 Feb 2025 15:07:01 +0000 (UTC)
+	 MIME-Version; b=Oa5sAnwjqx7Lidohih5Tzc0quS0Wmjb7bm1HDEGPgPKlli3rvtYUUjItBocOwi8TxIkdHxDILLJomGTyt+4uQOiZKpqgLzOss+8TARwZ6/x3tNvWd825mcmRLP+IHaHG1mlvrlAvoS2N0BHS4PurkxpdLaAn97QZGuRjG1UlSjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYFDC8Gt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2B8C4CED1;
+	Thu, 13 Feb 2025 14:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459221;
-	bh=G90tT/C78pAvCIEQooMuqxRv8IrE4x0tp4UKxjNJONw=;
+	s=korg; t=1739457801;
+	bh=Ss7pi1Sm77iBoDhICKhIWzJ+myJ0noLVbhz1GZVfv/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PbA9cLR89riwXn3Ns2h67Wt4s+CS+TdvxVjjSvYl/j09LlUwiUR3z51TGIXnF9hg
-	 reYqhG+AQfakMANTArBY+BTGp+Nvq/jWzY5APGOKEKyBiiKnLItGTnwNXNh/4Am/+9
-	 P1LccDFEM/QbIDdNVSFtxpxLMM4a3DGqKI2U33f0=
+	b=cYFDC8GtyAf5OWdi4aAT7sg/wiK9RMa21D/V/rqxDjyGaNaLEdLp0W/xgromZaD/i
+	 GSxmmeP47u2+pzsVrEsGO9LGW+g4H2u9vnAKvaqVOchD0rVw8mS5My+pss6q4Sza/h
+	 VWk/918QO/Dn/tbbeadJVL8ZgB5P0XG+K5MIoJ1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 200/443] clk: qcom: gcc-sm6350: Add missing parent_map for two clocks
+	Foster Snowhill <forst@pen.gy>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 216/422] usbnet: ipheth: break up NCM header size computation
 Date: Thu, 13 Feb 2025 15:26:05 +0100
-Message-ID: <20250213142448.331332874@linuxfoundation.org>
+Message-ID: <20250213142444.872533959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 96fe1a7ee477d701cfc98ab9d3c730c35d966861 upstream.
+commit efcbc678a14be268040ffc1fa33c98faf2d55141 upstream.
 
-If a clk_rcg2 has a parent, it should also have parent_map defined,
-otherwise we'll get a NULL pointer dereference when calling clk_set_rate
-like the following:
+Originally, the total NCM header size was computed as the sum of two
+vaguely labelled constants. While accurate, it wasn't particularly clear
+where they were coming from.
 
-  [    3.388105] Call trace:
-  [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
-  [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
-  [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
-  [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
-  [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
-  [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
-  [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
-  [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
-  [    3.455886]  clk_set_rate+0x38/0x14c
+Use sizes of existing NCM structs where available. Define the total
+NDP16 size based on the maximum amount of DPEs that can fit into the
+iOS-specific fixed-size header.
 
-Add the parent_map property for two clocks where it's missing and also
-un-inline the parent_data as well to keep the matching parent_map and
-parent_data together.
+This change does not fix any particular issue. Rather, it introduces
+intermediate constants that will simplify subsequent commits.
+It should also make it clearer for the reader where the constant values
+come from.
 
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241220-sm6350-parent_map-v1-1-64f3d04cb2eb@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm6350.c |   22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/net/usb/ipheth.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -182,6 +182,14 @@ static const struct clk_parent_data gcc_
- 	{ .hw = &gpll0_out_odd.clkr.hw },
- };
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -61,7 +61,18 @@
+ #define IPHETH_USBINTF_PROTO    1
  
-+static const struct parent_map gcc_parent_map_3[] = {
-+	{ P_BI_TCXO, 0 },
-+};
-+
-+static const struct clk_parent_data gcc_parent_data_3[] = {
-+	{ .fw_name = "bi_tcxo" },
-+};
-+
- static const struct parent_map gcc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
-@@ -701,13 +709,12 @@ static struct clk_rcg2 gcc_ufs_phy_phy_a
- 	.cmd_rcgr = 0x3a0b0,
- 	.mnd_width = 0,
- 	.hid_width = 5,
-+	.parent_map = gcc_parent_map_3,
- 	.freq_tbl = ftbl_gcc_ufs_phy_phy_aux_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_phy_aux_clk_src",
--		.parent_data = &(const struct clk_parent_data){
--			.fw_name = "bi_tcxo",
--		},
--		.num_parents = 1,
-+		.parent_data = gcc_parent_data_3,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -764,13 +771,12 @@ static struct clk_rcg2 gcc_usb30_prim_mo
- 	.cmd_rcgr = 0x1a034,
- 	.mnd_width = 0,
- 	.hid_width = 5,
-+	.parent_map = gcc_parent_map_3,
- 	.freq_tbl = ftbl_gcc_usb30_prim_mock_utmi_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_usb30_prim_mock_utmi_clk_src",
--		.parent_data = &(const struct clk_parent_data){
--			.fw_name = "bi_tcxo",
--		},
--		.num_parents = 1,
-+		.parent_data = gcc_parent_data_3,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
+ #define IPHETH_IP_ALIGN		2	/* padding at front of URB */
+-#define IPHETH_NCM_HEADER_SIZE  (12 + 96) /* NCMH + NCM0 */
++/* On iOS devices, NCM headers in RX have a fixed size regardless of DPE count:
++ * - NTH16 (NCMH): 12 bytes, as per CDC NCM 1.0 spec
++ * - NDP16 (NCM0): 96 bytes, of which
++ *    - NDP16 fixed header: 8 bytes
++ *    - maximum of 22 DPEs (21 datagrams + trailer), 4 bytes each
++ */
++#define IPHETH_NDP16_MAX_DPE	22
++#define IPHETH_NDP16_HEADER_SIZE (sizeof(struct usb_cdc_ncm_ndp16) + \
++				  IPHETH_NDP16_MAX_DPE * \
++				  sizeof(struct usb_cdc_ncm_dpe16))
++#define IPHETH_NCM_HEADER_SIZE	(sizeof(struct usb_cdc_ncm_nth16) + \
++				 IPHETH_NDP16_HEADER_SIZE)
+ #define IPHETH_TX_BUF_SIZE      ETH_FRAME_LEN
+ #define IPHETH_RX_BUF_SIZE_LEGACY (IPHETH_IP_ALIGN + ETH_FRAME_LEN)
+ #define IPHETH_RX_BUF_SIZE_NCM	65536
 
 
 
