@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-115585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77BFA34519
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C1EA34269
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9823D3B15E8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:59:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBDFB3AD44F
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6432222DE;
-	Thu, 13 Feb 2025 14:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A569238389;
+	Thu, 13 Feb 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5plMj6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0s4YytSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277C6221713;
-	Thu, 13 Feb 2025 14:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62034281377;
+	Thu, 13 Feb 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458549; cv=none; b=jk5cg6dt8M57KnH/ERNDN5C8MlSl28Un7RKKxbBW6LfllHMOyRw0G5UO/mJVkO4OcjmOl6Mo7c8qCDdOI6sloIN20CsXJNorsqHTjK3eRuRbYVIYMwFw++y/1FL/u948d7PaSu7tSI4MXrsuTWZIufl2wGCIhWQMB00Srm1rQdY=
+	t=1739457250; cv=none; b=oHCKNX67y8Z6PcmWOX928JCQBYwvT6vn6gqoI1SdtZCbVfXjqsVjDvfEJMyVA8/bS1fQL/nXMUm0BhBRFjmLabtiratpW9micYjAvd8kYmIa0Tr3TY6D048I7dXB4y8JqhlEBhuDO9By7eK+/d5E1jqa3h9+Kow2nuvXl3Hl5PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458549; c=relaxed/simple;
-	bh=R/l/qZUUImEsNmMXRo1iSoVI4sNLcP+YhBCR/bP3Qtc=;
+	s=arc-20240116; t=1739457250; c=relaxed/simple;
+	bh=3ODMXChXrlWaL07KjkCLVAyK0g+0V2g+faSJ2e1fwtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5yPWzo34aB/OMvzCfyeIjbLrlMka2hLWJKF3yyglFke93LOBFazdBhkBaZpo5oDP6j+tkJYDhnrC2XgLoJLV17EzxvqRb8ywBHaPuv9kjbVdXgsY1XYFxmPTPNHVxotu+Fqev/vT3aq6266OohHy8SPMgwD9Bte42PBYiZY7NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5plMj6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8925EC4CED1;
-	Thu, 13 Feb 2025 14:55:48 +0000 (UTC)
+	 MIME-Version; b=Olknim+8f8dxlBI74vADMgWZhtzrOCdFu1B1wQx3lMo6SzfKQSTNsWSk6wjLELztQzV81z/0SUzCBw5t9MtU1+Ou8XyFkhb5ZxVhyQnzm3JzuJRzf7/m9oTDHOlKEiW3LfNPc0eEM0KmoW8BXO4156pgqPnLfJCqNxTADpuRSZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0s4YytSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63B0C4CED1;
+	Thu, 13 Feb 2025 14:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458549;
-	bh=R/l/qZUUImEsNmMXRo1iSoVI4sNLcP+YhBCR/bP3Qtc=;
+	s=korg; t=1739457250;
+	bh=3ODMXChXrlWaL07KjkCLVAyK0g+0V2g+faSJ2e1fwtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5plMj6IwHz/5uHDYV+vMqDWp2IPwkHIx6qfmHkBHch30izDwLOdE5vr/JNpNRu8B
-	 JHInDksr7998MFXhGCmtYIoKsq6eaEKfd1e2jFjDLJqlAacStp7+jIMb6GS15IhIC7
-	 gSD1F58zpeMduBzuZqrfF96S7PMc+u2k3+kSe4Po=
+	b=0s4YytSdaAeh3pvr4bLKIrw+/zcBcr5lCuMzp+boFlFvLuwT/G2Pfssl3WEtXZ7ZG
+	 EpkjeKSieMsqDhvTXyYA2wtceI8umaFm14WLNKloeuMooeEnD3LOfh16SxeYthItwJ
+	 5V4iK+i+PZA99En0wpHOjn5cdObp2kiutBOQdgPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Ausef Yousof <Ausef.Yousof@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 010/443] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
+Subject: [PATCH 6.12 026/422] drm/amd/display: Overwriting dualDPP UBF values before usage
 Date: Thu, 13 Feb 2025 15:22:55 +0100
-Message-ID: <20250213142441.019189047@linuxfoundation.org>
+Message-ID: <20250213142437.564452792@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Ausef Yousof <Ausef.Yousof@amd.com>
 
-[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
+[ Upstream commit 24909d9ec7c3afa8da2f3c9afa312e7a4a61f250 ]
 
-This BUG_ON is meant to catch backref cache problems, but these can
-arise from either bugs in the backref cache or corruption in the extent
-tree.  Fix it to be a proper error.
+[WHY]
+Right now in dml2 mode validation we are calculating UBF parameters for
+prefetch calculation for single and dual DPP scenarios. Data structure
+to store such values are just 1D arrays, the single DPP values are
+overwritten by the dualDPP values, and we end up using dualDPP for
+prefetch calculations twice (once in place of singleDPP support check
+and again for dual).
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This naturally leads to many problems, one of which validating a mode in
+"singleDPP" (when we used dual DPP parameters) and sending the singleDPP
+parameters to mode programming, if we cannot support then we observe the
+corruption as described in the ticket.
+
+[HOW]
+UBF values need to have 2d arrays to store values specific to single and
+dual DPP states to avoid single DPP values being overwritten. Other
+parameters are recorded on a per state basis such as prefetch UBF values
+but they are in the same loop used for calculation and at that point its
+fine to overwrite them, its not the case for plain UBF values.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../amd/display/dc/dml2/display_mode_core.c   | 30 +++++++++----------
+ .../dc/dml2/display_mode_core_structs.h       |  6 ++--
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index db8b42f674b7c..ab2de2d1b2bee 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4405,8 +4405,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
- 		WARN_ON(!first_cow && level == 0);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index be87dc0f07799..6822b07951204 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -6301,9 +6301,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 			mode_lib->ms.meta_row_bandwidth_this_state,
+ 			mode_lib->ms.dpte_row_bandwidth_this_state,
+ 			mode_lib->ms.NoOfDPPThisState,
+-			mode_lib->ms.UrgentBurstFactorLuma,
+-			mode_lib->ms.UrgentBurstFactorChroma,
+-			mode_lib->ms.UrgentBurstFactorCursor);
++			mode_lib->ms.UrgentBurstFactorLuma[j],
++			mode_lib->ms.UrgentBurstFactorChroma[j],
++			mode_lib->ms.UrgentBurstFactorCursor[j]);
  
- 		node = rc->backref_cache.path[level];
--		BUG_ON(node->bytenr != buf->start &&
--		       node->new_bytenr != buf->start);
-+
-+		/*
-+		 * If node->bytenr != buf->start and node->new_bytenr !=
-+		 * buf->start then we've got the wrong backref node for what we
-+		 * expected to see here and the cache is incorrect.
-+		 */
-+		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
-+			btrfs_err(fs_info,
-+"bytenr %llu was found but our backref cache was expecting %llu or %llu",
-+				  buf->start, node->bytenr, node->new_bytenr);
-+			return -EUCLEAN;
-+		}
+ 		s->VMDataOnlyReturnBWPerState = dml_get_return_bw_mbps_vm_only(
+ 																	&mode_lib->ms.soc,
+@@ -6458,9 +6458,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 				mode_lib->ms.cursor_bw_pre,
+ 				mode_lib->ms.prefetch_vmrow_bw,
+ 				mode_lib->ms.NoOfDPPThisState,
+-				mode_lib->ms.UrgentBurstFactorLuma,
+-				mode_lib->ms.UrgentBurstFactorChroma,
+-				mode_lib->ms.UrgentBurstFactorCursor,
++				mode_lib->ms.UrgentBurstFactorLuma[j],
++				mode_lib->ms.UrgentBurstFactorChroma[j],
++				mode_lib->ms.UrgentBurstFactorCursor[j],
+ 				mode_lib->ms.UrgentBurstFactorLumaPre,
+ 				mode_lib->ms.UrgentBurstFactorChromaPre,
+ 				mode_lib->ms.UrgentBurstFactorCursorPre,
+@@ -6517,9 +6517,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 						mode_lib->ms.cursor_bw,
+ 						mode_lib->ms.cursor_bw_pre,
+ 						mode_lib->ms.NoOfDPPThisState,
+-						mode_lib->ms.UrgentBurstFactorLuma,
+-						mode_lib->ms.UrgentBurstFactorChroma,
+-						mode_lib->ms.UrgentBurstFactorCursor,
++						mode_lib->ms.UrgentBurstFactorLuma[j],
++						mode_lib->ms.UrgentBurstFactorChroma[j],
++						mode_lib->ms.UrgentBurstFactorCursor[j],
+ 						mode_lib->ms.UrgentBurstFactorLumaPre,
+ 						mode_lib->ms.UrgentBurstFactorChromaPre,
+ 						mode_lib->ms.UrgentBurstFactorCursorPre);
+@@ -6586,9 +6586,9 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 													mode_lib->ms.cursor_bw_pre,
+ 													mode_lib->ms.prefetch_vmrow_bw,
+ 													mode_lib->ms.NoOfDPP[j], // VBA_ERROR DPPPerSurface is not assigned at this point, should use NoOfDpp here
+-													mode_lib->ms.UrgentBurstFactorLuma,
+-													mode_lib->ms.UrgentBurstFactorChroma,
+-													mode_lib->ms.UrgentBurstFactorCursor,
++													mode_lib->ms.UrgentBurstFactorLuma[j],
++													mode_lib->ms.UrgentBurstFactorChroma[j],
++													mode_lib->ms.UrgentBurstFactorCursor[j],
+ 													mode_lib->ms.UrgentBurstFactorLumaPre,
+ 													mode_lib->ms.UrgentBurstFactorChromaPre,
+ 													mode_lib->ms.UrgentBurstFactorCursorPre,
+@@ -7809,9 +7809,9 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
+ 				mode_lib->ms.DETBufferSizeYThisState[k],
+ 				mode_lib->ms.DETBufferSizeCThisState[k],
+ 				/* Output */
+-				&mode_lib->ms.UrgentBurstFactorCursor[k],
+-				&mode_lib->ms.UrgentBurstFactorLuma[k],
+-				&mode_lib->ms.UrgentBurstFactorChroma[k],
++				&mode_lib->ms.UrgentBurstFactorCursor[j][k],
++				&mode_lib->ms.UrgentBurstFactorLuma[j][k],
++				&mode_lib->ms.UrgentBurstFactorChroma[j][k],
+ 				&mode_lib->ms.NotUrgentLatencyHiding[k]);
+ 		}
  
- 		btrfs_backref_drop_node_buffer(node);
- 		atomic_inc(&cow->refs);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
+index f951936bb579e..504c427b3b319 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core_structs.h
+@@ -884,11 +884,11 @@ struct mode_support_st {
+ 	dml_uint_t meta_row_height[__DML_NUM_PLANES__];
+ 	dml_uint_t meta_row_height_chroma[__DML_NUM_PLANES__];
+ 	dml_float_t UrgLatency;
+-	dml_float_t UrgentBurstFactorCursor[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorCursor[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorCursorPre[__DML_NUM_PLANES__];
+-	dml_float_t UrgentBurstFactorLuma[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorLuma[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorLumaPre[__DML_NUM_PLANES__];
+-	dml_float_t UrgentBurstFactorChroma[__DML_NUM_PLANES__];
++	dml_float_t UrgentBurstFactorChroma[2][__DML_NUM_PLANES__];
+ 	dml_float_t UrgentBurstFactorChromaPre[__DML_NUM_PLANES__];
+ 	dml_float_t MaximumSwathWidthInLineBufferLuma;
+ 	dml_float_t MaximumSwathWidthInLineBufferChroma;
 -- 
 2.39.5
 
