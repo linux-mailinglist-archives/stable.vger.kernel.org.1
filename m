@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EDAA34395
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B377A34723
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0890A7A1860
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA9170122
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50198269817;
-	Thu, 13 Feb 2025 14:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10861CDA3F;
+	Thu, 13 Feb 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZX7JKJq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik5tisX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C498269806;
-	Thu, 13 Feb 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D54C1CAA7B;
+	Thu, 13 Feb 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458056; cv=none; b=bX8QndKMkalFBA+NSFizH0X5YvU8jrDRG6Oum/CyddR7qvXCjh/yZtebmB1h84Xl4XAB0rdBykC6SUnIgAu7IgaowAGQv05Nk6yHaC59KOoYYkVs2YgBQUz6zTqIDHdGbdEJS4EvMfov0DTCchY+KKNR/b31aQSr+VQsDZDDNw0=
+	t=1739460342; cv=none; b=A/ARBwI8DXGRQ/ftSTCsYu+ZAU/Zzw5IfWi/svcCTZPmeIHgIucIspbAyy3qvPqfE4vN8A0xjmkl/mVJKb1UqDWYm43pUtjlkxrfc8PG982n0WKdKn2djhIQ7NuwpDCXLudH79KB6j1KlYiwi4GH8jfzIHBpv81PuDJQvuaWzKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458056; c=relaxed/simple;
-	bh=H4rs4WNcfAGINvFjhhGQ0dXCCSZSCi005ICm1hrkhwQ=;
+	s=arc-20240116; t=1739460342; c=relaxed/simple;
+	bh=3aU55NzPKnS4mE+Jfk2jd/EhaslA8Gdor+XR67vZzL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBmYVMxeXq8cic8bByR9Ou81Osv1v1KGKrir+GlOY9KHYA0/QvhrMwFxZmWPOV9t3SdNgWGUkb/UnlYg5TcmMgKYc0gmFJ3KdtniF2VT+OJv3ZGiASATjL2dzBeowjnuMt5O6MeO2xHCQwjxDqYUea3NgNeYfqWIOWh4xGAvfW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZX7JKJq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3897C4CED1;
-	Thu, 13 Feb 2025 14:47:34 +0000 (UTC)
+	 MIME-Version; b=lbMW0zRnDfnvxX/kEeDo1M/Jsv8ZA+tq3OtShvMpQTztntfksW0YPM0gjOA1DV/aZU4HQO6YvdTE4m/RvykrRsps7kPkR3RVjTJTMqa9eZPmeISax0JbB2BILPc6MKdC0CMDGNxrymbS1eaCulkNKVzJETyCsUA0Zc+Pp7q+sMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik5tisX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F26C4CED1;
+	Thu, 13 Feb 2025 15:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458055;
-	bh=H4rs4WNcfAGINvFjhhGQ0dXCCSZSCi005ICm1hrkhwQ=;
+	s=korg; t=1739460342;
+	bh=3aU55NzPKnS4mE+Jfk2jd/EhaslA8Gdor+XR67vZzL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZX7JKJq96N8uKeuN0GDMhunk9SbniTq50LNUd5/60YK53XmoxfbjFetSQfiWeIgdQ
-	 JM0DxNfmEwHejG5u5r179Nfef5XcFpxCDPUN3isTeGlHadyeutIvV+qoWyYaziI49m
-	 3s+8gT/mGr9QZ0gJFHxjXMWaP4ZKg+r9n/+AZp24=
+	b=ik5tisX9qDpCH2T2TT6pVrCiI/KW7ruSRG2VeE9pTbCbrNnEsFSpIBkUrb8MKFssg
+	 XVIwJ4ZwlEv8xQFIfx2w8fhMRBc8sQhu4SMLPBYKDNeptKJUTWSkjc9ZDwU6xNU8g0
+	 aG2uftd3zoEnmAm14j0cl+UGfAyXMNpzXTWw0QoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 288/422] arm64: dts: qcom: sm8550: Fix CDSP memory length
-Date: Thu, 13 Feb 2025 15:27:17 +0100
-Message-ID: <20250213142447.659191810@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/273] ice: Add check for devm_kzalloc()
+Date: Thu, 13 Feb 2025 15:27:18 +0100
+Message-ID: <20250213142409.964268476@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit 6b2570e1e43e4acd0fcb98c6489736fe1c67b222 upstream.
+[ Upstream commit a8aa6a6ddce9b5585f2b74f27f3feea1427fb4e7 ]
 
-The address space in CDSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-copied from older DTS, but it does not look accurate at all.
+Add check for the return value of devm_kzalloc() to guarantee the success
+of allocation.
 
-This should have no functional impact on Linux users, because PAS loader
-does not use this address space at all.
-
-Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
-Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-8-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 42c2eb6b1f43 ("ice: Implement devlink-rate API")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250131013832.24805-1-jiashengjiangcool@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_devlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -4715,7 +4715,7 @@
+diff --git a/drivers/net/ethernet/intel/ice/ice_devlink.c b/drivers/net/ethernet/intel/ice/ice_devlink.c
+index 80dc5445b50d4..030ca0ef71d87 100644
+--- a/drivers/net/ethernet/intel/ice/ice_devlink.c
++++ b/drivers/net/ethernet/intel/ice/ice_devlink.c
+@@ -999,6 +999,9 @@ static int ice_devlink_rate_node_new(struct devlink_rate *rate_node, void **priv
  
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,sm8550-cdsp-pas";
--			reg = <0x0 0x32300000 0x0 0x1400000>;
-+			reg = <0x0 0x32300000 0x0 0x10000>;
+ 	/* preallocate memory for ice_sched_node */
+ 	node = devm_kzalloc(ice_hw_to_dev(pi->hw), sizeof(*node), GFP_KERNEL);
++	if (!node)
++		return -ENOMEM;
++
+ 	*priv = node;
  
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
