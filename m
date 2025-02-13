@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-115262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D551EA342B9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:41:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E661A3450E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17303169795
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5437B3B463B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B58824166C;
-	Thu, 13 Feb 2025 14:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C872222B7;
+	Thu, 13 Feb 2025 15:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SwABRSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLjLzs5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7466241665;
-	Thu, 13 Feb 2025 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357DD3FB3B;
+	Thu, 13 Feb 2025 15:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457448; cv=none; b=PGgyRXTlakE/3+oxsbcNxPoTuI8/CkOaI/4Uq7w0ILOuJZg4p+x7z5y3MXQagqzqShaPtcJBDeoYJratdouwle6OcXi4YfiduukKDpBog32enoMCNaDoSkRabku8AlsURRFTyHcIq03KiNTgC5UhjcdCLyoBpZrJ3B8n3b4u9nE=
+	t=1739458862; cv=none; b=Eu36jEVUO6bnhf81pB/n+V71fQDPJUclDp2uhf/dMhSBPMPsEH/h8rLGkibJIiLV1lWxJCm3GNXKf3muOvpriIhkkc/8pqQiKGgPHNcQZHe3/DHjnFuPRtRsefzJ4p48U9l4Z8U3GHyunT4spwK+Yy/3+Wmuco1ZXArfToqF8+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457448; c=relaxed/simple;
-	bh=rsIBgcZE1w2KAluVyDJmm9W4hOJx0eQyn+F7VTabLug=;
+	s=arc-20240116; t=1739458862; c=relaxed/simple;
+	bh=RcgsCUJ/L83KHx6LLKeiMnPlckKX2j5HrVkDo+LplSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSgsxMywFJhA5C8Ei28DByh7jfiG7/fSwWtjiINM+0W+Nw1XLLYVcUH+gU5wa1nDRAY/oHmI9M29OZBSXSTsy0wQDSx5Kd2f9jEn2I7VJqfDQlhLZnvSTCEh6sK0fQjf4JyM7yGmCsg3/U37GVYfTUr52MTezfmRQ6Vi1Nl20AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SwABRSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5487AC4CED1;
-	Thu, 13 Feb 2025 14:37:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GtjkbpqV2YYPTDORhBMMUkn5dY9V/56f+XVJtET4t+oEA90/ubSq26bfe1xNy1gKwKy+unsNUF3VbZDqhf5TeN0aDGE6GqLsvU0UHf3X/YGVPl8pAbi7JyqrYkpt82sTM4/xZE7YJgesd6mwwVj9AJ5EGvdLi7MUPsnswtnhB4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLjLzs5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946D5C4CED1;
+	Thu, 13 Feb 2025 15:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457447;
-	bh=rsIBgcZE1w2KAluVyDJmm9W4hOJx0eQyn+F7VTabLug=;
+	s=korg; t=1739458862;
+	bh=RcgsCUJ/L83KHx6LLKeiMnPlckKX2j5HrVkDo+LplSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1SwABRSb/HH02JnaRT92F+RoHqyV5L+02npk4bSJOsidnnqWHvZdrdCqd/o0HHMus
-	 lc9yQ9IZ7oui3WGx+xcM0SY+vL7X0Hza0GNOXU4WGpgPthfsVIwyS7wLmd0AzaxUME
-	 eTtf+iH3i8B9wxubyrauWvnQXC7mFQHKhEX2K1GU=
+	b=aLjLzs5zYxyNduw6Gy5HMo0Yp+OOr4dzF1a4aHx4MQdZpB8Ypk+w1jeHowf4/5lyv
+	 cc8tBkJYhF3rYuv5oXRiGjLau+VUPFlqn3YuTP5aNNljVPDPj68PQZZRyEDE1Fze5P
+	 Wd5VTIUD4KPZsQc86WDWaX4PiZ2jRgandm8E11o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Eric Johnsten <ejohnsten@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/422] drm/i915/dp: fix the Adaptive sync Operation mode for SDP
+Subject: [PATCH 6.13 097/443] platform/x86: acer-wmi: Add support for Acer Predator PH16-72
 Date: Thu, 13 Feb 2025 15:24:22 +0100
-Message-ID: <20250213142440.913983690@linuxfoundation.org>
+Message-ID: <20250213142444.352997313@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 4466302262b38f5e6c65325035b4036a42efc934 ]
+[ Upstream commit c85b516b44d21e9cf751c4f73a6c235ed170d887 ]
 
-Currently we support Adaptive sync operation mode with dynamic frame
-rate, but instead the operation mode with fixed rate is set.
-This was initially set correctly in the earlier version of changes but
-later got changed, while defining a macro for the same.
+Add the Acer Predator PT16-72 to acer_quirks to provide support
+for the turbo button and predator_v4 interfaces.
 
-Fixes: a5bd5991cb8a ("drm/i915/display: Compute AS SDP parameters")
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250130051609.1796524-4-mitulkumar.ajitkumar.golani@intel.com
-(cherry picked from commit c5806862543ff6c2ad242409fcdf0667eac26dae)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Tested-by: Eric Johnsten <ejohnsten@gmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250107175652.3171-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 90fa73575feb1..7befd260f5949 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2738,7 +2738,6 @@ static void intel_dp_compute_as_sdp(struct intel_dp *intel_dp,
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 5cff538ee67fa..3c211eee95f42 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -393,6 +393,13 @@ static struct quirk_entry quirk_acer_predator_ph315_53 = {
+ 	.gpu_fans = 1,
+ };
  
- 	crtc_state->infoframes.enable |= intel_hdmi_infoframe_enable(DP_SDP_ADAPTIVE_SYNC);
- 
--	/* Currently only DP_AS_SDP_AVT_FIXED_VTOTAL mode supported */
- 	as_sdp->sdp_type = DP_SDP_ADAPTIVE_SYNC;
- 	as_sdp->length = 0x9;
- 	as_sdp->duration_incr_ms = 0;
-@@ -2750,7 +2749,7 @@ static void intel_dp_compute_as_sdp(struct intel_dp *intel_dp,
- 		as_sdp->target_rr = drm_mode_vrefresh(adjusted_mode);
- 		as_sdp->target_rr_divider = true;
- 	} else {
--		as_sdp->mode = DP_AS_SDP_AVT_FIXED_VTOTAL;
-+		as_sdp->mode = DP_AS_SDP_AVT_DYNAMIC_VTOTAL;
- 		as_sdp->vtotal = adjusted_mode->vtotal;
- 		as_sdp->target_rr = 0;
- 	}
++static struct quirk_entry quirk_acer_predator_ph16_72 = {
++	.turbo = 1,
++	.cpu_fans = 1,
++	.gpu_fans = 1,
++	.predator_v4 = 1,
++};
++
+ static struct quirk_entry quirk_acer_predator_pt14_51 = {
+ 	.turbo = 1,
+ 	.cpu_fans = 1,
+@@ -598,6 +605,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
+ 		},
+ 		.driver_data = &quirk_acer_predator_v4,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "Acer Predator PH16-72",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH16-72"),
++		},
++		.driver_data = &quirk_acer_predator_ph16_72,
++	},
+ 	{
+ 		.callback = dmi_matched,
+ 		.ident = "Acer Predator PH18-71",
 -- 
 2.39.5
 
