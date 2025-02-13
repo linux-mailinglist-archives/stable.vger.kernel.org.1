@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-115474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C826A343E9
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:58:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0DAA34703
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D89A16DDBB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 067F03AC21A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FC71531DB;
-	Thu, 13 Feb 2025 14:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262FB14037F;
+	Thu, 13 Feb 2025 15:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2incijDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnc4Q46c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4065114A605;
-	Thu, 13 Feb 2025 14:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80902A1CF;
+	Thu, 13 Feb 2025 15:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458177; cv=none; b=a4+p08uc7kGdX2hBjrh5AsFojMIZQCzew0P25V0DoGRuIDmPm6jASZ0zvTgffIgb+JvzvwStI/37EGLjmd+Z2AxjyxN7BCRxcyY6Ra/H+v1pf4a2GvlcLvyPxV3SQujm5Zq3q9mok7qSoTteZO9hlq5m5Hi6KCLHd0+Cb01qxcU=
+	t=1739459692; cv=none; b=TqTYN9/DnwRZGRx3dsVHsgb4ZQpXPiN6YxKacDb3uJ2HQk0cAq3Na4v0nD5mnxDC08yiPk/Y1/RoQAXrzVBg4iXIECODaxPl8RPGEIAa6yg4uHmL5bR+moJM275/zWPyiMKBATIV08jrdqHb6XTTsxGzzT0Yv8FuL/N5LSJebtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458177; c=relaxed/simple;
-	bh=9eNLhlrxKG7UbMAmOlS+YNS8dYaNojFpJqx6XDUMxi0=;
+	s=arc-20240116; t=1739459692; c=relaxed/simple;
+	bh=SEOyeQ+IL3v+FnPN114AmLNwsC/ZuBns0dSGoxUQlCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jj95wvNN8TNJWVeCP+KO7te1dhtLMIOxHA82qaJ+WKWCJtlkXwDr278s4baxIwOo/dgvW5i3kHCXv6x+E41HHvGoKADjUTklOnLkBTgvvcV8Z/XG89c01lFn/qidTS2QM042g0KNilzt9y4dLtBJMtNC5gcND6pzgZZA/jGWXcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2incijDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E39C4CEE5;
-	Thu, 13 Feb 2025 14:49:36 +0000 (UTC)
+	 MIME-Version; b=uvTL7e01cMIBsMm/6Ror0dZALbWKFB0Y/eQ5NM2bNimifJ59b5vDcdundNMsPO2DVO4rwMkazLINDvb94Puz1LOsUqA4j/SkFXgCjYVHMnPdTV5WmSu81tR8TaCIKdMDxdJnelfbE3WlubRbKURNK0hUU95Ow5d4a7lFkc+aKdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnc4Q46c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4625BC4CEE4;
+	Thu, 13 Feb 2025 15:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458176;
-	bh=9eNLhlrxKG7UbMAmOlS+YNS8dYaNojFpJqx6XDUMxi0=;
+	s=korg; t=1739459692;
+	bh=SEOyeQ+IL3v+FnPN114AmLNwsC/ZuBns0dSGoxUQlCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2incijDxZR5YZP27q8RervhT1rDAdRIKVuumD5bEBpxwarH/iV6qKFj2MU8r2IXJS
-	 Jp9krpn2YBLoUsyudphOR+gVUpMmG0VFhiKSivieGYHT88jzJfErhDju5WljDjszJk
-	 WeKpE9N7WwwFtCJplEfrCvva1sev31KXXhIis7Uc=
+	b=tnc4Q46c5SwjVBKWFIKkWsZnk/ogCKHaVNPdmTtbTiChtyJHTBbkp8Ali0yjnVc6R
+	 4+bkTWVzO9mLlrJ0naVdDv0y6Kn3Bo24fTdVKFveSbS92OWP61Gg0vpJZXehtVZNaq
+	 oQdsfwIWlHfFovEukX8nAc3cITXju+wrny2BnBa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Ardelean <aardelean@baylibre.com>,
-	Naushir Patuck <naush@raspberrypi.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 324/422] media: imx296: Add standby delay during probe
-Date: Thu, 13 Feb 2025 15:27:53 +0100
-Message-ID: <20250213142449.053961851@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 309/443] arm64: dts: qcom: sm6375: Fix MPSS memory base and length
+Date: Thu, 13 Feb 2025 15:27:54 +0100
+Message-ID: <20250213142452.538576323@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naushir Patuck <naush@raspberrypi.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 57d10bcac67707caaa542e09dee86e13ea85defc upstream.
+commit 918e71ba0c08c3d609ad69067854b0f675c4a253 upstream.
 
-Add a 2-5ms delay when coming out of standby and before reading the
-sensor info register durning probe, as instructed by the datasheet. This
-standby delay is already present when the sensor starts streaming.
+The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0608_0000 with length of 0x10000.
 
-During a cold-boot, reading the IMX296_SENSOR_INFO register would often
-return a value of 0x0000, if this delay is not present before.
+0x0600_0000, value used so far, is the main region of Modem.
 
-Fixes: cb33db2b6ccf ("media: i2c: IMX296 camera sensor driver")
+Correct the base address and length, which should have no functional
+impact on Linux users, because PAS loader does not use this address
+space at all.
+
+Fixes: 31cc61104f68 ("arm64: dts: qcom: sm6375: Add modem nodes")
 Cc: stable@vger.kernel.org
-Tested-by: Alexandru Ardelean <aardelean@baylibre.com>
-Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-19-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx296.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/imx296.c
-+++ b/drivers/media/i2c/imx296.c
-@@ -954,6 +954,8 @@ static int imx296_identify_model(struct
- 		return ret;
- 	}
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -1516,9 +1516,9 @@
+ 			#power-domain-cells = <1>;
+ 		};
  
-+	usleep_range(2000, 5000);
-+
- 	ret = imx296_read(sensor, IMX296_SENSOR_INFO);
- 	if (ret < 0) {
- 		dev_err(sensor->dev, "failed to read sensor information (%d)\n",
+-		remoteproc_mss: remoteproc@6000000 {
++		remoteproc_mss: remoteproc@6080000 {
+ 			compatible = "qcom,sm6375-mpss-pas";
+-			reg = <0 0x06000000 0 0x4040>;
++			reg = <0x0 0x06080000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
