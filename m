@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9394A342E6
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9EFA34525
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE20F3AAB92
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:39:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF261899474
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EC4242910;
-	Thu, 13 Feb 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C021FBEB3;
+	Thu, 13 Feb 2025 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u40t3zgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaB3TPIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924D72222C0;
-	Thu, 13 Feb 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB4E145348;
+	Thu, 13 Feb 2025 14:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457492; cv=none; b=rkei1JNnhO1JNnp3ewolxq1slcRA6xBYeAwMMSnd+tHtXDYIahldQrpnzRLnLBdYTh1jCwCdYm/cOGYgYo3+Zs0GJbkT/UEnVACHTDXQzb0XJ94zJnPlmnq5fysbtZX+gixVfqJRXgKA/RIH+2qqEkurpA4FVcwBiWW+R3XKmDo=
+	t=1739458784; cv=none; b=uW7iXm3+Hod2QhAClX6cWIhVXlew5Qe+SZ6fJqy4DK5I1llksRVgspgg5toG4UUYLPuTEe7F7+w2ENzVkRC+G0Mkv4vx4+fm4HzYoYzKSv/DPv1Ljeefe5i/BIkevrizCbtNIkWDKFW6vY6IdbX/RPQ3DoLiUntNiTBMcUTtVuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457492; c=relaxed/simple;
-	bh=n98i+rszUquvqdp0veVLBXzN3qr9eaLduI+7y79F/fk=;
+	s=arc-20240116; t=1739458784; c=relaxed/simple;
+	bh=caUrtVdSqLYrsYn3InBb9/hfX1RX4P0tpK3w+Sg6G/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4ClBlFmjEXYIz5ldTcU75TlYrGBP6HIN2ajKnQWk0yysWsBF5Sge2QdePewi9gfiXGe9R5CL/a2917uDr0pflewHETpz/xD6KaEE0gPdv7rkCIZFixHuEd9gOWfy5UoptMV7vojsQmJcGHAEczPqY8vMOHaOKVdhKCOpL0op9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u40t3zgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0018CC4CED1;
-	Thu, 13 Feb 2025 14:38:11 +0000 (UTC)
+	 MIME-Version; b=UT9OHQOsPaT+dzwiuP6JY+5ipRGuTFDDdABOh4/gJLMDZJhy1KOIr0rh5KbNpBBZIIy27dE+WExB4mGGHIyddLghXwfuI4W7K3kZ8dIxexMeR0XWKi45TKHLHQ3rLHvPPbNjEPWhiMxZHEz+B/bEpkiqTfZUFBxYr7vHxZy44xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaB3TPIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57653C4CEE4;
+	Thu, 13 Feb 2025 14:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457492;
-	bh=n98i+rszUquvqdp0veVLBXzN3qr9eaLduI+7y79F/fk=;
+	s=korg; t=1739458784;
+	bh=caUrtVdSqLYrsYn3InBb9/hfX1RX4P0tpK3w+Sg6G/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u40t3zgzAp19i+bj9JY9PlSwXSEiPP4dZVLZiXLV+BM7FyU+STNvaanQFCav5YGor
-	 t4tShHS9Abc690bzcBduMR7PxyJK7AQRbdkaGySHOKnatgbBwDW/mLSMiOmlJd3DXU
-	 H8ZRO2oy9FLR1UDQF/n7WHtSeBEG2NNeghu9+of0=
+	b=WaB3TPIxjwOWrIZ91XBo+RXtewO2fHKmnJzVnDp9lLaVyZk1xRlH0gJ+OyPHnK/hK
+	 bgOeu5Px3eazfVdsJfmUjiXQza58mWbqFNE7vY2aOu7zeHTlqocbkdjCch46mi3Yup
+	 hi08dLy4UtahCukLDyS9HInTZ0zIG6QYMMOlQH7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com,
+	Mazin Al Haddad <mazin@getstate.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/422] xfs: report realtime block quota limits on realtime directories
+Subject: [PATCH 6.13 078/443] Bluetooth: MGMT: Fix slab-use-after-free Read in mgmt_remove_adv_monitor_sync
 Date: Thu, 13 Feb 2025 15:24:03 +0100
-Message-ID: <20250213142440.181236147@linuxfoundation.org>
+Message-ID: <20250213142443.623126311@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mazin Al Haddad <mazin@getstate.dev>
 
-[ Upstream commit 9a17ebfea9d0c7e0bb7409dcf655bf982a5d6e52 ]
+[ Upstream commit 26fbd3494a7dd26269cb0817c289267dbcfdec06 ]
 
-On the data device, calling statvfs on a projinherit directory results
-in the block and avail counts being curtailed to the project quota block
-limits, if any are set.  Do the same for realtime files or directories,
-only use the project quota rt block limits.
+This fixes the following crash:
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: 4b8d867ca6e2 ("xfs: don't over-report free space or inodes in statvfs")
+==================================================================
+BUG: KASAN: slab-use-after-free in mgmt_remove_adv_monitor_sync+0x3a/0xd0 net/bluetooth/mgmt.c:5543
+Read of size 8 at addr ffff88814128f898 by task kworker/u9:4/5961
+
+CPU: 1 UID: 0 PID: 5961 Comm: kworker/u9:4 Not tainted 6.12.0-syzkaller-10684-gf1cd565ce577 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ mgmt_remove_adv_monitor_sync+0x3a/0xd0 net/bluetooth/mgmt.c:5543
+ hci_cmd_sync_work+0x22b/0x400 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+Allocated by task 16026:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4314
+ kmalloc_noprof include/linux/slab.h:901 [inline]
+ kzalloc_noprof include/linux/slab.h:1037 [inline]
+ mgmt_pending_new+0x65/0x250 net/bluetooth/mgmt_util.c:269
+ mgmt_pending_add+0x36/0x120 net/bluetooth/mgmt_util.c:296
+ remove_adv_monitor+0x102/0x1b0 net/bluetooth/mgmt.c:5568
+ hci_mgmt_cmd+0xc47/0x11d0 net/bluetooth/hci_sock.c:1712
+ hci_sock_sendmsg+0x7b8/0x11c0 net/bluetooth/hci_sock.c:1832
+ sock_sendmsg_nosec net/socket.c:711 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:726
+ sock_write_iter+0x2d7/0x3f0 net/socket.c:1147
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0xaeb/0xd30 fs/read_write.c:679
+ ksys_write+0x18f/0x2b0 fs/read_write.c:731
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 16022:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2338 [inline]
+ slab_free mm/slub.c:4598 [inline]
+ kfree+0x196/0x420 mm/slub.c:4746
+ mgmt_pending_foreach+0xd1/0x130 net/bluetooth/mgmt_util.c:259
+ __mgmt_power_off+0x183/0x430 net/bluetooth/mgmt.c:9550
+ hci_dev_close_sync+0x6c4/0x11c0 net/bluetooth/hci_sync.c:5208
+ hci_dev_do_close net/bluetooth/hci_core.c:483 [inline]
+ hci_dev_close+0x112/0x210 net/bluetooth/hci_core.c:508
+ sock_do_ioctl+0x158/0x460 net/socket.c:1209
+ sock_ioctl+0x626/0x8e0 net/socket.c:1328
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=479aff51bb361ef5aa18
+Tested-by: syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com
+Signed-off-by: Mazin Al Haddad <mazin@getstate.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_qm_bhv.c | 18 ++++++++++++------
- fs/xfs/xfs_super.c  | 11 +++++------
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ net/bluetooth/mgmt.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_qm_bhv.c b/fs/xfs/xfs_qm_bhv.c
-index a11436579877d..262f035b15c99 100644
---- a/fs/xfs/xfs_qm_bhv.c
-+++ b/fs/xfs/xfs_qm_bhv.c
-@@ -19,18 +19,24 @@
- STATIC void
- xfs_fill_statvfs_from_dquot(
- 	struct kstatfs		*statp,
-+	struct xfs_inode	*ip,
- 	struct xfs_dquot	*dqp)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index de47ad999d7b6..71dda10f6a24f 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5519,10 +5519,16 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
  {
-+	struct xfs_dquot_res	*blkres = &dqp->q_blk;
- 	uint64_t		limit;
- 
--	limit = dqp->q_blk.softlimit ?
--		dqp->q_blk.softlimit :
--		dqp->q_blk.hardlimit;
-+	if (XFS_IS_REALTIME_MOUNT(ip->i_mount) &&
-+	    (ip->i_diflags & (XFS_DIFLAG_RTINHERIT | XFS_DIFLAG_REALTIME)))
-+		blkres = &dqp->q_rtb;
+ 	struct mgmt_rp_remove_adv_monitor rp;
+ 	struct mgmt_pending_cmd *cmd = data;
+-	struct mgmt_cp_remove_adv_monitor *cp = cmd->param;
++	struct mgmt_cp_remove_adv_monitor *cp;
 +
-+	limit = blkres->softlimit ?
-+		blkres->softlimit :
-+		blkres->hardlimit;
- 	if (limit && statp->f_blocks > limit) {
- 		statp->f_blocks = limit;
- 		statp->f_bfree = statp->f_bavail =
--			(statp->f_blocks > dqp->q_blk.reserved) ?
--			 (statp->f_blocks - dqp->q_blk.reserved) : 0;
-+			(statp->f_blocks > blkres->reserved) ?
-+			 (statp->f_blocks - blkres->reserved) : 0;
- 	}
++	if (status == -ECANCELED ||
++	    cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
++		return;
  
- 	limit = dqp->q_ino.softlimit ?
-@@ -61,7 +67,7 @@ xfs_qm_statvfs(
- 	struct xfs_dquot	*dqp;
+ 	hci_dev_lock(hdev);
  
- 	if (!xfs_qm_dqget(mp, ip->i_projid, XFS_DQTYPE_PROJ, false, &dqp)) {
--		xfs_fill_statvfs_from_dquot(statp, dqp);
-+		xfs_fill_statvfs_from_dquot(statp, ip, dqp);
- 		xfs_qm_dqput(dqp);
- 	}
- }
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index fbb3a1594c0dc..8f7c9eaeb3609 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -873,12 +873,6 @@ xfs_fs_statfs(
- 	ffree = statp->f_files - (icount - ifree);
- 	statp->f_ffree = max_t(int64_t, ffree, 0);
- 
--
--	if ((ip->i_diflags & XFS_DIFLAG_PROJINHERIT) &&
--	    ((mp->m_qflags & (XFS_PQUOTA_ACCT|XFS_PQUOTA_ENFD))) ==
--			      (XFS_PQUOTA_ACCT|XFS_PQUOTA_ENFD))
--		xfs_qm_statvfs(ip, statp);
--
- 	if (XFS_IS_REALTIME_MOUNT(mp) &&
- 	    (ip->i_diflags & (XFS_DIFLAG_RTINHERIT | XFS_DIFLAG_REALTIME))) {
- 		s64	freertx;
-@@ -888,6 +882,11 @@ xfs_fs_statfs(
- 		statp->f_bavail = statp->f_bfree = xfs_rtx_to_rtb(mp, freertx);
- 	}
- 
-+	if ((ip->i_diflags & XFS_DIFLAG_PROJINHERIT) &&
-+	    ((mp->m_qflags & (XFS_PQUOTA_ACCT|XFS_PQUOTA_ENFD))) ==
-+			      (XFS_PQUOTA_ACCT|XFS_PQUOTA_ENFD))
-+		xfs_qm_statvfs(ip, statp);
++	cp = cmd->param;
 +
- 	return 0;
- }
+ 	rp.monitor_handle = cp->monitor_handle;
+ 
+ 	if (!status)
+@@ -5540,6 +5546,10 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
+ static int mgmt_remove_adv_monitor_sync(struct hci_dev *hdev, void *data)
+ {
+ 	struct mgmt_pending_cmd *cmd = data;
++
++	if (cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
++		return -ECANCELED;
++
+ 	struct mgmt_cp_remove_adv_monitor *cp = cmd->param;
+ 	u16 handle = __le16_to_cpu(cp->monitor_handle);
  
 -- 
 2.39.5
