@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8F7A34808
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:42:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00203A34770
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17684164D47
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957973B1D70
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E308670805;
-	Thu, 13 Feb 2025 15:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15923139566;
+	Thu, 13 Feb 2025 15:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKzsda+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7NlEvZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F61926B087;
-	Thu, 13 Feb 2025 15:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5E335BA;
+	Thu, 13 Feb 2025 15:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460885; cv=none; b=PiHTmvL3VXkw6fNXXtUbWAe3ew/zpeNCuqu3C4t4Pw0ZCqsRmYvTxHsD3UL6sbk9/3+vw1fZOXr8KpkH0OE2lJkk8TnIks39jnDfdtJhTZKN+p/1WoqRTYf4c0c1qp+lXIoyi5Ss77R0SBqWAqrhIgU7fNIRckT8qDfxYxQjlEs=
+	t=1739460059; cv=none; b=XXSD5przi89XKWdQhHW07EDwao06j7IxgqjyfXbcHnfeZ7fiyiMu4IvZLTtY6WlHh0iYM1ovTt3qDhF0c97bhQHvok2wc7JcK6FI2hHgmHldDAIC43D2+wfZzyIHGHDMGO4rOUFTV4+O/h8bzTkYPKO7O9aPaCVzqbklUVqfsLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460885; c=relaxed/simple;
-	bh=YBjw/bet8HcAXnLclaSvVAEvZVjQyNkPio4mVITVm+0=;
+	s=arc-20240116; t=1739460059; c=relaxed/simple;
+	bh=FUlUg1eHLScMVnYCTao6Cf/Y5LuCDyf3HNA2Y3zS+FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePubw1GO1azKIDI0DvSbG4jr8NzVQVosnFXy/AobiDCvelRstGVtB0gtQRd7wAnoHXEDbF5WOMH/3HM1PxC7F+s+J1pZVf3qKQafPawEIuPbKAESuqupFlIQKzHBNN6jgekWs2b83iatNFKH8yrxA9qYcq/skEcAI9VCKWD9M+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKzsda+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7F3C4CED1;
-	Thu, 13 Feb 2025 15:34:44 +0000 (UTC)
+	 MIME-Version; b=RMmAhO5c0adTYLHVyzfX2Iz+GPr7d7y0txbCvmOC+ZBNdlwJ383lXBMYbGINSOL1k5g6xo3YQfQ374NvJ5BsQr4NkSrfZFPc2QIMaTdJ6my9pU5MmpoK63+YHNYR7YBYCrfHljjL98Mc8oQMqC1s8+etW25ce4qCHK2Fu4Fc1ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7NlEvZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49498C4CEE7;
+	Thu, 13 Feb 2025 15:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460885;
-	bh=YBjw/bet8HcAXnLclaSvVAEvZVjQyNkPio4mVITVm+0=;
+	s=korg; t=1739460059;
+	bh=FUlUg1eHLScMVnYCTao6Cf/Y5LuCDyf3HNA2Y3zS+FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKzsda+BsZ8rQuXbnumSRMgoacadY1QTi7uVkzXR7d2CpSeUiCjWpftcp1DO9grlT
-	 waHRm7uMLwhUVgD3sXAwmTM+2wZ1gZl16DlHQhCE72XSAqRMvtS1jyyV6fUJ2ZP6Vz
-	 sGsKcYPTo5vdr2mQGaE8lh+UstA81acvvvgWlnqg=
+	b=Z7NlEvZkPWfc+Z57h2kSiDYGAs6r5JPPXbYXmRF8bwlP9424FOmmk9pfPph6PPauy
+	 jeSfRRXmvYIy51QRSvHbvmGTL+ovENtG/hkFTSt3GjACU68Oma7FMRi5ha3Jt251KT
+	 w6XWglOFDqNc4v3X1j0EHmqMA+aDx+zvkkwT9To0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 208/273] media: ccs: Fix cleanup order in ccs_probe()
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 415/443] net/ncsi: wait for the last response to Deselect Package before configuring channel
 Date: Thu, 13 Feb 2025 15:29:40 +0100
-Message-ID: <20250213142415.540937303@linuxfoundation.org>
+Message-ID: <20250213142456.622745314@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
+From: Paul Fertser <fercerpav@gmail.com>
 
-commit 6fdbff0f54786e94f0f630ff200ec1d666b1633e upstream.
+commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
 
-ccs_limits is allocated in ccs_read_all_limits() after the allocation of
-mdata.backing. Ensure that resources are freed in the reverse order of
-their allocation by moving out_free_ccs_limits up.
+The NCSI state machine as it's currently implemented assumes that
+transition to the next logical state is performed either explicitly by
+calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
+after processing the predefined (ndp->pending_req_num) number of
+replies. Thus to avoid the configuration FSM from advancing prematurely
+and getting out of sync with the process it's essential to not skip
+waiting for a reply.
 
-Fixes: a11d3d6891f0 ("media: ccs: Read CCS static data from firmware binaries")
+This patch makes the code wait for reception of the Deselect Package
+response for the last package probed before proceeding to channel
+configuration.
+
+Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
+testing.
+
+Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ncsi/ncsi-manage.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3658,15 +3658,15 @@ out_media_entity_cleanup:
- out_cleanup:
- 	ccs_cleanup(sensor);
- 
-+out_free_ccs_limits:
-+	kfree(sensor->ccs_limits);
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1385,6 +1385,12 @@ static void ncsi_probe_channel(struct nc
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		break;
+ 	case ncsi_dev_state_probe_package:
++		if (ndp->package_probe_id >= 8) {
++			/* Last package probed, finishing */
++			ndp->flags |= NCSI_DEV_PROBED;
++			break;
++		}
 +
- out_release_mdata:
- 	kvfree(sensor->mdata.backing);
+ 		ndp->pending_req_num = 1;
  
- out_release_sdata:
- 	kvfree(sensor->sdata.backing);
+ 		nca.type = NCSI_PKT_CMD_SP;
+@@ -1501,13 +1507,8 @@ static void ncsi_probe_channel(struct nc
+ 		if (ret)
+ 			goto error;
  
--out_free_ccs_limits:
--	kfree(sensor->ccs_limits);
--
- out_power_off:
- 	ccs_power_off(&client->dev);
- 	mutex_destroy(&sensor->mutex);
+-		/* Probe next package */
++		/* Probe next package after receiving response */
+ 		ndp->package_probe_id++;
+-		if (ndp->package_probe_id >= 8) {
+-			/* Probe finished */
+-			ndp->flags |= NCSI_DEV_PROBED;
+-			break;
+-		}
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		ndp->active_package = NULL;
+ 		break;
 
 
 
