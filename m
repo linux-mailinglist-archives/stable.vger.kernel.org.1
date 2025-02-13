@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-115981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9F2A34694
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694E5A3465C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E91A188884E
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A36F16C520
 	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3569E26B0BC;
-	Thu, 13 Feb 2025 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265B926B0BE;
+	Thu, 13 Feb 2025 15:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPbfGRuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN5+8fuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EA726B0B8;
-	Thu, 13 Feb 2025 15:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85BC26B0BC;
+	Thu, 13 Feb 2025 15:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459923; cv=none; b=lZl2M5dvXDFe48QBe4xXBRS6BOKmBGn1fsTxW/mZQBbmqajDOwNeW6S4Lf9DCVqOMh3P5vU/JnzfXYArPAcLf0EHMhuEqlt4W4Kb6SEBahNu9ZxqCyOBU3AfL21pQ4xPIEjfkBTqcKbNeOeI6mrk0pOa+0Rzf4TnLnmdXv1QWoA=
+	t=1739459929; cv=none; b=Czg+CiKmgMG6Pf3GU2y08OOG6SvjDvsS0+C4/jX3tk9ZF9cEInMtN/+DYFzHzoo+OwjNH40bG1KiDq2C5Hd6rBPneiAJb45ln9bRcuLKddbNZAC2xoQJefj3IY3fMURACGSfUPLQ52/RtnFBfEv1Im5yjvwAMYDuKLC+x/l5XZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459923; c=relaxed/simple;
-	bh=qRTOiHuF20WY2dJw8VilAv/2Oavna4ugzHkwQT0P/pk=;
+	s=arc-20240116; t=1739459929; c=relaxed/simple;
+	bh=gYKs1A8v1La+MZE7KEh7ENuE81wLIdvDqMP2pKfAHcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0YZi5By3bLhJz37RHRpk2KTZ9BqlVQ/SgdvRD5BsUwWLMUFVlQL1FI0WK7juiy8Nqu2RMWyM0iyYp4vxSJEB8NsJyQtTwa81S9hVRZo+u2EGLvskq5tSUrijpKVM+oPh1n7FAsA5/r0sVgixoJsSNHwflYlgdN8MzCROleUEfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPbfGRuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7440FC4CED1;
-	Thu, 13 Feb 2025 15:18:42 +0000 (UTC)
+	 MIME-Version; b=uZgndcbGaqOR973sEBiLsuR89PotP2owHvo63usVGB9kFCVe3g1ZeSW7g/tULjj6JPlGe8gSvtnOWj6kD0ELM1DNqT19cb7OQ0yrmlYJBnfg+G0UXZ2TZqdceWOdluE4eIbS24kI4TDDIjYOti5bLYGCJ7XAwFXKccuOcrIR1oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN5+8fuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94D6C4CED1;
+	Thu, 13 Feb 2025 15:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459922;
-	bh=qRTOiHuF20WY2dJw8VilAv/2Oavna4ugzHkwQT0P/pk=;
+	s=korg; t=1739459929;
+	bh=gYKs1A8v1La+MZE7KEh7ENuE81wLIdvDqMP2pKfAHcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPbfGRuCVkkUAFGKaxm5Sz4Yva7UsSM7lW6CzAutVKlRzK7IpcQNpjCysmYOxQDfL
-	 52ydg/4+xQAdc36DihWVYYYOg5CqOmfCPSh3InUvFFwzX6I+apN5YwdGeG59cx8qjC
-	 aM4FBqy5x2KHh7ahiiflORBVY+OXTDkMGDZ9TsPA=
+	b=NN5+8fuL6+1yD0E4/DLhMNpOvRz8vbyaatJs1MqYDsBCZJlVXBss3TcaX4c1gxs4N
+	 JjPUw+dj01DhmZC6hvkKwJhNE+mgmSC1gpBk5e6KbeUTQSoidkjOpbx3MRYjpCMGjW
+	 Ol3aQGzR9eR8P5dKihXWuB3Ed2JJKhEBBXO84Wi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Pessi <ppessi@nvidia.com>,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Tanmay Shah <tanmay.shah@amd.com>,
 	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.13 404/443] mailbox: tegra-hsp: Clear mailbox before using message
-Date: Thu, 13 Feb 2025 15:29:29 +0100
-Message-ID: <20250213142456.198404458@linuxfoundation.org>
+Subject: [PATCH 6.13 405/443] mailbox: zynqmp: Remove invalid __percpu annotation in zynqmp_ipi_probe()
+Date: Thu, 13 Feb 2025 15:29:30 +0100
+Message-ID: <20250213142456.237231333@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
 References: <20250213142440.609878115@linuxfoundation.org>
@@ -67,69 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pekka Pessi <ppessi@nvidia.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit 0b7f8328f988178b55ee11d772a6e1238c04d29d upstream.
+commit 170a264d2611a0bfa96b7818730473db5e7546fc upstream.
 
-The Tegra RCE (Camera) driver expects the mailbox to be empty before
-processing the IVC messages. On RT kernel, the threads processing the
-IVC messages (which are invoked after `mbox_chan_received_data()` is
-called) may be on a different CPU or running with a higher priority
-than the HSP interrupt handler thread. This can cause it to act on the
-message before the mailbox gets cleared in the HSP interrupt handler
-resulting in a loss of IVC notification.
+struct zynqmp_ipi_pdata __percpu *pdata is not a per-cpu variable,
+so it should not be annotated with __percpu annotation.
 
-Fix this by clearing the mailbox data register before calling
-`mbox_chan_received_data()`.
+Remove invalid __percpu annotation to fix several
 
-Fixes: 8f585d14030d ("mailbox: tegra-hsp: Add tegra_hsp_sm_ops")
-Fixes: 74c20dd0f892 ("mailbox: tegra-hsp: Add 128-bit shared mailbox support")
+zynqmp-ipi-mailbox.c:920:15: warning: incorrect type in assignment (different address spaces)
+zynqmp-ipi-mailbox.c:920:15:    expected struct zynqmp_ipi_pdata [noderef] __percpu *pdata
+zynqmp-ipi-mailbox.c:920:15:    got void *
+zynqmp-ipi-mailbox.c:927:56: warning: incorrect type in argument 3 (different address spaces)
+zynqmp-ipi-mailbox.c:927:56:    expected unsigned int [usertype] *out_value
+zynqmp-ipi-mailbox.c:927:56:    got unsigned int [noderef] __percpu *
+...
+
+and several
+
+drivers/mailbox/zynqmp-ipi-mailbox.c:924:9: warning: dereference of noderef expression
+...
+
+sparse warnings.
+
+There were no changes in the resulting object file.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Pekka Pessi <ppessi@nvidia.com>
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
+Fixes: 6ffb1635341b ("mailbox: zynqmp: handle SGI for shared IPI")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Tanmay Shah <tanmay.shah@amd.com>
 Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/tegra-hsp.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -388,7 +388,6 @@ static void tegra_hsp_sm_recv32(struct t
- 	value = tegra_hsp_channel_readl(channel, HSP_SM_SHRD_MBOX);
- 	value &= ~HSP_SM_SHRD_MBOX_FULL;
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
- 
- 	/*
- 	 * Need to clear all bits here since some producers, such as TCU, depend
-@@ -398,6 +397,8 @@ static void tegra_hsp_sm_recv32(struct t
- 	 * explicitly, so we have to make sure we cover all possible cases.
- 	 */
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SM_SHRD_MBOX);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_32bit_ops = {
-@@ -433,7 +434,6 @@ static void tegra_hsp_sm_recv128(struct
- 	value[3] = tegra_hsp_channel_readl(channel, HSP_SHRD_MBOX_TYPE1_DATA3);
- 
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
- 
- 	/*
- 	 * Clear data registers and tag.
-@@ -443,6 +443,8 @@ static void tegra_hsp_sm_recv128(struct
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA2);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA3);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_TAG);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_128bit_ops = {
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -905,7 +905,7 @@ static int zynqmp_ipi_probe(struct platf
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *nc, *np = pdev->dev.of_node;
+-	struct zynqmp_ipi_pdata __percpu *pdata;
++	struct zynqmp_ipi_pdata *pdata;
+ 	struct of_phandle_args out_irq;
+ 	struct zynqmp_ipi_mbox *mbox;
+ 	int num_mboxes, ret = -EINVAL;
 
 
 
