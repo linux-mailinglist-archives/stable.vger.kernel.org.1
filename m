@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80794A3470A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7440A345B4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF67188C01D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09FEB1888AEC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2072143736;
-	Thu, 13 Feb 2025 15:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733C226B0B1;
+	Thu, 13 Feb 2025 15:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeTJn1xq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn8Os/Ds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9431526B0BD;
-	Thu, 13 Feb 2025 15:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AF226B096;
+	Thu, 13 Feb 2025 15:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460266; cv=none; b=KdopVttBzJ6rBg/OIfIHnvUd9USNJBmN61fQwR2GNimA5EiKvQhbO+cq7wgBZ3FctI9AOMubmpq3y8HsD+gBtCBMUrzBtLqIvxuOeoiK785BfaEGT2HPKCO9jBuJcQkyjTWutyiix06KyWyNtCXg0JRahtxeCqxka/Kpo26/k/0=
+	t=1739459454; cv=none; b=dYfLCpuyz8zaLL0SkfyPbvTN+xtcHIAISglAKypifqh0p4D8RqKMKdFdN/26/OIe5+GyV1R/rwtaMvYchN19gVEcPBOpNACVs5In7QXj14jlL5Ik5PaSodZKQzvUyPB0BRsknX/EgndTqI8wCVOL8D57q23eNQ8E+LtPsA/NJBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460266; c=relaxed/simple;
-	bh=ijDEKDfkLStkRYobX1f8BMmEKFZQ5DIqu0f2OVza8+w=;
+	s=arc-20240116; t=1739459454; c=relaxed/simple;
+	bh=0W/PCscFnfh/RhipbY/Ty+awdut2cBkuQcaxbpXkuPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQmrG6a001mCKZ0RvkwWMTyNQT79cocAQPwE3vLX36Y6dfqMb4fY7Jj6tfM2AMk3OWJfTFnfNxhOZ8/seEt6tmnOTMB8A1p8wd6PAHSd+a1a/r53TvTdadDMBTAJXfoO7GLcCBVTSV6IqRUFPaKDW1Qm2WzaQ7I4RCR0RVU/5co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeTJn1xq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0848FC4CED1;
-	Thu, 13 Feb 2025 15:24:25 +0000 (UTC)
+	 MIME-Version; b=WFxnAbPZFE8Fwu9urrqDayOrCrPMKJXA1AINtf5ZPrCz06n14zBUBIsJ/bS6xavIEmuhA/2Fv0qv9L6tRpvcizrYghHpgqYjm1ezxsXoCQUXs/gIfcChCWsoa/3j8V0nNOJ0q7DyavV+eTjEWFPcjn+eAaEJn3l3wMHYf7wmMO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn8Os/Ds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A380C4CED1;
+	Thu, 13 Feb 2025 15:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460266;
-	bh=ijDEKDfkLStkRYobX1f8BMmEKFZQ5DIqu0f2OVza8+w=;
+	s=korg; t=1739459454;
+	bh=0W/PCscFnfh/RhipbY/Ty+awdut2cBkuQcaxbpXkuPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeTJn1xqSq7a2RZu+2jHNEvtlG5Acifh2wfpnetelgXjOt41a0f/K66mZ4dF3vmOn
-	 HjR/afxk/bhkFRAxgVkenyZUf6DsOCDAyNqOlfLJCMv2kwGJVuJeT7x2lYqVqjTGhe
-	 tKbDHQ2YSM/0YcfukrQ9OjvszNl0Z4lurxvaxgps=
+	b=zn8Os/Ds6/CBiXP9vRFvez4dFDnMGgUq0OdIw0cDchQq/5RQE84B5ulnxAlmQLs77
+	 gM/affL8vlrhhKZZjwkQGDJ23Srxl6xXKi1RwlOo968onxd4WY/5abTB5tnUTIgZVv
+	 auwfzVz2Z7J9n5VdI4eK8ezgg3aEQJsIU6UwybAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasad Pandit <pjp@fedoraproject.org>,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/273] firmware: iscsi_ibft: fix ISCSI_IBFT Kconfig entry
+	Takashi Iwai <tiwai@suse.de>,
+	Samantha Glocker <iam@anislandsomewhere.com>
+Subject: [PATCH 6.13 268/443] ALSA: hda/realtek: Fix quirk matching for Legion Pro 7
 Date: Thu, 13 Feb 2025 15:27:13 +0100
-Message-ID: <20250213142409.766068035@linuxfoundation.org>
+Message-ID: <20250213142450.955288760@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e1e17a1715982201034024863efbf238bee2bdf9 ]
+commit 0f3a822ae2254a1e7ce3a130a1efd94e2cab73ee upstream.
 
-Fix ISCSI_IBFT Kconfig entry, replace tab with a space character.
+The recent cleanup of the quirk table entries with the codec ID
+matching caused a regression on some Lenovo Legion 7 models with PCI
+SSID 17aa:386f: it assumed wrongly as if the codec SSID on the machine
+were also 17aa:386f, but in this case, it was 17aa:38a8.  This made
+the binding with a wrong sub-codec, instead of TAS2781, the Cirrus
+codec was bound.
 
-Fixes: 138fe4e0697 ("Firmware: add iSCSI iBFT Support")
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For addressing the regression, correct the quirk entry to the right
+value 17aa:38a8.
+
+Note that this makes the entry appearing in an unsorted position.
+This exception is needed because the entry must match before the PCI
+SSID 17aa:386f.
+
+Also there is another entry for 17aa:38a8, but the latter is for PCI
+SSID matching while the new entry is for the codec SSID matching.
+
+Fixes: 504f052aa343 ("ALSA: hda/realtek: Use codec SSID matching for Lenovo devices")
+Reported-and-tested-by: Samantha Glocker <iam@anislandsomewhere.com>
+Closes: https://lore.kernel.org/CAGPQRHYd48U__UKYj2jJnT4+dnNNoWRBi+wj6zPRn=JpNMBUrg@mail.gmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250125120519.16420-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/Kconfig | 2 +-
+ sound/pci/hda/patch_realtek.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index f0e9f250669e2..3f2f22e47bfa1 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -139,7 +139,7 @@ config ISCSI_IBFT
- 	select ISCSI_BOOT_SYSFS
- 	select ISCSI_IBFT_FIND if X86
- 	depends on ACPI && SCSI && SCSI_LOWLEVEL
--	default	n
-+	default n
- 	help
- 	  This option enables support for detection and exposing of iSCSI
- 	  Boot Firmware Table (iBFT) via sysfs to userspace. If you wish to
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10890,7 +10890,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	HDA_CODEC_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x386e, "Yoga Pro 7 14ARP8", ALC285_FIXUP_SPEAKER2_TO_DAC1),
+-	HDA_CODEC_QUIRK(0x17aa, 0x386f, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C),
++	HDA_CODEC_QUIRK(0x17aa, 0x38a8, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C), /* this must match before PCI SSID 17aa:386f below */
+ 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion Pro 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
