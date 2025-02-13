@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49DCA34310
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C997CA345C2
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C9116D045
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8168616F924
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F8F1487FA;
-	Thu, 13 Feb 2025 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39BF26B0B1;
+	Thu, 13 Feb 2025 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drTPLDPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZBundi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB60281375;
-	Thu, 13 Feb 2025 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B042726B09D;
+	Thu, 13 Feb 2025 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457714; cv=none; b=Yh9K8zRWO92iKjafvvrmOuPSbETA59TKzY7kXRSQUHlTx6A7h8OBtGFHMtPxmJM1bQwUk1tsQVOvxZDy9fkuwXOnFkUXb8dntvXeF8pHDBvWG2v6MQzNkC9wMZ270bD+ofDesB7C5rsXvmthhBfxBPWlL2HYZ+6fM8pDfQ91lGI=
+	t=1739459242; cv=none; b=mlsyGB2d+MZxHpZIQxA5I+Luwy5e2O2vfTexLiaYIJjJE/UqIrWG5DgS82yHM059gqHRSvXN/FCo977v/NCnWiYKlOCbZuNWk6qyB7lhCqaGTRZO+QYLctWFel6FO16qQq86f8JNk0GxxNAnA/HgNtEbIRSt3TsoivTxzlXcQvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457714; c=relaxed/simple;
-	bh=jkEoVhYWGKvFr+H3GZWbUyvFnpYhtsDNJbPTNNvh06k=;
+	s=arc-20240116; t=1739459242; c=relaxed/simple;
+	bh=Yv310Ee3oZfVw8s46BeE1O+cFioS9f5jGyKkr0ho/0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lt2Rkk5YBCAiUxBw75VZFkB7p/MFwJbjUlUcllr3nF4K9yEc1Tlvg+/0cBP5eYofFN/SEeBDiUeVil8nLhYa/H55I4AG+oPsamZbq8iJJFMlvZM1nozpZBvwea4437G5i1UQvUgwelFDUgU0TEVfEhuz35u2CnL85BoDB6xLY+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drTPLDPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37D1C4CED1;
-	Thu, 13 Feb 2025 14:41:53 +0000 (UTC)
+	 MIME-Version; b=HidpVM5Q0Vq9UX8Pok+PXd3tTo99OuRPZZjokq68O2luYb5BJ4tRXSJ1HBtnfpFuPMrYIEEyywLH7uwdZDXATyqg+gmz6Vuacy00O6xqbUMI1dDCLMqhZKl7xsXi0L++NwijYxfucVX6VS8zOcBuot4n0nby+mPRdqG9a0JLwpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZBundi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DA9C4CED1;
+	Thu, 13 Feb 2025 15:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457714;
-	bh=jkEoVhYWGKvFr+H3GZWbUyvFnpYhtsDNJbPTNNvh06k=;
+	s=korg; t=1739459242;
+	bh=Yv310Ee3oZfVw8s46BeE1O+cFioS9f5jGyKkr0ho/0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drTPLDPIaRrM1cNb7KA1D8phWxPJ4RR/fG6FOLbm4+CPS7KqIjY1Bcd/egO/R8FY3
-	 giP21ttXH/kgh9SAOZ3yYoEkWNbvb6U8RipoxTCsAVd25orMnKp20pW9vlkhMAaD23
-	 gqTqmU/vBXgv9eilZjARdLtBbpZFcTv1CKY9lCZc=
+	b=MZBundi7VlfNK2xdOFaNQ7Rhp2H/q15As1uxJjcOs7IHcmA5pxkvO1tZqadsN/4ha
+	 uUgroqbbxAawzTe2E2IBMHIkcuDyV/oj7PHR/5hu1WIYCke9MVeiJU/LhugNvyRFEo
+	 cYFNYQtnrCY06WELsNWr4WQ9ZbEMZnLnrmFl/sTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
-	Jakub Jelinek <jakub@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.12 191/422] efi: libstub: Use -std=gnu11 to fix build with GCC 15
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 175/443] drm/amd/amdgpu: change the config of cgcg on gfx12
 Date: Thu, 13 Feb 2025 15:25:40 +0100
-Message-ID: <20250213142443.915921476@linuxfoundation.org>
+Message-ID: <20250213142447.356851425@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-commit 8ba14d9f490aef9fd535c04e9e62e1169eb7a055 upstream.
+commit 5cda56bd86c455341087dca29c65dc7c87f84340 upstream.
 
-GCC 15 changed the default C standard version to C23, which should not
-have impacted the kernel because it requests the gnu11 standard via
-'-std=' in the main Makefile. However, the EFI libstub Makefile uses its
-own set of KBUILD_CFLAGS for x86 without a '-std=' value (i.e., using
-the default), resulting in errors from the kernel's definitions of bool,
-true, and false in stddef.h, which are reserved keywords under C23.
+change the config of cgcg on gfx12
 
-  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
-     11 |         false   = 0,
-  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-     35 | typedef _Bool                   bool;
-
-Set '-std=gnu11' in the x86 cflags to resolve the error and consistently
-use the same C standard version for the entire kernel. All other
-architectures reuse KBUILD_CFLAGS from the rest of the kernel, so this
-issue is not visible for them.
-
-Cc: stable@vger.kernel.org
-Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
-Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
-Reported-by: Jakub Jelinek <jakub@redhat.com>
-Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |   11 -----------
+ 1 file changed, 11 deletions(-)
 
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -11,7 +11,7 @@ cflags-y			:= $(KBUILD_CFLAGS)
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -3999,17 +3999,6 @@ static void gfx_v12_0_update_coarse_grai
  
- cflags-$(CONFIG_X86_32)		:= -march=i386
- cflags-$(CONFIG_X86_64)		:= -mcmodel=small
--cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
-+cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
+ 		if (def != data)
+ 			WREG32_SOC15(GC, 0, regRLC_CGCG_CGLS_CTRL_3D, data);
+-
+-		data = RREG32_SOC15(GC, 0, regSDMA0_RLC_CGCG_CTRL);
+-		data &= ~SDMA0_RLC_CGCG_CTRL__CGCG_INT_ENABLE_MASK;
+-		WREG32_SOC15(GC, 0, regSDMA0_RLC_CGCG_CTRL, data);
+-
+-		/* Some ASICs only have one SDMA instance, not need to configure SDMA1 */
+-		if (adev->sdma.num_instances > 1) {
+-			data = RREG32_SOC15(GC, 0, regSDMA1_RLC_CGCG_CTRL);
+-			data &= ~SDMA1_RLC_CGCG_CTRL__CGCG_INT_ENABLE_MASK;
+-			WREG32_SOC15(GC, 0, regSDMA1_RLC_CGCG_CTRL, data);
+-		}
+ 	}
+ }
+ 
 
 
 
