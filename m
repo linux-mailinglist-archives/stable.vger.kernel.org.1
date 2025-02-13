@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-115578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D5FA34483
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EBEA347AC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABC4B171D76
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:58:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5754A16A062
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23461993B7;
-	Thu, 13 Feb 2025 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65491632DD;
+	Thu, 13 Feb 2025 15:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3pv92Ub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11mTFv8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546120010B;
-	Thu, 13 Feb 2025 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C237153828;
+	Thu, 13 Feb 2025 15:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458536; cv=none; b=MrlUsaUO2DplkVSiQVWsTm4lgW2meEDDeiCRhyyoPtNgzUcsMzFmrh41tZ44r4UvEtgqvptkUaikwwk5sadNogABUrQgkhO0mHTbWhTFjlsYBdtfrqcQp448E29adGBRNL/f+XMS6e4Ypep+MeVqTqEqPjk4kPx7cFr3GZJxfAA=
+	t=1739460694; cv=none; b=cVgbD7YOX70yxcY6raVauyiiohwsb/CfbyUvYQLrDXKK6qNAOEzRaRGOlm/70a+CHbKkaBVbPW5IfI/jac6hkj+Jt4oioP2TeSX0fE7KedODstg63BUgTmn59dlFKoZLrU+7rzRuOAMbmjKD7wJIr2T3DfhopUrI2/k3CfLh5es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458536; c=relaxed/simple;
-	bh=ezQjZWohAPGZDpfbb5CO5tosFEldxkP4Ds0bSNcKvPs=;
+	s=arc-20240116; t=1739460694; c=relaxed/simple;
+	bh=XSr7BG0mOBhqvRQ2ZkRemVBNxfQaIgy7WAy8sSBmodQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDxV1xhyMo2hXvcxg8TrdxI+Jvm1Qk8eRoA5NZvE79j5bDGy4bmPCNJDyqZjSXY7xOpyipNT/clhLEKwTImkV7S0chTWj0AVKjwKjguFgCr/PXFLy2rvVNq9/SH0+S/io6jvfEdYfqt0h2Myo1YSuOVLewr77mBdkf31fs5lnxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3pv92Ub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48ECC4CEE5;
-	Thu, 13 Feb 2025 14:55:35 +0000 (UTC)
+	 MIME-Version; b=eJ/sKf4ufwc4qfwDGBXvwxdsBBoZ/+/RZcCEJD1eKjkDWY/923L73+7nuMmLxb1++0Q7aN55/a4FxoosdC7ntKJcU7dMZvafGzdBw2eBPJfggYocVwMEqlj/LQyuNcFWnF1z3K1NdC+LSW4ra+GaNjwfLfeFLvPS1ZXAlrf7nto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11mTFv8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAD3C4CED1;
+	Thu, 13 Feb 2025 15:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458536;
-	bh=ezQjZWohAPGZDpfbb5CO5tosFEldxkP4Ds0bSNcKvPs=;
+	s=korg; t=1739460694;
+	bh=XSr7BG0mOBhqvRQ2ZkRemVBNxfQaIgy7WAy8sSBmodQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3pv92Ube2c/UNyEKdq4IiRgT0ARPHT5UGkPmF29EMl06XFoJYJFkRIouC/9x0GQa
-	 OZ4I5r76OovBAn3bEeKNQz+miQKZkjeKLClEkqrOMB+YOvoO10DssaULIerAMTBRlD
-	 Dlq8aQG0zvdYnoeKlB3nTbM2+xEpokt4BAiFq/tM=
+	b=11mTFv8HtfcYob+Zpi09Ip5IgCfXLvy5JjYdIiig2nHE/rCVDg+cXVOwd+4LBsX79
+	 mr42H8328BrmI9NfFP9JRcDV6LBJ7QAlay1x011wNtSNsQ8V9wcuGIywjK75kiq8u4
+	 qyeX2DlTpAnjb09d6nKI1aij+I96nsAmRpkvTlO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>
-Subject: [PATCH 6.12 409/422] Revert "btrfs: avoid monopolizing a core when activating a swap file"
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 186/273] arm64: dts: qcom: sm8550: Fix CDSP memory length
 Date: Thu, 13 Feb 2025 15:29:18 +0100
-Message-ID: <20250213142452.341773313@linuxfoundation.org>
+Message-ID: <20250213142414.675076205@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-This reverts commit 9f372e86b9bd1914df58c8f6e30939b7a224c6b0.
+commit 6b2570e1e43e4acd0fcb98c6489736fe1c67b222 upstream.
 
-The backport for linux-6.12.y, commit 9f372e86b9bd ("btrfs: avoid
-monopolizing a core when activating a swap file"), inserted
-cond_resched() in the wrong location.
+The address space in CDSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
+copied from older DTS, but it does not look accurate at all.
 
-Revert it now; a subsequent commit will re-backport the original patch.
+This should have no functional impact on Linux users, because PAS loader
+does not use this address space at all.
 
-Fixes: 9f372e86b9bd ("btrfs: avoid monopolizing a core when activating a swap file") # linux-6.12.y
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-8-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7200,8 +7200,6 @@ noinline int can_nocow_extent(struct ino
- 			ret = -EAGAIN;
- 			goto out;
- 		}
--
--		cond_resched();
- 	}
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -4089,7 +4089,7 @@
  
- 	if (file_extent)
+ 		remoteproc_cdsp: remoteproc@32300000 {
+ 			compatible = "qcom,sm8550-cdsp-pas";
+-			reg = <0x0 0x32300000 0x0 0x1400000>;
++			reg = <0x0 0x32300000 0x0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
 
 
 
