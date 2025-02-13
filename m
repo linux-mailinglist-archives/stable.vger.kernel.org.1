@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-115372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB97DA34369
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE1AA3456A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E723AA931
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:43:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE1893B31CF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA894F218;
-	Thu, 13 Feb 2025 14:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C291D63C5;
+	Thu, 13 Feb 2025 15:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5fLNN19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJarRYgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783EB281369;
-	Thu, 13 Feb 2025 14:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEDD1C5F37;
+	Thu, 13 Feb 2025 15:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457825; cv=none; b=cYtTw78jsP1ihhwvX8PRYdu2jUL76QIMRRgStnS1jk4BQWF2WhWTGExw344ocDi+QCbjBieJFk4BUn6kQlsloFTPEKBNDYNn/n7TEKGDD+n4oeq88xQmFITuUZxuEYAGaA5s4lav2508Trg8Tn89vvh8tYH7FnOnFnWry+vBsWc=
+	t=1739459139; cv=none; b=n7iUzna0LTLlNabW6ieop0H5XxzfpxOqeNeeG9Dd5LjCT28Q8Yh06bbB1VgIzZWH/iwj+sn7Yy/rhK97B0ZxPX/edLypNWQVg/n3+ni4P/339+DNxP55S5tEePQagr2rCsxUMcW5x98AxMJKjbdYMCP9SLfzy+CmKJqRJwhDAqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457825; c=relaxed/simple;
-	bh=ZReJ1Rdg0YjU7Q5FepkAsUU9wF1eN49UKlUsUPsnosQ=;
+	s=arc-20240116; t=1739459139; c=relaxed/simple;
+	bh=avgi+V/Eo9Tsw53Y3edqflW4gFzi/J117O1TjJXxv7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kp/BL5gVlO7wyWkjMSeJzQxhsvyqbCojNJls5WczMLuKreoq1jO9kB65rqClGLTo31hGxqYyq6h5fuZomoMMx7lJDA8YfDn0eMoQP2WUOLzncmiMPYQL0NjI2y7YkXNOTIHTnspRF/pxjgvHacrGI+Cot69zlEQh4Q0g8ug7/Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5fLNN19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE66C4CED1;
-	Thu, 13 Feb 2025 14:43:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rmNNjq4QIkOjxrrNhdXXhIRlALv8aRmttSLE95kkHqCoRNSQr8r67x91Xr/wxqPnvR1jDAkfO29wNk3SRG8W+doTu530bMuBs7IPMdR9ipDYtGkNjo2WNLJL37LwRM8vNSdT1oVmiFa6CGYXuSaZkhp70Ccjhz3Kget9QPAHz1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJarRYgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5EDC4CED1;
+	Thu, 13 Feb 2025 15:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457825;
-	bh=ZReJ1Rdg0YjU7Q5FepkAsUU9wF1eN49UKlUsUPsnosQ=;
+	s=korg; t=1739459139;
+	bh=avgi+V/Eo9Tsw53Y3edqflW4gFzi/J117O1TjJXxv7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5fLNN19H5ax3C6kWZyIGmDTNLEPySnWqQc3NylTAdZmGElLlVfa9qC64r5k7Vz4Z
-	 eER0P2zCQOaKSAyYpLhlk1EpH7tXetDrBUhJyCnf3d1CM4F7F+WL7lPFmZshIsjJnz
-	 i1AzKGfvdAtnrDDe7I6tREy7jMjGyQxCgqOsMpA4=
+	b=HJarRYgCTatxWuXgxAZfptggmhPCh4/qYtGa5RN8Wn7ZLtZW2pu8OW8tSANqGyL7+
+	 KJBH3E5cp7W4M3Lyl//pYKndm7jPPiMy+RIYThSKaj3FquUThk/gUoX1WhTi0/Zprk
+	 d7hMOf/LTUJQ71c4YvV652jFNYMFGoogT5BE6nDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 196/422] of: Fix of_find_node_opts_by_path() handling of alias+path+options
+	Ville Syrjala <ville.syrjala@linux.intel.com>,
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Brian Geffon <bgeffon@google.com>,
+	Tomasz Figa <tfiga@google.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 180/443] drm/i915: Fix page cleanup on DMA remap failure
 Date: Thu, 13 Feb 2025 15:25:45 +0100
-Message-ID: <20250213142444.108438834@linuxfoundation.org>
+Message-ID: <20250213142447.558696533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Brian Geffon <bgeffon@google.com>
 
-commit b9e58c934c56aa35b0fb436d9afd86ef326bae0e upstream.
+commit fa6182c8b13ebfdc70ebdc09161a70dd8131f3b1 upstream.
 
-of_find_node_opts_by_path() fails to find OF device node when its
-@path parameter have pattern below:
+When converting to folios the cleanup path of shmem_get_pages() was
+missed. When a DMA remap fails and the max segment size is greater than
+PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
+size. The cleanup code isn't properly using the folio apis and as a
+result isn't handling compound pages correctly.
 
-"alias-name/node-name-1/.../node-name-N:options".
+v2 -> v3:
+(Ville) Just use shmem_sg_free_table() as-is in the failure path of
+shmem_get_pages(). shmem_sg_free_table() will clear mapping unevictable
+but it will be reset when it retries in shmem_sg_alloc_table().
 
-The reason is that alias name length calculated by the API is wrong, as
-explained by example below:
+v1 -> v2:
+(Ville) Fixed locations where we were not clearing mapping unevictable.
 
-"testcase-alias/phandle-tests/consumer-a:testaliasoption".
- ^             ^                        ^
- 0             14                       39
-
-The right length of alias 'testcase-alias' is 14, but the result worked
-out by the API is 39 which is obvious wrong.
-
-Fix by using index of either '/' or ':' as the length who comes earlier.
-
-Fixes: 75c28c09af99 ("of: add optional options parameter to of_find_node_by_path()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241216-of_core_fix-v2-1-e69b8f60da63@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: Vidya Srinivas <vidya.srinivas@intel.com>
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
+Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
+Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Suggested-by: Tomasz Figa <tfiga@google.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250127204332.336665-1-bgeffon@google.com
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit 9e304a18630875352636ad52a3d2af47c3bde824)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/base.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -841,10 +841,10 @@ struct device_node *of_find_node_opts_by
- 	/* The path could begin with an alias */
- 	if (*path != '/') {
- 		int len;
--		const char *p = separator;
-+		const char *p = strchrnul(path, '/');
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -209,8 +209,6 @@ static int shmem_get_pages(struct drm_i9
+ 	struct address_space *mapping = obj->base.filp->f_mapping;
+ 	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
+ 	struct sg_table *st;
+-	struct sgt_iter sgt_iter;
+-	struct page *page;
+ 	int ret;
  
--		if (!p)
--			p = strchrnul(path, '/');
-+		if (separator && separator < p)
-+			p = separator;
- 		len = p - path;
+ 	/*
+@@ -239,9 +237,7 @@ rebuild_st:
+ 		 * for PAGE_SIZE chunks instead may be helpful.
+ 		 */
+ 		if (max_segment > PAGE_SIZE) {
+-			for_each_sgt_page(page, sgt_iter, st)
+-				put_page(page);
+-			sg_free_table(st);
++			shmem_sg_free_table(st, mapping, false, false);
+ 			kfree(st);
  
- 		/* of_aliases must not be NULL */
+ 			max_segment = PAGE_SIZE;
 
 
 
