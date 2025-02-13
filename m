@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC22CA34540
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96DCA342FC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6568189B68D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AAEA16CC7C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCD11ACEA7;
-	Thu, 13 Feb 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2E4221710;
+	Thu, 13 Feb 2025 14:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLOoZAp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wsp13Oy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3919C54B;
-	Thu, 13 Feb 2025 15:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5BA281349;
+	Thu, 13 Feb 2025 14:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459130; cv=none; b=b+l3l+DSA/wGDFK8ro3tlZXERFAG/f5T6D1iRUBw5uAXkgA8vaLWFptS4sOcDWEZUuWyk18idLmN6VvqRzM+/bwQMC+GKLPTO9yByCNJj8L3152SvX7RLh77jEgErj/7Z767lnH/kFpNm+HYyTeZi5fdZtkfJfDnORzcGbECK2w=
+	t=1739457694; cv=none; b=FJX+9+7DGxreI85ntpZtY4BPIAHAeAseWL4L7RhKHIpCpw+MvkMtFNGuC+bfKdpkiG1ifseM3/cMeTi9GQjjN57UrQQUQYe/jYQX8A1PFnWPqFExQKH7kIfpwOZhrNx2+IGmIkMwabZJi6DMSby0Dq2l1Z9XshuajiiqasnDGdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459130; c=relaxed/simple;
-	bh=hCCfmW7D7AhzFnzTOP8M17VoeDJkfx5m9ILcNwAwA1g=;
+	s=arc-20240116; t=1739457694; c=relaxed/simple;
+	bh=hl5Uyfa6yEXy4SeCx+vCC8u8dOO1mQ7wvptbhNorvAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GScIkVqy7aaubqH7uXdVRbmp9E88n3VriJfgx+MjrCOYvheZ+/o8YSrGC42/VjxMkMcPKqMdrKmgrY833mGMNzbzp+QEbCMG7h5LGVoEtgOJ5AelHMRZAaCymbIIuj43+AQZGJHMvDZ57EjNSU+AdzEpa2M3YjiDHT3bTMVcDm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLOoZAp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A5FC4CED1;
-	Thu, 13 Feb 2025 15:05:29 +0000 (UTC)
+	 MIME-Version; b=aiKO2v4QGWVOxvlR455Gu5LY7Cauw/iJ8597djRTebWCmB5xbPnwbFgSGbcS40iOHIXl1qmBxW/Z2KrSxG+NbACJ7FuncpE4aAy1P1DW0+DcCAf7ZuRFVxT2oZ3kVSlqbn+vtc5TebRGTHUyVBvs4IJXBgslYPP+bMgsECa92TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wsp13Oy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57999C4CED1;
+	Thu, 13 Feb 2025 14:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459129;
-	bh=hCCfmW7D7AhzFnzTOP8M17VoeDJkfx5m9ILcNwAwA1g=;
+	s=korg; t=1739457693;
+	bh=hl5Uyfa6yEXy4SeCx+vCC8u8dOO1mQ7wvptbhNorvAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLOoZAp2ZFhf6Tm0chbl7T/PITJuEyGgO8Bo2eAtTpm0IVdlpLkuWJX+4ez1U18RB
-	 pnQYUw8Ykb/9SjJpre9xYGy/LLiNfjXBNTwTv2AvG2nHilDQP4cTD6WiHoCxs3n4U2
-	 UfPNkiBL+y7lM9oiuTL1h4FG/00soRmQKCRJQW+o=
+	b=Wsp13Oy8n86GXP5hpdxeTBWuNsFquB5daLcIgcAClv/kqo5D4UgUngpU14Z9UPJ+C
+	 wUQfTIVg7uLeNZDZSN5T5Cvgt8LyOTqe3/ydt+hDwqRt+kODawrwq3IGyV0C3hz7dx
+	 kvpBU/iv/DL7ndT1zpZ2DEpFnaGWRxJvrDW0+ooE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 169/443] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
-Date: Thu, 13 Feb 2025 15:25:34 +0100
-Message-ID: <20250213142447.124485000@linuxfoundation.org>
+	Daniel Golle <daniel@makrotopia.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.12 186/422] clk: mediatek: mt2701-bdp: add missing dummy clk
+Date: Thu, 13 Feb 2025 15:25:35 +0100
+Message-ID: <20250213142443.724410273@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
+commit fd291adc5e9a4ee6cd91e57f148f3b427f80647b upstream.
 
-Explicitly verify the target vCPU is fully online _prior_ to clamping the
-index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
-generate '0', i.e. KVM will return vCPU0 instead of NULL.
+Add dummy clk for index 0 which was missed during the conversion to
+mtk_clk_simple_probe().
 
-In practice, the bug is unlikely to cause problems, as it will only come
-into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
-send interrupts to vCPU0 instead of dropping them on the floor.
-
-However, returning vCPU0 when it shouldn't exist per online_vcpus is
-problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
-to insert into the xarray before publishing the vCPU to userspace (see
-commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
-i.e. before vCPU creation is guaranteed to succeed.
-
-As a result, incorrectly providing access to vCPU0 will trigger a
-use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
-bails out of vCPU creation due to an error and frees vCPU0.  Commit
-afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
-in doing so introduced an unsolvable teardown conundrum.  Preventing
-accesses to vCPU0 before it's fully online will allow reverting commit
-afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
-
-Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
+Fixes: 973d1607d936 ("clk: mediatek: mt2701: use mtk_clk_simple_probe to simplify driver")
 Cc: stable@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>
-Cc: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://lore.kernel.org/r/b8526c882a50f2b158df0eccb4a165956fd8fa13.1734300668.git.daniel@makrotopia.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kvm_host.h |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/clk/mediatek/clk-mt2701-bdp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -963,6 +963,15 @@ static inline struct kvm_io_bus *kvm_get
- static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
- {
- 	int num_vcpus = atomic_read(&kvm->online_vcpus);
-+
-+	/*
-+	 * Explicitly verify the target vCPU is online, as the anti-speculation
-+	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
-+	 * index, clamping the index to 0 would return vCPU0, not NULL.
-+	 */
-+	if (i >= num_vcpus)
-+		return NULL;
-+
- 	i = array_index_nospec(i, num_vcpus);
+--- a/drivers/clk/mediatek/clk-mt2701-bdp.c
++++ b/drivers/clk/mediatek/clk-mt2701-bdp.c
+@@ -31,6 +31,7 @@ static const struct mtk_gate_regs bdp1_c
+ 	GATE_MTK(_id, _name, _parent, &bdp1_cg_regs, _shift, &mtk_clk_gate_ops_setclr_inv)
  
- 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+ static const struct mtk_gate bdp_clks[] = {
++	GATE_DUMMY(CLK_DUMMY, "bdp_dummy"),
+ 	GATE_BDP0(CLK_BDP_BRG_BA, "brg_baclk", "mm_sel", 0),
+ 	GATE_BDP0(CLK_BDP_BRG_DRAM, "brg_dram", "mm_sel", 1),
+ 	GATE_BDP0(CLK_BDP_LARB_DRAM, "larb_dram", "mm_sel", 2),
 
 
 
