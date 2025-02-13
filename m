@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-115290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C422A342E2
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A6BA345DC
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A081880320
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0AD73B4ABF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5106227EA7;
-	Thu, 13 Feb 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E022318A6C4;
+	Thu, 13 Feb 2025 15:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLQ/QzO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvLhTk92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6303C28382;
-	Thu, 13 Feb 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C32C2A1D1;
+	Thu, 13 Feb 2025 15:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457542; cv=none; b=JwxfSdBcNMeV8Kmw+/mhtvWmGmJiYat0GDUM2vCp0YkPLHjBPcDOTiSvt3Zf4Bl0OoW+URuZv2bn7j7i4Yuq5KZ5YvyNjiPvWkzRhH4KApRe5tW4BODGO3ISH145dX/99agRnvL1qbxv9Ul2l2hwRIyeq5cEc7Jl86qH80GFzWQ=
+	t=1739458957; cv=none; b=fSJmtcwEgFj1eDGzXVTkuFjURAXzUylEjIq6rEJSw03WNnFSEYom/SEeAlKaQWIzQs1gTWodEE3vw372FIw0Y3Gbjkoh7i05CviBA0wN35zx8fnvSYX4xVYTKBUmFIAbStTKrXjiGaRwVppVD9BUO+ykUd+GKv1r+WpIhwC3ebA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457542; c=relaxed/simple;
-	bh=moXUfdBBPkGJ2PeQ6PoJy+IKXfF/USttt89k2ewOvCE=;
+	s=arc-20240116; t=1739458957; c=relaxed/simple;
+	bh=9AGGOlJhwNgIy/z7NAe/S5bkYVhPJEZCWvssKg/OKL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHlg8qWVsrnAtFWpTEYFd8rS0Y7vQVs9D8+hIdmbaF9tsMgpbl8l2gLSrhdxeU37wuq9gh4BW1iYGSlZfVr4kqS1QlitPWca8LlGPr+6uE3IgIT0g9y1A/d1gCKDZSzGaq4jNUsodPPP9Pj59ZVQ5QSfOjWfyl2uBzqJ2bt8hnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLQ/QzO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7B5C4CEEA;
-	Thu, 13 Feb 2025 14:39:01 +0000 (UTC)
+	 MIME-Version; b=oHK0EPHNcU2kXvg0o2bDkCvPFS+Jn5EXkMW1H7vQujaaPO9xyy+PwY6kpMptBUi2rNkhjoDHttBfa5do+1zwk5O7cRI3/QtHYxfloWJg9nx6QqRV3UT+Eu+R1QIE+3mpdIgmeZQNMTSCHwHovch2OId42aAVKDFFWsmaqQ7Lqd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvLhTk92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1D5C4CED1;
+	Thu, 13 Feb 2025 15:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457542;
-	bh=moXUfdBBPkGJ2PeQ6PoJy+IKXfF/USttt89k2ewOvCE=;
+	s=korg; t=1739458957;
+	bh=9AGGOlJhwNgIy/z7NAe/S5bkYVhPJEZCWvssKg/OKL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLQ/QzO9pyrNUD1VtUxpquWp0cOClogb1GsvwFdN6RKQ6LPbZbvN5ae6I85jQfqEL
-	 x3L45cnFgvMhvi8O7r0097HRk26pMPEMKokY99+wqtuqHv6M/9LrWIke21BSPXUgLi
-	 6rImo13DmzHzuCI0yyDfGgY7vQ+hDHOJr+CCfhbw=
+	b=vvLhTk92a333HGPqT+Ilubk9ghtWGZoM8Ntf+AcJAd++SMS5LgLGZw/ZrmgPc2GjG
+	 yDYh98mni2mqtOXLxcVpljs6ksPTFYP9SC+cD4JgOXxPenw6CIfZZbjKMXB2wCBmJk
+	 MSBUcwfXQnV0RmSfayPMaapL9htY8gXPa9piylBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.12 142/422] binfmt_flat: Fix integer overflow bug on 32 bit systems
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 126/443] selftests: drv-net: rss_ctx: add missing cleanup in queue reconfigure
 Date: Thu, 13 Feb 2025 15:24:51 +0100
-Message-ID: <20250213142442.026038863@linuxfoundation.org>
+Message-ID: <20250213142445.472268970@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 55cf2f4b945f6a6416cc2524ba740b83cc9af25a upstream.
+[ Upstream commit de379dfd9ada2995699052f4a1ecebe5d8f8d70f ]
 
-Most of these sizes and counts are capped at 256MB so the math doesn't
-result in an integer overflow.  The "relocs" count needs to be checked
-as well.  Otherwise on 32bit systems the calculation of "full_data"
-could be wrong.
+Commit under Fixes adds ntuple rules but never deletes them.
 
-	full_data = data_len + relocs * sizeof(unsigned long);
-
-Fixes: c995ee28d29d ("binfmt_flat: prevent kernel dammage from corrupted executable headers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Nicolas Pitre <npitre@baylibre.com>
-Link: https://lore.kernel.org/r/5be17f6c-5338-43be-91ef-650153b975cb@stanley.mountain
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 29a4bc1fe961 ("selftest: extend test_rss_context_queue_reconfigure for action addition")
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250201013040.725123-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_flat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/binfmt_flat.c
-+++ b/fs/binfmt_flat.c
-@@ -478,7 +478,7 @@ static int load_flat_file(struct linux_b
- 	 * 28 bits (256 MB) is way more than reasonable in this case.
- 	 * If some top bits are set we have probable binary corruption.
- 	*/
--	if ((text_len | data_len | bss_len | stack_len | full_data) >> 28) {
-+	if ((text_len | data_len | bss_len | stack_len | relocs | full_data) >> 28) {
- 		pr_err("bad header\n");
- 		ret = -ENOEXEC;
- 		goto err;
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index ca8a7edff3dda..27e24e20749ff 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@ -252,6 +252,7 @@ def test_rss_queue_reconfigure(cfg, main_ctx=True):
+         try:
+             # this targets queue 4, which doesn't exist
+             ntuple2 = ethtool_create(cfg, "-N", flow)
++            defer(ethtool, f"-N {cfg.ifname} delete {ntuple2}")
+         except CmdExitFailure:
+             pass
+         else:
+@@ -260,6 +261,7 @@ def test_rss_queue_reconfigure(cfg, main_ctx=True):
+         ethtool(f"-X {cfg.ifname} {ctx_ref} weight 1 0 1 0")
+         # ntuple rule therefore targets queues 1 and 3
+         ntuple2 = ethtool_create(cfg, "-N", flow)
++        defer(ethtool, f"-N {cfg.ifname} delete {ntuple2}")
+         # should replace existing filter
+         ksft_eq(ntuple, ntuple2)
+         _send_traffic_check(cfg, port, ctx_ref, { 'target': (1, 3),
+-- 
+2.39.5
+
 
 
 
