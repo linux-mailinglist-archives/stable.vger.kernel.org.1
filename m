@@ -1,272 +1,111 @@
-Return-Path: <stable+bounces-115126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E414EA33E6A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 12:47:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB94A33EFF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 13:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51224188E5C4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 11:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AFB8188E422
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 12:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6340A213E63;
-	Thu, 13 Feb 2025 11:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C62F21D3FD;
+	Thu, 13 Feb 2025 12:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="TU0yA+FX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YuL02+pi"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D1D20AF82
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 11:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE48227EB4;
+	Thu, 13 Feb 2025 12:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739447230; cv=none; b=c+dYVRcOVL6bRTh2yJ68e7wMxm0bEDmzApBvjHZRAhrZDPkry661U6sOk/wM2qNzfCQkodXdNp5czAbBzqyJCURJezXVtckZcRlQ0HYDx9o6SCBJwebRQ31t+R8AW8UOK3NRT19+Lk+fRGnVF3ei79VM+EBD/UOZiBQ8fASCB24=
+	t=1739449341; cv=none; b=ElyoCm9jH6RerL0yR7ilb00op774aBx/NvfxgC0i0trYIte1R4z01fay1LvihcoRDAugdppUZRg1j4U9ZB/u/4UDh64M0c/8iH8AN4uoUicGVHZHuZP1/P/Yj8tvzX1Emu5tCSHL7R12wT32oFMhlz42UIV4W4Jqw2BqUgHrfNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739447230; c=relaxed/simple;
-	bh=PEDU2V9jLhsUydX0kyeJE2iCM3McVCgnwVv6RbI1tUA=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gL7uxde4wz9JT0c8PDRtbar5apb+yx7xh5v9KTVRan0KQ1FDUQTffIRryLCrXaN4sNvo+WUqpWGu8KtJx8z55VzIs0iWLNe776M6rmCiyMloFgIloHtFqIKb0BJoxe/Kt/nOgfXUfjNzaoLvOXpt8j3aF7Plx0Z+MZInZHGcwqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=TU0yA+FX; arc=none smtp.client-ip=203.205.221.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1739447224; bh=fQrCX2rcjv2N90oR6MccQf1RJl9VjINjASLx5Wvu878=;
-	h=From:To:Cc:Subject:Date;
-	b=TU0yA+FXeFYrF+XVsJKMl44E8p9QQHEeFq2k92+2s0W2/bHYhpvGwkJp/RPojaUqa
-	 ya9gmqpj8SkQgYFxp7J2GAOkji/KTbkSpLPCrBFR0ghwKfGJ6mNTAvBrtLroBdQYoA
-	 Jd/oU28krAg1yfd4B1zFSq1m6QnKtSRXNyWBZmCY=
-Received: from public ([120.244.194.25])
-	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
-	id BB8A60FE; Thu, 13 Feb 2025 19:46:56 +0800
-X-QQ-mid: xmsmtpt1739447216tbn7fjvg7
-Message-ID: <tencent_4D4DC3879124B5B5140E1D0C64031B6D5706@qq.com>
-X-QQ-XMAILINFO: N8i9SvusUD3b8ImJqxuHmsZzgwS8OwQsxpl13YauU8FuveK/cqb4cD667lU+qu
-	 OsxkaNitJ/3gomRcZ9rRQjHrBVSkVQfz47f5sYIlMIyRv+0AXbPN9tg88CmXQKLmi9l/isczqciP
-	 C8PjzYxT+f9viJ8VOy+KMj56FtY4VQcJUYOLBmAsew87TT3i14BLca9Omr8bTX0qsOlGK4Hxu8to
-	 m0WmP7XZCMTBTgrsSjOmflhW2665CKZKMGXfDMa9aovkyk5snGUYOAWzdMLY3JdDYcVe0eD/5lT0
-	 5TQZycMH9ox5mj3ztwiNgG4HznKhYnx8c6RXpMDaG83STkuMxbczuZlj7/dwTACxsyyaJBQLIZST
-	 5H3u8Ro6q1eiDD6eZ3PJAAAdl1KoDjCL1c05wmzrFbTB7aZVuLPsvf33gDZmnyXE0Sh08NPIrKnD
-	 g5a10H02P4mJInMBQ7bCmBOOKuM2cgrFoVxIvUapKTEDPA/ttyX9GH9X3LfghGja8tdUw1BkQxBJ
-	 D0rxg/RiDkiW271XiNNfEx1KycnaAIUd75/1JSwPNZtpYEgah+0ORu+FcowOBgwp86AFdn22CgaY
-	 WUF0g4nGdk8T4pDQrxAf/apmJUbC4/Quew73V/ECZzUvFoHLFRTvlZ7tM2g52RQvP3IJ6oaU29sk
-	 RtONKsB3llgIqvC/8013JwUcJZYNCVU37K4UOZ1Dh5zP7zwCqH+469kJ2ZccLw83NEKxUdod4YYn
-	 k5ud8gfEVpdyn9uSXvF//GOUTYBVN4g1/vO2MvCOdCxEdWHZXd0QngD1UHH+EsEdo5ylcxctRrpL
-	 4FXTAfdmzM8LtVD/73YmHNqCjauBzQax7YwmHEJMaV6N8g4x0hlCMRLtYXrpG5c+8LoHoCUnqNRy
-	 oc3UcNrW2DzVjLVqzXYUzWsYfuevidVvZs6AgkFt6uMnq6LT/H0qrIVkauXkQyArKX1Dk4PafAvH
-	 C67/yYPHdWQfTPxRyCUQ+Bt7MaRdlhQbFLOHDGAq9F2XoL9Rgi2UvaXuE05JoP4I2t4+y39icD5J
-	 fdapWMfChuvd1yVIGAZALJ4TIb4NElyu3VN/FBUohmGrdP7M15
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-From: lanbincn@qq.com
-To: stable@vger.kernel.org
-Cc: Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 5.15.y] nfsd: release svc_expkey/svc_export with rcu_work
-Date: Thu, 13 Feb 2025 19:46:56 +0800
-X-OQ-MSGID: <20250213114656.1242-1-lanbincn@qq.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1739449341; c=relaxed/simple;
+	bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PTaaEif1UqHjL6LW207TNMSnpKoxtaul4+uEil1G1nD7zVLCklG5C4koiGSregPKvNPm9M+5iRYc6tTUPsSmXSrW4Yo6gPhb0a2moGFkhwA9MIAB4Ji56zPs5lojyE+96mClOSYFAQmDgvoM+uK0iJCC+dX4b9bX547wr/Giydw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YuL02+pi; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa18088594so173870a91.3;
+        Thu, 13 Feb 2025 04:22:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739449339; x=1740054139; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
+        b=YuL02+pi/HjOjeGea+ITDt4AQJLkzdt6HVb2sz4rKEixkSluBb/XeNpMwHAvz9VXU9
+         F8Cko2vpB84w1aL96P036hTceVevjyHpS+ykVHVseXVc9j3UQKqgJaSd4r26mofkJnDO
+         LUlqQQ394PQyYhpCiCH9YtuBz3ga614f542M7eDdUGYBV5UIhABYIsqogs5ocxzaOLvK
+         FbeRam9rb6LQWG3XvSBpfek8kjTg+UO6KFwdkMifkZeSDrkWAs7efzfgeumo/qf6YGY4
+         4WdIguC2+O62J5p2o0mi+PwX0OO00sdGq75yoUyYj0gZ9V1axejaW1Ad30U6CWXdidi6
+         sP7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739449339; x=1740054139;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
+        b=R0tuhZKO0jih0rZfXr2P7jLs8lwcqy52GU8Kqw/WqIDZT3T93Lp7U/WZY5NZgQtNkN
+         V6bmPF870legLBrDJBLzQkIziBWUp/hJ4HHw5adnnK553fZd9pYkuPnafPHfGJNACA17
+         kXBL074L351ZZUq0ZoricN+HcOKuOkDsjTQ4oIqo8v1iojTddYBZWFdxOOKY1PWHWx3n
+         Koh3d4pV/yhDeTQZjySiSlyL7JzQzhvf+gDVj+onsTwyykqsPOKTlx6CDbReBx1p6XCy
+         IqlH2xBu+PHfqqvNu/yT0clnNREvAjpyO5izQmFBkol9FPUfhg1Z5xQ7qVPZFio19/dA
+         zbBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYNhdW8nnmtDZtwxgaSVGB18qfTnOVH362oPbC2RDUAGtA6Wh9U4fzgFackJCc9jT40BAxHwttChrOQM4=@vger.kernel.org, AJvYcCWjmVnE0zahJifbm2mSMQ5tXd9rqPoJ8/fLRYxWGrOcaR5za2H8R+lLeVXy0u1S0Pbbszq1TP2688xuKkGPOv8=@vger.kernel.org, AJvYcCX9vz4u/KK5aD9LugtIZOaeskYqmnxhsXCIdFGzk22T2sQQUlvPWfMfNO0dvTUNs8RW2Xyhm5AM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmJ2aiz6ftCd2LwCE0ipfZdUTUMq/zFVrrE0rF6yJAnUcx52ir
+	GOhxmddvcIKCEzBkEYT5HcaCZ+zs97CMuUTZFXaWRTBmcXLXjslZN+JsqQbmVJP0Bywm9EXuW5W
+	vp8wiVRDis0xfiP2islsYj7z+pps=
+X-Gm-Gg: ASbGncumbbUxTktnX+lo5diLw5dOP8Umy7l7W1NUB5H2jfIXOk9bRZ0mw7fFZ815gHC
+	Urzkv7iDItApmh0yx73LtfEyNZwmM3NGnUdZzRzht5IQPJDY/ElrXUz9cOvbnxdMm1Ofd/k1l
+X-Google-Smtp-Source: AGHT+IHmYvEzL9KGp/GiZCJityFb8+Au3r1Y0YDY9cYrjSKGnUmZw+tnh/sBiqD37rnyvyHdxym1Eq0TTuz5tYj63uE=
+X-Received: by 2002:a17:90b:33cb:b0:2ea:853a:99e0 with SMTP id
+ 98e67ed59e1d1-2fbf5c75392mr4064811a91.5.1739449339042; Thu, 13 Feb 2025
+ 04:22:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250210163732.281786-1-ojeda@kernel.org> <20250211103333.GB8653@willie-the-truck>
+In-Reply-To: <20250211103333.GB8653@willie-the-truck>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 13 Feb 2025 13:22:06 +0100
+X-Gm-Features: AWEUYZnMSt2s3upFBai0wYaA0s4vfSFiHEc-syAvZrBIXeINByCQBVsZZ4yEXKc
+Message-ID: <CANiq72=n++Hb1KX5fHCN=XayfPOxgayb=sDG4AvyEnDOZqAsNA@mail.gmail.com>
+Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
+To: Will Deacon <will@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, 
+	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>, Ralf Jung <post@ralfj.de>, 
+	Jubilee Young <workingjubilee@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Yang Erkun <yangerkun@huawei.com>
+On Tue, Feb 11, 2025 at 11:33=E2=80=AFAM Will Deacon <will@kernel.org> wrot=
+e:
+>
+> Patch looks fine to me, but I'll wait for Matthew to confirm that it
+> works for them. I'm also fine with adding the rustc-min-version helper
+> at the same time, tbh -- it's not exactly rocket science, but it would
+> need an Ack from Masahiro.
 
-commit f8c989a0c89a75d30f899a7cabdc14d72522bb8d upstream.
+Thanks Will -- happy to take it through the Rust tree for if needed
+with your Ack, I have to send a couple other bits anyway for -rc3.
 
-The last reference for `cache_head` can be reduced to zero in `c_show`
-and `e_show`(using `rcu_read_lock` and `rcu_read_unlock`). Consequently,
-`svc_export_put` and `expkey_put` will be invoked, leading to two
-issues:
+And, yeah, I went back and forth on whether to do the helper directly... :)
 
-1. The `svc_export_put` will directly free ex_uuid. However,
-   `e_show`/`c_show` will access `ex_uuid` after `cache_put`, which can
-   trigger a use-after-free issue, shown below.
-
-   ==================================================================
-   BUG: KASAN: slab-use-after-free in svc_export_show+0x362/0x430 [nfsd]
-   Read of size 1 at addr ff11000010fdc120 by task cat/870
-
-   CPU: 1 UID: 0 PID: 870 Comm: cat Not tainted 6.12.0-rc3+ #1
-   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-   1.16.1-2.fc37 04/01/2014
-   Call Trace:
-    <TASK>
-    dump_stack_lvl+0x53/0x70
-    print_address_description.constprop.0+0x2c/0x3a0
-    print_report+0xb9/0x280
-    kasan_report+0xae/0xe0
-    svc_export_show+0x362/0x430 [nfsd]
-    c_show+0x161/0x390 [sunrpc]
-    seq_read_iter+0x589/0x770
-    seq_read+0x1e5/0x270
-    proc_reg_read+0xe1/0x140
-    vfs_read+0x125/0x530
-    ksys_read+0xc1/0x160
-    do_syscall_64+0x5f/0x170
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-   Allocated by task 830:
-    kasan_save_stack+0x20/0x40
-    kasan_save_track+0x14/0x30
-    __kasan_kmalloc+0x8f/0xa0
-    __kmalloc_node_track_caller_noprof+0x1bc/0x400
-    kmemdup_noprof+0x22/0x50
-    svc_export_parse+0x8a9/0xb80 [nfsd]
-    cache_do_downcall+0x71/0xa0 [sunrpc]
-    cache_write_procfs+0x8e/0xd0 [sunrpc]
-    proc_reg_write+0xe1/0x140
-    vfs_write+0x1a5/0x6d0
-    ksys_write+0xc1/0x160
-    do_syscall_64+0x5f/0x170
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-   Freed by task 868:
-    kasan_save_stack+0x20/0x40
-    kasan_save_track+0x14/0x30
-    kasan_save_free_info+0x3b/0x60
-    __kasan_slab_free+0x37/0x50
-    kfree+0xf3/0x3e0
-    svc_export_put+0x87/0xb0 [nfsd]
-    cache_purge+0x17f/0x1f0 [sunrpc]
-    nfsd_destroy_serv+0x226/0x2d0 [nfsd]
-    nfsd_svc+0x125/0x1e0 [nfsd]
-    write_threads+0x16a/0x2a0 [nfsd]
-    nfsctl_transaction_write+0x74/0xa0 [nfsd]
-    vfs_write+0x1a5/0x6d0
-    ksys_write+0xc1/0x160
-    do_syscall_64+0x5f/0x170
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-2. We cannot sleep while using `rcu_read_lock`/`rcu_read_unlock`.
-   However, `svc_export_put`/`expkey_put` will call path_put, which
-   subsequently triggers a sleeping operation due to the following
-   `dput`.
-
-   =============================
-   WARNING: suspicious RCU usage
-   5.10.0-dirty #141 Not tainted
-   -----------------------------
-   ...
-   Call Trace:
-   dump_stack+0x9a/0xd0
-   ___might_sleep+0x231/0x240
-   dput+0x39/0x600
-   path_put+0x1b/0x30
-   svc_export_put+0x17/0x80
-   e_show+0x1c9/0x200
-   seq_read_iter+0x63f/0x7c0
-   seq_read+0x226/0x2d0
-   vfs_read+0x113/0x2c0
-   ksys_read+0xc9/0x170
-   do_syscall_64+0x33/0x40
-   entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Fix these issues by using `rcu_work` to help release
-`svc_expkey`/`svc_export`. This approach allows for an asynchronous
-context to invoke `path_put` and also facilitates the freeing of
-`uuid/exp/key` after an RCU grace period.
-
-Fixes: 9ceddd9da134 ("knfsd: Allow lockless lookups of the exports")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Bin Lan <lanbincn@qq.com>
----
- fs/nfsd/export.c | 31 +++++++++++++++++++++++++------
- fs/nfsd/export.h |  4 ++--
- 2 files changed, 27 insertions(+), 8 deletions(-)
-
-diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index 39228bd7492a..78db46f6cbc6 100644
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -40,15 +40,24 @@
- #define	EXPKEY_HASHMAX		(1 << EXPKEY_HASHBITS)
- #define	EXPKEY_HASHMASK		(EXPKEY_HASHMAX -1)
- 
--static void expkey_put(struct kref *ref)
-+static void expkey_put_work(struct work_struct *work)
- {
--	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
-+	struct svc_expkey *key =
-+		container_of(to_rcu_work(work), struct svc_expkey, ek_rcu_work);
- 
- 	if (test_bit(CACHE_VALID, &key->h.flags) &&
- 	    !test_bit(CACHE_NEGATIVE, &key->h.flags))
- 		path_put(&key->ek_path);
- 	auth_domain_put(key->ek_client);
--	kfree_rcu(key, ek_rcu);
-+	kfree(key);
-+}
-+
-+static void expkey_put(struct kref *ref)
-+{
-+	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
-+
-+	INIT_RCU_WORK(&key->ek_rcu_work, expkey_put_work);
-+	queue_rcu_work(system_wq, &key->ek_rcu_work);
- }
- 
- static int expkey_upcall(struct cache_detail *cd, struct cache_head *h)
-@@ -351,16 +360,26 @@ static void export_stats_destroy(struct export_stats *stats)
- 					     EXP_STATS_COUNTERS_NUM);
- }
- 
--static void svc_export_put(struct kref *ref)
-+static void svc_export_put_work(struct work_struct *work)
- {
--	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
-+	struct svc_export *exp =
-+		container_of(to_rcu_work(work), struct svc_export, ex_rcu_work);
-+
- 	path_put(&exp->ex_path);
- 	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
- 	export_stats_destroy(exp->ex_stats);
- 	kfree(exp->ex_stats);
- 	kfree(exp->ex_uuid);
--	kfree_rcu(exp, ex_rcu);
-+	kfree(exp);
-+}
-+
-+static void svc_export_put(struct kref *ref)
-+{
-+	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
-+
-+	INIT_RCU_WORK(&exp->ex_rcu_work, svc_export_put_work);
-+	queue_rcu_work(system_wq, &exp->ex_rcu_work);
- }
- 
- static int svc_export_upcall(struct cache_detail *cd, struct cache_head *h)
-diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index f73e23bb24a1..fa545d8dcc36 100644
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -75,7 +75,7 @@ struct svc_export {
- 	u32			ex_layout_types;
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
--	struct rcu_head		ex_rcu;
-+	struct rcu_work		ex_rcu_work;
- 	struct export_stats	*ex_stats;
- };
- 
-@@ -91,7 +91,7 @@ struct svc_expkey {
- 	u32			ek_fsid[6];
- 
- 	struct path		ek_path;
--	struct rcu_head		ek_rcu;
-+	struct rcu_work		ek_rcu_work;
- };
- 
- #define EX_ISSYNC(exp)		(!((exp)->ex_flags & NFSEXP_ASYNC))
--- 
-2.43.0
-
+Cheers,
+Miguel
 
