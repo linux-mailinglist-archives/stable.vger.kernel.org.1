@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-115339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48CAA3434D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:46:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA49FA34684
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0423A4920
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:41:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBEB73B5720
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C588E22172F;
-	Thu, 13 Feb 2025 14:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240AD15E5D4;
+	Thu, 13 Feb 2025 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgE3cElu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6vcgvJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD8338389;
-	Thu, 13 Feb 2025 14:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ECC26B09D;
+	Thu, 13 Feb 2025 15:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457707; cv=none; b=DufXazwqgp4mcMmO/U9yyhVOn8KUWXnMV7NORMwBwvjjs04BPayiATrq82uY+jKCVrhgX+4+M0NZnKE+51SeV+7m0o98zJsN/z2Bffc10LQpYqq/UJ4/ud9bMQMrHjj4OALdRulhwInRu05a7c+CbuF5z1CEzB30uwNEEs1nP+4=
+	t=1739459235; cv=none; b=SU3H/7cPkolk7+pFGCeWncKNrBlpORxYzgGOhHQyg4Gc+cqJ1iHCG3K4xXLRI88IG4rQG5RkNu969JZzrtb5rawTguFEqhL1IiPIGtUt5uCrEhVK9R/EjywaIsDtM74N4ucB7tBSvv+m/XqlM7W13RmMwtwUYi1dLJRoVeTJN+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457707; c=relaxed/simple;
-	bh=N4lKFpxBYlYcZhOz+PqE5lHhGLoqwI7hoBKWldB6Obw=;
+	s=arc-20240116; t=1739459235; c=relaxed/simple;
+	bh=YuIcC6hXDKQ9Ho2GQ/YgQM5Q7oPiDlScE0IWQ1364IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASSbYCZhIcOsV0N/2JPpE6Jq11z+sW0qtj/8E4sKfnDE2v5CnaV+PAWkbFkEBLlC+bkI8A/LOA6ZZUgPuEyzsP1MxcClZvURow5OLoPgpuMGTY2rhnfS2n2mKQQoSypUwr2GQjOfP7Np1Li4YxoQXhggQo/ZY+r6LmlSb5hqrS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgE3cElu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDEC4CED1;
-	Thu, 13 Feb 2025 14:41:46 +0000 (UTC)
+	 MIME-Version; b=MecYjvR7bl+oETiBjecx/DoXKf6n//MBoUKyKv+78Kktz0184qtsGAGiBHEZerdhx6CvXR/DJd9RBZ/vVemSfrDSb/5JS3tEqejTdltPS6CYV2BpwA5egULGNQavslET3okn5oe51wWU1HqC0B3od4t1uauixYjIUR+riC1/jBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6vcgvJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43544C4CED1;
+	Thu, 13 Feb 2025 15:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457707;
-	bh=N4lKFpxBYlYcZhOz+PqE5lHhGLoqwI7hoBKWldB6Obw=;
+	s=korg; t=1739459235;
+	bh=YuIcC6hXDKQ9Ho2GQ/YgQM5Q7oPiDlScE0IWQ1364IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgE3cElufKTXbQ0DVF10R4O7iao9pcExQyo30iEhU9jXBv9YEGqde8JXmCBDRigFW
-	 p7UTI2FGNR8w5owr3v3ExF0otKtabHB42+oW79LlohcTFOJ8v1ZBq/nGyn7pCcxlLO
-	 ccUVNl3u9hGdQKqBXMU8sSBToM2GApibEgilWf6Q=
+	b=x6vcgvJnHMESXvy3IXWE8gTw/YQFCuCu/OxOuPyQbvB/t/fXsbzhWR8oxv5wRirwA
+	 x1DoyYizi3UGP5FzaHmA4zAoSx8ZwDRGx6VeCMUOYjJY3L+y4VM/7ZF+ayTrgCi0G8
+	 SRQyl+gJ4sveBlICY68/+IWbemz3SBR7/o9FkKkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Buchbinder <rafi@rbk.io>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.12 189/422] seccomp: passthrough uretprobe systemcall without filtering
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sung Lee <sung.lee@amd.com>,
+	Aric Cyr <Aric.Cyr@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.13 173/443] drm/amd/display: Optimize cursor position updates
 Date: Thu, 13 Feb 2025 15:25:38 +0100
-Message-ID: <20250213142443.840424031@linuxfoundation.org>
+Message-ID: <20250213142447.279564203@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eyal Birger <eyal.birger@gmail.com>
+From: Aric Cyr <Aric.Cyr@amd.com>
 
-commit cf6cb56ef24410fb5308f9655087f1eddf4452e6 upstream.
+commit 024771f3fb75dc817e9429d5763f1a6eb84b6f21 upstream.
 
-When attaching uretprobes to processes running inside docker, the attached
-process is segfaulted when encountering the retprobe.
+[why]
+Updating the cursor enablement register can be a slow operation and accumulates
+when high polling rate cursors cause frequent updates asynchronously to the
+cursor position.
 
-The reason is that now that uretprobe is a system call the default seccomp
-filters in docker block it as they only allow a specific set of known
-syscalls. This is true for other userspace applications which use seccomp
-to control their syscall surface.
+[how]
+Since the cursor enable bit is cached there is no need to update the
+enablement register if there is no change to it.  This removes the
+read-modify-write from the cursor position programming path in HUBP and
+DPP, leaving only the register writes.
 
-Since uretprobe is a "kernel implementation detail" system call which is
-not used by userspace application code directly, it is impractical and
-there's very little point in forcing all userspace applications to
-explicitly allow it in order to avoid crashing tracked processes.
-
-Pass this systemcall through seccomp without depending on configuration.
-
-Note: uretprobe is currently only x86_64 and isn't expected to ever be
-supported in i386.
-
-Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-Reported-by: Rafael Buchbinder <rafi@rbk.io>
-Closes: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
-Link: https://lore.kernel.org/lkml/20250121182939.33d05470@gandalf.local.home/T/#me2676c378eff2d6a33f3054fed4a5f3afa64e65b
-Link: https://lore.kernel.org/lkml/20250128145806.1849977-1-eyal.birger@gmail.com/
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
-Link: https://lore.kernel.org/r/20250202162921.335813-2-eyal.birger@gmail.com
-[kees: minimized changes for easier backporting, tweaked commit log]
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Sung Lee <sung.lee@amd.com>
+Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/seccomp.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c      |    7 ++++---
+ drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c |    6 ++++--
+ drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c    |    8 +++++---
+ drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c  |   10 ++++++----
+ 4 files changed, 19 insertions(+), 12 deletions(-)
 
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -749,6 +749,15 @@ static bool seccomp_is_const_allow(struc
- 	if (WARN_ON_ONCE(!fprog))
- 		return false;
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -483,10 +483,11 @@ void dpp1_set_cursor_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
  
-+	/* Our single exception to filtering. */
-+#ifdef __NR_uretprobe
-+#ifdef SECCOMP_ARCH_COMPAT
-+	if (sd->arch == SECCOMP_ARCH_NATIVE)
-+#endif
-+		if (sd->nr == __NR_uretprobe)
-+			return true;
-+#endif
-+
- 	for (pc = 0; pc < fprog->len; pc++) {
- 		struct sock_filter *insn = &fprog->filter[pc];
- 		u16 code = insn->code;
-@@ -1023,6 +1032,9 @@ static inline void seccomp_log(unsigned
-  */
- static const int mode1_syscalls[] = {
- 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
-+#ifdef __NR_uretprobe
-+	__NR_uretprobe,
-+#endif
- 	-1, /* negative terminated */
- };
+-	REG_UPDATE(CURSOR0_CONTROL,
+-			CUR0_ENABLE, cur_en);
++	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
++		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
  
+-	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++	}
+ }
+ 
+ void dpp1_cnv_set_optional_cursor_attributes(
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+@@ -154,9 +154,11 @@ void dpp401_set_cursor_position(
+ 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
+ 	uint32_t cur_en = pos->enable ? 1 : 0;
+ 
+-	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
++	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
++		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
+ 
+-	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++	}
+ }
+ 
+ void dpp401_set_optional_cursor_attributes(
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+@@ -1044,11 +1044,13 @@ void hubp2_cursor_set_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
+ 
+-	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
++		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-	REG_UPDATE(CURSOR_CONTROL,
++		REG_UPDATE(CURSOR_CONTROL,
+ 			CURSOR_ENABLE, cur_en);
++	}
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 			CURSOR_X_POSITION, pos->x,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+@@ -718,11 +718,13 @@ void hubp401_cursor_set_position(
+ 			dc_fixpt_from_int(dst_x_offset),
+ 			param->h_scale_ratio));
+ 
+-	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
++		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-	REG_UPDATE(CURSOR_CONTROL,
+-		CURSOR_ENABLE, cur_en);
++		REG_UPDATE(CURSOR_CONTROL,
++			CURSOR_ENABLE, cur_en);
++	}
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 		CURSOR_X_POSITION, x_pos,
 
 
 
