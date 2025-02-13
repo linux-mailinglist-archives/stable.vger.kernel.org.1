@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C45A344CD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57BFA342D5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EC371727E7
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FAD7188E98E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D271F200120;
-	Thu, 13 Feb 2025 14:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4022A242917;
+	Thu, 13 Feb 2025 14:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TL5gWYKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQJYqlj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C46C1FFC5C;
-	Thu, 13 Feb 2025 14:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05ED2222CA;
+	Thu, 13 Feb 2025 14:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458788; cv=none; b=tNLa5+TGsRls8CAmt8QaynUMj4t6l3PWQJC5W64b8rD5MOxS4HYbW1hywjSWuMJ/cu38hoVDPTmzvsjwlK/JLb8NfNpFJFsoyV458z802U9h2rhtpVB+24NJW54cSO4q08PB7NBrcRd6xqcXTMWd3AIQ2LnCu0wWaG7euNCs2n0=
+	t=1739457496; cv=none; b=JJtisBBeLQLE/WVvXAXnNE7bxmorpIq0P2c5wt5/G/CjvTFP6TPerW8tksR0z5p9Moq2k5o93wafVDmpnHhz5Kn4OIfOD0mUp+kXni8iiaaihtKT/tERaqLpRUle/gvwFikFrjn2GdJebn2GZAMfLAswM3teHN9JHEsm8BHdkLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458788; c=relaxed/simple;
-	bh=FWc9Kn/FNgBDzLdiHtMURNI0FPeKtaD6YDLNgAZB/Sg=;
+	s=arc-20240116; t=1739457496; c=relaxed/simple;
+	bh=QnsHu11J0CjlTZQS2ksfBzf4Ce8EGUsoCSrfEgzDNbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ma9YWPB1ZEFzr41E1C2BJdKbvNecsMuBPHneSQ+8q+sIRptVrU+X2LEoiYnYLeh9YPZ2H5+OV07LYvtRsPjbUyyJoFJM/7PeEq79Io9GbvngzaQmTviai4k8zCj4PyrFHCDUyJ7uEc5CPJdaNotB8UoQv05u0V+c3QbBVzR5FC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TL5gWYKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04E5C4CEE4;
-	Thu, 13 Feb 2025 14:59:47 +0000 (UTC)
+	 MIME-Version; b=R1wQTttC5d4W/SuVFmF8ljcykTkOOLoMfHySu0dDthBTkzoInJyZpacD3HOqIy7chq6hwRmTlbwy7mbS1LobMZx3g+uEZiYJyNnDYNGj45C+LGGGvbySFxWxdhB4il2iYkeko5x0RbLkWpgaD6VBP3i1NRagq2FHPDZdZhneZr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQJYqlj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F5C4CED1;
+	Thu, 13 Feb 2025 14:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458788;
-	bh=FWc9Kn/FNgBDzLdiHtMURNI0FPeKtaD6YDLNgAZB/Sg=;
+	s=korg; t=1739457495;
+	bh=QnsHu11J0CjlTZQS2ksfBzf4Ce8EGUsoCSrfEgzDNbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TL5gWYKc1lRPX+vINNHRAnLzNb8PYCYXPhDpnErG/Oa53mUiGUJ7GKZ6M9xn5x6Xh
-	 QxKN34RK/6JJEB3WP145LCkgZjeVMrPFlr2vh4jKaI0BjPNX24funCYVvpLL/N3Ig6
-	 H46+eZ4qMGWcZyMl5a3mS7NpsVgBaqad0FYY1M38=
+	b=mQJYqlj74qQeVr6OL3eJUiIVerOx6ft0BAGtkm9UvkFfD+b824U3jL+b+OIHRTxm6
+	 9/kKlBfaLa0/DmW+XK/VJoKrUpj9qTmLvOJZlR2BJJKKFfKnW4Ms7eJNAGF71C/zhG
+	 BVqlLKeV47z+mR7tu3KUgai5cvGXSHa7Yka06dBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Emmanuel Florac <eflorac@intellique.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 079/443] net: wwan: iosm: Fix hibernation by re-binding the driver around it
+Subject: [PATCH 6.12 095/422] xfs: dont over-report free space or inodes in statvfs
 Date: Thu, 13 Feb 2025 15:24:04 +0100
-Message-ID: <20250213142443.661045142@linuxfoundation.org>
+Message-ID: <20250213142440.219957732@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 0b6f6593aa8c3a05f155c12fd0e7ad33a5149c31 ]
+[ Upstream commit 4b8d867ca6e2fc6d152f629fdaf027053b81765a ]
 
-Currently, the driver is seriously broken with respect to the
-hibernation (S4): after image restore the device is back into
-IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
-full re-launch of the rest of its firmware, but the driver restore
-handler treats the device as merely sleeping and just sends it a
-wake-up command.
+Emmanual Florac reports a strange occurrence when project quota limits
+are enabled, free space is lower than the remaining quota, and someone
+runs statvfs:
 
-This wake-up command times out but device nodes (/dev/wwan*) remain
-accessible.
-However attempting to use them causes the bootloader to crash and
-enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a crash
-dump is ready").
+  # mkfs.xfs -f /dev/sda
+  # mount /dev/sda /mnt -o prjquota
+  # xfs_quota  -x -c 'limit -p bhard=2G 55' /mnt
+  # mkdir /mnt/dir
+  # xfs_io -c 'chproj 55' -c 'chattr +P' -c 'stat -vvvv' /mnt/dir
+  # fallocate -l 19g /mnt/a
+  # df /mnt /mnt/dir
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/sda         20G   20G  345M  99% /mnt
+  /dev/sda        2.0G     0  2.0G   0% /mnt
 
-It seems that the device cannot be re-initialized from this crashed
-stage without toggling some reset pin (on my test platform that's
-apparently what the device _RST ACPI method does).
+I think the bug here is that xfs_fill_statvfs_from_dquot unconditionally
+assigns to f_bfree without checking that the filesystem has enough free
+space to fill the remaining project quota.  However, this is a
+longstanding behavior of xfs so it's unclear what to do here.
 
-While it would theoretically be possible to rewrite the driver to tear
-down the whole MUX / IPC layers on hibernation (so the bootloader does
-not crash from improper access) and then re-launch the device on
-restore this would require significant refactoring of the driver
-(believe me, I've tried), since there are quite a few assumptions
-hard-coded in the driver about the device never being partially
-de-initialized (like channels other than devlink cannot be closed,
-for example).
-Probably this would also need some programming guide for this hardware.
-
-Considering that the driver seems orphaned [1] and other people are
-hitting this issue too [2] fix it by simply unbinding the PCI driver
-before hibernation and re-binding it after restore, much like
-USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
-problem.
-
-Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses
-the existing suspend / resume handlers) and S4 (which uses the new code).
-
-[1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bdebb@leemhuis.info/
-[2]:
-https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804139413
-
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://patch.msgid.link/e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org> # v2.6.18
+Fixes: 932f2c323196c2 ("[XFS] statvfs component of directory/project quota support, code originally by Glen.")
+Reported-by: Emmanuel Florac <eflorac@intellique.com>
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_pcie.c | 56 ++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_qm_bhv.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_pcie.c b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-index 04517bd3325a2..a066977af0be5 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_pcie.c
-@@ -6,6 +6,7 @@
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
-+#include <linux/suspend.h>
- #include <net/rtnetlink.h>
+diff --git a/fs/xfs/xfs_qm_bhv.c b/fs/xfs/xfs_qm_bhv.c
+index 262f035b15c99..ed1d597c30ca2 100644
+--- a/fs/xfs/xfs_qm_bhv.c
++++ b/fs/xfs/xfs_qm_bhv.c
+@@ -32,21 +32,28 @@ xfs_fill_statvfs_from_dquot(
+ 	limit = blkres->softlimit ?
+ 		blkres->softlimit :
+ 		blkres->hardlimit;
+-	if (limit && statp->f_blocks > limit) {
+-		statp->f_blocks = limit;
+-		statp->f_bfree = statp->f_bavail =
+-			(statp->f_blocks > blkres->reserved) ?
+-			 (statp->f_blocks - blkres->reserved) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > blkres->reserved)
++			remaining = limit - blkres->reserved;
++
++		statp->f_blocks = min(statp->f_blocks, limit);
++		statp->f_bfree = min(statp->f_bfree, remaining);
++		statp->f_bavail = min(statp->f_bavail, remaining);
+ 	}
  
- #include "iosm_ipc_imem.h"
-@@ -18,6 +19,7 @@ MODULE_LICENSE("GPL v2");
- /* WWAN GUID */
- static guid_t wwan_acpi_guid = GUID_INIT(0xbad01b75, 0x22a8, 0x4f48, 0x87, 0x92,
- 				       0xbd, 0xde, 0x94, 0x67, 0x74, 0x7d);
-+static bool pci_registered;
- 
- static void ipc_pcie_resources_release(struct iosm_pcie *ipc_pcie)
- {
-@@ -448,7 +450,6 @@ static struct pci_driver iosm_ipc_driver = {
- 	},
- 	.id_table = iosm_ipc_ids,
- };
--module_pci_driver(iosm_ipc_driver);
- 
- int ipc_pcie_addr_map(struct iosm_pcie *ipc_pcie, unsigned char *data,
- 		      size_t size, dma_addr_t *mapping, int direction)
-@@ -530,3 +531,56 @@ void ipc_pcie_kfree_skb(struct iosm_pcie *ipc_pcie, struct sk_buff *skb)
- 	IPC_CB(skb)->mapping = 0;
- 	dev_kfree_skb(skb);
+ 	limit = dqp->q_ino.softlimit ?
+ 		dqp->q_ino.softlimit :
+ 		dqp->q_ino.hardlimit;
+-	if (limit && statp->f_files > limit) {
+-		statp->f_files = limit;
+-		statp->f_ffree =
+-			(statp->f_files > dqp->q_ino.reserved) ?
+-			 (statp->f_files - dqp->q_ino.reserved) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dqp->q_ino.reserved)
++			remaining = limit - dqp->q_ino.reserved;
++
++		statp->f_files = min(statp->f_files, limit);
++		statp->f_ffree = min(statp->f_ffree, remaining);
+ 	}
  }
-+
-+static int pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
-+{
-+	if (mode == PM_HIBERNATION_PREPARE || mode == PM_RESTORE_PREPARE) {
-+		if (pci_registered) {
-+			pci_unregister_driver(&iosm_ipc_driver);
-+			pci_registered = false;
-+		}
-+	} else if (mode == PM_POST_HIBERNATION || mode == PM_POST_RESTORE) {
-+		if (!pci_registered) {
-+			int ret;
-+
-+			ret = pci_register_driver(&iosm_ipc_driver);
-+			if (ret) {
-+				pr_err(KBUILD_MODNAME ": unable to re-register PCI driver: %d\n",
-+				       ret);
-+			} else {
-+				pci_registered = true;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static struct notifier_block pm_notifier = {
-+	.notifier_call = pm_notify,
-+};
-+
-+static int __init iosm_ipc_driver_init(void)
-+{
-+	int ret;
-+
-+	ret = pci_register_driver(&iosm_ipc_driver);
-+	if (ret)
-+		return ret;
-+
-+	pci_registered = true;
-+
-+	register_pm_notifier(&pm_notifier);
-+
-+	return 0;
-+}
-+module_init(iosm_ipc_driver_init);
-+
-+static void __exit iosm_ipc_driver_exit(void)
-+{
-+	unregister_pm_notifier(&pm_notifier);
-+
-+	if (pci_registered)
-+		pci_unregister_driver(&iosm_ipc_driver);
-+}
-+module_exit(iosm_ipc_driver_exit);
+ 
 -- 
 2.39.5
 
