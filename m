@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B432BA346C8
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C3EA3484C
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 862171898C76
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A31F3AA24A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11BB14AD2D;
-	Thu, 13 Feb 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2230C1531DB;
+	Thu, 13 Feb 2025 15:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQppsanb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaGUnPLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC3F26B0BC;
-	Thu, 13 Feb 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BB126B087;
+	Thu, 13 Feb 2025 15:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460015; cv=none; b=ia0kIsAJ2HAw+/Wv/Du+QBZKabTnLG4NW3RqAiEblQBT4xCCp3aJqh245pasd4Z0yFTpwzgSXyJCJhR4QL8KjJRD0FzTtBUT0Mg1EZFvY75CPhzNPEuxlawp26rXogcUkL1T77VwfqTpBGxpXYIsGSG78OiVsK8AHLk5sYV7TaI=
+	t=1739460832; cv=none; b=m6dL67q/lM9zqbPsAp+XIwFbV0kSLDtw79cK1m3+jLs3w9/VQorcIwgP26EsvI9i7SJvdXMTWWZfzXIfz5o7FOzPWa/PSQrIEgRmTCyNlF1r/bctNHJjI2kctxF8EOLaNXxb4r6ZGieL7dQL8UgQO3Ugc7J3zE+scWetmSDFRYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460015; c=relaxed/simple;
-	bh=xvSwb7hITc+IQXPakkLvr8RitRbc7YlDkgW67USQcck=;
+	s=arc-20240116; t=1739460832; c=relaxed/simple;
+	bh=hGxDcDwj98XpXyCT+S0rthDvi45r/vUqkv7RrozbbLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJXnRwGOtr4S5gRvK7wqmwNwjRm5wYz3kzyOmBQPEspzsVgc/CrmeNXbY6Ar18D8bui1fc5UcLyvtiH/7YZJnzxjAXmO1/qss+dfndmCObkJAbnHzCAHQMHpSUTfinIkctZ/p6L/vCKqBeUhuPKgRLRFJ0ytMCKl1dznLIeJCkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQppsanb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC03C4CED1;
-	Thu, 13 Feb 2025 15:20:14 +0000 (UTC)
+	 MIME-Version; b=g0AJjOGnEoOdZ5dnGCpz8FXIZ6IzffcVjrHtIkDAeqLaPLSqvgnHNOgv3vnhx+GwYtqRg4Qfa7aRYbO4eW13j7Fu+CsgSnwwDoAlstPVLwlz9p5IZvYXtARi64k+dvIebafPIilHsK5QsHez+SsEiV5fM5cHeh2RKl6v6GZR91U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaGUnPLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD90C4CED1;
+	Thu, 13 Feb 2025 15:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460015;
-	bh=xvSwb7hITc+IQXPakkLvr8RitRbc7YlDkgW67USQcck=;
+	s=korg; t=1739460832;
+	bh=hGxDcDwj98XpXyCT+S0rthDvi45r/vUqkv7RrozbbLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQppsanbU85E00cO2mOlyhxuczVU1JUXWaR/7e1qAmGCeGeSY1E4OMslmPu4mrycB
-	 P/gPrKWQjVKmO8fv0iRNWofuNEdV2WTJig37IOrdQF9DvPd3EdQz7VkO5lGfDhCiEQ
-	 7fFJZVbFDIzG2V8LAw2EnOMLcxOKeBY/6Fn9x/8g=
+	b=OaGUnPLOwWvgViQGleQGdMIw1Q29LMv6qmukyS5Ig/Hg2N2JOS24bQQxwu0gtEfTo
+	 2n25byNVAqgT6DMeWF8Ap2vHXpiewhhDUzCTBV72fTTtsc94FaUIYPL9DQtdTstzdr
+	 Q7Mfu/qYgA1P4ssd55m863tyTao9Lv7Ai1uZnGxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.13 432/443] timers/migration: Fix off-by-one root mis-connection
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 225/273] nvmem: imx-ocotp-ele: set word length to 1
 Date: Thu, 13 Feb 2025 15:29:57 +0100
-Message-ID: <20250213142457.290005058@linuxfoundation.org>
+Message-ID: <20250213142416.204383986@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 868c9037df626b3c245ee26a290a03ae1f9f58d3 upstream.
+commit 1b2cb4d0b5b6a9d9fe78470704309ec75f8a1c3a upstream.
 
-Before attaching a new root to the old root, the children counter of the
-new root is checked to verify that only the upcoming CPU's top group have
-been connected to it. However since the recently added commit b729cc1ec21a
-("timers/migration: Fix another race between hotplug and idle entry/exit")
-this check is not valid anymore because the old root is pre-accounted
-as a child to the new root. Therefore after connecting the upcoming
-CPU's top group to the new root, the children count to be expected must
-be 2 and not 1 anymore.
+The ELE hardware internally has a word length of 4. However, among other
+things we store MAC addresses in the ELE OCOTP. With a length of 6 bytes
+these are naturally unaligned to the word length. Therefore we must
+support unaligned reads in reg_read() and indeed it works properly when
+reg_read() is called via nvmem_reg_read(). Setting the word size to 4
+has the only visible effect that doing unaligned reads from userspace
+via bin_attr_nvmem_read() do not work because they are rejected by that
+function.
 
-This omission results in the old root to not be connected to the new
-root. Then eventually the system may run with more than one top level,
-which defeats the purpose of a single idle migrator.
+Given that we have to abstract from word accesses to byte accesses in
+the driver, set the word size to 1. This allows bytewise accesses from
+userspace to be able to test what the driver has to support anyway.
 
-Also the old root is pre-accounted but not connected upon the new root
-creation. But it can be connected to the new root later on. Therefore
-the old root may be accounted twice to the new root. The propagation of
-such overcommit can end up creating a double final top-level root with a
-groupmask incorrectly initialized. Although harmless given that the final
-top level roots will never have a parent to walk up to, this oddity
-opportunistically reported the core issue:
-
-  WARNING: CPU: 8 PID: 0 at kernel/time/timer_migration.c:543 tmigr_requires_handle_remote
-  CPU: 8 UID: 0 PID: 0 Comm: swapper/8
-  RIP: 0010:tmigr_requires_handle_remote
-  Call Trace:
-   <IRQ>
-   ? tmigr_requires_handle_remote
-   ? hrtimer_run_queues
-   update_process_times
-   tick_periodic
-   tick_handle_periodic
-   __sysvec_apic_timer_interrupt
-   sysvec_apic_timer_interrupt
-  </IRQ>
-
-Fix the problem by taking the old root into account in the children count
-of the new root so the connection is not omitted.
-
-Also warn when more than one top level group exists to better detect
-similar issues in the future.
-
-Fixes: b729cc1ec21a ("timers/migration: Fix another race between hotplug and idle entry/exit")
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250205160220.39467-1-frederic@kernel.org
+Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20241230141901.263976-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer_migration.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/nvmem/imx-ocotp-ele.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1677,6 +1677,9 @@ static int tmigr_setup_groups(unsigned i
- 
- 	} while (i < tmigr_hierarchy_levels);
- 
-+	/* Assert single root */
-+	WARN_ON_ONCE(!err && !group->parent && !list_is_singular(&tmigr_level_list[top]));
-+
- 	while (i > 0) {
- 		group = stack[--i];
- 
-@@ -1718,7 +1721,12 @@ static int tmigr_setup_groups(unsigned i
- 		WARN_ON_ONCE(top == 0);
- 
- 		lvllist = &tmigr_level_list[top];
--		if (group->num_children == 1 && list_is_singular(lvllist)) {
-+
-+		/*
-+		 * Newly created root level should have accounted the upcoming
-+		 * CPU's child group and pre-accounted the old root.
-+		 */
-+		if (group->num_children == 2 && list_is_singular(lvllist)) {
- 			/*
- 			 * The target CPU must never do the prepare work, except
- 			 * on early boot when the boot CPU is the target. Otherwise
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -129,7 +129,7 @@ static int imx_ele_ocotp_probe(struct pl
+ 	priv->config.owner = THIS_MODULE;
+ 	priv->config.size = priv->data->size;
+ 	priv->config.reg_read = priv->data->reg_read;
+-	priv->config.word_size = 4;
++	priv->config.word_size = 1;
+ 	priv->config.stride = 1;
+ 	priv->config.priv = priv;
+ 	priv->config.read_only = true;
 
 
 
