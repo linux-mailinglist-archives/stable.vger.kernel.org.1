@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-115887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8DAA345F4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F971A34413
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65B0E189571F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:13:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3863D3ABD82
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C05E3FB3B;
-	Thu, 13 Feb 2025 15:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9C7241666;
+	Thu, 13 Feb 2025 14:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUU4Si79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqOmRiu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1236726B09E;
-	Thu, 13 Feb 2025 15:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A164126981F;
+	Thu, 13 Feb 2025 14:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459598; cv=none; b=u9OWhDQB1apjAPiRlDNULQ7vmrCAd+AUBqP4gD8JCXPzBf7pThDFGs1Sd6sPeOhhi6gy9ggF14AenT075q+TWwKgh4sV4slpF9E1glqCXMwlR3a7eBqCR/5lqER5XBqBF7g845Jh7KFVxRGoSp2InIWqhxZEjRsTwB5EVb/IQaM=
+	t=1739458083; cv=none; b=HLCfT6VjcIdTEygKnI01KAbm8Sb92W6VQ8+LEVKmKt9XDhDs7g7zbKmeasxxkSghs3eW4xrnwN+ttyiPxyuBpmijfTB1mbz3QPpd/5bze0WJT9Ew5ulXsFb5yd01Mv5FXsPDOeJpCZSoKVJZJk9Gt57Y8zHZ466L2dOnZrXEpjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459598; c=relaxed/simple;
-	bh=zAmhossX3c38Vf8KXUw/7IuyOlKtMWg8H31/Yqb6NXQ=;
+	s=arc-20240116; t=1739458083; c=relaxed/simple;
+	bh=plO5H2H/tqw7mqlGSTRCuC1RIGW6en1pqeFdVfzy3KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaHRoR610J+9VIfHTpUmwTBi72ixXMgKf4LSA3ctUF3NyGbWgx5NtSEtuQzX+AxnLex189y1RwJfU25bY6nm7tr0EuF9jTkzzc7Dex1fSovPpqMXTdAV9ko1GxNv4CbElRmI9pXwvdltvlV7ET5W54dmg+Ii+N269jZGcAkNQ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUU4Si79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7162AC4CEE4;
-	Thu, 13 Feb 2025 15:13:17 +0000 (UTC)
+	 MIME-Version; b=k5VGnekSDjkHoYqdd0Td5TdBIyGRupk1AidIuTqJze71OJBwJ/kdTGPe00P0nqsO5W9sWhkfxJGDTE13EzkX4AcNieHFTxOncfqRuehSbZxyHj7TjfCYn9U8nIGdovgysot9HtvrKJGoltwO2+bBHuKAi9RQ3qqcrJ7in0292UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqOmRiu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D881C4CEE5;
+	Thu, 13 Feb 2025 14:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459597;
-	bh=zAmhossX3c38Vf8KXUw/7IuyOlKtMWg8H31/Yqb6NXQ=;
+	s=korg; t=1739458083;
+	bh=plO5H2H/tqw7mqlGSTRCuC1RIGW6en1pqeFdVfzy3KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUU4Si797ktlRKnxDWvfDKZDoK6LJpHaVmsGAchDhYnsvQPH5EoM0BEER5sqYgi9g
-	 nJRE7jhbi1mr5EFYmZ62ln+uau9QfKkFDQikC1GrhVuh4VC6DyI7Zaoxeqyohdbjtl
-	 nb+3RgluCRcXYc3ZGnmh1PcXiimA2MDjQcG+vDOs=
+	b=pqOmRiu3Z8WQ+B2t38WsbBdGRzqWejX23IcYPFD4H/vs1GfoBrX0QcK+JSSOyuTI1
+	 onaB2B4hrZ5Eh8C8PuI8cYJTHhVL/RLVBUvV1bHEn+7bt2kY60/dS7E/RzNG1ihiGS
+	 UC14p3iZrvjMjrmZoh8zNlfVCmuLGVMDMVJkpTgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.13 279/443] KVM: x86/mmu: Ensure NX huge page recovery thread is alive before waking
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 295/422] crypto: qce - fix priority to be less than ARMv8 CE
 Date: Thu, 13 Feb 2025 15:27:24 +0100
-Message-ID: <20250213142451.374857535@linuxfoundation.org>
+Message-ID: <20250213142447.926596305@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +66,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 43fb96ae78551d7bfa4ecca956b258f085d67c40 upstream.
+commit 49b9258b05b97c6464e1964b6a2fddb3ddb65d17 upstream.
 
-When waking a VM's NX huge page recovery thread, ensure the thread is
-actually alive before trying to wake it.  Now that the thread is spawned
-on-demand during KVM_RUN, a VM without a recovery thread is reachable via
-the related module params.
+As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
+on the CPU, and is also less well tested, give it a lower priority.
+Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
+equivalents, and the ciphers such as AES-XTS had the same priority which
+meant the QCE versions were chosen if they happened to be loaded later.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000040
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:vhost_task_wake+0x5/0x10
-  Call Trace:
-   <TASK>
-   set_nx_huge_pages+0xcc/0x1e0 [kvm]
-   param_attr_store+0x8a/0xd0
-   module_attr_store+0x1a/0x30
-   kernfs_fop_write_iter+0x12f/0x1e0
-   vfs_write+0x233/0x3e0
-   ksys_write+0x60/0xd0
-   do_syscall_64+0x5b/0x160
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f3b52710104
-   </TASK>
-  Modules linked in: kvm_intel kvm
-  CR2: 0000000000000040
-
-Fixes: 931656b9e2ff ("kvm: defer huge page recovery vhost task to later")
+Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
 Cc: stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250124234623.3609069-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ drivers/crypto/qce/aead.c     |    2 +-
+ drivers/crypto/qce/sha.c      |    2 +-
+ drivers/crypto/qce/skcipher.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7090,6 +7090,19 @@ static void mmu_destroy_caches(void)
- 	kmem_cache_destroy(mmu_page_header_cache);
- }
+--- a/drivers/crypto/qce/aead.c
++++ b/drivers/crypto/qce/aead.c
+@@ -786,7 +786,7 @@ static int qce_aead_register_one(const s
+ 	alg->init			= qce_aead_init;
+ 	alg->exit			= qce_aead_exit;
  
-+static void kvm_wake_nx_recovery_thread(struct kvm *kvm)
-+{
-+	/*
-+	 * The NX recovery thread is spawned on-demand at the first KVM_RUN and
-+	 * may not be valid even though the VM is globally visible.  Do nothing,
-+	 * as such a VM can't have any possible NX huge pages.
-+	 */
-+	struct vhost_task *nx_thread = READ_ONCE(kvm->arch.nx_huge_page_recovery_thread);
-+
-+	if (nx_thread)
-+		vhost_task_wake(nx_thread);
-+}
-+
- static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
- {
- 	if (nx_hugepage_mitigation_hard_disabled)
-@@ -7150,7 +7163,7 @@ static int set_nx_huge_pages(const char
- 			kvm_mmu_zap_all_fast(kvm);
- 			mutex_unlock(&kvm->slots_lock);
+-	alg->base.cra_priority		= 300;
++	alg->base.cra_priority		= 275;
+ 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
+ 					  CRYPTO_ALG_ALLOCATES_MEMORY |
+ 					  CRYPTO_ALG_KERN_DRIVER_ONLY |
+--- a/drivers/crypto/qce/sha.c
++++ b/drivers/crypto/qce/sha.c
+@@ -482,7 +482,7 @@ static int qce_ahash_register_one(const
  
--			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
-+			kvm_wake_nx_recovery_thread(kvm);
- 		}
- 		mutex_unlock(&kvm_lock);
- 	}
-@@ -7279,7 +7292,7 @@ static int set_nx_huge_pages_recovery_pa
- 		mutex_lock(&kvm_lock);
+ 	base = &alg->halg.base;
+ 	base->cra_blocksize = def->blocksize;
+-	base->cra_priority = 300;
++	base->cra_priority = 175;
+ 	base->cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONLY;
+ 	base->cra_ctxsize = sizeof(struct qce_sha_ctx);
+ 	base->cra_alignmask = 0;
+--- a/drivers/crypto/qce/skcipher.c
++++ b/drivers/crypto/qce/skcipher.c
+@@ -461,7 +461,7 @@ static int qce_skcipher_register_one(con
+ 	alg->encrypt			= qce_skcipher_encrypt;
+ 	alg->decrypt			= qce_skcipher_decrypt;
  
- 		list_for_each_entry(kvm, &vm_list, vm_list)
--			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
-+			kvm_wake_nx_recovery_thread(kvm);
- 
- 		mutex_unlock(&kvm_lock);
- 	}
-@@ -7415,14 +7428,20 @@ static void kvm_mmu_start_lpage_recovery
- {
- 	struct kvm_arch *ka = container_of(once, struct kvm_arch, nx_once);
- 	struct kvm *kvm = container_of(ka, struct kvm, arch);
-+	struct vhost_task *nx_thread;
- 
- 	kvm->arch.nx_huge_page_last = get_jiffies_64();
--	kvm->arch.nx_huge_page_recovery_thread = vhost_task_create(
--		kvm_nx_huge_page_recovery_worker, kvm_nx_huge_page_recovery_worker_kill,
--		kvm, "kvm-nx-lpage-recovery");
-+	nx_thread = vhost_task_create(kvm_nx_huge_page_recovery_worker,
-+				      kvm_nx_huge_page_recovery_worker_kill,
-+				      kvm, "kvm-nx-lpage-recovery");
-+
-+	if (!nx_thread)
-+		return;
-+
-+	vhost_task_start(nx_thread);
- 
--	if (kvm->arch.nx_huge_page_recovery_thread)
--		vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
-+	/* Make the task visible only once it is fully started. */
-+	WRITE_ONCE(kvm->arch.nx_huge_page_recovery_thread, nx_thread);
- }
- 
- int kvm_mmu_post_init_vm(struct kvm *kvm)
+-	alg->base.cra_priority		= 300;
++	alg->base.cra_priority		= 275;
+ 	alg->base.cra_flags		= CRYPTO_ALG_ASYNC |
+ 					  CRYPTO_ALG_ALLOCATES_MEMORY |
+ 					  CRYPTO_ALG_KERN_DRIVER_ONLY;
 
 
 
