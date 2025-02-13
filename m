@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-116027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B90A34717
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:31:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC1FA34813
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72A13B4C9A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10BA016CEE8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B033F14B95A;
-	Thu, 13 Feb 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3381CDA3F;
+	Thu, 13 Feb 2025 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrb5vupm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbB9Dgdp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA2226B0BC;
-	Thu, 13 Feb 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F421C5F37;
+	Thu, 13 Feb 2025 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460070; cv=none; b=Anj9wnyflCbTPD/23D2Nm+vdPLYpGmz1iiu+xz11gEz0UkmY6lwVXwMGN2cYSmoElKQTfzblKIpxRgMjdQ6DBAvx5BaK7A3Cvun6HSzHXgpHvHlqIwWERkc36hDuptYebnRrv76s6Q7zK2v+d0FRiJaeRllHvhaSpDRT5qV8m9E=
+	t=1739460896; cv=none; b=SaDGJSPDmcvHky0OV+Wte4c07m1BG20GHJxoApDTpYCo+oUxldfeWpJaTrQyrn3tr9ClyIimJGW3A6f1dFF//d5X/giWeMbT6yNS1FppmmUEoJG/AUs0lWDJRQ6YzChfMfKnzjTTqHAAQ3YOKLECEvda6G2AgqiWLRGKLrgHQuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460070; c=relaxed/simple;
-	bh=Rw9SFSa5pfgPIyRrzhMq6yEIXumOCQswnssD5PtJ/KQ=;
+	s=arc-20240116; t=1739460896; c=relaxed/simple;
+	bh=dcqYYKDMocP5SuugkfdqgKfUxHBljHCBCZAtz1WPmZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtF9I5Tf4UW431VqmR92bYPSSaU7kFDLls7kUrwTvf9sVNJUgDrlTbnmr0u4Zd0AhhniH9q/iJLKG0YAG5q574HTsDWKcluoOMK3FGZqZDDAnSdqPug3M3oXtuQIOWm3BEW1lqoZ1MykE2KHXG97LAnBYybIFXWDtQsfIuVTmu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrb5vupm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7B0C4CED1;
-	Thu, 13 Feb 2025 15:21:09 +0000 (UTC)
+	 MIME-Version; b=OR2jos/PfyPkiPD8DpNIsUADreaAfh1JAyyrpmdaGzlgGBj9XRto2kT1mwlgJNmTM4xn+k83cK7SY9blqE7gJUhEMFtU5HFe4f5d7KJPzAsYp1ItPwusKU+yL7BHT1QunnNd9kCpcgkgzrLyYKGSIK9gRgdaJx0Ng9vkVdqajSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbB9Dgdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEE1C4CEE8;
+	Thu, 13 Feb 2025 15:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460070;
-	bh=Rw9SFSa5pfgPIyRrzhMq6yEIXumOCQswnssD5PtJ/KQ=;
+	s=korg; t=1739460896;
+	bh=dcqYYKDMocP5SuugkfdqgKfUxHBljHCBCZAtz1WPmZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrb5vupmNezPXRrjhTN437xXbnBRdBwlQlIJggJiVzL8Km7QfBAbxDc0YyMeBVW6F
-	 Qz72hq05QGsr8o0Z86LbT8jHqJ3JXKHAHIXzsj3EsM63WIdM4dgXcQx8VLE3XLMhCs
-	 6+D0572Cx3KCrksZio6GDP0rmJ26OvwlHRwtVZkk=
+	b=XbB9DgdpoKP+ecR94luljmf7FMSJOO2cv4GV+GnXiAq7YRUfWyjgXsmzpI+KWj+OU
+	 CHYQmbgk3WaF8SgZ/dW20i2VgmbtaF7WHb+ft/bRK0mLzABRKretJytxFsyvE5H5Mo
+	 qeC8yT6oh4G0DeUDCHSRr38st4W1YCK+pD79MXGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Barry Song <baohua@kernel.org>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 418/443] scripts/gdb: fix aarch64 userspace detection in get_current_task
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 211/273] media: i2c: ds90ub960: Fix UB9702 VC map
 Date: Thu, 13 Feb 2025 15:29:43 +0100
-Message-ID: <20250213142456.742767628@linuxfoundation.org>
+Message-ID: <20250213142415.656509955@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 4ebc417ef9cb34010a71270421fe320ec5d88aa2 upstream.
+commit 5dbbd0609b83f6eb72c005e2e5979d0cd25243c8 upstream.
 
-At least recent gdb releases (seen with 14.2) return SP_EL0 as signed long
-which lets the right-shift always return 0.
+The driver uses a static CSI-2 virtual channel mapping where all virtual
+channels from an RX port are mapped to a virtual channel number matching
+the RX port number.
 
-Link: https://lkml.kernel.org/r/dcd2fabc-9131-4b48-8419-6444e2d67454@siemens.com
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The UB960 and UB9702 have different registers for the purpose, and the
+UB9702 version is not correct. Each of the VC_ID_MAP registers do not
+contain a single mapping, as the driver currently thinks, but two.
+
+This can cause received VCs other than 0 to be mapped in a wrong way.
+
+Fix this by writing both mappings to each register.
+
+Cc: stable@vger.kernel.org
+Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/cpus.py |    2 +-
+ drivers/media/i2c/ds90ub960.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/gdb/linux/cpus.py
-+++ b/scripts/gdb/linux/cpus.py
-@@ -167,7 +167,7 @@ def get_current_task(cpu):
-             var_ptr = gdb.parse_and_eval("&pcpu_hot.current_task")
-             return per_cpu(var_ptr, cpu).dereference()
-     elif utils.is_target_arch("aarch64"):
--        current_task_addr = gdb.parse_and_eval("$SP_EL0")
-+        current_task_addr = gdb.parse_and_eval("(unsigned long)$SP_EL0")
-         if (current_task_addr >> 63) != 0:
-             current_task = current_task_addr.cast(task_ptr_type)
-             return current_task.dereference()
+--- a/drivers/media/i2c/ds90ub960.c
++++ b/drivers/media/i2c/ds90ub960.c
+@@ -2534,7 +2534,7 @@ static int ub960_configure_ports_for_str
+ 				for (i = 0; i < 8; i++)
+ 					ub960_rxport_write(priv, nport,
+ 							   UB960_RR_VC_ID_MAP(i),
+-							   nport);
++							   (nport << 4) | nport);
+ 			}
+ 
+ 			break;
 
 
 
