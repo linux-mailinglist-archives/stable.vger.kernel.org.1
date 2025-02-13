@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-115768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD32A345FD
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:21:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802D4A3431E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2171893548
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD65016306E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C927C26B0B7;
-	Thu, 13 Feb 2025 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CE413D8A4;
+	Thu, 13 Feb 2025 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXNyiRf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ7hREKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B1D26B09C;
-	Thu, 13 Feb 2025 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366DC281369;
+	Thu, 13 Feb 2025 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459183; cv=none; b=XaIrYR3/401W1c9bBSimpu28x5qoJ8oO9AYICfqntbobaII+0eb2HWO9InfIlrTnAvjk/dPV0mY4fQDH90f0eSKRh58qZT0dauWH1p9xv3Y6tmyGJB5eoQwvuwbz6PEAnu4kLgSWzb+TiwiYUrp3kclU6EMDyFULPuV1XuHZku4=
+	t=1739457762; cv=none; b=msDhho3lvNhs9QAbRJc55LbrUQ96paYW1wLfFZ4I9sc1lmwxcHFZ6HwRWucDDx2ehrmaZ+XOD9uGYrxRSH9x0jqkxDF6IOG1CCl4LEmP+UtVd4eaLVuRDakpk3ez0iPEyVug5Z/LNa/ehuTL5y9xfqmZm5Y31QN1AdiDU1o4vGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459183; c=relaxed/simple;
-	bh=hFjWAqvyl2UxnvWrkVxm93togf3pNvGcmX3N7VZv3Io=;
+	s=arc-20240116; t=1739457762; c=relaxed/simple;
+	bh=RemUqDVAE4pgGFwmWtJzPbt6bIoZ81+nhUE0ujAwi68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r200zWlZJux99MfQ/Xa8Fvgu5zhLRAzl0KWHZV8orKdOZFjaHwzbLrK+rWoi7mrHLMrXfFRlSH65qY59zpLNcXb6tdO8b2o/boUIlXhb8PalNuckAhlmYxIfcPCCUygZ7bPybe8HPfGkAvVleO6yc1gHYAdXHCzsNfxeKyZkY/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXNyiRf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F0EC4CED1;
-	Thu, 13 Feb 2025 15:06:22 +0000 (UTC)
+	 MIME-Version; b=r46g6wvzlbTFL4ltmfTNSkz4zQkxTkRndBeXUQvJUD7eaLHRG6NT176TVlicugjTqaJrljpNIPpHv2plhUjMuL4B0r1iiNdGpX/fogCa67OAn7vV+Eo4e7Ftk1ZICV+KbyOtQPuiBiErsrdWxUV+lC7cKxwjcS3ct0n8Qqa9QZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ7hREKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F7FC4CED1;
+	Thu, 13 Feb 2025 14:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459183;
-	bh=hFjWAqvyl2UxnvWrkVxm93togf3pNvGcmX3N7VZv3Io=;
+	s=korg; t=1739457762;
+	bh=RemUqDVAE4pgGFwmWtJzPbt6bIoZ81+nhUE0ujAwi68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXNyiRf78bUs9wzsYzrbwX3PPmZi+7oAhBFoMsQDadnlts4FJUrebwZdUyz9ZxLQ5
-	 dNlTjTUewDUZlxTSRk8gHAg5nZrTfm6U6QK8m1c2Q+VomtpoTAbG4YYwoop1ecIzlT
-	 jvX2Rpd5uaUCAxojngZG6Z+9AQUzQMlMh6FNn6Bs=
+	b=lJ7hREKKn9wLpPWEUQCi0yCu8wlOSEcir+kOd+R9CxqthHDcYB0kLUglWlGZEMi7N
+	 uLKivrrfFvOKj4YOapRyfFktoS4JhtqxP8mkdYOuVE1e2dpV1vboNQWnqXYeIyVaFc
+	 9z1vZlQT9TRupg7PwXlCXseIjNUPdlOSWwwa1Toc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gstir <david@sigma-star.at>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.13 191/443] KEYS: trusted: dcp: fix improper sg use with CONFIG_VMAP_STACK=y
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Subject: [PATCH 6.12 207/422] wifi: rtw88: 8703b: Fix RX/TX issues
 Date: Thu, 13 Feb 2025 15:25:56 +0100
-Message-ID: <20250213142447.982589852@linuxfoundation.org>
+Message-ID: <20250213142444.528502816@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gstir <david@sigma-star.at>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-commit e8d9fab39d1f87b52932646b2f1e7877aa3fc0f4 upstream.
+commit a806a8160a0fcaff368bb510c8a52eff37faf727 upstream.
 
-With vmalloc stack addresses enabled (CONFIG_VMAP_STACK=y) DCP trusted
-keys can crash during en- and decryption of the blob encryption key via
-the DCP crypto driver. This is caused by improperly using sg_init_one()
-with vmalloc'd stack buffers (plain_key_blob).
-
-Fix this by always using kmalloc() for buffers we give to the DCP crypto
+Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
+fatal and do not seem to have any impact, just fix them to match vendor
 driver.
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key")
-Signed-off-by: David Gstir <david@sigma-star.at>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+However the last one in rtw8703b_set_channel_bb() clears too many bits
+in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
+above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+
+With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+
+Cc: stable@vger.kernel.org
+Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-by: Fiona Klute <fiona.klute@gmx.de>
+Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250103075107.1337533-1-anarsoul@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_dcp.c |   22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -201,12 +201,16 @@ static int trusted_dcp_seal(struct trust
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
--	u8 plain_blob_key[AES_KEYSIZE_128];
-+	u8 *plain_blob_key;
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -911,7 +911,7 @@ static void rtw8703b_set_channel_bb(stru
+ 		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_OFDM0_TX_PSD_NOISE,
+-				 GENMASK(31, 20), 0x0);
++				 GENMASK(31, 30), 0x0);
+ 		rtw_write32(rtwdev, REG_BBRX_DFIR, 0x4A880000);
+ 		rtw_write32(rtwdev, REG_OFDM0_A_TX_AFE, 0x19F60000);
+ 		break;
+@@ -1257,9 +1257,9 @@ static u8 rtw8703b_iqk_rx_path(struct rt
+ 	rtw_write32(rtwdev, REG_RXIQK_TONE_A_11N, 0x38008c1c);
+ 	rtw_write32(rtwdev, REG_TX_IQK_TONE_B, 0x38008c1c);
+ 	rtw_write32(rtwdev, REG_RX_IQK_TONE_B, 0x38008c1c);
+-	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8216000f);
++	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8214030f);
+ 	rtw_write32(rtwdev, REG_RXIQK_PI_A_11N, 0x28110000);
+-	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x28110000);
++	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x82110000);
+ 	rtw_write32(rtwdev, REG_RXIQK_PI_B, 0x28110000);
  
- 	blen = calc_blob_len(p->key_len);
- 	if (blen > MAX_BLOB_SIZE)
- 		return -E2BIG;
+ 	/* LOK setting */
+@@ -1431,7 +1431,7 @@ void rtw8703b_iqk_fill_a_matrix(struct r
+ 		return;
  
-+	plain_blob_key = kmalloc(AES_KEYSIZE_128, GFP_KERNEL);
-+	if (!plain_blob_key)
-+		return -ENOMEM;
-+
- 	b->fmt_version = DCP_BLOB_VERSION;
- 	get_random_bytes(b->nonce, AES_KEYSIZE_128);
- 	get_random_bytes(plain_blob_key, AES_KEYSIZE_128);
-@@ -229,7 +233,8 @@ static int trusted_dcp_seal(struct trust
- 	ret = 0;
- 
- out:
--	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+	memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
-+	kfree(plain_blob_key);
- 
- 	return ret;
- }
-@@ -238,7 +243,7 @@ static int trusted_dcp_unseal(struct tru
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
--	u8 plain_blob_key[AES_KEYSIZE_128];
-+	u8 *plain_blob_key = NULL;
- 
- 	if (b->fmt_version != DCP_BLOB_VERSION) {
- 		pr_err("DCP blob has bad version: %i, expected %i\n",
-@@ -256,6 +261,12 @@ static int trusted_dcp_unseal(struct tru
- 		goto out;
- 	}
- 
-+	plain_blob_key = kmalloc(AES_KEYSIZE_128, GFP_KERNEL);
-+	if (!plain_blob_key) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
- 	ret = decrypt_blob_key(b->blob_key, plain_blob_key);
- 	if (ret) {
- 		pr_err("Unable to decrypt blob key: %i\n", ret);
-@@ -271,7 +282,10 @@ static int trusted_dcp_unseal(struct tru
- 
- 	ret = 0;
- out:
--	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+	if (plain_blob_key) {
-+		memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
-+		kfree(plain_blob_key);
-+	}
- 
- 	return ret;
- }
+ 	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_X, result[IQK_S1_RX_X]);
+-	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_X]);
++	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_Y]);
+ 	rtw_write32(rtwdev, REG_A_RXIQI, tmp_rx_iqi);
+ 	rtw_write32_mask(rtwdev, REG_RXIQK_MATRIX_LSB_11N, BIT_MASK_RXIQ_S1_Y2,
+ 			 BIT_SET_RXIQ_S1_Y2(result[IQK_S1_RX_Y]));
 
 
 
