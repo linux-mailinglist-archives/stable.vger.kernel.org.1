@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-116095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1255A34709
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67FBA34425
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9728416ED38
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E720E3B19CB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152C514A605;
-	Thu, 13 Feb 2025 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0CF16B3A1;
+	Thu, 13 Feb 2025 14:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gS3Xv4GS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltqeiszG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C740F14658D;
-	Thu, 13 Feb 2025 15:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FAB38389;
+	Thu, 13 Feb 2025 14:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460303; cv=none; b=IXi2mhhbgQq93untK5pSvBZTwDy5DdGp1V9fwoYBxdMxx4aXS89htqL5E4q/F0X9Q93uheOFmj2ud1Df7Nli6wRAGiRKqP0PPc2puGYwZFoDH0kvSF10JaZMODeWcwC9dm2LLKdL+ZuCwdXdc4ly7q5DGjFRXxiXs0TKcay2V0k=
+	t=1739458228; cv=none; b=qPFboHAPYVZek5sR6xbI4ox/rq+3PhID7avcwgDHlibrsMeNJbt81AB33UkfTO4c0/VNhlbvVLe9MvRiWooMG8PoRWa7WXXheSjDj1544UFoR9w+wxLcCAJYXWn4uWoXpOI+GckMt2sIzHVqkPyMvoVaWt4EiVHqTpN6f6HvCqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460303; c=relaxed/simple;
-	bh=czvBI46oVVLAkgGE5whCvgzrP/AI4BCzcTDYG0CGx/Y=;
+	s=arc-20240116; t=1739458228; c=relaxed/simple;
+	bh=CAzl3XUPHBn5Un8hMFm/e19ZJ9sBLjNROsdgKYYXS88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5c6feLyNCwBqGJgVkEen/cOWyKu50qlLuNjcEZkYu+MjTI1l5J8OTvIRWIfq0yakG1+rIrNaO+G3vXKwOruo2zGmSeDxMhkCi+SR6wtafPognsfcrBlKsjamrRe9v1GWLHvG0TCPZlH+zt6G9zuk9BssKFMyk+cvdS5tiQiZL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gS3Xv4GS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C30C4CED1;
-	Thu, 13 Feb 2025 15:25:02 +0000 (UTC)
+	 MIME-Version; b=mYl/HlkU4xNCtw9DILOEBbslPYWMcCWkzGipFMzFVNAdbxVw8z/2+c5r9OKdfGWkZfRSvFUW8sKXzZqdN/zK27QAMlESOOqJkFlcFl93LsdT1KuQQxJt5LhySlftjsGTAL4at9sk6JfbgPSG3yfQqOCefnXqyLuhrgNZxrZ0PJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltqeiszG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3E8C4CED1;
+	Thu, 13 Feb 2025 14:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460303;
-	bh=czvBI46oVVLAkgGE5whCvgzrP/AI4BCzcTDYG0CGx/Y=;
+	s=korg; t=1739458228;
+	bh=CAzl3XUPHBn5Un8hMFm/e19ZJ9sBLjNROsdgKYYXS88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gS3Xv4GSSG5xUl6fqgFo3KdwiRJ197P74L43aPgSW1RaZ4UDoayE/65Ca46pBizwi
-	 /tFrNe4UFNvUIXX+oB7bcnCLi8v1y+V6Zx8xjZFUfDhmRMdn/F9KaHjSrqPun6SZLF
-	 zOy0nbx1Hf27HfNI8L5JqBu6UhDkCvrQ5k81aUKk=
+	b=ltqeiszGbws1hMF2OxVbW3QeRmYDD05EIiocPmGoru/wr336vFKc+QtFilDKjQkIB
+	 NX6/MucrsAu7sdj4IdSgUDE5Bck4sLHUZrOsGPfreQOTMhtB23+Jl/akDZuWvf2n1d
+	 dP+9/ZdPgWraniKZGwqBqG40YRd1MWxarq5GG3tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/273] x86/xen: fix xen_hypercall_hvm() to not clobber %rbx
+	Sumit Gupta <sumitg@nvidia.com>,
+	Ivy Huang <yijuh@nvidia.com>,
+	Brad Griffis <bgriffis@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.12 297/422] arm64: tegra: Disable Tegra234 sce-fabric node
 Date: Thu, 13 Feb 2025 15:27:26 +0100
-Message-ID: <20250213142410.273187901@linuxfoundation.org>
+Message-ID: <20250213142448.002048750@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit 98a5cfd2320966f40fe049a9855f8787f0126825 ]
+commit a5e6fc0a10fe280989f1367a3b4f8047c7d00ea6 upstream.
 
-xen_hypercall_hvm(), which is used when running as a Xen PVH guest at
-most only once during early boot, is clobbering %rbx. Depending on
-whether the caller relies on %rbx to be preserved across the call or
-not, this clobbering might result in an early crash of the system.
+Access to safety cluster engine (SCE) fabric registers was blocked
+by firewall after the introduction of Functional Safety Island in
+Tegra234. After that, any access by software to SCE registers is
+correctly resulting in the internal bus error. However, when CPUs
+try accessing the SCE-fabric registers to print error info,
+another firewall error occurs as the fabric registers are also
+firewall protected. This results in a second error to be printed.
+Disable the SCE fabric node to avoid printing the misleading error.
+The first error info will be printed by the interrupt from the
+fabric causing the actual access.
 
-This can be avoided by using an already saved register instead of %rbx.
-
-Fixes: b4845bb63838 ("x86/xen: add central hypercall functions")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 302e154000ec ("arm64: tegra: Add node for CBB 2.0 on Tegra234")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Ivy Huang <yijuh@nvidia.com>
+Reviewed-by: Brad Griffis <bgriffis@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20241218000737.1789569-3-yijuh@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/xen-head.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 4fd814321ed02..9ecdde17c4e1e 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -117,8 +117,8 @@ SYM_FUNC_START(xen_hypercall_hvm)
- 	pop %ebx
- 	pop %eax
- #else
--	lea xen_hypercall_amd(%rip), %rbx
--	cmp %rax, %rbx
-+	lea xen_hypercall_amd(%rip), %rcx
-+	cmp %rax, %rcx
- #ifdef CONFIG_FRAME_POINTER
- 	pop %rax	/* Dummy pop. */
- #endif
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -3815,7 +3815,7 @@
+ 			compatible = "nvidia,tegra234-sce-fabric";
+ 			reg = <0x0 0xb600000 0x0 0x40000>;
+ 			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
+-			status = "okay";
++			status = "disabled";
+ 		};
+ 
+ 		rce-fabric@be00000 {
 
 
 
