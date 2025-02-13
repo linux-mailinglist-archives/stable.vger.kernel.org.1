@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-116029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380CEA346A5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:27:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF4CA347EA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDEDC168CBB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D957B3B269A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A532C156F3F;
-	Thu, 13 Feb 2025 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9388614A605;
+	Thu, 13 Feb 2025 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0aHSY+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh26isBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A2A1547F0;
-	Thu, 13 Feb 2025 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D84A16B3A1;
+	Thu, 13 Feb 2025 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460077; cv=none; b=scdKkt5EUtEJG3jMVtLjBnF7i5EHp8pDL8kZWO6deS5pDW8gwQOFAAtUj66dFakZK3ny4w9kwml7qORYffJXP73tb7/f0nzwuFYqxS5qG7Sae64bd4kbFF0ruZU94GBrPVQcUr6bWZn3RruZ7FvJz5oB7YnKhOiFzqzvmcuR4Aw=
+	t=1739460783; cv=none; b=lVUqu1udiHudvVk5+vNhAY/soLmP3hGiAwe9fBAFFe0RmajqrNwLKD+y3KBPNK4z7lTf0/rc9QO6UZu3yoqSLrlsjLSzRzx68R+3N+nSskgdtqtuAO/7E4LRD6ST02xMlGwU3vZkYB5pUCRssLr9o7Qw5liO7pXKlves/UOGYYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460077; c=relaxed/simple;
-	bh=a0yL6/AyCFUVqLPeTAeQrFs1oVEC1QD1kqTH6LEhDoU=;
+	s=arc-20240116; t=1739460783; c=relaxed/simple;
+	bh=XbGh7qG8DnB1Q3tzNf8RsqsbYtsOupeNSkwN/Sd51YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOEMg0VH3SDVgSrC1ptrfzD9AgX2HyzTVE4KmOJ4XvBCfl+1Q/PaK/9DuFFGut2G2+IT9h2krxsO2yG6LdqBBp97HnVbgrhSFtcVq2xGoR09jVL3fZhAhbenN9ilyiLO4lPkcuZD8YWmYflb1FERmluMCwv+fpxaL4VMcuZ3mV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0aHSY+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC5CC4CEE8;
-	Thu, 13 Feb 2025 15:21:16 +0000 (UTC)
+	 MIME-Version; b=Lir/jQTtRRHdpL3F5yTC6JEhejJ1RWuOEBypttpj73hJ67KhqQob62GB7/pnAnkNabNcbLWUqJrqcbTGblLTeUgA0/KBIwiz+MPfCfAtUITNAZerFX/1mMC9tav6vqTeiF/l+pzBqGc3hIp2FYjzlGeYLr8099v67ewCvoRz9nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh26isBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0453C4CEE5;
+	Thu, 13 Feb 2025 15:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460076;
-	bh=a0yL6/AyCFUVqLPeTAeQrFs1oVEC1QD1kqTH6LEhDoU=;
+	s=korg; t=1739460783;
+	bh=XbGh7qG8DnB1Q3tzNf8RsqsbYtsOupeNSkwN/Sd51YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0aHSY+xcTdOPyaNTiwmrnOcWGLHInR9q7mzLCyp32RNsIqDyfpirImIj0A9CTdmU
-	 PXBtOY4JRdCbCAnLLTDeowhbPk5/ajVtm9dXcOW+z48HEM3Kr1bC0ZdQ2Z5mUhYAXP
-	 B9K5lDu+yLupR2zfNHr0rlD11g1s/f5mrwyiTFy8=
+	b=Kh26isBCfXhzroCEh/pFv6Rin6UihUSElkNvtRxuLSGyYeTVH1poZE7xPgXjo5fOZ
+	 jT5bIiU2RuwPzK8odDQj6jYKvWnbTpCNxIHTly4cDklRbT8LAaFpcYkN7x+yA5iM6y
+	 pS5L/SSvaYzJqrR0JOaJ8K/9Y4+r7/pG7SUj3uRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.13 410/443] mtd: onenand: Fix uninitialized retlen in do_otp_read()
-Date: Thu, 13 Feb 2025 15:29:35 +0100
-Message-ID: <20250213142456.428295690@linuxfoundation.org>
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 204/273] media: mc: fix endpoint iteration
+Date: Thu, 13 Feb 2025 15:29:36 +0100
+Message-ID: <20250213142415.382718019@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
+commit fb2bd86270cd0ad004f4c614ba4f8c63a5720e25 upstream.
 
-The function do_otp_read() does not set the output parameter *retlen,
-which is expected to contain the number of bytes actually read.
-As a result, in onenand_otp_walk(), the tmp_retlen variable remains
-uninitialized after calling do_otp_walk() and used to change
-the values of the buf, len and retlen variables.
+When creating links from a subdev to a sink, the current logic tries to
+iterate over the endpoints of dev's fwnode.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This might not be correct when the subdev uses a different fwnode
+compared to the dev's fwnode.
 
-Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
+If, when registering, the subdev's fwnode is not set, the code inside
+v4l2_async_register_subdev will set it to the dev's fwnode.
+
+To fix this, just use the subdev's fwnode.
+
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Fixes: 0d3c81e82da9 ("media: v4l2-mc: add v4l2_create_fwnode_links helpers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/onenand/onenand_base.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-mc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -2923,6 +2923,7 @@ static int do_otp_read(struct mtd_info *
- 	ret = ONENAND_IS_4KB_PAGE(this) ?
- 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
- 		onenand_read_ops_nolock(mtd, from, &ops);
-+	*retlen = ops.retlen;
+--- a/drivers/media/v4l2-core/v4l2-mc.c
++++ b/drivers/media/v4l2-core/v4l2-mc.c
+@@ -329,7 +329,7 @@ int v4l2_create_fwnode_links_to_pad(stru
+ 	if (!(sink->flags & MEDIA_PAD_FL_SINK))
+ 		return -EINVAL;
  
- 	/* Exit OTP access mode */
- 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
+-	fwnode_graph_for_each_endpoint(dev_fwnode(src_sd->dev), endpoint) {
++	fwnode_graph_for_each_endpoint(src_sd->fwnode, endpoint) {
+ 		struct fwnode_handle *remote_ep;
+ 		int src_idx, sink_idx, ret;
+ 		struct media_pad *src;
 
 
 
