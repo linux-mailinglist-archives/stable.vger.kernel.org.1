@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-116190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9BFA3479F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F361A34666
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8063F188EB99
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6430618806AD
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5005D153828;
-	Thu, 13 Feb 2025 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54E26B0BC;
+	Thu, 13 Feb 2025 15:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0qHtCe1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeIRo9VM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F0B26B098;
-	Thu, 13 Feb 2025 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E52C26B0A5;
+	Thu, 13 Feb 2025 15:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460629; cv=none; b=OvBFzT0yaGAGsrqQo0axmVYMQkTFz2y5g3Ij6JDvnsSZ9mbqD8+JFdIP1aUBigleEGxeVecOk+ng6wPvC45sia6WU1xB1UFZPD7+6lsJwtk1gIQsYpXN+i/p2znLQN/mFNUyfbRBZcY8KxOwoG2IoiGbNU7iBXv4x0v8Ae/qwPM=
+	t=1739459824; cv=none; b=NFFqoqoc9GkQKEE21SFxK1baIWij0WsZJXM6RjDhBRxaIZ5rhC/Z/Op6UpGdI+YQSo92wfodyTASi0YIqvrE5D2hFj1lOgYDWqXUOsbMZ/+NCjkR1lnbAlGl49RZxJZhXfl6xepWR8prDUwZ2SxluMAApB06O/HRIZjkJ3W3ZBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460629; c=relaxed/simple;
-	bh=Tz/iim0aZ/B8Ql4pvO26A01tW+xpw8uXll7hm+YoOho=;
+	s=arc-20240116; t=1739459824; c=relaxed/simple;
+	bh=/UXg1gWm2T2plhsLXob0Er6L1R5ijhoDnZPbsV0mt3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZu2w9fpdCw0kBguue0O1hvH3fuIeyGbpNcUm3kCPkTbUmhkt9jgENTkExY10Uht4mEapfFs66eVqCCJXWk+dtiphXWHqWYJukfS9YY9AU1LgU8MeTO7hH9CTSEkW0b2oajf7PW6uU6AraxXhff3AlmSX7EaccYB/B+pnFLllIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0qHtCe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8A0C4CEE5;
-	Thu, 13 Feb 2025 15:30:28 +0000 (UTC)
+	 MIME-Version; b=Wni1tniTN70o/X/VNky91AW4ZxWdN6gT9c8QXwtGyvdcRrMiSdR4iyT5rPa1+RNcezJ3EsaWa//q4NCLlhpixdBDGPf8myfAsMt7DGlZTeCihS5lpqVChNbVYgsdhHIaHN4odYduyvnZAYKJdO5+I/d17wY4EVhh0RBr8ruqeBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeIRo9VM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F072BC4CEE4;
+	Thu, 13 Feb 2025 15:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460628;
-	bh=Tz/iim0aZ/B8Ql4pvO26A01tW+xpw8uXll7hm+YoOho=;
+	s=korg; t=1739459824;
+	bh=/UXg1gWm2T2plhsLXob0Er6L1R5ijhoDnZPbsV0mt3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0qHtCe1RMTDV0X5/hZFxn3C5Y9fnCR/rPI5V5XKxwbtbpA+8L+m9xSR0YvABqKKp
-	 d3OXGJ8jhsgAYdrdCGzHSKcJ3wuOXrzOe9ewI8Iw+zfwwACfSpGZ0sDFclyML5aSN4
-	 BS/bwUCp3RyGKTk05XE7bTMaHdSkkgjp8zHZwKPI=
+	b=NeIRo9VMfpZ7KbFI+/B4fAzONCi5AlTrS9YjCMxrzQaMZILZ0bbA0BibqcEUyMN0C
+	 M5oxPiA3iEmuJpJJBj0w32I09gdlo6WMA4dOeG12/po0pD3VuSqMtxWAbqi8AbAu4y
+	 JZbDTuy62HpGuy8JbIZBz0ZsaC/tzhzqqjQ2RG44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 166/273] kbuild: Move -Wenum-enum-conversion to W=2
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.13 373/443] media: uvcvideo: Support partial control reads
 Date: Thu, 13 Feb 2025 15:28:58 +0100
-Message-ID: <20250213142413.890897882@linuxfoundation.org>
+Message-ID: <20250213142455.002769714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+commit f00ee2ca8da25ebccb8e19956d853c9055e2c8d0 upstream.
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+Some cameras, like the ELMO MX-P3, do not return all the bytes
+requested from a control if it can fit in less bytes.
+Eg: Returning 0xab instead of 0x00ab.
+usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
-
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+Extend the returned value from the camera and return it.
 
 Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_video.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -144,7 +144,6 @@ KBUILD_CFLAGS += -Wno-tautological-const
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *de
+ 	if (likely(ret == size))
+ 		return 0;
  
- endif
-@@ -176,6 +175,10 @@ KBUILD_CFLAGS += -Wno-type-limits
- KBUILD_CFLAGS += -Wno-shift-negative-value
- 
- ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
++	/*
++	 * Some devices return shorter USB control packets than expected if the
++	 * returned value can fit in less bytes. Zero all the bytes that the
++	 * device has not written.
++	 *
++	 * This quirk is applied to all controls, regardless of their data type.
++	 * Most controls are little-endian integers, in which case the missing
++	 * bytes become 0 MSBs. For other data types, a different heuristic
++	 * could be implemented if a device is found needing it.
++	 *
++	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
++	 * to be excluded because its size is always 1.
++	 */
++	if (ret > 0 && query != UVC_GET_INFO) {
++		memset(data + ret, 0, size - ret);
++		dev_warn_once(&dev->udev->dev,
++			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
++			      uvc_query_name(query), cs, unit, ret, size);
++		return 0;
++	}
 +
-+ifdef CONFIG_CC_IS_CLANG
- KBUILD_CFLAGS += -Wno-initializer-overrides
- else
- KBUILD_CFLAGS += -Wno-maybe-uninitialized
+ 	if (ret != -EPIPE) {
+ 		dev_err(&dev->udev->dev,
+ 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
 
 
