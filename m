@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-115190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FFBA34250
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:35:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9700A344ED
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6133A4C7F
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:33:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0296C3B1822
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3AF139566;
-	Thu, 13 Feb 2025 14:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A05E241695;
+	Thu, 13 Feb 2025 14:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLJJxBbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkBiwmgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AAB281379;
-	Thu, 13 Feb 2025 14:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335524290B;
+	Thu, 13 Feb 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457198; cv=none; b=jPM+2i6IL6oWq2qyFKk0ELf2bUXHXJzCnDHgBQxolR4Twa1Akqe9IeUi+d0nHqq1aFQe9eKJ3NvIbo34Zo5jaVB2AVNiEND+5DUJ+3Fx9sIsN2YP1vSas8figtgYqJwLIWGl53kFpCEXNznTB4T6gDaqnEPh4F3XYDA2f1QdSQI=
+	t=1739458608; cv=none; b=UfJvoFuerjsBD+HLTyijUllYPtqAPHdtCRtREIbp5H+83h+uOL4UwiCfK1bR53T711uyB/riovDfy9bezPaK8Mgy6dnHWNU4lt8oF4cZ8SNNoRtFH96BUEbO9Vl+XKNIgZdZQ3FIE7nHTrW1a6Nqf19+UYvBVnhfWpdmqNgOIos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457198; c=relaxed/simple;
-	bh=6TWqF2JIbovxKb34tVe9BwbczQD6UUO18SgcwRapDCo=;
+	s=arc-20240116; t=1739458608; c=relaxed/simple;
+	bh=DwY2Xt53v4fsiemiEHH4enG9OaO8SNBnNhocw6mExIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GILQi7H4VvMl8Qi9S/VPZFyx2ZHufFDDdUGCMhq8AbGDgHizyWv5Rgf7jNvWIlk6x0cV2kOUC5zVV7Jde0yb5iEOGjuahp+nwUF+YBGGE5tHJt2gmRK2mTp5mds/DmSB9ceSNSyD2PVdyMDJVBAXxQdUyD9rpHRFHWkglGN29J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLJJxBbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45397C4CED1;
-	Thu, 13 Feb 2025 14:33:17 +0000 (UTC)
+	 MIME-Version; b=XPNtfgXj+7tKcCdXRbyskKAHH5Qq9xTyMCC4Sv9IkkkW76Ki6mx4FPwDn2pcGKmS0ZNLt2MZZaQgZRsbJl2NXKvk5QrrnOgsXZVGPM/axngk77nIKHde1xvobRDxA+j3poWMBl71zsTeAZk77NctFTW+yv+nqKw6Jhl6L6zLALY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkBiwmgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41639C4CED1;
+	Thu, 13 Feb 2025 14:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457197;
-	bh=6TWqF2JIbovxKb34tVe9BwbczQD6UUO18SgcwRapDCo=;
+	s=korg; t=1739458608;
+	bh=DwY2Xt53v4fsiemiEHH4enG9OaO8SNBnNhocw6mExIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLJJxBbLoNm77LWGIqGc5WOheDtOxntH911plYxmDHF97WOoXvdY61LUGnRqhambQ
-	 339lgW9xjbWjDDYcMqN52UsN7Lf2jdD4J2/jW/vMGwP8lqqKHY09ThvxoZGDiHZFZW
-	 1YK7RIR/omQI7xlwOjN86r0Cxy4Pz2tSkR0g+8/0=
+	b=EkBiwmgdQOZRBGSu/qrkRZ9rXpa0LX2L4P5Yi4NTMLINPKJalLMCI95l3s4AGl56K
+	 Crlbn3mnB43PxRKCfgu0dPV5A73And5dVP/P03el7r3UPsp08qRBWphH1ZxuUg2ExW
+	 I7BkfzabyUfFFuH4bDRwOe8vNv7Eu29laO+Eav9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/422] drm/bridge: it6505: fix HDCP CTS KSV list wait timer
+Subject: [PATCH 6.13 027/443] drm/tests: hdmi: return meaningful value from set_connector_edid()
 Date: Thu, 13 Feb 2025 15:23:12 +0100
-Message-ID: <20250213142438.225296739@linuxfoundation.org>
+Message-ID: <20250213142441.672965748@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 9f9eef9ec1a2b57d95a86fe81df758e8253a7766 ]
+[ Upstream commit a8403be6eea91e4f5d8ad5dbc463dd08339eaece ]
 
-HDCP must disabled encryption and restart authentication after
-waiting KSV for 5s.
-The original method uses a counter in a waitting loop that may
-wait much longer than it is supposed to.
-Use time_after() for KSV wait timeout.
+The set_connector_edid() function returns a bogus 0, performing the
+check on the connector->funcs->fill_modes() result internally. Make the
+function pass the fill_modes()'s return value to the caller and move
+corresponding checks to the caller site.
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241130-hdmi-mode-valid-v5-3-742644ec3b1f@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-9-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ .../drm/tests/drm_hdmi_state_helper_test.c    | 31 +++++++++----------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 029755ee21e23..faee8e2e82a05 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2061,12 +2061,13 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 	struct it6505 *it6505 = container_of(work, struct it6505,
- 					     hdcp_wait_ksv_list);
- 	struct device *dev = it6505->dev;
--	unsigned int timeout = 5000;
--	u8 bstatus = 0;
-+	u8 bstatus;
- 	bool ksv_list_check;
-+	/* 1B-04 wait ksv list for 5s */
-+	unsigned long timeout = jiffies +
-+				msecs_to_jiffies(5000) + 1;
+diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+index 1e77689af6549..4ba869e0e794c 100644
+--- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+@@ -105,9 +105,8 @@ static int set_connector_edid(struct kunit *test, struct drm_connector *connecto
+ 	mutex_lock(&drm->mode_config.mutex);
+ 	ret = connector->funcs->fill_modes(connector, 4096, 4096);
+ 	mutex_unlock(&drm->mode_config.mutex);
+-	KUNIT_ASSERT_GT(test, ret, 0);
  
--	timeout /= 20;
--	while (timeout > 0) {
-+	for (;;) {
- 		if (!it6505_get_sink_hpd_status(it6505))
- 			return;
+-	return 0;
++	return ret;
+ }
  
-@@ -2075,13 +2076,12 @@ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
- 		if (bstatus & DP_BSTATUS_READY)
- 			break;
+ static const struct drm_connector_hdmi_funcs dummy_connector_hdmi_funcs = {
+@@ -223,7 +222,7 @@ drm_atomic_helper_connector_hdmi_init(struct kunit *test,
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
  
--		msleep(20);
--		timeout--;
--	}
-+		if (time_after(jiffies, timeout)) {
-+			DRM_DEV_DEBUG_DRIVER(dev, "KSV list wait timeout");
-+			goto timeout;
-+		}
+ 	return priv;
+ }
+@@ -728,7 +727,7 @@ static void drm_test_check_output_bpc_crtc_mode_changed(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
  
--	if (timeout == 0) {
--		DRM_DEV_DEBUG_DRIVER(dev, "timeout and ksv list wait failed");
--		goto timeout;
-+		msleep(20);
- 	}
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -802,7 +801,7 @@ static void drm_test_check_output_bpc_crtc_mode_not_changed(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
  
- 	ksv_list_check = it6505_hdcp_part2_ksvlist_check(it6505);
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -873,7 +872,7 @@ static void drm_test_check_output_bpc_dvi(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_dvi_1080p,
+ 				 ARRAY_SIZE(test_edid_dvi_1080p));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_FALSE(test, info->is_hdmi);
+@@ -920,7 +919,7 @@ static void drm_test_check_tmds_char_rate_rgb_8bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -967,7 +966,7 @@ static void drm_test_check_tmds_char_rate_rgb_10bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -1014,7 +1013,7 @@ static void drm_test_check_tmds_char_rate_rgb_12bpc(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+@@ -1121,7 +1120,7 @@ static void drm_test_check_max_tmds_rate_bpc_fallback(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1190,7 +1189,7 @@ static void drm_test_check_max_tmds_rate_format_fallback(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1254,7 +1253,7 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1314,7 +1313,7 @@ static void drm_test_check_output_bpc_format_driver_rgb_only(struct kunit *test)
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1381,7 +1380,7 @@ static void drm_test_check_output_bpc_format_display_rgb_only(struct kunit *test
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_200mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_200mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1447,7 +1446,7 @@ static void drm_test_check_output_bpc_format_driver_8bpc_only(struct kunit *test
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
+@@ -1507,7 +1506,7 @@ static void drm_test_check_output_bpc_format_display_8bpc_only(struct kunit *tes
+ 	ret = set_connector_edid(test, conn,
+ 				 test_edid_hdmi_1080p_rgb_max_340mhz,
+ 				 ARRAY_SIZE(test_edid_hdmi_1080p_rgb_max_340mhz));
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_ASSERT_GT(test, ret, 0);
+ 
+ 	info = &conn->display_info;
+ 	KUNIT_ASSERT_TRUE(test, info->is_hdmi);
 -- 
 2.39.5
 
