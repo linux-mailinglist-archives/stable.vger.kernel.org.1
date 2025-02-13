@@ -1,80 +1,109 @@
-Return-Path: <stable+bounces-115094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00AEA33696
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 05:06:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3060AA3369A
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 05:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B55A169175
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 04:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE7D1886B45
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 04:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323CC205E17;
-	Thu, 13 Feb 2025 04:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqOaTuaR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29C920550B;
+	Thu, 13 Feb 2025 04:08:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB7F205512;
-	Thu, 13 Feb 2025 04:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D155D204C21;
+	Thu, 13 Feb 2025 04:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739419568; cv=none; b=CNm4QUoZjoCXrqUHwWQ+rzdfOfsHZgwkljc1KiLtwu/k1KibHSAM4PTAPJLi1PdD40tVWXwaloiXr0R6MwsQrQrj03/2554yD4J0YmGgStI3RV/oJ7gApF72SA2xg6gZmkBHBk/BZYgalN+nweKG4Vk8vodAvo2QE+POYAj02yc=
+	t=1739419716; cv=none; b=W1Gf39aH8uSiVZKckMcViQJvsiycQRp32E9RLlLgFgBAu1UoOpLlkrnnRmbznx3v1v1piwIgQTr/pg70RhhwNCXTO9aTEcT9vgpZYcpyxo+wm6BIVmTnHRwEDNqM8ZoaMDYwB9hcG2zlon9EeF67FaMNAbfeUJ811m3qQDLFrhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739419568; c=relaxed/simple;
-	bh=2qAEKldKxjDMlgop/J9s2nwKY2jZLURRUinqIzr3DpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXAUO5+My53dt09KptUKDNgT0DiFXtbghSIjLzEeq2iBYNhi9RkTjKp9EpuuN5TS6q2cFY5LLCHmsPDOBxGcVpWdDRmKTsNhh76SP/4TyHF9+oJ1CvUM3/3ruLFbfspoo8vM6r2fLCTPOmK2DWATeJ5WnGChm8Q2PLJ7y5lj+aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqOaTuaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927F3C4CEE4;
-	Thu, 13 Feb 2025 04:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739419568;
-	bh=2qAEKldKxjDMlgop/J9s2nwKY2jZLURRUinqIzr3DpA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DqOaTuaRoaAli5GYGECbqmxAX+mm7CyoQpfW32UF7De6zOenUyp4j+WTkTCGxlHWe
-	 AqM3jWhIlANjHxS52UhWIAbp9X4na338CbOwMETnYZKB06APU5meC5u2F7hiFEtzV5
-	 iRAu4y36nwyAL26/pfeJKVMGxADMaNdkIVJrsFUL5yDhZloKHbOg3bAy685AFmW7f7
-	 YI0LGxT8q/HX3x1T4qFTDi8GQGXWpd/LUlXZIrkoijig9HlgxqBhXzD9Lu/takwR59
-	 Io8nUjvpwUqAaAbMvZbiZzXdgcbE2t5++kDBeyMHH2Rv+Qp1dkUHJeSOnuyIs38noO
-	 0Y6GZ8injrrjw==
-Date: Wed, 12 Feb 2025 20:06:06 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Yanteng Si
- <si.yanteng@linux.dev>, Feiyang Chen <chris.chenfeiyang@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
- <joabreu@synopsys.com>, Serge Semin <fancer.lancer@gmail.com>,
- loongarch@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Simon Horman
- <horms@kernel.org>, Chong Qiao <qiaochong@loongson.cn>
-Subject: Re: [PATCH net V2] net: stmmac: dwmac-loongson: Set correct
- {tx,rx}_fifo_size
-Message-ID: <20250212200606.0638ed60@kernel.org>
-In-Reply-To: <20250210134328.2755328-1-chenhuacai@loongson.cn>
-References: <20250210134328.2755328-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1739419716; c=relaxed/simple;
+	bh=qskS6cXyZce5mqRax3SC9fW74H3DglHCMhSAZY7Cv4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i4xAbn9nJrEoMv6L4cRpxG44FQ73xfXO+SKJSL231cQC32LnPdZT7wpWAT8a5ci3kkgKwUCKZ52qknHvTi420uVgSh35nnpoz+lZTRDfVor7ksbQ1jqnq5YOZgsD0E/MhXVhxU5NwIbHzvN3kWnCEAGAXimTPTkjjDl5T0QVFcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowABHT6MqcK1nC5CdDA--.51126S2;
+	Thu, 13 Feb 2025 12:08:14 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com,
+	alexandre.belloni@bootlin.com,
+	UNGLinuxDriver@microchip.com,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: dsa: felix:  Add NULL check for outer_tagging_rule()
+Date: Thu, 13 Feb 2025 12:07:54 +0800
+Message-ID: <20250213040754.1473-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABHT6MqcK1nC5CdDA--.51126S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWUGw18Kw4rCFyrXryDGFg_yoWkZFg_Ga
+	s2vF93W34Yv3WYyrnxArs5Xryjkw409Fn3W3ZF9ry3J3yDXr1xtF48Zr13JrsrCFy09a9x
+	Arn5Wry0g342gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8XwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUca9-UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwMA2etbr8D4wAAs+
 
-On Mon, 10 Feb 2025 21:43:28 +0800 Huacai Chen wrote:
-> Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
-> zero. This means dwmac-loongson doesn't support changing MTU because in
-> stmmac_change_mtu() it requires the fifo size be no less than MTU. Thus,
-> set the correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by
-> queue counts).
+In felix_update_tag_8021q_rx_rules(), the return value of
+ocelot_vcap_block_find_filter_by_id() is not checked, which could
+lead to a NULL pointer dereference if the filter is not found.
 
-Not all drivers support changing MTU. Supporting jumbo frames 
-is a feature, so this commit enables the use of a feature. 
-As such it is not a fix. I'm applying this to net-next.
+Add the necessary check and use `continue` to skip the current CPU
+port if the filter is not found, ensuring that all CPU ports are
+processed.
+
+Fixes: f1288fd7293b ("net: dsa: felix: fix VLAN tag loss on CPU reception with ocelot-8021q")
+Cc: stable@vger.kernel.org # 6.11+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/dsa/ocelot/felix.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 3aa9c997018a..10ad43108b88 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -348,6 +348,8 @@ static int felix_update_tag_8021q_rx_rules(struct dsa_switch *ds, int port,
+ 
+ 		outer_tagging_rule = ocelot_vcap_block_find_filter_by_id(block_vcap_es0,
+ 									 cookie, false);
++		if (!outer_tagging_rule)
++			continue;
+ 
+ 		felix_update_tag_8021q_rx_rule(outer_tagging_rule, vlan_filtering);
+ 
+-- 
+2.42.0.windows.2
+
 
