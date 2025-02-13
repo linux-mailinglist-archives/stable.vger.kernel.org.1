@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-115200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC9A34273
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:37:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0171BA345B3
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C427188C3DC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:34:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB027189928B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03DA28137F;
-	Thu, 13 Feb 2025 14:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3921CB31D;
+	Thu, 13 Feb 2025 14:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL96VxEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU01UIq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D52628136D;
-	Thu, 13 Feb 2025 14:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB912A1D1;
+	Thu, 13 Feb 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457233; cv=none; b=BvIY7gkfIz9s5pPz7sFiumQAinAX+TrEH3nrkdjIor7aAKsvR6ybsKUsVVl7NWaaZzi5CIlnfAtirgV+THhFfzmDSZyTBaIHA6d8QSBWceYTeQTmaMg1f1vVcr7LeN1uz/rQ8/tIec3qv8VvCgCQb1U1ZcIwNpWdqqwE7p2FGgM=
+	t=1739458757; cv=none; b=IdptJD3FP5gcRHkcWI4z0+bjcrYA7Uhez/+/p6loeEayFJVz1oLBaYaHAxIP+wLK6gI0cqTc92Cxa3pumxc2cfx5wFcB8r81554+Wt0Rdy7JuLSmdxWq1ygf+Lw8PSJZgrcRQmRhtXAbic+kE9QFlxAF+L9rZhCsKxbx0o46aDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457233; c=relaxed/simple;
-	bh=3N+u9I7wazCFIDEPV+sAUPrw2W+2OP0rwMki8EUGWNQ=;
+	s=arc-20240116; t=1739458757; c=relaxed/simple;
+	bh=RMHNSb0Fish/76z8j58yFTs10uy5CjX7Jd5VKsFglAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhcdeOwDQ7sSLoGzJV+2LNY2c8lHHS/McjD4I/aIstC5O/PuBZsJxbzAarQpe+nZlhr4OskNmsXdqYemnyRiEtVbTjKZUad568a2XKeXR4x9cCq2/UxgOW9F4DR9iTIf7hEHE5ghbDX/DXmyE549CnQVKsjLiy/MfPF61Is8/F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL96VxEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9062C4CED1;
-	Thu, 13 Feb 2025 14:33:52 +0000 (UTC)
+	 MIME-Version; b=KiHgikH/PKTgmHbnhNVGoSwBp/MfSxHl9ZmGw0YStCRvWMfg3j8UeFD49//njfGmKzEx3By1FkEt69mm8MyYavj+66s8skV/3uX57gVp7nU2HPJi//q2yxuBoArshtUnVrCjLaY/oqGIXo0hNOB+eGxKGh/YAi8I7k3Vp/D616U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU01UIq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D47C4CED1;
+	Thu, 13 Feb 2025 14:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457233;
-	bh=3N+u9I7wazCFIDEPV+sAUPrw2W+2OP0rwMki8EUGWNQ=;
+	s=korg; t=1739458756;
+	bh=RMHNSb0Fish/76z8j58yFTs10uy5CjX7Jd5VKsFglAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gL96VxEV+yAKkaUyck6ke8Q0Kij6QOfwsS4bx1idvWJBn3NvrxycCwv2OZQs8hR0X
-	 IJcM+xMU6YQM0YD51K615S9KyCrdxs6sr/Zy52t1ZJzl0Kw7E8M1NfUo5EpQFER8JE
-	 q3O2A83xS5nu02MdiaaUblQppvuyXbkMhYUK6BSg=
+	b=GU01UIq/6HGZke0BZ6ASQQGjpOgaXsg5e3IYDFvVIFwheq4CJFdLhRLX673hmtDMT
+	 60GWNHKBWLDzUaH+tpjeLpfhGAwKGRqLydvaxRXIOmyhOe15y2mJVvqZd5qr49yMTL
+	 Vg3NT3kRtkiQsuBG1Gzl9tCdEPX5rfDriWTzjMXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/422] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
-Date: Thu, 13 Feb 2025 15:23:21 +0100
-Message-ID: <20250213142438.570602094@linuxfoundation.org>
+Subject: [PATCH 6.13 037/443] drm/msm/dp: use eld_mutex to protect access to connector->eld
+Date: Thu, 13 Feb 2025 15:23:22 +0100
+Message-ID: <20250213142442.057108288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
+[ Upstream commit 9aad030dc64f6994dc5de7bb81ceca55dbc555c3 ]
 
-In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
-instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
-Compile tested only.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-7-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index d69879e1bd870..d362c4337616b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -23423,6 +23423,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
- 				break;
- 		}
+diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
+index 5cbb11986460d..c179ed0e9e2bd 100644
+--- a/drivers/gpu/drm/msm/dp/dp_audio.c
++++ b/drivers/gpu/drm/msm/dp/dp_audio.c
+@@ -414,8 +414,10 @@ static int msm_dp_audio_get_eld(struct device *dev,
+ 		return -ENODEV;
+ 	}
  
-+		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
-+			return;
-+
- 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
- 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
- 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
++	mutex_lock(&msm_dp_display->connector->eld_mutex);
+ 	memcpy(buf, msm_dp_display->connector->eld,
+ 		min(sizeof(msm_dp_display->connector->eld), len));
++	mutex_unlock(&msm_dp_display->connector->eld_mutex);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
