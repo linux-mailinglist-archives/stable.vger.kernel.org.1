@@ -1,114 +1,141 @@
-Return-Path: <stable+bounces-115111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D960A339DB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:23:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03ACA33ADF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 10:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B711166AAF
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 08:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24729188DD9B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 09:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DAE20B7FF;
-	Thu, 13 Feb 2025 08:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFD620DD5A;
+	Thu, 13 Feb 2025 09:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HQ7+NrMY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VkB5uNRJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEE513B29B;
-	Thu, 13 Feb 2025 08:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD6020C49E;
+	Thu, 13 Feb 2025 09:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739435020; cv=none; b=tM4ZHbYvJQO2HXDnChkg91Yn3NWPZLDghQkwtwGilgtlTSzadw7JabI56ib14dDy9MDMnUAq6rSmT79kHnTzvOU68oWUGKJFZFC8g4Y1lVW8MkSMW5W/DqdbJP642Rjca+Y9Ui91d2V4pyFbefJCU7Ll10Y1GjQXP8LfvKtR2OE=
+	t=1739437932; cv=none; b=LjmQas9DBguPANXmIZkgXNRmLtc+2X9YAib4/2D9Y/v6OfZztUOMNWFMamzZcBn6Mx0yM3ADYVX6ppG2AjHT0Hf3lNZ8iOY1UUkRPCQbkHmjDVsw4ODX4UIRD7ro6gxYn1Q0MksbHcIOgjxmvtKPcC8KJ8EZy68HMBNa7iC6468=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739435020; c=relaxed/simple;
-	bh=qBkG/072U6g2ZDiyqvJVpcsyySyyplju3KaLZv/FChE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=r37mjAhkuNQGUKxRJvePUCn/6jV9/HKubVf0PuQtgt/EYl1RIeX0CxHHvEAQJRSQ8msnBzMC92UT8AV3CpxQdUX8OnjAACJp99zrjS6TbzSfSR3dC0aBDmnc/WPYBXvVDULWlP7wWQd7nVE5uWXSW8n5d0MidX5tFjfGZBGv2yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HQ7+NrMY; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1739434994; x=1740039794; i=markus.elfring@web.de;
-	bh=VMxGfvboixOQ6mR8XBWjIu/drCCOK0BX2fZLkdIjAJk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HQ7+NrMYykZNXB+p7PgQZFwP0d2MhsBuFEIgw/f4t/oTiUIJrJNvBLYNpXPWCC/t
-	 8gbUh4qMXvDg6rqiroF86YiA+zWI/+VDbEH6uODyC998k/g1Inhs7Qq6NBWZYt5zO
-	 Hc9705lSDt9pIPH8/Em5ZmP13Wwbd90Ql47aXg+g2DR3/YhH0AQrnXhQWm+LXBxXU
-	 EFHyRsfXWHco87XMABbktBsBbm/X85yeUMepa8eljqqUIvWU2o1MCRYeiki4zF6zr
-	 /lpL5/4ZghsZ3IpA8bwuzaqoquzt9uPLm2V3aVp7fPonuWJU6lrvbEY8Ey/nTwq1i
-	 RIy/cIODYIIULInTAg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.78]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mf3ug-1tBuZM2MLy-00ntzO; Thu, 13
- Feb 2025 09:23:14 +0100
-Message-ID: <cb503a4d-c942-44ad-accb-242c10e2d503@web.de>
-Date: Thu, 13 Feb 2025 09:23:13 +0100
+	s=arc-20240116; t=1739437932; c=relaxed/simple;
+	bh=JPlerEw+HpIcTQO1AoV9HkgsXrH9Q7r63PdqOw1EkME=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DK/7TEsbwc/HrOyZAmUcqD5ypBYRIlOKuMoVGo7XBQWkMUKBE/qGhuUqkuMnuNiBZ+vfVjaUGE+nxnOm8xRTSs1YTirkXtFokY1DkQ3PFMww1UXsg9U/JdSm8qg04ifkddV2wj5p9bpypI//TwBZ7f+07cjeRSKeVG8/8HeBImI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VkB5uNRJ; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ab7f2b3d563so130248766b.1;
+        Thu, 13 Feb 2025 01:12:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739437929; x=1740042729; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kk8GoiJCBLwy0VGMO3TU9B+awh6BEc3xAZZDrhJYR4Q=;
+        b=VkB5uNRJjqUC7rzjY+U4v+ylv5ha2vjEWxjL3XO6KbOiw2VU7P2YulK19n6BrMfPVh
+         Oh0WqiIwTNhVFQC2+UjhYPgSzALE6yQ2abcFkhXBz35POFjlICnQdgrygGiTL8fh+Asd
+         j5VoqctOzf76hMehq0C7ODcsFX1BlRQp3fivn6+72x54XSu4KxvPHUJPdFu3/K9QFVFj
+         HrzvtKb+axeuTObPUzgnsEGTtl2cgE6eaHiej8n0dYo67vP30Kz4XKIyf9xdICJ2DRbj
+         dsaLCqXZqlqj1z3skdOD0QkPxz/1++cSiVjSoqlTcqrsTS1EVItwFGiG4fABKeI3S59c
+         cy1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739437929; x=1740042729;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kk8GoiJCBLwy0VGMO3TU9B+awh6BEc3xAZZDrhJYR4Q=;
+        b=uO1vUv0WmYS4D71MqyvpsANk4+jQKUbyEIU863RLQyV8wzW0yWOcmK9DSt3SVeDufo
+         C0psicrrhECyV4D+mmEQ5K6h8sLcH+5iE4IoN3xn0fIHEVXkzz71ybYy+JwR3EXkgz4+
+         yPK/7B4VZ6Sqr5yfbr6PGCFpIIzuYZfgmCdAc68s9Q0b0o+Lh+i8gAxZ5Msav9kfQx5k
+         DYYgJM6Sjcc7jB6m5XXwdS3JJw3HzfF1zuvc5mwuhi9/KAXljv/sbYXaMv3uifJevKQi
+         hMX+/X2jW4s0VzHeqxqOtttxoXkmOpMZrn+dVYHxru/65OdeZQOzABfa9oye9rsMzvjl
+         6Tvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMV5ncOl6vHXUH9nmUQzxDNGAzKiOZE/taVptbAQBEO4NcUNW7qxFmaj7tPqFStq5Jg0aSvry5BX9W4SkZ@vger.kernel.org, AJvYcCUmM8Ubyx0qWwZK/3eUVMeqrKynVW3ELFGMP40jKvOSpwoE3e21fyN9oekzeA7Qvg/+NGM=@vger.kernel.org, AJvYcCVhWHHRugOZY9cbIIuwRb+R1RwZLHqzBz2AYXLwf5NGcqSUymfx3QGHM6JcsawY2JlROPf+caxq@vger.kernel.org, AJvYcCWHvRWEB5v8NhGw9DZcWtMopzdsXCh8xiTD3gwVcGcZTdw0TX4232L/MfJLcPJq5ShAMIHuRSoV5Dm0LEl6ksP2/PbU@vger.kernel.org, AJvYcCXWbDy4bg796h9DEIsD5HdaYApq+3oaLARU10LGKOL8gUQFD7rlV8IO17C8n7JEY9TBL3h/GmAlU4tg@vger.kernel.org
+X-Gm-Message-State: AOJu0YznvV8fO79wQoYLOzOUGjiBzVQATUTkpN+pu7a1caq9//paI/Yd
+	1+zbfyVVBUJdzSuyyGeCKJ+ggfFyA1s4ysJ4C/g1qprViax12M6G
+X-Gm-Gg: ASbGnctCxqSsloMuiPw/5skEJ51WYAiqq/a5Q5TZVRr2rz+3y9UUlB6MMZDkpmIT2AR
+	zlDbpnSBTcmHWkju7VVAxIMDcW3ODWZrsDrhMJyqO2CBHfjMcrm1qN23mx89TUcIEowyjhQBMto
+	OWm8BWPTR98QRNNP6SpCyjeDrMHSiFMd31KObaBkfrUDS1ZQYs0bnFGVL7RKNJTgig7NA3OkHRm
+	EA/9DZklJ7oUcMC+zDf7NnIHcdv7i1nlf8RvYjisjv0+P/SranZnqlKuu3ed8jfbj8dwnHWwEWZ
+	zw==
+X-Google-Smtp-Source: AGHT+IGs3oJZf7x6yD/Cx3fNNknBE6YPrj9ItenyEdO+HvKskjnm0uGLWq5sjCosjH1kmhwkZqU1rQ==
+X-Received: by 2002:a17:907:6d24:b0:ab7:be81:8940 with SMTP id a640c23a62f3a-aba4eb9b519mr235654066b.10.1739437928410;
+        Thu, 13 Feb 2025 01:12:08 -0800 (PST)
+Received: from krava ([173.38.220.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5337698asm88429866b.120.2025.02.13.01.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 01:12:07 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 13 Feb 2025 10:12:05 +0100
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, bpf@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
+ check
+Message-ID: <Z623ZcZj6Wsbnrhs@krava>
+References: <20250212220433.3624297-1-jolsa@kernel.org>
+ <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, linux-sound@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Cezary Rojewski <cezary.rojewski@intel.com>, Jaroslav Kysela
- <perex@perex.cz>, Julia Lawall <Julia.Lawall@inria.fr>,
- Takashi Iwai <tiwai@suse.com>
-References: <20250213074543.1620-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH v2] ALSA: hda: Add error check for snd_ctl_rename_id() in
- snd_hda_create_dig_out_ctls()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250213074543.1620-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Xa64B+x8jxXdsSTA9MT7mz8cNtk+94oMr/BCjxdLk2LtJ9iT25T
- J+ydW2WEyGCIvHo+VADz30jSLlX5LISSIVon/yJVPOwOeTrwL9JIWQ+7WC1/sdjAG2p6swl
- Zb+H1MsxR4rTfMkilzLnY+LS/1PoNcubrXqHODD2bNeh6yg46rGL/I/PTvc5PRXXRMV3vHR
- RFpLhV0JDjvJzfjkQFnlg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XdS1vi9NveM=;J7t31MrsF9L/QTgHaNf23SYaVLy
- KhINC//JOlFug8YS0NuFSueStROLbbLTPoJ/NAmvg5PsZde/5tmvD8+/VZSWiDBNdjluDfVfY
- cbXxLq9jsbPu1HJedzzTWkhDutbsUPQFabeWtOgMYMYGnw3w28eAv7Lqb6Smgnj2/yEVMpF3S
- GHc1nQQ6Amn+QHJjS6q111AAKge0mV7UZ0DcoYDIpiYdJm4Gt8z8PVFb4NwHuJAjufhVgX+3o
- lmuxMZHCL0BzGAqyW06A1H4Ep/z7/HCVbuk1URSn04Knaze9xCV3Bne1WU+wZQzJ45uw7J05C
- Hc6RuLghPVdXQe9D0pvmiSlzSW/KeRjwUMx1RLaz4Ls3AEI1rnT+ZlWlKUUVaJuXTuBEo1KZn
- ZPUUxl18JVmZIgxtOtu/++Ogoe3M+YOsK5Pd0Rldu4wlDZ3i9KTbnXu4Hx08asB2RBD4lGyC7
- FWlwhWhSAuEPDuHBdcjX09+k9bx3rTjPkyJiAtRayBpeEAZi+ZtGwlo4BqvjHw0ata8kCdDBy
- arxoIFjVVvnTE8lC0SmHcKahQi1bAQmVlj2GbdMXl1Qzxw26cWQ3JFqt35lDVzWsm7jMifQ5h
- Sg+qiV/c9/JUQCL8aFNXj4vOUtfLNbQP5GMZ/q3dHUKyEH2D9OcHbIFr9R0zbUNttwPMcgi1z
- PUsm3Mc7zgJmWFkdwk8BOa3LBYG8Md6aWKHkMdlkEggA2dnjGSLcU+V/sHLNr2KzXlKhzxAUP
- ogarV2JGl+GKehtm8FRN9TxzjI9GGng8gDydygtOp5CMzzFSNNmftF/2JsitweD87HSPX0jiF
- W7sqjcjhixEUCzd9OXI5L8ntiDCAwDkVncARK+K8tmB4HTDWCG/ksAdyyedF+7WvDCBPhFYVK
- +e2ZtPD7z/yz79U7D6JPumpcAfh9OyGQQlD0WYmKbYV3GOFN7B48RZdL2GOcCRSYi1e+SQ2kU
- MM2N/q4tvZHCnWve6B3G3S1cdbEduUr/KWa5WCysxPsVsanFVs+jBUPUdir0RKRfQ7kBNYBzS
- f0FKQXdFd5Xg+ICRbvadqfW+hAJIw0uow/gp5o2xyjCGzZFLc/ia9n5VYlzTN08QU9poDUZ7/
- r77Eojor7KnFb50VMkdCJCTS8EX2Ipa5vH1gbUUWGMgHZz70nVt+HPDoiAeqQzVH5xDBCD8Uo
- GVUwJZc0jNMyESebny3ZIX5aEM9PErnKXSBIbUsxp2sCiQ4hVf0roC80NE8SkptkPiDNrepNc
- msGILA31fjsWZ0A8XCIaaYFBIM4VbESsgZw0byz+vFstX0oyYIi2NC0deGv9bbDc4x2frYYRM
- 8HEgidYkiFowzeCCCGaplbEWCkCi1gY1NU2Sq3gzU+JQh1jg15/p2AJYKQ+5H92MNq9UEZWdf
- lpghJG9tTdfVoN1L4abBM9enAP9n1xKJ8fb2p0oNbrtbMPQ8rmkGVV4rxuXrrEFPJvWYQPORn
- s3VsEI4kv97X1ztjxzw7I9kOHECk=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
 
-=E2=80=A6
-> ---
->  sound/pci/hda/hda_codec.c | 4 +++-
-=E2=80=A6
+On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
+> On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> >
+> > Jann reported [1] possible issue when trampoline_check_ip returns
+> > address near the bottom of the address space that is allowed to
+> > call into the syscall if uretprobes are not set up.
+> >
+> > Though the mmap minimum address restrictions will typically prevent
+> > creating mappings there, let's make sure uretprobe syscall checks
+> > for that.
+> 
+> It would be a layering violation, but we could perhaps do better here:
+> 
+> > -       if (regs->ip != trampoline_check_ip())
+> > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
+> > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+> >                 goto sigill;
+> 
+> Instead of SIGILL, perhaps this should do the seccomp action?  So the
+> logic in seccomp would be (sketchily, with some real mode1 mess):
+> 
+> if (is_a_real_uretprobe())
+>     skip seccomp;
 
-How do you think about to improve also your version management?
-https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+pre=
-viously+submitted+patch%22
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.14-rc2#n780
+IIUC you want to move the address check earlier to the seccomp path..
+with the benefit that we would kill not allowed caller sooner?
 
-Regards,
-Markus
+jirka
+
+> 
+> where is_a_real_uretprobe() is only true if the nr and arch match
+> uretprobe *and* the address is right.
+> 
+> --Andy
 
