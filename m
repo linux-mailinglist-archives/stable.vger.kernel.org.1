@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-116052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B90CA346D1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F8A34570
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C5A166446
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:23:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19052189C120
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CAD1714A1;
-	Thu, 13 Feb 2025 15:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA3C26B097;
+	Thu, 13 Feb 2025 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLbACafs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7iY/qEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCC61946C7;
-	Thu, 13 Feb 2025 15:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF4A26B083;
+	Thu, 13 Feb 2025 15:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460154; cv=none; b=h8U2NZ07BREQ/WlNINCFXy8RvaxQI5Ag6XzcwZ+fouO+TadsbPfIlSxs/T+osk9oTzNcVgepPB77dkO7Rya9v/eGs9rOg1+fxs1/lPZKY4pA2E/8Nzt0HbyFy+/KhIeOqww7Cko1enrUBIvYOkEXrC3OE4zTB9ScGuJQ6pjKgNA=
+	t=1739459362; cv=none; b=pEixw7+efINFmYUCnRH/61wNA5/dOy65B0suAzeQT2u+ooxO9UvUheofZ8N1Msxor28QkJahF8Uk2vaYgddG5FAF0xJnPfOkYBq7N1T6jDfqUWyrfDFr7Y+TFrJRAviiz2xAMtQN14BundkM6WcdWMVAslvIM6oAIyloMOPuMUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460154; c=relaxed/simple;
-	bh=HEDbKtGN13Wr6r1JmZ2UKL0uimhE9WT1uLJMbnjihCo=;
+	s=arc-20240116; t=1739459362; c=relaxed/simple;
+	bh=TT4u5GDLXr6ktm/JLOt7Qnowo7Tsj1OEhyMp7834/iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OFiLRBWrePcjV0CR2AKC0hqr4YnljS9vUCdh9f/MGsxwACTtCKk1mWW9uLX+Kefr7MegPKgdBWm7hmptgO3PN4d0i/E1dI6BcUV047fx8wJqf9XELzSMStQAkzksL6NwNmdwKjs/BQkLVfF2/4UjFg5UyznTd1cX1J0npm89m6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLbACafs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D0FC4CED1;
-	Thu, 13 Feb 2025 15:22:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L/R0gjSkCXZgMyxn9fG/cK146SM6VFe/0BQq+C8iHgGa2siMAawpvjsjtmWN7SH5QKXvJufWakWBbCSOGVb8GLPSUy//sl5EhypL4E38Bn1I+vFIpRKvMGUtM1wGpzA7yxeDS11rIjYMcl/y77yEVRxkdHvd3Rmuw3t7e2qK9hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7iY/qEe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40059C4CED1;
+	Thu, 13 Feb 2025 15:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460154;
-	bh=HEDbKtGN13Wr6r1JmZ2UKL0uimhE9WT1uLJMbnjihCo=;
+	s=korg; t=1739459362;
+	bh=TT4u5GDLXr6ktm/JLOt7Qnowo7Tsj1OEhyMp7834/iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLbACafswl/LpYsrWeyOsjiRrhzmUXXPr5+PCjmtJtTITvwPBRRqt/bsib7ZCaMn+
-	 5TRGWOmCn/L2s4vktU54JHog1T8R0HOTpZn4z7KFJQaSvEyt5jWIes7/8KriaPTDOy
-	 AFZTna/KJj69uMZJI4jRsHlnIZ4bp+a+orRjHfpo=
+	b=v7iY/qEe3ekAnBHD5FQCpFT6Od1710qbinbihN6adB2J+e/VwMSznH8OihKzpp45q
+	 4AWlvwcmWq0krcPeLzG6huhrIM95gK+7edsM+0QfTWRSytfvAXWkXGPyKPb5RNfuIt
+	 9qcKx3AlHc4+MnschLc95JQgn++T+tZS5+7skJpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/273] exec: fix up /proc/pid/comm in the execveat(AT_EMPTY_PATH) case
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.13 211/443] efi: libstub: Use -std=gnu11 to fix build with GCC 15
 Date: Thu, 13 Feb 2025 15:26:16 +0100
-Message-ID: <20250213142407.532115729@linuxfoundation.org>
+Message-ID: <20250213142448.759131610@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,112 +64,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 543841d1806029889c2f69f040e88b247aba8e22 ]
+commit 8ba14d9f490aef9fd535c04e9e62e1169eb7a055 upstream.
 
-Zbigniew mentioned at Linux Plumber's that systemd is interested in
-switching to execveat() for service execution, but can't, because the
-contents of /proc/pid/comm are the file descriptor which was used,
-instead of the path to the binary[1]. This makes the output of tools like
-top and ps useless, especially in a world where most fds are opened
-CLOEXEC so the number is truly meaningless.
+GCC 15 changed the default C standard version to C23, which should not
+have impacted the kernel because it requests the gnu11 standard via
+'-std=' in the main Makefile. However, the EFI libstub Makefile uses its
+own set of KBUILD_CFLAGS for x86 without a '-std=' value (i.e., using
+the default), resulting in errors from the kernel's definitions of bool,
+true, and false in stddef.h, which are reserved keywords under C23.
 
-When the filename passed in is empty (e.g. with AT_EMPTY_PATH), use the
-dentry's filename for "comm" instead of using the useless numeral from
-the synthetic fdpath construction. This way the actual exec machinery
-is unchanged, but cosmetically the comm looks reasonable to admins
-investigating things.
+  ./include/linux/stddef.h:11:9: error: expected identifier before ‘false’
+     11 |         false   = 0,
+  ./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
+     35 | typedef _Bool                   bool;
 
-Instead of adding TASK_COMM_LEN more bytes to bprm, use one of the unused
-flag bits to indicate that we need to set "comm" from the dentry.
+Set '-std=gnu11' in the x86 cflags to resolve the error and consistently
+use the same C standard version for the entire kernel. All other
+architectures reuse KBUILD_CFLAGS from the rest of the kernel, so this
+issue is not visible for them.
 
-Suggested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
-Suggested-by: Tycho Andersen <tandersen@netflix.com>
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://github.com/uapi-group/kernel-features#set-comm-field-before-exec [1]
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Tested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
+Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
+Reported-by: Jakub Jelinek <jakub@redhat.com>
+Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c               | 29 ++++++++++++++++++++++++++---
- include/linux/binfmts.h |  4 +++-
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/firmware/efi/libstub/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 7776209d98c10..4a6255aa4ea7f 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1362,7 +1362,28 @@ int begin_new_exec(struct linux_binprm * bprm)
- 		set_dumpable(current->mm, SUID_DUMP_USER);
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -11,7 +11,7 @@ cflags-y			:= $(KBUILD_CFLAGS)
  
- 	perf_event_exec();
--	__set_task_comm(me, kbasename(bprm->filename), true);
-+
-+	/*
-+	 * If the original filename was empty, alloc_bprm() made up a path
-+	 * that will probably not be useful to admins running ps or similar.
-+	 * Let's fix it up to be something reasonable.
-+	 */
-+	if (bprm->comm_from_dentry) {
-+		/*
-+		 * Hold RCU lock to keep the name from being freed behind our back.
-+		 * Use acquire semantics to make sure the terminating NUL from
-+		 * __d_alloc() is seen.
-+		 *
-+		 * Note, we're deliberately sloppy here. We don't need to care about
-+		 * detecting a concurrent rename and just want a terminated name.
-+		 */
-+		rcu_read_lock();
-+		__set_task_comm(me, smp_load_acquire(&bprm->file->f_path.dentry->d_name.name),
-+				true);
-+		rcu_read_unlock();
-+	} else {
-+		__set_task_comm(me, kbasename(bprm->filename), true);
-+	}
- 
- 	/* An exec changes our domain. We are no longer part of the thread
- 	   group */
-@@ -1521,11 +1542,13 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename)
- 	if (fd == AT_FDCWD || filename->name[0] == '/') {
- 		bprm->filename = filename->name;
- 	} else {
--		if (filename->name[0] == '\0')
-+		if (filename->name[0] == '\0') {
- 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d", fd);
--		else
-+			bprm->comm_from_dentry = 1;
-+		} else {
- 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d/%s",
- 						  fd, filename->name);
-+		}
- 		if (!bprm->fdpath)
- 			goto out_free;
- 
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index 8d51f69f9f5ef..af9056d78fadf 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -42,7 +42,9 @@ struct linux_binprm {
- 		 * Set when errors can no longer be returned to the
- 		 * original userspace.
- 		 */
--		point_of_no_return:1;
-+		point_of_no_return:1,
-+		/* Set when "comm" must come from the dentry. */
-+		comm_from_dentry:1;
- 	struct file *executable; /* Executable to pass to the interpreter */
- 	struct file *interpreter;
- 	struct file *file;
--- 
-2.39.5
-
+ cflags-$(CONFIG_X86_32)		:= -march=i386
+ cflags-$(CONFIG_X86_64)		:= -mcmodel=small
+-cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
++cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
+ 				   -fPIC -fno-strict-aliasing -mno-red-zone \
+ 				   -mno-mmx -mno-sse -fshort-wchar \
+ 				   -Wno-pointer-sign \
 
 
 
