@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-115809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB80A34557
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598B3A346CF
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6155189C067
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33A2189385B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A65926B082;
-	Thu, 13 Feb 2025 15:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7351D1411DE;
+	Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrbs5raN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2F4oqOrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3E726B080;
-	Thu, 13 Feb 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C22335BA;
+	Thu, 13 Feb 2025 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459327; cv=none; b=lb4PohPXkPQpVtTdmrk315vj50uGIczY/r4kwHLoXiKkbfyCy15mJ74BzsrRLc6yiCRzr0g5WnZDvpULw9jozHW4Q/FDcBvDirDcFZRk54xzDLZafOBKetY0tOE96D8Ij2iYfeYXmkT86T8N98SK90xt3/xaxjkb8OtREWh3DSA=
+	t=1739460137; cv=none; b=aRmHzaC15tQzeScFVt4NIgiX3Qdgk5VWyBc/AqJ6G8foM5D7+SvsYacoyXitoV1iZPy0WjKLy7dyj7pgtILXQ6nd6jtUYK4WhUS5caIrfEH39fTZdzC2ZqThNY3SilyWg3NtLkOt17W1suCY6k8QFI1GmGfppz65hjplM3l2nhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459327; c=relaxed/simple;
-	bh=qMsqhBM+6MJ+Clt7/jMripEafoitJBQ29FyheFlHMPg=;
+	s=arc-20240116; t=1739460137; c=relaxed/simple;
+	bh=Miu5JP1/fmvW4Mp4oQnGQtw0yCFgjDGjuadvPLIjRLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6U0iV4VODUn4Xui2VKolubzIXFd5545MqKSeiiTUAuTXAw8vz2IMwzg+djpVZ5VniZhL9OQMgTb57JZepvqH5bepvoTePFIBbQuhNr1OqzLJXBkY/uPnppQLNI2Bi/WYOYYsUnglElScuc0P4RbvgrzC8Wlu7QHK28K1bv99BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrbs5raN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A931C4CEE5;
-	Thu, 13 Feb 2025 15:08:46 +0000 (UTC)
+	 MIME-Version; b=uwcaO3+6TrDIbkeeY2mxvcVgkYoDqOoSDN7o9kPnkFiGVDH+b5aELNW3BSk0knRMaCPXffOzrk2qSzF/fJ+2zeti9PhM3xcjEyQen4xog4JEjhB4gMyC803PPTJSrzu7DNphTMImeUTYuxpbjFH31WJJ03VxoTATjplgearg66k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2F4oqOrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C5CC4CED1;
+	Thu, 13 Feb 2025 15:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459327;
-	bh=qMsqhBM+6MJ+Clt7/jMripEafoitJBQ29FyheFlHMPg=;
+	s=korg; t=1739460137;
+	bh=Miu5JP1/fmvW4Mp4oQnGQtw0yCFgjDGjuadvPLIjRLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrbs5raNSYQzLGJ/a6KdUeEePgD4zjOB5+Q7a1qQcokpk0YLu5yuzQ4vmCLrnW5IX
-	 gsz4osJUao56eUoDbQl29hVGnXKnwiNyHpQWTLeeN28BmiHXqVhhljpYcpCzMCnLRr
-	 CRSrfn3QHK/4Wsq4sxZ+LhNi925Pu7u2nbXWW7vw=
+	b=2F4oqOrAXf2Sog5mK9MxcfTT+FPWfVgil0G0MICCGbYjgO6qE1ubMHycLBWnl3UIJ
+	 GHQXNQRxc+EfOH8vsYqfWg0R+DD8o0bYZR4zkakI2mdMHkWqbKdP8sHPBDHw/pkg7e
+	 cnDY05jZzjA6hvW+6GQaxKHkU3+9XFcAKMA8mF+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.13 232/443] usb: gadget: f_tcm: ep_autoconfig with fullspeed endpoint
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/273] drm/bridge: it6505: fix HDCP CTS compare V matching
 Date: Thu, 13 Feb 2025 15:26:37 +0100
-Message-ID: <20250213142449.567232136@linuxfoundation.org>
+Message-ID: <20250213142408.355609344@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-commit 25224c1f07d31c261d04dfbc705a7a0f314a825d upstream.
+[ Upstream commit 0989c02c7a5c887c70afeae80c64d0291624e1a7 ]
 
-Match usb endpoint using fullspeed endpoint descriptor to make sure the
-wMaxPacketSize for fullspeed descriptors is automatically configured.
+When HDCP negotiation with a repeater device.
+Checking SHA V' matching must retry 3 times before restarting HDCP.
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/e4507bc824aed6e7c7f5a718392ab6a7c1480a7f.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-8-e0fdd4844703@ite.corp-partner.google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 32 +++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1970,43 +1970,39 @@ static int tcm_bind(struct usb_configura
- 	bot_intf_desc.bInterfaceNumber = iface;
- 	uasp_intf_desc.bInterfaceNumber = iface;
- 	fu->iface = iface;
--	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bi_desc,
--			&uasp_bi_ep_comp_desc);
-+	ep = usb_ep_autoconfig(gadget, &uasp_fs_bi_desc);
- 	if (!ep)
- 		goto ep_fail;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index f9f67e172eeee..552d33c4325af 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2020,7 +2020,7 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
+ {
+ 	struct device *dev = it6505->dev;
+ 	u8 av[5][4], bv[5][4];
+-	int i, err;
++	int i, err, retry;
  
- 	fu->ep_in = ep;
+ 	i = it6505_setup_sha1_input(it6505, it6505->sha1_input);
+ 	if (i <= 0) {
+@@ -2029,22 +2029,28 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
+ 	}
  
--	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bo_desc,
--			&uasp_bo_ep_comp_desc);
-+	ep = usb_ep_autoconfig(gadget, &uasp_fs_bo_desc);
- 	if (!ep)
- 		goto ep_fail;
- 	fu->ep_out = ep;
+ 	it6505_sha1_digest(it6505, it6505->sha1_input, i, (u8 *)av);
++	/*1B-05 V' must retry 3 times */
++	for (retry = 0; retry < 3; retry++) {
++		err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
++				      sizeof(bv));
  
--	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_status_desc,
--			&uasp_status_in_ep_comp_desc);
-+	ep = usb_ep_autoconfig(gadget, &uasp_fs_status_desc);
- 	if (!ep)
- 		goto ep_fail;
- 	fu->ep_status = ep;
+-	err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
+-			      sizeof(bv));
++		if (err < 0) {
++			dev_err(dev, "Read V' value Fail %d", retry);
++			continue;
++		}
  
--	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_cmd_desc,
--			&uasp_cmd_comp_desc);
-+	ep = usb_ep_autoconfig(gadget, &uasp_fs_cmd_desc);
- 	if (!ep)
- 		goto ep_fail;
- 	fu->ep_cmd = ep;
+-	if (err < 0) {
+-		dev_err(dev, "Read V' value Fail");
+-		return false;
+-	}
++		for (i = 0; i < 5; i++) {
++			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
++			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
++				break;
  
- 	/* Assume endpoint addresses are the same for both speeds */
--	uasp_bi_desc.bEndpointAddress =	uasp_ss_bi_desc.bEndpointAddress;
--	uasp_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
-+	uasp_bi_desc.bEndpointAddress =	uasp_fs_bi_desc.bEndpointAddress;
-+	uasp_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
- 	uasp_status_desc.bEndpointAddress =
--		uasp_ss_status_desc.bEndpointAddress;
--	uasp_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
-+		uasp_fs_status_desc.bEndpointAddress;
-+	uasp_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+-	for (i = 0; i < 5; i++)
+-		if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
+-		    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
+-			return false;
++			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
++			return true;
++		}
++	}
  
--	uasp_fs_bi_desc.bEndpointAddress = uasp_ss_bi_desc.bEndpointAddress;
--	uasp_fs_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
--	uasp_fs_status_desc.bEndpointAddress =
--		uasp_ss_status_desc.bEndpointAddress;
--	uasp_fs_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
-+	uasp_ss_bi_desc.bEndpointAddress = uasp_fs_bi_desc.bEndpointAddress;
-+	uasp_ss_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
-+	uasp_ss_status_desc.bEndpointAddress =
-+		uasp_fs_status_desc.bEndpointAddress;
-+	uasp_ss_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+-	DRM_DEV_DEBUG_DRIVER(dev, "V' all match!!");
+-	return true;
++	DRM_DEV_DEBUG_DRIVER(dev, "V' NOT match!! %d", retry);
++	return false;
+ }
  
- 	ret = usb_assign_descriptors(f, uasp_fs_function_desc,
- 			uasp_hs_function_desc, uasp_ss_function_desc,
+ static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
+-- 
+2.39.5
+
 
 
 
