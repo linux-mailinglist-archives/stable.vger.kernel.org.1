@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-115381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB01A3436D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:48:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59309A34631
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124ED18932FB
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333733AA0B7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEEF24291D;
-	Thu, 13 Feb 2025 14:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD411DDA1B;
+	Thu, 13 Feb 2025 15:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6NusI5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUdHgZeg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ADD24290D;
-	Thu, 13 Feb 2025 14:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ACD15853B;
+	Thu, 13 Feb 2025 15:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457856; cv=none; b=U14R6cY4Ji9kX9xBWmEAYI11M6WWcKEw2D5UCs1zMv/ND2xbeYj4LQ7fhPqaI3myAQe6dFa11GHv8XoQaBOZjN/3o7KPqbVE0bFjIimA1YoUkZlvATUtEzvpmKgjsfhp1c2+etIxKEmC+D4xw343tZRLnlvDQzVEwnHavNATm9E=
+	t=1739459152; cv=none; b=top9+VUdBd2L4FDTaowNGXb9HlAohi43Ezk1GRS0qNf1Xet5HOz8Qi/4/SgGSdoSp5C8O5NXtcDCzNLtKE6Vr0fsSc97s3PdiiTYPHFYMjxhF9a1aEB6VR9VSxmTmO2miGIS2OpZDiE25PHFCdTgWfJ11srRoIiiD/rB/+MYMRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457856; c=relaxed/simple;
-	bh=6mzQsGFPkkaTeTDlKmrSEqIsDB1VMDeHa6w76e+xM/4=;
+	s=arc-20240116; t=1739459152; c=relaxed/simple;
+	bh=vrlFp/DoJopkNrFfvhPYOOX/LzL7IeO6vNz7DMR4+6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vD8Znci+aHBpIhW2hxOn5m9KbX0nvnRew3/LdoDN7Bn3ArHHm94+jMA83xHNSIC9IGRNvZ+CFPMkKf21G95JmepqklX/ttjsovCaEivn+ORpLggo1sxFm2XtdGuGS5rMoV9rj44FHVzcnr3XUW3wgeRQ0KLsdj1nti7QX77Pi4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6NusI5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E4CC4CED1;
-	Thu, 13 Feb 2025 14:44:15 +0000 (UTC)
+	 MIME-Version; b=LdiH0RExYDkjUri4EfNgwpeDMxBR1Y5jQXAmg3Mz+ySZ4yKkQEvwYBcQueGEgUJcLZ3Ru5GR1726tValo47o1yrfPFH/+T0tIslyXfQlu014GIKnCGunDEOJOWg+8p6h1pgGtxQZF22lpU4sX/jhgdqDUriCmBezhpvxdUpXUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUdHgZeg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF12C4CED1;
+	Thu, 13 Feb 2025 15:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457856;
-	bh=6mzQsGFPkkaTeTDlKmrSEqIsDB1VMDeHa6w76e+xM/4=;
+	s=korg; t=1739459152;
+	bh=vrlFp/DoJopkNrFfvhPYOOX/LzL7IeO6vNz7DMR4+6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6NusI5Q3bIYAUka0qHo9FqDsfixVGXyvkM4tQys0zrXC+XO95UoYWYeX0PQVdYYV
-	 bnuQ/jr9Uwh7gbvxGuLsjWrDCzSfqYDafte5HdFmN150OIMHIDmOpOPPjJWP3eQQy2
-	 96McM/UnXxL6NY0ufUBPOHrSIbUmWxoz0rw/LRz8=
+	b=xUdHgZegR19Tpg7wYI+4gTPSKf3vSTgmE+eTHn7SmENHK/wqA5jjbWyw50U+eoqdw
+	 jf7vo7iomcxi+x1MnbedEViEvENMz7jwlbxZ8rT9KHOi2D0pQU8+ysOYGNtcakkR5z
+	 gugx26pl6w04yZftkD2lNE9z7rU0v5RGPVIQ7c9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Ludwig Rydberg <ludwig.rydberg@gaisler.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 200/422] ring-buffer: Do not allow events in NMI with generic atomic64 cmpxchg()
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 184/443] drm/i915/dp: Iterate DSC BPP from high to low on all platforms
 Date: Thu, 13 Feb 2025 15:25:49 +0100
-Message-ID: <20250213142444.261046652@linuxfoundation.org>
+Message-ID: <20250213142447.715824693@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,56 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit cd2375a3567fd3d93aa6c68e0027a5756213bda0 upstream.
+commit 230b19bc2bcc5897d0e20b4ce7e9790a469a2db0 upstream.
 
-Some architectures can not safely do atomic64 operations in NMI context.
-Since the ring buffer relies on atomic64 operations to do its time
-keeping, if an event is requested in NMI context, reject it for these
-architectures.
+Commit 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
+compressed bpp") tries to find the best compressed bpp for the
+link. However, it iterates from max to min bpp on display 13+, and from
+min to max on other platforms. This presumably leads to minimum
+compressed bpp always being chosen on display 11-12.
 
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/20250120235721.407068250@goodmis.org
-Fixes: c84897c0ff592 ("ring-buffer: Remove 32bit timestamp logic")
-Closes: https://lore.kernel.org/all/86fb4f86-a0e4-45a2-a2df-3154acc4f086@gaisler.com/
-Reported-by: Ludwig Rydberg <ludwig.rydberg@gaisler.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Iterate from high to low on all platforms to actually use the best
+possible compressed bpp.
+
+Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: <stable@vger.kernel.org> # v6.7+
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/3bba67923cbcd13a59d26ef5fa4bb042b13c8a9b.1738327620.git.jani.nikula@intel.com
+(cherry picked from commit 56b0337d429356c3b9ecc36a03023c8cc856b196)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -4398,8 +4398,13 @@ rb_reserve_next_event(struct trace_buffe
- 	int nr_loops = 0;
- 	int add_ts_default;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2049,11 +2049,10 @@ icl_dsc_compute_link_config(struct intel
+ 	/* Compressed BPP should be less than the Input DSC bpp */
+ 	dsc_max_bpp = min(dsc_max_bpp, pipe_bpp - 1);
  
--	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
--	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
-+	/*
-+	 * ring buffer does cmpxchg as well as atomic64 operations
-+	 * (which some archs use locking for atomic64), make sure this
-+	 * is safe in NMI context
-+	 */
-+	if ((!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) ||
-+	     IS_ENABLED(CONFIG_GENERIC_ATOMIC64)) &&
- 	    (unlikely(in_nmi()))) {
- 		return NULL;
- 	}
+-	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
+-		if (valid_dsc_bpp[i] < dsc_min_bpp)
++	for (i = ARRAY_SIZE(valid_dsc_bpp) - 1; i >= 0; i--) {
++		if (valid_dsc_bpp[i] < dsc_min_bpp ||
++		    valid_dsc_bpp[i] > dsc_max_bpp)
+ 			continue;
+-		if (valid_dsc_bpp[i] > dsc_max_bpp)
+-			break;
+ 
+ 		ret = dsc_compute_link_config(intel_dp,
+ 					      pipe_config,
 
 
 
