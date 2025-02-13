@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-116039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A31A346F1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:30:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6049BA344C5
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535F31899506
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:21:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238267A4256
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BF214A605;
-	Thu, 13 Feb 2025 15:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A5A1422D8;
+	Thu, 13 Feb 2025 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9R0FUnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAUOFE6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF85145A03;
-	Thu, 13 Feb 2025 15:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118CC26B080;
+	Thu, 13 Feb 2025 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460109; cv=none; b=Y56O2gKNS2c09CaLGPBfuevqmGGqqrFdSHsh/XdIt8+DaRtLouRihMAB6khkz88e4PvZ5eK7dZ8Z3ERa6olYSogKEQWmA1gXKiUiFXOISCYrdUJlebhJmCl7UkxrL27WmTdxdU8enhsFJ/TI6cPK28KLvTN9QrEvDd8YA+eRt2I=
+	t=1739459304; cv=none; b=MJNr0SaxyKAHCxaVgEiOrCr3q5H8Hs9DaUGLCiAxrQAXy0dg1djaMtuEn2h3q573rC3KeVjsRK4kvzi525LYr9aQ1/kIwiwp1hG8gpif6etw6/YkJIAgAWd/osdMRYRnzDkGenVd4c3m8xVm1QloxCMjm/EAH+pgFLv+eScxp54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460109; c=relaxed/simple;
-	bh=Wol0u8ZIWi510SVpHkhHM3fjU4o34muiAc01cJh8dFY=;
+	s=arc-20240116; t=1739459304; c=relaxed/simple;
+	bh=PmRKJ78pADVz6UHpjGG1ceJLdh+QYvbgb91LTYUJoTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoOtIZQg8wWD5+gHuvMYitnsoRDshurn4gnaP+oguCNtFOP9Uu+hLg/bEFCzQ0JCgofZ150j4WVYXOLgm9Zjfma5nCw2W/G5wksfCiuKXFZC91PrIi+WLxireBUY41puxONmC1JMzByx5FOc6LrDc4l8QfEeXV/t3ctQQI6eeWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9R0FUnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11636C4CED1;
-	Thu, 13 Feb 2025 15:21:48 +0000 (UTC)
+	 MIME-Version; b=C5aMoakgij8X84HEkbDB5gZhDP5imXweWpxa6JKXwTavWFtcioVG6mCnRXVNA/X9kSW9ot/NjtSxMev99ToHS9XMyTZlTunk4L/yhqYo5F/hooOnnF16zeAGbnIPNA55URMHabB/nEY9h9xJbiPi77gEIsp8pF9Rmo70J/zhoKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAUOFE6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73115C4CED1;
+	Thu, 13 Feb 2025 15:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460109;
-	bh=Wol0u8ZIWi510SVpHkhHM3fjU4o34muiAc01cJh8dFY=;
+	s=korg; t=1739459303;
+	bh=PmRKJ78pADVz6UHpjGG1ceJLdh+QYvbgb91LTYUJoTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9R0FUnbO7KIbP+1y8EQgrpndrAS8Y2GgdfMnIHS7puHVx54HgMmlf1UGKp5S9NSH
-	 ab5sjPDKKKUl4BL6pX0NG2aMKw5luMW740XZLuAbqoK1C1GybYeEr+NJuGrVbyqQya
-	 w75X1jXR35WiApsl4oVgNRAjlMB45Nf8SroYsyMg=
+	b=qAUOFE6BFlQF9uPQUvZ3DOT7tJg7H/hW/iIuuOqwRIcABraJMhad84XNwd9M7dhNx
+	 sVgCUHdGXPwO3NMDh2BYEuozYaaloyasqD0Pgk0dfYVYGdnu3appy5SqtT4LYmWZ6P
+	 n8SePvTItwOqWT+guzCo4UcfngY6gccfFfu+UsJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/273] drm/radeon: use eld_mutex to protect access to connector->eld
+	Marcel Hamer <marcel.hamer@windriver.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.13 225/443] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
 Date: Thu, 13 Feb 2025 15:26:30 +0100
-Message-ID: <20250213142408.083839814@linuxfoundation.org>
+Message-ID: <20250213142449.294330767@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Marcel Hamer <marcel.hamer@windriver.com>
 
-[ Upstream commit b54c14f82428c8a602392d4cae1958a71a578132 ]
+commit 68abd0c4ebf24cd499841a488b97a6873d5efabb upstream.
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+On removal of the device or unloading of the kernel module a potential NULL
+pointer dereference occurs.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-8-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The following sequence deletes the interface:
+
+  brcmf_detach()
+    brcmf_remove_interface()
+      brcmf_del_if()
+
+Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
+BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
+
+After brcmf_remove_interface() call the brcmf_proto_detach() function is
+called providing the following sequence:
+
+  brcmf_detach()
+    brcmf_proto_detach()
+      brcmf_proto_msgbuf_detach()
+        brcmf_flowring_detach()
+          brcmf_msgbuf_delete_flowring()
+            brcmf_msgbuf_remove_flowring()
+              brcmf_flowring_delete()
+                brcmf_get_ifp()
+                brcmf_txfinalize()
+
+Since brcmf_get_ip() can and actually will return NULL in this case the
+call to brcmf_txfinalize() will result in a NULL pointer dereference inside
+brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
+
+This will only happen if a flowring still has an skb.
+
+Although the NULL pointer dereference has only been seen when trying to
+update the tx statistic, all other uses of the ifp pointer have been
+guarded as well with an early return if ifp is NULL.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
+Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20250116132240.731039-1-marcel.hamer@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_audio.c b/drivers/gpu/drm/radeon/radeon_audio.c
-index fc22fe709b9c1..da37a827337bc 100644
---- a/drivers/gpu/drm/radeon/radeon_audio.c
-+++ b/drivers/gpu/drm/radeon/radeon_audio.c
-@@ -773,8 +773,10 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
- 		if (!dig->pin || dig->pin->id != port)
- 			continue;
- 		*enabled = true;
-+		mutex_lock(&connector->eld_mutex);
- 		ret = drm_eld_size(connector->eld);
- 		memcpy(buf, connector->eld, min(max_bytes, ret));
-+		mutex_unlock(&connector->eld_mutex);
- 		break;
- 	}
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -540,6 +540,11 @@ void brcmf_txfinalize(struct brcmf_if *i
+ 	struct ethhdr *eh;
+ 	u16 type;
  
--- 
-2.39.5
-
++	if (!ifp) {
++		brcmu_pkt_buf_free_skb(txp);
++		return;
++	}
++
+ 	eh = (struct ethhdr *)(txp->data);
+ 	type = ntohs(eh->h_proto);
+ 
 
 
 
