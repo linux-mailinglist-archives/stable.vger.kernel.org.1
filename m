@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-115490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FBEA34414
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:00:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53C8A3443E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B03816990A
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748AE1897AF4
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2FD202C43;
-	Thu, 13 Feb 2025 14:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9C92222C7;
+	Thu, 13 Feb 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCXOUAr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfuyxNp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5876924168A;
-	Thu, 13 Feb 2025 14:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD76203719;
+	Thu, 13 Feb 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458237; cv=none; b=UOSId654Deq2q/aOSEguMRAkn0Zhb9q03Ktg0BOl3vFGbgOs5JpJ+66fEnz90OhpW+swjy3KOwarKAVTwNuLpcMawv6Ur1k7sJz1pwNLJUxE0jA8X5GO3WnB/yjzoAhPW9LG4FuTezR7zpTcaJOn90qZ+sWELE4Ej2kbWrYxpIM=
+	t=1739458274; cv=none; b=FsWxfNskow31OnQI7j72Zui/11wHmwhNccQmKNU7X0mEYuseH1Cz1VS6oqvUrUNOR9KkhDDwu22/gV5ge6Q8fGska91b/vdQUBTdgsNqPjo1/CE/evfX5qbaW0Wmyfpiu6pxScw2z2qmE1bdwzjo1MAys5YsUN4ZZ1ZvkdKjbQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458237; c=relaxed/simple;
-	bh=Btq3ZJOO4ppscKNfOIdcHboyLHI/NVgq9jlh4dGmDts=;
+	s=arc-20240116; t=1739458274; c=relaxed/simple;
+	bh=oDxJRpOsQJjD76Dq/8K/R7Ul1d696PEGSeCFQL0sTF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+KjbW6FvdzeVdjsfGH+cbnyaAewqFTLBxxUFxc9WOAt+Vyjz67wK8WUG23L39WPd1t0vVd5NKLrwukLE7GK5hiyoGLk4bXik8s8mQkf+CeAttZNGVrbkL4dkXUhsEROaz07o/cgGom6fnbhH9LtupMD19zbTe6KxIdqrP4CdIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCXOUAr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE41C4CEE4;
-	Thu, 13 Feb 2025 14:50:36 +0000 (UTC)
+	 MIME-Version; b=MirSey4XtQ2IjjO8Q+I8Z1UKM6EIbiilrklSGzUrqtAke1Kk4XE9helcpzba15Vh3wh1pFWg9cESj7+zMGI3h8OwHy+WS+pC5POgWqECi9RyI23JRUqVmMvZvk+2keYQ3NMAHEoQTs4LKDib8nfMDlDm3o7R5EupMyzstH69WgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfuyxNp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E64C4CED1;
+	Thu, 13 Feb 2025 14:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458236;
-	bh=Btq3ZJOO4ppscKNfOIdcHboyLHI/NVgq9jlh4dGmDts=;
+	s=korg; t=1739458273;
+	bh=oDxJRpOsQJjD76Dq/8K/R7Ul1d696PEGSeCFQL0sTF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCXOUAr2otimNzzzEltAMmAqrHVJgy0+yq8Wz+LLwA/Xg3hxPajQ87cMviyzk4V2O
-	 zx5fLo/uaw1hxEUgUTtHr3sBoI7XC4TP4Xv/0lTOKVN2QlQsIBf4l/7iiV/yW/LHYb
-	 ZLINC76ZDXNCYOfdBxrU6eTqBPXQLBkgU0B0c6Q4=
+	b=FfuyxNp6BfmXO+av2qoTelwrkixscUw//GdVUVALMoyMRYzd6/WZKrME7K6GvynA8
+	 qL63BuZSLIzUQqz/G+9uBklnXF2NZp/uuctD8O8E1N6RbDOZYfOP6Q9efR2FsZ79hK
+	 PaChh8Nj0bJ605WMeR+vpGv3PU+oLo+mbwDFnCBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 333/422] media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
-Date: Thu, 13 Feb 2025 15:28:02 +0100
-Message-ID: <20250213142449.404712211@linuxfoundation.org>
+Subject: [PATCH 6.12 334/422] media: uvcvideo: Fix crash during unbind if gpio unit is in use
+Date: Thu, 13 Feb 2025 15:28:03 +0100
+Message-ID: <20250213142449.442211185@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
 References: <20250213142436.408121546@linuxfoundation.org>
@@ -67,139 +67,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 42d0ec194aa12e9b97f09a94fe565ba2e5f631a2 upstream.
+commit a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5 upstream.
 
-UB9702 does not have SP and EQ registers, but the driver uses them in
-log_status(). Fix this by separating the SP and EQ related log_status()
-work into a separate function (for clarity) and calling that function
-only for UB960.
+We used the wrong device for the device managed functions. We used the
+usb device, when we should be using the interface device.
+
+If we unbind the driver from the usb interface, the cleanup functions
+are never called. In our case, the IRQ is never disabled.
+
+If an IRQ is triggered, it will try to access memory sections that are
+already free, causing an OOPS.
+
+We cannot use the function devm_request_threaded_irq here. The devm_*
+clean functions may be called after the main structure is released by
+uvc_delete.
+
+Luckily this bug has small impact, as it is only affected by devices
+with gpio units and the user has to unbind the device, a disconnect will
+not trigger this error.
 
 Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub960.c |   90 +++++++++++++++++++++++-------------------
- 1 file changed, 50 insertions(+), 40 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   28 +++++++++++++++++++++-------
+ drivers/media/usb/uvc/uvcvideo.h   |    1 +
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -2950,6 +2950,54 @@ static const struct v4l2_subdev_pad_ops
- 	.set_fmt = ub960_set_fmt,
- };
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1280,14 +1280,14 @@ static int uvc_gpio_parse(struct uvc_dev
+ 	struct gpio_desc *gpio_privacy;
+ 	int irq;
  
-+static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
-+					 unsigned int nport)
-+{
-+	struct device *dev = &priv->client->dev;
-+	u8 eq_level;
-+	s8 strobe_pos;
-+	u8 v = 0;
+-	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
++	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+ 					       GPIOD_IN);
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 
+ 	irq = gpiod_to_irq(gpio_privacy);
+ 	if (irq < 0)
+-		return dev_err_probe(&dev->udev->dev, irq,
++		return dev_err_probe(&dev->intf->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
+ 
+ 	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
+@@ -1313,15 +1313,27 @@ static int uvc_gpio_parse(struct uvc_dev
+ static int uvc_gpio_init_irq(struct uvc_device *dev)
+ {
+ 	struct uvc_entity *unit = dev->gpio_unit;
++	int ret;
+ 
+ 	if (!unit || unit->gpio.irq < 0)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+-					 uvc_gpio_irq,
+-					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+-					 IRQF_TRIGGER_RISING,
+-					 "uvc_privacy_gpio", dev);
++	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
++				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
++				   IRQF_TRIGGER_RISING,
++				   "uvc_privacy_gpio", dev);
 +
-+	/* Strobe */
++	unit->gpio.initialized = !ret;
 +
-+	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
-+
-+	dev_info(dev, "\t%s strobe\n",
-+		 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
-+							  "Manual");
-+
-+	if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
-+		ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
-+
-+		dev_info(dev, "\tStrobe range [%d, %d]\n",
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
-+			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
-+	}
-+
-+	ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
-+
-+	dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
-+
-+	/* EQ */
-+
-+	ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
-+
-+	dev_info(dev, "\t%s EQ\n",
-+		 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
-+						    "Adaptive");
-+
-+	if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
-+		ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
-+
-+		dev_info(dev, "\tEQ range [%u, %u]\n",
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
-+			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
-+	}
-+
-+	if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
-+		dev_info(dev, "\tEQ level %u\n", eq_level);
++	return ret;
 +}
 +
- static int ub960_log_status(struct v4l2_subdev *sd)
++static void uvc_gpio_deinit(struct uvc_device *dev)
++{
++	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
++		return;
++
++	free_irq(dev->gpio_unit->gpio.irq, dev);
+ }
+ 
+ /* ------------------------------------------------------------------------
+@@ -1918,6 +1930,8 @@ static void uvc_unregister_video(struct
  {
- 	struct ub960_data *priv = sd_to_ub960(sd);
-@@ -2997,8 +3045,6 @@ static int ub960_log_status(struct v4l2_
+ 	struct uvc_streaming *stream;
  
- 	for (nport = 0; nport < priv->hw_data->num_rxports; nport++) {
- 		struct ub960_rxport *rxport = priv->rxports[nport];
--		u8 eq_level;
--		s8 strobe_pos;
- 		unsigned int i;
++	uvc_gpio_deinit(dev);
++
+ 	list_for_each_entry(stream, &dev->streams, list) {
+ 		/* Nothing to do here, continue. */
+ 		if (!video_is_registered(&stream->vdev))
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -234,6 +234,7 @@ struct uvc_entity {
+ 			u8  *bmControls;
+ 			struct gpio_desc *gpio_privacy;
+ 			int irq;
++			bool initialized;
+ 		} gpio;
+ 	};
  
- 		dev_info(dev, "RX %u\n", nport);
-@@ -3034,44 +3080,8 @@ static int ub960_log_status(struct v4l2_
- 		ub960_rxport_read(priv, nport, UB960_RR_CSI_ERR_COUNTER, &v);
- 		dev_info(dev, "\tcsi_err_counter %u\n", v);
- 
--		/* Strobe */
--
--		ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
--
--		dev_info(dev, "\t%s strobe\n",
--			 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
--								  "Manual");
--
--		if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
--			ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
--
--			dev_info(dev, "\tStrobe range [%d, %d]\n",
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
--				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
--		}
--
--		ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
--
--		dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
--
--		/* EQ */
--
--		ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
--
--		dev_info(dev, "\t%s EQ\n",
--			 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
--							    "Adaptive");
--
--		if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
--			ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
--
--			dev_info(dev, "\tEQ range [%u, %u]\n",
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
--				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
--		}
--
--		if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
--			dev_info(dev, "\tEQ level %u\n", eq_level);
-+		if (!priv->hw_data->is_ub9702)
-+			ub960_log_status_ub960_sp_eq(priv, nport);
- 
- 		/* GPIOs */
- 		for (i = 0; i < UB960_NUM_BC_GPIOS; i++) {
 
 
 
