@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-116179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C40A34789
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:36:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00F5A34473
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA09416EA51
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB8F1893D91
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD3C14658D;
-	Thu, 13 Feb 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC321245021;
+	Thu, 13 Feb 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1zmbA3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcrCbaMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5756115252D;
-	Thu, 13 Feb 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B626B08D;
+	Thu, 13 Feb 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460596; cv=none; b=onirw3iB+Bk+8onB6ZvD3SQG3JB4APV5lghLQuNFJ90DLcIQIWJiyXVKGd53sGW4drwLf4XAIjo3O8tNsnoQkTfxbyIQAbeNcstrFPT7DgB3nzR4Zz0Sc1hyub8JnhVMNRECtRoFkKhdnaJf9mhg7m0R7CGBBiPpqasosVbVdIE=
+	t=1739458368; cv=none; b=kh1hJSuOw7NG6+i7ynqvooy5NDnnK47BDb6ug4vBavXQ+08N+jX+0Kkv9hqRpemYtygvxNCETM9EAE+bSioPCN2bYNAOg7s3u6RW6C8h44Lp4lKNUEc+XG86zCj518cr2Hv1PTckmafaeT2K7ZrWjzRxBor3vWq5brrRBCF92oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460596; c=relaxed/simple;
-	bh=KKYmW2ige3k9vhT1Ds6k8ZgVAMRCjGGEs9vAXipekwg=;
+	s=arc-20240116; t=1739458368; c=relaxed/simple;
+	bh=US7Neg8LDBtv5hilbpgbR7PEcvxjsjtQ5V474qKhfiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKmf4kfDSamz2/gMrB/Fj23K6h3q57S6/ZtfPgT+a7dXYGNaJSn5MezWjAFRREkl0GWs1R7zmjvq/3EMMDLij4w34CeiZbvtEwiAfM8TYbspmq2MOehzIyQINhzhKbvmlBrUAW2tnec7eTKJ3NgTkLh4UvZxB2U7LJakidntyao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1zmbA3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C45C4CEE8;
-	Thu, 13 Feb 2025 15:29:55 +0000 (UTC)
+	 MIME-Version; b=CLUw1AMpTWkcwW0f8RmCBz8HoqeA6ZKV+YaMhQaDpC+3QECqP/kqede5SfwF4W+BP9xaMTbiOJNZWUyFCTgGnZXXvNsyNz1FAZDL+fywMRTvsZVlfBJXaZzi+zG5vyLiY4Fnw0XChFGOfIrPgS8D+as/42cm3ov//IMT6/W2ejc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcrCbaMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09029C4CED1;
+	Thu, 13 Feb 2025 14:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460596;
-	bh=KKYmW2ige3k9vhT1Ds6k8ZgVAMRCjGGEs9vAXipekwg=;
+	s=korg; t=1739458368;
+	bh=US7Neg8LDBtv5hilbpgbR7PEcvxjsjtQ5V474qKhfiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1zmbA3chVkYLEmbTLzs+ws6ZjSnc0R1BDwtVXos6MgHxy4OU9k30qnV1BVhU+fAj
-	 zO50HiM4EG33gp1ZAScqtaeIDccdtmZDyLJ9WvZXqTOmmFAGB8wRAyM3Uebzt+LADa
-	 plalbpFs9Q4tNaFTV/NYsDGPHtgLx5HFl/c4zj2A=
+	b=qcrCbaMiTAVKzglnnOf6ul5ggC7orGpwUvI9g7ti2M5QctqFdTDfPsgSejI2SEf/C
+	 08A+chENhnaUZYzSuLKCa8qtTIxcZz9SpLX/2iiKQjdIw2UjRtHUYa8prvVuFkVtJ8
+	 sec0ZiHoX56q6ER7PPuoLnIoxPO/+hYTBoaHPKFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brad Griffis <bgriffis@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.6 157/273] arm64: tegra: Fix Tegra234 PCIe interrupt-map
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 380/422] maple_tree: simplify split calculation
 Date: Thu, 13 Feb 2025 15:28:49 +0100
-Message-ID: <20250213142413.540260220@linuxfoundation.org>
+Message-ID: <20250213142451.211675574@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brad Griffis <bgriffis@nvidia.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-commit b615fbd70fce8582d92b3bdbbf3c9b80cadcfb55 upstream.
+commit 4f6a6bed0bfef4b966f076f33eb4f5547226056a upstream.
 
-For interrupt-map entries, the DTS specification requires
-that #address-cells is defined for both the child node and the
-interrupt parent.  For the PCIe interrupt-map entries, the parent
-node ("gic") has not specified #address-cells. The existing layout
-of the PCIe interrupt-map entries indicates that it assumes
-that #address-cells is zero for this node.
+Patch series "simplify split calculation", v3.
 
-Explicitly set #address-cells to zero for "gic" so that it complies
-with the device tree specification.
 
-NVIDIA EDK2 works around this issue by assuming #address-cells
-is zero in this scenario, but that workaround is being removed and so
-this update is needed or else NVIDIA EDK2 cannot successfully parse the
-device tree and the board cannot boot.
+This patch (of 3):
 
-Fixes: ec142c44b026 ("arm64: tegra: Add P2U and PCIe controller nodes to Tegra234 DT")
-Signed-off-by: Brad Griffis <bgriffis@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241213235602.452303-1-bgriffis@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+The current calculation for splitting nodes tries to enforce a minimum
+span on the leaf nodes.  This code is complex and never worked correctly
+to begin with, due to the min value being passed as 0 for all leaves.
+
+The calculation should just split the data as equally as possible
+between the new nodes.  Note that b_end will be one more than the data,
+so the left side is still favoured in the calculation.
+
+The current code may also lead to a deficient node by not leaving enough
+data for the right side of the split. This issue is also addressed with
+the split calculation change.
+
+[Liam.Howlett@Oracle.com: rephrase the change log]
+Link: https://lkml.kernel.org/r/20241113031616.10530-1-richard.weiyang@gmail.com
+Link: https://lkml.kernel.org/r/20241113031616.10530-2-richard.weiyang@gmail.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ lib/maple_tree.c |   23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -1912,6 +1912,8 @@
- 			#redistributor-regions = <1>;
- 			#interrupt-cells = <3>;
- 			interrupt-controller;
-+
-+			#address-cells = <0>;
- 		};
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -1849,11 +1849,11 @@ static inline int mab_no_null_split(stru
+  * Return: The first split location.  The middle split is set in @mid_split.
+  */
+ static inline int mab_calc_split(struct ma_state *mas,
+-	 struct maple_big_node *bn, unsigned char *mid_split, unsigned long min)
++	 struct maple_big_node *bn, unsigned char *mid_split)
+ {
+ 	unsigned char b_end = bn->b_end;
+ 	int split = b_end / 2; /* Assume equal split. */
+-	unsigned char slot_min, slot_count = mt_slots[bn->type];
++	unsigned char slot_count = mt_slots[bn->type];
  
- 		smmu_iso: iommu@10000000 {
+ 	/*
+ 	 * To support gap tracking, all NULL entries are kept together and a node cannot
+@@ -1886,18 +1886,7 @@ static inline int mab_calc_split(struct
+ 		split = b_end / 3;
+ 		*mid_split = split * 2;
+ 	} else {
+-		slot_min = mt_min_slots[bn->type];
+-
+ 		*mid_split = 0;
+-		/*
+-		 * Avoid having a range less than the slot count unless it
+-		 * causes one node to be deficient.
+-		 * NOTE: mt_min_slots is 1 based, b_end and split are zero.
+-		 */
+-		while ((split < slot_count - 1) &&
+-		       ((bn->pivot[split] - min) < slot_count - 1) &&
+-		       (b_end - split > slot_min))
+-			split++;
+ 	}
+ 
+ 	/* Avoid ending a node on a NULL entry */
+@@ -2366,7 +2355,7 @@ static inline struct maple_enode
+ static inline unsigned char mas_mab_to_node(struct ma_state *mas,
+ 	struct maple_big_node *b_node, struct maple_enode **left,
+ 	struct maple_enode **right, struct maple_enode **middle,
+-	unsigned char *mid_split, unsigned long min)
++	unsigned char *mid_split)
+ {
+ 	unsigned char split = 0;
+ 	unsigned char slot_count = mt_slots[b_node->type];
+@@ -2379,7 +2368,7 @@ static inline unsigned char mas_mab_to_n
+ 	if (b_node->b_end < slot_count) {
+ 		split = b_node->b_end;
+ 	} else {
+-		split = mab_calc_split(mas, b_node, mid_split, min);
++		split = mab_calc_split(mas, b_node, mid_split);
+ 		*right = mas_new_ma_node(mas, b_node);
+ 	}
+ 
+@@ -2866,7 +2855,7 @@ static void mas_spanning_rebalance(struc
+ 		mast->bn->b_end--;
+ 		mast->bn->type = mte_node_type(mast->orig_l->node);
+ 		split = mas_mab_to_node(mas, mast->bn, &left, &right, &middle,
+-					&mid_split, mast->orig_l->min);
++					&mid_split);
+ 		mast_set_split_parents(mast, left, middle, right, split,
+ 				       mid_split);
+ 		mast_cp_to_nodes(mast, left, middle, right, split, mid_split);
+@@ -3357,7 +3346,7 @@ static void mas_split(struct ma_state *m
+ 		if (mas_push_data(mas, height, &mast, false))
+ 			break;
+ 
+-		split = mab_calc_split(mas, b_node, &mid_split, prev_l_mas.min);
++		split = mab_calc_split(mas, b_node, &mid_split);
+ 		mast_split_data(&mast, mas, split);
+ 		/*
+ 		 * Usually correct, mab_mas_cp in the above call overwrites
 
 
 
