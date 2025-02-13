@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-115812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E56CA34574
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:15:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B63A346BE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D384173D4D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:09:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4054A16D1E0
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177BD26B09C;
-	Thu, 13 Feb 2025 15:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A314658D;
+	Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aD7Jmf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVrPGQBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C618826B08A;
-	Thu, 13 Feb 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E53335BA;
+	Thu, 13 Feb 2025 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459338; cv=none; b=SWWTZjAnet1/RInipBLDXFa/qNMo7gZTZouTQudZ4iEYhzYsCTTPZit6YMv8/LJjtLKw93N2FZDdAEA3xyt/tbliR7zt20CWH+KeBCvtkWcjnuX819l62xdzsHPL+Jgw35eMHHRIpu7MRXWRFbAJ7kf7K5lv5IHgtvpQlbbi10Y=
+	t=1739460144; cv=none; b=rzQLpsl+oVfk2MLfBpCPTOWpuf6eWUn1/e3VMZIL9n4n9vICEXFn4SdDLkeD1RxaEdDj5FkM/Kyg6zNFxUCvj6uEBCKaSBCAGf59jULS4jbCN5bJw/mmZj+rfsbIbngmiQyyWcfa8PNjoWY2/xyvuSf+A1jav8qG/DojWPBtLZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459338; c=relaxed/simple;
-	bh=XHko+KCOIdAt8FS2LB+QievrU/KqzLVMeI7rb6SAcoQ=;
+	s=arc-20240116; t=1739460144; c=relaxed/simple;
+	bh=ARQTZPh502VMO4VS2GQ7ctflrxYVKuDQVDIYiPMcnBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oISwFpj6T06HLRapquYwyaiclIEVjwXMZDSzl/neB3W1Ihofgp3B5OpIGher/tCqnEWGse/eQQawAekYSIaxzqsvEBtx/a5jwNr0zmmYTTs4HGWPDMAwF4y03PoA9FLVTpU7NQOEPMWT8aw+WPl+GJuf5ZQe0yo0UL1TCl1BBqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aD7Jmf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CB3C4CED1;
-	Thu, 13 Feb 2025 15:08:58 +0000 (UTC)
+	 MIME-Version; b=dzaeoxJeGbhSB7qSGUusMuhxtv1dIRlaRJRx2V1TOH2jb/B00IjfEIyU9ji7gh+gv4f+4o+mCeC8+UwLMoa/SNdGa66WbFzwMvC67Jv6s5G8YCSZXjHID6hGEufdz5QN1VtXkTwOKw7kNrb8wONdzL5gT7RJzuGUDdsAbh9x8XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVrPGQBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597AEC4CEE8;
+	Thu, 13 Feb 2025 15:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459338;
-	bh=XHko+KCOIdAt8FS2LB+QievrU/KqzLVMeI7rb6SAcoQ=;
+	s=korg; t=1739460143;
+	bh=ARQTZPh502VMO4VS2GQ7ctflrxYVKuDQVDIYiPMcnBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aD7Jmf+TNa1Y+Knj0xefVL6qFe9iWWRS2AlW4frsQYH8N9/VBDUO65otkNeAa5Oo
-	 H+ilI5ZLEpXbGJhcHTa5v1NfYFvBily8/Bx0rBiVZm2KY9S3xtbHymiD+2H8xMt0Pl
-	 niTWoTwZj85VBYo/N/M28Dogsn4+UDoCBQvCLRBQ=
+	b=aVrPGQBRvhkfWxBBEuQJwTDHu0QyXoi+2UCVBOLRB9XBKWNa23WUYRRPmi9PTcecL
+	 jnhcfhQJvgtmlH9sVCm5IE/bjhsl5L+l+jIaPqJF8FYI1jAW0dFXMZeMJV/5XvXmIa
+	 IumiPaWc+Z8VkVOPO7iW4XUO5h5LGs9cgxIoOSLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Foster Snowhill <forst@pen.gy>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 234/443] usbnet: ipheth: fix possible overflow in DPE length check
+	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 027/273] safesetid: check size of policy writes
 Date: Thu, 13 Feb 2025 15:26:39 +0100
-Message-ID: <20250213142449.643241588@linuxfoundation.org>
+Message-ID: <20250213142408.432390351@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Foster Snowhill <forst@pen.gy>
+From: Leo Stone <leocstone@gmail.com>
 
-commit c219427ed296f94bb4b91d08626776dc7719ee27 upstream.
+[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
 
-Originally, it was possible for the DPE length check to overflow if
-wDatagramIndex + wDatagramLength > U16_MAX. This could lead to an OoB
-read.
+syzbot attempts to write a buffer with a large size to a sysfs entry
+with writes handled by handle_policy_update(), triggering a warning
+in kmalloc.
 
-Move the wDatagramIndex term to the other side of the inequality.
+Check the size specified for write buffers before allocating.
 
-An existing condition ensures that wDatagramIndex < urb->actual_length.
-
-Fixes: a2d274c62e44 ("usbnet: ipheth: add CDC NCM support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+[PM: subject tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ipheth.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/safesetid/securityfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -243,8 +243,8 @@ static int ipheth_rcvbulk_callback_ncm(s
- 	while (le16_to_cpu(dpe->wDatagramIndex) != 0 &&
- 	       le16_to_cpu(dpe->wDatagramLength) != 0) {
- 		if (le16_to_cpu(dpe->wDatagramIndex) >= urb->actual_length ||
--		    le16_to_cpu(dpe->wDatagramIndex) +
--		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length) {
-+		    le16_to_cpu(dpe->wDatagramLength) > urb->actual_length -
-+		    le16_to_cpu(dpe->wDatagramIndex)) {
- 			dev->net->stats.rx_length_errors++;
- 			return retval;
- 		}
+diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
+index 25310468bcddf..8e1ffd70b18ab 100644
+--- a/security/safesetid/securityfs.c
++++ b/security/safesetid/securityfs.c
+@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
+ 	char *buf, *p, *end;
+ 	int err;
+ 
++	if (len >= KMALLOC_MAX_SIZE)
++		return -EINVAL;
++
+ 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
+ 	if (!pol)
+ 		return -ENOMEM;
+-- 
+2.39.5
+
 
 
 
