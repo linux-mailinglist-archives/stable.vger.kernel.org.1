@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-116262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E88A347E3
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D144A3484D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04651889A2D
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3830161527
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEC526B087;
-	Thu, 13 Feb 2025 15:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFEC18A6A7;
+	Thu, 13 Feb 2025 15:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsC9bS82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxD1LyMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19370805;
-	Thu, 13 Feb 2025 15:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3728A15A856;
+	Thu, 13 Feb 2025 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460879; cv=none; b=eTv3owQ0hrDfmI4M/evUrgtCcvBiBYIt46qtm7na7EKPWc7w/DiMf2BFxFVRm33jH3bXrDsmx60WUL9joyT1keI++7TRvBLPkpijnhHOffMJeAelemtpeXd6Fvna1mcjQlh1CFkoVMAOZcAlhq7OjKhT0njqnSTdtz9IS5yR7io=
+	t=1739461023; cv=none; b=ae1A4QAKLF2gJrTNN20ckg63pfCx44lcn4VnQ5LSxR67BvnOWujCoEUt9sb7vOXrpvNr7R78jZOkkeoeuxE0FSCMloDHz1Spx9W4C0ErYs9lYOdeaSwJ15VirTI+hdu7VigTEvb9va5vPN+hNdZvRHp922Df74XSb3AjOzEt4f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460879; c=relaxed/simple;
-	bh=iY0DRZaryUaX/Uf71siWhHtPlWHU3P9B/K8ylcwUr+g=;
+	s=arc-20240116; t=1739461023; c=relaxed/simple;
+	bh=/CXSdpSQOl7Gdc92N2cFxG/o/G19Yb3w15vxUDIfOWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CE3gPgVe/4BxX8Q8pMzLeaBLZ38kqFm5DTN+A4MQrdjDklrg4mDvrFvbyIqKDtC+JY5WYkwZhUdZ1ngSm44yGcmeOxlQGa5oj3DztZ3MrVYGpi4hPMZbRpd+/o6mJ4QUmmuLqt6aHPW44by/W2xXHd+sAEQba1tLBEFnZd2UbtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsC9bS82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9ADAC4CED1;
-	Thu, 13 Feb 2025 15:34:37 +0000 (UTC)
+	 MIME-Version; b=BpNlnex2xQC6X/R9opYPYetzFS646CP5b+G+GLajp3KKG06VrL16RBuylgoH+HEhql5dtDjawxih9E82lFWrxgkdnRonbhauN0V2yleKOVriSKYddoqWJFxHhEHe2aOSUrh8dvzsP2XTX2t4pw3lDRsm9P9iziEzSj1I+WeXxbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxD1LyMB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432D2C4CED1;
+	Thu, 13 Feb 2025 15:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460878;
-	bh=iY0DRZaryUaX/Uf71siWhHtPlWHU3P9B/K8ylcwUr+g=;
+	s=korg; t=1739461022;
+	bh=/CXSdpSQOl7Gdc92N2cFxG/o/G19Yb3w15vxUDIfOWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsC9bS82R7u0h225KQlvRdMi7dXojOPuGKHYbpIum83mRRbb90ll3o8xLy7IftTQ4
-	 ueWZVwMs4ymuj8QK4fIaA47APIrGSJW93it1igZ4ExNNrxGrt8xpsa8ThkWCY9mhhS
-	 y4mtRtJ4zMX2ic9YsSx6ThKqJsV7arGUW6TaCDgs=
+	b=xxD1LyMBHUQzs/4lrVskwe9oEsRypi7W/emc247a0Io5iWNqv7RYPxGdLMeszPqGb
+	 V4GUUZaFUGWtsk47DbDSHLnsIMV1+toGULSn6N9jpUQBg53yCIUXwxdwUP+U9zm8K0
+	 KfY79suRpW3OIVZ4sWm0QV1rhAuhvZNLiy3sHCq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 237/273] NFC: nci: Add bounds checking in nci_hci_create_pipe()
-Date: Thu, 13 Feb 2025 15:30:09 +0100
-Message-ID: <20250213142416.799585427@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 238/273] i3c: master: Fix missing ret assignment in set_speed()
+Date: Thu, 13 Feb 2025 15:30:10 +0100
+Message-ID: <20250213142416.840799638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
 References: <20250213142407.354217048@linuxfoundation.org>
@@ -67,37 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 110b43ef05342d5a11284cc8b21582b698b4ef1c upstream.
+commit b266e0d4dac00eecdfaf50ec3f708fd0c3b39637 upstream.
 
-The "pipe" variable is a u8 which comes from the network.  If it's more
-than 127, then it results in memory corruption in the caller,
-nci_hci_connect_gate().
+Fix a probe failure in the i3c master driver that occurs when no i3c
+devices are connected to the bus.
+
+The issue arises in `i3c_master_bus_init()` where the `ret` value is not
+updated after calling `master->ops->set_speed()`. If no devices are
+present, `ret` remains set to `I3C_ERROR_M2`, causing the code to
+incorrectly proceed to `err_bus_cleanup`.
 
 Cc: stable@vger.kernel.org
-Fixes: a1b0b9415817 ("NFC: nci: Create pipe on specific gate in nci_hci_connect_gate")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: aef79e189ba2 ("i3c: master: support to adjust first broadcast address speed")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20250108225533.915334-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/hci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i3c/master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/nfc/nci/hci.c
-+++ b/net/nfc/nci/hci.c
-@@ -542,6 +542,8 @@ static u8 nci_hci_create_pipe(struct nci
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1878,7 +1878,7 @@ static int i3c_master_bus_init(struct i3
+ 		goto err_bus_cleanup;
  
- 	pr_debug("pipe created=%d\n", pipe);
- 
-+	if (pipe >= NCI_HCI_MAX_PIPES)
-+		pipe = NCI_HCI_INVALID_PIPE;
- 	return pipe;
- }
- 
+ 	if (master->ops->set_speed) {
+-		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
++		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+ 		if (ret)
+ 			goto err_bus_cleanup;
+ 	}
 
 
 
