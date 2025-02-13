@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-115507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF0EA34470
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:04:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3F1A3477B
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 145413B01FC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B198188DD4E
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBF624169C;
-	Thu, 13 Feb 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1537115252D;
+	Thu, 13 Feb 2025 15:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1txpWIow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XreCZV6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A97423A995;
-	Thu, 13 Feb 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D5513D8A4;
+	Thu, 13 Feb 2025 15:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458295; cv=none; b=h2oXr0FELjWzU5kxMTvCsOU9VnaWk7OCrmWqWkGQr3ygk16gTliiL+X2x8cHG9WolzOoZyMB7LGpswnY1zSWR2jRu4huwqZmUFehyb/Sy4WDUhvaHpv7AJotaFfKpfw2OP8yD56CZHH0+4HjtQxedPmMgoHoJAZ0u51BOEfXpUQ=
+	t=1739460541; cv=none; b=sNT+v9qiuHvuu0d+F68seRjNj6j+1dZQA7rPeR8AgcjH0uZmc1Grs8cPxiBD6YWoXrCIztzdBdEv4tR8S+odQd0acVXf+uWEnEDDTqTf3Fsv5N1z1EwF4KnXyE/GF04olu5QSEvD3M3UuhjVhqcUvrXP6C2OXyqvpgM2TDDKrx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458295; c=relaxed/simple;
-	bh=NzgCWSwjymHxI1cfWd1pNF3cBsqhIF0qwcnB7PVF9js=;
+	s=arc-20240116; t=1739460541; c=relaxed/simple;
+	bh=qCe+MTS1gghHjvqhojKFW/E38ULxigfRF3eTml+EgWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0N9/GCUXl2YgCyvTH82g50n+DAMP9unpbgZ0bR1Q3pghhS8B2hSgK4cygIroBTtWI0cJRfmH8xw/o21AyuAdAolRL2mHZxrX/71Kksfn+k3iPOHjU+s/SWxAir73CPNs3q+151Vnafsxm6tH1k3YUBA2eXz1tq84dTbTMCQd4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1txpWIow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22390C4CED1;
-	Thu, 13 Feb 2025 14:51:33 +0000 (UTC)
+	 MIME-Version; b=ZfC+fiYEUWPdG6YRtnR9t1jqdMmlAOq08+2tDS4KVDSdjXFx0H3seOCiYjqX2OZHDh2dfuTEWuLeFhlyhp+hcdaygv/8aw7CpqupPY+HiwyJg7LbPNOr6tvZ7ekjI5R13H5x4/svPTvr7hc+JNkyQvz8vlzE5hhmRQnEPSDccVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XreCZV6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307A4C4CED1;
+	Thu, 13 Feb 2025 15:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458295;
-	bh=NzgCWSwjymHxI1cfWd1pNF3cBsqhIF0qwcnB7PVF9js=;
+	s=korg; t=1739460541;
+	bh=qCe+MTS1gghHjvqhojKFW/E38ULxigfRF3eTml+EgWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1txpWIow+FH8HBg+CgQzTdH/7nAPB7qy4WhZD38SrGz7Lh3LD4tLlIGbZsFS9s/V9
-	 Wx9/AamHNWazyl72QxTaTWySY8mXzH6tFlVbQuSSq6nUxohLDU2zEN7UIUjeMvq2Lj
-	 eB/oUbn7RaPnk7hk13ESoQTfkQ/cwjD6YbZ7Hopo=
+	b=XreCZV6HbYraIParhriJYfomEx+AnanSTw3PEZY4fs4yRJfRt9cfSpKuQvHYpEwfE
+	 txu4i9tTxUzH1mAsiPVa86/8+x51ev+UqDDQyvfxUJ1wSBFCMgeJ/GwUC+1KvQA/B6
+	 Ifunhpz6M/2z+BhYF6OPy0hxNtCWtkhi/1ZkLF3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Jacob Soo <jacob.soo@starlabs.sg>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 357/422] io_uring: fix multishots with selected buffers
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 134/273] usb: gadget: f_tcm: ep_autoconfig with fullspeed endpoint
 Date: Thu, 13 Feb 2025 15:28:26 +0100
-Message-ID: <20250213142450.328902747@linuxfoundation.org>
+Message-ID: <20250213142412.632953954@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit d63b0e8a628e62ca85a0f7915230186bb92f8bb4 upstream.
+commit 25224c1f07d31c261d04dfbc705a7a0f314a825d upstream.
 
-We do io_kbuf_recycle() when arming a poll but every iteration of a
-multishot can grab more buffers, which is why we need to flush the kbuf
-ring state before continuing with waiting.
+Match usb endpoint using fullspeed endpoint descriptor to make sure the
+wMaxPacketSize for fullspeed descriptors is automatically configured.
 
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
 Cc: stable@vger.kernel.org
-Fixes: b3fdea6ecb55c ("io_uring: multishot recv")
-Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/1bfc9990fe435f1fc6152ca9efeba5eb3e68339c.1738025570.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/e4507bc824aed6e7c7f5a718392ab6a7c1480a7f.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_tcm.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -357,8 +357,10 @@ void io_poll_task_func(struct io_kiocb *
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1967,43 +1967,39 @@ static int tcm_bind(struct usb_configura
+ 	bot_intf_desc.bInterfaceNumber = iface;
+ 	uasp_intf_desc.bInterfaceNumber = iface;
+ 	fu->iface = iface;
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bi_desc,
+-			&uasp_bi_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bi_desc);
+ 	if (!ep)
+ 		goto ep_fail;
  
- 	ret = io_poll_check_events(req, ts);
- 	if (ret == IOU_POLL_NO_ACTION) {
-+		io_kbuf_recycle(req, 0);
- 		return;
- 	} else if (ret == IOU_POLL_REQUEUE) {
-+		io_kbuf_recycle(req, 0);
- 		__io_poll_execute(req, 0);
- 		return;
- 	}
+ 	fu->ep_in = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bo_desc,
+-			&uasp_bo_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bo_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_out = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_status_desc,
+-			&uasp_status_in_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_status_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_status = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_cmd_desc,
+-			&uasp_cmd_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_cmd_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_cmd = ep;
+ 
+ 	/* Assume endpoint addresses are the same for both speeds */
+-	uasp_bi_desc.bEndpointAddress =	uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
++	uasp_bi_desc.bEndpointAddress =	uasp_fs_bi_desc.bEndpointAddress;
++	uasp_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
+ 	uasp_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+-	uasp_fs_bi_desc.bEndpointAddress = uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_fs_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
+-	uasp_fs_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_fs_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++	uasp_ss_bi_desc.bEndpointAddress = uasp_fs_bi_desc.bEndpointAddress;
++	uasp_ss_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
++	uasp_ss_status_desc.bEndpointAddress =
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_ss_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+ 	ret = usb_assign_descriptors(f, uasp_fs_function_desc,
+ 			uasp_hs_function_desc, uasp_ss_function_desc,
 
 
 
