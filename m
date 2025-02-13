@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-116014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5E8A346BC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:28:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FA6A347FE
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E34A61890867
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF6B3AFD32
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECBF78F30;
-	Thu, 13 Feb 2025 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10E0153828;
+	Thu, 13 Feb 2025 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSi195gN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSWttHto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5D535961;
-	Thu, 13 Feb 2025 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904E513C816;
+	Thu, 13 Feb 2025 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460032; cv=none; b=P531zwL9hCBl8WOzjcWXi4dDgftP6WRguHZdPRjBpb+rfjEt0rtR3cQnkWi9b0jliZ3hfsINN7mrpRSCZyAzMqgbnzZsQOcZdJplFPsaHfAH26ABAFbSKve0WR8O+6S4IdRhV9DpMtgxgz7W4weLQ32M8vYycQ5PtmR8YnVfe/Q=
+	t=1739460853; cv=none; b=d0ZNqUO+S1R/0VXzNG+hzL/qRbzh5rS5sLVYnpRUxmb8MuWzA3eu4vQUmtNNA2FAjxjGZ+1VoxNtz4IROSHt98SnJ3dw02ULF1o5XN89PKe0tbzXJnosEpfzh/l4L1ZTGLDJC/aaElKLx+bZhQuuuGrDQv1aBrv75a8zkEtILpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460032; c=relaxed/simple;
-	bh=o4BR1UnZf6m2SJceqtQv6Xl10h9oZ+ArDifLwlmMkIE=;
+	s=arc-20240116; t=1739460853; c=relaxed/simple;
+	bh=eeGyhp+hOfrfgsywX6ZTSbF2JE7Y2exTYE6tb6Izt3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kns3Pk26yHs9JPwS4iIwvkHiPRTV/KHmNOMGqBEipcXzSxgPX+TC/6BmkHvCGVf1O2fRphVQL0YCOxRAUAihv7k6lbrRsNI4l2rsOKxAc5Fh9Fhjm6e2c5F30gMpBgznjMxfrEtMA/OFej3PVZy3DvXt6bTYzAUQb+7MhMyIDhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSi195gN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AA9C4CED1;
-	Thu, 13 Feb 2025 15:20:31 +0000 (UTC)
+	 MIME-Version; b=f6dfr7pg9ZBXGV2/Ob+uGAabb+hFGokqkEDQaBRrkYmvEIVVTcGQk7wd/3xNadp6iqPepYyvJoSCYgsHrf3xLfqW+YPZ3BEmL/3/kOUfPshGd42n4UlqCZ86f/umnvt9+pE3zmF2vYr88wAI36uvJSRdtqM+fqvzkYbRGQMMrqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSWttHto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935FFC4CED1;
+	Thu, 13 Feb 2025 15:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460032;
-	bh=o4BR1UnZf6m2SJceqtQv6Xl10h9oZ+ArDifLwlmMkIE=;
+	s=korg; t=1739460853;
+	bh=eeGyhp+hOfrfgsywX6ZTSbF2JE7Y2exTYE6tb6Izt3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSi195gNp5efkG37X5CjEN1TqgtsErEodOzNvV8cy8pbWGV9F0Zf5cSIIXEA0TaKn
-	 /a9V8ZzhHk1JDieAE7k8RNsRaEO0vSB+4TJzNSj7JQ4YfjKXJ/7Rlp+3AsJ/ru+T4l
-	 JAU49CU3Zi2kXVP7sK7H0UrHMXg+GUbMRz9Fgbac=
+	b=tSWttHtojVbpkVsnuQ3Eh2DodShTkGP+mA1TeT3JavM2qISPkit7osYbIBUcRUhxo
+	 rEM9FKToTDw63tP3po6qEeN2TeugpK3i7RIm7Ev4yCDN3oi2V9Kxe3lqA6mOmubWnF
+	 kp+OC1rokxEvjw3oLP9+zC9TyAUR5j0DIuqS6vKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.13 437/443] x86/mm: Convert unreachable() to BUG()
-Date: Thu, 13 Feb 2025 15:30:02 +0100
-Message-ID: <20250213142457.480522628@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 231/273] selftests: mptcp: connect: -f: no reconnect
+Date: Thu, 13 Feb 2025 15:30:03 +0100
+Message-ID: <20250213142416.563296506@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
+References: <20250213142407.354217048@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 41a1e976623eb430f7b5a8619d3810b44e6235ad upstream.
+commit 5368a67307b3b2c347dc8965ac55b888be665934 upstream.
 
-Commit 2190966fbc14 ("x86: Convert unreachable() to BUG()") missed
-one.
+The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
+by closing the connection with unread bytes in the receive queue.
 
-And after commit 06e24745985c ("objtool: Remove
-annotate_{,un}reachable()") the invalid use of unreachable()
-(rightfully) triggers warnings:
+The xdisconnect() helper was used to stop the connection, but it does
+more than that: it will shut it down, then wait before reconnecting to
+the same address. This causes the mptcp_join's "fastclose test" to fail
+all the time.
 
-  vmlinux.o: warning: objtool: page_fault_oops() falls through to next function is_prefetch()
+This failure is due to a recent change, with commit 218cc166321f
+("selftests: mptcp: avoid spurious errors on disconnect"), but that went
+unnoticed because the test is currently ignored. The recent modification
+only shown an existing issue: xdisconnect() doesn't need to be used
+here, only the shutdown() part is needed.
 
-Fixes: 2190966fbc14 ("x86: Convert unreachable() to BUG()")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241216093215.GD12338@noisy.programming.kicks-ass.net
+Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/fault.c |    2 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -678,7 +678,7 @@ page_fault_oops(struct pt_regs *regs, un
- 			      ASM_CALL_ARG3,
- 			      , [arg1] "r" (regs), [arg2] "r" (address), [arg3] "r" (&info));
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1302,7 +1302,7 @@ again:
+ 		return ret;
  
--		unreachable();
-+		BUG();
- 	}
- #endif
+ 	if (cfg_truncate > 0) {
+-		xdisconnect(fd);
++		shutdown(fd, SHUT_WR);
+ 	} else if (--cfg_repeat > 0) {
+ 		xdisconnect(fd);
  
 
 
