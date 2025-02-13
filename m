@@ -1,118 +1,159 @@
-Return-Path: <stable+bounces-115103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155B7A337AC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:03:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB25A337A8
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 07:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00A7B7A24B0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 06:02:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CAA31888163
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 06:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C241B2066D4;
-	Thu, 13 Feb 2025 06:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01D52066D4;
+	Thu, 13 Feb 2025 06:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LB8+CRIZ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="WmUPekEU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCDE1E376E;
-	Thu, 13 Feb 2025 06:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8591E376E;
+	Thu, 13 Feb 2025 06:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739426604; cv=none; b=N4TbGcALhYtPTPehy5Z97iukh3rqtSHEeCXnE9TJ1Cx/DA7U3UabparY3xb5Ph+cDj7XaUkeLrCy5V6GhFDjn7Me4vQhg4yGRM6ilOvynKupigqgK3DVQ93dIIM9x5VcjOgelvJRfyT8QfqmVhLTZE8BwhBgiIsTWmrn6BLs494=
+	t=1739426444; cv=none; b=kaPHH38SXvpbsQ7NFpz92ocD/GRpCMMfYgrnuyQ1bDFpeetunFsbBa+qz2Rn2Ilvaip7HNE6pB5NFgYkT0yJXqe1JRkNLz4eGS1H9PUdGwf5cHiklN6xU0gyUFcF9DxHT+s5SPeAYQCwdTrBEnRWNKvaKlVNdb0rn92f1uySYkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739426604; c=relaxed/simple;
-	bh=A1KejvtxR9/JSfGOFPXMqvUIQBaZlAHvh1/62NOg5Y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M21KyCEqHTk5Vk/pC61GLDVzhrjl19UAUVih2pboDIL1CdndhNTh/3pjY79RSYGVBuB82K+gISlaIMWaxXyNlshTL5CCWToH1EtpJsmME+/OFWuy4pXeMkj3f7aXr80wg7+aYVKplG7eJ2/reu8BJX2Uf6rvA5nNnLuJAMDwIjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LB8+CRIZ; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739426603; x=1770962603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A1KejvtxR9/JSfGOFPXMqvUIQBaZlAHvh1/62NOg5Y8=;
-  b=LB8+CRIZyDsFotBQH8KFunpfma2smt4yYX8cVeSpr66fjhTryEUP+D57
-   4dpw6owdPhAgpj39TNqZyUCJrmbsRZ0W/Vcu9SoSSgJIj+xrPQFUchl1o
-   eBE4+i293mXkPy3xsvAoCBHbq4lmLYV+KKcOdkrN2pbv0mfFCmRKxZm1+
-   gB0Qj0x/NILSjv874rvaxz8WGsUjsIj0R+969lSkE3OfKz4WbKETz05uu
-   I62aCMWqGspb+My5o3xgI3Ox/OoKxXyX23fXzWaj2gR2UQOkgkIJfienu
-   JMFPKZsZ5O0vDUFRfy5hP7MXXi0KmF3OScpC0HSK6IYiJ1p0aXIesp+OL
-   g==;
-X-CSE-ConnectionGUID: yfyih/YkQoOYa7ODLPVcQQ==
-X-CSE-MsgGUID: MRws48Y+THm/FAdCMXmQKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="57644332"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="57644332"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:03:22 -0800
-X-CSE-ConnectionGUID: AvIoVobbT6+oTVNraSds5w==
-X-CSE-MsgGUID: kvlLfINJR0uni5uKSjASzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="112900246"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:03:18 -0800
-Date: Thu, 13 Feb 2025 06:59:43 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
-	alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: felix:  Add NULL check for outer_tagging_rule()
-Message-ID: <Z62KTwRLHAQDyIGb@mev-dev.igk.intel.com>
-References: <20250213040754.1473-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1739426444; c=relaxed/simple;
+	bh=bVh+FGK2nAlK+67aFhVGHvDEOpT1Y3PR9HfW5kYrQUk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SX8v07WDQsaAmurnd56GATeYnztIWr9Nd4VH7Oim36/wETUeAxPXxJ25w0CoGKAAVVNCWej48kGl4E9R59//zmyFJlAT9sH3pOD9ZqzBFn0KbdEOqOMuTWK03v/TFTT3fVFAiX+RplYov4eM4fHM6nDscw0hv9bw/NLUJ9U7ncU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=WmUPekEU; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51D60Nvm3947666
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Feb 2025 00:00:23 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739426423;
+	bh=UDhnz5wxw1hdHaBaFUmXZ2OsCA8ywcG70oJJgWadirY=;
+	h=From:To:CC:Subject:Date;
+	b=WmUPekEU+t7sxR6eZVVDybaHF+73/ETG/YKOk5N1IEc2wTErilEKuYkyQ8/QV7War
+	 bRBap42jhXmScWamSMpgSaAI/SYHrDBsKKV6ynJ/tyfVKBQFwWwj9UMACFjx43k74n
+	 A/KnR0YAHK0Kd1LmVneruNq2+d2D6qzKIAF1+F8w=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51D60NtE076218
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 13 Feb 2025 00:00:23 -0600
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
+ Feb 2025 00:00:22 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 13 Feb 2025 00:00:23 -0600
+Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.227.241])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51D60J7K117400;
+	Thu, 13 Feb 2025 00:00:20 -0600
+From: Santhosh Kumar K <s-k6@ti.com>
+To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <quic_sridsn@quicinc.com>, <quic_mdalam@quicinc.com>
+CC: <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <p-mantena@ti.com>, <s-k6@ti.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] mtd: spinand: winbond: Fix oob_layout for W25N01JW
+Date: Thu, 13 Feb 2025 11:30:18 +0530
+Message-ID: <20250213060018.2664518-1-s-k6@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213040754.1473-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Thu, Feb 13, 2025 at 12:07:54PM +0800, Wentao Liang wrote:
-> In felix_update_tag_8021q_rx_rules(), the return value of
-> ocelot_vcap_block_find_filter_by_id() is not checked, which could
-> lead to a NULL pointer dereference if the filter is not found.
-> 
-> Add the necessary check and use `continue` to skip the current CPU
-> port if the filter is not found, ensuring that all CPU ports are
-> processed.
-> 
-> Fixes: f1288fd7293b ("net: dsa: felix: fix VLAN tag loss on CPU reception with ocelot-8021q")
-> Cc: stable@vger.kernel.org # 6.11+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/dsa/ocelot/felix.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-> index 3aa9c997018a..10ad43108b88 100644
-> --- a/drivers/net/dsa/ocelot/felix.c
-> +++ b/drivers/net/dsa/ocelot/felix.c
-> @@ -348,6 +348,8 @@ static int felix_update_tag_8021q_rx_rules(struct dsa_switch *ds, int port,
->  
->  		outer_tagging_rule = ocelot_vcap_block_find_filter_by_id(block_vcap_es0,
->  									 cookie, false);
-> +		if (!outer_tagging_rule)
-> +			continue;
->  
->  		felix_update_tag_8021q_rx_rule(outer_tagging_rule, vlan_filtering);
->  
+Fix the W25N01JW's oob_layout according to the datasheet. [1]
 
-All other calls to ocelot_vcap_block_find_filter_by_id() are checked, so
-looks correct, thanks.
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
 
-> -- 
-> 2.42.0.windows.2
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Cc: Sridharan S N <quic_sridsn@quicinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+---
+
+Changes in v2:
+ - Detach patch 3/3 from v1
+ - Rebase on next
+ - Link to v1: https://lore.kernel.org/linux-mtd/20250102115110.1402440-1-s-k6@ti.com/
+ 
+Repo: https://github.com/santhosh21/linux/tree/uL_next
+Test results: https://gist.github.com/santhosh21/71ab6646dccc238a0b3c47c0382f219a
+
+---
+ drivers/mtd/nand/spi/winbond.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index ea11ae12423f..41cd0a51e450 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -134,6 +134,30 @@ static int w25n02kv_ooblayout_free(struct mtd_info *mtd, int section,
+ 	return 0;
+ }
+ 
++static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 12;
++	region->length = 4;
++
++	return 0;
++}
++
++static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 2;
++	region->length = 10;
++
++	return 0;
++}
++
+ static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -173,6 +197,11 @@ static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
+ 	.free = w35n01jw_ooblayout_free,
+ };
+ 
++static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
++	.ecc = w25n01jw_ooblayout_ecc,
++	.free = w25n01jw_ooblayout_free,
++};
++
+ static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
+ 				   u8 status)
+ {
+@@ -249,7 +278,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
+ 		     NAND_MEMORG(1, 2048, 96, 64, 1024, 20, 1, 1, 1),
+-- 
+2.34.1
+
 
