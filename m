@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-116080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF47A3477C
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:35:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73BDA3438D
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494D53B4EE0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:24:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A1AC7A2F81
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416A814B95A;
-	Thu, 13 Feb 2025 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542B323A9B8;
+	Thu, 13 Feb 2025 14:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjs81+Fy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uv8onbQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89B514A605;
-	Thu, 13 Feb 2025 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3B12222C0;
+	Thu, 13 Feb 2025 14:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460252; cv=none; b=eFO7dv5BOrDTpUfbj1u3jXVP+f9qRD9elavvuOtpwYfQG5Nfi/ze3STITD8q3CRoIP2dkkUfMz1wAJxMX7iym88sKEhLP0jjfQtQFJFRT/u5wtYdzlyJXTP+uEOvV+Fb+jIkBkVWebPhwhSyLE0dBhCzNEPqi0jzCoDudwvBLms=
+	t=1739458028; cv=none; b=HQAXTTpXHF1d02ukou5NCpweIC/RHwT8VvS+l302lkwPVhB67v9eH8R+OquZkh+FNDcRBIzt1UWdSr1r2VaPYUEF/RBlE1GYYN0Oc9EHZ0iWwZZn1sOP4SwC1pme+am2Sx8CBCgTvd3n7TSI7Pa/FRYnlVqSF4XRvn5rmp9F0D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460252; c=relaxed/simple;
-	bh=4xMG+OH7NBGXYs6H9Rh4PQzl62qhXaIi2bN95QXU/JI=;
+	s=arc-20240116; t=1739458028; c=relaxed/simple;
+	bh=69yD5w9JOyBsdDlJHE7NjMm0IVuJ5TGiA4bpElOR4Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVrY1bMwdkKpZo+TUTkLuKZ2Ca2YwDdxVi62qeJO+fCMHhQatBnBt9P8CWu2d68QYzxfy7FLiKBP9/K60O9RR0sD00FwYk9ZyxAO2ais3aJ50aU5SOawK4rS6vKcIM9oGwnH3bLEJ3ywkqnyo55WQZcrHgBfXhnVYIC0usxUPB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjs81+Fy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74EAC4CED1;
-	Thu, 13 Feb 2025 15:24:10 +0000 (UTC)
+	 MIME-Version; b=OYzebyWsARGLTdr5CwhJqhfBKYi7y7WkLYkM03rB54MNaf1erWbCPxKYXwdUIh323UYmwoMekvBwjGSonyJPi+d4/RMvCx3ky7wpI++DAFKLZ5JWrOmHTa5BQkEnauR9GnmsuRtwR0VmfxSjy51xeaPCzQk9w98QWRyJMxPFWqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uv8onbQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F25BC4CED1;
+	Thu, 13 Feb 2025 14:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460251;
-	bh=4xMG+OH7NBGXYs6H9Rh4PQzl62qhXaIi2bN95QXU/JI=;
+	s=korg; t=1739458027;
+	bh=69yD5w9JOyBsdDlJHE7NjMm0IVuJ5TGiA4bpElOR4Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjs81+Fyh57EhofIMwGerAe8PMM2N3ffMNjup/rU0Rwt70YTf3WxkYMU1sYPhnfnI
-	 EZz6bkerWSyXn11GMawk4gUjamEbSrDnDzLgkLj1GKtP4bsr4ZI/YwxU/IctTSZjgM
-	 rWv6IM5Fl/UYHsuLlDlJW/gDWgXy7PVxLLdNUbmQ=
+	b=Uv8onbQIAy7fTBQdv7VDsnvHyWuKFqIVXlIK4NnM0VnCxlLiPUFk/DpR/02YRLFGy
+	 U6N3FUucdwpRMA2EYWKIwAvgdaP9k6swkFwrHL+zwBonsAuEwFu+MwWiqiCjuUGhH6
+	 LlST+LF1XlfekLkCY2HOusTh71j7ugiADlr2dfLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Delevoryas <peter@pjd.dev>,
-	Patrick Williams <patrick@stwcx.xyz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/273] net/ncsi: Add NC-SI 1.2 Get MC MAC Address command
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 281/422] arm64: dts: qcom: sm8350: Fix ADSP memory base and length
 Date: Thu, 13 Feb 2025 15:27:10 +0100
-Message-ID: <20250213142409.645954860@linuxfoundation.org>
+Message-ID: <20250213142447.387646212@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +62,329 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Delevoryas <peter@pjd.dev>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b8291cf3d1180b5b61299922f17c9441616a805a ]
+commit f9ba85566ddd5a3db8fa291aaecd70c4e55a3732 upstream.
 
-This change adds support for the NC-SI 1.2 Get MC MAC Address command,
-specified here:
+The address space in ADSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0300_0000 with length of 0x10000.  0x1730_0000,
+value used so far, was copied from downstream DTS, is in the middle of
+unused space and downstream DTS describes the PIL loader, which is a bit
+different interface.
 
-https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.2.0.pdf
+Assume existing value (thus downstream DTS) is not really describing the
+intended ADSP PAS region.
 
-It serves the exact same function as the existing OEM Get MAC Address
-commands, so if a channel reports that it supports NC-SI 1.2, we prefer
-to use the standard command rather than the OEM command.
+Correct the base address and length, which also moves the node to
+different place to keep things sorted by unit address.  The diff looks
+big, but only the unit address and "reg" property were changed.  This
+should have no functional impact on Linux users, because PAS loader does
+not use this address space at all.
 
-Verified with an invalid MAC address and 2 valid ones:
-
-[   55.137072] ftgmac100 1e690000.ftgmac eth0: NCSI: Received 3 provisioned MAC addresses
-[   55.137614] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 0: 00:00:00:00:00:00
-[   55.138026] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 1: fa:ce:b0:0c:20:22
-[   55.138528] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 2: fa:ce:b0:0c:20:23
-[   55.139241] ftgmac100 1e690000.ftgmac eth0: NCSI: Unable to assign 00:00:00:00:00:00 to device
-[   55.140098] ftgmac100 1e690000.ftgmac eth0: NCSI: Set MAC address to fa:ce:b0:0c:20:22
-
-Signed-off-by: Peter Delevoryas <peter@pjd.dev>
-Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9e2bbab94b88 ("net/ncsi: fix locking in Get MAC Address handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-1-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-cmd.c    |  3 ++-
- net/ncsi/ncsi-manage.c |  9 +++++++--
- net/ncsi/ncsi-pkt.h    | 10 ++++++++++
- net/ncsi/ncsi-rsp.c    | 41 ++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 59 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |  272 +++++++++++++++++------------------
+ 1 file changed, 136 insertions(+), 136 deletions(-)
 
-diff --git a/net/ncsi/ncsi-cmd.c b/net/ncsi/ncsi-cmd.c
-index fd2236ee9a79d..b3ff37a181d73 100644
---- a/net/ncsi/ncsi-cmd.c
-+++ b/net/ncsi/ncsi-cmd.c
-@@ -270,7 +270,8 @@ static struct ncsi_cmd_handler {
- 	{ NCSI_PKT_CMD_GPS,    0, ncsi_cmd_handler_default },
- 	{ NCSI_PKT_CMD_OEM,   -1, ncsi_cmd_handler_oem     },
- 	{ NCSI_PKT_CMD_PLDM,   0, NULL                     },
--	{ NCSI_PKT_CMD_GPUUID, 0, ncsi_cmd_handler_default }
-+	{ NCSI_PKT_CMD_GPUUID, 0, ncsi_cmd_handler_default },
-+	{ NCSI_PKT_CMD_GMCMA,  0, ncsi_cmd_handler_default }
- };
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -1876,6 +1876,142 @@
+ 			reg = <0x0 0x1fc0000 0x0 0x30000>;
+ 		};
  
- static struct ncsi_request *ncsi_alloc_command(struct ncsi_cmd_arg *nca)
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 90c6cf676221a..5ecf611c88200 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1040,11 +1040,16 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
- 	case ncsi_dev_state_config_oem_gma:
- 		nd->state = ncsi_dev_state_config_clear_vids;
- 
--		nca.type = NCSI_PKT_CMD_OEM;
- 		nca.package = np->id;
- 		nca.channel = nc->id;
- 		ndp->pending_req_num = 1;
--		ret = ncsi_gma_handler(&nca, nc->version.mf_id);
-+		if (nc->version.major >= 1 && nc->version.minor >= 2) {
-+			nca.type = NCSI_PKT_CMD_GMCMA;
-+			ret = ncsi_xmit_cmd(&nca);
-+		} else {
-+			nca.type = NCSI_PKT_CMD_OEM;
-+			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
-+		}
- 		if (ret < 0)
- 			schedule_work(&ndp->work);
- 
-diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
-index c9d1da34dc4dc..f2f3b5c1b9412 100644
---- a/net/ncsi/ncsi-pkt.h
-+++ b/net/ncsi/ncsi-pkt.h
-@@ -338,6 +338,14 @@ struct ncsi_rsp_gpuuid_pkt {
- 	__be32                  checksum;
- };
- 
-+/* Get MC MAC Address */
-+struct ncsi_rsp_gmcma_pkt {
-+	struct ncsi_rsp_pkt_hdr rsp;
-+	unsigned char           address_count;
-+	unsigned char           reserved[3];
-+	unsigned char           addresses[][ETH_ALEN];
-+};
++		adsp: remoteproc@3000000 {
++			compatible = "qcom,sm8350-adsp-pas";
++			reg = <0x0 0x03000000 0x0 0x10000>;
 +
- /* AEN: Link State Change */
- struct ncsi_aen_lsc_pkt {
- 	struct ncsi_aen_pkt_hdr aen;        /* AEN header      */
-@@ -398,6 +406,7 @@ struct ncsi_aen_hncdsc_pkt {
- #define NCSI_PKT_CMD_GPUUID	0x52 /* Get package UUID                 */
- #define NCSI_PKT_CMD_QPNPR	0x56 /* Query Pending NC PLDM request */
- #define NCSI_PKT_CMD_SNPR	0x57 /* Send NC PLDM Reply  */
-+#define NCSI_PKT_CMD_GMCMA	0x58 /* Get MC MAC Address */
- 
- 
- /* NCSI packet responses */
-@@ -433,6 +442,7 @@ struct ncsi_aen_hncdsc_pkt {
- #define NCSI_PKT_RSP_GPUUID	(NCSI_PKT_CMD_GPUUID + 0x80)
- #define NCSI_PKT_RSP_QPNPR	(NCSI_PKT_CMD_QPNPR   + 0x80)
- #define NCSI_PKT_RSP_SNPR	(NCSI_PKT_CMD_SNPR   + 0x80)
-+#define NCSI_PKT_RSP_GMCMA	(NCSI_PKT_CMD_GMCMA  + 0x80)
- 
- /* NCSI response code/reason */
- #define NCSI_PKT_RSP_C_COMPLETED	0x0000 /* Command Completed        */
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index f22d67cb04d37..e28be33bdf2c4 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1093,6 +1093,44 @@ static int ncsi_rsp_handler_netlink(struct ncsi_request *nr)
- 	return ret;
- }
- 
-+static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
-+{
-+	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct net_device *ndev = ndp->ndev.dev;
-+	struct ncsi_rsp_gmcma_pkt *rsp;
-+	struct sockaddr saddr;
-+	int ret = -1;
-+	int i;
++			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog", "fatal", "ready",
++					  "handover", "stop-ack";
 +
-+	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
-+	saddr.sa_family = ndev->type;
-+	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
++			clocks = <&rpmhcc RPMH_CXO_CLK>;
++			clock-names = "xo";
 +
-+	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
-+		    rsp->address_count);
-+	for (i = 0; i < rsp->address_count; i++) {
-+		netdev_info(ndev, "NCSI: MAC address %d: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+			    i, rsp->addresses[i][0], rsp->addresses[i][1],
-+			    rsp->addresses[i][2], rsp->addresses[i][3],
-+			    rsp->addresses[i][4], rsp->addresses[i][5]);
-+	}
++			power-domains = <&rpmhpd RPMHPD_LCX>,
++					<&rpmhpd RPMHPD_LMX>;
++			power-domain-names = "lcx", "lmx";
 +
-+	for (i = 0; i < rsp->address_count; i++) {
-+		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
-+		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
-+		if (ret < 0) {
-+			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
-+				    saddr.sa_data);
-+			continue;
-+		}
-+		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
-+		break;
-+	}
++			memory-region = <&pil_adsp_mem>;
 +
-+	ndp->gma_flag = ret == 0;
-+	return ret;
-+}
++			qcom,qmp = <&aoss_qmp>;
 +
- static struct ncsi_rsp_handler {
- 	unsigned char	type;
- 	int             payload;
-@@ -1129,7 +1167,8 @@ static struct ncsi_rsp_handler {
- 	{ NCSI_PKT_RSP_PLDM,   -1, ncsi_rsp_handler_pldm    },
- 	{ NCSI_PKT_RSP_GPUUID, 20, ncsi_rsp_handler_gpuuid  },
- 	{ NCSI_PKT_RSP_QPNPR,  -1, ncsi_rsp_handler_pldm    },
--	{ NCSI_PKT_RSP_SNPR,   -1, ncsi_rsp_handler_pldm    }
-+	{ NCSI_PKT_RSP_SNPR,   -1, ncsi_rsp_handler_pldm    },
-+	{ NCSI_PKT_RSP_GMCMA,  -1, ncsi_rsp_handler_gmcma   },
- };
++			qcom,smem-states = <&smp2p_adsp_out 0>;
++			qcom,smem-state-names = "stop";
++
++			status = "disabled";
++
++			glink-edge {
++				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
++							     IPCC_MPROC_SIGNAL_GLINK_QMP
++							     IRQ_TYPE_EDGE_RISING>;
++				mboxes = <&ipcc IPCC_CLIENT_LPASS
++						IPCC_MPROC_SIGNAL_GLINK_QMP>;
++
++				label = "lpass";
++				qcom,remote-pid = <2>;
++
++				apr {
++					compatible = "qcom,apr-v2";
++					qcom,glink-channels = "apr_audio_svc";
++					qcom,domain = <APR_DOMAIN_ADSP>;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					service@3 {
++						reg = <APR_SVC_ADSP_CORE>;
++						compatible = "qcom,q6core";
++						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
++					};
++
++					q6afe: service@4 {
++						compatible = "qcom,q6afe";
++						reg = <APR_SVC_AFE>;
++						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
++
++						q6afedai: dais {
++							compatible = "qcom,q6afe-dais";
++							#address-cells = <1>;
++							#size-cells = <0>;
++							#sound-dai-cells = <1>;
++						};
++
++						q6afecc: clock-controller {
++							compatible = "qcom,q6afe-clocks";
++							#clock-cells = <2>;
++						};
++					};
++
++					q6asm: service@7 {
++						compatible = "qcom,q6asm";
++						reg = <APR_SVC_ASM>;
++						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
++
++						q6asmdai: dais {
++							compatible = "qcom,q6asm-dais";
++							#address-cells = <1>;
++							#size-cells = <0>;
++							#sound-dai-cells = <1>;
++							iommus = <&apps_smmu 0x1801 0x0>;
++
++							dai@0 {
++								reg = <0>;
++							};
++
++							dai@1 {
++								reg = <1>;
++							};
++
++							dai@2 {
++								reg = <2>;
++							};
++						};
++					};
++
++					q6adm: service@8 {
++						compatible = "qcom,q6adm";
++						reg = <APR_SVC_ADM>;
++						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
++
++						q6routing: routing {
++							compatible = "qcom,q6adm-routing";
++							#sound-dai-cells = <0>;
++						};
++					};
++				};
++
++				fastrpc {
++					compatible = "qcom,fastrpc";
++					qcom,glink-channels = "fastrpcglink-apps-dsp";
++					label = "adsp";
++					qcom,non-secure-domain;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					compute-cb@3 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <3>;
++						iommus = <&apps_smmu 0x1803 0x0>;
++					};
++
++					compute-cb@4 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <4>;
++						iommus = <&apps_smmu 0x1804 0x0>;
++					};
++
++					compute-cb@5 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <5>;
++						iommus = <&apps_smmu 0x1805 0x0>;
++					};
++				};
++			};
++		};
++
+ 		lpass_tlmm: pinctrl@33c0000 {
+ 			compatible = "qcom,sm8350-lpass-lpi-pinctrl";
+ 			reg = <0 0x033c0000 0 0x20000>,
+@@ -3284,142 +3420,6 @@
+ 				     <GIC_SPI 707 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
  
- int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
--- 
-2.39.5
-
+-		adsp: remoteproc@17300000 {
+-			compatible = "qcom,sm8350-adsp-pas";
+-			reg = <0 0x17300000 0 0x100>;
+-
+-			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "wdog", "fatal", "ready",
+-					  "handover", "stop-ack";
+-
+-			clocks = <&rpmhcc RPMH_CXO_CLK>;
+-			clock-names = "xo";
+-
+-			power-domains = <&rpmhpd RPMHPD_LCX>,
+-					<&rpmhpd RPMHPD_LMX>;
+-			power-domain-names = "lcx", "lmx";
+-
+-			memory-region = <&pil_adsp_mem>;
+-
+-			qcom,qmp = <&aoss_qmp>;
+-
+-			qcom,smem-states = <&smp2p_adsp_out 0>;
+-			qcom,smem-state-names = "stop";
+-
+-			status = "disabled";
+-
+-			glink-edge {
+-				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
+-							     IPCC_MPROC_SIGNAL_GLINK_QMP
+-							     IRQ_TYPE_EDGE_RISING>;
+-				mboxes = <&ipcc IPCC_CLIENT_LPASS
+-						IPCC_MPROC_SIGNAL_GLINK_QMP>;
+-
+-				label = "lpass";
+-				qcom,remote-pid = <2>;
+-
+-				apr {
+-					compatible = "qcom,apr-v2";
+-					qcom,glink-channels = "apr_audio_svc";
+-					qcom,domain = <APR_DOMAIN_ADSP>;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					service@3 {
+-						reg = <APR_SVC_ADSP_CORE>;
+-						compatible = "qcom,q6core";
+-						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
+-					};
+-
+-					q6afe: service@4 {
+-						compatible = "qcom,q6afe";
+-						reg = <APR_SVC_AFE>;
+-						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
+-
+-						q6afedai: dais {
+-							compatible = "qcom,q6afe-dais";
+-							#address-cells = <1>;
+-							#size-cells = <0>;
+-							#sound-dai-cells = <1>;
+-						};
+-
+-						q6afecc: clock-controller {
+-							compatible = "qcom,q6afe-clocks";
+-							#clock-cells = <2>;
+-						};
+-					};
+-
+-					q6asm: service@7 {
+-						compatible = "qcom,q6asm";
+-						reg = <APR_SVC_ASM>;
+-						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
+-
+-						q6asmdai: dais {
+-							compatible = "qcom,q6asm-dais";
+-							#address-cells = <1>;
+-							#size-cells = <0>;
+-							#sound-dai-cells = <1>;
+-							iommus = <&apps_smmu 0x1801 0x0>;
+-
+-							dai@0 {
+-								reg = <0>;
+-							};
+-
+-							dai@1 {
+-								reg = <1>;
+-							};
+-
+-							dai@2 {
+-								reg = <2>;
+-							};
+-						};
+-					};
+-
+-					q6adm: service@8 {
+-						compatible = "qcom,q6adm";
+-						reg = <APR_SVC_ADM>;
+-						qcom,protection-domain = "avs/audio", "msm/adsp/audio_pd";
+-
+-						q6routing: routing {
+-							compatible = "qcom,q6adm-routing";
+-							#sound-dai-cells = <0>;
+-						};
+-					};
+-				};
+-
+-				fastrpc {
+-					compatible = "qcom,fastrpc";
+-					qcom,glink-channels = "fastrpcglink-apps-dsp";
+-					label = "adsp";
+-					qcom,non-secure-domain;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					compute-cb@3 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <3>;
+-						iommus = <&apps_smmu 0x1803 0x0>;
+-					};
+-
+-					compute-cb@4 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <4>;
+-						iommus = <&apps_smmu 0x1804 0x0>;
+-					};
+-
+-					compute-cb@5 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <5>;
+-						iommus = <&apps_smmu 0x1805 0x0>;
+-					};
+-				};
+-			};
+-		};
+-
+ 		intc: interrupt-controller@17a00000 {
+ 			compatible = "arm,gic-v3";
+ 			#interrupt-cells = <3>;
 
 
 
