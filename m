@@ -1,156 +1,116 @@
-Return-Path: <stable+bounces-115144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F80A340E0
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63328A340E1
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:55:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30506188BD30
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 13:55:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1DD2169983
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D7138389;
-	Thu, 13 Feb 2025 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8295724BC09;
+	Thu, 13 Feb 2025 13:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gtrg/AQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMz3okXH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E6C221575
-	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 13:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4199112E7F
+	for <stable@vger.kernel.org>; Thu, 13 Feb 2025 13:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739454892; cv=none; b=fr1zNQlskNllqngdwYdWR63+mpaXgzJTPc+VV7T3k2yjaeW5Fq3OusTcUBWTR0fVGa4TDo0DoHPx7oF7U2Q5Yla4xn9VgydkAeRDhLWPSkb+Amvc4CUWey2X1bnUGd2VDejJE381TVphPIr0MY0fXjYHOCCUsTn94ck2s5feYbI=
+	t=1739454911; cv=none; b=ofwIQl6CLgO99Sgmz+yUQkpPoXwmIPyOvdnR/wdFqMkulEZUsXzq0HIR6u+1aoZM4RPcup6OEsOxlXcTQZjPyov21bX8O1q+1VU/rZtI+ZUoCJHUsOPHIwejDIGKk4wNbrD4Chk/sFlcwB1p0//YdSQPwaZ2ut9LvFioNjc/HO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739454892; c=relaxed/simple;
-	bh=bHZeZfKNTDogIf6Y2kInrbME7S2+Xgh/ojub8j6miqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=choAArY3Pt75ZtGwG5MU/TWbh+bPUEWFIoDqFVxosONz+ZzcOGDKWv68xN49+8wai2mpHjXZtUTIZVo3R1eam98GG0BYNgLozh3Ir9JBFC7n6MYANTmN7i8EAmhCRCM4syRIRAGmQvQjhb8fU1WH3HlCPI0UVEQfqLj8vyFKMYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gtrg/AQV; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739454890; x=1770990890;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bHZeZfKNTDogIf6Y2kInrbME7S2+Xgh/ojub8j6miqU=;
-  b=Gtrg/AQV0/FwTL1uImnIxjICT9hWm/icDMuJFGNzxxza8KbALk8Scbfr
-   k4E1nefhxTujNmngRSJ90sTcAq3xWwGTuFFqJnHgdhU0mwF9Gw876Itec
-   lJwKUV5JGEzoU0clxdxmxtW1pSri1t+NM9htIRW+Eb83/mWhmg4wPbMfw
-   YhZVkmCoknC37BemIWCw3TnCZdGq8NMk2Xiht8rNUKukH6M5/tb3M/7du
-   xt8aQjkemJw8cUET6v8MYNpPjuyiw/NydY8j204qG/GYZUyZrki0jSeJz
-   VLAdQHhWbdbGb2YWmLvb02BXOoBgMdKTz24g3KmFSGTqOez6RHMCeiwb5
-   Q==;
-X-CSE-ConnectionGUID: R/Kx5l3wR5C/Elq61NOgLQ==
-X-CSE-MsgGUID: zrbo3z2zT7GbdZh7OZlnjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="51554198"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="51554198"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:54:50 -0800
-X-CSE-ConnectionGUID: YZ+rNqu2T3OcocVS5wpSaQ==
-X-CSE-MsgGUID: UWP57olhRjaEQ9XGGQFx2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="113020051"
-Received: from apaszkie-mobl2.apaszkie-mobl2 (HELO mwauld-desk.intel.com) ([10.245.245.31])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:54:48 -0800
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/xe/userptr: fix EFAULT handling
-Date: Thu, 13 Feb 2025 13:54:35 +0000
-Message-ID: <20250213135434.186967-2-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1739454911; c=relaxed/simple;
+	bh=64E/N9ULDjSIClkUiDh6+ymD5+eS8cns5Rb3DQzsc4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PyxCO8T92MAd6z3GbJ1CuhFg4QFiGzJbv3bS/eSlvAI1MWQ9J+st9lbiritSBxon6dDSzTEjmaSXziQ/zgfhfzrFtZ1EZbXRmAjBkdj6yCX92bKY0jmj4KF0GV2Sbp9OgsNHEepUf47JvemVL5KdK5eTpZNB0emZXjw4YvF3sX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMz3okXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C49C4CED1;
+	Thu, 13 Feb 2025 13:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739454911;
+	bh=64E/N9ULDjSIClkUiDh6+ymD5+eS8cns5Rb3DQzsc4U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PMz3okXH3cvUhos1zmETURTDRu0WpoiMxx92/JSnhBKhNvmNeqHfYBTRP/QNiw4aa
+	 41bI/dJ0dDtEAKA2MqdBb0VclJUTCTJCR5j/PxGPemXik1O/R40ZHDRTclkMnbnJ4/
+	 v+cqkdq2Mqp+L5BuLH/m64N1PTJwGqqF0GAW/HYg=
+Date: Thu, 13 Feb 2025 14:55:08 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: vgiraud.opensource@witekio.com
+Cc: stable@vger.kernel.org, Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Theodore Ts'o <tytso@mit.edu>, Bruno VERNAY <bruno.vernay@se.com>
+Subject: Re: [PATCH 6.6] ext4: filesystems without casefold feature cannot be
+ mounted with siphash
+Message-ID: <2025021331-neuron-alarm-ecfc@gregkh>
+References: <20250207113703.2444446-1-vgiraud.opensource@witekio.com>
+ <2025021313-aware-yam-ffec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025021313-aware-yam-ffec@gregkh>
 
-Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
-when called from xe_vm_userptr_pin() with the idea that we want to avoid
-killing the entire vm and chucking an error, under the assumption that
-the user just did an unmap or something, and has no intention of
-actually touching that memory from the GPU.  At this point we have
-already zapped the PTEs so any access should generate a page fault, and
-if the pin fails there also it will then become fatal.
+On Thu, Feb 13, 2025 at 02:53:56PM +0100, Greg KH wrote:
+> On Fri, Feb 07, 2025 at 12:37:03PM +0100, vgiraud.opensource@witekio.com wrote:
+> > From: Lizhi Xu <lizhi.xu@windriver.com>
+> > 
+> > commit 985b67cd86392310d9e9326de941c22fc9340eec upstream.
+> > 
+> > When mounting the ext4 filesystem, if the default hash version is set to
+> > DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
+> > 
+> > Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+> > Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> > Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+> > Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> > Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+> > Signed-off-by: Victor Giraud <vgiraud.opensource@witekio.com>
+> > ---
+> >  fs/ext4/super.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> > index f019ce64eba4..b69d791be846 100644
+> > --- a/fs/ext4/super.c
+> > +++ b/fs/ext4/super.c
+> > @@ -3627,6 +3627,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+> >  	}
+> >  #endif
+> >  
+> > +	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+> > +	    !ext4_has_feature_casefold(sb)) {
+> > +		ext4_msg(sb, KERN_ERR,
+> > +			 "Filesystem without casefold feature cannot be "
+> > +			 "mounted with siphash");
+> > +		return 0;
+> > +	}
+> > +
+> >  	if (readonly)
+> >  		return 1;
+> >  
+> > -- 
+> > 2.34.1
+> > 
+> > 
+> 
+> Any specific reason you asked for just this one commit to be backported
+> and NOT the fix for this commit?
+> 
+> How did you test this?
 
-However it looks like it's possible for the userptr vma to still be on
-the rebind list in preempt_rebind_work_func(), if we had to retry the
-pin again due to something happening in the caller before we did the
-rebind step, but in the meantime needing to re-validate the userptr and
-this time hitting the EFAULT.
+And the fix did not apply either, so I'm dropping this from all queues.
 
-This might explain an internal user report of hitting:
+Be more careful please!  Don't submit patches that actually cause
+documented problems.
 
-[  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
-[  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738690] Call Trace:
-[  191.738692]  <TASK>
-[  191.738694]  ? show_regs+0x69/0x80
-[  191.738698]  ? __warn+0x93/0x1a0
-[  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738759]  ? report_bug+0x18f/0x1a0
-[  191.738764]  ? handle_bug+0x63/0xa0
-[  191.738767]  ? exc_invalid_op+0x19/0x70
-[  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
-[  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738834]  ? ret_from_fork_asm+0x1a/0x30
-[  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
-[  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
-[  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
-[  191.738966]  ? kmemleak_alloc+0x4b/0x80
-[  191.738973]  ops_execute+0x188/0x9d0 [xe]
-[  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
-[  191.739098]  ? trace_hardirqs_on+0x4d/0x60
-[  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
-
-Followed by NPD, when running some workload, since the sg was never
-actually populated but the vma is still marked for rebind when it should
-be skipped for this special EFAULT case. And from the logs it does seem
-like we hit this special EFAULT case before the explosions.
-
-Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
----
- drivers/gpu/drm/xe/xe_vm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index d664f2e418b2..1caee9cbeafb 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -692,6 +692,17 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 			xe_vm_unlock(vm);
- 			if (err)
- 				return err;
-+
-+			/*
-+			 * We might have already done the pin once already, but then had to retry
-+			 * before the re-bind happended, due some other condition in the caller, but
-+			 * in the meantime the userptr got dinged by the notifier such that we need
-+			 * to revalidate here, but this time we hit the EFAULT. In such a case
-+			 * make sure we remove ourselves from the rebind list to avoid going down in
-+			 * flames.
-+			 */
-+			if (!list_empty(&uvma->vma.combined_links.rebind))
-+				list_del_init(&uvma->vma.combined_links.rebind);
- 		} else {
- 			if (err < 0)
- 				return err;
--- 
-2.48.1
-
+greg k-h
 
