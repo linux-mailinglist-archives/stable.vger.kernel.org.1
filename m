@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-115276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57BFA342D5
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:43:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C75FA34453
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:03:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FAD7188E98E
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:40:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 513247A29FA
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4022A242917;
-	Thu, 13 Feb 2025 14:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B557202C25;
+	Thu, 13 Feb 2025 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQJYqlj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNJBn2eC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05ED2222CA;
-	Thu, 13 Feb 2025 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B271FF5F7;
+	Thu, 13 Feb 2025 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457496; cv=none; b=JJtisBBeLQLE/WVvXAXnNE7bxmorpIq0P2c5wt5/G/CjvTFP6TPerW8tksR0z5p9Moq2k5o93wafVDmpnHhz5Kn4OIfOD0mUp+kXni8iiaaihtKT/tERaqLpRUle/gvwFikFrjn2GdJebn2GZAMfLAswM3teHN9JHEsm8BHdkLE=
+	t=1739458792; cv=none; b=IbbSZ7uyizhse7L7qk+cZ0VDAbBFlaTLEUY6hWlMR6Ygp+rx1HIZE+TYrpVSMcZ0kp6wc1DMFq9hmyUTjwQ/kdL3JMVOXRFk+dF/4Ixv0ibgegcnhXcyd3ZA28MVUDp0bKqK9Mue4g673fW2LEy+5D74tA9GxFSK6YKj2mIuMaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457496; c=relaxed/simple;
-	bh=QnsHu11J0CjlTZQS2ksfBzf4Ce8EGUsoCSrfEgzDNbw=;
+	s=arc-20240116; t=1739458792; c=relaxed/simple;
+	bh=cE8p8kuV1NuAB1Vqc/5GV8E9kKbkvvGhxGw4e+UYCt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1wQTttC5d4W/SuVFmF8ljcykTkOOLoMfHySu0dDthBTkzoInJyZpacD3HOqIy7chq6hwRmTlbwy7mbS1LobMZx3g+uEZiYJyNnDYNGj45C+LGGGvbySFxWxdhB4il2iYkeko5x0RbLkWpgaD6VBP3i1NRagq2FHPDZdZhneZr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQJYqlj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F5C4CED1;
-	Thu, 13 Feb 2025 14:38:15 +0000 (UTC)
+	 MIME-Version; b=mGVfSLDZwa6Mv7jyyogjC1x1krlpT68YjvSA1pNFzoZsTvzJJAILscl9cCIgw2QcHsq3wrWGD6mzYDNp31aH6wgMObhhm020ZGmcKH9nsD7i/gDNoTvorqZjrmUPD+JOPYujQBdpITF33mZ2nGrPfvZWzdVs0PMSEM4fDgC30FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNJBn2eC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C29C4CEE5;
+	Thu, 13 Feb 2025 14:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739457495;
-	bh=QnsHu11J0CjlTZQS2ksfBzf4Ce8EGUsoCSrfEgzDNbw=;
+	s=korg; t=1739458792;
+	bh=cE8p8kuV1NuAB1Vqc/5GV8E9kKbkvvGhxGw4e+UYCt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQJYqlj74qQeVr6OL3eJUiIVerOx6ft0BAGtkm9UvkFfD+b824U3jL+b+OIHRTxm6
-	 9/kKlBfaLa0/DmW+XK/VJoKrUpj9qTmLvOJZlR2BJJKKFfKnW4Ms7eJNAGF71C/zhG
-	 BVqlLKeV47z+mR7tu3KUgai5cvGXSHa7Yka06dBY=
+	b=YNJBn2eCaOHyy/OYNjV+68PQ6PiSg/+3dstLB1rWETji2ROcsrmWS00fiyb775QXJ
+	 OEqR1BDkyF9jlD0hqf6p2TN8tOYBieQyKbquGrW8klt9n3OUSsCUhca6DIV2ThY+wT
+	 dlCP7DK76hlULJaF5xUbbcM4No3RQHCEf+93qLHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Florac <eflorac@intellique.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Connor Belli <connorbelli2003@gmail.com>,
+	Jan Schmidt <jan@centricular.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/422] xfs: dont over-report free space or inodes in statvfs
-Date: Thu, 13 Feb 2025 15:24:04 +0100
-Message-ID: <20250213142440.219957732@linuxfoundation.org>
+Subject: [PATCH 6.13 080/443] HID: hid-asus: Disable OOBE mode on the ProArt P16
+Date: Thu, 13 Feb 2025 15:24:05 +0100
+Message-ID: <20250213142443.698746365@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 4b8d867ca6e2fc6d152f629fdaf027053b81765a ]
+[ Upstream commit 53078a736fbc60e5d3a1e14f4cd4214003815026 ]
 
-Emmanual Florac reports a strange occurrence when project quota limits
-are enabled, free space is lower than the remaining quota, and someone
-runs statvfs:
+The new ASUS ProArt 16" laptop series come with their keyboards stuck in
+an Out-Of-Box-Experience mode. While in this mode most functions will
+not work such as LED control or Fn key combos. The correct init sequence
+is now done to disable this OOBE.
 
-  # mkfs.xfs -f /dev/sda
-  # mount /dev/sda /mnt -o prjquota
-  # xfs_quota  -x -c 'limit -p bhard=2G 55' /mnt
-  # mkdir /mnt/dir
-  # xfs_io -c 'chproj 55' -c 'chattr +P' -c 'stat -vvvv' /mnt/dir
-  # fallocate -l 19g /mnt/a
-  # df /mnt /mnt/dir
-  Filesystem      Size  Used Avail Use% Mounted on
-  /dev/sda         20G   20G  345M  99% /mnt
-  /dev/sda        2.0G     0  2.0G   0% /mnt
+This patch addresses only the ProArt series so far and it is unknown if
+there may be others, in which case a new quirk may be required.
 
-I think the bug here is that xfs_fill_statvfs_from_dquot unconditionally
-assigns to f_bfree without checking that the filesystem has enough free
-space to fill the remaining project quota.  However, this is a
-longstanding behavior of xfs so it's unclear what to do here.
-
-Cc: <stable@vger.kernel.org> # v2.6.18
-Fixes: 932f2c323196c2 ("[XFS] statvfs component of directory/project quota support, code originally by Glen.")
-Reported-by: Emmanuel Florac <eflorac@intellique.com>
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Co-developed-by: Connor Belli <connorbelli2003@gmail.com>
+Signed-off-by: Connor Belli <connorbelli2003@gmail.com>
+Tested-by: Jan Schmidt <jan@centricular.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_qm_bhv.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/hid/hid-asus.c                     | 26 ++++++++++++++++++++++
+ include/linux/platform_data/x86/asus-wmi.h |  5 +++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/fs/xfs/xfs_qm_bhv.c b/fs/xfs/xfs_qm_bhv.c
-index 262f035b15c99..ed1d597c30ca2 100644
---- a/fs/xfs/xfs_qm_bhv.c
-+++ b/fs/xfs/xfs_qm_bhv.c
-@@ -32,21 +32,28 @@ xfs_fill_statvfs_from_dquot(
- 	limit = blkres->softlimit ?
- 		blkres->softlimit :
- 		blkres->hardlimit;
--	if (limit && statp->f_blocks > limit) {
--		statp->f_blocks = limit;
--		statp->f_bfree = statp->f_bavail =
--			(statp->f_blocks > blkres->reserved) ?
--			 (statp->f_blocks - blkres->reserved) : 0;
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
-+		if (limit > blkres->reserved)
-+			remaining = limit - blkres->reserved;
-+
-+		statp->f_blocks = min(statp->f_blocks, limit);
-+		statp->f_bfree = min(statp->f_bfree, remaining);
-+		statp->f_bavail = min(statp->f_bavail, remaining);
- 	}
- 
- 	limit = dqp->q_ino.softlimit ?
- 		dqp->q_ino.softlimit :
- 		dqp->q_ino.hardlimit;
--	if (limit && statp->f_files > limit) {
--		statp->f_files = limit;
--		statp->f_ffree =
--			(statp->f_files > dqp->q_ino.reserved) ?
--			 (statp->f_files - dqp->q_ino.reserved) : 0;
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
-+		if (limit > dqp->q_ino.reserved)
-+			remaining = limit - dqp->q_ino.reserved;
-+
-+		statp->f_files = min(statp->f_files, limit);
-+		statp->f_ffree = min(statp->f_ffree, remaining);
- 	}
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 506c6f377e7d6..46e3e42f9eb5f 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -432,6 +432,26 @@ static int asus_kbd_get_functions(struct hid_device *hdev,
+ 	return ret;
  }
  
++static int asus_kbd_disable_oobe(struct hid_device *hdev)
++{
++	const u8 init[][6] = {
++		{ FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 },
++		{ FEATURE_KBD_REPORT_ID, 0xBA, 0xC5, 0xC4 },
++		{ FEATURE_KBD_REPORT_ID, 0xD0, 0x8F, 0x01 },
++		{ FEATURE_KBD_REPORT_ID, 0xD0, 0x85, 0xFF }
++	};
++	int ret;
++
++	for (size_t i = 0; i < ARRAY_SIZE(init); i++) {
++		ret = asus_kbd_set_report(hdev, init[i], sizeof(init[i]));
++		if (ret < 0)
++			return ret;
++	}
++
++	hid_info(hdev, "Disabled OOBE for keyboard\n");
++	return 0;
++}
++
+ static void asus_schedule_work(struct asus_kbd_leds *led)
+ {
+ 	unsigned long flags;
+@@ -534,6 +554,12 @@ static int asus_kbd_register_leds(struct hid_device *hdev)
+ 		ret = asus_kbd_init(hdev, FEATURE_KBD_LED_REPORT_ID2);
+ 		if (ret < 0)
+ 			return ret;
++
++		if (dmi_match(DMI_PRODUCT_FAMILY, "ProArt P16")) {
++			ret = asus_kbd_disable_oobe(hdev);
++			if (ret < 0)
++				return ret;
++		}
+ 	} else {
+ 		/* Initialize keyboard */
+ 		ret = asus_kbd_init(hdev, FEATURE_KBD_REPORT_ID);
+diff --git a/include/linux/platform_data/x86/asus-wmi.h b/include/linux/platform_data/x86/asus-wmi.h
+index 365e119bebaa2..783e2a336861b 100644
+--- a/include/linux/platform_data/x86/asus-wmi.h
++++ b/include/linux/platform_data/x86/asus-wmi.h
+@@ -184,6 +184,11 @@ static const struct dmi_system_id asus_use_hid_led_dmi_ids[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ROG Flow"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt P16"),
++		},
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GA403U"),
 -- 
 2.39.5
 
