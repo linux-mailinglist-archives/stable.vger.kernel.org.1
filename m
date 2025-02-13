@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-115846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7440A345B4
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:18:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7412DA343BB
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09FEB1888AEC
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:11:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2197D1708A7
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 14:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733C226B0B1;
-	Thu, 13 Feb 2025 15:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2D8245021;
+	Thu, 13 Feb 2025 14:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn8Os/Ds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCDABblM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AF226B096;
-	Thu, 13 Feb 2025 15:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34754241693;
+	Thu, 13 Feb 2025 14:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459454; cv=none; b=dYfLCpuyz8zaLL0SkfyPbvTN+xtcHIAISglAKypifqh0p4D8RqKMKdFdN/26/OIe5+GyV1R/rwtaMvYchN19gVEcPBOpNACVs5In7QXj14jlL5Ik5PaSodZKQzvUyPB0BRsknX/EgndTqI8wCVOL8D57q23eNQ8E+LtPsA/NJBE=
+	t=1739458042; cv=none; b=Tpiop77MAa9Dq8567I4pOWKA0nZWVZGpJFD5J539FWS2XBrzOGwtDoRsVLj2gFPHMqYDFTC6k7aLl6gD+ldithH3ROcnFLJJSrs5LQEAXk87e6bRErayAk8PO1XN9c/rhS2EX8djjcGg7csQ0FsUyH4mYofpjRVeJ5pF9ropagU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459454; c=relaxed/simple;
-	bh=0W/PCscFnfh/RhipbY/Ty+awdut2cBkuQcaxbpXkuPI=;
+	s=arc-20240116; t=1739458042; c=relaxed/simple;
+	bh=RIq1CqsctayITswA1hUpjy4vLAV3WVzgDk5HUvUg4v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFxnAbPZFE8Fwu9urrqDayOrCrPMKJXA1AINtf5ZPrCz06n14zBUBIsJ/bS6xavIEmuhA/2Fv0qv9L6tRpvcizrYghHpgqYjm1ezxsXoCQUXs/gIfcChCWsoa/3j8V0nNOJ0q7DyavV+eTjEWFPcjn+eAaEJn3l3wMHYf7wmMO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn8Os/Ds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A380C4CED1;
-	Thu, 13 Feb 2025 15:10:53 +0000 (UTC)
+	 MIME-Version; b=VvPcsq8qA5GRO6REauS4AFQfgAb8yzI9peiOfv9p7xm3wL1aLcRBLDhtH/5s1+dB5esYaJelEbZpucid0NH04Mq2nbSq0MAGA5S4R9NBm032CcfcO0K2NyqAKzOh3Kf7YHkMjTQ0B9kwgc8no7Gq9TcizjBSJ9+3smZQDL46QSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCDABblM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44208C4CED1;
+	Thu, 13 Feb 2025 14:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739459454;
-	bh=0W/PCscFnfh/RhipbY/Ty+awdut2cBkuQcaxbpXkuPI=;
+	s=korg; t=1739458041;
+	bh=RIq1CqsctayITswA1hUpjy4vLAV3WVzgDk5HUvUg4v4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zn8Os/Ds6/CBiXP9vRFvez4dFDnMGgUq0OdIw0cDchQq/5RQE84B5ulnxAlmQLs77
-	 gM/affL8vlrhhKZZjwkQGDJ23Srxl6xXKi1RwlOo968onxd4WY/5abTB5tnUTIgZVv
-	 auwfzVz2Z7J9n5VdI4eK8ezgg3aEQJsIU6UwybAU=
+	b=WCDABblMiHwJcwzHDLBBXkriwfJ2N30572qfV145BNaT7zNKCfqlrNYoS5KwnTBDT
+	 WoQsgIzezfeGUhUMgGVhBV8P1fNgZZILjhyZ13nZg5NWIRxbPUQnloKgTdDLG/YIG0
+	 gpAU5X4SftMRH7kusrd7QT79gkVQyWPbGVkM7uzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Samantha Glocker <iam@anislandsomewhere.com>
-Subject: [PATCH 6.13 268/443] ALSA: hda/realtek: Fix quirk matching for Legion Pro 7
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 284/422] arm64: dts: qcom: sm8450: Fix ADSP memory base and length
 Date: Thu, 13 Feb 2025 15:27:13 +0100
-Message-ID: <20250213142450.955288760@linuxfoundation.org>
+Message-ID: <20250213142447.503380172@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,265 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 0f3a822ae2254a1e7ce3a130a1efd94e2cab73ee upstream.
+commit 13c96bee5d5e5b61a9d8d000c9bb37bb9a2a0551 upstream.
 
-The recent cleanup of the quirk table entries with the codec ID
-matching caused a regression on some Lenovo Legion 7 models with PCI
-SSID 17aa:386f: it assumed wrongly as if the codec SSID on the machine
-were also 17aa:386f, but in this case, it was 17aa:38a8.  This made
-the binding with a wrong sub-codec, instead of TAS2781, the Cirrus
-codec was bound.
+The address space in ADSP PAS (Peripheral Authentication Service)
+remoteproc node should point to the QDSP PUB address space
+(QDSP6...SS_PUB): 0x0300_0000 with length of 0x10000, which also matches
+downstream DTS.  0x3000_0000, value used so far, was in datasheet is the
+region of CDSP.
 
-For addressing the regression, correct the quirk entry to the right
-value 17aa:38a8.
+Correct the base address and length, which also moves the node to
+different place to keep things sorted by unit address.  The diff looks
+big, but only the unit address and "reg" property were changed.  This
+should have no functional impact on Linux users, because PAS loader does
+not use this address space at all.
 
-Note that this makes the entry appearing in an unsorted position.
-This exception is needed because the entry must match before the PCI
-SSID 17aa:386f.
-
-Also there is another entry for 17aa:38a8, but the latter is for PCI
-SSID matching while the new entry is for the codec SSID matching.
-
-Fixes: 504f052aa343 ("ALSA: hda/realtek: Use codec SSID matching for Lenovo devices")
-Reported-and-tested-by: Samantha Glocker <iam@anislandsomewhere.com>
-Closes: https://lore.kernel.org/CAGPQRHYd48U__UKYj2jJnT4+dnNNoWRBi+wj6zPRn=JpNMBUrg@mail.gmail.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250125120519.16420-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1172729576fb ("arm64: dts: qcom: sm8450: Add remoteproc enablers and instances")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-4-2e0036fccd8d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi |  212 +++++++++++++++++------------------
+ 1 file changed, 106 insertions(+), 106 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10890,7 +10890,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	HDA_CODEC_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x386e, "Yoga Pro 7 14ARP8", ALC285_FIXUP_SPEAKER2_TO_DAC1),
--	HDA_CODEC_QUIRK(0x17aa, 0x386f, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C),
-+	HDA_CODEC_QUIRK(0x17aa, 0x38a8, "Legion Pro 7 16ARX8H", ALC287_FIXUP_TAS2781_I2C), /* this must match before PCI SSID 17aa:386f below */
- 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion Pro 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -2492,6 +2492,112 @@
+ 			};
+ 		};
+ 
++		remoteproc_adsp: remoteproc@3000000 {
++			compatible = "qcom,sm8450-adsp-pas";
++			reg = <0x0 0x03000000 0x0 0x10000>;
++
++			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog", "fatal", "ready",
++					  "handover", "stop-ack";
++
++			clocks = <&rpmhcc RPMH_CXO_CLK>;
++			clock-names = "xo";
++
++			power-domains = <&rpmhpd RPMHPD_LCX>,
++					<&rpmhpd RPMHPD_LMX>;
++			power-domain-names = "lcx", "lmx";
++
++			memory-region = <&adsp_mem>;
++
++			qcom,qmp = <&aoss_qmp>;
++
++			qcom,smem-states = <&smp2p_adsp_out 0>;
++			qcom,smem-state-names = "stop";
++
++			status = "disabled";
++
++			remoteproc_adsp_glink: glink-edge {
++				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
++							     IPCC_MPROC_SIGNAL_GLINK_QMP
++							     IRQ_TYPE_EDGE_RISING>;
++				mboxes = <&ipcc IPCC_CLIENT_LPASS
++						IPCC_MPROC_SIGNAL_GLINK_QMP>;
++
++				label = "lpass";
++				qcom,remote-pid = <2>;
++
++				gpr {
++					compatible = "qcom,gpr";
++					qcom,glink-channels = "adsp_apps";
++					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
++					qcom,intents = <512 20>;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					q6apm: service@1 {
++						compatible = "qcom,q6apm";
++						reg = <GPR_APM_MODULE_IID>;
++						#sound-dai-cells = <0>;
++						qcom,protection-domain = "avs/audio",
++									 "msm/adsp/audio_pd";
++
++						q6apmdai: dais {
++							compatible = "qcom,q6apm-dais";
++							iommus = <&apps_smmu 0x1801 0x0>;
++						};
++
++						q6apmbedai: bedais {
++							compatible = "qcom,q6apm-lpass-dais";
++							#sound-dai-cells = <1>;
++						};
++					};
++
++					q6prm: service@2 {
++						compatible = "qcom,q6prm";
++						reg = <GPR_PRM_MODULE_IID>;
++						qcom,protection-domain = "avs/audio",
++									 "msm/adsp/audio_pd";
++
++						q6prmcc: clock-controller {
++							compatible = "qcom,q6prm-lpass-clocks";
++							#clock-cells = <2>;
++						};
++					};
++				};
++
++				fastrpc {
++					compatible = "qcom,fastrpc";
++					qcom,glink-channels = "fastrpcglink-apps-dsp";
++					label = "adsp";
++					qcom,non-secure-domain;
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					compute-cb@3 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <3>;
++						iommus = <&apps_smmu 0x1803 0x0>;
++					};
++
++					compute-cb@4 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <4>;
++						iommus = <&apps_smmu 0x1804 0x0>;
++					};
++
++					compute-cb@5 {
++						compatible = "qcom,fastrpc-compute-cb";
++						reg = <5>;
++						iommus = <&apps_smmu 0x1805 0x0>;
++					};
++				};
++			};
++		};
++
+ 		wsa2macro: codec@31e0000 {
+ 			compatible = "qcom,sm8450-lpass-wsa-macro";
+ 			reg = <0 0x031e0000 0 0x1000>;
+@@ -2688,112 +2794,6 @@
+ 			status = "disabled";
+ 		};
+ 
+-		remoteproc_adsp: remoteproc@30000000 {
+-			compatible = "qcom,sm8450-adsp-pas";
+-			reg = <0 0x30000000 0 0x100>;
+-
+-			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "wdog", "fatal", "ready",
+-					  "handover", "stop-ack";
+-
+-			clocks = <&rpmhcc RPMH_CXO_CLK>;
+-			clock-names = "xo";
+-
+-			power-domains = <&rpmhpd RPMHPD_LCX>,
+-					<&rpmhpd RPMHPD_LMX>;
+-			power-domain-names = "lcx", "lmx";
+-
+-			memory-region = <&adsp_mem>;
+-
+-			qcom,qmp = <&aoss_qmp>;
+-
+-			qcom,smem-states = <&smp2p_adsp_out 0>;
+-			qcom,smem-state-names = "stop";
+-
+-			status = "disabled";
+-
+-			remoteproc_adsp_glink: glink-edge {
+-				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
+-							     IPCC_MPROC_SIGNAL_GLINK_QMP
+-							     IRQ_TYPE_EDGE_RISING>;
+-				mboxes = <&ipcc IPCC_CLIENT_LPASS
+-						IPCC_MPROC_SIGNAL_GLINK_QMP>;
+-
+-				label = "lpass";
+-				qcom,remote-pid = <2>;
+-
+-				gpr {
+-					compatible = "qcom,gpr";
+-					qcom,glink-channels = "adsp_apps";
+-					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
+-					qcom,intents = <512 20>;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					q6apm: service@1 {
+-						compatible = "qcom,q6apm";
+-						reg = <GPR_APM_MODULE_IID>;
+-						#sound-dai-cells = <0>;
+-						qcom,protection-domain = "avs/audio",
+-									 "msm/adsp/audio_pd";
+-
+-						q6apmdai: dais {
+-							compatible = "qcom,q6apm-dais";
+-							iommus = <&apps_smmu 0x1801 0x0>;
+-						};
+-
+-						q6apmbedai: bedais {
+-							compatible = "qcom,q6apm-lpass-dais";
+-							#sound-dai-cells = <1>;
+-						};
+-					};
+-
+-					q6prm: service@2 {
+-						compatible = "qcom,q6prm";
+-						reg = <GPR_PRM_MODULE_IID>;
+-						qcom,protection-domain = "avs/audio",
+-									 "msm/adsp/audio_pd";
+-
+-						q6prmcc: clock-controller {
+-							compatible = "qcom,q6prm-lpass-clocks";
+-							#clock-cells = <2>;
+-						};
+-					};
+-				};
+-
+-				fastrpc {
+-					compatible = "qcom,fastrpc";
+-					qcom,glink-channels = "fastrpcglink-apps-dsp";
+-					label = "adsp";
+-					qcom,non-secure-domain;
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					compute-cb@3 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <3>;
+-						iommus = <&apps_smmu 0x1803 0x0>;
+-					};
+-
+-					compute-cb@4 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <4>;
+-						iommus = <&apps_smmu 0x1804 0x0>;
+-					};
+-
+-					compute-cb@5 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <5>;
+-						iommus = <&apps_smmu 0x1805 0x0>;
+-					};
+-				};
+-			};
+-		};
+-
+ 		remoteproc_cdsp: remoteproc@32300000 {
+ 			compatible = "qcom,sm8450-cdsp-pas";
+ 			reg = <0 0x32300000 0 0x1400000>;
 
 
 
