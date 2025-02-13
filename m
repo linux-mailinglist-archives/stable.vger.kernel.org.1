@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-115871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0052BA347E1
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:39:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E093A34628
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 16:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF1423AEBAE
-	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:26:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16251188E954
+	for <lists+stable@lfdr.de>; Thu, 13 Feb 2025 15:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0645156F3F;
-	Thu, 13 Feb 2025 15:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F55726B09E;
+	Thu, 13 Feb 2025 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1mSYRia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/GTrDLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC0414A605;
-	Thu, 13 Feb 2025 15:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E36526B098;
+	Thu, 13 Feb 2025 15:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460352; cv=none; b=BoXVHkKGS2aPijCbA6AJ1Jq2vHD6FA1yYbl80q2D7dx5QQTQlsHLrVOaIBDpfTihzGDQ9QQnSVWglXsbI5cJeBNIlaG50WY1WPBLvMRQYHK21HEZuHaRpscu2Q03PYvs7B2lLP6dS3pfav2FC7WLL2qPYiL7z8urjcurOw/bjBM=
+	t=1739459538; cv=none; b=F+z/bPdDTPXFndVw0SIhU7KYvTZ1YqYeQG1TnOIyPSxIuDyAH+eEAn+yKomJN/A1gVi6klEKtgD5mXHLp2USgAQTn0rE6xhuzmQB006CctyEUjyB6AcuMTXabEsm2I4F9FZVvqV8pmF1nlFyRGI2+r0srAIFEivMCA944mAV4eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460352; c=relaxed/simple;
-	bh=dT6azSflby7sF4fnJWeJMxmrCN/aT+oR0kVCpSMy2ws=;
+	s=arc-20240116; t=1739459538; c=relaxed/simple;
+	bh=iCzg/uxWt0xIaAkmRZGGD2kJTJOjodRx3Qegq6N7Pgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiPqmiyS4BzNbcAw+TK9jWszs5mdxLNR8Bh3uRbbyJS4h1i4EXQ4lo2lDHQqSp3USHYnW7EHNGyfTHTSXagq/NE4ItVFFhejZ6a/kTEEqS6JrU8ESp6uPULGNKQtWVkaCV1hucq/50pCwIQrdonnRQ7LgZVnVJc2TW0YvlUr9Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1mSYRia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C7EC4CED1;
-	Thu, 13 Feb 2025 15:25:51 +0000 (UTC)
+	 MIME-Version; b=A9/3QZUJTJbZmKvJ/E2gc4ASWGdn2OC0mwnwsJD4i/Cd0xw55/8rhBYxUBBTOctHT+48nAHGn/peY4frT9cwh8Xx9LFRzWXcK7WrskJfCRNN6l1eKpjFv91eCcK22v8OO/VKz8zlUDAvzL8emD/BbHyWSYeuTmfzPRnA1gpT6gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/GTrDLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2810C4CED1;
+	Thu, 13 Feb 2025 15:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739460352;
-	bh=dT6azSflby7sF4fnJWeJMxmrCN/aT+oR0kVCpSMy2ws=;
+	s=korg; t=1739459538;
+	bh=iCzg/uxWt0xIaAkmRZGGD2kJTJOjodRx3Qegq6N7Pgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1mSYRiaGF+ysNwfiLRMohgIHLI3cgkQWw4FP+BitlP/t/ORsBdWI3YS4v+akGdiH
-	 NbLJHrdbhkA8HvokG2DBr9ORSCaHtm5lVg4VuXiAMXVNpyYAKPphGftvcLJm/eI+x5
-	 WmiWWLAKk9I9SScfRGcsdA0t+CP6P3k3WgFxUroQ=
+	b=T/GTrDLaYzPpP2fJGkRZFqE8R4e1sXlbDuQy+UB5HI+o4lkh+f/zFYa/XWjq2wwcb
+	 BugNqgSQP3Q4D7AktPfkh9MMM+X6v+0bb0eNLnBiPGDingXNwBMH2YQhuNGgNQ25JZ
+	 fF7/eFlKcV3dN6fOs/QoPb/6OqmkCngE2Z7aMaiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 086/273] smb: client: change lease epoch type from unsigned int to __u16
-Date: Thu, 13 Feb 2025 15:27:38 +0100
-Message-ID: <20250213142410.743404900@linuxfoundation.org>
+	Romain Naour <romain.naour@skf.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.13 294/443] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
+Date: Thu, 13 Feb 2025 15:27:39 +0100
+Message-ID: <20250213142451.960165528@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142407.354217048@linuxfoundation.org>
-References: <20250213142407.354217048@linuxfoundation.org>
+In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
+References: <20250213142440.609878115@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meetakshi Setiya <msetiya@microsoft.com>
+From: Romain Naour <romain.naour@skf.com>
 
-commit 57e4a9bd61c308f607bc3e55e8fa02257b06b552 upstream.
+commit c1472ec1dc4419d0bae663c1a1e6cb98dc7881ad upstream.
 
-MS-SMB2 section 2.2.13.2.10 specifies that 'epoch' should be a 16-bit
-unsigned integer used to track lease state changes. Change the data
-type of all instances of 'epoch' from unsigned int to __u16. This
-simplifies the epoch change comparisons and makes the code more
-compliant with the protocol spec.
+A bus_dma_limit was added for l3 bus by commit cfb5d65f2595
+("ARM: dts: dra7: Add bus_dma_limit for L3 bus") to fix an issue
+observed only with SATA on DRA7-EVM with 4GB RAM and CONFIG_ARM_LPAE
+enabled.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Since kernel 5.13, the SATA issue can be reproduced again following
+the SATA node move from L3 bus to L4_cfg in commit 8af15365a368
+("ARM: dts: Configure interconnect target module for dra7 sata").
+
+Fix it by adding an empty dma-ranges property to l4_cfg and
+segment@100000 nodes (parent device tree node of SATA controller) to
+inherit the 2GB dma ranges limit from l3 bus node.
+
+Note: A similar fix was applied for PCIe controller by commit
+90d4d3f4ea45 ("ARM: dts: dra7: Fix bus_dma_limit for PCIe").
+
+Fixes: 8af15365a368 ("ARM: dts: Configure interconnect target module for dra7 sata").
+Link: https://lore.kernel.org/linux-omap/c583e1bb-f56b-4489-8012-ce742e85f233@smile.fr/
+Cc: stable@vger.kernel.org # 5.13
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+Link: https://lore.kernel.org/r/20241115102537.1330300-1-romain.naour@smile.fr
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h  |   14 +++++++-------
- fs/smb/client/smb1ops.c   |    2 +-
- fs/smb/client/smb2ops.c   |   18 +++++++++---------
- fs/smb/client/smb2pdu.c   |    2 +-
- fs/smb/client/smb2proto.h |    2 +-
- 5 files changed, 19 insertions(+), 19 deletions(-)
+ arch/arm/boot/dts/ti/omap/dra7-l4.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -323,7 +323,7 @@ struct smb_version_operations {
- 	int (*handle_cancelled_mid)(struct mid_q_entry *, struct TCP_Server_Info *);
- 	void (*downgrade_oplock)(struct TCP_Server_Info *server,
- 				 struct cifsInodeInfo *cinode, __u32 oplock,
--				 unsigned int epoch, bool *purge_cache);
-+				 __u16 epoch, bool *purge_cache);
- 	/* process transaction2 response */
- 	bool (*check_trans2)(struct mid_q_entry *, struct TCP_Server_Info *,
- 			     char *, int);
-@@ -519,12 +519,12 @@ struct smb_version_operations {
- 	/* if we can do cache read operations */
- 	bool (*is_read_op)(__u32);
- 	/* set oplock level for the inode */
--	void (*set_oplock_level)(struct cifsInodeInfo *, __u32, unsigned int,
--				 bool *);
-+	void (*set_oplock_level)(struct cifsInodeInfo *cinode, __u32 oplock, __u16 epoch,
-+				 bool *purge_cache);
- 	/* create lease context buffer for CREATE request */
- 	char * (*create_lease_buf)(u8 *lease_key, u8 oplock);
- 	/* parse lease context buffer and return oplock/epoch info */
--	__u8 (*parse_lease_buf)(void *buf, unsigned int *epoch, char *lkey);
-+	__u8 (*parse_lease_buf)(void *buf, __u16 *epoch, char *lkey);
- 	ssize_t (*copychunk_range)(const unsigned int,
- 			struct cifsFileInfo *src_file,
- 			struct cifsFileInfo *target_file,
-@@ -1412,7 +1412,7 @@ struct cifs_fid {
- 	__u8 create_guid[16];
- 	__u32 access;
- 	struct cifs_pending_open *pending_open;
--	unsigned int epoch;
-+	__u16 epoch;
- #ifdef CONFIG_CIFS_DEBUG2
- 	__u64 mid;
- #endif /* CIFS_DEBUG2 */
-@@ -1445,7 +1445,7 @@ struct cifsFileInfo {
- 	bool oplock_break_cancelled:1;
- 	bool status_file_deleted:1; /* file has been deleted */
- 	bool offload:1; /* offload final part of _put to a wq */
--	unsigned int oplock_epoch; /* epoch from the lease break */
-+	__u16 oplock_epoch; /* epoch from the lease break */
- 	__u32 oplock_level; /* oplock/lease level from the lease break */
- 	int count;
- 	spinlock_t file_info_lock; /* protects four flag/count fields above */
-@@ -1584,7 +1584,7 @@ struct cifsInodeInfo {
- 	spinlock_t	open_file_lock;	/* protects openFileList */
- 	__u32 cifsAttrs; /* e.g. DOS archive bit, sparse, compressed, system */
- 	unsigned int oplock;		/* oplock/lease level we have */
--	unsigned int epoch;		/* used to track lease state changes */
-+	__u16 epoch;		/* used to track lease state changes */
- #define CIFS_INODE_PENDING_OPLOCK_BREAK   (0) /* oplock break in progress */
- #define CIFS_INODE_PENDING_WRITERS	  (1) /* Writes in progress */
- #define CIFS_INODE_FLAG_UNUSED		  (2) /* Unused flag */
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -377,7 +377,7 @@ coalesce_t2(char *second_buf, struct smb
- static void
- cifs_downgrade_oplock(struct TCP_Server_Info *server,
- 		      struct cifsInodeInfo *cinode, __u32 oplock,
--		      unsigned int epoch, bool *purge_cache)
-+		      __u16 epoch, bool *purge_cache)
- {
- 	cifs_set_oplock_level(cinode, oplock);
- }
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3867,22 +3867,22 @@ static long smb3_fallocate(struct file *
- static void
- smb2_downgrade_oplock(struct TCP_Server_Info *server,
- 		      struct cifsInodeInfo *cinode, __u32 oplock,
--		      unsigned int epoch, bool *purge_cache)
-+		      __u16 epoch, bool *purge_cache)
- {
- 	server->ops->set_oplock_level(cinode, oplock, 0, NULL);
- }
+--- a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
+@@ -12,6 +12,7 @@
+ 	ranges = <0x00000000 0x4a000000 0x100000>,	/* segment 0 */
+ 		 <0x00100000 0x4a100000 0x100000>,	/* segment 1 */
+ 		 <0x00200000 0x4a200000 0x100000>;	/* segment 2 */
++	dma-ranges;
  
- static void
- smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
--		       unsigned int epoch, bool *purge_cache);
-+		       __u16 epoch, bool *purge_cache);
+ 	segment@0 {					/* 0x4a000000 */
+ 		compatible = "simple-pm-bus";
+@@ -557,6 +558,7 @@
+ 			 <0x0007e000 0x0017e000 0x001000>,	/* ap 124 */
+ 			 <0x00059000 0x00159000 0x001000>,	/* ap 125 */
+ 			 <0x0005a000 0x0015a000 0x001000>;	/* ap 126 */
++		dma-ranges;
  
- static void
- smb3_downgrade_oplock(struct TCP_Server_Info *server,
- 		       struct cifsInodeInfo *cinode, __u32 oplock,
--		       unsigned int epoch, bool *purge_cache)
-+		       __u16 epoch, bool *purge_cache)
- {
- 	unsigned int old_state = cinode->oplock;
--	unsigned int old_epoch = cinode->epoch;
-+	__u16 old_epoch = cinode->epoch;
- 	unsigned int new_state;
- 
- 	if (epoch > old_epoch) {
-@@ -3902,7 +3902,7 @@ smb3_downgrade_oplock(struct TCP_Server_
- 
- static void
- smb2_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
--		      unsigned int epoch, bool *purge_cache)
-+		      __u16 epoch, bool *purge_cache)
- {
- 	oplock &= 0xFF;
- 	cinode->lease_granted = false;
-@@ -3926,7 +3926,7 @@ smb2_set_oplock_level(struct cifsInodeIn
- 
- static void
- smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
--		       unsigned int epoch, bool *purge_cache)
-+		       __u16 epoch, bool *purge_cache)
- {
- 	char message[5] = {0};
- 	unsigned int new_oplock = 0;
-@@ -3963,7 +3963,7 @@ smb21_set_oplock_level(struct cifsInodeI
- 
- static void
- smb3_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
--		      unsigned int epoch, bool *purge_cache)
-+		      __u16 epoch, bool *purge_cache)
- {
- 	unsigned int old_oplock = cinode->oplock;
- 
-@@ -4077,7 +4077,7 @@ smb3_create_lease_buf(u8 *lease_key, u8
- }
- 
- static __u8
--smb2_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
-+smb2_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
- {
- 	struct create_lease *lc = (struct create_lease *)buf;
- 
-@@ -4088,7 +4088,7 @@ smb2_parse_lease_buf(void *buf, unsigned
- }
- 
- static __u8
--smb3_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
-+smb3_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
- {
- 	struct create_lease_v2 *lc = (struct create_lease_v2 *)buf;
- 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2322,7 +2322,7 @@ parse_posix_ctxt(struct create_context *
- 
- int smb2_parse_contexts(struct TCP_Server_Info *server,
- 			struct kvec *rsp_iov,
--			unsigned int *epoch,
-+			__u16 *epoch,
- 			char *lease_key, __u8 *oplock,
- 			struct smb2_file_all_info *buf,
- 			struct create_posix_rsp *posix)
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -283,7 +283,7 @@ extern enum securityEnum smb2_select_sec
- 					enum securityEnum);
- int smb2_parse_contexts(struct TCP_Server_Info *server,
- 			struct kvec *rsp_iov,
--			unsigned int *epoch,
-+			__u16 *epoch,
- 			char *lease_key, __u8 *oplock,
- 			struct smb2_file_all_info *buf,
- 			struct create_posix_rsp *posix);
+ 		target-module@2000 {			/* 0x4a102000, ap 27 3c.0 */
+ 			compatible = "ti,sysc";
 
 
 
