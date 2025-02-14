@@ -1,123 +1,125 @@
-Return-Path: <stable+bounces-116358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5010BA3556F
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 04:52:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80861A355B7
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 05:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1205616DD47
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 03:52:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C8AB1891865
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 04:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6A22CCC5;
-	Fri, 14 Feb 2025 03:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B958C15CD4A;
+	Fri, 14 Feb 2025 04:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ezLKQzjY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="naSQNDfW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1151A86334;
-	Fri, 14 Feb 2025 03:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83841519AB;
+	Fri, 14 Feb 2025 04:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739505171; cv=none; b=EiDpAXPbUnepNYiC6PDCy7sUm0RpqJoBcl5q+ALBHLJPfIeeCPzyOw2oURhtn3YVeQkHsrKN1o/Vpc1mHZ7bUVDjlpkZKhuoPMD5acSdV81Ym+j5ABicHRHKPNJGiUauMUFLzacBh3KYTlwt86RGAM31oHKUAwaoTbclu8iDMz8=
+	t=1739507246; cv=none; b=gxR/pLZBHAlCydMeatrBcdHaB+5D+TTv+5dSVuXcscfLXgdzf6Xhoq2DwLM9KS3zK6VORntzVDctcuf6CVihxraQ/QJQq67YvpyFwLtgRK5qYtKSlnB+6z6FFSEnHW89Bpp9ApVmOmRhswk0AgaKs0AnLZ1CSdESugEytYAvKXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739505171; c=relaxed/simple;
-	bh=Rs2j6gfwxMYn37DhzP1+0JgF/bStoQ+oF9AGaTTN5Sk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E2HKveK1srmV3tMfiqJiBbN0fqeR2a33Oh9Sui4ypuugfdEy6+R5CHYQqFS699YS1Q4NMOSvqklgcjsoRFGioDFF01UjhhAY5whjyk/nsGlDeWdR3MCIgOGj6OOcBRZZZNkTX1qE2xJI9OSmtv1d8Yg8J2qDG/9iDc0HL0uxVeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ezLKQzjY; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4395a06cf43so10141105e9.2;
-        Thu, 13 Feb 2025 19:52:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1739505168; x=1740109968; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cGTgsvQRtLrU16wvAkbEa6kMfXqNaErqcnGKNV8MsW8=;
-        b=ezLKQzjYpcqgfeYywJyUzDnSQBxogKw1odHPNiKbtRYWoOdkvPrqpVrKBApj+OzqZ1
-         wmkKwfz1je4mQJ3++QwsIi4zyS89msVU1slWdFCd7a/ZtIrA0zpa52zQhdyNX7EpG/dM
-         t2IwTVd+LHca2RpuvhAgvYenegmtxx0yMFK52IzdJUYD97ThxU4GN/ApZGUVKRRYJPLR
-         sK0MJzVFkT9smd1OUP4SN/nj4iRpZHw2qgoLsaZOXqMW1rJM6U/gE4TEvVFryZsid4al
-         zRmiqhPtUEcZqNLsHprbg36nMGjctYroD/LBHPhZT3LDV0AX0cbefQM97oCbRZfUZV/B
-         d11w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739505168; x=1740109968;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cGTgsvQRtLrU16wvAkbEa6kMfXqNaErqcnGKNV8MsW8=;
-        b=cXu0BVzNHio7GJ6PBJL7ZkzFoMCL6hoQb1RDT+QrC1u9TDlM6PQSZCAeQeZ8khCslM
-         b9bIJkagGEK9ZSuw0Y/BLVxqvLQnSjSUgrEXFmno3Ygs3rKDASixdORI3h/cftok3iaJ
-         dV/DINr/+r55H/UQhHK8sqKQK+0GNu6WPcL7GXSGSr2wldYPLH3+i4WExUVAMyPmr2Vb
-         VL6jOsOvtG8nVugk/ItTVZDnkF9DVPkA49ffDBSafwc7/swaJ5y5vH0NHAeXGASekH/J
-         z0IL6LwNwOm72orCSighiVQVtl1RFBzZoShiYldpFFUjo4VGnjVr3bUS/DYIApBXbk4u
-         dE8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVcR/Y/xUQn5fERaBwSKdajpjEy/+VS9njp01DSUijsa+FbjPf+EMvrn14V18MFTekUuTdbO3YchC7Oaaw=@vger.kernel.org, AJvYcCX3ElXnFPsZ3hbpCtvyVg5/9cxHlgonlbNeFO4+EOvAGb0C+C8ooxs1EMC2TBbD9CYBe821dCg6@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnOkwg9ZIpCyhtS1IzefWL/8qRNztMunIEhloP86ApwjsRkZwh
-	HzO2ddoCoA6rGBUgtjKQUJ9MoEilT3qNyzhgTdEeqUTGo6+cm18=
-X-Gm-Gg: ASbGncuYx7dEJNmgpPmff46uZdPc/TRFy9f5WONSpqqvoda5wdBMm9eaFnpCBw8E4bI
-	rjB/Tgl/yEgad9k07+kBh+wWpFfdqJetk2ePYYNRyaJwv8fEvxmvF0y8ATyiK/ESkoFd0YenZLA
-	ic47YQHmXaCzusjCcIB07x9zGohAzjeRps0yZBbGfP+vCbq8xC1dskN3itaPnFHU3N6DPTbIZmj
-	Zebf9xosKevTp+tlAx6KmRxuisWneTHacy3N/Nm8g2QV/Lh8fizui+yrYhqmq05Tz3kp2kN/svR
-	DxUbc4fj7qBfQlKyjZA8ltGlx+fHTU2nkL/kc6bQV8gygGAcivoCms4+z2jORdI5cqFf
-X-Google-Smtp-Source: AGHT+IHnuZCZZN3hYCYtZNp8eBMnru/Soke5PXNSGlagpibSv/+mbMRJgyuZcAKim0m1e8spt/YyVQ==
-X-Received: by 2002:adf:e752:0:b0:38e:53e7:da50 with SMTP id ffacd0b85a97d-38f244e9028mr5242524f8f.30.1739505168074;
-        Thu, 13 Feb 2025 19:52:48 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4779.dip0.t-ipconnect.de. [91.43.71.121])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b4118sm3582837f8f.18.2025.02.13.19.52.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Feb 2025 19:52:46 -0800 (PST)
-Message-ID: <85123df4-8339-455e-87aa-65570d39dab5@googlemail.com>
-Date: Fri, 14 Feb 2025 04:52:44 +0100
+	s=arc-20240116; t=1739507246; c=relaxed/simple;
+	bh=cwOWN3M1X6sYEs2p0n2DpNMSR6tInZBxt1fXIReXkRM=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=Esl8iM1E82K3rfYCkuMJfmMq+VfyziZYCxxJTywFEEeUJ9Vx5YI3l2sFBwbKVWLO4eFeYV1S8Uz+u2q5sT+9Ov65FOSC3FZyG1JPGKJKJiGDc3Wy15FRWMso6YksBQOJUoDI/rWF5WLBEvrRtzGDEpEHJWcTxLKRbOV+gZnS0Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=naSQNDfW; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51DIDk0v016651;
+	Fri, 14 Feb 2025 04:27:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=TRsp/swsia5qzuNFYgeNVa
+	z4avqKbv9weFNJ/pRk/8U=; b=naSQNDfWs3YAzihW+5sNH0tR0XG/huh5KTss7z
+	T43HkDG1ywZeOAYRgUjqIn1vz5NnDMox63HaRaZoHvohugXsxaPHJrGIuju5dnmT
+	jAevdnySaHcCZ/suV8fOfuYpZbSdIwQLeiDP7l7chlbAqHRM/8tjY1yOiPiQzNE3
+	h0rgP8AY+JPDcPv66ymLU6ooPEWruKDPJ1MUeyZiJj3RWEp0JUjBPrwp+OXq4XA9
+	2N6wXpdirbT8jGXctSJGGPmfpoaZXOxTYDJY6Yhm/B+2ev9iLWyKGWbEfcRRHFOu
+	Ig0+PuHdJV2axfhC5JjqhzjzgmMxwfBZBqfQBBw0l6NB0GPA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44sde8an6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 04:27:14 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51E4RDhe011068
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 04:27:13 GMT
+Received: from hu-tdas-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 13 Feb 2025 20:27:10 -0800
+From: Taniya Das <quic_tdas@quicinc.com>
+Subject: [PATCH 0/2] clk: qcom: gdsc: Update retain_ff sequence and timeout
+ for GDSC
+Date: Fri, 14 Feb 2025 09:56:58 +0530
+Message-ID: <20250214-gdsc_fixes-v1-0-73e56d68a80f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250213142440.609878115@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABLGrmcC/x2LzQqAIBAGXyX2nGALofQqEdHPp+3FwoUIwndPO
+ g4z85IiC5SG5qWMW1TOVKFrG9qOJUUY2SsTW+4td2zirtsc5IEa5+BXD3bgQHW4Mn5R+3Eq5QP
+ UIf6dXAAAAA==
+X-Change-ID: 20250212-gdsc_fixes-77e8b8e27e2f
+To: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+CC: Ajit Pandey <quic_ajipan@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
+        <stable@vger.kernel.org>
+X-Mailer: b4 0.15-dev-aa3f6
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: m8yIRXhxrZ9CjJScVqKHomzvHbk2CBlJ
+X-Proofpoint-ORIG-GUID: m8yIRXhxrZ9CjJScVqKHomzvHbk2CBlJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_01,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
+ clxscore=1011 mlxscore=0 mlxlogscore=902 spamscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502140029
 
-Am 13.02.2025 um 15:22 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 443 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+The retain_ff bit should be updated for a GDSC when it is under SW
+control and ON. The current sequence needs to be fixed as the GDSC
+needs to update retention and is moved to HW control which does not
+guarantee the GDSC to be in enabled state.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+During the GDSC FSM state, the GDSC hardware waits for an ACK and the
+timeout for the ACK is 2000us as per design requirements.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+---
+Taniya Das (2):
+      clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
+      clk: qcom: gdsc: Update the status poll timeout for GDSC
 
+ drivers/clk/qcom/gdsc.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+---
+base-commit: c674aa7c289e51659e40dda0f954886ef7f80042
+change-id: 20250212-gdsc_fixes-77e8b8e27e2f
 
-Beste Grüße,
-Peter Schneider
-
+Best regards,
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Taniya Das <quic_tdas@quicinc.com>
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
