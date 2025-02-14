@@ -1,135 +1,99 @@
-Return-Path: <stable+bounces-116405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1ABEA35DA9
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA6AA35DCE
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABC8D3AE0AA
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 12:29:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 878683AE146
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 12:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C28263F3C;
-	Fri, 14 Feb 2025 12:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C7263F41;
+	Fri, 14 Feb 2025 12:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jIznVETw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LyALb3t9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD5263F23
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 12:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97103263F43
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 12:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739536196; cv=none; b=eMUCKkLAruT5gLkU711chTo0KPnju5yDPCGT3MwOaOBH0sYmOyVGkov9mMk4CoBsmjecz3J+QmNG2GwKm4f+gk5PjMim7i/Ha7bcoEpEYhQUEpG7B+QstXxhn5fVNoq0FVKmjNmtWeMeEyoKt4A0xiGwgNVHuiVyMjAQLm21+AU=
+	t=1739536968; cv=none; b=hJYTrDt2f9IEkYbfVfymTVgbDq6DvA9qzPinKs4bpwLtaM1reCmQ0Mcv1GjqHbdi72DAu6t05dTFlcDjZ4RRwz6RmJ1k3Ti1n5dlLWqBJBaux4vK+Kk2DGkrzFOnkwX4UD6SBDji8NYHnjGxPtfY4Zz/rib79lkRbe59FYBCsWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739536196; c=relaxed/simple;
-	bh=o+9eJVl8CwL4mxIer/X2JlMnYjvZGgitWo5E6XsIP00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tESY6Mumy5ApmMxP8T7rj8hhyvEFuwsz3mSn4nwC0wXX1ebtuAf6jV4X+8Lhcc2CVEYsXMFjb2FY90Ja31Ce9K3xmjkuH+qhA9fzwd40UbPYf9W6p6TUinMfKeSjmHUdcOB8w/IQRN5S4YSMD2V1niyHOJX4ypY7BKetL29BnU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jIznVETw; arc=none smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4bbe0d2189aso594079137.2
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 04:29:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739536192; x=1740140992; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lTFbAU7wJoF4fOBfb8cWjl4tFAB0huVpYXczHim4Y1o=;
-        b=jIznVETwq8/92diQRkc6ubURVuUbxWxObGWy0fYTTNYnFS2bA0Is0SP1zksOKVKmEH
-         gzC2IIQLArsP7NWH67thl2+I7QOwC27AHoOy0onLqMJ6Iymapkue2Mk3gC7WCvLCrbhj
-         uqtCKuesU6S8iwHfAnuoP3eqbPseN1vwhze1u5TmXPDyEAnRM6swd2KTLIGO0SsnSVUZ
-         f2PVAkDzYt6WdHaePrc6gydE7YTCzMp2Iq4JsEj6oSeVtEfGukB+zavGyb2xC/eaG1tU
-         yZi+fQ6j6ugoz6rhVk8YTpmJIjuqRUJx3EAFExjDnw7ACcwudWxAIrxkGT76Q9q8kmDm
-         mzRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739536192; x=1740140992;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lTFbAU7wJoF4fOBfb8cWjl4tFAB0huVpYXczHim4Y1o=;
-        b=YXRGZwN3Cd/npUV+GZgJgfV0u0FbHrHA74iKadzalYYwn9J6yyihAAYZ6C+/x/XB6P
-         VgZUgJgy87NiI7a8/sUoZYdB2og0E92gZg4OXZSP8rf+lC/1PA0DecibpkaDyCNVi+v0
-         BURjOqgqkMacUEbmN3hAK1dHO5yoWGPMRjVHIn8tdRFZrBH6wlXu4uYh4bSQA6ibbjBv
-         c2EFjl914/utIDkMGEQso/klz6VQBVch5j1RYS/AZ8udYiEzhGgUyUNNDJWdpQvgh21z
-         siCoyf1KI1IzqBKpLPVxoz28qmxgI8yQcMTFtoHE4xgNalX44dKAJWKzF/d9JZa2borF
-         eQHQ==
-X-Gm-Message-State: AOJu0YyBJ4sYJ8ua+VzTGVF0nyCbhYUaO9Sh6Jne68OVeej9jVaF6Jqf
-	THJOGDDC7pCpMk2J2MnA4jdBSOdCC38uOc1Wip4s5mGyXRejjbHmqDY25BJIcBbhc8e4mrqLuWM
-	mMd4+LrWy4gU6VhydJQyL/k6zX/IjUHwjeqrzZA==
-X-Gm-Gg: ASbGnctLnoNHiLQCZ6fk0vvh2heKQws8ypQr3NGLSdHfGtbMTsH4TqPnzJQp1Fsq3RH
-	nZGMP9mvYpGO9rPGA0vQTN0Nd3Why7bWXPcoy6R+YCmSgkK1fVqZjViBMywdBSNPcRR9jViNQoN
-	Cc7wsSHLHPKGFTXPniTPbI9plxUx0ysUQ=
-X-Google-Smtp-Source: AGHT+IFayjXgqLnPIi5Gj/6+Fnamdf+uE2pl1g6krTGZMHKX9RJajOKZ81JoDlIpuTxR8LgZtuj0I33nc9DhR+zNH3w=
-X-Received: by 2002:a05:6102:3a0e:b0:4bb:e14a:944b with SMTP id
- ada2fe7eead31-4bc03781b64mr5853377137.20.1739536192461; Fri, 14 Feb 2025
- 04:29:52 -0800 (PST)
+	s=arc-20240116; t=1739536968; c=relaxed/simple;
+	bh=d11x50LxRQmrP1+dyTgBwa9f88B58AqvvEqtw+md3vo=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=goUpGWemFj4VdavVlWSFKoSBcn8nxtKhEw3p0M7DS7Uvn8u18mw3CuaTBiHcC6619J/TmSMS9a7w0L5g6yps+5OtmuD+MHmRslNheNzDnFQpfW/5ldYdciOsaQHtQlHl98HvbtN1iv/CwNT8T5Z5E0sygihvKNtCDizHE9ye45Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LyALb3t9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739536965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeI2phbh9W6eJPANE+hSKKu7J5Y3ZY+RS2E2MDT+/Mg=;
+	b=LyALb3t98TxxQD49E/sWFi19ZgwWEm5nos6PLFLXEjgjtTog/onBDx/BABbC2ARCAF/KOM
+	d6bQMuvxlZrX0y3AJ8ZXg6etDInwYpnZyQvTxzskkxYXQFpPKLO30ECOv2mJetK+dZsYN8
+	TGiGB+1fiYg+tLmy+AlKXc7+MLlYVbU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-a9oD0zXqNjK2Sbi1lAnHAA-1; Fri,
+ 14 Feb 2025 07:42:42 -0500
+X-MC-Unique: a9oD0zXqNjK2Sbi1lAnHAA-1
+X-Mimecast-MFC-AGG-ID: a9oD0zXqNjK2Sbi1lAnHAA_1739536961
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BBD93180087F;
+	Fri, 14 Feb 2025 12:42:40 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EC8621955DCE;
+	Fri, 14 Feb 2025 12:42:38 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250210223144.3481766-1-max.kellermann@ionos.com>
+References: <20250210223144.3481766-1-max.kellermann@ionos.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without `marks3`
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213142436.408121546@linuxfoundation.org> <CA+G9fYuVj+rhFPLshE_RKfBMyMvKiHaDzPttZ1FeqqeJHOnSbQ@mail.gmail.com>
-In-Reply-To: <CA+G9fYuVj+rhFPLshE_RKfBMyMvKiHaDzPttZ1FeqqeJHOnSbQ@mail.gmail.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 14 Feb 2025 17:59:40 +0530
-X-Gm-Features: AWEUYZk1PwH1MSNr9Lf4hA8ve4s44k0qj-QHXi0NZuppFfQe21jEYySxIYPOqJU
-Message-ID: <CA+G9fYsVFoLTXYBqpeUN1VUTwy5kXTB82fztK62fMPR6tYxChA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	linux-xfs@vger.kernel.org, chandan.babu@oracle.com, 
-	"Darrick J. Wong" <djwong@kernel.org>, Long Li <leo.lilong@huawei.com>, 
-	Wentao Liang <vulab@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3977862.1739536957.1@warthog.procyon.org.uk>
+Date: Fri, 14 Feb 2025 12:42:37 +0000
+Message-ID: <3977863.1739536957@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Fri, 14 Feb 2025 at 14:16, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->
-> On Thu, 13 Feb 2025 at 20:02, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.14 release.
-> > There are 422 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 15 Feb 2025 14:23:11 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> Regressions on the arm64, powerpc builds failed with gcc-8/13 and clang
-> on the Linux stable-rc 6.12.14-rc1.
->
-> Build regression: arm, powerpc, fs/xfs/xfs_trans.c too few arguments
->
-> Good: v6.12.13
-> Bad:  6.12.14-rc1 (v6.12.13-423-gfb9a4bb2450b)
+Max Kellermann <max.kellermann@ionos.com> wrote:
 
-Anders bisected this to,
-# first bad commit:
-   [91717e464c5939f7d01ca64742f773a75b319981]
-   xfs: don't lose solo dquot update transactions
+> At the beginning of the function, folio queues with marks3==0 are
+> skipped, but after that, the `marks3` field is ignored.  If one such
+> queue is found, `slot` is set to 64 (because `__ffs(0)==64`), leading
+> to a buffer overflow in the folioq_folio() call.  The resulting crash
+> may look like this:
+> 
+>  BUG: kernel NULL pointer dereference, address: 0000000000000000
+> ...
+> 
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
---
-Linaro LKFT
-https://lkft.linaro.org
+Signed-off-by: David Howells <dhowells@redhat.com>
+
 
