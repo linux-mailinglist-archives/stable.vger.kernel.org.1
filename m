@@ -1,121 +1,108 @@
-Return-Path: <stable+bounces-116414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15787A35E80
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:13:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EE4A35E85
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3821D16B31C
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:08:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA5151896F29
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEC7263C9D;
-	Fri, 14 Feb 2025 13:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5713263F4D;
+	Fri, 14 Feb 2025 13:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXlffXLn"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="fSaxiOlE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEDC230D1E;
-	Fri, 14 Feb 2025 13:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DAAF507
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 13:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739538481; cv=none; b=Q1+zf3cUu+J2zycgNNxWUPpRljlIFl6WJ+0spGcjwUpeaTMQIImZ/aKfOIUqh1EJwiUp2oWRroj+jp3X9O8a+wABAErLaeBidcU+2OmfZK2+6qNLfEGfPYup586CK6P91yoIf/YT//mHIXtlaXldn1CjxhaIM0crOFEnwrV2Kms=
+	t=1739538520; cv=none; b=Qd+qHp8njocQ46ccxJR0EdRyYPYzqVdrw+WUAvRMN9mrda0T9/0rVZWwZw6UIQBgdREw+5EUODmHk3Jm+iNo1ggbBXJy6mqwuJut8e7bLx5uoNMEfWAyKS6NFPwYf12UkLxhR/mP8ntC1Bj081QQM45Aj1pkttJ5Lk6AI1NgbGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739538481; c=relaxed/simple;
-	bh=ODTOjd4Bv0YzvgZUjajJ7VHAs+BhMRmBghGQ5h5yJt8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J/XzwlZ17pgLwRq4kt6an41/GB6J1XK1v8MWPHRc34BjhxK5G9j5bfFQupWWp9IwGa/nmLAgIVpuwm73LbedgfuZ+tv3QSZff14fSSduhGXQY7s+8fYFalXSnDS6ABRuPvNZnayV50uq47eXjFXv/rDxycSPLqFFZp5fcfvw7Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXlffXLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D980C4CEE7;
-	Fri, 14 Feb 2025 13:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739538480;
-	bh=ODTOjd4Bv0YzvgZUjajJ7VHAs+BhMRmBghGQ5h5yJt8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hXlffXLn/MnzT1ILAuefEUiB549zb///H6Ib6fpQB9BCKYyRXRzYy0ossXv30WizK
-	 laKk8I2A8kAqW4ZinF7qcZG3EGzIcw9Q8uYnNtxKLm0ZRtUxsArJCXv9ZL+isN45jI
-	 P3ymlW9OgQOEki5wb6nPgcWNwjhsgdY4WLEeo16k=
-Date: Fri, 14 Feb 2025 14:07:57 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc1 review
-Message-ID: <2025021439-sixtieth-concrete-c104@gregkh>
-References: <20250213142440.609878115@linuxfoundation.org>
- <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
- <2025021459-guise-graph-edb3@gregkh>
- <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
+	s=arc-20240116; t=1739538520; c=relaxed/simple;
+	bh=neEm4+Cx/iEQVvb4iKsSOqlmD79lxM637n3ua8WM8qI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=reu9FJPB1VzdBCSnujPE993WAI9c4q5oUTLS0D6QHzqTLTMqiINPkQDVBgzpW6CraLC+08F9THY7r041T9ZxGObwzCMsLzB2fDljMsLw6PQCZUJBWQURx4UIwGCX9YSVs+ITKNS5+btmdcFHvdMNGrzlogxp9ZOQQNqJ3AB0fM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=fSaxiOlE; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5dee1626093so1118837a12.1
+        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 05:08:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1739538516; x=1740143316; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FblFcMwedzNnfAxN1Z4KRU7BW8Pt4N7aNbycDWrv6Kc=;
+        b=fSaxiOlEK7l/SvIlK0sQYJJfqn6g8Q9qkE9RA78PlgGL5rutY91dsdgq3RwNnksUcq
+         PcxRjWWkaMJCbYOpMA/RsDkBIH6JPLmSI54PMRJBBhorvyu+6sOhRunv+3rphpVB73lA
+         bdZVcxdB4bpfftnBtF5qc8L1D7oHuQ3vy7S757+rFbbX7+bBzJCTSk5EyeRm5Oh3i/iV
+         lb7ag4YmsBBFOIsosKY1MfXswoP6m61AMTyvIOhugrLYWuKjjn3WFj3HquMm7wqyrY+T
+         jpXgZzJ56RDdzZ+jSXTdMk+LoIjSXu3hSpFwdWwvAFP0kpAn9h+Dui3afB7nMRnhkW1o
+         rgFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739538516; x=1740143316;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FblFcMwedzNnfAxN1Z4KRU7BW8Pt4N7aNbycDWrv6Kc=;
+        b=pQgFXst9Aekm/h8qzlaYdWWu4zXO7X5I5fapNUzjXDrg1ksUgNsxCHftb86i6q//SU
+         HZiYh/iaQHHp2RJfwFDt8ykt8OJGPcnwiTUF6MqevrQ4F6wk16/g4t1a7g8RogNfBP0b
+         s+mVryqq48mZKiBvrf5ePxkDiyVPVI234chQtsHIRgLO9vmXzqxvlkOXD3wT4jJl6YAE
+         STDUjiFbrs2KrsdsSYu8g+7ww502Zwi9rIib6GOoTjfbyVa4Eow/MnhMsRCQwzOYrCXT
+         uWoYvhW7w6wnyKmylBKK204QQLaVo47cBhAaScwTUXCQhB1wekeJNFu0E1A+Y9t12dk7
+         Mwfg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4sSbkKAvllKKgysuOeVWN9N6yyPY9nHDFeZWYE3dhWlFYWJcIba0EhyR6IxxCnKorjMR4NUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwLcxnVVpBik5nykoqUbfgkHcN2Yv05rqE2HgyEulKIX4QKFa+
+	bOq5H3M7ez/n0kcB/B1LbC86H/7nVtVyYoT+87U/UmQGONT66/f43wFBy2f39smPpzNx2C6b96v
+	god9QZcqxeFDABp9eEGq57t4MVwFTWIc84yZPZQ==
+X-Gm-Gg: ASbGncuwDlpKpNel+4Vkg0aCICmlBTusN5A6FGVZJufl+QMLywmhwreeUbe4BxAm5XB
+	aMGsLdbdBDSQsXqW9CqFrme01/mRhrjlTCSXbIIgPLyRsosbTd5k4MjbtTcMbAaPVmjHfiqKc3R
+	+mOgiUkFhBHaIjLoeKD5Gt185lZQ==
+X-Google-Smtp-Source: AGHT+IF50ioArXYzWdb9AwMM5Jd2Q6Gaky4E7wPQIfV+mgA5jj7trK1nfZmCALNES+0mGT+0rIc/VOt17oANdRVwXjc=
+X-Received: by 2002:a17:907:2dac:b0:ab7:462d:77a5 with SMTP id
+ a640c23a62f3a-aba50fa00c1mr561174666b.7.1739538516107; Fri, 14 Feb 2025
+ 05:08:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
+References: <20250211093432.3524035-1-max.kellermann@ionos.com> <3978535.1739538228@warthog.procyon.org.uk>
+In-Reply-To: <3978535.1739538228@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 14 Feb 2025 14:08:24 +0100
+X-Gm-Features: AWEUYZnphr9tXHnNU_D4Lm2cTV5HRLCiurerIEsfzwR7a2ytXNxgP0imZ2tMeI0
+Message-ID: <CAKPOu+8fGrCgzL6q0SA+WKesMTDEMWkOgTDb1AA_=GN4_k3abg@mail.gmail.com>
+Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to
+ uninitialized `prev` variable
+To: David Howells <dhowells@redhat.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, netfs@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 11:12:06AM +0100, Holger Hoffstätte wrote:
-> On 2025-02-14 09:42, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 14, 2025 at 09:32:06AM +0100, Holger Hoffstätte wrote:
-> > > On 2025-02-13 15:22, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.13.3 release.
-> > > > There are 443 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > 
-> > > Builds & runs fine BUT fails to suspend to RAM 99.99% of the time (basically
-> > > one success but never again). Display powers down but fans stay on.
-> > > 
-> > > Tested on multiple systems, all x64. I first suspected amdgpu because why not :)
-> > > but it also fails on a system without amdgpu, so that's not it.
-> > > 
-> > > Reverting to 6.13.2 immediately fixes everything.
-> > > 
-> > > Common symptom on all machines seems to be
-> > > 
-> > > [  +0.000134] Disabling non-boot CPUs ...
-> > > [  +0.000072] Error taking CPU15 down: -16
-> > > [  +0.000002] Non-boot CPUs are not disabled
-> > > 
-> > > "Error taking down CPUX" is always the highest number of CPU, i.e.
-> > > 15 on my 16-core Zen2 laptop, 3 on my 4-core Sandybridge etc.
-> > > 
-> > > I started to revert suspects but no luck so far:
-> > > - acpi parsing order
-> > > - amdgpu backlight quirks
-> > > - timers/hrtimers
-> > > 
-> > > Suggestions for other suspects are welcome.
-> > 
-> > Can you run 'git bisect' to try to find the offending change?
-> 
-> (cc: Juri Lelli)
-> 
-> Whoop! Whoop! The sound of da police!
-> 
-> 2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
-> commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
-> Author: Juri Lelli <juri.lelli@redhat.com>
-> Date:   Fri Nov 15 11:48:29 2024 +0000
-> 
->     sched/deadline: Check bandwidth overflow earlier for hotplug
->     [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
-> 
-> With this reverted it reliably suspends again.
+On Fri, Feb 14, 2025 at 2:03=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+>
+> Max Kellermann <max.kellermann@ionos.com> wrote:
+>
+> >               prev =3D list_prev_entry(subreq, rreq_link);
+> > ...
+> > +             if (subreq->start =3D=3D prev->start + prev->len) {
+> > +                     prev =3D list_prev_entry(subreq, rreq_link);
+>
+> Actually, that doubles the setting of prev redundantly.  It shouldn't hur=
+t,
+> but we might want to remove the inner one.
 
-Thanks!  I'll go revert that one now and push out new -rc releases soon.
-
-greg k-h
+Oh right, that line shouldn't exist twice. (Previously, it was set too
+late, after the variable had already been dereferenced.) I'll send v2
+with only one copy.
 
