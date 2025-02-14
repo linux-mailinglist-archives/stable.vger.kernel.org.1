@@ -1,150 +1,138 @@
-Return-Path: <stable+bounces-116387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153A5A35984
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:57:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0D2A35991
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 10:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1203ADD75
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 08:57:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02321891462
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BFD22AE4E;
-	Fri, 14 Feb 2025 08:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ED622ACC6;
+	Fri, 14 Feb 2025 09:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gSd9bn8b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RExNhrZs"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B176222A7EF
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54675155756;
+	Fri, 14 Feb 2025 09:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739523419; cv=none; b=WJbr7g7mZCNNTsLkivEuP6b67rWbyoVlJEIQaP22W3lN7/XYPW8nN7DZr9+3Bojh1kv12ffwzXyB2ilYjnn4HRpogKjxYFc0OF0tGpJElU5xLxe6uS5ngV5x7VwRGeHRayjLNW92HNXalzlk2meUcznZWTycmawVK7EnxbaVAL8=
+	t=1739523645; cv=none; b=EIsEGkoUI5qRq4JwGqeoomWvC9dq3rfq0SWn2ihgU4Z+nGMaYGBUVbJt9JTzSiHtADrd/fkRAUs7l66b2kzV2/VG4688GBdgoZJ4OCAF4kWZBSxF9hj9mFWOIY/kMleH+FW/XaHyCTHMq0zioGNVLNbLdoTQYP3h+zPl35jzY6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739523419; c=relaxed/simple;
-	bh=N2oMEh6KNf6wBuiHWeggrzEjBJybpqlqwqAt7hY3EyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MRn6aFOj5qGISEVpYNS4tSZM9SyJts98GXSh/e6n78EUHKhI6XJrKHS3chjmcyLuDWLHyhHJW/f8ZSjE3/baI6x0XbM2MYJHchbbnryiZ9Xfu2mkCTmvij2jpYSnf9Azo3MhA+fPiqFJSchZU7XNYTJIFzRNNfvbAG00hUROJjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gSd9bn8b; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51DMCH8h002806
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:56:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Zt82XTOmepbxt73N1eo4Gcxa2vbkGwf5dADu4EFFH+w=; b=gSd9bn8b7SfqRDSj
-	62HWhD+6Z68T4K2/jUZoXM89ENZRZ1XYc51Gpgx721HbkQTibqoqYNNoPogrgsPd
-	nCK0TL1AWA6hxa+3t5mtEj9VrsQ7QJfM70yrphUjDuBFB64TGmxEMGiT1dxTWVvQ
-	irXeSyLR9UgVs6qASOxy7LAk8p/0Yl/6ccIC/s60c2xvK6VLhgISvnyfnPvQ8aFb
-	/KdiDBntaVXBkDtyS+yso/HFi6tH69NkMHPR8AWGSmpSLi6UImVgAc7PKARznjUp
-	b8GjSef86WNpPDG0AcpcR5ZbBblhDe5Bgme+3mHf9idWcsEibSTWjESao+UnmZD4
-	nrE5ig==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44s5w4cd1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:56:56 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2fc1a4c150bso3505082a91.2
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 00:56:56 -0800 (PST)
+	s=arc-20240116; t=1739523645; c=relaxed/simple;
+	bh=7lX+xYMFJh9I+bPXe+Txvhf9q+36wzQ9yi/jo6PJCcc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Luwy6FSIuKS8vVFmhtwivj/ESJftYptkW9nFNI+epsI8V++eHidXVTMvGq+JxzutVsI5SPgDD9mP5XdTdOPImAWj21v7rIbFHn3oWAidtWs7a8EdxLhcQJcgm3+30oYhjccpxmaPEpdtX7AleGivpbUwX7I7ZRP6fPgJ/h1QxkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RExNhrZs; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-438a39e659cso12654365e9.2;
+        Fri, 14 Feb 2025 01:00:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739523642; x=1740128442; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BCeQRqKC2mbRi4qoCT2t+rHnwR2WSeqQ1KRGbRtrTlk=;
+        b=RExNhrZsQIGdBfIgMpokqT4WWHxJjlIxnvr/B1J4+qUR1wz0UanV3n4FmS4TRzl10S
+         yHI7azLUbqIVrsLoAakFXfV6AnbJxmt9gKg+L6p4c6WSTMttyaZ6zeDiL7DyViqd6ktD
+         eAMO+Wgmkl+clzp/EHnmsMBTDVWRGj/R8wKINybmQuTMtZJ5BH/N8s+G7mPWaGMjImtE
+         duHIfRB2QRYDyK3unAsNzzbfB8WwIwDfu2ybw/qGG36lojzPK37423NRgd5cc1WU/zLf
+         aMJ4vcrINs9Nzj8UWGtmW9COryyExxH2mdJe6Tq++FMhJPwfPQCZHTCmc4Qw4ROBMzoN
+         44nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739523415; x=1740128215;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zt82XTOmepbxt73N1eo4Gcxa2vbkGwf5dADu4EFFH+w=;
-        b=oiOnT5sEctJQ8CTVHnGi9rfMTdQNuKCMOScwxeF8EoJ0wVgclr9+aYGLg213+jmv6Q
-         Ysf1WVvv4G3EGSlQjvIfmk75/ScNyH7ZWJGh5e+MeKPwjR+BduYdKP+tAlOI+zxNWeHt
-         QXnJ1U+8vphfnpRvExq5J5AdaS6ias0PWVUtPLQfo0ct0MuKY6uCPVl/Nn7vYRL1sImW
-         T/aS+7lwX1t5fpbb+/8o62j0TDf6RPbolVqfnogQ4R11VKUqtU3oldk2xvtu9rA+GrAu
-         uc3UhcXh5cJig2fyD5eXZM23U8dsZM2AvK+llKBjvmmS1Z2VU5y0cBeQeAOACwer/YdI
-         pvDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVR8Fm+D/S5Gek6ifl0KHuBR89bvbOE9Cn6Ecn+GCSBuI0RGthsRRu7zRQbkZqDrbZ9PgumDFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBzsxlAWmOhWX7qqoeD2lkRvLkjR3sz2Kt6Ciq8cr7fpQw29zd
-	svAIUIyHb21iFUtDG5oNV4mDClpPSp/N0cRxJao+A9R4nzT38nrrCXMxcfZrwbIEaJ2RLqiQRoh
-	kvuO+GU0SzWL1hp+GvTS8bt4Eom28Y3zgh9g/9BHeeAP0W5GsiuQu/7i/lczyuv8=
-X-Gm-Gg: ASbGncvMwnEi+x8tZq90orZePJpxZQMo3J5tp6aHYfZouWDnvI2j3CHthEYPGwx2a6T
-	1+EfQZrfCCED5yiC2yLlGyY07Npb9rx5tm5NduzE/mTmWxKhmmafxVMNF7cx8XYt2kuyAudEC2w
-	HQGE2QMA8I3nj1sMn2HgGox5/z5vfSj8ce3cU+TWUKDPGLHFk9JTBeOOGDM71CG+77eJhf7ShJ0
-	S/b73Xaow9Tqh+H8NzBjERSSC9VMrEU3KhVcXCSPc6XDU2CtTHgECIEK4rPAzKVnCjQC5dl+fGq
-	TR8EiZqmK2J+qVQUaGjVVwg4CdnEqg==
-X-Received: by 2002:a05:6a00:3989:b0:729:a31:892d with SMTP id d2e1a72fcca58-7322c591baemr20039226b3a.8.1739523415562;
-        Fri, 14 Feb 2025 00:56:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG0xCy3CGTXSILQ1bj4llABzfBeQ7obxgJnQtk/CYwRAuzAyy2KgJQVQxxN2Sx9fbn0eu/yyw==
-X-Received: by 2002:a05:6a00:3989:b0:729:a31:892d with SMTP id d2e1a72fcca58-7322c591baemr20039209b3a.8.1739523415219;
-        Fri, 14 Feb 2025 00:56:55 -0800 (PST)
-Received: from [10.218.35.239] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7324273e438sm2728749b3a.94.2025.02.14.00.56.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 00:56:54 -0800 (PST)
-Message-ID: <b7903b50-4213-41d5-a7d3-5dded5f38994@oss.qualcomm.com>
-Date: Fri, 14 Feb 2025 14:26:51 +0530
+        d=1e100.net; s=20230601; t=1739523642; x=1740128442;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BCeQRqKC2mbRi4qoCT2t+rHnwR2WSeqQ1KRGbRtrTlk=;
+        b=ee1lOirNCzMI08dxBHC3Odwx4FwLBpSQYh3hHKPDy6oEwpO7/3MHR37Uw0YNEltDrG
+         vOt0V48vizgfxPp0DW+fNBYeNtkFyr8PUVA1J9gxzarrwlnRONOGwopNaeGdyvvR+ErY
+         7hvYVrmquQb6hbfKk9zbXnkCZZjRI0vd0iA/Yl0e0D4SK+Wew/wpUE37mSpSkS6foSP7
+         xsOwL5ansvoh20iWW42HR+F0vJZ+bU9Nx5Jq4ElNPnSuN7aCZMnf5C6BOWHVwZg/lG42
+         3yVtbrQVYOL/5shWA2lEfD6O71FL4TEG7dSl8oaX27JgYWpFFstYLl54QzI8UkKGkeHR
+         6rdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdloWJ2XYbbvY0sF+ARYqhPo1xWpBCCobWZaAUahVorSZ/puI69sH0ZXnsyZ0Q3v6Q7l9IV10=@vger.kernel.org, AJvYcCXpxUAmAXnJun3fYXYd3ABQSJRf3qMJrrW+Qmo7aVv7BQmYNWsra0pk6mf0dWn5UpZuo3e9jYSu@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmyWjrXUfew29x48J7jtF1HsMwv31oTvgc8a8wfZuNU4Sn5Zq6
+	Lo5Fv4rW8hyy0rhTVsV7iBLd9fXor/Rj79a5GgZXVrUJcsiKjT3FsM1+Qks6wwqCIHvtNYZnd7i
+	sCpzSGwnf3McqoedDm75Phj08Ma9DJTyX
+X-Gm-Gg: ASbGncvI8YKtqE0W+qzP2XihQ8sdiJo/i+4ZYbOxP4kjCSNxBHipWvaXzdx4+Q/C03z
+	CzBpfYt1hG6o/r3tXOtw/e2YTkAoBLSzaDUXnCVlvkV8CjydggZo4O6v/K21qK6CcGV1NO7+d6q
+	k=
+X-Google-Smtp-Source: AGHT+IF15SfeQj3HA1ZMD+2sa81H/Bp7K68HgV09burIDohLpGXFpzE9CUzH85s9o55mFKj7h/Av1qPuDFotyK/ZIoA=
+X-Received: by 2002:a05:600c:4e4f:b0:439:6332:275d with SMTP id
+ 5b1f17b1804b1-43963322a53mr64091465e9.2.1739523642375; Fri, 14 Feb 2025
+ 01:00:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] usb: gadget: Set self-powered based on MaxPower and
- bmAttributes
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        Sabyrzhan Tasbolatov <snovitoll@gmail.com>, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250204105908.2255686-1-prashanth.k@oss.qualcomm.com>
- <2025021435-campfire-vending-ae46@gregkh>
-Content-Language: en-US
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
-In-Reply-To: <2025021435-campfire-vending-ae46@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: PI78ABw0newGJ_elc9y6XM14h0miLggF
-X-Proofpoint-ORIG-GUID: PI78ABw0newGJ_elc9y6XM14h0miLggF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_03,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 mlxscore=1 spamscore=1
- phishscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
- suspectscore=0 mlxlogscore=207 priorityscore=1501 adultscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502140064
+From: Qiang Zhang <dtzq01@gmail.com>
+Date: Fri, 14 Feb 2025 17:00:30 +0800
+X-Gm-Features: AWEUYZnMyRVuMUo18B9Q4Cpr5cORWRavjMOpn-JsG2wYZUOafE0PZqTGJKToTB0
+Message-ID: <CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com>
+Subject: [RESEND]tc-flower not worked when configured dst_port and src_port
+ range in one rule.
+To: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, stable@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Hi, all.
 
+recently met an issue: tc-flower not worked when configured dst_port
+and src_port range in one rule.
 
-On 14-02-25 01:32 pm, Greg Kroah-Hartman wrote:
-> On Tue, Feb 04, 2025 at 04:29:08PM +0530, Prashanth K wrote:
->> Currently the USB gadget will be set as bus-powered based solely
->> on whether its bMaxPower is greater than 100mA, but this may miss
->> devices that may legitimately draw less than 100mA but still want
->> to report as bus-powered. Similarly during suspend & resume, USB
->> gadget is incorrectly marked as bus/self powered without checking
->> the bmAttributes field. Fix these by configuring the USB gadget
->> as self or bus powered based on bmAttributes, and explicitly set
->> it as bus-powered if it draws more than 100mA.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
->> Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
->> ---
->>  drivers/usb/gadget/composite.c | 16 +++++++++++-----
->>  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> What type of "comments" are you wanting here?
-> 
-> For obvious reasons, I can't apply patches tagged "RFC" but I don't see
-> what you are wanting us to do here.
-> 
-> confused,
-> 
-> greg k-h
-Sent an RFC since I got some comments last time while changing few
-things on this path, was expecting the same thing this time, Will send a v2.
+detailed like this:
+$ tc qdisc add dev ens38 ingress
+$ tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+  dst_port 5000 src_port 2000-3000 action drop
 
-Thanks,
-Prashanth K
+I try to find the root cause in kernel source code:
+1. FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flag of
+mask->dissector were set
+in fl_classify from flow_dissector.c.
+2. then skb_flow_dissect -> __skb_flow_dissect -> __skb_flow_dissect_ports.
+3. FLOW_DISSECTOR_KEY_PORTS handled and FLOW_DISSECTOR_KEY_PORTS_RANGE
+not handled
+in __skb_flow_dissect_ports, so tp_range.tp.src was 0 here expected
+the actual skb source port.
+
+By the way, __skb_flow_bpf_to_target function may has the same issue.
+
+Please help confirm and fix it, thank you.
+
+source code of __skb_flow_dissect_ports in flow_dissector.c as below:
+
+static void
+__skb_flow_dissect_ports(const struct sk_buff *skb,
+struct flow_dissector *flow_dissector,
+void *target_container, const void *data,
+int nhoff, u8 ip_proto, int hlen)
+{
+enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+struct flow_dissector_key_ports *key_ports;
+
+if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+else if (dissector_uses_key(flow_dissector,
+   FLOW_DISSECTOR_KEY_PORTS_RANGE))
+dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
+
+if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
+return;
+
+key_ports = skb_flow_dissector_target(flow_dissector,
+     dissector_ports,
+     target_container);
+key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+data, hlen);
+}
+
+Best regards.
 
