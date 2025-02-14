@@ -1,88 +1,87 @@
-Return-Path: <stable+bounces-116377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DD1A35882
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:08:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D64A3588B
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C601A188D2C5
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 08:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E89E188EBC5
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 08:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967C4221700;
-	Fri, 14 Feb 2025 08:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CCC221D9A;
+	Fri, 14 Feb 2025 08:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hwEoIHJJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XGVWaQWt"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7DD21D583
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB2D221D86
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739520506; cv=none; b=elKJ7FlDaZrkvn/DiqAfWsiXwTVdojn5K2KePTn/dlJMXlPhFlPPINz6glnBVSS/5e8J0gejShS3TTgu78KcD/3c0ifrXXM5HhhZIOZHlXqvjSo/gTARc3NV6j4IvOfZBpI8n1lHYi82Lfy3P86IGTZOhwHTSNKqQdpe6u2EnyM=
+	t=1739520723; cv=none; b=lCFSc4iHEAHGj3sRaSrM7/r3DWuRt6QjprtkXzD71j1BgNlo+mIzkpXfr3ypnRU1cvwUjl+nNJYKTz7CHgTwI4lr6lhS8maAekDyx7BgH0C8djNB28kFJJHnsJ200h6QX05mG7/bda/lriv8Cdqvwzqz3FRZsWMJG62ornGr00Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739520506; c=relaxed/simple;
-	bh=BH+R3DeaVEFkeBBM6A+bBYTJgrlpDE3DtYh3x94HZks=;
+	s=arc-20240116; t=1739520723; c=relaxed/simple;
+	bh=c83toEbUGxDGViChrV/KOK7NpsU/xF5jHNNacafC6ME=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TkaKKu4zRwFGhO4+vEoIWxIQBUubreKdJoerQ3MpGap3FXOG4Lzr7LEBQveljwd2Q2ByJ+2oFPcPmPTovNmQDo76OkcsLdaRQ9wi3nffrSGneIZ/+KU1irBflDTq6JW8q9/c8MwlDWvYWT7G6Jcm6kBMkvlbczTnNeKTcFhrSkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hwEoIHJJ; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=QYDPRglLDKs8KcAno3J+DjX7g+ugMdyl3WLyFYZG3XhJqELtSOW+Ugph5fA6f1QHUp6XBMiQsuCRIZAi8Di9sUTnV7hitAeBhtfNXiRK81X0gBXXT16hsuXmEzF/nP+X5TrnfdKnlYTf5vYsi6YQK+dexECMqkQT1Sd5zTCeUhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XGVWaQWt; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739520503;
+	s=mimecast20190719; t=1739520721;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ALk/+QsFRqtPl0vuqEBrVk2BlK5oNcB8f3FY4atPu5g=;
-	b=hwEoIHJJlq/5e2luGZH+QgXdTJaaXP8jEcXd8Abvm6kTGzHZfbNHqGHG0CJPxwEtn+/pHM
-	v0GDq5Qwe4QoxtVVy8sCq51K/Uq8qBmnzzi2egCz4Zf71RRB2JS+Cm5g4isx4zxxWDhkdc
-	CM0EkSwmfHS7QsxesF53VsTs7BRJrLU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=svkKqK/BHsrJwB4zl/6h7GqUXx+TvbrSqp2ylJbweyw=;
+	b=XGVWaQWtfeL/FVKW17UdQT5D9M05OLTQVNoTwgre1vZ6Z8onnNuBjF/UE52wfMZkmC2/PC
+	Be8ebyRvHdPCh8shjb2IeIXTYg1GTtN/mvlfYnxhvig7RhYMev97KcWOiyK7315U2IKjVU
+	Hwcc/TWYBkUYgucUBryrtur6PFb77AA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-Hv3PFp8eNbSjKxAJ1SKl7g-1; Fri, 14 Feb 2025 03:08:22 -0500
-X-MC-Unique: Hv3PFp8eNbSjKxAJ1SKl7g-1
-X-Mimecast-MFC-AGG-ID: Hv3PFp8eNbSjKxAJ1SKl7g_1739520501
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38de0201875so1088119f8f.0
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 00:08:22 -0800 (PST)
+ us-mta-27-1E7nxbVbMnCMtDetKEpVvA-1; Fri, 14 Feb 2025 03:11:59 -0500
+X-MC-Unique: 1E7nxbVbMnCMtDetKEpVvA-1
+X-Mimecast-MFC-AGG-ID: 1E7nxbVbMnCMtDetKEpVvA_1739520718
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43945f32e2dso14395615e9.2
+        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 00:11:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739520501; x=1740125301;
+        d=1e100.net; s=20230601; t=1739520718; x=1740125518;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ALk/+QsFRqtPl0vuqEBrVk2BlK5oNcB8f3FY4atPu5g=;
-        b=at8OQx7QH3VBzUor6suf/lH2XGDUS51j5QKrttVSSvsvnfVf07yLEM3tIbMLNqOOix
-         /pcY9QEXiuFE3ZBTLj4oWzxY/iMjndKpeH0vbJie1lltWyQV+2UQDDZo6uSjZ9Yi6cyl
-         b5fHTYmluA4cI1VHQxDOOIP8Gts9FjNcHb4gSNTsHvsME6ymGDAlIT8RhzggkbUUwpiD
-         bm+nnvPtxYyfwnLZz8DkFBzJ5PsvbBPdKe2CrncaaCNc1mFAH1PcjOYYjF4RRzOdYwDu
-         pVDtBUzAqrSYxw5cYnpEdSx8ExWi8uq3bEGytJo92NHBO9ZPVhdRVGeHaGpu4mjoesay
-         fkyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmM2LML0bwtpWp4ftYELcQC7RecSRhsLWFco8WBOBu1TPOgBpzL9KRKYEZSIXMFP4Y/i+PEB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSOmvWCLWOtArXzWGo8FylZYsSOZSW3Z1qHqJNXlhD6zj2p3C4
-	0GkzV/X10gdibtP9SQd3t0tDd/ykgw5Fdc/+a5sU8bVZMccCmuHYZbjfjByBX55x+gdHnT/iGBi
-	EkGRNNHjLZ9FUCF2A8NU6FN3czASl0S6Jxmse4zW/iRv9G6ZYYZkEXQK0wrkwmw==
-X-Gm-Gg: ASbGncuZRBTipi/OE94zqJWn/z6t/2mTOMi47zpnao3BZvSpd6Dhk7Jn1Z3qPHyHvnh
-	v87KdCGhnY9OzBj4lHot1DjylgnK1E1xNGCUIQUiB1KDn3DAVr25F+EPD5V3YFluaiNuwoK35lo
-	KAd0AbytzKg6LB7bgCR17A5KnbYEKmyN/t1ZG8ATpifiATe3DpXp6ZtaCV2/mFR6+qjtykT8eZt
-	1w7Ge1Ma8rxTxv1n6D8cn/cx++FsyAvU6dDH/DtRjphxWJ+UfTj4vpSbFF5Ty393+adKynlIpgu
-	EhxwSB3o9WE6xdVFGa+RZXeq6pO9sIJkh2JxDGEEhcgUSncrOkL8ARj2lPMID770pK6r81lEvMw
-	sEWvSuzAp6xc41p0NCODPtJ4y2a+XTg==
-X-Received: by 2002:a5d:64e4:0:b0:38d:e584:e944 with SMTP id ffacd0b85a97d-38f244e7b39mr7640407f8f.25.1739520501131;
-        Fri, 14 Feb 2025 00:08:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF88OUJBIRdGRmRlZpdC9r3dGoNyEx2raYg4TWW28uJG4QVHn2dmMATX6H9nKtGJhgZv1oquw==
-X-Received: by 2002:a5d:64e4:0:b0:38d:e584:e944 with SMTP id ffacd0b85a97d-38f244e7b39mr7640377f8f.25.1739520500760;
-        Fri, 14 Feb 2025 00:08:20 -0800 (PST)
-Received: from ?IPV6:2003:cb:c709:a00:7d7d:3665:5fe4:7127? (p200300cbc7090a007d7d36655fe47127.dip0.t-ipconnect.de. [2003:cb:c709:a00:7d7d:3665:5fe4:7127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259fe1efsm3976063f8f.97.2025.02.14.00.08.19
+        bh=svkKqK/BHsrJwB4zl/6h7GqUXx+TvbrSqp2ylJbweyw=;
+        b=D1GfoERaijeqgQPBr30OwmmWbMTMfselalQHGz64I54TsZ8H9wu3BBiZKYvvTSUqOH
+         8W/QgxbM78ARvzZt5RLu0IbC6t29sNuL/7YkGvVvir/uYJFF0HEhFdA6UbNpFl+YyAfM
+         aetL8+5YLTB/zbtU/VaVRUSbEeI3GWG9r2OvU5Qbe+buUveVO0QoKmqu9r1eFYlS0Kv0
+         hJOLtwcrhbzUZU2/QITGJ/NWNI5K0vLJY2cRvnEPfw1Hxjk5vT7FU2cnJI/ZuNmTIV4v
+         mXuPNwzabOhRPmAl9k87g0fumIdmF8Eb4yBR8sDpj5fB2RBkWIEQu+DPM4O4eH5aLwA3
+         hLkw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3/PioXuKIw850CCHxMUVIJB1XDd0n2o3dtMMzGGhSGl3Joi19Z+/qdMKY1cu1GqFVAWw1yb0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAaSn3BvRhXJTGjs09ktf69S3A7dYuB8o8cgtansEhOCc2wZAO
+	xMZTn69Xu+ZR/81It7PJw3Wvf1VXAQdH4m11R60WmEeRd2MQjzvi4dTLt+1JUlE3wCSD55Qj6sY
+	IhfobgHFAJocmib5x774Rk8TlieKP/PV9fSTRlY+mmdOluBxO5pPfpMMxYRMbpukU
+X-Gm-Gg: ASbGncuYTAfGxsFMSQE+brOokkBgT8vS6qNiLmUGElBdIIs+aVDozBj4g76sRXSfMHH
+	nx5U/gPiE+bwoRFy4T7yCat1RhSeOhDtj6MaSe8KMe6ozLhKfwEbVYmKwg7/WcUaYLyXMz+dINY
+	p4mTiUOZw+EDylWaPeqG3x0le07W+5ACppZBiEthPPqTGZ5waDFBJbEJMR8Ex7oMNS75r/Y9ylg
+	uU9nXojigJNd7tkWyIlaOv4vfEL9zcd2j0DJn1HZbDRfXIB0h72t8wKVWeeaUuIyK2kOlfOVXDs
+	haRbCas5TT2ojLBJv5uSIRqWa9piZfMgQg==
+X-Received: by 2002:a05:600c:458e:b0:434:f4fa:83c4 with SMTP id 5b1f17b1804b1-439601c530amr92220565e9.29.1739520717753;
+        Fri, 14 Feb 2025 00:11:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESIpdDMkIV9XZI+zXprC/FkLET0tfjCaeqJLBbz1eYNn1sr4KvPCg+3sfMHk/W96V5Bys/FA==
+X-Received: by 2002:a05:600c:458e:b0:434:f4fa:83c4 with SMTP id 5b1f17b1804b1-439601c530amr92220115e9.29.1739520717289;
+        Fri, 14 Feb 2025 00:11:57 -0800 (PST)
+Received: from [192.168.3.141] (p4ff23654.dip0.t-ipconnect.de. [79.242.54.84])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f25915146sm4010991f8f.56.2025.02.14.00.11.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 00:08:19 -0800 (PST)
-Message-ID: <37363b17-88b0-4ccc-a115-8c9f1d83a1b5@redhat.com>
-Date: Fri, 14 Feb 2025 09:08:18 +0100
+        Fri, 14 Feb 2025 00:11:56 -0800 (PST)
+Message-ID: <f15bd993-20de-41ae-8631-9ce557cd9d20@redhat.com>
+Date: Fri, 14 Feb 2025 09:11:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,12 +89,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: wait for hugepage folios to be freed
-To: yangge1116@126.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- osalvador@suse.de, liuzixing@hygon.cn
-References: <1739514729-21265-1-git-send-email-yangge1116@126.com>
+Subject: Re: [PATCH v2] arm: pgtable: fix NULL pointer dereference issue
+To: Qi Zheng <zhengqi.arch@bytedance.com>, linux@armlinux.org.uk,
+ ezra@easyb.ch, hughd@google.com, ryan.roberts@arm.com,
+ akpm@linux-foundation.org, muchun.song@linux.dev
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ezra Buehler
+ <ezra.buehler@husqvarnagroup.com>, stable@vger.kernel.org
+References: <20250214030349.45524-1-zhengqi.arch@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -143,60 +144,163 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <1739514729-21265-1-git-send-email-yangge1116@126.com>
+In-Reply-To: <20250214030349.45524-1-zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 14.02.25 07:32, yangge1116@126.com wrote:
-> From: Ge Yang <yangge1116@126.com>
+On 14.02.25 04:03, Qi Zheng wrote:
+> When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
+> parameter is NULL, which will cause a NULL pointer dereference issue in
+> adjust_pte():
 > 
-> Since the introduction of commit b65d4adbc0f0 ("mm: hugetlb: defer freeing
-> of HugeTLB pages"), which supports deferring the freeing of HugeTLB pages,
-> the allocation of contiguous memory through cma_alloc() may fail
-> probabilistically.
+> Unable to handle kernel NULL pointer dereference at virtual address 00000030 when read
+> Hardware name: Atmel AT91SAM9
+> PC is at update_mmu_cache_range+0x1e0/0x278
+> LR is at pte_offset_map_rw_nolock+0x18/0x2c
+> Call trace:
+>   update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
+>   remove_migration_pte from rmap_walk_file+0xcc/0x130
+>   rmap_walk_file from remove_migration_ptes+0x90/0xa4
+>   remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
+>   migrate_pages_batch from migrate_pages+0x188/0x488
+>   migrate_pages from compact_zone+0x56c/0x954
+>   compact_zone from compact_node+0x90/0xf0
+>   compact_node from kcompactd+0x1d4/0x204
+>   kcompactd from kthread+0x120/0x12c
+>   kthread from ret_from_fork+0x14/0x38
+> Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
 > 
-> In the CMA allocation process, if it is found that the CMA area is occupied
-> by in-use hugepage folios, these in-use hugepage folios need to be migrated
-> to another location. When there are no available hugepage folios in the
-> free HugeTLB pool during the migration of in-use HugeTLB pages, new folios
-> are allocated from the buddy system. A temporary state is set on the newly
-> allocated folio. Upon completion of the hugepage folio migration, the
-> temporary state is transferred from the new folios to the old folios.
-> Normally, when the old folios with the temporary state are freed, it is
-> directly released back to the buddy system. However, due to the deferred
-> freeing of HugeTLB pages, the PageBuddy() check fails, ultimately leading
-> to the failure of cma_alloc().
+> To fix it, do not rely on whether 'ptl' is equal to decide whether to hold
+> the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
+> enabled. In addition, if two vmas map to the same PTE page, there is no
+> need to hold the pte lock again, otherwise a deadlock will occur. Just add
+> the need_lock parameter to let adjust_pte() know this information.
 > 
-> Here is a simplified call trace illustrating the process:
-> cma_alloc()
->      ->__alloc_contig_migrate_range() // Migrate in-use hugepage
->          ->unmap_and_move_huge_page()
->              ->folio_putback_hugetlb() // Free old folios
->      ->test_pages_isolated()
->          ->__test_page_isolated_in_pageblock()
->               ->PageBuddy(page) // Check if the page is in buddy
+> Reported-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+> Closes: https://lore.kernel.org/lkml/CAM1KZSmZ2T_riHvay+7cKEFxoPgeVpHkVFTzVVEQ1BO0cLkHEQ@mail.gmail.com/
+> Fixes: fc9c45b71f43 ("arm: adjust_pte() use pte_offset_map_rw_nolock()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> Changes in v2:
+>   - change Ezra's email address (Ezra Buehler)
+>   - some cleanups (David Hildenbrand)
 > 
-> To resolve this issue, we have implemented a function named
-> wait_for_hugepage_folios_freed(). This function ensures that the hugepage
-> folios are properly released back to the buddy system after their migration
-> is completed. By invoking wait_for_hugepage_folios_freed() following the
-> migration process, we guarantee that when test_pages_isolated() is
-> executed, it will successfully pass.
+>   arch/arm/mm/fault-armv.c | 38 ++++++++++++++++++++++++++------------
+>   1 file changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+> index 2bec87c3327d2..ea4c4e15f0d31 100644
+> --- a/arch/arm/mm/fault-armv.c
+> +++ b/arch/arm/mm/fault-armv.c
+> @@ -62,7 +62,7 @@ static int do_adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   }
+>   
+>   static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+> -		      unsigned long pfn, struct vm_fault *vmf)
+> +		      unsigned long pfn, bool need_lock)
+>   {
+>   	spinlock_t *ptl;
+>   	pgd_t *pgd;
+> @@ -99,12 +99,11 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   	if (!pte)
+>   		return 0;
+>   
+> -	/*
+> -	 * If we are using split PTE locks, then we need to take the page
+> -	 * lock here.  Otherwise we are using shared mm->page_table_lock
+> -	 * which is already locked, thus cannot take it.
+> -	 */
+> -	if (ptl != vmf->ptl) {
+> +	if (need_lock) {
+> +		/*
+> +		 * Use nested version here to indicate that we are already
+> +		 * holding one similar spinlock.
+> +		 */
+>   		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>   		if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+>   			pte_unmap_unlock(pte, ptl);
+> @@ -114,7 +113,7 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   
+>   	ret = do_adjust_pte(vma, address, pfn, pte);
+>   
+> -	if (ptl != vmf->ptl)
+> +	if (need_lock)
+>   		spin_unlock(ptl);
+>   	pte_unmap(pte);
+>   
+> @@ -123,16 +122,18 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   
+>   static void
+>   make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+> -	      unsigned long addr, pte_t *ptep, unsigned long pfn,
+> -	      struct vm_fault *vmf)
+> +	      unsigned long addr, pte_t *ptep, unsigned long pfn)
+>   {
+>   	struct mm_struct *mm = vma->vm_mm;
+>   	struct vm_area_struct *mpnt;
+>   	unsigned long offset;
+> +	unsigned long pmd_start_addr, pmd_end_addr;
 
-Okay, so after every successful migration -> put of src, we wait for the 
-src to actually get freed.
+Nit: reverse christmas tree would make us put this line at the very top.
 
-When migrating multiple hugetlb folios, we'd wait once per folio.
+Maybe do the initialization directly:
 
-It reminds me a bit about pcp caches, where folios are !buddy until the 
-pcp was drained.
+const unsigned long pmd_start_addr = ALIGN_DOWN(addr, PMD_SIZE);
+const unsigned long pmd_end_addr = pmd_start_addr + PMD_SIZE;
 
-I wonder if that waiting should instead be done exactly once after 
-migrating multiple folios? For example, at the beginning of 
-test_pages_isolated(), to "flush" that state from any previous migration?
+>   	pgoff_t pgoff;
+>   	int aliases = 0;
+>   
+>   	pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	pmd_start_addr = ALIGN_DOWN(addr, PMD_SIZE);
+> +	pmd_end_addr = pmd_start_addr + PMD_SIZE;
+>   
+>   	/*
+>   	 * If we have any shared mappings that are in the same mm
+> @@ -141,6 +142,14 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+>   	 */
+>   	flush_dcache_mmap_lock(mapping);
+>   	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+> +		/*
+> +		 * If we are using split PTE locks, then we need to take the pte
+> +		 * lock. Otherwise we are using shared mm->page_table_lock which
+> +		 * is already locked, thus cannot take it.
+> +		 */
+> +		bool need_lock = IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS);
+> +		unsigned long mpnt_addr;
+> +
+>   		/*
+>   		 * If this VMA is not in our MM, we can ignore it.
+>   		 * Note that we intentionally mask out the VMA
+> @@ -151,7 +160,12 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+>   		if (!(mpnt->vm_flags & VM_MAYSHARE))
+>   			continue;
+>   		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+> -		aliases += adjust_pte(mpnt, mpnt->vm_start + offset, pfn, vmf);
+> +		mpnt_addr = mpnt->vm_start + offset;
+> +
+> +		/* Avoid deadlocks by not grabbing the same PTE lock again. */
+> +		if (mpnt_addr >= pmd_start_addr && mpnt_addr < pmd_end_addr)
+> +			need_lock = false;
+> +		aliases += adjust_pte(mpnt, mpnt_addr, pfn, need_lock);
+>   	}
+>   	flush_dcache_mmap_unlock(mapping);
+>   	if (aliases)
+> @@ -194,7 +208,7 @@ void update_mmu_cache_range(struct vm_fault *vmf, struct vm_area_struct *vma,
+>   		__flush_dcache_folio(mapping, folio);
+>   	if (mapping) {
+>   		if (cache_is_vivt())
+> -			make_coherent(mapping, vma, addr, ptep, pfn, vmf);
+> +			make_coherent(mapping, vma, addr, ptep, pfn);
+>   		else if (vma->vm_flags & VM_EXEC)
+>   			__flush_icache_all();
+>   	}
 
-Thanks for all your effort around making CMA allocations / migration 
-more reliable.
+
+Apart from that LGTM. Hoping it will work :)
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
