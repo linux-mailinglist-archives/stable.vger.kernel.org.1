@@ -1,167 +1,97 @@
-Return-Path: <stable+bounces-116458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD76A3687A
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:41:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A10A36860
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5094F7A3A1D
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 22:40:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DB957A22C2
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 22:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FA2212B0A;
-	Fri, 14 Feb 2025 22:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A37E1FDA6A;
+	Fri, 14 Feb 2025 22:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sxcAraYI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AECZGR6C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E45E20E6F9
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 22:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DC61DE2B4;
+	Fri, 14 Feb 2025 22:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739572722; cv=none; b=KNgV8aSVZ+HIP/d0iDZVulSYV0Iri12htYyFTICmlGLK/28VGIRzUUL0QxzazR0iF7XDkcUa66xros39ZtQlRpj4KjAtFiEh49PBcp6zvLbCAAWUOBcz6jPRBlvV45n0RRnYJTirCyQUM3PaZ1PhH7m2SQpVd4ULlxNjI50qD80=
+	t=1739572712; cv=none; b=bMQNeba1uwPUZAG518wmHCmbQ3Ww3IXaj/7eJLYrQCfzTpVr6EFB4Q+N6mNpYXNx+R1LRRTtuz7uWZeK91/rnQLOLM4+sfRZrXh3GrADOmfABHQMjMWJM5FoCN8RDz2T5OA+X8AIpwWFR9RU0TKNxjkvpwNWG+ZBy04Hprg4NAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739572722; c=relaxed/simple;
-	bh=C9A3LWRVVEvM4OBlqT9wYA0yWCdJj2Hpz7Z1pzmG8wU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kriKWDgx6R6vqbgs8pWC573l+YyiRfv4+WXWMJyspMpIvaJYugWJTGmHXY8y4pXexb+vyhU26PweBGZiLO3Sw4Ytz6lTypMuVC/ZqgcicVSepsd70tqLurI4z+6ZrkAGSEFtr+jj2lDQdoQaWtUyWcp/kTAY3uM8eXqjKP7Ty9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sxcAraYI; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-22101839788so9659115ad.3
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 14:38:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739572720; x=1740177520; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tUNETmfCcN16mATl/cudDdX8wxXBFFNsGuPJIeAzz7o=;
-        b=sxcAraYIu8e44pbbpWvNWlVzGDnWXj9fvzGXJoI3ud6pQhIXCm3l1OyrxGN97VUurH
-         j69o/zPBGz3+GMwqj26NfTzpsVEsCQj3/9gvxgptvmXPmbewn0l6AEoOwqyacqddFdRG
-         KPT4uL+TfceQGU3IIRu2eWBlGcyMJkLz06GWFP8up+JJOBw18bcFs/D1Cs+WmyyzkrAl
-         fusNzDskDpaR13JYdQDSCit5r/ltMjyhJdTsJxanznqxe9JbsZlM7H1nKOJB8QcZzo1j
-         jEhvfjV4ytx485xPX6MnJVmLf3bjTGsuiKV4BN9V30ZvPMDLuhXIJG0tcglJJk5Q06AL
-         4lkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739572720; x=1740177520;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tUNETmfCcN16mATl/cudDdX8wxXBFFNsGuPJIeAzz7o=;
-        b=Hb6UwLug0mwXZdcEJUgYWtAMwdKYx+8nPI8lpAkzlYjez7EFg3PwELaVtHZjIvqSRL
-         TwJnLcRhpwggA677DvgloxG+uMGuWrpAPMX+loe2dRzAJAWUC+pjUbQNhPIQlXERJcF8
-         aenn8SULafhq6LaTkvty6i88Sa8Wmms1mS0d6g2wJYnguYhP3xy5ti8rR1vzlOHcEgfv
-         //fCPD74+Fjn4LVQnrEgKgsKlZZVG6MnrhtpIXWMRjloZZl0key36XjAe6hz5t6K/gn/
-         v7O0U9NsgRO9vV1kQMPvOPw9Vw12R7d+QWbAXUdgb5RrbbCYTSpG8QZLMP//golzCZI8
-         iKaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKR1xIYin+8EQol2rnOF627Z9t2My2k/RDeouO4ZQijCRn+TIqm0mQLFb4h2tKLAEXC6miiVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwYPgHj2Bv2nwy17J80lgrVfBvXZN4ZykTYV8bKfcX576KYSGf
-	N4XTZvBXsylxShFMFVJ96LabdGm2g3epRH5rWBCmlZSuqksSBL/VSbygIRb7hX7plqmmQFfJQwu
-	jRt437RdAlA==
-X-Google-Smtp-Source: AGHT+IGx5EUUJ6Z4zMDYclDQP+PzCMwRDfETHpFgm91+oQRalpeSgNTUDtjKw58EJXrDOCaT//TmCaudpiMQ9Q==
-X-Received: from pfbdn12.prod.google.com ([2002:a05:6a00:498c:b0:730:92d9:52e3])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:1583:b0:1ee:8a27:364c with SMTP id adf61e73a8af0-1ee8cbe7e09mr2160416637.34.1739572719877;
- Fri, 14 Feb 2025 14:38:39 -0800 (PST)
-Date: Fri, 14 Feb 2025 14:38:10 -0800
+	s=arc-20240116; t=1739572712; c=relaxed/simple;
+	bh=q6LtkGb0WhcDiO2mICpWEpf5smiU8aORVVy5c59Ug5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ey3jiBQK043AcuBGLhJQoOS7ScGMcanQqJ7jJU8wH4tBMmDNgmjHFOTfJeqzfhExZpCdzg+wcKrGwzb9SdXguwbtU8n9tJuS1jEY3vJloBg0fYozzaFkoc3L74zaJdOpM+N4uqzPrQpIP+YkguBY077TGnZUs7ct3EXfMx2IXaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AECZGR6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6972CC4CEEC;
+	Fri, 14 Feb 2025 22:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739572711;
+	bh=q6LtkGb0WhcDiO2mICpWEpf5smiU8aORVVy5c59Ug5c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AECZGR6CqfTD8uMSOplbLmFqQrfTaE5dKsGtghzbTkSNVclsmTXo5J94lDF1r4McS
+	 ezP/xeay8jlWfnsuyFKZg1GlZ++A9VR8DHtr/qc0+Tl2oDVHM+qmvPtYli6L5epp6e
+	 FaSRCxMoUrAzBOtws23hLejYbJ38bNVgBk7cbudjYPmM0pr1PEY1ExbkKmI9W1ngiA
+	 DhTHYgj6Kg4jfzMnqVY5KAW7oFNaiE4d8U3Iwk3dDpvxTzkJyxCa0kUMG27x0lf8OU
+	 9vz/bhk8tpU3ZM5keRuvSVKL1Z2ozhs+iinU9XhufYMkcHLrKblCmlzJfNf+usvArT
+	 iTk/wF0E+5tAA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v10 0/4] clk: qcom: Add support for multiple power-domains for a clock controller.
+Date: Fri, 14 Feb 2025 16:38:13 -0600
+Message-ID: <173957268920.110887.11371056980059784937.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-0-13f2bb656dad@linaro.org>
+References: <20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-0-13f2bb656dad@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250214223829.1195855-1-joshwash@google.com>
-Subject: [PATCH] gve: set xdp redirect target only when it is available
-From: joshwash@google.com
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, stable@kernel.org, 
-	Joshua Washington <joshwash@google.com>, stable@vger.kernel.org, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Jeroen de Borst <jeroendb@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>, Ziwei Xiao <ziweixiao@google.com>, 
-	Shailend Chand <shailend@google.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)" <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-From: Joshua Washington <joshwash@google.com>
 
-Before this patch the NETDEV_XDP_ACT_NDO_XMIT XDP feature flag is set by
-default as part of driver initialization, and is never cleared. However,
-this flag differs from others in that it is used as an indicator for
-whether the driver is ready to perform the ndo_xdp_xmit operation as
-part of an XDP_REDIRECT. Kernel helpers
-xdp_features_(set|clear)_redirect_target exist to convey this meaning.
+On Fri, 17 Jan 2025 13:54:06 +0000, Bryan O'Donoghue wrote:
+> Changes in v10:
+> - Updated the commit log of patch #1 to make the reasoning - that it makes
+>   applying the subsequent patch cleaner/nicer clear - Bjorn
+> - Substantially rewrites final patch commit to mostly reflect Bjorn's
+>   summation of my long and rambling previous paragraphs.
+>   Being a visual person, I've included some example pseudo-code which
+>   hopefully makes the intent clearer plus some ASCII art >= Klimt.
+> - Link to v9: https://lore.kernel.org/r/20241230-b4-linux-next-24-11-18-clock-multiple-power-domains-v9-0-f15fb405efa5@linaro.org
+> 
+> [...]
 
-This patch ensures that the netdev is only reported as a redirect target
-when XDP queues exist to forward traffic.
+Applied, thanks!
 
-Fixes: 39a7f4aa3e4a ("gve: Add XDP REDIRECT support for GQI-QPL format")
-Cc: stable@vger.kernel.org
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
----
- drivers/net/ethernet/google/gve/gve.h      | 10 ++++++++++
- drivers/net/ethernet/google/gve/gve_main.c |  6 +++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+[1/4] clk: qcom: gdsc: Release pm subdomains in reverse add order
+      commit: 0e6dfde439df0bb977cddd3cf7fff150a084a9bf
+[2/4] clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
+      commit: 65a733464553ea192797b889d1533a1a37216f32
+[3/4] clk: qcom: common: Add support for power-domain attachment
+      commit: ed5a0d065fe87d7f64e2aa67191bc73299b830bd
+[4/4] clk: qcom: Support attaching GDSCs to multiple parents
+      commit: b489235b4dc01ff2b53995c03f30726fb1ea8005
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 8167cc5fb0df..78d2a19593d1 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -1116,6 +1116,16 @@ static inline u32 gve_xdp_tx_start_queue_id(struct gve_priv *priv)
- 	return gve_xdp_tx_queue_id(priv, 0);
- }
- 
-+static inline bool gve_supports_xdp_xmit(struct gve_priv *priv)
-+{
-+	switch (priv->queue_format) {
-+	case GVE_GQI_QPL_FORMAT:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- /* gqi napi handler defined in gve_main.c */
- int gve_napi_poll(struct napi_struct *napi, int budget);
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 533e659b15b3..92237fb0b60c 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1903,6 +1903,8 @@ static void gve_turndown(struct gve_priv *priv)
- 	/* Stop tx queues */
- 	netif_tx_disable(priv->dev);
- 
-+	xdp_features_clear_redirect_target(priv->dev);
-+
- 	gve_clear_napi_enabled(priv);
- 	gve_clear_report_stats(priv);
- 
-@@ -1972,6 +1974,9 @@ static void gve_turnup(struct gve_priv *priv)
- 		napi_schedule(&block->napi);
- 	}
- 
-+	if (priv->num_xdp_queues && gve_supports_xdp_xmit(priv))
-+		xdp_features_set_redirect_target(priv->dev, false);
-+
- 	gve_set_napi_enabled(priv);
- }
- 
-@@ -2246,7 +2251,6 @@ static void gve_set_netdev_xdp_features(struct gve_priv *priv)
- 	if (priv->queue_format == GVE_GQI_QPL_FORMAT) {
- 		xdp_features = NETDEV_XDP_ACT_BASIC;
- 		xdp_features |= NETDEV_XDP_ACT_REDIRECT;
--		xdp_features |= NETDEV_XDP_ACT_NDO_XMIT;
- 		xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
- 	} else {
- 		xdp_features = 0;
+Best regards,
 -- 
-2.48.1.601.g30ceb7b040-goog
-
+Bjorn Andersson <andersson@kernel.org>
 
