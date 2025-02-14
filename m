@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-116455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DD7A36863
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:39:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08F7A36889
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8429F16ED46
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 22:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DDD71898C33
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 22:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF95D1FDE2B;
-	Fri, 14 Feb 2025 22:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A9C20C028;
+	Fri, 14 Feb 2025 22:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOmXrHzZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhrR7CWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D1B1FDE12;
-	Fri, 14 Feb 2025 22:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDC2206F0A;
+	Fri, 14 Feb 2025 22:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739572713; cv=none; b=UkzW4iDVF10E9PHN13uvvqHZb3oYRbsRZfuSVhD524IMC0RCc7vQZwA4cuyEo7A/++h145lH//EVg8DHSWQgMpbTTghxzyRgHlw1f/1lVfa9Ta9JVOCDuREr4jtbZ4W4jjBKmLNui9CfAP6yBbJD0+hdh07zFbuRdPZudZi31lI=
+	t=1739572718; cv=none; b=tXKWGchNMFIfotJb79vfj7DCksEMhE050ROKcJQ3LjcZj4M1rI+aruxfojDxLdM4cOngNipFH/V5FIxbqTEq6+DBY8E4ijAyvssxVxpOxSbmVzwvO5I2JlaQgGCHxTEDMcZ73E/yKXc/JnKI2YYizdL/bTwQ6X/kgLuIDPewLxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739572713; c=relaxed/simple;
-	bh=jabKirllUxcwql5mR6xctWDxwPEvXktLTMG69gr5hJk=;
+	s=arc-20240116; t=1739572718; c=relaxed/simple;
+	bh=J4XFtM72YIIZ5v4c9kn+15GubKLzOEbPKqnB4di7mb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iBPd3JVG1Ou/gcrk7AbCL9BCg58fi8Z2cumMN+BjVBO7AzAiwzp6trXOTngHwvXxL5WOeCXFYcH2k9f3EKwgcUBgaTj6cb0NpgojeRkC23U3UvedVtmxC2v6W20Eoc2iEeTkwpaSgd/egy61oxq1a0N8u3radPmhu1WMExYBSn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOmXrHzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAAD0C4CEE9;
-	Fri, 14 Feb 2025 22:38:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mRKX5hSWRs+CpTG432aOHuM2ec0Oy+yr1m839+jm1+KTQetb01k4L4ujh4YOgWFaIxHaOLI/60ueXQO+UpDAywrSSa7AWtLkdTHnCQRMPspnDB2BFXT29ST9mg1SnsXzy4ewAw0f14uMIXWKP1gAaH9vhVrZh5msLaDW1sU1ivY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhrR7CWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD88CC4CEE9;
+	Fri, 14 Feb 2025 22:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739572713;
-	bh=jabKirllUxcwql5mR6xctWDxwPEvXktLTMG69gr5hJk=;
+	s=k20201202; t=1739572717;
+	bh=J4XFtM72YIIZ5v4c9kn+15GubKLzOEbPKqnB4di7mb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOmXrHzZaXXkXfSVouoMSU9Dfg0pH4OkmALQfloSpneEDDOxgglyaXb2k1YHGofX0
-	 W6D5bW9ImnKDn93bO4qvNLmXTe4dQwFU7pAjUf5MTte1964TrcsMC4JOdIA3Z18Y1T
-	 Zp5/402IBCVIa1wmOZgyiQM94Gk3/mEXGUUggCepAyIog7XCM2nV0vpl1o9m58qFI+
-	 Igg870aUIiXlT5rJs2BdAEKU0RI43S25PYHG8ULoHOi1CasPRdIAGAOrhHNVj7jr4g
-	 JFS8bdIEVrrXeHH9evHW+6RRSqfn4MCBF2fBihFAOcI/VmOcUrMaSv3anmTX2XX2Er
-	 wnwni88zIjcMA==
+	b=EhrR7CWo9V7uBYwJGWCHrmzkETuoB09T2jMorfHLYzmIFojyVVZ+5+0g+WakQ3W4o
+	 2CLuQFk1mwdGer0Wu9vGrccnIG072lK8GFzz+tdkh0DUFyUpQznfBWTQ9jq8MyD5RU
+	 22heFPmZ3fy2wLbA7zZAQK1Q9MnwBgKH42zsAQfZTMCwcQXsuTcza1YUZHdA89vh2v
+	 zSbS0wS/pSYwXzU9KToPhU7bJR6xVSfF1/e7yrYrxoi7CU0KgHpjIYArwykfUl7ps5
+	 Xp/3Q+iPTONnbPhCwh4PJdrW/HBLFh6ZgqU/khMZKyoPQ43M4gxtgtuWzfpcWPXlG9
+	 PrI2pvUmRB5Eg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Maximilian Luz <luzmaximilian@gmail.com>,
-	Johan Hovold <johan+linaro@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
+To: konradybcio@kernel.org,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] firmware: qcom: uefisecapp: fix efivars registration race
-Date: Fri, 14 Feb 2025 16:38:15 -0600
-Message-ID: <173957268919.110887.5072726541164891700.b4-ty@kernel.org>
+	Saranya R <quic_sarar@quicinc.com>,
+	stable@vger.kernel.org,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH v3] soc: qcom: pdr: Fix the potential deadlock
+Date: Fri, 14 Feb 2025 16:38:20 -0600
+Message-ID: <173957268922.110887.5172881427439356224.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250120151000.13870-1-johan+linaro@kernel.org>
-References: <20250120151000.13870-1-johan+linaro@kernel.org>
+In-Reply-To: <20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com>
+References: <20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,21 +66,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Mon, 20 Jan 2025 16:10:00 +0100, Johan Hovold wrote:
-> Since the conversion to using the TZ allocator, the efivars service is
-> registered before the memory pool has been allocated, something which
-> can lead to a NULL-pointer dereference in case of a racing EFI variable
-> access.
-> 
-> Make sure that all resources have been set up before registering the
-> efivars.
+On Wed, 12 Feb 2025 22:07:20 +0530, Mukesh Ojha wrote:
+> When some client process A call pdr_add_lookup() to add the look up for
+> the service and does schedule locator work, later a process B got a new
+> server packet indicating locator is up and call pdr_locator_new_server()
+> which eventually sets pdr->locator_init_complete to true which process A
+> sees and takes list lock and queries domain list but it will timeout due
+> to deadlock as the response will queued to the same qmi->wq and it is
+> ordered workqueue and process B is not able to complete new server
+> request work due to deadlock on list lock.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] firmware: qcom: uefisecapp: fix efivars registration race
-      commit: da8d493a80993972c427002684d0742560f3be4a
+[1/1] soc: qcom: pdr: Fix the potential deadlock
+      commit: 2eeb03ad9f42dfece63051be2400af487ddb96d2
 
 Best regards,
 -- 
