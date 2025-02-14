@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-116437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C2EA36473
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 18:24:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F10A3648B
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 18:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25D6D18978CB
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 17:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B9BE3AE702
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE08268687;
-	Fri, 14 Feb 2025 17:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C3B2686A6;
+	Fri, 14 Feb 2025 17:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I7QfDX8G"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ueiW/ucT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0CF267F77
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 17:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A1A267F75
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 17:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739553705; cv=none; b=eV2MGFLTPpIIDbrrHemLmrTMiW/qmzi5NbHv2rwDIiNhK7jyH4yQKL7UIIDGeRQuwWIXF/AegOoXcIROOj0JA8G4O9ohT0xDiHs3Nuxqqx8ZaFu6EqEIt2t7INnyNl55UD05dx/PjdjiHo9iPJGOZmZHxmpP2qrAgHaeF6sELTY=
+	t=1739553943; cv=none; b=d6W2qxmOLvzbnhF1zE9WOCqLA6qVCuK7CSrZPgJOCv8UqhzVWnJvWoESJIJ7p7jZ++fwpjFYfwe/1nHB8NIblwfoD0t8ty6FHTGCwb37rI08fVlU4gQtEzIhVNEd32bNNdOKV2tkfJpZz1wLzHdjbgimG7cgQHMo+wAfEusZxHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739553705; c=relaxed/simple;
-	bh=q7gQgr616uVOQTMZ77imFQirud5OxtnWyayh475uip0=;
+	s=arc-20240116; t=1739553943; c=relaxed/simple;
+	bh=03iNdRn/em6uG2YPWo02GDuzrIUhH61RcLmXWAh+IJc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pteqpK5unlzMdif23ykvTjEsvIJK8suiW7oJDhc2IHKpduRF7Oywiikc3D2Ru3KoUqlZazlt1QmIZ9w2Cq2Q5D7oILg2f9oXIoRbooi21F7ek3haMtrdBiPY96126ZpjgKXfQwDmC9btpKe1tTinDnCrZpjm+P9Nx9OyTu5Bu0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I7QfDX8G; arc=none smtp.client-ip=209.85.214.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=eyehBVgtVS6BNXiezcNb5b8MPpEta6XHWJThoeBwKhjEeDQPBEpfmNtc6TL/TfJy0oFqYPjtBTMl/pEHQhrdW9PzC4ALDfJC/6vgSX/UuhNAsKKsr12TPKrvfqANSgqUJEc/UeeNsC2r/9kL67LKIoTg+tBsZIDuySKWwVLV0JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ueiW/ucT; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21f6d2642faso62426635ad.1
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 09:21:43 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-220e83d65e5so30626115ad.1
+        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 09:25:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739553703; x=1740158503; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1739553939; x=1740158739; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/PVsVZnYuQ/wni7IvzfZedmUg/Flzek4tKSKCxL8mts=;
-        b=I7QfDX8GYTv0bYvHmRotwx156koiyCrZsSmMz9c9f4HZITTuCZ5CYG4JfsM7i0ljBR
-         qHelGRtKwnkAMgTq6NSwMkq+On67JleQo2V40YQkMe42mplnQxHdkMbIvUAiT+dzM2tJ
-         kjN5P4wQbGEYffaogdMjAdpikWi2rowIFGIow4g3uXMaXINjv/5M6vYKLY6pOfGScOsG
-         AlnRa/xeKdBD0Wpgo0PAVPhHWm1tDma7e79WiN/eZXq24Wc2DVRJel+dqbdh7c7W/qIb
-         vKmc26gz60XyVX61c9rsH4znNMZe+Ft5wb2zFxdhdJqdrSppQoPZrWHMggZ3HkeXbaeU
-         CxwQ==
+        bh=PsirFScxxlndbt5JatVVlLCyI/9U7Qi8qRIjGd5HNUc=;
+        b=ueiW/ucTQtgc4um94ARRu735GLAsAU0m5XzRxAtvHA0L0VdBCcqhgNHdVJUjUQfuhM
+         xfa9LMf5t1ZAzQNH8A/2bxUi2qLlCRAt9jRH4xk0J3+wDRuICz+U9wjUvQXcalzwxmxw
+         DZx4spOKOV3BNQ01KywGu0rhxSM8ARaVkX7VAkeSRJ9rdjUd8fNjbTUA7V+wu5yKm3mw
+         2fuk+PxfpwHcw/Z7CGrf2+gLq+MbhwX6bjxp1uH3A/Qu4LKw9SMQex/WAOAHMOeVKRFW
+         eh5gOca8kbCKZ93bTWGIsoA9SJN9EDL5gJs5xA4ti3aFVYio+3ofo0yveBm0K4LsTCJW
+         z44w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739553703; x=1740158503;
+        d=1e100.net; s=20230601; t=1739553939; x=1740158739;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/PVsVZnYuQ/wni7IvzfZedmUg/Flzek4tKSKCxL8mts=;
-        b=LGz+a6qKfN564mIGXfN+igoqUDq9xy39jRQIgbCglfdO0Fnz8noK1I7ArFOzA+Lyw/
-         PnHk8usOzzj4Q6DaaMTK6WeoVXAqyBkPCkA3ebqr2RY1OINtfdM9nlfU2ZTSDAE5Jq26
-         BsPliRCRJhbbhU4fOjZ/Bt/m72b8vJtK6xFoqnFuKk/dYs/oSs1qlRQJpemSixVbQQU3
-         0mNMDwtQGKL2eVg+d8iv2G5nlDTcAOe+MV539kqsBpcpiHDBFt3OmFc2y8+fqghjri05
-         AbxpBAPc3hrBZiL5iR7msFCBHQBTp8j4TOSOxAVPK2qFCbr2IHEMfBTUp1yrpXi288KO
-         emfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxaTb77zx/pl6rHGcJe3ZDfxOhpSweqs2WYOv+Iu5IGn9Og4tBwJc+I3vo5b5UlhZt8fb5z0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrR/bDZxuexHBRdHEUZtNGAe5VSPgYXxiwvJwSC4NVk4uSev38
-	nyPrmf7g1p+SSY51Vrte8A/VCaJnsNbUKmIYmVCio5BVSj8gBK/O56AZmo98aw==
-X-Gm-Gg: ASbGncvKTlqXY+iC/enbkK1JmJvm1mnDoMCX4YzgWcqJC1H2Sufcu3tKeu4Yxi9+ANW
-	wR9UowVaep4RIWK6puusdV2VddUEuAYb8pXOevzDgAMxuQXvwBI4Vowq2pEwVL3FwMRPJoBPb+r
-	fXTOuWcuUdRv6TG/jrpTyW4OqKFDNnvECcMOMqnSSU/lVU6gAuncKp/MSV6SGIAHBrSIBpTvaCf
-	IbJbX2GR4GwPUwkgQuz7ThHxFAiiyNTDRI07i8HBiTe1Mn5+WBr9Qc2ia6Y5Md9jyuX3WcEDYYR
-	229NHtoZtuwSJdir1banS/Md0E0=
-X-Google-Smtp-Source: AGHT+IGcRo+nLJC59NjoyRCElAIfb+jisUP5T3miAi6A+0NQw62kcP9lRVYfGrAftSB0L9zhfWHPdQ==
-X-Received: by 2002:a05:6a00:2eaa:b0:732:5164:3bb with SMTP id d2e1a72fcca58-732617b7772mr183432b3a.9.1739553703494;
-        Fri, 14 Feb 2025 09:21:43 -0800 (PST)
+        bh=PsirFScxxlndbt5JatVVlLCyI/9U7Qi8qRIjGd5HNUc=;
+        b=KAvykC0KwBaP3q2FLPi82AgclxHRVVvksyBKvkXNpiLOjebmOidoe2by8FyEId9JjL
+         yNAQZX28eE5SOp0cQjaWqjtJCtmCAc8kPpEs9QvqW2VqE8VkU9tNLRQt6F/N7CNk8sYB
+         1sQe2fFwm8/yquHScyDND8sGiGrDNEObzC6cha4aXfESalFKqYX3J0EO9xcbOUK3Y4ND
+         6E/ti3y4ohIAZXPr+sQ41T3ux9MObDBmLdt7lZVlrUH2qMsttep/tiu1Z0yRj6Qy1kdJ
+         8ESetyBEvhmQZQlVTjBd1CxJbYv8FvhFYIC5IL9IOOGz8oesadE3mNv+IDJ6qhJgIZrm
+         eEFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgW7iRBB3GNySPQ9wL2bZmjCHxIgwCFLBZxNASQtWMzHJXLz3iYUuRyROquEP4UZrPUMrdFUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJbabZ2l7lmjCvGAUXNW/zJ2RrOodIWVxv3OaetKDcegLhvqkM
+	Kmx3dhr+OtVtLc15vR84Ht8OHor91GpXagI7m1Nb5CK/Z0rYJb3/5W5hkOoqvw==
+X-Gm-Gg: ASbGncv6bdPbsRRE2v76KXnvYj998FHqXa2r2VCRkVRtkL8MbXDetdKGiam7Xkn/YDz
+	+brdvFlAWHiV5+NPHzGzNLD1RGD7Pq89Us2JgFrMvmZZFmjayoyeVJ+PaTvn4B+sbg9DgSxO686
+	kgpy6xuSIN+9KgsffkS4LKg2VlAcGBsjmq0CB9iMi+zUvqDT4lnQC9QWl6criV/9s4LyonSTKHP
+	XS5AziPSednOeaf0FDW7PpxEh70J/1oNn5E7IQ0zuNJoWkO6uQrdIJqaL+URBEWep6+06O2ATgx
+	hlKZVEeWSSjiDJZj2pxSxckzQyg=
+X-Google-Smtp-Source: AGHT+IHzsapv0KPmsdonjwOxgJKB9jp9uj1Hj8zr7WwtL9knFoK7gwoAa5VsROZGsAdMi4C1EOACoQ==
+X-Received: by 2002:a17:902:f984:b0:220:c34c:5760 with SMTP id d9443c01a7336-221040c0c61mr230215ad.51.1739553937978;
+        Fri, 14 Feb 2025 09:25:37 -0800 (PST)
 Received: from thinkpad ([120.60.134.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7324273e4e2sm3375480b3a.116.2025.02.14.09.21.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d0a9sm30993605ad.151.2025.02.14.09.25.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Feb 2025 09:21:43 -0800 (PST)
-Date: Fri, 14 Feb 2025 22:51:38 +0530
+        Fri, 14 Feb 2025 09:25:37 -0800 (PST)
+Date: Fri, 14 Feb 2025 22:55:33 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Cc: Krzysztof Wilczynski <kw@linux.com>,
@@ -83,11 +83,11 @@ Cc: Krzysztof Wilczynski <kw@linux.com>,
 	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
 	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] misc: pci_endpoint_test: Avoid issue of
- interrupts remaining after request_irq error
-Message-ID: <20250214172138.setswcgqz3dbf65t@thinkpad>
+Subject: Re: [PATCH v3 3/5] misc: pci_endpoint_test: Fix irq_type to convey
+ the correct type
+Message-ID: <20250214172533.szrbreiv45c3g5lo@thinkpad>
 References: <20250210075812.3900646-1-hayashi.kunihiko@socionext.com>
- <20250210075812.3900646-2-hayashi.kunihiko@socionext.com>
+ <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,78 +97,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250210075812.3900646-2-hayashi.kunihiko@socionext.com>
+In-Reply-To: <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
 
-On Mon, Feb 10, 2025 at 04:58:08PM +0900, Kunihiko Hayashi wrote:
-> After devm_request_irq() fails with error in
-> pci_endpoint_test_request_irq(), pci_endpoint_test_free_irq_vectors() is
-> called assuming that all IRQs have been released.
+On Mon, Feb 10, 2025 at 04:58:10PM +0900, Kunihiko Hayashi wrote:
+> There are two variables that indicate the interrupt type to be used
+> in the next test execution, "irq_type" as global and test->irq_type.
 > 
-> However some requested IRQs remain unreleased, so there are still
-> /proc/irq/* entries remaining and we encounters WARN() with the following
+> The global is referenced from pci_endpoint_test_get_irq() to preserve
+> the current type for ioctl(PCITEST_GET_IRQTYPE).
+> 
+> The type set in this function isn't reflected in the global "irq_type",
+> so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+> As a result, the wrong type will be displayed in "pcitest" as follows:
+> 
+>     # pcitest -i 0
+>     SET IRQ TYPE TO LEGACY:         OKAY
+>     # pcitest -I
+>     GET IRQ TYPE:           MSI
+> 
 
-s/we encounters/this results in WARN()
+Could you please post the failure with kselftest that got merged into v6.14-rc1?
 
-> message:
-> 
->     remove_proc_entry: removing non-empty directory 'irq/30', leaking at
->     least 'pci-endpoint-test.0'
->     WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry
->     +0x190/0x19c
-> 
-> And show the call trace that led to this issue:
-
-You can remove this backtrace.
-
-> 
->     [   12.050005] Call trace:
->     [   12.051226]  remove_proc_entry+0x190/0x19c (P)
->     [   12.053448]  unregister_irq_proc+0xd0/0x104
->     [   12.055541]  free_desc+0x4c/0xd0
->     [   12.057155]  irq_free_descs+0x68/0x90
->     [   12.058984]  irq_domain_free_irqs+0x15c/0x1bc
->     [   12.061161]  msi_domain_free_locked.part.0+0x184/0x1d4
->     [   12.063728]  msi_domain_free_irqs_all_locked+0x64/0x8c
->     [   12.066296]  pci_msi_teardown_msi_irqs+0x48/0x54
->     [   12.068604]  pci_free_msi_irqs+0x18/0x38
->     [   12.070564]  pci_free_irq_vectors+0x64/0x8c
->     [   12.072654]  pci_endpoint_test_ioctl+0x870/0x1068
->     [   12.075006]  __arm64_sys_ioctl+0xb0/0xe8
->     [   12.076967]  invoke_syscall+0x48/0x110
->     [   12.078841]  el0_svc_common.constprop.0+0x40/0xe8
->     [   12.081192]  do_el0_svc+0x20/0x2c
->     [   12.082848]  el0_svc+0x30/0xd0
->     [   12.084376]  el0t_64_sync_handler+0x144/0x168
->     [   12.086553]  el0t_64_sync+0x198/0x19c
->     [   12.088383] ---[ end trace 0000000000000000 ]---
-> 
-> To solve this issue, set the number of remaining IRQs to test->num_irqs
-> and release IRQs in advance by calling pci_endpoint_test_release_irq().
+> Fix this issue by propagating the current type to the global "irq_type".
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
+> Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
 > Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-- Mani
-
 > ---
->  drivers/misc/pci_endpoint_test.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/misc/pci_endpoint_test.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 > diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-> index d5ac71a49386..bbcccd425700 100644
+> index f13fa32ef91a..6a0972e7674f 100644
 > --- a/drivers/misc/pci_endpoint_test.c
 > +++ b/drivers/misc/pci_endpoint_test.c
-> @@ -259,6 +259,9 @@ static int pci_endpoint_test_request_irq(struct pci_endpoint_test *test)
->  		break;
+> @@ -829,6 +829,7 @@ static int pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+>  		return ret;
 >  	}
 >  
-> +	test->num_irqs = i;
-> +	pci_endpoint_test_release_irq(test);
-> +
->  	return ret;
+> +	irq_type = test->irq_type;
+>  	return 0;
 >  }
 >  
 > -- 
