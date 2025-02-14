@@ -1,233 +1,216 @@
-Return-Path: <stable+bounces-116395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DFBA35AAD
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 10:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078F1A35AB2
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 10:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D13D3AE697
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:46:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D6D3A269E
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4928204C0B;
-	Fri, 14 Feb 2025 09:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4515A2222B4;
+	Fri, 14 Feb 2025 09:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Qcqxn0sN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZS5/K7f3"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2065.outbound.protection.outlook.com [40.107.236.65])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DC02163A5;
-	Fri, 14 Feb 2025 09:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739526389; cv=fail; b=QFQMQE7jpmbbyZ3a1F/xdyVncphwyjIB/8O61OFr0kd7QzKgRrG8Lb8Uph/9rJzevXCx8GrOvl4pwHxZl5nAZkGamKH04A6kOQcAlGs8p3CsoWr+HAwDQHVM4DeSWoid12PPZ6do3azYa8YWv4y+opIJED3OAU9Tuxnn5Uyg9KY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739526389; c=relaxed/simple;
-	bh=uYBk5IA6MtvKxIu7Ko5uCpMDiifzedYkOK4ZpsFn8zY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=q4rlFWusmgB/tQ5IMoHNUqxbzoO2NswSDmG26UkS52wIebauNiVYyAlPnWJXQonuRI5+R+Z52c8WYuZuc/la/61+N8Ovnknfjzda3PrdntfFouALSdOrUQ+bXsadz2j95WmH94ZWWptG4APH+bzMDbiaX23mvYMtfhA6pExRmEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Qcqxn0sN; arc=fail smtp.client-ip=40.107.236.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t7i86KHi2SZRaytmRN6aVfXvLjC98kK7GyIRspCOdcPKVY38ofRf+6kYVIgyLSDULy25P1HZ5X4YqQfst/2HrD8lv8uYhO4BulgbIvKPta9W/1i/iv1xedzZcgriXTvUQQvSG0jVKeAsxdhNLMq4C6d5lL5bkbAd1yHpopQ50Z3aR/BlBJFE/D0F3cNR/Y8LcIeF1RV3uMwQooVZiemRDHX8BKGY6Ty5ilbN8WggnsLbRGufr7uzni9tm/rNVP8E1j2gmecblVmzI/Mg/q16nQjEiBJQ97RoH85Tq+l025UO9UuxzL5pLmOzr+9VM2nTfPdwZHTqu9NWppUJ3AEeXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pW2iZ/ULWgsX3t7z7G8qPaIiODWcEKlI6j21848p18c=;
- b=arpR50J16EoMmd5oKld+XbqLUwK8T77gaBg5g1kc+8i3eoaCjIbq0RYFzRO0l7tBjOAkETPg7UNOscHJu3TFT2SKHrLv8FqYk1iPnoGCdBgro/8t53qmrsjIf/nysu2+7JKyF3HbvzEHpc/jsC3sX84V3v+rjFsTt7rc15DA15s3DM4zg214aTdG94EfPIlp67eJaeGns4J4q4Q4kyXGde+i2C4JyxYpIZrzgjA+p+ICXnIykm92fkUmNXB9CoEf+i+lEUMipKOEHkcjL0I9fecyg4ciMFZ26t8pn1foQT2Xxg36iNjlXeOnJnMo0rDj1SXFqsqyOiuvGzrHA6s8CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pW2iZ/ULWgsX3t7z7G8qPaIiODWcEKlI6j21848p18c=;
- b=Qcqxn0sNBJQHCRj4xOPcdMGaG1R/tRfc+g/tzSoS+S3Z+9arvcx/iP4XNd7s5ApdeavIbO45C51/HBhT0mGP3VgbbwXXLHoEz9uaNodsYrBiDojWNBNNFqR1P3BGk9qq1SRC0vSAq2ERK0pC4psN4pllF8BoDmKe92j1R/HIQcl34SgD6749JQYFc41OKdhRvGqfjLsjPEkfQMovYvjCd3UJ+4sWXdbecA5TmGWWRIgOOOvy+mdCbLI3vwNwT6NzJoqHCGmbQ5hZ2iKpW9xg9mb1hmK8aJ52rLQGtWNjYg1mpObHTO3SQEAb+RKPjcWrhMEBg+3/ApX6j8NQ7+Wqaw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
- by SA1PR12MB8164.namprd12.prod.outlook.com (2603:10b6:806:338::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Fri, 14 Feb
- 2025 09:46:24 +0000
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9%6]) with mapi id 15.20.8445.013; Fri, 14 Feb 2025
- 09:46:24 +0000
-Message-ID: <d6b9039d-1253-4207-899a-e0ba3fa23a0a@nvidia.com>
-Date: Fri, 14 Feb 2025 09:46:18 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- linux-tegra@vger.kernel.org, stable@vger.kernel.org
-References: <20250213142436.408121546@linuxfoundation.org>
- <fb0ad22b-3777-4ef9-b478-445da3524b39@rnnvmail205.nvidia.com>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <fb0ad22b-3777-4ef9-b478-445da3524b39@rnnvmail205.nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0167.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:312::12) To SJ2PR12MB8784.namprd12.prod.outlook.com
- (2603:10b6:a03:4d0::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B8D1FFC47;
+	Fri, 14 Feb 2025 09:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739526443; cv=none; b=eEs+GTP0EH3dNNKfrV3fmI3XCdS3HXc39lVRY5+pzG8F/ec0rNtP91DEGcN+VBWAdUiM5JUjMIFc49oUlnCp450YI8lUKnhyIGswAjZlbv2zVkJfskKj3jDqXpz5uBt3fYtneFiM7xnnP9XtWHg0QwyIGLQXhTSdAjfjUt/m0L8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739526443; c=relaxed/simple;
+	bh=07ky5ASVXyGuberBVg2VwiO9bFNI1rX7+8zyig2CeAU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=S1oILafVyerXFAq9XO7mkdOzf7qE31K1fjcCNORe5UOHasZj2tuxp50/RtckHFCcfRN4sjrjIzu/WTFUESiZa7E+1XX1xOK6Yp70XC3uDU5ehAtc7IbLu3lEHT25a09BIG7OMpw6AY6QlLGvB6/0JTLj0G+ceyT2mGrsnwcc/x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZS5/K7f3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51DLglXM001230;
+	Fri, 14 Feb 2025 09:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wt/iQvY38SLBB+vliNgUL2Hkrb2gXuog8nLwR89H8Dk=; b=ZS5/K7f3DQyKDTEt
+	fdUCHOK6l8sGrYtcR8xaKtjIzkyizQpGkAYLRwwwuH4uN2DHV1lFPKhVv2DKFVSs
+	CkJ81DwTgi3wAAHoKb2F2wM1q3ylQheDCIJ+ZH/iU7u9eLWwsMaFqB6TGw1tfShF
+	JuOE55Rin6zz5qK92o9Cjec/uIeKivZkREJYguchI8W9m4p4vswuvqb507oY27JU
+	nhJKRt7F+MZp65U+8rBGYCKwrDbUYssjKzGqC9rDL0L+q0Ogc6J8iJvxF6w8PGH/
+	3zJp6uAqNBBd27uCmJTRFL+gTI/Cb+YL/qCqa0zQYgKHThhhzB1XecKD6IJvgHYY
+	DQ1s7w==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44seq0342c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 09:46:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51E9kqRU027585
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 09:46:52 GMT
+Received: from [10.239.132.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 14 Feb
+ 2025 01:46:48 -0800
+Message-ID: <f1e61bf3-31b8-4c81-8e6a-5a5f93926663@quicinc.com>
+Date: Fri, 14 Feb 2025 17:46:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|SA1PR12MB8164:EE_
-X-MS-Office365-Filtering-Correlation-Id: da05b276-739f-4179-fe85-08dd4cdc71d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y1VpUzE4akF0WnczOHlaMm9XKzdYV2JONDdSblh6d3F1eHVidzkzZGVPTU9O?=
- =?utf-8?B?am0yWlhva2lXQmIyRHF0RnVQOW9Qa1NJaHRFSytxU05HLzNrU2laQWJRNHBD?=
- =?utf-8?B?UGN0c0pXeldvaTNRRTh6K2VjYjZSSDlHMHpmdHdEakxkYXFWWHp0OXB1TWRa?=
- =?utf-8?B?emNqMDc5M2xQNm9aNk1KbWNRQXRnWWI3aExmTkFhWWtzSnpLSGVuWDVVWCt5?=
- =?utf-8?B?TWY5UE9Vb3QybGw0c2J0TGtIbjJhQ29JN2hPNU1FWERycjZ3djVqdnJwNG5K?=
- =?utf-8?B?TmEybVlZNEp5M25DTXZ5b0RVZExHbHBHYS9SNk1zVExvWW14MFJQS1d6YnhJ?=
- =?utf-8?B?TVliT2Vsbm8zVUowQUY5RlNBQ0lJZUJNdW5YTzdUSUdQc1MzMFFOaGcxeWtl?=
- =?utf-8?B?dnNzamtqUmcwdVdQckVQQTJPOS9SenRTZE9OYU1ZeEN0TlpWcFhwdDJzREt4?=
- =?utf-8?B?TU1kRTBRR1FPSSsyVjhBbkZYZ0lMYzl5TWUvVFhadEhidCtUdGRDNmZQL0sy?=
- =?utf-8?B?ZkJYOG5GbnhLTlczT2pQcHNOM1dDWld2dGZGWGsyR3B0Nmt0eTZVNCtGZVBl?=
- =?utf-8?B?V2NmQm5PNzJSZ0hWYmRDcGtLeTdOWjNYQVNxREcyMnpLZDBFVzVLcW1GbjV5?=
- =?utf-8?B?RjlyWE1GblZEd0lYSEtTWkFxb25Lb1VZZFhnaWM5NlpONU82WTNUb1FpUExy?=
- =?utf-8?B?Q0F4OTJ4aytocXB2SjhmczJ3cldpVFY5eDY5SnhzdEtpVEVicVp4d1FsQUsy?=
- =?utf-8?B?dUg1MHAyNk5KSTJRdWxhTkg4ekFnT3JDbm5VZmprZG9CR0M0c24zd0F2QzE1?=
- =?utf-8?B?dTNQNm5zdVc1QUJFTDhMQi9KZzFuN1phaHFVM1pnK3REOUdJWFNGbkFBUGJL?=
- =?utf-8?B?dHdoaXhDUUZZeWI0RFREVFVpOXh6WmliVWJ2VktLeVhKSHdramU0Nm5MSmhp?=
- =?utf-8?B?emY2dmpKSEtXbjJBY1Fpc2hiYlZhb214WnRKejNyQlRVN2tsc0xGOFVtYllQ?=
- =?utf-8?B?U2YyZGxZbHJDUEhadnkxckh1dk5KUkd2YUE4MXVHZkoyMnpxclFwZDhRWUxD?=
- =?utf-8?B?RkoxdGhuVTlHVUVxZW1hY2s4dU1wZm5OZ0hBTVRmNXY2ekxiMit0QjN3MHFT?=
- =?utf-8?B?T0NaUUQrckl4RU1wOUlRS2dGamJ5T0pvWU55T2VlM25kNFBmaCtWOS9YOFZQ?=
- =?utf-8?B?MFZ3MnRCUThySk56bTBEejJCeGh1TEtuZ20zZ0c2dERxeEI5RTZaYmNHMDE4?=
- =?utf-8?B?N01ucWRvZ083eHg5VWF0UjFpeThCRlpHWEMrWHJxS3FNTGZ0SWt6akFDUWQ1?=
- =?utf-8?B?b1Z4Z0Z3L2Zpb2pLcHNDU2VNUXpNVCthREFIRWtvOXVHdDhqZ1krc3ZDbnVq?=
- =?utf-8?B?KzVrd3h3Um9ZN21OOE5ZRmRYZUZNZFl5S2NuRjJ2RGRJaDVJYzMzVUloNEFm?=
- =?utf-8?B?TFVpSG5hdUEvWGdMd1RuRDJVZ1R0TjZLZ1FidjA1cFZ0QlBwWFdpYnk4UVZO?=
- =?utf-8?B?aXF2MGJLSElraDBZdkZ4NDhzNUxkanB1OFhPejFIQUNOZmlnRDY0bHJKUUVN?=
- =?utf-8?B?aERabTFFSFFDblloVWdnTWczNUxmcXZzclZFWjNFaU9GTHA1R1hsZzlFSUJS?=
- =?utf-8?B?em1ZN2lia3dLWElMQVZYcEZ4VEtUVXBJMkMrdEZPYjc0cXJOa0RQaTZCLzFL?=
- =?utf-8?B?UHdpOUVuNkliSk5jOHBRR1p4Z1U0ZEdJWDBqcERCWmNvQTJMeC9FNDI1NEJY?=
- =?utf-8?B?WG9XKzVyTWh0VUtNckxzQnFEYXA4SnVPU0RvU2NMUk1IOFo5a2lKdTYyMHdu?=
- =?utf-8?B?eVgrZWJZS0J1bUpsemY2Ylg2SXpTS0dEZVNrZytPd2JDT0UwdHEyNC9Vby92?=
- =?utf-8?Q?Lf9Zlyv7qjOeM?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RWZMQW9Pa2xVNDVsWnJxV3BId2Vwei8zMnlSRlhOWmdpalppY2tQUHczZ3hT?=
- =?utf-8?B?ZkFybW9YeHJpYmV4WjBOUTVtcCs2ditXWWVBR0lITnBHdEJpYVg0QVpNZTRj?=
- =?utf-8?B?MVJBRFlmd1JScFh4T3BiQkhSUm9RRWxhTThoUFpOTGU0aE53bWM4Y2M2b3Yw?=
- =?utf-8?B?cWZRa1lkZ2NFTytBREd3Q3BSZlJmMmw4d0pGREFzemlHTjZPdzhQVU1jcUJ3?=
- =?utf-8?B?cnU4cllpZXpOT0tkYlNoTmtUVWJuUm9Udkh0Y04yRTJLSnlvV2NXbUV0ekZN?=
- =?utf-8?B?RFgzdFN6SUhQRmV3TlhmS0tlVTY0emhFa2w0QUJpWGlVRFlhNndWUkdHSHl0?=
- =?utf-8?B?djFjVUdKb1EwTXRzTG41dmwzdjd5cXBjbkh6NWY0OEFyc2JSd2U3bWNzN0p6?=
- =?utf-8?B?M0tqbElSa2ptYldvT2xjTERRVmRvTU5Qb1dFaFQyaG5TSnROUmg0c1RETjIv?=
- =?utf-8?B?bFZ0S0p3QkMxTUFzcUlFQlN0cVh4RFQxUmFzRUgzQTJRMXRYTXJ4Qzduemhk?=
- =?utf-8?B?QzI1VVRLOEdvUzl2NzFBQVkxMDc1NW81akZkZktVdVZqdmZ3SXY2aEJzbWdX?=
- =?utf-8?B?clU4bFlhcjhLVmNCa3djeUJHY1lKeVhMMzlFVEdXOVM2aDhpbHdJQzk4R2hi?=
- =?utf-8?B?RjErSXhUNjN6aGpXQUUxTUJSUnhtcFBBVjY5ZitFL1hJWmxqM1FWenFMOVZU?=
- =?utf-8?B?WHZXVUU2RUhVb2FUbEhtVHVFRkEyS2QyYWpISXhieFUyU1ZXbm1rM3BKMVlZ?=
- =?utf-8?B?YnRXa1B4UkZoeUV2ZUhkMm5Lcmg2UnBPTmZkTFYxeTVtSmR1MlgrUzFzbXRn?=
- =?utf-8?B?cm1UT2FDQkFMcjA0VlNBbkQwV2hycXp6SmRBd0ZCUWxkNXJGSE9aKzBsdUpB?=
- =?utf-8?B?MmdoOUIzOTZZWGxrTkdVNVJlcTJMcVVUZTM5Z0NhWVlrWkhsVGRRR0hYNTNJ?=
- =?utf-8?B?R2NHNEpaSzcveUFSSVZqUi9scmJ5YzBUQlc0Y1BxTmJPREk4a2Vhai9MNDJ5?=
- =?utf-8?B?WFhnYno5a3RVSlJ1MC9Wc0JIV2VKY3RudkVEUjNSeUNHRkF6ajVrRFZMMVVL?=
- =?utf-8?B?cS9HYlJHTlYvK1puVXFieVRnSjBJRUh2WXo5aHhsUys0ZWFnZTFHUXQrR2xZ?=
- =?utf-8?B?Wm93QTJWelNoQmVmSlRVbDNNS1dhU2FRbjZPNEUvNXd5NVFWbE43U3hjcDhw?=
- =?utf-8?B?cURTNEpmcmNLejFNek8yQ0ZCN1l3U2VYWklVUVF2TGd5S055UlFncCtWejNi?=
- =?utf-8?B?clZXSFNKYnZsZ0E5ckl1dmV2b3F5QW5ValNYdXdyL29VT29tNXQzc3lqTDNB?=
- =?utf-8?B?aTFWSzI2bFFNVGlNTi90WCtoS2pIajhOMFFqelY4bGRUMFZtMnpsUno0ZWNM?=
- =?utf-8?B?TDR2NEpSaXE1YnZGNDdTbCtnQjJiNElPbTlqVDluZ3dWeUdCWVRoQm1HQmRV?=
- =?utf-8?B?MTdGaTQ0T2F6WDUvYXpHK3JjT0FyNnlOd2xRQk9yemk1cHVoNUV2b2VpSEVx?=
- =?utf-8?B?a2srcXZqemNrSys3KzFWSDVMWWR5UEhaNXJoZWsvMHNKZ1RpblhWSkd5Tlgr?=
- =?utf-8?B?VWQwUjRDVlBLWUduWDQ2RWt4UC96eUhEWDMrWWcvWnA1QU40bldSeEhtYk5n?=
- =?utf-8?B?UmhzTWI0a3F1RHBraUcyRWlaUWZFeDk4cUtsR0NkNGlocFluVDYveHAwQnhz?=
- =?utf-8?B?b0hlZzVYb2VwYkRyMzg0MFNBYlZaU1JjOS9MaHlpSysyVEtReE95NjhSNHNW?=
- =?utf-8?B?bUM5VFByWHFhSXFwY1RMWldXYkdVaEVMdTRDNmVtdmRPTnVmbFk2Nlc1Sm56?=
- =?utf-8?B?VVNsc2N4SlRZWkFWaFRYYWtnV0dQdjVyamoyd1BTQ2ZncG14VUNDMmVpOXFT?=
- =?utf-8?B?S2hGL3BaTkswZEVPRFpXY2ZiYlZGd1VFTzRpcGI2d3ppNHVIVk9IcGtsT1pJ?=
- =?utf-8?B?d2hNMWNkRHp6bFQyazdacnNuRGhWdFVXc0dMSXlZTUF4cUhPTGpPbDNobGtU?=
- =?utf-8?B?WWtjd0ZtdEI4TWJ5Vk1lS0h6YU41Mkh5elpUaEF4ZTlnU3NxTERWSmF4dDUv?=
- =?utf-8?B?Nmkrbks4WWlkMU1FUDJBTklJanV5aVdWd2E4TkFFRStVeWFaMm5DZS9pcHFi?=
- =?utf-8?B?Rmx4TElSMmJ0NFRDcUJTNWZxQmhlTlZkTVM1eWN0TFY0blBrMnlRQjIxZG9F?=
- =?utf-8?B?WEl6VUtMZ3hhQ3RxZWdtNGJzcGlINWRoWlpHZ3kybVpDOVF0cmhDbFg4NmlX?=
- =?utf-8?B?T01JNUNsSnloWXpJWkhoSGtFcWpnPT0=?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da05b276-739f-4179-fe85-08dd4cdc71d3
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 09:46:24.3881
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S8XhYFoLK5K9H4vj71RSVTJqQq3ieXp4YCuQlMCSlEDTwZ8vnnULb4pzraZPp8O3juS5E8x8gHmcycEq/M0Xpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8164
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] arm64: mm: Populate vmemmap/linear at the page level
+ for hotplugged sections
+To: David Hildenbrand <david@redhat.com>,
+        Catalin Marinas
+	<catalin.marinas@arm.com>
+CC: <anshuman.khandual@arm.com>, <will@kernel.org>, <ardb@kernel.org>,
+        <ryan.roberts@arm.com>, <mark.rutland@arm.com>, <joey.gouly@arm.com>,
+        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
+        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
+        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20250213075703.1270713-1-quic_zhenhuah@quicinc.com>
+ <9bc91fe3-c590-48e2-b29f-736d0b056c34@redhat.com> <Z64UcwSGQ53mFmWF@arm.com>
+ <b2964ea1-a22c-4b66-89ef-3082b6d00d21@redhat.com> <Z64yZRPpyR9A_BiR@arm.com>
+ <e3e62864-f914-4ecd-bd26-0363ea72e991@redhat.com>
+Content-Language: en-US
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+In-Reply-To: <e3e62864-f914-4ecd-bd26-0363ea72e991@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 1xmDfeMpkahF76XFwUCOazOxk1QdiY81
+X-Proofpoint-ORIG-GUID: 1xmDfeMpkahF76XFwUCOazOxk1QdiY81
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_04,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 bulkscore=0 clxscore=1011 priorityscore=1501 adultscore=0
+ mlxscore=0 malwarescore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=699 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502140070
 
 
-On 14/02/2025 09:45, Jon Hunter wrote:
-> On Thu, 13 Feb 2025 15:22:29 +0100, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 6.12.14 release.
->> There are 422 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
+
+On 2025/2/14 2:20, David Hildenbrand wrote:
+> On 13.02.25 18:56, Catalin Marinas wrote:
+>> On Thu, Feb 13, 2025 at 05:16:37PM +0100, David Hildenbrand wrote:
+>>> On 13.02.25 16:49, Catalin Marinas wrote:
+>>>> On Thu, Feb 13, 2025 at 01:59:25PM +0100, David Hildenbrand wrote:
+>>>>> On 13.02.25 08:57, Zhenhua Huang wrote:
+>>>>>> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS 
+>>>>>> is set
+>>>>>> to 27, making one section 128M. The related page struct which vmemmap
+>>>>>> points to is 2M then.
+>>>>>> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+>>>>>> vmemmap to populate at the PMD section level which was suitable
+>>>>>> initially since hot plug granule is always one section(128M). 
+>>>>>> However,
+>>>>>> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+>>>>>> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted 
+>>>>>> the
+>>>>>> existing arm64 assumptions.
+>>>>>>
+>>>>>> Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
+>>>>>> pmd_sect() is true, the entire PMD section is cleared, even if 
+>>>>>> there is
+>>>>>> other effective subsection. For example page_struct_map1 and
+>>>>>> page_strcut_map2 are part of a single PMD entry and they are hot- 
+>>>>>> added
+>>>>>> sequentially. Then page_struct_map1 is removed, vmemmap_free() 
+>>>>>> will clear
+>>>>>> the entire PMD entry freeing the struct page map for the whole 
+>>>>>> section,
+>>>>>> even though page_struct_map2 is still active. Similar problem exists
+>>>>>> with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
+>>>>>> base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
+>>>>>> Tearing down the entire PMD mapping too will leave other subsections
+>>>>>> unmapped in the linear mapping.
+>>>>>>
+>>>>>> To address the issue, we need to prevent PMD/PUD/CONT mappings for 
+>>>>>> both
+>>>>>> linear and vmemmap for non-boot sections if corresponding size on the
+>>>>>> given base page exceeds SUBSECTION_SIZE(2MB now).
+>>>>>>
+>>>>>> Cc: <stable@vger.kernel.org> # v5.4+
+>>>>>> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+>>>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>>>> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+>>>>>
+>>>>> Just so I understand correctly: for ordinary memory-sections-size 
+>>>>> hotplug
+>>>>> (NVDIMM, virtio-mem), we still get a large mapping where possible?
+>>>>
+>>>> Up to 2MB blocks only since that's the SUBSECTION_SIZE value. The
+>>>> vmemmap mapping is also limited to PAGE_SIZE mappings (we could use
+>>>> contiguous mappings for vmemmap but it's not wired up; I don't think
+>>>> it's worth the hassle).
+>>>
+>>> But that's messed up, no?
+>>>
+>>> If someone hotplugs a memory section, they have to hotunplug a memory
+>>> section, not parts of it.
+>>>
+>>> That's why x86 does in vmemmap_populate():
+>>>
+>>> if (end - start < PAGES_PER_SECTION * sizeof(struct page))
+>>>     err = vmemmap_populate_basepages(start, end, node, NULL);
+>>> else if (boot_cpu_has(X86_FEATURE_PSE))
+>>>     err = vmemmap_populate_hugepages(start, end, node, altmap);
+>>> ...
+>>>
+>>> Maybe I'm missing something. Most importantly, why the weird subsection
+>>> stuff is supposed to degrade ordinary hotplug of dimms/virtio-mem etc.
 >>
->> Responses should be made by Sat, 15 Feb 2025 14:23:11 +0000.
->> Anything received after that time might be too late.
+>> I think that's based on the discussion for a previous version assuming
+>> that the hotplug/unplug sizes are not guaranteed to be symmetric:
 >>
->> The whole patch series can be found in one patch at:
->> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc1.gz
->> or in the git tree and branch at:
->> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
->> and the diffstat can be found below.
+>> https://lore.kernel.org/lkml/a720aaa5-a75e-481e-b396- 
+>> a5f2b50ed362@quicinc.com/
 >>
->> thanks,
->>
->> greg k-h
+>  > If that's not the case, we can indeed ignore the SUBSECTION_SIZE> 
+> altogether and just rely on the start/end of the hotplugged region.
 > 
-> Failures detected for Tegra ...
+> All cases I know about hotunplug system RAM in the same granularity they 
+> hotplugged (virtio-mem, dax/kmem, dimm, dlpar), and if they wouldn't, 
+> they wouldn't operate on sub-section sizes either way.
 > 
-> Test results for stable-v6.12:
->      10 builds:	10 pass, 0 fail
->      26 boots:	26 pass, 0 fail
->      116 tests:	103 pass, 13 fail
+> Regarding dax/pmem, I also recall that it happens always in the same 
+> granularity. If not, it should be fixed: this weird subsection hotplug 
+> should not make all other hotplug users suffer (e.g., no vmemmap PMD).
 > 
-> Linux version:	6.12.14-rc1-gfb9a4bb2450b
-> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
->                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
->                  tegra20-ventana, tegra210-p2371-2180,
->                  tegra210-p3450-0000, tegra30-cardhu-a04
+> What can likely happen (dax/pmem) is that we hotplug something that 
+> spans part of 128 MiB section (subsections), to then hotplug something 
+> that spans another part of a 128 MiB section (subsections). 
+> Hotunplugging either should not hotplug something part of the other 
+> device (e.g., rip out the vmemmap PMD).
 > 
-> Test failures:	tegra124-jetson-tk1: pm-system-suspend.sh
->                  tegra186-p2771-0000: cpu-hotplug
->                  tegra186-p2771-0000: pm-system-suspend.sh
->                  tegra194-p2972-0000: pm-system-suspend.sh
->                  tegra20-ventana: pm-system-suspend.sh
->                  tegra210-p2371-2180: cpu-hotplug
->                  tegra210-p3450-0000: cpu-hotplug
->                  tegra30-cardhu-a04: pm-system-suspend.sh
+> I think this was expressed with:
+> 
+> "However, if start or end is not aligned to a section boundary, such as 
+> when a subsection is hot added, populating the entire section is 
+> wasteful." -- which is what we should focus on.
+> 
+> I thought x86-64 would handle that case; it would surprise me if 
+> handling between both archs would have to differ in that regard: with 4k 
+> arm64 we have the same section/subsection sizes as on x86-64.
+> 
 
-
-I will kick off a bisect now and see what is going on here.
-
-Jon
-
--- 
-nvpublic
+Thanks David and Catalin. From your discussion, I understand that 
+hotplug/unplug sizes are guaranteed to be symmetric ? Therefore, it 
+should be straightforward to populate to base pages if (end - start < 
+PAGES_PER_SECTION * sizeof(struct page)) ? I will write patch and verify.
+Please correct me if my understanding is incorrect.
 
 
