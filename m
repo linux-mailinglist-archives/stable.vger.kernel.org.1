@@ -1,168 +1,123 @@
-Return-Path: <stable+bounces-116354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6A6A353D0
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 02:40:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64ED7A353E9
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 02:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3D5B7A16D1
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 01:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA86D18904E2
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 01:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA04586324;
-	Fri, 14 Feb 2025 01:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95432347CC;
+	Fri, 14 Feb 2025 01:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BTEnjzar"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="R+dIYQyM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CC539FD9
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 01:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F2B7083A;
+	Fri, 14 Feb 2025 01:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739497199; cv=none; b=Fvxc1Z6Hqf1gRWl1agxYoHVB+4DKi3wvuPOx6VD/WJoW9f2KDcycxZXz9ko8BbqHoiSoPmfQQNi8QBKq7YT1jmjj3KVAEX2eXpCAYLujs3MSWZ12thfJc+K+yYIaYC5WqBsM8d1cJ5BsKiTRFo1QowtkWCj+r9oyNTJ3QjHrjmU=
+	t=1739498149; cv=none; b=CcBIcHDancQ9o/HfeKa3frgA2+7ms2pASSKAMht0kvnAeou4sOPCmHFOmCbQInM3fY07iFJncTo+hKWiYwMtKdHaFH8MF+MEV91pwdOd/vsSZQXZnruXhZXZlGQPnDUkUhgGjG2LfgEcU9X6YLcNWzKXnSE/z3spFWNknkgRqzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739497199; c=relaxed/simple;
-	bh=nfP4yEj2vL6ycDB2Fk0sO0HXVXlyHmxmwJ3kr+6xh3g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oxeVOtrQp7oN9TFHTED7qa9TBMbhdTlO//d8c7UxsUjtG4UQaObv7CUvFnXGmLy50GPcvnXH4GRxcVllHuGMrrYeHr+sKN5WC3mY2BCKei0R8K+dECB7UAL8HL282GTSlxbC04mWTqkRBO9kMxsCYrjaUAmp62+H0aY95BIo+QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BTEnjzar; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43961ded371so28335e9.0
-        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 17:39:56 -0800 (PST)
+	s=arc-20240116; t=1739498149; c=relaxed/simple;
+	bh=VcjAQ3B4mQjDUypYSd6nbGJXNoRWezJBNsnpycoJKa8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rk/yK5D567Uv+Ax5dFmpRswDO3HpzBdWDEDxK/T97lWXem4c9U9JdWbJ3ciTW7sE1nbXOFsS812Cc7hgvRGuXGlrUtyQ7XdtEd6DzZl2z779gqnWb6BW2/TB0oBmWyrSCU27BrsQYZGhfgYRKHz0sBeeq28fZXrjva3Da3e2lhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=R+dIYQyM; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4395f66a639so9836305e9.0;
+        Thu, 13 Feb 2025 17:55:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739497195; x=1740101995; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j3rEr2PzHksO3Fsv/Zkc3QLfv1bYecXc0QZkWn8OD/Y=;
-        b=BTEnjzarvcLT2lesiPvBw4Vm2J2V9ZErklfm6YWFta3EI+kSIkd9R/A9AS+fUP9Hna
-         DsDCUcT1QN+9sHH8hRvqlIHhnGjXZ6tCwxu8H+jCAaU4xX9704DBZehaQnlm3CZoyk76
-         rT9+45xVgVBM9lsJ0Peo/aItPvO0ADmr0A6DqPWh6t1iWPVGM21BoIenejPbbuJT4row
-         FnQBgeaWK/1w8V6IT0s69RuP3ERBuR3WO7uQYvKAzCOwrMeTAUjqW2pisX52I2nFEK/9
-         H33kB2zMqYQDk6Nm3vpaoPHQ0VwUcgFxdAJj7wWgsO1V8MvAdVkLImiYcIuWdL1WDZNO
-         FQbA==
+        d=googlemail.com; s=20230601; t=1739498146; x=1740102946; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eEKId/k+euMe1WkATnBM1ya6ihDrHX3GOG9+SISZlPA=;
+        b=R+dIYQyMqjjfl+F4KNPEnWYoWzqC2d6N3nJ0YkBX+VH8bpgH0SUzX2CaGPmgbct+8e
+         xjlpnINbeS7RSBZ5aOC78zfN65P6UzXF5Wpm7d7QiQLHqRQqGfDYysb+u6rhguhFU/dW
+         9CtS6zyMIfQgxauc/Zn9uLX7mLfkJqq8mydreoJM6x4fI+fS2YxbpdiZUbpmPbyNPO8+
+         LCzLPh6L4Z45kff7NcsHZRfnZILzWwbigEYH+7ypvda/OoomXOfTp4k8j8k+ayVPcH1j
+         GPu1A3LMuU1LaM2V35no14TUlsq6UzFSF9pJBmAmAjeXTcGzR6ZIyQ/w2w3uTGE4n3IL
+         N1yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739497195; x=1740101995;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j3rEr2PzHksO3Fsv/Zkc3QLfv1bYecXc0QZkWn8OD/Y=;
-        b=WNPCdxcsv7e6ybrIETlYYBOSA2h9qFMSOJVbqE14CJ3/dWAf6utPGzRwBMf9X9GuLJ
-         GwGGpqhd/i+Um0Gduj8X6e7XS7oWuRgKuyOQmh/VpGfYi/zDjh4JVLq8VDprPTT9Drly
-         MHpCj1PEzKa9IPapriTn44M1O5RA8+Gnf6vLPpEaagFuKzYay/LP7lHp010bxme8JiXW
-         SMtPQNYh7AkwuCms9l7T3hOxVWOUAlmpYNSifXp4YUvcMZja4l+g2IRSZw0g3DFwuT1H
-         mup8FWDFFOxe9C4lSjmzXOnXtqwcXDn7bdzI2wWNxHPMfRoKc6GeoaoIvqvkAgM2Lmyl
-         0MCg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/kRxgJSB/sazi8wyo84Vf+XfDlwFUCsGjJ6ejIuNG/YIJ7kzadVk4kKXea2gXxhX8/NdM2M4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6wkgiUc+mhltUT8VmzuGDozHO6HZGKAw3/BGfp2vqhQ0OlKhD
-	XVuGK3/Cww/b3PvW0FgKCKJ2cmGXBzXudQar1BGzGdHiRI53uSrGnRlcgU14Bw==
-X-Gm-Gg: ASbGncu5Qos3Juj5aozSbIy6Nj1XfP8RTafksEYZAWrAB9GmcSISJoKw21BkO96vR6N
-	OhIkwphIuAoi+Yc/sRhDX7zRJLMXNGJWEVZmIGWSkbhAW+D4THMnNS3DzhQz46mUzhCT36T43gw
-	umJS6vTAm3t6jnKkG49+OKYfF3lIe9rV7dHAlSVSiAYlJfj4ifeyAAU8sZ8C7/p7PlV5KceKHpG
-	w7QL4c1hkGMBEHKlqWEIntNqdpFJVY7JICzwUnSgditVVDgbxAM3+ey+zftIdwMPEoX1uq5PLuc
-	btJl
-X-Google-Smtp-Source: AGHT+IERNn2wQZnS5W4hVQgg0jAgZlRsgDb+R9ON8DjwxOfnnnOh9Q5LS2mFbZr333r1gnG0bzGl5g==
-X-Received: by 2002:a05:600c:6d19:b0:439:33c5:3872 with SMTP id 5b1f17b1804b1-43968364d78mr307105e9.5.1739497194866;
-        Thu, 13 Feb 2025 17:39:54 -0800 (PST)
-Received: from localhost ([2a00:79e0:9d:4:fe28:cd9e:e03f:148e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43961811315sm31377985e9.20.2025.02.13.17.39.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 17:39:54 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Fri, 14 Feb 2025 02:39:50 +0100
-Subject: [PATCH] partitions: mac: fix handling of bogus partition table
+        d=1e100.net; s=20230601; t=1739498146; x=1740102946;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eEKId/k+euMe1WkATnBM1ya6ihDrHX3GOG9+SISZlPA=;
+        b=JnNfYepU90zoIWinfecPSpWtOwVSNQ1OUaePoa/tDA+WZu7cSpZkzyOi3ffwyxSdXK
+         fea713Gc3tqth42gQOpO1J4isKBqzqKX4YaGHSLlJNNDLjLBAdJjX4lZYegw29kzadJg
+         gHA6Jgd29wWnRf+Q8q1y444zLCIT4Drg5jmwL/Rcp06mJZPs9YNxKfdRw3rdAvdyzF5g
+         mur3UrWhrLuUscY6IYEWyEoUfrq8fDSpnUsPC1t8494In6cU0p4ak9qNKENSS72W+nn7
+         1ZSEjCLF1qSSsTb8pOHPpcS6Dws92xuGdr9/+kEJXiec7/P8/0rJKvMNZqjHooP8ogf0
+         eMlw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlL6N5byhBNqTdlMUyZR/HdMVVA7ZoqjAU1624pnXLRaMFGf+YwedHOuf2b3hOm1OFe9Anye+l@vger.kernel.org, AJvYcCWDAvv9HUsTVeKmf+qx1YP4uJvP8PNrR+YL3N9WoPpQmsnpTJv7faXsQwJrUZOAloUW/rf74mc/cKcICz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQcoXpyxit9K3b6LjXJe98jHWZ/dR3iArF/AYLLHcW7Tn6fE6G
+	/vMrSpm1TIif+JA16e0c1ePMxypsc9AwjK2oOmxDbNLsjbR3ttY=
+X-Gm-Gg: ASbGnctzurZTO8fGZdP0z2KQQ/wmNJDWq0npyXPEgQxDdmAbYl3XPgv3OR2fNGkAZ7B
+	alKlt9WXJHHzaYUM94x3iqwkg4CSLMR3hEgt5xbxo0VNgPnP+BEOVo83qPq6XRt++OxOjxYRYaR
+	SczUuI/FmQegRvTkDlgY8BWpsd1cK30EoOJzmnF9RadeBtpoumIRIX40+Vg55nGrGKhpFPLkI20
+	erDMwE5/DjG9Q31hXWLuie1NYQsR8UzQWJRuITbuTtlf6fqIMGIObR+FWFeLuAknYprH0VNfG18
+	mLbUiy2bqbHLJv/m8EI0+CeT7h3S+ZVaKVX9RgrIM15T3WH+CNHdkE52wUOPag3tbe+X
+X-Google-Smtp-Source: AGHT+IGAFqLoCM9XcT7iiED4OM3G31gTMLs6si60SuowTMy1yKm8m0Y8Y1g9lSJEe43V1rJv7W6nQA==
+X-Received: by 2002:a05:600c:35c9:b0:439:65c3:3310 with SMTP id 5b1f17b1804b1-43965c3365emr30595945e9.28.1739498145653;
+        Thu, 13 Feb 2025 17:55:45 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4779.dip0.t-ipconnect.de. [91.43.71.121])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a06cf2fsm62498165e9.19.2025.02.13.17.55.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Feb 2025 17:55:43 -0800 (PST)
+Message-ID: <66f89945-dd39-466b-a6cb-5f67b2f0940c@googlemail.com>
+Date: Fri, 14 Feb 2025 02:55:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250214-partition-mac-v1-1-c1c626dffbd5@google.com>
-X-B4-Tracking: v=1; b=H4sIAOWermcC/x2MQQqAIBAAvyJ7TtDNCvpKdBDbag+ZqEQg/j3pO
- DAzBRJFpgSzKBDp4cS3b6A7Ae60/iDJW2NAhYNCbWSwMXNulrysk0iT1saNiNhDa0Kknd//t6y
- 1fiw47kBfAAAA
-X-Change-ID: 20250214-partition-mac-2e7114c62223
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739497190; l=2407;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=nfP4yEj2vL6ycDB2Fk0sO0HXVXlyHmxmwJ3kr+6xh3g=;
- b=BV6zLc/d4z/D4NFAJ6tQJUcbU1o7Ri6FlL0LcWrpZEjcQxmvcFpXFJ8pS2zBfplOgKW4yhvJG
- dCLE32yp6MTB29egbiz4hhVQPEMdLnu9G4PPeY4ztgUBWeGVxoE1GkB
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250213142436.408121546@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Fix several issues in partition probing:
+Am 13.02.2025 um 15:22 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.14 release.
+> There are 422 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
- - The bailout for a bad partoffset must use put_dev_sector(), since the
-   preceding read_part_sector() succeeded.
- - If the partition table claims a silly sector size like 0xfff bytes
-   (which results in partition table entries straddling sector boundaries),
-   bail out instead of accessing out-of-bounds memory.
- - We must not assume that the partition table contains proper NUL
-   termination - use strnlen() and strncmp() instead of strlen() and
-   strcmp().
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
----
- block/partitions/mac.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-diff --git a/block/partitions/mac.c b/block/partitions/mac.c
-index c80183156d68020e0e14974308ac751b3df84421..b02530d986297058de0db929fbf638a76fc44508 100644
---- a/block/partitions/mac.c
-+++ b/block/partitions/mac.c
-@@ -53,13 +53,25 @@ int mac_partition(struct parsed_partitions *state)
- 	}
- 	secsize = be16_to_cpu(md->block_size);
- 	put_dev_sector(sect);
-+
-+	/*
-+	 * If the "block size" is not a power of 2, things get weird - we might
-+	 * end up with a partition straddling a sector boundary, so we wouldn't
-+	 * be able to read a partition entry with read_part_sector().
-+	 * Real block sizes are probably (?) powers of two, so just require
-+	 * that.
-+	 */
-+	if (!is_power_of_2(secsize))
-+		return -1;
- 	datasize = round_down(secsize, 512);
- 	data = read_part_sector(state, datasize / 512, &sect);
- 	if (!data)
- 		return -1;
- 	partoffset = secsize % 512;
--	if (partoffset + sizeof(*part) > datasize)
-+	if (partoffset + sizeof(*part) > datasize) {
-+		put_dev_sector(sect);
- 		return -1;
-+	}
- 	part = (struct mac_partition *) (data + partoffset);
- 	if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC) {
- 		put_dev_sector(sect);
-@@ -112,8 +124,8 @@ int mac_partition(struct parsed_partitions *state)
- 				int i, l;
- 
- 				goodness++;
--				l = strlen(part->name);
--				if (strcmp(part->name, "/") == 0)
-+				l = strnlen(part->name, sizeof(part->name));
-+				if (strncmp(part->name, "/", sizeof(part->name)) == 0)
- 					goodness++;
- 				for (i = 0; i <= l - 4; ++i) {
- 					if (strncasecmp(part->name + i, "root",
 
----
-base-commit: ab68d7eb7b1a64f3f4710da46cc5f93c6c154942
-change-id: 20250214-partition-mac-2e7114c62223
+Beste Grüße,
+Peter Schneider
 
 -- 
-Jann Horn <jannh@google.com>
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
