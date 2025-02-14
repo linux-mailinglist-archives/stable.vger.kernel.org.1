@@ -1,95 +1,121 @@
-Return-Path: <stable+bounces-116413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70E1A35E69
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15787A35E80
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD61E170B8D
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3821D16B31C
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C632641CB;
-	Fri, 14 Feb 2025 13:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEC7263C9D;
+	Fri, 14 Feb 2025 13:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i1lU0N0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXlffXLn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC7D230D1E
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 13:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEDC230D1E;
+	Fri, 14 Feb 2025 13:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739538239; cv=none; b=jzTmbFwU0Mng+j52vUQCUYOeWdQuvvMmp0U4ZIoWLoKjZDTYnIklmaKaOc7L3CM5N0hjbeAwOtj0399yjBO2xgn7Gg7vtuAedZC5kVeFbjjvX1y8sOiJ2zHX5lPY+i/ubbcrAuZeQkAAk1E/SOF5TI7SOhm7SR4AV4I8HrirmhM=
+	t=1739538481; cv=none; b=Q1+zf3cUu+J2zycgNNxWUPpRljlIFl6WJ+0spGcjwUpeaTMQIImZ/aKfOIUqh1EJwiUp2oWRroj+jp3X9O8a+wABAErLaeBidcU+2OmfZK2+6qNLfEGfPYup586CK6P91yoIf/YT//mHIXtlaXldn1CjxhaIM0crOFEnwrV2Kms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739538239; c=relaxed/simple;
-	bh=+dRvZAEpzggpCGdlVHWJjVQQHmFiEjX9LCOV2fbhmjE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=IT5RW+QqyM423g4sWN1RdMK21amN+rkDpdZxG6Tb1xI/11IPy6TCZ8tVYogeAe7ClkMl3S9BmZy9S81Jwlxlh/hVNlew3UeAVAGF6tC8w0CMwx/E7n6KYFe/DvGQeX+Id/N715ZxVchzXnRMEg3SEEDjwnWQCfLZxca1gBskxXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i1lU0N0K; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739538236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HkmQoBgY6ibrO0SJlNLLatAXD9nZtLfLlyNK+9OBhaI=;
-	b=i1lU0N0KwaSnRB7O6G5NmzZEgUcDUETr7P5lQtp84NBTO9YeeQgCSs4SN/qvonQosKH03z
-	OTNQ/5mAgB9Nypu6bEtR9vIkJsyq8CUb+iawB3a00corbIfJnFehLbKNgBx49S5QI3Jp49
-	X2+OTwfpw+N6kF3nFSUds/sQaAAIp3E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-Nol8qBg2MiuZsh45u0WI8Q-1; Fri,
- 14 Feb 2025 08:03:52 -0500
-X-MC-Unique: Nol8qBg2MiuZsh45u0WI8Q-1
-X-Mimecast-MFC-AGG-ID: Nol8qBg2MiuZsh45u0WI8Q_1739538231
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FD5C18D95DE;
-	Fri, 14 Feb 2025 13:03:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 847C51800352;
-	Fri, 14 Feb 2025 13:03:49 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250211093432.3524035-1-max.kellermann@ionos.com>
-References: <20250211093432.3524035-1-max.kellermann@ionos.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Johannes Berg <johannes@sipsolutions.net>,
-    netfs@lists.linux.dev, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
+	s=arc-20240116; t=1739538481; c=relaxed/simple;
+	bh=ODTOjd4Bv0YzvgZUjajJ7VHAs+BhMRmBghGQ5h5yJt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J/XzwlZ17pgLwRq4kt6an41/GB6J1XK1v8MWPHRc34BjhxK5G9j5bfFQupWWp9IwGa/nmLAgIVpuwm73LbedgfuZ+tv3QSZff14fSSduhGXQY7s+8fYFalXSnDS6ABRuPvNZnayV50uq47eXjFXv/rDxycSPLqFFZp5fcfvw7Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXlffXLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D980C4CEE7;
+	Fri, 14 Feb 2025 13:08:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739538480;
+	bh=ODTOjd4Bv0YzvgZUjajJ7VHAs+BhMRmBghGQ5h5yJt8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hXlffXLn/MnzT1ILAuefEUiB549zb///H6Ib6fpQB9BCKYyRXRzYy0ossXv30WizK
+	 laKk8I2A8kAqW4ZinF7qcZG3EGzIcw9Q8uYnNtxKLm0ZRtUxsArJCXv9ZL+isN45jI
+	 P3ymlW9OgQOEki5wb6nPgcWNwjhsgdY4WLEeo16k=
+Date: Fri, 14 Feb 2025 14:07:57 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc1 review
+Message-ID: <2025021439-sixtieth-concrete-c104@gregkh>
+References: <20250213142440.609878115@linuxfoundation.org>
+ <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
+ <2025021459-guise-graph-edb3@gregkh>
+ <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3978534.1739538228.1@warthog.procyon.org.uk>
-Date: Fri, 14 Feb 2025 13:03:48 +0000
-Message-ID: <3978535.1739538228@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
+On Fri, Feb 14, 2025 at 11:12:06AM +0100, Holger Hoffstätte wrote:
+> On 2025-02-14 09:42, Greg Kroah-Hartman wrote:
+> > On Fri, Feb 14, 2025 at 09:32:06AM +0100, Holger Hoffstätte wrote:
+> > > On 2025-02-13 15:22, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.13.3 release.
+> > > > There are 443 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > 
+> > > Builds & runs fine BUT fails to suspend to RAM 99.99% of the time (basically
+> > > one success but never again). Display powers down but fans stay on.
+> > > 
+> > > Tested on multiple systems, all x64. I first suspected amdgpu because why not :)
+> > > but it also fails on a system without amdgpu, so that's not it.
+> > > 
+> > > Reverting to 6.13.2 immediately fixes everything.
+> > > 
+> > > Common symptom on all machines seems to be
+> > > 
+> > > [  +0.000134] Disabling non-boot CPUs ...
+> > > [  +0.000072] Error taking CPU15 down: -16
+> > > [  +0.000002] Non-boot CPUs are not disabled
+> > > 
+> > > "Error taking down CPUX" is always the highest number of CPU, i.e.
+> > > 15 on my 16-core Zen2 laptop, 3 on my 4-core Sandybridge etc.
+> > > 
+> > > I started to revert suspects but no luck so far:
+> > > - acpi parsing order
+> > > - amdgpu backlight quirks
+> > > - timers/hrtimers
+> > > 
+> > > Suggestions for other suspects are welcome.
+> > 
+> > Can you run 'git bisect' to try to find the offending change?
+> 
+> (cc: Juri Lelli)
+> 
+> Whoop! Whoop! The sound of da police!
+> 
+> 2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
+> commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
+> Author: Juri Lelli <juri.lelli@redhat.com>
+> Date:   Fri Nov 15 11:48:29 2024 +0000
+> 
+>     sched/deadline: Check bandwidth overflow earlier for hotplug
+>     [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
+> 
+> With this reverted it reliably suspends again.
 
->  		prev = list_prev_entry(subreq, rreq_link);
-> ...
-> +		if (subreq->start == prev->start + prev->len) {
-> +			prev = list_prev_entry(subreq, rreq_link);
+Thanks!  I'll go revert that one now and push out new -rc releases soon.
 
-Actually, that doubles the setting of prev redundantly.  It shouldn't hurt,
-but we might want to remove the inner one.
-
-David
-
+greg k-h
 
