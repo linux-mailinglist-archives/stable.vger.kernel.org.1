@@ -1,203 +1,132 @@
-Return-Path: <stable+bounces-116383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917A7A35943
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:46:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48380A35953
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 09:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4700516CB05
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 08:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0653A4C0E
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 08:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576DD215771;
-	Fri, 14 Feb 2025 08:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA52E227BA6;
+	Fri, 14 Feb 2025 08:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mRR1CKAB"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="AKsbYQM3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6691F2222AE
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 08:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04379275401;
+	Fri, 14 Feb 2025 08:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739522788; cv=none; b=deOy+A6+rPZzUJaZSNrXQ2Yd5EcjfVJdd0D1CnwzbR3SZ27YGhLat99R0NhZUgFLGsCxODwEgZYUwaqxUNWHkV5HFExYVwUesTDrY15uRZP49W5ejlR1SbKnumJkGqzKIgN94ILESBQf6lysSpJ1H/FHC3PQQtTa7UYX/JWSpwA=
+	t=1739523010; cv=none; b=dmeyWP8N7RwvigG8JgUDeHAxwyM8j/alGZjqFw/sqPfESWVctj6FOD29Z4Ru6AdfG51IFKjKDmal6Rvru/qnWTqQaAAu6Ybm/+/SgVNJaYILk0N88MfJyXzejJZ8Ub5JoDhSMx3ZEgOODEx3dBilaIA59GkmsAB+yiO4W4LEano=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739522788; c=relaxed/simple;
-	bh=DaapRn/iW7Nn3mWXq/1zNU2x1WmgQpD91mDAIchYOno=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j0eEtf9l/+inS/w9mgxerGmfMdytm/AQOzB3ZRBiY1luwaW4oTBFZ/oXrvQo2TUPbOPR1IK/Uy/KVMRvUOPdgBs/EJItbhK8Y4/qaDgJMDs09Uys95brko86d+wmY8NszZweNupyKE53hKRdfNQjyLNAaXUpnADHPAtJsmupyyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mRR1CKAB; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-52067a2ca31so975779e0c.0
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 00:46:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739522785; x=1740127585; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=s/SpVrueRYoLO67L8eIIkV6jzrQYHfIk1nopkq7+ltQ=;
-        b=mRR1CKABP2MCEa4qcB5AWjHEhB9x81OVQR2pLhPKP/4IT5sSa1fRSUaF3TrFwDvWCM
-         BPrJAg+JyC6A5MsDVLE3g0UXr1TtuQlnJK/ODRZhsLGDLjY6eScloqDPGz8UCfT0X1WE
-         TeFu9cmZxikMC/k1tkUPUAkmtlbG1RzWKBpNILF28etIsTtx/X/M5e54Ea5MQB1lgm96
-         nT/jLcScWOKPnLgld/iXBiZhSFnF4AGDhfiOsdXQTQiUTxp6Z3ucp8cdEmmN/hwptzQl
-         KdEiTllQOsCI3wYLod0ks3+OPLzK0BrUhAYAAABvce91wzJUhE3AN1krpSXsld6vQGRj
-         XDfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739522785; x=1740127585;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s/SpVrueRYoLO67L8eIIkV6jzrQYHfIk1nopkq7+ltQ=;
-        b=n958DU9gbzXdDJDksn1agA3DgHaOZdhSauZF30bGBgyBqjWsI7biECmoB3EXXkT6i4
-         KetWz/82FFohda/+NhwwDkIbYNjn31PjqMjrNHavVYLbWxURRa6msSez++mciYMI3nWT
-         b8gF3TZZd7wvyuLLK/SSQCFX0/V85xtdDTSmu7+W7/6CnvcBG16dFdLuKOk0l+CjFWhv
-         Ca6l+Nwb2Zou8P6+aV/DCu/IPu2HD+hKTcSlzjzkZJ7G5j1SQO8qj7g4wgdq6S07l/i0
-         QQZKhmOZ06kFVaH0EQXFYDKIIygjfxZZu7lTGmMgEVuNNo5jP5qTX/wj/iXB38R7jrq2
-         vL7Q==
-X-Gm-Message-State: AOJu0Yx5bYeLE0+/u/Z2ZXx0rS1eehpDBOr7faSj1ha5RST9YD+2wgEb
-	XSSMe6tRvH6p1tG0s9ZYIYo01BHZAQDFkV2yf25RPhGwRaQrjCU11TgbVvK0fssX11sKL6Yob1z
-	P1a/QlZJ37EIJpiE+AlCUUyLVZ7sney/gtiGrvQ==
-X-Gm-Gg: ASbGncsFhq4K/AzV/PzE4rZ+s1ETQDrWAyDTcGK/Dam6el5PeyQ1i55yit1GKE0I4NI
-	L4HofS6DBgYQNxSseS5gC8g/FG6lJTJFk9rSvjd+al7sLxQ4+VF/ZQ0lslfmx4AIkh4vyLdSd/1
-	SMQ893ZF9h4+dVZepCPD7uEjHJnw7DFOY=
-X-Google-Smtp-Source: AGHT+IEmsJZT+jXKj4JBRFBmsWO8P+p3scpYQLSYSd7oc2CaHyRP52nyDmef7v9VG3cRCZJx74tDbUVT3Hl5ru2KBmM=
-X-Received: by 2002:a05:6122:2028:b0:520:3d87:5cdb with SMTP id
- 71dfb90a1353d-52067c9792amr8941602e0c.9.1739522785112; Fri, 14 Feb 2025
- 00:46:25 -0800 (PST)
+	s=arc-20240116; t=1739523010; c=relaxed/simple;
+	bh=eHsbsd/eFKbVVaYr4omsL/Cx88B0Q51hlfhaRwPY0RA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WXo9o4MXBkVyE7juKHi/FQxwgCcKEnEj1cB0pid75TXuq5eUpxYBjv/QLzPnHPJ/Kd5Vb3505OYucxe+S0lqD9fkQbieGKzuH7KuQHKxWfR8hxX08Vz0P3Sqr2/Gm0rvbX7FMd5IQMH6+T0BBjc6LOEx2HIxsUGxDWmA93cxQFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=AKsbYQM3; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: ae86e8d2eab011efb8f9918b5fc74e19-20250214
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=SZTKFrboegu1pyLSyq2HcY2eKZBWe3hXG4JUqZ8ZU0c=;
+	b=AKsbYQM3lxBAVEii1KIMqewju/FjqyPgdG/pUaVAs7cOTyqevlueh+KQSCI65TLtIhivjCOOuuzUYdB5d+5fHVu5MrdzQY51KAsAfzY7rg+H8OEMPZ3FVdQaFKBqB4WJBRLHBpz4doIJZ9XpXOu4jh5I2K5mizdJqbIUPbMtixQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:46e23ee0-5498-40be-8e8a-c3aa7291560b,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:60aa074,CLOUDID:fcecbf24-96bd-4ac5-8f2e-15aa1ef9defa,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: ae86e8d2eab011efb8f9918b5fc74e19-20250214
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
+	(envelope-from <macpaul.lin@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 94671838; Fri, 14 Feb 2025 16:50:03 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 14 Feb 2025 16:50:02 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Fri, 14 Feb 2025 16:50:02 +0800
+From: Macpaul Lin <macpaul.lin@mediatek.com>
+To: Sen Chu <sen.chu@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>, Alexandre Mergnat
+	<amergnat@baylibre.com>
+CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
+	Macpaul Lin <macpaul@gmail.com>,
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
+	<linux-usb@vger.kernel.org>, <stable@vger.kernel.org>, Chris-qj chen
+	<chris-qj.chen@mediatek.com>
+Subject: [PATCH v3] arm64: dts: mediatek: mt6359: fix dtbs_check error for RTC and regulators
+Date: Fri, 14 Feb 2025 16:49:54 +0800
+Message-ID: <20250214084954.1181435-1-macpaul.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213142436.408121546@linuxfoundation.org>
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 14 Feb 2025 14:16:13 +0530
-X-Gm-Features: AWEUYZmYXnFVTFbZ3xpIYpccIn9qqsxnpqLJJ2bHanM_Ra-e0XbxIu6KOWpiedk
-Message-ID: <CA+G9fYuVj+rhFPLshE_RKfBMyMvKiHaDzPttZ1FeqqeJHOnSbQ@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	linux-xfs@vger.kernel.org, chandan.babu@oracle.com, 
-	"Darrick J. Wong" <djwong@kernel.org>, Long Li <leo.lilong@huawei.com>, 
-	Wentao Liang <vulab@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-On Thu, 13 Feb 2025 at 20:02, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.14 release.
-> There are 422 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 15 Feb 2025 14:23:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This patch fixes the following dtbs_check errors:
+1. 'mt6359rtc' do not match any of the regexes: 'pinctrl-[0-9]+'
+ - Update 'mt6359rtc' in 'mt6359.dtsi' with a generic device name 'rtc'
+2. 'pmic: regulators: 'compatible' is a required property'
+ - Add 'mediatek,mt6359-regulator' to compatible property.
 
-Regressions on the arm64, powerpc builds failed with gcc-8/13 and clang
-on the Linux stable-rc 6.12.14-rc1.
+Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+ arch/arm64/boot/dts/mediatek/mt6359.dtsi | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Build regression: arm, powerpc, fs/xfs/xfs_trans.c too few arguments
+Changes for v2:
+ - No change.
 
-Good: v6.12.13
-Bad:  6.12.14-rc1 (v6.12.13-423-gfb9a4bb2450b)
+Changes for v3:
+ - Add "Reviewed-by:" tag, Thanks!
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+index 150ad84d5d2b..3d97ca4e2098 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+@@ -19,6 +19,8 @@ mt6359codec: mt6359codec {
+ 		};
+ 
+ 		regulators {
++			compatible = "mediatek,mt6359-regulator";
++
+ 			mt6359_vs1_buck_reg: buck_vs1 {
+ 				regulator-name = "vs1";
+ 				regulator-min-microvolt = <800000>;
+@@ -297,7 +299,7 @@ mt6359_vsram_others_sshub_ldo: ldo_vsram_others_sshub {
+ 			};
+ 		};
+ 
+-		mt6359rtc: mt6359rtc {
++		mt6359_rtc: rtc {
+ 			compatible = "mediatek,mt6358-rtc";
+ 		};
+ 	};
+-- 
+2.45.2
 
-* arm, build
-  - clang-19-davinci_all_defconfig
-  - clang-nightly-davinci_all_defconfig
-  - gcc-13-davinci_all_defconfig
-  - gcc-8-davinci_all_defconfig
-
-* powerpc, build
-  - clang-19-defconfig
-  - clang-19-ppc64e_defconfig
-  - clang-nightly-allyesconfig
-  - clang-nightly-defconfig
-  - clang-nightly-lkftconfig-hardening
-  - clang-nightly-lkftconfig-lto-full
-  - clang-nightly-lkftconfig-lto-thing
-  - clang-nightly-ppc64e_defconfig
-  - gcc-13-defconfig
-  - gcc-13-lkftconfig-hardening
-  - gcc-13-ppc64e_defconfig
-  - gcc-8-defconfig
-  - gcc-8-lkftconfig-hardening
-  - gcc-8-ppc64e_defconfig
-  - korg-clang-19-lkftconfig-hardening
-  - korg-clang-19-lkftconfig-lto-full
-  - korg-clang-19-lkftconfig-lto-thing
-
-
-## Build log arm and powerpc
-fs/xfs/xfs_trans.c:843:33: error: too few arguments provided to
-function-like macro invocation
-  843 |         xfs_trans_apply_dquot_deltas(tp);
-      |                                        ^
-fs/xfs/xfs_quota.h:169:9: note: macro 'xfs_trans_apply_dquot_deltas'
-defined here
-  169 | #define xfs_trans_apply_dquot_deltas(tp, a)
-      |         ^
-fs/xfs/xfs_trans.c:843:2: error: use of undeclared identifier
-'xfs_trans_apply_dquot_deltas'; did you mean
-'xfs_trans_apply_sb_deltas'?
-  843 |         xfs_trans_apply_dquot_deltas(tp);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         xfs_trans_apply_sb_deltas
-fs/xfs/xfs_trans.c:475:1: note: 'xfs_trans_apply_sb_deltas' declared here
-  475 | xfs_trans_apply_sb_deltas(
-      | ^
-fs/xfs/xfs_trans.c:843:2: warning: expression result unused [-Wunused-value]
-  843 |         xfs_trans_apply_dquot_deltas(tp);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1 warning and 2 errors generated.
-
-
-## Source
-* kernel version: 6.12.14-rc1
-* git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git sha: fb9a4bb2450b6b0f073a493bd6a1f54f231413e9
-* git describe: v6.12.13-423-gfb9a4bb2450b
-* Project details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.13-423-gfb9a4bb2450b
-
-## Build
-* build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2szXNYzJaqUDby0ajsj9cBcVrPY/
-* build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.13-423-gfb9a4bb2450b/testrun/27280977/suite/build/test/clang-19-davinci_all_defconfig/log
-* build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.13-423-gfb9a4bb2450b/testrun/27280977/suite/build/test/clang-19-davinci_all_defconfig/history/
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.13-423-gfb9a4bb2450b/testrun/27280977/suite/build/test/clang-19-davinci_all_defconfig/
-* kernel config: arm-clang-19-davinci_all_defconfig and gcc-8-ppc64e_defconfig
-* architectures: arm, powerpc
-* toolchain version: clang and gcc
-
-## Steps to reproduce
-# tuxmake --runtime podman --target-arch arm --toolchain clang-19
---kconfig davinci_all_defconfig LLVM=1 LLVM_IAS=1
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
