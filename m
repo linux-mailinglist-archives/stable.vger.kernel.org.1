@@ -1,101 +1,117 @@
-Return-Path: <stable+bounces-116419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E913A35F51
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9ADA35F61
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97A1F16C752
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 534E416B5E5
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F64C264A8F;
-	Fri, 14 Feb 2025 13:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E2B227BB9;
+	Fri, 14 Feb 2025 13:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gB/fRXJE"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="toB4xdJW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IHM9zIQO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B12139A8;
-	Fri, 14 Feb 2025 13:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6D8188713
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 13:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739539954; cv=none; b=az2eELY4hxJHYJW+Ri4/3vZWSSnSynx2TlLzWkNwgFvOFdd4WFngkvrOOu0MXVDqUunBNi8+PvN7zdR24dInnY4w5NIFshpqtzn+WMYQE9NTOFElPxo+s7hZlv5S4v/BsYHs26NfqYMxP3hqklZDy0nMZ9TSkYHXSKB+0QVWQH0=
+	t=1739540143; cv=none; b=Jj7n6731Y63VbXpb1JpiGcSWIB2enWvOrFbKBT3hTaEWp1Cgk4H1H6fiOgtGviU0bbtR5xMOE/DQ3QmnyQERs5dzPZwNZYljq+U+68/dut7eCulaOGWrG8AEQ0oNMZrK73gFpNksDMeQ7jCT2RrW5bpS/jTd4IpVMcLJXIj73Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739539954; c=relaxed/simple;
-	bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FwPM9hwE6jblA4/CXu3rRQnJsdAUytx05izcigGzdc7MHqVB3K/AUNtTVGJrR08eymdZ///DdzCOmuthKE1g+PbGKbCKoUOQHVd7MwVN0ud+5QG9o4j2mOdlcsprYw9/oR98Gy+bYOqdPKP7n+fUl1sGTIRDsW9o8HlDuoBeG1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gB/fRXJE; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38dcac27bcbso2006449f8f.0;
-        Fri, 14 Feb 2025 05:32:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739539951; x=1740144751; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
-        b=gB/fRXJEjGgdMuchrApMi/MeQfqebYJKRjAfjqXaJ56gyE1UXgYbiKTFthgtVczKpO
-         iGBJ3lHE0WmweSIIql3smcs5I1SYjNLHZhtAVn+NUyx0txKxg7ixhpZejGZgaIuGlJfj
-         GXN9nfectMh9ZlmSGRZUgVcIBD9P4c5PXsclGLM2LLPaMe1KkVl1f0UTAM/fOXZ3Ejiy
-         dibr4yzCwcSR2PrpPsYQ8F2r4SM381ZBTrPPq7aXg+jLAOcteDGSJpYks8SRzSm2S9Lc
-         cvIe4ierAVA/hzf+9xkT8ITaK28ypyNAhQ7t/2jBXXQVeSrUupUcexarI8D0+MZ+G6jj
-         IhAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739539951; x=1740144751;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
-        b=YmQ6dICxbabIvHKh7gQFI26+c6NAYNSZrzCtcz3eAnAQviuudPtjFFGALsgS1NyD1V
-         HpDVBzN0xXHvAdnH0eAXSN7FExTeZhn8KAFSsc3BZwjPm6qcn5iDzFcKMVI56zG/heVN
-         jYhcbECwFC10baKbsp8prTwrSfR2qfrLY5qgjmRyzI4eQ6SzUZEFA2aDIfJzs0zvb8Yx
-         K2U1L/Dcqex/3HEIA42/rjlWGvTaHYtUvhxm2twa+kDvkPnJxXEf6/YRtSyWNqpKA0T8
-         bS010jctcw4Nngt3o0CxArR3evPKT4cKdS7gN44HX81HnEnrZjSBf0sTLCv0xchNlIrO
-         mLKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYdup2OAV4OQXxHeX8NWQum7Pnl7D5xaUpFMrv1IJdTMrBsmOdlVV3DqBn89QZ/RhanjMRVPDS@vger.kernel.org, AJvYcCXPiTio5F4Tnn0CCuihHFLlIZwlSLXZwpmn+xQgN1cBZMuL/GX0dCX3AnacHz3yiCPAQLnwpSuqIHd4qH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc0Y9Xu/WjpxRSDB5GnAeLemczp+PY155FXpxLDuHaNbZe0hVw
-	D8jKErEtqv6ULzCH5xokuBpcZXGamaFhfkGqGkgVr2ldTwQmqpHFClHdBtUR48kQfeRJcV+Exuw
-	Z+NSlrVPZMoGCsN5zgQNCUusmqcBZ5cCCXAw=
-X-Gm-Gg: ASbGncuETM2DvUxfh4CPn52JWPblx2loNhVtEHhDd+dUoETe8i0+y8GkPaiXHKlgOFm
-	QPga4YSD/YQi54PsQhbrmQx7ZdXQFokGC8FpmWpTTNLZzbxnqVF2UT0wtRrpff4G6nCmVcOvwzw
-	==
-X-Google-Smtp-Source: AGHT+IG9WP8+ZNo83h0WeFmRnnKi+HLuePMl2SVa9DOJjwkyOlXU88efT5p0gmxEYkDj3zX7PEnLqKgxLdJGs3e3KFQ=
-X-Received: by 2002:a05:6000:4024:b0:38d:afc8:954e with SMTP id
- ffacd0b85a97d-38f24cfa3dbmr9449189f8f.11.1739539950482; Fri, 14 Feb 2025
- 05:32:30 -0800 (PST)
+	s=arc-20240116; t=1739540143; c=relaxed/simple;
+	bh=seafV6A56qlMSGQtjIs6w47drKZVA9DocIsWsH0zMjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uFESU1HysSAIRmgREcFSEVPn9k5OkOnDATZOgLsEQuIBBR+juVjIGFpqYrWiDubMxdSZ5Hf7F71bLI/RpSuC3834G1u4BoZZJ4c47qHCXCbJM21Ddz5WPzOT3Wf1l0c8GIWS7zP+f5Vn1PFuYiCVzLuDz0NjGbYRdOCGWtqOz60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=toB4xdJW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IHM9zIQO; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 29195138098F;
+	Fri, 14 Feb 2025 08:35:40 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 14 Feb 2025 08:35:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1739540140; x=1739626540; bh=CBEd3AoyYN
+	/n2kajvvGA9WHOiLlc0DfRq6RA3igCfg4=; b=toB4xdJWUAKpcxIr66wvsE1ztR
+	qFJdZADEKk/6REJLyYqjtUGJ550oOc809ce0BALkHw8cAKaFFrsoIX9KXP8UpnY4
+	51jb+g5pS9WZmxF8HZxMyY34W/w3N0FMCa1iR/jrfl3EnnkKphybNqAurrL67tVo
+	8VjvRE1SpepJZDCAEnDdqusD0uzLhQg3lzeeN+UnsADimY5gt/jrfMAsssc44bVo
+	fnBc+Q2bPjGrMJ1JR8Q2kM2mD3SEZpiiw08N0jczwHPKNfj1eAoa0lj6sgsWRMH8
+	8Mp4upMDR7kqAuOCiQg1s0kzd4TpiAVBRATTgyaCUsUgiV8qnvPoPg59C1QQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1739540140; x=1739626540; bh=CBEd3AoyYN/n2kajvvGA9WHOiLlc0DfRq6R
+	A3igCfg4=; b=IHM9zIQOCrVHLfnE7A7n+nf6zSBPRE00Xe5UWqcCGVfCFbBKOiF
+	g9lFeqmZZTdV/rgSZWoN/CJ6bFIocIUR6L9fwpACVzQIaEzq/rpav3rdPMdS2MA8
+	fv95hBm92fCm+9fVtch9SML6MER0yKR9YFuGkZQo97WKKCQZ5NBQk20G5DI+Zev7
+	ArEuLuJDj5RH/MYHa7B8sJrFFascTLypY17Hdb75WXOjoTSOzs1rAwP2bpJ/3xT+
+	FCjvb6oTS4yrwVVaVgFL6+HfoNyQQiUjdVZHMm51k34PZFYOHwrOnt3pSbhpHjg9
+	DLK/TlutRPH6PXc9bbvpOrnx/+s2ca1y2+Q==
+X-ME-Sender: <xms:q0avZ7zfg8tqiMoGeNT-Fb4cyRXg5a7WXJHDKimczEdynqRsSUmKDw>
+    <xme:q0avZzRHb7O8jmUVJgXYth4KZdfVO3XI_3fDPv7xUvV5jcWw87djKE6GkSPm-82rk
+    wM-759XOFzxcA>
+X-ME-Received: <xmr:q0avZ1VhqhPsE85mSda3UjrCbnLNuq782uylW1cJ9bpiNre5suwW5JUDy4RHxRWpQP1tmnjfFgGTdcBTOW4lZEnTc2-ovpjBuiJnDg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegleejkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueef
+    hffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepkedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopeigfhhsqdhsthgrsghlvgeslhhishhtshdrlhhinhhugidruggvvhdprhgtphht
+    thhopehhtghhsehlshhtrdguvgdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:q0avZ1g7PShgmK_VsSxiLIN3Ip0nhV0SGW_CDM6xZedpgCwItgBfkg>
+    <xmx:q0avZ9AYx2a_GtruW0efBrBj7WWPolxn9UNSjp3dd9kocgSQ_tCD8A>
+    <xmx:q0avZ-IMt2OLsODfzCNaQzepXSkCDz5birDdKFRzugz5NkOYCQxTlw>
+    <xmx:q0avZ8AZeTkKzGExohN3cHmDOGo3WEqqix42Lqz4OVQNurEfqd2yMw>
+    <xmx:rEavZx1JOIWmAus2WT-ZKoCLXROb3pqQpMj7LtY_5c0eSCsPCuZn15ls>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Feb 2025 08:35:38 -0500 (EST)
+Date: Fri, 14 Feb 2025 14:35:34 +0100
+From: Greg KH <greg@kroah.com>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: xfs-stable@lists.linux.dev, hch@lst.de, stable@vger.kernel.org
+Subject: Re: [PATCH 03/11] xfs: don't lose solo dquot update transactions
+Message-ID: <2025021409-royal-swoosh-04d3@gregkh>
+References: <173895601380.3373740.10524153147164865557.stgit@frogsfrogsfrogs>
+ <173895601451.3373740.13218256058657142856.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213133854.100866-3-stuart.a.hayhurst@gmail.com> <eae04827-0d87-48f5-929a-9f1f23359f24@kernel.org>
-In-Reply-To: <eae04827-0d87-48f5-929a-9f1f23359f24@kernel.org>
-From: Stuart <stuart.a.hayhurst@gmail.com>
-Date: Fri, 14 Feb 2025 13:32:19 +0000
-X-Gm-Features: AWEUYZleqHgvL8C3DS0N7zLUwLcLSDIaKydireboWkZiXcihIMcSrRiQcTlFnXk
-Message-ID: <CALTg27kDRv+_y9qS3eCZUaQ6f5A-P8Y2GFyL-EMHZxixW=jYaw@mail.gmail.com>
-Subject: Re: [PATCH v3] HID: corsair-void: Update power supply values with a
- unified work handler
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173895601451.3373740.13218256058657142856.stgit@frogsfrogsfrogs>
 
-> Now I think, what is actually expected to happen if both add_battery and
-> remove_battery is set? Do nothing as the code does?
+On Fri, Feb 07, 2025 at 11:27:04AM -0800, Darrick J. Wong wrote:
+> From: Darrick J. Wong <djwong@kernel.org>
+> 
+> commit d00ffba4adacd0d4d905f6e64bd8cd87011f5711 upstream
 
-It means that either the headset connected and then disconnected again, or
-it disconnected and reconnected again. Either way, the battery should be left
-in its current state.
+There is no such commit upstream :(
 
-Of course it could connect, disconnect and connect again to end up in
-that state,
-but if the driver is 3 events (a physical action) behind, we're already done for
+And maybe because of this, it turns out this commit breaks the build, so
+I'll be dropping it now.
 
-Stuart
+thanks,
+
+greg k-h
 
