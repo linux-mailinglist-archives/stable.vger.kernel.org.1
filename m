@@ -1,157 +1,116 @@
-Return-Path: <stable+bounces-116398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0169DA35B10
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 11:03:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC98A35B3E
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 11:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5EBE1892F3C
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 10:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57EA188FD18
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 10:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDF42236F8;
-	Fri, 14 Feb 2025 10:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBUzqpiZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBC4256C62;
+	Fri, 14 Feb 2025 10:12:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2C3186E40;
-	Fri, 14 Feb 2025 10:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F90A256C67;
+	Fri, 14 Feb 2025 10:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739527385; cv=none; b=lwhGHlVY9yc6qW0Or02wU4flTfMySj/BJQL2Wz3bCtDrCuWmXKLm4DPfxVgFGBzm4hEJoI0uCxupqRk76lxH5ATJonp8adOVHxZXQvEmzxiS7i2w13OEzJ1loYdMueGc/5ce2fjdbws+PVAGMpZ0HzLol0BvCd1sN4NcCjCCaUk=
+	t=1739527930; cv=none; b=iZdXLaqtZ3fDa5u6ax3QR5jdPYZ3NjuFREniJJwpfGuRjqjjoerr+nhrho+TQNxf90YkGeQkX4v/r4p43YCNWisC8gocvtWCEgQtEAPQjoVxVtTyjvy40nPC02DCLln2+i8oguc5uY3QAVVBgIKBX75GIB/XdfC/fmDnePVa4oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739527385; c=relaxed/simple;
-	bh=jO4jhFQ85OnGWdW5dvqK63uV1QT1n3kqXLhiHck4gg4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jBQ5821/y0mu6GoCuyLl1qxI4kyh9V3i74Szkwl/lM8sOWKLMSTcRpgGWL6Arodm0BkUDEsudwWqHYBKtZIRhnU9CvdfZsi/wvQ4zjkH/m70OJSvdQK/Xu7lyfDK10bKBPZbFmLCGO5yfxn8rahSjXigFR7Vd0tBv7h5Ab8VuUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBUzqpiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0184C4CEF1;
-	Fri, 14 Feb 2025 10:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739527384;
-	bh=jO4jhFQ85OnGWdW5dvqK63uV1QT1n3kqXLhiHck4gg4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NBUzqpiZM2kg4A4aIeNUBUOibeqSOVdTCCgLV7S9YEmAYGt0NjfihqdFPpBOv0s0W
-	 jHiJpvv422oeAnxPw9TgpAFL6ICc1RXReG+91+C3kqltaHlwiD83sE0iG0GzYL25Se
-	 blcuqwNMeJwYvQyxs1zgwx6Rro5vOwC6vuoiusWrnlvGszdUg7AcL1Kt9BQmDKdjJ4
-	 +tlmYpT+SkOSAa8HJqIo9OJVccxvkB+1QKjFtTK1LLcqSWCpF9lSH5NjFMBNwJUlzE
-	 jnzVUo05iIxhqGda+jA0qwijumlXdQZ1Fdr7ca+Cy0eyaPRi0mZb54o9rzVenriGTS
-	 8022g8FGeOiBw==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ab7430e27b2so345813666b.3;
-        Fri, 14 Feb 2025 02:03:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU/9GCi8QWyRzpRsfzThdXcWBcGtHB9i7dB1MMQVeWbIh5cSj7zifHDMGQiftrqlcx42rzUo0eH@vger.kernel.org, AJvYcCWWnpssKyi98J2t8GgVlDHdp0ZSE04KzVx7w+rjeVLI7alWR+m424d01Ed96IxfQwFacDBi+K3LAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgcEeaLntqyAGPmWI7BX59MU3TOtLkwXN+F6YzZaN4bWAn9bf1
-	lwl6QvuraaBqU5iLwRjafDXQTawt6eqAGMI6J6ia+LZ1toFWVcDoIUqoWWeXKxghzdH4adiJsNh
-	oSIerDa3jTOHXRCzHYAuaW6yIOlY=
-X-Google-Smtp-Source: AGHT+IF+gf9jQe7+2YADT4xx62KGGZLtUQx0JukYMtr4LvBbe4Kkbx3IFmzUu9eWSkMmaKUi5YdGeXvyYy9vwpY3NL4=
-X-Received: by 2002:a17:907:7b06:b0:aa6:7737:1991 with SMTP id
- a640c23a62f3a-ab7f334aa67mr1128081866b.2.1739527382895; Fri, 14 Feb 2025
- 02:03:02 -0800 (PST)
+	s=arc-20240116; t=1739527930; c=relaxed/simple;
+	bh=uo1ONZh7PV6yV5ok5Kqc0LS/gvE/SyAXHxFR/1FcGaA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kuZirhsYJ/dTx9vqFDNmNIcypwGLIBV1x/kCp2fUwpjlseHyvLKb5t9yGP5uE4UurzpvFzUvOyzfJSwfgUOPCW68p9WkUOL22x7J/0FCFAsaquzSMNmBd1DH9JXGlI4xbGOhtHfjK+2nackmcqt4igZ0UCCBX7AGqRhA/WJw/jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5ddd71dc.dip0.t-ipconnect.de [93.221.113.220])
+	by mail.itouring.de (Postfix) with ESMTPSA id 7CF7D12566F;
+	Fri, 14 Feb 2025 11:12:06 +0100 (CET)
+Received: from [192.168.100.223] (ragnarok.applied-asynchrony.com [192.168.100.223])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id 3FB0160189381;
+	Fri, 14 Feb 2025 11:12:06 +0100 (CET)
+Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, Juri Lelli <juri.lelli@redhat.com>
+References: <20250213142440.609878115@linuxfoundation.org>
+ <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
+ <2025021459-guise-graph-edb3@gregkh>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
+Date: Fri, 14 Feb 2025 11:12:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212141648.599661-1-chenhuacai@loongson.cn>
- <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
- <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com> <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
-In-Reply-To: <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 14 Feb 2025 18:02:52 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
-X-Gm-Features: AWEUYZm7CELBuJgCgpXlQjQwq3zKmA4KOCzMtVj82ho-oFkUscdkn1NgvHwjb6Q
-Message-ID: <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
-Subject: Re: How does swsusp work with randomization features? (was: mm/slab:
- Initialise random_kmalloc_seed after initcalls)
-To: "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	linux-pm@vger.kernel.org, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
-	Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org, 
-	Yuli Wang <wangyuli@uniontech.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Pekka Enberg <penberg@kernel.org>, 
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2025021459-guise-graph-edb3@gregkh>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 14, 2025 at 5:33=E2=80=AFPM Harry (Hyeonggon) Yoo
-<42.hyeyoo@gmail.com> wrote:
->
-> On Thu, Feb 13, 2025 at 11:20:22AM +0800, Huacai Chen wrote:
-> > Hi, Harry,
-> >
-> > On Wed, Feb 12, 2025 at 11:39=E2=80=AFPM Harry (Hyeonggon) Yoo
-> > <42.hyeyoo@gmail.com> wrote:
-> > > On Wed, Feb 12, 2025 at 11:17=E2=80=AFPM Huacai Chen <chenhuacai@loon=
-gson.cn> wrote:
-> > > >
-> > > > Hibernation assumes the memory layout after resume be the same as t=
-hat
-> > > > before sleep, but CONFIG_RANDOM_KMALLOC_CACHES breaks this assumpti=
-on.
-> > >
-> > > Could you please elaborate what do you mean by
-> > > hibernation assumes 'the memory layout' after resume be the same as t=
-hat
-> > > before sleep?
-> > >
-> > > I don't understand how updating random_kmalloc_seed breaks resuming f=
-rom
-> > > hibernation. Changing random_kmalloc_seed affects which kmalloc cache=
-s
-> > > newly allocated objects are from, but it should not affect the object=
-s that are
-> > > already allocated (before hibernation).
-> >
-> > When resuming, the booting kernel should switch to the target kernel,
-> > if the address of switch code (from the booting kernel) is the
-> > effective data of the target kernel, then the switch code may be
-> > overwritten.
->
-> Hmm... I'm still missing some pieces.
-> How is the kernel binary overwritten when slab allocations are randomized=
-?
->
-> Also, I'm not sure if it's even safe to assume that the memory layout is =
-the
-> same across boots. But I'm not an expert on swsusp anyway...
->
-> It'd be really helpful for linux-pm folks to clarify 1) what are the
-> (architecture-independent) assumptions are for swsusp to work, and
-> 2) how architectures dealt with other randomization features like kASLR..=
-.
-I'm sorry to confuse you. Binary overwriting is indeed caused by
-kASLR, so at least on LoongArch we should disable kASLR for
-hibernation.
+On 2025-02-14 09:42, Greg Kroah-Hartman wrote:
+> On Fri, Feb 14, 2025 at 09:32:06AM +0100, Holger Hoffstätte wrote:
+>> On 2025-02-13 15:22, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 6.13.3 release.
+>>> There are 443 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>
+>> Builds & runs fine BUT fails to suspend to RAM 99.99% of the time (basically
+>> one success but never again). Display powers down but fans stay on.
+>>
+>> Tested on multiple systems, all x64. I first suspected amdgpu because why not :)
+>> but it also fails on a system without amdgpu, so that's not it.
+>>
+>> Reverting to 6.13.2 immediately fixes everything.
+>>
+>> Common symptom on all machines seems to be
+>>
+>> [  +0.000134] Disabling non-boot CPUs ...
+>> [  +0.000072] Error taking CPU15 down: -16
+>> [  +0.000002] Non-boot CPUs are not disabled
+>>
+>> "Error taking down CPUX" is always the highest number of CPU, i.e.
+>> 15 on my 16-core Zen2 laptop, 3 on my 4-core Sandybridge etc.
+>>
+>> I started to revert suspects but no luck so far:
+>> - acpi parsing order
+>> - amdgpu backlight quirks
+>> - timers/hrtimers
+>>
+>> Suggestions for other suspects are welcome.
+> 
+> Can you run 'git bisect' to try to find the offending change?
 
-Random kmalloc is another story, on LoongArch it breaks smpboot when
-resuming, the details are:
-1, LoongArch uses kmalloc() family to allocate idle_task's
-stack/thread_info and other data structures.
-2, If random kmalloc is enabled, idle_task's stack in the booting
-kernel may be other things in the target kernel.
-3, When CPU0 executes the switch code, other CPUs are executing
-idle_task, and their stacks may be corrupted by the switch code.
+(cc: Juri Lelli)
 
-So in experiments we can fix hibernation only by moving
-random_kmalloc_seed initialization after smp_init(). But obviously,
-moving it after all initcalls is harmless and safer.
+Whoop! Whoop! The sound of da police!
 
+2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
+commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
+Author: Juri Lelli <juri.lelli@redhat.com>
+Date:   Fri Nov 15 11:48:29 2024 +0000
 
-Huacai
+     sched/deadline: Check bandwidth overflow earlier for hotplug
+     
+     [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
 
->
-> > For LoongArch there is an additional problem: the regular kernel
-> > function uses absolute address to call exception handlers, this means
-> > the code calls to exception handlers should at the same address for
-> > booting kernel and target kernel.
->
-> --
-> Harry
+With this reverted it reliably suspends again.
+
+cheers
+Holger
 
