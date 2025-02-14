@@ -1,100 +1,142 @@
-Return-Path: <stable+bounces-116428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97A3A361CC
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 16:34:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D778A3625D
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 16:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DE43AA73F
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 15:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3972616A7B8
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 15:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992B5266B7D;
-	Fri, 14 Feb 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463D8267391;
+	Fri, 14 Feb 2025 15:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="j3/Ml5YN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkmGpmH1"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B56266EED;
-	Fri, 14 Feb 2025 15:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBF9267387;
+	Fri, 14 Feb 2025 15:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739547271; cv=none; b=HyqUOoPVbVaDQRS5QqXPzWnWLfmGNnubEcdSaLQEYMPmmnJW6SQM9ahB2obag+ceqQZ5Aap64qiF4qnn0FnY75uOiV7dcy363MOlhdTlTSN4o2Ji33ExjJPk8Qfndwzx9DoshghaRVo5Bwl3LFo+p/f4EeHqhp8zkMb/MKO4RFc=
+	t=1739548559; cv=none; b=RaKfRq9Cfr+3JtCurlnqGW4NvhSwhhA0nSuowQlbtZWm3ehv2aLXQ0iUsEgnCwj9pNX8Hr/q5jIxslRnwPMYCUcL12HEb2ytTSzZVcZnWEeryxZ0+zYZpJDvgS7TIGDHJS85dN79yRYkU06vzeVCub4xtSJsaAt9FNFkXP9G1sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739547271; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=A6nq7k6sKU7n4EebHTczh9bPNrIWMXJaJXTvSlOx1kkY+ahNwf0094PW5Ba9K0tKQmC6INV9SwOHciklOpyK3B1UtVlRuDzajIFcBPFKQfNyUsPy/zMB9iCsAYHlWL7J94q7u/WMEdy8l0B+IT8+Yk2qKMsMp4ZWSFipRW/3uns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=j3/Ml5YN; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1739547266; x=1740152066; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=j3/Ml5YNMjBE1ZYSgk9h8TA+g1PGUnUnwPcyd8vofNSk+gvuX+hBGNT36gr+EHOh
-	 7cp6p/vlUUF3D0w2Fwon8iF4r5NWjg1s8JQF3lSU3QCv0cqeq8a0uRn4vlzZ5hMDa
-	 qWsO577eLRxV0CB+9UIw/ufx9/ZwrAfww1fjZOq8uwfNyq6Wk9KkjUDuvBSGQetNo
-	 A7iNFWjNR7YYB5ObP9Vy11aO3FwCBKiD+vE6lidkb6wC5AGsUzObihI4lVG61+Edr
-	 qcc5Ff28pISSLU2mhKdZqrGv3GFOuLSbOam3nWQrZ1124yI3/DMVQ8r5jixScE+PJ
-	 Ozxs2NgbrOt2V8HqHg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.122]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAfYm-1tXwAE2URs-006lmQ; Fri, 14
- Feb 2025 16:34:26 +0100
-Message-ID: <f48a704a-8cb3-452d-95fb-fda16a484e83@gmx.de>
-Date: Fri, 14 Feb 2025 16:34:25 +0100
+	s=arc-20240116; t=1739548559; c=relaxed/simple;
+	bh=p/kPHut2qHfzfKzb7Xznt3VAJj0sGjrRew/U5IZb5kI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mTAL/X/kbquyamFS9f6h60/zGASpWLefiJkjEUf7sF2rMOOJCYG0D3pMTQWdw1MBJGiH+McHlqttC3ZLFExmLFqBIRwtdBBj+UncMMnQfLuHQpmoigxklWOjqCTKdze5HuXoyV9iGe1YnCpjAMVkHFKvZ7SK4B8zdHw+FBuSb2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkmGpmH1; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4395dddb07dso23491215e9.2;
+        Fri, 14 Feb 2025 07:55:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739548555; x=1740153355; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BabzqMVj2y+OlBwwIhPLHmR51YcJ8bOgLXov4FeaX8M=;
+        b=mkmGpmH109p1dW14LFwUHKOzdxAcdKYYZ9G2FUnODRNguguxxHj6kXw9punxyTUmcr
+         R2MMns61Laf/diDdN+gTvP6AToPV/DEwmHxL6UpfRtSKtW0U17ydLbH00juUCKssCBdV
+         bCIIxsEg4vfDw1uYMyki38gsdDZF9syg0RtWm3p/DU2ppZpotFyOPWo+vF+4jSeBqfSo
+         artRNA7oUDymTJtZGJWfQWMf04pdSlEW3wTMIeovjzXB1Atf1csn+/stLuVaGGygivae
+         UHFrpE5lxDYSOot3bZHL9+tiAsnurayoCJJWjt+pBLnWbJhD/zN2L35XmQFsBn8qY0F1
+         0w2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739548555; x=1740153355;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BabzqMVj2y+OlBwwIhPLHmR51YcJ8bOgLXov4FeaX8M=;
+        b=hHhyQreGghRTM54ZyZ1DsjI314fvsbykshWIu2NUNqTwIeaXbC25R0BGUw7KME31P7
+         m2qXPW4jzjH80P2FJH1Dlm/+rnUkMMGVCMVWOKjNcr1Ck2Q4gRgct1eGo9hUkXTn0Bzx
+         ubsh695PP2TWxEJ55nWVIP2kb1LMnietiFfcGjM2/A8Wy1xY5yK9Wlrqns/D+AM6JRgE
+         dE27OHLfZfqWu04RPJo+x2Ow/fCgDAC8H7FMScF9VeNyIstnLUYOh+Hz71w6m0kfP6We
+         NW1rHwbgz0ClShZM9DpN+j5yAlgl8Ts9LZr7EvdIfP3/vOKWL1VJA/VRLkKkE5PsJHk1
+         WNNA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2i9TV5ccUD3MIV27sgFEpBieqPnYBuNN1KtKFFsnLCnqPmOT4AOUjXOpIVnU18WJoohLTwK9CwcA=@vger.kernel.org, AJvYcCWxmoRt+wiqUkiFt845/CkSEMEUsG7s8ofcRwYy1zGWh9B2WuGfH12A7Fhj8mprdy4I0MmfncIN@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI/0CP4D+T9ST4AJ85XFV7PSgdgiQ6nnZHdA8BdJ7C6AR/YQHy
+	l0EJmJ1Qq5XgOW3fftgEJD7FB5xCjfVt/VzUrfPkHzP+59YRJ5b0
+X-Gm-Gg: ASbGncuTKeZoCxCJmGnAOZzOmT/31FhjS/ptg82+P2KproKSa+Vw6rdXRDdeXunlhUk
+	+GLNeVLw44J6ZSyX40OGzUQcDg4uU3PzF9euZYD2mxGphfWU7WW1edClV1OVw3Brrf0/yT62kpU
+	xQLDIcK3UMoqf7tY+eFtt5Z41GGLwyutO+QQC+Wrvc4YnP7/7XMlH3RmqxUkJH9DeJ7FWQCHinC
+	CC22pJiHkIvJFJ7qVEVpy2wm3gll2AuHrUpGhKIdXG8C1lrwIVDph/ld+ymowbV0QpL2Qzv5eHV
+	FCYHQgEUtaIfNihJRIquSrK7PZeqTrgSoPOanwDwOFTSc1d2
+X-Google-Smtp-Source: AGHT+IG9jRk9cmkBRz1ehmcym8NWsRSbA5wy5EE6+AQlwQIxNX7/S/c6g7lrbNl80HdHwNFwZDlONw==
+X-Received: by 2002:a05:600c:5950:b0:439:5b4d:2b2e with SMTP id 5b1f17b1804b1-4395b4d2cfcmr115326695e9.19.1739548555157;
+        Fri, 14 Feb 2025 07:55:55 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4396180f199sm47311355e9.15.2025.02.14.07.55.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 07:55:54 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 6E025BE2EE7; Fri, 14 Feb 2025 16:55:53 +0100 (CET)
+Date: Fri, 14 Feb 2025 16:55:53 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Forest <forestix@nom.one>, linux-usb@vger.kernel.org,
+	regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [REGRESSION] usb: xhci port capability storage change broke
+ fastboot android bootloader utility
+Message-ID: <Z69nif2-5Q5p8Wkv@eldamar.lan>
+References: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
+ <2c35ff52-78aa-4fa1-a61c-f53d1af4284d@linux.intel.com>
+ <0l5mnj5hcmh2ev7818b3m0m7pokk73jfur@sonic.net>
+ <3bd0e058-1aeb-4fc9-8b76-f0475eebbfe4@linux.intel.com>
+ <4kb3ojp4t59rm79ui8kj3t8irsp6shlinq@sonic.net>
+ <8a5bef2e-7cf9-4f5c-8281-c8043a090feb@linux.intel.com>
+ <2tq7pj5g33d76j2uddbv5k8iiuakchso16@sonic.net>
+ <ee229b33-2082-4e03-8f2b-df5b4a86a77d@linux.intel.com>
+ <Z65U9rZrZUjofo02@eldamar.lan>
+ <f2563e57-1982-4a64-a655-236dd4fff208@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc2 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:zLdJm+nrSOgp8ni7IZYRm/YQ0D/imNaN3c5frWqS5o+eA+M58AZ
- onEMaD1qcD1E7WKwRObOmyWxNVgIFMEKsOr/JocIkS373sc84aVUOJg+dDfRumcJBED1ZMO
- bf7ke0Smd39mYI44L6AGOMsCtb7LoWwky7fobyORz/kSTUlfK8QZH5hKIcQc0P8vyULQNcX
- 852/p/602HfOmVNaAdBaA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7ttD5aQwKMU=;jbYOPEkEe1U9BiW1E2o3oL3DZnT
- uPbwyUmOLSPlHHotk5M9kA7633GvI55mswDB8SwajVbNEtn3kOE1XMiUp5hkSpS63An9wX1SY
- I9pLzegM2sxl+712SlmcY8ivJN6QwS4tb9+8RMsxEITp2GaYcMRRMcqtlYnqMwB2oRIhqv6Ap
- Hrlv0GT2Vtt+9t2tGnwbLUKWeSm3ozhdsUPJAX6FkijSNtkifiWEIc7wZ/UI+NLaZBSvIdZwP
- yQPkBZq07lEEGttlcWyrTT6XjiNrf0Gn/ZpuxgoR2x1MhhEyeBkaktAqugaDSCa1BSf0+ypAl
- PzO9SAMl1nTe5s+bGAG443b+XwBQsug9Z+0anv9BGvhct9yVQecJX5rBVKOGBqvRvDMpfiN9n
- e+BHWRbMc9m90VMotpcbLmJSNm+S6Kj/qeESmhCDEY9B5fIfEudFCJr+hYGGLjAp5UUGsqr4A
- WCW6OOXwWtLMIo7VbB4z4hhv62am/CgZBNC7tnlfun8Kd9767hxjF78Sjd4pEIr6qSjnSKAXP
- g+0BGJAy1wqFzCfmkDflPMAN+fYO8Kf0yWHw+3fEESVDrAtTeXe5qi3J6dElQFyo5B862Sc8J
- URFbVIF5XxS1Fa6oXhnjQoazq2YdMnzra5cpRoedsrrEuYWmdG7IHqg5biBKmY/oD4fXSDJUs
- WCCWD7cAtPOJF3y3YUSARl8kvHsakG65H4KbRK84hyhPBi5yimER0agIb2V757z8PMImGqx1G
- 2xMKLbpipcnMUUONnTr/UYxbU7S7CMTsfkLTF6mGd/2ioFwibCCiOqfAeOGy9YgdFrNAmjCps
- STHpUZw8X8WzgWOVaiiR+NOK2KoeeBj8A8NY/UcKmSr4c6aJ/YrpRdhTqvvahRc7EppMaa1i0
- 3Dxq9FbbeFnAjHuzCYJw9cn4Mho9fGiB1bOd8Uvp1eyRzjKOfRE+Xv0pcG/+TQtOokCQx0iUx
- 09Tdi8/KDlOoctxb5xOJG6gwZR6P889Ma1vvPQzVy0t4Is7SmlVcA2NDkTRZFn8/SvkSMUNBe
- erJH1P6tjVC64VV3VpjrXlETNmUDEl9+3RgwnGf1pzfcg3xXriUpjUbOZIm1/rQDNIYWTnN/L
- zmGFiUfy3iJFnxMqUUEizpQdYFyVX/ZEGutiJ8/XhkJ1G/ZwYBbtUEGWSTTRsLIzfNHmVqmVm
- dvrwwmE7p24o9tWshZZIKoEPsICvjIofVG9peUH2d8rfAIkDyFj+9Y93DnsG1ZXTXACoOdb9M
- bm+PxcrxPvRMlhzOlZYB6ri8oWFALCgMr/q8WVtO6aWNKBDA+kOV07BwCxM3EoGyxLvhNdPpJ
- lySQeaPbCbwcsnAjCj0azR5mvhecddko24EjtAOjD3sx0IBgQoYv8OZFZH5vlbznPTLZeizTA
- bg3m7DEBJzYBIJkuUgB+H7LYOeIQlFTnduGY0lyRhDIXeR4Ji4Y3y5PvZU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f2563e57-1982-4a64-a655-236dd4fff208@linux.intel.com>
 
-Hi Greg
+Hi,
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+On Fri, Feb 14, 2025 at 02:29:29PM +0200, Mathias Nyman wrote:
+> On 13.2.2025 22.24, Salvatore Bonaccorso wrote:
+> > Hi Mathias,
+> > 
+> > On Wed, Jan 29, 2025 at 01:01:58PM +0200, Mathias Nyman wrote:
+> > > On 24.1.2025 21.44, Forest wrote:
+> > > > On Mon, 13 Jan 2025 17:05:09 +0200, Mathias Nyman wrote:
+> > > > 
+> > > > > I'd recommend a patch that permanently adds USB_QUIRK_NO_LPM for this device.
+> > > > > Let me know if you want to submit it yourself, otherwise I can do it.
+> > > > 
+> > > > It looks like I can't contribute a patch after all, due to an issue with my
+> > > > Signed-off-by signature.
+> > > > 
+> > > > So, can you take care of the quirk patch for this device?
+> > > > 
+> > > > Thank you.
+> > > 
+> > > Sure, I'll send it after rc1 is out next week
+> > 
+> > Not something superurgent, but wanted to ask is that still on your
+> > radaar? I stumpled over it while looking at the current open bugs
+> > reported in Debian, reminding me of https://bugs.debian.org/1091517
+> 
+> Yes, patch was here:
+> https://lore.kernel.org/linux-usb/20250206151836.51742-1-mathias.nyman@linux.intel.com/
+> 
+> Greg applied it to his tree today:
+> https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/commit/?h=usb-linus&id=159daf1258227f44b26b5d38f4aa8f37b8cca663
 
-Thanks
+Thank you Matthias.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Regards,
+Salvatore
 
