@@ -1,97 +1,100 @@
-Return-Path: <stable+bounces-116408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47ADDA35DF0
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:55:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F81A35E28
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B31A9188EE79
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 12:54:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AD327A4DB5
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF72D263F42;
-	Fri, 14 Feb 2025 12:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C17266566;
+	Fri, 14 Feb 2025 12:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1bmsCsN"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Cr4XXrGs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C292817555
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 12:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E9C266EF4
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 12:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739537629; cv=none; b=JXAdNrabDPO9fn7Llq5ivAKjs7sNlGICSmEbW9O6CyBJUjPFo4SEcmyPJGh1CA5GaBzAuqRqUbe5QASARoPTs1LNtzLipC/leL7R9vJAzixmEbvNK5gx2Ww66f6ZuTwRWbgSVPOngBJKHpzHC2zyqneoQXzM9x8hC5SEg3k23CM=
+	t=1739537896; cv=none; b=UEJwQkH27YdQPehl0m32s2KZef8du2RAdn/KDYQ5q38oHYHMtsCjjMv3HSRK6CwjMh9IX9GRxNuS4f3Alt2hVoHYJFufFO0SfTgQF1hqoXAY79/Ovta4h6KSEwIQPSRpVbBHe80C4CqGeJF4cigb/ga6yzQVT2MYdLaW5P10tAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739537629; c=relaxed/simple;
-	bh=4z1f4w3fc/rS+rR37tw4jvKtssLmhg7xJF+noxM8VNw=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=iEOU6l3VeLsdRswFQzkKnMaLNTaqdGqRYSqUVMFAbqDmNUD/RmNMqNdWOHIK9TuQLJWjNUNZWHsgZTKc4F7SkxpIOLcUWJVEQ/nTV071okbFQa3sz2CfIfgHG6QPfXKpPDY76ONPkj/J8b3QDXjDnFUH8FoZsWhMzx+oRwi+d7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1bmsCsN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739537626;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M24UA7C5snSotQt93BcJrFNpx6zFhQ3V7OApt+YZfGE=;
-	b=L1bmsCsNgywQBsiiw9dEohAudteLr8NQiRNbNi6r8PVGzHLineyNzokpOUFl2pkYRRoivE
-	CPsViqAojPJGmnfccYRbQxsT6BnR6X8HpzOzA1GYuKKKvdkcpfotzVx4UoS1P8EWVfhasD
-	9vPC7i6CdKGm4dtZKTEyx7F21iIi2pw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-rFv_Yn9pNEeo8NemprD6KA-1; Fri,
- 14 Feb 2025 07:53:42 -0500
-X-MC-Unique: rFv_Yn9pNEeo8NemprD6KA-1
-X-Mimecast-MFC-AGG-ID: rFv_Yn9pNEeo8NemprD6KA_1739537621
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF2281800879;
-	Fri, 14 Feb 2025 12:53:41 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 668DC300018D;
-	Fri, 14 Feb 2025 12:53:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250211093432.3524035-1-max.kellermann@ionos.com>
-References: <20250211093432.3524035-1-max.kellermann@ionos.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
+	s=arc-20240116; t=1739537896; c=relaxed/simple;
+	bh=gQsZ4UndctShqa6chFNFDzmOS8h3FjVBV4y0ULOFnwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IUCpV9anOEEVOR3FDwSrUytA5FKuG6ZDyF6ckzbFyMmRL8JdFjX1w7gSFQhWe8l3T3ZR+9ZMgt0rJAZtSbigXOou3HSCze558xZIW81v9HcIBFyxNsjuK/pO1rU+i3lKOnPl4nt2/kplSPikWEzb9SqVNGtdgIzQz3eG98vWxPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Cr4XXrGs; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aaedd529ba1so250281866b.1
+        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 04:58:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1739537892; x=1740142692; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gQsZ4UndctShqa6chFNFDzmOS8h3FjVBV4y0ULOFnwE=;
+        b=Cr4XXrGsfnSJkI4egEnIi4Qm36HM1/pM2XXGocSHMBy7dRQR2U9nGtAhtmQkGXnTD8
+         045IxGVkJ1blxDk0cxjAg47Y/MXPCr7nHKkPrMHtT/OeGoc3qeyjX2nezhHuzl6qYSeh
+         ULhgfa1QkX5q5Am+8nq3TbIkEOiat+f/8g81eYYp8dcXstfgisVdRCA/Ah5ttF3Zxs88
+         J4vlBdJ2JkQCVUxzbHsoJEF22geGcY6RBQQgqPW/Uj31SYEK61TwolGwKkmPQchJx5u6
+         9TGu7x1zMzbwp/ymfQN0+4Vp/Y0eJBMWX9HegzjpR6dPpGQj1nKRJCHytEuXG+2v9wgx
+         OggQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739537892; x=1740142692;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gQsZ4UndctShqa6chFNFDzmOS8h3FjVBV4y0ULOFnwE=;
+        b=uTeve3leOy6qh4dhE3B5MQhLSt1+Y6wGiWb1tw8rhGtFg8pjWug/I9Ffa0DXwkGrus
+         hJtXzh+ZJMMXCTewIluJE4WucGNaYxnmaZixKnwRilBQt9s/V15VUb0aPDt+ym3T19t3
+         OFcP5ZqHFkcB5MO4brMUMXvYO/losS1y3G21n+K554hNhLqbHsoiW8PwCchew53b8OeA
+         zdEz0bpEO4XSn2wxQb3BqSrojatByuJcCJf8GTTOxFqEjFzcIXwjBfUanDL+A1EmSxvh
+         qOt2JYORcKaKeWhFh0i2SBidmsf7Yc+rrAMYujzys/exP5EvrmpfpnmbIczA4bRKtEQU
+         nzqA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9GAHeyPOH3ZoAduiuGqSroqTPwJM9l1b+/V/RP+6QCL/xFzgAsd/KD32AmYwh2DSUOP0oERY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6o7BKnOLz1V0PHj+p1uJX6s0IwkkOJio03Zqy3x+Te0OmL5+8
+	kDb9Gg36aOgL76Umdd1B420HFUB8cw5u4qZSJDZQnx6+Kqle2CN+iwAlh8PKKo52Mo/P7IyeTxa
+	QhT56//hC67MQezM2UMFqH0LE1w0q6G91Yfi8DQ==
+X-Gm-Gg: ASbGncsWvJCc4euF838eI8Gk4mZ2HvpV6QmN417XRT+VvXQR/zOPeRB049G5Q+3oySS
+	OMhMvnLbLlbNNfRaZqmIASpaswrj4sb00NoVdv20NMOcXbuB64mjkq0Up//NgAsqhp2FA19vfSn
+	3fCTzodstggpxui32mu6rMWyCDBw==
+X-Google-Smtp-Source: AGHT+IHLe7+YddvwF1jEwniu619wHEGtN11Tr41dYTgRyswr/oDOoR/sEJkfGEC7KAtiD2iVWAPopvcxL2FDqAZcQrg=
+X-Received: by 2002:a05:6402:2387:b0:5de:db71:3c56 with SMTP id
+ 4fb4d7f45d1cf-5dedb713c8bmr5113028a12.20.1739537892171; Fri, 14 Feb 2025
+ 04:58:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3978181.1739537619.1@warthog.procyon.org.uk>
-Date: Fri, 14 Feb 2025 12:53:39 +0000
-Message-ID: <3978182.1739537619@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20250211093432.3524035-1-max.kellermann@ionos.com> <3978182.1739537619@warthog.procyon.org.uk>
+In-Reply-To: <3978182.1739537619@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 14 Feb 2025 13:57:59 +0100
+X-Gm-Features: AWEUYZmPI7kPTw9KjZhYB07W4f8cfJRiru9zF2iZKyu1QvSWQCmjZ0cvWlpS8mI
+Message-ID: <CAKPOu+_6v4Dc59CHOTpP0PuzY3hie=nCUjw0WNBTwiHzCRc=Nw@mail.gmail.com>
+Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to
+ uninitialized `prev` variable
+To: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
+On Fri, Feb 14, 2025 at 1:53=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-> When checking whether the edges of adjacent subrequests touch, the
-> `prev` variable is deferenced, but it might not have been initialized.
-> This causes crashes like this one:
-> 
->  BUG: unable to handle page fault for address: 0000000181343843
-> ...
-> 
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-
+Thanks David.
+By the way, we have been running 6.13.2 with these 3 patches on dozens
+of production servers since I submitted them. All netfs problems that
+had been haunting us since 6.10 are gone. No more crashes, for the
+first time since last summer.
 
