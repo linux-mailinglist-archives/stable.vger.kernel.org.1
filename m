@@ -1,151 +1,136 @@
-Return-Path: <stable+bounces-116463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E84A36901
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:19:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A964BA36903
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67046188CFE6
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83817188C752
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758F01FCCF6;
-	Fri, 14 Feb 2025 23:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C02D1FCFCA;
+	Fri, 14 Feb 2025 23:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HUygTgAs"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="mASSejbB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4B21FCD05
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 23:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E471FCD0C
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 23:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739575153; cv=none; b=RcX4mXiiJ/vrDcxpcnaIaQRCqk5id/scAX4vsTGcn+AtXj6syvaAXc6S+aa1BeejD1ofkDp8440UbOpiOxR2tsGDENODhH+8vfHGgBLcqGApbCpaeMStQnwFWhGWdES1C6HSx5+j+ithGOnF2Je3Ymtpq64eyWK1VSd+tJHqWgM=
+	t=1739575187; cv=none; b=iLjHT0x+69E6IjTGYoT1JNTKENOeWiT5EHUBTEFMESOtlLAXdFOIlOdg9DBXD9eMmIbNJx8fLf2EoROcDzhLmnELe0DQ+7xp3Iv6/8UFn488MCeEbEpfhmas/HfO5Si8G5Nch/O9MwDUasjzxQH5H9236Xzv+pj5ApJtxl3UtCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739575153; c=relaxed/simple;
-	bh=SgmEvAU/vG04Qn0lJ4jDnjyvyJBjVNh66TzffQgnVOo=;
+	s=arc-20240116; t=1739575187; c=relaxed/simple;
+	bh=IVCW8vVwUdVf2Ohvyaabldfb9qJTAjpef7lVg2IxJj4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P4N+Pb0FWbCqQZ2GHohQqhokJ+/LbjqZPgUVZEHuj6tiCRFxGMmLx767Wa2UXnSf4gksaZBzQm8MTAC+NBkLBjZL69VdEo2U7jCNXCNImMSMKtTOYc0Bx1XdIZn17WtTGVjrI73gb9H4j1CycljeBmBRAT//unfcvoXJsc4ktQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HUygTgAs; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5ded368fcd9so3022009a12.1
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 15:19:10 -0800 (PST)
+	 To:Cc:Content-Type; b=TD3y+wpS+kzNqBn/dcd7+uPmHhvAtPPHAta2/BWfb4Hac5N4INdlz2OQT3cpDS1OydeOmr22PIN6ZC3wi4jW/Wu+WWxG39/UplZya63ixjU4W4tbBqlfvPo6iEpk7fp2xjpSfYGh0P4Qa1sbOjVaP1U70Rwz+Cy8Fvytqzl+OYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=mASSejbB; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fc11834404so3483011a91.0
+        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 15:19:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1739575149; x=1740179949; darn=vger.kernel.org;
+        d=futuring-girl.com; s=google; t=1739575184; x=1740179984; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sGj/3HWHrhep/eH6jmzDeOoJQ8CQVCeqgV1vLe07A2c=;
-        b=HUygTgAs3gCGNw/7iI89AFbmXPiV5N4VXRMZCGCvolY2FzIFNwl1paUHTgF9wtNVnh
-         tBLAlt8Zz9gU7S6xLN0Vw4PA1m1P9Q34gWSG7JXMeKzW3NtQVj99KKgehWL724+wFaPs
-         8RkPfZxgw50hncm6G9vW3DtLvL/ShThibCue4=
+        bh=M1kptu5/J+vpdEp6ep3Tn6E02zBSHfeej1qMSG9kR5Y=;
+        b=mASSejbBqka2CMPACMh5Jijdrd0+x9m+VwFin12UjxJbeemt8yTj26NmWJONoGAoCg
+         RqCWmPqFqVdwJO4tNX5P/zlR6swXWTFkEypWm6D2aczv2WZtiMrJZMsIweLSb3S5AnCr
+         AukdAQ3lnoAE6hONNK/M6Dj53POg9c0v82x1ezd9wB8Ry1a3VLSF8LwAjJepyeGbN+p4
+         D5+1egzW3lAWPHHuqdDl6PWnx5FESNucEgVcBiVxLWeqpcyDs3np2pmWHj/XrbF94Ul9
+         JCw+YdfuPLq5E6SEA6KrbUjtIrNwN5q6gMQjbt9p5QCenquNR2xjmgqgeOX/CUjMoRiw
+         ydSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739575149; x=1740179949;
+        d=1e100.net; s=20230601; t=1739575184; x=1740179984;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sGj/3HWHrhep/eH6jmzDeOoJQ8CQVCeqgV1vLe07A2c=;
-        b=Gqn2iqM7/NQkrxHdFxdijNT1rnsf59Y/uXHH3oCGyxuKItbIiUGM9sPh1icxhOh9z+
-         y2ypkUAhQhIbqs4b3kgWleoJO47sB46t97dsfrLyeRXsisVXcoRBD3FjQib6NhIj5G9d
-         AGVBnlFw9g6KdgOZl//j61cKArWcVXyCvN7gGPhdD3bEUaJwt7u3FPAYjPfo00HPKJTa
-         wR1JJkP0lngVg7C/31qAc1khJNzYEJlnANLqAIpaoNL8AbU+T3/hiivbxEUNyexFaKTd
-         WUyPW6kqUxBNjSNrKI0vD0wOIVaLUd/4hbD4EhpmuiWnKvuw6M3iq27va/Y4w3bKJ9KZ
-         BTrg==
-X-Forwarded-Encrypted: i=1; AJvYcCXqctFbikV2HvPMvn2rfyrGS7LFnNrVJVvBKY3LE41oega/IK5Cc+I0XfoxojPqZUlU6lRK4sc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzluhWR/8bRYX1OMBq4Vd8cTOqT2y0vXomNEN2kzvBtJ/LxGmrw
-	cBVdZIddx/nxumCdde7cjb9bPP6o9MSZgT7DMJ2I24szedkbcEbxgZIBhzae6/nqsClyHKTkKVS
-	zRhk=
-X-Gm-Gg: ASbGncsrflxMQO+Zwb2R6BsrLKqfEZ3u98O/4iIM+vN8H60B0nlPAgy6G+TohEHGiPc
-	EnP/+n4Z56y+iswuC+VXpHUD6sejzxVDtIeUpaaMZzdC//V1YrC4nx/Ypy06C/OtT8CEUTxzVTl
-	Rvmo3iACl+lkccpiTOGdcJebF1hW3CnEROZopRvWNf+fFQ2fqRgWf+aA0LSBKc0/XoGzJ8TZnu8
-	K6HDuj7ZUoJFK4cW1HFILx2ac7U30KuhSVux7rZxMcB7RavL70M4kaxaPv48NFLjJ2Xfkf3VZ+J
-	2DPlNjDo0koBtpgjQ+EMYhGsYOcfMbMvwfh44i+kh5eawj+TWUjQwoYcKEU2ueCPdQ==
-X-Google-Smtp-Source: AGHT+IF6uOZX+0eCua6OqTKf7KaVEM+XiobvXi0rrgLhtVBUZYsOgGzcBBQj19dft+3Zn0xJ5V1Asg==
-X-Received: by 2002:a17:907:6d08:b0:ab7:d87f:665a with SMTP id a640c23a62f3a-abb70dc5897mr98069966b.46.1739575148865;
-        Fri, 14 Feb 2025 15:19:08 -0800 (PST)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba533bf5casm420355266b.182.2025.02.14.15.19.07
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 15:19:08 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abb7520028bso12294366b.3
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 15:19:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVHZ28VvLFP7rkEPIahyAqwpxtWIBqx2uL1wZIq5ZWNt4vgOJXPJu/gOlPpF0lYksAI9xPbKjg=@vger.kernel.org
-X-Received: by 2002:a17:906:3155:b0:ab7:5fcd:d4c4 with SMTP id
- a640c23a62f3a-abb70c054c6mr76397266b.33.1739575147640; Fri, 14 Feb 2025
- 15:19:07 -0800 (PST)
+        bh=M1kptu5/J+vpdEp6ep3Tn6E02zBSHfeej1qMSG9kR5Y=;
+        b=mbqwwSbT9p/Axzr+XlL+IbnLGZJlcAVhexMrdDNUD/og4cSQzyB9lh5J8A+buAzKhM
+         p5aMyKdB7axSa4EGSTPOisUQ+7VZ3221f9/Z+axCTgBzTeH6UwZwzMMMNQxdhla29Fh5
+         jGRyRpP/CV0qIOIoic7Jb4b9Y1qFMJzMsdy6jyH/MMb+5DBshtnjX0IfR3dhN8SaQPaV
+         6N5fGevhbrZGJrlZMEqWy1/CUAuMajfJvKtQhqNsaez8wKfdaJSe5tHjU42tfQQ4qNE6
+         8CIC1zBVAifCcbyQOxUGJv1Zi2LUdnw8wsZbcoE5bfWCFaWzpiE+0F4E4ETISd9dBG2m
+         9z7w==
+X-Gm-Message-State: AOJu0Yz+EfSrgnSM3uVfb2vU2EtjdAgCQAacewDopWYmD5GpvWsfHzfQ
+	e02CZDp6Nu0yFMnlGM6oRIiops2yPdHAzfgVgxWV3p2CoqpzQZUITPAAmR6GguVNyj2tnk32QvL
+	Z1JBJ4VFltFgpWpEUz1Nt0Ie25I1XS+lf4r8dEg==
+X-Gm-Gg: ASbGncslfDxdlk+WNM0aj320tdwMK7MtGqRv3lJ0lHOeGkzXbFWpFfkQnt+OyJ6TFA9
+	B5pHtDvdJM2athnHdGyG+UfsEGPlteP5rPDuNdoIwbvpUlNOlboy1FhIsHnD08yNRzukGF7M=
+X-Google-Smtp-Source: AGHT+IEMDk4JmHkWwYaC0JdU3mrceeG+mLsI96RmyYTF792fB06bA49XHLnAxr/Cg0xW5tlJasKPprqGg2xWInDdScY=
+X-Received: by 2002:a17:90b:4fcf:b0:2ee:a4f2:b311 with SMTP id
+ 98e67ed59e1d1-2fc40f1040dmr1245930a91.8.1739575184167; Fri, 14 Feb 2025
+ 15:19:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213142440.609878115@linuxfoundation.org> <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
- <2025021459-guise-graph-edb3@gregkh> <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
-In-Reply-To: <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 14 Feb 2025 15:18:51 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
-X-Gm-Features: AWEUYZnpuwVNokIgf-y-LLoLlsjnsYUfEfqoXfSxgBhKGKvjpuPO1OGj0V6ncvE
-Message-ID: <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
-Subject: Suspend failures (was Re: [PATCH 6.13 000/443] 6.13.3-rc1 review)
-To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Phil Auld <pauld@redhat.com>, Waiman Long <longman@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+References: <20250214133842.964440150@linuxfoundation.org>
+In-Reply-To: <20250214133842.964440150@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Sat, 15 Feb 2025 08:19:33 +0900
+X-Gm-Features: AWEUYZmSJWzwPPeIoaUIOQDKvcgfilAIixByMHWDgVxEElGNhm8DLhW2jW1DgKE
+Message-ID: <CAKL4bV6p=1wrzk_HoLMTog7a8SyDaZz5UtkNRgV+j-OtkTjq2w@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Adding more people: Peter / Phil / Waiman. Juri was already on the list ear=
-lier.
+Hi Greg
 
-On Fri, 14 Feb 2025 at 02:12, Holger Hoffst=C3=A4tte
-<holger@applied-asynchrony.com> wrote:
+On Fri, Feb 14, 2025 at 10:59=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Whoop! Whoop! The sound of da police!
+> This is the start of the stable review cycle for the 6.13.3 release.
+> There are 443 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> 2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
-> commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
-> Author: Juri Lelli <juri.lelli@redhat.com>
-> Date:   Fri Nov 15 11:48:29 2024 +0000
+> Responses should be made by Sun, 16 Feb 2025 13:37:13 +0000.
+> Anything received after that time might be too late.
 >
->      sched/deadline: Check bandwidth overflow earlier for hotplug
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.13.3-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.13.y
+> and the diffstat can be found below.
 >
->      [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
+> thanks,
 >
-> With this reverted it reliably suspends again.
+> greg k-h
+>
 
-Can you check that it works (or - more likely - doesn't work) in upstream?
+6.13.3-rc2 tested.
 
-That commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
-earlier for hotplug") got merged during the current merge window, so
-it would be lovely if you can check whether current -git (or just the
-latest 6.14-rc) works for you, or has the same breakage.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Background for new people on the participants list: original report at
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-  https://lore.kernel.org/all/e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-=
-asynchrony.com/
+[    0.000000] Linux version 6.13.3-rc2rv-gac5999a6c007
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
+Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Sat Feb 15 07:57:54 JST 2025
 
-which says
+Thanks
 
->> Common symptom on all machines seems to be
->>
->> [  +0.000134] Disabling non-boot CPUs ...
->> [  +0.000072] Error taking CPU15 down: -16
->> [  +0.000002] Non-boot CPUs are not disabled
-
-and this bisection result is from
-
-  https://lore.kernel.org/all/9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-=
-asynchrony.com/
-
-and if it breaks in 6.13 -stable, I would expect the same in the
-current tree. Unless there's some non-obvious interaction with
-something else ?
-
-               Linus
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
