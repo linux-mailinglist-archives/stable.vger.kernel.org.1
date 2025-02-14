@@ -1,96 +1,62 @@
-Return-Path: <stable+bounces-116420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9ADA35F61
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:40:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E20AA35F62
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 534E416B5E5
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:35:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C13816BA69
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E2B227BB9;
-	Fri, 14 Feb 2025 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EC4264A8F;
+	Fri, 14 Feb 2025 13:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="toB4xdJW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IHM9zIQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6TcpxKr"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6D8188713
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 13:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D64188713;
+	Fri, 14 Feb 2025 13:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739540143; cv=none; b=Jj7n6731Y63VbXpb1JpiGcSWIB2enWvOrFbKBT3hTaEWp1Cgk4H1H6fiOgtGviU0bbtR5xMOE/DQ3QmnyQERs5dzPZwNZYljq+U+68/dut7eCulaOGWrG8AEQ0oNMZrK73gFpNksDMeQ7jCT2RrW5bpS/jTd4IpVMcLJXIj73Cw=
+	t=1739540200; cv=none; b=dvrT40OkX9c0nMfT8AtT7ZxBR7w5WTXTlVOrMTRAszdHnhG3uSzXFvBMEX7EKqv9Zj1wWnIjQFVTbSf7y78O/0VmKQT5BR3XVnzF6FlxD5fk5VqOGfJHTDQ137QWTLajbiwazdJ4g5fwAzgjpghfsCYIBGO0lWYEphwV+20OJYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739540143; c=relaxed/simple;
-	bh=seafV6A56qlMSGQtjIs6w47drKZVA9DocIsWsH0zMjE=;
+	s=arc-20240116; t=1739540200; c=relaxed/simple;
+	bh=FDr/8w/Mw3nuq3cwDe/Ou4ZfyPI0cVa0KRi+7EQU1+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uFESU1HysSAIRmgREcFSEVPn9k5OkOnDATZOgLsEQuIBBR+juVjIGFpqYrWiDubMxdSZ5Hf7F71bLI/RpSuC3834G1u4BoZZJ4c47qHCXCbJM21Ddz5WPzOT3Wf1l0c8GIWS7zP+f5Vn1PFuYiCVzLuDz0NjGbYRdOCGWtqOz60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=toB4xdJW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IHM9zIQO; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 29195138098F;
-	Fri, 14 Feb 2025 08:35:40 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 14 Feb 2025 08:35:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1739540140; x=1739626540; bh=CBEd3AoyYN
-	/n2kajvvGA9WHOiLlc0DfRq6RA3igCfg4=; b=toB4xdJWUAKpcxIr66wvsE1ztR
-	qFJdZADEKk/6REJLyYqjtUGJ550oOc809ce0BALkHw8cAKaFFrsoIX9KXP8UpnY4
-	51jb+g5pS9WZmxF8HZxMyY34W/w3N0FMCa1iR/jrfl3EnnkKphybNqAurrL67tVo
-	8VjvRE1SpepJZDCAEnDdqusD0uzLhQg3lzeeN+UnsADimY5gt/jrfMAsssc44bVo
-	fnBc+Q2bPjGrMJ1JR8Q2kM2mD3SEZpiiw08N0jczwHPKNfj1eAoa0lj6sgsWRMH8
-	8Mp4upMDR7kqAuOCiQg1s0kzd4TpiAVBRATTgyaCUsUgiV8qnvPoPg59C1QQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1739540140; x=1739626540; bh=CBEd3AoyYN/n2kajvvGA9WHOiLlc0DfRq6R
-	A3igCfg4=; b=IHM9zIQOCrVHLfnE7A7n+nf6zSBPRE00Xe5UWqcCGVfCFbBKOiF
-	g9lFeqmZZTdV/rgSZWoN/CJ6bFIocIUR6L9fwpACVzQIaEzq/rpav3rdPMdS2MA8
-	fv95hBm92fCm+9fVtch9SML6MER0yKR9YFuGkZQo97WKKCQZ5NBQk20G5DI+Zev7
-	ArEuLuJDj5RH/MYHa7B8sJrFFascTLypY17Hdb75WXOjoTSOzs1rAwP2bpJ/3xT+
-	FCjvb6oTS4yrwVVaVgFL6+HfoNyQQiUjdVZHMm51k34PZFYOHwrOnt3pSbhpHjg9
-	DLK/TlutRPH6PXc9bbvpOrnx/+s2ca1y2+Q==
-X-ME-Sender: <xms:q0avZ7zfg8tqiMoGeNT-Fb4cyRXg5a7WXJHDKimczEdynqRsSUmKDw>
-    <xme:q0avZzRHb7O8jmUVJgXYth4KZdfVO3XI_3fDPv7xUvV5jcWw87djKE6GkSPm-82rk
-    wM-759XOFzxcA>
-X-ME-Received: <xmr:q0avZ1VhqhPsE85mSda3UjrCbnLNuq782uylW1cJ9bpiNre5suwW5JUDy4RHxRWpQP1tmnjfFgGTdcBTOW4lZEnTc2-ovpjBuiJnDg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegleejkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueef
-    hffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepkedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopeigfhhsqdhsthgrsghlvgeslhhishhtshdrlhhinhhugidruggvvhdprhgtphht
-    thhopehhtghhsehlshhtrdguvgdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:q0avZ1g7PShgmK_VsSxiLIN3Ip0nhV0SGW_CDM6xZedpgCwItgBfkg>
-    <xmx:q0avZ9AYx2a_GtruW0efBrBj7WWPolxn9UNSjp3dd9kocgSQ_tCD8A>
-    <xmx:q0avZ-IMt2OLsODfzCNaQzepXSkCDz5birDdKFRzugz5NkOYCQxTlw>
-    <xmx:q0avZ8AZeTkKzGExohN3cHmDOGo3WEqqix42Lqz4OVQNurEfqd2yMw>
-    <xmx:rEavZx1JOIWmAus2WT-ZKoCLXROb3pqQpMj7LtY_5c0eSCsPCuZn15ls>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Feb 2025 08:35:38 -0500 (EST)
-Date: Fri, 14 Feb 2025 14:35:34 +0100
-From: Greg KH <greg@kroah.com>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: xfs-stable@lists.linux.dev, hch@lst.de, stable@vger.kernel.org
-Subject: Re: [PATCH 03/11] xfs: don't lose solo dquot update transactions
-Message-ID: <2025021409-royal-swoosh-04d3@gregkh>
-References: <173895601380.3373740.10524153147164865557.stgit@frogsfrogsfrogs>
- <173895601451.3373740.13218256058657142856.stgit@frogsfrogsfrogs>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFqEcMJlIwYSIcfwAv69lXeMap+WmRdmtvmg/FTVD8KyprWN6nIv9+mmnW2KwsAHFaBZUtoaNE8cE42lgpS4gllxWRO0WmYOuc+tB93DxyyhmOJijeTmNo8u/qko57q27MLVy95C//KSheYtE4+04gQKxESm8aToPYyvA81SXyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6TcpxKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA414C4CED1;
+	Fri, 14 Feb 2025 13:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739540200;
+	bh=FDr/8w/Mw3nuq3cwDe/Ou4ZfyPI0cVa0KRi+7EQU1+E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N6TcpxKrT5q1N+gF0T8eLdLziDSqVXHtFsKWqBNVWcpL3oxB6G3xNeJ9nnKBpY+RQ
+	 To3+iWBftYdZ1JB/hGJLJMmjM3twaNChc5FtVMWBctiblWdOOTMC2nJ5mpMMb9mPC0
+	 YIU9pNrOXjEhYHzuLU0uSJJpFVduRNOwXLBM8bG4=
+Date: Fri, 14 Feb 2025 14:36:37 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Darrick Wong <darrick.wong@oracle.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
+Message-ID: <2025021420-scouring-circus-5dac@gregkh>
+References: <20250213142436.408121546@linuxfoundation.org>
+ <c6c19838-dfa0-4e94-b7bd-1dd49449573b@oracle.com>
+ <2025021418-provoke-trilogy-2d6e@gregkh>
+ <f25f0369-bbcc-47e5-8668-ddc8177ea02c@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,19 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <173895601451.3373740.13218256058657142856.stgit@frogsfrogsfrogs>
+In-Reply-To: <f25f0369-bbcc-47e5-8668-ddc8177ea02c@oracle.com>
 
-On Fri, Feb 07, 2025 at 11:27:04AM -0800, Darrick J. Wong wrote:
-> From: Darrick J. Wong <djwong@kernel.org>
+On Fri, Feb 14, 2025 at 03:24:08PM +0530, Harshit Mogalapalli wrote:
+> Hi Greg,
 > 
-> commit d00ffba4adacd0d4d905f6e64bd8cd87011f5711 upstream
+> On 14/02/25 13:50, Greg Kroah-Hartman wrote:
+> > On Fri, Feb 14, 2025 at 01:23:23PM +0530, Harshit Mogalapalli wrote:
+> > > Hi,
+> > > 
+> > > 
+> > > On 13/02/25 19:52, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.12.14 release.
+> > > > There are 422 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > 
+> > > I see these build failures:
+> > > 
+> > > fs/xfs/xfs_trans.c: In function '__xfs_trans_commit':
+> > > fs/xfs/xfs_trans.c:843:40: error: macro "xfs_trans_apply_dquot_deltas"
+> > > requires 2 arguments, but only 1 given
+> > >    843 |         xfs_trans_apply_dquot_deltas(tp);
+> > >        |                                        ^
+> > > In file included from fs/xfs/xfs_trans.c:15:
+> > > fs/xfs/xfs_quota.h:169:9: note: macro "xfs_trans_apply_dquot_deltas" defined
+> > > here
+> > >    169 | #define xfs_trans_apply_dquot_deltas(tp, a)
+> > >        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > > fs/xfs/xfs_trans.c:843:9: error: 'xfs_trans_apply_dquot_deltas' undeclared
+> > > (first use in this function); did you mean 'xfs_trans_apply_sb_deltas'?
+> > >    843 |         xfs_trans_apply_dquot_deltas(tp);
+> > >        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >        |         xfs_trans_apply_sb_deltas
+> > > fs/xfs/xfs_trans.c:843:9: note: each undeclared identifier is reported only
+> > > once for each function it appears in
+> > > make[4]: *** [scripts/Makefile.build:229: fs/xfs/xfs_trans.o] Error 1
+> > > make[4]: *** Waiting for unfinished jobs....
+> > > make[3]: *** [scripts/Makefile.build:478: fs/xfs] Error 2
+> > > make[3]: *** Waiting for unfinished jobs....
+> > > make[2]: *** [scripts/Makefile.build:478: fs] Error 2
+> > > make[2]: *** Waiting for unfinished jobs....
+> > > make[1]: *** [/builddir/build/BUILD/kernel-6.12.14/linux-6.12.14-master.20250214.el9.rc1/Makefile:1937:
+> > > .] Error 2
+> > > make: *** [Makefile:224: __sub-make] Error 2
+> > > 
+> > > 
+> > > This commit: 91717e464c593 ("xfs: don't lose solo dquot update
+> > > transactions") in the 6.12.14-rc1 is causing this.
+> > 
+> > Odd, I am guessing that you do not have CONFIG_XFS_QUOTA enabled?
+> > 
+> 
+> I do have that enabled.
+> 
+> CONFIG_XFS_QUOTA=y
 
-There is no such commit upstream :(
+Odd, that didn't trip in my test builds :(
 
-And maybe because of this, it turns out this commit breaks the build, so
-I'll be dropping it now.
-
-thanks,
+Anyway, now dropped, thanks!
 
 greg k-h
 
