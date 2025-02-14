@@ -1,118 +1,100 @@
-Return-Path: <stable+bounces-116427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DEEA361C5
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 16:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97A3A361CC
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 16:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CFFD3A8FE5
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 15:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DE43AA73F
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 15:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91289264A8C;
-	Fri, 14 Feb 2025 15:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992B5266B7D;
+	Fri, 14 Feb 2025 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="DJPNUGCT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="j3/Ml5YN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657F26618E
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 15:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B56266EED;
+	Fri, 14 Feb 2025 15:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739547229; cv=none; b=CQv5DnT2dBEJhT8EZsiSik/er+im83TJEbdrhKVVbCLvfMOCCpw6+T2FAUK1fQ4ronEzJv8RPrnbJQEki2v1oKq7E5v3tVsUHRh/vI4vFXTVZ05PGl5/n6kYDGp4Kl60MtNnSXd4bH7+lFwuYWjFTFi24u4IRAIYQEnG52uAN+Y=
+	t=1739547271; cv=none; b=HyqUOoPVbVaDQRS5QqXPzWnWLfmGNnubEcdSaLQEYMPmmnJW6SQM9ahB2obag+ceqQZ5Aap64qiF4qnn0FnY75uOiV7dcy363MOlhdTlTSN4o2Ji33ExjJPk8Qfndwzx9DoshghaRVo5Bwl3LFo+p/f4EeHqhp8zkMb/MKO4RFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739547229; c=relaxed/simple;
-	bh=07AhQZY6eqBCHApP+AXZgM2NZRDZAnYHuj2a4Hr2NjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S4epxGjJRt5Y+YDPdSEO9dZG1JQBzy8Y5dJ+UWgktMWg1mfHVzMmT4DH6gbdOt4qqX8H4yjPF8zjA2GcnzKG7uCfM1TYv9U4lwuZcTsPCpdLYeh/3rUGhEKd95eOLhWiNMWwihol/B8EAlbHM6EvD4lLFhQevwmlDKHox9VEv1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=DJPNUGCT; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-85527b814abso33393639f.1
-        for <stable@vger.kernel.org>; Fri, 14 Feb 2025 07:33:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1739547226; x=1740152026; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qkMQckh9jiT1iN830+BKZT3u1q140/CKGbZYSL5RY18=;
-        b=DJPNUGCT6u/zHwxYTyh+0wrTeEj8939ZwQAzkKVaFThB+iHhjEJTgdXu3ubUYCcwT4
-         i2Svf/GAfRe/u1r8bic4ScjwmlZBuBs/h78PkqIzlVnU6Q3BDChVtlKdYMj9CRN8xtOp
-         Nbejh1d3Xb1XW1Lp2iB7343l6B7e++pfyuQlM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739547226; x=1740152026;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qkMQckh9jiT1iN830+BKZT3u1q140/CKGbZYSL5RY18=;
-        b=LwwlKznxlm9n1e3JO1JgLjOnNyue74whQzzWjhs4Dzn6P0oWWwrfk3C2YIuK3Hgome
-         MoqJxlqRDOciKCxaZdn5B6SEdn7Lg8T08z2JFrtTFDhhy0lu7sqSq8lUauWTIuR7tt8z
-         MUxnKb1Ndg6dbRGczu5w/3d1on6/d0G4zp56r08nacN7wMIFE2jsihlqB74WL9fIrmSL
-         iPsxcwESU8QskkbWu8hBxdfQZHisGMVK365M3nNaE/6q9tt/puzyCa4R0C3AS7z3Meu6
-         2JuTkCazasvaI4hdY2tTot1GGKoQqgNwhypB9PguetbGIfJ/FR1zwEeJYcq+BBH9C2ng
-         EysQ==
-X-Gm-Message-State: AOJu0Yw5/bPYVBgwpSm7lwQZpqO7jXjEmB9XHZntz7M4CEtZwJjoIKUV
-	Ui9wJf5Q9h1nRi2sLnFopyPhY59NYQUg6yRXDEluACiyfTTyq/vFFRQPu+M/QQ==
-X-Gm-Gg: ASbGnctklVuKW9U2xyesJaHAG5+TII3GJ+D1Aqg7rq/vrQA9waYEiw5ouh2w/5dT9W5
-	SE4SwoP+XEgRlFb5+GhyfizSbgO9ZoSABs4OltL8v59eahl8XKoAFjbkgrelmSzWik5MPYE2/YF
-	7J1x3GGACnli1s3OFuoYMcX9M+Y1aZVP5lgInBQjjGB0vx8ZiYwuW5sWm5DC223+o6juiseXjNf
-	Jz1m71Xjw0EOGN9xms5+qCcieY1VgbMb3Tkigt7DG6JukbLw+O4UU+GShhz4Enlp1QO1s8s5mZu
-	psHxaZnbH/EKGN31mWBrroZF5/rWOCej
-X-Google-Smtp-Source: AGHT+IEq9JvuG9VMapzzSQzEygbV112X3NEj6nPsFllTlUf7bexl8lMA4JJVXPsFCKRgGWrgadZhuA==
-X-Received: by 2002:a05:6602:1588:b0:855:515b:ba6 with SMTP id ca18e2360f4ac-85555daecf3mr976402839f.10.1739547226240;
-        Fri, 14 Feb 2025 07:33:46 -0800 (PST)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-85566e63194sm74004939f.21.2025.02.14.07.33.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Feb 2025 07:33:45 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Fri, 14 Feb 2025 08:33:44 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
-Message-ID: <Z69iWGFV6szC7Jck@fedora64.linuxtx.org>
-References: <20250213142436.408121546@linuxfoundation.org>
+	s=arc-20240116; t=1739547271; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=A6nq7k6sKU7n4EebHTczh9bPNrIWMXJaJXTvSlOx1kkY+ahNwf0094PW5Ba9K0tKQmC6INV9SwOHciklOpyK3B1UtVlRuDzajIFcBPFKQfNyUsPy/zMB9iCsAYHlWL7J94q7u/WMEdy8l0B+IT8+Yk2qKMsMp4ZWSFipRW/3uns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=j3/Ml5YN; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1739547266; x=1740152066; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=j3/Ml5YNMjBE1ZYSgk9h8TA+g1PGUnUnwPcyd8vofNSk+gvuX+hBGNT36gr+EHOh
+	 7cp6p/vlUUF3D0w2Fwon8iF4r5NWjg1s8JQF3lSU3QCv0cqeq8a0uRn4vlzZ5hMDa
+	 qWsO577eLRxV0CB+9UIw/ufx9/ZwrAfww1fjZOq8uwfNyq6Wk9KkjUDuvBSGQetNo
+	 A7iNFWjNR7YYB5ObP9Vy11aO3FwCBKiD+vE6lidkb6wC5AGsUzObihI4lVG61+Edr
+	 qcc5Ff28pISSLU2mhKdZqrGv3GFOuLSbOam3nWQrZ1124yI3/DMVQ8r5jixScE+PJ
+	 Ozxs2NgbrOt2V8HqHg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.122]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAfYm-1tXwAE2URs-006lmQ; Fri, 14
+ Feb 2025 16:34:26 +0100
+Message-ID: <f48a704a-8cb3-452d-95fb-fda16a484e83@gmx.de>
+Date: Fri, 14 Feb 2025 16:34:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:zLdJm+nrSOgp8ni7IZYRm/YQ0D/imNaN3c5frWqS5o+eA+M58AZ
+ onEMaD1qcD1E7WKwRObOmyWxNVgIFMEKsOr/JocIkS373sc84aVUOJg+dDfRumcJBED1ZMO
+ bf7ke0Smd39mYI44L6AGOMsCtb7LoWwky7fobyORz/kSTUlfK8QZH5hKIcQc0P8vyULQNcX
+ 852/p/602HfOmVNaAdBaA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:7ttD5aQwKMU=;jbYOPEkEe1U9BiW1E2o3oL3DZnT
+ uPbwyUmOLSPlHHotk5M9kA7633GvI55mswDB8SwajVbNEtn3kOE1XMiUp5hkSpS63An9wX1SY
+ I9pLzegM2sxl+712SlmcY8ivJN6QwS4tb9+8RMsxEITp2GaYcMRRMcqtlYnqMwB2oRIhqv6Ap
+ Hrlv0GT2Vtt+9t2tGnwbLUKWeSm3ozhdsUPJAX6FkijSNtkifiWEIc7wZ/UI+NLaZBSvIdZwP
+ yQPkBZq07lEEGttlcWyrTT6XjiNrf0Gn/ZpuxgoR2x1MhhEyeBkaktAqugaDSCa1BSf0+ypAl
+ PzO9SAMl1nTe5s+bGAG443b+XwBQsug9Z+0anv9BGvhct9yVQecJX5rBVKOGBqvRvDMpfiN9n
+ e+BHWRbMc9m90VMotpcbLmJSNm+S6Kj/qeESmhCDEY9B5fIfEudFCJr+hYGGLjAp5UUGsqr4A
+ WCW6OOXwWtLMIo7VbB4z4hhv62am/CgZBNC7tnlfun8Kd9767hxjF78Sjd4pEIr6qSjnSKAXP
+ g+0BGJAy1wqFzCfmkDflPMAN+fYO8Kf0yWHw+3fEESVDrAtTeXe5qi3J6dElQFyo5B862Sc8J
+ URFbVIF5XxS1Fa6oXhnjQoazq2YdMnzra5cpRoedsrrEuYWmdG7IHqg5biBKmY/oD4fXSDJUs
+ WCCWD7cAtPOJF3y3YUSARl8kvHsakG65H4KbRK84hyhPBi5yimER0agIb2V757z8PMImGqx1G
+ 2xMKLbpipcnMUUONnTr/UYxbU7S7CMTsfkLTF6mGd/2ioFwibCCiOqfAeOGy9YgdFrNAmjCps
+ STHpUZw8X8WzgWOVaiiR+NOK2KoeeBj8A8NY/UcKmSr4c6aJ/YrpRdhTqvvahRc7EppMaa1i0
+ 3Dxq9FbbeFnAjHuzCYJw9cn4Mho9fGiB1bOd8Uvp1eyRzjKOfRE+Xv0pcG/+TQtOokCQx0iUx
+ 09Tdi8/KDlOoctxb5xOJG6gwZR6P889Ma1vvPQzVy0t4Is7SmlVcA2NDkTRZFn8/SvkSMUNBe
+ erJH1P6tjVC64VV3VpjrXlETNmUDEl9+3RgwnGf1pzfcg3xXriUpjUbOZIm1/rQDNIYWTnN/L
+ zmGFiUfy3iJFnxMqUUEizpQdYFyVX/ZEGutiJ8/XhkJ1G/ZwYBbtUEGWSTTRsLIzfNHmVqmVm
+ dvrwwmE7p24o9tWshZZIKoEPsICvjIofVG9peUH2d8rfAIkDyFj+9Y93DnsG1ZXTXACoOdb9M
+ bm+PxcrxPvRMlhzOlZYB6ri8oWFALCgMr/q8WVtO6aWNKBDA+kOV07BwCxM3EoGyxLvhNdPpJ
+ lySQeaPbCbwcsnAjCj0azR5mvhecddko24EjtAOjD3sx0IBgQoYv8OZFZH5vlbznPTLZeizTA
+ bg3m7DEBJzYBIJkuUgB+H7LYOeIQlFTnduGY0lyRhDIXeR4Ji4Y3y5PvZU
 
-On Thu, Feb 13, 2025 at 03:22:29PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.14 release.
-> There are 422 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 15 Feb 2025 14:23:11 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi Greg
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
