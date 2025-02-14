@@ -1,102 +1,101 @@
-Return-Path: <stable+bounces-116418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25280A35F10
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:29:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E913A35F51
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 14:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C437817603D
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97A1F16C752
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 13:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21FB2641C6;
-	Fri, 14 Feb 2025 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F64C264A8F;
+	Fri, 14 Feb 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bO5Ic6a0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gB/fRXJE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1648263F4E
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 13:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B12139A8;
+	Fri, 14 Feb 2025 13:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739539278; cv=none; b=sj3zGSgDHG6nYBPyw1Ssrd+RbpNXDNDL4q6r0/Bw18PFCef//ZzYNJy8Gn4F2F0F0vAknda7Yyfpt394XsEoAGP3+dRaBZh/9OW/VbHH6AYgEfNBHMZ94UOLXx7e592PZ5FXP7Fbadsu9p2DR6lKQE9ETZKSN1lyAdUugrZ8bZg=
+	t=1739539954; cv=none; b=az2eELY4hxJHYJW+Ri4/3vZWSSnSynx2TlLzWkNwgFvOFdd4WFngkvrOOu0MXVDqUunBNi8+PvN7zdR24dInnY4w5NIFshpqtzn+WMYQE9NTOFElPxo+s7hZlv5S4v/BsYHs26NfqYMxP3hqklZDy0nMZ9TSkYHXSKB+0QVWQH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739539278; c=relaxed/simple;
-	bh=bbkW/I9ztmZgI/e0AwKpxzN7KUiCMxygp8302sY3DIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=oNxzfG3r+A2lgYvWuQrqWtTJdFrIvDW3pDvfPLQao/dS8qhV4BSl9XlUBrHIuGNpSLFABro31gkhY3q3pDmzgJSiW7Qsj5mucG5S81K9JxoMRMLmvIjxRL//HazOBwFKFJUXTWYEoEpvDupyoh/6TbWQAoLOtAz2a6tLYqogLGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bO5Ic6a0; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739539277; x=1771075277;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=bbkW/I9ztmZgI/e0AwKpxzN7KUiCMxygp8302sY3DIU=;
-  b=bO5Ic6a0jTj5hxp05YYrOziCiGcvEhXnd0zt3B9ZYlXTJ/I/M9ieTQeo
-   YVi+mrOHOtUlut20hm2Wt/aiQDKT7GIXgvt8+01owKIxFG5DxB7mZH16X
-   YadgCxbrl685ZLLmxZxzWsJASROxUpo0hDB6kteCrYG3K2obWQGN/Pha/
-   0i1S27kUPZPT4rHZovXOp9kWW1bDVIYKBIWoBe6d1zhd6ncfnTk1pRm4n
-   4Enst1f0mq0o0vrMZntTO/M2NdIvkIIoceWYIquzhFMq6u0syblfY8E03
-   DYkwL9Eyuo8DVOmS/USI02aF5cftpG2iJ7YxIU/Ts9LpzQlwIzDt+WRUL
-   Q==;
-X-CSE-ConnectionGUID: Q5x8ReOsRlyVExO25hID0w==
-X-CSE-MsgGUID: XTKbkCndTsmD2VkoB5h46A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="65639872"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="65639872"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 05:21:16 -0800
-X-CSE-ConnectionGUID: /oSxlP/5Tx2sBNlbAOCjlw==
-X-CSE-MsgGUID: SmgWB3p1SWO1uukeC8VVLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118388825"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 14 Feb 2025 05:21:15 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tivd3-0019Zz-0A;
-	Fri, 14 Feb 2025 13:21:13 +0000
-Date: Fri, 14 Feb 2025 21:21:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6.13 v2] fs/netfs/read_collect: fix crash due to
- uninitialized `prev` variable
-Message-ID: <Z69DQ-0FtgJxueCX@4f51b8f948e0>
+	s=arc-20240116; t=1739539954; c=relaxed/simple;
+	bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FwPM9hwE6jblA4/CXu3rRQnJsdAUytx05izcigGzdc7MHqVB3K/AUNtTVGJrR08eymdZ///DdzCOmuthKE1g+PbGKbCKoUOQHVd7MwVN0ud+5QG9o4j2mOdlcsprYw9/oR98Gy+bYOqdPKP7n+fUl1sGTIRDsW9o8HlDuoBeG1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gB/fRXJE; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38dcac27bcbso2006449f8f.0;
+        Fri, 14 Feb 2025 05:32:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739539951; x=1740144751; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
+        b=gB/fRXJEjGgdMuchrApMi/MeQfqebYJKRjAfjqXaJ56gyE1UXgYbiKTFthgtVczKpO
+         iGBJ3lHE0WmweSIIql3smcs5I1SYjNLHZhtAVn+NUyx0txKxg7ixhpZejGZgaIuGlJfj
+         GXN9nfectMh9ZlmSGRZUgVcIBD9P4c5PXsclGLM2LLPaMe1KkVl1f0UTAM/fOXZ3Ejiy
+         dibr4yzCwcSR2PrpPsYQ8F2r4SM381ZBTrPPq7aXg+jLAOcteDGSJpYks8SRzSm2S9Lc
+         cvIe4ierAVA/hzf+9xkT8ITaK28ypyNAhQ7t/2jBXXQVeSrUupUcexarI8D0+MZ+G6jj
+         IhAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739539951; x=1740144751;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V5/OO3BqjGF7YYqHo1ixFHMsG/BHYH5z79AbUXkeGc0=;
+        b=YmQ6dICxbabIvHKh7gQFI26+c6NAYNSZrzCtcz3eAnAQviuudPtjFFGALsgS1NyD1V
+         HpDVBzN0xXHvAdnH0eAXSN7FExTeZhn8KAFSsc3BZwjPm6qcn5iDzFcKMVI56zG/heVN
+         jYhcbECwFC10baKbsp8prTwrSfR2qfrLY5qgjmRyzI4eQ6SzUZEFA2aDIfJzs0zvb8Yx
+         K2U1L/Dcqex/3HEIA42/rjlWGvTaHYtUvhxm2twa+kDvkPnJxXEf6/YRtSyWNqpKA0T8
+         bS010jctcw4Nngt3o0CxArR3evPKT4cKdS7gN44HX81HnEnrZjSBf0sTLCv0xchNlIrO
+         mLKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUYdup2OAV4OQXxHeX8NWQum7Pnl7D5xaUpFMrv1IJdTMrBsmOdlVV3DqBn89QZ/RhanjMRVPDS@vger.kernel.org, AJvYcCXPiTio5F4Tnn0CCuihHFLlIZwlSLXZwpmn+xQgN1cBZMuL/GX0dCX3AnacHz3yiCPAQLnwpSuqIHd4qH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc0Y9Xu/WjpxRSDB5GnAeLemczp+PY155FXpxLDuHaNbZe0hVw
+	D8jKErEtqv6ULzCH5xokuBpcZXGamaFhfkGqGkgVr2ldTwQmqpHFClHdBtUR48kQfeRJcV+Exuw
+	Z+NSlrVPZMoGCsN5zgQNCUusmqcBZ5cCCXAw=
+X-Gm-Gg: ASbGncuETM2DvUxfh4CPn52JWPblx2loNhVtEHhDd+dUoETe8i0+y8GkPaiXHKlgOFm
+	QPga4YSD/YQi54PsQhbrmQx7ZdXQFokGC8FpmWpTTNLZzbxnqVF2UT0wtRrpff4G6nCmVcOvwzw
+	==
+X-Google-Smtp-Source: AGHT+IG9WP8+ZNo83h0WeFmRnnKi+HLuePMl2SVa9DOJjwkyOlXU88efT5p0gmxEYkDj3zX7PEnLqKgxLdJGs3e3KFQ=
+X-Received: by 2002:a05:6000:4024:b0:38d:afc8:954e with SMTP id
+ ffacd0b85a97d-38f24cfa3dbmr9449189f8f.11.1739539950482; Fri, 14 Feb 2025
+ 05:32:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250214131225.492756-1-max.kellermann@ionos.com>
+References: <20250213133854.100866-3-stuart.a.hayhurst@gmail.com> <eae04827-0d87-48f5-929a-9f1f23359f24@kernel.org>
+In-Reply-To: <eae04827-0d87-48f5-929a-9f1f23359f24@kernel.org>
+From: Stuart <stuart.a.hayhurst@gmail.com>
+Date: Fri, 14 Feb 2025 13:32:19 +0000
+X-Gm-Features: AWEUYZleqHgvL8C3DS0N7zLUwLcLSDIaKydireboWkZiXcihIMcSrRiQcTlFnXk
+Message-ID: <CALTg27kDRv+_y9qS3eCZUaQ6f5A-P8Y2GFyL-EMHZxixW=jYaw@mail.gmail.com>
+Subject: Re: [PATCH v3] HID: corsair-void: Update power supply values with a
+ unified work handler
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+> Now I think, what is actually expected to happen if both add_battery and
+> remove_battery is set? Do nothing as the code does?
 
-Thanks for your patch.
+It means that either the headset connected and then disconnected again, or
+it disconnected and reconnected again. Either way, the battery should be left
+in its current state.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Of course it could connect, disconnect and connect again to end up in
+that state,
+but if the driver is 3 events (a physical action) behind, we're already done for
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH v6.13 v2] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
-Link: https://lore.kernel.org/stable/20250214131225.492756-1-max.kellermann%40ionos.com
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Stuart
 
