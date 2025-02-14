@@ -1,123 +1,242 @@
-Return-Path: <stable+bounces-116355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ED7A353E9
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 02:55:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465C8A3552C
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 04:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA86D18904E2
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 01:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE51516A8E9
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 03:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95432347CC;
-	Fri, 14 Feb 2025 01:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EFC14F136;
+	Fri, 14 Feb 2025 03:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="R+dIYQyM"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="GRwzHSOw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F2B7083A;
-	Fri, 14 Feb 2025 01:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF584039
+	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 03:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739498149; cv=none; b=CcBIcHDancQ9o/HfeKa3frgA2+7ms2pASSKAMht0kvnAeou4sOPCmHFOmCbQInM3fY07iFJncTo+hKWiYwMtKdHaFH8MF+MEV91pwdOd/vsSZQXZnruXhZXZlGQPnDUkUhgGjG2LfgEcU9X6YLcNWzKXnSE/z3spFWNknkgRqzc=
+	t=1739502336; cv=none; b=RdBYpZ09JpzdxXzpE93LjacniUriNCNFmBjV/fKNl5mW/eQ5erNG2srEAjZrQAWkvHyptLrsGOHmavqQwrLJHv8hnwwEDrEGSvM8vKaEDf3LsM6zVy9znBSkAMVdjwwcQufk6nEoPy3ITEoyN8RKHmQeLNjuv2wQDRskHrQWaXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739498149; c=relaxed/simple;
-	bh=VcjAQ3B4mQjDUypYSd6nbGJXNoRWezJBNsnpycoJKa8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rk/yK5D567Uv+Ax5dFmpRswDO3HpzBdWDEDxK/T97lWXem4c9U9JdWbJ3ciTW7sE1nbXOFsS812Cc7hgvRGuXGlrUtyQ7XdtEd6DzZl2z779gqnWb6BW2/TB0oBmWyrSCU27BrsQYZGhfgYRKHz0sBeeq28fZXrjva3Da3e2lhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=R+dIYQyM; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4395f66a639so9836305e9.0;
-        Thu, 13 Feb 2025 17:55:47 -0800 (PST)
+	s=arc-20240116; t=1739502336; c=relaxed/simple;
+	bh=TJDCSBAj2ec3338N/q1YZZCvJ2Une4i1PCUFYWpwQNY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I40RoHSZ3eDPHN5W0Nb8VSOx3jFwaORugRF/He+DVJTrPDOWBzmEYDl/ecdl5DatwHt08sIL2i3bMeqrhQuFSbwUs6MSuztLYlTitR5V5K/kVE8Kzee6Bw5WyteYdpk4oJiKXaSFUaXt10AO8qmPp5bLpeiIBbRiHwRqr+AVugY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=GRwzHSOw; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-220bff984a0so27746235ad.3
+        for <stable@vger.kernel.org>; Thu, 13 Feb 2025 19:05:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1739498146; x=1740102946; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eEKId/k+euMe1WkATnBM1ya6ihDrHX3GOG9+SISZlPA=;
-        b=R+dIYQyMqjjfl+F4KNPEnWYoWzqC2d6N3nJ0YkBX+VH8bpgH0SUzX2CaGPmgbct+8e
-         xjlpnINbeS7RSBZ5aOC78zfN65P6UzXF5Wpm7d7QiQLHqRQqGfDYysb+u6rhguhFU/dW
-         9CtS6zyMIfQgxauc/Zn9uLX7mLfkJqq8mydreoJM6x4fI+fS2YxbpdiZUbpmPbyNPO8+
-         LCzLPh6L4Z45kff7NcsHZRfnZILzWwbigEYH+7ypvda/OoomXOfTp4k8j8k+ayVPcH1j
-         GPu1A3LMuU1LaM2V35no14TUlsq6UzFSF9pJBmAmAjeXTcGzR6ZIyQ/w2w3uTGE4n3IL
-         N1yQ==
+        d=bytedance.com; s=google; t=1739502334; x=1740107134; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=880EogUQ7YhTtxOXOr4zFxC4yPI4QQKvoHhCveXLots=;
+        b=GRwzHSOwGUOCdTx1eJgNHclXW8qxNa8otx49Y24oxx94G8lZUn6Rn94o/o/Jrwh+eW
+         SjvTdrdlQwRixDeUKAFs05674s+hwHbNFe/WNZ3MtsTBwStmePCc/O1l04oXGNM1WFVa
+         P+BRcL8BR/wl3AhwVtVyl2T3cYiaOq39l3H+7bR1lEntl/GcN3B+yU315gyGlPcC3/CZ
+         R8X4uv+FxNzdSjIGXhnOXstWALCXxOY2TwuayPdVqzSZ0a/M+ouWeMp7A/70mRFEUrUR
+         dpao/Y6NpUAPTVIkMHsck9wWXEuIqdmb2l15PP0bLAlqsOIz/A5zkswpA0u3fWgi7kxI
+         69Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739498146; x=1740102946;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eEKId/k+euMe1WkATnBM1ya6ihDrHX3GOG9+SISZlPA=;
-        b=JnNfYepU90zoIWinfecPSpWtOwVSNQ1OUaePoa/tDA+WZu7cSpZkzyOi3ffwyxSdXK
-         fea713Gc3tqth42gQOpO1J4isKBqzqKX4YaGHSLlJNNDLjLBAdJjX4lZYegw29kzadJg
-         gHA6Jgd29wWnRf+Q8q1y444zLCIT4Drg5jmwL/Rcp06mJZPs9YNxKfdRw3rdAvdyzF5g
-         mur3UrWhrLuUscY6IYEWyEoUfrq8fDSpnUsPC1t8494In6cU0p4ak9qNKENSS72W+nn7
-         1ZSEjCLF1qSSsTb8pOHPpcS6Dws92xuGdr9/+kEJXiec7/P8/0rJKvMNZqjHooP8ogf0
-         eMlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlL6N5byhBNqTdlMUyZR/HdMVVA7ZoqjAU1624pnXLRaMFGf+YwedHOuf2b3hOm1OFe9Anye+l@vger.kernel.org, AJvYcCWDAvv9HUsTVeKmf+qx1YP4uJvP8PNrR+YL3N9WoPpQmsnpTJv7faXsQwJrUZOAloUW/rf74mc/cKcICz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQcoXpyxit9K3b6LjXJe98jHWZ/dR3iArF/AYLLHcW7Tn6fE6G
-	/vMrSpm1TIif+JA16e0c1ePMxypsc9AwjK2oOmxDbNLsjbR3ttY=
-X-Gm-Gg: ASbGnctzurZTO8fGZdP0z2KQQ/wmNJDWq0npyXPEgQxDdmAbYl3XPgv3OR2fNGkAZ7B
-	alKlt9WXJHHzaYUM94x3iqwkg4CSLMR3hEgt5xbxo0VNgPnP+BEOVo83qPq6XRt++OxOjxYRYaR
-	SczUuI/FmQegRvTkDlgY8BWpsd1cK30EoOJzmnF9RadeBtpoumIRIX40+Vg55nGrGKhpFPLkI20
-	erDMwE5/DjG9Q31hXWLuie1NYQsR8UzQWJRuITbuTtlf6fqIMGIObR+FWFeLuAknYprH0VNfG18
-	mLbUiy2bqbHLJv/m8EI0+CeT7h3S+ZVaKVX9RgrIM15T3WH+CNHdkE52wUOPag3tbe+X
-X-Google-Smtp-Source: AGHT+IGAFqLoCM9XcT7iiED4OM3G31gTMLs6si60SuowTMy1yKm8m0Y8Y1g9lSJEe43V1rJv7W6nQA==
-X-Received: by 2002:a05:600c:35c9:b0:439:65c3:3310 with SMTP id 5b1f17b1804b1-43965c3365emr30595945e9.28.1739498145653;
-        Thu, 13 Feb 2025 17:55:45 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4779.dip0.t-ipconnect.de. [91.43.71.121])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a06cf2fsm62498165e9.19.2025.02.13.17.55.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Feb 2025 17:55:43 -0800 (PST)
-Message-ID: <66f89945-dd39-466b-a6cb-5f67b2f0940c@googlemail.com>
-Date: Fri, 14 Feb 2025 02:55:42 +0100
+        d=1e100.net; s=20230601; t=1739502334; x=1740107134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=880EogUQ7YhTtxOXOr4zFxC4yPI4QQKvoHhCveXLots=;
+        b=aLX7YIvUOYzlZ75y3ZdYsB4TzPJSqwRJt/JSbH2bgXNamRggWj+2phYKKUEq/AwN0G
+         oGoHsRCbidREHovrl50vF9LdqMIKXATxZQvwfCOqpD++5TQzeXd2Cs20J8gcQkLdMymI
+         gftiEZZ0ksREZMg35oYRM509+Kc7MKmqTTdWbQAAyVE4Qp8J0mRk5m+mFURFnFc5irNT
+         2rmbq4Omlr9su2dJZvTa8p6vSsQq+x0mKZxTnFp+vvzKvogXrO525MJ5gUEzgKCWrB19
+         KJnEpA9Rc1Xu2mdqN56UkX+L43OWLnVvJGTw0I6KmijEVNJLFBjItfd/vLYU5fJXGvyO
+         o/Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWa2Vbf/yJYNsxt7zxx40gTaZdpCH9mBl25i6M3EIWvCsVxOvG0U2r6MbhVFKgOLyut3uneOr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzrci2Klu3OWe/YmVLn8sVNB9I8VhnD1X8wD7s0oXBRyofQUAY2
+	J+ziYNU55+eY9a7h4gISC1QMnspfXPOMjPDiNpGBTjwTlcXjalGqxSDG0dbPl7Q8gmP7rZ5BvJ6
+	H
+X-Gm-Gg: ASbGncteZqWmjOi0CrP6mzXsMl/672lWDfGUQRn7h7dKmFS6VlOTzLkbovZSu21ZEYo
+	jjp9VXDlh4+b0yBEpLOTmbnmlG2VmdrsAfGcc4UK+s2Q7tPehxs2It4q9otG/ca5lKelL2GoPIl
+	BUCpUgDjtp+mHLI4AgJYQlPg81t18T/Z1e31a/1nMbJZypJTQcsi7iX97z2g+lDm6QspKm19Fw2
+	8HSS4atGML1JsETwO5Gbgxo3k6lf0oV3tHbYbtz3YXF8Ywm9rkRK9Y2zQB8QuW241Dy7qh+eYQb
+	sXznHM41zTieRCEkb9fkQ0Bt4XIhbwpo/t2UMk3pMCZT2WVIf4ZDE8eS
+X-Google-Smtp-Source: AGHT+IE0j4ifNKT9H6YLxFTZoD5WzE6IGo9wOiQNtVXNtqnV2ixJQoeneDIT/l4UNMn6vQM3UgH1KQ==
+X-Received: by 2002:a05:6a20:431b:b0:1ee:6032:b1e9 with SMTP id adf61e73a8af0-1ee6b360aa3mr9894032637.21.1739502334088;
+        Thu, 13 Feb 2025 19:05:34 -0800 (PST)
+Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.155])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73242568a78sm2130486b3a.55.2025.02.13.19.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 19:05:33 -0800 (PST)
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+To: linux@armlinux.org.uk,
+	ezra@easyb.ch,
+	david@redhat.com,
+	hughd@google.com,
+	ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	muchun.song@linux.dev
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] arm: pgtable: fix NULL pointer dereference issue
+Date: Fri, 14 Feb 2025 11:03:49 +0800
+Message-Id: <20250214030349.45524-1-zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/422] 6.12.14-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250213142436.408121546@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 13.02.2025 um 15:22 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.14 release.
-> There are 422 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+When update_mmu_cache_range() is called by update_mmu_cache(), the vmf
+parameter is NULL, which will cause a NULL pointer dereference issue in
+adjust_pte():
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Unable to handle kernel NULL pointer dereference at virtual address 00000030 when read
+Hardware name: Atmel AT91SAM9
+PC is at update_mmu_cache_range+0x1e0/0x278
+LR is at pte_offset_map_rw_nolock+0x18/0x2c
+Call trace:
+ update_mmu_cache_range from remove_migration_pte+0x29c/0x2ec
+ remove_migration_pte from rmap_walk_file+0xcc/0x130
+ rmap_walk_file from remove_migration_ptes+0x90/0xa4
+ remove_migration_ptes from migrate_pages_batch+0x6d4/0x858
+ migrate_pages_batch from migrate_pages+0x188/0x488
+ migrate_pages from compact_zone+0x56c/0x954
+ compact_zone from compact_node+0x90/0xf0
+ compact_node from kcompactd+0x1d4/0x204
+ kcompactd from kthread+0x120/0x12c
+ kthread from ret_from_fork+0x14/0x38
+Exception stack(0xc0d8bfb0 to 0xc0d8bff8)
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+To fix it, do not rely on whether 'ptl' is equal to decide whether to hold
+the pte lock, but decide it by whether CONFIG_SPLIT_PTE_PTLOCKS is
+enabled. In addition, if two vmas map to the same PTE page, there is no
+need to hold the pte lock again, otherwise a deadlock will occur. Just add
+the need_lock parameter to let adjust_pte() know this information.
 
+Reported-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Closes: https://lore.kernel.org/lkml/CAM1KZSmZ2T_riHvay+7cKEFxoPgeVpHkVFTzVVEQ1BO0cLkHEQ@mail.gmail.com/
+Fixes: fc9c45b71f43 ("arm: adjust_pte() use pte_offset_map_rw_nolock()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+Changes in v2:
+ - change Ezra's email address (Ezra Buehler)
+ - some cleanups (David Hildenbrand)
 
-Beste Grüße,
-Peter Schneider
+ arch/arm/mm/fault-armv.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
+diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+index 2bec87c3327d2..ea4c4e15f0d31 100644
+--- a/arch/arm/mm/fault-armv.c
++++ b/arch/arm/mm/fault-armv.c
+@@ -62,7 +62,7 @@ static int do_adjust_pte(struct vm_area_struct *vma, unsigned long address,
+ }
+ 
+ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+-		      unsigned long pfn, struct vm_fault *vmf)
++		      unsigned long pfn, bool need_lock)
+ {
+ 	spinlock_t *ptl;
+ 	pgd_t *pgd;
+@@ -99,12 +99,11 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+ 	if (!pte)
+ 		return 0;
+ 
+-	/*
+-	 * If we are using split PTE locks, then we need to take the page
+-	 * lock here.  Otherwise we are using shared mm->page_table_lock
+-	 * which is already locked, thus cannot take it.
+-	 */
+-	if (ptl != vmf->ptl) {
++	if (need_lock) {
++		/*
++		 * Use nested version here to indicate that we are already
++		 * holding one similar spinlock.
++		 */
+ 		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+ 		if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+ 			pte_unmap_unlock(pte, ptl);
+@@ -114,7 +113,7 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+ 
+ 	ret = do_adjust_pte(vma, address, pfn, pte);
+ 
+-	if (ptl != vmf->ptl)
++	if (need_lock)
+ 		spin_unlock(ptl);
+ 	pte_unmap(pte);
+ 
+@@ -123,16 +122,18 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+ 
+ static void
+ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+-	      unsigned long addr, pte_t *ptep, unsigned long pfn,
+-	      struct vm_fault *vmf)
++	      unsigned long addr, pte_t *ptep, unsigned long pfn)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct vm_area_struct *mpnt;
+ 	unsigned long offset;
++	unsigned long pmd_start_addr, pmd_end_addr;
+ 	pgoff_t pgoff;
+ 	int aliases = 0;
+ 
+ 	pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
++	pmd_start_addr = ALIGN_DOWN(addr, PMD_SIZE);
++	pmd_end_addr = pmd_start_addr + PMD_SIZE;
+ 
+ 	/*
+ 	 * If we have any shared mappings that are in the same mm
+@@ -141,6 +142,14 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+ 	 */
+ 	flush_dcache_mmap_lock(mapping);
+ 	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
++		/*
++		 * If we are using split PTE locks, then we need to take the pte
++		 * lock. Otherwise we are using shared mm->page_table_lock which
++		 * is already locked, thus cannot take it.
++		 */
++		bool need_lock = IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS);
++		unsigned long mpnt_addr;
++
+ 		/*
+ 		 * If this VMA is not in our MM, we can ignore it.
+ 		 * Note that we intentionally mask out the VMA
+@@ -151,7 +160,12 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+ 		if (!(mpnt->vm_flags & VM_MAYSHARE))
+ 			continue;
+ 		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+-		aliases += adjust_pte(mpnt, mpnt->vm_start + offset, pfn, vmf);
++		mpnt_addr = mpnt->vm_start + offset;
++
++		/* Avoid deadlocks by not grabbing the same PTE lock again. */
++		if (mpnt_addr >= pmd_start_addr && mpnt_addr < pmd_end_addr)
++			need_lock = false;
++		aliases += adjust_pte(mpnt, mpnt_addr, pfn, need_lock);
+ 	}
+ 	flush_dcache_mmap_unlock(mapping);
+ 	if (aliases)
+@@ -194,7 +208,7 @@ void update_mmu_cache_range(struct vm_fault *vmf, struct vm_area_struct *vma,
+ 		__flush_dcache_folio(mapping, folio);
+ 	if (mapping) {
+ 		if (cache_is_vivt())
+-			make_coherent(mapping, vma, addr, ptep, pfn, vmf);
++			make_coherent(mapping, vma, addr, ptep, pfn);
+ 		else if (vma->vm_flags & VM_EXEC)
+ 			__flush_icache_all();
+ 	}
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.20.1
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
