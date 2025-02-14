@@ -1,96 +1,96 @@
-Return-Path: <stable+bounces-116442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8FDA365AC
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 19:24:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAC7A365B8
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 19:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26A517A129B
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 18:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5205A16A672
+	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 18:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A976A2686B3;
-	Fri, 14 Feb 2025 18:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD862690E2;
+	Fri, 14 Feb 2025 18:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBfCeEh4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rhosxkk1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6157E6FC5;
-	Fri, 14 Feb 2025 18:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EFE14D28C;
+	Fri, 14 Feb 2025 18:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739557477; cv=none; b=W+wbdqdLGV1Xa4BRbdE4++Rp8YLGG2pfVNcDpDdXLIgDyHekZYXM082vNGZzeN+LNJ2YY7dOBP91TD2XDQPQU/rfQ+xlq//Q2ktO33XlKTszquDCh3lr91SuoZEKL0MvoU2n3E9CG85e1lgFYFUlms/uBJBqpvioszcGMxeRSKI=
+	t=1739557681; cv=none; b=N74c3ZxHeO330agY5peeuVvbGhw/ZKfAPgwo+PUWPkcfkjgfJogfjt5c1qe7IM+McB4K4spSMmI7CQbH6UESql3Xb8vTWTdalRSpo2LtxoVcqknos3X+P75hCkGBA/nCEeYstxk+dTZGNvpdkV/z1XE61P0P/kv0qxP3GMdd77Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739557477; c=relaxed/simple;
-	bh=EnPyDsRXxOiW9E/OiZLbcdVLTE16+ppq7ViugzHEnYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bAAM5Xgc+jweLxlukSRrnyMrVjRX7dxgc6VsxdBy1Fu7UZ0xw4ZbXScNALElJB35yZ5fPVWGe1SXDqT65LX8PUjqi8LJbKoAfGwp739uFJwbu0WhsdwaMfwoG2sJOhslY4LIDkaNwtEP2ErJC2XcbsQAmlPvzTDJU0FipX/u+7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBfCeEh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F42C4CED1;
-	Fri, 14 Feb 2025 18:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739557476;
-	bh=EnPyDsRXxOiW9E/OiZLbcdVLTE16+ppq7ViugzHEnYY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bBfCeEh4gj/A6ILiMdKMqQabCX9D4An7sg2s5CFZUToePUnsiq+euusSu7APeYf6z
-	 BSZSwpY/LkyWyaWPw1xj0/nAYzz24KcNxBl4yywdrKFjnPZGldFsTwCPknANmHx2uK
-	 Qxj9PkuRcxBOfErjo5bAJHoPoexjCsu+bGT41vAIsNimspWVUtggCukVPM+9FfrFjR
-	 CebW6UtQwU7FecdBmn31qW+xL3U1I5/k6WyyaVLswvheP8KgQR8jBdNU/+eH5WxKEG
-	 1eTRPLKnzsuzYLwcKjzFD/kQtBdMnKsDypCq9ElEr53g1mnXgUt6ZAJUnNXI0bmHsP
-	 G4sUA4MrhDPVA==
-Date: Fri, 14 Feb 2025 10:24:36 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Greg KH <greg@kroah.com>
-Cc: xfs-stable@lists.linux.dev, hch@lst.de, stable@vger.kernel.org
-Subject: Re: [PATCH 03/11] xfs: don't lose solo dquot update transactions
-Message-ID: <20250214182436.GB21799@frogsfrogsfrogs>
-References: <173895601380.3373740.10524153147164865557.stgit@frogsfrogsfrogs>
- <173895601451.3373740.13218256058657142856.stgit@frogsfrogsfrogs>
- <2025021409-royal-swoosh-04d3@gregkh>
+	s=arc-20240116; t=1739557681; c=relaxed/simple;
+	bh=zUy8H2TXFgYBHz9VYypM+bAWJmRV/WrtybTJ+h3s1f4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EoG7xYZn3zQc9oVZKRwD7QMUGFQQnGidrhkmNhuiIx6jO6GZRtGwa1TIiUr2Mc5xhOiND1U/ViWn1KcB165hkOGVkkdyFJJQPQFd1BQQRCqV+97tTVr9d6O/sUpt9lzW91hCdFALKod3kHWP/azmLdSTJwvSweRliHZpej4TDIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Rhosxkk1; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 723364442A;
+	Fri, 14 Feb 2025 18:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739557677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zUy8H2TXFgYBHz9VYypM+bAWJmRV/WrtybTJ+h3s1f4=;
+	b=Rhosxkk1SMWTYOQ+STvzgixJugox5srvE3afnwNLcfA7raIwFpwbBz00K0LU+BDT2uNAEt
+	fATwbXx6zTUNhKBB1vCIVkUV3QQgrrT1mZWl8VqHVyIKmCmG6IyEVAXcyPasW9NqBbC5nt
+	aU5xzAsp8LUg0fSQESnrhJOWxdA2+RNtBr+8mNC2qmhl3fu/+4kCCVu3EIswba5pRpHoEC
+	EhnWNC6BrFyBwBDY8Za7bGFuWiCqTHqBQJyD5FOlDXAqMruJlIRc/Mg66wKOao9YH9DkAj
+	6j3Essbbc/FF7Tn8vBjN+BiM3YNChEV5WlQckgv7HQ6JUhCpKZF+s01x5dlR3w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Santhosh Kumar K <s-k6@ti.com>
+Cc: <richard@nod.at>,  <vigneshr@ti.com>,  <quic_sridsn@quicinc.com>,
+  <quic_mdalam@quicinc.com>,  <linux-mtd@lists.infradead.org>,
+  <linux-kernel@vger.kernel.org>,  <p-mantena@ti.com>,
+  <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] mtd: spinand: winbond: Fix oob_layout for W25N01JW
+In-Reply-To: <20250213060018.2664518-1-s-k6@ti.com> (Santhosh Kumar K.'s
+	message of "Thu, 13 Feb 2025 11:30:18 +0530")
+References: <20250213060018.2664518-1-s-k6@ti.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 14 Feb 2025 19:27:56 +0100
+Message-ID: <875xlcnzyr.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025021409-royal-swoosh-04d3@gregkh>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehtdefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegvdduleeihfettdfgieevtdffjeeggfefveetudeludekieffhfeiffduvdehffenucffohhmrghinhepfihinhgsohhnugdrtghomhenucfkphepledvrddukeegrdelkedrudeijeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedrleekrdduieejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtohepshdqkheisehtihdrtghomhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtohepqhhuihgtpghsrhhiughsnhesqhhuihgtihhntgdrtghomhdprhgtphhtthhopehquhhitggpmhgurghlrghmsehquhhitghinhgtrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdri
+ hhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpqdhmrghnthgvnhgrsehtihdrtghomh
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, Feb 14, 2025 at 02:35:34PM +0100, Greg KH wrote:
-> On Fri, Feb 07, 2025 at 11:27:04AM -0800, Darrick J. Wong wrote:
-> > From: Darrick J. Wong <djwong@kernel.org>
-> > 
-> > commit d00ffba4adacd0d4d905f6e64bd8cd87011f5711 upstream
-> 
-> There is no such commit upstream :(
-> 
-> And maybe because of this, it turns out this commit breaks the build, so
-> I'll be dropping it now.
+Hello Santhosh,
 
-Heh, I originally ported this patch when it was in my dev tree, then
-later fixed something in the dev branch and forgot to update the lts
-branch.  Then all those quota fixes got delayed for a month because
-the upstream maintainer was on vacation and didn't push anything, and I
-forgot to ever get back to this, and checkpatch didn't notice because it
-doesn't validate commit ids that link to another repo.
+On 13/02/2025 at 11:30:18 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 
-Soooo here I go updating my bespoke checkpatch for a third day in a row,
-and will resubmit this patch soon.
+> Fix the W25N01JW's oob_layout according to the datasheet. [1]
+>
+> [1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand=
+-flash/?__locale=3Den&partNo=3DW25N01JW
+>
+> Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND =
+flash")
+> Cc: Sridharan S N <quic_sridsn@quicinc.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 
-Q: Does everyone else already have Really Good maintainer scripts and I
-am the grossly ignorant one?  Or is scripts/checkpatch.pl really the
-only thing available?  Because it whines about things that nobody in the
-xfs community really care about (minor style problems), and misses
-things that we really /do/ care about (correct commit tagging).
+I am sorry this patch does not apply, are you sure you rebased on next?
 
---D
+Can you please fix and resend ?
 
-> thanks,
-> 
-> greg k-h
-> 
+Thanks,
+Miqu=C3=A8l
 
