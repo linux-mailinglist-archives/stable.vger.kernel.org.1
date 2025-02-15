@@ -1,216 +1,88 @@
-Return-Path: <stable+bounces-116505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA23A3703B
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6904A3707B
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 20:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4561893ADE
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 18:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751A01893F7A
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD321EDA24;
-	Sat, 15 Feb 2025 18:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcTf1zJS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94ED1EA7DD;
+	Sat, 15 Feb 2025 19:58:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C791EDA13;
-	Sat, 15 Feb 2025 18:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A5915696E
+	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 19:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739645567; cv=none; b=LCLPYdL+DFsltPS25QLAbsWCQxTgy0OiVUyfRlhKo/pDZMEhsuN++JF9N2w8c9HJQOcPfvJbUSsu3o1tg5vGMFncFrdzKJaMLzMrwkHMPbXJzqyRHJxTb5CF3Ii/20bIQClid3nGt27pai4Rp7Bz6QhJf6/agDdMEJYHQwBaQcw=
+	t=1739649489; cv=none; b=ovzfRrMkRPAaejyszuHY9D8pnqR87RbGqJ/puD6jKS+x97rhm+FPZLC24M3AGrkgPLe/Ct9ty0BQy0LzRwyqJyHagzjW8cyh11T1DKAbn79WgOguOZ3pTT5RPuT8q1ddmNM7O3w1leIcm1BNfP1jEZXNIv8vGJlpZXGiD7yjwG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739645567; c=relaxed/simple;
-	bh=/PQD4PwAVkDwv0RHEHZ6GErT3TxEUPl8AR+MB47KVcE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d+XpYEgBJ0ovugWFA5AYJDbRZRtYyJMl98MEzwYU0Dr4Ut4pDjGhj6fNn4UK6+8CiLxy92izX6/HVCOtCOwwyE3e6EDsvkoSaoWtGCDTtTdEdzKrZRqGS/XIQS+SLNEpLd9g6MkajFrXsksS1kE9T0eEucNZofCkFqWrSfGlAcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcTf1zJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6354CC4CEDF;
-	Sat, 15 Feb 2025 18:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739645566;
-	bh=/PQD4PwAVkDwv0RHEHZ6GErT3TxEUPl8AR+MB47KVcE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mcTf1zJS7dFUPBwQcmPveA2paU2Vl8Ar+hMeCC3u+jrIgw+89XfU25VM7eSh5lI4l
-	 a0bQzPW6zL1V387oPaFf2jQyZ4CpL1iO4fBkDus/sGXbsA4kc8azIOtBzY5J/UqesN
-	 hC0gn2JdI01TFCBdd1Ab4qJE6diT+0kBrdmrANI+LQEV0HDaWh5XxYyUDsKuMNDAjI
-	 IzB2y3cIaeBbin34FdtPnCSRd7/gm8c4iXaMJENt2KrCQc754lr6ik3sjpEbz622JQ
-	 HIsB94TmWTMX7ZJD7LlPpBV99K38SOzoFzqyr9BtoxwY0LC54J5h9Cv6DveBnRhO04
-	 O/7ms4hdlkQfQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tjNHQ-004Qno-4c;
-	Sat, 15 Feb 2025 18:52:44 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Christoph Fritz <chf.fritz@googlemail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] irqchip/gic-v3: Fix rk3399 workaround when secure interrupts are enabled
-Date: Sat, 15 Feb 2025 18:52:41 +0000
-Message-Id: <20250215185241.3768218-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1739649489; c=relaxed/simple;
+	bh=8Agr4LCJvMont3sOn0Fa6/PrKDLRic6lEVvoPBKxio0=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=hOWRPdlbxuqBAuzqmD4creoOONJXWRMPwb/NSmFFZJ0jUu3V3eqdQ+EF/n9za0K3pSH+hpuFypghljHIqKZQ2hSA7F6d3IfhJ9Q0+wVJZJnlAVC32TvJO/yuVKzbE9ANXzP4cCWV21Jnsd+FN+23R/22+lh6O0Sfb/dC7UarwWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5ddd71dc.dip0.t-ipconnect.de [93.221.113.220])
+	by mail.itouring.de (Postfix) with ESMTPSA id 364FB12566F;
+	Sat, 15 Feb 2025 20:57:57 +0100 (CET)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id DD9136018E4C0;
+	Sat, 15 Feb 2025 20:57:56 +0100 (CET)
+Subject: Re: Suspend failures (was [PATCH 6.13 000/443] 6.13.3-rc1 review)
+To: Waiman Long <llong@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Phil Auld <pauld@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable <stable@vger.kernel.org>
+References: <20250213142440.609878115@linuxfoundation.org>
+ <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
+ <2025021459-guise-graph-edb3@gregkh>
+ <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
+ <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
+ <012c4a3a-ead8-4bba-8ec9-5d5297bbd60c@redhat.com>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <905eb8ab-2635-e030-b671-ab045b55f24c@applied-asynchrony.com>
+Date: Sat, 15 Feb 2025 20:57:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <012c4a3a-ead8-4bba-8ec9-5d5297bbd60c@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, chf.fritz@googlemail.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Christoph reports that their rk3399 system dies since we merged
-773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC
-integrations").
+On 2025-02-15 02:35, Waiman Long wrote:
+<snip>
 
-It appears that some rk3399 have some secure payloads, and that
-the firmware sets SCR_EL3.FIQ==1. Obivously, disabling security
-in that configuration leads to even more problems.
+> Commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
+> earlier for hotplug") is the last patch of the 3 patch series.
+> 
+>   1) commit 41d4200b7103 ("sched/deadline: Restore dl_server bandwidth on non-destructive root domain changes")
+>   2) commit d4742f6ed7ea ("sched/deadline: Correctly account for allocated bandwidth during hotplug")
+>   3) commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow earlier for hotplug")
+> 
+> It looks like 6.13.3-rc1 has patches 2 and 3, but not patch 1. It is
+> possible that patch 3 has a dependency on patch 1. My suggestion is
+> to either take patch 1 as well or none of them.
+  
+Now that we have 6.13.3-rc3 passing all tests I got curious and applied
+the whole series again. And voila: suspend works reliably (3 out of 3).
+Mystery solved.
 
-Let's revisit the workaround by:
+So Greg, feel free to add the whole 3-part series in the next round.
 
-- making it rk3399 specific
-- checking whether Group-0 is available, which is a good proxy
-  for SCR_EL3.FIQ being 0
-- either apply the workaround if Group-0 is available, or disable
-  pseudo-NMIs if not
-
-Note that this doesn't mean that the secure side is able to receive
-interrupts anyway, as we make all interrupts non-secure anyway.
-Clearly, nobody ever tested secure interrupts on this platform.
-
-With that, Christoph is able to use their rk3399.
-
-Reported-by: Christoph Fritz <chf.fritz@googlemail.com>
-Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC integrations")
-Link: https://lore.kernel.org/r/b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com
----
- drivers/irqchip/irq-gic-v3.c | 53 +++++++++++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 76dce0aac2465..270d7a4d85a6d 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -44,6 +44,7 @@ static u8 dist_prio_nmi __ro_after_init = GICV3_PRIO_NMI;
- #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
- #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
- #define FLAGS_WORKAROUND_ASR_ERRATUM_8601001	(1ULL << 2)
-+#define FLAGS_WORKAROUND_INSECURE		(1ULL << 3)
- 
- #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
- 
-@@ -83,6 +84,8 @@ static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
- #define GIC_LINE_NR	min(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
- #define GIC_ESPI_NR	GICD_TYPER_ESPIS(gic_data.rdists.gicd_typer)
- 
-+static bool nmi_support_forbidden;
-+
- /*
-  * There are 16 SGIs, though we only actually use 8 in Linux. The other 8 SGIs
-  * are potentially stolen by the secure side. Some code, especially code dealing
-@@ -163,21 +166,27 @@ static void __init gic_prio_init(void)
- {
- 	bool ds;
- 
--	ds = gic_dist_security_disabled();
--	if (!ds) {
--		u32 val;
--
--		val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
--		val |= GICD_CTLR_DS;
--		writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
-+	cpus_have_group0 = gic_has_group0();
- 
--		ds = gic_dist_security_disabled();
--		if (ds)
--			pr_warn("Broken GIC integration, security disabled");
-+	ds = gic_dist_security_disabled();
-+	if ((gic_data.flags & FLAGS_WORKAROUND_INSECURE) && !ds) {
-+		if (cpus_have_group0) {
-+			u32 val;
-+
-+			val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
-+			val |= GICD_CTLR_DS;
-+			writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
-+
-+			ds = gic_dist_security_disabled();
-+			if (ds)
-+				pr_warn("Broken GIC integration, security disabled\n");
-+		} else {
-+			pr_warn("Broken GIC integration, pNMI forbidden\n");
-+			nmi_support_forbidden = true;
-+		}
- 	}
- 
- 	cpus_have_security_disabled = ds;
--	cpus_have_group0 = gic_has_group0();
- 
- 	/*
- 	 * How priority values are used by the GIC depends on two things:
-@@ -209,7 +218,7 @@ static void __init gic_prio_init(void)
- 	 * be in the non-secure range, we program the non-secure values into
- 	 * the distributor to match the PMR values we want.
- 	 */
--	if (cpus_have_group0 & !cpus_have_security_disabled) {
-+	if (cpus_have_group0 && !cpus_have_security_disabled) {
- 		dist_prio_irq = __gicv3_prio_to_ns(dist_prio_irq);
- 		dist_prio_nmi = __gicv3_prio_to_ns(dist_prio_nmi);
- 	}
-@@ -1922,6 +1931,18 @@ static bool gic_enable_quirk_arm64_2941627(void *data)
- 	return true;
- }
- 
-+static bool gic_enable_quirk_rk3399(void *data)
-+{
-+	struct gic_chip_data *d = data;
-+
-+	if (of_machine_is_compatible("rockchip,rk3399")) {
-+		d->flags |= FLAGS_WORKAROUND_INSECURE;
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool rd_set_non_coherent(void *data)
- {
- 	struct gic_chip_data *d = data;
-@@ -1996,6 +2017,12 @@ static const struct gic_quirk gic_quirks[] = {
- 		.property = "dma-noncoherent",
- 		.init   = rd_set_non_coherent,
- 	},
-+	{
-+		.desc	= "GICv3: Insecure RK3399 integration",
-+		.iidr	= 0x0000043b,
-+		.mask	= 0xff000fff,
-+		.init	= gic_enable_quirk_rk3399,
-+	},
- 	{
- 	}
- };
-@@ -2004,7 +2031,7 @@ static void gic_enable_nmi_support(void)
- {
- 	int i;
- 
--	if (!gic_prio_masking_enabled())
-+	if (!gic_prio_masking_enabled() || nmi_support_forbidden)
- 		return;
- 
- 	rdist_nmi_refs = kcalloc(gic_data.ppi_nr + SGI_NR,
--- 
-2.39.2
-
+cheers
+Holger
 
