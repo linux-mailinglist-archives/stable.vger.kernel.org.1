@@ -1,102 +1,216 @@
-Return-Path: <stable+bounces-116504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDB7A3701C
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:11:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA23A3703B
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB9F67A3D61
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 18:10:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4561893ADE
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 18:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779131EA7E1;
-	Sat, 15 Feb 2025 18:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD321EDA24;
+	Sat, 15 Feb 2025 18:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3SeTT7x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcTf1zJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A5D197A87;
-	Sat, 15 Feb 2025 18:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C791EDA13;
+	Sat, 15 Feb 2025 18:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739643072; cv=none; b=fTyIqsqMW4eVZWY1TR2UFSD9X5BsqsS7rf1fESiMw+R4ZXW5cL6YvdJ7GEp8C2jk1iUdWHOojYFaPdn5m7JP4xg1lWoJleOgBTOzbnsEGLbmSGawybP7Kq1GUMkln2dZDfFGLq8RPqHfZHhQsZZ2pi+HKxEvUt5kLOyw4i3C4WM=
+	t=1739645567; cv=none; b=LCLPYdL+DFsltPS25QLAbsWCQxTgy0OiVUyfRlhKo/pDZMEhsuN++JF9N2w8c9HJQOcPfvJbUSsu3o1tg5vGMFncFrdzKJaMLzMrwkHMPbXJzqyRHJxTb5CF3Ii/20bIQClid3nGt27pai4Rp7Bz6QhJf6/agDdMEJYHQwBaQcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739643072; c=relaxed/simple;
-	bh=VwiucCmRsHj4WIjXs8qnCxLiQoA41Y/9GZf5q6IhOkU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TgLrVHbavgZB/TObITpCXQrtETXeGaLp26Lm76C29V4q0NX8F+7pmBFKNSfBdjAFFn7GZ39gdQSmKGzxi1KuFyqvCuYkV/a/pHlLUpphLnDGjcV/4Uw65Y8ERm9vRmTphDpJzt5DOWasWb9y0NCgMQaXWELDnWYAxodEQ1SMBOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3SeTT7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EEEC4CEE2;
-	Sat, 15 Feb 2025 18:11:11 +0000 (UTC)
+	s=arc-20240116; t=1739645567; c=relaxed/simple;
+	bh=/PQD4PwAVkDwv0RHEHZ6GErT3TxEUPl8AR+MB47KVcE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d+XpYEgBJ0ovugWFA5AYJDbRZRtYyJMl98MEzwYU0Dr4Ut4pDjGhj6fNn4UK6+8CiLxy92izX6/HVCOtCOwwyE3e6EDsvkoSaoWtGCDTtTdEdzKrZRqGS/XIQS+SLNEpLd9g6MkajFrXsksS1kE9T0eEucNZofCkFqWrSfGlAcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcTf1zJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6354CC4CEDF;
+	Sat, 15 Feb 2025 18:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739643071;
-	bh=VwiucCmRsHj4WIjXs8qnCxLiQoA41Y/9GZf5q6IhOkU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d3SeTT7xsLBcmBCCbwEsTYMmsO5H+B9aU62Ry9WxlkZtPxRVfQWZaLjQtzEBNRK/8
-	 mWmcI/oBs8lsGujeTaP2Il5h2m2Hu8wR6hfwXZ8UKeMwUlcU2fB0bpIYs8jwmydQS0
-	 1rA2/FU3x4P+7Doi9WzLpR4PDhOuwy9yNdhshAz/9l8pairy/eDMgsfqp9sah/P6IZ
-	 H+bUl6D2PWzC2qHVYiMYcv+afzoOhgwbR0PW5QD1kOLOp1lcW8HO2XHD6TaKpY7O5x
-	 WGKxrJ0ZVjQimrRHXEeNRMsm1q96WnyFSXJ1r2WVvZXgPkOQ5VF1mA+WjFC687vatg
-	 sMjIVh956VbNQ==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-54529eeb38aso1829783e87.2;
-        Sat, 15 Feb 2025 10:11:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU76f3SeWHbuNHX+8sSEsepXZ1Pbtfl8bLybFjQ4hQVGRiPfb5ky983/Rma40CUFJ+aqBRoj9sJzpdrv0CX@vger.kernel.org, AJvYcCUL9nduLKZ23Bgj0ySaBIT7OAnB1ePWLAc0SZB3OGi9ZBjahud/XVh5qjpRa1wjVI1cGOuuCr0DKBVKnkc=@vger.kernel.org, AJvYcCWNCeB9LdBZciU1C3R6VjK86JtWv4vlnv7RylRHJj6kS7DtS1tDoSM2WCvYvLdMPmyTmRxxSZ66@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM1LUP4JohoxY4qZyUBxpHTBCQ57cPjjKIVIVY2EDqZstO5ytF
-	EFNXrw0LvP7j0vi5td3voXegLtgbAveuVpBmDEGf0vnM7nzgxjUTRlxdo460YHJDzehmU8y/4BS
-	zOjCAt4SH2SzZq8J6L2rP78WILn0=
-X-Google-Smtp-Source: AGHT+IE0rwwrkKgLzFfRhD+QZGgoJPXVzhh3qODeXXehVd6GVBdQBZy6zuaKggs25GRFT4iSWYp/JPldBTE6dAjsCs8=
-X-Received: by 2002:a05:6512:6ce:b0:540:3561:969d with SMTP id
- 2adb3069b0e04-5452fe8f8b0mr1371699e87.49.1739643070214; Sat, 15 Feb 2025
- 10:11:10 -0800 (PST)
+	s=k20201202; t=1739645566;
+	bh=/PQD4PwAVkDwv0RHEHZ6GErT3TxEUPl8AR+MB47KVcE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mcTf1zJS7dFUPBwQcmPveA2paU2Vl8Ar+hMeCC3u+jrIgw+89XfU25VM7eSh5lI4l
+	 a0bQzPW6zL1V387oPaFf2jQyZ4CpL1iO4fBkDus/sGXbsA4kc8azIOtBzY5J/UqesN
+	 hC0gn2JdI01TFCBdd1Ab4qJE6diT+0kBrdmrANI+LQEV0HDaWh5XxYyUDsKuMNDAjI
+	 IzB2y3cIaeBbin34FdtPnCSRd7/gm8c4iXaMJENt2KrCQc754lr6ik3sjpEbz622JQ
+	 HIsB94TmWTMX7ZJD7LlPpBV99K38SOzoFzqyr9BtoxwY0LC54J5h9Cv6DveBnRhO04
+	 O/7ms4hdlkQfQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tjNHQ-004Qno-4c;
+	Sat, 15 Feb 2025 18:52:44 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Christoph Fritz <chf.fritz@googlemail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] irqchip/gic-v3: Fix rk3399 workaround when secure interrupts are enabled
+Date: Sat, 15 Feb 2025 18:52:41 +0000
+Message-Id: <20250215185241.3768218-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-kbuild-userprog-fixes-v1-0-f255fb477d98@linutronix.de> <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
-In-Reply-To: <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sun, 16 Feb 2025 03:10:34 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQPO82Qp_161yGgsRL4hA1XdeoCX6ZgLutmivKorUuLxw@mail.gmail.com>
-X-Gm-Features: AWEUYZnbXcOx5HSwO35f-2mNBGhl_Ad3is1i1PF1BQf2JE6Cr9dN8_ACRThMo2w
-Message-ID: <CAK7LNAQPO82Qp_161yGgsRL4hA1XdeoCX6ZgLutmivKorUuLxw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: userprogs: fix bitsize and target detection
- on clang
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Sam Ravnborg <sam@ravnborg.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, chf.fritz@googlemail.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Feb 13, 2025 at 11:55=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> scripts/Makefile.clang was changed in the linked commit to move --target =
-from
-> KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-> However that variable is not inspected by the userprogs logic,
-> breaking cross compilation on clang.
->
-> Use both variables to detect bitsize and target arguments for userprogs.
->
-> Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-> ---
+Christoph reports that their rk3399 system dies since we merged
+773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC
+integrations").
 
-Applied to linux-kbuild/fixes.
-Thanks!
+It appears that some rk3399 have some secure payloads, and that
+the firmware sets SCR_EL3.FIQ==1. Obivously, disabling security
+in that configuration leads to even more problems.
 
+Let's revisit the workaround by:
 
+- making it rk3399 specific
+- checking whether Group-0 is available, which is a good proxy
+  for SCR_EL3.FIQ being 0
+- either apply the workaround if Group-0 is available, or disable
+  pseudo-NMIs if not
 
+Note that this doesn't mean that the secure side is able to receive
+interrupts anyway, as we make all interrupts non-secure anyway.
+Clearly, nobody ever tested secure interrupts on this platform.
 
---=20
-Best Regards
-Masahiro Yamada
+With that, Christoph is able to use their rk3399.
+
+Reported-by: Christoph Fritz <chf.fritz@googlemail.com>
+Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC integrations")
+Link: https://lore.kernel.org/r/b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com
+---
+ drivers/irqchip/irq-gic-v3.c | 53 +++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 76dce0aac2465..270d7a4d85a6d 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -44,6 +44,7 @@ static u8 dist_prio_nmi __ro_after_init = GICV3_PRIO_NMI;
+ #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
+ #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
+ #define FLAGS_WORKAROUND_ASR_ERRATUM_8601001	(1ULL << 2)
++#define FLAGS_WORKAROUND_INSECURE		(1ULL << 3)
+ 
+ #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+ 
+@@ -83,6 +84,8 @@ static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
+ #define GIC_LINE_NR	min(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
+ #define GIC_ESPI_NR	GICD_TYPER_ESPIS(gic_data.rdists.gicd_typer)
+ 
++static bool nmi_support_forbidden;
++
+ /*
+  * There are 16 SGIs, though we only actually use 8 in Linux. The other 8 SGIs
+  * are potentially stolen by the secure side. Some code, especially code dealing
+@@ -163,21 +166,27 @@ static void __init gic_prio_init(void)
+ {
+ 	bool ds;
+ 
+-	ds = gic_dist_security_disabled();
+-	if (!ds) {
+-		u32 val;
+-
+-		val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
+-		val |= GICD_CTLR_DS;
+-		writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++	cpus_have_group0 = gic_has_group0();
+ 
+-		ds = gic_dist_security_disabled();
+-		if (ds)
+-			pr_warn("Broken GIC integration, security disabled");
++	ds = gic_dist_security_disabled();
++	if ((gic_data.flags & FLAGS_WORKAROUND_INSECURE) && !ds) {
++		if (cpus_have_group0) {
++			u32 val;
++
++			val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
++			val |= GICD_CTLR_DS;
++			writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++
++			ds = gic_dist_security_disabled();
++			if (ds)
++				pr_warn("Broken GIC integration, security disabled\n");
++		} else {
++			pr_warn("Broken GIC integration, pNMI forbidden\n");
++			nmi_support_forbidden = true;
++		}
+ 	}
+ 
+ 	cpus_have_security_disabled = ds;
+-	cpus_have_group0 = gic_has_group0();
+ 
+ 	/*
+ 	 * How priority values are used by the GIC depends on two things:
+@@ -209,7 +218,7 @@ static void __init gic_prio_init(void)
+ 	 * be in the non-secure range, we program the non-secure values into
+ 	 * the distributor to match the PMR values we want.
+ 	 */
+-	if (cpus_have_group0 & !cpus_have_security_disabled) {
++	if (cpus_have_group0 && !cpus_have_security_disabled) {
+ 		dist_prio_irq = __gicv3_prio_to_ns(dist_prio_irq);
+ 		dist_prio_nmi = __gicv3_prio_to_ns(dist_prio_nmi);
+ 	}
+@@ -1922,6 +1931,18 @@ static bool gic_enable_quirk_arm64_2941627(void *data)
+ 	return true;
+ }
+ 
++static bool gic_enable_quirk_rk3399(void *data)
++{
++	struct gic_chip_data *d = data;
++
++	if (of_machine_is_compatible("rockchip,rk3399")) {
++		d->flags |= FLAGS_WORKAROUND_INSECURE;
++		return true;
++	}
++
++	return false;
++}
++
+ static bool rd_set_non_coherent(void *data)
+ {
+ 	struct gic_chip_data *d = data;
+@@ -1996,6 +2017,12 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.property = "dma-noncoherent",
+ 		.init   = rd_set_non_coherent,
+ 	},
++	{
++		.desc	= "GICv3: Insecure RK3399 integration",
++		.iidr	= 0x0000043b,
++		.mask	= 0xff000fff,
++		.init	= gic_enable_quirk_rk3399,
++	},
+ 	{
+ 	}
+ };
+@@ -2004,7 +2031,7 @@ static void gic_enable_nmi_support(void)
+ {
+ 	int i;
+ 
+-	if (!gic_prio_masking_enabled())
++	if (!gic_prio_masking_enabled() || nmi_support_forbidden)
+ 		return;
+ 
+ 	rdist_nmi_refs = kcalloc(gic_data.ppi_nr + SGI_NR,
+-- 
+2.39.2
+
 
