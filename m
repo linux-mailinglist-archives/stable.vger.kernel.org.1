@@ -1,106 +1,118 @@
-Return-Path: <stable+bounces-116483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F5DA36C6C
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 08:25:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594D3A36C83
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 08:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E200F17157F
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 07:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E94C188CA14
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 07:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB17F18D64B;
-	Sat, 15 Feb 2025 07:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD942199920;
+	Sat, 15 Feb 2025 07:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="u+5RnPZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aey1bzAX"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4828715A843;
-	Sat, 15 Feb 2025 07:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63528126C18;
+	Sat, 15 Feb 2025 07:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739604301; cv=none; b=nz23OqSVXo0BLhzF66KYzTQytVgYu3UpITFAGQ7QOdSv0dz0e/TB2o2aGfYtkjfm0BVJizt6vyB/JAoPHEMSTFQLdt71d71DrnJ8pbcM/5mNCOJBzobTQ0MhiUi7yvA/cYwxrVcMOlUHXKv51EvZwlitZNLrWXMDTcn7e+6sjQc=
+	t=1739605557; cv=none; b=Jha49vrooigpaYPoWMr+ba4Xeo95bG8oa62leh9zWXhfo1d4QoJyUGu+y5LENqg0S2jEQkyaLaILCYdl9zz/3JLhKARv4sW+p76jvjuBz2s3Y9qokBUIztWig9Qq1wmu/3OVW/NaQJqSQoXIbQk60a8usLItD7TxbXZ79QYGsDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739604301; c=relaxed/simple;
-	bh=g0DserNjnh4CPfXzi6skQIf2mt9+TFY4JYtcJczP3I4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FjZqUSGfoMKPUn5sWLEfRX7hGkO7BmGdcGxxa4Rlj4ANeCZyl6nrRGZEdTQiK6tzSR5/NgS//XHyg6mz5kEY9zCePsDQdOYiwZOOX9FJib3g1DOZAZvcHKIwzuKkFWtz77ogW8pEyWf+0qjlsVre/fevqzF7RqLYDB8zkvmgHhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=u+5RnPZz; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Yw0md5Bcxz9sp0;
-	Sat, 15 Feb 2025 08:24:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
-	s=MBO0001; t=1739604289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AftpR5FhL9ZRrXGJ0FAdsd9x50d7E72otdacK1ldixc=;
-	b=u+5RnPZzkcE2cz10+O8ddBZKRm+ZHb+nqhxMraSTBSK1BHclf1Y6YJ/l9aDVr9z3ld/IFP
-	aqZtISvhvhO8Ttrzsfgi5VMttKnXXwOwO5qV55zmTKD9e8LEg65I+tnOeHk0meYnjYhPh8
-	gwSyC89DfIycc4wQXa9YqZFYXr2sHYCoAebJXAbpcypoAUxE/WloVK+V2kpmSrB7VesXgg
-	DMNOg24pdvkFAtw8pcCW1Ip9o1BdetFuBnhnWssUAJZPnxKHU+7PzmPfDcCz3b+efTDEen
-	ubWkZ68bFpQRdIcXmr8zBsA5lvv2if1Uw9ANtf0ZOcRheIZa+NBacA0Nh82Bzw==
-From: Frank Oltmanns <frank@oltmanns.dev>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,  Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>,  Chris Lew <quic_clew@quicinc.com>,
-  linux-arm-msm@vger.kernel.org,  linux-kernel@vger.kernel.org,  Stephan
- Gerhold <stephan.gerhold@linaro.org>,  Johan Hovold
- <johan+linaro@kernel.org>,  Caleb Connolly <caleb.connolly@linaro.org>,
-  Joel Selvaraj <joelselvaraj.oss@gmail.com>,  Alexey Minnekhanov
- <alexeymin@postmarketos.org>,  stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: pd-mapper: defer probing on sdm845
-In-Reply-To: <aujp6tbyug66jamddd5mlpdnobiazapyzwtkkwo23uckd6x7yx@b73cwtszcjlr>
-	(Bjorn Andersson's message of "Tue, 11 Feb 2025 20:48:36 -0600")
-References: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
-	<2vfwtuiorefq64ood4k7y7ukt34ubdomyezfebkeu2wu5omvkb@c5h2sbqs47ya>
-	<87y0yj1up1.fsf@oltmanns.dev> <87msez1sim.fsf@oltmanns.dev>
-	<87seon9vq6.fsf@oltmanns.dev>
-	<aujp6tbyug66jamddd5mlpdnobiazapyzwtkkwo23uckd6x7yx@b73cwtszcjlr>
-Date: Sat, 15 Feb 2025 08:24:40 +0100
-Message-ID: <874j0vy8jr.fsf@oltmanns.dev>
+	s=arc-20240116; t=1739605557; c=relaxed/simple;
+	bh=qlq0mYc6i5WWBc/Lorm9EOv7T5OYfse3LTvwazBQoyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XuIec9yGPA38sOSW/VN0jF8AISPZRwyE3edeCiadyePEq/lmKOe2imViuZmLrMas1bcQHdUpWVBYJsc1ENhc/VSu64WVpSLx8mob1cC07/s1GbuaTLO/05lRvz2YRfZ0EaVK0LYqERTp/lL95ZsNe9Swfo0jKKLmEOWQOGs9uHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aey1bzAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1CEC4CEDF;
+	Sat, 15 Feb 2025 07:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739605556;
+	bh=qlq0mYc6i5WWBc/Lorm9EOv7T5OYfse3LTvwazBQoyQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aey1bzAXGrHx2AIo538Fs1z79XV5sWeMSRSEd7R1MxQBPITlLalOo6LlN1gUlU5B5
+	 6abSdP2RXHPv8sKsaSvNoRjbyYuR0H+Nm5EOEhbmfVHePLtSaD6jWhciCM1QcGY7fI
+	 +6gyzzps3yY202O1VGX+FZsGA1EKNRjksgYg15qQ=
+Date: Sat, 15 Feb 2025 08:45:53 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.12 000/419] 6.12.14-rc2 review
+Message-ID: <2025021540-attic-limelight-0fb3@gregkh>
+References: <20250214133845.788244691@linuxfoundation.org>
+ <57e42fbb-9372-4618-bbed-71da01326ffe@rnnvmail203.nvidia.com>
+ <bcf76664-e77c-44b3-b78f-bcefc7aa3fc1@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4Yw0md5Bcxz9sp0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bcf76664-e77c-44b3-b78f-bcefc7aa3fc1@nvidia.com>
 
-On 2025-02-11 at 20:48:36 -0600, Bjorn Andersson <andersson@kernel.org> wrote:
-> On Sun, Feb 09, 2025 at 12:57:21PM +0100, Frank Oltmanns wrote:
-[snip]
->> Just wanted to let you know that I've tested Mukesh Ojha's and Saranya
->> R's patch [1]. Thanks, Bjorn for cc'ing me in your response.
->>
->> Unfortunately, it seems to fix a different issue than the one I'm
->> experiencing. The phone's mic still doesn't work. As I wrote elsewhere
->> [2], I don't see the PDR error messages on xiaomi-beryllium, so, as
->> Johan expected, the issue I'm experiencing is indeed a different one.
->>
->
-> Yes, it sounds like you have another race following this. [1] resolves
-> an issue where we get a timeout as we're trying to learn about which PDs
-> exist - which results in no notification about the adsp coming up, which
-> in turn means no audio services.
->
-> Do you have the userspace pd-mapper still running btw?
+On Fri, Feb 14, 2025 at 09:12:39PM +0000, Jon Hunter wrote:
+> Hi Greg,
+> 
+> On 14/02/2025 21:11, Jon Hunter wrote:
+> > On Fri, 14 Feb 2025 14:58:41 +0100, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.12.14 release.
+> > > There are 419 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Sun, 16 Feb 2025 13:37:21 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc2.gz
+> > > or in the git tree and branch at:
+> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > Failures detected for Tegra ...
+> > 
+> > Test results for stable-v6.12:
+> >      10 builds:	10 pass, 0 fail
+> >      26 boots:	26 pass, 0 fail
+> >      116 tests:	107 pass, 9 fail
+> > 
+> > Linux version:	6.12.14-rc2-ga58d06766300
+> > Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+> >                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+> >                  tegra20-ventana, tegra210-p2371-2180,
+> >                  tegra210-p3450-0000, tegra30-cardhu-a04
+> > 
+> > Test failures:	tegra124-jetson-tk1: cpu-hotplug
+> >                  tegra124-jetson-tk1: pm-system-suspend.sh
+> >                  tegra186-p2771-0000: cpu-hotplug
+> >                  tegra20-ventana: cpu-hotplug
+> >                  tegra210-p2371-2180: cpu-hotplug
+> >                  tegra210-p3450-0000: cpu-hotplug
+> > 
+> 
+> 
+> Bisect is pointing to this commit ...
+> 
+> # first bad commit: [3efd1a4cc13eccc1ae02b0511aec5bc74a168b74] sched/deadline: Correctly account for allocated bandwidth during hotplug
 
-I don't.
+Thanks, let me go delete that from both 6.12 and 6.13 queues.
 
-Best regards,
-  Frank
-
->
-> Regards,
-> Bjorn
+greg k-h
 
