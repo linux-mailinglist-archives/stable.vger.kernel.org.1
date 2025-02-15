@@ -1,88 +1,133 @@
-Return-Path: <stable+bounces-116506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6904A3707B
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 20:58:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55577A370BA
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 22:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751A01893F7A
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:58:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA513ACD0C
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 21:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94ED1EA7DD;
-	Sat, 15 Feb 2025 19:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E3D1E5B7C;
+	Sat, 15 Feb 2025 21:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="j6ZlM+nk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A5915696E
-	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 19:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDFD193086;
+	Sat, 15 Feb 2025 21:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739649489; cv=none; b=ovzfRrMkRPAaejyszuHY9D8pnqR87RbGqJ/puD6jKS+x97rhm+FPZLC24M3AGrkgPLe/Ct9ty0BQy0LzRwyqJyHagzjW8cyh11T1DKAbn79WgOguOZ3pTT5RPuT8q1ddmNM7O3w1leIcm1BNfP1jEZXNIv8vGJlpZXGiD7yjwG8=
+	t=1739653424; cv=none; b=A3JTex5HNjNK3Idwk5ia2qoRqI3QpcpJEVtRpljNIim3JFhvJT/JlbR54sXB16FKnbItbAYoYfQwjKTrlumAcjzwgnth9P/tSuTqvfj9JP0MhzQ14+RE1PAIFgx/fjRYK0+xk5xSVDOdPo7JZASb9hlNByIVYZlR7QtxebHIw30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739649489; c=relaxed/simple;
-	bh=8Agr4LCJvMont3sOn0Fa6/PrKDLRic6lEVvoPBKxio0=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=hOWRPdlbxuqBAuzqmD4creoOONJXWRMPwb/NSmFFZJ0jUu3V3eqdQ+EF/n9za0K3pSH+hpuFypghljHIqKZQ2hSA7F6d3IfhJ9Q0+wVJZJnlAVC32TvJO/yuVKzbE9ANXzP4cCWV21Jnsd+FN+23R/22+lh6O0Sfb/dC7UarwWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5ddd71dc.dip0.t-ipconnect.de [93.221.113.220])
-	by mail.itouring.de (Postfix) with ESMTPSA id 364FB12566F;
-	Sat, 15 Feb 2025 20:57:57 +0100 (CET)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id DD9136018E4C0;
-	Sat, 15 Feb 2025 20:57:56 +0100 (CET)
-Subject: Re: Suspend failures (was [PATCH 6.13 000/443] 6.13.3-rc1 review)
-To: Waiman Long <llong@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Phil Auld <pauld@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- stable <stable@vger.kernel.org>
-References: <20250213142440.609878115@linuxfoundation.org>
- <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
- <2025021459-guise-graph-edb3@gregkh>
- <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
- <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
- <012c4a3a-ead8-4bba-8ec9-5d5297bbd60c@redhat.com>
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <905eb8ab-2635-e030-b671-ab045b55f24c@applied-asynchrony.com>
-Date: Sat, 15 Feb 2025 20:57:56 +0100
+	s=arc-20240116; t=1739653424; c=relaxed/simple;
+	bh=IXB/OA0/HJEcsIwYx8E7/hlc3FONZBJ+SuINx/OY1Ww=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pQn8XoJPLR0abZKgjpPq2VHH695c3gNuRU8S5yRJXgbdUJ0AHPtOYUJlXDlaDsvfANG6wOSb7/rQAFKOaVTOglCh3FDzqVQuybMOVQA16GpedewMP0jFe4i/cpTN4+5I2FkzZUKLK/rDXdDNOWW7viF3aaNR/fMItnMwWi6m6Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=j6ZlM+nk; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=8SGIblqnPcnG43bpX86thHVrqLMXC+Z5CiJGbNB0aOA=; b=j6ZlM+nk37YpPhhR4WQbqyeu1E
+	ucV/nYoy0Yqn2O1PbFrjKpTr4/ndEZ16FcChl9f4/eKsmZDEE1BCeG1xcdPvWiA4DHX0fQfJOvCDj
+	Ni+EtzOPi/g3caHa2rMpUU0XCwTmutcg8JXLOpwsQ+hso4xE6Qc2i8Mxk91PBOiGNAmyQJJdb9SXk
+	dsh5JJCS/Yhaqqaound2KpDxpmQ+0ZGAwd+tPirBa8AnM25NCHOS7I6tEGlN3zVDczHaPwZG+Zn7b
+	N3eKP8dlB8nFCrdwNAemai60DV3pYc9Tbfgwrc7j9UMhgPdiZigEAbtE7q3V/6A01CrMpm54A6aGO
+	pIjyfq9w==;
+Received: from [187.90.171.141] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tjPJt-004POc-M5; Sat, 15 Feb 2025 22:03:32 +0100
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Cc: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	rostedt@goodmis.org,
+	kernel-dev@igalia.com,
+	kernel@gpiccoli.net,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/tsc: Always save/restore TSC sched_clock on suspend/resume
+Date: Sat, 15 Feb 2025 17:58:16 -0300
+Message-ID: <20250215210314.351480-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <012c4a3a-ead8-4bba-8ec9-5d5297bbd60c@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 
-On 2025-02-15 02:35, Waiman Long wrote:
-<snip>
+TSC could be reset in deep ACPI sleep states, even with invariant TSC.
+That's the reason we have sched_clock() save/restore functions, to deal
+with this situation. But happens that such functions are guarded with a
+check for the stability of sched_clock - if not considered stable, the
+save/restore routines aren't executed.
 
-> Commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
-> earlier for hotplug") is the last patch of the 3 patch series.
-> 
->   1) commit 41d4200b7103 ("sched/deadline: Restore dl_server bandwidth on non-destructive root domain changes")
->   2) commit d4742f6ed7ea ("sched/deadline: Correctly account for allocated bandwidth during hotplug")
->   3) commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow earlier for hotplug")
-> 
-> It looks like 6.13.3-rc1 has patches 2 and 3, but not patch 1. It is
-> possible that patch 3 has a dependency on patch 1. My suggestion is
-> to either take patch 1 as well or none of them.
-  
-Now that we have 6.13.3-rc3 passing all tests I got curious and applied
-the whole series again. And voila: suspend works reliably (3 out of 3).
-Mystery solved.
+On top of that, we have a clear comment on native_sched_clock() saying
+that *even* with TSC unstable, we continue using TSC for sched_clock due
+to its speed. In other words, if we have a situation of TSC getting
+detected as unstable, it marks the sched_clock as unstable as well,
+so subsequent S3 sleep cycles could bring bogus sched_clock values due
+to the lack of the save/restore mechanism, causing warnings like this:
 
-So Greg, feel free to add the whole 3-part series in the next round.
+[22.954918] ------------[ cut here ]------------
+[22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
+[22.954923] If you just came from a suspend/resume,
+[22.954923] please switch to the trace global clock:
+[22.954923]   echo global > /sys/kernel/tracing/trace_clock
+[22.954923] or add trace_clock=global to the kernel command line
+[22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
 
-cheers
-Holger
+Notice that the above was reproduced even with "trace_clock=global".
+
+The fix for that is to _always_ save/restore the sched_clock on suspend
+cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
+the sched_clock_stable() check becomes relevant to save/restore the
+sched_clock.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+ arch/x86/kernel/tsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 34dec0b72ea8..88e5a4ed9db3 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -959,7 +959,7 @@ static unsigned long long cyc2ns_suspend;
+ 
+ void tsc_save_sched_clock_state(void)
+ {
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
+ 
+ 	cyc2ns_suspend = sched_clock();
+@@ -979,7 +979,7 @@ void tsc_restore_sched_clock_state(void)
+ 	unsigned long flags;
+ 	int cpu;
+ 
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
+ 
+ 	local_irq_save(flags);
+-- 
+2.47.1
+
 
