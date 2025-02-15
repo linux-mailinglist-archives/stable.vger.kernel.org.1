@@ -1,111 +1,102 @@
-Return-Path: <stable+bounces-116503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EC2A36FC4
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 18:26:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDB7A3701C
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 19:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E03A16FB64
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 17:26:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB9F67A3D61
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 18:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3CA1EA7DD;
-	Sat, 15 Feb 2025 17:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779131EA7E1;
+	Sat, 15 Feb 2025 18:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b="aBsnKVA9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3SeTT7x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBDF1C7011
-	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 17:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A5D197A87;
+	Sat, 15 Feb 2025 18:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739640354; cv=none; b=trWpptx2Na65ZdfvxcTR/CnMb7WbBVfhGUKxgRLfrVjlFiDwQ3ZdHD69mJtebx6jg5/FGuXgSKdrp5GVMROT+9mzQk7ZF3TXQw97QRyysvdrVxY9+7h0wAUgEemuEsH1sGtIWcb/dtwUuwrnN++jBY0y/RtJi7RFPXsMBl4YmQQ=
+	t=1739643072; cv=none; b=fTyIqsqMW4eVZWY1TR2UFSD9X5BsqsS7rf1fESiMw+R4ZXW5cL6YvdJ7GEp8C2jk1iUdWHOojYFaPdn5m7JP4xg1lWoJleOgBTOzbnsEGLbmSGawybP7Kq1GUMkln2dZDfFGLq8RPqHfZHhQsZZ2pi+HKxEvUt5kLOyw4i3C4WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739640354; c=relaxed/simple;
-	bh=bWdwc4tU+jS/WtyYL5ZUs1E6ELOzM9Zd3g3hT2CGL20=;
+	s=arc-20240116; t=1739643072; c=relaxed/simple;
+	bh=VwiucCmRsHj4WIjXs8qnCxLiQoA41Y/9GZf5q6IhOkU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pnE6J3Y/bvpJXFYJ+fPeQ6xB87pvCxRXIDWrt7bRL7pohWZ4v46vSLgI748jFPeb6td97+h/Q78KBsZV0NHBZtrwwxOGHK0Nlgkq4kDzqTZPtEakr6KjdYGy8pCCDme95yNuNAHlCGEzbtW7dhQM03cLDG6Cgcl4J9jYhJQ5hQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b=aBsnKVA9; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abb7520028bso71010066b.3
-        for <stable@vger.kernel.org>; Sat, 15 Feb 2025 09:25:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.net; s=google; t=1739640350; x=1740245150; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JHP8LGPaE55AxKwpSHf5L42NI3V/KQU7zbKAocoI1Fw=;
-        b=aBsnKVA9ag9LC6n5ANYZdb5zeLf2sQJlZ+LXg/4VdFDaiYs/T8fBRNEzptsFRJVE4T
-         bGmMd88mjEIZTAJbYq+HxsAcVaFXLAFHmHnoSyRDRzuGg7omEvSqbDdCqGDB8WHXr6ot
-         DiWS7YqXH60NCiEYU+EU3G/whlQtUlwskc1tigiVVQ5s927i2Wk+95DsHJJ7JLNdY/Kk
-         4a3YZPlqFJ1t5+6MZTvabV/pDGzsK9HXKvEcrWl3AhyNNsUUZOzVnNau6Vfj/+LQT2pH
-         R5OM/XSE9KwE7UbZE5CcYqh49lzIKuuuReZbW7u8az1A0Vv1wzFUnXuuzLaI55WB9B38
-         Rs5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739640350; x=1740245150;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JHP8LGPaE55AxKwpSHf5L42NI3V/KQU7zbKAocoI1Fw=;
-        b=LVwmhk9IiQ1tPjPjANLfuLir/ulfT+QNL37H1o0Bj3HrvFWcx6qMkufk5cBc4y+VTy
-         4jVE6wQCrRTZ2o6kK/gFftgRFkYYhoGc2+wXaH24dw7DWUg2qvhsu3ksh+6Wx+QUK/Rj
-         Cz8Rbx6qgCau6P/o0xC2MmBRN7IOvi2PbBl3Q7AL4gsXtDHOL5UGIT5uSDLttJi9VWuN
-         hDyWK5TxAn7tMq4L2+/supVrhGmKXorCRM7UeDiiOza44Ook6cMYwZ9LfTuru/v6zkh0
-         EK8HfNbWGLcjeGsiHbIT7cg+vXVKDmcyhOasKYySoPvwtCy3d+kkdqNt1SFkjwmM4SIP
-         M4Fg==
-X-Gm-Message-State: AOJu0YyAmvCUKX3Ai0+bgX4EXZxCU2jN/DvBlrvLB7U0pOJuAfi6MtIL
-	pNoC8T80NruoRnVIehqOsppxlCExj47/Ieq0/48sutYc2Rnvnzwo9SAf1f3CGYewjhDm0pXXBvC
-	gp4FT4GoG4o04363CM+Y+7x005H+QYIjykaJMKg==
-X-Gm-Gg: ASbGncsfSv2GIgHqirkHF1+kZXJV2KTXRkTpgwGyXAqbUsH86qoMtD+uKj/avCrTEJy
-	EnOiHNjSNDStbef3FT0HASKy1lM6pCj4rqMpL0Y44VaTE/kY0Z3r+PFl/2bSXb+bwYGhWg70/
-X-Google-Smtp-Source: AGHT+IHJzLjc0Mpd+v0lswpn7DhJ2tM9BZti1csqHDT4yfjUQZtHYKVsAb7uI+EuHhv1xXJViJSu9WBUuDD1SVw30Wc=
-X-Received: by 2002:a17:907:1c21:b0:ab6:fd1d:ef6b with SMTP id
- a640c23a62f3a-abb70bad34amr363614966b.27.1739640349746; Sat, 15 Feb 2025
- 09:25:49 -0800 (PST)
+	 To:Cc:Content-Type; b=TgLrVHbavgZB/TObITpCXQrtETXeGaLp26Lm76C29V4q0NX8F+7pmBFKNSfBdjAFFn7GZ39gdQSmKGzxi1KuFyqvCuYkV/a/pHlLUpphLnDGjcV/4Uw65Y8ERm9vRmTphDpJzt5DOWasWb9y0NCgMQaXWELDnWYAxodEQ1SMBOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3SeTT7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EEEC4CEE2;
+	Sat, 15 Feb 2025 18:11:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739643071;
+	bh=VwiucCmRsHj4WIjXs8qnCxLiQoA41Y/9GZf5q6IhOkU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=d3SeTT7xsLBcmBCCbwEsTYMmsO5H+B9aU62Ry9WxlkZtPxRVfQWZaLjQtzEBNRK/8
+	 mWmcI/oBs8lsGujeTaP2Il5h2m2Hu8wR6hfwXZ8UKeMwUlcU2fB0bpIYs8jwmydQS0
+	 1rA2/FU3x4P+7Doi9WzLpR4PDhOuwy9yNdhshAz/9l8pairy/eDMgsfqp9sah/P6IZ
+	 H+bUl6D2PWzC2qHVYiMYcv+afzoOhgwbR0PW5QD1kOLOp1lcW8HO2XHD6TaKpY7O5x
+	 WGKxrJ0ZVjQimrRHXEeNRMsm1q96WnyFSXJ1r2WVvZXgPkOQ5VF1mA+WjFC687vatg
+	 sMjIVh956VbNQ==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-54529eeb38aso1829783e87.2;
+        Sat, 15 Feb 2025 10:11:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU76f3SeWHbuNHX+8sSEsepXZ1Pbtfl8bLybFjQ4hQVGRiPfb5ky983/Rma40CUFJ+aqBRoj9sJzpdrv0CX@vger.kernel.org, AJvYcCUL9nduLKZ23Bgj0ySaBIT7OAnB1ePWLAc0SZB3OGi9ZBjahud/XVh5qjpRa1wjVI1cGOuuCr0DKBVKnkc=@vger.kernel.org, AJvYcCWNCeB9LdBZciU1C3R6VjK86JtWv4vlnv7RylRHJj6kS7DtS1tDoSM2WCvYvLdMPmyTmRxxSZ66@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM1LUP4JohoxY4qZyUBxpHTBCQ57cPjjKIVIVY2EDqZstO5ytF
+	EFNXrw0LvP7j0vi5td3voXegLtgbAveuVpBmDEGf0vnM7nzgxjUTRlxdo460YHJDzehmU8y/4BS
+	zOjCAt4SH2SzZq8J6L2rP78WILn0=
+X-Google-Smtp-Source: AGHT+IE0rwwrkKgLzFfRhD+QZGgoJPXVzhh3qODeXXehVd6GVBdQBZy6zuaKggs25GRFT4iSWYp/JPldBTE6dAjsCs8=
+X-Received: by 2002:a05:6512:6ce:b0:540:3561:969d with SMTP id
+ 2adb3069b0e04-5452fe8f8b0mr1371699e87.49.1739643070214; Sat, 15 Feb 2025
+ 10:11:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250215075925.888236411@linuxfoundation.org>
-In-Reply-To: <20250215075925.888236411@linuxfoundation.org>
-From: Slade Watkins <srw@sladewatkins.net>
-Date: Sat, 15 Feb 2025 12:25:38 -0500
-X-Gm-Features: AWEUYZkvqJ1y-XsnBU_Lwvy2M4G3bDMXGE9SW7Ow2NVPM6dh7UJTVqGNeXXm7gM
-Message-ID: <CA+pv=HOEzqtotB8hp4ikj_q7NWFB334CgPUT5BwYi2Re877dpA@mail.gmail.com>
-Subject: Re: [PATCH 6.13 000/442] 6.13.3-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250213-kbuild-userprog-fixes-v1-0-f255fb477d98@linutronix.de> <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
+In-Reply-To: <20250213-kbuild-userprog-fixes-v1-1-f255fb477d98@linutronix.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 16 Feb 2025 03:10:34 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQPO82Qp_161yGgsRL4hA1XdeoCX6ZgLutmivKorUuLxw@mail.gmail.com>
+X-Gm-Features: AWEUYZnbXcOx5HSwO35f-2mNBGhl_Ad3is1i1PF1BQf2JE6Cr9dN8_ACRThMo2w
+Message-ID: <CAK7LNAQPO82Qp_161yGgsRL4hA1XdeoCX6ZgLutmivKorUuLxw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: userprogs: fix bitsize and target detection
+ on clang
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Sam Ravnborg <sam@ravnborg.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 15, 2025 at 3:00=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Feb 13, 2025 at 11:55=E2=80=AFPM Thomas Wei=C3=9Fschuh
+<thomas.weissschuh@linutronix.de> wrote:
 >
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 442 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> scripts/Makefile.clang was changed in the linked commit to move --target =
+from
+> KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
+> However that variable is not inspected by the userprogs logic,
+> breaking cross compilation on clang.
 >
-> Responses should be made by Mon, 17 Feb 2025 07:57:54 +0000.
-> Anything received after that time might be too late.
+> Use both variables to detect bitsize and target arguments for userprogs.
+>
+> Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+> ---
 
-Hi Greg,
-No regressions or any sort of issues to speak of. Builds fine on my
-x86_64 test machine.
+Applied to linux-kbuild/fixes.
+Thanks!
 
-Tested-by: Slade Watkins <srw@sladewatkins.net>
 
-All the best,
-Slade
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
