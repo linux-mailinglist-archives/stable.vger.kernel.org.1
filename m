@@ -1,166 +1,377 @@
-Return-Path: <stable+bounces-116465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB67A36922
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:39:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FCDA369FE
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 01:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409A0188F9FB
-	for <lists+stable@lfdr.de>; Fri, 14 Feb 2025 23:38:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A96F17A4ED1
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3F71FDA65;
-	Fri, 14 Feb 2025 23:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFDC125DF;
+	Sat, 15 Feb 2025 00:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f0l1a3PC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="biatnH26"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA01FC7C1
-	for <stable@vger.kernel.org>; Fri, 14 Feb 2025 23:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD5DC2ED;
+	Sat, 15 Feb 2025 00:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739576324; cv=none; b=Nk5Zr0jfcOWUkvWmE6fUzpHLePUVzP2LqgIomU6IrB+l9VSfdgT2VlPyc2o2GZqyQlLQ5Idw5QrrvSB8Al9fJck4284ZSdJcM7lTwTLibrltU+gGKC06RAiN5/ZNyeeGDtWVsWmr6447IbTGWpLVrBAJnPjd5MGy57J+ZwpRc4U=
+	t=1739579442; cv=none; b=TNIEgHJ0sWnMdmO0Me+aaueA24euk1aAagDK8RZ1+FnsKO3SBmQzXqaZZZ0uGpXW1y4EI6S+xj5WgAhGFTZmCOKlMUCQwK/aRD9A6nHweePHhbO7DHaueOspf/MgMQ8qTihZNwp/NT0mSH2uBrmXVs3Izqif2qWNS9YarthkAyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739576324; c=relaxed/simple;
-	bh=3FgOVFO8GNqDS2zLxm0cMMBnAmqo1GiengKzpNDRW/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cVdpwdW1KkA+XWlnG9yguSETw9xbIu2xJRiKINhEMfvpBjwdvNCpXYY3JArtkHocxyvCbS4wwpMkQedNotJf6HINp58d0ClzSj9CFGrHWijmIY6s/5tdl8rJFEDim34rSo0jFMd38Wj7jeFPUVDyEw3uDtUoMntO/tPuvH3tN/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f0l1a3PC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739576321;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dkl08VAARbn7X2yB9Abn8zNYw7VapeXfiEWGo0rvbzs=;
-	b=f0l1a3PCh8mp3Ku6UCEteOQHN3DNRGsDVZbk/iNvy6ce4Dm9W2f69OJ/iBKPFa8vEDEKxA
-	U+jAX1pDWNi2k5hR8bhJgFI5pjXEPixMyZEaBptr55qPBXDlKwwIF1zTQqJ/V/aUfLA7IM
-	ccEEjvXNxWkBMhFXNg306Eh/JlHSMJw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-h1vY8DYbNhS3K3RJJlK5Dw-1; Fri, 14 Feb 2025 18:38:40 -0500
-X-MC-Unique: h1vY8DYbNhS3K3RJJlK5Dw-1
-X-Mimecast-MFC-AGG-ID: h1vY8DYbNhS3K3RJJlK5Dw_1739576319
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4395fa20a21so15219295e9.1
-        for <Stable@vger.kernel.org>; Fri, 14 Feb 2025 15:38:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739576319; x=1740181119;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dkl08VAARbn7X2yB9Abn8zNYw7VapeXfiEWGo0rvbzs=;
-        b=fQUKL00d5LocTh9aBm5B8kQgiZnPgbzlawSJVLBpHJIyRl9EfEWOcGZtxPzhy2L84h
-         dRe8auy9w7i5UetdKJtTWFGMMNcI89YqtUkHD1uFyme05xYfKk2VEn5yCcN6jTksC19+
-         kCtf3crql0izTAjP8X+Pex8ChJV3EnMgC3lztS7FeHPiEpRprdgxzsiGBVLODJ2N1KHf
-         FsjHEPiEDLVWWV89H7OC0Fq2PWA6PlHHyeP3U6mCOx8xjjHp1ODmNE+qvLaefdn6rHvS
-         kUzciyiOpM5sjTy5RniTkXJSCPwNVAt0e8nTSTHQfIzNSxLcDME+/y2KfjiA987/4nfz
-         r/dw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6nQEYdzRGkJQ9hnWY2lOIeIc8gat3maLGUPnlqFTma0F1Ia3nlAi2D9NWlLHM1sD0d6/Ni9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGAn8rrW/PQbHMbT4M1Cld9uwhV5cLLhFIafEdCCh8AH5kK+br
-	bpzfl9g2VJDWTIyeGZL7bGJYJ3/bW3kvMrxd7NpMj9SmcfmaaiE91z/YibRxflce/dd4GMlERLP
-	6lMIun+StGJ4pqkUqtn5ZU44t2SQzhxWYShjfKY4iRayAZsWY2qiy/Q==
-X-Gm-Gg: ASbGncuVm1e6lc3tyA1m8T0AWFcr4QLCOA94yfCClVBR3cLmyCYoLnAdYRiz3xttsiN
-	6jXZn5i160NRiw65gNNJ+BM+I0IIs2B9A113/FEkBl44oDIQcsxplOcdGhxdV21itH72in6uV6s
-	l9ZHPkJP1ZsErSFYMCCQXZ7NK7GLvCwmAivHTIGCE9jEXq2XdC+3zv65MZGjS4uexPwln6vRLY2
-	vdU+U+3/wV94wx+G0GjepoToiwxyUcIGqJDMrlYZfbdmRJeloDrpaEdnojFZR75yEsMKKLaaeL7
-	GRHNyhIzmiE=
-X-Received: by 2002:a05:6000:1f8d:b0:38d:b028:d906 with SMTP id ffacd0b85a97d-38f33c20f7cmr1320366f8f.21.1739576319199;
-        Fri, 14 Feb 2025 15:38:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGuwJR95sgolXJa3JZbal6oWOnodlKaw9NVdzdZq6kdIBfuHesYm3UO/VFsI1pO4iTzeaJo2w==
-X-Received: by 2002:a05:6000:1f8d:b0:38d:b028:d906 with SMTP id ffacd0b85a97d-38f33c20f7cmr1320351f8f.21.1739576318838;
-        Fri, 14 Feb 2025 15:38:38 -0800 (PST)
-Received: from [192.168.10.48] ([176.206.122.109])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38f259f7987sm5694927f8f.87.2025.02.14.15.38.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 15:38:38 -0800 (PST)
-Message-ID: <dbb0ceba-4748-47ca-9aae-affd189e2f92@redhat.com>
-Date: Sat, 15 Feb 2025 00:38:36 +0100
+	s=arc-20240116; t=1739579442; c=relaxed/simple;
+	bh=FqnvkTgQM7Put0NwV0Tc9gzroKjdSy4h5xd/kKVX6oE=;
+	h=Date:To:From:Subject:Message-Id; b=sRRez3pKH3qAlkUjhEEAECWnY8Axz4fegpoD28C4wNcxrgTalMcFhQ1tCuXyBxN/SVUfJoSzFtezaxlV1OvGl62UJIWifrj2tTQXhtnUk0oXc7VKq8IRqoN7FLYNm0EYDJ1d5z033173f9HrbRq+ZjX7RE0u0Cf1TkwEoDx3HhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=biatnH26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF16C4CED1;
+	Sat, 15 Feb 2025 00:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1739579440;
+	bh=FqnvkTgQM7Put0NwV0Tc9gzroKjdSy4h5xd/kKVX6oE=;
+	h=Date:To:From:Subject:From;
+	b=biatnH26pnsTXQfqJLmbhm8eBBEw88f9b/8JIHJAs7EDHmoNoYJytF8Pm3TbB+XTr
+	 gomWXlEfyxBVFoB4kbLZohMr36P+XOZDD5dPGmXbnjoHHFm0Y4/SM2Pq8PkQDnMucp
+	 GebNiBaQ/6ik+VdTzSuJVe0WGhkIoQpFnRL6JbLw=
+Date: Fri, 14 Feb 2025 16:30:40 -0800
+To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,liwang@redhat.com,Liam.Howlett@oracle.com,kent.overstreet@linux.dev,kees@kernel.org,jeffxu@chromium.org,david@redhat.com,dave.hansen@intel.com,dalias@libc.org,brauner@kernel.org,axelrasmussen@google.com,avagin@google.com,jhubbard@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + revert-selftests-mm-remove-local-__nr_-definitions.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250215003040.ABF16C4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] Fix broken SNP support with KVM module built-in
-To: Sean Christopherson <seanjc@google.com>,
- Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, joro@8bytes.org, suravee.suthikulpanit@amd.com,
- will@kernel.org, robin.murphy@arm.com, michael.roth@amd.com,
- dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org,
- kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, vasant.hegde@amd.com,
- Stable@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
- iommu@lists.linux.dev
-References: <cover.1739226950.git.ashish.kalra@amd.com>
- <Z6vByjY9t8X901hQ@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
- CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
- hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
- DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
- P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
- Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
- UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
- tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
- wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
- UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
- 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
- jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
- VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
- CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
- SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
- AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
- AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
- nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
- bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
- KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
- m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
- tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
- dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
- JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
- sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
- OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
- GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
- Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
- usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
- xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
- JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
- dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
- b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <Z6vByjY9t8X901hQ@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 2/11/25 22:31, Sean Christopherson wrote:
-> On Mon, Feb 10, 2025, Ashish Kalra wrote:
->> Ashish Kalra (1):
->>    x86/sev: Fix broken SNP support with KVM module built-in
->>
->> Sean Christopherson (2):
->>    crypto: ccp: Add external API interface for PSP module initialization
->>    KVM: SVM: Ensure PSP module is initialized if KVM module is built-in
-> 
-> Unless I've overlooked a dependency, patch 3 (IOMMU vs. RMP) is entirely
-> independent of patches 1 and 2 (PSP vs. KVM).  If no one objects, I'll take the
-> first two patches through the kvm-x86 tree, and let the tip/iommu maintainers
-> sort out the last patch.
-I'll queue them myself (yes I still exist...) since I have a largish PR 
-from Marc anyway.
 
-Paolo
+The patch titled
+     Subject: Revert "selftests/mm: remove local __NR_* definitions"
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     revert-selftests-mm-remove-local-__nr_-definitions.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-selftests-mm-remove-local-__nr_-definitions.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: John Hubbard <jhubbard@nvidia.com>
+Subject: Revert "selftests/mm: remove local __NR_* definitions"
+Date: Thu, 13 Feb 2025 19:38:50 -0800
+
+This reverts commit a5c6bc590094a1a73cf6fa3f505e1945d2bf2461.
+
+The general approach described in commit e076eaca5906 ("selftests: break
+the dependency upon local header files") was taken one step too far here:
+it should not have been extended to include the syscall numbers.  This is
+because doing so would require per-arch support in tools/include/uapi, and
+no such support exists.
+
+This revert fixes two separate reports of test failures, from Dave
+Hansen[1], and Li Wang[2].  An excerpt of Dave's report:
+
+Before this commit (a5c6bc590094a1a73cf6fa3f505e1945d2bf2461) things are
+fine.  But after, I get:
+
+	running PKEY tests for unsupported CPU/OS
+
+An excerpt of Li's report:
+
+    I just found that mlock2_() return a wrong value in mlock2-test
+
+[1] https://lore.kernel.org/dc585017-6740-4cab-a536-b12b37a7582d@intel.com
+[2] https://lore.kernel.org/CAEemH2eW=UMu9+turT2jRie7+6ewUazXmA6kL+VBo3cGDGU6RA@mail.gmail.com
+
+Link: https://lkml.kernel.org/r/20250214033850.235171-1-jhubbard@nvidia.com
+Fixes: a5c6bc590094 ("selftests/mm: remove local __NR_* definitions")
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Li Wang <liwang@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/hugepage-mremap.c      |    2 -
+ tools/testing/selftests/mm/ksm_functional_tests.c |    8 +++++-
+ tools/testing/selftests/mm/memfd_secret.c         |   14 ++++++++++-
+ tools/testing/selftests/mm/mkdirty.c              |    8 +++++-
+ tools/testing/selftests/mm/mlock2.h               |    1 
+ tools/testing/selftests/mm/protection_keys.c      |    2 -
+ tools/testing/selftests/mm/uffd-common.c          |    4 +++
+ tools/testing/selftests/mm/uffd-stress.c          |   15 +++++++++++-
+ tools/testing/selftests/mm/uffd-unit-tests.c      |   14 ++++++++++-
+ 9 files changed, 60 insertions(+), 8 deletions(-)
+
+--- a/tools/testing/selftests/mm/hugepage-mremap.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/hugepage-mremap.c
+@@ -15,7 +15,7 @@
+ #define _GNU_SOURCE
+ #include <stdlib.h>
+ #include <stdio.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <sys/mman.h>
+ #include <errno.h>
+ #include <fcntl.h> /* Definition of O_* constants */
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -11,7 +11,7 @@
+ #include <string.h>
+ #include <stdbool.h>
+ #include <stdint.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <sys/mman.h>
+@@ -369,6 +369,7 @@ unmap:
+ 	munmap(map, size);
+ }
+ 
++#ifdef __NR_userfaultfd
+ static void test_unmerge_uffd_wp(void)
+ {
+ 	struct uffdio_writeprotect uffd_writeprotect;
+@@ -429,6 +430,7 @@ close_uffd:
+ unmap:
+ 	munmap(map, size);
+ }
++#endif
+ 
+ /* Verify that KSM can be enabled / queried with prctl. */
+ static void test_prctl(void)
+@@ -684,7 +686,9 @@ int main(int argc, char **argv)
+ 		exit(test_child_ksm());
+ 	}
+ 
++#ifdef __NR_userfaultfd
+ 	tests++;
++#endif
+ 
+ 	ksft_print_header();
+ 	ksft_set_plan(tests);
+@@ -696,7 +700,9 @@ int main(int argc, char **argv)
+ 	test_unmerge();
+ 	test_unmerge_zero_pages();
+ 	test_unmerge_discarded();
++#ifdef __NR_userfaultfd
+ 	test_unmerge_uffd_wp();
++#endif
+ 
+ 	test_prot_none();
+ 
+--- a/tools/testing/selftests/mm/memfd_secret.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/memfd_secret.c
+@@ -17,7 +17,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <fcntl.h>
+@@ -28,6 +28,8 @@
+ #define pass(fmt, ...) ksft_test_result_pass(fmt, ##__VA_ARGS__)
+ #define skip(fmt, ...) ksft_test_result_skip(fmt, ##__VA_ARGS__)
+ 
++#ifdef __NR_memfd_secret
++
+ #define PATTERN	0x55
+ 
+ static const int prot = PROT_READ | PROT_WRITE;
+@@ -332,3 +334,13 @@ int main(int argc, char *argv[])
+ 
+ 	ksft_finished();
+ }
++
++#else /* __NR_memfd_secret */
++
++int main(int argc, char *argv[])
++{
++	printf("skip: skipping memfd_secret test (missing __NR_memfd_secret)\n");
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_memfd_secret */
+--- a/tools/testing/selftests/mm/mkdirty.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/mkdirty.c
+@@ -9,7 +9,7 @@
+  */
+ #include <fcntl.h>
+ #include <signal.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <string.h>
+ #include <errno.h>
+ #include <stdlib.h>
+@@ -265,6 +265,7 @@ munmap:
+ 	munmap(mmap_mem, mmap_size);
+ }
+ 
++#ifdef __NR_userfaultfd
+ static void test_uffdio_copy(void)
+ {
+ 	struct uffdio_register uffdio_register;
+@@ -322,6 +323,7 @@ munmap:
+ 	munmap(dst, pagesize);
+ 	free(src);
+ }
++#endif /* __NR_userfaultfd */
+ 
+ int main(void)
+ {
+@@ -334,7 +336,9 @@ int main(void)
+ 			       thpsize / 1024);
+ 		tests += 3;
+ 	}
++#ifdef __NR_userfaultfd
+ 	tests += 1;
++#endif /* __NR_userfaultfd */
+ 
+ 	ksft_print_header();
+ 	ksft_set_plan(tests);
+@@ -364,7 +368,9 @@ int main(void)
+ 	if (thpsize)
+ 		test_pte_mapped_thp();
+ 	/* Placing a fresh page via userfaultfd may set the PTE dirty. */
++#ifdef __NR_userfaultfd
+ 	test_uffdio_copy();
++#endif /* __NR_userfaultfd */
+ 
+ 	err = ksft_get_fail_cnt();
+ 	if (err)
+--- a/tools/testing/selftests/mm/mlock2.h~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/mlock2.h
+@@ -3,7 +3,6 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <asm-generic/unistd.h>
+ 
+ static int mlock2_(void *start, size_t len, int flags)
+ {
+--- a/tools/testing/selftests/mm/protection_keys.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/protection_keys.c
+@@ -42,7 +42,7 @@
+ #include <sys/wait.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <asm-generic/unistd.h>
++#include <unistd.h>
+ #include <sys/ptrace.h>
+ #include <setjmp.h>
+ 
+--- a/tools/testing/selftests/mm/uffd-common.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/uffd-common.c
+@@ -673,7 +673,11 @@ int uffd_open_dev(unsigned int flags)
+ 
+ int uffd_open_sys(unsigned int flags)
+ {
++#ifdef __NR_userfaultfd
+ 	return syscall(__NR_userfaultfd, flags);
++#else
++	return -1;
++#endif
+ }
+ 
+ int uffd_open(unsigned int flags)
+--- a/tools/testing/selftests/mm/uffd-stress.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/uffd-stress.c
+@@ -33,10 +33,11 @@
+  * pthread_mutex_lock will also verify the atomicity of the memory
+  * transfer (UFFDIO_COPY).
+  */
+-#include <asm-generic/unistd.h>
++
+ #include "uffd-common.h"
+ 
+ uint64_t features;
++#ifdef __NR_userfaultfd
+ 
+ #define BOUNCE_RANDOM		(1<<0)
+ #define BOUNCE_RACINGFAULTS	(1<<1)
+@@ -471,3 +472,15 @@ int main(int argc, char **argv)
+ 	       nr_pages, nr_pages_per_cpu);
+ 	return userfaultfd_stress();
+ }
++
++#else /* __NR_userfaultfd */
++
++#warning "missing __NR_userfaultfd definition"
++
++int main(void)
++{
++	printf("skip: Skipping userfaultfd test (missing __NR_userfaultfd)\n");
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_userfaultfd */
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~revert-selftests-mm-remove-local-__nr_-definitions
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -5,11 +5,12 @@
+  *  Copyright (C) 2015-2023  Red Hat, Inc.
+  */
+ 
+-#include <asm-generic/unistd.h>
+ #include "uffd-common.h"
+ 
+ #include "../../../../mm/gup_test.h"
+ 
++#ifdef __NR_userfaultfd
++
+ /* The unit test doesn't need a large or random size, make it 32MB for now */
+ #define  UFFD_TEST_MEM_SIZE               (32UL << 20)
+ 
+@@ -1558,3 +1559,14 @@ int main(int argc, char *argv[])
+ 	return ksft_get_fail_cnt() ? KSFT_FAIL : KSFT_PASS;
+ }
+ 
++#else /* __NR_userfaultfd */
++
++#warning "missing __NR_userfaultfd definition"
++
++int main(void)
++{
++	printf("Skipping %s (missing __NR_userfaultfd)\n", __file__);
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_userfaultfd */
+_
+
+Patches currently in -mm which might be from jhubbard@nvidia.com are
+
+revert-selftests-mm-remove-local-__nr_-definitions.patch
 
 
