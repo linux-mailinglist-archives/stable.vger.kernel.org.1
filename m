@@ -1,125 +1,98 @@
-Return-Path: <stable+bounces-116468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C247EA36A10
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 01:48:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FDBA36A7F
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 02:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 894C716C845
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:48:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D28E27A0336
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 01:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913C81CD2B;
-	Sat, 15 Feb 2025 00:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCBF204F94;
+	Sat, 15 Feb 2025 00:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtsgTaCl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807805103F
-	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 00:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F4113CA9C;
+	Sat, 15 Feb 2025 00:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739580521; cv=none; b=joMPwRYN/BTrwjvDk2Jvdbd/9TRhXSUh/+qgw31dV52oGcafQRDVXBWbaUzGAgfZkC7PfyooXzm7rr3w6Lxg704gvaG2xifimMnWfGCmOHtZRcquKt8GNio0y9imdjWbgJPh1lvIcdtMEyuUO+16pJSes04Bquz45GHm0FhFRS4=
+	t=1739581024; cv=none; b=F8CmtDcNo3yyC2fo2l5Y0Z3tk9QJ3dIMwnPhf6fRfrGD6m77aIJVLGAuscrQZPY+Tn1X6nfq6Nm2d3ZenwfhQN18GytBCpcZxLMG8cektA/ithuhLRQguqGJc+fh8Wc/qH8K20bLaL5l6baYB38hgba29SmZanDmIK4lJ7OFgwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739580521; c=relaxed/simple;
-	bh=J8WUjsnnP7sCIDzXp/yxMBz/NbLT/IgBeDS5wJ1BZkQ=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=uP8yCFf5hSWFSnePgt5CI/H9JglFmVCHPhMrtRXQp95vifXEDtctDzem8k8bs63dA9ROMnDaHSdhagzH5kdSA2RSUO7FdJpRRjQoSP3hIczU133D6/CjNon7nE5A5HlNBwZ1PsT7eA+WVPbPOd8HDxcRdwjaF6jgvD60iq/5YNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5ddd71dc.dip0.t-ipconnect.de [93.221.113.220])
-	by mail.itouring.de (Postfix) with ESMTPSA id EFF5A12566F;
-	Sat, 15 Feb 2025 01:48:34 +0100 (CET)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id A7DC360188735;
-	Sat, 15 Feb 2025 01:48:34 +0100 (CET)
-Subject: Re: Suspend failures (was [PATCH 6.13 000/443] 6.13.3-rc1 review)
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Phil Auld <pauld@redhat.com>, Waiman Long <longman@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- stable <stable@vger.kernel.org>
-References: <20250213142440.609878115@linuxfoundation.org>
- <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
- <2025021459-guise-graph-edb3@gregkh>
- <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
- <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <9d2efa62-3b80-b594-5173-ca711a391dbe@applied-asynchrony.com>
-Date: Sat, 15 Feb 2025 01:48:34 +0100
+	s=arc-20240116; t=1739581024; c=relaxed/simple;
+	bh=imiRXcRe5fIzga1fTl2XI0oxBCEsG3xFvR07QmMegj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MtBgXtMG58EEOUQTVpAZeBJxctnZXdOooMkqpoR5Mxb5t3t5ZxKK5qyu9QcFRYfgVbLJDBzs2N8RI74RhMKD59xtAWBo3de1N9KFG9s3OQV3FyIWMhF7MjUV4vyT1Fq+LHmK9Wc6JtRLeTjdIBTZwPAU9zmx8gmf42bk+SwAfjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtsgTaCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F33CC4CED1;
+	Sat, 15 Feb 2025 00:57:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739581023;
+	bh=imiRXcRe5fIzga1fTl2XI0oxBCEsG3xFvR07QmMegj0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MtsgTaClPzNEeNFM589RpXlKOsY6YNX5SrT20oR5i2WSWVQIA2sBcgRkL6roIoAk9
+	 Z5VVHLTLn8qirFBrwEtZ+7AJXyGamHTeanDTXLSqMQcHZUDImxSJe3lIhnv4pWPpUk
+	 YOcPPb4wCXftDpbLQVz3mQNtNxRS7YusiLrZNSielDmLUyThQbJonkm1UXSNQpI7LJ
+	 dCtcl+3vQxJQAJ/lqGCjdhRQMH8SWEnV+jjSLHT3dHs4tTIXhoMl6AyUosZiLU18Fz
+	 1eUdPB0eOPHZQxc5YVdsrvZscfIng5R/k6bTKaqO0LpC5a2x6NYIh3lLCUfImB6KuS
+	 p75eqMwUImy6Q==
+Date: Sat, 15 Feb 2025 00:56:59 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.12 000/419] 6.12.14-rc2 review
+Message-ID: <Z6_mW-l_zGRthtBU@finisterre.sirena.org.uk>
+References: <20250214133845.788244691@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="b1zMQeLm7Y0fmuUQ"
+Content-Disposition: inline
+In-Reply-To: <20250214133845.788244691@linuxfoundation.org>
+X-Cookie: Editing is a rewording activity.
 
-On 2025-02-15 00:18, Linus Torvalds wrote:
-> Adding more people: Peter / Phil / Waiman. Juri was already on the list earlier.
-> 
-> On Fri, 14 Feb 2025 at 02:12, Holger Hoffstätte
-> <holger@applied-asynchrony.com> wrote:
->>
->> Whoop! Whoop! The sound of da police!
->>
->> 2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
->> commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
->> Author: Juri Lelli <juri.lelli@redhat.com>
->> Date:   Fri Nov 15 11:48:29 2024 +0000
->>
->>       sched/deadline: Check bandwidth overflow earlier for hotplug
->>
->>       [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
->>
->> With this reverted it reliably suspends again.
-> 
-> Can you check that it works (or - more likely - doesn't work) in upstream?
-> 
-> That commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
-> earlier for hotplug") got merged during the current merge window, so
-> it would be lovely if you can check whether current -git (or just the
-> latest 6.14-rc) works for you, or has the same breakage.
-> 
-> Background for new people on the participants list: original report at
-> 
->    https://lore.kernel.org/all/e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com/
-> 
-> which says
-> 
->>> Common symptom on all machines seems to be
->>>
->>> [  +0.000134] Disabling non-boot CPUs ...
->>> [  +0.000072] Error taking CPU15 down: -16
->>> [  +0.000002] Non-boot CPUs are not disabled
-> 
-> and this bisection result is from
-> 
->    https://lore.kernel.org/all/9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com/
-> 
-> and if it breaks in 6.13 -stable, I would expect the same in the
-> current tree. Unless there's some non-obvious interaction with
-> something else ?
 
-I just booted into current 6.14-git and could suspend/wakeup multiple times without
-any problem - no reverting necessary, so that is good.
+--b1zMQeLm7Y0fmuUQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As for 6.12/6.13 it might be necessary to revert an accompanying commit
-as well since it seems to cause test failures with hotplug, as documented here:
+On Fri, Feb 14, 2025 at 02:58:41PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.14 release.
+> There are 419 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-   https://lore.kernel.org/stable/bcf76664-e77c-44b3-b78f-bcefc7aa3fc1@nvidia.com/
+Tested-by: Mark Brown <broonie@kernel.org>
 
-..but I don't know anything about that; I just wanted to find the patch causing
-the suspend problem. Other than that 6.13.3-rc2 works fine.
+--b1zMQeLm7Y0fmuUQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Not sure if that was useful information. :)
+-----BEGIN PGP SIGNATURE-----
 
-cheers
-Holger
+iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmev5lsACgkQJNaLcl1U
+h9BK0Qf3SzoFKJQ5kz2A1VqO+kHwutHNzrjB5O7aSBnpK4EMWhRwrIVV4qhT+tA7
+xT9Vj1WX4in3tBlXf2hGGQXLHFm46ARFn91DkrxAdj6HYTQynQ8fDyQtehmCnHSV
+STZvh9VFVBrQKLYBzsY9ljJLBj0BzZ8LHwX67es9GYQvlh0H+a9k+l1kOB5voJtc
+6vExTBBJvIzWVwpc81mF8mE3pH0IK33qSTXZ4voZHHaSW3yTNiaczUWCyXEC9UG9
+Jd4ob3t4CFsGGjZEm/55CqirUeF5dnXEAFxIEEpYVtKpqw80DKsGgUledfKZkUuo
+rxaX+0JTOBxpPAMWGqUh0QABTTwi
+=qL4n
+-----END PGP SIGNATURE-----
+
+--b1zMQeLm7Y0fmuUQ--
 
