@@ -1,98 +1,125 @@
-Return-Path: <stable+bounces-116467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981B9A36A0D
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 01:44:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C247EA36A10
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 01:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EF04169DE9
-	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:44:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 894C716C845
+	for <lists+stable@lfdr.de>; Sat, 15 Feb 2025 00:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F30C44C94;
-	Sat, 15 Feb 2025 00:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIbln9A2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913C81CD2B;
+	Sat, 15 Feb 2025 00:48:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491034C8F;
-	Sat, 15 Feb 2025 00:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807805103F
+	for <stable@vger.kernel.org>; Sat, 15 Feb 2025 00:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739580236; cv=none; b=E5Z8pXFdPE31SvJA44wAotHgMC2qN7YR4Rbt/e8ABAqFXkjnEv7V2yIustwCwZ4rTvyaAK2RX1CQAbv7/ZGvRIU5wROwLUQxHlokNM1WTZ323u224phx+DwbYp7xkXyAiB5/mz6WvZO6+cFONVSmgrj0nnMBjwOpd6LYYa0zA9k=
+	t=1739580521; cv=none; b=joMPwRYN/BTrwjvDk2Jvdbd/9TRhXSUh/+qgw31dV52oGcafQRDVXBWbaUzGAgfZkC7PfyooXzm7rr3w6Lxg704gvaG2xifimMnWfGCmOHtZRcquKt8GNio0y9imdjWbgJPh1lvIcdtMEyuUO+16pJSes04Bquz45GHm0FhFRS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739580236; c=relaxed/simple;
-	bh=Lg2KBYgTP6DSZbw8H9xyEYu7CAsTBt9CPAZb69EX0Ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VS+sUjSKXU2P/BZps+n/ynXSlanvJhc/olCBn76Tbehmk2uL1m320bqpqctTmEnF3pl7Jre1bk5xtXa7Xvtw0UFOKvKzOFPQUhhThZquRCsb3xFI8NxllhSmmbMWxyfErJLrGWW79tTDCr+hvdKCpGP0kenTv6HPN/mYf95imE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIbln9A2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1CDC4CED1;
-	Sat, 15 Feb 2025 00:43:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739580236;
-	bh=Lg2KBYgTP6DSZbw8H9xyEYu7CAsTBt9CPAZb69EX0Ls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QIbln9A23hCf3e9x1ErSA/Fnf3gJJudEvVqyEDh2dCRJGXzkwaOp2VP0D9/Wmsp9x
-	 q5P7fh+nK0gOnyXtlHSXZlxVek03n3MiW4PfMtid1LjS2u0mGNZ635SreWUyC/iIEL
-	 av3JNvrEnhWIQM9puEz4BFUMXR/Hn3dqTZth1AE9LoYb9VVYDlvpaTHyKhh9K+KCE7
-	 EQAUC6DizC5ORJnJG7jQHbgG/Cc0cTe+N4uiJ0Mo8K7LtCtaCAzc4jlmh5dAqu9Kl3
-	 i1NzUSIbgnz/xmyqokmyZSAUoNfcGUqF6DPhZ5Ns8eE545GpDcir+fvVsjcShPQ2Xc
-	 fuPXscGCqLq8A==
-Date: Sat, 15 Feb 2025 00:43:52 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.13 000/443] 6.13.3-rc2 review
-Message-ID: <Z6_jSDxUowQpJ7qx@finisterre.sirena.org.uk>
-References: <20250214133842.964440150@linuxfoundation.org>
+	s=arc-20240116; t=1739580521; c=relaxed/simple;
+	bh=J8WUjsnnP7sCIDzXp/yxMBz/NbLT/IgBeDS5wJ1BZkQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=uP8yCFf5hSWFSnePgt5CI/H9JglFmVCHPhMrtRXQp95vifXEDtctDzem8k8bs63dA9ROMnDaHSdhagzH5kdSA2RSUO7FdJpRRjQoSP3hIczU133D6/CjNon7nE5A5HlNBwZ1PsT7eA+WVPbPOd8HDxcRdwjaF6jgvD60iq/5YNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5ddd71dc.dip0.t-ipconnect.de [93.221.113.220])
+	by mail.itouring.de (Postfix) with ESMTPSA id EFF5A12566F;
+	Sat, 15 Feb 2025 01:48:34 +0100 (CET)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id A7DC360188735;
+	Sat, 15 Feb 2025 01:48:34 +0100 (CET)
+Subject: Re: Suspend failures (was [PATCH 6.13 000/443] 6.13.3-rc1 review)
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Phil Auld <pauld@redhat.com>, Waiman Long <longman@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable <stable@vger.kernel.org>
+References: <20250213142440.609878115@linuxfoundation.org>
+ <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
+ <2025021459-guise-graph-edb3@gregkh>
+ <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
+ <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <9d2efa62-3b80-b594-5173-ca711a391dbe@applied-asynchrony.com>
+Date: Sat, 15 Feb 2025 01:48:34 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="olmlACVjamj9Rcp4"
-Content-Disposition: inline
-In-Reply-To: <20250214133842.964440150@linuxfoundation.org>
-X-Cookie: Editing is a rewording activity.
+In-Reply-To: <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
+On 2025-02-15 00:18, Linus Torvalds wrote:
+> Adding more people: Peter / Phil / Waiman. Juri was already on the list earlier.
+> 
+> On Fri, 14 Feb 2025 at 02:12, Holger Hoffstätte
+> <holger@applied-asynchrony.com> wrote:
+>>
+>> Whoop! Whoop! The sound of da police!
+>>
+>> 2ce2a62881abcd379b714bf41aa671ad7657bdd2 is the first bad commit
+>> commit 2ce2a62881abcd379b714bf41aa671ad7657bdd2 (HEAD)
+>> Author: Juri Lelli <juri.lelli@redhat.com>
+>> Date:   Fri Nov 15 11:48:29 2024 +0000
+>>
+>>       sched/deadline: Check bandwidth overflow earlier for hotplug
+>>
+>>       [ Upstream commit 53916d5fd3c0b658de3463439dd2b7ce765072cb ]
+>>
+>> With this reverted it reliably suspends again.
+> 
+> Can you check that it works (or - more likely - doesn't work) in upstream?
+> 
+> That commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
+> earlier for hotplug") got merged during the current merge window, so
+> it would be lovely if you can check whether current -git (or just the
+> latest 6.14-rc) works for you, or has the same breakage.
+> 
+> Background for new people on the participants list: original report at
+> 
+>    https://lore.kernel.org/all/e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com/
+> 
+> which says
+> 
+>>> Common symptom on all machines seems to be
+>>>
+>>> [  +0.000134] Disabling non-boot CPUs ...
+>>> [  +0.000072] Error taking CPU15 down: -16
+>>> [  +0.000002] Non-boot CPUs are not disabled
+> 
+> and this bisection result is from
+> 
+>    https://lore.kernel.org/all/9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com/
+> 
+> and if it breaks in 6.13 -stable, I would expect the same in the
+> current tree. Unless there's some non-obvious interaction with
+> something else ?
 
---olmlACVjamj9Rcp4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I just booted into current 6.14-git and could suspend/wakeup multiple times without
+any problem - no reverting necessary, so that is good.
 
-On Fri, Feb 14, 2025 at 02:58:52PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 443 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+As for 6.12/6.13 it might be necessary to revert an accompanying commit
+as well since it seems to cause test failures with hotplug, as documented here:
 
-Tested-by: Mark Brown <broonie@kernel.org>
+   https://lore.kernel.org/stable/bcf76664-e77c-44b3-b78f-bcefc7aa3fc1@nvidia.com/
 
---olmlACVjamj9Rcp4
-Content-Type: application/pgp-signature; name="signature.asc"
+..but I don't know anything about that; I just wanted to find the patch causing
+the suspend problem. Other than that 6.13.3-rc2 works fine.
 
------BEGIN PGP SIGNATURE-----
+Not sure if that was useful information. :)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmev40cACgkQJNaLcl1U
-h9ABgAf/RXjtJJCLtkKINZgfgoxcMZ212Ey/z7rQ2tPMfAt/4QfBUYu6HnV2bHtP
-udSiiIOfTc70hjbbgpRvyl9QTfweBpyLPPD1vAUBesEHBDYpN40dGO6oO8VXh7Sb
-A5bicYZpHrxJffiWj/fmcqlbas05II8iK0a00F0/Wd5AdATPEgRtCt/ai71w4t4F
-OHz1Dxb0PG21YNyUc3nmnbMOGXnRI/KlX0HzaDplWiZ69y0JoajF0hpWBivsiwRT
-lMNkCdhDQu/MeQrpuhcHKpJBPlStbhZZx5qYQEVe8/pQ2OrZSn5MbVvmo0L1wKNp
-jRcW1My3VmRytRsc9Ad+OSf+B+4y6Q==
-=kDaN
------END PGP SIGNATURE-----
-
---olmlACVjamj9Rcp4--
+cheers
+Holger
 
