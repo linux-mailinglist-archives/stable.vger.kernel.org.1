@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-116518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F59A3791B
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 01:04:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5961A3790D
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 00:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 359BD16D006
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 00:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D00F3AAB58
+	for <lists+stable@lfdr.de>; Sun, 16 Feb 2025 23:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAFE15C0;
-	Mon, 17 Feb 2025 00:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6471A727D;
+	Sun, 16 Feb 2025 23:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="XG8sok2p"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="BYJTIAYP"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AE9A41;
-	Mon, 17 Feb 2025 00:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C601A38E1;
+	Sun, 16 Feb 2025 23:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739750666; cv=none; b=MsXkPsDsnyg7EaX8CnPAN/kBMssqcBbpo4c+dmprciOMNJnVn0L+nI0FRE1XlS7riF/czV6+OxOpDLCJj1iJa5BYHLXWOyFolOrGM1YPI1ftccg1dcVbqNtREaOUmH4Pnu2UW4KCILH2tH0naLnY0cuUBqJ9Wb1vJ4C+nNLHuvs=
+	t=1739750281; cv=none; b=Tex9znj3SxSxCDU6o50jZfU+6NP4X61b+yYMwUh6nhzSog2YNCm079RbDIExE2x+GgdIRO8TSiAH8xEFyvrosaDs/ek3bUX7RvF9EZze/43fylkv5iUMQPKQwq1uiguf7CTYS2mmU3/8ldEesrFfy1pP/v3H8O8AQg2SwciB9L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739750666; c=relaxed/simple;
-	bh=WcwwYqXch6QV/PhVm4Vn7dF66DiUSx5U7MGHrLCNvyw=;
+	s=arc-20240116; t=1739750281; c=relaxed/simple;
+	bh=RvMyz69Q5a1HwyeTHOUFJKWZ23Du+1ViAhQqi4WE9X8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H/B4v3oV5H5MMHohQwL3laB63zhr6bRvGGxjDorS3w7pfCD0OUVBx2HZ99WsnDyhjHwFMCaw81P9QFBvlvc5gPHZhEPOJlg/zh2wNwUSrfm7ReOczt2zAqViJEJV8dQzGfzBQ1xWs3nt6M9Jl6zEyewoY190ina4AGHLEtx2++c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=XG8sok2p; arc=none smtp.client-ip=51.81.35.219
+	 In-Reply-To:Content-Type; b=qZJnVtRxml29kiyFKloLoJ+wt9J4ILgzflSrNhZ3gooXnef2nu6vLeyy7M/DXFM+zGZkJe+qri0mCoagvqOA0zpI+GISzSEEVc6hQCOy77LixAm2zbbOhpWwazNspWDVLsQQZmSKKGzjhyi3xX1XxsU95CPir37w6mqwwa5c2W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=BYJTIAYP; arc=none smtp.client-ip=159.100.248.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 45D6820496;
-	Sun, 16 Feb 2025 23:57:27 +0000 (UTC)
-Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.102])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id A9EFF260EB;
-	Sun, 16 Feb 2025 23:57:17 +0000 (UTC)
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3AB4C260F6;
+	Sun, 16 Feb 2025 23:57:58 +0000 (UTC)
 Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay1.mymailcheap.com (Postfix) with ESMTPS id 9F97C3E939;
-	Sun, 16 Feb 2025 23:57:09 +0000 (UTC)
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id B8B2F3EA8A;
+	Sun, 16 Feb 2025 23:57:49 +0000 (UTC)
 Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id A3B0F4023E;
-	Sun, 16 Feb 2025 23:57:08 +0000 (UTC)
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 6182F4023E;
+	Sun, 16 Feb 2025 23:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1739750228; bh=WcwwYqXch6QV/PhVm4Vn7dF66DiUSx5U7MGHrLCNvyw=;
+	t=1739750269; bh=RvMyz69Q5a1HwyeTHOUFJKWZ23Du+1ViAhQqi4WE9X8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XG8sok2p80qBXIoQ91t+ESJlpumx2vB7wGIhARCY5ph8gw9ubH7pF54BJJ0TAO2M3
-	 jSzrYOFW0u6P/hl157Ib8r0El2aoU1o8N2aP/qdPGQY8tyhbdWf3LxhhHVxSaorFqd
-	 fkwVReZmINsF3ytVyalzDAJo54ia5xvTsssc6Zak=
+	b=BYJTIAYPkG+5mPQal7AKQJlQ0t0QDjtxp/w+OPwiLxmU2/ZraRrj+ID3Oy9WLNn9p
+	 aZw1Uok8dOW6s4eiflXpQRnTtQMBLcVlyxqCdqgl8VWGdbUgdLZpo1s+I09BnLoIh9
+	 RDsoSOrVmiHWKdVMk22qOhwpeJ+dBL6APKbBzltE=
 Received: from [198.18.0.1] (unknown [58.32.17.244])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 6D5E04086E;
-	Sun, 16 Feb 2025 23:57:03 +0000 (UTC)
-Message-ID: <2327a312-8b1a-4fde-9fa5-1aec5498bfdb@aosc.io>
-Date: Mon, 17 Feb 2025 07:57:00 +0800
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id C863940657;
+	Sun, 16 Feb 2025 23:57:44 +0000 (UTC)
+Message-ID: <270c8038-dfb2-4b09-87ba-023b353c67df@aosc.io>
+Date: Mon, 17 Feb 2025 07:57:42 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +61,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Thunderbird Daily
-Subject: Re: [PATCH 6.13 000/442] 6.13.3-rc3 review
+Subject: Re: [PATCH 6.12 000/418] 6.12.14-rc3 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -72,14 +69,14 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
  rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250215075925.888236411@linuxfoundation.org>
+References: <20250215075701.840225877@linuxfoundation.org>
 Content-Language: en-US
 From: Kexy Biscuit <kexybiscuit@aosc.io>
-In-Reply-To: <20250215075925.888236411@linuxfoundation.org>
+In-Reply-To: <20250215075701.840225877@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: A3B0F4023E
+X-Rspamd-Queue-Id: 6182F4023E
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [1.41 / 10.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -104,19 +101,19 @@ X-Spamd-Result: default: False [1.41 / 10.00];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	RCVD_TLS_ALL(0.00)[]
 
-On 2/15/2025 4:00 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 442 patches in this series, all will be posted as a response
+On 2/15/2025 3:58 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.14 release.
+> There are 418 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Mon, 17 Feb 2025 07:57:54 +0000.
+> Responses should be made by Mon, 17 Feb 2025 07:52:41 +0000.
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.3-rc3.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc3.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -141,7 +138,7 @@ riscv64     (kernel arch: riscv)
 
 Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
 
-https://github.com/AOSC-Dev/aosc-os-abbs/pull/9696
+https://github.com/AOSC-Dev/aosc-os-abbs/pull/9699
 
 -- 
 Best Regards,
