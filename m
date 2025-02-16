@@ -1,123 +1,164 @@
-Return-Path: <stable+bounces-116511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F498A3725B
-	for <lists+stable@lfdr.de>; Sun, 16 Feb 2025 08:19:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7745A3732B
+	for <lists+stable@lfdr.de>; Sun, 16 Feb 2025 10:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A4E3AB777
-	for <lists+stable@lfdr.de>; Sun, 16 Feb 2025 07:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77CF1168DCA
+	for <lists+stable@lfdr.de>; Sun, 16 Feb 2025 09:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2C615383D;
-	Sun, 16 Feb 2025 07:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58512189916;
+	Sun, 16 Feb 2025 09:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="bebWdZ9P"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zzZEo4yj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E03C15445D;
-	Sun, 16 Feb 2025 07:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ABE433A0;
+	Sun, 16 Feb 2025 09:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739690382; cv=none; b=qUp1K9lz8uPCgLcDyTRmANgyJvYE9k9xswuK355rlDIVIN8Klz0L5locETL5WCcRgSX4c5t50Z0kyhiPk8f3muJrDTajjyMe0oU6D3BGmQvrY0v6Z9zv3QEbs8l6/ZQr7Xk3S9hbZc2QZ/VIc+9+1b5c19uteO5c0xMfdJe6r7k=
+	t=1739698263; cv=none; b=fGNE9LcQ2L1JRyJVjqZbRibYeIS9Kg9HGoygFmD8l1N+2P/35Gncm06FShooi1/F5wUYG8P27Fvv1YdOxftacSPEyKZIx+dSLqrYqXMxLamCm57UIbrVYa1MQtACaBpELfPEFTwKDzkOeVtbFiRBQNvTeJDGy7oSJp6kE+o6sXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739690382; c=relaxed/simple;
-	bh=h8GLSyu0qMrP7keJKlTVF3CUjBxx96cUnU04Y2WSPPc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qE+Tk/2thD2aEsre6GgnDSUoraabB3T55ot8v48tEG4rpDJZPEpSAstiBWl8Gn7fmvh0hjg70uVKo9u4RGHes2YziYid6sJjJkeUVKy/itQqrVKJIms11aS31VcBNLLUg7bqFbVPyiD0FPFX69Njc9pcuDYHqjq39irNThOGPtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=bebWdZ9P; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38f286b5281so1459568f8f.1;
-        Sat, 15 Feb 2025 23:19:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1739690379; x=1740295179; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oJ48bFI5nmQNNKRHP45qr5Uw0E1Ug7S7l+n7QSTbTcs=;
-        b=bebWdZ9PR5egA1lwSXUFt5Cx4Tav6TeWRs6imSY2AFmmuE1IOD+BE9Oj9QNTVG24MQ
-         CDUvdr4CIR6/SwGKCAxjkz04RkbRU3fu+W2pgGbMs3SLxpcX/eA9NjOkZCpHNgmlKEIO
-         6701dcv8DiG0+0Y51j2Tp5xE+BG8v1FDgMoZPbgiWd02+I5ktwmu9rQPsOL5oq39Mpj3
-         nGS+7qzrsDPDP0dps15HeP0q+J28swgJGue6/QpUaFkF5GZWnu+/WUBVS5GZf1Q1Azzj
-         imLOLPCOhO7ORpeOfB9rwuePDIyvcklgGW31gVgjLvzuDeeAyR0XIAIJfWvb5Ucf3K9G
-         EpWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739690379; x=1740295179;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJ48bFI5nmQNNKRHP45qr5Uw0E1Ug7S7l+n7QSTbTcs=;
-        b=megjzE7yXUPInFbrhBDijXPLMB9KTNMxntVphD1LCWPLd+6Q+Jct4ILeRTTae90HID
-         65atyzDwMtH7lK3GjUaLd0pDHWO8Rw1ArfFiovt88lEUP7efuBt265HfESuJxZpxSCpT
-         jx09bBY7J0u+tOHdEcbzFLfzwanzY6uoPR6DAb0s0b+Jp+5FGSxtRDu7mGL3cwtV0T54
-         bcnDDlVV6t8g4JuOnjKvp39bZkpyojQ95AP3uBTaEOBgBcxH8Y8zYuhUaVqmKJByhAb7
-         mCtN/tG27igTFQH+riUQgM/cVYqglqdEbLbJr0EIRzvj7dwz+l4mhH4VOjKYBylSid+T
-         8eYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXViWHwxnqxKxLU0YlSixAga/3AEpplYX0QCh1rIVfMbM/9eAqNQNBweM1aw/mfwMShyBaFi8vmo6xAJ2Q=@vger.kernel.org, AJvYcCXeTjmBobd8DBfscZaTxeCCAOPIifdCy+sISf0EWRld18tbNj4KBp+CZbo5AN0mFfSuaOjlqIgl@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx83+0k26VdijycUmW3fAbRZQhGR3YJY5eoFWmZehz2sj6oUa/q
-	RK+peuUsSv4xS+68+OIdDqrdIb0gtQ0X3dZlOTWJ+w8AZFTZM20=
-X-Gm-Gg: ASbGncutZHIkG3FsPQRYNH3Zj4+q1fF9OMEA8NUfsc8b7g3Jcu3sg8gkjzX1ufjtWwH
-	1nSljFvs+UQiQbt+4tbADK02nHSivFGNnjME2PewJCvzDp1YNnWRhYrXlEm8644w0/YMeQtwMmm
-	JqJUT+F8L4dHhrEQ8qQh5gaPfaaZQAnCihpEt3+19iD5qD3JcFdl0ACB04GpK8vsjeoyBlJD314
-	uYRgDoRNmAGE/mp9AK/1wZz12cZAzUZAxwtLiYM535hrBbnc9xTZKV3A2s8QFLCV80vH8uhswgj
-	kqD25ic7qMykvVB4T3HjUgbtl9VCIgs/wS26gOIaF+33qSZvYufwSYXVm7/IjFr/M8Eo
-X-Google-Smtp-Source: AGHT+IGm4hiqnMQWTqMPbhPKO2hNADidPmmiKUb3hBslmIgtWXuoigTeYkXT9sNM/irggrjxCpN+6Q==
-X-Received: by 2002:adf:e74e:0:b0:38d:d767:364 with SMTP id ffacd0b85a97d-38f33f1c8bamr4413943f8f.13.1739690379125;
-        Sat, 15 Feb 2025 23:19:39 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b47ca.dip0.t-ipconnect.de. [91.43.71.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f25a0fe5esm9086555f8f.99.2025.02.15.23.19.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Feb 2025 23:19:38 -0800 (PST)
-Message-ID: <545f056e-fe4b-463c-afda-653cf558ad12@googlemail.com>
-Date: Sun, 16 Feb 2025 08:19:36 +0100
+	s=arc-20240116; t=1739698263; c=relaxed/simple;
+	bh=YycW8ro2VftsQjHvrgvBkrK3WDsRY9Wr78hI4vwmwoE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O5we3F1nJU0or+6zr1jA5ZMmUf5VxRUxhXT5Y0FLikpCW+VWOzRBDg2GmIo3MbAcOuoyEfohitLn+XCiClXDg8Xe4qJjVwI5xgZzHyALsdJzc0uxToyAtpvqBalIVl/oxFNSGMec9eLWfDzScqcJ06bnictBm9odnceL41aYMCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zzZEo4yj; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1D7A92540123;
+	Sun, 16 Feb 2025 04:31:00 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Sun, 16 Feb 2025 04:31:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1739698259; x=1739784659; bh=qx/SJG5ijmT0Xa4nxgZmBXmRB69O0r8beqb
+	QPBqwIS8=; b=zzZEo4yjwGDmU5if/IV5GZpfCiWFDYeBmDGERWTHbqk8NdxZVmP
+	ehrM/xkVhNCKFziS8b6FgApqabx/IxYUpBocuOPmqBif4GDbfPhIUfxPTbTEbn3I
+	sSvLibtESN8t7akiB3v3kkGvSAB9BPpbwGaAkEEyo4mZBXTYDKHlRskxLDgYYGgq
+	vhyX5ZlOyx4sIHQR17xTm4LG2rD/JopB9bZL2HjUoryvSNLU/yRolnHBQ4Me09o4
+	xplAEGU28UegynV+xacvrQqS9uXij8mXBMQwSnK5dhTEA/6uKy7/aWyL64b1C+K9
+	muYzA4J/y66FlAcnC0Civl54CqnJa1xJiSQ==
+X-ME-Sender: <xms:UrCxZ_eDSVpsraW3p6A8cDqbURZ6u-eWvN7-ywNkNpaRW_RJ3sxvCA>
+    <xme:UrCxZ1M2h5-MQEs99ZywZIRRsJ2nwmHHQE5vIKYzkN7frWK-nyyyG7douKwNRlo-t
+    Bo7alYHPY9shZw>
+X-ME-Received: <xmr:UrCxZ4gLRW0hNuIV14P371PwXIwOBRH-O1txIPKqIamITUF5rdmWf1dmp_ey>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehheduudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
+    horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
+    fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
+    thhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepihhlihgrrdhgrghvrh
+    hilhhovhesihhnfhhothgvtghsrdhruhdprhgtphhtthhopehnhhhorhhmrghnsehtuhig
+    ughrihhvvghrrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnh
+    gvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthht
+    ohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvug
+    hhrghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:UrCxZw-FBWVbSp35ufaCHUq_EIbohO5GaH9KiyqCem4euKfkLJZUPg>
+    <xmx:UrCxZ7vl_OCnxlWWNL0e5aTVYi5MBJ-sXYKNu8KMzsN8N_10iAOSOg>
+    <xmx:UrCxZ_FuXnX2IkqpNKOpPBwITdj6w7KMyCYhxNY7WIyBDhHV7TjPvw>
+    <xmx:UrCxZyNUq4eyJRuXICbTzCfgqg6hkFY6-eKXS2ddB1rkSoDG0roVUA>
+    <xmx:U7CxZ8lcJOOfNRpPhu8MFK32DNezGT_bkeXpkA6zKpWt0mXz0HUMc7Px>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Feb 2025 04:30:57 -0500 (EST)
+Date: Sun, 16 Feb 2025 11:30:55 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Cc: Neil Horman <nhorman@tuxdriver.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net v2] drop_monitor: fix incorrect initialization order
+Message-ID: <Z7GwT6d-9ZFuzUcL@shredder>
+References: <20250213152054.2785669-1-Ilia.Gavrilov@infotecs.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.13 000/442] 6.13.3-rc3 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250215075925.888236411@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250215075925.888236411@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213152054.2785669-1-Ilia.Gavrilov@infotecs.ru>
 
-Am 15.02.2025 um 09:00 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 442 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Feb 13, 2025 at 03:20:55PM +0000, Gavrilov Ilia wrote:
+> Syzkaller reports the following bug:
+> 
+> BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
+>  lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+> CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+ #1
+> Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+> Call Trace:
+>  __dump_stack lib/dump_stack.c:77 [inline]
+>  dump_stack+0x119/0x179 lib/dump_stack.c:118
+>  debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
+>  do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
+>  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
+>  _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
+>  reset_per_cpu_data+0xe6/0x240 [drop_monitor]
+>  net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
+>  genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+>  genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+>  genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+>  netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
+>  genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+>  netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
+>  netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
+>  sock_sendmsg_nosec net/socket.c:651 [inline]
+>  __sock_sendmsg+0x157/0x190 net/socket.c:663
+>  ____sys_sendmsg+0x712/0x870 net/socket.c:2378
+>  ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
+>  __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
+>  do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+>  entry_SYSCALL_64_after_hwframe+0x62/0xc7
+> RIP: 0033:0x7f3f9815aee9
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
+> RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
+> RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
+> 
+> If drop_monitor is built as a kernel module, syzkaller may have time
+> to send a netlink NET_DM_CMD_START message during the module loading.
+> This will call the net_dm_monitor_start() function that uses
+> a spinlock that has not yet been initialized.
+> 
+> To fix this, let's place resource initialization above the registration
+> of a generic netlink family.
+> 
+> Found by InfoTeCS on behalf of Linux Verification Center
+> (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+I wouldn't object if someone requested to remove these archaic
+{BUG,WARN}_ON()s, but figured this cleanup is more of a net-next
+material.
 
