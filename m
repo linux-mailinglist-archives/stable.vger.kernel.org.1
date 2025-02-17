@@ -1,181 +1,201 @@
-Return-Path: <stable+bounces-116602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABDAA38917
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:27:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A918DA389FD
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95C153AA54E
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47B6616D072
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB3C2253BB;
-	Mon, 17 Feb 2025 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC50226180;
+	Mon, 17 Feb 2025 16:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=monogon-tech.20230601.gappssmtp.com header.i=@monogon-tech.20230601.gappssmtp.com header.b="vYx0PAmz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LbrWTewQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DBC2248B6
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 16:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C9225767;
+	Mon, 17 Feb 2025 16:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739809667; cv=none; b=rG6pFtICWOLbUNwkN93jnp/Kq1vk1zlOW/MXodUheCmNbB3+1ThbB1/zxBS3oefgPyLjSDpJoeK/xh0x3JapzqP0sQPzswbguJcIWKcjl+9tFRmHmounXTvhA4DJ4Y8WvFgi+sW4VCcJASaO2Xto0BnuZwlpqwIOFYkhjxsbp00=
+	t=1739810560; cv=none; b=HTmhkJgogl9783rdzvCn3uWJK2vR1rJF+qoo957LFjtxde2PGLjJuiJLWJt1Tcx9zuHKk80IGjvXAxuOl9bJTPYK1tRGph92utS9WXgQhkWwahnt4SN4c2bFIhY3icdvFDxqhLpLA3HwOZAzyxPAQHddge/MV+JM7QVf2j6g7Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739809667; c=relaxed/simple;
-	bh=6s7qdFHoXX0JCt7zS/mheacDmDGeW5NZtHSKHWH4Gyg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ABoFaI+s2KX2siTV2+4j/fnHZstrYRFQUU54GhkSxHe9wy+DIQyyZTPaJyMxgKeE/NmJB0T907KQiQ+NFPuM06RGxl1H7U7TDvS/EtBlIMEZ4b0bWLJME62fV88YGKzpnVWOPsP+tvsZVqYo6VnDjFGkioCvdxqT3H/IA08kGdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech; spf=pass smtp.mailfrom=monogon.tech; dkim=pass (2048-bit key) header.d=monogon-tech.20230601.gappssmtp.com header.i=@monogon-tech.20230601.gappssmtp.com header.b=vYx0PAmz; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monogon.tech
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-868da0af0fcso1455400241.2
-        for <stable@vger.kernel.org>; Mon, 17 Feb 2025 08:27:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=monogon-tech.20230601.gappssmtp.com; s=20230601; t=1739809664; x=1740414464; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6PvFl2wKnWHwXjigH9j9efLBuesnBYAv1Xo9xuUqiu4=;
-        b=vYx0PAmz630aNYOeaJketaAZqaiqrwp2t+0uTLJMzaifqDQYJ/ARttby3j/S/dwfkh
-         2VXg2Jgm+CUd0WhkbLQZvtr96vkXEaA3BgF9XZOshrItpEnMvLaVr2FXMCLnjQasGehB
-         cWhVnZEIl9jdmAFe8gXpQ9ZhhOsxNTKn25oPZwqg4LxUVt9KEyinFsCYIlQT2QGwhekX
-         dH8W94CHKiqnOpdjHGYb792Qvyy8rz2hyJ+Qytkx6C53pO/EWDCXMoRthzoOx+w7VjL2
-         eCACMl7Z4SSXCx6NQPaoRc8rSKJYJMJO4rgZezw4o/5V9Lg1jiUXBSVfuTbmWk2MJrDr
-         E8Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739809664; x=1740414464;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6PvFl2wKnWHwXjigH9j9efLBuesnBYAv1Xo9xuUqiu4=;
-        b=XVaYjbaJUAavrBzWS6Y7/TR93z0npdgc0deO4xkGzdXpKorDfsdKFOCX15SSDEgOxa
-         3O0GZ96rP9RCFhPK4u6uEkklxcN3Sc6bEzWkjbpysMth7bW0xwyqQdeicuexP+z75cSz
-         +/qDPQPo7UADSUrnOSLKuMRSrt8zLtSop9jyOFY4uE1nswtUg1/mPIzw3KpXubvYMN7K
-         JBQOGpAGhcaYyhJWh0AoFytZXx1zAW/VzAuvGPvmJQttZJ8u5YY+zpNM5l0AT3g+pmoX
-         i2rG42+kfjf6+8Oxd3HdKkv2dY8xiSe8xqTk0ZgMAsc+4Zt4eOi5VHZaZ25r/CnEIEYt
-         zZSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUe5gIosDRYEDQtGsuaSPYEngC/8nAhbDQiL/waLPn+o0kab01wHGW72VA0qw5ppVJIoFiRiSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+d0WUrwXJ7hpYEqJNIGwLA0N7DY+iaQpxJZiTTB6v5fsHLhtV
-	4bRjMe12g+i8hrvnWkYiLkJyPBJzRPwdihV2d2Kpmn6ZZ2Vb0ryjNwlIp+riXGLwVWRI6751bkR
-	w7hem23OoYdT3Mdbu1BAh/0HdrUA+q420myUu6Q==
-X-Gm-Gg: ASbGnct+njHt1Qq9vwdbhkDQvLqoGk4Bs3pOplaY+Qz/n4exArE9Q84J53+kGipz3s6
-	P3mTTmIYwhlJaglw9jl3y6DC5qEhWPXEWSUyn059fAS4gX0nSTsHTpr8PL+UFFMtrtuOysHNbxN
-	lu5VBxxeUuP1e0ASlvh3UH3sHf
-X-Google-Smtp-Source: AGHT+IEU+xU6Lu3tYZjkn9ZoOcQOLC4IpIXmKmOlG8P6p77QposbysTbDwU5scNRtoiwFYf2AGQQ8athYurjvX1HotA=
-X-Received: by 2002:a05:6102:150f:b0:4bb:dba6:99b7 with SMTP id
- ada2fe7eead31-4bd3fd83d64mr5797165137.13.1739809663935; Mon, 17 Feb 2025
- 08:27:43 -0800 (PST)
+	s=arc-20240116; t=1739810560; c=relaxed/simple;
+	bh=t3NE35I54Cu59eW2QKSlmDyuH6d3KefVwcXixHa8P/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ob7X97WfBPSdqaSUvcEbmjXIb8Xvwy74Dw1oG8AJPTtaV0GfdagWL2xKX3bQeXKa4QJS1abksA3p1LP6Pl/MkSHjRBQkMbqNlzTuu49gaxKnW8itA8fGbDGB/ekGApCIayIoxxXWITz3YOLHSAyzKP8984pNG8BJWiR4mIV2c/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LbrWTewQ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739810559; x=1771346559;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=t3NE35I54Cu59eW2QKSlmDyuH6d3KefVwcXixHa8P/w=;
+  b=LbrWTewQuHzKVsHzdAkrcyjs6K49PfkH9LapAX6WNXw1SprcgGvAImLF
+   SxVOflUhWeFVwsOtM2f5hqyAQe0j7ajAwj4AxsVisubzx8jBA2FDNArzF
+   e78/O0n/9X8wYi/80+93YkZNP6p582m9zuZLbcO0eyH7zA/eHos4ZUqc/
+   M0SLvkGv18HOGPTrCsuvW+IeI36KSCcNKBcSv/BblhgkHiNMh8zO6oSr0
+   uV1tNr8H7w4mPtqeKRvTmn3otGHaF+TasvvopJgEJ/SY/nOUZkFiuK7zA
+   QpGTHfOUH6RuqXENUy/N0kw5n9RPDToFM9cDBFqd+YJA3GamSGVqHvn70
+   Q==;
+X-CSE-ConnectionGUID: 3EgAUcLpQfGGsfQZ8KzcyA==
+X-CSE-MsgGUID: aEHyVbWfQuKmHIz0LITZsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="43329438"
+X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
+   d="scan'208";a="43329438"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:42:38 -0800
+X-CSE-ConnectionGUID: GLSyU+VWRGi5n4oLNrlKgg==
+X-CSE-MsgGUID: cQWRr/6aS7y+47a0BZOQXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114034941"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 17 Feb 2025 08:42:30 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 80EC3E7; Mon, 17 Feb 2025 18:42:29 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Chan <ericchancf@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kai Huang <kai.huang@intel.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCHv4 1/2] memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
+Date: Mon, 17 Feb 2025 18:38:20 +0200
+Message-ID: <20250217163822.343400-2-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250217163822.343400-1-kirill.shutemov@linux.intel.com>
+References: <20250217163822.343400-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJMi0nTHX0inFxme=xnJf23c8=w0bAf7LfiT=YNpmU-zVnUR+Q@mail.gmail.com>
-In-Reply-To: <CAJMi0nTHX0inFxme=xnJf23c8=w0bAf7LfiT=YNpmU-zVnUR+Q@mail.gmail.com>
-From: Lorenz Brun <lorenz@monogon.tech>
-Date: Mon, 17 Feb 2025 17:27:33 +0100
-X-Gm-Features: AWEUYZlONNt3-2mGQmD2nJ1CQWjkgdmHcjq6soS03JM_P4AP6zfQzaEeoIF9ZpE
-Message-ID: <CAJMi0nTbyi6VGTmmZ43wYWwJWur0XPtuswZ_5UaXB+S6Z=Mo6A@mail.gmail.com>
-Subject: Re: [REGRESSION] xfs kernel panic
-To: "Darrick J. Wong" <djwong@kernel.org>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, linux-xfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Am Mo., 17. Feb. 2025 um 16:00 Uhr schrieb Lorenz Brun <lorenz@monogon.tech>:
->
-> Hi everyone,
->
-> Linux 6.12.14 (released today) contains a regression for XFS, causing
-> a kernel panic after just a few seconds of working with a
-> freshly-created (xfsprogs 6.9) XFS filesystem. I have not yet bisected
-> this because I wanted to get this report out ASAP but I'm going to do
-> that now. There are multiple associated stack traces, but all of them
-> have xfs_buf_offset as the faulting function.
->
-> Example backtrace:
-> [   31.745932] BUG: kernel NULL pointer dereference, address: 0000000000000098
-> [   31.746590] #PF: supervisor read access in kernel mode
-> [   31.747072] #PF: error_code(0x0000) - not-present page
-> [   31.747537] PGD 5bee067 P4D 5bee067 PUD 5bef067 PMD 0
-> [   31.748016] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [   31.748459] CPU: 0 UID: 0 PID: 116 Comm: xfsaild/vda4 Not tainted
-> 6.12.14-metropolis #1 9b2470be3d7713b818a3236e4a2804dd9cbef735
-> [   31.749490] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-> BIOS 0.0.0 02/06/2015
-> [   31.750340] RIP: 0010:xfs_buf_offset+0x9/0x50
-> [   31.750823] Code: 08 5b e9 8a 2c c4 00 66 2e 0f 1f 84 00 00 00 00
-> 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f
-> 44 00 00 <48> 8b 87 98 00 00 00 48 85 c0 75 2e 48 8b 87 00 01 00 00 48
-> 89 f2
-> [   31.752775] RSP: 0018:ffffbf50c07abdb8 EFLAGS: 00010246
-> [   31.753343] RAX: 0000000000000002 RBX: ffff9c0985817d58 RCX: 0000000000000016
-> [   31.754103] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> [   31.754734] RBP: 0000000000000000 R08: ffff9c09fb704000 R09: 00000000e0be9fc4
-> [   31.755396] R10: 0000000000000000 R11: ffff9c0985827df8 R12: ffff9c09fb57ff58
-> [   31.756078] R13: ffff9c0985817eb0 R14: ffff9c09fb704000 R15: ffff9c0985817f00
-> [   31.756764] FS:  0000000000000000(0000) GS:ffff9c09fc000000(0000)
-> knlGS:0000000000000000
-> [   31.757529] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   31.758041] CR2: 0000000000000098 CR3: 0000000005b70000 CR4: 0000000000350ef0
-> [   31.758696] Call Trace:
-> [   31.758940]  <TASK>
-> [   31.759172]  ? __die+0x56/0x97
-> [   31.759473]  ? page_fault_oops+0x15c/0x2d0
-> [   31.759853]  ? exc_page_fault+0x4c5/0x790
-> [   31.760237]  ? asm_exc_page_fault+0x26/0x30
-> [   31.760637]  ? xfs_buf_offset+0x9/0x50
-> [   31.761002]  ? srso_return_thunk+0x5/0x5f
-> [   31.761409]  xfs_qm_dqflush+0xd0/0x350
-> [   31.761799]  xfs_qm_dquot_logitem_push+0xe9/0x140
-> [   31.762253]  xfsaild+0x347/0xa10
-> [   31.762567]  ? srso_return_thunk+0x5/0x5f
-> [   31.762952]  ? srso_return_thunk+0x5/0x5f
-> [   31.763325]  ? __pfx_xfsaild+0x10/0x10
-> [   31.763665]  kthread+0xd2/0x100
-> [   31.763985]  ? __pfx_kthread+0x10/0x10
-> [   31.764342]  ret_from_fork+0x34/0x50
-> [   31.764675]  ? __pfx_kthread+0x10/0x10
-> [   31.765029]  ret_from_fork_asm+0x1a/0x30
-> [   31.765408]  </TASK>
-> [   31.765618] Modules linked in: kvm_amd
-> [   31.765978] CR2: 0000000000000098
-> [   31.766297] ---[ end trace 0000000000000000 ]---
-> [   32.371004] RIP: 0010:xfs_buf_offset+0x9/0x50
-> [   32.371453] Code: 08 5b e9 8a 2c c4 00 66 2e 0f 1f 84 00 00 00 00
-> 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f
-> 44 00 00 <48> 8b 87 98 00 00 00 48 85 c0 75 2e 48 8b 87 00 01 00 00 48
-> 89 f2
-> [   32.373133] RSP: 0018:ffffbf50c07abdb8 EFLAGS: 00010246
-> [   32.373611] RAX: 0000000000000002 RBX: ffff9c0985817d58 RCX: 0000000000000016
-> [   32.374275] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> [   32.374921] RBP: 0000000000000000 R08: ffff9c09fb704000 R09: 00000000e0be9fc4
-> [   32.375720] R10: 0000000000000000 R11: ffff9c0985827df8 R12: ffff9c09fb57ff58
-> [   32.376376] R13: ffff9c0985817eb0 R14: ffff9c09fb704000 R15: ffff9c0985817f00
-> [   32.377027] FS:  0000000000000000(0000) GS:ffff9c09fc000000(0000)
-> knlGS:0000000000000000
-> [   32.377761] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   32.378292] CR2: 0000000000000098 CR3: 0000000005b70000 CR4: 0000000000350ef0
-> [   32.378940] Kernel panic - not syncing: Fatal exception
-> [   32.379492] Kernel Offset: 0x2a600000 from 0xffffffff81000000
-> (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
->
-> #regzbot introduced: v6.12.13..v6.12.14
->
-> Regards,
-> Lorenz
+x86 version of arch_memremap_wb() needs the flags to decide if the mapping
+has be encrypted or decrypted.
 
-Hi everyone,
+Pass down the flag to arch_memremap_wb(). All current implementations
+ignore the argument.
 
-I root-caused this to 5808d420 ("xfs: attach dquot buffer to dquot log
-item buffer"), but needs reverting of the 3 follow-up commits
-(d331fc15, ee6984a2 and 84307caf) as well as they depend on the broken
-one. With that 6.12.14 passes our test suite again. Reproduction
-should be rather easy by just creating a fresh filesystem, mounting
-with "prjquota" and performing I/O.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: stable@vger.kernel.org # 6.11+
+---
+ arch/arm/include/asm/io.h   | 2 +-
+ arch/arm/mm/ioremap.c       | 2 +-
+ arch/arm/mm/nommu.c         | 2 +-
+ arch/riscv/include/asm/io.h | 2 +-
+ kernel/iomem.c              | 5 +++--
+ 5 files changed, 7 insertions(+), 6 deletions(-)
 
-Regards,
-Lorenz
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 1815748f5d2a..bae5edf348ef 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -381,7 +381,7 @@ void __iomem *ioremap_wc(resource_size_t res_cookie, size_t size);
+ void iounmap(volatile void __iomem *io_addr);
+ #define iounmap iounmap
+ 
+-void *arch_memremap_wb(phys_addr_t phys_addr, size_t size);
++void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags);
+ #define arch_memremap_wb arch_memremap_wb
+ 
+ /*
+diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
+index 794cfea9f9d4..9f7883e6db46 100644
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -411,7 +411,7 @@ void __arm_iomem_set_ro(void __iomem *ptr, size_t size)
+ 	set_memory_ro((unsigned long)ptr, PAGE_ALIGN(size) / PAGE_SIZE);
+ }
+ 
+-void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
++void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
+ {
+ 	return (__force void *)arch_ioremap_caller(phys_addr, size,
+ 						   MT_MEMORY_RW,
+diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
+index c415f3859b20..279641f0780e 100644
+--- a/arch/arm/mm/nommu.c
++++ b/arch/arm/mm/nommu.c
+@@ -251,7 +251,7 @@ void __iomem *pci_remap_cfgspace(resource_size_t res_cookie, size_t size)
+ EXPORT_SYMBOL_GPL(pci_remap_cfgspace);
+ #endif
+ 
+-void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
++void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
+ {
+ 	return (void *)phys_addr;
+ }
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+index 1c5c641075d2..0257f4aa7ff4 100644
+--- a/arch/riscv/include/asm/io.h
++++ b/arch/riscv/include/asm/io.h
+@@ -136,7 +136,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
+ #include <asm-generic/io.h>
+ 
+ #ifdef CONFIG_MMU
+-#define arch_memremap_wb(addr, size)	\
++#define arch_memremap_wb(addr, size, flags)	\
+ 	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
+ #endif
+ 
+diff --git a/kernel/iomem.c b/kernel/iomem.c
+index dc2120776e1c..75e61c1c6bc0 100644
+--- a/kernel/iomem.c
++++ b/kernel/iomem.c
+@@ -6,7 +6,8 @@
+ #include <linux/ioremap.h>
+ 
+ #ifndef arch_memremap_wb
+-static void *arch_memremap_wb(resource_size_t offset, unsigned long size)
++static void *arch_memremap_wb(resource_size_t offset, unsigned long size,
++			      unsigned long flags)
+ {
+ #ifdef ioremap_cache
+ 	return (__force void *)ioremap_cache(offset, size);
+@@ -91,7 +92,7 @@ void *memremap(resource_size_t offset, size_t size, unsigned long flags)
+ 		if (is_ram == REGION_INTERSECTS)
+ 			addr = try_ram_remap(offset, size, flags);
+ 		if (!addr)
+-			addr = arch_memremap_wb(offset, size);
++			addr = arch_memremap_wb(offset, size, flags);
+ 	}
+ 
+ 	/*
+-- 
+2.47.2
+
 
