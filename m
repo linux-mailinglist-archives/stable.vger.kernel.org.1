@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-116542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FA0A37E47
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:19:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9326A37ECF
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F5C188A13C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:19:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC08165EDF
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F30201261;
-	Mon, 17 Feb 2025 09:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413AC2153DD;
+	Mon, 17 Feb 2025 09:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kfcSHVit"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QbZjjzek"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11B200BA8
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 09:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3721155316
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 09:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739783959; cv=none; b=RrdynYNhDw8IuOuJGSSYVBdaw8TmJABDTdM+hr5jBV7kWqIvmloUK7YtGR1gfez79DFlQ84zr207O32Hv/6q4nQy42AzNrXQf7xtXupNTJktdy3b8N1wni7ES9m8VinuOqSL1RLhP9YlS+CzSHIwMcqpYPlOWlSSLIODMcz8gIQ=
+	t=1739785112; cv=none; b=iTqP5vZPlZiDgXZVc1IrEOLb7TccMottVPiaZZswanl5Kn0f/r3r+XVU5DTFOIahRtGv0P+QjdrmAwNNNViPJ9776NKGdJIudVVHBQS4tkzxlfSN1Bito/8uCQ9Ygjrfc6F32AyahHNqUrmi/9J5H3p6/a/P9TdUnd+IJwNUiO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739783959; c=relaxed/simple;
-	bh=r/Gwa//y0lYyDEogMeLWJ5YpBC9J0mVmavf3W+j2hgU=;
+	s=arc-20240116; t=1739785112; c=relaxed/simple;
+	bh=xH3Hy9dhQ6bLZ5I/SDFGnVKNoil9bC2Prv+SGWvQUR4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DsixebBs7p3zYj/8We39ewTrIKnrjm19mjbh9oJDokOAufVyxI1W93vuN9nGQsIRV5Muy1a3KYPSymNKazBenQHCZeR0C7z3CG5Yx5nltD9uMDFzSeODAghzuk4HKPWVrGerTIhwDNwaADsEJ8yh/5AmQleciZoQ8/OkeVGo5hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kfcSHVit; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=IZEv7ItjLfFROGn0NceNqiVWU4CaVvLijG4SHvj9SfK+zlQu6JcOVuqnpP2W7qWiR6DYc/SLGvhAPjw+vNseQGX8k3P/lZdI7Smo/l+/8nUPId4JXgjCDct4JrkWFvh0EFpVxX0+hxR758lnsmGwY2CzV+/zDMjVveLXDJ0KYv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QbZjjzek; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739783957; x=1771319957;
+  t=1739785109; x=1771321109;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=r/Gwa//y0lYyDEogMeLWJ5YpBC9J0mVmavf3W+j2hgU=;
-  b=kfcSHVityMhYUie2h1WyZMwaGEo/wEf78BgqYKEl4f+LvQ4YjDB8fKCE
-   KZpgMHb4LGtc4LhehxSTIkU4wY20ukjRq43N2p0ZeJxMcIKRZ+hVaPPBb
-   gpup4TFD9W3IqKQfGQUQ2AvW1Cnt+gbcvhSV2WnprlBJ580O1lsFIOu0J
-   TdY+vwrYdWts2tnQQRWWb7YYgh8dPCYDGIz6G4LHPCxSWqUzAaR32XzZt
-   g4HtUzh8dMIeq7Lzvlz0EaRfh/v4IelUTXWsRZr04S7xE08hUNdrZdYYc
-   4A0jOQZcCY7TlmH0b+481vJxEQ6dLWF2q1equc2a8p3kZywUh2PzVVNYu
-   Q==;
-X-CSE-ConnectionGUID: BXFXsUZVSN6TZQ0/HZb3dg==
-X-CSE-MsgGUID: KPBXvIsKRHybmcNnEq+xTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="62928926"
+  bh=xH3Hy9dhQ6bLZ5I/SDFGnVKNoil9bC2Prv+SGWvQUR4=;
+  b=QbZjjzek1501wnwYEpa0AvQa9Yg9Vz3nxj9fAeFmYn7KOwbRzWSVUc46
+   garkdNRRKda1lKgGnZV0/4Qo0ZqVKcJsbdR8WIX52B/29uG0B6BdRNmG7
+   NGxkSnLOMl5tMOzZ0YiuDdshFRmQMdINQ1P0/onHDSwz9gMu8WQ5FHZMV
+   M77DEACNC/v8qDBrcA+LTOiSjyXtGl6FzAB1U7CAWg+SHKcbessjNQNQX
+   C9sjOFG4N6szifkgd9QcJOElwjowqGIYJowX1/1l+iQN8+LRqIl6PpmEd
+   mdxoj/Sn3oA/oo12xSnHNTMS3OWkClwPVfp1HZZ3LTMsFOiLUfszmlyNM
+   g==;
+X-CSE-ConnectionGUID: Urk2//JPRe+sVAqQumtZHA==
+X-CSE-MsgGUID: kXhBVf3rRkmZ2OBM0/sVNg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="39648216"
 X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
-   d="scan'208";a="62928926"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:19:15 -0800
-X-CSE-ConnectionGUID: X7ejjno2RTaQtvlQD1L2aA==
-X-CSE-MsgGUID: CnPUX6qNQFWlbEzKVIvWvg==
+   d="scan'208";a="39648216"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:38:29 -0800
+X-CSE-ConnectionGUID: uXo9fve3QeKgAjAFvN0Akw==
+X-CSE-MsgGUID: vFV/FOu/SjGBdlMfCgFiNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="118703860"
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="114048859"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.174]) ([10.245.244.174])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:19:13 -0800
-Message-ID: <43e7703d-b53d-4b68-b4d3-edcfea95e44e@intel.com>
-Date: Mon, 17 Feb 2025 09:19:11 +0000
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:38:28 -0800
+Message-ID: <6fec16d5-cbf3-448b-9c07-85a079095f62@intel.com>
+Date: Mon, 17 Feb 2025 09:38:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,116 +67,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] drm/xe/userptr: fix EFAULT handling
+Subject: Re: [PATCH v2 1/3] drm/xe/userptr: restore invalidation list on error
 To: Matthew Brost <matthew.brost@intel.com>
 Cc: intel-xe@lists.freedesktop.org,
  =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
  stable@vger.kernel.org
 References: <20250214170527.272182-4-matthew.auld@intel.com>
- <20250214170527.272182-5-matthew.auld@intel.com>
- <Z6/skmsP0lw0+GUi@lstrano-desk.jf.intel.com>
+ <Z6/ttCTrEuwNsD6w@lstrano-desk.jf.intel.com>
 Content-Language: en-GB
 From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <Z6/skmsP0lw0+GUi@lstrano-desk.jf.intel.com>
+In-Reply-To: <Z6/ttCTrEuwNsD6w@lstrano-desk.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15/02/2025 01:23, Matthew Brost wrote:
-> On Fri, Feb 14, 2025 at 05:05:29PM +0000, Matthew Auld wrote:
->> Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
->> when called from xe_vm_userptr_pin() with the idea that we want to avoid
->> killing the entire vm and chucking an error, under the assumption that
->> the user just did an unmap or something, and has no intention of
->> actually touching that memory from the GPU.  At this point we have
->> already zapped the PTEs so any access should generate a page fault, and
->> if the pin fails there also it will then become fatal.
+On 15/02/2025 01:28, Matthew Brost wrote:
+> On Fri, Feb 14, 2025 at 05:05:28PM +0000, Matthew Auld wrote:
+>> On error restore anything still on the pin_list back to the invalidation
+>> list on error. For the actual pin, so long as the vma is tracked on
+>> either list it should get picked up on the next pin, however it looks
+>> possible for the vma to get nuked but still be present on this per vm
+>> pin_list leading to corruption. An alternative might be then to instead
+>> just remove the link when destroying the vma.
 >>
->> However it looks like it's possible for the userptr vma to still be on
->> the rebind list in preempt_rebind_work_func(), if we had to retry the
->> pin again due to something happening in the caller before we did the
->> rebind step, but in the meantime needing to re-validate the userptr and
->> this time hitting the EFAULT.
->>
->> This might explain an internal user report of hitting:
->>
->> [  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
->> [  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
->> [  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
->> [  191.738690] Call Trace:
->> [  191.738692]  <TASK>
->> [  191.738694]  ? show_regs+0x69/0x80
->> [  191.738698]  ? __warn+0x93/0x1a0
->> [  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
->> [  191.738759]  ? report_bug+0x18f/0x1a0
->> [  191.738764]  ? handle_bug+0x63/0xa0
->> [  191.738767]  ? exc_invalid_op+0x19/0x70
->> [  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
->> [  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
->> [  191.738834]  ? ret_from_fork_asm+0x1a/0x30
->> [  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
->> [  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
->> [  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
->> [  191.738966]  ? kmemleak_alloc+0x4b/0x80
->> [  191.738973]  ops_execute+0x188/0x9d0 [xe]
->> [  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
->> [  191.739098]  ? trace_hardirqs_on+0x4d/0x60
->> [  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
->>
->> Followed by NPD, when running some workload, since the sg was never
->> actually populated but the vma is still marked for rebind when it should
->> be skipped for this special EFAULT case. And from the logs it does seem
->> like we hit this special EFAULT case before the explosions.
->>
-> 
-> It would be nice to verify if this fixes the bug report.
-
-Yes, reporter said it fixes it. Or at least the previous version did. 
-See GSD-10562 if you are curious. Will re-phrase the commit message to 
-make that clear.
-
-> 
->> v2 (MattB):
->>   - Move earlier
->>
->> Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
+>> Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
+>> Suggested-by: Matthew Brost <matthew.brost@intel.com>
 >> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
-> 
-> Anyways, LGTM:
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
-Thanks.
-
-> 
 >> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: <stable@vger.kernel.org> # v6.10+
+>> Cc: <stable@vger.kernel.org> # v6.8+
 >> ---
->>   drivers/gpu/drm/xe/xe_vm.c | 12 ++++++++++++
->>   1 file changed, 12 insertions(+)
+>>   drivers/gpu/drm/xe/xe_vm.c | 26 +++++++++++++++++++-------
+>>   1 file changed, 19 insertions(+), 7 deletions(-)
 >>
 >> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
->> index 668b0bde7822..f36e2cc1d155 100644
+>> index d664f2e418b2..668b0bde7822 100644
 >> --- a/drivers/gpu/drm/xe/xe_vm.c
 >> +++ b/drivers/gpu/drm/xe/xe_vm.c
->> @@ -681,6 +681,18 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
->>   		err = xe_vma_userptr_pin_pages(uvma);
->>   		if (err == -EFAULT) {
->>   			list_del_init(&uvma->userptr.repin_link);
->> +			/*
->> +			 * We might have already done the pin once already, but
->> +			 * then had to retry before the re-bind happened, due
->> +			 * some other condition in the caller, but in the
->> +			 * meantime the userptr got dinged by the notifier such
->> +			 * that we need to revalidate here, but this time we hit
->> +			 * the EFAULT. In such a case make sure we remove
->> +			 * ourselves from the rebind list to avoid going down in
->> +			 * flames.
->> +			 */
->> +			if (!list_empty(&uvma->vma.combined_links.rebind))
->> +				list_del_init(&uvma->vma.combined_links.rebind);
+>> @@ -670,12 +670,12 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+>>   	list_for_each_entry_safe(uvma, next, &vm->userptr.invalidated,
+>>   				 userptr.invalidate_link) {
+>>   		list_del_init(&uvma->userptr.invalidate_link);
+>> -		list_move_tail(&uvma->userptr.repin_link,
+>> -			       &vm->userptr.repin_list);
+>> +		list_add_tail(&uvma->userptr.repin_link,
+>> +			      &vm->userptr.repin_list);
+> 
+> Why this change?
+
+Just that with this patch the repin_link should now always be empty at 
+this point, I think. add should complain if that is not the case.
+
+> 
+>>   	}
+>>   	spin_unlock(&vm->userptr.invalidated_lock);
 >>   
->>   			/* Wait for pending binds */
->>   			xe_vm_lock(vm, false);
+>> -	/* Pin and move to temporary list */
+>> +	/* Pin and move to bind list */
+>>   	list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
+>>   				 userptr.repin_link) {
+>>   		err = xe_vma_userptr_pin_pages(uvma);
+>> @@ -691,10 +691,10 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+>>   			err = xe_vm_invalidate_vma(&uvma->vma);
+>>   			xe_vm_unlock(vm);
+>>   			if (err)
+>> -				return err;
+>> +				break;
+>>   		} else {
+>> -			if (err < 0)
+>> -				return err;
+>> +			if (err)
+>> +				break;
+>>   
+>>   			list_del_init(&uvma->userptr.repin_link);
+>>   			list_move_tail(&uvma->vma.combined_links.rebind,
+>> @@ -702,7 +702,19 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+>>   		}
+>>   	}
+>>   
+>> -	return 0;
+>> +	if (err) {
+>> +		down_write(&vm->userptr.notifier_lock);
+> 
+> Can you explain why you take the notifier lock here? I don't think this
+> required unless I'm missing something.
+
+For the invalidated list, the docs say:
+
+"Removing items from the list additionally requires @lock in write mode, 
+and adding items to the list requires the @userptr.notifer_lock in write 
+mode."
+
+Not sure if the docs needs to be updated here?
+
+> 
+> Matt
+> 
+>> +		spin_lock(&vm->userptr.invalidated_lock);
+>> +		list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
+>> +					 userptr.repin_link) {
+>> +			list_del_init(&uvma->userptr.repin_link);
+>> +			list_move_tail(&uvma->userptr.invalidate_link,
+>> +				       &vm->userptr.invalidated);
+>> +		}
+>> +		spin_unlock(&vm->userptr.invalidated_lock);
+>> +		up_write(&vm->userptr.notifier_lock);
+>> +	}
+>> +	return err;
+>>   }
+>>   
+>>   /**
 >> -- 
 >> 2.48.1
 >>
