@@ -1,138 +1,181 @@
-Return-Path: <stable+bounces-116529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9824A37B5C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 07:31:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BBFA37BCA
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 08:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1016C3A9D42
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 06:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0DA77A2518
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 07:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE8C17BB35;
-	Mon, 17 Feb 2025 06:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA24C193425;
+	Mon, 17 Feb 2025 07:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vn3BOK2A"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="OujwgcgJ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAEB383A5
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 06:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595F183098
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 07:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739773863; cv=none; b=F5w5ECTVgE62/T1R3HzC0qTQ7raoS69xjptcHxZjfjMxKwDzBxl6P3GBI3wS456Mo03mR6jv+GwZCpxAGY8CLQzp+e8L/58LP1zZO1mZdMJmliTL+1cKspg7cqMZ76BkdCml2BhGqvMQko50mB2wDK26JML1U7gnwQLDnUgy2OU=
+	t=1739775788; cv=none; b=QQb3s83CuD7P2fW+cI/6I3moxYyGyR4MCJ+47F/u9VhY/JvHTYL8nfBnwW0zm2ht0HIqMjfE6gCs4fRop8r8b6IQ+c8OXMJFzGZIhjqlVSEyeszsyUeQHoFu+0bgoFzIw3jfJvRvBbKihUmGvlR+fu+puARU8Wr7PMSX+JmV8/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739773863; c=relaxed/simple;
-	bh=KlWfU6yVdYqXXkIRsGuYLgdSZ86bNp7r/wlf/JvN+O8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mXNDsZln+q8Z05B8vZFiGXYF5b2wFzNaYX1Rourr589c+1hipQLW+wauNt2cg5bmZznmFke3T2LKUEn7aoZ+GWQ2uSCpsdYNq/G7+9kaGC3D8UihXNWrDDXIyTWehmJxNaAfX8s5VQEVVrYe3z5iAth116ZQ4MVHO4gWUhbyT6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vn3BOK2A; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739773859;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eSbkq0nAzlcx3GRcxRq0rHk3/NNkNXvn8agIEIdBHzc=;
-	b=Vn3BOK2A3y9iasejumNr1iKWCEwu6PTtI4D8lTuSP3lM0+Bmm5kMo88wqsQubI35rDdt5P
-	HQmWILPCNo+osEAYZ3nRQ4pMHAkuTMXKp+FwFLa4fIBe/RbxbJZVJfVP276w2uCSTAu25W
-	WmNO86PNShKXF5EW9e3WH0RqnTtCVcY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-NBKO0KFlNmOm1gAQIMTlnQ-1; Mon, 17 Feb 2025 01:30:58 -0500
-X-MC-Unique: NBKO0KFlNmOm1gAQIMTlnQ-1
-X-Mimecast-MFC-AGG-ID: NBKO0KFlNmOm1gAQIMTlnQ_1739773857
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38f2f78aee1so1392421f8f.0
-        for <stable@vger.kernel.org>; Sun, 16 Feb 2025 22:30:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739773857; x=1740378657;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eSbkq0nAzlcx3GRcxRq0rHk3/NNkNXvn8agIEIdBHzc=;
-        b=QQfFjNQp0uEDKerkhckZasRkYpD+PQTCz3bbtr2Ht4hL6a1Am6BD1+eDPaelErR3KY
-         Yu/kRW7vr2uZr0C69dN4Te3i3Jx7bZDGhH5Gw0h7OHD4mNdewyxRax4PkikTkXh2ryUx
-         PvPez9Z8Dby2j7OMNYZCTCeIvhwxxqCHB5NBhsvPWmn3JdzG1Rdf/cKEYM/BzFPKcYZ4
-         kssbWKC8DJroV4vlMkDPNW/y6kpofg2L/FYLN0QztRmxRgfQWojJLcELXf4gZhZ1rJTx
-         34ICDM23s8CUcOKk/6mMZpAhDdDxk8hOpfgcBjuxFlB7dd84/WvO83ggtSlGKoMRUsQC
-         PPkw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkQ1FzoYDSyrzd+IUetYLd2HUP3fkLaYHCnHibHpirLNEl7t9O9QNKWVmUF7hHDE4z6PLD5/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjJEtz5kF22NHymGCTD3gExaxRU7is5QhpD67jwcy4ELWSwq3r
-	Nd8msh11/ZNaE6e1Iy5zKSiMU0sZqzhCAMdRt/SfWJca45Uh7kFwfzAqR3elGNMIeIZ2CbZWvjc
-	OPsRfmT89xIMnYqdJ1DV4wlPjkFvLFXibmhW1586TXoMu3itff+hONA==
-X-Gm-Gg: ASbGncuG9vQyqSuHM+w8kJ9TSolzOPPaCQoxEcH+yCylRiqzZPAVKknyZPkbosHKvFZ
-	IufjP6hBCP0a3YBC18hl6MOei7NDhTiQRZ8Fa0xaNQ88KvX9METT0ZM704sJCGHrBmU8hciSDXg
-	bw6ZnD9tQwLI4ONaM8y9Uaa/qY7alUJt2niAf66vcJ1E14SLJgCtf1I4OHcYRe6mOczxJmhHbud
-	G7Zjmji2urvxyyNqPSDCIb19FuDgz4zN8/3SgWz7wCoPAZam9sq88mFph3FbpZoP6y5Oy3ISCro
-	Vkw+EqqCG6XjwZVK7787XIuw1/Fyu+7fnw==
-X-Received: by 2002:a5d:64e6:0:b0:385:faf5:ebb8 with SMTP id ffacd0b85a97d-38f339dec87mr7221682f8f.7.1739773857165;
-        Sun, 16 Feb 2025 22:30:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHttA9fha0k/9govYLax1zHGBuPJ4nojLhARVkvqFPQSjco5hSshV1vhLQo6S+SjSbefkXQtA==
-X-Received: by 2002:a5d:64e6:0:b0:385:faf5:ebb8 with SMTP id ffacd0b85a97d-38f339dec87mr7221665f8f.7.1739773856881;
-        Sun, 16 Feb 2025 22:30:56 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.34.42])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b4335sm11548426f8f.15.2025.02.16.22.30.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Feb 2025 22:30:56 -0800 (PST)
-Date: Mon, 17 Feb 2025 07:30:54 +0100
-From: Juri Lelli <juri.lelli@redhat.com>
-To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
-Cc: Waiman Long <llong@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable <stable@vger.kernel.org>
-Subject: Re: Suspend failures (was [PATCH 6.13 000/443] 6.13.3-rc1 review)
-Message-ID: <Z7LXniBEa_u5atXS@jlelli-thinkpadt14gen4.remote.csb>
-References: <20250213142440.609878115@linuxfoundation.org>
- <e7096ec2-68db-fc3e-9c48-f20d3e80df72@applied-asynchrony.com>
- <2025021459-guise-graph-edb3@gregkh>
- <9a44f314-c101-4ed1-98ad-547c84df7cdd@applied-asynchrony.com>
- <CAHk-=wiqfigQWF1itWTOGkahU6EP0KU96d3C8txbc9K=RpE2sQ@mail.gmail.com>
- <012c4a3a-ead8-4bba-8ec9-5d5297bbd60c@redhat.com>
- <905eb8ab-2635-e030-b671-ab045b55f24c@applied-asynchrony.com>
+	s=arc-20240116; t=1739775788; c=relaxed/simple;
+	bh=I4lEzRs8HaSxRTcYMtIiIHlNRjL2s8WF7AH/tHfWmV0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=LzqyjaDO84wWwsTCuQ2Lm+gBSyjweuuzmheDnb0e8ZJ9GdlXW6KhhMkGwRfdEEFuTUgDI66vtrnmE2QxER1GzMHQVL6wnR0VG6Xdgf2I0l1cfcqA2bVltkHQrOpCOsXNePFkGfLhtE5gutA5SJ5UjzUkYNgzI6O/qnhD3iwNK8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=OujwgcgJ; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250217070304epoutp025083c823abe89a87e639842c55bf2e69~k7NutBJhn0955009550epoutp02O
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 07:03:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250217070304epoutp025083c823abe89a87e639842c55bf2e69~k7NutBJhn0955009550epoutp02O
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1739775784;
+	bh=IcdTsF592wys3NuB9zAJMtMjdRMai5MPVdBZ+r76j1Y=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=OujwgcgJn22zsXLzH554wkeMP7lz42mV+A6AfXnQci0Ows+UJa0Xu/heGx7mGZs+P
+	 yKwYlqTI9FcM1f3sjvZpHTlDO5/S9VzbU2KncymkTHnpKYoEFuqJUwlhpwDEi08hEh
+	 adVYR0e5yUQ0up4Tuhm3s650PQOjGUSFeSP2eHR4=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20250217070303epcas5p4058a8462b30780bdb2133a3c6a56b75f~k7NuEguY00604406044epcas5p4H;
+	Mon, 17 Feb 2025 07:03:03 +0000 (GMT)
+Received: from epcpadp2new (unknown [182.195.40.142]) by
+	epsnrtp2.localdomain (Postfix) with ESMTP id 4YxDBb4G3Sz4x9QH; Mon, 17 Feb
+	2025 07:03:03 +0000 (GMT)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250217065002epcas5p4e223a794dc8151ec3234eac68c6e60ba~k7CWLpeQQ2915729157epcas5p48;
+	Mon, 17 Feb 2025 06:50:02 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250217065002epsmtrp1f8f4370f80ebf35f6144154f8fa3f0b5~k7CWKimJc2260922609epsmtrp1j;
+	Mon, 17 Feb 2025 06:50:02 +0000 (GMT)
+X-AuditID: b6c32a2a-bca3124000004a05-ce-67b2dc199438
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	08.DB.18949.91CD2B76; Mon, 17 Feb 2025 15:50:01 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250217064959epsmtip178990626cda7c2b2fce40cb5e9ac6f73~k7CTujbzv3238732387epsmtip1B;
+	Mon, 17 Feb 2025 06:49:59 +0000 (GMT)
+Message-ID: <1997287019.61739775783590.JavaMail.epsvc@epcpadp2new>
+Date: Mon, 17 Feb 2025 12:19:51 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] usb: xhci: Fix unassigned variable 'bcdUSB' in
+ xhci_create_usb3x_bos_desc()
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: mathias.nyman@intel.com, WeitaoWang-oc@zhaoxin.com,
+	Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	h10.kim@samsung.com, eomji.oh@samsung.com, alim.akhtar@samsung.com,
+	thiagu.r@samsung.com, muhammed.ali@samsung.com, pritam.sutar@samsung.com,
+	cpgs@samsung.com, stable@vger.kernel.org
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <2025021402-cruelty-dumpster-57cc@gregkh>
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <905eb8ab-2635-e030-b671-ab045b55f24c@applied-asynchrony.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIIsWRmVeSWpSXmKPExsWy7bCSnK7knU3pBvf6bCzeXF3FavFg3jY2
+	i5eHNC3uLJjGZHFq+UImi+bF69ks/t6+yGpx9+EPFovLu+awWSxa1sps0bxpCqvF+RddrBaf
+	jv5ntXh2bwWbxYKNjxgtVjQDZVctOMBu8ejnXCYHIY/Fe14yeeyfu4bdo2/LKkaPLfs/M3p8
+	3iTn8evWLZYAtigum5TUnMyy1CJ9uwSujL87t7IUzBeouHVqNnMDYw9vFyMnh4SAicSdgztZ
+	uhi5OIQEdjNKHD88mQUiIS3xelYXI4QtLLHy33N2iKLXjBItazaygSR4Bewkbp/cDlbEIqAq
+	carjAgtEXFDi5MwnYLaogLzE/Vsz2EFsYYFMiUU/boLZIgIaEi+P3gKrYRZYySyxtLsMxBYS
+	+MQocWiCO0RcXOLWk/lMXYwcHGwChhLPTtiAhDkFzCR2vnrHCFFiJtG1tQvKlpdo3jqbeQKj
+	0CwkV8xCMmkWkpZZSFoWMLKsYpRMLSjOTc8tNiwwykst1ytOzC0uzUvXS87P3cQIjlUtrR2M
+	e1Z90DvEyMTBeIhRgoNZSYT3UNeGdCHelMTKqtSi/Pii0pzU4kOM0hwsSuK83173pggJpCeW
+	pGanphakFsFkmTg4pRqYlhSXPhFjfM6mo2brdrDV6uPk7ZbyXYJWsxepW2spP/f6c2V56Ke8
+	JX/Ti522zJ8u05rqWvRzvcrhjMB1c36dYY5oePn0/5agRIu7SgVz5zUx+rsutIq6NNtYMYJt
+	g3tuleOm4+qrPoVaaFRUyawJ+sfzz2mb36nZr/OZjk08enypXx7jldLQKZt+fdO8aOB1/VKh
+	n2xP7YzFP7MCPf5Z3GywOiV3JDr25WKmTa8kry39UXo1k6N450RnuX8fNC2OMe/kO/ZEZeqz
+	Lp2Z86+7q3Ln/+C8c90iOPz4j9114ru9D82S3ZfybaOvsOa3vynNPY5bj5yYzLhb4uSHiSLJ
+	bb4JR0u1Dv69ucKl3GBVqRJLcUaioRZzUXEiAEa15nJEAwAA
+X-CMS-MailID: 20250217065002epcas5p4e223a794dc8151ec3234eac68c6e60ba
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20250213042240epcas5p3c1ac4f97ebf36054abdccc962329273d
+References: <20250213042130.858-1-selvarasu.g@samsung.com>
+	<CGME20250213042240epcas5p3c1ac4f97ebf36054abdccc962329273d@epcas5p3.samsung.com>
+	<158453976.61739422383216.JavaMail.epsvc@epcpadp2new>
+	<2025021402-cruelty-dumpster-57cc@gregkh>
 
-Hi,
 
-On 15/02/25 20:57, Holger Hoffst�tte wrote:
-> On 2025-02-15 02:35, Waiman Long wrote:
-> <snip>
-> 
-> > Commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow
-> > earlier for hotplug") is the last patch of the 3 patch series.
-> > 
-> >  �1) commit 41d4200b7103 ("sched/deadline: Restore dl_server bandwidth on non-destructive root domain changes")
-> >  �2) commit d4742f6ed7ea ("sched/deadline: Correctly account for allocated bandwidth during hotplug")
-> >  �3) commit 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow earlier for hotplug")
-> > 
-> > It looks like 6.13.3-rc1 has patches 2 and 3, but not patch 1. It is
-> > possible that patch 3 has a dependency on patch 1. My suggestion is
-> > to either take patch 1 as well or none of them.
-> Now that we have 6.13.3-rc3 passing all tests I got curious and applied
-> the whole series again. And voila: suspend works reliably (3 out of 3).
-> Mystery solved.
-> 
-> So Greg, feel free to add the whole 3-part series in the next round.
+On 2/14/2025 1:35 PM, Greg KH wrote:
+> On Thu, Feb 13, 2025 at 09:51:26AM +0530, Selvarasu Ganesan wrote:
+>> Fix the following smatch error:
+>> drivers/usb/host/xhci-hub.c:71 xhci_create_usb3x_bos_desc() error: unassigned variable 'bcdUSB'
+> That really doesn't say what is happening here at all.  Please provide a
+> lot more information as the response from a tool could, or could not, be
+> a real issue, how are we supposed to know?
+>
+> And "unassigned" really isn't the bug that is being fixed here, please
+> describe it better.
+>
+> Same for patch 2 of the series.
+>
+> Also, your 0/2 email was not threaded with these patches, something odd
+> happened in your email setup, you might want to look into that.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Apologies for looking into this late, but thank you so much, Holger, for
-the report and Waiman for catching the missing change!
+Hi Greg,
 
-Best,
-Juri
+I understand your concern about whether the response from the tool could 
+be a real issue or not. However, please check the provided code, I 
+believe there is an issue worth considering.
+In both conditions of the code snippet, the logical check is not valid 
+because the 'bcdUSB' variable has not been assigned any value initially. 
+Therefore, we believe that the tool is correctly identifying this problem.
+
+If you do not consider it an issue, we can ignore this commit.
+
+
+Please find the relevant portion of the code below:
+
+========================================================================
+u16                             bcdUSB;
+...
+...
+/* Create the descriptor for port with the highest revision */
+for (i = 0; i < xhci->num_port_caps; i++) {
+     ..
+     ..
+*  if (i == 0 || bcdUSB < rev) { *
+         bcdUSB = rev;
+         port_cap = &xhci->port_caps[i];
+     }
+}
+..
+..
+*if (bcdUSB >= 0x0310) {* //*Logically invalid to check bcdUSB without 
+assigning a valuewhere above **xhci->num_port_caps become NULL*.
+     if (port_cap->psi_count) {
+
+         u8 num_sym_ssa = 0;
+
+=======================================================================
+
+
+yeah some issue in ouremail setup. We will fix it.
+
 
 
