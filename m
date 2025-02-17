@@ -1,187 +1,140 @@
-Return-Path: <stable+bounces-116616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB03A38CA6
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:45:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B96BA38CB0
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161363A39DE
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:45:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594DD1892AE8
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3301B23642B;
-	Mon, 17 Feb 2025 19:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F857233D7B;
+	Mon, 17 Feb 2025 19:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YOAXb50L"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="iW8Osr9B"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2087.outbound.protection.outlook.com [40.107.94.87])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538DA372;
-	Mon, 17 Feb 2025 19:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739821514; cv=fail; b=fvCb4s/a34/gcfGKIdT+z6JU+iGcxrcttCLqx/rnW1d/Y0MG3DklcXu2o1rl0y4ZObtkaqZu3c4PzSBIkQhQ38x0Z0aqLC6MmoYmZEUOK1FnaElQiznrmWPNmPSzJVceOQ2Aaro4HhVuI8TxR9x6v010GBSqQSYtfX3+I2SyUGo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739821514; c=relaxed/simple;
-	bh=AJik8rY/aMlNbZPCp9DJwveZEOQHrYxtoHpFn5Q+aOk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vBQq6KgP2+WUuxO3+RSjgWaI6q0MghAgW0PAAftYqt+adke6mO0JJnU7sF0okwrFAEFKy9epj05zExRvYFELzhSf0B35E3jqXiQGeECe2E2r3fYadYm/RuMCag3+BmYQJUkbkPP20ynQPJ7m02KP/yUOqr31mTR3K2QqokyP6qY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YOAXb50L; arc=fail smtp.client-ip=40.107.94.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=stjAx0/4WhzEx3/sGCDbWgdQaHgvaELMObFVUmCyeDFdtsoUsXRzhcm9F51G9QvoefzvCRHOxeoiZ4h+9uedUHh+m/F28jzHstCQJ8JOgkX+1WS8EueH6VUi0T0gYdXzF6kHQm4JTPSBVtJODTkJGao91N8Ic1mckk2MxYWj3ueq05TnLik0jcRxg92KkVMMIC0BpB9qanC9ozuqV1YPIVq9oRfy5qo9ExJZTVsRoGhnguMqljiTgrL0iyzV9T+ixndCK3HEaLAurFSd37IGmtTwaVClixhEzvs3DAhS8Za4yK7OA1tvOUUZJgobC1v/EU0XURlUceGgoB3Q6Ik2fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5dMux0PVRp6CcD9vwX61E0cMURaXaeRNgllS1ZJILqE=;
- b=kHFO9xvM2fwT84RqFCMMqJIdGWxwU2LByhzVkLN1irHm+gQo8Z6rzalozkIwczdOKDMH34Sit9nOeeCDMnSMz/35QbLVwJIgKnLg4x+1tE8pgQLqgNTUB45hjmBfg9nin0H80IkkAxmCf7zelis2si7wCc9Gk4N0rUrQT9d3vVTIit91nrnsbGZSSkaTtvu3fFKXZR5iUA4BoX9GsdIj2TYQuBM45b4aY8kisLVSA9vUQ0hMeJAh1euu82otgNFuBRDRavtdKPE+WgaxhBT7+dS6IUZSgQJ/96T2+rt8fjIgfwQH+Ialu2Mm6AetmU2bRpQj/tGD9g386HJslbFy1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5dMux0PVRp6CcD9vwX61E0cMURaXaeRNgllS1ZJILqE=;
- b=YOAXb50LIuoNppxKwFf7Nkf1X6+MG0DBVVXjRhVXU8XLnWIfjRJZY8BMjRyLqS7xflaY9jX7/GHrdo5bRaG3ji6MRSN8P/C6J1BM4DZl48aUCsvy8J6j0Z9kPvNdF3t7BxE7EqITUgoJu2mkCia7WkhDETj7JuD2541+Gy1LJPVhAzxBre7tMRYmc6cW9SumwX0Bd521YdoSKya7n3dIOuCVFrVdz9NGV+TuipemP5ZD0H1tqnesAJzp25DNMKinuPQnTjyOqdDonAgWcsDcaqsLiufsFGUeN92dgMbLOWAo8KR4NJbxs2HhSy6M5WDKQiyBnL4lCqhuGu0+RhJdpg==
-Received: from MW4PR03CA0287.namprd03.prod.outlook.com (2603:10b6:303:b5::22)
- by PH0PR12MB7813.namprd12.prod.outlook.com (2603:10b6:510:286::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.16; Mon, 17 Feb
- 2025 19:45:07 +0000
-Received: from SJ1PEPF0000231A.namprd03.prod.outlook.com
- (2603:10b6:303:b5:cafe::aa) by MW4PR03CA0287.outlook.office365.com
- (2603:10b6:303:b5::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.19 via Frontend Transport; Mon,
- 17 Feb 2025 19:45:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF0000231A.mail.protection.outlook.com (10.167.242.231) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.11 via Frontend Transport; Mon, 17 Feb 2025 19:45:07 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 17 Feb
- 2025 11:44:59 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 17 Feb
- 2025 11:44:59 -0800
-Received: from c-237-113-220-225.mtl.labs.mlnx (10.127.8.12) by
- mail.nvidia.com (10.129.68.6) with Microsoft SMTP Server id 15.2.1544.14 via
- Frontend Transport; Mon, 17 Feb 2025 11:44:56 -0800
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>, <virtualization@lists.linux.dev>
-CC: Dragos Tatulea <dtatulea@nvidia.com>, Jason Wang <jasowang@redhat.com>,
-	Eugenio Perez Martin <eperezma@redhat.com>, Si-Wei Liu
-	<si-wei.liu@oracle.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, <stable@vger.kernel.org>
-Subject: [PATCH vhost] vdpa/mlx5: Fix oversized null mkey longer than 32bit
-Date: Mon, 17 Feb 2025 21:44:43 +0200
-Message-ID: <20250217194443.145601-1-dtatulea@nvidia.com>
-X-Mailer: git-send-email 2.48.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C272E198E6D
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 19:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739821573; cv=none; b=PvcLZkM+3Njr5kAjt1Qhdc/XDdrniqfqcq1PdWIwoLA2uxXOsrCoAE0w6o4OMzqVMDo0Pfh+jUFey/ly2QIP1qkXAQ2DZUAiJytGnUeY7Swuei/MNbHI2yBmppKeC0pFjy0QBT+eqoukrfSIZ6+rWU1z4YadWXCs0RlEgTU/NIQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739821573; c=relaxed/simple;
+	bh=Jvpl4e2kTA2BjtsoNl/JaVnKq/mGFfybRCrnvtF4Lk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kKtier6nV6gXCGmcbWcJlEQpywY4IbgZlpV3Un9hZQitTWhPHNuywZ/KswmkbFDQAUvZeWVH92bQGgBW7jaHH+Opw+rZLdi2CfwT2HKwXGcBbKJEMxmwci1UAG5O/HQ4mtRBS/fiKRx272egfpwxXlC135Aff6uA8peP86JGqTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=iW8Osr9B; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tk74C-00Ec5K-RA; Mon, 17 Feb 2025 20:46:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=UtnNLBavpDfR4PoGCVQC6Xy6NA3yJJlyyOk/O5j/Bz0=; b=iW8Osr9BwROtuiGyKUnhDRd7gO
+	rUVRnpFF8WYjhPkif7AMqo/IE4IHKUqNRXAn+AiVWWYAx6L66JxXZm8BsaksPbMdFPgyrToWdiX3/
+	kQ0ngnPqm/09Y1CNpaCJsAu8JBscE4suWwdBPJ4dJp5E+55Je/mmpBp+QBBnmjEjuIkxOVduLa0rO
+	E6Nat9qo+w0p3mXkfp7N39MyaIw2q9RjHpld+eoUHSk3LTGG8sxSp9/h3Dk8QU0FB0peKfLfvnGmQ
+	j6O7oRcg50xHz+RK3e9rZYuw57AoLzaQzQWs7NsOCQ6fQBrMLZQgy8cb7Vj70OmYEClnghc1ywkzs
+	9eMT9R1Q==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tk74C-0005jW-7b; Mon, 17 Feb 2025 20:46:08 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tk743-00HFNo-Pz; Mon, 17 Feb 2025 20:45:59 +0100
+Message-ID: <cf0ef7bc-4da9-492a-bc43-0c3e83c48d02@rbox.co>
+Date: Mon, 17 Feb 2025 20:45:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231A:EE_|PH0PR12MB7813:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c8781e2-d117-4030-37bc-08dd4f8b94ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?o282xY0jv0B1+H7GyMWmxGyPJgufv42YtlaAYfsm4ADWo3J5PPa8RR/Q47Qz?=
- =?us-ascii?Q?SrR++E9AWanCyh+2x7imPTjUFEaCGfOJVXlUzp2zXizZ6EEtkIHhm78FGuPn?=
- =?us-ascii?Q?ZQVrA4V5W+22nGetcxot59FOzsh4E5c+pAY5GkePRBWec70EetM168Vj1yEz?=
- =?us-ascii?Q?rhE0TQm2RjsouR4TSqOTFIrz6Y9Uqk/QY9+lbCC8K1cUkoLMc5giI7FrMs/W?=
- =?us-ascii?Q?P6YYpYx4L0QxABq3XNd60ad0AFkG3vLVyKRM4sdnBpamHzvi66zF62q3en2n?=
- =?us-ascii?Q?xXgMjqz4N/aE4TEfSONUCqUsV/QoA9Gc6fkIlV68XqyGKMo0lidxA2FhgYQT?=
- =?us-ascii?Q?6EAw8gw6N7QwitH9AXXO37aUrhrLf6LAD9J9iesQoa89udt+pv8s8uWIuY9G?=
- =?us-ascii?Q?VhB7zwbwJom8TbkwYd/970kbcfvJXoV767zJwdtk3hGaCopqNDWVLRfCwUdb?=
- =?us-ascii?Q?sXT/356tUXxNNXJjNLSQABHycbVIAy7TWjooD2qehzl1eVw3nGwIpYeC3QC4?=
- =?us-ascii?Q?AFlW7xwutp2blaSPyO1PZpWKb0nydL87cJnkaIW06WVVknMgeuuMq8zU7+fv?=
- =?us-ascii?Q?sbp/i2F9kSPvuBHhStcjKQXCHnyjXrDPd1WtDmsyyC6ECbs3fWONpN1MV5x1?=
- =?us-ascii?Q?c1j0Q7/PkslFy3wwfPs6Hcn8C9iCpkzLCL2KmDVpTH2Zz604U487C9NwOKku?=
- =?us-ascii?Q?Hc/SBH5xjJR2MGdct9ASEHIV8DBDdeqwZjP5+XVZ64WM4zrUxugxoHrLp8xN?=
- =?us-ascii?Q?X0sL4KJBqWNFYn4015Rn7b4Op8d0CanoX4QtpcjiQbhqGmr6d/HkN7yVjfWN?=
- =?us-ascii?Q?WPB2Aq9cHUDQFcgalhdFgo4njTqZCuvtg7FhZhBi4N66Qac/BMaY12puhulZ?=
- =?us-ascii?Q?JQ2ivNNIsBpwiH3UrEfl9xWeocoJvdTKCGJPHx8Imv+mMRl1EPCr3FtG1d0Y?=
- =?us-ascii?Q?uJI8Urx2qgmpbGK+kUcYzxyZdaraYB9w3Q/UcdBpHjI2CtGIpIfFXiIXd5OP?=
- =?us-ascii?Q?/02YrbbcFHUo4bux7IMpqbC5qtnEjuZnE1cdCmBEGoeFvIFj7n5w4nurM9sT?=
- =?us-ascii?Q?j00tFtMpb5IsDLJUIn8WXYZggJk4vREPP9t7bZX7kFfaqs4Nyc0545/6r1E8?=
- =?us-ascii?Q?GTZGWSt4Oyjg/dlAzqBqhJJ7/LSw7mj4ogfqoq6ih1NXhpR+nDSlBCDjUk9G?=
- =?us-ascii?Q?bqxwf7ryIYXqW50hJmi3e2+5D3OW8eBE4bfHeh4dibGXo0bnZd7TbogW7U8i?=
- =?us-ascii?Q?wXgk8OYgQ0vthDoFdzJqqjy4HxjIYVFuX0b6Tzr2vfUJjnISwXmcUaKk8Li6?=
- =?us-ascii?Q?5wyYruyJqTSYMhdovV7nO0OlmxKZSRGjkexiC/F7BONDTscTeRHcZWskXkJg?=
- =?us-ascii?Q?htPwgM5iZI7kkWrXhw8cGSNfo7FmE8nn4zpocUZ0QfeYF+dB8K2x18T3/jvR?=
- =?us-ascii?Q?lgbcOzxO8+mRnUjYiCArMZ9Wj3+9tUMk9rhwgaxmhVZstb4U59O8Qw0mo4mL?=
- =?us-ascii?Q?tm2k+qRmiqzZS1s=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 19:45:07.3566
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c8781e2-d117-4030-37bc-08dd4f8b94ec
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231A.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7813
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] vsock: fix use-after free and null-ptr-deref
+To: Luigi Leonardi <leonardi@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+ syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
+References: <20250214-linux-rolling-stable-v1-0-d39dc6251d2f@redhat.com>
+ <f7lr3ftzo66sl6phlcygh4xx4spga4b6je37fhawjrsjtexzne@xhhwaqrjznlp>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <f7lr3ftzo66sl6phlcygh4xx4spga4b6je37fhawjrsjtexzne@xhhwaqrjznlp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+On 2/17/25 12:18, Luigi Leonardi wrote:
+> On Fri, Feb 14, 2025 at 06:53:54PM +0100, Luigi Leonardi wrote:
+>> Hi all,
+>>
+>> This series contains two patches that are already available upstream:
+>>
+>> - The first commit fixes a use-after-free[1], but introduced a
+>> null-ptr-deref[2].
+>> - The second commit fixes it. [3]
+>>
+>> I suggested waiting for both of them to be merged upstream and then
+>> applying them togheter to stable[4].
+>>
+>> It should be applied to:
+>> - 6.13.y
+>> - 6.12.y
+>> - 6.6.y
+>>
+>> I will send another series for
+>> - 6.1.y
+>> - 5.15.y
+>> - 5.10.y
+>>
+>> because of conflicts.
+>>
+>> [1]https://lore.kernel.org/all/20250128-vsock-transport-vs-autobind-v3-0-1cf57065b770@rbox.co/
+>> [2]https://lore.kernel.org/all/67a09300.050a0220.d7c5a.008b.GAE@google.com/
+>> [3]https://lore.kernel.org/all/20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co/
+>> [4]https://lore.kernel.org/all/2025020644-unwitting-scary-3c0d@gregkh/
+>>
+>> Thanks,
+>> Luigi
+>>
+>> ---
+>> Michal Luczaj (2):
+>>      vsock: Keep the binding until socket destruction
+>>      vsock: Orphan socket after transport release
+>>
+>> net/vmw_vsock/af_vsock.c | 12 +++++++++++-
+>> 1 file changed, 11 insertions(+), 1 deletion(-)
+>> ---
+>> base-commit: a1856aaa2ca74c88751f7d255dfa0c8c50fcc1ca
+>> change-id: 20250214-linux-rolling-stable-d73f0bed815d
+>>
+>> Best regards,
+>> -- Luigi Leonardi <leonardi@redhat.com>
+>>
+> 
+> Looks like I forgot to add my SoB to the commits, my bad.
+> 
+> For all the other stable trees (6.1, 5.15 and 5.10), there are some 
+> conflicts due to some indentation changes introduced by 135ffc7 ("bpf, 
+> vsock: Invoke proto::close on close()"). Should I backport this commit 
+> too?  There is no real dependency on the commit in the Fixes tag 
+> ("vsock: support sockmap"). IMHO, this would help future backports, 
+> because of indentation conficts! Otherwise I can simply fix the patches.  
+> WDYT?
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondinly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
-
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- drivers/vdpa/mlx5/core/mr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
-index 8455f08f5d40..61424342c096 100644
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -190,9 +190,12 @@ static void fill_indir(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mkey, v
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
-+
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
--- 
-2.43.0
+Just a note: since sockmap does not support AF_VSOCK in those kernels <=
+6.1, backporting 135ffc7 would introduce a (no-op) callback function
+vsock_close(), which would then be (unnecessarily) called on every
+vsock_release().
 
 
