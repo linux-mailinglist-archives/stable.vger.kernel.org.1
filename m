@@ -1,89 +1,100 @@
-Return-Path: <stable+bounces-116576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55062A382C1
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 13:16:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D58A382C9
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 13:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 533FE3AA6BE
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9DB21889007
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACC3217723;
-	Mon, 17 Feb 2025 12:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B401A3A94;
+	Mon, 17 Feb 2025 12:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pelago.org.uk header.i=@pelago.org.uk header.b="iWuF2D/t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lSHGwpCf"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [46.235.227.24])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A47B18DB37;
-	Mon, 17 Feb 2025 12:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEAD18DB37
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 12:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739794559; cv=none; b=ETpaFMXgulKLHWqPP+tl+dJ8eKQCrN058Cft9smuq2TbW72EfudEn3WdeXdTX6NMoYQ46racRCl0NYKkNvm6ddDYfMCdjzbUyhg0MREyCJSPzAUhwOeCwmwgyQUNSzd8hWBbR7uqM+8qYyb/+jMI+OOHnAmq9PV5oXC2oHqOoio=
+	t=1739794715; cv=none; b=aPOoOE6pHuxxVMsgcpXWUg7ciSPkPEeMRXZijA5WVE64GD9uvIrZPBs4KWZj3nDvPE0sD1ggC/Vd+rbdm6SP26wecSg8N6O6v31zPXJqGGBgh8fDGpAm5D3ge7kVocpjU5UholQYU0DeNDey/ZFhusAsEu7KCD7ddjMyvk77Ooc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739794559; c=relaxed/simple;
-	bh=IUpcs5fuPv0MlqHTX1WqaxfwSXVbNE64n/vXBNN2vFI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=oXSV4dabLnOsxA2yhyRnMyFExYB7IEp+UAgpgTlqdX8zeuWityPeruAm8L4mX00b9Ggcd/tsR48LLMQo15+tcg9vkzKUdvSg68y6b675XgCvi0qB716M2OQNxs0CaTEB1A6pFzuts0QrK6hHlUIsHwY+LUq8KP5o6vPTKMowd7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pelago.org.uk; spf=pass smtp.mailfrom=pelago.org.uk; dkim=pass (2048-bit key) header.d=pelago.org.uk header.i=@pelago.org.uk header.b=iWuF2D/t; arc=none smtp.client-ip=46.235.227.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pelago.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pelago.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=pelago.org.uk; s=mythic-beasts-k1; h=To:Subject:From:Date;
-	bh=N29UVb7lsFIAUeKtfz7zQQ1tY8pSM+hJIbIL5FWIg6I=; b=iWuF2D/tIqz9lu7WQd1IKMPx/g
-	98XTkVwpg0VIafwEjfl3c5jCOmSbN1SDL7aJz4s8o3tGWpv3Zh2uIgAntHOXoDrZXLK6/wkF8QDL6
-	/TN+G/adWi0WXg7BeyAC16IQEHvcLxcp/OxWNSx2mRuydLEli1feK5uK0423NE5XcpWvcDhDcZADN
-	VP6M9BvVHboj3xTt6a1dX9j9w6goy+tV+dXt7qYTgUvYHQ8X4MmQzBksLVpZQKOiiMcnc9qWa3/P/
-	fibw9LPjf4kQK7sJgBtUsWUL2XOxkK5WBkk4WRvBaHzJavqxDCu7vRkQ1l4ZXdNGEf/8Etjzmsm72
-	CY68dURg==;
-Received: by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <john-linux@pelago.org.uk>)
-	id 1tk02U-0054vQ-VP; Mon, 17 Feb 2025 12:15:55 +0000
-Message-ID: <2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk>
-Date: Mon, 17 Feb 2025 12:15:50 +0000
+	s=arc-20240116; t=1739794715; c=relaxed/simple;
+	bh=mm2jN73fWCk+HcJNQBGHwKZAJn1ZU9V2JqURczNe+1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=APRAfXmZ6es2671ujekAMWFYXE2Kg/oFhp3/LvOLXHD2P+VlYYNLkPCWf1fKCAmdSYmLy5hFtY4pee2ECOXsceE2UWywJQaXM2q0h2omDx7nFBA9PBCZhnV60zgfTGHgeGLR78LLh3PBUfJ1Kc406tzsr9rOFM+/Xr1I2bF2Cqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lSHGwpCf; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739794714; x=1771330714;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=mm2jN73fWCk+HcJNQBGHwKZAJn1ZU9V2JqURczNe+1o=;
+  b=lSHGwpCfkHx+KdW788Q1zmGTg4QDB/XSl+7YESWOzzp4g/tNRvS0tIgs
+   eHd7lXggHaDNAFg8sY8dZVugn6QSOyYq4ze2+nk0NjKABe5dozlFnAmRc
+   Mw0IkOO0JXxHXg9P9SIjSkqNm0F6y9F16OMvOg4LKzdBEtd3phI4MHlyr
+   xUF9Jr5GrVUDobayp71taLIR1+OZh1LuHKFRfBopf82Y8RRZRY0dnFLsm
+   74UK1FbncDWAIh2mhHcb1FZG6kAHtnZzvBrH2Dmr0F0wCAmMfa0pUgV7/
+   UT2EO3w8kWIh4a+CT4g3ITdHOGtvNyd09NvRH+nLyu0jcqHQTToNYlFmo
+   A==;
+X-CSE-ConnectionGUID: uu4KVkcmQ0StY6f8deLNmQ==
+X-CSE-MsgGUID: V6buvpP7SPKXmjTRx7Pm+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="43304741"
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="43304741"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 04:18:33 -0800
+X-CSE-ConnectionGUID: eYGIW3pBSzSnpUtx/NPBkA==
+X-CSE-MsgGUID: fu67Q/+MQSmHHQd2b+en4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="114308184"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 17 Feb 2025 04:18:32 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tk050-001D5r-0q;
+	Mon, 17 Feb 2025 12:18:30 +0000
+Date: Mon, 17 Feb 2025 20:17:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: John Veness <john-linux@pelago.org.uk>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4
+ mute LED
+Message-ID: <Z7Mo7QVdl7-qa3BF@a8a2e957b38e>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: John Veness <john-linux@pelago.org.uk>
-Subject: [PATCH v2] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute
- LED
-To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-sound@vger.kernel.org
-Content-Language: en-GB
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk>
 
-Allows the LED on the dedicated mute button on the HP ProBook 450 G4
-laptop to change colour correctly.
+Hi,
 
-Signed-off-by: John Veness <john-linux@pelago.org.uk>
----
-Re-submitted with correct tabs (I hope!)
+Thanks for your patch.
 
- sound/pci/hda/patch_conexant.c | 1 +
- 1 file changed, 1 insertion(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 4985e72b9..34874039a 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1090,6 +1090,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
+Link: https://lore.kernel.org/stable/2fb55d48-6991-4a42-b591-4c78f2fad8d7%40pelago.org.uk
+
 -- 
-2.48.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
