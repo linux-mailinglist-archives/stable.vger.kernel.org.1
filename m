@@ -1,98 +1,126 @@
-Return-Path: <stable+bounces-116517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFF2A37915
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 01:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BD6A37961
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 02:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6A216C4FA
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 00:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 821B916D525
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 01:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3BA2556E;
-	Mon, 17 Feb 2025 00:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="orkfcCyl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7044714F90;
+	Mon, 17 Feb 2025 01:07:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CF2C9D;
-	Mon, 17 Feb 2025 00:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E723611E;
+	Mon, 17 Feb 2025 01:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739750513; cv=none; b=mRcGwuf4K5D75SMEK6S0Ii9w6KpFNXmO0gb5zO3XMLEm/Yr2gqpcW+XOreFL89fYL55NcicW0Z1jgGQ2Yx126QAuDfL5+tj1ewA56m0uLeGsZJyd39//6AlVWnIMCnruddBgqD4NrLsooPBlHgJuDB6qxbfBr3zEy1Ig9AxgYx4=
+	t=1739754434; cv=none; b=oRbtoDC7OLxgPYzSuTNPnCoHh5ZpAf6hiO/s61Io5tCxXU6JXVZefVANCs6kNCZgUKYzQqCeRoB+AZwC+NhwW36QthqE6Zc/wN16oW12FtWdJgpHIXDxgGZ4tPp2tvpuy0yjVAGWk+8QCAfdqIZFSCoVbYDFuNRiN70pIG5kYjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739750513; c=relaxed/simple;
-	bh=usGdHPl3WlcwuoBQ1gfOOsCpw1tlvxcC/mZQnEk12rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAci8+qUuHASdxoedsyyfEPGMKq5j3yhSCBcbIHWkpaG6irl+2J116/UpHphth4HJlx6oXpIWkInl2RFTU+BYKRpv7bA3ZEdr1mQCBx8GI+aXrASHwm6rvQiOx1Zwswu/lKAXxe1It/ZlhQ7T9+Ddp4cNRhReYxCQNv1MDD17Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=orkfcCyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C94C4CEDD;
-	Mon, 17 Feb 2025 00:01:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739750513;
-	bh=usGdHPl3WlcwuoBQ1gfOOsCpw1tlvxcC/mZQnEk12rs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=orkfcCyl3ZctI8M0FYDl93FYz2f8cGsTwqlS+firT37MoM7c749/oJnFmpP6y166z
-	 +O46REFH+xADHdM1/1wjbA9sGnJLQ1EaFqTeSaWsAfTUaw32inxV6/roeDtsyXK5JJ
-	 aVBcKjnv2ZnQv+r5uUvKCg91/etiIvbeDRZqjwAigR7jHQJYJXP10Nfi6OnRo2h+ib
-	 TFoQmYaCIFBWZ9ULmJWRFSZ2B3OXnro9SXUnLNm1xXmU6BYzfB/PlYmAqo1Z0AF2xH
-	 M3oQnHmW04fTUdqDCd2/nZhZ2I9k38f7VDlS+l9DXzxur8u3id/QD7BD1p+YNtVqL6
-	 6jZUH7vm1DfQw==
-Date: Mon, 17 Feb 2025 00:01:47 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.13 000/442] 6.13.3-rc3 review
-Message-ID: <cbe97f72-d9c3-4bbf-b025-8766f9b6dca4@sirena.org.uk>
-References: <20250215075925.888236411@linuxfoundation.org>
+	s=arc-20240116; t=1739754434; c=relaxed/simple;
+	bh=sS6epZ/Q0dmr2tgVut1X+sY8gavr366YXLTOVDwcdzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fV8f416VL3sPPcmQ/+yKFiBZ3YOQP704LTH+JDxW8JW8PCgEycb3GZSg3woLZ44ETsLNcGSo7uZbgHBEAGEXHrK8kq8Zv7XZvMta7OWaFU+T4VMNj7OU9X/nReNEkVSdE1GHodLkOgaT3rXeLjI5Df+0p2uqh71VeRmTWL4Vntk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAAHDqKmi7Jn3P6zDQ--.18663S2;
+	Mon, 17 Feb 2025 09:06:55 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com
+Cc: linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] phy: Fix error handling in tegra_xusb_port_init
+Date: Mon, 17 Feb 2025 09:06:45 +0800
+Message-Id: <20250217010645.2238757-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6t2Qta+oZtImKEW7"
-Content-Disposition: inline
-In-Reply-To: <20250215075925.888236411@linuxfoundation.org>
-X-Cookie: This is a good time to punt work.
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHDqKmi7Jn3P6zDQ--.18663S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw4DKFWkAF15tFW3Aw4fKrg_yoW8XFyDpa
+	1DGas8Kr9YgrWkKF4jvF409Fy5GF42k3yrur1rJ34akrn3W348tas8trWxXa4UArZ7uF4U
+	ArnxJa4kJFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
---6t2Qta+oZtImKEW7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-On Sat, Feb 15, 2025 at 09:00:06AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.3 release.
-> There are 442 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Found by code review.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the bug description as suggestions.
+---
+ drivers/phy/tegra/xusb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---6t2Qta+oZtImKEW7
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 79d4814d758d..c89df95aa6ca 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
+ 
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
+ }
+ 
+-- 
+2.25.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeyfGoACgkQJNaLcl1U
-h9CYVgf/Uy7S2iq6WzPc7x/8dxcU9al2YPQseglVxN8RNxmBtaJkM0vzQcYse9Bo
-UXktHVXGJP/F7FpttjGDFeDPdXkiC5sN4tfX/Mm1YtuXpfw2pU3IRrFSNeK1sH8q
-f7kt/X5Ylx9c5HI3N6aCEhms5I6mRWJSt7StCKGLpBt/JxML4Ef/UL9/tMvHX3nC
-N+M5TnwTEhkTYU5E1UXlsJaeNPNDGj9aXVAxw5TI57lEie9hh80dWvAdYbrEkBjE
-uUqQ41Sx+WWCJkEG05MR/+dsOj+QojfbNyJthrlf13zwnrY42Nr5H8AiCrfaLTbx
-AxQVB5eP5qg4lxUfKnZ5Y1qltJTz/g==
-=lQ4t
------END PGP SIGNATURE-----
-
---6t2Qta+oZtImKEW7--
 
