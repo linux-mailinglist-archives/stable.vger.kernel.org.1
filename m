@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-116603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A918DA389FD
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:47:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B802A389FA
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47B6616D072
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:46:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF8877A1222
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC50226180;
-	Mon, 17 Feb 2025 16:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A2E22A7F7;
+	Mon, 17 Feb 2025 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LbrWTewQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c1SWIqM7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C9225767;
-	Mon, 17 Feb 2025 16:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA518225A57;
+	Mon, 17 Feb 2025 16:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739810560; cv=none; b=HTmhkJgogl9783rdzvCn3uWJK2vR1rJF+qoo957LFjtxde2PGLjJuiJLWJt1Tcx9zuHKk80IGjvXAxuOl9bJTPYK1tRGph92utS9WXgQhkWwahnt4SN4c2bFIhY3icdvFDxqhLpLA3HwOZAzyxPAQHddge/MV+JM7QVf2j6g7Yc=
+	t=1739810561; cv=none; b=BGzvfXOe0SdEfFtq+jlGIVT2CTgcNXx2DOI4L9u53qYde/QBb3z4L8RTIVINxLnplvB6zGBPmkuW9BBIl+c5o62x2JbN2dyK1+xHH6N0JjWGViTrGnmxqRxfUzIq9+ymyP1kHT/4z3z3WcznWugsYdSsCUAvkSl0oyyXR3wlrIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739810560; c=relaxed/simple;
-	bh=t3NE35I54Cu59eW2QKSlmDyuH6d3KefVwcXixHa8P/w=;
+	s=arc-20240116; t=1739810561; c=relaxed/simple;
+	bh=Q/y2Ura+ZZ4aJJSpOsP2M0RlMQFJRNDUTUtpYBZlPro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ob7X97WfBPSdqaSUvcEbmjXIb8Xvwy74Dw1oG8AJPTtaV0GfdagWL2xKX3bQeXKa4QJS1abksA3p1LP6Pl/MkSHjRBQkMbqNlzTuu49gaxKnW8itA8fGbDGB/ekGApCIayIoxxXWITz3YOLHSAyzKP8984pNG8BJWiR4mIV2c/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LbrWTewQ; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=X8L9r2JBeEIZuNv3usyf9ogpkVtTMllUzkn9igw9xdSuEaQnqPK784ufZ7Ng0fG1aIivfiu8soWP9Oa0MxuxlfDkQNL2KZolKkGexYtX/oiIakVmYC1fKVn+SPLlBhe9S2YEW0lll/ezqfA/STVaSt/Dq1U4S1MSfevrmpk1jZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c1SWIqM7; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739810559; x=1771346559;
+  t=1739810560; x=1771346560;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=t3NE35I54Cu59eW2QKSlmDyuH6d3KefVwcXixHa8P/w=;
-  b=LbrWTewQuHzKVsHzdAkrcyjs6K49PfkH9LapAX6WNXw1SprcgGvAImLF
-   SxVOflUhWeFVwsOtM2f5hqyAQe0j7ajAwj4AxsVisubzx8jBA2FDNArzF
-   e78/O0n/9X8wYi/80+93YkZNP6p582m9zuZLbcO0eyH7zA/eHos4ZUqc/
-   M0SLvkGv18HOGPTrCsuvW+IeI36KSCcNKBcSv/BblhgkHiNMh8zO6oSr0
-   uV1tNr8H7w4mPtqeKRvTmn3otGHaF+TasvvopJgEJ/SY/nOUZkFiuK7zA
-   QpGTHfOUH6RuqXENUy/N0kw5n9RPDToFM9cDBFqd+YJA3GamSGVqHvn70
-   Q==;
-X-CSE-ConnectionGUID: 3EgAUcLpQfGGsfQZ8KzcyA==
-X-CSE-MsgGUID: aEHyVbWfQuKmHIz0LITZsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="43329438"
+  bh=Q/y2Ura+ZZ4aJJSpOsP2M0RlMQFJRNDUTUtpYBZlPro=;
+  b=c1SWIqM7gHfLQ6x+cmRUSV/pE+5v8a4csJ7jO+uhm7By3gNM9EB7MgDb
+   rkQASHkeKx+ARY3Ag0KoWhu7WCuEcBgLzlarc1fmCeFrW5qFIDC0a7pYq
+   V5XX39ZX+x7e4T6zlTExIFifOZ9tWfvzY4iEkxZAkeGjwTQUO34Ckpr6V
+   Wag3MwmlK0nk/9A8MRCoFsflF6BReQhVsewvrRQsJzarqSufmBUrDBend
+   C0cichzBD3NTiZ9lbxveqRUDUKHO2GgneHF0yFZbArI+j5jOzSh66qB9/
+   Yldr74jpKmF008mQdZSaKAfZf4TbvuP5ZtOnk45mf0XG7mUOuaKHD3rfE
+   g==;
+X-CSE-ConnectionGUID: NndbcaRYT2GC5v/RGdMzDA==
+X-CSE-MsgGUID: UEVzFiioRzWH+nqvn64S6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="44426586"
 X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
-   d="scan'208";a="43329438"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:42:38 -0800
-X-CSE-ConnectionGUID: GLSyU+VWRGi5n4oLNrlKgg==
-X-CSE-MsgGUID: cQWRr/6aS7y+47a0BZOQXQ==
+   d="scan'208";a="44426586"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:42:38 -0800
+X-CSE-ConnectionGUID: DLaoWa/wSWS1Bb+Zkbv1Tw==
+X-CSE-MsgGUID: X50OseD7Tkq0w6139d7UYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="114034941"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="119092112"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 17 Feb 2025 08:42:30 -0800
+  by orviesa003.jf.intel.com with ESMTP; 17 Feb 2025 08:42:31 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 80EC3E7; Mon, 17 Feb 2025 18:42:29 +0200 (EET)
+	id 98D08139; Mon, 17 Feb 2025 18:42:29 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -89,10 +89,12 @@ Cc: Albert Ou <aou@eecs.berkeley.edu>,
 	linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCHv4 1/2] memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
-Date: Mon, 17 Feb 2025 18:38:20 +0200
-Message-ID: <20250217163822.343400-2-kirill.shutemov@linux.intel.com>
+	stable@vger.kernel.org,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCHv4 2/2] x86/mm: Make memremap(MEMREMAP_WB) map memory as encrypted by default
+Date: Mon, 17 Feb 2025 18:38:21 +0200
+Message-ID: <20250217163822.343400-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250217163822.343400-1-kirill.shutemov@linux.intel.com>
 References: <20250217163822.343400-1-kirill.shutemov@linux.intel.com>
@@ -104,97 +106,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-x86 version of arch_memremap_wb() needs the flags to decide if the mapping
-has be encrypted or decrypted.
+Currently memremap(MEMREMAP_WB) can produce decrypted/shared mapping:
 
-Pass down the flag to arch_memremap_wb(). All current implementations
-ignore the argument.
+memremap(MEMREMAP_WB)
+  arch_memremap_wb()
+    ioremap_cache()
+      __ioremap_caller(.encrytped = false)
+
+In such cases, the IORES_MAP_ENCRYPTED flag on the memory will determine
+if the resulting mapping is encrypted or decrypted.
+
+Creating a decrypted mapping without explicit request from the caller is
+risky:
+
+  - It can inadvertently expose the guest's data and compromise the
+    guest.
+
+  - Accessing private memory via shared/decrypted mapping on TDX will
+    either trigger implicit conversion to shared or #VE (depending on
+    VMM implementation).
+
+    Implicit conversion is destructive: subsequent access to the same
+    memory via private mapping will trigger a hard-to-debug #VE crash.
+
+The kernel already provides a way to request decrypted mapping
+explicitly via the MEMREMAP_DEC flag.
+
+Modify memremap(MEMREMAP_WB) to produce encrypted/private mapping by
+default unless MEMREMAP_DEC is specified or if the kernel runs on
+a machine with SME enabled.
+
+It fixes the crash due to #VE on kexec in TDX guests if CONFIG_EISA is
+enabled.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Cc: stable@vger.kernel.org # 6.11+
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>
 ---
- arch/arm/include/asm/io.h   | 2 +-
- arch/arm/mm/ioremap.c       | 2 +-
- arch/arm/mm/nommu.c         | 2 +-
- arch/riscv/include/asm/io.h | 2 +-
- kernel/iomem.c              | 5 +++--
- 5 files changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/io.h | 3 +++
+ arch/x86/mm/ioremap.c     | 8 ++++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 1815748f5d2a..bae5edf348ef 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -381,7 +381,7 @@ void __iomem *ioremap_wc(resource_size_t res_cookie, size_t size);
- void iounmap(volatile void __iomem *io_addr);
- #define iounmap iounmap
+diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
+index ed580c7f9d0a..1a0dc2b2bf5b 100644
+--- a/arch/x86/include/asm/io.h
++++ b/arch/x86/include/asm/io.h
+@@ -175,6 +175,9 @@ extern void __iomem *ioremap_prot(resource_size_t offset, unsigned long size, un
+ extern void __iomem *ioremap_encrypted(resource_size_t phys_addr, unsigned long size);
+ #define ioremap_encrypted ioremap_encrypted
  
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size);
 +void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags);
- #define arch_memremap_wb arch_memremap_wb
++#define arch_memremap_wb arch_memremap_wb
++
+ /**
+  * ioremap     -   map bus memory into CPU space
+  * @offset:    bus address of the memory
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 8d29163568a7..a4b23d2e92d2 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -503,6 +503,14 @@ void iounmap(volatile void __iomem *addr)
+ }
+ EXPORT_SYMBOL(iounmap);
  
++void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
++{
++	if ((flags & MEMREMAP_DEC) || cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
++		return (void __force *)ioremap_cache(phys_addr, size);
++
++	return (void __force *)ioremap_encrypted(phys_addr, size);
++}
++
  /*
-diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-index 794cfea9f9d4..9f7883e6db46 100644
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -411,7 +411,7 @@ void __arm_iomem_set_ro(void __iomem *ptr, size_t size)
- 	set_memory_ro((unsigned long)ptr, PAGE_ALIGN(size) / PAGE_SIZE);
- }
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (__force void *)arch_ioremap_caller(phys_addr, size,
- 						   MT_MEMORY_RW,
-diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-index c415f3859b20..279641f0780e 100644
---- a/arch/arm/mm/nommu.c
-+++ b/arch/arm/mm/nommu.c
-@@ -251,7 +251,7 @@ void __iomem *pci_remap_cfgspace(resource_size_t res_cookie, size_t size)
- EXPORT_SYMBOL_GPL(pci_remap_cfgspace);
- #endif
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (void *)phys_addr;
- }
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-index 1c5c641075d2..0257f4aa7ff4 100644
---- a/arch/riscv/include/asm/io.h
-+++ b/arch/riscv/include/asm/io.h
-@@ -136,7 +136,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
- #include <asm-generic/io.h>
- 
- #ifdef CONFIG_MMU
--#define arch_memremap_wb(addr, size)	\
-+#define arch_memremap_wb(addr, size, flags)	\
- 	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
- #endif
- 
-diff --git a/kernel/iomem.c b/kernel/iomem.c
-index dc2120776e1c..75e61c1c6bc0 100644
---- a/kernel/iomem.c
-+++ b/kernel/iomem.c
-@@ -6,7 +6,8 @@
- #include <linux/ioremap.h>
- 
- #ifndef arch_memremap_wb
--static void *arch_memremap_wb(resource_size_t offset, unsigned long size)
-+static void *arch_memremap_wb(resource_size_t offset, unsigned long size,
-+			      unsigned long flags)
- {
- #ifdef ioremap_cache
- 	return (__force void *)ioremap_cache(offset, size);
-@@ -91,7 +92,7 @@ void *memremap(resource_size_t offset, size_t size, unsigned long flags)
- 		if (is_ram == REGION_INTERSECTS)
- 			addr = try_ram_remap(offset, size, flags);
- 		if (!addr)
--			addr = arch_memremap_wb(offset, size);
-+			addr = arch_memremap_wb(offset, size, flags);
- 	}
- 
- 	/*
+  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+  * access
 -- 
 2.47.2
 
