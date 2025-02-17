@@ -1,135 +1,99 @@
-Return-Path: <stable+bounces-116620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03384A38DC4
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:00:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22183A38DCD
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE023A6BC1
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:00:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14A377A1F29
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6443F23716B;
-	Mon, 17 Feb 2025 21:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68D222E3E8;
+	Mon, 17 Feb 2025 21:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bSDoAD+J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HFFv0XFC"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106E3226545;
-	Mon, 17 Feb 2025 21:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1FE226545
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 21:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739826052; cv=none; b=Kr9Mj0Z9tZU85vR83FAGXzeHTIbERhaVIy5hejfZwSjnc0Rc+Eh9xyROwLtiCCzcbMLWPctNYSTGqdQ0tPn5CLycFV3FblJHKlyts+3kfeUOAZimpi8gwI6BbIixcLwrdfOcm0gZGcHyFVHSFyephdEMGJw63lvRWYT5DotiYA4=
+	t=1739826150; cv=none; b=imPzwgBHbitqj0pR9edDJ4Ereo5+8+58VPYR38w3AUG9awTHCfI+IiDkCBO6MUmJ5pLqqA7pjc4ixs7UbCo4Ukwteu3WFKs46yfkw/wUsl2i7cjOkPqODc1yr3xzFIkA0eazVVyToUKz0xFUFeqaXXI58CQpNHx8YioKeRXXcFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739826052; c=relaxed/simple;
-	bh=f5tgNUKn8b8r/9Um0XvFMzVBJvr9yukC/ZCxlBpueLU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eFP673BZSm3W8tdZ5QkkLcTMY52bc7Tkk9c2I0dXALXUumLjMBbZmW1FHQrDQtm9h4byKLf2jOKNhzTVQHCEPYt6LZEE/51jGKDiYnO3zxFLbfRdFOgWLvRYCSZfTbNjYveWFb2hFcit0USU6Lt7wk6E9CX071tbqPLw8TG6eNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bSDoAD+J; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1739826045;
-	bh=f5tgNUKn8b8r/9Um0XvFMzVBJvr9yukC/ZCxlBpueLU=;
-	h=From:Date:Subject:To:Cc:From;
-	b=bSDoAD+JmM6J6AcSUDPkzxa/vE0iU5XSWGbAfLo/JbUAZXYz3UiFHJ6Uw9pBaWDql
-	 6KLWhZbBSdZZogDh0shLRnSSHjQdS3iUr5y+grmvv/sXTWXyYjAdEcnFu1lwWaGs3c
-	 ZChyktJ95Uxgy7oeXN3aVBnW3RL7iWVVuvyIC/xgk+obT/KB7M5kT0hiVUZHuowwS0
-	 Ld6weeFac+aDBakv6K6JbwtmqmG4ahLU5yPsgZjp/Ra2bMp8z9o02zQmXIPNjWJ/U1
-	 ptkkg/N8pv1Y1vK4HjqkVtQDypnoJp8XpEGlIBH5cGgK2aOdqwTW935r/hj0EFLgav
-	 NjmuK0IVOApPw==
-Received: from [192.168.13.3] (unknown [IPv6:2606:6d00:11:e976::c73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B235C17E1097;
-	Mon, 17 Feb 2025 22:00:43 +0100 (CET)
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Date: Mon, 17 Feb 2025 16:00:38 -0500
-Subject: [PATCH] media: verisilicon: Fix AV1 decoder clock frequency
+	s=arc-20240116; t=1739826150; c=relaxed/simple;
+	bh=19zlvIxFozcIGE2zzrNwFMYPUHZ6Rpp/w+EDlYLvIVw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=iNEPKM1PG7httnU5twKs4Q3l99yKET6QuOH1KBJnZosxqaRvW8B7TtqQUlRJJAygI3sU03lSAKWlCczeKgECmsMEgT4sJJovnw+PnQyfV9LLVG7KlDMSgGgiTrDlEk83AWQ4p0QhoEKgCKM1q+fP1xP5MNA16asjiPxQjHJewf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HFFv0XFC; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739826149; x=1771362149;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=19zlvIxFozcIGE2zzrNwFMYPUHZ6Rpp/w+EDlYLvIVw=;
+  b=HFFv0XFC+j6yfNepZ06OxwWVAwxESdyag2YhurFUuGPhppoDruHzr2g0
+   xiion9rigAUO8QYivTNlXfmYQkTuhFSoGOyneMyr7f4vA1sxA6pcQlqbb
+   ErWzvWsjES0YuT7rjtUdxoWpFyBO/2ux2siQ3Lu7vWffhzSA9XxB/bgtV
+   qlx7Y2DIsov0X0uBJnBz5s1VCyL/4CVw7njQPNa5vKWpR6tsWWemZgu81
+   vGU5pviTpfTNFG4D2m0DEs1PPAInBlNtelKSgue1ZTqiwGZBg/z+L57Cx
+   SDBb9hhHFiw7LNDNaYPBbkd2K0VlLhFYo6MOxMpmPXR13SHf/EnfEkDa2
+   w==;
+X-CSE-ConnectionGUID: OHuhncYMTRCr69i1iKMnvQ==
+X-CSE-MsgGUID: SgZwUGpgSpugTVHyfdtvcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="44442235"
+X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
+   d="scan'208";a="44442235"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 13:02:28 -0800
+X-CSE-ConnectionGUID: c892KkS9RZulVmm7o5iGXg==
+X-CSE-MsgGUID: EqhJuRVaTtyCkgoz9qb6CQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
+   d="scan'208";a="114191756"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 17 Feb 2025 13:02:27 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tk8G1-001Dax-1d;
+	Mon, 17 Feb 2025 21:02:25 +0000
+Date: Tue, 18 Feb 2025 05:01:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] media: verisilicon: Fix AV1 decoder clock frequency
+Message-ID: <Z7OjpShZOo9mDa14@a5d4ccc8ade5>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250217-b4-hantro-av1-clock-rate-v1-1-65b91132c551@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAHWjs2cC/x2MQQqAIBAAvxJ7biHFCPtKdDBbayky1ohA+nvSc
- QZmMiQSpgR9lUHo5sTxKKDqCvzqjoWQ58KgG902WnU4GSz+kojuVuj36DcUdxFSa2wXlLF2DlD
- yUyjw86+H8X0/3kW3uWoAAAA=
-X-Change-ID: 20250217-b4-hantro-av1-clock-rate-e5497f1499df
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Heiko Stuebner <heiko@sntech.de>, Hans Verkuil <hverkuil@xs4all.nl>
-Cc: stable@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-media@vger.kernel.org, kernel@collabora.com, 
- Nicolas Dufresne <nicolas.dufresne@collabora.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250217-b4-hantro-av1-clock-rate-v1-1-65b91132c551@collabora.com>
 
-The desired clock frequency was correctly set to 400MHz in the device tree
-but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
-Fix the issue by removing the driver call to clk_set_rate(), which reduce
-the amount of board specific code.
+Hi,
 
-Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
----
-This patch fixes user report of AV1 4K60 decoder not being fast enough
-on RK3588 based SoC. This is a break from Hantro original authors
-habbit of coding the frequencies in the driver instead of specifying this
-frequency in the device tree. The other calls to clk_set_rate() are left
-since this would require modifying many dtsi files, which would then be
-unsuitable for backport.
----
- drivers/media/platform/verisilicon/rockchip_vpu_hw.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Thanks for your patch.
 
-diff --git a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-index 964122e7c355934cd80eb442219f6ba51bba8b71..9d8eab33556d62733ec7ec6b5e685c86ba7086e4 100644
---- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-@@ -17,7 +17,6 @@
- 
- #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
- #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
--#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
- 
- #define ROCKCHIP_VPU981_MIN_SIZE 64
- 
-@@ -440,10 +439,9 @@ static int rk3066_vpu_hw_init(struct hantro_dev *vpu)
- 	return 0;
- }
- 
-+/* TODO just remove, the CLK are defined correctly in the DTS */
- static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
- {
--	/* Bump ACLKs to max. possible freq. to improve performance. */
--	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
- 	return 0;
- }
- 
-@@ -807,7 +805,6 @@ const struct hantro_variant rk3588_vpu981_variant = {
- 	.codec_ops = rk3588_vpu981_codec_ops,
- 	.irqs = rk3588_vpu981_irqs,
- 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
--	.init = rk3588_vpu981_hw_init,
- 	.clk_names = rk3588_vpu981_vpu_clk_names,
- 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
- };
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
----
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-change-id: 20250217-b4-hantro-av1-clock-rate-e5497f1499df
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Best regards,
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] media: verisilicon: Fix AV1 decoder clock frequency
+Link: https://lore.kernel.org/stable/20250217-b4-hantro-av1-clock-rate-v1-1-65b91132c551%40collabora.com
+
 -- 
-Nicolas Dufresne <nicolas.dufresne@collabora.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
