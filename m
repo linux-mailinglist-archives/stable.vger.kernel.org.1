@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-116571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD3FA38244
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17826A3827A
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E95A3A654B
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31E833AC213
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C883216E10;
-	Mon, 17 Feb 2025 11:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26EF219A66;
+	Mon, 17 Feb 2025 11:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="YkMcbAnL"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="cn7eGseI"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD02C2EF
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 11:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FE1C2EF
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 11:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739793079; cv=none; b=JR+mjoFZb42GX5ZXa1IyVx+g6SvmFGc99vuDxtLv5DmpIbP8w9oXaQEKeG+K8mxYSAtRc9mTQQf0vEJo/4HpemE28MIcH/VDUH+3JnLNeyhSitTMPV5k+g8amcgHn7ki8e0CFBP6Ri9p9MyO0G4i1XJGwwNyODwlOGVxEsKctMU=
+	t=1739793268; cv=none; b=oVGRAgS2POb42ckKI4lx3HVepngfJY4bIOo1ykY/6yGhQ6wW6HNkCJ9ni9duUSL09WqWqZzCRTNlb+Q44Be4liTCr99/3D0C4+JNyKdYysrp3tGC9jkzqs5kuDlAnzPRd1qXlNtHss9xr+F6k6sYnEXLWtbPE0J8qDi751psMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739793079; c=relaxed/simple;
-	bh=/++wlYECu1bAVF8WyQi6cZGtH9Hj0M2oadDYNmhAt3c=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=qdOgHcd9WUjiKhb3Nxpj9kj+QNhP9k4tbPwUms/ML212OEzdQIlQ2QPbtJuEovMiCrt/UWjOnGQ2n/f0J5l4Au60933F+7ExIcuXfHLpd/WkVtATgFfB5ToyO7OBpMmfO0LmhCv6JHKO/G5UVbkCjetu2YRFBJxLqYLncxQH9A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=YkMcbAnL; arc=none smtp.client-ip=162.62.58.211
+	s=arc-20240116; t=1739793268; c=relaxed/simple;
+	bh=Ou7nePRxroTuiDKGaYMJaIt89/+wwwGXHEM2WKXbY1k=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=pG7aRlplzKGl2eGGtEHzjXuXoEyX9KSoos0CdP+GN7FLz/w8ksV9q1d8v+9NW/OLMtSB7B0xfBDKieQa0AGiNBMEUIR+H6oWJ6dta5tUYGTQOR3RhnX9slkncs2+Z/NXt3wvYFHCgJGGxJvxijhcmLxb2C5nMGrMhJ5KYWZE0XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=cn7eGseI; arc=none smtp.client-ip=203.205.221.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1739792765;
-	bh=qWKL0q8zg1HnYrxT09ud0byPjMFRV4ibdxOAgxB99ic=;
+	s=s201512; t=1739793258;
+	bh=xrDQl6URn9iFlgHqvuOB8xc5otCb8KhpKUZSAHiLQgo=;
 	h=From:To:Cc:Subject:Date;
-	b=YkMcbAnLSzsrer5mDoGBaYOYBS2wKZpMOZKRXvDlbdo7RQIOoBRGr8aQ+zoUWNdh5
-	 0YZNF+KzLgfiw4yv8y5BawRHsqoGjrjUO8ZGnP8PHv7oaGi2QnDbqv3DoDuFqx0G8b
-	 wW6GJHFrTjT0rB5y4oHvjy0a/6yrjApI9ejbL7G4=
+	b=cn7eGseIEfVMGEIVaDI/1J99xA8r2a862sOsjRE+IAPe9EV1iaZO7502+JG2MAs8i
+	 dVEKHdxGJEkA2JH+sUekRd8gl111n5nizEZFNHW1HUrNtc23ft4fJY7vOrXSKcvaF9
+	 BKdl+6RQmGXe5EAbBssu2ng9+52MBHfQsoZsu3OU=
 Received: from public ([120.244.194.234])
-	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
-	id B5EB884A; Mon, 17 Feb 2025 19:45:30 +0800
-X-QQ-mid: xmsmtpt1739792730ti4osgomr
-Message-ID: <tencent_12AC63705E617E1B6268656A223ED6246109@qq.com>
-X-QQ-XMAILINFO: NCrRxdeazcoFeL/bDWfZvgco+AvHGu+s/vwWxQJoKmpv2ANU8+kffgTcWFX+u2
-	 JVGi+a68UmrGxidsyvGNNBz6vBMIY+th+cHwaHgCbgWLLhAs7OcrChUfQeGdeaQY4NFALWQEmPDW
-	 4Hd3CKvwSQCWtOrJXyeGv095i1GRO08mp3n88Z/QW8T8HlB4rCcOZ6y8ItyMRx6uJJa2Bp7BHVfz
-	 npI6jidxt6Avn/Nk+yRwrg8lp6gem8qpD9zf+mAnyRSld93ROWKPl3JknuN4THC7LkndRVcM/ClG
-	 E3mDFpedfdDbXIDIHWnNmrPL5wdhIBXy0IWIP7RMJNLPrz8k+k5GYtqNcdUaZdTp3YM//mPdHcYS
-	 WbzzhJjQyd+mDSVdyH7e/bTSBZzzwm9QEaamRj+uZ4Pp5Jgh9hK5k/+Q78u/5BCS+WW+Geyzm1js
-	 y9o6InsMGNIKcJeCuhsvmLgHqbLcRHxia9poUYNdNmnu6Mqwu0E88n8fXyV7MToW9v97Nt3+aOMu
-	 6ensPxIOJwILIIq9ZyS6tEU7CGth/tgvdpAwUw56DopyIOYp/aD/FALkAgYvT6L611SSycStL14i
-	 d+dB/UskLjQhu+TpSFsi7WQ495Yc/4tiJgkdojrP8LoVxDciNqsEhRh64zWxWrf0Am/UN4LoZBuF
-	 vIBPdwbr+qWgJ1vNHzMynG4Zin7TV0MlihUITgYEe/Fb+olnkrUH1PDjxVIxDMy9XEClkor/G6Mc
-	 ZdWnen6vUOHkkZV3pjpNmEw1F2HrFHyDHgdSlzzpJmZ+1iSc2jpw62pR3d65OtGBgGpLnMmWW0Y2
-	 f4bn2dHRiLQIQCY3cmuRZ+XVaPCT/2pwETt9Z2yWc/k2TC8l/lSKx+E9h6sRqXX+Ar6rAEZxnYp9
-	 QhhK25NgznMFR1zMMWAshHAFp36//4ruxuDvms5wTxVjlGYUxcxBsSNcWxy3iTpJUIXiERPjhR3e
-	 Y1BzFzfB9t0bFUvCu9aHOF8BUnpG63
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id BF2B84FF; Mon, 17 Feb 2025 19:47:50 +0800
+X-QQ-mid: xmsmtpt1739792870tnmpchkrz
+Message-ID: <tencent_6D9AAE8F6E49296B401C0C188B06785AAC07@qq.com>
+X-QQ-XMAILINFO: NGHdgOcrWZQ96jzqPzsSVO8enQPIJZdiK0YZ/dnfNMra7gKHvgACd0WXrsrmnl
+	 kz1VGCLPNu1EmFC5+eIGJdVQUCItD1cf0KVD2nzhF+8FTfaQU/fzi7gUDz4XKxb1HIvZvmSyQEXG
+	 Sb07E4v3QGEXQDEDP/9CGoZFMFDnR5nSAkm6hliYPgZ3uu2UpZmxe9etz678aforRyqN7mT2FT/j
+	 QixSO1mEAyJDNP+NeLJoQZCU7226CUn0xwbjMWb+xiDgwAGAXyqzM8W5gAxS7M3hxcNmdfaJQtip
+	 LfKfeZF0qSoCx3EDwl29hmvqMjfotR86LRf6VueiafBRK82/EkCFy/voNpZ9iBQ6658FlHYWTjuZ
+	 BX01SprSrYGSYJchDLVYk9ZoQq7Llt2tPZRibPuAyVIFck1PT+WpAMD9EE22diA/37GOuf/OcvEp
+	 Hxit4mMz3/SL2UEiCLkYk/n1k+XjJH6RVGdU3k7+FuQ66J6NN9YvC1edC0UdMBxSzeT7ZSKMrInl
+	 pWPo2AdPh5+vlZqTB3Z5qogD5DbmNAwfIJxNPYVO5NG8Cx3Jwm+/TohM8l75Lk/fpxV7rqunJndN
+	 rhsjTUeDAPGFfkbURMGUZfDNDZvBdVAADUchBcHLbOBzOQrlT86sZIkHqBisFYvvtEmGKm2E92nR
+	 noPeeGiNvw0xxrDvHvt2r13IMzZXQs3+6XlzY51IRN/c5iGW6TY90wo0Ae5wMPSL7KSq4GOtOaNM
+	 1bTFGyFWKHYJ4bjZJiOlhn0vLByFI8J/mTNOndrAoTj9jVZqRSzwP8X2SVItUWrJ/QUTbY7uVcET
+	 r3waJixnO7U1EbcQYoN/+GKDg/uPqXojFBaJkqzI4eEw6REk7ivnDaEOgJQ/9eqciADUFLKrRmw0
+	 fAEX1ySwO2IcXLH7zny/GnBEdvtYxNHaJTrmd1Rl5PFRNiuWpzSqAB6mwE+ZZC5HtQpX/pZ+cfFN
+	 0eHYGR7S2DZTNErcs/8oXreZvfl1z8uUMzQyfZAfhpoOaWyL7MFQ==
 X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 From: alvalan9@foxmail.com
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y] f2fs: fix to wait dio completion
-Date: Mon, 17 Feb 2025 19:45:11 +0800
-X-OQ-MSGID: <20250217114511.1053-1-alvalan9@foxmail.com>
+Subject: [PATCH 5.15.y] f2fs: fix to wait dio completion
+Date: Mon, 17 Feb 2025 19:47:53 +0800
+X-OQ-MSGID: <20250217114753.1713-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,10 +91,10 @@ Signed-off-by: Alva Lan <alvalan9@foxmail.com>
  1 file changed, 13 insertions(+)
 
 diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 3bab52d33e80..5e2a0cb8d24d 100644
+index b38ce5a7a2ef..685a14309406 100644
 --- a/fs/f2fs/file.c
 +++ b/fs/f2fs/file.c
-@@ -1048,6 +1048,13 @@ int f2fs_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
+@@ -965,6 +965,13 @@ int f2fs_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
  				return err;
  		}
  
@@ -105,10 +105,10 @@ index 3bab52d33e80..5e2a0cb8d24d 100644
 +		if (attr->ia_size < old_size)
 +			inode_dio_wait(inode);
 +
- 		f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+ 		down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
  		filemap_invalidate_lock(inode->i_mapping);
  
-@@ -1880,6 +1887,12 @@ static long f2fs_fallocate(struct file *file, int mode,
+@@ -1790,6 +1797,12 @@ static long f2fs_fallocate(struct file *file, int mode,
  	if (ret)
  		goto out;
  
