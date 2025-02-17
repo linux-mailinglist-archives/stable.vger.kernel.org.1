@@ -1,99 +1,137 @@
-Return-Path: <stable+bounces-116599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F13A388CB
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C98A388D1
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC13189BC5C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA62189C46F
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AD1225385;
-	Mon, 17 Feb 2025 16:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00D7226170;
+	Mon, 17 Feb 2025 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ARlezlZR"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Nzyn4iKb"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB5D21ADD3;
-	Mon, 17 Feb 2025 16:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1798D225413;
+	Mon, 17 Feb 2025 16:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739808072; cv=none; b=aeYhG3S17bXZ8bK2BhFSYMntCfsu9FO+TEo5t7TIhVhFK7GnKtdjyUx9DvcS1R9tr6H0DdbL3R5i2pLfRCOeLewLk+Khy40A3ZYuFJUcOSMCBPHfOTiR0OLIc2+F6EDkERDTXwetMV4CcAKP7JmLLpj7QeYXx2yBB6zUXYHeCkY=
+	t=1739808087; cv=none; b=ZuEhz3GdbPkrHmfalnwbiejOtp7+NrbIPR2s6axWb3Xg8Hf42YqxlEJ8CSDUvRMDPeOWfUHBrP9sdspCzQJTVAzv7JCXTA5abo3fPpc22v0n/nITtI4/GoaO2ZnbUTGTaLRJ0NBViYW3MpAiD0BHZsuHsJQTw7elprA+Rirl2GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739808072; c=relaxed/simple;
-	bh=a9L1iRTJAGeYLsPNdHi5448kzMlviGufO4uA3zEzNmU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UmRuGy+e237X0sxLwwcp813BM0flPUOYi/riQmctTl8Vg0XDBgBGZ42cayPqWvXnA2hlYYWMy9V7KQobcBftj9AQg62qReZGTvqIIoogxQ1hCIY/RGI3d4bbFTNue/nWVCiYNtHI0rFqfGI1q9DASA9CRcI8ET1icCl5jr2zYB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ARlezlZR; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=g3on1
-	gNZIaw9/zrdoIKx6bUBSXJCPFOMbC1oZWieC3w=; b=ARlezlZRDBcAG68jLlqBH
-	jMYMDZL1JvwefdvBPA4EvS2X1hafuT/nwjaLf8Ik5JHDoGm6cFdDhJ/TnWdjAY3N
-	vX3l4WENt5erU51REra/Spv94i8YEDNZWnvJdmm2WJzuOy8X7vZWZTWhzsBmn5LP
-	qrgXr/SDpEmfc7EXIbnRdY=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgCHjVcTXbNnyxM4EQ--.1900S4;
-	Tue, 18 Feb 2025 00:00:20 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: sammy@sammy.net,
-	geert@linux-m68k.org,
-	zhengqi.arch@bytedance.com,
-	akpm@linux-foundation.org,
-	dave.hansen@linux.intel.com,
-	kevin.brodsky@arm.com
-Cc: linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] m68k: sun3: Add check for __pgd_alloc()
-Date: Tue, 18 Feb 2025 00:00:17 +0800
-Message-Id: <20250217160017.2375536-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1739808087; c=relaxed/simple;
+	bh=IuVTqzQkxtSgLrHGsZfIOOA0G7iyiJzOcS14TT2AgaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ld2odzp8xQohDoI+AEfMjMSMBUdT7kVt2+MGwHGWm1XrV53LnLwqhLaww48h5D/W3+kKYotyym/n03DE+Yr4cBEjshhtFcXjFxIYzknqDDUWB71ljJhcxzWZhx0RwvZBlrR2Vpd015HwFvDoL7edgxIC0ritI7Ei+qN1BxHbZSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Nzyn4iKb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HDgVX8012418;
+	Mon, 17 Feb 2025 16:01:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=SoehcMeZOdOgd49RfeiQ5M429ABE1P
+	ZNhcT8Mtuo+Y4=; b=Nzyn4iKbBDOz0i1unhkV8jYiWDeHxFsP4KHdKeQMG6cFlt
+	mpF0HuGrvZLNiDC94BVGMKWKD+7DHD1GJkGCHndTsWtyf3ad19GPCS5uXmHLZG55
+	3GXQozCMEXC07Zrb2sXHmWL3YrV26wA9bT7tW5WKIdu/vo7TnJ5TWv+YHvE5BRr0
+	JztZv9iNNoN1HkROvuWrfDW34eZJkGC7/SJ9nGpiTjp10qSvpeWL6HWw3YMFMHZ7
+	9ClCxh8RbuuY8X9pUwNtGb/BD3me97KMLQqK7LjIaauHNBepLeOXslXQr1glstz1
+	o7YFvVbqcxs/wtRMFCT0sldt0XCEbofjO233vlUA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44uuy03kn3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Feb 2025 16:01:24 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51HG1OIQ025147;
+	Mon, 17 Feb 2025 16:01:24 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44uuy03kn0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Feb 2025 16:01:24 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51HC0ghZ008164;
+	Mon, 17 Feb 2025 16:01:23 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u58tf014-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Feb 2025 16:01:23 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51HG1IFR55378300
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Feb 2025 16:01:18 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C2E3E20040;
+	Mon, 17 Feb 2025 16:01:18 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6018C20043;
+	Mon, 17 Feb 2025 16:01:18 +0000 (GMT)
+Received: from osiris (unknown [9.171.53.224])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 17 Feb 2025 16:01:18 +0000 (GMT)
+Date: Mon, 17 Feb 2025 17:01:17 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, schwidefsky@de.ibm.com,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] s390/sclp: Add check for get_zeroed_page()
+Message-ID: <20250217160117.21424B3d-hca@linux.ibm.com>
+References: <20250217153146.2372134-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgCHjVcTXbNnyxM4EQ--.1900S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JF43uw4kurWktr4fKw18AFb_yoWDCFcEk3
-	Z2kws3CrykXrW8Jr18Aa13WF90gw1kWr95Zr1Svw43Ar98Xrs5Zw4DKr1rAr429anxZrWk
-	uFZ0yrW5trnFqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRRAwI3UUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqBr2bmezPf2FDwADs3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250217153146.2372134-1-haoxiang_li2024@163.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: b5OYOY0KcivQa3x2-argEvWA6JiQ4sbc
+X-Proofpoint-ORIG-GUID: NFaKHgijFbTpfRZ82bIXgcYm51ePZ0aV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-17_06,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ impostorscore=0 lowpriorityscore=0 mlxlogscore=513 spamscore=0
+ adultscore=0 phishscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502170132
 
-Add check for the return value of __pgd_alloc() in
-pgd_alloc() to prevent null pointer dereference.
+On Mon, Feb 17, 2025 at 11:31:46PM +0800, Haoxiang Li wrote:
+> Add check for the return value of get_zeroed_page() in
+> sclp_console_init() to prevent null pointer dereference.
+> 
+> Fixes: 4c8f4794b61e ("[S390] sclp console: convert from bootmem to slab")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  drivers/s390/char/sclp_con.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
+> index e5d947c763ea..7447076b1ec1 100644
+> --- a/drivers/s390/char/sclp_con.c
+> +++ b/drivers/s390/char/sclp_con.c
+> @@ -282,6 +282,8 @@ sclp_console_init(void)
+>  	/* Allocate pages for output buffering */
+>  	for (i = 0; i < sclp_console_pages; i++) {
+>  		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
+> +		if (!page)
+> +			return -ENOMEM;
+>  		list_add_tail(page, &sclp_con_pages);
 
-Fixes: a9b3c355c2e6 ("asm-generic: pgalloc: provide generic __pgd_{alloc,free}")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- arch/m68k/include/asm/sun3_pgalloc.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+We can add this check, however if this early allocation would fail a
+null pointer dereference would be the last problem we would have to
+think about.
 
-diff --git a/arch/m68k/include/asm/sun3_pgalloc.h b/arch/m68k/include/asm/sun3_pgalloc.h
-index f1ae4ed890db..80afc3a18724 100644
---- a/arch/m68k/include/asm/sun3_pgalloc.h
-+++ b/arch/m68k/include/asm/sun3_pgalloc.h
-@@ -44,8 +44,10 @@ static inline pgd_t * pgd_alloc(struct mm_struct *mm)
- 	pgd_t *new_pgd;
- 
- 	new_pgd = __pgd_alloc(mm, 0);
--	memcpy(new_pgd, swapper_pg_dir, PAGE_SIZE);
--	memset(new_pgd, 0, (PAGE_OFFSET >> PGDIR_SHIFT));
-+	if (likely(new_pgd != NULL)) {
-+		memcpy(new_pgd, swapper_pg_dir, PAGE_SIZE);
-+		memset(new_pgd, 0, (PAGE_OFFSET >> PGDIR_SHIFT));
-+	}
- 	return new_pgd;
- }
- 
--- 
-2.25.1
-
+Anyway:
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
