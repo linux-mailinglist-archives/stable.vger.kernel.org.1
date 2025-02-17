@@ -1,164 +1,184 @@
-Return-Path: <stable+bounces-116541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199E3A37E3C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:17:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FA0A37E47
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBBCC7A2062
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F5C188A13C
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4099B1FDE27;
-	Mon, 17 Feb 2025 09:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F30201261;
+	Mon, 17 Feb 2025 09:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b="fUkNMear"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kfcSHVit"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDC11FDA9D
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 09:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11B200BA8
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 09:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739783824; cv=none; b=XcA8hSuUQSMEYgXra9mxQWYI0L4jmYgP6iBqZROTjrNumXxgk4F/zAMOxgvcrZUV8+8SilqB+qhKSs2Lq1/Wd3ZLh2rHHBk3aj+47LTsCr0J+IOnrCxfUlXYIFGzx+rhvZ6wbCb6ZAFl/Im4r39Cyz7z4tBleemP/4+SN6aK77w=
+	t=1739783959; cv=none; b=RrdynYNhDw8IuOuJGSSYVBdaw8TmJABDTdM+hr5jBV7kWqIvmloUK7YtGR1gfez79DFlQ84zr207O32Hv/6q4nQy42AzNrXQf7xtXupNTJktdy3b8N1wni7ES9m8VinuOqSL1RLhP9YlS+CzSHIwMcqpYPlOWlSSLIODMcz8gIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739783824; c=relaxed/simple;
-	bh=w6Xek6gc0q+4P9UzPF8VfQsNZL0XbyhVwrY7dVOdb04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LIrjcrRoU0yuoVzQUVZiPZMLxjcxnlroGR7s9HvBvaLtQTmrEJlpIj8RmYyiAUw+rqO1SOc2SVNOBjg9VO9+ZsWFceg0QXR7H7CSO2Us76GC4jpvp5VoHuTuZaBCE3xxHT//rxfmxpXilBHcYEQK7S78zsFVjzYcFzeAr/15opE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no; spf=pass smtp.mailfrom=remarkable.no; dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b=fUkNMear; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remarkable.no
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5453153782aso1620435e87.2
-        for <stable@vger.kernel.org>; Mon, 17 Feb 2025 01:17:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=remarkable.no; s=google; t=1739783820; x=1740388620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xGyYdH1pDSfyQz+Thi0FH/5o/u/GeZTZnMnZcTSpLdQ=;
-        b=fUkNMearvmqB84wtwjii/Ls4O9Msn3yedlN/n2O9V0GsHlCOnb79ZLXaqanBTL7oRa
-         khbINwl8jUGtOj8SspsVGMWQ679g7bpZxsdigpd+vvtALF4FgDf57C6fGxOTjKpfJXON
-         urk9q51EgipElZlyCfbH15Uhs760hOvWeAQcYEiZuIEBEbsvjayRTIFUwkInqkM0k2u1
-         QL+uu8Y3EMsXt0CVpevMUVIZbEKAlZMSH/l/R1E7BAIlyMBrXMFJCvpjdqPJNxrpkZHY
-         mAm3qHZ8fX1Zm4yAv/KYyBOCwkKujZFeWj2t+ueqvRebmZX9VTBsRMkZN+sv8amyRkui
-         KyxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739783820; x=1740388620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xGyYdH1pDSfyQz+Thi0FH/5o/u/GeZTZnMnZcTSpLdQ=;
-        b=XrfHkh2kBQlYHGPccmj5hc9cc0jj495Nv1itqTjKNzlgbyqrJUtRA9SF3aBc1wQN2y
-         eSShbNz1edr5osj6pZGzoNv47T7U/GlX/4mHtKhwy+ms1kiXTO+keOKcn2hkg9Qet7cI
-         Bwr2XJ7KVfhmnMTEfkZdk6+Xy6b0NJ8j5w7BlMl9uiO4Kz0HC9O0msiibYjhc/75qTEr
-         edlDOAIzk9PA677IOICwg5r4jx7TJjYw6W0MV9NeCJ90w2aXcA+vHVQe/ZRccv16OHl0
-         29hhrQf90UOkZ9cXtZ7jaUKvm9i2Z8la4ap2RouM9JRn6P5KLTPdJ3e+GlndzDPydg64
-         je5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXMb7y4nwRJ3KnFqlgb2goNIxCuNhkqlcczy2kMUCiJDxTh56Imsa1HlYhQhgBlKpOHDCBX0Bs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymBRJ+RwKxEpZqqKpepUa1xwJthZhkyPYIkkr1Lq5CS2CS73O6
-	Yfv8juaeixRTFVBxNeui8WerK6rcR4kxFozDipLrbn+3egvBz4RM+QPgZp4Y+39fGOJnWHJlTl0
-	=
-X-Gm-Gg: ASbGncvjjpF3FCPZXiiPS3+EW9Q3gJ41rs88jNllJK7wHqe8gfXVw7kkFcnbiTMc1Jc
-	xX1vhsKALr0BR7SL1TIeLlR/12SvvKYeFsVY2AqiQxlwkD4pBsyuxUcTzL6115jrhzbLMfSDtKq
-	jd+pewZLqoZPj+DGXsoHM5zWHc33WP5eCVhc3L8h7AMOj1+WLs3ep9ydI76UmQOedvqRu25zVlu
-	zeEs9GCXeg2FPr79eN3TmWgoGmA/L9/sqSMVIJxVhKKxdx+eeN8pJ/Gqm37Ig9vzd3R7JlRjH9X
-	oTflVhT5hyT0oX4Tp+62BwfOGr/hmeIkxuGLG1z1LUMnZ3GO3GC/D+vy21pQvI/3T5NxVk5baeb
-	pDtqIGSeyFwojJgpz5OkuqF+speUBwfL/Y+jutEyS
-X-Google-Smtp-Source: AGHT+IHr5LJSgDlSbDQgsKhQvtHHkAjw3oQCRwTlQBsKrWf9bI7/1oERlhBLt0NwZu0j1L/wlFMhiQ==
-X-Received: by 2002:a05:6512:3b90:b0:545:2fa9:9704 with SMTP id 2adb3069b0e04-5452fe503abmr2927294e87.19.1739783819866;
-        Mon, 17 Feb 2025 01:16:59 -0800 (PST)
-Received: from yocto-build-johan.c.remarkable-codex-builds.internal (64.199.88.34.bc.googleusercontent.com. [34.88.199.64])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-545e939224esm701585e87.135.2025.02.17.01.16.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 01:16:59 -0800 (PST)
-From: Johan Korsnes <johan.korsnes@remarkable.no>
-To: linux-gpio@vger.kernel.org
-Cc: Johan Korsnes <johan.korsnes@remarkable.no>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] gpio: vf610: add locking to gpio direction functions
-Date: Mon, 17 Feb 2025 10:16:43 +0100
-Message-ID: <20250217091643.679644-1-johan.korsnes@remarkable.no>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1739783959; c=relaxed/simple;
+	bh=r/Gwa//y0lYyDEogMeLWJ5YpBC9J0mVmavf3W+j2hgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DsixebBs7p3zYj/8We39ewTrIKnrjm19mjbh9oJDokOAufVyxI1W93vuN9nGQsIRV5Muy1a3KYPSymNKazBenQHCZeR0C7z3CG5Yx5nltD9uMDFzSeODAghzuk4HKPWVrGerTIhwDNwaADsEJ8yh/5AmQleciZoQ8/OkeVGo5hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kfcSHVit; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739783957; x=1771319957;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=r/Gwa//y0lYyDEogMeLWJ5YpBC9J0mVmavf3W+j2hgU=;
+  b=kfcSHVityMhYUie2h1WyZMwaGEo/wEf78BgqYKEl4f+LvQ4YjDB8fKCE
+   KZpgMHb4LGtc4LhehxSTIkU4wY20ukjRq43N2p0ZeJxMcIKRZ+hVaPPBb
+   gpup4TFD9W3IqKQfGQUQ2AvW1Cnt+gbcvhSV2WnprlBJ580O1lsFIOu0J
+   TdY+vwrYdWts2tnQQRWWb7YYgh8dPCYDGIz6G4LHPCxSWqUzAaR32XzZt
+   g4HtUzh8dMIeq7Lzvlz0EaRfh/v4IelUTXWsRZr04S7xE08hUNdrZdYYc
+   4A0jOQZcCY7TlmH0b+481vJxEQ6dLWF2q1equc2a8p3kZywUh2PzVVNYu
+   Q==;
+X-CSE-ConnectionGUID: BXFXsUZVSN6TZQ0/HZb3dg==
+X-CSE-MsgGUID: KPBXvIsKRHybmcNnEq+xTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="62928926"
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="62928926"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:19:15 -0800
+X-CSE-ConnectionGUID: X7ejjno2RTaQtvlQD1L2aA==
+X-CSE-MsgGUID: CnPUX6qNQFWlbEzKVIvWvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="118703860"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.174]) ([10.245.244.174])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:19:13 -0800
+Message-ID: <43e7703d-b53d-4b68-b4d3-edcfea95e44e@intel.com>
+Date: Mon, 17 Feb 2025 09:19:11 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] drm/xe/userptr: fix EFAULT handling
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ stable@vger.kernel.org
+References: <20250214170527.272182-4-matthew.auld@intel.com>
+ <20250214170527.272182-5-matthew.auld@intel.com>
+ <Z6/skmsP0lw0+GUi@lstrano-desk.jf.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <Z6/skmsP0lw0+GUi@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Add locking to `vf610_gpio_direction_input|output()` functions. Without
-this locking, a race condition exists between concurrent calls to these
-functions, potentially leading to incorrect GPIO direction settings.
+On 15/02/2025 01:23, Matthew Brost wrote:
+> On Fri, Feb 14, 2025 at 05:05:29PM +0000, Matthew Auld wrote:
+>> Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
+>> when called from xe_vm_userptr_pin() with the idea that we want to avoid
+>> killing the entire vm and chucking an error, under the assumption that
+>> the user just did an unmap or something, and has no intention of
+>> actually touching that memory from the GPU.  At this point we have
+>> already zapped the PTEs so any access should generate a page fault, and
+>> if the pin fails there also it will then become fatal.
+>>
+>> However it looks like it's possible for the userptr vma to still be on
+>> the rebind list in preempt_rebind_work_func(), if we had to retry the
+>> pin again due to something happening in the caller before we did the
+>> rebind step, but in the meantime needing to re-validate the userptr and
+>> this time hitting the EFAULT.
+>>
+>> This might explain an internal user report of hitting:
+>>
+>> [  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+>> [  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
+>> [  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+>> [  191.738690] Call Trace:
+>> [  191.738692]  <TASK>
+>> [  191.738694]  ? show_regs+0x69/0x80
+>> [  191.738698]  ? __warn+0x93/0x1a0
+>> [  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+>> [  191.738759]  ? report_bug+0x18f/0x1a0
+>> [  191.738764]  ? handle_bug+0x63/0xa0
+>> [  191.738767]  ? exc_invalid_op+0x19/0x70
+>> [  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
+>> [  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+>> [  191.738834]  ? ret_from_fork_asm+0x1a/0x30
+>> [  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
+>> [  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
+>> [  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
+>> [  191.738966]  ? kmemleak_alloc+0x4b/0x80
+>> [  191.738973]  ops_execute+0x188/0x9d0 [xe]
+>> [  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
+>> [  191.739098]  ? trace_hardirqs_on+0x4d/0x60
+>> [  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
+>>
+>> Followed by NPD, when running some workload, since the sg was never
+>> actually populated but the vma is still marked for rebind when it should
+>> be skipped for this special EFAULT case. And from the logs it does seem
+>> like we hit this special EFAULT case before the explosions.
+>>
+> 
+> It would be nice to verify if this fixes the bug report.
 
-To verify the correctness of this fix, a `trylock` patch was applied,
-where after a couple of reboots the race was confirmed. I.e., one user
-had to wait before acquiring the lock. With this patch the race has not
-been encountered. It's worth mentioning that any type of debugging
-(printing, tracing, etc.) would "resolve"/hide the issue.
+Yes, reporter said it fixes it. Or at least the previous version did. 
+See GSD-10562 if you are curious. Will re-phrase the commit message to 
+make that clear.
 
-Fixes: 659d8a62311f ("gpio: vf610: add imx7ulp support")
-Signed-off-by: Johan Korsnes <johan.korsnes@remarkable.no>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: stable@vger.kernel.org
+> 
+>> v2 (MattB):
+>>   - Move earlier
+>>
+>> Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+> 
+> Anyways, LGTM:
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
----
+Thanks.
 
-v3
- - Use guards from cleanup.h for spinlock
- - Added linux-stable to cc
- - Added Fixes: tags
-
-v2
- - Added description on correcctness to commit text
- - Added Reviewed-by from Walleij and Haibo
----
- drivers/gpio/gpio-vf610.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index c4f34a347cb6..c36a9dbccd4d 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -36,6 +36,7 @@ struct vf610_gpio_port {
- 	struct clk *clk_port;
- 	struct clk *clk_gpio;
- 	int irq;
-+	spinlock_t lock; /* protect gpio direction registers */
- };
- 
- #define GPIO_PDOR		0x00
-@@ -124,6 +125,7 @@ static int vf610_gpio_direction_input(struct gpio_chip *chip, unsigned int gpio)
- 	u32 val;
- 
- 	if (port->sdata->have_paddr) {
-+		guard(spinlock_irqsave)(&port->lock);
- 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
- 		val &= ~mask;
- 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
-@@ -142,6 +144,7 @@ static int vf610_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio
- 	vf610_gpio_set(chip, gpio, value);
- 
- 	if (port->sdata->have_paddr) {
-+		guard(spinlock_irqsave)(&port->lock);
- 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
- 		val |= mask;
- 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
-@@ -297,6 +300,7 @@ static int vf610_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	port->sdata = device_get_match_data(dev);
-+	spin_lock_init(&port->lock);
- 
- 	dual_base = port->sdata->have_dual_base;
- 
--- 
-2.43.0
+> 
+>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.10+
+>> ---
+>>   drivers/gpu/drm/xe/xe_vm.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+>> index 668b0bde7822..f36e2cc1d155 100644
+>> --- a/drivers/gpu/drm/xe/xe_vm.c
+>> +++ b/drivers/gpu/drm/xe/xe_vm.c
+>> @@ -681,6 +681,18 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+>>   		err = xe_vma_userptr_pin_pages(uvma);
+>>   		if (err == -EFAULT) {
+>>   			list_del_init(&uvma->userptr.repin_link);
+>> +			/*
+>> +			 * We might have already done the pin once already, but
+>> +			 * then had to retry before the re-bind happened, due
+>> +			 * some other condition in the caller, but in the
+>> +			 * meantime the userptr got dinged by the notifier such
+>> +			 * that we need to revalidate here, but this time we hit
+>> +			 * the EFAULT. In such a case make sure we remove
+>> +			 * ourselves from the rebind list to avoid going down in
+>> +			 * flames.
+>> +			 */
+>> +			if (!list_empty(&uvma->vma.combined_links.rebind))
+>> +				list_del_init(&uvma->vma.combined_links.rebind);
+>>   
+>>   			/* Wait for pending binds */
+>>   			xe_vm_lock(vm, false);
+>> -- 
+>> 2.48.1
+>>
 
 
