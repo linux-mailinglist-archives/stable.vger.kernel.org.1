@@ -1,188 +1,143 @@
-Return-Path: <stable+bounces-116625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DF6A38DE3
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:12:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804CBA38E3F
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13DBB3B380B
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E60643ABA1D
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684CB239070;
-	Mon, 17 Feb 2025 21:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D441A256E;
+	Mon, 17 Feb 2025 21:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BGmeZM6A"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="hZufUftv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0CA2376FD
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 21:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84BE224F0;
+	Mon, 17 Feb 2025 21:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739826734; cv=none; b=NVTM4DkpoVuF7y6rZZFLjECiqy7g5eOriLTHcEMO0yj9vqFjFO8mwLM+mBL3FlV+cyw3wNwrgdqE17Fd29aQS01r+PCN3MjlZNbwOWgX6PYaj4aJurXuMPB//E485bDbvWEj037Dqc3dcCL+44igZXVNobg5sSHDa6wUZIAQrTQ=
+	t=1739828838; cv=none; b=slRIzKSd79R3PBZ6gZbt9Xu01UmcBXY/JDWqB5A0tAi6M5MRP52v6GjspjfPwgr7ZuyHjqw4aKar3KQRAkBY+fotKW0mc3sf1wx2Cpjnosbm3Kao1nHlUqUXBX/ZygWLH1GfAgWu9AoPZVEiBVXx1u357fR5z8jonN4px987r5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739826734; c=relaxed/simple;
-	bh=628d//cGyhJ7bsKVLYL7GpDoFYCEIRjptQtZSoI+yGU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FeNb7dUqNVhWlIp5y49TaDQMPWyPouCIaa3uhtD3KOeAg8Kc/XEF4IUY+RNhq8lQ5ufIKps2NFWBBb0Ewr2GcK0vW8+GzGtPpNo93PzVAiKo5dFN1qwy2XGUfhVNAKv4NTySRHxXMbHPtp7epTiDdbV0ddU/B6NyZG+45CPlyeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BGmeZM6A; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1739826733; x=1771362733;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=609jEB2iB8XBp6Vnaa0SMvcti8Cyfw6a7AVFQQJj91k=;
-  b=BGmeZM6AiPhSjwj7Tvc6th1srkGHy4hjqn64D4O4+3axQDLNMBen/Luj
-   NBREVjivyifq1G5W/XgoeSHmRGrTWTPSzUyqZ0BfJrHBy1rmdt4n5gXF3
-   OuXy2ns7BUKUPV/cmmru16Vi/oEF8mq4UkT2AoKjDXa1ZDLdDB1F/BtLD
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.13,293,1732579200"; 
-   d="scan'208";a="697905633"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 21:12:11 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:14971]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.53:2525] with esmtp (Farcaster)
- id 19ad35a0-96c5-483f-b457-26d0c3c672ed; Mon, 17 Feb 2025 21:12:10 +0000 (UTC)
-X-Farcaster-Flow-ID: 19ad35a0-96c5-483f-b457-26d0c3c672ed
-Received: from EX19D004UWA001.ant.amazon.com (10.13.138.232) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Mon, 17 Feb 2025 21:12:09 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19D004UWA001.ant.amazon.com (10.13.138.232) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Mon, 17 Feb 2025 21:12:09 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com
- (10.43.8.6) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.39 via Frontend Transport; Mon, 17 Feb 2025 21:12:09 +0000
-Received: from dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com [10.189.199.127])
-	by email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com (Postfix) with ESMTP id 9911DA0607;
-	Mon, 17 Feb 2025 21:12:08 +0000 (UTC)
-Received: by dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (Postfix, from userid 30684173)
-	id 96C0D4F03; Mon, 17 Feb 2025 21:12:08 +0000 (UTC)
-From: jaywang-amazon <wanjay@amazon.com>
-To: <stable@vger.kernel.org>
-CC: <wanjay@amazon.com>
-Subject: [PATCH 1/1] x86/i8253: Disable PIT timer 0 when not in use
-Date: Mon, 17 Feb 2025 21:11:21 +0000
-Message-ID: <20250217211120.12666-3-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250217211120.12666-2-wanjay@amazon.com>
-References: <20250217211120.12666-2-wanjay@amazon.com>
+	s=arc-20240116; t=1739828838; c=relaxed/simple;
+	bh=dWswvE6k6RZzT0gYmzA3vHv6oGrSRhqk5YRVLJGMfQo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f5LcpGPvmvDSWlGhQ5mdLcMca4irzHqz6fdyXIy1WD+xDny4kH+KZdZ7tGZNhSeEPXic7rxgUbRP7Yh4GcOPCPwy0Jg7cprGHTj0xAdT6pzO5e3LtiWEG4o+54esR1xwJ870+vHJHGdTOf0pjXDyqmJu0+Xcg1ozyAHLVyXyfeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=hZufUftv; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1739828833;
+	bh=dWswvE6k6RZzT0gYmzA3vHv6oGrSRhqk5YRVLJGMfQo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=hZufUftvTOC/mPZXkXOHREXlqLHcDmhBPjyZR65EGwNgnpyckzModKaTL56HP23ac
+	 D5WU2jg40FGCoi8ABPELrsSFK/gEOAPGAgyTo24p+pqWO3CveE7ufid2/jUhnY2Z90
+	 fM7Jq5QsHVozPBYdqANWrqbeKQWRerMiGbjwT+v/Me+o9aMG0gXVbKOg0Y/nfW0oHS
+	 G9/PFlmmZtcSK+zSd1R8VyqjIc4FLW6I9efLoka5GrKJZNvy1R38F+gW9ft/TaODjF
+	 sgJ5DCKez2nfV7gH1FCMX7t1Dx/xiO09Q4wWkmtii8wDUr5a/M4pR6ylu5uL+ckRwk
+	 Csh+oYWpr5UpQ==
+Received: from [192.168.13.3] (unknown [IPv6:2606:6d00:11:e976::c73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8987817E02BE;
+	Mon, 17 Feb 2025 22:47:12 +0100 (CET)
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Date: Mon, 17 Feb 2025 16:46:54 -0500
+Subject: [PATCH v2] media: verisilicon: Fix AV1 decoder clock frequency
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250217-b4-hantro-av1-clock-rate-v2-1-e179fad52641@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAE2us2cC/42NQQ6CMBBFr0Jm7RimUkldeQ/DopRBGpExU0I0h
+ LtbOYHL95L//gqJNXKCS7GC8hJTlCmDORQQBj/dGWOXGUxpbGmoxrbC7GcV9AthGCU8UP3MyLZ
+ ydU+Vc10Pef5S7uN7T9+azENMs+hnf1roZ/+IZiI829YRnUywlq5BxtG3ov4Y5AnNtm1fTty95
+ MQAAAA=
+X-Change-ID: 20250217-b4-hantro-av1-clock-rate-e5497f1499df
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Hans Verkuil <hverkuil@xs4all.nl>
+Cc: linux-rockchip@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org, 
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: b4 0.14.2
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+The desired clock frequency was correctly set to 400MHz in the device tree
+but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
+Fix the issue by removing the driver call to clk_set_rate(), which reduce
+the amount of board specific code.
 
-Leaving the PIT interrupt running can cause noticeable steal time for
-virtual guests. The VMM generally has a timer which toggles the IRQ input
-to the PIC and I/O APIC, which takes CPU time away from the guest. Even
-on real hardware, running the counter may use power needlessly (albeit
-not much).
-
-Make sure it's turned off if it isn't going to be used.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Michael Kelley <mhkelley@outlook.com>
-Link: https://lore.kernel.org/all/20240802135555.564941-1-dwmw2@infradead.org
-
-(cherry picked from commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60)
-Cc: stable@vger.kernel.org #v5.10
-Signed-off-by: jaywang-amazon <wanjay@amazon.com>
+Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 ---
- arch/x86/kernel/i8253.c     | 11 +++++++++--
- drivers/clocksource/i8253.c | 13 +++++++++----
- include/linux/i8253.h       |  1 +
- 3 files changed, 19 insertions(+), 6 deletions(-)
+This patch fixes user report of AV1 4K60 decoder not being fast enough
+on RK3588 based SoC. This is a break from Hantro original authors
+habbit of coding the frequencies in the driver instead of specifying this
+frequency in the device tree. The other calls to clk_set_rate() are left
+since this would require modifying many dtsi files, which would then be
+unsuitable for backport.
+---
+Changes in v2:
+- Completely remove the unused init function, the driver is null-safe
+- Link to v1: https://lore.kernel.org/r/20250217-b4-hantro-av1-clock-rate-v1-1-65b91132c551@collabora.com
+---
+ drivers/media/platform/verisilicon/rockchip_vpu_hw.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
-index 2b7999a1a50a..80e262bb627f 100644
---- a/arch/x86/kernel/i8253.c
-+++ b/arch/x86/kernel/i8253.c
-@@ -8,6 +8,7 @@
- #include <linux/timex.h>
- #include <linux/i8253.h>
+diff --git a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
+index 964122e7c355934cd80eb442219f6ba51bba8b71..842040f713c15e6ff295771bc9fa5a7b66e584b2 100644
+--- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
++++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
+@@ -17,7 +17,6 @@
  
-+#include <asm/hypervisor.h>
- #include <asm/apic.h>
- #include <asm/hpet.h>
- #include <asm/time.h>
-@@ -39,9 +40,15 @@ static bool __init use_pit(void)
+ #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
+ #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
+-#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
  
- bool __init pit_timer_init(void)
- {
--	if (!use_pit())
-+	if (!use_pit()) {
-+		/*
-+		 * Don't just ignore the PIT. Ensure it's stopped, because
-+		 * VMMs otherwise steal CPU time just to pointlessly waggle
-+		 * the (masked) IRQ.
-+		 */
-+		clockevent_i8253_disable();
- 		return false;
--
-+	}
- 	clockevent_i8253_init(true);
- 	global_clock_event = &i8253_clockevent;
- 	return true;
-diff --git a/drivers/clocksource/i8253.c b/drivers/clocksource/i8253.c
-index d4350bb10b83..cb215e6f2e83 100644
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -108,11 +108,8 @@ int __init clocksource_i8253_init(void)
- #endif
+ #define ROCKCHIP_VPU981_MIN_SIZE 64
  
- #ifdef CONFIG_CLKEVT_I8253
--static int pit_shutdown(struct clock_event_device *evt)
-+void clockevent_i8253_disable(void)
- {
--	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
--		return 0;
--
- 	raw_spin_lock(&i8253_lock);
- 
- 	outb_p(0x30, PIT_MODE);
-@@ -123,6 +120,14 @@ static int pit_shutdown(struct clock_event_device *evt)
- 	}
- 
- 	raw_spin_unlock(&i8253_lock);
-+}
-+
-+static int pit_shutdown(struct clock_event_device *evt)
-+{
-+	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
-+		return 0;
-+
-+	clockevent_i8253_disable();
+@@ -440,13 +439,6 @@ static int rk3066_vpu_hw_init(struct hantro_dev *vpu)
  	return 0;
  }
  
-diff --git a/include/linux/i8253.h b/include/linux/i8253.h
-index 8336b2f6f834..bf169cfef7f1 100644
---- a/include/linux/i8253.h
-+++ b/include/linux/i8253.h
-@@ -24,6 +24,7 @@ extern raw_spinlock_t i8253_lock;
- extern bool i8253_clear_counter_on_shutdown;
- extern struct clock_event_device i8253_clockevent;
- extern void clockevent_i8253_init(bool oneshot);
-+extern void clockevent_i8253_disable(void);
- 
- extern void setup_pit_timer(void);
- 
+-static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
+-{
+-	/* Bump ACLKs to max. possible freq. to improve performance. */
+-	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
+-	return 0;
+-}
+-
+ static int rockchip_vpu_hw_init(struct hantro_dev *vpu)
+ {
+ 	/* Bump ACLK to max. possible freq. to improve performance. */
+@@ -807,7 +799,6 @@ const struct hantro_variant rk3588_vpu981_variant = {
+ 	.codec_ops = rk3588_vpu981_codec_ops,
+ 	.irqs = rk3588_vpu981_irqs,
+ 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
+-	.init = rk3588_vpu981_hw_init,
+ 	.clk_names = rk3588_vpu981_vpu_clk_names,
+ 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
+ };
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250217-b4-hantro-av1-clock-rate-e5497f1499df
+
+Best regards,
 -- 
-2.47.1
+Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
 
