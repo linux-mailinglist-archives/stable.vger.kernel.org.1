@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-116567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B51A3819F
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:26:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C388AA381A2
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2943188BF4A
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:26:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98B6188C8D4
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B9D217F20;
-	Mon, 17 Feb 2025 11:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00401217F27;
+	Mon, 17 Feb 2025 11:26:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951462135C7;
-	Mon, 17 Feb 2025 11:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA992135C7;
+	Mon, 17 Feb 2025 11:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739791565; cv=none; b=i8EBZ89mrmUJGwX9qCnYSOqfCv2PwWEgg848EQj3JKoWaoXioB24i6EfbH/qvxXIAqR2CXNRzJH1U4K5/LzsOdOWXsyZBlnX7l0u8SXneCz7klf5V4LJ1EHWfPJVwf6tmF/Q/J8f0h2LtLJH3IAqnDuITiaAbsmwmRCBMjT8hv4=
+	t=1739791609; cv=none; b=aKoOlcE5uW6U1GBMLkF4bpEn7LmPl4ozdeCVAP+bG2QJsCG+z3s3E8SUX3vOcxlXpGXSkqTdaMSHYnun9GeI9M2glYi7UVeu+62ldlYqMyvZAcGqk+o0N11kjFnUa05dR4D0nuhmfDUOkc07Ez326JQeseggq08eAABhrd5p54E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739791565; c=relaxed/simple;
-	bh=zwrZXcz8kUFQtW0/zwqY0uqd82Wgg/WRh74T4km+69A=;
+	s=arc-20240116; t=1739791609; c=relaxed/simple;
+	bh=OuMrnB1xAZdhRcTfUDDYRq3ryHgXLtSqmCrg3cU93EM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dFSKAlK1l+PEOg47MdCNm/a6/kzPd+BMUekaMuWUBY3HVmkXhHDEa/LM8WzRf7cE2DJZ2JyyaODaCwIJNSAV70FteMMqeFhRFYzFE/Qqy23TrK72iWzMRi8tZIp/gqkAz5FETtXGFrQkukqvHOH4TKK5UgDTmdppPsBuIII76AY=
+	 In-Reply-To:Content-Type; b=srp3aKoz/yDWjdc8+ALDwCCUu/32J5FrmPDQmdozD4Sl76CDm/WKcVX3SbdcSJlTq7T2z18aRA3oxMweBv/2rq3wH9SVDE08yMzCSeF/UhO7ihMSfgnsQDblG/Q6NqjTxXjLsbXGt6anAUy1+JayF7zpbO1S/D2DYJfepuxNq8o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 17 Feb 2025 20:24:53 +0900
+Received: from unknown (HELO iyokan2-ex.css.socionext.com) ([172.31.9.54])
+  by mx.socionext.com with ESMTP; 17 Feb 2025 20:26:46 +0900
 Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id AB7E52019C91;
-	Mon, 17 Feb 2025 20:24:53 +0900 (JST)
-Received: from iyokan2.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Mon, 17 Feb 2025 20:24:53 +0900
+	by iyokan2-ex.css.socionext.com (Postfix) with ESMTP id 08C9720090C2;
+	Mon, 17 Feb 2025 20:26:46 +0900 (JST)
+Received: from iyokan2.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Mon, 17 Feb 2025 20:26:46 +0900
 Received: from [10.212.246.222] (unknown [10.212.246.222])
-	by iyokan2.css.socionext.com (Postfix) with ESMTP id D11C294B21;
-	Mon, 17 Feb 2025 20:24:52 +0900 (JST)
-Message-ID: <2dda0bd7-abdb-446b-b1ba-cd5245d18da0@socionext.com>
-Date: Mon, 17 Feb 2025 20:24:52 +0900
+	by iyokan2.css.socionext.com (Postfix) with ESMTP id 10655398;
+	Mon, 17 Feb 2025 20:26:45 +0900 (JST)
+Message-ID: <36cc27be-4ba7-4d65-b32b-2a1e0b03b161@socionext.com>
+Date: Mon, 17 Feb 2025 20:26:44 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,8 +45,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] misc: pci_endpoint_test: Avoid issue of interrupts
- remaining after request_irq error
+Subject: Re: [PATCH v3 3/5] misc: pci_endpoint_test: Fix irq_type to convey
+ the correct type
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: Krzysztof Wilczynski <kw@linux.com>,
  Kishon Vijay Abraham I <kishon@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
@@ -56,73 +56,65 @@ Cc: Krzysztof Wilczynski <kw@linux.com>,
  Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20250210075812.3900646-1-hayashi.kunihiko@socionext.com>
- <20250210075812.3900646-2-hayashi.kunihiko@socionext.com>
- <20250214172138.setswcgqz3dbf65t@thinkpad>
+ <20250210075812.3900646-4-hayashi.kunihiko@socionext.com>
+ <20250214172533.szrbreiv45c3g5lo@thinkpad>
 Content-Language: en-US
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <20250214172138.setswcgqz3dbf65t@thinkpad>
+In-Reply-To: <20250214172533.szrbreiv45c3g5lo@thinkpad>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi Manivannan,
 
-On 2025/02/15 2:21, Manivannan Sadhasivam wrote:
-> On Mon, Feb 10, 2025 at 04:58:08PM +0900, Kunihiko Hayashi wrote:
->> After devm_request_irq() fails with error in
->> pci_endpoint_test_request_irq(), pci_endpoint_test_free_irq_vectors() is
->> called assuming that all IRQs have been released.
+On 2025/02/15 2:25, Manivannan Sadhasivam wrote:
+> On Mon, Feb 10, 2025 at 04:58:10PM +0900, Kunihiko Hayashi wrote:
+>> There are two variables that indicate the interrupt type to be used
+>> in the next test execution, "irq_type" as global and test->irq_type.
 >>
->> However some requested IRQs remain unreleased, so there are still
->> /proc/irq/* entries remaining and we encounters WARN() with the following
+>> The global is referenced from pci_endpoint_test_get_irq() to preserve
+>> the current type for ioctl(PCITEST_GET_IRQTYPE).
+>>
+>> The type set in this function isn't reflected in the global "irq_type",
+>> so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+>> As a result, the wrong type will be displayed in "pcitest" as follows:
+>>
+>>      # pcitest -i 0
+>>      SET IRQ TYPE TO LEGACY:         OKAY
+>>      # pcitest -I
+>>      GET IRQ TYPE:           MSI
+>>
 > 
-> s/we encounters/this results in WARN()
+> Could you please post the failure with kselftest that got merged into
+> v6.14-rc1?
 
-I see. I'll fix it.
+The kselftest doesn't call GET_IRQTYPE, so current kselftest doesn't fail.
 
->> message:
->>
->>      remove_proc_entry: removing non-empty directory 'irq/30', leaking at
->>      least 'pci-endpoint-test.0'
->>      WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry
->>      +0x190/0x19c
->>
->> And show the call trace that led to this issue:
-> 
-> You can remove this backtrace.
+If necessary, I can add GET_IRQTYPE test after SET_IRQTYPE of each
+interrupt test prior to this patch.
 
-I'll add more information instead.
+         pci_ep_ioctl(PCITEST_SET_IRQTYPE, 0);
+         ASSERT_EQ(0, ret) TH_LOG("Can't set Legacy IRQ type");
 
-> 
->>
->>      [   12.050005] Call trace:
->>      [   12.051226]  remove_proc_entry+0x190/0x19c (P)
->>      [   12.053448]  unregister_irq_proc+0xd0/0x104
->>      [   12.055541]  free_desc+0x4c/0xd0
->>      [   12.057155]  irq_free_descs+0x68/0x90
->>      [   12.058984]  irq_domain_free_irqs+0x15c/0x1bc
->>      [   12.061161]  msi_domain_free_locked.part.0+0x184/0x1d4
->>      [   12.063728]  msi_domain_free_irqs_all_locked+0x64/0x8c
->>      [   12.066296]  pci_msi_teardown_msi_irqs+0x48/0x54
->>      [   12.068604]  pci_free_msi_irqs+0x18/0x38
->>      [   12.070564]  pci_free_irq_vectors+0x64/0x8c
->>      [   12.072654]  pci_endpoint_test_ioctl+0x870/0x1068
->>      [   12.075006]  __arm64_sys_ioctl+0xb0/0xe8
->>      [   12.076967]  invoke_syscall+0x48/0x110
->>      [   12.078841]  el0_svc_common.constprop.0+0x40/0xe8
->>      [   12.081192]  do_el0_svc+0x20/0x2c
->>      [   12.082848]  el0_svc+0x30/0xd0
->>      [   12.084376]  el0t_64_sync_handler+0x144/0x168
->>      [   12.086553]  el0t_64_sync+0x198/0x19c
->>      [   12.088383] ---[ end trace 0000000000000000 ]---
->>
->> To solve this issue, set the number of remaining IRQs to test->num_irqs
->> and release IRQs in advance by calling pci_endpoint_test_release_irq().
->>
->> Cc: stable@vger.kernel.org
->> Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
->> Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> 
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++       pci_ep_ioctl(PCITEST_GET_IRQTYPE, 0);
++       ASSERT_EQ(0, ret) TH_LOG("Can't get Legacy IRQ type");
+
+However, pci_ep_ioctl() returns zero if OK, the return value should be
+changed to the actual return value.
+
+  #define pci_ep_ioctl(cmd, arg)                 \
+  ({                                             \
+         ret = ioctl(self->fd, cmd, arg);        \
+-       ret = ret < 0 ? -errno : 0;             \
++       ret = ret < 0 ? -errno : ret;           \
+  })
+
+Before applying the patch, this test fails.
+
+#  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+# pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+# pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+# LEGACY_IRQ_TEST: Test terminated by assertion
+#          FAIL  pci_ep_basic.LEGACY_IRQ_TEST
 
 Thank you,
 
