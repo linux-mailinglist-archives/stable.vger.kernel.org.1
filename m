@@ -1,142 +1,185 @@
-Return-Path: <stable+bounces-116614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68D5A38B9F
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:55:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B53A38C4C
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FAAD3B09EA
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 18:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7365A16E8F0
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C64235C03;
-	Mon, 17 Feb 2025 18:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B6723645F;
+	Mon, 17 Feb 2025 19:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TS/SMsuD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OzLTuFI4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887A7137C35;
-	Mon, 17 Feb 2025 18:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515BF137C35
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 19:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739818502; cv=none; b=ShlZHA9ts49MLk0EPXOodHjieWpTou4v2Z8l2WDKv32e5K5aEKGLKwcu0aYD9Aob8eXTWnR12CZS4zV696GkEZg84wQlStzNMYXfb1pvQhUzU4zt5Yr4bfNZf+zcG0cjOqExaSdCPW+0QGerm+r8Fx7dMNdH2HQt+y6m7qqSldQ=
+	t=1739820238; cv=none; b=OSiG5hRXBEf0yuo2ZU1NmTMEASHFqTCE1Oqyb66h3LTmElEU07zWaRdfuq500/hbOeASOlbXp5A5slwAGPf5LfH1uLLO1/cSbibTqrXvmOI0sd8H/rEygKCNaZZ9R+1NR1gR8UY+JXfDsjj/b8TZeM0BI2HqbGUg7JYCqpp64rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739818502; c=relaxed/simple;
-	bh=Tqbh4I2DxBUjZqDu585rxe+RDN/kxswkQgYyawvMlPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kA0vrAonkOl1tF7t4lbkVFAnIW8YWxj21BjW+KFF6AF+NUaN0dcA9uDGJ+kmWnJdcoPLnbyMBKDNeeu0ANmY7g6XetCVvEzCG4V9wv7HOAPtjm4TUYmH+zdd2Se/zpaTR6iSlSMZUdMM9Dgm9z8la2orI6dS2App8li6XvB+WaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TS/SMsuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A4FC4CED1;
-	Mon, 17 Feb 2025 18:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739818502;
-	bh=Tqbh4I2DxBUjZqDu585rxe+RDN/kxswkQgYyawvMlPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TS/SMsuDJRBUEMsQKkbR5RQBT44JpwsqHZjtu4QGib/fqIClvQUKgDdtBKAUgaypl
-	 ZLHeEiiyk+rU/TAveQVNFxusS9sqKvjuKGgQ0S9PWKY9zi3Cbdl8rpt2XWGsY712zb
-	 pf/6BTpMKWS2I2dZYbajKoxxAZAdseDSDGufeahc86wUd5mIMHNeXapm6bWipArYce
-	 2JAeyDhRnX0/Md+eSiIEnSQ1GHD6vrH0JOgKbKbif9rfi7PIuwQNjK0B7uv962tEdb
-	 PsZ5k74Gzo1eQAPi4tD585cY0hAIr8FQfqRSnwETHEIso4SpWuadNijK2j8f++iT97
-	 AroJ1X0Yos1/w==
-Date: Mon, 17 Feb 2025 10:54:56 -0800
-From: Nathan Chancellor <nathan@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Sam Ravnborg <sam@ravnborg.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: userprogs: use correct lld when linking
- through clang
-Message-ID: <20250217185456.GA435791@ax162>
-References: <20250217-kbuild-userprog-fixes-v2-1-4da179778be0@linutronix.de>
+	s=arc-20240116; t=1739820238; c=relaxed/simple;
+	bh=K5xbticayABbDNzQfkkZK+YCQtH3EDpoHVZLJoDGuz8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=PIcwu5w0Ir3fw1tJl8vwZ/7xVp/PhUELHuiDAahf89PKSyBHMojo79LSV4Wwg09jSdWoAXnPbNY6Pqb5BN64OVb/PAiuOmlBduGdgkH7lFXCenTRgc9IMXjLljlk/5BEZbyQftbtNj7JK38WgNY7rVTY6Etpl/5vF2oTl316Bfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OzLTuFI4; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22101839807so53200635ad.3
+        for <stable@vger.kernel.org>; Mon, 17 Feb 2025 11:23:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739820236; x=1740425036; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Te+VKo7kwsLy07VLbZgsTk2pS8KaTJsF/aajK/gyheQ=;
+        b=OzLTuFI4awrqQBv8YIYr2ndHcqFgnGw4bGaB6fQfTpcqtv9oNY5LiJcKlLXPH0Uc70
+         gO+QDmsuyqhPtt/5WQbONUhNWNT1co1CmG/wWvvuRrN0LYWrhLLE6lKehzCwrV/6g4Xm
+         88RYZO48QHbthYHNJdnrBe3kIH9yJAXMAKxDE9AOBVbC0tuznRaVw/LubKe5ZnpXtHUR
+         WQ7kPQbS3dKxPlIlJIKMLGrLBhg660F6NDN0jZaoK7zj9q1Gazux4TLPyRe4dolXAfC9
+         TcvGmA8+dAbEOr3xdKsSxzYpmXo4OARiw+2wJNg5yA1ML2tTQ2xTPfVpw/8TXktze2Lw
+         RRbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739820236; x=1740425036;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Te+VKo7kwsLy07VLbZgsTk2pS8KaTJsF/aajK/gyheQ=;
+        b=F4xZHuF5QTmjBWShSTXdI8jstSTX6kEMWoktBXaC8HrosFEAy/ERg0HLQnwwFbTbEV
+         9za2Mc0zTbbVCHlUgZRYhOZh55FggajRI1YIUWqS8R9aYatrQpzQE5loaZ9AE6ELmrsO
+         vVQBzAn6ggWaAkpOi8yWjXJgeXp/H/Hvs/qf+ZbKYrWhiQU+d4KfZb2mZ28txzdfzsro
+         t4sd5lq4psp0XtqDnx4Q/2UFK9IcsMsT8C7+44Al7PoNkilkGjYNuPI0ps9STzlKQFFo
+         ai5krdXR5fWYIqsTct8c/+RXtFLJ/DVApxTzpB+Dm7dVjuiJAirMVAkmeDdBASnM8LiZ
+         WgCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPtR6/WH2JYOGUTpcpWh71J7OgKev+mpbZaPoj4ta3iMDG7zEZBrju0nPSwZ/RG4xwySAT/fc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKBATUc5uFX4BBxbswoTUhz7N7aD3mpaOqgMYqqX12Hz0ZdWLv
+	SAwGRZnY086M29yDS3dxjBkFc+QFGP0b920s4OUcM8T/SC/blZzT5tcniVBw9svdBTI6+5b1GrU
+	eFIF6a5122/+d7E9xe9uvx1hZu2Ex8nH3+CQ=
+X-Gm-Gg: ASbGnctJUoOvL0FFHyezDawbY6T0mhdANdiAz/JrPJz1b4nKSFD4b/eI0Hd5kboiKdG
+	WlabHUCqB308XJWYJllSpSRch4z1tROF0qgdq0zi+wcI0ahvfz5I4wEFL2IweYiMSgapQJfvCVg
+	==
+X-Google-Smtp-Source: AGHT+IGM2MoJMv6lQCLsukaIhIVpBZostZCrYYfoO3bBd5Q1WnLPfwZdlh8ioZ3t2FVLgQ1BK7dICrUkaFrA9pViu14=
+X-Received: by 2002:a05:6a21:6182:b0:1ee:7e68:6987 with SMTP id
+ adf61e73a8af0-1ee8cad0f05mr20251813637.14.1739820235107; Mon, 17 Feb 2025
+ 11:23:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250217-kbuild-userprog-fixes-v2-1-4da179778be0@linutronix.de>
+From: Marc Smith <msmith626@gmail.com>
+Date: Mon, 17 Feb 2025 14:23:43 -0500
+X-Gm-Features: AWEUYZnaRdOkbEHkU8bGsBuPq-7dALt5qHPfjaaEwvX3X7FW67L0_2zSXsN-icQ
+Message-ID: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
+Subject: Linux 5.4.x DLM Regression
+To: jakobkoschel@gmail.com, stable@vger.kernel.org
+Cc: aahringo@redhat.com, teigland@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Feb 17, 2025 at 08:27:54AM +0100, Thomas Weiﬂschuh wrote:
-> The userprog infrastructure links objects files through $(CC).
-> Either explicitly by manually calling $(CC) on multiple object files or
-> implicitly by directly compiling a source file to an executable.
-> The documentation at Documentation/kbuild/llvm.rst indicates that ld.lld
-> would be used for linking if LLVM=1 is specified.
-> However clang instead will use either a globally installed cross linker
-> from $PATH called ${target}-ld or fall back to the system linker, which
-> probably does not support crosslinking.
-> For the normal kernel build this is not an issue because the linker is
-> always executed directly, without the compiler being involved.
-> 
-> Explicitly pass --ld-path to clang so $(LD) is respected.
-> As clang 13.0.1 is required to build the kernel, this option is available.
-> 
-> Fixes: 7f3a59db274c ("kbuild: add infrastructure to build userspace programs")
-> Cc: stable@vger.kernel.org # needs wrapping in $(cc-option) for < 6.9
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+Hi,
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+I noticed there appears to be a regression in DLM (fs/dlm/) when
+moving from Linux 5.4.229 to 5.4.288; I get a kernel panic when using
+dlm_ls_lockx() (DLM user) with a timeout >0, and the panic occurs when
+the timeout is reached (eg, attempting to take a lock on a resource
+that is already locked); the host where the timeout occurs is the one
+that panics:
+...
+[  187.976007]
+               DLM:  Assertion failed on line 1239 of file fs/dlm/lock.c
+               DLM:  assertion:  "!lkb->lkb_status"
+               DLM:  time = 4294853632
+[  187.976009] lkb: nodeid 2 id 1 remid 2 exflags 40000 flags 800001
+sts 1 rq 5 gr -1 wait_type 4 wait_nodeid 2 seq 0
+[  187.976009]
+[  187.976010] Kernel panic - not syncing: DLM:  Record message above
+and reboot.
+[  187.976099] CPU: 9 PID: 7409 Comm: dlm_scand Kdump: loaded Tainted:
+P           OE     5.4.288-esos.prod #1
+[  187.976195] Hardware name: Quantum H2012/H12SSW-NT, BIOS
+T20201009143356 10/09/2020
+[  187.976282] Call Trace:
+[  187.976356]  dump_stack+0x50/0x63
+[  187.976429]  panic+0x10c/0x2e3
+[  187.976501]  kill_lkb+0x51/0x52
+[  187.976570]  kref_put+0x16/0x2f
+[  187.976638]  __put_lkb+0x2f/0x95
+[  187.976707]  dlm_scan_timeout+0x18b/0x19c
+[  187.976779]  ? dlm_uevent+0x19/0x19
+[  187.976848]  dlm_scand+0x94/0xd1
+[  187.976920]  kthread+0xe4/0xe9
+[  187.976988]  ? kthread_flush_worker+0x70/0x70
+[  187.977062]  ret_from_fork+0x35/0x40
+...
 
-> ---
-> Reproducer, using nolibc to avoid libc requirements for cross building:
-> 
-> $ tail -2 init/Makefile
-> userprogs-always-y += test-llvm
-> test-llvm-userccflags += -nostdlib -nolibc -static -isystem usr/ -include $(srctree)/tools/include/nolibc/nolibc.h
-> 
-> $ cat init/test-llvm.c
-> int main(void)
-> {
-> 	return 0;
-> }
-> 
-> $ make ARCH=arm64 LLVM=1 allnoconfig headers_install init/
-> 
-> Validate that init/test-llvm builds and has the correct binary format.
-> ---
-> Changes in v2:
-> - Use --ld-path instead of -fuse-ld
-> - Drop already applied patch
-> - Link to v1: https://lore.kernel.org/r/20250213-kbuild-userprog-fixes-v1-0-f255fb477d98@linutronix.de
-> ---
->  Makefile | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/Makefile b/Makefile
-> index 96407c1d6be167b04ed5883e455686918c7a75ee..b41c164533d781d010ff8b2522e523164dc375d0 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1123,6 +1123,11 @@ endif
->  KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
->  KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
->  
-> +# userspace programs are linked via the compiler, use the correct linker
-> +ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-> +KBUILD_USERLDFLAGS += --ld-path=$(LD)
-> +endif
-> +
->  # make the checker run with the right architecture
->  CHECKFLAGS += --arch=$(ARCH)
->  
-> 
-> ---
-> base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
-> change-id: 20250213-kbuild-userprog-fixes-4f07b62ae818
-> 
-> Best regards,
-> -- 
-> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
-> 
+I examined the commits for fs/dlm/ between 5.4.229 and 5.4.288 and
+this is the offender:
+dlm: replace usage of found with dedicated list iterator variable
+[ Upstream commit dc1acd5c94699389a9ed023e94dd860c846ea1f6 ]
+
+Specifically, the change highlighted below in this hunk for
+dlm_scan_timeout() in fs/dlm/lock.c:
+@@ -1867,27 +1867,28 @@ void dlm_scan_timeout(struct dlm_ls *ls)
+                do_cancel = 0;
+                do_warn = 0;
+                mutex_lock(&ls->ls_timeout_mutex);
+-               list_for_each_entry(lkb, &ls->ls_timeout, lkb_time_list) {
++               list_for_each_entry(iter, &ls->ls_timeout, lkb_time_list) {
+
+                        wait_us = ktime_to_us(ktime_sub(ktime_get(),
+-                                                       lkb->lkb_timestamp));
++                                                       iter->lkb_timestamp));
+
+-                       if ((lkb->lkb_exflags & DLM_LKF_TIMEOUT) &&
+-                           wait_us >= (lkb->lkb_timeout_cs * 10000))
++                       if ((iter->lkb_exflags & DLM_LKF_TIMEOUT) &&
++                           wait_us >= (iter->lkb_timeout_cs * 10000))
+                                do_cancel = 1;
+
+-                       if ((lkb->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
++                       if ((iter->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
+                            wait_us >= dlm_config.ci_timewarn_cs * 10000)
+                                do_warn = 1;
+
+                        if (!do_cancel && !do_warn)
+                                continue;
+-                       hold_lkb(lkb);
++                       hold_lkb(iter);
++                       lkb = iter;
+                        break;
+                }
+                mutex_unlock(&ls->ls_timeout_mutex);
+
+-               if (!do_cancel && !do_warn)
++               if (!lkb)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        break;
+
+                r = lkb->lkb_resource;
+
+Reverting this single line change resolves the kernel panic:
+$ diff -Naur fs/dlm/lock.c{.orig,}
+--- fs/dlm/lock.c.orig  2024-12-19 12:05:05.000000000 -0500
++++ fs/dlm/lock.c       2025-02-16 21:21:42.544181390 -0500
+@@ -1888,7 +1888,7 @@
+                }
+                mutex_unlock(&ls->ls_timeout_mutex);
+
+-               if (!lkb)
++               if (!do_cancel && !do_warn)
+                        break;
+
+                r = lkb->lkb_resource;
+
+It appears this same "dlm: replace usage of found with dedicated list
+iterator variable" commit was pulled into other stable branches as
+well, and I don't see any fix in the latest 5.4.x patch release
+(5.4.290).
+
+
+--Marc
 
