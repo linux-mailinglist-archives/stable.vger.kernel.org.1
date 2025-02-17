@@ -1,185 +1,187 @@
-Return-Path: <stable+bounces-116615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B53A38C4C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:24:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB03A38CA6
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7365A16E8F0
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:24:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161363A39DE
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 19:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B6723645F;
-	Mon, 17 Feb 2025 19:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3301B23642B;
+	Mon, 17 Feb 2025 19:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OzLTuFI4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YOAXb50L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2087.outbound.protection.outlook.com [40.107.94.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515BF137C35
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 19:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739820238; cv=none; b=OSiG5hRXBEf0yuo2ZU1NmTMEASHFqTCE1Oqyb66h3LTmElEU07zWaRdfuq500/hbOeASOlbXp5A5slwAGPf5LfH1uLLO1/cSbibTqrXvmOI0sd8H/rEygKCNaZZ9R+1NR1gR8UY+JXfDsjj/b8TZeM0BI2HqbGUg7JYCqpp64rk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739820238; c=relaxed/simple;
-	bh=K5xbticayABbDNzQfkkZK+YCQtH3EDpoHVZLJoDGuz8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=PIcwu5w0Ir3fw1tJl8vwZ/7xVp/PhUELHuiDAahf89PKSyBHMojo79LSV4Wwg09jSdWoAXnPbNY6Pqb5BN64OVb/PAiuOmlBduGdgkH7lFXCenTRgc9IMXjLljlk/5BEZbyQftbtNj7JK38WgNY7rVTY6Etpl/5vF2oTl316Bfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OzLTuFI4; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22101839807so53200635ad.3
-        for <stable@vger.kernel.org>; Mon, 17 Feb 2025 11:23:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739820236; x=1740425036; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Te+VKo7kwsLy07VLbZgsTk2pS8KaTJsF/aajK/gyheQ=;
-        b=OzLTuFI4awrqQBv8YIYr2ndHcqFgnGw4bGaB6fQfTpcqtv9oNY5LiJcKlLXPH0Uc70
-         gO+QDmsuyqhPtt/5WQbONUhNWNT1co1CmG/wWvvuRrN0LYWrhLLE6lKehzCwrV/6g4Xm
-         88RYZO48QHbthYHNJdnrBe3kIH9yJAXMAKxDE9AOBVbC0tuznRaVw/LubKe5ZnpXtHUR
-         WQ7kPQbS3dKxPlIlJIKMLGrLBhg660F6NDN0jZaoK7zj9q1Gazux4TLPyRe4dolXAfC9
-         TcvGmA8+dAbEOr3xdKsSxzYpmXo4OARiw+2wJNg5yA1ML2tTQ2xTPfVpw/8TXktze2Lw
-         RRbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739820236; x=1740425036;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Te+VKo7kwsLy07VLbZgsTk2pS8KaTJsF/aajK/gyheQ=;
-        b=F4xZHuF5QTmjBWShSTXdI8jstSTX6kEMWoktBXaC8HrosFEAy/ERg0HLQnwwFbTbEV
-         9za2Mc0zTbbVCHlUgZRYhOZh55FggajRI1YIUWqS8R9aYatrQpzQE5loaZ9AE6ELmrsO
-         vVQBzAn6ggWaAkpOi8yWjXJgeXp/H/Hvs/qf+ZbKYrWhiQU+d4KfZb2mZ28txzdfzsro
-         t4sd5lq4psp0XtqDnx4Q/2UFK9IcsMsT8C7+44Al7PoNkilkGjYNuPI0ps9STzlKQFFo
-         ai5krdXR5fWYIqsTct8c/+RXtFLJ/DVApxTzpB+Dm7dVjuiJAirMVAkmeDdBASnM8LiZ
-         WgCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPtR6/WH2JYOGUTpcpWh71J7OgKev+mpbZaPoj4ta3iMDG7zEZBrju0nPSwZ/RG4xwySAT/fc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKBATUc5uFX4BBxbswoTUhz7N7aD3mpaOqgMYqqX12Hz0ZdWLv
-	SAwGRZnY086M29yDS3dxjBkFc+QFGP0b920s4OUcM8T/SC/blZzT5tcniVBw9svdBTI6+5b1GrU
-	eFIF6a5122/+d7E9xe9uvx1hZu2Ex8nH3+CQ=
-X-Gm-Gg: ASbGnctJUoOvL0FFHyezDawbY6T0mhdANdiAz/JrPJz1b4nKSFD4b/eI0Hd5kboiKdG
-	WlabHUCqB308XJWYJllSpSRch4z1tROF0qgdq0zi+wcI0ahvfz5I4wEFL2IweYiMSgapQJfvCVg
-	==
-X-Google-Smtp-Source: AGHT+IGM2MoJMv6lQCLsukaIhIVpBZostZCrYYfoO3bBd5Q1WnLPfwZdlh8ioZ3t2FVLgQ1BK7dICrUkaFrA9pViu14=
-X-Received: by 2002:a05:6a21:6182:b0:1ee:7e68:6987 with SMTP id
- adf61e73a8af0-1ee8cad0f05mr20251813637.14.1739820235107; Mon, 17 Feb 2025
- 11:23:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538DA372;
+	Mon, 17 Feb 2025 19:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739821514; cv=fail; b=fvCb4s/a34/gcfGKIdT+z6JU+iGcxrcttCLqx/rnW1d/Y0MG3DklcXu2o1rl0y4ZObtkaqZu3c4PzSBIkQhQ38x0Z0aqLC6MmoYmZEUOK1FnaElQiznrmWPNmPSzJVceOQ2Aaro4HhVuI8TxR9x6v010GBSqQSYtfX3+I2SyUGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739821514; c=relaxed/simple;
+	bh=AJik8rY/aMlNbZPCp9DJwveZEOQHrYxtoHpFn5Q+aOk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vBQq6KgP2+WUuxO3+RSjgWaI6q0MghAgW0PAAftYqt+adke6mO0JJnU7sF0okwrFAEFKy9epj05zExRvYFELzhSf0B35E3jqXiQGeECe2E2r3fYadYm/RuMCag3+BmYQJUkbkPP20ynQPJ7m02KP/yUOqr31mTR3K2QqokyP6qY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YOAXb50L; arc=fail smtp.client-ip=40.107.94.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=stjAx0/4WhzEx3/sGCDbWgdQaHgvaELMObFVUmCyeDFdtsoUsXRzhcm9F51G9QvoefzvCRHOxeoiZ4h+9uedUHh+m/F28jzHstCQJ8JOgkX+1WS8EueH6VUi0T0gYdXzF6kHQm4JTPSBVtJODTkJGao91N8Ic1mckk2MxYWj3ueq05TnLik0jcRxg92KkVMMIC0BpB9qanC9ozuqV1YPIVq9oRfy5qo9ExJZTVsRoGhnguMqljiTgrL0iyzV9T+ixndCK3HEaLAurFSd37IGmtTwaVClixhEzvs3DAhS8Za4yK7OA1tvOUUZJgobC1v/EU0XURlUceGgoB3Q6Ik2fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5dMux0PVRp6CcD9vwX61E0cMURaXaeRNgllS1ZJILqE=;
+ b=kHFO9xvM2fwT84RqFCMMqJIdGWxwU2LByhzVkLN1irHm+gQo8Z6rzalozkIwczdOKDMH34Sit9nOeeCDMnSMz/35QbLVwJIgKnLg4x+1tE8pgQLqgNTUB45hjmBfg9nin0H80IkkAxmCf7zelis2si7wCc9Gk4N0rUrQT9d3vVTIit91nrnsbGZSSkaTtvu3fFKXZR5iUA4BoX9GsdIj2TYQuBM45b4aY8kisLVSA9vUQ0hMeJAh1euu82otgNFuBRDRavtdKPE+WgaxhBT7+dS6IUZSgQJ/96T2+rt8fjIgfwQH+Ialu2Mm6AetmU2bRpQj/tGD9g386HJslbFy1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5dMux0PVRp6CcD9vwX61E0cMURaXaeRNgllS1ZJILqE=;
+ b=YOAXb50LIuoNppxKwFf7Nkf1X6+MG0DBVVXjRhVXU8XLnWIfjRJZY8BMjRyLqS7xflaY9jX7/GHrdo5bRaG3ji6MRSN8P/C6J1BM4DZl48aUCsvy8J6j0Z9kPvNdF3t7BxE7EqITUgoJu2mkCia7WkhDETj7JuD2541+Gy1LJPVhAzxBre7tMRYmc6cW9SumwX0Bd521YdoSKya7n3dIOuCVFrVdz9NGV+TuipemP5ZD0H1tqnesAJzp25DNMKinuPQnTjyOqdDonAgWcsDcaqsLiufsFGUeN92dgMbLOWAo8KR4NJbxs2HhSy6M5WDKQiyBnL4lCqhuGu0+RhJdpg==
+Received: from MW4PR03CA0287.namprd03.prod.outlook.com (2603:10b6:303:b5::22)
+ by PH0PR12MB7813.namprd12.prod.outlook.com (2603:10b6:510:286::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.16; Mon, 17 Feb
+ 2025 19:45:07 +0000
+Received: from SJ1PEPF0000231A.namprd03.prod.outlook.com
+ (2603:10b6:303:b5:cafe::aa) by MW4PR03CA0287.outlook.office365.com
+ (2603:10b6:303:b5::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.19 via Frontend Transport; Mon,
+ 17 Feb 2025 19:45:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF0000231A.mail.protection.outlook.com (10.167.242.231) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8466.11 via Frontend Transport; Mon, 17 Feb 2025 19:45:07 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 17 Feb
+ 2025 11:44:59 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 17 Feb
+ 2025 11:44:59 -0800
+Received: from c-237-113-220-225.mtl.labs.mlnx (10.127.8.12) by
+ mail.nvidia.com (10.129.68.6) with Microsoft SMTP Server id 15.2.1544.14 via
+ Frontend Transport; Mon, 17 Feb 2025 11:44:56 -0800
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, <virtualization@lists.linux.dev>
+CC: Dragos Tatulea <dtatulea@nvidia.com>, Jason Wang <jasowang@redhat.com>,
+	Eugenio Perez Martin <eperezma@redhat.com>, Si-Wei Liu
+	<si-wei.liu@oracle.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, <stable@vger.kernel.org>
+Subject: [PATCH vhost] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+Date: Mon, 17 Feb 2025 21:44:43 +0200
+Message-ID: <20250217194443.145601-1-dtatulea@nvidia.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Marc Smith <msmith626@gmail.com>
-Date: Mon, 17 Feb 2025 14:23:43 -0500
-X-Gm-Features: AWEUYZnaRdOkbEHkU8bGsBuPq-7dALt5qHPfjaaEwvX3X7FW67L0_2zSXsN-icQ
-Message-ID: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
-Subject: Linux 5.4.x DLM Regression
-To: jakobkoschel@gmail.com, stable@vger.kernel.org
-Cc: aahringo@redhat.com, teigland@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231A:EE_|PH0PR12MB7813:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c8781e2-d117-4030-37bc-08dd4f8b94ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?o282xY0jv0B1+H7GyMWmxGyPJgufv42YtlaAYfsm4ADWo3J5PPa8RR/Q47Qz?=
+ =?us-ascii?Q?SrR++E9AWanCyh+2x7imPTjUFEaCGfOJVXlUzp2zXizZ6EEtkIHhm78FGuPn?=
+ =?us-ascii?Q?ZQVrA4V5W+22nGetcxot59FOzsh4E5c+pAY5GkePRBWec70EetM168Vj1yEz?=
+ =?us-ascii?Q?rhE0TQm2RjsouR4TSqOTFIrz6Y9Uqk/QY9+lbCC8K1cUkoLMc5giI7FrMs/W?=
+ =?us-ascii?Q?P6YYpYx4L0QxABq3XNd60ad0AFkG3vLVyKRM4sdnBpamHzvi66zF62q3en2n?=
+ =?us-ascii?Q?xXgMjqz4N/aE4TEfSONUCqUsV/QoA9Gc6fkIlV68XqyGKMo0lidxA2FhgYQT?=
+ =?us-ascii?Q?6EAw8gw6N7QwitH9AXXO37aUrhrLf6LAD9J9iesQoa89udt+pv8s8uWIuY9G?=
+ =?us-ascii?Q?VhB7zwbwJom8TbkwYd/970kbcfvJXoV767zJwdtk3hGaCopqNDWVLRfCwUdb?=
+ =?us-ascii?Q?sXT/356tUXxNNXJjNLSQABHycbVIAy7TWjooD2qehzl1eVw3nGwIpYeC3QC4?=
+ =?us-ascii?Q?AFlW7xwutp2blaSPyO1PZpWKb0nydL87cJnkaIW06WVVknMgeuuMq8zU7+fv?=
+ =?us-ascii?Q?sbp/i2F9kSPvuBHhStcjKQXCHnyjXrDPd1WtDmsyyC6ECbs3fWONpN1MV5x1?=
+ =?us-ascii?Q?c1j0Q7/PkslFy3wwfPs6Hcn8C9iCpkzLCL2KmDVpTH2Zz604U487C9NwOKku?=
+ =?us-ascii?Q?Hc/SBH5xjJR2MGdct9ASEHIV8DBDdeqwZjP5+XVZ64WM4zrUxugxoHrLp8xN?=
+ =?us-ascii?Q?X0sL4KJBqWNFYn4015Rn7b4Op8d0CanoX4QtpcjiQbhqGmr6d/HkN7yVjfWN?=
+ =?us-ascii?Q?WPB2Aq9cHUDQFcgalhdFgo4njTqZCuvtg7FhZhBi4N66Qac/BMaY12puhulZ?=
+ =?us-ascii?Q?JQ2ivNNIsBpwiH3UrEfl9xWeocoJvdTKCGJPHx8Imv+mMRl1EPCr3FtG1d0Y?=
+ =?us-ascii?Q?uJI8Urx2qgmpbGK+kUcYzxyZdaraYB9w3Q/UcdBpHjI2CtGIpIfFXiIXd5OP?=
+ =?us-ascii?Q?/02YrbbcFHUo4bux7IMpqbC5qtnEjuZnE1cdCmBEGoeFvIFj7n5w4nurM9sT?=
+ =?us-ascii?Q?j00tFtMpb5IsDLJUIn8WXYZggJk4vREPP9t7bZX7kFfaqs4Nyc0545/6r1E8?=
+ =?us-ascii?Q?GTZGWSt4Oyjg/dlAzqBqhJJ7/LSw7mj4ogfqoq6ih1NXhpR+nDSlBCDjUk9G?=
+ =?us-ascii?Q?bqxwf7ryIYXqW50hJmi3e2+5D3OW8eBE4bfHeh4dibGXo0bnZd7TbogW7U8i?=
+ =?us-ascii?Q?wXgk8OYgQ0vthDoFdzJqqjy4HxjIYVFuX0b6Tzr2vfUJjnISwXmcUaKk8Li6?=
+ =?us-ascii?Q?5wyYruyJqTSYMhdovV7nO0OlmxKZSRGjkexiC/F7BONDTscTeRHcZWskXkJg?=
+ =?us-ascii?Q?htPwgM5iZI7kkWrXhw8cGSNfo7FmE8nn4zpocUZ0QfeYF+dB8K2x18T3/jvR?=
+ =?us-ascii?Q?lgbcOzxO8+mRnUjYiCArMZ9Wj3+9tUMk9rhwgaxmhVZstb4U59O8Qw0mo4mL?=
+ =?us-ascii?Q?tm2k+qRmiqzZS1s=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 19:45:07.3566
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c8781e2-d117-4030-37bc-08dd4f8b94ec
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF0000231A.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7813
 
-Hi,
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-I noticed there appears to be a regression in DLM (fs/dlm/) when
-moving from Linux 5.4.229 to 5.4.288; I get a kernel panic when using
-dlm_ls_lockx() (DLM user) with a timeout >0, and the panic occurs when
-the timeout is reached (eg, attempting to take a lock on a resource
-that is already locked); the host where the timeout occurs is the one
-that panics:
-...
-[  187.976007]
-               DLM:  Assertion failed on line 1239 of file fs/dlm/lock.c
-               DLM:  assertion:  "!lkb->lkb_status"
-               DLM:  time = 4294853632
-[  187.976009] lkb: nodeid 2 id 1 remid 2 exflags 40000 flags 800001
-sts 1 rq 5 gr -1 wait_type 4 wait_nodeid 2 seq 0
-[  187.976009]
-[  187.976010] Kernel panic - not syncing: DLM:  Record message above
-and reboot.
-[  187.976099] CPU: 9 PID: 7409 Comm: dlm_scand Kdump: loaded Tainted:
-P           OE     5.4.288-esos.prod #1
-[  187.976195] Hardware name: Quantum H2012/H12SSW-NT, BIOS
-T20201009143356 10/09/2020
-[  187.976282] Call Trace:
-[  187.976356]  dump_stack+0x50/0x63
-[  187.976429]  panic+0x10c/0x2e3
-[  187.976501]  kill_lkb+0x51/0x52
-[  187.976570]  kref_put+0x16/0x2f
-[  187.976638]  __put_lkb+0x2f/0x95
-[  187.976707]  dlm_scan_timeout+0x18b/0x19c
-[  187.976779]  ? dlm_uevent+0x19/0x19
-[  187.976848]  dlm_scand+0x94/0xd1
-[  187.976920]  kthread+0xe4/0xe9
-[  187.976988]  ? kthread_flush_worker+0x70/0x70
-[  187.977062]  ret_from_fork+0x35/0x40
-...
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondinly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
-I examined the commits for fs/dlm/ between 5.4.229 and 5.4.288 and
-this is the offender:
-dlm: replace usage of found with dedicated list iterator variable
-[ Upstream commit dc1acd5c94699389a9ed023e94dd860c846ea1f6 ]
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+---
+ drivers/vdpa/mlx5/core/mr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Specifically, the change highlighted below in this hunk for
-dlm_scan_timeout() in fs/dlm/lock.c:
-@@ -1867,27 +1867,28 @@ void dlm_scan_timeout(struct dlm_ls *ls)
-                do_cancel = 0;
-                do_warn = 0;
-                mutex_lock(&ls->ls_timeout_mutex);
--               list_for_each_entry(lkb, &ls->ls_timeout, lkb_time_list) {
-+               list_for_each_entry(iter, &ls->ls_timeout, lkb_time_list) {
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index 8455f08f5d40..61424342c096 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -190,9 +190,12 @@ static void fill_indir(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mkey, v
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
+ 	}
+-- 
+2.43.0
 
-                        wait_us = ktime_to_us(ktime_sub(ktime_get(),
--                                                       lkb->lkb_timestamp));
-+                                                       iter->lkb_timestamp));
-
--                       if ((lkb->lkb_exflags & DLM_LKF_TIMEOUT) &&
--                           wait_us >= (lkb->lkb_timeout_cs * 10000))
-+                       if ((iter->lkb_exflags & DLM_LKF_TIMEOUT) &&
-+                           wait_us >= (iter->lkb_timeout_cs * 10000))
-                                do_cancel = 1;
-
--                       if ((lkb->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
-+                       if ((iter->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
-                            wait_us >= dlm_config.ci_timewarn_cs * 10000)
-                                do_warn = 1;
-
-                        if (!do_cancel && !do_warn)
-                                continue;
--                       hold_lkb(lkb);
-+                       hold_lkb(iter);
-+                       lkb = iter;
-                        break;
-                }
-                mutex_unlock(&ls->ls_timeout_mutex);
-
--               if (!do_cancel && !do_warn)
-+               if (!lkb)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                        break;
-
-                r = lkb->lkb_resource;
-
-Reverting this single line change resolves the kernel panic:
-$ diff -Naur fs/dlm/lock.c{.orig,}
---- fs/dlm/lock.c.orig  2024-12-19 12:05:05.000000000 -0500
-+++ fs/dlm/lock.c       2025-02-16 21:21:42.544181390 -0500
-@@ -1888,7 +1888,7 @@
-                }
-                mutex_unlock(&ls->ls_timeout_mutex);
-
--               if (!lkb)
-+               if (!do_cancel && !do_warn)
-                        break;
-
-                r = lkb->lkb_resource;
-
-It appears this same "dlm: replace usage of found with dedicated list
-iterator variable" commit was pulled into other stable branches as
-well, and I don't see any fix in the latest 5.4.x patch release
-(5.4.290).
-
-
---Marc
 
