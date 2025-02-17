@@ -1,303 +1,90 @@
-Return-Path: <stable+bounces-116606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001D6A38A1B
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:54:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C496A38A1A
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 17:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054A616FC44
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0BD3B0949
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 16:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA998226166;
-	Mon, 17 Feb 2025 16:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JHwaIXoO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCC4226160;
+	Mon, 17 Feb 2025 16:53:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47CF225A4E;
-	Mon, 17 Feb 2025 16:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C2B226163;
+	Mon, 17 Feb 2025 16:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739811193; cv=none; b=kWTtZ7bxRzXLmjtn2GonQNO0oxIxlq1KZ+edFqzsMvra0qAi+nKdGz0mAIY6vB0KrHVdV19Om8yVAJyDMxOMQ1WfrPF8jyAdUgQo1FR4FcPWsh2FPcV1hq/RXL4/XL0ijUAUj6C01cr3/u188zGVs2h60zc/hSLogqvjg+4kgrQ=
+	t=1739811232; cv=none; b=dbKY+LpkiENiGXSPEJKbvsuHX2h2EKfT3Tp4sA6pKTd4LPB+PqIXqVxeSCkE15rto4es6ZyXNbTEXdm4kX7F1xPdLCvxHRAi86UtARH1jmvVqeNEbbvs7x4fOB0BWieavO2mkhhB4S7Asst2f0v8Y5jajKfKfmCokYWj70j8JUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739811193; c=relaxed/simple;
-	bh=k5klOe0el+gRBmc4oyWVlzannr3hukSD6r4iebAZnvg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=h1Rnf4XE1egAVUDtu623Hom8dXszDGTyaPKWJDMz1eXhjT5UKyoe/3zq9TQmlJYhNBgT69UCL9p++d7i+YffPsSIojPCnl1ILjlALqJ4Ofk6IWyW6dR71NRgRmSzpfCd8svOf+FCUAMD6dIKtswRFS2QNNnSzZc948QduAcvt0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JHwaIXoO; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739811192; x=1771347192;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=k5klOe0el+gRBmc4oyWVlzannr3hukSD6r4iebAZnvg=;
-  b=JHwaIXoO08FPlYvfNDnhEhOFjMMbdweDEjuPrJLcSxTYJBwk+BGpSF4L
-   pg8zGcS5ui8gbvBemgjnkmRu+LsjmTIY/0heeNEzarK0zthavdFQ8lHn/
-   h63LTaf1xoKDXBt0K05ybGR20BuNig6hKM0eUwau04TA+ocXtcoeh4w2h
-   +TsQCuGNn90ePg4H+voe/ZFKPdjuqkZC6anLg7/m7jbqufsHiEt4m4oxJ
-   2f3jCieweGI0CUKqeY16VqsrP9uQxRpoIsT1rhkHcgo+ryZMjzL/3vAvD
-   ZRzarVMKHcRDcBrfxjkNNSvk0Z7Ogu0f9TR3VuW28x/SHFggaWOMkoXon
-   Q==;
-X-CSE-ConnectionGUID: Yig8adAuSpS76/GhCWFLew==
-X-CSE-MsgGUID: +n+HuglES0GwK1V82g507w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40635319"
-X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
-   d="scan'208";a="40635319"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:53:10 -0800
-X-CSE-ConnectionGUID: s3QlSUGfRGaM63Exzz4IbA==
-X-CSE-MsgGUID: DE8Lyl9LT9mLDJHZaiDwHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,293,1732608000"; 
-   d="scan'208";a="114370098"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.163])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 08:53:07 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Joel Mathew Thomas <proxy0@tutamail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] PCI/bwctrl: Disable PCIe BW controller during reset
-Date: Mon, 17 Feb 2025 18:52:58 +0200
-Message-Id: <20250217165258.3811-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1739811232; c=relaxed/simple;
+	bh=1ToLr4OoA/zbx+qsnP+YnCjDKLy+mk728Wleqkl7e64=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ln3XleODZDyq9JcRaBsYV6tGGAW1+dNXeVgJHi/mx9Ut3zxWpn27eReZXdlvid/31q5tsopB0K3PanzulfALO3h4D6kcBq//DhA9fcv5DGbSZbx4LHcCthXEjsDJGrSuqLmpTV+AB/KhEf6N/OVr8v9Z7FeJ2iRrx3RZY7nYfEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D899C4CED1;
+	Mon, 17 Feb 2025 16:53:50 +0000 (UTC)
+Date: Mon, 17 Feb 2025 11:54:09 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Harshit Agarwal <harshit@nutanix.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Jon Kohler <jon@nutanix.com>, Gauri Patwardhan
+ <gauri.patwardhan@nutanix.com>, Rahul Chunduru
+ <rahul.chunduru@nutanix.com>, Will Ton <william.ton@nutanix.com>
+Subject: Re: [PATCH v2] sched/rt: Fix race in push_rt_task
+Message-ID: <20250217115409.05599bd2@gandalf.local.home>
+In-Reply-To: <20250214170844.201692-1-harshit@nutanix.com>
+References: <20250214170844.201692-1-harshit@nutanix.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-PCIe BW controller enables BW notifications for Downstream Ports by
-setting Link Bandwidth Management Interrupt Enable (LBMIE) and Link
-Autonomous Bandwidth Interrupt Enable (LABIE) (PCIe Spec. r6.2 sec.
-7.5.3.7).
+On Fri, 14 Feb 2025 17:08:44 +0000
+Harshit Agarwal <harshit@nutanix.com> wrote:
 
-It was discovered that performing a reset can lead to the device
-underneath the Downstream Port becoming unavailable if BW notifications
-are left enabled throughout the reset sequence (at least LBMIE was
-found to cause an issue).
+> Co-developed-by: Jon Kohler <jon@nutanix.com>
+> Signed-off-by: Jon Kohler <jon@nutanix.com>
+> Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+> Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+> Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+> Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+> Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+> Tested-by: Will Ton <william.ton@nutanix.com>
+> ---
+> Changes in v2:
+> - As per Steve's suggestion, removed some checks that are done after
+>   obtaining the lock that are no longer needed with the addition of new
+>   check.
+> - Moved up is_migration_disabled check.
+> - Link to v1:
+>   https://lore.kernel.org/lkml/20250211054646.23987-1-harshit@nutanix.com/
+> ---
+>  kernel/sched/rt.c | 54 +++++++++++++++++++++++------------------------
+>  1 file changed, 26 insertions(+), 28 deletions(-)
 
-While the PCIe Specifications do not indicate BW notifications could not
-be kept enabled during resets, the PCIe Link state during an
-intentional reset is not of large interest. Thus, disable BW controller
-for the bridge while reset is performed and re-enable it after the
-reset has completed to workaround the problems some devices encounter
-if BW notifications are left on throughout the reset sequence.
 
-Keep a counter for the disable/enable because MFD will execute
-pci_dev_save_and_disable() and pci_dev_restore() back to back for
-sibling devices:
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[   50.139010] vfio-pci 0000:01:00.0: resetting
-[   50.139053] vfio-pci 0000:01:00.1: resetting
-[   50.141126] pcieport 0000:00:01.1: PME: Spurious native interrupt!
-[   50.141133] pcieport 0000:00:01.1: PME: Spurious native interrupt!
-[   50.441466] vfio-pci 0000:01:00.0: reset done
-[   50.501534] vfio-pci 0000:01:00.1: reset done
+Peter or Ingo,
 
-Fixes: 665745f27487 ("PCI/bwctrl: Re-add BW notification portdrv as PCIe BW controller")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219765
-Tested-by: Joel Mathew Thomas <proxy0@tutamail.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
----
+Care to take his patch
 
-I suspect the root cause is some kind of violation of specifications.
-Resets shouldn't cause devices to become unavailable just because BW
-notifications have been enabled.
+Thanks,
 
-Before somebody comments on those dual rwsems, I do have yet to be
-submitted patch to simplify the locking as per Lukas Wunner's earlier
-suggestion. I've just focused on solving the regressions first.
-
- drivers/pci/pci.c         |  8 +++++++
- drivers/pci/pci.h         |  4 ++++
- drivers/pci/pcie/bwctrl.c | 49 ++++++++++++++++++++++++++++++++-------
- 3 files changed, 53 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 869d204a70a3..7a53d7474175 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5148,6 +5148,7 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
- {
- 	const struct pci_error_handlers *err_handler =
- 			dev->driver ? dev->driver->err_handler : NULL;
-+	struct pci_dev *bridge = pci_upstream_bridge(dev);
- 
- 	/*
- 	 * dev->driver->err_handler->reset_prepare() is protected against
-@@ -5166,6 +5167,9 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
- 	 */
- 	pci_set_power_state(dev, PCI_D0);
- 
-+	if (bridge)
-+		pcie_bwnotif_disable(bridge);
-+
- 	pci_save_state(dev);
- 	/*
- 	 * Disable the device by clearing the Command register, except for
-@@ -5181,9 +5185,13 @@ static void pci_dev_restore(struct pci_dev *dev)
- {
- 	const struct pci_error_handlers *err_handler =
- 			dev->driver ? dev->driver->err_handler : NULL;
-+	struct pci_dev *bridge = pci_upstream_bridge(dev);
- 
- 	pci_restore_state(dev);
- 
-+	if (bridge)
-+		pcie_bwnotif_enable(bridge);
-+
- 	/*
- 	 * dev->driver->err_handler->reset_done() is protected against
- 	 * races with ->remove() by the device lock, which must be held by
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 01e51db8d285..856546f1aad9 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -759,12 +759,16 @@ static inline void pcie_ecrc_get_policy(char *str) { }
- #ifdef CONFIG_PCIEPORTBUS
- void pcie_reset_lbms_count(struct pci_dev *port);
- int pcie_lbms_count(struct pci_dev *port, unsigned long *val);
-+void pcie_bwnotif_enable(struct pci_dev *port);
-+void pcie_bwnotif_disable(struct pci_dev *port);
- #else
- static inline void pcie_reset_lbms_count(struct pci_dev *port) {}
- static inline int pcie_lbms_count(struct pci_dev *port, unsigned long *val)
- {
- 	return -EOPNOTSUPP;
- }
-+static inline void pcie_bwnotif_enable(struct pci_dev *port) {}
-+static inline void pcie_bwnotif_disable(struct pci_dev *port) {}
- #endif
- 
- struct pci_dev_reset_methods {
-diff --git a/drivers/pci/pcie/bwctrl.c b/drivers/pci/pcie/bwctrl.c
-index 0a5e7efbce2c..a117f6f67c07 100644
---- a/drivers/pci/pcie/bwctrl.c
-+++ b/drivers/pci/pcie/bwctrl.c
-@@ -40,11 +40,13 @@
-  * @set_speed_mutex:	Serializes link speed changes
-  * @lbms_count:		Count for LBMS (since last reset)
-  * @cdev:		Thermal cooling device associated with the port
-+ * @disable_count:	BW notifications disabled/enabled counter
-  */
- struct pcie_bwctrl_data {
- 	struct mutex set_speed_mutex;
- 	atomic_t lbms_count;
- 	struct thermal_cooling_device *cdev;
-+	int disable_count;
- };
- 
- /*
-@@ -200,10 +202,9 @@ int pcie_set_target_speed(struct pci_dev *port, enum pci_bus_speed speed_req,
- 	return ret;
- }
- 
--static void pcie_bwnotif_enable(struct pcie_device *srv)
-+static void __pcie_bwnotif_enable(struct pci_dev *port)
- {
--	struct pcie_bwctrl_data *data = srv->port->link_bwctrl;
--	struct pci_dev *port = srv->port;
-+	struct pcie_bwctrl_data *data = port->link_bwctrl;
- 	u16 link_status;
- 	int ret;
- 
-@@ -224,12 +225,44 @@ static void pcie_bwnotif_enable(struct pcie_device *srv)
- 	pcie_update_link_speed(port->subordinate);
- }
- 
--static void pcie_bwnotif_disable(struct pci_dev *port)
-+void pcie_bwnotif_enable(struct pci_dev *port)
-+{
-+	guard(rwsem_read)(&pcie_bwctrl_setspeed_rwsem);
-+	guard(rwsem_read)(&pcie_bwctrl_lbms_rwsem);
-+
-+	if (!port->link_bwctrl)
-+		return;
-+
-+	port->link_bwctrl->disable_count--;
-+	if (!port->link_bwctrl->disable_count) {
-+		__pcie_bwnotif_enable(port);
-+		pci_dbg(port, "BW notifications enabled\n");
-+	}
-+	WARN_ON_ONCE(port->link_bwctrl->disable_count < 0);
-+}
-+
-+static void __pcie_bwnotif_disable(struct pci_dev *port)
- {
- 	pcie_capability_clear_word(port, PCI_EXP_LNKCTL,
- 				   PCI_EXP_LNKCTL_LBMIE | PCI_EXP_LNKCTL_LABIE);
- }
- 
-+void pcie_bwnotif_disable(struct pci_dev *port)
-+{
-+	guard(rwsem_read)(&pcie_bwctrl_setspeed_rwsem);
-+	guard(rwsem_read)(&pcie_bwctrl_lbms_rwsem);
-+
-+	if (!port->link_bwctrl)
-+		return;
-+
-+	port->link_bwctrl->disable_count++;
-+
-+	if (port->link_bwctrl->disable_count == 1) {
-+		__pcie_bwnotif_disable(port);
-+		pci_dbg(port, "BW notifications disabled\n");
-+	}
-+}
-+
- static irqreturn_t pcie_bwnotif_irq(int irq, void *context)
- {
- 	struct pcie_device *srv = context;
-@@ -314,7 +347,7 @@ static int pcie_bwnotif_probe(struct pcie_device *srv)
- 				return ret;
- 			}
- 
--			pcie_bwnotif_enable(srv);
-+			__pcie_bwnotif_enable(port);
- 		}
- 	}
- 
-@@ -336,7 +369,7 @@ static void pcie_bwnotif_remove(struct pcie_device *srv)
- 
- 	scoped_guard(rwsem_write, &pcie_bwctrl_setspeed_rwsem) {
- 		scoped_guard(rwsem_write, &pcie_bwctrl_lbms_rwsem) {
--			pcie_bwnotif_disable(srv->port);
-+			__pcie_bwnotif_disable(srv->port);
- 
- 			free_irq(srv->irq, srv);
- 
-@@ -347,13 +380,13 @@ static void pcie_bwnotif_remove(struct pcie_device *srv)
- 
- static int pcie_bwnotif_suspend(struct pcie_device *srv)
- {
--	pcie_bwnotif_disable(srv->port);
-+	__pcie_bwnotif_disable(srv->port);
- 	return 0;
- }
- 
- static int pcie_bwnotif_resume(struct pcie_device *srv)
- {
--	pcie_bwnotif_enable(srv);
-+	__pcie_bwnotif_enable(srv->port);
- 	return 0;
- }
- 
-
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
--- 
-2.39.5
-
+-- Steve
 
