@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-116555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7171A3803B
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:32:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6470DA3803F
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 11:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3624188AF52
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE93164D6D
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E891917D7;
-	Mon, 17 Feb 2025 10:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D492165EA;
+	Mon, 17 Feb 2025 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iyRdW4qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vws2W5Ps"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29956199E8B
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 10:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F33E101FF;
+	Mon, 17 Feb 2025 10:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739788224; cv=none; b=Ou0K2ZdoR7uEkTr3M4hJral0GUxhx0X/wjuClWiTkikkO6CKX3Ooh6x8qvnkFQFN3F3ByB0RXUarV/JY4CPUHBV+QuQX7KURIrQRVuCz4De9YWnk+9Lq9P/RA0L9cTdvA17qd7JNZVNq/g/MIP6BIFxqQG1OndztBGeRQriSSiY=
+	t=1739788366; cv=none; b=rp82nUM3GGb3PHzNAm/mTxjzu9ywqEzwdHndu3G5+tmJ+g/1WdnYP71M9qo02hFUSzomrmj0w9ZoTkxyqirsSCaj4Xw+lnQ/rsTI5SpzCWnWzSDf8r3gzZGhholr0exnfMlz/m7ew3pUOVMFPd658KpOfwGJysiTlwJ5DJab2t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739788224; c=relaxed/simple;
-	bh=rqy0o7Oys/LLE9YRPDp46bhFWyAGqnDUjKuvPTU+GHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tfY2hQwec8vuc5wD9JMPp3ef8kGkMXRqbeo1NIhmzFPsz4BcxF0E+XiA0j/qXol/1UKf+NFRMZaWmTk3HdwJluzec8cwmRSPkut6S/uirc0cAiiNzYwQl639HxAoNEZjLJxNvBp1SDcu0TPbmU+n7rHX7Ub4A2QuPrq3YIfdnes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iyRdW4qI; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739788223; x=1771324223;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=rqy0o7Oys/LLE9YRPDp46bhFWyAGqnDUjKuvPTU+GHs=;
-  b=iyRdW4qIXS/U1Pda85Vzk6jdEUW6ZpJ9qprxtSwAoS4JCUWEAJ2u9v+S
-   n8cu2ZYSp395NgnhPyUKuwErTRtEY+AaNT0Qsg21KwfETWg9T5Gd+czxr
-   U0DY7YoEQU4Wy3RyAUjHXUPP1kRB3NKRSrQFBefVcJGdsNJGh6JjmUwNI
-   UjqRobVUkj0sF4GszN06OsbVHbFgGu89JpWsFlRC/7MVWiVTaiEE5WemA
-   zYL5fSp0Cd5W/nr7pq0h5CfFTI6FFRp9Tp6tn7uPog80YWZhqgCOQ0EZp
-   PjUsImKyHkDU+kzAbbkajBtGc4RJMAcOZCdUUo1mtKv59yGjDvYy3fOqG
-   w==;
-X-CSE-ConnectionGUID: eqP+lY0YSJ23JxYpM40Qhw==
-X-CSE-MsgGUID: CIpdCSWRTOeePzKK+B3Fag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51891613"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="51891613"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 02:30:22 -0800
-X-CSE-ConnectionGUID: HZVQroiFQHW4PN/acQroKw==
-X-CSE-MsgGUID: l3ieAs+nQre5GF7FPuaDZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
-   d="scan'208";a="119094457"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 17 Feb 2025 02:30:21 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tjyOI-001Cz5-2R;
-	Mon, 17 Feb 2025 10:30:18 +0000
-Date: Mon, 17 Feb 2025 18:29:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Macpaul Lin <macpaul.lin@mediatek.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6 RESEND] dt-bindings: iommu: mediatek: Fix interrupt
- count constraint for new SoCs
-Message-ID: <Z7MPmZ9URNWhZNEB@0e6ae266f58d>
+	s=arc-20240116; t=1739788366; c=relaxed/simple;
+	bh=mr5XtlwlHqykvXGNQxLZB9lSz3mPoMv4DXO1bz9Od3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5Yv+S1nzvcOUC4ohq+7RIZdK7bPi36SJ9oCb+cGK45LFL4c+UUBUqeeCX7/VbMVl34cmQFL0S50SD3tJYhv2XyrLQwoKVUr9PbZmGklrCg0CT6m5K5HezRFhe/DCGMedM13cJXwhxovsmcqwHkO4a6i2p6bCb+mV/KsMHXxiE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vws2W5Ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BBFC4CED1;
+	Mon, 17 Feb 2025 10:32:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739788365;
+	bh=mr5XtlwlHqykvXGNQxLZB9lSz3mPoMv4DXO1bz9Od3Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vws2W5PsD+NPh8Jq9mb40nsCAgrztsyX5z4GHJ4JhozK7elQDSHGOzkM0TBwZCGq5
+	 wqfnl288kXG64Y1dftYvWTo+FfpZdgljp2vPlFx+4fZCnab9Dd9+n09otajDAA+jdh
+	 5k5PeNwDQtUq6vKUrNoVDxNhhn3TXW4JZ7A56utM=
+Date: Mon, 17 Feb 2025 11:32:42 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Fedor Pchelkin <boddah8794@gmail.com>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Saranya Gopal <saranya.gopal@intel.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mark Pearson <mpearson@squebb.ca>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RFC 2/2] usb: typec: ucsi: increase timeout for PPM reset
+ operations
+Message-ID: <2025021713-panhandle-eccentric-777a@gregkh>
+References: <20250206184327.16308-1-boddah8794@gmail.com>
+ <20250206184327.16308-3-boddah8794@gmail.com>
+ <Z636e6Vdr4FC7HbQ@kuha.fi.intel.com>
+ <iuqvnem6m6okpxmto5uscj5bzgkrzszc3npcf23zus6luybhtd@mztr62veakdb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250217102652.1858304-1-macpaul.lin@mediatek.com>
+In-Reply-To: <iuqvnem6m6okpxmto5uscj5bzgkrzszc3npcf23zus6luybhtd@mztr62veakdb>
 
-Hi,
+On Mon, Feb 17, 2025 at 01:18:25PM +0300, Fedor Pchelkin wrote:
+> On Thu, 13. Feb 15:58, Heikki Krogerus wrote:
+> > On Thu, Feb 06, 2025 at 09:43:15PM +0300, Fedor Pchelkin wrote:
+> > > It is observed that on some systems an initial PPM reset during the boot
+> > > phase can trigger a timeout:
+> > > 
+> > > [    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
+> > > [    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+> > > 
+> > > Still, increasing the timeout value, albeit being the most straightforward
+> > > solution, eliminates the problem: the initial PPM reset may take up to
+> > > ~8000-10000ms on some Lenovo laptops. When it is reset after the above
+> > > period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
+> > > works as expected.
+> > > 
+> > > Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
+> > > system has booted, reading the CCI values and resetting the PPM works
+> > > perfectly, without any timeout. Thus it's only a boot-time issue.
+> > > 
+> > > The reason for this behavior is not clear but it may be the consequence
+> > > of some tricks that the firmware performs or be an actual firmware bug.
+> > > As a workaround, increase the timeout to avoid failing the UCSI
+> > > initialization prematurely.
+> > > 
+> > > Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion timeout value")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+> > 
+> > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> 
+> Thanks for review!
+> 
+> Should I respin the series or it can be taken as is despite being
+> initially tagged an RFC material?
 
-Thanks for your patch.
+For obvious reasons, I can't take RFC patches as obviously you didn't
+think they were worthy of being taken, hence you marking them that way
+:)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+thanks,
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v6 RESEND] dt-bindings: iommu: mediatek: Fix interrupt count constraint for new SoCs
-Link: https://lore.kernel.org/stable/20250217102652.1858304-1-macpaul.lin%40mediatek.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
 
