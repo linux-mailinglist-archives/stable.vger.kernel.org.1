@@ -1,188 +1,201 @@
-Return-Path: <stable+bounces-116618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF45AA38D46
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:24:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB03A38DBB
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 21:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2A537A26EC
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAAD188D620
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 20:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B99623872E;
-	Mon, 17 Feb 2025 20:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B45239095;
+	Mon, 17 Feb 2025 20:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="RKd7GC1K"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HRROt6ZH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C07225798
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 20:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739823879; cv=none; b=JXGADV/GPDiGlHrJSjU7IJ73D+QDQGhH7McW3rM6twBLfNPfy/yOrKAy8unuXi3/vYS3B0v9ncKKuDJyS6fX6INxh6oAKsxH5XtRoS4eu8NSnIjbrEids4FChTMSIj8H57mv1B+QBCXm0o+w0fVaB072kOy02Vq/laJ5IyiY1jo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739823879; c=relaxed/simple;
-	bh=eT0uHoJVUyeYy/0a2hHObE8YxpngQ35kMWqHF5vQT3M=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FYDmM7v+oX68JSc/gB+APS4Zf+99X8O6Ek0FvvVeeW7MwCRYwrhT1FmVDHImkwdXUz6jYaOGOq+Bj4xvlwS1jWLFHkCc1fREXVJB0zsi29XaVEvMbr++qvgYH5PvfIk46B+QhpzWN2XpNc1fo5B3ITHh6oie4vAoVw6zKjm1fMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=RKd7GC1K; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1739823877; x=1771359877;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RjWCe/xAD5p4Eoc0myXeNx+KiCaOmaq/9SVu5NEXTHg=;
-  b=RKd7GC1KXXuWFmEK080da/Zrq9tdUhJQSTOuvZvVfRfrKAq3i50cLF9C
-   04GYXyLqpgcEVcpnzsKaHTvWGRo9HH1K31ibhsqJLn2XzgesTHiBA3Yt8
-   hao74/ITL/K6PU+uC6HeaMlSyrwjYyE9OQ49CU3ynem2W2LI/7N+/Xf3X
-   I=;
-X-IronPort-AV: E=Sophos;i="6.13,293,1732579200"; 
-   d="scan'208";a="697893077"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 20:24:36 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:36443]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.115:2525] with esmtp (Farcaster)
- id df27e7da-5d58-4bac-b3d8-bb3c37f30eb8; Mon, 17 Feb 2025 20:24:35 +0000 (UTC)
-X-Farcaster-Flow-ID: df27e7da-5d58-4bac-b3d8-bb3c37f30eb8
-Received: from EX19EXOUWB001.ant.amazon.com (10.250.64.229) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Mon, 17 Feb 2025 20:24:35 +0000
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19EXOUWB001.ant.amazon.com (10.250.64.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Mon, 17 Feb 2025 20:24:35 +0000
-Received: from email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.39 via Frontend Transport; Mon, 17 Feb 2025 20:24:35 +0000
-Received: from dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com [10.189.199.127])
-	by email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com (Postfix) with ESMTP id E2BCD405B1
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 20:24:34 +0000 (UTC)
-Received: by dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (Postfix, from userid 30684173)
-	id A54FD4F01; Mon, 17 Feb 2025 20:24:34 +0000 (UTC)
-From: jaywang-amazon <wanjay@amazon.com>
-To: <stable@vger.kernel.org>
-Subject: [PATCH] x86/i8253: Disable PIT timer 0 when not in use
-Date: Mon, 17 Feb 2025 20:24:34 +0000
-Message-ID: <20250217202434.11659-1-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1974D238D3B;
+	Mon, 17 Feb 2025 20:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739825795; cv=fail; b=ugyOYXa/L08d1gVXSWqWgg5U/ZQohDYc0qyirbV/BsEy+PyhbAgCwlCw9ARo94tD/laS4ZQpk/QF2htLNDC6rHKaRBdWLpG3MXLeFWK3dwYiKf/hYF2SoAp0f+mWS13j9xuDjFwYQjTJxxsFJ+0PK+TtqA2sw+L6UC6UqGZ6w4w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739825795; c=relaxed/simple;
+	bh=7i6H4cFUCGC8ZgG6RZG0mTYb3sHUu7JaD0eHRW+oTeg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Moc0+G69Mpe46gDctjlFkwoKMZGz3SpdtVmNecL+I53cHWjeSgFuIlZX/RqeENgSYGE9i5IvyLWdd19cbfhCfRvmmNeAaBi32JcZsGTKOXmJcD4S9FCghyPNT40IaIH54DpA6Ws04AxHYrNltZWxwkyL532uqszmHDcCLWp4fRk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HRROt6ZH; arc=fail smtp.client-ip=40.107.20.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vKMeRsKX3FX9DPFKETDweLSZHVUsCngPy7yOADEZkDSwTCFrnwdNQxtfN5mIs/Y8IH5x3N0ZWSWTEttUId2oQ/sFuzp47HyOiqqYe6Ezs2KTVBym7pU084nTSHXn0LWADHdu02GiKPYxQVXUnSX6PmIKWjXqZAA8qPAEgSyZbqsnNd7tBQjGE7UtwvjGDun5jL7ciBSJVkaJE8grTv0joxscj6IEEffDVXi6SWU9ZbQXvu1RMamYqRu0l2h8a6EYAtJ5gQXOPPznBTsoCpInhZqVsXWE5sSoxfv74zXJkzk2rCkvH/MUgGbFOcQ7yJZnXTyl0m5+mI7LSTh9riOP9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yRzjau2EL1jp7CX/fNPtjwp4Crm5sBiFOOfP8RXCmX0=;
+ b=KHCDuy6rtFfrgjgq4Nzm24Odcue49mpKPs3bPYlM17sUtq7+9zzULvi7UJGAsNdsz1LFNhkUKx5D9Uvf3N//PVhkPWOkG8KVZSY2y0G/gmOf3tuE9P4BkY52+PVhx4KjJRf3tYywtEIVg7n3nXAIYTo/FnAlIYY5YWMZSPBwSkwkGd0MfeYqzs8xfM7CArOHTs2Bc0+QQrgC1jQ7iLG7zq3cS0BQYmW2860GyJj7/zsm+C4EGj+yPmVH6XuxB+HKyL2XcViXgL210fZiLi18QIjFaPC7YyitS3bzauHgjOWQf8sCAtA9NfzJBLAXbv9Dj7FFu46wrYaUSNRE0zrXnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yRzjau2EL1jp7CX/fNPtjwp4Crm5sBiFOOfP8RXCmX0=;
+ b=HRROt6ZHmcnloVAvKD5LA7gnDqfbNWrVS/nWsH/W6LTk637Vxg2ID1drs/sssbEWp15iwDu0Hgw+wr3fGqAodJIVcndVxmYNoR8GFEKaaCC6ywRqadRJkiE9FhgwLDvMNAB8+vX9nsPmoClOgHMYOLou7mmatUhQeLtLwmQPsJt1O1GYglECsOhD7B/ACbLtmuE2Og0GTOYPLP1LrnuNm0HR5V04pe6wAf9th68GXwi6RWIgMqB5h1ZiqLzqJ0cn2RXlY6OQbV8Y0Rucp1jcvRUg8JLqp6B97lFyFSWEh+Sc1UJPozx3/zKSozOUc4ELi7YTwyXSmlN1jSVVa0Qyqw==
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
+ by PA4PR04MB9711.eurprd04.prod.outlook.com (2603:10a6:102:267::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Mon, 17 Feb
+ 2025 20:56:30 +0000
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Mon, 17 Feb 2025
+ 20:56:29 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Thread-Topic: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Thread-Index: AQHbgSIyYzp3wPB+I0SIp7LSGpxlULNL+Ehw
+Date: Mon, 17 Feb 2025 20:56:29 +0000
+Message-ID:
+ <AS8PR04MB8849FB282339EB6D5DC2637396FB2@AS8PR04MB8849.eurprd04.prod.outlook.com>
+References: <20250217093906.506214-1-wei.fang@nxp.com>
+ <20250217093906.506214-2-wei.fang@nxp.com>
+In-Reply-To: <20250217093906.506214-2-wei.fang@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|PA4PR04MB9711:EE_
+x-ms-office365-filtering-correlation-id: 93e6663c-8b87-4fe1-4e3b-08dd4f958d83
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?3GAIqjX9DNbkXu+RpbfoZ0M8aEJZQsoaV75ZtgviEOK6fwAXSg0q90wOhjrS?=
+ =?us-ascii?Q?5cNJW0kgA+zWinqOfrccF1M/LydNWjD3RxSGFyR6Kpj8PO1g7RC6ZTHhk5WO?=
+ =?us-ascii?Q?gOoow9y23w3Mh5qiudXT36EsiJDkuhKE5hTKx2KBrd92jToi3QQ3OuGD/YEz?=
+ =?us-ascii?Q?DVALIQWPBlEcVWD5HDXWYcyEDV8gjSOsZVVCYrVKvNuLa9X4dJjr7Ys7ybNz?=
+ =?us-ascii?Q?xnpTJy4hvo+SNzUvJjLaTSv9O9dDGPnjRXhesq758zj3gDOXTHj9FhcJog+R?=
+ =?us-ascii?Q?ZWQcBayQTu6BCGrsA0B9gHsNhD9b5ezglLW+araWihQCEr1AcpmfjUM2mZZr?=
+ =?us-ascii?Q?BP5Jt20vsEYYO9JR4FnlCSfpGTiua99Mv2sCvAuA6f2ncuogGFDo51BZ6S+6?=
+ =?us-ascii?Q?NQV7jJEbe+xLMQfkYr6Bl/UXMADrSVFb9tIaJxI8TQgVSXuqqKzdnjK3vQey?=
+ =?us-ascii?Q?jVYf/0MceeS3hhU6pyhAtBKFAZUHmyTu4ZB9pzqGyekWYtkX4jmzxXqa47gp?=
+ =?us-ascii?Q?pjtDIr6Z6TcRj6x7rpVd1/K60865eCKeCdORT3MWjZoE7127hxW496KU/Fee?=
+ =?us-ascii?Q?iSZnKZc0QuqtEVeKBD8RWwTnGKmRoofIFuchtKAUoLVs0KoIoTTTFvtJjXI9?=
+ =?us-ascii?Q?9lcwhhaKMIDaicaqxvrqEILM95GvXJxl0VZOybS6Ml4dX4sG9IcR/3ma+jLa?=
+ =?us-ascii?Q?2DqIRAiEzbxHPec6o2MN2/47MyMuvks5GSOvhUlerFd+VCiTRc7KmtCzstqt?=
+ =?us-ascii?Q?DLZqV7EhZU0uP/rhkgybc8B+FhxzioNnk+JEIJI4RQ8QB6BPHQNbyKHqSY3V?=
+ =?us-ascii?Q?zp5z/yIXwnFxWTOl1kJ5oavOOW1vEq3XeLz1nVEnE2LQ6QwXNeh2BNPxnry7?=
+ =?us-ascii?Q?DeHd4aiUX//mUrwN8Imer9SQr7/9/9emqpBOo3aiJiryaAHGDOGArvzauh8t?=
+ =?us-ascii?Q?zqfe/HKc5pWvGkYxGg+5+GdRJlZ12cIw7t6sRaRMx7OW44feLHB8iql+uNLV?=
+ =?us-ascii?Q?SS2sQH9grDNv5R8SHmkvJXC2z+g+7Pdo4AFQ86W7ztloyOBkeoJRdyfAfs/4?=
+ =?us-ascii?Q?p0AmLAqv3jOYwiN2IUpPGLvW5i8+TYbYHqVpl0ogkhFb3e7/YtgmEXOn3x7P?=
+ =?us-ascii?Q?D2Xo+p8+PyLXUL79oZxh43vucSj7oiLpMvmhqbgxi7HubTHcYpE4fnngdFNh?=
+ =?us-ascii?Q?Bc9qFDYfjOvpSliJ9Jdxkd4d1cTx6G/j1onNTHuev1Bq88ZkN+tq9fvdD49p?=
+ =?us-ascii?Q?CnxDKa6B+hJdQYec/QXVdP41IYimfKSb66p+Nm97mRxr0Tzyf8ZPFCxtQaS+?=
+ =?us-ascii?Q?XWXn1+sp9NL3ni7kibxoqHkRhWH0FVgMXtv8mZdGltREjYYGXpZtDSTt5E/6?=
+ =?us-ascii?Q?1+t0pEvFJYrA4HhgtJ1oingMdXy+UCAtFRyW9esHfarDiQEjLYZtJxw6Zrw3?=
+ =?us-ascii?Q?VZDaqNWpCWC9UObdZLwIhUtoMiZzFkAV?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?keSt1Guedv5izm8gyJ8QWQXwMlNoeiuaffAllCOFehFjrOF30sa1kkv/k+Ss?=
+ =?us-ascii?Q?C1c9sWwIFlotypAJKgNjw5e1c7HGyzH3zFWavdefe/jauCj/nlBE93NMPnNK?=
+ =?us-ascii?Q?MtZk5U38CipP9nfRt9p2sMbSrMvG/X+cpWu5Eh7PP5d+1GgyAFfH+aNzox6A?=
+ =?us-ascii?Q?RmShX/TJMCNutKPxZ152JUD7l66FEaoyMYdOxPPSjLox8JmfTWV43adSEGmG?=
+ =?us-ascii?Q?S4cnJfCvgl82/FzCdR7BYW6jB/82Z2XQcX2SruwdLESys4V5skKrJqxOuiyg?=
+ =?us-ascii?Q?hALq8oib11CWjlqEBKdrtXZTw6PxtMw5QIt/wpoeDw9BsrmLR7eHts9OCqCn?=
+ =?us-ascii?Q?3DW+h2Ml+1C+EVXZS4iBZjZOOvLMTlsh2ahGDI63fWSbWWq48tiM33RFqosM?=
+ =?us-ascii?Q?0XU8B7XXM/6k0R90zfHwLTsOWPibMAzSwbAPrdIus4qKxCV9APXyUZVTu2Jz?=
+ =?us-ascii?Q?WGN/dfZCTK8asWWrl6F0A3CtdEUufeVB1B14TVN+1KfAc4JTUU+/STKsmP2Y?=
+ =?us-ascii?Q?pISUzoosezlTWz9JkrazVprGXCpBZfVa+F0awyzpFbjzul55CoP4b29u4jQU?=
+ =?us-ascii?Q?OEwyoRCciRbG2QSjLYUPk+Nq3VWOsZX7gJcfpY0t9Xc/SN/Lc5I97j1Tvy/Q?=
+ =?us-ascii?Q?blwfqIKjTZ/Rlr5K/ZpIQzweDSxDrRdO9t86i85S6xSq50NzlcUbd+16PhQv?=
+ =?us-ascii?Q?t3DtFwVs7SFXTPNUwJrr9gVEnxxRqt+cPQ3trZhO8h5zou6jWMg+htlWeDHc?=
+ =?us-ascii?Q?+SB9Hd8U7RwT+dsw9tmJK01vDLE+Ikwb0m/E0USOvwa0g6DH4nKQIAbHETGF?=
+ =?us-ascii?Q?7/dmfxC/7Npxz8E6pKveQPMkcCGOG09ZwD2R+3noLVV3j9TneYVs63ByVKRk?=
+ =?us-ascii?Q?LmUETFd8VJNWkrYyB4oxrhZMMrezxytdi9XtEXlmILkL0D9gnB77UzRDr2iO?=
+ =?us-ascii?Q?gih2UqDlleRSzFY7ibhNDE2H5dNRX+NN2qA5J+khM6R6IKNLEPn8K5l57q55?=
+ =?us-ascii?Q?BjGqCLj2PbEha/l/d4zdJNCGu8nGAoosjj0xM0ms3yN8WxDQUsVtxM1S1MP+?=
+ =?us-ascii?Q?aVFJoqsuYk+SR8OPgStLxGPf7RqKT6p4u/8RyTHXa91JNmse2FR5wDPSfc24?=
+ =?us-ascii?Q?sIsBOAB8S+3DqE3oqjd+Tp/5dVEEwMDYeH/8U4QiESWMqzpC4a6N6Ah3DwdG?=
+ =?us-ascii?Q?ierUAIDflbhM4r2gWcAO++NQV4OaaIQh6Lht2dbhvdhPSCgjNwW0sfXESDMk?=
+ =?us-ascii?Q?4E3Olsq1NYadL/YEGc6T9K0fDakPTvuoRChbCP45SUKnC+aO1kYD+L6IPoLN?=
+ =?us-ascii?Q?HZSUGnI1Xxn1zU0RH7q4Wt07dsHTz0lI+ajgME/BQuwdyi+VRCp0A+mKxYN7?=
+ =?us-ascii?Q?fJPW/a0+i9CQOGEIXOuDiBgY1f9bLO47qm1TCLd0zDoxm8ykCUsnBhZ0DT/C?=
+ =?us-ascii?Q?rcHd2AMz/iOXzNxsARadOMw/AawpN/ezvqCsdHQuVLYyQs1OfUnAHSm2WEGZ?=
+ =?us-ascii?Q?2lKfiNHRF/MFux7y3F+vggNyXeQ+83lTrPdW65TU1NPvWkcC8eulKS6Cwgp+?=
+ =?us-ascii?Q?fbpQiW+aCcv2dx+x/sR4eC5G3ZgO4WRQjmR/tH0i?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93e6663c-8b87-4fe1-4e3b-08dd4f958d83
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Feb 2025 20:56:29.9219
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YuWTmvDzBMRzmdPyjPKlEJjeUoqWoUU2OmNt6oJE0O1SX0Rva7MoIPDIZ04nCFEPehWdQz01ct7cmezsH2XDBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9711
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Monday, February 17, 2025 11:39 AM
+[...]
+> Subject: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+> enetc_map_tx_buffs()
+>=20
+> When the DMA mapping error occurs, it will attempt to free 'count + 1'
 
-[upstream commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c360]
+Hi Wei,
+Are you sure?
 
-Leaving the PIT interrupt running can cause noticeable steal time for
-virtual guests. The VMM generally has a timer which toggles the IRQ input
-to the PIC and I/O APIC, which takes CPU time away from the guest. Even
-on real hardware, running the counter may use power needlessly (albeit
-not much).
+dma_err occurs before count is incremented, at least that's the design.
 
-Make sure it's turned off if it isn't going to be used.
+First step already contradicts your claim:
+```
+static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *sk=
+b)
+{
+[...]
+	int i, count =3D 0;
+[...]
+	dma =3D dma_map_single(tx_ring->dev, skb->data, len, DMA_TO_DEVICE);
+	if (unlikely(dma_mapping_error(tx_ring->dev, dma)))
+		goto dma_err;
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Michael Kelley <mhkelley@outlook.com>
-Link: https://lore.kernel.org/all/20240802135555.564941-1-dwmw2@infradead.org
+=3D=3D=3D> count is 0 on goto path!
+[...]
+	count++;
+```
 
-(cherry picked from commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60)
-
-Cc: stable@vger.kernel.org # v5.15
-
-Signed-off-by: jaywang-amazon <wanjay@amazon.com>
----
- arch/x86/kernel/i8253.c     | 11 +++++++++--
- drivers/clocksource/i8253.c | 13 +++++++++----
- include/linux/i8253.h       |  1 +
- 3 files changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
-index 2b7999a1a50a..80e262bb627f 100644
---- a/arch/x86/kernel/i8253.c
-+++ b/arch/x86/kernel/i8253.c
-@@ -8,6 +8,7 @@
- #include <linux/timex.h>
- #include <linux/i8253.h>
- 
-+#include <asm/hypervisor.h>
- #include <asm/apic.h>
- #include <asm/hpet.h>
- #include <asm/time.h>
-@@ -39,9 +40,15 @@ static bool __init use_pit(void)
- 
- bool __init pit_timer_init(void)
- {
--	if (!use_pit())
-+	if (!use_pit()) {
-+		/*
-+		 * Don't just ignore the PIT. Ensure it's stopped, because
-+		 * VMMs otherwise steal CPU time just to pointlessly waggle
-+		 * the (masked) IRQ.
-+		 */
-+		clockevent_i8253_disable();
- 		return false;
--
-+	}
- 	clockevent_i8253_init(true);
- 	global_clock_event = &i8253_clockevent;
- 	return true;
-diff --git a/drivers/clocksource/i8253.c b/drivers/clocksource/i8253.c
-index d4350bb10b83..cb215e6f2e83 100644
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -108,11 +108,8 @@ int __init clocksource_i8253_init(void)
- #endif
- 
- #ifdef CONFIG_CLKEVT_I8253
--static int pit_shutdown(struct clock_event_device *evt)
-+void clockevent_i8253_disable(void)
- {
--	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
--		return 0;
--
- 	raw_spin_lock(&i8253_lock);
- 
- 	outb_p(0x30, PIT_MODE);
-@@ -123,6 +120,14 @@ static int pit_shutdown(struct clock_event_device *evt)
- 	}
- 
- 	raw_spin_unlock(&i8253_lock);
-+}
-+
-+static int pit_shutdown(struct clock_event_device *evt)
-+{
-+	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
-+		return 0;
-+
-+	clockevent_i8253_disable();
- 	return 0;
- }
- 
-diff --git a/include/linux/i8253.h b/include/linux/i8253.h
-index 8336b2f6f834..bf169cfef7f1 100644
---- a/include/linux/i8253.h
-+++ b/include/linux/i8253.h
-@@ -24,6 +24,7 @@ extern raw_spinlock_t i8253_lock;
- extern bool i8253_clear_counter_on_shutdown;
- extern struct clock_event_device i8253_clockevent;
- extern void clockevent_i8253_init(bool oneshot);
-+extern void clockevent_i8253_disable(void);
- 
- extern void setup_pit_timer(void);
- 
--- 
-2.47.1
-
+Regards,
+Claudiu
 
