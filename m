@@ -1,182 +1,189 @@
-Return-Path: <stable+bounces-116543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9326A37ECF
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:39:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1DBA37F18
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 10:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC08165EDF
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79F25188B7E3
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413AC2153DD;
-	Mon, 17 Feb 2025 09:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8422163B9;
+	Mon, 17 Feb 2025 09:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QbZjjzek"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="h292Lw14"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2070.outbound.protection.outlook.com [40.107.103.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3721155316
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 09:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739785112; cv=none; b=iTqP5vZPlZiDgXZVc1IrEOLb7TccMottVPiaZZswanl5Kn0f/r3r+XVU5DTFOIahRtGv0P+QjdrmAwNNNViPJ9776NKGdJIudVVHBQS4tkzxlfSN1Bito/8uCQ9Ygjrfc6F32AyahHNqUrmi/9J5H3p6/a/P9TdUnd+IJwNUiO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739785112; c=relaxed/simple;
-	bh=xH3Hy9dhQ6bLZ5I/SDFGnVKNoil9bC2Prv+SGWvQUR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IZEv7ItjLfFROGn0NceNqiVWU4CaVvLijG4SHvj9SfK+zlQu6JcOVuqnpP2W7qWiR6DYc/SLGvhAPjw+vNseQGX8k3P/lZdI7Smo/l+/8nUPId4JXgjCDct4JrkWFvh0EFpVxX0+hxR758lnsmGwY2CzV+/zDMjVveLXDJ0KYv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QbZjjzek; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739785109; x=1771321109;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xH3Hy9dhQ6bLZ5I/SDFGnVKNoil9bC2Prv+SGWvQUR4=;
-  b=QbZjjzek1501wnwYEpa0AvQa9Yg9Vz3nxj9fAeFmYn7KOwbRzWSVUc46
-   garkdNRRKda1lKgGnZV0/4Qo0ZqVKcJsbdR8WIX52B/29uG0B6BdRNmG7
-   NGxkSnLOMl5tMOzZ0YiuDdshFRmQMdINQ1P0/onHDSwz9gMu8WQ5FHZMV
-   M77DEACNC/v8qDBrcA+LTOiSjyXtGl6FzAB1U7CAWg+SHKcbessjNQNQX
-   C9sjOFG4N6szifkgd9QcJOElwjowqGIYJowX1/1l+iQN8+LRqIl6PpmEd
-   mdxoj/Sn3oA/oo12xSnHNTMS3OWkClwPVfp1HZZ3LTMsFOiLUfszmlyNM
-   g==;
-X-CSE-ConnectionGUID: Urk2//JPRe+sVAqQumtZHA==
-X-CSE-MsgGUID: kXhBVf3rRkmZ2OBM0/sVNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="39648216"
-X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
-   d="scan'208";a="39648216"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:38:29 -0800
-X-CSE-ConnectionGUID: uXo9fve3QeKgAjAFvN0Akw==
-X-CSE-MsgGUID: vFV/FOu/SjGBdlMfCgFiNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
-   d="scan'208";a="114048859"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.174]) ([10.245.244.174])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 01:38:28 -0800
-Message-ID: <6fec16d5-cbf3-448b-9c07-85a079095f62@intel.com>
-Date: Mon, 17 Feb 2025 09:38:26 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C182165F9;
+	Mon, 17 Feb 2025 09:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739786180; cv=fail; b=fnUEf6z7/XCca1+OiqBnllcnwHK/oT7MbWFMcRfPuF58ewpWpAWJd7f9Jhn8zYnUae4OHOh0Biy9d1rsG1GGaEOAHJXEUtD8z2qXvaA2bdfRM2d86wKoonyd/S2g/QyTEmhD45W6DjdEC58JPxsMA9aE/rPiOwfuXXf2MqahAGQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739786180; c=relaxed/simple;
+	bh=jPu1ZP22+NClqqng6QlP5eqoDB1CNQTLuEMrSuFRHic=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MvTY1QrfYGDgJONxCTVenqFu1tRxvDjmPVCEFwoXGYB8vOvxrGqVP3IZ803hoFfaKmgXTUMD9FYZBLaVZ8ORsFwZbHDofSRsjFcJJSxMAYBX+SH4+m5P7UHf9mc6s/vzKH4EDBs0qSxsosvkjVLFBDwCpvHAwYR63BTd7+bOOu4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=h292Lw14; arc=fail smtp.client-ip=40.107.103.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jE1AqGIaCxnrbJ84n1bky6JbmbHK7RCmaJQG+PYlb1bc+Gg35rfZCVgwb2njhurc/KIAy28rNkp6HlUyFTLzQO6B+mIoAwTnxkbK+w+lbR0NvKIatwJqnXgDMR0sxvaD58q7YrVV10pXtFp4jNb8AZIPhXZRQ79XGPdKKrn3gQeMB207GpMpXePBSxd6TyxkertwIJUVyoTjRCS9+DZl7eypx2GO/+UK9rpFHa+F/cv1wF9Qlw5FxYtRT5ArJ8hMRZgJgNIAsxVTN4TbrLW3h1gnJrcpVcyRLgF+SYvfuHDABCaGtQv4cxAYSudFUO1itBha3Bp6mR4ZbQ/bpPhRZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V8G7MSe2P/2X03ljRDMV4899Mbm1A4oIxxTH6ARR+dA=;
+ b=nQd0gXvSbWFNNQHJ0L73905Gx6auZACy556tmNyhk673q3NFr4JCH0iDlml6C1g5aqTteLTr76QxcLXpTO++Hx9g/JdWJ9a8T9YsbiZxNw5lujAoBjAFITgvI0xWeiG8kD1YZyv0Sa/7r4Jjw9ny4UR3J3EpsvLXcXQ3nsz70aHWBWUeNh9X/ernQNhRHB0A7Q7hioZmRozNTx3TUSjRgEMP3OgSIPbkP8vVW5lPGKHFYuqzczu9vKjaphRIHfQXIdtS7z3a/Px+ZftsMc1q2je4pSSQakay8JRj7Z8nqz3cd7xTI7t7rXtZwDKxvjA09/WIC6XLPUKcliInOvxPjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V8G7MSe2P/2X03ljRDMV4899Mbm1A4oIxxTH6ARR+dA=;
+ b=h292Lw1455TXH2+vKbmGv4Cp4n2cyHi5j2M6BV2SFSr2PwA9sJ607NXpHL8Jwl/w1lmKlqyw+T+c8jOnrNKmIyKaqL0dMFtJMieZrKT/puTMxMK1pSrqL8qk2AiOiizFgJ0mwbFSii8VARTJMmC2MzkhWwMcv/KI9OhyqSLUcygy9+QTet6qWoiq6RwVG86DthImwBKXVtfh9EMFWUGhOY/DzMFTTs2spQSGd5T3vqCVBV+WdIdtzBFeJ7U/cp+rnkeUXgyF1iUlxHwsagE7jmUqtg8cLgaWFwTSLA06PBmzF74F8/goJANGF8c3GzgCwlns/VTKEpZZeBCLxvbLdA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB7684.eurprd04.prod.outlook.com (2603:10a6:20b:287::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Mon, 17 Feb
+ 2025 09:56:14 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8445.011; Mon, 17 Feb 2025
+ 09:56:14 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH net 0/8] net: enetc: fix some known issues
+Date: Mon, 17 Feb 2025 17:38:58 +0800
+Message-Id: <20250217093906.506214-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0196.apcprd04.prod.outlook.com
+ (2603:1096:4:14::34) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] drm/xe/userptr: restore invalidation list on error
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- stable@vger.kernel.org
-References: <20250214170527.272182-4-matthew.auld@intel.com>
- <Z6/ttCTrEuwNsD6w@lstrano-desk.jf.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <Z6/ttCTrEuwNsD6w@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AM9PR04MB7684:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29d2fcd4-b940-4e25-547e-08dd4f3950c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Rl+HKIODbHJ8Geo2yBpwQa5CvyT3GTJnWyku0cDXoBRE9Uz/r5za0lm5xaRU?=
+ =?us-ascii?Q?saUKbJiM6E2Ir6N0FlEQp/jG/3Me5FiLq6bXd1fk5VLEVt4Y3Zlu96QPC081?=
+ =?us-ascii?Q?b+3g/sJyiT+BxCCtd4VbYsTeoUhu0dKH+iWDqeJj3p5R8rwHvzRNyLDarrIH?=
+ =?us-ascii?Q?cHCKLEqTEbpXv89XWvvZRy+Ylmyo5fxpvRAKSA/m8mF3CLqGoTmE5ERxGT0K?=
+ =?us-ascii?Q?NHW8fzkWkc/jzgQo8G2ZatQXbg0jrlOKf4JY0q7xQNKLm+T/Gru6TigrBXre?=
+ =?us-ascii?Q?Shc68B1nkMSN752MgyvBLgQfLWKQrloIoDrU2ifO5CtTPJyCvlTaOPY9OfN5?=
+ =?us-ascii?Q?PIbjja5fHSAxPe7D4S5sImZzVtluNEExRJjRiwQO8IciXwX+uNRf0fKbiZKf?=
+ =?us-ascii?Q?urVOkUp6IbvP2wXGFUgJlLcgWVUYgrpH/eASGuG7rnDNGDGT0RD/7BAppBNu?=
+ =?us-ascii?Q?OEWQTDh2wamnXSr15/6/+nOWmnggnGWEkzzgpDNwpX75MC8Ve0Hg/FYHZM7s?=
+ =?us-ascii?Q?nOoYiyAPoU/AUwh9B62fmhS4YlKYmS7P18quKcIJ839mv3fZCEzD+GAdz48o?=
+ =?us-ascii?Q?6HF17X5z8gfoq29/NW5lEqVWPTYOzoMoiG7i9qyGGb4XefiX2m4Hei7WHWgp?=
+ =?us-ascii?Q?tTlYsZo/r9xJNfLqj1PY9VBucrr+WBjcvfzCzLgf++TpdgljyoRkr1CCCNUU?=
+ =?us-ascii?Q?R0tIU38VRL7JXVTnIA4oWSicF61JOla4o5MBhEFmRia9coWiTpEAnXZAAPEe?=
+ =?us-ascii?Q?Giq8Tj/sE23smOZrCDPbvWZAxaVh6M33kVpEXGN0n0NBURbor8pFOBYcewTb?=
+ =?us-ascii?Q?fGL5nuRkV8SPvGnE1AMNtC6Wmy59J+cC3f0nVfCRUzr+T3+MbZf3ZRKm3CVH?=
+ =?us-ascii?Q?teeWgHTkahtmKz8xKINhofOeGFo4pF3G8CAI3c0TyYFKUtF3Gith3rVAPEdg?=
+ =?us-ascii?Q?WnGHquWysK+sN33JigiLEAUxussVAoJD3G0kZVKpVzl9s5/viP6Ro5bwe5h/?=
+ =?us-ascii?Q?CCGs7+/aYj2KJBuL9I79K3cZIt0kcyq3ZQAlOBqgpHWTLjqS95we3SRTM/vt?=
+ =?us-ascii?Q?bUfMVgwJhTPebjhwB99ZHT2W7bENAbHurBBp25fum/b/6W2Ez3Yn6FcJkUze?=
+ =?us-ascii?Q?IQ+UlvcUDjQmvnK9tKqReCKJkj/hjBF/epbihKE6fkn96zIH1nQ0kynlgjb9?=
+ =?us-ascii?Q?AwWgrcff+3C3iAmSmg7XClPpYnOndgIJXCeO+eNTmjnsFkcOiDY9h+xwqXdl?=
+ =?us-ascii?Q?mwe5wcUw3mEXie8qX/sGMprCGTv+i1K4qsrlzvbGMTVZTaaZGQ6i1i24FuHr?=
+ =?us-ascii?Q?ZzjCZXwbZGr6XmQw9CSTLLluCO40sDMc7N7jAYxn32Oq2uVhRUnJWsM8SD3E?=
+ =?us-ascii?Q?M8I5LP6pM8oMR/7ViEbLywwK03TdnatUsU6NjpZyoE/kq3glOUCnwTyaQnsc?=
+ =?us-ascii?Q?nT2jAIJkpPqVB6sfvezl+CA8I0z3OXkS?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FGU43UyynQfl0cuzDWLb2ukspbsDn3KcD8ISlvSrsxkZKUz6Q3+xoBfTGZ/C?=
+ =?us-ascii?Q?4VJhETd6V2OjLpjVjs1MFjIwHQb9p5ePd/swKOZFC5rJfz6aV/72B40spLBf?=
+ =?us-ascii?Q?ZxmhmpyoFMJI73b7gyoVmABWiEAXEQoLioQlNxHnLYLsJBEaC5BdpMOgkKlH?=
+ =?us-ascii?Q?KIAkRH5Gls3lrwjQ5OnIGTSPhuTjD8FcFZzi/4w7Xj0kfmx2ugy6g66nKAV/?=
+ =?us-ascii?Q?WO3G5fYT28vGJi9N/DQFQK5Yi71cSIKulnfJB0PBzA+SeXXf78LbsXd/pDvG?=
+ =?us-ascii?Q?l4lM7jiFn3IEeDfGxYrRm9XvFmbhE1yQO3M2ZWP1x3z30baTl167ZZ8e/Q1z?=
+ =?us-ascii?Q?eyVV4D6YStbyYiRj7lFpemGHUscAZbQUqqailVChdb7nmwIChF8mx7rFeiLp?=
+ =?us-ascii?Q?69n25uJDqFNME4d3cSfo2wn/SfxamzzAt9q6hCBokOmKtYx5h1iqM2gu2VkD?=
+ =?us-ascii?Q?mimXZS1wAeAVaGbjEgL64P1uYy4Of0xYVqzz59gStR8KHG+IPBVhnyT2oIoM?=
+ =?us-ascii?Q?uX/jGql89OjK80Zp+y6juYn7dbyEAIQ/qSGVk8b6rjExOzmzqogYbELUHUxJ?=
+ =?us-ascii?Q?ynz3tgHRowGR4mgW0mp5WHHxfsV1sdDxiTo0u0wrAJJ8FIY5+4OBsLHrD2yj?=
+ =?us-ascii?Q?NFeEeg4sCNi4L89EAUl9Z56AHfQ++zt6hiEJL4Ny+Ebama0guOXu8W9g7f1h?=
+ =?us-ascii?Q?47HqnmbxSFruYuYDpGK/I4Y0DcV3KWc3/9Eg3fjQApVrNrPj744dgd6WEPjv?=
+ =?us-ascii?Q?RimmcroKgsqlwSFd8hyEe5lVCfmtKWWSLWYCBMPHGhcXeUstaYrPsWaJSHqq?=
+ =?us-ascii?Q?pAXBh1lnQNGdxOUbVPVeyhfPexnnrk104uNUFzzh6MCLQp8RxNSf59ziO/Bu?=
+ =?us-ascii?Q?xbfj6P8GqLsFK+hVOJVIO9sbyK+oluokZHxslk3Y5tVzHgJAfSkZ4Dpw/zlS?=
+ =?us-ascii?Q?tiacYFxccjKslfPpbw9Mn6qPhygSkd5EYhVwCl6DRen+Aea/op0qC6bmmTuU?=
+ =?us-ascii?Q?OQ0kl8FVUo/CfZq27AhY9EMKxzQJ0nVEY71XfLhhrX0y31P+4H/XGXQjgduW?=
+ =?us-ascii?Q?oNQ/bk4aXe4fdLILi8Ijox/DgJD0MtoC+j1puutTHW2HR5cZ7PpzHbfDnXRK?=
+ =?us-ascii?Q?ON8flskhDV6HuKPpYgG2ADitLd6JwB4YVJiVq6hgbFBL5nELo5KjOpbVSL0e?=
+ =?us-ascii?Q?wg9Tz4+zXJwGAXwLQxXxE7NbpW6PXAjf7dAeVhA6UpkHyNe0zeHRK15XuIg1?=
+ =?us-ascii?Q?7bspwRdb2EdWv1Mp8NtqPNUulacolVocPFDe/nGEYnjVp7KjsMsoSf1Y/Zii?=
+ =?us-ascii?Q?LbYb8W8VenCDQQwtxUtN9RPlcu0CC0sH+mxgE6eW2yxlyHl/9gbO6xNSKfW0?=
+ =?us-ascii?Q?9xsppuKwH3T5Ljd5RIb1zdge39dXIrACCxBrAcGKE3GIj1yfwI8Wi3D3JVWm?=
+ =?us-ascii?Q?fABtqnd6mSPrExc++WYu3Uq6jB0aYFCkv88vt7lIo8T6xcbSYAZkVHJnuvXy?=
+ =?us-ascii?Q?htaESXrc14U70zs86/7/3d0GAMGAs9wBOLaaxRajPN1sCl9CkneIAbhPcnU9?=
+ =?us-ascii?Q?J3EKsU/AmV3+rCE+SWktF2Azocrc5Br5qZUJ8lWW?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29d2fcd4-b940-4e25-547e-08dd4f3950c0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 09:56:14.6845
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vBAvxQZbqZF+qo/oTEorXQa5ZGAG/ChqTctbvRWfMmavyZMHCww559kd77S8c+kwRiLZm3CfEpvAYZT6LN0Knw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7684
 
-On 15/02/2025 01:28, Matthew Brost wrote:
-> On Fri, Feb 14, 2025 at 05:05:28PM +0000, Matthew Auld wrote:
->> On error restore anything still on the pin_list back to the invalidation
->> list on error. For the actual pin, so long as the vma is tracked on
->> either list it should get picked up on the next pin, however it looks
->> possible for the vma to get nuked but still be present on this per vm
->> pin_list leading to corruption. An alternative might be then to instead
->> just remove the link when destroying the vma.
->>
->> Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
->> Suggested-by: Matthew Brost <matthew.brost@intel.com>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: <stable@vger.kernel.org> # v6.8+
->> ---
->>   drivers/gpu/drm/xe/xe_vm.c | 26 +++++++++++++++++++-------
->>   1 file changed, 19 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
->> index d664f2e418b2..668b0bde7822 100644
->> --- a/drivers/gpu/drm/xe/xe_vm.c
->> +++ b/drivers/gpu/drm/xe/xe_vm.c
->> @@ -670,12 +670,12 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
->>   	list_for_each_entry_safe(uvma, next, &vm->userptr.invalidated,
->>   				 userptr.invalidate_link) {
->>   		list_del_init(&uvma->userptr.invalidate_link);
->> -		list_move_tail(&uvma->userptr.repin_link,
->> -			       &vm->userptr.repin_list);
->> +		list_add_tail(&uvma->userptr.repin_link,
->> +			      &vm->userptr.repin_list);
-> 
-> Why this change?
+There are some issues with the enetc driver, some of which are specific
+to the LS1028A platform, and some of which were introduced recently when
+i.MX95 ENETC support was added, so this patch set aims to clean up those
+issues.
 
-Just that with this patch the repin_link should now always be empty at 
-this point, I think. add should complain if that is not the case.
+Wei Fang (8):
+  net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+  net: enetc: correct the tx_swbd statistics
+  net: enetc: correct the xdp_tx statistics
+  net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC
+  net: enetc: update UDP checksum when updating originTimestamp field
+  net: enetc: add missing enetc4_link_deinit()
+  net: enetc: remove the mm_lock from the ENETC v4 driver
+  net: enetc: correct the EMDIO base offset for ENETC v4
 
-> 
->>   	}
->>   	spin_unlock(&vm->userptr.invalidated_lock);
->>   
->> -	/* Pin and move to temporary list */
->> +	/* Pin and move to bind list */
->>   	list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
->>   				 userptr.repin_link) {
->>   		err = xe_vma_userptr_pin_pages(uvma);
->> @@ -691,10 +691,10 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
->>   			err = xe_vm_invalidate_vma(&uvma->vma);
->>   			xe_vm_unlock(vm);
->>   			if (err)
->> -				return err;
->> +				break;
->>   		} else {
->> -			if (err < 0)
->> -				return err;
->> +			if (err)
->> +				break;
->>   
->>   			list_del_init(&uvma->userptr.repin_link);
->>   			list_move_tail(&uvma->vma.combined_links.rebind,
->> @@ -702,7 +702,19 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
->>   		}
->>   	}
->>   
->> -	return 0;
->> +	if (err) {
->> +		down_write(&vm->userptr.notifier_lock);
-> 
-> Can you explain why you take the notifier lock here? I don't think this
-> required unless I'm missing something.
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 53 +++++++++++++++----
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  3 ++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |  2 +-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  7 ++-
+ .../freescale/enetc/enetc_pf_common.c         | 10 +++-
+ 5 files changed, 60 insertions(+), 15 deletions(-)
 
-For the invalidated list, the docs say:
-
-"Removing items from the list additionally requires @lock in write mode, 
-and adding items to the list requires the @userptr.notifer_lock in write 
-mode."
-
-Not sure if the docs needs to be updated here?
-
-> 
-> Matt
-> 
->> +		spin_lock(&vm->userptr.invalidated_lock);
->> +		list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
->> +					 userptr.repin_link) {
->> +			list_del_init(&uvma->userptr.repin_link);
->> +			list_move_tail(&uvma->userptr.invalidate_link,
->> +				       &vm->userptr.invalidated);
->> +		}
->> +		spin_unlock(&vm->userptr.invalidated_lock);
->> +		up_write(&vm->userptr.notifier_lock);
->> +	}
->> +	return err;
->>   }
->>   
->>   /**
->> -- 
->> 2.48.1
->>
+-- 
+2.34.1
 
 
