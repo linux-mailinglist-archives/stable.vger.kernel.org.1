@@ -1,74 +1,77 @@
-Return-Path: <stable+bounces-116628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04989A38F2C
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 23:37:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9DEA38F51
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 23:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60A3B3ADCF5
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C2E71727AE
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 22:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28A01A8F7A;
-	Mon, 17 Feb 2025 22:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCBE1A83E2;
+	Mon, 17 Feb 2025 22:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U8FbEnNT"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="U9kwVmZR"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF8B18B495
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 22:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735381A5B9D
+	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 22:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739831852; cv=none; b=F5GsXQ9zXvU1eLteTFj/MACSpb9LTKWM9wnlm0mqFC0WWCyKyIOHZwTDwPjaD33x50r8G+i1XzCHyZOCbGTfLIzdHd+xaXe25IY8/GN8AI2Z/wvRnURrUpaPHmcM+2PIOcuRuoFWxlulEsFv1cfB2F9RQE7VBCvlZLij/rRze6I=
+	t=1739832867; cv=none; b=IMnNbqbD3C60sZC+fdBhqrBwyjca/WAHwNyU1muT9a3Vq+b+9hyXzgcniFO6AE/fV1llEJvMNWs4zZ7Ps946qFUpSyABoZEEgxj1KP8Mua4atss/unR6sUA3tDUl12GHGOwJxCey3/9ZHTFOQFgt7FeVNA2SVAp4h0VYMfpDPG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739831852; c=relaxed/simple;
-	bh=e3W15pdFUay2X4MUqjFbksdjtZgDa/8IFND6iZsW3n4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sptmknfqtWCrcU/++i7jN46o4f8bmaptjtq4Rq9o57qiGvHx8aB900G9hUcQ2asgDfckCf1zGwxHriB0NRq8bb1cA8WFm73ho4IFrZHTXdJ+0XvX6GUR3XE9NJGHTHbraJ7X1juELNtvEHLQa4irewyHbrnjJggb+tXf9SvHMNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U8FbEnNT; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739831851; x=1771367851;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=e3W15pdFUay2X4MUqjFbksdjtZgDa/8IFND6iZsW3n4=;
-  b=U8FbEnNTUc1MrlXXKCnYFISIVi7rCwrrjvIBnbVppm8bvWPtxlBg/Ult
-   BgijUDumKFJvDC3b+8bipUeEOSsUjY/O9hnoUui6OWS78DEp682Pu5SAK
-   4f6p4Qi2ky2XVHzIGjGPOPG/aa18V5ga8+1K9XRTZm1jEb+tE0ZIXa97v
-   FL/4f5XkZwIkeD25orhhL7FbMk5HecnvW4es4VzRsoWU0Z7svK/qA32o5
-   mnqpTmxhGgMo12j+ncMt45QT8cTQTkZ2ThBC+OD80bohxwp0xrVjq/8hA
-   RSKh76ZP1oUayFNCV34xZqVsFFXplgYq2Du+F6vX0YzfaML0RbY63zLLM
-   g==;
-X-CSE-ConnectionGUID: G/mONJiBQkaJKqgu4Ye8Qw==
-X-CSE-MsgGUID: /r44tIY/QZakemmYVZqTwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="44171143"
-X-IronPort-AV: E=Sophos;i="6.13,294,1732608000"; 
-   d="scan'208";a="44171143"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 14:37:30 -0800
-X-CSE-ConnectionGUID: fThTQHpRTZ+1kgrSflZ3CQ==
-X-CSE-MsgGUID: 6YzBTyUBS4yR3NmF6zzZKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,294,1732608000"; 
-   d="scan'208";a="114872573"
-Received: from ideak-desk.fi.intel.com ([10.237.72.78])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 14:37:28 -0800
-From: Imre Deak <imre.deak@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 1/2] drm/i915/dp: Fix error handling during 128b/132b link training
-Date: Tue, 18 Feb 2025 00:38:27 +0200
-Message-ID: <20250217223828.1166093-2-imre.deak@intel.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20250217223828.1166093-1-imre.deak@intel.com>
-References: <20250217223828.1166093-1-imre.deak@intel.com>
+	s=arc-20240116; t=1739832867; c=relaxed/simple;
+	bh=XyQMds23xtWJ7/f7tXZbSYvQTVYBe2H4RDME7csQWt4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VnqVrObww749VqULk7BEaTPTrqrdnqQnFuEVPf7sp0shT1to9RnddqDiBhvYgNIQHM6bnjQj2KxPrqzJfDTfnQixdA78aAX+gUQ+BgSNLwyIePIRYGZcv5WSFF87qETsOxnJOYxUW3dfSo22XC3cCWJcT/edjKT4mNjuRSGKn/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=U9kwVmZR; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739832866; x=1771368866;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=k7Hb7ZFSDiD+1g4jauYnyjoLg5ylmUkIgS6UZobxAKM=;
+  b=U9kwVmZRVw81d70WY5tG2cQZS3ypLoMPjuTBaowxRes3yOgyROjK5Ycr
+   lPooD127xvljd9ISh49vavCVut9yTm01nI8//kjGXz8r0HCyZWCeqBK7K
+   hAGDB257bQVz/NXmuk67Dxz84gDiQ9HymFCACM1SaD10IX7zarkkpBG11
+   k=;
+X-IronPort-AV: E=Sophos;i="6.13,294,1732579200"; 
+   d="scan'208";a="697926859"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 22:54:25 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:20290]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.181:2525] with esmtp (Farcaster)
+ id 9292f06d-8a5c-4808-bc66-dec9662aaa23; Mon, 17 Feb 2025 22:54:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 9292f06d-8a5c-4808-bc66-dec9662aaa23
+Received: from EX19D004UWB002.ant.amazon.com (10.13.138.45) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Mon, 17 Feb 2025 22:54:23 +0000
+Received: from EX19MTAUEB002.ant.amazon.com (10.252.135.47) by
+ EX19D004UWB002.ant.amazon.com (10.13.138.45) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Mon, 17 Feb 2025 22:54:23 +0000
+Received: from email-imr-corp-prod-pdx-all-2c-619df93b.us-west-2.amazon.com
+ (10.43.8.2) by mail-relay.amazon.com (10.252.135.97) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.39 via Frontend Transport; Mon, 17 Feb 2025 22:54:22 +0000
+Received: from dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com [10.189.199.127])
+	by email-imr-corp-prod-pdx-all-2c-619df93b.us-west-2.amazon.com (Postfix) with ESMTP id 45A58406E0;
+	Mon, 17 Feb 2025 22:54:22 +0000 (UTC)
+Received: by dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (Postfix, from userid 30684173)
+	id 403E84F37; Mon, 17 Feb 2025 22:54:22 +0000 (UTC)
+From: jaywang-amazon <wanjay@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <wanjay@amazon.com>
+Subject: [PATCH 6.1 0/1] Backport upstream commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60 to stable 6.1
+Date: Mon, 17 Feb 2025 22:53:53 +0000
+Message-ID: <20250217225353.21795-2-wanjay@amazon.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,60 +79,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-At the end of a 128b/132b link training sequence, the HW expects the
-transcoder training pattern to be set to TPS2 and from that to normal
-mode (disabling the training pattern). Transitioning from TPS1 directly
-to normal mode leaves the transcoder in a stuck state, resulting in
-page-flip timeouts later in the modeset sequence.
+Backport upstream commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60 to stable 6.1
 
-Atm, in case of a failure during link training, the transcoder may be
-still set to output the TPS1 pattern. Later the transcoder is then set
-from TPS1 directly to normal mode in intel_dp_stop_link_train(), leading
-to modeset failures later as described above. Fix this by setting the
-training patter to TPS2, if the link training failed at any point.
+David Woodhouse (1):
+  x86/i8253: Disable PIT timer 0 when not in use
 
-Cc: stable@vger.kernel.org # v5.18+
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
----
- .../gpu/drm/i915/display/intel_dp_link_training.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/kernel/i8253.c     | 11 +++++++++--
+ drivers/clocksource/i8253.c | 13 +++++++++----
+ include/linux/i8253.h       |  1 +
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-index 3cc06c916017d..11953b03bb6aa 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-@@ -1563,7 +1563,7 @@ intel_dp_128b132b_link_train(struct intel_dp *intel_dp,
- 
- 	if (wait_for(intel_dp_128b132b_intra_hop(intel_dp, crtc_state) == 0, 500)) {
- 		lt_err(intel_dp, DP_PHY_DPRX, "128b/132b intra-hop not clear\n");
--		return false;
-+		goto out;
- 	}
- 
- 	if (intel_dp_128b132b_lane_eq(intel_dp, crtc_state) &&
-@@ -1575,6 +1575,19 @@ intel_dp_128b132b_link_train(struct intel_dp *intel_dp,
- 	       passed ? "passed" : "failed",
- 	       crtc_state->port_clock, crtc_state->lane_count);
- 
-+out:
-+	/*
-+	 * Ensure that the training pattern does get set to TPS2 even in case
-+	 * of a failure, as is the case at the end of a passing link training
-+	 * and what is expected by the transcoder. Leaving TPS1 set (and
-+	 * disabling the link train mode in DP_TP_CTL later from TPS1 directly)
-+	 * would result in a stuck transcoder HW state and flip-done timeouts
-+	 * later in the modeset sequence.
-+	 */
-+	if (!passed)
-+		intel_dp_program_link_training_pattern(intel_dp, crtc_state,
-+						       DP_PHY_DPRX, DP_TRAINING_PATTERN_2);
-+
- 	return passed;
- }
- 
 -- 
-2.44.2
+2.47.1
 
 
