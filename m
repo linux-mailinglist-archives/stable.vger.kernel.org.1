@@ -1,176 +1,163 @@
-Return-Path: <stable+bounces-116574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F41CA38291
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 13:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4E3A3829D
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 13:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEDE118884E6
-	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C19B188FBE5
+	for <lists+stable@lfdr.de>; Mon, 17 Feb 2025 12:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC87219A94;
-	Mon, 17 Feb 2025 12:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E3121A425;
+	Mon, 17 Feb 2025 12:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Iyatpmj6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W267dJ6j"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7046E2135AF
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 12:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB7C2185A8;
+	Mon, 17 Feb 2025 12:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739793821; cv=none; b=WXjjM4XabAdQ/kp4VY28feoOS/+v0Mc42lfE6kZ6g4gAEzM9f4r1gD3fSkI1O+3G8vQyeO55zC0fH0S9zr6XaQglRHqW/6VJTzdKzXXAIcHqvwJVoit/wkLKt8BMQGSXU5lcgWDjmVShhV0LeO8xA6e8eMl4K3WW3jwRI5RjjJQ=
+	t=1739794188; cv=none; b=KhEIxiJ5sIUieVUoVjX6wXkRvFL7m/E8Sn1RaOuxxKKANvjxJ5kB3AytmRzxF4us4XJG/KAZTEOVZwmvRQ8MG+9Y+gCxalLXjWwl9x9fyswvhYwmUaZOr/gsE0xt+2m8+gk88KzT3aOmRi3fmqDVRamEyoCyUxMRXP//8WQ5sTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739793821; c=relaxed/simple;
-	bh=6K1s7WtvEcHra4PUkbNmsvAn+WXVWxS0gjiaUNd/DaA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j4rdbF2D1275IFT7YpKj1/COlRWYN+jfSToQK09U3YCtS35eYaKoa3u5H0GYzZJ87k9Dx1Pt3RBYiyQaf3HPjXRpMVgNu178ue/S/pEEC8G9tlwe1796nWTnRN4aDrHpo+eTJD9FNuu0NNPelMDc9yiOpktPqoP/TNe3BP8UjqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Iyatpmj6; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HAinWM004213
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 12:03:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=aSw/G6T2sY+Uwj1Mjfh8/x3LyRxDhXoGM64
-	LGGBqwdk=; b=Iyatpmj6Qzd5lrwLSDcnbKhY1PEhWovR98kJt+HTgzONzVpjnxd
-	qvwigJNGNbGBdudzSRNEebmi4C8k8cS9noiRfFc9tDaZlu5zhk6cwsnCIHqNnRig
-	iV0IbXFg7aN8vP/hKz3UlTG4toOC/BkQxVT+mU/qTJSXpo54344ctAWsRc4IwpC6
-	sYvfDENc6v6Er1/ibdl+0daKOzMks6dsNlZKiaWJ+u+qDGfu5g+ehant1MF40igV
-	g29opPcICn/NJuQ6vd8aZmhKFSKig18p9bO3FbC5kJzEoYY4sQCzEVrdr1lczSqH
-	a6jPjKVyC0QmnFQbe0jtDX3VfpTeAjnwqgA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44v3mg06gx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 17 Feb 2025 12:03:38 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22104619939so63821645ad.1
-        for <stable@vger.kernel.org>; Mon, 17 Feb 2025 04:03:37 -0800 (PST)
+	s=arc-20240116; t=1739794188; c=relaxed/simple;
+	bh=Inc0DYizA8KNQ76TznDJ4jYBwtNttsUa637XXQe72zE=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSFNwQYg3Gi8QVszkcs52y9sVSKLBwE55+DJGeu/1hdbn9O6SPV5zEyEFULhguUAKE5vG2C4xs94JTS/BEaFw7xmt5SrXTYWjJolgNTV8MTZYKrMlQsyH76Fg5E525qZM2+lRLlsQHMDQrnbMwqC7R/5RC9Sn0DCRWmPltx+N3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W267dJ6j; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38dd9b3419cso2241312f8f.0;
+        Mon, 17 Feb 2025 04:09:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739794185; x=1740398985; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eSFQgbvq+nNgV7Pls+43YmrvimRl0VvsXoAHq2jrYgw=;
+        b=W267dJ6jRpk4INEYYLmNDUkAmeD4bA1PwAp8dcm+kXnJ3Q73MYS5TEepJIhqP5Ge3g
+         paVhAS4SEzsqzL9ITYeaHNdgPTCgJybin8oBu9WDEaJLIfCQ3J0iWYLTbj9GlKjENI4h
+         yehkXSv3TqnJQVinaubyAQ+Xr+vhujMhxn7eHOASpYln0qOLX8XnWangUv4A1Ajaln9C
+         RJFrVHC4R4lOv6jQf206DPB3QtqeLwSY+uNFcTpXyZBkKhxSvdMPIO2PiKYhHbQIE2NW
+         NzW9KayTHIp0c1JaOOo8HFfxgXCxR0wrCMccMz2OdWTnDoFLilYiN1eot+mvX1m0kS9G
+         JmIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739793817; x=1740398617;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aSw/G6T2sY+Uwj1Mjfh8/x3LyRxDhXoGM64LGGBqwdk=;
-        b=PCofNFnGnymus6eTtkeEjixcIqakfq/O4HLrC/77Zh4DfukMPia1v1RJmWVn0FwlGx
-         dt7/RvUq/HBALJYNxVZLwQadvqrv+dCVJuB0Ci3AbFFnf6rBJqGc2X5qZ2MhjalXlNgK
-         UWz8yC6TFcIG23FHzMy6ybotgGO5Nn4MZzdvOEQ/6M2nN2/5v1uV+Lr1+0tgpgKAQTXR
-         0L51c3YYgf/TNV2BSJGutzqEkpzM45Pp4LhkyTRRjtoeZSNVmvNSNcR4ro0mSXOlh6L9
-         xTyswAInubUqZXyaxPo1pxspmxANwN04asxY2WAdfXVTAZtASUyIerxRdg8sDT6tUH68
-         3JBA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+qQ/RkhqNs3w4J3DPukjp5/R4lJAlxx8bLTqqaQvWS2FpsQt+C3hfZLqduho3pWeFtpZincw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN/O2SwvIgXS96fevJ8W9IxMRTocJPvRU1uVFJMZ2kB0x15xvZ
-	BlyW42o3rkM6ervWeqTib433j9tJCBdkPEcXNW4KbnKBLqbPXEaH2bxUOtrASuxZKclNKdSsXgx
-	iAcYaor661I8A+hcvK3GNk0r3tXFHrzCp4qDBAXccPRAfT/zVVChGztE=
-X-Gm-Gg: ASbGnctuFyGTmd28w/3TLB50bBBxVIzFxWpAMZjcFCWXkbsyHOgx5mC6LAa2067y8s/
-	UK/4cQENL+k8zjal0fWNVXRsmP+L53BwffMlZ44y88ykBSZvwregHMFYP1TrGVa3VrqalAaaGjh
-	T8ZkJLFi4lPJeL/ihxaSK+gy5NPpVuk0HAcjWoeR2CBENVJdypBZQ3nAQaFD9QNCYUkVug+PEsk
-	gLgGOxEE+ssyqMVivxNtDKJjja6D6TrNHwvCjrMhjMbfD66LBPvjln3qVyqr40e4xpUHN3ijA5T
-	5wgtLubnLN4UHMDM+4i00gzrORPjYUs44A==
-X-Received: by 2002:a17:902:d50d:b0:216:3633:36e7 with SMTP id d9443c01a7336-22104062006mr155026825ad.26.1739793816579;
-        Mon, 17 Feb 2025 04:03:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCA6q1jXs0gOYPnNc5rfyp37vbwb5yTD5SJhEK5QU1yvw7CTG3Llt6jrhbbwMiFjX0ult0Sw==
-X-Received: by 2002:a17:902:d50d:b0:216:3633:36e7 with SMTP id d9443c01a7336-22104062006mr155026335ad.26.1739793816079;
-        Mon, 17 Feb 2025 04:03:36 -0800 (PST)
-Received: from hu-prashk-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5348f34sm70632925ad.10.2025.02.17.04.03.33
+        d=1e100.net; s=20230601; t=1739794185; x=1740398985;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eSFQgbvq+nNgV7Pls+43YmrvimRl0VvsXoAHq2jrYgw=;
+        b=gOJLm3e5uybz//qkwsFqDVB31C04SGk9TJO3v2fNEfgGuPb6JitjuoFe7X4mhVni6c
+         jBv21lOG9R0YMMem/ZrHZctRJSf9Z8LpLciPzzuJjjQbnhi6V5k25YyJlubYTMwbq+RL
+         gVrMbM8D1TzHP4RwDasbMI07CfnNB9tIL/yCZrJEF0RNQR4t4d+0Bkz2lYcNCoh2Yb5x
+         qbb8sUbGdOzD9p2R8n45uMd+azJpC5TzZLtJI71wGbFT6P6w8BLS1aIwSzU89nO5lKeU
+         OwDC536eN8pyfp6MvoIvn9rcZjzPGzB/tf4ZmYwKJXdz5/v8hXBDwKysMmE6uNwMH22g
+         kQJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ/Czgs1augz1PGsBvaILjwzGmq9VzaqqBpOcZMCat8+1aDnFZoV1Y4WYzoAqtqSQ14JHlDnk4rpGx@vger.kernel.org, AJvYcCVo65O9eStms4zeMo/bC2gJOUBMZb8DvgFgkPK6r5MEffcBX0pWTv8EIsZKF+QBFai4f562fqCy@vger.kernel.org, AJvYcCWCfqM6MnpkMOkJIuaOmtQzIH0H+s+2AHnmj2mFD6276K7CMvLkNvgfA13vIZq/XVqhaK0=@vger.kernel.org, AJvYcCWlmTaR4ZLYdKUqAC8HHiy+qBAT7pcFp2Ii7gVJyehiXewnZHKvoJBpi3Z4BNkYJ9PuIgme5u13SLg/rm2KzuGr9+Bj@vger.kernel.org, AJvYcCX2BntPeE8SlbwiSZUkFb5+6Qhjyx7ndduRRKqNFf8WYXUFUa/OXmEYh2c7Lwm3LBwsGFkkGWmb8U57oAqZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2PN3l99oyryJsSoulngZ8NuA/9ASr24/TP4lAbG7nv1TEGMGZ
+	nGMIQHbdN77CfsFjFXmZ4+6yGrDf75MAlnEv68bWAWPAMq660uHJ
+X-Gm-Gg: ASbGncvfbo93rb81GUqfbASB4e5VoIeEn9qh+wNJvH/xJb4sW1/sDy356cgrMl31uI4
+	tgisXpS6ULgKZH+m6WFSH4XusBW4/YGppQRlw7azCSJVYXW2mmRiFUfQeXA5lKTgIYqNEhPVE4J
+	Z9HHZL96cOqhbpTTw5hDqfyDJmJiIQBHnIBNXllLlqhzpGTV1OGISkvkI44n5j5z1uM53B4BZYT
+	2ePHM+LMdvsn1BDUQITq+QRHQp1U6DjEM6b6H2KfwxLseMpqo0QZmiKP8encqNPIXho4w3rSN2D
+	h3GsYhwi6ECy/YD4X3Doi142MNgJ/vo=
+X-Google-Smtp-Source: AGHT+IGUXM3M95eG2ye29Yd/3FfkwlIr6guJPzqgoVosGmixd8/VUD2KiN9iIXdlnRjIK3DBW5mXIw==
+X-Received: by 2002:a05:6000:2c8:b0:38f:277a:4eb3 with SMTP id ffacd0b85a97d-38f33f1199amr7927742f8f.8.1739794185289;
+        Mon, 17 Feb 2025 04:09:45 -0800 (PST)
+Received: from krava (ip4-95-82-160-96.cust.nbox.cz. [95.82.160.96])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258dd5acsm12253193f8f.35.2025.02.17.04.09.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 04:03:35 -0800 (PST)
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Prashanth K <prashanth.k@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: [PATCH v2] usb: gadget: Set self-powered based on MaxPower and bmAttributes
-Date: Mon, 17 Feb 2025 17:33:28 +0530
-Message-Id: <20250217120328.2446639-1-prashanth.k@oss.qualcomm.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 17 Feb 2025 04:09:44 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Mon, 17 Feb 2025 13:09:43 +0100
+To: Andy Lutomirski <luto@kernel.org>, Kees Cook <kees@kernel.org>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>, stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, bpf@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Deepak Gupta <debug@rivosinc.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCHv3 perf/core] uprobes: Harden uretprobe syscall trampoline
+ check
+Message-ID: <Z7MnB3yf2u9eR1yp@krava>
+References: <20250212220433.3624297-1-jolsa@kernel.org>
+ <CALCETrVFdAFVinbpPK+q7pSQHo3=JgGxZSPZVz-y7oaG=xP3fA@mail.gmail.com>
+ <Z623ZcZj6Wsbnrhs@krava>
+ <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: -ogonL7TX_s-THUpEy-dheDwetRqDjEc
-X-Proofpoint-ORIG-GUID: -ogonL7TX_s-THUpEy-dheDwetRqDjEc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-17_05,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 clxscore=1015 adultscore=0 priorityscore=1501 mlxscore=0
- phishscore=0 spamscore=0 mlxlogscore=481 impostorscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502170106
+In-Reply-To: <CALCETrVt=N-QG3zGyPspNCF=8tA4icC75RVVe70-DvJfsh7Sww@mail.gmail.com>
 
-Currently the USB gadget will be set as bus-powered based solely
-on whether its bMaxPower is greater than 100mA, but this may miss
-devices that may legitimately draw less than 100mA but still want
-to report as bus-powered. Similarly during suspend & resume, USB
-gadget is incorrectly marked as bus/self powered without checking
-the bmAttributes field. Fix these by configuring the USB gadget
-as self or bus powered based on bmAttributes, and explicitly set
-it as bus-powered if it draws more than 100mA.
+On Thu, Feb 13, 2025 at 09:58:29AM -0800, Andy Lutomirski wrote:
+> On Thu, Feb 13, 2025 at 1:16 AM Jiri Olsa <olsajiri@gmail.com> wrote:
+> >
+> > On Wed, Feb 12, 2025 at 05:37:11PM -0800, Andy Lutomirski wrote:
+> > > On Wed, Feb 12, 2025 at 2:04 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> > > >
+> > > > Jann reported [1] possible issue when trampoline_check_ip returns
+> > > > address near the bottom of the address space that is allowed to
+> > > > call into the syscall if uretprobes are not set up.
+> > > >
+> > > > Though the mmap minimum address restrictions will typically prevent
+> > > > creating mappings there, let's make sure uretprobe syscall checks
+> > > > for that.
+> > >
+> > > It would be a layering violation, but we could perhaps do better here:
+> > >
+> > > > -       if (regs->ip != trampoline_check_ip())
+> > > > +       /* Make sure the ip matches the only allowed sys_uretprobe caller. */
+> > > > +       if (unlikely(regs->ip != trampoline_check_ip(tramp)))
+> > > >                 goto sigill;
+> > >
+> > > Instead of SIGILL, perhaps this should do the seccomp action?  So the
+> > > logic in seccomp would be (sketchily, with some real mode1 mess):
+> > >
+> > > if (is_a_real_uretprobe())
+> > >     skip seccomp;
+> >
+> > IIUC you want to move the address check earlier to the seccomp path..
+> > with the benefit that we would kill not allowed caller sooner?
+> 
+> The benefit would be that seccomp users that want to do something
+> other than killing a process (returning an error code, getting
+> notified, etc) could retain that functionality without the new
+> automatic hole being poked for uretprobe() in cases where uprobes
+> aren't in use or where the calling address doesn't match the uprobe
+> trampoline.  IOW it would reduce the scope to which we're making
+> seccomp behave unexpectedly.
 
-Cc: stable@vger.kernel.org
-Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
----
-Changes in v2:
-- Didn't change anything from RFC.
-- Link to RFC: https://lore.kernel.org/all/20250204105908.2255686-1-prashanth.k@oss.qualcomm.com/
+Kees, any thoughts about this approach?
 
- drivers/usb/gadget/composite.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+thanks,
+jirka
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index bdda8c74602d..1fb28bbf6c45 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1050,10 +1050,11 @@ static int set_config(struct usb_composite_dev *cdev,
- 	else
- 		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
--	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
--		usb_gadget_set_selfpowered(gadget);
--	else
-+	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 		usb_gadget_clear_selfpowered(gadget);
-+	else
-+		usb_gadget_set_selfpowered(gadget);
- 
- 	usb_gadget_vbus_draw(gadget, power);
- 	if (result >= 0 && cdev->delayed_status)
-@@ -2615,7 +2616,9 @@ void composite_suspend(struct usb_gadget *gadget)
- 
- 	cdev->suspended = 1;
- 
--	usb_gadget_set_selfpowered(gadget);
-+	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+		usb_gadget_set_selfpowered(gadget);
-+
- 	usb_gadget_vbus_draw(gadget, 2);
- }
- 
-@@ -2649,8 +2652,11 @@ void composite_resume(struct usb_gadget *gadget)
- 		else
- 			maxpower = min(maxpower, 900U);
- 
--		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW)
-+		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
-+		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
- 			usb_gadget_clear_selfpowered(gadget);
-+		else
-+			usb_gadget_set_selfpowered(gadget);
- 
- 		usb_gadget_vbus_draw(gadget, maxpower);
- 	} else {
--- 
-2.25.1
 
+> 
+> >
+> > jirka
+> >
+> > >
+> > > where is_a_real_uretprobe() is only true if the nr and arch match
+> > > uretprobe *and* the address is right.
+> > >
+> > > --Andy
+> >
 
