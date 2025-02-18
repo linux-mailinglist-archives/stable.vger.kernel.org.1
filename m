@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-116778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EF7A39E30
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:03:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D258FA39E31
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB81D188B2B5
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:02:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD1F1188B55B
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEB9241C90;
-	Tue, 18 Feb 2025 14:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1702A241C90;
+	Tue, 18 Feb 2025 14:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3SDApG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQz1JSSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7A712CD96
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DBA26738D
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739887342; cv=none; b=hrtoRqGE5Cm+X/cYZENU5ZPJa1A4nMNEou99hGdA/nQ1q5AMsG7r6kiK/GEo66QyduoirucwpDeKSlenWNgWt+cjOVdF82F/t1X9OF4C29BbhKcxULV2D0iwMKMbFJ++DbMW2Qz6g+SI5Or1ss5CBXeepLGwIuDq6hCt406WAeQ=
+	t=1739887346; cv=none; b=rPbuFqWtvKCXzZtCrmu3I4AZetBY4DSynZhr+v9xwumZKTwa7Cu9o/jUuDp+x0frya48hDzLp0k5qTAalPJCEtFQcO1tWjLUof6etu8JDK5aFRouEdmo/hhiDtPWj6hjo+gtD2Mg2aym3M4kCmV/31tUEKezuHw0Ojlpmr+FR6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739887342; c=relaxed/simple;
-	bh=y9gJxmJF5bqLwWg/rP3QS2T5NR1IYOdfpsg6JFrgFEk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pdnlAlfjS1RwJ7z9w/IN4lQp49tCC7Dd8v3WudFTNc2vY5OqGgAOx1rR3fne9VBJmCsFsGY098Ng3C26UBePG/X3uRqJaQezd6dE0YQaVWKtj+OACClFBNCBs79Lkly5U9kbIIwaG6b4B7Z87Ofoz8RLB98lk36aoA0jWZO1lKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3SDApG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA11CC4CEE2;
-	Tue, 18 Feb 2025 14:02:19 +0000 (UTC)
+	s=arc-20240116; t=1739887346; c=relaxed/simple;
+	bh=OlKWoBxDtQkidMM3MYpEiGe4XeMuy3RM41T3ZfZhXn0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Im7TOFizg4EDUjvYB4x/tdUA327A73JoZoKNLtEPrZMrJofiAmXTwIrTdYDg6J9XO5rparhckwdyRPgGNB8+aNiyiz4MxGwMkSabR6kroMEzudBSGGYYtTpXQsE8n+QngPpsLv14lnf+2Of8OiAX7tPtSNoE0hM6XcFKq4WSbzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQz1JSSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCF3C4CEE2;
+	Tue, 18 Feb 2025 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739887340;
-	bh=y9gJxmJF5bqLwWg/rP3QS2T5NR1IYOdfpsg6JFrgFEk=;
+	s=korg; t=1739887346;
+	bh=OlKWoBxDtQkidMM3MYpEiGe4XeMuy3RM41T3ZfZhXn0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=h3SDApG4bunGZl/k6VzBb1/4il3gjWhK44RNxvG8v0TNwgn04VR09U6fA/y698/Ru
-	 jK0kU4p2H1PKapyzDRc6mV+GwZNRqwAEGPEccjS5h6EBDKhT1Fp4w7Y5OS5OloaBru
-	 NcKAI9IiZfoT2DYdIWCWOxdyTbnyyI6BXQ2DLEBk=
-Subject: FAILED: patch "[PATCH] drm/msm/gem: prevent integer overflow in" failed to apply to 5.15-stable tree
+	b=YQz1JSSvmWMCno7w7WuyVcA3F2Z9VhKJjwloJGtYGEpCLxOfpZZM/m3wNFpqWg3cU
+	 N4lAFDFLUqZCI2SbQn0gmfHJUw2Tz/VN2sLBRdp42e5F5uuTyGsZtPq5eOYgmJslr8
+	 9Op2uxac+blhC9oFkJY+DRFOzveoTI7JKiMOqBuc=
+Subject: FAILED: patch "[PATCH] drm/msm/gem: prevent integer overflow in" failed to apply to 5.10-stable tree
 To: dan.carpenter@linaro.org,robdclark@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Feb 2025 15:02:13 +0100
-Message-ID: <2025021813-scorebook-fountain-acda@gregkh>
+Date: Tue, 18 Feb 2025 15:02:15 +0100
+Message-ID: <2025021814-rhyme-unimpeded-1604@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3a47f4b439beb98e955d501c609dfd12b7836d61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021813-scorebook-fountain-acda@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021814-rhyme-unimpeded-1604@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
