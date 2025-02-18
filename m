@@ -1,99 +1,176 @@
-Return-Path: <stable+bounces-116806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAEDA3A256
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AFBA3A36E
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 18:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5357B3A6CFE
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:16:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 755473B6000
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3E726F442;
-	Tue, 18 Feb 2025 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB2D26F474;
+	Tue, 18 Feb 2025 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="f5lg3l4Z"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="OIkztm9I";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lW8oanri"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D1B197A76
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 16:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDEB26F46A;
+	Tue, 18 Feb 2025 16:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739895362; cv=none; b=DkvrG4xuBSzM9utWzWxtIIuuCwLMa/Ulpw7XS3Fy1tHoXTXVt8qGMVBKiXcrN41ZVeBRZXS78L8FN5crm5NYvRhT06Ux3Uj5FDp2e/1+WZJAFZnW35J9meBuNI1DGJPtwjYLV8Faalv96Ei7bjh7bLjAontDdYMBU2PCSr09wlE=
+	t=1739897901; cv=none; b=HfimXFa8sBEyNdxYFYxKVMhjOK2oaGra25YXbWarXT3cpViMGEVHn65QnAQ5kLluNubZ9XEcd7lEQJrWr2TcluCJ9cCs1XFBcbiVdA6lv9t3/8XnYO/iTTNGXiSnmD15reYunZ7QxFvXVnmYywoGcgtbdDqL/AGYqFF/gQ+q7Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739895362; c=relaxed/simple;
-	bh=4DCRbtgkDw0IZjAW49il1ZVipOsM68oGgrvBByju2I8=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=DFlCLD2OBFvUfjgYgatROrpEF1Kk6Wu7tOQ7heNQBnrnQ25ToVV7nhqtbC+cUT2cgubjkJQpYVDRaXsANQZa4lU6lsRGHxXB2iAnyiz0s9c8fBHmA2dXAFOCjhU/XkbWJ4fa85U2zlDcf9Th+9aN+Ve++oj5EdHPyPeoq7/9wSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=f5lg3l4Z; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1739895325;
-	bh=4DCRbtgkDw0IZjAW49il1ZVipOsM68oGgrvBByju2I8=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=f5lg3l4ZhFICqyMPkwa055O6+ewj2E417mKt1D336/IU9r2BVsh/XOoVcN2I79TWF
-	 0tcG9FDeld4FjuV6Dq1AG5rK8Vo/Ei0Fs0x2nCosevq1J8M+KHGilzuplo+aZWzbf4
-	 gWobTUHnXHSxRK03Y8Uz8H456mPsH7CQ1/TpK9gY=
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqT6iyfUez+DXx4B7ybItHVbSxkDlA8/kMI=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: 8hQkX+uVq0WVgQcfgVStrEMe3/btD/Dx1I92wJ2RjVQ=
-X-QQ-STYLE: 
-X-QQ-mid: v3sz3a-6t1739895310t4318913
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?5YWz5paH5rab?=" <guanwentao@uniontech.com>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Cc: "=?utf-8?B?cGFiZW5p?=" <pabeni@redhat.com>, "=?utf-8?B?ZWR1bWF6ZXQ=?=" <edumazet@google.com>, "=?utf-8?B?a3ViYQ==?=" <kuba@kernel.org>
-Subject: Re:[PATCH 6.12.y] Revert "net: skb: introduce and use a single page frag cache"
+	s=arc-20240116; t=1739897901; c=relaxed/simple;
+	bh=CGmdvdDU/PynLCC51mKFw/25ge/gsTJ3wantBbxOtPA=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Mby2cF2dGnYkK/1SdK3wGdK8Fy4Govy+dwlDex2qcTPeN/i2cBtk83Xzu3cNXHwLKjn0/9Ab4uL9lT4em9jm4sEnahJwoII6Xu8zfzh7uO3M2hVMaR6h/NM6ALWdCM7xa6Pg40P4vJI0PKTW/1tBA+3OyyeCRbzZI4H61RfKI8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=OIkztm9I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lW8oanri; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id CDCF413808BC;
+	Tue, 18 Feb 2025 11:58:16 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-04.internal (MEProxy); Tue, 18 Feb 2025 11:58:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1739897896;
+	 x=1739984296; bh=aNAlA8hxRpyCp2MQ3TxnR2uvSEYOdSCvL4wn3IpX5pI=; b=
+	OIkztm9IINN51EQQpkqZjo+t1/Hu5t+iIAZJRPTxBdjwHrX/Nl+4IarLUdcuhrmG
+	VH72YWC/ZJL0M2cV9ZpvVE2achxvR2nowtGujzYCfCOBmUau2yW7TSVYT/peeiMw
+	9JUXhHlW/2MkxsSllk6dqR8A9GPHEW/B7VMqwmaJdH8CQr5DTfmFMx7qaXQqa+3I
+	099jRNWIXQu/Lw2Hn24IWeD95C0NkMy+z59v3FvnaC3MlxtSIuSDZhmxrG25WqL0
+	KC63urPDqb11zN8NJnFoFoq/e2J8hlB1RhJDp8wZr5fuYfHNY8S2xJP4MOUavhzH
+	EzVXXy3aZtomSlQBbi1jxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739897896; x=
+	1739984296; bh=aNAlA8hxRpyCp2MQ3TxnR2uvSEYOdSCvL4wn3IpX5pI=; b=l
+	W8oanriWgtsuobHLGPS2P2UseU45uRT5mKqNdYrPq7Pi2XjhpQLKw2tl7E13TKhP
+	o4FHb0+00mr1EprMJfOs9kYJ/bIDCpImVbciWMz3ttpXsA61MQqDvNNG4hH0OCMN
+	PpiyEC7cPuBTTmZ8r1C54VBD6q9XZWbdXew5BPC1IpEVLo8EyViZ7gDzyOyt7xPC
+	dY/EUly9EWC4HE/stByuOEuR2Vql8k7U8utHKsd6cLXqS8gR3EGSMLTBSSDql30i
+	SNvafbPJbilXRcRfwvqDyUPr9WS662lOOL8xcWeC2mEVcc+6G/stT3npite5Sz7q
+	NRazv9OK0lmDbGAdk/p4g==
+X-ME-Sender: <xms:KLy0ZyywSJdNf-UFpG4wDImNB8Fd46hYu5kGcHPU851eqbQHpzQoNg>
+    <xme:KLy0Z-SmwJCw8mePwjAqJyp-Tb7SbJ5yz7tjcdQEwMVirbEKFlhEfBlj_CaXrYnH8
+    DunanqS2NXOsZTI-CU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiudekhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
+    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeuvdehteeghedt
+    hedtveehuddvjeejgffgieejvdegkefhfeelheekhedvffehnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhv
+    ohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpoh
+    huthdprhgtphhtthhopehlkhestgdqqdgvrdguvgdprhgtphhtthhopegslhgvuhhnghes
+    tghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtohepsghouggurghhkeejleegsehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepjhhthhhivghssehgohhoghhlvgdrtghomhdprhgtphht
+    thhopehsrghrrghnhigrrdhgohhprghlsehinhhtvghlrdgtohhmpdhrtghpthhtohepug
+    hmihhtrhihrdgsrghrhihshhhkohhvsehlihhnrghrohdrohhrghdprhgtphhtthhopehh
+    vghikhhkihdrkhhrohhgvghruhhssehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
+    htohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:KLy0Z0U_iEENkeePDPy9VGPg0xnWzlZQN3uWL9yLN0d8CjYLCL_04A>
+    <xmx:KLy0Z4haWr5l3EfZrp56aqFTrfiZLZ4vxk0O4CNo_DkRy9k4dNcPVA>
+    <xmx:KLy0Z0CActtgex7uX4rDqBg7wLBhZueRFQHL0n5ANF7_pboNJS2uGA>
+    <xmx:KLy0Z5K34IqwNwssrKiMbeauqUMP8q3gCwQYUYDaeDHesg_rbCpiww>
+    <xmx:KLy0Z46ieUoqvemKyVBHYKX7EvblXx1hxkUTWFp-9Zg6auIHdEaxwJ2d>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id F101B3C0066; Tue, 18 Feb 2025 11:58:15 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 19 Feb 2025 00:15:10 +0800
-X-Priority: 3
-Message-ID: <tencent_4EA91163291FFDC7005AD482@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <2025021859-renewal-onto-1877@gregkh>
-	<20250218161035.25064-1-guanwentao@uniontech.com>
-In-Reply-To: <20250218161035.25064-1-guanwentao@uniontech.com>
-X-QQ-ReplyHash: 2288748950
-X-BIZMAIL-ID: 13233809376332602693
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Wed, 19 Feb 2025 00:15:11 +0800 (CST)
-Feedback-ID: v:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OPxYnD53Kkts4fnFn89V/1i07YqL5nAkElceSQoUbAF6gvsAZcvEmWBz
-	MIvEx/JMZSjRMqTOED6xkEjweDWQvlV6YiGgNtWYwHE0gB7YPW99l4ooX8u/ECkbGbu4lGW
-	y1z7gcxCt2GkYfxoUqSrXFaDuRU1QWl8mRzK8Mkl3GLRGivSHNP8p7T/CTunqgPfA0n2yg7
-	qILpelGVxXFiSN2qV5yGzntrs8uwrNReodJsocn1GEviW9MIWGK5UPf+oA76DCXh945C5h4
-	LLy+BELQenN/NDewpD8cEHk1ErXWlMyZEQGVXuZHEbt7zqQestWS3UB0zcxu+tTEL0avRNJ
-	IbJFaPZdzDp249ozl9AGOGFa2VJ3PM1DxivOriZtj8gutSrfMkQMYevPRU0Hy2YFdJuY8iz
-	ABNUdx6P5n+iCLS1oJ0Zn5rM9txFsW0m5DULRzQW2SQNbz2PnoyTkAG+4MUprVw5z9MPkCk
-	G7+3kODCgQBVVQKrIV3M85MtETwBOFH6aRhszy7sihVXel9n13qAGDjQNbQqPyH+w4qrYof
-	SB6zNVrmvj7GFw7n94OKT5tyiGLmEK5g49prEQxUyZVJGVk+6HmuaIrBtlSO4Nz5fH5dhkf
-	4CYNofxGAfNzpaMzMvkN27DX1UiaPBQaXwDF7dNUMW1loud8c/PWQ4ZTWJ4ksyErbmTdQMj
-	w/MaEEG0bJ5XQY3wfrGPV/cEBa6hxzbfihUWFMjD1RxbgjlBZGq8hUc4xdo/clKtALR3g8t
-	yQkdr7SQ6xv/qqT3WATlxUMAruTWt5yY0kky8aj8kwqfA2C84lPEJrUSwL+W24TOjCYh5bY
-	XRBMPeOq203nJLOTUK/oT3wSqhNKP56jXwQg5JmUnbdGkwQ52SOWUG2zRPRqhrg28GKE1AQ
-	lVLg7snuzjRcbVRC1byZ2lltKTqIElV9vXSzUCUdtV5xs4lGQ1hn2fz8ulEDkv1vUK9BPOx
-	c1gWRXR8SR5FI/LoeCAWIUHHw8IrZ/Axv++wkqIo2Y+j05prtHw0mAmbHUuUCqSRtP8b4te
-	S1nozOpo9kozDDTXqdP53NV+1h8uOFk16kW8ieiFEkn96BnYniH8mZMAX3DoJT46kijS2yU
-	fmuJ1vNLhYS+iiYKNXZttpKwWATIrGURQ==
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Date: Tue, 18 Feb 2025 11:57:55 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Fedor Pchelkin" <boddah8794@gmail.com>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
+ "Christian A. Ehrhardt" <lk@c--e.de>
+Cc: "Greg KH" <gregkh@linuxfoundation.org>,
+ "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+ "Benson Leung" <bleung@chromium.org>, "Jameson Thies" <jthies@google.com>,
+ "Saranya Gopal" <saranya.gopal@intel.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <c48d6d73-73d6-4df6-8e9c-c8f2ecdd654a@app.fastmail.com>
+In-Reply-To: <20250206184327.16308-3-boddah8794@gmail.com>
+References: <20250206184327.16308-1-boddah8794@gmail.com>
+ <20250206184327.16308-3-boddah8794@gmail.com>
+Subject: Re: [PATCH RFC 2/2] usb: typec: ucsi: increase timeout for PPM reset
+ operations
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-TkFLLCBhcyBjb21taXQgMDg5MmI4NDAzMThkLCBqdXN0IGlnbm9yZSBpdC4=
+Hi  Fedor,
 
+On Thu, Feb 6, 2025, at 1:43 PM, Fedor Pchelkin wrote:
+> It is observed that on some systems an initial PPM reset during the boot
+> phase can trigger a timeout:
+>
+> [    6.482546] ucsi_acpi USBC000:00: failed to reset PPM!
+> [    6.482551] ucsi_acpi USBC000:00: error -ETIMEDOUT: PPM init failed
+>
+> Still, increasing the timeout value, albeit being the most straightforward
+> solution, eliminates the problem: the initial PPM reset may take up to
+> ~8000-10000ms on some Lenovo laptops. When it is reset after the above
+> period of time (or even if ucsi_reset_ppm() is not called overall), UCSI
+> works as expected.
+>
+> Moreover, if the ucsi_acpi module is loaded/unloaded manually after the
+> system has booted, reading the CCI values and resetting the PPM works
+> perfectly, without any timeout. Thus it's only a boot-time issue.
+>
+> The reason for this behavior is not clear but it may be the consequence
+> of some tricks that the firmware performs or be an actual firmware bug.
+> As a workaround, increase the timeout to avoid failing the UCSI
+> initialization prematurely.
+>
+
+Could you let me know which Lenovo platform(s) you see the issue on?
+
+I don't have any concerns with the patch below, but if the platform is in the Linux program I can reach out to the FW team and try to determine if there's an expected time needed (and how close we are to it).
+
+Thanks
+
+Mark
+
+> Fixes: b1b59e16075f ("usb: typec: ucsi: Increase command completion 
+> timeout value")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <boddah8794@gmail.com>
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c 
+> b/drivers/usb/typec/ucsi/ucsi.c
+> index 0fe1476f4c29..7a56d3f840d7 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -25,7 +25,7 @@
+>   * difficult to estimate the time it takes for the system to process 
+> the command
+>   * before it is actually passed to the PPM.
+>   */
+> -#define UCSI_TIMEOUT_MS		5000
+> +#define UCSI_TIMEOUT_MS		10000
+> 
+>  /*
+>   * UCSI_SWAP_TIMEOUT_MS - Timeout for role swap requests
+> -- 
+> 2.48.1
 
