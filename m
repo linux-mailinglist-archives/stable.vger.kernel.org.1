@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-116897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33E5A3A98F
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:43:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E5BA3A9A4
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 266687A59F5
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:42:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9521F1898F63
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E84621B1AC;
-	Tue, 18 Feb 2025 20:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D3621CA06;
+	Tue, 18 Feb 2025 20:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wvx9Vb9+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MA17id+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD15521A440;
-	Tue, 18 Feb 2025 20:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3683B21C9E6;
+	Tue, 18 Feb 2025 20:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910490; cv=none; b=olVguXS8wF+7ErNYkim/ev3ULsgk3N2zuqlLeG+L31l1jmBwYay+GW9NAF9/uaFWoreC1BnroJnr4XMUROd4H+p6cLlbUtdsqgILuJLNHW140GkHyHFtH2a1o4L51vSdc7361RCLcz9NEVCcNt+huP4H1axW46RjFmpHKt+ta2s=
+	t=1739910492; cv=none; b=GtddOMQqbQhVoc6tz1SN6vRGbvs2udCWzGMdYJlgWFl4cQD+un7/9mSeQYwchXwn0FlCsEgefmx9hukK3hCOg6dgJzCi3jAE1xInVQJFAgiMPM+IoGdYEfq+g/rmU22LbUoPkbT7RMRGDxPbq+GwA+Kf9mukgjTFNAy7jqRbN6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910490; c=relaxed/simple;
-	bh=QKrdvXReXi8KQD3WFcEkWnbwGaQsE1tvpjORmQTi0NE=;
+	s=arc-20240116; t=1739910492; c=relaxed/simple;
+	bh=DFWtttygelaZtQfN6lEq/ZJlHYl+TAZeqCnSmLKij5g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SVVsVmnOG/vxSw/TC+90nIu45zN6KmKH2h75Zjo/UOOEq4T+gH6jYq2B/MgEg9PW1nDimn6JObsopf7er/brCAJpw7xcorGWtCEViGkqqCQbxMfPDsLXQUT1AzyDs93MlcogrwgNbpXyA//aaMBvD8qIGRN3/oR9Nya4nm8oVR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wvx9Vb9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E952C4CEE2;
-	Tue, 18 Feb 2025 20:28:08 +0000 (UTC)
+	 MIME-Version; b=jqaZ61gET7pTn//Zq8lsQZ+9zqPPPpoeB/GfFPM17WOx/4iFPL3qSeNvgBTfa6fgviux2mxbumYy+SjZujj1hpFpMqJgZHuuLCry3XDORMfh185KxaI21ZK+1e7hIoSMtYnV97J9un9VLKegs2hDfWvhFw/QIsKWzZewrh8Xdfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MA17id+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85831C4CEE4;
+	Tue, 18 Feb 2025 20:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910489;
-	bh=QKrdvXReXi8KQD3WFcEkWnbwGaQsE1tvpjORmQTi0NE=;
+	s=k20201202; t=1739910492;
+	bh=DFWtttygelaZtQfN6lEq/ZJlHYl+TAZeqCnSmLKij5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wvx9Vb9+hYppCkX3T/2bkzuAFohQQHBZfi3smJ3Xcv2wuXQe1PcQF/8FBAeRgUHd3
-	 NLhIwxDYqq2uAD6VHg5g7IFSglQ/cSlylPHXMuYVdNDIDR71qhnZnDcGpyFpBNH9fh
-	 SkCZfVSB1re9Uvap3WQ3yjiGS8oFqGcF8a3+/8Lv56Om7Gs6+BUEoKL5+91OA9GGau
-	 deKy2pJAlriF+t22d2CmQHs6MzgSngJC6sPZOGYYF93sPw7o4LxcpZuFIZEA+6ss1J
-	 JsfyfxMtVmzMLWKTMH2Zqin6XjGh26kFTcdcUElEao9IDyyOc8QWhzv6+rUF2cP4Jz
-	 HA3wA/EbPb+OA==
+	b=MA17id+ePHujI2SSpECMNk7ivzIZlRT24l32EapKmDDHIwD8Lu64JlxvadFigVQ4d
+	 H5iOYcDxW9T/LfnfPzNS3wIu5uUo+k4cI0tANBAMo3wq9Z1lpLFumjtk//Da/hmtEE
+	 T001zqN3q7Q8v/uVUsX8CiRy/BlNmtcd+KyVp61/RlnLodGrGgIBU4G8y9oYLuSv0K
+	 ioPx5SFIrttrDTzgHmg6vXklN+rvQENU5avSN2u1NdeIZR7boohMMoutG+fikLb0WZ
+	 zuFXSoM4uN/+RLNaId5BLjyV7JNen0/ZDD5shMLSz2rOcON703RO6DT23+G23bnuTR
+	 1AyKNOsFaeysg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>,
-	amit.kachhap@gmail.com,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/17] thermal/cpufreq_cooling: Remove structure member documentation
-Date: Tue, 18 Feb 2025 15:27:37 -0500
-Message-Id: <20250218202743.3593296-13-sashal@kernel.org>
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	mst@redhat.com,
+	jiri@resnulli.us,
+	tglx@linutronix.de,
+	viro@zeniv.linux.org.uk,
+	krzysztof.kozlowski@linaro.org,
+	herve.codina@bootlin.com,
+	linux-um@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 14/17] um: virt-pci: don't use kmalloc()
+Date: Tue, 18 Feb 2025 15:27:38 -0500
+Message-Id: <20250218202743.3593296-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202743.3593296-1-sashal@kernel.org>
 References: <20250218202743.3593296-1-sashal@kernel.org>
@@ -69,39 +73,385 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.78
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
+[ Upstream commit 5b166b782d327f4b66190cc43afd3be36f2b3b7a ]
 
-The structure member documentation refers to a member which does not
-exist any more. Remove it.
+This code can be called deep in the IRQ handling, for
+example, and then cannot normally use kmalloc(). Have
+its own pre-allocated memory and use from there instead
+so this doesn't occur. Only in the (very rare) case of
+memcpy_toio() we'd still need to allocate memory.
 
-Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
-[ rjw: Minor changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/20250110125550.32479-6-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/cpufreq_cooling.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/um/drivers/virt-pci.c | 198 +++++++++++++++++++------------------
+ 1 file changed, 102 insertions(+), 96 deletions(-)
 
-diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-index e2cc7bd308620..874b4838d2c92 100644
---- a/drivers/thermal/cpufreq_cooling.c
-+++ b/drivers/thermal/cpufreq_cooling.c
-@@ -57,8 +57,6 @@ struct time_in_idle {
-  * @max_level: maximum cooling level. One less than total number of valid
-  *	cpufreq frequencies.
-  * @em: Reference on the Energy Model of the device
-- * @cdev: thermal_cooling_device pointer to keep track of the
-- *	registered cooling device.
-  * @policy: cpufreq policy.
-  * @cooling_ops: cpufreq callbacks to thermal cooling device ops
-  * @idle_time: idle time stats
+diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
+index 97a37c0629972..3a02b5e2f78ba 100644
+--- a/arch/um/drivers/virt-pci.c
++++ b/arch/um/drivers/virt-pci.c
+@@ -25,8 +25,10 @@
+ #define MAX_IRQ_MSG_SIZE (sizeof(struct virtio_pcidev_msg) + sizeof(u32))
+ #define NUM_IRQ_MSGS	10
+ 
+-#define HANDLE_NO_FREE(ptr) ((void *)((unsigned long)(ptr) | 1))
+-#define HANDLE_IS_NO_FREE(ptr) ((unsigned long)(ptr) & 1)
++struct um_pci_message_buffer {
++	struct virtio_pcidev_msg hdr;
++	u8 data[8];
++};
+ 
+ struct um_pci_device {
+ 	struct virtio_device *vdev;
+@@ -36,6 +38,11 @@ struct um_pci_device {
+ 
+ 	struct virtqueue *cmd_vq, *irq_vq;
+ 
++#define UM_PCI_WRITE_BUFS	20
++	struct um_pci_message_buffer bufs[UM_PCI_WRITE_BUFS + 1];
++	void *extra_ptrs[UM_PCI_WRITE_BUFS + 1];
++	DECLARE_BITMAP(used_bufs, UM_PCI_WRITE_BUFS);
++
+ #define UM_PCI_STAT_WAITING	0
+ 	unsigned long status;
+ 
+@@ -61,12 +68,40 @@ static unsigned long um_pci_msi_used[BITS_TO_LONGS(MAX_MSI_VECTORS)];
+ static unsigned int um_pci_max_delay_us = 40000;
+ module_param_named(max_delay_us, um_pci_max_delay_us, uint, 0644);
+ 
+-struct um_pci_message_buffer {
+-	struct virtio_pcidev_msg hdr;
+-	u8 data[8];
+-};
++static int um_pci_get_buf(struct um_pci_device *dev, bool *posted)
++{
++	int i;
++
++	for (i = 0; i < UM_PCI_WRITE_BUFS; i++) {
++		if (!test_and_set_bit(i, dev->used_bufs))
++			return i;
++	}
+ 
+-static struct um_pci_message_buffer __percpu *um_pci_msg_bufs;
++	*posted = false;
++	return UM_PCI_WRITE_BUFS;
++}
++
++static void um_pci_free_buf(struct um_pci_device *dev, void *buf)
++{
++	int i;
++
++	if (buf == &dev->bufs[UM_PCI_WRITE_BUFS]) {
++		kfree(dev->extra_ptrs[UM_PCI_WRITE_BUFS]);
++		dev->extra_ptrs[UM_PCI_WRITE_BUFS] = NULL;
++		return;
++	}
++
++	for (i = 0; i < UM_PCI_WRITE_BUFS; i++) {
++		if (buf == &dev->bufs[i]) {
++			kfree(dev->extra_ptrs[i]);
++			dev->extra_ptrs[i] = NULL;
++			WARN_ON(!test_and_clear_bit(i, dev->used_bufs));
++			return;
++		}
++	}
++
++	WARN_ON(1);
++}
+ 
+ static int um_pci_send_cmd(struct um_pci_device *dev,
+ 			   struct virtio_pcidev_msg *cmd,
+@@ -82,7 +117,9 @@ static int um_pci_send_cmd(struct um_pci_device *dev,
+ 	};
+ 	struct um_pci_message_buffer *buf;
+ 	int delay_count = 0;
++	bool bounce_out;
+ 	int ret, len;
++	int buf_idx;
+ 	bool posted;
+ 
+ 	if (WARN_ON(cmd_size < sizeof(*cmd) || cmd_size > sizeof(*buf)))
+@@ -101,26 +138,28 @@ static int um_pci_send_cmd(struct um_pci_device *dev,
+ 		break;
+ 	}
+ 
+-	buf = get_cpu_var(um_pci_msg_bufs);
+-	if (buf)
+-		memcpy(buf, cmd, cmd_size);
++	bounce_out = !posted && cmd_size <= sizeof(*cmd) &&
++		     out && out_size <= sizeof(buf->data);
+ 
+-	if (posted) {
+-		u8 *ncmd = kmalloc(cmd_size + extra_size, GFP_ATOMIC);
+-
+-		if (ncmd) {
+-			memcpy(ncmd, cmd, cmd_size);
+-			if (extra)
+-				memcpy(ncmd + cmd_size, extra, extra_size);
+-			cmd = (void *)ncmd;
+-			cmd_size += extra_size;
+-			extra = NULL;
+-			extra_size = 0;
+-		} else {
+-			/* try without allocating memory */
+-			posted = false;
+-			cmd = (void *)buf;
++	buf_idx = um_pci_get_buf(dev, &posted);
++	buf = &dev->bufs[buf_idx];
++	memcpy(buf, cmd, cmd_size);
++
++	if (posted && extra && extra_size > sizeof(buf) - cmd_size) {
++		dev->extra_ptrs[buf_idx] = kmemdup(extra, extra_size,
++						   GFP_ATOMIC);
++
++		if (!dev->extra_ptrs[buf_idx]) {
++			um_pci_free_buf(dev, buf);
++			return -ENOMEM;
+ 		}
++		extra = dev->extra_ptrs[buf_idx];
++	} else if (extra && extra_size <= sizeof(buf) - cmd_size) {
++		memcpy((u8 *)buf + cmd_size, extra, extra_size);
++		cmd_size += extra_size;
++		extra_size = 0;
++		extra = NULL;
++		cmd = (void *)buf;
+ 	} else {
+ 		cmd = (void *)buf;
+ 	}
+@@ -128,39 +167,40 @@ static int um_pci_send_cmd(struct um_pci_device *dev,
+ 	sg_init_one(&out_sg, cmd, cmd_size);
+ 	if (extra)
+ 		sg_init_one(&extra_sg, extra, extra_size);
+-	if (out)
++	/* allow stack for small buffers */
++	if (bounce_out)
++		sg_init_one(&in_sg, buf->data, out_size);
++	else if (out)
+ 		sg_init_one(&in_sg, out, out_size);
+ 
+ 	/* add to internal virtio queue */
+ 	ret = virtqueue_add_sgs(dev->cmd_vq, sgs_list,
+ 				extra ? 2 : 1,
+ 				out ? 1 : 0,
+-				posted ? cmd : HANDLE_NO_FREE(cmd),
+-				GFP_ATOMIC);
++				cmd, GFP_ATOMIC);
+ 	if (ret) {
+-		if (posted)
+-			kfree(cmd);
+-		goto out;
++		um_pci_free_buf(dev, buf);
++		return ret;
+ 	}
+ 
+ 	if (posted) {
+ 		virtqueue_kick(dev->cmd_vq);
+-		ret = 0;
+-		goto out;
++		return 0;
+ 	}
+ 
+ 	/* kick and poll for getting a response on the queue */
+ 	set_bit(UM_PCI_STAT_WAITING, &dev->status);
+ 	virtqueue_kick(dev->cmd_vq);
++	ret = 0;
+ 
+ 	while (1) {
+ 		void *completed = virtqueue_get_buf(dev->cmd_vq, &len);
+ 
+-		if (completed == HANDLE_NO_FREE(cmd))
++		if (completed == buf)
+ 			break;
+ 
+-		if (completed && !HANDLE_IS_NO_FREE(completed))
+-			kfree(completed);
++		if (completed)
++			um_pci_free_buf(dev, completed);
+ 
+ 		if (WARN_ONCE(virtqueue_is_broken(dev->cmd_vq) ||
+ 			      ++delay_count > um_pci_max_delay_us,
+@@ -172,8 +212,11 @@ static int um_pci_send_cmd(struct um_pci_device *dev,
+ 	}
+ 	clear_bit(UM_PCI_STAT_WAITING, &dev->status);
+ 
+-out:
+-	put_cpu_var(um_pci_msg_bufs);
++	if (bounce_out)
++		memcpy(out, buf->data, out_size);
++
++	um_pci_free_buf(dev, buf);
++
+ 	return ret;
+ }
+ 
+@@ -187,20 +230,13 @@ static unsigned long um_pci_cfgspace_read(void *priv, unsigned int offset,
+ 		.size = size,
+ 		.addr = offset,
+ 	};
+-	/* buf->data is maximum size - we may only use parts of it */
+-	struct um_pci_message_buffer *buf;
+-	u8 *data;
+-	unsigned long ret = ULONG_MAX;
+-	size_t bytes = sizeof(buf->data);
++	/* max 8, we might not use it all */
++	u8 data[8];
+ 
+ 	if (!dev)
+ 		return ULONG_MAX;
+ 
+-	buf = get_cpu_var(um_pci_msg_bufs);
+-	data = buf->data;
+-
+-	if (buf)
+-		memset(data, 0xff, bytes);
++	memset(data, 0xff, sizeof(data));
+ 
+ 	switch (size) {
+ 	case 1:
+@@ -212,34 +248,26 @@ static unsigned long um_pci_cfgspace_read(void *priv, unsigned int offset,
+ 		break;
+ 	default:
+ 		WARN(1, "invalid config space read size %d\n", size);
+-		goto out;
++		return ULONG_MAX;
+ 	}
+ 
+-	if (um_pci_send_cmd(dev, &hdr, sizeof(hdr), NULL, 0, data, bytes))
+-		goto out;
++	if (um_pci_send_cmd(dev, &hdr, sizeof(hdr), NULL, 0, data, size))
++		return ULONG_MAX;
+ 
+ 	switch (size) {
+ 	case 1:
+-		ret = data[0];
+-		break;
++		return data[0];
+ 	case 2:
+-		ret = le16_to_cpup((void *)data);
+-		break;
++		return le16_to_cpup((void *)data);
+ 	case 4:
+-		ret = le32_to_cpup((void *)data);
+-		break;
++		return le32_to_cpup((void *)data);
+ #ifdef CONFIG_64BIT
+ 	case 8:
+-		ret = le64_to_cpup((void *)data);
+-		break;
++		return le64_to_cpup((void *)data);
+ #endif
+ 	default:
+-		break;
++		return ULONG_MAX;
+ 	}
+-
+-out:
+-	put_cpu_var(um_pci_msg_bufs);
+-	return ret;
+ }
+ 
+ static void um_pci_cfgspace_write(void *priv, unsigned int offset, int size,
+@@ -312,13 +340,8 @@ static void um_pci_bar_copy_from(void *priv, void *buffer,
+ static unsigned long um_pci_bar_read(void *priv, unsigned int offset,
+ 				     int size)
+ {
+-	/* buf->data is maximum size - we may only use parts of it */
+-	struct um_pci_message_buffer *buf;
+-	u8 *data;
+-	unsigned long ret = ULONG_MAX;
+-
+-	buf = get_cpu_var(um_pci_msg_bufs);
+-	data = buf->data;
++	/* 8 is maximum size - we may only use parts of it */
++	u8 data[8];
+ 
+ 	switch (size) {
+ 	case 1:
+@@ -330,33 +353,25 @@ static unsigned long um_pci_bar_read(void *priv, unsigned int offset,
+ 		break;
+ 	default:
+ 		WARN(1, "invalid config space read size %d\n", size);
+-		goto out;
++		return ULONG_MAX;
+ 	}
+ 
+ 	um_pci_bar_copy_from(priv, data, offset, size);
+ 
+ 	switch (size) {
+ 	case 1:
+-		ret = data[0];
+-		break;
++		return data[0];
+ 	case 2:
+-		ret = le16_to_cpup((void *)data);
+-		break;
++		return le16_to_cpup((void *)data);
+ 	case 4:
+-		ret = le32_to_cpup((void *)data);
+-		break;
++		return le32_to_cpup((void *)data);
+ #ifdef CONFIG_64BIT
+ 	case 8:
+-		ret = le64_to_cpup((void *)data);
+-		break;
++		return le64_to_cpup((void *)data);
+ #endif
+ 	default:
+-		break;
++		return ULONG_MAX;
+ 	}
+-
+-out:
+-	put_cpu_var(um_pci_msg_bufs);
+-	return ret;
+ }
+ 
+ static void um_pci_bar_copy_to(void *priv, unsigned int offset,
+@@ -523,11 +538,8 @@ static void um_pci_cmd_vq_cb(struct virtqueue *vq)
+ 	if (test_bit(UM_PCI_STAT_WAITING, &dev->status))
+ 		return;
+ 
+-	while ((cmd = virtqueue_get_buf(vq, &len))) {
+-		if (WARN_ON(HANDLE_IS_NO_FREE(cmd)))
+-			continue;
+-		kfree(cmd);
+-	}
++	while ((cmd = virtqueue_get_buf(vq, &len)))
++		um_pci_free_buf(dev, cmd);
+ }
+ 
+ static void um_pci_irq_vq_cb(struct virtqueue *vq)
+@@ -1000,10 +1012,6 @@ static int __init um_pci_init(void)
+ 		 "No virtio device ID configured for PCI - no PCI support\n"))
+ 		return 0;
+ 
+-	um_pci_msg_bufs = alloc_percpu(struct um_pci_message_buffer);
+-	if (!um_pci_msg_bufs)
+-		return -ENOMEM;
+-
+ 	bridge = pci_alloc_host_bridge(0);
+ 	if (!bridge) {
+ 		err = -ENOMEM;
+@@ -1065,7 +1073,6 @@ static int __init um_pci_init(void)
+ 		pci_free_resource_list(&bridge->windows);
+ 		pci_free_host_bridge(bridge);
+ 	}
+-	free_percpu(um_pci_msg_bufs);
+ 	return err;
+ }
+ module_init(um_pci_init);
+@@ -1077,6 +1084,5 @@ static void __exit um_pci_exit(void)
+ 	irq_domain_remove(um_pci_inner_domain);
+ 	pci_free_resource_list(&bridge->windows);
+ 	pci_free_host_bridge(bridge);
+-	free_percpu(um_pci_msg_bufs);
+ }
+ module_exit(um_pci_exit);
 -- 
 2.39.5
 
