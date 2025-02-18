@@ -1,67 +1,74 @@
-Return-Path: <stable+bounces-116705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E170A39A35
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:15:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23AEA39A78
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67CB172C1D
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E8017551D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BB423C8A0;
-	Tue, 18 Feb 2025 11:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBEE2417EB;
+	Tue, 18 Feb 2025 11:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b="bhGNTk05"
+	dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b="XDJpg2we"
 X-Original-To: stable@vger.kernel.org
 Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978B423C375
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 11:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD08023F295;
+	Tue, 18 Feb 2025 11:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.71.153.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739877194; cv=none; b=NFyV5wrvaiGAFzggCILfxdxaXEzymHe8z6ohmpIAzMY3WGWnqULzDl4D6mQBy5I1L5EGXtsWZPFnfU8kiKWPeMyh8R7z8pylLj1K+cGKPMenFskdBhk5T2QRxj9kG05d6t75rI36TmjNknnuS/tqL0jjZ12wlmf/Ch+x0Dt0de4=
+	t=1739877334; cv=none; b=Rjieg3bJhV9L6+ZT5v633U9skDNEl4lYEOAYgolQvdwSE6sssffsrasof26zQlIm58gVH7WzQvRYNxv5udo8IweHODu1BA4YidgCKZNir6O8SbJQ9NJgZJUtndDY9+pKixhViyFrHQmk3NSg80WnZ4qaJZJSkvonEOWbfwcWIQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739877194; c=relaxed/simple;
+	s=arc-20240116; t=1739877334; c=relaxed/simple;
 	bh=ufqG7XoGOJZCg/c36vHLg/i8bJImksgJs7KeU/+b6mc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UV7bXlITDxlVsWeYIaWos7VOwb4i2DnySZBsclTQDArsDERcPJzK2/VhfxY60PoYdZHaLmQ+XiVJR4FznZm1rU07SfdeoqyEkLZNaON9GNTcfnQLtmGYrtiXGMvvu6v6QWnbTAnn2zobSEAcy9f5U5N2+1yFYSyVgFNwclf4c8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com; spf=pass smtp.mailfrom=sandisk.com; dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b=bhGNTk05; arc=none smtp.client-ip=216.71.153.141
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h1FsxIqtg6WKZF9djgvwQY3odwE9lNoBxxQuEbppqXPai0t3sM2/5W5iCky3oimeJ+v1DQLuNZhUBM8aa/oDIDmNLX3DHno1tYP4ldVeUXKDfMCScib55ZnzpeASwHJ8yogGseqIs+hG0GUW2TflleuhAZgBrPMPDV4XGArTScE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com; spf=pass smtp.mailfrom=sandisk.com; dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b=XDJpg2we; arc=none smtp.client-ip=216.71.153.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandisk.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=sandisk.com; i=@sandisk.com; q=dns/txt;
-  s=dkim.sandisk.com; t=1739877192; x=1771413192;
+  s=dkim.sandisk.com; t=1739877333; x=1771413333;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=ufqG7XoGOJZCg/c36vHLg/i8bJImksgJs7KeU/+b6mc=;
-  b=bhGNTk05A/JGZLP3G6JqHtN11Zbn8zUfeECpnMj0lCeB/APbzOOrceha
-   WuOpneCqYewkZq77K+pM2JRmp2I1DWwcV11imIjAkFHcnsz9vkyypsLGX
-   jilfqAHVxiSYL8YtpXipW/vuMxYlgsChM/Bk+NjzQ4Km4Lc6iBZKb8Vbi
-   scsW3bw7PxK7bxgwP38/F83WCjyT3c3yhOyT6oMMuHNxhzjaGNWbt1YpR
-   mY+UQWXRk57UAz0eeUH3Es5q3jlrKVW3foCQR5tbSq5nbT0OZhqj4dp+2
-   LZ6tLWK55Mjxdo99akrtK7epj5ppxbOHIOrcTOhTotxzoLP939wm4maaz
-   A==;
-X-CSE-ConnectionGUID: 2toLDwUMSymTROo7JgwGGQ==
-X-CSE-MsgGUID: DODH//ThSw+0elAO6LZJGg==
+  b=XDJpg2we9L+/sn4/ZTEMepa0rD9URkTPlFLwmHamman19pM/ppzWwR7g
+   b7V8+nOXxMsoWoqDucD9eh9x6GdthyFXXaQpPtnSTNqzRxkDLdfaZLrRT
+   1nVdJ9XaMBGIGN6Yq/7X2ezFN10EuvHRG3jC8AiBPevWcCn3qBG6Poi2G
+   UtiamyIdTD+MZ8rdMdnMeWaW0gs1hfujCi4hfES373cvr6cG53Kd8Kev1
+   Ws1L+jhzunEnhHSTS80OGsonhWHjdbWw8eu2GTr75+hAxH/3DiXM+gFbg
+   jINfz2XhcTCNv3QiE8Zp/PTO57Lsg/d+1mA+j7Qxcp8mWBrMCMoFCTj89
+   w==;
+X-CSE-ConnectionGUID: kzPNWm4vQnmc3ihwnCQ3sA==
+X-CSE-MsgGUID: zrwzFhjOTyuPPdnDXwNx9w==
 X-IronPort-AV: E=Sophos;i="6.13,295,1732550400"; 
-   d="scan'208";a="38739609"
+   d="scan'208";a="38739768"
 Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 18 Feb 2025 19:13:06 +0800
-IronPort-SDR: 67b45d88_XOqZzKzCBNkdqas4VKw6Fi6Dt0ESE2VsRjDTUHPvYZ2EZfm
- oW39ZUyTOyJ58HTPAZUF/nQVTbXKtpFcxi9RIGw==
+  by ob1.hgst.iphmx.com with ESMTP; 18 Feb 2025 19:15:32 +0800
+IronPort-SDR: 67b45e1a_qx6JGEbPkJxRdaa7oidkw1zvzA+ND3kGszbPapWhSdzZY2B
+ KlcdaH1raNkRltGWuH8/FL0dzNwCR8EHwVUS1Mw==
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Feb 2025 02:14:33 -0800
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Feb 2025 02:16:58 -0800
 WDCIronportException: Internal
 Received: from unknown (HELO WDAP-ez2C89klLd.corp.sandisk.com) ([10.112.13.179])
-  by uls-op-cesaip02.wdc.com with ESMTP; 18 Feb 2025 03:13:05 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP; 18 Feb 2025 03:15:29 -0800
 From: Arthur Simchaev <arthur.simchaev@sandisk.com>
-To: arthur.simchaev@sandisk.com
-Cc: stable@vger.kernel.org
+To: martin.petersen@oracle.com
+Cc: avri.altman@sandisk.com,
+	Avi.Shchislowski@sandisk.com,
+	beanhuo@micron.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bvanassche@acm.org,
+	Arthur Simchaev <arthur.simchaev@sandisk.com>,
+	stable@vger.kernel.org
 Subject: [PATCH v2] ufs: core: bsg: Fix memory crash in case arpmb command failed
-Date: Tue, 18 Feb 2025 13:13:02 +0200
-Message-Id: <20250218111302.246473-1-arthur.simchaev@sandisk.com>
+Date: Tue, 18 Feb 2025 13:15:27 +0200
+Message-Id: <20250218111527.246506-1-arthur.simchaev@sandisk.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
