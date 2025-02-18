@@ -1,144 +1,194 @@
-Return-Path: <stable+bounces-116812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46407A3A54B
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 19:23:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781D4A3A5E5
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 19:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB2E1751BF
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 18:23:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBB2D7A3FE6
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4531EB5C2;
-	Tue, 18 Feb 2025 18:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16C526AA98;
+	Tue, 18 Feb 2025 18:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="LDP/4VEJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4DAXhgC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833E1EB5C1
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 18:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F65B239086;
+	Tue, 18 Feb 2025 18:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739902905; cv=none; b=O5srHn8Xb69Acl5X4NXCTZd9PqE2pgPmk313zq130KyZz08rWwfD2e2Msz2YewBUXEMAq5mBMI0DnvdwipQ9TnqAvJl0Q7oGwOB1yPmNgV4BAP+8fsmzRmb3TNUae5j5O+vasm5DGenjSEfmBA51F1J8znPGJLYsH/TPJgkyO6s=
+	t=1739904087; cv=none; b=s//2y8dEgE89wHMPPS4UCUA/bbEzfEp62QmaXmUBKn1ma/5CN5xjYulKLdkp9uFU4yUk8JETTHQWPcbrn7xRlS+0YOjn6c9pazG37aqdFjP5dZIVIbW46jmUJVCz9hwZFg10dgbyibVJqM/vYMSTadUdwTDuUG47oxz7yUjnxTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739902905; c=relaxed/simple;
-	bh=VxBKUL7A1C3oPhV40Wt0J7vlZZ9K+hkbyB4chJN/I1Y=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=NE1HpzYK7puIUz+qiq95aNh47oRLv3Lrr1Tz8SnuNVsOVXlbEH0SvYouiIuTHxf1mtZKD1c4sKzc7uf+b8eBGTPzg6Uzy4HJgLjPWVnUdGrqil3hQ3Nnlo8kHcSSafehXlpAIaqdE2zxEHXmmXyHax4NnKsekbVDdz8E4qqLL/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=LDP/4VEJ; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6f6715734d9so51244727b3.3
-        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 10:21:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1739902903; x=1740507703; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3DLPk5HJOE7dDuCAl3DfZti38//Zfuc6q30M+5mu9qE=;
-        b=LDP/4VEJ+0mxvv48JXoKp7GxenzicOWwxAkw4Ds1K/uH4DTmAsFpbx0VT7Hq4eoIbl
-         jG4xUKcKRr93IuSuvUfolL5AX1RrIt9HM6OM26DybRQgFLOQKNIjTgQ1NAy/x66cPNBd
-         ljlPB4jc1bKJQFDz89WqVy+uRvY9TUa89hQz7jVA7k2M5gpKZuVtGg6OyRvRUCaqwIIn
-         GkCw/IS4aq6JIdjOO1tLBeqAMA52WcV6BPwFsmus6dgmwkR4foX8QJJ/dL+b5Imebk5x
-         SjhClu+ReUlpJhy5fAeTYCTxxFB37Knn0Lxib4TZYPgmo+GNaX/ibZXc0Dgul3b9HQLp
-         pBlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739902903; x=1740507703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3DLPk5HJOE7dDuCAl3DfZti38//Zfuc6q30M+5mu9qE=;
-        b=t8bDN4V069gBQ/7R5FDgwo1WB82lawklQK3qmLn3Y0CVKKTEf3ZjBlEzkCmulnF1lo
-         WJlNR4jpU4WuEMWseJTE2KUtl2QxiP+KmZ8RxM+2YGC2YxI9HemoXefVYulvc5eU+xS9
-         YwWK9JBTT6j+2Z80r0V4UZR5jXkWzmv5M11t7Gw9msP1CNDnYnApbmAAfZoLdHS8t6TQ
-         FzP0ZiHWS21jigDaNE6lazvnAQvMrgyGXnM2fvQ6qVyrX574S04W8j9Cj9g5AzrNWjs6
-         EJpMxM3Ll2NecXcJD+qvz7i3htm4d7/x7sioG3E7hYzX3BYu0WSZrKpCgIq8wbBFub6m
-         MtXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ5Ygg7j2ggPrSCh7dEEV2TJkx1OZgTF83HdLUZmjyBln0QngGWaAHouQ7cm6KPwc4+NB/FPY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqvdvPjhBHt3eq7KJ81ovcUjb0KrvKnjSkyGCZjy3nL58KHFws
-	UGI2qXpcQK3/JVJtYo1jU2BZTS8YpPSCTgq0nlVRToQuTKHQRGWodP1eYbNOptPpNfUpnSuDtA3
-	Bben83mOnsii0FMSqBlyVh5UiTsIflFT1fjIMpuXAG1j1dDOQ4pE=
-X-Gm-Gg: ASbGnctC/Tujp3k7aoDiSo8XXHpDAThyldGfENUWn5d5RDmttOBmfwe62tDaIDej9qV
-	kT5muoHkDxQwKixjl9ZamyBS1IikikkxGyX1O/IL6BXcuao7uamsfcw8GbzvSqbT18j0N9JtQz8
-	hjaHk+vWWWW4qNHgxN34batL122whQ5g==
-X-Google-Smtp-Source: AGHT+IFiVI/r2JRro8jHkswWZkPjZaH107K8Pn/cEPvQvamYbCbM4GU71WVcxbUswOxs9SVnvtHXjVzxpG1ywBXhoEc=
-X-Received: by 2002:a05:690c:6c01:b0:6f9:87ce:71e3 with SMTP id
- 00721157ae682-6fb58294c7fmr132289677b3.15.1739902902858; Tue, 18 Feb 2025
- 10:21:42 -0800 (PST)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 18 Feb 2025 13:21:41 -0500
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 18 Feb 2025 13:21:41 -0500
+	s=arc-20240116; t=1739904087; c=relaxed/simple;
+	bh=SwR1sd0bsb1Ldfx0iR+Z11qCAEsWof8L4vEOyN0rOlo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=g9l38CtO2O9I4G/RWH1ffATxPQXHoWOOMJsHsWiif48Ao0pKwFCjwowHXSXGV4j1y0UI3LH2fT0xA2FnrmuNxYpOixW7A48PJAj2ndnLRudS/BF///DevRMh1MXSMzK8RiH0BIf5bdjcxgrCH6mkb4A45LbP6v9ESdiOWlH7kXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4DAXhgC; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739904086; x=1771440086;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=SwR1sd0bsb1Ldfx0iR+Z11qCAEsWof8L4vEOyN0rOlo=;
+  b=Y4DAXhgCLh8Fc2hhFVNoayk/P+gYlPC20MP0ZQiEHitl9aialCwxd7EU
+   Hz+dA/XwpjQtv6GLnUQZnJkQ0HrylKq3gPsJyUzf5ySNAOLpZwarzlsiW
+   kQLURt6CiufVnMjSXeMnhc1RIAPilFA2dOh4cLfQEmsHBzxwiqJpJBDPG
+   00c7DD4D7+7IsFQdyze3u3AN3Biq63xdAxk5XuatWoZGWEfNkwI+2Mrcj
+   bU/4rPYlKLKyv1atqYXsS8jdzg5qz2UXjg4xcUWPcPXIXXc3kHE3ZFye9
+   VpRZXvZpKH1VmqfjRbwkVTKbvDKb+9tDhr5+JuYIRxH80G3jvpF/maOn7
+   Q==;
+X-CSE-ConnectionGUID: 2a57/VjJT6+qHqKfh0Vr9w==
+X-CSE-MsgGUID: 4GFAS9R2Qz+Z0xYcEFvM4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51259542"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
+   d="scan'208";a="51259542"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 10:41:25 -0800
+X-CSE-ConnectionGUID: 7XuQNNHZSmSDOvzohj0vQg==
+X-CSE-MsgGUID: 4NASh5FJQZamsnkb5fsAyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114334949"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.109.167]) ([10.125.109.167])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 10:41:23 -0800
+Message-ID: <24fae382-2dc4-4658-b9b5-b73ea670b0b0@intel.com>
+Date: Tue, 18 Feb 2025 10:41:27 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Date: Tue, 18 Feb 2025 13:21:41 -0500
-X-Gm-Features: AWEUYZloxxOt4-mqol9AqlF7ZKBT0I-dyrv5vsKAksddRNGEKM77BQL8VsoRMco
-Message-ID: <CACo-S-3z+WnL=LsrXvK6tWs8hBB49Lvo6Q0_FZcrxpsTDizXnQ@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC01LjQueTogKGJ1aWxkKSAuL2FyY2gvbQ==?=
-	=?UTF-8?B?aXBzL2luY2x1ZGUvYXNtL3N5c2NhbGwuaDo2NjoyODogZXJyb3I6IOKAmHN0cnVjdCBwdF9yZWdz4oCZ?=
-	=?UTF-8?B?IGguLi4=?=
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: +
+ x86-vmemmap-use-direct-mapped-va-instead-of-vmemmap-based-va.patch added to
+ mm-hotfixes-unstable branch
+To: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
+ stable@vger.kernel.org, peterz@infradead.org, osalvador@suse.de,
+ luto@kernel.org, dave.hansen@linux.intel.com, byungchul@sk.com,
+ 42.hyeyoo@gmail.com, gwan-gyeong.mun@intel.com
+References: <20250218054551.344E2C4CEE6@smtp.kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250218054551.344E2C4CEE6@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 2/17/25 21:45, Andrew Morton wrote:
+> When a process leads the addition of a struct page to vmemmap
+> (e.g. hot-plug), the page table update for the newly added vmemmap-based
+> virtual address is updated first in init_mm's page table and then
+> synchronized later.
+> If the vmemmap-based virtual address is accessed through the process's
+> page table before this sync, a page fault will occur.
 
-New build issue found on stable-rc/linux-5.4.y:
+So, I think we're talking about the loop in vmemmap_populate_hugepages()
+(with a bunch of context chopped out:
 
----
- ./arch/mips/include/asm/syscall.h:66:28: error: =E2=80=98struct pt_regs=E2=
-=80=99 has
-no member named =E2=80=98args=E2=80=99 in arch/mips/kernel/ptrace.o
-(arch/mips/kernel/ptrace.c) [logspec:kbuild,kbuild.compiler.error]
----
+        for (addr = start; addr < end; addr = next) {
+		...
+                pgd = vmemmap_pgd_populate(addr, node);
+                if (!pgd)
+                        return -ENOMEM;
+		...
+		vmemmap_set_pmd(pmd, p, node, addr, next);
+        }
 
-- dashboard: https://d.kernelci.org/issue/maestro:609e973861db59e6d6e75d96a=
-9f0f0a24ba09ba0
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  46b505f46fed8d28d9f0cf8e2aace766b99e48ce
+This both creates a mapping under 'pgd' and uses the new mapping inside
+vmemmap_set_pmd(). This is generally a known problem since
+vmemmap_populate() already does a sync_global_pgds(). The reason it
+manifests here is that the vmemmap_set_pmd() comes before the sync:
 
+vmemmap_populate() {
+	vmemmap_populate_hugepages() {
+		vmemmap_pgd_populate(addr, node);
+		...
+		// crash:
+		vmemmap_set_pmd(pmd, p, node, addr, next);
+	}
+	// too late:
+	sync_global_pgds();
+}
 
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-In file included from arch/mips/kernel/ptrace.c:45:
-./arch/mips/include/asm/syscall.h: In function =E2=80=98mips_get_syscall_ar=
-g=E2=80=99:
-./arch/mips/include/asm/syscall.h:66:28: error: =E2=80=98struct pt_regs=E2=
-=80=99 has
-no member named =E2=80=98args=E2=80=99
-   66 |                 *arg =3D regs->args[n];
-      |                            ^~
+I really don't like the idea of having the x86 code just be super
+careful not to use the newly-populated PGD (this patch). That's fragile
+and further diverges the x86 implementation from the generic code.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+The quick and dirty fix would be to just to call sync_global_pgds() all
+the time, like:
 
+pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+{
+        pgd_t *pgd = pgd_offset_k(addr);
+        if (pgd_none(*pgd)) {
+                void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
+                if (!p)
+                        return NULL;
+                pgd_populate(&init_mm, pgd, p);
++		sync_global_pgds(...);
+        }
+        return pgd;
+}
 
-# Builds where the incident occurred:
+That actually mirrors how __kernel_physical_mapping_init() does it:
+watch for an actual PGD write and sync there. It shouldn't be too slow
+because it only calls sync_global_pgds() during actual PGD population
+which is horribly rare.
 
-## 32r2el_defconfig on (mips):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67b4a28b50b59caecce1c871
+Could we do something like that, please? It might mean defining a new
+__weak symbol in mm/sparse-vmemmap.c and then calling out to an x86
+implementation like vmemmap_set_pmd().
 
-
-#kernelci issue maestro:609e973861db59e6d6e75d96a9f0f0a24ba09ba0
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Is x86 just an oddball with how it populates kernel page tables? I'm a
+bit surprised nobody else has this problem too.
 
