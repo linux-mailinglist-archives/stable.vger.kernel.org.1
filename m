@@ -1,172 +1,162 @@
-Return-Path: <stable+bounces-116650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792B5A39150
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D03A39158
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72DD13B318F
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:30:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6E13ACCB7
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7523915B115;
-	Tue, 18 Feb 2025 03:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DEE1714C0;
+	Tue, 18 Feb 2025 03:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SfxyDzPG"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tUmx8OtJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284E618A6DB;
-	Tue, 18 Feb 2025 03:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB915B115;
+	Tue, 18 Feb 2025 03:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739849407; cv=none; b=q0KDtQ+LGYpRqXX14IXbEkmNOFd8UYDtHU/QrhtaJxV56hRV6zURo+KCV86rJJjDbZEUAg8OEED1OnJppHrGYFvOW2LsTj19eAne9WXNJumfNzEr3qrezCbMrFJcf5nMOjwkhGRbqCXxm1tL0RtzZQ1ScPIfSPLgZiqROdD531Y=
+	t=1739849636; cv=none; b=P8UsmzDMAVFCDsWcFnWtZZgMNXA/EwMrepAi5gT4E+78oXzV0Y/Ia14tgFq5fz9U3/Lrbfv6hFNVSoKwm4luOhdNgNLV0U1fYyZc44oMit5/3tX66Oau2H3K9oFmPkWzayM1CNiHJNLniIDHFvICQwkQ34zvlbr4ggst0TnOj/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739849407; c=relaxed/simple;
-	bh=SyQB9SkXvPzfX3KdD57jjhRb3Sqa7wo6LxGljuuL09A=;
-	h=Date:To:From:Subject:Message-Id; b=LmMKH1VN0S64N6L405wUMqkL3A8LFNN4LcyEAS+Sytr9npflrUILxa+Gs2Dexu5OWPgEuXY2MaZjmaw61xA7N/NhaE4PbkpuGEMr/rR8I20ymqpuBskS+xcE+xyTWdG7g5leowcxKtibWNMYteNgq/KLt2xeifJRlNeo9XJ4j9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SfxyDzPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F85C4CEE6;
-	Tue, 18 Feb 2025 03:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739849406;
-	bh=SyQB9SkXvPzfX3KdD57jjhRb3Sqa7wo6LxGljuuL09A=;
-	h=Date:To:From:Subject:From;
-	b=SfxyDzPGSh0gU8dhxycZvw3GX+KqSPxWTT5VjH8ggcsgVPmcq/iNlGrQ5QlmJNtBW
-	 iP6QDcsFUoEmBr/US+5nulQ6xVFepdkku8Qb+TDqapp3kLVolWNaFbNuCUKArcjSKv
-	 xu9wcHZ/JiVTwUvk0z+556iRkGXaRtaHQKsENivo=
-Date: Mon, 17 Feb 2025 19:30:06 -0800
-To: mm-commits@vger.kernel.org,yazen.ghannam@amd.com,tony.luck@intel.com,tianruidong@linux.alibaba.com,tglx@linutronix.de,stable@vger.kernel.org,peterz@infradead.org,nao.horiguchi@gmail.com,mingo@redhat.com,linmiaohe@huawei.com,jpoimboe@kernel.org,Jonathan.Cameron@huawei.com,jarkko@kernel.org,jane.chu@oracle.com,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,baolin.wang@linux.alibaba.com,xueshuai@linux.alibaba.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages.patch added to mm-unstable branch
-Message-Id: <20250218033006.88F85C4CEE6@smtp.kernel.org>
+	s=arc-20240116; t=1739849636; c=relaxed/simple;
+	bh=g3CVzc0N4QCovs4cPbDtedwoOVxTlanqyloRgtqqMl8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kkSWVcZau/cZP1saFx7C6U2pyW9H5zpSSAR2Hc2hnwrwz6AI2a6OsBt9dU1O6JQFn9oD1F49l1LtKa6IkvWdTCsiUX3fXxHXZa8VlXJdcb2Cw2QHstRZnjGqUeWV1QwfiDe9vvCyaECxBI2idc33YosfHlnfRBiV6tqAtm800iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tUmx8OtJ; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 28945dc6eda911efaae1fd9735fae912-20250218
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=jYfLsQz2vVDXyMu7G7dGGNxPBYtbHclJtLhy9S100qM=;
+	b=tUmx8OtJiCl3XNJi+vKA1IZmEeORwuvrfLhu6uUi96RPPtE2GJ+TRPRe8QdKwD15Y5JZGfnAgx4Z6XdiGtbCRG72k37sZ5J1Rc+pOOak3PridAq+CdhslYg4NJM1OnRA6LP8eWNzq008iiO29LcH8OypTlvnhU5HPre1d+Ecg9E=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:48e772b0-f9f0-43a1-bfdf-afa85c1c3ad4,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:60aa074,CLOUDID:6a007aa3-3e52-4e5b-a515-5e42bbdb1515,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 28945dc6eda911efaae1fd9735fae912-20250218
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 2007115265; Tue, 18 Feb 2025 11:33:45 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 18 Feb 2025 11:33:44 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Tue, 18 Feb 2025 11:33:44 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>, <kvalo@kernel.org>,
+	<kuba@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, Nick Morrow <usbwifi2024@gmail.com>,
+	<stable@vger.kernel.org>, Salah Coronya <salah.coronya@gmail.com>
+Subject: [net-next, v3] wifi: mt76: mt7921: fix kernel panic due to null pointer dereference
+Date: Tue, 18 Feb 2025 11:33:42 +0800
+Message-ID: <20250218033343.1999648-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-The patch titled
-     Subject: mm/hwpoison: fix incorrect "not recovered" report for recovered clean pages
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages.patch
+Address a kernel panic caused by a null pointer dereference in the
+`mt792x_rx_get_wcid` function. The issue arises because the `deflink` structure
+is not properly initialized with the `sta` context. This patch ensures that the
+`deflink` structure is correctly linked to the `sta` context, preventing the 
+null pointer dereference.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages.patch
+ BUG: kernel NULL pointer dereference, address: 0000000000000400
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 0 UID: 0 PID: 470 Comm: mt76-usb-rx phy Not tainted 6.12.13-gentoo-dist #1
+ Hardware name:  /AMD HUDSON-M1, BIOS 4.6.4 11/15/2011
+ RIP: 0010:mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
+ RSP: 0018:ffffa147c055fd98 EFLAGS: 00010202
+ RAX: 0000000000000000 RBX: ffff8e9ecb652000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8e9ecb652000
+ RBP: 0000000000000685 R08: ffff8e9ec6570000 R09: 0000000000000000
+ R10: ffff8e9ecd2ca000 R11: ffff8e9f22a217c0 R12: 0000000038010119
+ R13: 0000000080843801 R14: ffff8e9ec6570000 R15: ffff8e9ecb652000
+ FS:  0000000000000000(0000) GS:ffff8e9f22a00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000400 CR3: 000000000d2ea000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  ? __die_body.cold+0x19/0x27
+  ? page_fault_oops+0x15a/0x2f0
+  ? search_module_extables+0x19/0x60
+  ? search_bpf_extables+0x5f/0x80
+  ? exc_page_fault+0x7e/0x180
+  ? asm_exc_page_fault+0x26/0x30
+  ? mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
+  mt7921_queue_rx_skb+0x1c6/0xaa0 [mt7921_common]
+  mt76u_alloc_queues+0x784/0x810 [mt76_usb]
+  ? __pfx___mt76_worker_fn+0x10/0x10 [mt76]
+  __mt76_worker_fn+0x4f/0x80 [mt76]
+  kthread+0xd2/0x100
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x34/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: mm/hwpoison: fix incorrect "not recovered" report for recovered clean pages
-Date: Mon, 17 Feb 2025 14:33:34 +0800
-
-When an uncorrected memory error is consumed there is a race between the
-CMCI from the memory controller reporting an uncorrected error with a UCNA
-signature, and the core reporting and SRAR signature machine check when
-the data is about to be consumed.
-
-If the CMCI wins that race, the page is marked poisoned when
-uc_decode_notifier() calls memory_failure().  For dirty pages,
-memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
-converting the PTE to a hwpoison entry.  As a result,
-kill_accessing_process():
-
-- call walk_page_range() and return 1 regardless of whether
-  try_to_unmap() succeeds or fails,
-- call kill_proc() to make sure a SIGBUS is sent
-- return -EHWPOISON to indicate that SIGBUS is already sent to the
-  process and kill_me_maybe() doesn't have to send it again.
-
-However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
-PTE unchanged and not converted to a hwpoison entry.  Conversely, for
-clean pages where PTE entries are not marked as hwpoison,
-kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
-a SIGBUS.
-
-Console log looks like this:
-
-    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
-    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
-    Memory failure: 0x827ca68: already hardware poisoned
-    mce: Memory error not recovered
-
-To fix it, return 0 for "corrupted page was clean", preventing an
-unnecessary SIGBUS.
-
-Link: https://lkml.kernel.org/r/20250217063335.22257-5-xueshuai@linux.alibaba.com
-Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Cc: Acked-by:Thomas Gleixner <tglx@linutronix.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: linmiaohe <linmiaohe@huawei.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Nick Morrow <usbwifi2024@gmail.com>
+Closes: https://github.com/morrownr/USB-WiFi/issues/577
+Cc: stable@vger.kernel.org
+Fixes: 90c10286b176 ("wifi: mt76: mt7925: Update mt792x_rx_get_wcid for per-link STA")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Tested-by: Salah Coronya <salah.coronya@gmail.com>
 ---
+v2:
+  - Change Nick from "Tested-by" to "Reported-by".
+v3:
+  - Rewrite the commit msg in the imperative mood.
+  - Remove the boot time for code trace.
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- mm/memory-failure.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
---- a/mm/memory-failure.c~mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages
-+++ a/mm/memory-failure.c
-@@ -881,12 +881,17 @@ static int kill_accessing_process(struct
- 	mmap_read_lock(p->mm);
- 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwpoison_walk_ops,
- 			      (void *)&priv);
-+	/*
-+	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
-+	 * succeeds or fails, then kill the process with SIGBUS.
-+	 * ret = 0 when poison page is a clean page and it's dropped, no
-+	 * SIGBUS is needed.
-+	 */
- 	if (ret == 1 && priv.tk.addr)
- 		kill_proc(&priv.tk, pfn, flags);
--	else
--		ret = 0;
- 	mmap_read_unlock(p->mm);
--	return ret > 0 ? -EHWPOISON : -EFAULT;
-+
-+	return ret > 0 ? -EHWPOISON : 0;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 13e58c328aff..78b77a54d195 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -811,6 +811,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	msta->deflink.wcid.phy_idx = mvif->bss_conf.mt76.band_idx;
+ 	msta->deflink.wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	msta->deflink.last_txs = jiffies;
++	msta->deflink.sta = msta;
  
- /*
-_
-
-Patches currently in -mm which might be from xueshuai@linux.alibaba.com are
-
-x86-mce-collect-error-message-for-severities-below-mce_panic_severity.patch
-x86-mce-dump-error-msg-from-severities.patch
-x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression.patch
-mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages.patch
-mm-memory-failure-move-return-value-documentation-to-function-declaration.patch
+ 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (ret)
+-- 
+2.45.2
 
 
